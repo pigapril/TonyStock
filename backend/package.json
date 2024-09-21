@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "google-finance": "^0.1.12",
+    "yahoo-finance2": "^2.12.4",
+    "yfinance": "^0.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
