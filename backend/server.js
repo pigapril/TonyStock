@@ -25,7 +25,13 @@ const express = require('express');
          period2: endDate.toISOString().split('T')[0]
        });
        console.log('Fetched quotes:', result);
-       const dates = result.map(quote => formatDate(quote.date)); // 格式化日期
+
+       // 檢查日期格式
+       const dates = result.map(quote => {
+         console.log('Original date:', quote.date); // 日誌輸出原始日期
+         return quote.date.toISOString().split('T')[0]; // 返回 YYYY-MM-DD 格式的字符串
+       });
+       
        const prices = result.map(quote => quote.close);
        const mockData = {
          dates,
