@@ -26,8 +26,15 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 检查股票代码长度，如果是4位数字，则添加 .TW
+    let formattedStockCode = stockCode;
+    if (stockCode.length === 4 && /^\d+$/.test(stockCode)) {
+      formattedStockCode += '.TW';
+    }
+
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${stockCode}&years=${years}&backTestDate=${backTestDate}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${formattedStockCode}&years=${years}&backTestDate=${backTestDate}`);
       const data = response.data;
       console.log('Response data:', data);
       setChartData({
@@ -112,7 +119,7 @@ function App() {
                         type="text"
                         value={stockCode}
                         onChange={(e) => setStockCode(e.target.value)}
-                        placeholder="台股代號請加.TW"
+                        placeholder="如:0050、AAPL"
                         required
                       />
                     </div>
