@@ -22,37 +22,44 @@ import React, { useState } from 'react';
              {
                label: 'Price',
                data: data.prices,
-               borderColor: 'blue',
-               fill: false
+               borderColor: 'blue', // 藍色
+               borderWidth: 2,
+               fill: false, // 設置為純線條
+               pointRadius: 0 // 隱藏數據點
              },
              {
                label: 'Trend Line',
                data: data.trendLine,
-               borderColor: 'red',
+               borderColor: 'lightgray', // 淺灰色
+               borderWidth: 2,
                fill: false
              },
              {
                label: 'TL-2SD',
                data: data.tl_minus_2sd,
-               borderColor: 'yellow',
+               borderColor: 'darkgreen', // 深綠色
+               borderWidth: 2,
                fill: false
              },
              {
                label: 'TL-SD',
                data: data.tl_minus_sd,
-               borderColor: 'green',
+               borderColor: 'lightgreen', // 淺綠色
+               borderWidth: 2,
                fill: false
              },
              {
                label: 'TL+SD',
                data: data.tl_plus_sd,
-               borderColor: 'green',
+               borderColor: 'lightcoral', // 淺紅色
+               borderWidth: 2,
                fill: false
              },
              {
                label: 'TL+2SD',
                data: data.tl_plus_2sd,
-               borderColor: 'yellow',
+               borderColor: 'red', // 深紅色
+               borderWidth: 2,
                fill: false
              }
            ]
@@ -87,12 +94,24 @@ import React, { useState } from 'react';
          {chartData && <Line 
            data={chartData} 
            options={{
+             plugins: {
+               legend: {
+                 display: false // 隱藏圖例
+               }
+             },
              scales: {
+               x: {
+                 grid: {
+                   display: false // 隱藏縱線
+                 }
+               },
                y: {
                  beginAtZero: false,
-                 // 根据实际数据调整这些值
                  suggestedMin: Math.min(...chartData.datasets.flatMap(d => d.data)) * 0.9,
-                 suggestedMax: Math.max(...chartData.datasets.flatMap(d => d.data)) * 1.1
+                 suggestedMax: Math.max(...chartData.datasets.flatMap(d => d.data)) * 1.1,
+                 grid: {
+                   display: true // 保留橫線
+                 }
                }
              }
            }}
