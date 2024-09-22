@@ -95,8 +95,8 @@ function App() {
           <h2>StockAnalysisTool</h2>
           <ul style={{listStyleType: 'none', padding: 0}}>
             <li><Link to="/">五線標準差分析</Link></li>
-            <li><Link to="/watchlist">關鍵圖表</Link></li>
-            <li><Link to="/about">關於我</Link></li>
+            <li><a href="https://vocus.cc/salon/daily_chart" target="_blank" rel="noopener noreferrer">關鍵圖表</a></li>
+            <li><a href="https://vocus.cc/salon/daily_chart/about" target="_blank" rel="noopener noreferrer">關於我</a></li>
           </ul>
         </nav>
         <main style={{flex: 1, padding: '20px'}}>
@@ -138,11 +138,10 @@ function App() {
                   </div>
                   <button type="submit">開始分析</button>
                 </form>
-                {chartData && <Line data={chartData} options={/* ... 現有的圖表選項 ... */} />}
+                {chartData && <Line data={chartData} options={{}} />}
               </>
             } />
-            <Route path="/watchlist" element={<h2>關鍵圖表（待實現）</h2>} />
-            <Route path="/about" element={<h2>關於我（待實現）</h2>} />
+            {/* 移除了 /about 路由，因为现在是外部链接 */}
           </Routes>
         </main>
       </div>
