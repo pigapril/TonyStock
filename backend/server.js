@@ -15,11 +15,12 @@ const express = require('express');
 
    // 更新 /api/stock-data 路由以獲取真實數據
    app.get('/api/stock-data', async (req, res) => {
-     const { stockCode, years } = req.query;
-     console.log(`Fetching data for: ${stockCode} for ${years} years`);
+     const { stockCode, years, backTestDate } = req.query;
+     console.log(`Fetching data for: ${stockCode} for ${years} years, back test date: ${backTestDate || 'today'}`);
      try {
-       const endDate = new Date();
-       const startDate = new Date(new Date().setFullYear(endDate.getFullYear() - years));
+       const endDate = backTestDate ? new Date(backTestDate) : new Date();
+       const startDate = new Date(endDate);
+       startDate.setFullYear(startDate.getFullYear() - parseFloat(years));
        
        // 使用 yahoo-finance2 獲取歷史數據
        const result = await yahooFinance.historical(stockCode, {
