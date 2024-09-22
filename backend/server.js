@@ -6,7 +6,9 @@ const express = require('express');
    const yahooFinance = require('yahoo-finance2').default;
 
    const app = express();
-   app.use(cors());
+   app.use(cors({
+     origin: 'https://bejewelled-griffin-6c36fd.netlify.app'
+   }));
    app.use(express.json());
 
    const PORT = process.env.PORT || 5001;
