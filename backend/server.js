@@ -9,7 +9,7 @@ const express = require('express');
    app.use(cors());
    app.use(express.json());
 
-   const PORT = process.env.PORT || 5000;
+   const PORT = process.env.PORT || 5001;
 
    // 更新 /api/stock-data 路由以獲取真實數據
    app.get('/api/stock-data', async (req, res) => {
@@ -25,7 +25,7 @@ const express = require('express');
          period2: endDate.toISOString().split('T')[0]
        });
        console.log('Fetched quotes:', result);
-       const dates = result.map(quote => quote.date);
+       const dates = result.map(quote => formatDate(quote.date)); // 格式化日期
        const prices = result.map(quote => quote.close);
        const mockData = {
          dates,
@@ -79,6 +79,12 @@ const express = require('express');
      // 确保所有值都是正数，并且在合理范围内
      const minPrice = Math.min(...prices);
      return trendLine.map(value => Math.max(value + multiplier * stdDev, minPrice * 0.5));
+   }
+
+   // 新增格式化日期的函數
+   function formatDate(date) {
+     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+     return new Intl.DateTimeFormat('zh-CN', options).format(new Date(date));
    }
 
    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
