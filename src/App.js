@@ -112,7 +112,7 @@ function App() {
                         type="text"
                         value={stockCode}
                         onChange={(e) => setStockCode(e.target.value)}
-                        placeholder="台股代號請加.TW，如: 0050.TW"
+                        placeholder="台股代號請加.TW"
                         required
                       />
                     </div>
