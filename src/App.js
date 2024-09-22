@@ -26,7 +26,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`${process.env.API_URL}?stockCode=${stockCode}&years=${years}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${stockCode}&years=${years}`);
       const data = response.data;
       console.log('Response data:', data);
       setChartData({
@@ -67,7 +67,7 @@ function App() {
           {
             label: 'TL+SD',
             data: data.tl_plus_sd,
-            borderColor: 'lightcoral', // 淺紅色
+            borderColor: 'lightcoral', // 淺紅��
             borderWidth: 2,
             fill: false,
             pointRadius: 0 // 隱藏數據點
