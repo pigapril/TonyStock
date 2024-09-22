@@ -88,29 +88,33 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App" style={{textAlign: 'left', margin: '0 auto', maxWidth: '800px'}}>
       <h1>Stock Analysis Tool</h1>
       <form onSubmit={handleSubmit}>
-        <h4 className="input-label">請輸入股票代碼，如 aapl</h4> {/* 使用 h4 並添加類名 */}
-        <input
-          type="text"
-          value={stockCode}
-          onChange={(e) => setStockCode(e.target.value)}
-          placeholder="Enter stock code"
-          required
-        />
-        <div className="input-spacing" /> {/* 添加間距 */}
-
-        <h4 className="input-label">請輸入查詢年數</h4> {/* 新增日期欄位標題 */}
-        <input
-          type="number"
-          value={years}
-          onChange={(e) => setYears(e.target.value)}
-          step="0.5"
-          min="0.5"
-          max="5"
-          required
-        />
+        <div className="input-container">
+          <div className="input-group">
+            <label>股票代碼：</label>
+            <input
+              type="text"
+              value={stockCode}
+              onChange={(e) => setStockCode(e.target.value)}
+              placeholder="Enter stock code"
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label>查詢期間：</label>
+            <input
+              type="number"
+              value={years}
+              onChange={(e) => setYears(e.target.value)}
+              step="0.5"
+              min="0.5"
+              max="5"
+              required
+            />
+          </div>
+        </div>
         <button type="submit">Analyze</button>
       </form>
       {chartData && <Line 
@@ -143,6 +147,7 @@ function App() {
               beginAtZero: false,
               suggestedMin: Math.min(...chartData.datasets.flatMap(d => d.data)) * 0.9,
               suggestedMax: Math.max(...chartData.datasets.flatMap(d => d.data)) * 1.1,
+              position: 'right', // 將 Y 軸移到右邊
               grid: {
                 display: true // 保留橫線
               }
