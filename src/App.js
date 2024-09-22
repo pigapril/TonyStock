@@ -21,12 +21,13 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 function App() {
   const [stockCode, setStockCode] = useState('');
   const [years, setYears] = useState(3.5);
+  const [backTestDate, setBackTestDate] = useState(''); // 新增状态
   const [chartData, setChartData] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${stockCode}&years=${years}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${stockCode}&years=${years}&backTestDate=${backTestDate}`);
       const data = response.data;
       console.log('Response data:', data);
       setChartData({
@@ -93,9 +94,9 @@ function App() {
         <nav style={{width: '200px', backgroundColor: '#f0f0f0', padding: '20px'}}>
           <h2>StockAnalysisTool</h2>
           <ul style={{listStyleType: 'none', padding: 0}}>
-            <li><Link to="/">五線標準差分析</Link></li>
-            <li><a href="https://vocus.cc/salon/daily_chart" target="_blank" rel="noopener noreferrer">關鍵圖表</a></li>
-            <li><a href="https://vocus.cc/salon/daily_chart/about" target="_blank" rel="noopener noreferrer">關於我</a></li>
+            <li className="menu-item"><Link to="/">五線標準差分析</Link></li>
+            <li className="menu-item"><a href="https://vocus.cc/salon/daily_chart" target="_blank" rel="noopener noreferrer">關鍵圖表</a></li>
+            <li className="menu-item"><a href="https://vocus.cc/salon/daily_chart/about" target="_blank" rel="noopener noreferrer">關於我</a></li>
           </ul>
         </nav>
         <main style={{flex: 1, padding: '20px'}}>
@@ -131,13 +132,21 @@ function App() {
                       <label>回測日期（預設為當日）：</label>
                       <input
                         type="date"
-                        // 添加日期選擇邏輯
+                        value={backTestDate}
+                        onChange={(e) => setBackTestDate(e.target.value)} // 更新状态
                       />
                     </div>
                   </div>
-                  <button type="submit">開始分析</button>
+                  <button type="submit" style={{ marginTop: '20px' }}>開始分析</button>
                 </form>
-                {chartData && <Line data={chartData} options={{}} />}
+                {chartData && <Line data={chartData} options={{
+                  plugins: { legend: { display: false } },
+                  scales: {
+                    y: {
+                      position: 'right' // 将 Y 轴移至右侧
+                    }
+                  }
+                }} />}
               </>
             } />
             {/* 移除了 /about 路由，因为现在是外部链接 */}
