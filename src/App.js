@@ -44,7 +44,7 @@ function App() {
           {
             label: 'Trend Line',
             data: data.trendLine,
-            borderColor: 'lightgray', // 淺灰色
+            borderColor: 'black', // 修改为黑色
             borderWidth: 2,
             fill: false,
             pointRadius: 0 // 隱藏數據點
@@ -112,7 +112,7 @@ function App() {
                         type="text"
                         value={stockCode}
                         onChange={(e) => setStockCode(e.target.value)}
-                        placeholder="輸入股票代碼"
+                        placeholder="台股代號請加.TW，如: 0050.TW"
                         required
                       />
                     </div>
