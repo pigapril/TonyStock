@@ -13,7 +13,6 @@ import {
   TimeScale // 添加 TimeScale
 } from 'chart.js';
 import 'chartjs-adapter-date-fns'; // 添加日期適配器
-import { zhCN } from 'date-fns/locale'; // 導入中文本地化設置
 import './App.css'; // 確保引入 CSS 文件
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 
