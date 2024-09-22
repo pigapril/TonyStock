@@ -26,7 +26,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`http://localhost:5001/api/stock-data?stockCode=${stockCode}&years=${years}`);
+      const response = await axios.get(`${process.env.API_URL}?stockCode=${stockCode}&years=${years}`);
       const data = response.data;
       console.log('Response data:', data);
       setChartData({
