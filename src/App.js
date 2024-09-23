@@ -10,28 +10,35 @@ import {
   Title,
   Tooltip,
   Legend,
-  TimeScale // 添加 TimeScale
+  TimeScale
 } from 'chart.js';
-import 'chartjs-adapter-date-fns'; // 添加日期適配器
-import './App.css'; // 確保引入 CSS 文件
+import 'chartjs-adapter-date-fns';
+import './App.css';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale); // 註冊 TimeScale
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
 function App() {
   const [stockCode, setStockCode] = useState('');
   const [years, setYears] = useState(3.5);
-  const [backTestDate, setBackTestDate] = useState(''); // 新增状态
+  const [backTestDate, setBackTestDate] = useState('');
   const [chartData, setChartData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [timeoutMessage, setTimeoutMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setTimeoutMessage('');
 
-    // 检查股票代码长度，如果是4位数字，则添加 .TW
     let formattedStockCode = stockCode;
     if (stockCode.length === 4 && /^\d+$/.test(stockCode)) {
       formattedStockCode += '.TW';
     }
+
+    const timeoutId = setTimeout(() => {
+      setTimeoutMessage('抓資料中，再等一下~');
+    }, 2000);
 
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${formattedStockCode}&years=${years}&backTestDate=${backTestDate}`);
@@ -43,70 +50,73 @@ function App() {
           {
             label: 'Price',
             data: data.prices,
-            borderColor: 'blue', // 藍色
+            borderColor: 'blue',
             borderWidth: 2,
-            fill: false, // 設置為純線條
-            pointRadius: 0 // 隱藏數據點
+            fill: false,
+            pointRadius: 0
           },
           {
             label: 'Trend Line',
             data: data.trendLine,
-            borderColor: 'black', // 修改为黑色
+            borderColor: 'black',
             borderWidth: 2,
             fill: false,
-            pointRadius: 0 // 隱藏數據點
+            pointRadius: 0
           },
           {
             label: 'TL-2SD',
             data: data.tl_minus_2sd,
-            borderColor: 'darkgreen', // 深綠色
+            borderColor: 'darkgreen',
             borderWidth: 2,
             fill: false,
-            pointRadius: 0 // 隱藏數據點
+            pointRadius: 0
           },
           {
             label: 'TL-SD',
             data: data.tl_minus_sd,
-            borderColor: 'lightgreen', // 淺綠色
+            borderColor: 'lightgreen',
             borderWidth: 2,
             fill: false,
-            pointRadius: 0 // 隱藏數據點
+            pointRadius: 0
           },
           {
             label: 'TL+SD',
             data: data.tl_plus_sd,
-            borderColor: 'lightcoral', // 淺紅
+            borderColor: 'lightcoral',
             borderWidth: 2,
             fill: false,
-            pointRadius: 0 // 隱藏數據點
+            pointRadius: 0
           },
           {
             label: 'TL+2SD',
             data: data.tl_plus_2sd,
-            borderColor: 'red', // 深紅色
+            borderColor: 'red',
             borderWidth: 2,
             fill: false,
-            pointRadius: 0 // 隱藏數據點
+            pointRadius: 0
           }
         ]
       });
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      clearTimeout(timeoutId);
+      setLoading(false);
     }
   };
 
   return (
     <Router>
-      <div className="App" style={{display: 'flex', height: '100vh'}}>
-        <nav style={{width: '200px', backgroundColor: '#f0f0f0', padding: '20px'}}>
+      <div className="App" style={{ display: 'flex', height: '100vh' }}>
+        <nav style={{ width: '200px', backgroundColor: '#f0f0f0', padding: '20px' }}>
           <h2>StockAnalysisTool</h2>
-          <ul style={{listStyleType: 'none', padding: 0}}>
+          <ul style={{ listStyleType: 'none', padding: 0 }}>
             <li className="menu-item"><Link to="/">五線標準差分析</Link></li>
             <li className="menu-item"><a href="https://vocus.cc/salon/daily_chart" target="_blank" rel="noopener noreferrer">關鍵圖表</a></li>
             <li className="menu-item"><a href="https://vocus.cc/salon/daily_chart/about" target="_blank" rel="noopener noreferrer">關於我</a></li>
           </ul>
         </nav>
-        <main style={{flex: 1, padding: '20px'}}>
+        <main style={{ flex: 1, padding: '20px' }}>
           <Routes>
             <Route path="/" element={
               <>
@@ -140,23 +150,25 @@ function App() {
                       <input
                         type="date"
                         value={backTestDate}
-                        onChange={(e) => setBackTestDate(e.target.value)} // 更新状态
+                        onChange={(e) => setBackTestDate(e.target.value)}
                       />
                     </div>
                   </div>
-                  <button type="submit" style={{ marginTop: '20px' }}>開始分析</button>
+                  <button type="submit" style={{ marginTop: '20px' }} disabled={loading}>
+                    {loading ? '分析中' : '開始分析'}
+                  </button>
                 </form>
+                {timeoutMessage && <p style={{ color: 'lightgray' }}>{timeoutMessage}</p>}
                 {chartData && <Line data={chartData} options={{
                   plugins: { legend: { display: false } },
                   scales: {
                     y: {
-                      position: 'right' // 将 Y 轴移至右侧
+                      position: 'right'
                     }
                   }
                 }} />}
               </>
             } />
-            {/* 移除了 /about 路由，因为现在是外部链接 */}
           </Routes>
         </main>
       </div>
