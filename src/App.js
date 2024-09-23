@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import {
@@ -25,6 +25,23 @@ function App() {
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [timeoutMessage, setTimeoutMessage] = useState('');
+
+  // 定时自动发送请求以避免冷启动
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      // 发送请求以分析 AAPL 股票数据
+      axios.get(`${process.env.REACT_APP_API_URL}?stockCode=AAPL&years=3.5`)
+        .then(response => {
+          console.log('Periodic fetch for AAPL:', response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching AAPL data:', error);
+        });
+    }, 12 * 60 * 1000); // 每 12 分钟
+
+    // 清理定时器
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
