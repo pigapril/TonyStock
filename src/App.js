@@ -36,6 +36,7 @@ function App() {
       formattedStockCode += '.TW';
     }
 
+    // 设置超时提示
     const timeoutId = setTimeout(() => {
       setTimeoutMessage('抓資料中，再等一下~');
     }, 2000);
@@ -102,6 +103,7 @@ function App() {
     } finally {
       clearTimeout(timeoutId);
       setLoading(false);
+      setTimeoutMessage(''); // 清除超时消息
     }
   };
 
@@ -159,14 +161,18 @@ function App() {
                   </button>
                 </form>
                 {timeoutMessage && <p style={{ color: 'lightgray' }}>{timeoutMessage}</p>}
-                {chartData && <Line data={chartData} options={{
-                  plugins: { legend: { display: false } },
-                  scales: {
-                    y: {
-                      position: 'right'
-                    }
-                  }
-                }} />}
+                {chartData && (
+                  <>
+                    <Line data={chartData} options={{
+                      plugins: { legend: { display: false } },
+                      scales: {
+                        y: {
+                          position: 'right'
+                        }
+                      }
+                    }} />
+                  </>
+                )}
               </>
             } />
           </Routes>
