@@ -29,7 +29,7 @@ function App() {
   const [displayedStockCode, setDisplayedStockCode] = useState(''); // 新增狀態變量
 
   // 修改 fetchStockData 函數，添加一個參數來區分用戶操作和自動操作
-  const fetchStockData = useCallback(async (stockCode, isUserAction = false) => {
+  const fetchStockData = useCallback(async (stockCode, yearsToUse, backTestDateToUse) => {
     setLoading(true);
     setTimeoutMessage('');
 
@@ -106,7 +106,7 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  }, [years, backTestDate]); // 添加 years 和 backTestDate 作為依賴項
+  }, []); // 移除 years 和 backTestDate 的依賴
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,18 +114,18 @@ function App() {
     if (stockCode.length === 4 && /^\d+$/.test(stockCode)) {
       formattedStockCode += '.TW';
     }
-    await fetchStockData(formattedStockCode, true); // 傳遞 true 表示這是用戶操作
+    await fetchStockData(formattedStockCode, years, backTestDate); // 在用戶提交時更新圖表數據
   };
 
   useEffect(() => {
-    fetchStockData('AAPL', false); // 初始加載，傳遞 false 表示這不是用戶操作
+    fetchStockData('AAPL', years, backTestDate); // 初始加載，傳遞默認值
 
     const intervalId = setInterval(() => {
-      fetchStockData('AAPL', false); // 定期更新，傳遞 false 表示這不是用戶操作
+      fetchStockData('AAPL', years, backTestDate); // 定期更新
     }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, [fetchStockData]);
+  }, [fetchStockData]); // 只依賴 fetchStockData
 
   return (
     <Router>
