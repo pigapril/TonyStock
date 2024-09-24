@@ -99,7 +99,7 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  }, [years, backTestDate]); // 添加 years 和 backTestDate 作為依賴項
+  }, [years, backTestDate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // 防止表單默認提交行為
@@ -111,20 +111,7 @@ function App() {
       formattedStockCode += '.TW';
     }
 
-    const timeoutId = setTimeout(() => {
-      setTimeoutMessage('抓資料中，再等一下~');
-    }, 2000);
-
-    try {
-      // 這裡調用 fetchStockData 來獲取數據
-      await fetchStockData(formattedStockCode);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      clearTimeout(timeoutId);
-      setLoading(false);
-      setTimeoutMessage('');
-    }
+    await fetchStockData(formattedStockCode); // 只有在提交時才獲取數據
   };
 
   useEffect(() => {
@@ -170,7 +157,7 @@ function App() {
           </header>
           <div className="dashboard">
             <div className="card chart-card">
-              <h2>Analysis Result</h2>
+              <h2>{stockCode ? `${stockCode} 分析結果` : '分析結果'}</h2>
               {chartData && (
                 <Line data={chartData} options={{
                   plugins: { legend: { display: false } },
