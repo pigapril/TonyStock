@@ -15,7 +15,7 @@ import {
 import 'chartjs-adapter-date-fns';
 import './App.css';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-import { FaChartLine, FaInfoCircle, FaChartBar, FaCircle } from 'react-icons/fa';
+import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
 import 'chartjs-plugin-crosshair';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
