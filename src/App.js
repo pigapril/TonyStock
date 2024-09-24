@@ -102,7 +102,7 @@ function App() {
   }, [years, backTestDate]); // 添加 years 和 backTestDate 作為依賴項
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // 防止表單默認提交行為
     setLoading(true);
     setTimeoutMessage('');
 
@@ -116,62 +116,8 @@ function App() {
     }, 2000);
 
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${formattedStockCode}&years=${years}&backTestDate=${backTestDate}`);
-      const data = response.data;
-      console.log('Response data:', data);
-      setChartData({
-        labels: data.dates,
-        datasets: [
-          {
-            label: 'Price',
-            data: data.prices,
-            borderColor: 'blue',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'Trend Line',
-            data: data.trendLine,
-            borderColor: 'black',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL-2SD',
-            data: data.tl_minus_2sd,
-            borderColor: 'darkgreen',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL-SD',
-            data: data.tl_minus_sd,
-            borderColor: 'lightgreen',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL+SD',
-            data: data.tl_plus_sd,
-            borderColor: 'lightcoral',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL+2SD',
-            data: data.tl_plus_2sd,
-            borderColor: 'red',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          }
-        ]
-      });
+      // 這裡調用 fetchStockData 來獲取數據
+      await fetchStockData(formattedStockCode);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -182,10 +128,10 @@ function App() {
   };
 
   useEffect(() => {
-    fetchStockData('AAPL');
+    fetchStockData('AAPL'); // 在組件加載時自動獲取數據
 
     const intervalId = setInterval(() => {
-      fetchStockData('AAPL');
+      fetchStockData('AAPL'); // 每12分鐘自動獲取數據
     }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
