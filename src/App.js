@@ -121,7 +121,7 @@ function App() {
   };
 
   useEffect(() => {
-    fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取��數
+    fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取數
 
     const intervalId = setInterval(() => {
       fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取參數
@@ -172,7 +172,7 @@ function App() {
               )}
             </div>
             <div className="card stock-analysis-card">
-              <h2>Stock Analysis</h2>
+              {/* <h2>Stock Analysis</h2>  // 移除這一行 */}
               <form onSubmit={handleSubmit}>
                 <div className="input-group">
                   <label>股票代碼：</label>
