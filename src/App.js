@@ -27,79 +27,10 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [timeoutMessage, setTimeoutMessage] = useState('');
 
-  const fetchStockData = useCallback(async (stockCode) => {
-    setLoading(true);
-    setTimeoutMessage('');
-
-    const timeoutId = setTimeout(() => {
-      setTimeoutMessage('抓資料中，再等一下~');
-    }, 2000);
-
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${stockCode}&years=${years}&backTestDate=${backTestDate}`);
-      const data = response.data;
-      console.log('Response data:', data);
-      setChartData({
-        labels: data.dates,
-        datasets: [
-          {
-            label: 'Price',
-            data: data.prices,
-            borderColor: 'blue',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'Trend Line',
-            data: data.trendLine,
-            borderColor: 'black',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL-2SD',
-            data: data.tl_minus_2sd,
-            borderColor: 'darkgreen',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL-SD',
-            data: data.tl_minus_sd,
-            borderColor: 'lightgreen',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL+SD',
-            data: data.tl_plus_sd,
-            borderColor: 'lightcoral',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL+2SD',
-            data: data.tl_plus_2sd,
-            borderColor: 'red',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          }
-        ]
-      });
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      clearTimeout(timeoutId);
-      setLoading(false);
-      setTimeoutMessage('');
-    }
-  }, [years, backTestDate]); // 添加 years 和 backTestDate 作為依賴項
+  const fetchStockData = useCallback(async (stockCode, yearsParam, backTestDateParam) => {
+    // 使用 yearsParam 和 backTestDateParam 代替 years 和 backTestDate
+    // ... fetchStockData 的實現 ...
+  }, []); // 空依賴數組
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -116,7 +47,7 @@ function App() {
     }, 2000);
 
     try {
-      await fetchStockData(formattedStockCode); // 在这里调用 fetchStockData
+      await fetchStockData(formattedStockCode, years, backTestDate); // 在这里调用 fetchStockData
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -127,14 +58,14 @@ function App() {
   };
 
   useEffect(() => {
-    fetchStockData('AAPL'); // 组件加载时自动获取数据
+    fetchStockData('AAPL', years, backTestDate);
 
     const intervalId = setInterval(() => {
-      fetchStockData('AAPL');
-    }, 12 * 60 * 1000); // 每12分钟自动获取数据
+      fetchStockData('AAPL', years, backTestDate);
+    }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, []); // 只在组件挂载时调用
+  }, [fetchStockData, years, backTestDate]);
 
   return (
     <Router>
