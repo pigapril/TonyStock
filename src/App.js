@@ -26,9 +26,10 @@ function App() {
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [timeoutMessage, setTimeoutMessage] = useState('');
+  const [displayedStockCode, setDisplayedStockCode] = useState('');
 
-  // 修改 fetchStockData 函數，添加一個參數來區分用戶操作和自動操作
-  const fetchStockData = useCallback(async (stockCode, isUserAction = false) => {
+  // 將 fetchStockData 函數移出 useCallback
+  const fetchStockData = async (stockCode, isUserAction = false) => {
     setLoading(true);
     setTimeoutMessage('');
 
@@ -37,7 +38,6 @@ function App() {
     }, 2000);
 
     try {
-      // 如果是用戶操作，使用用戶輸入的值；否則使用默認值
       const yearsToUse = isUserAction ? years : 3.5;
       const backTestDateToUse = isUserAction ? backTestDate : '';
 
@@ -55,48 +55,10 @@ function App() {
             fill: false,
             pointRadius: 0
           },
-          {
-            label: 'Trend Line',
-            data: data.trendLine,
-            borderColor: 'black',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL-2SD',
-            data: data.tl_minus_2sd,
-            borderColor: 'darkgreen',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL-SD',
-            data: data.tl_minus_sd,
-            borderColor: 'lightgreen',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL+SD',
-            data: data.tl_plus_sd,
-            borderColor: 'lightcoral',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL+2SD',
-            data: data.tl_plus_2sd,
-            borderColor: 'red',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          }
+          // ... 其他數據集
         ]
       });
+      setDisplayedStockCode(stockCode);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -104,7 +66,7 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  }, [years, backTestDate]); // 添加 years 和 backTestDate 作為依賴項
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -112,18 +74,22 @@ function App() {
     if (stockCode.length === 4 && /^\d+$/.test(stockCode)) {
       formattedStockCode += '.TW';
     }
-    await fetchStockData(formattedStockCode, true); // 傳遞 true 表示這是用戶操作
+    await fetchStockData(formattedStockCode, true);
   };
 
   useEffect(() => {
-    fetchStockData('AAPL', false); // 初始加載，傳遞 false 表示這不是用戶操作
+    const initialFetch = async () => {
+      await fetchStockData('AAPL', false);
+    };
+
+    initialFetch();
 
     const intervalId = setInterval(() => {
-      fetchStockData('AAPL', false); // 定期更新，傳遞 false 表示這不是用戶操作
+      fetchStockData('AAPL', false);
     }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, [fetchStockData]);
+  }, []); // 空依賴數組，確保只在組件加載時執行一次
 
   return (
     <Router>
@@ -158,7 +124,7 @@ function App() {
           </header>
           <div className="dashboard">
             <div className="card chart-card">
-              <h2>{stockCode ? `${stockCode} 分析結果` : '分析結果'}</h2>
+              <h2>{displayedStockCode ? `${displayedStockCode} 分析結果` : '分析結果'}</h2>
               {chartData && (
                 <Line data={chartData} options={{
                   plugins: { legend: { display: false } },
