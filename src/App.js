@@ -189,7 +189,7 @@ function App() {
     }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, [fetchStockData]); // 确保 fetchStockData 在依赖数组中
+  }, []); // 移除 fetchStockData
 
   return (
     <Router>
