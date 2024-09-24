@@ -17,6 +17,7 @@ import './App.css';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
 import 'chartjs-plugin-crosshair';
+import { FaCircle } from 'react-icons/fa'; // 引入實心圖標
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
@@ -174,14 +175,15 @@ function App() {
                         intersect: false,
                         callbacks: {
                           label: function (context) {
-                            let label = `● ${context.dataset.label}: `;
+                            let label = <FaCircle style={{ color: context.dataset.borderColor }} />; // 使用實心圖標
+                            label += ` ${context.dataset.label}: `;
                             if (context.parsed.y !== null) {
                               label += context.parsed.y.toFixed(2);
                             }
                             return label;
                           },
                           afterBody: function (tooltipItems) {
-                            const order = ['TL+2SD', 'TL+SD', 'Trend Line', 'TL-SD', 'TL-2SD', 'Price'];
+                            const order = ['TL+2SD', 'TL+SD', 'Trend Line', 'TL-SD', 'TL-2SD'];
                             tooltipItems.sort((a, b) => {
                               return order.indexOf(a.dataset.label) - order.indexOf(b.dataset.label);
                             });
@@ -201,10 +203,6 @@ function App() {
                               }
 
                               if (!inserted) {
-                                tooltipItems.unshift(priceItem);
-                              }
-
-                              if (tooltipItems.length === 0 || priceValue < tooltipItems[tooltipItems.length - 1].parsed.y) {
                                 tooltipItems.push(priceItem);
                               }
                             }
