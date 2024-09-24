@@ -14,7 +14,7 @@ import {
 } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import './App.css';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
@@ -189,7 +189,7 @@ function App() {
     }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, [fetchStockData]);
+  }, [fetchStockData]); // 确保 fetchStockData 在依赖数组中
 
   return (
     <Router>
