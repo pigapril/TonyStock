@@ -26,8 +26,8 @@ function App() {
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [timeoutMessage, setTimeoutMessage] = useState('');
+  const [displayedStockCode, setDisplayedStockCode] = useState(''); // 新增狀態變量
 
-  // 修改 fetchStockData 函數，添加一個參數來區分用戶操作和自動操作
   const fetchStockData = useCallback(async (stockCode, isUserAction = false) => {
     setLoading(true);
     setTimeoutMessage('');
@@ -37,7 +37,6 @@ function App() {
     }, 2000);
 
     try {
-      // 如果是用戶操作，使用用戶輸入的值；否則使用默認值
       const yearsToUse = isUserAction ? years : 3.5;
       const backTestDateToUse = isUserAction ? backTestDate : '';
 
@@ -55,48 +54,10 @@ function App() {
             fill: false,
             pointRadius: 0
           },
-          {
-            label: 'Trend Line',
-            data: data.trendLine,
-            borderColor: 'black',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL-2SD',
-            data: data.tl_minus_2sd,
-            borderColor: 'darkgreen',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL-SD',
-            data: data.tl_minus_sd,
-            borderColor: 'lightgreen',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL+SD',
-            data: data.tl_plus_sd,
-            borderColor: 'lightcoral',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL+2SD',
-            data: data.tl_plus_2sd,
-            borderColor: 'red',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          }
+          // ... 其他數據集
         ]
       });
+      setDisplayedStockCode(stockCode); // 在成功獲取數據後更新顯示的股票代碼
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -104,7 +65,7 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  }, [years, backTestDate]); // 添加 years 和 backTestDate 作為依賴項
+  }, [years, backTestDate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -158,7 +119,7 @@ function App() {
           </header>
           <div className="dashboard">
             <div className="card chart-card">
-              <h2>{stockCode ? `${stockCode} 分析結果` : '分析結果'}</h2>
+              <h2>{displayedStockCode ? `${displayedStockCode} 分析結果` : '分析結果'}</h2> {/* 使用 displayedStockCode */}
               {chartData && (
                 <Line data={chartData} options={{
                   plugins: { legend: { display: false } },
