@@ -106,7 +106,7 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  }, [actualStockCode, actualYears, actualBackTestDate]); // 添加實際抓取參數作為依賴
+  }, []); // 移除不必要的依賴
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -121,14 +121,14 @@ function App() {
   };
 
   useEffect(() => {
-    fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取參數
+    fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取��數
 
     const intervalId = setInterval(() => {
       fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取參數
     }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, [fetchStockData]); // 僅依賴 fetchStockData
+  }, [fetchStockData, actualStockCode, actualYears, actualBackTestDate]); // 添加所有依賴
 
   return (
     <Router>
