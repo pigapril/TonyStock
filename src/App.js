@@ -175,7 +175,12 @@ function App() {
                         intersect: false,
                         callbacks: {
                           label: function (context) {
-                            return `${context.dataset.label}: ${context.parsed.y !== null ? context.parsed.y.toFixed(2) : ''}`;
+                            return (
+                              <span>
+                                <FaCircle style={{ color: context.dataset.borderColor }} /> {/* 使用實心圓形圖標 */}
+                                {`${context.dataset.label}: ${context.parsed.y !== null ? context.parsed.y.toFixed(2) : ''}`}
+                              </span>
+                            );
                           },
                           afterBody: function (tooltipItems) {
                             const order = ['TL+2SD', 'TL+SD', 'Trend Line', 'TL-SD', 'TL-2SD', 'Price'];
