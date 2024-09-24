@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import {
@@ -27,7 +27,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [timeoutMessage, setTimeoutMessage] = useState('');
 
-  const fetchStockData = async (stockCode) => {
+  const fetchStockData = useCallback(async (stockCode) => {
     setLoading(true);
     setTimeoutMessage('');
 
@@ -99,7 +99,7 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  };
+  }, [years, backTestDate]); // 添加 years 和 backTestDate 作為依賴項
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -189,7 +189,7 @@ function App() {
     }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, []); // 移除 fetchStockData
+  }, [fetchStockData]); // 添加 fetchStockData 作為依賴項
 
   return (
     <Router>
