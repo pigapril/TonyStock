@@ -184,6 +184,25 @@ function App() {
                               label += context.parsed.y.toFixed(2);
                             }
                             return label;
+                          },
+                          afterBody: function (tooltipItems) {
+                            // 排序順序
+                            const order = ['TL+2SD', 'TL+SD', 'Trend Line', 'TL-SD', 'TL-2SD', 'Price'];
+                            // 根據順序排序
+                            tooltipItems.sort((a, b) => {
+                              return order.indexOf(a.dataset.label) - order.indexOf(b.dataset.label);
+                            });
+                            // 將 Price 插入到正確的位置
+                            const priceIndex = tooltipItems.findIndex(item => item.dataset.label === 'Price');
+                            if (priceIndex !== -1) {
+                              const priceItem = tooltipItems.splice(priceIndex, 1)[0];
+                              for (let i = 0; i < tooltipItems.length; i++) {
+                                if (tooltipItems[i].parsed.y < priceItem.parsed.y) {
+                                  tooltipItems.splice(i, 0, priceItem);
+                                  break;
+                                }
+                              }
+                            }
                           }
                         }
                       },
