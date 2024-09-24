@@ -26,9 +26,13 @@ function App() {
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [timeoutMessage, setTimeoutMessage] = useState('');
-  const [displayedStockCode, setDisplayedStockCode] = useState(''); // 新增狀態變量
+  const [displayedStockCode, setDisplayedStockCode] = useState('');
 
-  // 修改 fetchStockData 函數，添加一個參數來區分用戶操作和自動操作
+  // 新增用於抓取數據的狀態變量
+  const [actualStockCode, setActualStockCode] = useState('AAPL');
+  const [actualYears, setActualYears] = useState(3.5);
+  const [actualBackTestDate, setActualBackTestDate] = useState('');
+
   const fetchStockData = useCallback(async (stockCode, yearsToUse, backTestDateToUse, isUserAction = false) => {
     setLoading(true);
     setTimeoutMessage('');
@@ -38,10 +42,6 @@ function App() {
     }, 2000);
 
     try {
-      // 如果是用戶操作，使用用戶輸入的值；否則使用默認值
-      const yearsToUse = isUserAction ? years : 3.5;
-      const backTestDateToUse = isUserAction ? backTestDate : '';
-
       const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${stockCode}&years=${yearsToUse}&backTestDate=${backTestDateToUse}`);
       const data = response.data;
       console.log('Response data:', data);
@@ -98,7 +98,7 @@ function App() {
           }
         ]
       });
-      setDisplayedStockCode(stockCode.replace('.TW', '')); // 更新顯示的股票代碼，去掉 ".TW"
+      setDisplayedStockCode(stockCode.replace('.TW', ''));
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -106,7 +106,7 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  }, []); // 移除 years 和 backTestDate 的依賴
+  }, [actualStockCode, actualYears, actualBackTestDate]); // 添加實際抓取參數作為依賴
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,18 +114,21 @@ function App() {
     if (stockCode.length === 4 && /^\d+$/.test(stockCode)) {
       formattedStockCode += '.TW';
     }
-    await fetchStockData(formattedStockCode, years, backTestDate, true); // 在用戶提交時更新圖表數據
+    // 設置實際抓取參數
+    setActualStockCode(formattedStockCode);
+    setActualYears(years);
+    setActualBackTestDate(backTestDate);
   };
 
   useEffect(() => {
-    fetchStockData('AAPL', years, backTestDate); // 初始加載，傳遞默認值
+    fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取參數
 
     const intervalId = setInterval(() => {
-      fetchStockData('AAPL', years, backTestDate); // 定期更新
+      fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取參數
     }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, [fetchStockData]); // 只依賴 fetchStockData
+  }, [fetchStockData]); // 僅依賴 fetchStockData
 
   return (
     <Router>
@@ -160,7 +163,7 @@ function App() {
           </header>
           <div className="dashboard">
             <div className="card chart-card">
-              <h2>{displayedStockCode ? `${displayedStockCode} 分析結果` : '分析結果'}</h2> {/* 使用 displayedStockCode */}
+              <h2>{displayedStockCode ? `${displayedStockCode} 分析結果` : '分析結果'}</h2>
               {chartData && (
                 <Line data={chartData} options={{
                   plugins: { legend: { display: false } },
