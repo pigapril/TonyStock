@@ -29,7 +29,7 @@ function App() {
   const [displayedStockCode, setDisplayedStockCode] = useState(''); // 新增狀態變量
 
   // 修改 fetchStockData 函數，添加一個參數來區分用戶操作和自動操作
-  const fetchStockData = useCallback(async (stockCode, yearsToUse, backTestDateToUse) => {
+  const fetchStockData = useCallback(async (stockCode, yearsToUse, backTestDateToUse, isUserAction = false) => {
     setLoading(true);
     setTimeoutMessage('');
 
@@ -114,7 +114,7 @@ function App() {
     if (stockCode.length === 4 && /^\d+$/.test(stockCode)) {
       formattedStockCode += '.TW';
     }
-    await fetchStockData(formattedStockCode, years, backTestDate); // 在用戶提交時更新圖表數據
+    await fetchStockData(formattedStockCode, years, backTestDate, true); // 在用戶提交時更新圖表數據
   };
 
   useEffect(() => {
