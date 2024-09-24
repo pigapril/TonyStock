@@ -15,9 +15,8 @@ import {
 import 'chartjs-adapter-date-fns';
 import './App.css';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
+import { FaChartLine, FaInfoCircle, FaChartBar, FaCircle } from 'react-icons/fa';
 import 'chartjs-plugin-crosshair';
-import { FaCircle } from 'react-icons/fa'; // 引入實心圖標
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
@@ -30,12 +29,11 @@ function App() {
   const [timeoutMessage, setTimeoutMessage] = useState('');
   const [displayedStockCode, setDisplayedStockCode] = useState('');
 
-  // 新增用於抓取數據的狀態變量
   const [actualStockCode, setActualStockCode] = useState('AAPL');
   const [actualYears, setActualYears] = useState(3.5);
   const [actualBackTestDate, setActualBackTestDate] = useState('');
 
-  const fetchStockData = useCallback(async (stockCode, yearsToUse, backTestDateToUse, isUserAction = false) => {
+  const fetchStockData = useCallback(async (stockCode, yearsToUse, backTestDateToUse) => {
     setLoading(true);
     setTimeoutMessage('');
 
@@ -116,21 +114,20 @@ function App() {
     if (stockCode.length === 4 && /^\d+$/.test(stockCode)) {
       formattedStockCode += '.TW';
     }
-    // 設置實際抓取參數
     setActualStockCode(formattedStockCode);
     setActualYears(years);
     setActualBackTestDate(backTestDate);
   };
 
   useEffect(() => {
-    fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取參數
+    fetchStockData(actualStockCode, actualYears, actualBackTestDate);
 
     const intervalId = setInterval(() => {
-      fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取參數
+      fetchStockData(actualStockCode, actualYears, actualBackTestDate);
     }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, [fetchStockData, actualStockCode, actualYears, actualBackTestDate]); // 添加所有依賴
+  }, [fetchStockData, actualStockCode, actualYears, actualBackTestDate]);
 
   return (
     <Router>
@@ -177,10 +174,7 @@ function App() {
                         intersect: false,
                         callbacks: {
                           label: function (context) {
-                            let label = <FaCircle style={{ color: context.dataset.borderColor }} />; // 使用實心圖標
-                            if (context.dataset.label) {
-                              label += ` ${context.dataset.label}: `;
-                            }
+                            let label = `● ${context.dataset.label}: `;
                             if (context.parsed.y !== null) {
                               label += context.parsed.y.toFixed(2);
                             }
@@ -241,7 +235,6 @@ function App() {
               )}
             </div>
             <div className="card stock-analysis-card">
-              {/* <h2>Stock Analysis</h2>  // 移除這一行 */}
               <form onSubmit={handleSubmit}>
                 <div className="input-group">
                   <label>股票代碼：</label>
