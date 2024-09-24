@@ -27,7 +27,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [timeoutMessage, setTimeoutMessage] = useState('');
 
-  // 新增函数以获取股票数据
   const fetchStockData = async (stockCode) => {
     setLoading(true);
     setTimeoutMessage('');
@@ -182,17 +181,15 @@ function App() {
     }
   };
 
-  // 定时自动发送请求以避免冷启动
   useEffect(() => {
-    // 初始请求 AAPL 数据
     fetchStockData('AAPL');
 
     const intervalId = setInterval(() => {
       fetchStockData('AAPL');
-    }, 12 * 60 * 1000); // 每 12 分钟
+    }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [fetchStockData]);
 
   return (
     <Router>
@@ -203,19 +200,19 @@ function App() {
             <li>
               <Link to="/">
                 <FaChartLine />
-                <span>五線標準差分析</span> {/* 更新为新文本 */}
+                <span>五線標準差分析</span>
               </Link>
             </li>
             <li>
               <a href="https://vocus.cc/salon/daily_chart" target="_blank" rel="noopener noreferrer">
                 <FaChartBar />
-                <span>關鍵圖表</span> {/* 更新为新文本 */}
+                <span>關鍵圖表</span>
               </a>
             </li>
             <li>
               <a href="https://vocus.cc/salon/daily_chart/about" target="_blank" rel="noopener noreferrer">
                 <FaInfoCircle />
-                <span>關於我</span> {/* 更新为新文本 */}
+                <span>關於我</span>
               </a>
             </li>
           </ul>
@@ -223,9 +220,7 @@ function App() {
         <main className="main-content">
           <header>
             <h1>五線標準差分析</h1>
-            <div className="search-bar">
-              <input type="text" placeholder="Search" />
-            </div>
+            {timeoutMessage && <div>{timeoutMessage}</div>}
           </header>
           <div className="dashboard">
             <div className="card chart-card">
