@@ -27,7 +27,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [timeoutMessage, setTimeoutMessage] = useState('');
 
-  const fetchStockData = useCallback(async (stockCode) => {
+  // 修改 fetchStockData 函數，添加一個參數來區分用戶操作和自動操作
+  const fetchStockData = useCallback(async (stockCode, isUserAction = false) => {
     setLoading(true);
     setTimeoutMessage('');
 
@@ -36,7 +37,11 @@ function App() {
     }, 2000);
 
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${stockCode}&years=${years}&backTestDate=${backTestDate}`);
+      // 如果是用戶操作，使用用戶輸入的值；否則使用默認值
+      const yearsToUse = isUserAction ? years : 3.5;
+      const backTestDateToUse = isUserAction ? backTestDate : '';
+
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${stockCode}&years=${yearsToUse}&backTestDate=${backTestDateToUse}`);
       const data = response.data;
       console.log('Response data:', data);
       setChartData({
@@ -99,7 +104,7 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  }, [years, backTestDate]);
+  }, []); // 移除 years 和 backTestDate 作為依賴項
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // 防止表單默認提交行為
@@ -111,14 +116,14 @@ function App() {
       formattedStockCode += '.TW';
     }
 
-    await fetchStockData(formattedStockCode); // 只有在提交時才獲取數據
+    await fetchStockData(formattedStockCode, true); // 只有在提交時才獲取數據，傳遞 true 表示這是用戶操作
   };
 
   useEffect(() => {
-    fetchStockData('AAPL'); // 在組件加載時自動獲取數據
+    fetchStockData('AAPL', false); // 在組件加載時自動獲取數據，傳遞 false 表示這不是用戶操作
 
     const intervalId = setInterval(() => {
-      fetchStockData('AAPL'); // 每12分鐘自動獲取數據
+      fetchStockData('AAPL', false); // 每12分鐘自動獲取數據，傳遞 false 表示這不是用戶操作
     }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
