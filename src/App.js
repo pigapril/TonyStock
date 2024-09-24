@@ -116,62 +116,7 @@ function App() {
     }, 2000);
 
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${formattedStockCode}&years=${years}&backTestDate=${backTestDate}`);
-      const data = response.data;
-      console.log('Response data:', data);
-      setChartData({
-        labels: data.dates,
-        datasets: [
-          {
-            label: 'Price',
-            data: data.prices,
-            borderColor: 'blue',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'Trend Line',
-            data: data.trendLine,
-            borderColor: 'black',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL-2SD',
-            data: data.tl_minus_2sd,
-            borderColor: 'darkgreen',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL-SD',
-            data: data.tl_minus_sd,
-            borderColor: 'lightgreen',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL+SD',
-            data: data.tl_plus_sd,
-            borderColor: 'lightcoral',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: 'TL+2SD',
-            data: data.tl_plus_2sd,
-            borderColor: 'red',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          }
-        ]
-      });
+      await fetchStockData(formattedStockCode); // 在这里调用 fetchStockData
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -182,14 +127,14 @@ function App() {
   };
 
   useEffect(() => {
-    fetchStockData('AAPL');
+    fetchStockData('AAPL'); // 组件加载时自动获取数据
 
     const intervalId = setInterval(() => {
       fetchStockData('AAPL');
-    }, 12 * 60 * 1000);
+    }, 12 * 60 * 1000); // 每12分钟自动获取数据
 
     return () => clearInterval(intervalId);
-  }, [fetchStockData]); // 添加 fetchStockData 作為依賴項
+  }, []); // 只在组件挂载时调用
 
   return (
     <Router>
@@ -224,7 +169,7 @@ function App() {
           </header>
           <div className="dashboard">
             <div className="card chart-card">
-              <h2>Analysis Result</h2>
+              <h2>{stockCode ? `${stockCode} 分析結果` : '分析結果'}</h2>
               {chartData && (
                 <Line data={chartData} options={{
                   plugins: { legend: { display: false } },
@@ -233,7 +178,7 @@ function App() {
               )}
             </div>
             <div className="card stock-analysis-card">
-              <h2>Stock Analysis</h2>
+              {/* <h2>Stock Analysis</h2> */} {/* 刪除或註釋掉這一行 */}
               <form onSubmit={handleSubmit}>
                 <div className="input-group">
                   <label>股票代碼：</label>

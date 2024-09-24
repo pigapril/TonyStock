@@ -85,9 +85,11 @@ header {
 }
 
 .dashboard {
-  display: flex; /* 使用 Flexbox */
-  justify-content: space-between; /* 左右对齐 */
-  gap: 20px; /* 添加间距 */
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch; /* 確保子元素拉伸到相同高度 */
+  gap: 20px;
+  height: calc(100vh - 100px); /* 減去頁面頂部的空間 */
 }
 
 .card {
@@ -95,6 +97,8 @@ header {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .balance-card {
@@ -144,6 +148,9 @@ header {
 
 .stock-analysis-card {
   width: 300px; /* 设置 Stock Analysis 的宽度 */
+  margin-top: 0px; /* 添加上边距 */
+  display: flex;
+  flex-direction: column;
 }
 
 .input-field {
@@ -154,4 +161,23 @@ header {
 .title {
   font-size: 24px;
   font-weight: bold;
+}
+
+/* 讓圖表佔據所有可用空間 */
+.chart-card > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 讓表單佔據所有可用空間 */
+.stock-analysis-card form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 讓按鈕保持在底部 */
+.stock-analysis-card .btn-primary {
+  margin-top: auto;
 }
