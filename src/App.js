@@ -175,15 +175,19 @@ function App() {
                         intersect: false,
                         callbacks: {
                           label: function (context) {
-                            let label = <FaCircle style={{ color: context.dataset.borderColor }} />; // 使用實心圓形圖標
-                            label += ` ${context.dataset.label}: `;
-                            if (context.parsed.y !== null) {
-                              label += context.parsed.y.toFixed(2);
-                            }
-                            return label;
+                            return `${context.dataset.label}: ${context.parsed.y !== null ? context.parsed.y.toFixed(2) : ''}`;
                           },
                           afterBody: function (tooltipItems) {
-                            const order = ['TL+2SD', 'TL+SD', 'Trend Line', 'TL-SD', 'TL-2SD'];
+                            const order = ['TL+2SD', 'TL+SD', 'Trend Line', 'TL-SD', 'TL-2SD', 'Price'];
+
+                            // 先對 tooltipItems 進行排序，根據數值從大到小
+                            tooltipItems.sort((a, b) => {
+                              const aValue = a.parsed.y !== null ? a.parsed.y : -Infinity; // 確保 null 值不影響排序
+                              const bValue = b.parsed.y !== null ? b.parsed.y : -Infinity;
+                              return bValue - aValue; // 從大到小排序
+                            });
+
+                            // 重新排序以確保順序
                             tooltipItems.sort((a, b) => {
                               return order.indexOf(a.dataset.label) - order.indexOf(b.dataset.label);
                             });
