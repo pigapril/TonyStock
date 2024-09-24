@@ -26,6 +26,7 @@ function App() {
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [timeoutMessage, setTimeoutMessage] = useState('');
+  const [displayedStockCode, setDisplayedStockCode] = useState(''); // 新增狀態變量
 
   // 修改 fetchStockData 函數，添加一個參數來區分用戶操作和自動操作
   const fetchStockData = useCallback(async (stockCode, isUserAction = false) => {
@@ -97,6 +98,7 @@ function App() {
           }
         ]
       });
+      setDisplayedStockCode(stockCode.replace('.TW', '')); // 更新顯示的股票代碼，去掉 ".TW"
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -158,7 +160,7 @@ function App() {
           </header>
           <div className="dashboard">
             <div className="card chart-card">
-              <h2>{stockCode ? `${stockCode} 分析結果` : '分析結果'}</h2>
+              <h2>{displayedStockCode ? `${displayedStockCode} 分析結果` : '分析結果'}</h2> {/* 使用 displayedStockCode */}
               {chartData && (
                 <Line data={chartData} options={{
                   plugins: { legend: { display: false } },
