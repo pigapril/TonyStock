@@ -15,6 +15,7 @@ import 'chartjs-adapter-date-fns';
 import './App.css';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
+import axios from 'axios';  // 新添加的導入語句
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
