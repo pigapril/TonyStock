@@ -17,7 +17,7 @@ import './App.css';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
 import 'chartjs-plugin-crosshair';
-import { FaCircle } from 'react-icons/fa'; // 引入實心圖標
+import { FaCircle } from 'react-icons/fa'; // 引入實心圓形圖標
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
@@ -175,7 +175,7 @@ function App() {
                         intersect: false,
                         callbacks: {
                           label: function (context) {
-                            let label = <FaCircle style={{ color: context.dataset.borderColor }} />; // 使用實心圖標
+                            let label = <FaCircle style={{ color: context.dataset.borderColor }} />; // 使用實心圓形圖標
                             label += ` ${context.dataset.label}: `;
                             if (context.parsed.y !== null) {
                               label += context.parsed.y.toFixed(2);
