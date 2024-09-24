@@ -16,6 +16,7 @@ import 'chartjs-adapter-date-fns';
 import './App.css';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
+import 'chartjs-plugin-crosshair';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
@@ -171,6 +172,8 @@ function App() {
                     plugins: {
                       legend: { display: false },
                       tooltip: {
+                        mode: 'index',
+                        intersect: false,
                         callbacks: {
                           label: function (context) {
                             let label = context.dataset.label || '';
@@ -183,7 +186,24 @@ function App() {
                             return label;
                           }
                         }
+                      },
+                      crosshair: {
+                        line: {
+                          color: '#F66',  // 虛線顏色
+                          width: 1,       // 虛線寬度
+                          dashPattern: [5, 5]  // 虛線樣式
+                        },
+                        sync: {
+                          enabled: false  // 禁用同步
+                        },
+                        zoom: {
+                          enabled: false  // 禁用縮放
+                        }
                       }
+                    },
+                    hover: {
+                      mode: 'index',
+                      intersect: false
                     },
                     scales: { y: { position: 'right' } }
                   }}
