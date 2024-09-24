@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -28,9 +27,28 @@ function App() {
   const [timeoutMessage, setTimeoutMessage] = useState('');
 
   const fetchStockData = useCallback(async (stockCode, yearsParam, backTestDateParam) => {
-    // 使用 yearsParam 和 backTestDateParam 代替 years 和 backTestDate
-    // ... fetchStockData 的實現 ...
-  }, []); // 空依賴數組
+    try {
+      // 假設這是從 API 獲取數據的代碼
+      const response = await axios.get(`/api/stock-data?stockCode=${stockCode}&years=${yearsParam}&backTestDate=${backTestDateParam}`);
+      const data = response.data;
+
+      // 處理數據並設置圖表數據
+      setChartData({
+        labels: data.dates,
+        datasets: [
+          {
+            label: '股價',
+            data: data.prices,
+            borderColor: 'blue',
+            fill: false
+          },
+          // ... 其他數據集
+        ]
+      });
+    } catch (error) {
+      console.error('Error fetching stock data:', error);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
