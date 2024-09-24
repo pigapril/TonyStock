@@ -17,6 +17,7 @@ import './App.css';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
 import 'chartjs-plugin-crosshair';
+import { FaCircle } from 'react-icons/fa'; // 引入實心圖標
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
@@ -176,9 +177,9 @@ function App() {
                         intersect: false,
                         callbacks: {
                           label: function (context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                              label += ': ';
+                            let label = <FaCircle style={{ color: context.dataset.borderColor }} />; // 使用實心圖標
+                            if (context.dataset.label) {
+                              label += ` ${context.dataset.label}: `;
                             }
                             if (context.parsed.y !== null) {
                               label += context.parsed.y.toFixed(2);
@@ -186,21 +187,31 @@ function App() {
                             return label;
                           },
                           afterBody: function (tooltipItems) {
-                            // 排序順序
                             const order = ['TL+2SD', 'TL+SD', 'Trend Line', 'TL-SD', 'TL-2SD', 'Price'];
-                            // 根據順序排序
                             tooltipItems.sort((a, b) => {
                               return order.indexOf(a.dataset.label) - order.indexOf(b.dataset.label);
                             });
-                            // 將 Price 插入到正確的位置
+
                             const priceIndex = tooltipItems.findIndex(item => item.dataset.label === 'Price');
                             if (priceIndex !== -1) {
                               const priceItem = tooltipItems.splice(priceIndex, 1)[0];
+                              const priceValue = priceItem.parsed.y;
+                              let inserted = false;
+
                               for (let i = 0; i < tooltipItems.length; i++) {
-                                if (tooltipItems[i].parsed.y < priceItem.parsed.y) {
+                                if (tooltipItems[i].parsed.y > priceValue) {
                                   tooltipItems.splice(i, 0, priceItem);
+                                  inserted = true;
                                   break;
                                 }
+                              }
+
+                              if (!inserted) {
+                                tooltipItems.unshift(priceItem);
+                              }
+
+                              if (tooltipItems.length === 0 || priceValue < tooltipItems[tooltipItems.length - 1].parsed.y) {
+                                tooltipItems.push(priceItem);
                               }
                             }
                           }
