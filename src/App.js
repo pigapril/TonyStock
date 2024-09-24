@@ -106,7 +106,7 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  }, []); // 移除不必要的依賴
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -121,7 +121,7 @@ function App() {
   };
 
   useEffect(() => {
-    fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取數
+    fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取參數
 
     const intervalId = setInterval(() => {
       fetchStockData(actualStockCode, actualYears, actualBackTestDate); // 使用實際抓取參數
@@ -165,10 +165,29 @@ function App() {
             <div className="card chart-card">
               <h2>{displayedStockCode ? `${displayedStockCode} 分析結果` : '分析結果'}</h2>
               {chartData && (
-                <Line data={chartData} options={{
-                  plugins: { legend: { display: false } },
-                  scales: { y: { position: 'right' } }
-                }} />
+                <Line
+                  data={chartData}
+                  options={{
+                    plugins: {
+                      legend: { display: false },
+                      tooltip: {
+                        callbacks: {
+                          label: function (context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                              label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                              label += context.parsed.y.toFixed(2);
+                            }
+                            return label;
+                          }
+                        }
+                      }
+                    },
+                    scales: { y: { position: 'right' } }
+                  }}
+                />
               )}
             </div>
             <div className="card stock-analysis-card">
