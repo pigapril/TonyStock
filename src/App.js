@@ -104,30 +104,26 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  }, []); // 移除 years 和 backTestDate 作為依賴項
+  }, [years, backTestDate]); // 添加 years 和 backTestDate 作為依賴項
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 防止表單默認提交行為
-    setLoading(true);
-    setTimeoutMessage('');
-
+    e.preventDefault();
     let formattedStockCode = stockCode;
     if (stockCode.length === 4 && /^\d+$/.test(stockCode)) {
       formattedStockCode += '.TW';
     }
-
-    await fetchStockData(formattedStockCode, true); // 只有在提交時才獲取數據，傳遞 true 表示這是用戶操作
+    await fetchStockData(formattedStockCode, true); // 傳遞 true 表示這是用戶操作
   };
 
   useEffect(() => {
-    fetchStockData('AAPL', false); // 在組件加載時自動獲取數據，傳遞 false 表示這不是用戶操作
+    fetchStockData('AAPL', false); // 初始加載，傳遞 false 表示這不是用戶操作
 
     const intervalId = setInterval(() => {
-      fetchStockData('AAPL', false); // 每12分鐘自動獲取數據，傳遞 false 表示這不是用戶操作
+      fetchStockData('AAPL', false); // 定期更新，傳遞 false 表示這不是用戶操作
     }, 12 * 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, [fetchStockData]); // 添加 fetchStockData 作為依賴項
+  }, [fetchStockData]);
 
   return (
     <Router>
