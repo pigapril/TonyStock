@@ -15,7 +15,7 @@ import {
 import 'chartjs-adapter-date-fns';
 import './App.css';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-import { FaChartLine, FaInfoCircle, FaChartBar, FaCircle } from 'react-icons/fa';
+import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
 import 'chartjs-plugin-crosshair';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
@@ -173,26 +173,27 @@ function App() {
                         mode: 'index',
                         intersect: false,
                         callbacks: {
-                          label: function (context) {
-                            // 使用 FaCircle 來創建帶顏色的圖標
-                            const iconColor = context.dataset.borderColor;
-                            const icon = <FaCircle style={{ color: iconColor }} />;
-                            return `${icon} ${context.dataset.label}: ${context.parsed.y.toFixed(2)}`;
-                          },
+                          // 移除 label 回調，因為我們將在 afterBody 中處理所有內容
                           afterBody: function (tooltipItems) {
                             // 按照數值從大到小排序
                             tooltipItems.sort((a, b) => b.parsed.y - a.parsed.y);
                             
-                            // 將排序後的項目轉換為字符串數組，並加上顏色圖標
+                            // 將排序後的項目轉換為字符串數組
                             return tooltipItems.map(item => {
-                              const iconColor = item.dataset.borderColor;
-                              const icon = <FaCircle style={{ color: iconColor }} />;
                               const label = item.dataset.label;
                               const value = item.parsed.y.toFixed(2);
-                              return `${icon} ${label}: ${value}`;
+                              // 使用 Unicode 字符作為顏色圓點
+                              const colorDot = `\u25CF`; // 實心圓點
+                              return `${colorDot} ${label}: ${value}`;
                             });
                           }
-                        }
+                        },
+                        // 自定義 tooltip 的外觀
+                        titleFont: { size: 14 },
+                        bodyFont: { size: 12 },
+                        bodySpacing: 4,
+                        padding: 10,
+                        displayColors: false // 不顯示默認的顏色框
                       },
                       crosshair: {
                         line: {
