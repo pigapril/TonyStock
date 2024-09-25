@@ -177,44 +177,25 @@ function App() {
                           label: function (context) {
                             return (
                               <span>
-                                <FaCircle style={{ color: context.dataset.borderColor }} /> {/* 使用實心圓形圖標 */}
-                                {`${context.dataset.label}: ${context.parsed.y !== null ? context.parsed.y.toFixed(2) : ''}`}
+                                <FaCircle style={{ color: context.dataset.borderColor }} />
+                                {` ${context.dataset.label}: ${context.parsed.y !== null ? context.parsed.y.toFixed(2) : ''}`}
                               </span>
                             );
                           },
                           afterBody: function (tooltipItems) {
-                            const order = ['TL+2SD', 'TL+SD', 'Trend Line', 'TL-SD', 'TL-2SD', 'Price'];
-
-                            // 先對 tooltipItems 進行排序，根據數值從大到小
+                            // 按照數值從大到小排序
                             tooltipItems.sort((a, b) => {
-                              const aValue = a.parsed.y !== null ? a.parsed.y : -Infinity; // 確保 null 值不影響排序
+                              const aValue = a.parsed.y !== null ? a.parsed.y : -Infinity;
                               const bValue = b.parsed.y !== null ? b.parsed.y : -Infinity;
                               return bValue - aValue; // 從大到小排序
                             });
 
-                            // 重新排序以確保順序
-                            tooltipItems.sort((a, b) => {
-                              return order.indexOf(a.dataset.label) - order.indexOf(b.dataset.label);
+                            // 將排序後的項目轉換為字符串數組
+                            return tooltipItems.map(item => {
+                              const label = item.dataset.label;
+                              const value = item.parsed.y !== null ? item.parsed.y.toFixed(2) : 'N/A';
+                              return `${label}: ${value}`;
                             });
-
-                            const priceIndex = tooltipItems.findIndex(item => item.dataset.label === 'Price');
-                            if (priceIndex !== -1) {
-                              const priceItem = tooltipItems.splice(priceIndex, 1)[0];
-                              const priceValue = priceItem.parsed.y;
-                              let inserted = false;
-
-                              for (let i = 0; i < tooltipItems.length; i++) {
-                                if (tooltipItems[i].parsed.y > priceValue) {
-                                  tooltipItems.splice(i, 0, priceItem);
-                                  inserted = true;
-                                  break;
-                                }
-                              }
-
-                              if (!inserted) {
-                                tooltipItems.push(priceItem);
-                              }
-                            }
                           }
                         }
                       },
