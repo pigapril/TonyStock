@@ -175,26 +175,19 @@ function App() {
                         intersect: false,
                         callbacks: {
                           label: function (context) {
-                            return (
-                              <span>
-                                <FaCircle style={{ color: context.dataset.borderColor }} />
-                                {` ${context.dataset.label}: ${context.parsed.y !== null ? context.parsed.y.toFixed(2) : ''}`}
-                              </span>
-                            );
+                            // 直接返回字符串，避免 React 元素被轉換為 [object Object]
+                            return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}`;
                           },
                           afterBody: function (tooltipItems) {
                             // 按照數值從大到小排序
-                            tooltipItems.sort((a, b) => {
-                              const aValue = a.parsed.y !== null ? a.parsed.y : -Infinity;
-                              const bValue = b.parsed.y !== null ? b.parsed.y : -Infinity;
-                              return bValue - aValue; // 從大到小排序
-                            });
-
-                            // 將排序後的項目轉換為字符串數組
+                            tooltipItems.sort((a, b) => b.parsed.y - a.parsed.y);
+                            
+                            // 將排序後的項目轉換為字符串數組，並加上顏色圖標
                             return tooltipItems.map(item => {
+                              const color = item.dataset.borderColor;
                               const label = item.dataset.label;
-                              const value = item.parsed.y !== null ? item.parsed.y.toFixed(2) : 'N/A';
-                              return `${label}: ${value}`;
+                              const value = item.parsed.y.toFixed(2);
+                              return `\u2B24 ${label}: ${value}`; // \u2B24 是一個實心圓形的 Unicode 字符
                             });
                           }
                         }
