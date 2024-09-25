@@ -15,9 +15,8 @@ import {
 import 'chartjs-adapter-date-fns';
 import './App.css';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
+import { FaChartLine, FaInfoCircle, FaChartBar, FaCircle } from 'react-icons/fa';
 import 'chartjs-plugin-crosshair';
-import { FaCircle } from 'react-icons/fa'; // 引入實心圓形圖標
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
@@ -175,8 +174,10 @@ function App() {
                         intersect: false,
                         callbacks: {
                           label: function (context) {
-                            // 直接返回字符串，避免 React 元素被轉換為 [object Object]
-                            return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}`;
+                            // 使用 FaCircle 來創建帶顏色的圖標
+                            const iconColor = context.dataset.borderColor;
+                            const icon = <FaCircle style={{ color: iconColor }} />;
+                            return `${icon} ${context.dataset.label}: ${context.parsed.y.toFixed(2)}`;
                           },
                           afterBody: function (tooltipItems) {
                             // 按照數值從大到小排序
@@ -184,10 +185,11 @@ function App() {
                             
                             // 將排序後的項目轉換為字符串數組，並加上顏色圖標
                             return tooltipItems.map(item => {
-                              const color = item.dataset.borderColor;
+                              const iconColor = item.dataset.borderColor;
+                              const icon = <FaCircle style={{ color: iconColor }} />;
                               const label = item.dataset.label;
                               const value = item.parsed.y.toFixed(2);
-                              return `\u2B24 ${label}: ${value}`; // \u2B24 是一個實心圓形的 Unicode 字符
+                              return `${icon} ${label}: ${value}`;
                             });
                           }
                         }
