@@ -174,11 +174,9 @@ function App() {
                         intersect: false,
                         callbacks: {
                           title: function(tooltipItems) {
-                            // 只顯示日期，隱藏舊的六筆資料
                             return tooltipItems[0].label;
                           },
                           label: function() {
-                            // 返回空字符串，不顯示默認的標籤
                             return '';
                           },
                           afterBody: function (tooltipItems) {
@@ -191,26 +189,87 @@ function App() {
                               'TL-2SD': 'darkgreen'
                             };
 
-                            // 按照數值從大到小排序
                             tooltipItems.sort((a, b) => b.parsed.y - a.parsed.y);
                             
-                            // 將排序後的項目轉換為字符串數組
                             return tooltipItems.map(item => {
                               const label = item.dataset.label;
                               const value = item.parsed.y.toFixed(2);
                               const color = colorMap[label] || 'gray';
-                              // 使用 Unicode 字符作為顏色方塊
-                              const colorBlock = `\u25A0`; // 實心方塊
-                              return `<span style="color:${color}">${colorBlock}</span> ${label}: ${value}`;
-                            });
+                              return `<div style="display: flex; align-items: center;">
+                                        <div style="width: 10px; height: 10px; background-color: ${color}; margin-right: 5px;"></div>
+                                        <span>${label}: ${value}</span>
+                                      </div>`;
+                            }).join('');
                           }
                         },
-                        // 自定義 tooltip 的外觀
                         titleFont: { size: 14 },
                         bodyFont: { size: 12 },
                         bodySpacing: 4,
                         padding: 10,
-                        displayColors: false // 不顯示默認的顏色框
+                        displayColors: false,
+                        enabled: true,
+                        external: function(context) {
+                          let tooltipEl = document.getElementById('chartjs-tooltip');
+
+                          if (!tooltipEl) {
+                            tooltipEl = document.createElement('div');
+                            tooltipEl.id = 'chartjs-tooltip';
+                            tooltipEl.innerHTML = '<table></table>';
+                            document.body.appendChild(tooltipEl);
+                          }
+
+                          const tooltipModel = context.tooltip;
+
+                          if (tooltipModel.opacity === 0) {
+                            tooltipEl.style.opacity = 0;
+                            return;
+                          }
+
+                          tooltipEl.classList.remove('above', 'below', 'no-transform');
+                          if (tooltipModel.yAlign) {
+                            tooltipEl.classList.add(tooltipModel.yAlign);
+                          } else {
+                            tooltipEl.classList.add('no-transform');
+                          }
+
+                          function getBody(bodyItem) {
+                            return bodyItem.lines;
+                          }
+
+                          if (tooltipModel.body) {
+                            const titleLines = tooltipModel.title || [];
+                            const bodyLines = tooltipModel.body.map(getBody);
+
+                            let innerHtml = '<thead>';
+
+                            titleLines.forEach(function(title) {
+                              innerHtml += '<tr><th>' + title + '</th></tr>';
+                            });
+                            innerHtml += '</thead><tbody>';
+
+                            bodyLines.forEach(function(body, i) {
+                              innerHtml += '<tr><td>' + body + '</td></tr>';
+                            });
+                            innerHtml += '</tbody>';
+
+                            let tableRoot = tooltipEl.querySelector('table');
+                            tableRoot.innerHTML = innerHtml;
+                          }
+
+                          const position = context.chart.canvas.getBoundingClientRect();
+
+                          tooltipEl.style.opacity = 1;
+                          tooltipEl.style.position = 'absolute';
+                          tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                          tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+                          tooltipEl.style.font = tooltipModel.options.bodyFont.string;
+                          tooltipEl.style.padding = tooltipModel.options.padding + 'px ' + tooltipModel.options.padding + 'px';
+                          tooltipEl.style.pointerEvents = 'none';
+                          tooltipEl.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                          tooltipEl.style.color = 'white';
+                          tooltipEl.style.borderRadius = '3px';
+                          tooltipEl.style.zIndex = 1000;
+                        }
                       },
                       crosshair: {
                         line: {
