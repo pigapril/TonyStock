@@ -19,7 +19,8 @@ import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
 import 'chartjs-plugin-crosshair';
 
 // 添加這行來獲取 API 基礎 URL
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+console.log('API_BASE_URL:', process.env.REACT_APP_API_BASE_URL);
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
@@ -63,7 +64,9 @@ function App() {
     }, 2000);
 
     try {
-      // 修改這裡的 URL 以使用環境變量
+      console.log('Fetching data from:', `${API_BASE_URL}/api/stock-data`);
+      console.log('Params:', { stockCode, years: yearsToUse, backTestDate: backTestDateToUse });
+      
       const response = await axios.get(`${API_BASE_URL}/api/stock-data`, {
         params: {
           stockCode,
@@ -71,6 +74,8 @@ function App() {
           backTestDate: backTestDateToUse
         }
       });
+      
+      console.log('Response:', response);
       const data = response.data;
       console.log('Response data:', data);
       setChartData({
@@ -129,6 +134,7 @@ function App() {
       setDisplayedStockCode(stockCode.replace('.TW', ''));
     } catch (error) {
       console.error('Error fetching data:', error);
+      console.error('Error details:', error.response ? error.response.data : 'No response');
     } finally {
       clearTimeout(timeoutId);
       setLoading(false);
