@@ -170,32 +170,34 @@ function App() {
                     plugins: {
                       legend: { display: false },
                       tooltip: {
-                        enabled: false,  // 禁用默認的 tooltip
+                        enabled: false,
+                        mode: 'index',
+                        intersect: false,
                         external: function(context) {
-                          // 獲取 tooltip 模型
                           const tooltipModel = context.tooltip;
-
-                          // 如果 tooltip 不顯示，則退出
-                          if (tooltipModel.opacity === 0) {
-                            return;
-                          }
-
-                          // 創建或獲取 tooltip 元素
                           let tooltipEl = document.getElementById('chartjs-tooltip');
+
                           if (!tooltipEl) {
                             tooltipEl = document.createElement('div');
                             tooltipEl.id = 'chartjs-tooltip';
                             document.body.appendChild(tooltipEl);
                           }
 
-                          // 設置 tooltip 內容
+                          if (tooltipModel.opacity === 0) {
+                            tooltipEl.style.opacity = 0;
+                            return;
+                          }
+
                           if (tooltipModel.body) {
                             const titleLines = tooltipModel.title || [];
-                            // 移除未使用的 bodyLines 變量
-                            // const bodyLines = tooltipModel.body.map(bodyItem => bodyItem.lines);
 
-                            // 排序數據
-                            const sortedItems = tooltipModel.dataPoints.sort((a, b) => b.raw - a.raw);
+                            // 定義我們想要顯示的數據集標籤
+                            const desiredLabels = ['TL+2SD', 'TL+SD', 'Trend Line', 'Price', 'TL-SD', 'TL-2SD'];
+
+                            // 過濾並排序數據點
+                            const sortedItems = tooltipModel.dataPoints
+                              .filter(item => desiredLabels.includes(item.dataset.label))
+                              .sort((a, b) => b.raw - a.raw);
 
                             let innerHtml = `<div class="custom-tooltip">`;
                             innerHtml += `<div class="tooltip-title">${titleLines[0]}</div>`;
@@ -216,7 +218,6 @@ function App() {
                             tooltipEl.innerHTML = innerHtml;
                           }
 
-                          // 設置 tooltip 位置
                           const position = context.chart.canvas.getBoundingClientRect();
                           tooltipEl.style.opacity = 1;
                           tooltipEl.style.position = 'absolute';
@@ -233,15 +234,15 @@ function App() {
                       },
                       crosshair: {
                         line: {
-                          color: '#F66',  // 虛線顏色
-                          width: 1,       // 虛線寬度
-                          dashPattern: [5, 5]  // 虛線樣式
+                          color: '#F66',
+                          width: 1,
+                          dashPattern: [5, 5]
                         },
                         sync: {
-                          enabled: false  // 禁用同步
+                          enabled: false
                         },
                         zoom: {
-                          enabled: false  // 禁用縮放
+                          enabled: false
                         }
                       }
                     },
