@@ -191,7 +191,8 @@ function App() {
                           // 設置 tooltip 內容
                           if (tooltipModel.body) {
                             const titleLines = tooltipModel.title || [];
-                            const bodyLines = tooltipModel.body.map(bodyItem => bodyItem.lines);
+                            // 移除未使用的 bodyLines 變量
+                            // const bodyLines = tooltipModel.body.map(bodyItem => bodyItem.lines);
 
                             // 排序數據
                             const sortedItems = tooltipModel.dataPoints.sort((a, b) => b.raw - a.raw);
