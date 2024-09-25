@@ -149,7 +149,7 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  }, [API_BASE_URL]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
