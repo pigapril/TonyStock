@@ -170,94 +170,53 @@ function App() {
                     plugins: {
                       legend: { display: false },
                       tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        callbacks: {
-                          title: function(tooltipItems) {
-                            return tooltipItems[0].label;
-                          },
-                          label: function() {
-                            return '';
-                          },
-                          afterBody: function (tooltipItems) {
-                            const colorMap = {
-                              'TL+2SD': 'red',
-                              'TL+SD': 'lightcoral',
-                              'Trend Line': 'black',
-                              'Price': 'blue',
-                              'TL-SD': 'lightgreen',
-                              'TL-2SD': 'darkgreen'
-                            };
-
-                            tooltipItems.sort((a, b) => b.parsed.y - a.parsed.y);
-                            
-                            return tooltipItems.map(item => {
-                              const label = item.dataset.label;
-                              const value = item.parsed.y.toFixed(2);
-                              const color = colorMap[label] || 'gray';
-                              return `<div style="display: flex; align-items: center;">
-                                        <div style="width: 10px; height: 10px; background-color: ${color}; margin-right: 5px;"></div>
-                                        <span>${label}: ${value}</span>
-                                      </div>`;
-                            }).join('');
-                          }
-                        },
-                        titleFont: { size: 14 },
-                        bodyFont: { size: 12 },
-                        bodySpacing: 4,
-                        padding: 10,
-                        displayColors: false,
-                        enabled: true,
+                        enabled: false,  // 禁用默認的 tooltip
                         external: function(context) {
-                          let tooltipEl = document.getElementById('chartjs-tooltip');
-
-                          if (!tooltipEl) {
-                            tooltipEl = document.createElement('div');
-                            tooltipEl.id = 'chartjs-tooltip';
-                            tooltipEl.innerHTML = '<table></table>';
-                            document.body.appendChild(tooltipEl);
-                          }
-
+                          // 獲取 tooltip 模型
                           const tooltipModel = context.tooltip;
 
+                          // 如果 tooltip 不顯示，則退出
                           if (tooltipModel.opacity === 0) {
-                            tooltipEl.style.opacity = 0;
                             return;
                           }
 
-                          tooltipEl.classList.remove('above', 'below', 'no-transform');
-                          if (tooltipModel.yAlign) {
-                            tooltipEl.classList.add(tooltipModel.yAlign);
-                          } else {
-                            tooltipEl.classList.add('no-transform');
+                          // 創建或獲取 tooltip 元素
+                          let tooltipEl = document.getElementById('chartjs-tooltip');
+                          if (!tooltipEl) {
+                            tooltipEl = document.createElement('div');
+                            tooltipEl.id = 'chartjs-tooltip';
+                            document.body.appendChild(tooltipEl);
                           }
 
-                          function getBody(bodyItem) {
-                            return bodyItem.lines;
-                          }
-
+                          // 設置 tooltip 內容
                           if (tooltipModel.body) {
                             const titleLines = tooltipModel.title || [];
-                            const bodyLines = tooltipModel.body.map(getBody);
+                            const bodyLines = tooltipModel.body.map(bodyItem => bodyItem.lines);
 
-                            let innerHtml = '<thead>';
+                            // 排序數據
+                            const sortedItems = tooltipModel.dataPoints.sort((a, b) => b.raw - a.raw);
 
-                            titleLines.forEach(function(title) {
-                              innerHtml += '<tr><th>' + title + '</th></tr>';
+                            let innerHtml = `<div class="custom-tooltip">`;
+                            innerHtml += `<div class="tooltip-title">${titleLines[0]}</div>`;
+
+                            sortedItems.forEach(item => {
+                              const label = item.dataset.label;
+                              const value = item.raw.toFixed(2);
+                              const color = item.dataset.borderColor;
+                              innerHtml += `
+                                <div class="tooltip-item" style="display: flex; align-items: center;">
+                                  <div style="width: 10px; height: 10px; background-color: ${color}; margin-right: 5px;"></div>
+                                  <span>${label}: ${value}</span>
+                                </div>
+                              `;
                             });
-                            innerHtml += '</thead><tbody>';
 
-                            bodyLines.forEach(function(body, i) {
-                              innerHtml += '<tr><td>' + body + '</td></tr>';
-                            });
-                            innerHtml += '</tbody>';
-
-                            let tableRoot = tooltipEl.querySelector('table');
-                            tableRoot.innerHTML = innerHtml;
+                            innerHtml += `</div>`;
+                            tooltipEl.innerHTML = innerHtml;
                           }
 
+                          // 設置 tooltip 位置
                           const position = context.chart.canvas.getBoundingClientRect();
-
                           tooltipEl.style.opacity = 1;
                           tooltipEl.style.position = 'absolute';
                           tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
