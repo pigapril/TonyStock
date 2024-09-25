@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { BrowserRouter as Router, useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import {
@@ -14,11 +15,31 @@ import {
 } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import './App.css';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
 import 'chartjs-plugin-crosshair';
 
+// 添加這行來獲取 API 基礎 URL
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
+
+function PageViewTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'pageview',
+        page: {
+          path: location.pathname,
+          title: document.title
+        }
+      });
+    }
+  }, [location]);
+
+  return null;
+}
 
 function App() {
   const [stockCode, setStockCode] = useState('');
@@ -42,7 +63,14 @@ function App() {
     }, 2000);
 
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}?stockCode=${stockCode}&years=${yearsToUse}&backTestDate=${backTestDateToUse}`);
+      // 修改這裡的 URL 以使用環境變量
+      const response = await axios.get(`${API_BASE_URL}/api/stock-data`, {
+        params: {
+          stockCode,
+          years: yearsToUse,
+          backTestDate: backTestDateToUse
+        }
+      });
       const data = response.data;
       console.log('Response data:', data);
       setChartData({
@@ -129,8 +157,21 @@ function App() {
     return () => clearInterval(intervalId);
   }, [fetchStockData, actualStockCode, actualYears, actualBackTestDate]);
 
+  useEffect(() => {
+    // 發送頁面瀏覽
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'pageview',
+      page: {
+        path: window.location.pathname,
+        title: document.title
+      }
+    });
+  }, []);
+
   return (
     <Router>
+      <PageViewTracker />
       <div className="App">
         <nav className="sidebar">
           <div className="logo">K</div>
