@@ -55,11 +55,14 @@ function App() {
   const [actualYears, setActualYears] = useState(3.5);
   const [actualBackTestDate, setActualBackTestDate] = useState('');
 
-  const formatStockCode = (code) => {
-    // 將代碼轉換為大寫
+  // 用於顯示的格式化函數
+  const formatDisplayStockCode = (code) => {
+    return code.toUpperCase();
+  };
+
+  // 用於發送到後端的格式化函數
+  const formatBackendStockCode = (code) => {
     const upperCaseCode = code.toUpperCase();
-    
-    // 如果是台灣股票代碼（純數字或數字加字母），自動添加 .TW 後綴
     if (/^\d+[A-Z]?$/.test(upperCaseCode) && !upperCaseCode.endsWith('.TW')) {
       return upperCaseCode + '.TW';
     }
@@ -75,7 +78,7 @@ function App() {
     }, 2000);
 
     try {
-      const formattedStockCode = formatStockCode(stockCode);
+      const formattedStockCode = formatBackendStockCode(stockCode);
       console.log('Fetching data from:', `${API_BASE_URL}/api/stock-data`);
       console.log('Params:', { stockCode: formattedStockCode, years: yearsToUse, backTestDate: backTestDateToUse });
       
@@ -143,7 +146,7 @@ function App() {
           }
         ]
       });
-      setDisplayedStockCode(formattedStockCode.replace('.TW', ''));
+      setDisplayedStockCode(stockCode); // 使用原始的 stockCode，不包含 .TW
     } catch (error) {
       console.error('Error fetching data:', error);
       console.error('Error details:', error.response ? error.response.data : 'No response');
@@ -156,7 +159,7 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formattedStockCode = formatStockCode(stockCode);
+    const formattedStockCode = formatBackendStockCode(stockCode);
     setActualStockCode(formattedStockCode);
     setActualYears(years);
     setActualBackTestDate(backTestDate);
@@ -319,7 +322,7 @@ function App() {
                     className="form-control"
                     type="text"
                     value={stockCode}
-                    onChange={(e) => setStockCode(formatStockCode(e.target.value))}
+                    onChange={(e) => setStockCode(formatDisplayStockCode(e.target.value))}
                     placeholder="如:0050、AAPL"
                     required
                   />
