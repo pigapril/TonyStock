@@ -56,11 +56,14 @@ function App() {
   const [actualBackTestDate, setActualBackTestDate] = useState('');
 
   const formatStockCode = (code) => {
+    // 將代碼轉換為大寫
+    const upperCaseCode = code.toUpperCase();
+    
     // 如果是台灣股票代碼（純數字或數字加字母），自動添加 .TW 後綴
-    if (/^\d+[A-Z]?$/.test(code) && !code.endsWith('.TW')) {
-      return code + '.TW';
+    if (/^\d+[A-Z]?$/.test(upperCaseCode) && !upperCaseCode.endsWith('.TW')) {
+      return upperCaseCode + '.TW';
     }
-    return code;
+    return upperCaseCode;
   };
 
   const fetchStockData = useCallback(async (stockCode, yearsToUse, backTestDateToUse) => {
@@ -316,7 +319,7 @@ function App() {
                     className="form-control"
                     type="text"
                     value={stockCode}
-                    onChange={(e) => setStockCode(e.target.value)}
+                    onChange={(e) => setStockCode(formatStockCode(e.target.value))}
                     placeholder="如:0050、AAPL"
                     required
                   />
