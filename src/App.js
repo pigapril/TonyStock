@@ -173,8 +173,24 @@ function App() {
                         mode: 'index',
                         intersect: false,
                         callbacks: {
-                          // 移除 label 回調，因為我們將在 afterBody 中處理所有內容
+                          title: function(tooltipItems) {
+                            // 只顯示日期，隱藏舊的六筆資料
+                            return tooltipItems[0].label;
+                          },
+                          label: function() {
+                            // 返回空字符串，不顯示默認的標籤
+                            return '';
+                          },
                           afterBody: function (tooltipItems) {
+                            const colorMap = {
+                              'TL+2SD': 'red',
+                              'TL+SD': 'lightcoral',
+                              'Trend Line': 'black',
+                              'Price': 'blue',
+                              'TL-SD': 'lightgreen',
+                              'TL-2SD': 'darkgreen'
+                            };
+
                             // 按照數值從大到小排序
                             tooltipItems.sort((a, b) => b.parsed.y - a.parsed.y);
                             
@@ -182,9 +198,10 @@ function App() {
                             return tooltipItems.map(item => {
                               const label = item.dataset.label;
                               const value = item.parsed.y.toFixed(2);
-                              // 使用 Unicode 字符作為顏色圓點
-                              const colorDot = `\u25CF`; // 實心圓點
-                              return `${colorDot} ${label}: ${value}`;
+                              const color = colorMap[label] || 'gray';
+                              // 使用 Unicode 字符作為顏色方塊
+                              const colorBlock = `\u25A0`; // 實心方塊
+                              return `<span style="color:${color}">${colorBlock}</span> ${label}: ${value}`;
                             });
                           }
                         },
