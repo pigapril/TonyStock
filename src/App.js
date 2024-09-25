@@ -55,6 +55,14 @@ function App() {
   const [actualYears, setActualYears] = useState(3.5);
   const [actualBackTestDate, setActualBackTestDate] = useState('');
 
+  const formatStockCode = (code) => {
+    // 如果是台灣股票代碼（純數字或數字加字母），自動添加 .TW 後綴
+    if (/^\d+[A-Z]?$/.test(code) && !code.endsWith('.TW')) {
+      return code + '.TW';
+    }
+    return code;
+  };
+
   const fetchStockData = useCallback(async (stockCode, yearsToUse, backTestDateToUse) => {
     setLoading(true);
     setTimeoutMessage('');
@@ -64,12 +72,13 @@ function App() {
     }, 2000);
 
     try {
+      const formattedStockCode = formatStockCode(stockCode);
       console.log('Fetching data from:', `${API_BASE_URL}/api/stock-data`);
-      console.log('Params:', { stockCode, years: yearsToUse, backTestDate: backTestDateToUse });
+      console.log('Params:', { stockCode: formattedStockCode, years: yearsToUse, backTestDate: backTestDateToUse });
       
       const response = await axios.get(`${API_BASE_URL}/api/stock-data`, {
         params: {
-          stockCode,
+          stockCode: formattedStockCode,
           years: yearsToUse,
           backTestDate: backTestDateToUse
         }
@@ -131,7 +140,7 @@ function App() {
           }
         ]
       });
-      setDisplayedStockCode(stockCode.replace('.TW', ''));
+      setDisplayedStockCode(formattedStockCode.replace('.TW', ''));
     } catch (error) {
       console.error('Error fetching data:', error);
       console.error('Error details:', error.response ? error.response.data : 'No response');
@@ -140,14 +149,11 @@ function App() {
       setLoading(false);
       setTimeoutMessage('');
     }
-  }, []);
+  }, [API_BASE_URL]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let formattedStockCode = stockCode;
-    if (stockCode.length === 4 && /^\d+$/.test(stockCode)) {
-      formattedStockCode += '.TW';
-    }
+    const formattedStockCode = formatStockCode(stockCode);
     setActualStockCode(formattedStockCode);
     setActualYears(years);
     setActualBackTestDate(backTestDate);
