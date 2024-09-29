@@ -36,14 +36,11 @@ function MarketSentimentIndex() {
         {indicators.map((indicator, index) => (
           <div key={index} className="indicator-item">
             <h4>{indicator.name}</h4>
-            <p
-              className={indicator.isRealData ? 'real-data' : 'simulated-data'}
-            >
+            <p className={indicator.isRealData ? 'real-data' : 'simulated-data'}>
               數據: {indicator.value}
             </p>
-            <p>
-              分數: {indicator.score.toFixed(2)} / 10
-            </p>
+            <p>分數: {indicator.score.toFixed(2)} / 10</p>
+            <p className="indicator-description">說明: {indicator.description}</p>
           </div>
         ))}
       </div>
