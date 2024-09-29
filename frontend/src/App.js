@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { BrowserRouter as Router, useLocation, Link } from 'react-router-dom';
+import { BrowserRouter as Router, useLocation, Link, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import {
@@ -17,6 +17,7 @@ import 'chartjs-adapter-date-fns';
 import './App.css';
 import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
 import 'chartjs-plugin-crosshair';
+import MarketSentimentIndex from './components/MarketSentimentIndex';
 
 // 添加這行來獲取 API 基礎 URL
 console.log('API_BASE_URL:', process.env.REACT_APP_API_BASE_URL);
@@ -95,6 +96,15 @@ function App() {
       console.log('Response:', response);
       const data = response.data;
       console.log('Response data:', data);
+      
+      // 確保數據長度與請求的年數���符
+      const expectedDataPoints = Math.round(yearsToUse * 252); // 假設每年約有252個交易日
+      console.log(`Expected data points: ${expectedDataPoints}, Actual data points: ${data.dates.length}`);
+      
+      if (Math.abs(data.dates.length - expectedDataPoints) > 10) { // 允許少量誤差
+        console.warn(`Data length (${data.dates.length}) does not match expected length (${expectedDataPoints})`);
+      }
+
       setChartData({
         labels: data.dates,
         datasets: [
@@ -163,7 +173,7 @@ function App() {
     e.preventDefault();
     const formattedStockCode = formatBackendStockCode(stockCode);
     setActualStockCode(formattedStockCode);
-    setActualYears(years);
+    setActualYears(parseFloat(years)); // 確保 years 是數字
     setActualBackTestDate(backTestDate);
   };
 
@@ -193,7 +203,7 @@ function App() {
   useEffect(() => {
     const fetchMultiStockData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/multi-stock-data`);
+        const response = await axios.get(`${API_BASE_URL}/api/multi-stock-data`);
         setMultiStockData(response.data);
       } catch (error) {
         console.error('Error fetching multi-stock data:', error);
@@ -366,6 +376,12 @@ function App() {
               </Link>
             </li>
             <li>
+              <Link to="/market-sentiment">
+                <FaChartBar />
+                <span>市場情緒綜合指標</span>
+              </Link>
+            </li>
+            <li>
               <a href="https://vocus.cc/salon/daily_chart" target="_blank" rel="noopener noreferrer">
                 <FaChartBar />
                 <span>關鍵圖表</span>
@@ -380,154 +396,161 @@ function App() {
           </ul>
         </nav>
         <main className="main-content">
-          <header>
-            <h1>五線標準差分析</h1>
-            {timeoutMessage && <div>{timeoutMessage}</div>}
-          </header>
-          <div className="dashboard">
-            <div className="card chart-card">
-              <h2>{displayedStockCode ? `${displayedStockCode} 分析結果` : '分析結果'}</h2>
-              {chartData && (
-                <Line
-                  data={chartData}
-                  options={{
-                    plugins: {
-                      legend: { display: false },
-                      tooltip: {
-                        enabled: false,
-                        mode: 'index',
-                        intersect: false,
-                        external: function(context) {
-                          const tooltipModel = context.tooltip;
-                          let tooltipEl = document.getElementById('chartjs-tooltip');
+          <Routes>
+            <Route path="/" element={
+              <>
+                <header>
+                  <h1>五線標準差分析</h1>
+                  {timeoutMessage && <div>{timeoutMessage}</div>}
+                </header>
+                <div className="dashboard">
+                  <div className="card chart-card">
+                    <h2>{displayedStockCode ? `${displayedStockCode} 分析結果` : '分析結果'}</h2>
+                    {chartData && (
+                      <Line
+                        data={chartData}
+                        options={{
+                          plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                              enabled: false,
+                              mode: 'index',
+                              intersect: false,
+                              external: function(context) {
+                                const tooltipModel = context.tooltip;
+                                let tooltipEl = document.getElementById('chartjs-tooltip');
 
-                          if (!tooltipEl) {
-                            tooltipEl = document.createElement('div');
-                            tooltipEl.id = 'chartjs-tooltip';
-                            document.body.appendChild(tooltipEl);
-                          }
+                                if (!tooltipEl) {
+                                  tooltipEl = document.createElement('div');
+                                  tooltipEl.id = 'chartjs-tooltip';
+                                  document.body.appendChild(tooltipEl);
+                                }
 
-                          if (tooltipModel.opacity === 0) {
-                            tooltipEl.style.opacity = 0;
-                            return;
-                          }
+                                if (tooltipModel.opacity === 0) {
+                                  tooltipEl.style.opacity = 0;
+                                  return;
+                                }
 
-                          if (tooltipModel.body) {
-                            const titleLines = tooltipModel.title || [];
+                                if (tooltipModel.body) {
+                                  const titleLines = tooltipModel.title || [];
 
-                            // 定義我們想要顯示的數據集標籤
-                            const desiredLabels = ['TL+2SD', 'TL+SD', 'Trend Line', 'Price', 'TL-SD', 'TL-2SD'];
+                                  // 定義我們想要顯示的數據集標籤
+                                  const desiredLabels = ['TL+2SD', 'TL+SD', 'Trend Line', 'Price', 'TL-SD', 'TL-2SD'];
 
-                            // 過濾並排序數據點
-                            const sortedItems = tooltipModel.dataPoints
-                              .filter(item => desiredLabels.includes(item.dataset.label))
-                              .sort((a, b) => b.raw - a.raw);
+                                  // 過濾並排序數據點
+                                  const sortedItems = tooltipModel.dataPoints
+                                    .filter(item => desiredLabels.includes(item.dataset.label))
+                                    .sort((a, b) => b.raw - a.raw);
 
-                            let innerHtml = `<div class="custom-tooltip">`;
-                            innerHtml += `<div class="tooltip-title">${titleLines[0]}</div>`;
+                                  let innerHtml = `<div class="custom-tooltip">`;
+                                  innerHtml += `<div class="tooltip-title">${titleLines[0]}</div>`;
 
-                            sortedItems.forEach(item => {
-                              const label = item.dataset.label;
-                              const value = item.raw.toFixed(2);
-                              const color = item.dataset.borderColor;
-                              innerHtml += `
-                                <div class="tooltip-item" style="display: flex; align-items: center;">
-                                  <div style="width: 10px; height: 10px; background-color: ${color}; margin-right: 5px;"></div>
-                                  <span>${label}: ${value}</span>
-                                </div>
-                              `;
-                            });
+                                  sortedItems.forEach(item => {
+                                    const label = item.dataset.label;
+                                    const value = item.raw.toFixed(2);
+                                    const color = item.dataset.borderColor;
+                                    innerHtml += `
+                                      <div class="tooltip-item" style="display: flex; align-items: center;">
+                                        <div style="width: 10px; height: 10px; background-color: ${color}; margin-right: 5px;"></div>
+                                        <span>${label}: ${value}</span>
+                                      </div>
+                                    `;
+                                  });
 
-                            innerHtml += `</div>`;
-                            tooltipEl.innerHTML = innerHtml;
-                          }
+                                  innerHtml += `</div>`;
+                                  tooltipEl.innerHTML = innerHtml;
+                                }
 
-                          const position = context.chart.canvas.getBoundingClientRect();
-                          tooltipEl.style.opacity = 1;
-                          tooltipEl.style.position = 'absolute';
-                          tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
-                          tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
-                          tooltipEl.style.font = tooltipModel.options.bodyFont.string;
-                          tooltipEl.style.padding = tooltipModel.options.padding + 'px ' + tooltipModel.options.padding + 'px';
-                          tooltipEl.style.pointerEvents = 'none';
-                          tooltipEl.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-                          tooltipEl.style.color = 'white';
-                          tooltipEl.style.borderRadius = '3px';
-                          tooltipEl.style.zIndex = 1000;
-                        }
-                      },
-                      crosshair: {
-                        line: {
-                          color: '#F66',
-                          width: 1,
-                          dashPattern: [5, 5]
-                        },
-                        sync: {
-                          enabled: false
-                        },
-                        zoom: {
-                          enabled: false
-                        }
-                      }
-                    },
-                    hover: {
-                      mode: 'index',
-                      intersect: false
-                    },
-                    scales: { y: { position: 'right' } }
-                  }}
-                />
-              )}
-            </div>
-            <div className="card stock-analysis-card">
-              <form onSubmit={handleSubmit}>
-                <div className="input-group">
-                  <label>股票代碼：</label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    value={stockCode}
-                    onChange={(e) => setStockCode(formatDisplayStockCode(e.target.value))}
-                    placeholder="如:0050、AAPL"
-                    required
-                  />
+                                const position = context.chart.canvas.getBoundingClientRect();
+                                tooltipEl.style.opacity = 1;
+                                tooltipEl.style.position = 'absolute';
+                                tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                                tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+                                tooltipEl.style.font = tooltipModel.options.bodyFont.string;
+                                tooltipEl.style.padding = tooltipModel.options.padding + 'px ' + tooltipModel.options.padding + 'px';
+                                tooltipEl.style.pointerEvents = 'none';
+                                tooltipEl.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                                tooltipEl.style.color = 'white';
+                                tooltipEl.style.borderRadius = '3px';
+                                tooltipEl.style.zIndex = 1000;
+                              }
+                            },
+                            crosshair: {
+                              line: {
+                                color: '#F66',
+                                width: 1,
+                                dashPattern: [5, 5]
+                              },
+                              sync: {
+                                enabled: false
+                              },
+                              zoom: {
+                                enabled: false
+                              }
+                            }
+                          },
+                          hover: {
+                            mode: 'index',
+                            intersect: false
+                          },
+                          scales: { y: { position: 'right' } }
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div className="card stock-analysis-card">
+                    <form onSubmit={handleSubmit}>
+                      <div className="input-group">
+                        <label>股票代碼：</label>
+                        <input
+                          className="form-control"
+                          type="text"
+                          value={stockCode}
+                          onChange={(e) => setStockCode(formatDisplayStockCode(e.target.value))}
+                          placeholder="如:0050、AAPL"
+                          required
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label>查詢期間（年）：</label>
+                        <input
+                          className="form-control"
+                          type="number"
+                          value={years}
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            setYears(value > 0 ? value : 0.25); // 確保值大於 0
+                          }}
+                          step="0.25"
+                          min="0.25"
+                          placeholder="輸入年數，如 3.5"
+                          required
+                          style={{ width: '110px' }}
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label>回測日期：</label>
+                        <input
+                          className="form-control"
+                          type="date"
+                          value={backTestDate}
+                          onChange={(e) => setBackTestDate(e.target.value)}
+                        />
+                      </div>
+                      <button className="btn-primary" type="submit" disabled={loading}>
+                        {loading ? '分析中' : '開始分析'}
+                      </button>
+                    </form>
+                  </div>
                 </div>
-                <div className="input-group">
-                  <label>查詢期間（年）：</label>
-                  <input
-                    className="form-control"
-                    type="number"
-                    value={years}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value);
-                      setYears(value);
-                    }}
-                    step="0.25"
-                    min="0.25"
-                    placeholder="輸入年數，如 3.5"
-                    required
-                    style={{ width: '110px' }}
-                  />
+                {/* 添加多个股票图表 */}
+                <div className="multi-stock-dashboard">
+                  {renderMultiStockCharts()}
                 </div>
-                <div className="input-group">
-                  <label>回測日期：</label>
-                  <input
-                    className="form-control"
-                    type="date"
-                    value={backTestDate}
-                    onChange={(e) => setBackTestDate(e.target.value)}
-                  />
-                </div>
-                <button className="btn-primary" type="submit" disabled={loading}>
-                  {loading ? '分析中' : '開始分析'}
-                </button>
-              </form>
-            </div>
-          </div>
-          {/* 添加多个股票图表 */}
-          <div className="multi-stock-dashboard">
-            {renderMultiStockCharts()}
-          </div>
+              </>
+            } />
+            <Route path="/market-sentiment" element={<MarketSentimentIndex />} />
+          </Routes>
         </main>
       </div>
     </Router>
