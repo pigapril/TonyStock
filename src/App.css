@@ -1,0 +1,157 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 60px; /* 初始宽度 */
+  background-color: #1a73e8;
+  color: white;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: width 0.3s; /* 添加过渡效果 */
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin-bottom: 20px;
+  white-space: nowrap; /* 防止文本换行 */
+}
+
+.sidebar li span {
+  display: none; /* 默认隐藏文本 */
+}
+
+.sidebar a {
+  color: white;
+  font-size: 20px;
+  overflow: hidden; /* 隐藏溢出文本 */
+  text-overflow: ellipsis; /* 溢出文本显示省略号 */
+  display: flex; /* 使用 flexbox 以便图标和文本在同一行 */
+  align-items: center; /* 垂直居中对齐 */
+  width: 100%; /* 使链接宽度为 100% */
+}
+
+.sidebar:hover {
+  width: 200px; /* 鼠标悬停时的宽度 */
+}
+
+.sidebar:hover li span {
+  display: inline; /* 鼠标悬停时显示文本 */
+}
+
+.sidebar li:hover a {
+  white-space: normal; /* 鼠标悬停时允许换行 */
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  width: 200px;
+}
+
+.dashboard {
+  display: flex; /* 使用 Flexbox */
+  justify-content: space-between; /* 左右对齐 */
+  gap: 20px; /* 添加间距 */
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+.balance-card {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.balance {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.card-number {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 150px; /* 设置与标题相同的宽度 */
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.btn-primary {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  background-color: #9e9e9e;
+}
+
+.chart-card {
+  flex: 1; /* 使 Analysis Result 占据剩余空间 */
+  margin-right: 20px; /* 添加右边距 */
+}
+
+.stock-analysis-card {
+  width: 300px; /* 设置 Stock Analysis 的宽度 */
+}
+
+.input-field {
+  width: 150px; /* 根据需要调整宽度 */
+  margin: 5px 0;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}

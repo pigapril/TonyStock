@@ -1,0 +1,27 @@
+.market-sentiment {
+  padding: 20px;
+}
+
+.composite-score {
+  margin-bottom: 20px;
+}
+
+.indicators-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.indicator-item {
+  width: 45%;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.real-data {
+  color: blue;
+}
+
+.simulated-data {
+  color: red;
+}
