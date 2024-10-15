@@ -1,0 +1,146 @@
+.market-sentiment {
+  padding: 20px;
+}
+
+.composite-score {
+  margin-bottom: 20px;
+}
+
+.time-range-selector {
+  margin-bottom: 20px;
+}
+
+.indicators-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.indicator-item {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.real-data {
+  color: green;
+}
+
+.simulated-data {
+  color: red;
+}
+
+.indicator-description {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 450px; /* 根據需要調整高度 */
+}
+
+/* 確保市場情緒指數頁面在小螢幕上顯示良好 */
+.market-sentiment-index {
+  padding: 20px;
+}
+
+.time-range-selector {
+  margin-bottom: 20px;
+}
+
+.indicator-list {
+  display: flex;
+  flex-direction: column; /* 垂直排列 */
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 新增以下部分 */
+@media (max-width: 768px) {
+  .indicator-list {
+    flex-direction: column; /* 小螢幕上垂直排列 */
+  }
+
+  .indicator-chart {
+    height: 200px; /* 調整圖表高度 */
+  }
+}
+
+/* 確保圖表卡片的寬度一致 */
+.sentiment-dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.sentiment-chart-card {
+  width: calc(33.333% - 20px); /* 每列顯示三個圖表卡片，減去間距 */
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .sentiment-chart-card {
+    width: calc(50% - 20px); /* 中等螢幕每列顯示兩個圖表卡片 */
+  }
+}
+
+@media (max-width: 768px) {
+  .sentiment-dashboard {
+    flex-direction: column;
+  }
+  .sentiment-chart-card {
+    width: 100%; /* 小螢幕上圖表卡片佔據全寬 */
+  }
+}
+
+/* 調整指標列表的佈局 */
+.indicator-list {
+  display: flex;
+  flex-direction: column; /* 垂直排列 */
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 調整指標項目的樣式 */
+.indicator-item {
+  width: 100%; /* 佔據全寬 */
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* 調整圖表區域的樣式 */
+.indicator-chart {
+  width: 100%;
+  height: 300px; /* 根據需要調整高度 */
+}
+
+/* 小螢幕調整 */
+@media (max-width: 1024px) {
+  .indicator-item {
+    width: calc(50% - 20px); /* 中等螢幕每列顯示兩個圖表卡片 */
+  }
+}
+
+@media (max-width: 768px) {
+  .indicator-list {
+    flex-direction: column;
+  }
+  .indicator-item {
+    width: 100%; /* 小螢幕上圖表卡片佔據全寬 */
+  }
+  .indicator-chart {
+    height: 200px; /* 在小螢幕上調整圖表高度 */
+  }
+}
