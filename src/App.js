@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { BrowserRouter as Router, useLocation, Link } from 'react-router-dom';
+import { BrowserRouter as Router, useLocation, Link, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import {
@@ -15,12 +15,22 @@ import {
 } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import './App.css';
-import { FaChartLine, FaInfoCircle, FaChartBar } from 'react-icons/fa';
-import 'chartjs-plugin-crosshair';
 
-// 添加這行來獲取 API 基礎 URL
+// 引入所有需要的圖標，包括 FaHeartbeat 和 FaBars
+import { FaChartLine, FaInfoCircle, FaChartBar, FaHeartbeat, FaBars } from 'react-icons/fa';
+
+// 引入 'react-responsive' 的 useMediaQuery
+import { useMediaQuery } from 'react-responsive';
+
+import 'chartjs-plugin-crosshair';
+import MarketSentimentIndex from './components/MarketSentimentIndex';
+
+// 獲取 API 基礎 URL
 console.log('API_BASE_URL:', process.env.REACT_APP_API_BASE_URL);
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
+
+// 設定 axios 的預設 baseURL
+axios.defaults.baseURL = API_BASE_URL;
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
@@ -56,6 +66,17 @@ function App() {
   const [actualBackTestDate, setActualBackTestDate] = useState('');
 
   const [multiStockData, setMultiStockData] = useState([]);
+
+  // 使用 useMediaQuery 檢測是否為行動裝置
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+
+  // 控制側邊欄顯示狀態
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // 切換側邊欄的函數
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   // 用於顯示的格式化函數
   const formatDisplayStockCode = (code) => {
@@ -96,7 +117,7 @@ function App() {
       const data = response.data;
       console.log('Response data:', data);
       
-      // 確保數據長度與請求的年數相符
+      // 確保數據長度與請求的年數符
       const expectedDataPoints = Math.round(yearsToUse * 252); // 假設每年約有252個交易日
       console.log(`Expected data points: ${expectedDataPoints}, Actual data points: ${data.dates.length}`);
       
@@ -171,8 +192,16 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formattedStockCode = formatBackendStockCode(stockCode);
+    const yearsValue = parseFloat(years);
+
+    // 檢查 yearsValue 是否為有效的正數
+    if (isNaN(yearsValue) || yearsValue <= 0) {
+      alert('請輸入有效的查詢期間（年），且必須大於零。');
+      return;
+    }
+
     setActualStockCode(formattedStockCode);
-    setActualYears(parseFloat(years)); // 確保 years 是數字
+    setActualYears(yearsValue);
     setActualBackTestDate(backTestDate);
   };
 
@@ -361,182 +390,250 @@ function App() {
     ));
   };
 
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    // 其他配置項目
+  };
+
   return (
     <Router>
       <PageViewTracker />
       <div className="App">
-        <nav className="sidebar">
-          <div className="logo">K</div>
-          <ul>
-            <li>
-              <Link to="/">
-                <FaChartLine />
-                <span>五線標準差分析</span>
-              </Link>
-            </li>
-            <li>
-              <a href="https://vocus.cc/salon/daily_chart" target="_blank" rel="noopener noreferrer">
-                <FaChartBar />
-                <span>關鍵圖表</span>
-              </a>
-            </li>
-            <li>
-              <a href="https://vocus.cc/salon/daily_chart/about" target="_blank" rel="noopener noreferrer">
-                <FaInfoCircle />
-                <span>關於我</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-        <main className="main-content">
-          <header>
-            <h1>五線標準差分析</h1>
-            {timeoutMessage && <div>{timeoutMessage}</div>}
-          </header>
-          <div className="dashboard">
-            <div className="card chart-card">
-              <h2>{displayedStockCode ? `${displayedStockCode} 分析結果` : '分析結果'}</h2>
-              {chartData && (
-                <Line
-                  data={chartData}
-                  options={{
-                    plugins: {
-                      legend: { display: false },
-                      tooltip: {
-                        enabled: false,
-                        mode: 'index',
-                        intersect: false,
-                        external: function(context) {
-                          const tooltipModel = context.tooltip;
-                          let tooltipEl = document.getElementById('chartjs-tooltip');
+        {/* 電腦版側邊欄 */}
+        {!isMobile && (
+          <nav className="sidebar">
+            <ul>
+              <li>
+                <Link to="/">
+                  <FaChartLine />
+                  <span>五線標準差分析</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/market-sentiment">
+                  <FaHeartbeat />
+                  <span>市場情緒綜合指標</span>
+                </Link>
+              </li>
+              <li>
+                <a href="https://vocus.cc/salon/daily_chart" target="_blank" rel="noopener noreferrer">
+                  <FaChartBar />
+                  <span>關鍵圖表</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://vocus.cc/salon/daily_chart/about" target="_blank" rel="noopener noreferrer">
+                  <FaInfoCircle />
+                  <span>關於我</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        )}
 
-                          if (!tooltipEl) {
-                            tooltipEl = document.createElement('div');
-                            tooltipEl.id = 'chartjs-tooltip';
-                            document.body.appendChild(tooltipEl);
-                          }
+        {/* 行動裝置版的側邊欄 */}
+        {isMobile && (
+          <nav className={`mobile-sidebar ${sidebarOpen ? 'open' : ''}`}>
+            <ul>
+              <li>
+                <Link to="/" onClick={toggleSidebar}>
+                  <FaChartLine />
+                  <span>五線標準差分析</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/market-sentiment" onClick={toggleSidebar}>
+                  <FaHeartbeat />
+                  <span>市場情緒綜合指標</span>
+                </Link>
+              </li>
+              <li>
+                <a href="https://vocus.cc/salon/daily_chart" target="_blank" rel="noopener noreferrer" onClick={toggleSidebar}>
+                  <FaChartBar />
+                  <span>關鍵圖表</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://vocus.cc/salon/daily_chart/about" target="_blank" rel="noopener noreferrer" onClick={toggleSidebar}>
+                  <FaInfoCircle />
+                  <span>關於我</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        )}
 
-                          if (tooltipModel.opacity === 0) {
-                            tooltipEl.style.opacity = 0;
-                            return;
-                          }
-
-                          if (tooltipModel.body) {
-                            const titleLines = tooltipModel.title || [];
-
-                            // 定義我們想要顯示的數據集標籤
-                            const desiredLabels = ['TL+2SD', 'TL+SD', 'Trend Line', 'Price', 'TL-SD', 'TL-2SD'];
-
-                            // 過濾並排序數據點
-                            const sortedItems = tooltipModel.dataPoints
-                              .filter(item => desiredLabels.includes(item.dataset.label))
-                              .sort((a, b) => b.raw - a.raw);
-
-                            let innerHtml = `<div class="custom-tooltip">`;
-                            innerHtml += `<div class="tooltip-title">${titleLines[0]}</div>`;
-
-                            sortedItems.forEach(item => {
-                              const label = item.dataset.label;
-                              const value = item.raw.toFixed(2);
-                              const color = item.dataset.borderColor;
-                              innerHtml += `
-                                <div class="tooltip-item" style="display: flex; align-items: center;">
-                                  <div style="width: 10px; height: 10px; background-color: ${color}; margin-right: 5px;"></div>
-                                  <span>${label}: ${value}</span>
-                                </div>
-                              `;
-                            });
-
-                            innerHtml += `</div>`;
-                            tooltipEl.innerHTML = innerHtml;
-                          }
-
-                          const position = context.chart.canvas.getBoundingClientRect();
-                          tooltipEl.style.opacity = 1;
-                          tooltipEl.style.position = 'absolute';
-                          tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
-                          tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
-                          tooltipEl.style.font = tooltipModel.options.bodyFont.string;
-                          tooltipEl.style.padding = tooltipModel.options.padding + 'px ' + tooltipModel.options.padding + 'px';
-                          tooltipEl.style.pointerEvents = 'none';
-                          tooltipEl.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-                          tooltipEl.style.color = 'white';
-                          tooltipEl.style.borderRadius = '3px';
-                          tooltipEl.style.zIndex = 1000;
-                        }
-                      },
-                      crosshair: {
-                        line: {
-                          color: '#F66',
-                          width: 1,
-                          dashPattern: [5, 5]
-                        },
-                        sync: {
-                          enabled: false
-                        },
-                        zoom: {
-                          enabled: false
-                        }
-                      }
-                    },
-                    hover: {
-                      mode: 'index',
-                      intersect: false
-                    },
-                    scales: { y: { position: 'right' } }
-                  }}
-                />
-              )}
+        {/* 主內容區域 */}
+        <main className="main-content" onClick={() => sidebarOpen && setSidebarOpen(false)}>
+          {/* 行動裝置版的 menu icon */}
+          {isMobile && (
+            <div className="mobile-menu-icon" onClick={toggleSidebar}>
+              <FaBars />
             </div>
-            <div className="card stock-analysis-card">
-              <form onSubmit={handleSubmit}>
-                <div className="input-group">
-                  <label>股票代碼：</label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    value={stockCode}
-                    onChange={(e) => setStockCode(formatDisplayStockCode(e.target.value))}
-                    placeholder="如:0050、AAPL"
-                    required
-                  />
-                </div>
-                <div className="input-group">
-                  <label>查詢期間（年）：</label>
-                  <input
-                    className="form-control"
-                    type="number"
-                    value={years}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value);
-                      setYears(value > 0 ? value : 0.25); // 確保值大於 0
-                    }}
-                    step="0.25"
-                    min="0.25"
-                    placeholder="輸入年數，如 3.5"
-                    required
-                    style={{ width: '110px' }}
-                  />
-                </div>
-                <div className="input-group">
-                  <label>回測日期：</label>
-                  <input
-                    className="form-control"
-                    type="date"
-                    value={backTestDate}
-                    onChange={(e) => setBackTestDate(e.target.value)}
-                  />
-                </div>
-                <button className="btn-primary" type="submit" disabled={loading}>
-                  {loading ? '分析中' : '開始分析'}
-                </button>
-              </form>
-            </div>
-          </div>
-          {/* 添加多个股票图表 */}
-          <div className="multi-stock-dashboard">
-            {renderMultiStockCharts()}
-          </div>
+          )}
+
+          {/* 內容路由 */}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <header>
+                    <h1>五線標準差分析</h1>
+                    {timeoutMessage && <div>{timeoutMessage}</div>}
+                  </header>
+                  <div className="dashboard">
+                    <div className="chart-card">
+                      <h2>{displayedStockCode ? `${displayedStockCode} 分析結果` : '分析結果'}</h2>
+                      {chartData && (
+                        <div className="chart-container">
+                          <Line
+                            data={chartData}
+                            options={{
+                              responsive: true,
+                              maintainAspectRatio: false,
+                              plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                  enabled: false,
+                                  mode: 'index',
+                                  intersect: false,
+                                  external: function(context) {
+                                    const tooltipModel = context.tooltip;
+                                    let tooltipEl = document.getElementById('chartjs-tooltip');
+
+                                    if (!tooltipEl) {
+                                      tooltipEl = document.createElement('div');
+                                      tooltipEl.id = 'chartjs-tooltip';
+                                      document.body.appendChild(tooltipEl);
+                                    }
+
+                                    if (tooltipModel.opacity === 0) {
+                                      tooltipEl.style.opacity = 0;
+                                      return;
+                                    }
+
+                                    if (tooltipModel.body) {
+                                      const titleLines = tooltipModel.title || [];
+
+                                      // 定義我們想要顯示的數據集標籤
+                                      const desiredLabels = ['TL+2SD', 'TL+SD', 'Trend Line', 'Price', 'TL-SD', 'TL-2SD'];
+
+                                      // 過濾並排序數據點
+                                      const sortedItems = tooltipModel.dataPoints
+                                        .filter(item => desiredLabels.includes(item.dataset.label))
+                                        .sort((a, b) => b.raw - a.raw);
+
+                                      let innerHtml = `<div class="custom-tooltip">`;
+                                      innerHtml += `<div class="tooltip-title">${titleLines[0]}</div>`;
+
+                                      sortedItems.forEach(item => {
+                                        const label = item.dataset.label;
+                                        const value = item.raw.toFixed(2);
+                                        const color = item.dataset.borderColor;
+                                        innerHtml += `
+                                          <div class="tooltip-item" style="display: flex; align-items: center;">
+                                            <div style="width: 10px; height: 10px; background-color: ${color}; margin-right: 5px;"></div>
+                                            <span>${label}: ${value}</span>
+                                          </div>
+                                        `;
+                                      });
+
+                                      innerHtml += `</div>`;
+                                      tooltipEl.innerHTML = innerHtml;
+                                    }
+
+                                    const position = context.chart.canvas.getBoundingClientRect();
+                                    tooltipEl.style.opacity = 1;
+                                    tooltipEl.style.position = 'absolute';
+                                    tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                                    tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+                                    tooltipEl.style.font = tooltipModel.options.bodyFont.string;
+                                    tooltipEl.style.padding = tooltipModel.options.padding + 'px ' + tooltipModel.options.padding + 'px';
+                                    tooltipEl.style.pointerEvents = 'none';
+                                    tooltipEl.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                                    tooltipEl.style.color = 'white';
+                                    tooltipEl.style.borderRadius = '3px';
+                                    tooltipEl.style.zIndex = 1000;
+                                  }
+                                },
+                                crosshair: {
+                                  line: {
+                                    color: '#F66',
+                                    width: 1,
+                                    dashPattern: [5, 5]
+                                  },
+                                  sync: {
+                                    enabled: false
+                                  },
+                                  zoom: {
+                                    enabled: false
+                                  }
+                                }
+                              },
+                              hover: {
+                                mode: 'index',
+                                intersect: false
+                              },
+                              scales: { y: { position: 'right' } }
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                    <div className="stock-analysis-card">
+                      <form onSubmit={handleSubmit}>
+                        <div className="input-group">
+                          <label>股票代碼：</label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            value={stockCode}
+                            onChange={(e) => setStockCode(formatDisplayStockCode(e.target.value))}
+                            placeholder="如:0050、AAPL"
+                            required
+                          />
+                        </div>
+                        <div className="input-group">
+                          <label>查詢期間（年）：</label>
+                          <input
+                            className="form-control"
+                            type="number"
+                            value={years}
+                            onChange={(e) => {
+                              const value = parseFloat(e.target.value);
+                              setYears(value); // 移除了對使用者輸入數字的限制
+                            }}
+                            placeholder="輸入年數，如 3.5"
+                            required
+                            style={{ width: '110px' }}
+                          />
+                        </div>
+                        <div className="input-group">
+                          <label>回測日期：</label>
+                          <input
+                            className="form-control"
+                            type="date"
+                            value={backTestDate}
+                            onChange={(e) => setBackTestDate(e.target.value)}
+                          />
+                        </div>
+                        <button className="btn-primary" type="submit" disabled={loading}>
+                          {loading ? '分析中' : '開始分析'}
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                  {/* 添加多个股票图表 */}
+                  <div className="multi-stock-dashboard">
+                    {renderMultiStockCharts()}
+                  </div>
+                </>
+              }
+            />
+            <Route path="/market-sentiment" element={<MarketSentimentIndex />} />
+          </Routes>
         </main>
       </div>
     </Router>

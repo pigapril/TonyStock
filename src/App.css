@@ -7,24 +7,20 @@ body {
 
 .App {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
+/* 桌面版側邊欄樣式 */
 .sidebar {
-  width: 60px; /* 初始宽度 */
+  width: 60px;
+  min-width: 60px;
   background-color: #1a73e8;
   color: white;
   padding: 20px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: width 0.3s; /* 添加过渡效果 */
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 30px;
+  transition: width 0.3s;
 }
 
 .sidebar ul {
@@ -35,46 +31,128 @@ body {
 
 .sidebar li {
   margin-bottom: 20px;
-  white-space: nowrap; /* 防止文本换行 */
+  white-space: nowrap;
 }
 
 .sidebar li span {
-  display: none; /* 默认隐藏文本 */
+  display: none;
 }
 
 .sidebar a {
   color: white;
   font-size: 20px;
-  overflow: hidden; /* 隐藏溢出文本 */
-  text-overflow: ellipsis; /* 溢出文本显示省略号 */
-  display: flex; /* 使用 flexbox 以便图标和文本在同一行 */
-  align-items: center; /* 垂直居中对齐 */
-  width: 100%; /* 使链接宽度为 100% */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .sidebar:hover {
-  width: 200px; /* 鼠标悬停时的宽度 */
+  width: 200px;
 }
 
 .sidebar:hover li span {
-  display: inline; /* 鼠标悬停时显示文本 */
+  display: inline;
 }
 
 .sidebar li:hover a {
-  white-space: normal; /* 鼠标悬停时允许换行 */
+  white-space: normal;
 }
 
+/* 主內容區域 */
 .main-content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
+  flex-grow: 1;
+  padding-top: 10px; /* 调整为您需要的值 */
+  padding-right: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  transition: filter 0.3s ease-in-out;
+}
+
+/* 行動裝置版樣式調整 */
+@media (max-width: 768px) {
+  /* 隱藏桌面版側邊欄 */
+  .sidebar {
+    display: none !important;
+  }
+
+  /* 行動裝置版的 menu icon */
+  .mobile-menu-icon {
+    position: fixed;
+    top: 20px;
+    right: 0px; /* 將 menu icon 放在右上角 */
+    font-size: 30px;
+    color: #1a73e8;
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  /* 主內容區域 */
+  .main-content {
+    width: 100%;
+    padding: 20px;
+    margin-top: 0;
+    transition: filter 0.3s ease-in-out;
+  }
+
+  /* 行動裝置版的側邊欄樣式 */
+  .mobile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -250px; /* 初始位置在螢幕右側之外 */
+    width: 250px;
+    height: 100%;
+    background-color: #1a73e8;
+    color: white;
+    padding-top: 20px;
+    transition: right 0.3s ease-in-out; /* 使用 right 屬性的過渡效果 */
+    z-index: 999;
+  }
+
+  /* 側邊欄顯示時 */
+  .mobile-sidebar.open {
+    right: 0; /* 側邊欄滑入螢幕 */
+  }
+
+  .mobile-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mobile-sidebar li {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .mobile-sidebar a {
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+  }
+
+  /* 當側邊欄打開時，主內容區域的模糊效果 */
+  .mobile-sidebar.open ~ .main-content {
+    filter: blur(2px);
+  }
+}
+
+/* 主內容區域的過渡效果 */
+.main-content {
+  transition: filter 0.3s ease-in-out;
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+header h1 {
+  margin-top: 0;
 }
 
 .search-bar input {
@@ -85,9 +163,32 @@ header {
 }
 
 .dashboard {
-  display: flex; /* 使用 Flexbox */
-  justify-content: space-between; /* 左右对齐 */
-  gap: 20px; /* 添加间距 */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch; /* 改为 stretch，使子元素高度一致 */
+  gap: 20px;
+  width: 100%;
+  max-width: 100%; /* 移除最大宽度限制 */
+  margin: 0 auto;
+}
+
+/* 新增以下部分 */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column; /* 垂直排列 */
+  }
+
+  .chart-card,
+  .stock-analysis-card {
+    flex: none;
+    width: 100%;
+    max-width: none;
+  }
+
+  .stock-analysis-card {
+    margin-top: 20px; /* 增加與圖表区域的间距 */
+  }
 }
 
 .card {
@@ -138,12 +239,26 @@ header {
 }
 
 .chart-card {
-  flex: 1; /* 使 Analysis Result 占据剩余空间 */
-  margin-right: 20px; /* 添加右边距 */
+  flex: 3;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box;
+  height: auto; /* 改为 auto，允许内容决定高度 */
 }
 
 .stock-analysis-card {
-  width: 300px; /* 设置 Stock Analysis 的宽度 */
+  flex: 1;
+  min-width: 250px;
+  max-width: 300px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box;
+  height: auto; /* 改为 auto，允许内容决定高度 */
 }
 
 .input-field {
@@ -154,4 +269,348 @@ header {
 .title {
   font-size: 24px;
   font-weight: bold;
+}
+
+/* 新增以下部分 */
+@media (max-width: 768px) {
+  .chart-card,
+  .stock-analysis-card {
+    margin-right: 0; /* 移除右边距 */
+  }
+}
+
+/* 不要对 canvas 设置全局的 max-width 限制 */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 如果有以下样式，注释掉或删除 */
+/*
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+*/
+
+/* 添加以下全域樣式，確保圖表容器在桌面版時寬度一致 */
+.chart-container {
+  flex-grow: 1;
+}
+
+/* 調整 .dashboard 下的圖表卡片樣式 */
+.dashboard .chart-card {
+  flex: 1 1 45%; /* 每行顯示兩個圖表片 */
+  box-sizing: border-box;
+  margin: 10px;
+}
+
+/* 在桌面版確保圖表容器排列 */
+@media (min-width: 769px) {
+  .dashboard {
+    flex-wrap: nowrap; /* 防止换行 */
+  }
+
+  .dashboard .chart-card {
+    flex: 3;
+    max-width: none; /* 移除最大宽度限制 */
+    margin: 0;
+  }
+
+  .dashboard .stock-analysis-card {
+    flex: 1;
+    max-width: 300px;
+    margin: 0;
+  }
+}
+
+/* 在行動裝置版，圖表卡片佔據全寬 */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 10px; /* 行動裝置上適當減少左右內邊距 */
+  }
+
+  .dashboard .chart-card {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+/* 圖表卡片樣式 */
+.chart-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+  height: 100%; /* 或者設定為具體數值，例如 500px */
+}
+
+.chart-card h2, .chart-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.chart-card canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* 圖表容器樣式 */
+.chart-container {
+  flex-grow: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* --- 行動裝置樣式 --- */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column; /* 改為垂直排列 */
+  }
+
+  .chart-card,
+  .stock-analysis-card {
+    flex: none;
+    width: 100%; /* 佔據全寬 */
+    max-width: none;
+  }
+
+  .stock-analysis-card {
+    margin-top: 20px; /* 增加頂部間距 */
+  }
+}
+
+/* 添加到第 171 行之后 */
+.chart-container {
+  flex-grow: 1;         /* 允许扩展占据剩余空间 */
+  position: relative;   /* 为了使绝对定位的元素（如自定义 tooltip）相对于容器定位 */
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* 調整行動裝置的 menu icon 位置 */
+.mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #1a73e8;
+  color: white;
+  position: fixed; /* 固定在頂部 */
+  width: 100%;
+  z-index: 1000;
+}
+
+/* 調整主內容區域的上邊距，避免被 header 遮擋 */
+.main-content {
+  margin-top: 10px; /* 根據 header 的高度進行調整 */
+}
+
+.menu-icon {
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* 行動裝置版邊欄樣式 */
+.mobile-sidebar {
+  display: none; /* 初始隱藏 */
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #1a73e8;
+  color: white;
+  padding: 20px 0;
+  overflow-y: auto;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(100%); /* 隱藏在右側 */
+  z-index: 999; /* 確保在 header 之下 */
+}
+
+/* 側邊欄顯示時 */
+.mobile-sidebar.open {
+  display: block;
+  transform: translateX(0); /* 移入視窗內 */
+}
+
+/* 確保所有互動元素都有足夠的點擊區域 */
+.mobile-header .menu-icon,
+.mobile-sidebar a,
+.btn-primary,
+.form-control {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* 確保在行動裝置上完全隱藏側邊欄 */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none !important; /* 使用 !important 確保樣式生效 */
+  }
+
+  /* 調整行動裝置的 menu icon 位置 */
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #1a73e8;
+    color: white;
+    position: fixed; /* 固定在頂部 */
+    width: 100%;
+    z-index: 1000;
+  }
+
+  /* 調整主內容區域的上邊距，避免被 header 遮擋 */
+  .main-content {
+    margin-top: 0px; /* 根據 header 的高度進行調整 */
+  }
+
+  .menu-icon {
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  /* 行動裝置版邊欄樣式 */
+  .mobile-sidebar {
+    display: none; /* 初始隱藏 */
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #1a73e8;
+    color: white;
+    padding: 20px 0;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%); /* 隱藏在右側 */
+    z-index: 999; /* 確保在 header 之下 */
+  }
+
+  /* 側邊欄顯示時 */
+  .mobile-sidebar.open {
+    display: block;
+    transform: translateX(0); /* 移入視窗內 */
+  }
+
+  .mobile-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mobile-sidebar li {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .mobile-sidebar a {
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+  }
+
+  /* 調整行動裝置上的其他樣式 */
+  /* ...（其他行動裝置專用樣式）... */
+}
+
+/* 確保主內容區域在點擊時關閉側邊欄 */
+.main-content {
+  /* 新增下列樣式 */
+  transition: filter 0.3s ease-in-out;
+}
+
+.mobile-sidebar.open ~ .main-content {
+  filter: blur(2px); /* 側邊欄打開時主內容模糊處理 */
+}
+
+/* 行動裝置版的樣式調整 */
+@media (max-width: 768px) {
+  /* 隱藏桌面版側邊欄 */
+  .sidebar {
+    display: none !important;
+  }
+
+  /* 行動裝置版的 menu icon */
+  .mobile-menu-icon {
+    position: fixed;
+    top: 20px;
+    right: 0px; /* 將 menu icon 放在右上角 */
+    font-size: 30px;
+    color: #1a73e8;
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  /* 主內容區域 */
+  .main-content {
+    width: 100%;
+    padding: 20px;
+    margin-top: 0;
+  }
+
+  /* 行動裝置版的側邊欄樣式 */
+  .mobile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -250px; /* 初始位置在螢幕右側之外 */
+    width: 250px;
+    height: 100%;
+    background-color: #1a73e8;
+    color: white;
+    padding-top: 20px;
+    transition: right 0.3s ease-in-out; /* 使用 right 屬性的過渡效果 */
+    z-index: 999;
+  }
+
+  /* 側邊欄顯示時 */
+  .mobile-sidebar.open {
+    right: 0; /* 側邊欄滑入螢幕 */
+  }
+
+  .mobile-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mobile-sidebar li {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .mobile-sidebar a {
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+  }
+
+  /* 當側邊欄打開時，主內容區域的效果 */
+  .mobile-sidebar.open ~ .main-content {
+    filter: blur(2px);
+  }
+}
+/* 主內容區域的過渡效果 */
+.main-content {
+  transition: filter 0.3s ease-in-out;
+}
+
+h1 {
+  margin-top: 0;
 }

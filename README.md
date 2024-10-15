@@ -1,70 +1,75 @@
-# Getting Started with Create React App
+# 市場情緒指標專案
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 指標列表
 
-## Available Scripts
+### AAII Bull-Bear Spread
 
-In the project directory, you can run:
+- **說明**：AAII 投資者情緒調查的多頭比例減去空頭比例，反映散戶投資者的市場情緒。
+- **使用方法**：數值越高，表示更多投資者看多市場。
 
-### `npm start`
+### CBOE Put/Call Ratio 5-Day Avg
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **說明**：CBOE 股票期權買權賣權比率的 5 日移動平均值，衡量市場的恐慌或貪婪情緒。
+- **使用方法**：數值越高，表示市場更恐慌；越低，表示市場更貪婪。
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Market Momentum
 
-### `npm test`
+- **說明**：計算標普500指數的動能，表示價格隨時間的加速度或減速度。
+- **計算方式**：收盤價的日度變化率（百分比），並取過去 10 日的平均值。
+- **使用方法**：數值為正，表示市場上漲動能；數值為負，表示市場下跌動能。
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### VIX MA50
 
-### `npm run build`
+- **說明**：VIX 指數的 50 日移動平均線，反映市場的預期波動性。
+- **使用方法**：數值越高，表示市場預期波動性越大。
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Safe Haven Demand
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **說明**：股票與債券 20 日回報差異，衡量市場對避險資產的需求。
+- **使用方法**：數值越低，表示市場對避險資產需求增加。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Junk Bond Spread
 
-### `npm run eject`
+- **說明**：垃圾債券與投資級債券的收益率利差，反映市場對風險資產的偏好程度。
+- **使用方法**：利差擴大，表示市場風險偏好降低。
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### S&P 500 COT Index
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **說明**：標普500期貨投機淨持倉指數，反映大型投機者對市場的看法。
+- **使用方法**：淨持倉增加，表示看多情緒提升。
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### NAAIM Exposure Index
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **說明**：NAAIM 投資經理人曝險指數，衡量專業投資經理對市場的曝險程度。
+- **使用方法**：曝險程度越高，表示對市場越樂觀。
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 使用說明
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **運行資料抓取腳本**：
 
-### Code Splitting
+  ```bash
+  python crawler/historical_data_scraper.py
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **啟動後端服務器**：
 
-### Analyzing the Bundle Size
+  ```bash
+  cd backend
+  node server.js
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **啟動前端應用**：
 
-### Making a Progressive Web App
+  ```bash
+  cd frontend
+  npm start
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 注意事項
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 確保已安裝所需的 Python 套件，並配置好環境變數和 API 金鑰。
+- 如有任何問題，請檢查日誌輸出，或聯繫開發人員獲取支持。
