@@ -393,12 +393,6 @@ function App() {
     ));
   };
 
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    // 其他配置項目
-  };
-
   return (
     <Router>
       <PageViewTracker />
