@@ -26,8 +26,11 @@ import 'chartjs-plugin-crosshair';
 import MarketSentimentIndex from './components/MarketSentimentIndex';
 
 // 獲取 API 基礎 URL
-console.log('API_BASE_URL:', process.env.REACT_APP_API_BASE_URL);
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('REACT_APP_API_BASE_URL:', process.env.REACT_APP_API_BASE_URL);
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'http://104.198.104.215:5001'
+  : process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
 
 // 設定 axios 的預設 baseURL
 axios.defaults.baseURL = API_BASE_URL;

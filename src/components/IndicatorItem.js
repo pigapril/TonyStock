@@ -61,6 +61,14 @@ const INDICATOR_DESCRIPTION_MAP = {
     'NAAIM 投資經理人曝險指數，以近四週數值做平均來減少波動，反映專業投資經理對美國股市的曝險程度。值越高，代表投資經理對市場更有信心，情緒樂觀。',
 };
 
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'http://104.198.104.215:5001'
+  : process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
+
+// 使用 API_BASE_URL 進行 API 調用
+// 例如：
+// axios.get(`${API_BASE_URL}/api/indicator-history`)
+
 function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
   const indicatorName = INDICATOR_NAME_MAP[indicatorKey] || indicatorKey;
   const indicatorDescription = INDICATOR_DESCRIPTION_MAP[indicatorKey] || '';
