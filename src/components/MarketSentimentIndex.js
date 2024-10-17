@@ -61,7 +61,7 @@ const MarketSentimentIndex = () => {
     async function fetchSentimentData() {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/api/market-sentiment`);
+        const response = await axios.get(`${API_BASE_URL}/api/market-sentiment`); // 使用環境變數
         setSentimentData(response.data);
         setIndicatorsData(response.data.indicators);
       } catch (error) {
@@ -77,7 +77,7 @@ const MarketSentimentIndex = () => {
   useEffect(() => {
     async function fetchHistoricalData() {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/composite-historical-data`);
+        const response = await axios.get(`${API_BASE_URL}/api/composite-historical-data`); // 使用環境變數
         // 假設後端返回的數據格式為 [{ date: 'YYYY-MM-DD', compositeScore: Number, spyClose: Number }, ...]
         const formattedData = response.data.map((item) => ({
           date: new Date(item.date),

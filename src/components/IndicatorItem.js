@@ -73,7 +73,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
 
   useEffect(() => {
     axios
-      .get('/api/indicator-history', {
+      .get(`${API_BASE_URL}/api/indicator-history`, {
         params: {
           indicator: indicatorKey,
         },
