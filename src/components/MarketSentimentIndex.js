@@ -46,9 +46,8 @@ const TIME_RANGES = [
   { value: 'ALL', label: '全部' },
 ];
 
-const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'http://104.198.104.215:5001'
-  : process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
+// 添加這行來定義 API_BASE_URL
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
 
 const MarketSentimentIndex = () => {
   const [sentimentData, setSentimentData] = useState(null);
@@ -61,7 +60,7 @@ const MarketSentimentIndex = () => {
     async function fetchSentimentData() {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/api/market-sentiment`); // 使用環境變數
+        const response = await axios.get(`${API_BASE_URL}/api/market-sentiment`);
         setSentimentData(response.data);
         setIndicatorsData(response.data.indicators);
       } catch (error) {
@@ -77,7 +76,7 @@ const MarketSentimentIndex = () => {
   useEffect(() => {
     async function fetchHistoricalData() {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/composite-historical-data`); // 使用環境變數
+        const response = await axios.get(`${API_BASE_URL}/api/composite-historical-data`);
         // 假設後端返回的數據格式為 [{ date: 'YYYY-MM-DD', compositeScore: Number, spyClose: Number }, ...]
         const formattedData = response.data.map((item) => ({
           date: new Date(item.date),
