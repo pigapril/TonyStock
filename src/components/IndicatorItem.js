@@ -92,7 +92,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
       .catch((error) => {
         console.error(`獲取 ${indicatorName} 的歷史數據時出錯:`, error);
       });
-  }, [indicatorKey]);
+  }, [indicatorKey, indicatorName]); // 添加 indicatorName 作為依賴
 
   // 過濾數據
   const filteredData = React.useMemo(() => {
