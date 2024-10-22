@@ -49,18 +49,6 @@ const TIME_RANGES = [
 // 添加這行來定義 API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
 
-// 添加這個常量對象
-const INDICATOR_KEYS = {
-  AAII_BULL_BEAR_SPREAD: 'AAII Bull-Bear Spread',
-  CBOE_PUT_CALL_RATIO: 'CBOE Put/Call Ratio 5-Day Avg',
-  MARKET_MOMENTUM: 'Market Momentum',
-  VIX_MA50: 'VIX MA50',
-  SAFE_HAVEN_DEMAND: 'Safe Haven Demand',
-  JUNK_BOND_SPREAD: 'Junk Bond Spread',
-  S_AND_P_500_COT_INDEX: 'S&P 500 COT Index',
-  NAAIM_EXPOSURE_INDEX: 'NAAIM Exposure Index',
-};
-
 const MarketSentimentIndex = () => {
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
