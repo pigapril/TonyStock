@@ -82,6 +82,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
         },
       })
       .then((response) => {
+        console.log(`Received data for ${indicatorKey}:`, response.data);
         const formattedData = response.data.map((item) => ({
           date: new Date(item.date),
           value: parseFloat(item.value),
@@ -171,25 +172,25 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
   };
 
   // 計算加權分數和貢獻百分比
-  const weightedScore =
+  const fearGreedScore =
     indicator.weightedScore !== null && indicator.weightedScore !== undefined
-      ? parseFloat(indicator.weightedScore).toFixed(2)
-      : 'N/A';
-  const contributionPercentage =
-    indicator.contribution !== null && indicator.contribution !== undefined
-      ? parseFloat(indicator.contribution).toFixed(2)
+      ? Math.round(parseFloat(indicator.weightedScore))
       : 'N/A';
 
   return (
     <div className="indicator-item">
       <h3>{indicatorName}</h3>
-      {/* 顯示指標敘述 */}
-      <p>{indicatorDescription}</p>
-      <p>加權分數: {weightedScore}</p>
-      <p>對總得分的貢獻: {contributionPercentage}%</p>
-      <div className="indicator-chart">
-        <Line data={chartData} options={chartOptions} />
-      </div>
+      {historicalData.length > 0 ? (
+        <>
+          <p>{indicatorDescription}</p>
+          <p>恐懼貪婪分數: {fearGreedScore}</p>
+          <div className="indicator-chart">
+            <Line data={chartData} options={chartOptions} />
+          </div>
+        </>
+      ) : (
+        <p>暫無數據</p>
+      )}
     </div>
   );
 }
