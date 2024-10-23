@@ -47,21 +47,21 @@ const INDICATOR_NAME_MAP = {
 // 指標敘述映射
 const INDICATOR_DESCRIPTION_MAP = {
   'AAII Bull-Bear Spread':
-    'AAII 投資者情緒調查淨看多值。計算方式為看多者百分比減去看空者百分比，並以近四週數值做平均減少波動。正值表示樂觀情緒，負值表示悲觀情緒。',
+    'AAII 投資者情緒調查淨看多值。計算方式為看多者百分比減去看空者百分比。正值表示市場樂觀，負值表示市場悲觀。',
   'CBOE Put/Call Ratio 5-Day Avg':
     'CBOE 買賣權比率的 5 日平均值。計算方式為買入賣權（看空）合約數量除以買入買權（看多）合約數量。比率越低，表示投資者預期市場上漲，情緒偏樂觀。',
   'Market Momentum':
-    '市場動能指標通過比較S&P500指數與其125日移動平均線，計算當前價格相對於長期平均水平的百分比差異。正值表示上升趨勢，負值表示下降趨勢。',
+    '市場動能指標是藉由比較S&P500指數與其125日移動平均線，計算當前價格相對於長期平均的差異。正值表示上升樂觀趨勢，負值表示下降悲觀趨勢。',
   'VIX MA50':
     'VIX 指數的 50 日移動平均線，反映市場對未來波動率的預期。VIX 趨勢上升表示市場預期波動加大，情緒較為悲觀；下降則表示預期波動減小，情緒較為樂觀。',
   'Safe Haven Demand':
-    '避險需求指標衡量資金在股市（SPY ETF）與債市（IEF ETF）之間的流動。計算過去20日內股債回報率差異。正值表示資金入股市，情緒樂觀；負值表示流入債市，情緒悲觀。',
+    '避險需求指標衡量資金在股市與債市之間的流動。計算過去20日內股債報酬率差異。正值表示資金入股市，情緒樂觀；負值表示流入債市，情緒悲觀。',
   'Junk Bond Spread':
-    '垃圾債券收益率與投資級債券收益率的利差。利差越小，表示風險偏好情緒上升，投資者願意承擔更多風險；利差越大，表示避險情緒上升，市場情緒偏悲觀。',
+    '垃圾債券殖利率與投資級債券殖利率的利差。利差越小，表示風險偏好情緒上升，投資者願意承擔更多風險；利差越大，表示避險情緒上升，市場情緒偏悲觀。',
   "S&P 500 COT Index":
     'S&P 500 期貨投機淨持倉指數，反映投機者與避險者之間的持倉差異。淨多頭表示市場樂觀，淨空頭表示市場悲觀。',
   'NAAIM Exposure Index':
-    'NAAIM 投資經理人曝險指數，以近四週數值做平均來減少波動，反映專業投資經理對美國股市的曝險程度。值越高，代表投資經理對市場更有信心，情緒樂觀。',
+    'NAAIM 投資經理人曝險指數，反映專業投資經理對美國股市的曝險程度。數值越高，代表經理人對市場更有信心，情緒樂觀。',
 };
 
 // 使用 API_BASE_URL 進行 API 調用
@@ -109,7 +109,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
     labels: filteredData.map((item) => item.date),
     datasets: [
       {
-        label: '實際值',
+        label: '實際數據',
         yAxisID: 'left-axis',
         data: filteredData.map((item) => item.value),
         borderColor: 'rgba(75,192,192,1)',
@@ -118,7 +118,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
         pointRadius: 0,
       },
       {
-        label: '百分位數排名',
+        label: '百分等級',
         yAxisID: 'right-axis',
         data: filteredData.map((item) => item.percentileRank),
         borderColor: 'rgba(153,102,255,1)',
@@ -148,14 +148,14 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
         position: 'left',
         title: {
           display: true,
-          text: '實際值',
+          text: '實際數據',
         },
       },
       'right-axis': {
         position: 'right',
         title: {
           display: true,
-          text: '百分位數排名',
+          text: '百分等級',
         },
         min: 0,
         max: 100,
@@ -171,19 +171,14 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
     maintainAspectRatio: false,
   };
 
-  // 計算加權分數和貢獻百分比
-  const fearGreedScore =
-    indicator.weightedScore !== null && indicator.weightedScore !== undefined
-      ? Math.round(parseFloat(indicator.weightedScore))
-      : 'N/A';
-
   return (
     <div className="indicator-item">
       <h3>{indicatorName}</h3>
       {historicalData.length > 0 ? (
         <>
           <p>{indicatorDescription}</p>
-          <p>恐懼貪婪分數: {fearGreedScore}</p>
+          <p>最新數據: {indicator.value ? indicator.value.toFixed(2) : 'N/A'}</p>
+          <p>恐懼貪婪分數: {indicator.percentileRank ? Math.round(indicator.percentileRank) : 'N/A'}</p>
           <div className="indicator-chart">
             <Line data={chartData} options={chartOptions} />
           </div>

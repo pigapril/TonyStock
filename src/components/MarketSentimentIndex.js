@@ -145,8 +145,9 @@ const MarketSentimentIndex = () => {
         label: '市場情緒指數',
         yAxisID: 'left-axis',
         data: filteredData.map((item) => item.compositeScore),
-        borderColor: 'rgba(75,192,192,1)',
-        fill: false,
+        borderColor: 'rgba(255, 99, 132, 1)', // 改為粉紅色
+        backgroundColor: 'rgba(255, 99, 132, 0.2)', // 添加淡粉色背景
+        fill: true,
         tension: 0.1,
         pointRadius: 0,
       },
@@ -154,8 +155,9 @@ const MarketSentimentIndex = () => {
         label: 'SPY 價格',
         yAxisID: 'right-axis',
         data: filteredData.map((item) => item.spyClose),
-        borderColor: 'rgba(153,102,255,1)',
-        fill: false,
+        borderColor: 'rgba(54, 162, 235, 1)', // 改為藍色
+        backgroundColor: 'rgba(54, 162, 235, 0.2)', // 添加淡藍色背景
+        fill: true,
         tension: 0.1,
         pointRadius: 0,
       },
