@@ -1,0 +1,17 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production.environment]
+  REACT_APP_API_BASE_URL = "https://stockdatabase.publicvm.com"
+
+[context.deploy-preview.environment]
+  REACT_APP_API_BASE_URL = "https://stockdatabase.publicvm.com"
+
+[context.branch-deploy.environment]
+  REACT_APP_API_BASE_URL = "https://stockdatabase.publicvm.com"
