@@ -94,11 +94,6 @@ function App() {
     setSidebarOpen(false);
   };
 
-  // 用於顯示的格式化函數
-  const formatDisplayStockCode = (code) => {
-    return code.toUpperCase();
-  };
-
   // 用於發送到後端的格式化函數
   const formatBackendStockCode = (code) => {
     const upperCaseCode = code.toUpperCase();
@@ -251,7 +246,7 @@ function App() {
     });
   }, []);
 
-  // 添��新的 useEffect 來获取多个股票的数据
+  // 添新的 useEffect 來获取多个股票的数据
   useEffect(() => {
     const fetchMultiStockData = async () => {
       try {
@@ -424,12 +419,12 @@ function App() {
     }
   }, [location]);
 
-  // 修改這個函數來處理全形數字
+  // 修改這個函數來處理全形數字和字母
   const handleStockCodeChange = (e) => {
     const value = e.target.value;
-    // 將全形數字轉換為半形數字
-    const convertedValue = value.replace(/[０-９]/g, char => String.fromCharCode(char.charCodeAt(0) - 0xFEE0));
-    setStockCode(convertedValue);
+    // 將全形數字和字母轉換為半形
+    const convertedValue = value.replace(/[０-９Ａ-Ｚａ-ｚ]/g, char => String.fromCharCode(char.charCodeAt(0) - 0xFEE0));
+    setStockCode(convertedValue.toUpperCase()); // 轉換為大寫
   };
 
   return (
