@@ -74,6 +74,14 @@ function PageTitle() {
   return title;
 }
 
+// 在 App 組件之前添加這個新的組件
+const Overlay = ({ isVisible, onClick }) => (
+  <div 
+    className={`overlay ${isVisible ? 'visible' : ''}`}
+    onClick={onClick}
+  />
+);
+
 function App() {
   const [stockCode, setStockCode] = useState('');
   const [years, setYears] = useState('');
@@ -99,6 +107,11 @@ function App() {
   // 切換側邊欄的函數
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  // 添加新的 closeSidebar 函數
+  const closeSidebar = () => {
+    setSidebarOpen(false);
   };
 
   // 用於顯示的格式化函數
@@ -222,7 +235,7 @@ function App() {
     const numYears = parseFloat(convertedYears);
 
     if (isNaN(numYears) || numYears <= 0) {
-      setYearsError('請輸入有效的查詢期間（年），且必須大於零。');
+      setYearsError('請輸入有效的查詢期間（年，且必須大於零。');
       return;
     }
 
@@ -427,9 +440,9 @@ function App() {
   }, [location]);
 
   return (
-    <div className={`App ${sidebarOpen ? '' : 'sidebar-closed'}`}>
+    <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <PageViewTracker />
-      <div className="App">
+      <div className="App-inner">
         {/* 側邊欄 */}
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
           <div className="sidebar-header">
@@ -473,14 +486,12 @@ function App() {
         </nav>
 
         {/* 主內容區域 */}
-        <main className={`main-content ${sidebarOpen ? 'sidebar-open' : ''}`}>
+        <main className="main-content">
           {/* 頂部導航欄 */}
           <header className="top-nav">
             <div className="menu-toggle" onClick={toggleSidebar}>
               <FaBars />
             </div>
-            {/* 移除或註釋掉這行 */}
-            {/* <h1><PageTitle /></h1> */}
             <div className="user-actions">
               {/* <button className="btn-primary">Sign In</button>
               <button className="btn-secondary">Register</button> */}
@@ -669,6 +680,9 @@ function App() {
             </Routes>
           </div>
         </main>
+
+        {/* 添加遮罩層 */}
+        <Overlay isVisible={sidebarOpen && isMobile} onClick={closeSidebar} />
       </div>
     </div>
   );

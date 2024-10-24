@@ -10,12 +10,15 @@ body {
   min-height: 100vh;
 }
 
+.App-inner {
+  display: flex;
+  width: 100%;
+}
+
 /* 側邊欄樣式 */
 .sidebar {
-  width: 250px !important; /* 使用 !important 來確保這個規則不被覆蓋 */
+  width: 250px;
   min-width: 250px;
-  max-width: 250px;
-  flex-shrink: 0;
   background-color: #ffffff;
   color: #333333;
   transition: width 0.3s, transform 0.3s;
@@ -76,6 +79,8 @@ body {
 /* 主內容區域樣式 */
 .main-content {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .top-nav {
@@ -98,7 +103,9 @@ body {
 }
 
 .content-area {
+  flex-grow: 1;
   padding: 20px;
+  overflow-y: auto;
 }
 
 .content-area h2 {
@@ -150,17 +157,28 @@ body {
 
 /* 響應式設計 */
 @media (max-width: 768px) {
-  .App .sidebar {
-    position: fixed;
-    left: -250px;
+  .App-inner {
+    flex-direction: column;
   }
 
-  .App .sidebar.open {
+  .sidebar {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+  }
+
+  .sidebar.open {
     left: 0;
   }
 
   .main-content {
     margin-left: 0;
+  }
+
+  .App.sidebar-open .main-content {
+    transform: translateX(250px);
   }
 
   .menu-toggle {
@@ -318,4 +336,20 @@ body {
     flex: 1 1 100%;
     max-width: 100%;
   }
+}
+
+/* 新增以下樣式 */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+.overlay.visible {
+  display: block;
 }
