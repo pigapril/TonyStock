@@ -53,27 +53,6 @@ function PageViewTracker() {
   return null;
 }
 
-// 新增一個 PageTitle 組件來處理標題
-function PageTitle() {
-  const location = useLocation();
-  const [title, setTitle] = useState('Stock Analysis Platform');
-
-  useEffect(() => {
-    switch(location.pathname) {
-      case '/':
-        setTitle('價格標準差分析');
-        break;
-      case '/market-sentiment':
-        setTitle('市場情緒分析');
-        break;
-      default:
-        setTitle('Stock Analysis Platform');
-    }
-  }, [location]);
-
-  return title;
-}
-
 // 在 App 組件之前添加這個新的組件
 const Overlay = ({ isVisible, onClick }) => (
   <div 
@@ -84,7 +63,7 @@ const Overlay = ({ isVisible, onClick }) => (
 
 function App() {
   const [stockCode, setStockCode] = useState('');
-  const [years, setYears] = useState('');
+  const [years, setYears] = useState('3.5');
   const [yearsError, setYearsError] = useState('');
   const [backTestDate, setBackTestDate] = useState('');
   const [chartData, setChartData] = useState(null);
@@ -92,6 +71,7 @@ function App() {
   const [timeoutMessage, setTimeoutMessage] = useState('');
   const [displayedStockCode, setDisplayedStockCode] = useState('');
 
+  // 修改這裡，使用 useState 的第二個參數來設置初始值
   const [actualStockCode, setActualStockCode] = useState('AAPL');
   const [actualYears, setActualYears] = useState(3.5);
   const [actualBackTestDate, setActualBackTestDate] = useState('');
@@ -235,13 +215,18 @@ function App() {
     const numYears = parseFloat(convertedYears);
 
     if (isNaN(numYears) || numYears <= 0) {
-      setYearsError('請輸入有效的查詢期間（年，且必須大於零。');
+      setYearsError('請輸入有效的查詢期間（年），且必須大於零。');
       return;
     }
 
     setYearsError('');
-    // 繼續處理表單提交
-    // ...
+    // 更新實際使用的值
+    setActualStockCode(stockCode);
+    setActualYears(numYears);
+    setActualBackTestDate(backTestDate);
+    
+    // 調用 fetchStockData 函數
+    fetchStockData(stockCode, numYears, backTestDate);
   };
 
   useEffect(() => {
@@ -266,7 +251,7 @@ function App() {
     });
   }, []);
 
-  // 添加新的 useEffect 來获取多个股票的数据
+  // 添��新的 useEffect 來获取多个股票的数据
   useEffect(() => {
     const fetchMultiStockData = async () => {
       try {
@@ -438,6 +423,14 @@ function App() {
       sidebar.style.width = '250px';
     }
   }, [location]);
+
+  // 修改這個函數來處理全形數字
+  const handleStockCodeChange = (e) => {
+    const value = e.target.value;
+    // 將全形數字轉換為半形數字
+    const convertedValue = value.replace(/[０-９]/g, char => String.fromCharCode(char.charCodeAt(0) - 0xFEE0));
+    setStockCode(convertedValue);
+  };
 
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
@@ -616,9 +609,10 @@ function App() {
                               className="form-control"
                               type="text"
                               value={stockCode}
-                              onChange={(e) => setStockCode(formatDisplayStockCode(e.target.value))}
-                              placeholder="如:0050、AAPL"
+                              onChange={handleStockCodeChange}
+                              placeholder="輸入股票代碼"
                               required
+                              style={{ width: '110px' }}
                             />
                           </div>
                           <div className="input-group">
