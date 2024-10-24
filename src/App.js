@@ -190,6 +190,9 @@ function App() {
         ]
       });
       setDisplayedStockCode(stockCode); // 使用原始的 stockCode，不包含 .TW
+      
+      // 清除超時訊息
+      setTimeoutMessage('');
     } catch (error) {
       console.error('Error fetching data:', error);
       console.error('Error details:', error.response ? error.response.data : 'No response');
