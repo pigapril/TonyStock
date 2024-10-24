@@ -216,9 +216,10 @@ const MarketSentimentIndex = () => {
   }
 
   return (
-    <div className="market-sentiment-index">
-      <h2>市場情緒指數</h2>
-      <p>市場情緒指數綜合了多項指標，旨在衡量市場參與者的情緒狀態。</p>
+    <>
+      <p className="analysis-description">
+        分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入提供機會。
+      </p>
 
       {/* 期間切換選項 */}
       <div className="time-range-selector">
@@ -235,13 +236,19 @@ const MarketSentimentIndex = () => {
       {/* 綜合指數與 SPY 圖表 */}
       <div className="indicator-item">
         <h3>市場情緒指數與 SPY 價格走勢圖</h3>
-        <div className="indicator-chart">
-          <Line data={chartData} options={chartOptions} />
+        <p className="analysis-description">
+          綜合多個代表市場情緒的數據，包含AAII投資人調查、VIX指數...等等，用來衡量整體投資市場的氛圍。
+          當數值愈接近100，代表市場極度樂觀;當數值接近0，代表市場極度悲觀。
+        </p>
+        <div className="indicator-chart-container"> {/* 新增這個容器 */}
+          <div className="indicator-chart">
+            <Line data={chartData} options={chartOptions} />
+          </div>
         </div>
       </div>
 
-      {/* 顯示各項指標 */}
-      <div className="indicator-list">
+      {/* 指標列表 */}
+      <div className="indicators-list">
         {Object.entries(indicatorsData).map(([key, indicator]) => {
           // 排除不需要顯示的指標，例如 "Investment Grade Bond Yield" 和 "Junk Bond Yield"
           if (key === 'Investment Grade Bond Yield' || key === 'Junk Bond Yield') {
@@ -257,7 +264,7 @@ const MarketSentimentIndex = () => {
           );
         })}
       </div>
-    </div>
+    </>
   );
 };
 
