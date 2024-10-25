@@ -739,7 +739,7 @@ function App() {
                               onChange={handleStockCodeChange}
                               placeholder="輸入股票代碼"
                               required
-                              style={{ width: '110px' }}
+                              style={{ width: '150px' }}
                             />
                           </div>
                           <div className="input-group">
@@ -758,7 +758,7 @@ function App() {
                               }}
                               placeholder="輸入年數，如 3.5"
                               required
-                              style={{ width: '110px' }}
+                              style={{ width: '150px' }}
                             />
                             {yearsError && <div className="error-message">{yearsError}</div>}
                           </div>
@@ -769,6 +769,7 @@ function App() {
                               type="date"
                               value={backTestDate}
                               onChange={(e) => setBackTestDate(e.target.value)}
+                              style={{ width: '150px' }}  // 添加這行，使寬度與其他輸入框一致
                             />
                           </div>
                           <button 

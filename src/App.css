@@ -269,10 +269,26 @@ body {
 }
 
 .form-control {
-  width: 100%;
+  width: 110px;  /* 設置固定寬度 */
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  font-size: 16px;
+  -webkit-appearance: none;  /* 移除 WebKit 瀏覽器的默認樣式 */
+  -moz-appearance: none;     /* 移除 Firefox 的默認樣式 */
+  appearance: none;          /* 移除默認樣式 */
+}
+
+/* 為日期輸入框添加特定樣式 */
+input[type="date"].form-control {
+  padding-right: 10px;  /* 為日曆圖標留出空間 */
+}
+
+/* 確保在 iOS 設備上日期輸入框的文字大小一致 */
+@supports (-webkit-touch-callout: none) {
+  input[type="date"].form-control {
+    font-size: 16px !important;
+  }
 }
 
 /* 多股票圖表樣式 */
@@ -309,10 +325,6 @@ body {
 
 .overlay.visible {
   display: block;
-}
-
-input, select, textarea {
-  font-size: 16px; /* 防止 iOS 設備自動放大 */
 }
 
 /* 對於 iOS 設備 */
