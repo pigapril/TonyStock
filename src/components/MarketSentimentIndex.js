@@ -21,7 +21,7 @@ import {
 import { Line } from 'react-chartjs-2';
 
 // 引入 IndicatorItem 組件
-import IndicatorItem from './IndicatorItem';
+import IndicatorItem, { INDICATOR_NAME_MAP } from './IndicatorItem';
 
 // 註冊 Chart.js 的元件和插件
 ChartJS.register(
@@ -55,6 +55,7 @@ const MarketSentimentIndex = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState('1Y');
   const [indicatorsData, setIndicatorsData] = useState({});
   const [historicalData, setHistoricalData] = useState([]);
+  const [activeTab, setActiveTab] = useState('composite'); // 新增：用於跟踪當前活動的標籤
 
   useEffect(() => {
     async function fetchSentimentData() {
@@ -207,6 +208,11 @@ const MarketSentimentIndex = () => {
     maintainAspectRatio: false,
   };
 
+  // 新增：處理標籤切換的函數
+  const handleTabChange = (tabKey) => {
+    setActiveTab(tabKey);
+  };
+
   if (loading) {
     return <div>載入中...</div>;
   }
@@ -216,12 +222,11 @@ const MarketSentimentIndex = () => {
   }
 
   return (
-    <>
+    <div className="market-sentiment-index">
       <p className="analysis-description">
-        分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入提供機會。
+        分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入的機會。
       </p>
 
-      {/* 期間切換選項 */}
       <div className="time-range-selector">
         <label htmlFor="timeRange">選擇期間：</label>
         <select id="timeRange" value={selectedTimeRange} onChange={handleTimeRangeChange}>
@@ -233,38 +238,52 @@ const MarketSentimentIndex = () => {
         </select>
       </div>
 
-      {/* 綜合指數與 SPY 圖表 */}
-      <div className="indicator-item">
-        <h3>市場情緒指數與 SPY 價格走勢圖</h3>
-        <p className="analysis-description">
-          綜合多個代表市場情緒的數據，包含AAII投資人調查、VIX指數...等等，用來衡量整體投資市場的氛圍。
-          當數值愈接近100，代表市場極度樂觀;當數值接近0，代表市場極度悲觀。
-        </p>
-        <div className="indicator-chart-container"> {/* 新增這個容器 */}
-          <div className="indicator-chart">
-            <Line data={chartData} options={chartOptions} />
-          </div>
-        </div>
+      <div className="tabs-grid">
+        <button
+          className={`tab-button ${activeTab === 'composite' ? 'active' : ''}`}
+          onClick={() => handleTabChange('composite')}
+        >
+          市場情緒綜合指數
+        </button>
+        {Object.keys(indicatorsData).map((key) => (
+          key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield' && (
+            <button
+              key={key}
+              className={`tab-button ${activeTab === key ? 'active' : ''}`}
+              onClick={() => handleTabChange(key)}
+            >
+              {INDICATOR_NAME_MAP[key] || key} {/* 使用 INDICATOR_NAME_MAP 中的中文名稱 */}
+            </button>
+          )
+        ))}
       </div>
 
-      {/* 指標列表 */}
-      <div className="indicators-list">
-        {Object.entries(indicatorsData).map(([key, indicator]) => {
-          // 排除不需要顯示的指標，例如 "Investment Grade Bond Yield" 和 "Junk Bond Yield"
-          if (key === 'Investment Grade Bond Yield' || key === 'Junk Bond Yield') {
-            return null;
-          }
-          return (
+      <div className="tab-content">
+        {activeTab === 'composite' && (
+          <div className="indicator-item">
+            <h3>市場情緒指數與 SPY 價格走勢圖</h3>
+            <p className="analysis-description">
+              綜合多個代表市場情緒的數據，包含AAII投資人調查、VIX指數...等等，用來衡量整體投資市場的氛圍。當數值愈接近100，代表市場極度樂觀；當數值接近0，代表市場極度悲觀。
+            </p>
+            <div className="indicator-chart-container">
+              <div className="indicator-chart">
+                <Line data={chartData} options={chartOptions} />
+              </div>
+            </div>
+          </div>
+        )}
+        {Object.entries(indicatorsData).map(([key, indicator]) => (
+          key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield' && activeTab === key && (
             <IndicatorItem
               key={key}
               indicatorKey={key}
               indicator={indicator}
               selectedTimeRange={selectedTimeRange}
             />
-          );
-        })}
+          )
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 

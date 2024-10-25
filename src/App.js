@@ -63,10 +63,13 @@ const Overlay = ({ isVisible, onClick }) => (
 
 // 在文件頂部添加這個函數
 function sendGAEvent(eventName, eventParams) {
-  if (window.gtag) {
-    window.gtag('event', eventName, eventParams);
+  if (window.dataLayer) {
+    window.dataLayer.push({
+      event: eventName,
+      ...eventParams
+    });
   } else {
-    console.warn('Google Analytics not loaded');
+    console.warn('DataLayer not found');
   }
 }
 
@@ -203,11 +206,11 @@ function App() {
       // 清除超時訊息
       setTimeoutMessage('');
 
-      // 在成功獲取數據後發送 GA 事件
+      // 推送事件到數據層
       sendGAEvent('check_stock_symbol', {
-        'stock_code': stockCode,
-        'years': yearsToUse,
-        'back_test_date': backTestDateToUse
+        stock_code: stockCode,
+        years: yearsToUse,
+        back_test_date: backTestDateToUse
       });
 
     } catch (error) {

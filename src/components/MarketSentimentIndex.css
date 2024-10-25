@@ -45,9 +45,8 @@
 /* 確保市場情緒指數頁面在小螢幕上顯示良好 */
 .market-sentiment-index {
   width: 100%;
-  max-width: 1600px; /* 與 App.css 中的 .page-container 保持一致 */
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 100%;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -116,7 +115,7 @@
 
 /* 調整指標項目的樣式 */
 .indicator-item {
-  width: 100%; /* 佔據全寬 */
+  width: 100%;
   background-color: white;
   border: 1px solid #ccc;
   padding: 20px;
@@ -129,31 +128,26 @@
 /* 調整圖表區域的樣式 */
 .indicator-chart {
   width: 100%;
-  max-width: 100%; /* 確保圖表不會超出容器 */
-  height: 400px; /* 或者您希望的其他高度 */
+  height: 400px;
 }
 
-/* 小螢幕調整 */
-@media (max-width: 1024px) {
-  .indicator-item {
-    width: calc(50% - 20px); /* 中等螢幕每列顯示兩個圖表卡片 */
-  }
+.indicator-chart-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-@media (max-width: 768px) {
-  .indicator-list {
-    flex-direction: column;
-  }
-  .indicator-item {
-    width: 100%; /* 小螢幕上圖表卡片佔據全寬 */
-  }
+/* 平板電腦和桌面版面配置 */
+@media (min-width: 768px) {
   .indicator-chart {
-    height: 200px; /* 在小螢幕上調整圖表高度 */
+    height: 450px;
   }
 }
+
+/* 移除大螢幕桌面版面配置的特殊處理 */
 
 .analysis-description {
-  margin-bottom: 20px;
+  margin: 10px 0 20px;
   font-size: 16px;
   line-height: 1.6;
   color: #333;
@@ -170,12 +164,53 @@
   margin-bottom: 10px;
 }
 
-.indicator-chart {
-  height: 400px; /* 或者您希望的其他高度 */
+.tabs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* 減小最小寬度 */
+  gap: 8px; /* 稍微減小間距 */
+  margin-bottom: 20px;
 }
 
-.indicator-chart-container {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto; /* 如果內容過寬，允許水平滾動 */
+.tab-button {
+  padding: 8px 5px; /* 減小上下內邊距，左右內邊距更小 */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px; /* 減小字體大小 */
+  text-align: center;
+  transition: all 0.3s ease;
+  background-color: #e0e0e0;
+  color: #333;
+  white-space: nowrap; /* 防止文字換行 */
+  overflow: hidden; /* 隱藏溢出的文字 */
+  text-overflow: ellipsis; /* 使用省略號表示溢出的文字 */
+  line-height: 1.2; /* 調整行高 */
+}
+
+.tab-button.active {
+  background-color: #4a4a4a;
+  color: white;
+}
+
+/* 在小螢幕上進一步調整 */
+@media (max-width: 768px) {
+  .tabs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* 進一步減小最小寬度 */
+  }
+
+  .tab-button {
+    font-size: 11px; /* 在小螢幕上進一步減小字體 */
+    padding: 6px 4px; /* 在小螢幕上進一步減小內邊距 */
+  }
+}
+
+.tab-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+.indicator-item {
+  margin-bottom: 20px;
 }
