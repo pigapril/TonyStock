@@ -61,6 +61,15 @@ const Overlay = ({ isVisible, onClick }) => (
   />
 );
 
+// 在文件頂部添加這個函數
+function sendGAEvent(eventName, eventParams) {
+  if (window.gtag) {
+    window.gtag('event', eventName, eventParams);
+  } else {
+    console.warn('Google Analytics not loaded');
+  }
+}
+
 function App() {
   const [stockCode, setStockCode] = useState('');
   const [years, setYears] = useState('3.5');
@@ -193,6 +202,14 @@ function App() {
       
       // 清除超時訊息
       setTimeoutMessage('');
+
+      // 在成功獲取數據後發送 GA 事件
+      sendGAEvent('check_stock_symbol', {
+        'stock_code': stockCode,
+        'years': yearsToUse,
+        'back_test_date': backTestDateToUse
+      });
+
     } catch (error) {
       console.error('Error fetching data:', error);
       console.error('Error details:', error.response ? error.response.data : 'No response');
