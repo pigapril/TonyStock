@@ -364,3 +364,14 @@ body {
 .overlay.visible {
   display: block;
 }
+
+input, select, textarea {
+  font-size: 16px; /* 防止 iOS 設備自動放大 */
+}
+
+/* 對於 iOS 設備 */
+@supports (-webkit-touch-callout: none) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}

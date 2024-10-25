@@ -49,6 +49,21 @@ const TIME_RANGES = [
 // 添加這行來定義 API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
 
+// 新增：獲取時間單位的函數
+function getTimeUnit(dates) {
+  const start = new Date(dates[0]);
+  const end = new Date(dates[dates.length - 1]);
+  const yearDiff = end.getFullYear() - start.getFullYear();
+  
+  if (yearDiff > 1) {
+    return 'year';
+  } else if (yearDiff === 1 || end.getMonth() - start.getMonth() > 3) {
+    return 'month';
+  } else {
+    return 'day';
+  }
+}
+
 const MarketSentimentIndex = () => {
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -137,6 +152,9 @@ const MarketSentimentIndex = () => {
   };
 
   const filteredData = filterDataByTimeRange(historicalData, selectedTimeRange);
+  
+  // 獲取時間單位
+  const timeUnit = getTimeUnit(filteredData.map(item => item.date));
 
   // 構建圖表數據
   const chartData = {
@@ -165,20 +183,26 @@ const MarketSentimentIndex = () => {
     ],
   };
 
-  // 圖表選項
+  // 修改圖表選項
   const chartOptions = {
     scales: {
       x: {
         type: 'time',
         time: {
-          unit: 'month',
+          unit: timeUnit,
           tooltipFormat: 'yyyy-MM-dd',
           displayFormats: {
-            day: 'yyyy-MM-dd',
-            month: 'yyyy-MM',
             year: 'yyyy',
-          },
+            month: "MMM''yy",
+            day: 'd MMM'
+          }
         },
+        ticks: {
+          maxTicksLimit: 6,
+          autoSkip: true,
+          maxRotation: 0,
+          minRotation: 0
+        }
       },
       'left-axis': {
         position: 'left',

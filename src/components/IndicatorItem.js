@@ -64,9 +64,20 @@ const INDICATOR_DESCRIPTION_MAP = {
     'NAAIM 投資經理人曝險指數，反映專業投資經理人對美國股市的曝險程度。數值越高，代表經理人對市場更有信心，情緒樂觀。',
 };
 
-// 使用 API_BASE_URL 進行 API 調用
-// 例如：
-// axios.get(`${API_BASE_URL}/api/indicator-history`)
+// 新增：獲取時間單位的函數
+function getTimeUnit(dates) {
+  const start = new Date(dates[0]);
+  const end = new Date(dates[dates.length - 1]);
+  const yearDiff = end.getFullYear() - start.getFullYear();
+  
+  if (yearDiff > 1) {
+    return 'year';
+  } else if (yearDiff === 1 || end.getMonth() - start.getMonth() > 3) {
+    return 'month';
+  } else {
+    return 'day';
+  }
+}
 
 function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
   const indicatorName = INDICATOR_NAME_MAP[indicatorKey] || indicatorKey;
@@ -96,13 +107,16 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
       .catch((error) => {
         console.error(`獲取 ${indicatorName} 的歷史數據時出錯:`, error);
       });
-  }, [indicatorKey, indicatorName]); // 添加 indicatorName 作為依賴
+  }, [indicatorKey, indicatorName]);
 
   // 過濾數據
   const filteredData = React.useMemo(() => {
     const data = filterDataByTimeRange(historicalData, selectedTimeRange);
     return data;
   }, [historicalData, selectedTimeRange]);
+
+  // 獲取時間單位
+  const timeUnit = getTimeUnit(filteredData.map(item => item.date));
 
   // 構建圖表數據
   const chartData = {
@@ -135,14 +149,20 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
       x: {
         type: 'time',
         time: {
-          unit: 'month',
+          unit: timeUnit,
           tooltipFormat: 'yyyy-MM-dd',
           displayFormats: {
-            day: 'yyyy-MM-dd',
-            month: 'yyyy-MM',
             year: 'yyyy',
-          },
+            month: "MMM''yy",
+            day: 'd MMM'
+          }
         },
+        ticks: {
+          maxTicksLimit: 6,
+          autoSkip: true,
+          maxRotation: 0,
+          minRotation: 0
+        }
       },
       'left-axis': {
         position: 'left',
