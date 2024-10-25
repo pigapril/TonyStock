@@ -203,6 +203,22 @@ const MarketSentimentIndex = () => {
         mode: 'index',
         intersect: false,
       },
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'x',
+          overScaleMode: 'x',
+        },
+        zoom: {
+          wheel: {
+            enabled: false,
+          },
+          pinch: {
+            enabled: false,
+          },
+          mode: 'x',
+        },
+      },
     },
     responsive: true,
     maintainAspectRatio: false,
@@ -261,9 +277,10 @@ const MarketSentimentIndex = () => {
       <div className="tab-content">
         {activeTab === 'composite' && (
           <div className="indicator-item">
-            <h3>市場情緒指數與 SPY 價格走勢圖</h3>
+            <h3>市場情緒綜合指數與 S&P500 ETF</h3>
             <p className="analysis-description">
-              綜合多個代表市場情緒的數據，包含AAII投資人調查、VIX指數...等等，用來衡量整體投資市場的氛圍。當數值愈接近100，代表市場極度樂觀；當數值接近0，代表市場極度悲觀。
+              綜合多個代表市場情緒的數據，包含AAII投資人調查、VIX指數...等等，用來衡量整體投資市場的氛圍。當數值愈接近100，代表市場極度樂觀；當數值接近0，代表市場極度悲觀。<br /><br />
+              回顧歷史數據，例如在金融海嘯期間股市最低點2009年3月、疫情爆發後股市最低點2020年3月、以及聯準會2022年的連續升息期間，市場情緒綜合指數都曾經低於10、甚至接近0，回頭看都是相當好的買點。
             </p>
             <div className="indicator-chart-container">
               <div className="indicator-chart">

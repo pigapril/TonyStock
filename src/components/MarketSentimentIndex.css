@@ -48,6 +48,7 @@
   max-width: 100%;
   padding: 0;
   box-sizing: border-box;
+  overscroll-behavior: contain;
 }
 
 .time-range-selector {
@@ -135,6 +136,8 @@
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch; /* 為 iOS 設備提供平滑滾動 */
 }
 
 /* 平板電腦和桌面版面配置 */
@@ -213,4 +216,11 @@
 
 .indicator-item {
   margin-bottom: 20px;
+}
+
+/* 確保在觸摸設備上的滾動行為正常 */
+@media (hover: none) and (pointer: coarse) {
+  .indicator-chart-container {
+    touch-action: pan-x pan-y;
+  }
 }
