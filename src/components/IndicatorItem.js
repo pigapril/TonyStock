@@ -204,7 +204,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
           </div>
         </>
       ) : (
-        <p>暫無數據</p>
+        <p>載入中...</p>
       )}
     </div>
   );
