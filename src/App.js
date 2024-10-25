@@ -24,6 +24,7 @@ import { useMediaQuery } from 'react-responsive';
 
 import 'chartjs-plugin-crosshair';
 import MarketSentimentIndex from './components/MarketSentimentIndex';
+import PageContainer from './components/PageContainer';
 
 // 獲取 API 基礎 URL
 console.log('NODE_ENV:', process.env.NODE_ENV);
@@ -582,11 +583,10 @@ function App() {
               <Route
                 path="/"
                 element={
-                  <div className="page-container">
-                    <h2>價格標準差分析</h2>
-                    <p className="analysis-description">
-                      分析股價長期趨勢，並搭配標準差。當價格漲至最上緣時可能代表過度樂觀；當價格跌至最下緣時可能代表過度悲觀。
-                    </p>
+                  <PageContainer
+                    title="價格標準差分析"
+                    description="分析股價長期趨勢，並搭配標準差。當價格漲至最上緣時可能代表過度樂觀；當價格跌至最下緣時可能代表過度悲觀。"
+                  >
                     <div className="dashboard">
                       <div className="chart-card">
                         <h3>{displayedStockCode ? `${displayedStockCode} 分析結果` : '分析結果'}</h3>
@@ -786,16 +786,18 @@ function App() {
                     <div className="multi-stock-dashboard">
                       {renderMultiStockCharts()}
                     </div>
-                  </div>
+                  </PageContainer>
                 }
               />
               <Route 
                 path="/market-sentiment" 
                 element={
-                  <div className="page-container">
-                    <h2>市場情緒分析</h2>
+                  <PageContainer
+                    title="市場情緒分析"
+                    description="分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入的機會。"
+                  >
                     <MarketSentimentIndex />
-                  </div>
+                  </PageContainer>
                 } 
               />
             </Routes>

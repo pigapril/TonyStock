@@ -44,11 +44,10 @@
 
 /* 確保市場情緒指數頁面在小螢幕上顯示良好 */
 .market-sentiment-index {
+  overscroll-behavior: contain;
   width: 100%;
   max-width: 100%;
-  padding: 0;
   box-sizing: border-box;
-  overscroll-behavior: contain;
 }
 
 .time-range-selector {

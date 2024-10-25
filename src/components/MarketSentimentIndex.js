@@ -262,11 +262,8 @@ const MarketSentimentIndex = () => {
   }
 
   return (
-    <div className="market-sentiment-index">
-      <p className="analysis-description">
-        分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入的機會。
-      </p>
-
+    <>
+      {/* 直接渲染內容，不需要額外的容器 */}
       <div className="time-range-selector">
         <label htmlFor="timeRange">選擇期間：</label>
         <select id="timeRange" value={selectedTimeRange} onChange={handleTimeRangeChange}>
@@ -277,7 +274,6 @@ const MarketSentimentIndex = () => {
           ))}
         </select>
       </div>
-
       <div className="tabs-grid">
         <button
           className={`tab-button ${activeTab === 'composite' ? 'active' : ''}`}
@@ -297,7 +293,6 @@ const MarketSentimentIndex = () => {
           )
         ))}
       </div>
-
       <div className="tab-content">
         {activeTab === 'composite' && (
           <div className="indicator-item">
@@ -324,7 +319,7 @@ const MarketSentimentIndex = () => {
           )
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

@@ -295,60 +295,6 @@ body {
   border-bottom: none;
 }
 
-.page-container {
-  max-width: calc(100% - 250px); /* 減去側邊欄的寬度 */
-  margin-left: 250px; /* 添加左邊距，與側邊欄寬度相同 */
-  padding: 20px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.page-container h2 {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-.analysis-description {
-  margin: 10px 0 20px;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #333;
-  max-width: 100%;
-  width: 100%;
-  text-align: justify;
-  hyphens: auto;
-  word-wrap: break-word;
-}
-
-.sidebar-closed .page-container {
-  max-width: 100%;
-  margin-left: 0;
-}
-
-/* 調整表單內的輸入框寬度 */
-.stock-analysis-card .input-group input,
-.stock-analysis-card .input-group select {
-  width: 80%;
-  max-width: 250px; /* 設置最大寬度 */
-}
-
-/* 調整按鈕寬度 */
-.stock-analysis-card button {
-  width: 55%;
-  max-width: 250px; /* 設置最大寬度 */
-}
-
-/* 響應式設計調整 */
-@media (max-width: 1024px) {
-  .chart-card, .stock-analysis-card {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-}
-
 /* 新增以下樣式 */
 .overlay {
   display: none;
@@ -373,5 +319,30 @@ input, select, textarea {
 @supports (-webkit-touch-callout: none) {
   input, select, textarea {
     font-size: 16px !important;
+  }
+}
+
+/* 為標準差和情緒指標頁面添加特定樣式 */
+.standard-deviation-page,
+.market-sentiment-index {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 20px; /* 添加左右內邊距 */
+  box-sizing: border-box;
+}
+
+/* 調整圖表容器的寬度 */
+.chart-container,
+.indicator-chart-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; /* 隱藏水平滾動 */
+}
+
+/* 響應式設計調整 */
+@media (max-width: 768px) {
+  .standard-deviation-page,
+  .market-sentiment-index {
+    padding: 0 10px; /* 減少左右內邊距 */
   }
 }
