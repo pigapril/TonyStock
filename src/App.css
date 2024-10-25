@@ -1,3 +1,7 @@
+body, html {
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
@@ -8,6 +12,7 @@ body {
 .App {
   display: flex;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .App-inner {
@@ -106,6 +111,7 @@ body {
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .content-area h2 {
@@ -192,6 +198,11 @@ body {
   .user-actions button {
     padding: 5px 10px;
     font-size: 14px;
+  }
+
+  #chartjs-tooltip {
+    font-size: 12px; /* 減小字體大小 */
+    max-width: 150px !important; /* 減小最大寬度 */
   }
 }
 

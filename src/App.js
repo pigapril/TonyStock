@@ -73,6 +73,21 @@ function sendGAEvent(eventName, eventParams) {
   }
 }
 
+// 在 App 組件之前添加這個新的函數
+function getTimeUnit(dates) {
+  const start = new Date(dates[0]);
+  const end = new Date(dates[dates.length - 1]);
+  const yearDiff = end.getFullYear() - start.getFullYear();
+  
+  if (yearDiff > 5) {
+    return 'year';
+  } else if (yearDiff > 2) {
+    return 'month';
+  } else {
+    return 'day';
+  }
+}
+
 function App() {
   const [stockCode, setStockCode] = useState('');
   const [years, setYears] = useState('3.5');
@@ -148,6 +163,8 @@ function App() {
         console.warn(`Data length (${data.dates.length}) does not match expected length (${expectedDataPoints})`);
       }
 
+      const timeUnit = getTimeUnit(data.dates);
+
       setChartData({
         labels: data.dates,
         datasets: [
@@ -199,7 +216,8 @@ function App() {
             fill: false,
             pointRadius: 0
           }
-        ]
+        ],
+        timeUnit: timeUnit // 添加這行
       });
       setDisplayedStockCode(stockCode); // 使用原始的 stockCode，不包含 .TW
       
@@ -394,9 +412,27 @@ function App() {
                   }
 
                   const position = context.chart.canvas.getBoundingClientRect();
+                  const bodyWidth = document.body.clientWidth;
+
+                  // 計算 tooltip 的寬度（假設最大寬度為200px）
+                  const tooltipWidth = Math.min(200, bodyWidth * 0.8);
+
+                  // 計算 tooltip 的左側位置
+                  let left = position.left + window.pageXOffset + tooltipModel.caretX;
+
+                  // 檢查是否會超出右邊界
+                  if (left + tooltipWidth > bodyWidth) {
+                    left = bodyWidth - tooltipWidth;
+                  }
+
+                  // 檢查是否會超出左邊界
+                  if (left < 0) {
+                    left = 0;
+                  }
+
                   tooltipEl.style.opacity = 1;
                   tooltipEl.style.position = 'absolute';
-                  tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                  tooltipEl.style.left = left + 'px';
                   tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
                   tooltipEl.style.font = tooltipModel.options.bodyFont.string;
                   tooltipEl.style.padding = tooltipModel.options.padding + 'px ' + tooltipModel.options.padding + 'px';
@@ -405,6 +441,8 @@ function App() {
                   tooltipEl.style.color = 'white';
                   tooltipEl.style.borderRadius = '3px';
                   tooltipEl.style.zIndex = 1000;
+                  tooltipEl.style.maxWidth = tooltipWidth + 'px'; // 設置最大寬度
+                  tooltipEl.style.width = 'auto'; // 讓寬度自適應內容
                 }
               },
               crosshair: {
@@ -582,9 +620,27 @@ function App() {
                                       }
 
                                       const position = context.chart.canvas.getBoundingClientRect();
+                                      const bodyWidth = document.body.clientWidth;
+
+                                      // 計算 tooltip 的寬度（假設最大寬度為200px）
+                                      const tooltipWidth = Math.min(200, bodyWidth * 0.8);
+
+                                      // 計算 tooltip 的左側位置
+                                      let left = position.left + window.pageXOffset + tooltipModel.caretX;
+
+                                      // 檢查是否會超出右邊界
+                                      if (left + tooltipWidth > bodyWidth) {
+                                        left = bodyWidth - tooltipWidth;
+                                      }
+
+                                      // 檢查是否會超出左邊界
+                                      if (left < 0) {
+                                        left = 0;
+                                      }
+
                                       tooltipEl.style.opacity = 1;
                                       tooltipEl.style.position = 'absolute';
-                                      tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                                      tooltipEl.style.left = left + 'px';
                                       tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
                                       tooltipEl.style.font = tooltipModel.options.bodyFont.string;
                                       tooltipEl.style.padding = tooltipModel.options.padding + 'px ' + tooltipModel.options.padding + 'px';
@@ -593,6 +649,8 @@ function App() {
                                       tooltipEl.style.color = 'white';
                                       tooltipEl.style.borderRadius = '3px';
                                       tooltipEl.style.zIndex = 1000;
+                                      tooltipEl.style.maxWidth = tooltipWidth + 'px'; // 設置最大寬度
+                                      tooltipEl.style.width = 'auto'; // 讓寬度自適應內容
                                     }
                                   },
                                   crosshair: {
@@ -609,11 +667,32 @@ function App() {
                                     }
                                   }
                                 },
+                                scales: {
+                                  x: {
+                                    type: 'time',
+                                    time: {
+                                      unit: chartData.timeUnit,
+                                      displayFormats: {
+                                        year: 'yyyy',
+                                        month: "MMM''yy",
+                                        day: 'd MMM'
+                                      }
+                                    },
+                                    ticks: {
+                                      maxTicksLimit: 10, // 限制 x 軸上的刻度數量
+                                      autoSkip: true,
+                                      maxRotation: 0,
+                                      minRotation: 0
+                                    }
+                                  },
+                                  y: { 
+                                    position: 'right'
+                                  }
+                                },
                                 hover: {
                                   mode: 'index',
                                   intersect: false
-                                },
-                                scales: { y: { position: 'right' } }
+                                }
                               }}
                             />
                           )}

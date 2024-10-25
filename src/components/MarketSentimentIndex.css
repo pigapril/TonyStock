@@ -16,10 +16,10 @@
 }
 
 .indicator-item {
-  border: 1px solid #ccc;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 5px;
+  border: none;  /* 移除邊框 */
+  padding: 0;    /* 移除內邊距 */
+  margin-bottom: 20px;
+  box-shadow: none;  /* 移除陰影 */
 }
 
 .real-data {
@@ -164,7 +164,8 @@
 .indicator-item h3 {
   font-size: 20px;
   color: #333;
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
+  padding: 0;
 }
 
 .tabs-grid {
@@ -211,7 +212,7 @@
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  padding: 20px;
+  padding: 0;
 }
 
 .indicator-item {
