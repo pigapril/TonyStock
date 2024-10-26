@@ -100,7 +100,7 @@ function App() {
   const [displayedStockCode, setDisplayedStockCode] = useState('');
 
   // 修改這裡，使用 useState 的第二個參數來設置初始值
-  const [actualStockCode, setActualStockCode] = useState('AAPL');
+  const [actualStockCode, setActualStockCode] = useState('SPY');
   const [actualYears, setActualYears] = useState(3.5);
   const [actualBackTestDate, setActualBackTestDate] = useState('');
 
@@ -131,7 +131,7 @@ function App() {
     return upperCaseCode;
   };
 
-  const fetchStockData = useCallback(async (stockCode, yearsToUse, backTestDateToUse) => {
+  const fetchStockData = useCallback(async (stockCode, yearsToUse, backTestDateToUse, isInitialLoad = false) => {
     setLoading(true);
     setTimeoutMessage('');
 
@@ -225,12 +225,14 @@ function App() {
       // 清除超時訊息
       setTimeoutMessage('');
 
-      // 推送事件到數據層
-      sendGAEvent('check_stock_symbol', {
-        stock_code: stockCode,
-        years: yearsToUse,
-        back_test_date: backTestDateToUse
-      });
+      // 只有在非初始加載時才發送 Google Analytics 事件
+      if (!isInitialLoad) {
+        sendGAEvent('check_stock_symbol', {
+          stock_code: stockCode,
+          years: yearsToUse,
+          back_test_date: backTestDateToUse
+        });
+      }
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -262,12 +264,20 @@ function App() {
     setActualYears(numYears);
     setActualBackTestDate(backTestDate);
     
-    // 調用 fetchStockData 函數
+    // 調用 fetchStockData 函數，不使用 isInitialLoad 參數
     fetchStockData(stockCode, numYears, backTestDate);
   };
 
   useEffect(() => {
-    fetchStockData(actualStockCode, actualYears, actualBackTestDate);
+    const fetchInitialData = async () => {
+      try {
+        await fetchStockData(actualStockCode, actualYears, actualBackTestDate, true);
+      } catch (error) {
+        console.error('Error fetching initial data:', error);
+      }
+    };
+
+    fetchInitialData();
 
     const intervalId = setInterval(() => {
       fetchStockData(actualStockCode, actualYears, actualBackTestDate);
