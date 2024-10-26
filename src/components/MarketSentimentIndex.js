@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './MarketSentimentIndex.css';
 import 'chartjs-adapter-date-fns';
+import GaugeChart from 'react-gauge-chart'; // 引入 GaugeChart
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -71,6 +72,7 @@ const MarketSentimentIndex = () => {
   const [indicatorsData, setIndicatorsData] = useState({});
   const [historicalData, setHistoricalData] = useState([]);
   const [activeTab, setActiveTab] = useState('composite'); // 新增：用於跟踪當前活動的標籤
+  const [viewMode, setViewMode] = useState('timeline'); // 新增：用於跟踪視圖模式
 
   useEffect(() => {
     async function fetchSentimentData() {
@@ -253,6 +255,11 @@ const MarketSentimentIndex = () => {
     setActiveTab(tabKey);
   };
 
+  // 新增：處理視圖模式切換的函數
+  const handleViewModeChange = (mode) => {
+    setViewMode(mode);
+  };
+
   if (loading) {
     return <div>載入中...</div>;
   }
@@ -301,10 +308,49 @@ const MarketSentimentIndex = () => {
               綜合多個代表市場情緒的數據，包含AAII投資人調查、VIX指數...等等，用來衡量整體投資市場的氛圍。當數值愈接近100，代表市場極度樂觀；當數值接近0，代表市場極度悲觀。<br /><br />
               回顧歷史數據，例如在金融海嘯期間股市最低點2009年3月、疫情爆發後股市最低點2020年3月、以及聯準會2022年的連續升息期間，市場情緒綜合指數都曾經低於10、甚至接近0，回頭看都是相當好的買點。
             </p>
+            <div className="view-mode-selector">
+              <button
+                className={`view-mode-button ${viewMode === 'overview' ? 'active' : ''}`}
+                onClick={() => handleViewModeChange('overview')}
+              >
+                概覽
+              </button>
+              <button
+                className={`view-mode-button ${viewMode === 'timeline' ? 'active' : ''}`}
+                onClick={() => handleViewModeChange('timeline')}
+              >
+                時間線
+              </button>
+            </div>
             <div className="indicator-chart-container">
-              <div className="indicator-chart">
-                <Line data={chartData} options={chartOptions} />
-              </div>
+              {viewMode === 'overview' ? (
+                <div className="gauge-chart">
+                  <div className="gauge-labels">
+                    <span className="gauge-label gauge-label-left">極度恐懼</span>
+                    <span className="gauge-label gauge-label-right">極度樂觀</span>
+                  </div>
+                  <GaugeChart
+                    id="gauge-chart"
+                    nrOfLevels={5}
+                    percent={sentimentData.totalScore / 100}
+                    textColor="#333"
+                    needleColor="#464A4F"
+                    colors={["#FF0000", "#FFA500", "#FFFF00", "#00FF00", "#00FF00"]}
+                    arcWidth={0.3}
+                    cornerRadius={5}
+                    animDelay={0}
+                    hideText={true}
+                    needleBaseColor="#464A4F"
+                    needleTransitionDuration={3000}
+                    needleTransition="easeElastic"
+                  />
+                  <p className="gauge-value">最新綜合情緒指標: {sentimentData.totalScore}</p>
+                </div>
+              ) : (
+                <div className="indicator-chart">
+                  <Line data={chartData} options={chartOptions} />
+                </div>
+              )}
             </div>
           </div>
         )}
