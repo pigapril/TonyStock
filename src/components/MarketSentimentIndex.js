@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './MarketSentimentIndex.css';
 import 'chartjs-adapter-date-fns';
-import GaugeChart from 'react-gauge-chart'; // 引入 GaugeChart
+import GaugeChart from 'react-gauge-chart';
+import styled from 'styled-components';
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -50,6 +51,10 @@ const TIME_RANGES = [
 // 添加這行來定義 API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
 
+// 在文件頂部添加這兩個常量
+const BUBBLE_RADIUS = 155; // 控制泡泡圍繞的圓的半徑
+const BUBBLE_Y_OFFSET = 0; // 控制泡泡的垂直偏移，正值向上移動，負值向下移動
+
 // 新增：獲取時間單位的函數
 function getTimeUnit(dates) {
   const start = new Date(dates[0]);
@@ -65,6 +70,52 @@ function getTimeUnit(dates) {
   }
 }
 
+// 使用 styled-components 創建自定義的 GaugeChart
+const StyledGaugeChart = styled(GaugeChart)`
+  .gauge-chart {
+    .circle-outer {
+      fill: none;
+      stroke: #e6e6e6;
+      stroke-width: 30;
+    }
+    .circle-inner {
+      fill: none;
+      stroke-width: 30;
+      filter: url(#innerShadow);
+    }
+    .circle-inner-0 {
+      stroke: url(#gradient-0);
+    }
+    .circle-inner-1 {
+      stroke: url(#gradient-1);
+    }
+    .circle-inner-2 {
+      stroke: url(#gradient-2);
+    }
+    .circle-inner-3 {
+      stroke: url(#gradient-3);
+    }
+    .circle-inner-4 {
+      stroke: url(#gradient-4);
+    }
+    .needle {
+      fill: #464A4F;
+    }
+    .needle-base {
+      fill: #464A4F;
+    }
+  }
+`;
+
+// 定義漸變色
+const gradients = [
+  ['#FF0000', '#FF4500'],  // 紅色到橙紅色
+  ['#FF4500', '#FFA500'],  // 橙紅色到橙色
+  ['#FFA500', '#FFFF00'],  // 橙色到黃色
+  ['#FFFF00', '#7CFC00'],  // 黃色到淺綠色
+  ['#7CFC00', '#00FF00']   // 淺綠色到綠色
+];
+
 const MarketSentimentIndex = () => {
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -72,7 +123,7 @@ const MarketSentimentIndex = () => {
   const [indicatorsData, setIndicatorsData] = useState({});
   const [historicalData, setHistoricalData] = useState([]);
   const [activeTab, setActiveTab] = useState('composite'); // 新增：用於跟踪當前活動的標籤
-  const [viewMode, setViewMode] = useState('timeline'); // 新增：用於跟踪視圖模式
+  const [viewMode, setViewMode] = useState('overview'); // 修改：默認顯示概覽（最新情緒指數）
 
   useEffect(() => {
     async function fetchSentimentData() {
@@ -270,7 +321,6 @@ const MarketSentimentIndex = () => {
 
   return (
     <>
-      {/* 直接渲染內容，不需要額外的容器 */}
       <div className="time-range-selector">
         <label htmlFor="timeRange">選擇期間：</label>
         <select id="timeRange" value={selectedTimeRange} onChange={handleTimeRangeChange}>
@@ -303,48 +353,70 @@ const MarketSentimentIndex = () => {
       <div className="tab-content">
         {activeTab === 'composite' && (
           <div className="indicator-item">
-            <h3>市場情緒綜合指數與 S&P500 ETF</h3>
-            <p className="analysis-description">
-              綜合多個代表市場情緒的數據，包含AAII投資人調查、VIX指數...等等，用來衡量整體投資市場的氛圍。當數值愈接近100，代表市場極度樂觀；當數值接近0，代表市場極度悲觀。<br /><br />
-              回顧歷史數據，例如在金融海嘯期間股市最低點2009年3月、疫情爆發後股市最低點2020年3月、以及聯準會2022年的連續升息期間，市場情緒綜合指數都曾經低於10、甚至接近0，回頭看都是相當好的買點。
-            </p>
+            <h3>市場情緒綜合指數</h3>
             <div className="view-mode-selector">
               <button
                 className={`view-mode-button ${viewMode === 'overview' ? 'active' : ''}`}
                 onClick={() => handleViewModeChange('overview')}
               >
-                概覽
+                最新情緒指數
               </button>
               <button
                 className={`view-mode-button ${viewMode === 'timeline' ? 'active' : ''}`}
                 onClick={() => handleViewModeChange('timeline')}
               >
-                時間線
+                歷史數據
               </button>
             </div>
             <div className="indicator-chart-container">
               {viewMode === 'overview' ? (
                 <div className="gauge-chart">
-                  <div className="gauge-labels">
-                    <span className="gauge-label gauge-label-left">極度恐懼</span>
-                    <span className="gauge-label gauge-label-right">極度樂觀</span>
+                  <div 
+                    className="gauge-value-bubble"
+                    style={{
+                      left: `calc(50% + ${Math.cos((sentimentData.totalScore / 100 - 0.5) * Math.PI) * BUBBLE_RADIUS}px)`,
+                      bottom: `${Math.sin((sentimentData.totalScore / 100 - 0.5) * Math.PI) * BUBBLE_RADIUS + BUBBLE_Y_OFFSET}px`,
+                      transform: `translate(-50%, 50%) rotate(${(sentimentData.totalScore / 100 - 0.5) * 180}deg)`
+                    }}
+                  >
+                    {Math.round(sentimentData.totalScore)}
                   </div>
-                  <GaugeChart
+                  <StyledGaugeChart
                     id="gauge-chart"
                     nrOfLevels={5}
                     percent={sentimentData.totalScore / 100}
                     textColor="#333"
                     needleColor="#464A4F"
-                    colors={["#FF0000", "#FFA500", "#FFFF00", "#00FF00", "#00FF00"]}
+                    needleBaseColor="#464A4F"
                     arcWidth={0.3}
                     cornerRadius={5}
                     animDelay={0}
                     hideText={true}
-                    needleBaseColor="#464A4F"
                     needleTransitionDuration={3000}
                     needleTransition="easeElastic"
                   />
-                  <p className="gauge-value">最新綜合情緒指標: {sentimentData.totalScore}</p>
+                  <svg width="0" height="0">
+                    <defs>
+                      <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
+                        <feOffset in="blur" dx="2" dy="2" result="offsetBlur" />
+                        <feComposite in="SourceGraphic" in2="offsetBlur" operator="over" />
+                      </filter>
+                      {gradients.map((gradient, index) => (
+                        <linearGradient key={index} id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor={gradient[0]} />
+                          <stop offset="100%" stopColor={gradient[1]} />
+                        </linearGradient>
+                      ))}
+                    </defs>
+                  </svg>
+                  <div className="gauge-center-value">
+                    {Math.round(sentimentData.totalScore)}
+                  </div>
+                  <div className="gauge-labels">
+                    <span className="gauge-label gauge-label-left">極度恐懼</span>
+                    <span className="gauge-label gauge-label-right">極度樂觀</span>
+                  </div>
                 </div>
               ) : (
                 <div className="indicator-chart">
@@ -352,6 +424,10 @@ const MarketSentimentIndex = () => {
                 </div>
               )}
             </div>
+            <p className="analysis-description">
+              綜合多個代表市場情緒的數據，包含AAII投資人調查、VIX指數...等等，用來衡量整體投資市場的氛圍。當數值愈接近100，代表市場極度樂觀；當數值接近0，代表市場極度悲觀。<br /><br />
+              回顧歷史數據，例如在金融海嘯期間股市最低點2009年3月、疫情爆發後股市最低點2020年3月、以及聯準會2022年的連續升息期間，市場情緒綜合指數都曾經低於10、甚至接近0，回頭看都是相當好的買點。
+            </p>
           </div>
         )}
         {Object.entries(indicatorsData).map(([key, indicator]) => (

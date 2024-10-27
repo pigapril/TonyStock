@@ -83,9 +83,9 @@
 }
 
 .sentiment-chart-card {
-  width: calc(33.333% - 20px); /* 每列顯示三個圖表卡片，減去間距 */
+  width: calc(33.333% - 20px); /* 每列顯示三個圖表卡片減去間距 */
   background-color: white;
-  border-radius: 8px;
+  border-radius: 1px;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -134,8 +134,9 @@
 
 .indicator-chart-container {
   width: 100%;
-  max-height: 400px; /* 設置最大高度 */
-  overflow: hidden; /* 隱藏溢出內容 */
+  max-height: 400px;
+  overflow: hidden;
+  margin-bottom: 30px; /* 增加底部間距 */
 }
 
 /* 平板電腦和桌面版面配置 */
@@ -148,7 +149,8 @@
 /* 移除大螢幕桌面版面配置的特殊處理 */
 
 .analysis-description {
-  margin: 10px 0 20px;
+  margin-top: 30px; /* 增加頂部間距 */
+  margin-bottom: 20px;
   font-size: 16px;
   line-height: 1.6;
   color: #333;
@@ -248,20 +250,35 @@
 }
 
 .gauge-chart {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  max-width: 300px;
-  margin: 0 auto;
   position: relative;
-  overflow: visible;
+  width: 300px;
+  height: 170px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.gauge-center-value {
+  position: absolute;
+  bottom: 30px; /* 調整底部距離 */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #4a4a4a;
+  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(240,240,240,1) 100%);
+  width: 45px; /* 增加寬度 */
+  height: 45px; /* 增加高度 */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 添加陰影效果 */
 }
 
 .gauge-labels {
   position: absolute;
-  top: 0;
+  bottom: 20px;
   left: 0;
   right: 0;
   display: flex;
@@ -272,62 +289,53 @@
 }
 
 .gauge-label {
-  position: relative;
-  top: 10px;
+  position: absolute;
+  bottom: 0;
 }
 
 .gauge-label-left {
-  left: 10px;
+  left: 10%;
+  transform: translateX(-50%);
 }
 
 .gauge-label-right {
-  right: 10px;
-}
-
-.gauge-chart > div {
-  width: 100% !important;
-  height: auto !important;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-}
-
-.gauge-chart::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 50%;
-  z-index: -1;
-}
-
-.gauge-chart::after {
-  content: '';
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-  background: white;
-  border-radius: 50%;
-  z-index: -1;
-}
-
-.gauge-value {
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 10px;
-  text-align: center;
-  color: #333;
+  right: 10%;
+  transform: translateX(50%);
 }
 
 @media (max-width: 768px) {
   .gauge-chart {
     max-width: 250px;
+    padding-top: 0px; /* 移除上方的內邊距 */
+    padding-bottom: 0px;
   }
 
-  .gauge-value {
-    font-size: 16px;
+  .gauge-center-value {
+    font-size: 20px;
+    width: 40px; /* 調整小螢幕上的寬度 */
+    height: 40px; /* 調整小螢幕上的高度 */
+    bottom: 35px; /* 調整小螢幕上的底部距離 */
+  }
+
+  .gauge-labels {
+    bottom: 20px;
+  }
+}
+
+/* 確保 GaugeChart 組件在容器中正確定位 */
+.gauge-chart > div:nth-child(2) {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+}
+
+@media (max-width: 768px) {
+  .indicator-chart-container {
+    margin-bottom: 20px; /* 在小螢幕上使用較小的間距 */
+  }
+
+  .analysis-description {
+    margin-top: 20px; /* 在小螢幕上使用較小的間距 */
   }
 }
