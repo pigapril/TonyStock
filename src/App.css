@@ -7,12 +7,17 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f0f2f5;
+  min-height: 100vh;
+  width: 100%;
+  -webkit-text-size-adjust: none;  /* 防止 iOS 自動調整字體大小 */
 }
 
 .App {
   display: flex;
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: auto;  /* 允許內容滾動 */
+  -webkit-overflow-scrolling: touch;  /* 在 iOS 上實現平滑滾動 */
 }
 
 .App-inner {
@@ -269,14 +274,15 @@ body {
 }
 
 .form-control {
-  width: 110px;  /* 設置固定寬度 */
+  width: 110px;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
-  -webkit-appearance: none;  /* 移除 WebKit 瀏覽器的默認樣式 */
-  -moz-appearance: none;     /* 移除 Firefox 的默認樣式 */
-  appearance: none;          /* 移除默認樣式 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transform: translateZ(0);  /* 強制硬件加速 */
 }
 
 /* 為日期輸入框添加特定樣式 */
@@ -331,6 +337,11 @@ input[type="date"].form-control {
 @supports (-webkit-touch-callout: none) {
   input, select, textarea {
     font-size: 16px !important;
+    transform: translateZ(0);
+  }
+  
+  body {
+    -webkit-text-size-adjust: none;  /* 防止 iOS 自動調整字體大小 */
   }
 }
 

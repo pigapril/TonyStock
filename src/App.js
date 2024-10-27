@@ -499,35 +499,6 @@ function App() {
     setStockCode(convertedValue.toUpperCase()); // 轉換為大寫
   };
 
-  useEffect(() => {
-    const handleFocus = () => {
-      // 在輸入框獲得焦點時，滾動到頁面頂部
-      window.scrollTo(0, 0);
-      // 設置 body 的高度為視窗高度，防止彈出鍵盤時頁面縮小
-      document.body.style.height = window.innerHeight + 'px';
-    };
-
-    const handleBlur = () => {
-      // 在輸入框失去焦點時，恢復 body 的高度
-      document.body.style.height = '';
-    };
-
-    // 為所有輸入框添加事件監聽器
-    const inputs = document.querySelectorAll('input, select, textarea');
-    inputs.forEach(input => {
-      input.addEventListener('focus', handleFocus);
-      input.addEventListener('blur', handleBlur);
-    });
-
-    // 清理函數
-    return () => {
-      inputs.forEach(input => {
-        input.removeEventListener('focus', handleFocus);
-        input.removeEventListener('blur', handleBlur);
-      });
-    };
-  }, []);
-
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <PageViewTracker />
