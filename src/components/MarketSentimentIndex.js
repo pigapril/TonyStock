@@ -124,24 +124,39 @@ const MarketSentimentIndex = () => {
   const [historicalData, setHistoricalData] = useState([]);
   const [activeTab, setActiveTab] = useState('composite'); // 新增：用於跟踪當前活動的標籤
   const [viewMode, setViewMode] = useState('overview'); // 修改：默認顯示概覽（最新情緒指數）
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function fetchSentimentData() {
       try {
         setLoading(true);
         const response = await axios.get(`${API_BASE_URL}/api/market-sentiment`);
-        console.log('Received sentiment data:', response.data);
-        setSentimentData(response.data);
-        setIndicatorsData(response.data.indicators);
+        
+        if (isMounted) {
+          console.log('Received sentiment data:', response.data);
+          setSentimentData(response.data);
+          setIndicatorsData(response.data.indicators);
+          setIsFirstRender(false);
+        }
       } catch (error) {
-        console.error('獲取市場情緒數據時出錯:', error.response ? error.response.data : error.message);
+        if (isMounted) {
+          console.error('獲取市場情緒數據時出錯:', error.response ? error.response.data : error.message);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     }
 
     fetchSentimentData();
-  }, []);
+
+    return () => {
+      isMounted = false;
+    };
+  }, []); // 空依賴陣列
 
   useEffect(() => {
     async function fetchHistoricalData() {
@@ -311,6 +326,24 @@ const MarketSentimentIndex = () => {
     setViewMode(mode);
   };
 
+  // 修改 GaugeChart 的渲染
+  const renderGaugeChart = () => (
+    <StyledGaugeChart
+      id="gauge-chart"
+      nrOfLevels={5}
+      percent={sentimentData.totalScore / 100}
+      textColor="#333"
+      needleColor="#464A4F"
+      needleBaseColor="#464A4F"
+      arcWidth={0.3}
+      cornerRadius={5}
+      animDelay={0}
+      hideText={true}
+      needleTransitionDuration={isFirstRender ? 0 : 3000} // 首次渲染時不使用動畫
+      needleTransition="easeElastic"
+    />
+  );
+
   if (loading) {
     return <div>載入中...</div>;
   }
@@ -381,20 +414,7 @@ const MarketSentimentIndex = () => {
                   >
                     {Math.round(sentimentData.totalScore)}
                   </div>
-                  <StyledGaugeChart
-                    id="gauge-chart"
-                    nrOfLevels={5}
-                    percent={sentimentData.totalScore / 100}
-                    textColor="#333"
-                    needleColor="#464A4F"
-                    needleBaseColor="#464A4F"
-                    arcWidth={0.3}
-                    cornerRadius={5}
-                    animDelay={0}
-                    hideText={true}
-                    needleTransitionDuration={3000}
-                    needleTransition="easeElastic"
-                  />
+                  {renderGaugeChart()}
                   <svg width="0" height="0">
                     <defs>
                       <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
