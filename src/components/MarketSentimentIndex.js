@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './MarketSentimentIndex.css';
 import 'chartjs-adapter-date-fns';
@@ -124,7 +124,8 @@ const MarketSentimentIndex = () => {
   const [historicalData, setHistoricalData] = useState([]);
   const [activeTab, setActiveTab] = useState('composite'); // 新增：用於跟踪當前活動的標籤
   const [viewMode, setViewMode] = useState('overview'); // 修改：默認顯示概覽（最新情緒指數）
-  const [isFirstRender, setIsFirstRender] = useState(true);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const initialRenderRef = useRef(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -135,14 +136,16 @@ const MarketSentimentIndex = () => {
         const response = await axios.get(`${API_BASE_URL}/api/market-sentiment`);
         
         if (isMounted) {
-          console.log('Received sentiment data:', response.data);
           setSentimentData(response.data);
           setIndicatorsData(response.data.indicators);
-          setIsFirstRender(false);
+          // 使用 setTimeout 確保數據完全載入後再設置 isDataLoaded
+          setTimeout(() => {
+            setIsDataLoaded(true);
+          }, 100);
         }
       } catch (error) {
         if (isMounted) {
-          console.error('獲取市場情緒數據時出錯:', error.response ? error.response.data : error.message);
+          console.error('獲取市場情緒數據時出錯:', error);
         }
       } finally {
         if (isMounted) {
@@ -156,7 +159,7 @@ const MarketSentimentIndex = () => {
     return () => {
       isMounted = false;
     };
-  }, []); // 空依賴陣列
+  }, []);
 
   useEffect(() => {
     async function fetchHistoricalData() {
@@ -339,10 +342,17 @@ const MarketSentimentIndex = () => {
       cornerRadius={5}
       animDelay={0}
       hideText={true}
-      needleTransitionDuration={isFirstRender ? 0 : 3000} // 首次渲染時不使用動畫
+      needleTransitionDuration={!isDataLoaded || initialRenderRef.current ? 0 : 3000}
       needleTransition="easeElastic"
     />
   );
+
+  // 在組件渲染完成後將 initialRenderRef 設為 false
+  useEffect(() => {
+    if (isDataLoaded) {
+      initialRenderRef.current = false;
+    }
+  }, [isDataLoaded]);
 
   if (loading) {
     return <div>載入中...</div>;
