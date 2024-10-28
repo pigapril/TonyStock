@@ -164,6 +164,7 @@ body {
   height: 400px;
   max-width: 100%; /* 添加這行 */
   overflow: hidden; /* 添加這行 */
+  padding-right: 10px;  /* 添加右側內邊距 */
 }
 
 /* 響應式設計 */
@@ -367,5 +368,95 @@ input[type="date"].form-control {
   .standard-deviation-page,
   .market-sentiment-index {
     padding: 0 10px; /* 減少左右內邊距 */
+  }
+}
+
+/* 添加到現有的 CSS 文件中 */
+.chart-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.tab-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.tab-button.active {
+    background-color: #1a73e8;
+    color: white;
+}
+
+.tab-button:hover {
+    background-color: #e4e6e9;
+}
+
+.tab-button.active:hover {
+    background-color: #1557b0;
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;  /* 將上下內邊距從 10px 減少到 5px */
+  margin-top: -5px;   /* 添加負的上邊距使整個標題區域往上移 */
+}
+
+.chart-title {
+  font-size: 0.95em;  /* 將文字大小從 1.1em 調整為 0.95em */
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.chart-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 0;  /* 移除標籤的預設邊距 */
+}
+
+.chart-tab {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.chart-tab.active {
+  border-bottom: 2px solid #007bff;
+  color: #007bff;
+}
+
+.chart-content {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  padding: 10px 10px 0 10px;  /* 移除底部內邊距 */
+}
+
+.chart-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  padding-right: 10px;  /* 添加右側內邊距 */
+}
+
+/* 添加響應式設計 */
+@media (max-width: 768px) {
+  .chart-title {
+    font-size: 0.9em;  /* 在行動裝置上進一步縮小文字 */
+    white-space: nowrap;  /* 確保文字保持在一行 */
+    overflow: hidden;
+    text-overflow: ellipsis;  /* 如果文字太長，顯示省略號 */
   }
 }
