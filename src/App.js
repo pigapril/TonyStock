@@ -27,6 +27,8 @@ import MarketSentimentIndex from './components/MarketSentimentIndex';
 import PageContainer from './components/PageContainer';
 import ULBandChart from './components/ULBandChart';
 
+import { Analytics } from './utils/analytics';
+
 // 獲取 API 基礎 URL
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('REACT_APP_API_BASE_URL:', process.env.REACT_APP_API_BASE_URL);
@@ -62,18 +64,6 @@ const Overlay = ({ isVisible, onClick }) => (
     onClick={onClick}
   />
 );
-
-// 在文件頂部添加這個函數
-function sendGAEvent(eventName, eventParams) {
-  if (window.dataLayer) {
-    window.dataLayer.push({
-      event: eventName,
-      ...eventParams
-    });
-  } else {
-    console.warn('DataLayer not found');
-  }
-}
 
 // 修改 getTimeUnit 函數
 function getTimeUnit(dates) {
@@ -219,6 +209,14 @@ function App() {
     } catch (error) {
       console.error('Error fetching data:', error);
       setTimeoutMessage('發生錯誤，請稍後再試');
+      
+      // 錯誤追蹤
+      Analytics.error({
+        type: 'API_ERROR',
+        message: error.message,
+        stockCode,
+        years: yearsToUse
+      });
     } finally {
       setLoading(false);
     }
@@ -235,20 +233,16 @@ function App() {
 
     if (isNaN(numYears) || numYears <= 0) {
       setYearsError('請輸入有效的查詢期間（年），且必須大於零。');
-      // 追蹤錯誤事件
-      sendGAEvent('stock_analysis_error', {
-        error_type: 'invalid_years',
-        error_message: '無效的查詢期間'
-      });
       return;
     }
 
     setYearsError('');
-    // 追蹤成功分析事件
-    sendGAEvent('stock_analysis', {
-      stock_code: stockCode,
+    
+    // 使用通用追蹤模組
+    Analytics.stockAnalysis.search({
+      stockCode: stockCode,
       years: numYears,
-      back_test_date: backTestDate
+      backTestDate: backTestDate
     });
     
     // 更新實際使用的值
@@ -495,6 +489,12 @@ function App() {
     setStockCode(convertedValue.toUpperCase()); // 轉換為大寫
   };
 
+  // 圖表切換追蹤
+  const handleChartSwitch = (chartType) => {
+    Analytics.stockAnalysis.chartSwitch(chartType);
+    setActiveChart(chartType);
+  };
+
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <PageViewTracker />
@@ -562,7 +562,7 @@ function App() {
                 element={
                   <PageContainer
                     title="價格標準差分析"
-                    description="分析股價長期趨勢，並搭配標準差。當價格漲至最上緣時可能代表過度樂觀；當價格跌至最下緣時可能代表過度悲觀。"
+                    description="分析股價長期趨勢，並搭配標準差，當價格漲至最上緣時可能代表過度樂觀；當價格跌至最下緣時可能代表過度悲觀。搭配超漲超跌通道使用，當價格突破通道上下緣時，可能代表超漲或超跌，趨勢或許將持續，可以等再次回到通道時再做買賣。"
                   >
                     <div className="dashboard">
                       <div className="chart-card">
@@ -574,13 +574,13 @@ function App() {
                             <div className="chart-tabs">
                               <button
                                 className={`chart-tab ${activeChart === 'sd' ? 'active' : ''}`}
-                                onClick={() => setActiveChart('sd')}
+                                onClick={() => handleChartSwitch('sd')}
                               >
                                 標準差分析
                               </button>
                               <button
                                 className={`chart-tab ${activeChart === 'ulband' ? 'active' : ''}`}
-                                onClick={() => setActiveChart('ulband')}
+                                onClick={() => handleChartSwitch('ulband')}
                               >
                                 超漲超跌通道
                               </button>
