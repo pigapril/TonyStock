@@ -118,10 +118,10 @@ function App() {
 
   const fetchStockData = useCallback(async (stockCode, yearsToUse, backTestDateToUse) => {
     setLoading(true);
-    setTimeoutMessage('');  // 只重置 timeoutMessage
+    setTimeoutMessage('');
 
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/stock-data`, {
+      const response = await axios.get(`${API_BASE_URL}/api/integrated-analysis`, {
         params: {
           stockCode,
           years: yearsToUse,
@@ -130,13 +130,15 @@ function App() {
         timeout: 30000
       });
 
+      const { dates, prices, sdAnalysis, ulbandAnalysis } = response.data;
+
       // 設置標準差圖表數據
       setChartData({
-        labels: response.data.dates,
+        labels: dates,
         datasets: [
           {
             label: 'Price',
-            data: response.data.prices,
+            data: prices,
             borderColor: 'blue',
             borderWidth: 2,
             fill: false,
@@ -144,7 +146,7 @@ function App() {
           },
           {
             label: 'Trend Line',
-            data: response.data.trendLine,
+            data: sdAnalysis.trendLine,
             borderColor: 'black',
             borderWidth: 2,
             fill: false,
@@ -152,7 +154,7 @@ function App() {
           },
           {
             label: 'TL-2SD',
-            data: response.data.tl_minus_2sd,
+            data: sdAnalysis.tl_minus_2sd,
             borderColor: 'darkgreen',
             borderWidth: 2,
             fill: false,
@@ -160,7 +162,7 @@ function App() {
           },
           {
             label: 'TL-SD',
-            data: response.data.tl_minus_sd,
+            data: sdAnalysis.tl_minus_sd,
             borderColor: 'lightgreen',
             borderWidth: 2,
             fill: false,
@@ -168,7 +170,7 @@ function App() {
           },
           {
             label: 'TL+SD',
-            data: response.data.tl_plus_sd,
+            data: sdAnalysis.tl_plus_sd,
             borderColor: 'lightcoral',
             borderWidth: 2,
             fill: false,
@@ -176,41 +178,31 @@ function App() {
           },
           {
             label: 'TL+2SD',
-            data: response.data.tl_plus_2sd,
+            data: sdAnalysis.tl_plus_2sd,
             borderColor: 'red',
             borderWidth: 2,
             fill: false,
             pointRadius: 0
           }
         ],
-        timeUnit: getTimeUnit(response.data.dates) // 添加這行
+        timeUnit: getTimeUnit(dates)
       });
-      setDisplayedStockCode(stockCode); // 使用原始的 stockCode，不包含 .TW
       
-      // 獲取超漲超跌通道數據
-      const ulbandResponse = await axios.post(`${API_BASE_URL}/api/ulband/analyze`, {
-        prices: response.data.prices,
-        highs: response.data.highs,
-        lows: response.data.lows,
-        dates: response.data.dates
-      }, {
-        timeout: 30000 // 也為這個請求添加超時設置
-      });
+      setDisplayedStockCode(stockCode);
 
       // 設置超漲超跌通道數據
       setUlbandData({
-        dates: ulbandResponse.data.dates,
-        prices: ulbandResponse.data.prices,
-        upperBand: ulbandResponse.data.upperBand,
-        lowerBand: ulbandResponse.data.lowerBand,
-        ma20: ulbandResponse.data.ma20
+        dates: ulbandAnalysis.dates,
+        prices: ulbandAnalysis.prices,
+        upperBand: ulbandAnalysis.upperBand,
+        lowerBand: ulbandAnalysis.lowerBand,
+        ma20: ulbandAnalysis.ma20
       });
 
     } catch (error) {
       console.error('Error fetching data:', error);
       setTimeoutMessage('發生錯誤，請稍後再試');
       
-      // 錯誤追蹤
       Analytics.error({
         type: 'API_ERROR',
         message: error.message,
