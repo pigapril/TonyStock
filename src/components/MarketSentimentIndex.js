@@ -445,7 +445,10 @@ const MarketSentimentIndex = () => {
                   </div>
                   <div className="gauge-labels">
                     <span className="gauge-label gauge-label-left">極度恐懼</span>
-                    <span className="gauge-label gauge-label-right">極度樂觀</span>
+                    <span className="gauge-label gauge-label-right">極度貪婪</span>
+                  </div>
+                  <div className="last-update-time">
+                    最後更新時間: {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString('zh-TW')}
                   </div>
                 </div>
               ) : (

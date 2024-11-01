@@ -339,3 +339,13 @@
     margin-top: 20px; /* 在小螢幕上使用較小的間距 */
   }
 }
+
+.last-update-time {
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  margin-top: 118px;  /* 增加上方間距 */
+  margin-bottom: 15px;
+  position: relative;  /* 確保位置正確 */
+  z-index: 1;  /* 確保文字在最上層 */
+}
