@@ -136,7 +136,16 @@
   width: 100%;
   max-height: 400px;
   overflow: hidden;
-  margin-bottom: 30px; /* 增加底部間距 */
+  margin-bottom: 30px;
+  padding-bottom: 10px;  /* 增加底部內邊距 */
+}
+
+/* 在小螢幕上調整 */
+@media (max-width: 768px) {
+  .indicator-chart-container {
+    margin-bottom: 20px;
+    padding-bottom: 10px;  /* 在小螢幕上使用較小的內邊距 */
+  }
 }
 
 /* 平板電腦和桌面版面配置 */
