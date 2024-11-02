@@ -275,7 +275,7 @@ body {
 }
 
 .form-control {
-  width: 110px;
+  width: 150px;  /* 改為固定寬度 150px */
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -283,7 +283,6 @@ body {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  transform: translateZ(0);  /* 強制硬件加速 */
 }
 
 /* 為日期輸入框添加特定樣式 */
@@ -459,4 +458,17 @@ input[type="date"].form-control {
     overflow: hidden;
     text-overflow: ellipsis;  /* 如果文字太長，顯示省略號 */
   }
+}
+
+/* 為 DatePicker 添加特定樣式 */
+.react-datepicker-wrapper {
+  width: 150px !important;  /* 強制設定寬度 */
+}
+
+.react-datepicker__input-container {
+  width: 100%;  /* 使輸入框填滿容器 */
+}
+
+.react-datepicker__input-container input {
+  width: 150px !important;  /* 強制設定輸入框寬度 */
 }

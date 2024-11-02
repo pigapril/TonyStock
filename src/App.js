@@ -15,6 +15,8 @@ import {
 } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import './App.css';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 // 引入所有需要的圖標，包括 FaHeartbeat 和 FaBars
 import { FaChartLine, FaInfoCircle, FaChartBar, FaHeartbeat, FaBars} from 'react-icons/fa';
@@ -201,7 +203,13 @@ function App() {
 
     } catch (error) {
       console.error('Error fetching data:', error);
-      setTimeoutMessage('發生錯誤，請稍後再試');
+      
+      // 修改錯誤判斷邏輯
+      if (error.response && error.response.status === 404) {
+        setTimeoutMessage('您輸入的股票代碼不存在，代碼範例：台股0050、美股AAPL');
+      } else {
+        setTimeoutMessage('發生錯誤，請稍後再試');
+      }
       
       Analytics.error({
         type: 'API_ERROR',
@@ -740,7 +748,7 @@ function App() {
                               type="text"
                               value={stockCode}
                               onChange={handleStockCodeChange}
-                              placeholder="輸入股票代碼"
+                              placeholder="例如:2330、AAPL"
                               required
                               style={{ width: '150px' }}
                             />
@@ -767,12 +775,14 @@ function App() {
                           </div>
                           <div className="input-group">
                             <label>回測日期：</label>
-                            <input
+                            <DatePicker
+                              selected={backTestDate ? new Date(backTestDate) : null}
+                              onChange={(date) => setBackTestDate(date ? date.toISOString().split('T')[0] : '')}
+                              placeholderText="預設為今日"
                               className="form-control"
-                              type="date"
-                              value={backTestDate}
-                              onChange={(e) => setBackTestDate(e.target.value)}
-                              style={{ width: '150px' }}  // 添加這行，使寬度與其他輸入框一致
+                              dateFormat="yyyy/MM/dd"
+                              isClearable
+                              style={{ width: '150px' }}
                             />
                           </div>
                           <button 
