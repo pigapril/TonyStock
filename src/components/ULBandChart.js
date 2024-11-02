@@ -27,7 +27,7 @@ const ULBandChart = ({ data }) => {
             {
                 label: '上軌',
                 data: data.upperBand,
-                borderColor: 'red',
+                borderColor: '#A0361B',  // 極度貪婪 - 深紅褐色
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0
@@ -35,7 +35,7 @@ const ULBandChart = ({ data }) => {
             {
                 label: 'MA20',
                 data: data.ma20,
-                borderColor: 'blue',
+                borderColor: '#E9972D',  // 中性 - 橙黃色
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0
@@ -43,7 +43,7 @@ const ULBandChart = ({ data }) => {
             {
                 label: '價格',
                 data: data.prices,
-                borderColor: 'gray',
+                borderColor: 'blue',     // 保持與標準差分析相同的藍色
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0
@@ -51,7 +51,7 @@ const ULBandChart = ({ data }) => {
             {
                 label: '下軌',
                 data: data.lowerBand,
-                borderColor: 'green',
+                borderColor: '#143829',  // 極度恐懼 - 深墨綠色
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0

@@ -107,13 +107,13 @@ const StyledGaugeChart = styled(GaugeChart)`
   }
 `;
 
-// 定義漸變色
+// 修改漸變色定義，從極度恐懼到極度貪婪
 const gradients = [
-  ['#FF0000', '#FF4500'],  // 紅色到橙紅色
-  ['#FF4500', '#FFA500'],  // 橙紅色到橙色
-  ['#FFA500', '#FFFF00'],  // 橙色到黃色
-  ['#FFFF00', '#7CFC00'],  // 黃色到淺綠色
-  ['#7CFC00', '#00FF00']   // 淺綠色到綠色
+  ['#143829', '#1A432F'],  // 極度恐懼 - 深墨綠色
+  ['#2B5B3F', '#326B4A'],  // 恐懼 - 深綠色
+  ['#E9972D', '#EBA542'],  // 中性 - 橙黃色
+  ['#C4501B', '#D05E2A'],  // 貪婪 - 橙紅色
+  ['#A0361B', '#B13D1F']   // 極度貪婪 - 深紅褐色
 ];
 
 const MarketSentimentIndex = () => {
@@ -235,20 +235,44 @@ const MarketSentimentIndex = () => {
         label: '市場情緒指數',
         yAxisID: 'left-axis',
         data: filteredData.map((item) => item.compositeScore),
-        borderColor: 'rgba(255, 99, 132, 1)', // 改為粉紅色
-        backgroundColor: 'rgba(255, 99, 132, 0.2)', // 添加淡粉色背景
+        borderColor: '#C78F57',
+        backgroundColor: (context) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) return null;
+          
+          // 創建垂直漸層，使用相同顏色但不同透明度
+          const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+          gradient.addColorStop(0, 'rgba(199, 143, 87, 0)');     // #C78F57 完全透明
+          gradient.addColorStop(0.5, 'rgba(199, 143, 87, 0.2)'); // #C78F57 半透明
+          gradient.addColorStop(1, 'rgba(199, 143, 87, 0.4)');   // #C78F57 較不透明
+          
+          return gradient;
+        },
         fill: true,
-        tension: 0.1,
+        tension: 0.4,
         pointRadius: 0,
       },
       {
         label: 'SPY 價格',
         yAxisID: 'right-axis',
         data: filteredData.map((item) => item.spyClose),
-        borderColor: 'rgba(54, 162, 235, 1)', // 改為藍色
-        backgroundColor: 'rgba(54, 162, 235, 0.2)', // 添加淡藍色背景
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: (context) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) return null;
+          
+          // 創建垂直漸層
+          const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+          gradient.addColorStop(0, 'rgba(54, 162, 235, 0)');     // 完全透明
+          gradient.addColorStop(0.5, 'rgba(54, 162, 235, 0.2)'); // 半透明
+          gradient.addColorStop(1, 'rgba(54, 162, 235, 0.4)');   // 較不透明
+          
+          return gradient;
+        },
         fill: true,
-        tension: 0.1,
+        tension: 0.4, // 增加曲線的平滑度
         pointRadius: 0,
       },
     ],
@@ -334,10 +358,14 @@ const MarketSentimentIndex = () => {
     <StyledGaugeChart
       id="gauge-chart"
       nrOfLevels={5}
+      colors={[
+        '#143829',  // 極度恐懼
+        '#2B5B3F',  // 恐懼
+        '#E9972D',  // 中性
+        '#C4501B',  // 貪婪
+        '#A0361B'   // 極度貪婪
+      ]}
       percent={sentimentData.totalScore / 100}
-      textColor="#333"
-      needleColor="#464A4F"
-      needleBaseColor="#464A4F"
       arcWidth={0.3}
       cornerRadius={5}
       animDelay={0}

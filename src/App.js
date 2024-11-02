@@ -149,7 +149,7 @@ function App() {
           {
             label: 'Trend Line',
             data: sdAnalysis.trendLine,
-            borderColor: 'black',
+            borderColor: '#E9972D',
             borderWidth: 2,
             fill: false,
             pointRadius: 0
@@ -157,7 +157,7 @@ function App() {
           {
             label: 'TL-2SD',
             data: sdAnalysis.tl_minus_2sd,
-            borderColor: 'darkgreen',
+            borderColor: '#143829',
             borderWidth: 2,
             fill: false,
             pointRadius: 0
@@ -165,7 +165,7 @@ function App() {
           {
             label: 'TL-SD',
             data: sdAnalysis.tl_minus_sd,
-            borderColor: 'lightgreen',
+            borderColor: '#2B5B3F',
             borderWidth: 2,
             fill: false,
             pointRadius: 0
@@ -173,7 +173,7 @@ function App() {
           {
             label: 'TL+SD',
             data: sdAnalysis.tl_plus_sd,
-            borderColor: 'lightcoral',
+            borderColor: '#C4501B',
             borderWidth: 2,
             fill: false,
             pointRadius: 0
@@ -181,7 +181,7 @@ function App() {
           {
             label: 'TL+2SD',
             data: sdAnalysis.tl_plus_2sd,
-            borderColor: 'red',
+            borderColor: '#A0361B',
             borderWidth: 2,
             fill: false,
             pointRadius: 0
@@ -320,7 +320,7 @@ function App() {
                 {
                   label: 'Trend Line',
                   data: stockData.trendLine,
-                  borderColor: 'black',
+                  borderColor: '#E9972D',
                   borderWidth: 2,
                   fill: false,
                   pointRadius: 0
@@ -328,7 +328,7 @@ function App() {
                 {
                   label: 'TL-2SD',
                   data: stockData.tl_minus_2sd,
-                  borderColor: 'green',
+                  borderColor: '#143829',
                   borderWidth: 2,
                   fill: false,
                   pointRadius: 0
@@ -336,7 +336,7 @@ function App() {
                 {
                   label: 'TL-SD',
                   data: stockData.tl_minus_sd,
-                  borderColor: 'lightgreen',
+                  borderColor: '#2B5B3F',
                   borderWidth: 2,
                   fill: false,
                   pointRadius: 0
@@ -344,7 +344,7 @@ function App() {
                 {
                   label: 'TL+SD',
                   data: stockData.tl_plus_sd,
-                  borderColor: 'lightcoral',
+                  borderColor: '#C4501B',
                   borderWidth: 2,
                   fill: false,
                   pointRadius: 0
@@ -352,7 +352,7 @@ function App() {
                 {
                   label: 'TL+2SD',
                   data: stockData.tl_plus_2sd,
-                  borderColor: 'red',
+                  borderColor: '#A0361B',
                   borderWidth: 2,
                   fill: false,
                   pointRadius: 0
