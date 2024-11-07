@@ -132,7 +132,17 @@ function App() {
         timeout: 30000
       });
 
-      const { dates, prices, sdAnalysis, ulbandAnalysis } = response.data;
+      const { data } = response.data;
+      const {
+        dates,
+        prices,
+        sdAnalysis,
+        weeklyDates,
+        weeklyPrices,
+        upperBand,
+        lowerBand,
+        ma20
+      } = data;
 
       // 設置標準差圖表數據
       setChartData({
@@ -194,11 +204,11 @@ function App() {
 
       // 設置超漲超跌通道數據
       setUlbandData({
-        dates: ulbandAnalysis.dates,
-        prices: ulbandAnalysis.prices,
-        upperBand: ulbandAnalysis.upperBand,
-        lowerBand: ulbandAnalysis.lowerBand,
-        ma20: ulbandAnalysis.ma20
+        dates: weeklyDates,
+        prices: weeklyPrices,
+        upperBand,
+        lowerBand,
+        ma20
       });
 
     } catch (error) {
