@@ -214,16 +214,17 @@ function App() {
     } catch (error) {
       console.error('Error fetching data:', error);
       
-      // 修改錯誤判斷邏輯
-      if (error.response && error.response.status === 404) {
-        setTimeoutMessage('您輸入的股票代碼不存在，代碼範例：台股0050、美股AAPL');
+      // 使用後端提供的錯誤訊息
+      if (error.response && error.response.data) {
+        setTimeoutMessage(error.response.data.message);
       } else {
         setTimeoutMessage('發生錯誤，請稍後再試');
       }
       
       Analytics.error({
         type: 'API_ERROR',
-        message: error.message,
+        errorCode: error.response?.data?.errorCode || 'UNKNOWN_ERROR',
+        message: error.response?.data?.message || error.message,
         stockCode,
         years: yearsToUse
       });
