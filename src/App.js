@@ -17,6 +17,7 @@ import 'chartjs-adapter-date-fns';
 import './App.css';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import SignInButton from './components/Auth/SignInButton';
 
 // 引入所有需要的圖標，包括 FaHeartbeat 和 FaBars
 import { FaChartLine, FaInfoCircle, FaChartBar, FaHeartbeat, FaBars} from 'react-icons/fa';
@@ -560,8 +561,7 @@ function App() {
               <FaBars />
             </div>
             <div className="user-actions">
-              {/* <button className="btn-primary">Sign In</button>
-              <button className="btn-secondary">Register</button> */}
+              <SignInButton />
             </div>
           </header>
 

@@ -108,8 +108,12 @@ body {
   cursor: pointer;
 }
 
-.user-actions button {
-  margin-left: 10px;
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto; /* 將按鈕推到右側 */
+  padding-right: 20px; /* 添加一些右側間距 */
 }
 
 .content-area {
