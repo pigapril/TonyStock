@@ -1,6 +1,6 @@
 import { useContext, useCallback } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import Analytics from '../utils/analytics';
+import { Analytics } from '../utils/analytics';
 
 export function useAuth() {
     const context = useContext(AuthContext);

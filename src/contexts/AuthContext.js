@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import Analytics from '../utils/analytics';
+import { Analytics } from '../utils/analytics';
 import { handleApiError } from '../utils/errorHandler';
 
 export const AuthContext = createContext(null);

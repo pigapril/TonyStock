@@ -32,6 +32,10 @@ import ULBandChart from './components/ULBandChart';
 import { Analytics } from './utils/analytics';
 import { handleApiError } from './utils/errorHandler';
 
+// 新增 AuthProvider 和 useAuth 的引入
+import { AuthProvider } from './contexts/AuthContext';
+import { useAuth } from './hooks/useAuth';
+
 // 獲取 API 基礎 URL
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('REACT_APP_API_BASE_URL:', process.env.REACT_APP_API_BASE_URL);
@@ -83,9 +87,7 @@ function getTimeUnit(dates) {
   }
 }
 
-// 新增 AuthProvider 和 useAuth 的引入
-import { AuthProvider } from './contexts/AuthContext';
-import { useAuth } from './hooks/useAuth';
+
 
 // 建立 AppContent 元件來使用 useAuth
 function AppContent() {

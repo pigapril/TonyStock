@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import Analytics from '../../utils/analytics';
+import { Analytics } from '../../utils/analytics';
 import './styles/UserProfile.css';
 
 export const UserProfile = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import Analytics from '../../utils/analytics';
+import { Analytics } from '../../utils/analytics';
 import './styles/SignInButton.css';
 import { handleApiError } from '../../utils/errorHandler';
 

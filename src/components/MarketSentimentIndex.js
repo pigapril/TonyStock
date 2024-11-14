@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { handleApiError } from '../../utils/errorHandler';
-import Analytics from '../../utils/analytics';
+import { handleApiError } from '../utils/errorHandler';
+import { Analytics } from '../utils/analytics';
 import './MarketSentimentIndex.css';
 import 'chartjs-adapter-date-fns';
 import GaugeChart from 'react-gauge-chart';
