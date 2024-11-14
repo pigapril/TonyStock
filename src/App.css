@@ -108,8 +108,15 @@ body {
   cursor: pointer;
 }
 
-.user-actions button {
-  margin-left: 10px;
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-actions .btn-primary {
+  font-size: 14px;
+  padding: 8px 16px;
 }
 
 .content-area {
@@ -201,9 +208,9 @@ body {
     font-size: 18px;
   }
 
-  .user-actions button {
-    padding: 5px 10px;
-    font-size: 14px;
+  .user-actions .btn-primary {
+    font-size: 12px;
+    padding: 6px 12px;
   }
 
   #chartjs-tooltip {

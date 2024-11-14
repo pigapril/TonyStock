@@ -30,6 +30,7 @@ import PageContainer from './components/PageContainer';
 import ULBandChart from './components/ULBandChart';
 
 import { Analytics } from './utils/analytics';
+import { handleApiError } from './utils/errorHandler';
 
 // 獲取 API 基礎 URL
 console.log('NODE_ENV:', process.env.NODE_ENV);
@@ -82,7 +83,12 @@ function getTimeUnit(dates) {
   }
 }
 
-function App() {
+// 新增 AuthProvider 和 useAuth 的引入
+import { AuthProvider } from './contexts/AuthContext';
+import { useAuth } from './hooks/useAuth';
+
+// 建立 AppContent 元件來使用 useAuth
+function AppContent() {
   const [stockCode, setStockCode] = useState('');
   const [years, setYears] = useState('3.5');
   const [yearsError, setYearsError] = useState('');
@@ -215,16 +221,13 @@ function App() {
       console.error('Error fetching data:', error);
       
       // 使用後端提供的錯誤訊息
-      if (error.response && error.response.data) {
-        setTimeoutMessage(error.response.data.message);
-      } else {
-        setTimeoutMessage('發生錯誤，請稍後再試');
-      }
+      const handledError = handleApiError(error);
+      setTimeoutMessage(handledError.message);
       
       Analytics.error({
-        type: 'API_ERROR',
-        errorCode: error.response?.data?.errorCode || 'UNKNOWN_ERROR',
-        message: error.response?.data?.message || error.message,
+        status: handledError.status,
+        errorCode: handledError.errorCode,
+        message: handledError.message,
         stockCode,
         years: yearsToUse
       });
@@ -483,6 +486,7 @@ function App() {
   };
 
   const location = useLocation();
+  const { user, googleLogin, logout } = useAuth(); // 使用 auth context
 
   useEffect(() => {
     // 重置側邊欄寬度
@@ -560,8 +564,11 @@ function App() {
               <FaBars />
             </div>
             <div className="user-actions">
-              {/* <button className="btn-primary">Sign In</button>
-              <button className="btn-secondary">Register</button> */}
+              {user ? (
+                <button className="btn-primary" onClick={logout}>登出</button>
+              ) : (
+                <button className="btn-primary" onClick={googleLogin}>登入</button>
+              )}
             </div>
           </header>
 
@@ -833,6 +840,15 @@ function App() {
         <Overlay isVisible={sidebarOpen && isMobile} onClick={closeSidebar} />
       </div>
     </div>
+  );
+}
+
+// 修改主要的 App 元件
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

@@ -29,17 +29,45 @@ export const Analytics = {
     }
   },
 
+  // 認證相關追蹤
+  auth: {
+    login: (data) => {
+      pushToDataLayer('auth_login', {
+        method: data.method,
+        status: data.status
+      });
+    },
+    
+    logout: (data) => {
+      pushToDataLayer('auth_logout', {
+        status: data.status
+      });
+    },
+    
+    statusCheck: (data) => {
+      pushToDataLayer('auth_status_check', {
+        status: data.status
+      });
+    }
+  },
+
   // 頁面瀏覽追蹤
   pageView: (pageData) => {
     pushToDataLayer('page_view', pageData);
   },
 
   // 錯誤追蹤
-  error: (errorData) => {
-    pushToDataLayer('error', {
-      error_type: errorData.type,
-      error_message: errorData.message,
-      ...errorData
-    });
+  error: ({ status, errorCode, message, ...metadata }) => {
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'error',
+        error: {
+          status,
+          errorCode,
+          message,
+          ...metadata
+        }
+      });
+    }
   }
 };

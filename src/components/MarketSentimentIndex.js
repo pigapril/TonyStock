@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { handleApiError } from '../../utils/errorHandler';
+import Analytics from '../../utils/analytics';
 import './MarketSentimentIndex.css';
 import 'chartjs-adapter-date-fns';
 import GaugeChart from 'react-gauge-chart';
@@ -145,7 +147,14 @@ const MarketSentimentIndex = () => {
         }
       } catch (error) {
         if (isMounted) {
-          console.error('獲取市場情緒數據時出錯:', error);
+          const handledError = handleApiError(error);
+          Analytics.error({
+            status: handledError.status,
+            errorCode: handledError.errorCode,
+            message: handledError.message,
+            component: 'MarketSentimentIndex',
+            action: 'fetchSentimentData'
+          });
         }
       } finally {
         if (isMounted) {
@@ -174,7 +183,14 @@ const MarketSentimentIndex = () => {
           }));
         setHistoricalData(formattedData);
       } catch (error) {
-        console.error('獲取歷史綜合指數數據時出錯:', error);
+        const handledError = handleApiError(error);
+        Analytics.error({
+          status: handledError.status,
+          errorCode: handledError.errorCode,
+          message: handledError.message,
+          component: 'MarketSentimentIndex',
+          action: 'fetchHistoricalData'
+        });
       }
     }
 
