@@ -1,5 +1,8 @@
+// React 相關
 import React, { useState, useEffect, useCallback } from 'react';
-import { useLocation, Link, Route, Routes } from 'react-router-dom'; // 移除 BrowserRouter
+import { useLocation, Link, Route, Routes } from 'react-router-dom';
+
+// 第三方庫
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import {
@@ -13,28 +16,31 @@ import {
   Legend,
   TimeScale
 } from 'chart.js';
-import 'chartjs-adapter-date-fns';
-import './App.css';
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
-
-// 引入所有需要的圖標，包括 FaHeartbeat 和 FaBars
-import { FaChartLine, FaInfoCircle, FaChartBar, FaHeartbeat, FaBars} from 'react-icons/fa';
-
-// 引入 'react-responsive' 的 useMediaQuery
 import { useMediaQuery } from 'react-responsive';
+import { FaChartLine, FaInfoCircle, FaChartBar, FaHeartbeat, FaBars } from 'react-icons/fa';
 
+// 樣式引入
+import './App.css';
+import "react-datepicker/dist/react-datepicker.css";
+import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-crosshair';
+
+// 自定義組件
+import { ProtectedRoute } from './components/Common/ProtectedRoute';
 import MarketSentimentIndex from './components/MarketSentimentIndex';
 import PageContainer from './components/PageContainer';
 import ULBandChart from './components/ULBandChart';
+import { GoogleCallback } from './components/Auth/GoogleCallback';
+import { SignInDialog } from './components/Auth/SignInDialog';
 
-import { Analytics } from './utils/analytics';
-import { handleApiError } from './utils/errorHandler';
-
-// 新增 AuthProvider 和 useAuth 的引入
+// Context 和 Hooks
 import { AuthProvider } from './contexts/AuthContext';
 import { useAuth } from './hooks/useAuth';
+
+// 工具函數
+import { Analytics } from './utils/analytics';
+import { handleApiError } from './utils/errorHandler';
 
 // 獲取 API 基礎 URL
 console.log('NODE_ENV:', process.env.NODE_ENV);
@@ -86,8 +92,6 @@ function getTimeUnit(dates) {
     return 'day';
   }
 }
-
-
 
 // 建立 AppContent 元件來使用 useAuth
 function AppContent() {
@@ -488,7 +492,7 @@ function AppContent() {
   };
 
   const location = useLocation();
-  const { user, googleLogin, logout } = useAuth(); // 使用 auth context
+  const { user, logout } = useAuth(); // 使用 auth context
 
   useEffect(() => {
     // 重置側邊欄寬度
@@ -511,6 +515,8 @@ function AppContent() {
     Analytics.stockAnalysis.chartSwitch(chartType);
     setActiveChart(chartType);
   };
+
+  const [showSignInDialog, setShowSignInDialog] = useState(false);
 
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
@@ -569,7 +575,12 @@ function AppContent() {
               {user ? (
                 <button className="btn-primary" onClick={logout}>登出</button>
               ) : (
-                <button className="btn-primary" onClick={googleLogin}>登入</button>
+                <button 
+                  className="btn-primary" 
+                  onClick={() => setShowSignInDialog(true)}
+                >
+                  登入
+                </button>
               )}
             </div>
           </header>
@@ -826,14 +837,17 @@ function AppContent() {
               <Route 
                 path="/market-sentiment" 
                 element={
-                  <PageContainer
-                    title="市場情緒分析"
-                    description="分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入的機會。"
-                  >
-                    <MarketSentimentIndex />
-                  </PageContainer>
+                  <ProtectedRoute>
+                    <PageContainer
+                      title="市場情緒分析"
+                      description="分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入的機會。"
+                    >
+                      <MarketSentimentIndex />
+                    </PageContainer>
+                  </ProtectedRoute>
                 } 
               />
+              <Route path="/auth/callback" element={<GoogleCallback />} />
             </Routes>
           </div>
         </main>
@@ -841,6 +855,10 @@ function AppContent() {
         {/* 添加遮罩層 */}
         <Overlay isVisible={sidebarOpen && isMobile} onClick={closeSidebar} />
       </div>
+      <SignInDialog 
+        isOpen={showSignInDialog} 
+        onClose={() => setShowSignInDialog(false)} 
+      />
     </div>
   );
 }
@@ -853,5 +871,5 @@ function App() {
     </AuthProvider>
   );
 }
-
 export default App;
+

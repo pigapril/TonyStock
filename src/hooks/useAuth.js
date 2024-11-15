@@ -1,6 +1,7 @@
 import { useContext, useCallback } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { Analytics } from '../utils/analytics';
+import authService from '../services/auth.service';
 
 export function useAuth() {
     const context = useContext(AuthContext);
@@ -11,22 +12,46 @@ export function useAuth() {
 
     const { user, loading, error, logout, checkAuthStatus } = context;
 
-    // Google 登入
-    const googleLogin = useCallback(() => {
-        Analytics.auth.login({ method: 'google', status: 'start' });
-        window.location.href = `${process.env.REACT_APP_API_BASE_URL}/api/auth/google/login`;
+    const googleLogin = useCallback(async () => {
+        try {
+            Analytics.auth.login({ method: 'google', status: 'start' });
+            await authService.googleLogin();
+        } catch (error) {
+            Analytics.auth.login({ 
+                method: 'google', 
+                status: 'error',
+                error: error.message 
+            });
+            throw error;
+        }
     }, []);
 
-    // 檢查是否已登入
-    const isAuthenticated = Boolean(user);
+    const handleGoogleCallback = useCallback(async () => {
+        try {
+            await checkAuthStatus();
+            
+            Analytics.auth.login({ 
+                method: 'google', 
+                status: 'success' 
+            });
+        } catch (error) {
+            Analytics.auth.login({ 
+                method: 'google', 
+                status: 'error',
+                error: error.message 
+            });
+            throw error;
+        }
+    }, [checkAuthStatus]);
 
     return {
         user,
         loading,
         error,
-        isAuthenticated,
+        isAuthenticated: Boolean(user),
         googleLogin,
         logout,
-        checkAuthStatus
+        checkAuthStatus,
+        handleGoogleCallback
     };
 } 

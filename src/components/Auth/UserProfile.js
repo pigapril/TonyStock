@@ -24,9 +24,10 @@ export const UserProfile = () => {
 
     const handleLogout = async () => {
         try {
-            setIsOpen(false);
-            await logout();
-            Analytics.auth.logout({ status: 'success' });
+            const response = await authService.logout();
+            if (response.status === 'success') {
+                setIsOpen(false);
+            }
         } catch (error) {
             Analytics.error({
                 type: 'AUTH_ERROR',

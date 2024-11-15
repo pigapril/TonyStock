@@ -1,3 +1,5 @@
+import { Analytics } from './analytics';
+
 const ErrorMessages = {
     // 後端定義的錯誤
     STOCK_NOT_FOUND: '股票代碼不存在',
@@ -19,45 +21,88 @@ const ErrorMessages = {
     HISTORICAL_DATA_ERROR: '無法取得歷史數據',
     
     // 預設錯誤
-    DEFAULT_ERROR: '發生錯誤，請稍後再試'
+    DEFAULT_ERROR: '發生錯誤，請稍後再試',
+    
+    // Google 登入相關錯誤
+    GOOGLE_AUTH_FAILED: 'Google 登入失敗，請稍後再試',
+    GOOGLE_AUTH_CANCELLED: '已取消 Google 登入',
+    GOOGLE_AUTH_POPUP_BLOCKED: '請允許彈出視窗以完成登入',
+    GOOGLE_AUTH_INVALID_STATE: '登入狀態無效，請重新嘗試',
+    GOOGLE_AUTH_NETWORK_ERROR: 'Google 登入網路連線異常',
+    GOOGLE_AUTH_SERVER_ERROR: 'Google 登入伺服器錯誤',
+    
+    // 新增按鈕相關錯誤
+    BUTTON_DISABLED: '按鈕暫時無法使用',
+    BUTTON_NETWORK_ERROR: '網路連線異常，請重試',
+    BUTTON_TIMEOUT: '操作逾時，請重試'
 };
 
 export const handleApiError = (error) => {
+    // 統一錯誤追蹤格式
+    const trackError = (errorData) => {
+        Analytics.error({
+            status: errorData.status,
+            errorCode: errorData.errorCode,
+            message: errorData.message,
+            component: error.component || 'Unknown',
+            path: window.location.pathname,
+            timestamp: new Date().toISOString()
+        });
+        return errorData;
+    };
+
+    // 處理 Google OAuth 特定錯誤
+    if (error.response?.data?.errorCode?.startsWith('GOOGLE_AUTH_')) {
+        return trackError({
+            status: 'error',
+            errorCode: error.response.data.errorCode,
+            message: ErrorMessages[error.response.data.errorCode] || ErrorMessages.GOOGLE_AUTH_FAILED
+        });
+    }
+    
     // 如果是 API 回傳的錯誤
     if (error.response?.data) {
-        const { status, errorCode, message } = error.response.data;
-        return {
+        const { status, data } = error.response.data;
+        return trackError({
             status,
-            errorCode,
-            // 優先使用本地化的錯誤訊息
-            message: ErrorMessages[errorCode] || message || ErrorMessages.DEFAULT_ERROR
-        };
+            errorCode: data.errorCode,
+            message: ErrorMessages[data.errorCode] || data.message || ErrorMessages.DEFAULT_ERROR
+        });
+    }
+
+    // 處理 Invalid response format 錯誤
+    if (error.message === 'Invalid response format') {
+        return trackError({
+            status: 'error',
+            errorCode: 'GOOGLE_AUTH_FAILED',
+            message: ErrorMessages.GOOGLE_AUTH_FAILED
+        });
     }
     
     // 處理網路錯誤
     if (error.message === 'Network Error') {
-        return {
+        return trackError({
             status: 'error',
             errorCode: 'NETWORK_ERROR',
             message: ErrorMessages.NETWORK_ERROR
-        };
+        });
     }
     
     // 處理超時
     if (error.code === 'ECONNABORTED') {
-        return {
+        return trackError({
             status: 'error',
             errorCode: 'TIMEOUT_ERROR',
             message: ErrorMessages.TIMEOUT_ERROR
-        };
+        });
     }
     
     // 預設錯誤
-    return {
+    return trackError({
         status: 'error',
         errorCode: 'UNKNOWN_ERROR',
         message: ErrorMessages.DEFAULT_ERROR
-    };
+    });
 };
 
 // 導出錯誤訊息供其他模組使用

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { SignInButton } from './SignInButton';
-import Analytics from '../../utils/analytics';
+import { Analytics } from '../../utils/analytics';
 import './styles/SignInDialog.css';
 
 export const SignInDialog = ({ isOpen, onClose }) => {

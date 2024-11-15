@@ -34,7 +34,9 @@ export const Analytics = {
     login: (data) => {
       pushToDataLayer('auth_login', {
         method: data.method,
-        status: data.status
+        status: data.status,
+        variant: data.variant,
+        component: data.component
       });
     },
     
@@ -67,6 +69,17 @@ export const Analytics = {
           message,
           ...metadata
         }
+      });
+    }
+  },
+
+  // 新增按鈕相關追蹤
+  button: {
+    click: (data) => {
+      pushToDataLayer('button_click', {
+        component: data.component,
+        variant: data.variant,
+        action: data.action
       });
     }
   }

@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { Analytics } from '../utils/analytics';
+import authService from '../services/auth.service';
 import { handleApiError } from '../utils/errorHandler';
 
 export const AuthContext = createContext(null);
@@ -17,28 +18,12 @@ export function AuthProvider({ children }) {
     // 檢查認證狀態
     const checkAuthStatus = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/status`, {
-                credentials: 'include'
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                setUser(data.user);
-                Analytics.auth.statusCheck({ status: 'success' });
-            } else {
-                setUser(null);
-                const errorData = await response.json();
-                const error = handleApiError({ response: { data: errorData } });
-                setError(error.message);
-            }
+            const { user: userData } = await authService.checkStatus();
+            setUser(userData);
+            Analytics.auth.statusCheck({ status: 'success' });
         } catch (error) {
-            const handledError = handleApiError(error);
-            setError(handledError.message);
-            Analytics.error({
-                type: 'AUTH_ERROR',
-                code: handledError.code || 500,
-                message: handledError.message
-            });
+            setUser(null);
+            handleError(error);
         } finally {
             setLoading(false);
         }
@@ -47,27 +32,40 @@ export function AuthProvider({ children }) {
     // 登出處理
     const logout = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/logout`, {
-                method: 'POST',
-                credentials: 'include'
+            await authService.logout();
+            setUser(null);
+            Analytics.auth.logout({ status: 'success' });
+        } catch (error) {
+            handleError(error);
+        }
+    };
+
+    const handleError = (error) => {
+        const errorData = handleApiError(error);
+        setError(errorData.data);
+        setLoading(false);
+    };
+
+    const resetError = () => setError(null);
+
+    const handleGoogleCallback = async (code, state) => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/google/callback`, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
 
-            if (response.ok) {
-                setUser(null);
-                Analytics.auth.logout({ status: 'success' });
-            } else {
-                const errorData = await response.json();
-                const error = handleApiError({ response: { data: errorData } });
-                throw new Error(error.message);
+            if (!response.ok) {
+                throw new Error('Google callback failed');
             }
+
+            await checkAuthStatus();  // 重新檢查認證狀態
         } catch (error) {
-            const handledError = handleApiError(error);
-            setError(handledError.message);
-            Analytics.error({
-                type: 'AUTH_ERROR',
-                code: handledError.code || 500,
-                message: handledError.message
-            });
+            handleError(error);
+            throw error;
         }
     };
 
@@ -75,8 +73,10 @@ export function AuthProvider({ children }) {
         user,
         loading,
         error,
+        resetError,
         logout,
-        checkAuthStatus
+        checkAuthStatus,
+        handleGoogleCallback
     };
 
     return (

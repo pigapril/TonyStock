@@ -1,4 +1,4 @@
-import Analytics from '../utils/analytics';
+import { Analytics } from '../utils/analytics';
 import { handleApiError } from '../utils/errorHandler';
 
 class AuthService {
@@ -18,7 +18,8 @@ class AuthService {
                 throw { response: { data: errorData } };
             }
 
-            return await response.json();
+            const data = await response.json();
+            return data.data;
         } catch (error) {
             const handledError = handleApiError(error);
             throw handledError;
@@ -39,13 +40,10 @@ class AuthService {
             }
 
             Analytics.auth.logout({ status: 'success' });
-            return await response.json();
+            const data = await response.json();
+            return data.data;
         } catch (error) {
             const handledError = handleApiError(error);
-            Analytics.error({
-                type: handledError.type,
-                message: handledError.message
-            });
             throw handledError;
         }
     }
@@ -62,7 +60,33 @@ class AuthService {
                 throw { response: { data: errorData } };
             }
 
-            return await response.json();
+            const data = await response.json();
+            return data.data;
+        } catch (error) {
+            const handledError = handleApiError(error);
+            throw handledError;
+        }
+    }
+
+    // Google 登入
+    async googleLogin() {
+        try {
+            const response = await fetch(`${this.baseUrl}/api/auth/google/login`, {
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw { response: { data: errorData } };
+            }
+
+            const data = await response.json();
+            if (data?.data?.url) {
+                localStorage.setItem('auth_redirect', window.location.pathname);
+                window.location.href = data.data.url;
+            } else {
+                throw new Error('Invalid response format');
+            }
         } catch (error) {
             const handledError = handleApiError(error);
             throw handledError;
