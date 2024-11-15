@@ -100,23 +100,28 @@ body {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: 60px;
 }
 
 .menu-toggle {
   display: none;
   font-size: 24px;
   cursor: pointer;
+  flex: 0 0 auto;
 }
 
 .user-actions {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-left: auto;
 }
 
 .user-actions .btn-primary {
   font-size: 14px;
   padding: 8px 16px;
+  min-width: 80px;
+  text-align: center;
 }
 
 .content-area {
