@@ -27,6 +27,10 @@ body {
 
 /* 側邊欄樣式 */
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
   width: 250px;
   min-width: 250px;
   background-color: #ffffff;
@@ -34,6 +38,7 @@ body {
   transition: width 0.3s, transform 0.3s;
   overflow-y: auto;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  z-index: 1000;
 }
 
 .sidebar-header {
@@ -88,26 +93,35 @@ body {
 
 /* 主內容區域樣式 */
 .main-content {
+  margin-left: 250px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 .top-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 250px;
   background-color: white;
-  padding: 10px 20px;
+  padding: 5px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  height: 60px;
+  height: 50px;
+  z-index: 999;
+  transition: left 0.3s, transform 0.3s;  /* 添加過渡效果 */
 }
 
 .menu-toggle {
   display: none;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
   flex: 0 0 auto;
+  padding: 4px;
 }
 
 .user-actions {
@@ -115,18 +129,20 @@ body {
   align-items: center;
   gap: 10px;
   margin-left: auto;
+  padding-right: 5px;
 }
 
 .user-actions .btn-primary {
   font-size: 14px;
-  padding: 8px 16px;
-  height: 36px;
+  padding: 6px 14px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .content-area {
+  margin-top: 50px;
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
@@ -188,11 +204,7 @@ body {
   }
 
   .sidebar {
-    position: fixed;
     left: -250px;
-    top: 0;
-    bottom: 0;
-    z-index: 1000;
   }
 
   .sidebar.open {
@@ -204,6 +216,10 @@ body {
   }
 
   .App.sidebar-open .main-content {
+    transform: translateX(250px);
+  }
+
+  .App.sidebar-open .top-nav {
     transform: translateX(250px);
   }
 
@@ -492,6 +508,8 @@ input[type="date"].form-control {
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-left: auto;
+    padding-right: 5px;
 }
 
 /* UserProfile 在頂部導航欄中的特定樣式 */
@@ -500,7 +518,6 @@ input[type="date"].form-control {
     align-items: center;
     gap: 8px;
     position: relative;
-    margin-left: auto;
 }
 
 .top-nav .user-profile__trigger {
@@ -514,8 +531,8 @@ input[type="date"].form-control {
 }
 
 .top-nav .user-profile__avatar {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -539,11 +556,61 @@ input[type="date"].form-control {
 
 /* 響應式調整 */
 @media (max-width: 768px) {
+    .user-actions {
+        padding-right: 0;  /* 移除右側內邊距 */
+        margin-right: 20px;  /* 添加右側外邊距 */
+    }
+
     .top-nav .user-profile__name {
-        display: none; /* 在手機版隱藏用戶名稱 */
+        display: none;
     }
     
     .top-nav .user-profile__menu {
-        width: 180px; /* 在手機版縮小選單寬度 */
+        width: 180px;
+        right: -10px;  /* 向左移動選單 */
+    }
+
+    .top-nav .user-profile__avatar {
+        margin-right: 0;  /* 移除頭像右側邊距 */
+    }
+
+    /* 確保下拉選單不會超出螢幕 */
+    .top-nav .user-profile__menu {
+        right: 0;
+        max-width: calc(100vw - 30px);  /* 預留一些邊距 */
     }
 }
+
+/* 響應式設計調整 */
+@media (max-width: 768px) {
+  .sidebar {
+    left: -250px;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .top-nav {
+    left: 0;  /* 確保在行動裝置版延伸到左側 */
+    width: 100%;  /* 確保寬度為 100% */
+    padding: 5px 15px;  /* 稍微調整行動裝置版的內邊距 */
+  }
+
+  /* 當側邊欄開啟時的樣式 */
+  .App.sidebar-open .main-content {
+    transform: translateX(250px);
+  }
+
+  .App.sidebar-open .top-nav {
+    transform: translateX(250px);
+  }
+
+  /* 確保內容區域的邊距正確 */
+  .content-area {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 15px;  /* 調整行動裝置版的內邊距 */
+  }
+}
+
