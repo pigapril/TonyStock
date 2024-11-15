@@ -33,6 +33,7 @@ import PageContainer from './components/PageContainer';
 import ULBandChart from './components/ULBandChart';
 import { GoogleCallback } from './components/Auth/GoogleCallback';
 import { SignInDialog } from './components/Auth/SignInDialog';
+import { UserProfile } from './components/Auth/UserProfile';
 
 // Context 和 Hooks
 import { AuthProvider } from './contexts/AuthContext';
@@ -573,7 +574,7 @@ function AppContent() {
             </div>
             <div className="user-actions">
               {user ? (
-                <button className="btn-primary" onClick={logout}>登出</button>
+                <UserProfile />
               ) : (
                 <button 
                   className="btn-primary" 

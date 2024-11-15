@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Analytics } from '../../utils/analytics';
+import authService from '../../services/auth.service';
 import './styles/UserProfile.css';
 
 export const UserProfile = () => {
@@ -24,10 +25,8 @@ export const UserProfile = () => {
 
     const handleLogout = async () => {
         try {
-            const response = await authService.logout();
-            if (response.status === 'success') {
-                setIsOpen(false);
-            }
+            await logout();
+            setIsOpen(false);
         } catch (error) {
             Analytics.error({
                 type: 'AUTH_ERROR',

@@ -120,8 +120,10 @@ body {
 .user-actions .btn-primary {
   font-size: 14px;
   padding: 8px 16px;
-  min-width: 80px;
-  text-align: center;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .content-area {
@@ -483,4 +485,65 @@ input[type="date"].form-control {
 
 .react-datepicker__input-container input {
   width: 150px !important;  /* 強制設定輸入框寬度 */
+}
+
+/* 調整頂部導航欄的使用者操作區域 */
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* UserProfile 在頂部導航欄中的特定樣式 */
+.top-nav .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    margin-left: auto;
+}
+
+.top-nav .user-profile__trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.top-nav .user-profile__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.top-nav .user-profile__name {
+    color: #333;
+    font-size: 14px;
+}
+
+.top-nav .user-profile__menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 200px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 8px;
+    z-index: 1000;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+    .top-nav .user-profile__name {
+        display: none; /* 在手機版隱藏用戶名稱 */
+    }
+    
+    .top-nav .user-profile__menu {
+        width: 180px; /* 在手機版縮小選單寬度 */
+    }
 }
