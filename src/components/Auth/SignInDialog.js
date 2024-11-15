@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { SignInButton } from './SignInButton';
 import { Analytics } from '../../utils/analytics';
 import './styles/SignInDialog.css';
+import GoogleIcon from '../../assets/icons/google.svg';
 
 export const SignInDialog = ({ isOpen, onClose }) => {
     const dialogRef = useRef(null);
-    const { loading } = useAuth();
+    const { loading, googleLogin } = useAuth();
 
     useEffect(() => {
         const handleEscapeKey = (event) => {
@@ -31,6 +31,15 @@ export const SignInDialog = ({ isOpen, onClose }) => {
     }, [isOpen, onClose]);
 
     if (!isOpen) return null;
+
+    const handleGoogleLogin = async () => {
+        try {
+            await googleLogin();
+        } catch (error) {
+            console.error('Google login failed:', error);
+            // 可以在這裡添加錯誤處理邏輯
+        }
+    };
 
     return (
         <div 
@@ -76,7 +85,13 @@ export const SignInDialog = ({ isOpen, onClose }) => {
                     </div>
                 ) : (
                     <div className="signin-dialog__buttons">
-                        <SignInButton />
+                        <button 
+                            className="google-signin-button"
+                            onClick={handleGoogleLogin}
+                        >
+                            <img src={GoogleIcon} alt="Google" className="google-icon" />
+                            <span>使用 Google 帳號登入</span>
+                        </button>
                     </div>
                 )}
             </div>
