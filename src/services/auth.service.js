@@ -15,7 +15,7 @@ class AuthService {
             
             if (!response.ok) {
                 const errorData = await response.json();
-                throw { response: { data: errorData } };
+                throw new Error(JSON.stringify(errorData));
             }
 
             const data = await response.json();
@@ -36,7 +36,7 @@ class AuthService {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw { response: { data: errorData } };
+                throw new Error(JSON.stringify(errorData));
             }
 
             Analytics.auth.logout({ status: 'success' });
@@ -57,7 +57,7 @@ class AuthService {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw { response: { data: errorData } };
+                throw new Error(JSON.stringify(errorData));
             }
 
             const data = await response.json();
@@ -77,7 +77,7 @@ class AuthService {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw { response: { data: errorData } };
+                throw new Error(JSON.stringify(errorData));
             }
 
             const data = await response.json();
