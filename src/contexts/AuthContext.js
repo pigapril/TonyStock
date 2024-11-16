@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useCallback } from 'react';
 import { Analytics } from '../utils/analytics';
 import authService from '../services/auth.service';
 import { handleApiError } from '../utils/errorHandler';
@@ -10,13 +10,8 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // 初始化時檢查登入狀態
-    useEffect(() => {
-        checkAuthStatus();
-    }, []);
-
     // 檢查認證狀態
-    const checkAuthStatus = async () => {
+    const checkAuthStatus = useCallback(async () => {
         try {
             const { user: userData } = await authService.checkStatus();
             setUser(userData);
@@ -27,7 +22,12 @@ export function AuthProvider({ children }) {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
+
+    // 初始化時檢查登入狀態
+    useEffect(() => {
+        checkAuthStatus();
+    }, [checkAuthStatus]);
 
     // 登出處理
     const logout = async () => {

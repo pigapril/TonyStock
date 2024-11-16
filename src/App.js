@@ -1,6 +1,7 @@
 // React 相關
 import React, { useState, useEffect, useCallback } from 'react';
-import { useLocation, Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 
 // 第三方庫
 import axios from 'axios';
@@ -17,7 +18,6 @@ import {
   TimeScale
 } from 'chart.js';
 import DatePicker from 'react-datepicker';
-import { useMediaQuery } from 'react-responsive';
 import { FaChartLine, FaInfoCircle, FaChartBar, FaHeartbeat, FaBars } from 'react-icons/fa';
 
 // 樣式引入
@@ -27,17 +27,19 @@ import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-crosshair';
 
 // 自定義組件
-import { ProtectedRoute } from './components/Common/ProtectedRoute';
 import MarketSentimentIndex from './components/MarketSentimentIndex';
 import PageContainer from './components/PageContainer';
 import ULBandChart from './components/ULBandChart';
 import { GoogleCallback } from './components/Auth/GoogleCallback';
-import { SignInDialog } from './components/Auth/SignInDialog';
+import { AuthDialog } from './components/Auth/AuthDialog';
 import { UserProfile } from './components/Auth/UserProfile';
+import { PageViewTracker } from './components/Common/PageViewTracker';
 
 // Context 和 Hooks
 import { AuthProvider } from './contexts/AuthContext';
+import { DialogProvider } from './contexts/DialogContext';
 import { useAuth } from './hooks/useAuth';
+import { useDialog } from './hooks/useDialog';
 
 // 工具函數
 import { Analytics } from './utils/analytics';
@@ -52,24 +54,6 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:500
 axios.defaults.baseURL = API_BASE_URL;
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
-
-function PageViewTracker() {
-  const location = useLocation();
-
-  useEffect(() => {
-    if (window.dataLayer) {
-      window.dataLayer.push({
-        event: 'pageview',
-        page: {
-          path: location.pathname,
-          title: document.title
-        }
-      });
-    }
-  }, [location]);
-
-  return null;
-}
 
 // 在 App 組件之前添加這個新的組件
 const Overlay = ({ isVisible, onClick }) => (
@@ -492,8 +476,8 @@ function AppContent() {
     ));
   };
 
-  const location = useLocation();
-  const { user, logout } = useAuth(); // 使用 auth context
+  const { user } = useAuth(); // 使用 auth context
+  const { openDialog } = useDialog(); // 添加 useDialog
 
   useEffect(() => {
     // 重置側邊欄寬度
@@ -501,7 +485,7 @@ function AppContent() {
     if (sidebar) {
       sidebar.style.width = '250px';
     }
-  }, [location]);
+  }, []);
 
   // 修改這個函數來處理全形數字和字母
   const handleStockCodeChange = (e) => {
@@ -516,8 +500,6 @@ function AppContent() {
     Analytics.stockAnalysis.chartSwitch(chartType);
     setActiveChart(chartType);
   };
-
-  const [showSignInDialog, setShowSignInDialog] = useState(false);
 
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
@@ -578,7 +560,7 @@ function AppContent() {
               ) : (
                 <button 
                   className="btn-primary" 
-                  onClick={() => setShowSignInDialog(true)}
+                  onClick={() => openDialog('auth')}
                 >
                   登入
                 </button>
@@ -838,14 +820,12 @@ function AppContent() {
               <Route 
                 path="/market-sentiment" 
                 element={
-                  <ProtectedRoute>
-                    <PageContainer
-                      title="市場情緒分析"
-                      description="分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入的機會。"
-                    >
-                      <MarketSentimentIndex />
-                    </PageContainer>
-                  </ProtectedRoute>
+                  <PageContainer
+                    title="市場情緒分析"
+                    description="分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入的機會。"
+                  >
+                    <MarketSentimentIndex />
+                  </PageContainer>
                 } 
               />
               <Route path="/auth/callback" element={<GoogleCallback />} />
@@ -856,21 +836,21 @@ function AppContent() {
         {/* 添加遮罩層 */}
         <Overlay isVisible={sidebarOpen && isMobile} onClick={closeSidebar} />
       </div>
-      <SignInDialog 
-        isOpen={showSignInDialog} 
-        onClose={() => setShowSignInDialog(false)} 
-      />
+      <AuthDialog />
     </div>
   );
 }
 
-// 修改主要的 App 元件
+// 修改主要的 App 元件，加入 BrowserRouter 和 DialogProvider
 function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <DialogProvider>
+        <AppContent />
+      </DialogProvider>
     </AuthProvider>
   );
 }
+
 export default App;
 

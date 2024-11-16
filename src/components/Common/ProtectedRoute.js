@@ -1,11 +1,12 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useDialog } from '../../hooks/useDialog';
 import { Analytics } from '../../utils/analytics';
-import { SignInDialog } from '../Auth/SignInDialog';
 
-export const ProtectedRoute = ({ children, requireAuth = true }) => {
-    const { user, loading, error } = useAuth();
+export function ProtectedRoute({ children, requireAuth = true }) {
+    const { isAuthenticated, loading, error } = useAuth();
+    const { openDialog } = useDialog();
     const location = useLocation();
 
     // 處理載入狀態
@@ -26,46 +27,31 @@ export const ProtectedRoute = ({ children, requireAuth = true }) => {
             message: error.message,
             path: location.pathname
         });
-        return (
-            <>
-                {children}
-                <SignInDialog 
-                    isOpen={true} 
-                    onClose={() => {
-                        Analytics.auth.login({ 
-                            status: 'cancelled',
-                            reason: 'error_dialog_close'
-                        });
-                    }}
-                    error={error.message}
-                />
-            </>
-        );
+        
+        openDialog('auth', {
+            returnPath: location.pathname,
+            message: error.message,
+            isError: true
+        });
+        
+        return <Navigate to="/" state={{ from: location }} replace />;
     }
 
     // 需要認證但未登入
-    if (requireAuth && !user) {
+    if (requireAuth && !isAuthenticated) {
         Analytics.auth.statusCheck({
             status: 'dialog_shown',
             from: location.pathname,
             reason: 'unauthenticated'
         });
-        
-        return (
-            <>
-                {children}
-                <SignInDialog 
-                    isOpen={true} 
-                    onClose={() => {
-                        Analytics.auth.login({ 
-                            status: 'cancelled',
-                            reason: 'dialog_close'
-                        });
-                    }}
-                />
-            </>
-        );
+
+        openDialog('auth', {
+            returnPath: location.pathname,
+            message: '請先登入以繼續'
+        });
+
+        return <Navigate to="/" state={{ from: location }} replace />;
     }
 
     return children;
-}; 
+} 

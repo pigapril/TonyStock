@@ -82,5 +82,22 @@ export const Analytics = {
         action: data.action
       });
     }
+  },
+
+  // 添加 UI 相關追蹤
+  ui: {
+    dialog: {
+      open: (data) => {
+        pushToDataLayer('dialog_open', {
+          dialog_type: data.type,
+          ...data
+        });
+      },
+      close: (data) => {
+        pushToDataLayer('dialog_close', {
+          dialog_type: data.type
+        });
+      }
+    }
   }
 };
