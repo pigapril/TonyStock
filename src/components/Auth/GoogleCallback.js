@@ -28,11 +28,27 @@ export const GoogleCallback = () => {
                 }
 
                 if (success) {
+                    console.log('Auth process details:', {
+                        userAgent: navigator.userAgent,
+                        platform: navigator.platform,
+                        isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
+                        cookies: document.cookie,
+                        localStorage: {
+                            redirect: localStorage.getItem('auth_redirect'),
+                            // 其他相關的 localStorage 項目
+                        },
+                        timestamp: new Date().toISOString()
+                    });
+
                     console.log('Starting auth status check...');
                     await checkAuthStatus();
                     
                     const redirectPath = localStorage.getItem('auth_redirect') || '/';
-                    console.log('Redirecting to:', redirectPath);
+                    console.log('Redirect details:', {
+                        path: redirectPath,
+                        currentLocation: window.location.href,
+                        timestamp: new Date().toISOString()
+                    });
                     
                     Analytics.auth.login({
                         method: 'google',

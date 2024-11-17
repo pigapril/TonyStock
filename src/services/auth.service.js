@@ -10,15 +10,22 @@ class AuthService {
     // 檢查認證狀態
     async checkStatus() {
         try {
-            console.log('Checking auth status...');
+            console.log('Checking auth status...', {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+            });
+
             const response = await fetch(`${this.baseUrl}/api/auth/status`, {
                 credentials: 'include'
             });
             
-            console.log('Auth status response:', {
+            console.log('Auth status response details:', {
                 ok: response.ok,
                 status: response.status,
-                headers: Object.fromEntries(response.headers.entries())
+                headers: Object.fromEntries(response.headers.entries()),
+                cookies: document.cookie,  // 檢查當前的 cookies
+                timestamp: new Date().toISOString()
             });
 
             if (!response.ok) {
@@ -28,10 +35,18 @@ class AuthService {
             }
 
             const data = await response.json();
-            console.log('Auth status success:', data);
+            console.log('Auth status success details:', {
+                data,
+                timestamp: new Date().toISOString()
+            });
             return data.data;
         } catch (error) {
-            console.error('Auth status check failed:', error);
+            console.error('Auth status check failed:', {
+                error: error.message,
+                stack: error.stack,
+                userAgent: navigator.userAgent,
+                timestamp: new Date().toISOString()
+            });
             const handledError = handleApiError(error);
             throw handledError;
         }
