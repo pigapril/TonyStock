@@ -133,8 +133,8 @@ class AuthService {
     async googleLogin() {
         try {
             console.log('Starting Google login...', {
-                currentUrl: window.location.href,
-                timestamp: new Date().toISOString()
+                baseUrl: this.baseUrl,
+                currentUrl: window.location.href
             });
 
             const response = await fetch(`${this.baseUrl}/api/auth/google/login`, {
@@ -145,45 +145,36 @@ class AuthService {
                 }
             });
 
-            console.log('Google login response:', {
-                ok: response.ok,
+            // 添加詳細的響應日誌
+            const responseData = await response.json();
+            console.log('Google OAuth Response:', {
                 status: response.status,
                 headers: Object.fromEntries(response.headers.entries()),
-                cookies: document.cookie,
-                timestamp: new Date().toISOString()
+                data: responseData,
+                oauthUrl: responseData?.data?.url // 這是我們需要的 URL
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error('Google login error:', errorData);
-                throw new Error(JSON.stringify(errorData));
+            if (!responseData?.data?.url) {
+                throw new Error('Missing OAuth URL in response');
             }
 
-            const data = await response.json();
-            console.log('Google login success:', {
-                data,
-                timestamp: new Date().toISOString()
-            });
+            // 在重定向前暫停（用於測試）
+            console.log('準備重定向到 Google OAuth URL:', responseData.data.url);
+            
+            // 儲存當前路徑
+            localStorage.setItem('auth_redirect', window.location.pathname);
+            
+            // 延遲重定向（方便我們看到 URL）
+            setTimeout(() => {
+                window.location.href = responseData.data.url;
+            }, 1000); // 延遲 1 秒
 
-            if (data?.data?.url) {
-                localStorage.setItem('auth_redirect', window.location.pathname);
-                console.log('Redirecting to Google OAuth:', {
-                    url: data.data.url,
-                    redirect: localStorage.getItem('auth_redirect'),
-                    timestamp: new Date().toISOString()
-                });
-                window.location.href = data.data.url;
-            } else {
-                throw new Error('Invalid response format');
-            }
         } catch (error) {
             console.error('Google login failed:', {
                 error: error.message,
-                stack: error.stack,
-                timestamp: new Date().toISOString()
+                stack: error.stack
             });
-            const handledError = handleApiError(error);
-            throw handledError;
+            throw error;
         }
     }
 }
