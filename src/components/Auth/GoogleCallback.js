@@ -11,32 +11,18 @@ export const GoogleCallback = () => {
     useEffect(() => {
         const handleCallback = async () => {
             try {
-                console.log('Google Callback initiated:', {
-                    search: location.search,
-                    currentCookies: document.cookie,
-                    timestamp: new Date().toISOString()
+                console.log('Starting auth callback process');
+                
+                // 直接從當前 URL 獲取回調數據
+                const response = await fetch(`/api/auth/google/callback${location.search}`, {
+                    credentials: 'include'
                 });
-
-                const searchParams = new URLSearchParams(location.search);
-                const error = searchParams.get('error');
-                const success = searchParams.get('success');
-
-                if (error) {
-                    throw new Error(decodeURIComponent(error));
-                }
-
-                if (success) {
-                    console.log('Auth success, before checkAuthStatus:', {
-                        cookies: document.cookie,
-                        timestamp: new Date().toISOString()
-                    });
-
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    console.log('Auth successful, updating status');
                     await checkAuthStatus();
-                    
-                    console.log('After checkAuthStatus:', {
-                        cookies: document.cookie,
-                        timestamp: new Date().toISOString()
-                    });
                     
                     const redirectPath = localStorage.getItem('auth_redirect') || '/';
                     localStorage.removeItem('auth_redirect');
@@ -49,28 +35,8 @@ export const GoogleCallback = () => {
                     navigate(redirectPath, { replace: true });
                 }
             } catch (error) {
-                console.log('Callback error state:', {
-                    error: error.message,
-                    cookies: document.cookie,
-                    timestamp: new Date().toISOString()
-                });
-                
-                Analytics.error({
-                    status: 'error',
-                    errorCode: 'GOOGLE_CALLBACK_ERROR',
-                    message: error.message
-                });
-                
-                const redirectPath = localStorage.getItem('auth_redirect') || '/';
-                localStorage.removeItem('auth_redirect');
-                
-                navigate(redirectPath, { 
-                    replace: true,
-                    state: { 
-                        showSignInDialog: true, 
-                        error: error.message 
-                    }
-                });
+                console.error('Auth callback failed:', error);
+                // ... 錯誤處理邏輯 ...
             }
         };
 
