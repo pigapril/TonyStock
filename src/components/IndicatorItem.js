@@ -17,7 +17,7 @@ import {
 import './IndicatorItem.css';
 
 // 添加這行來定義 API_BASE_URL
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
 // 註冊 Chart.js 的元件和插件
 ChartJS.register(

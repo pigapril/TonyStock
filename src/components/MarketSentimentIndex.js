@@ -51,7 +51,7 @@ const TIME_RANGES = [
 ];
 
 // 添加這行來定義 API_BASE_URL
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
 // 在文件頂部添加這兩個常量
 const BUBBLE_RADIUS = 155; // 控制泡泡圍繞的圓的半徑

@@ -50,7 +50,7 @@ import { handleApiError } from './utils/errorHandler';
 // 獲取 API 基礎 URL
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('REACT_APP_API_BASE_URL:', process.env.REACT_APP_API_BASE_URL);
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001'; // 使用環境變數
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || ''; // 使用環境變數
 
 // 設定 axios 的預設 baseURL
 axios.defaults.baseURL = API_BASE_URL;

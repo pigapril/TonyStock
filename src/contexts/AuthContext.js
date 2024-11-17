@@ -50,7 +50,7 @@ export function AuthProvider({ children }) {
 
     const handleGoogleCallback = async (code, state) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/google/callback`, {
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL || ''}/api/auth/google/callback`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
