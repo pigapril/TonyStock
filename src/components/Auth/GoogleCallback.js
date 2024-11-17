@@ -11,16 +11,24 @@ export const GoogleCallback = () => {
     useEffect(() => {
         const handleCallback = async () => {
             try {
-                console.log('Google callback initiated', {
+                console.log('Google callback details:', {
+                    url: window.location.href,
                     search: location.search,
-                    pathname: location.pathname
+                    pathname: location.pathname,
+                    timestamp: new Date().toISOString()
                 });
 
                 const searchParams = new URLSearchParams(location.search);
                 const error = searchParams.get('error');
                 const success = searchParams.get('success');
+                const code = searchParams.get('code');
 
-                console.log('Callback parameters:', { error, success });
+                console.log('Callback parameters:', {
+                    error,
+                    success,
+                    code: code ? 'exists' : 'missing',
+                    timestamp: new Date().toISOString()
+                });
 
                 if (error) {
                     console.error('Google callback error:', error);
@@ -59,9 +67,12 @@ export const GoogleCallback = () => {
                     navigate(redirectPath, { replace: true });
                 }
             } catch (error) {
-                console.error('Callback handling failed:', {
+                console.error('Callback error details:', {
                     error: error.message,
-                    stack: error.stack
+                    stack: error.stack,
+                    url: window.location.href,
+                    cookies: document.cookie,
+                    timestamp: new Date().toISOString()
                 });
                 
                 Analytics.error({

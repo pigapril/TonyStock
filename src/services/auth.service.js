@@ -109,23 +109,56 @@ class AuthService {
     // Google 登入
     async googleLogin() {
         try {
+            console.log('Starting Google login...', {
+                currentUrl: window.location.href,
+                timestamp: new Date().toISOString()
+            });
+
             const response = await fetch(`${this.baseUrl}/api/auth/google/login`, {
-                credentials: 'include'
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            console.log('Google login response:', {
+                ok: response.ok,
+                status: response.status,
+                headers: Object.fromEntries(response.headers.entries()),
+                cookies: document.cookie,
+                timestamp: new Date().toISOString()
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
+                console.error('Google login error:', errorData);
                 throw new Error(JSON.stringify(errorData));
             }
 
             const data = await response.json();
+            console.log('Google login success:', {
+                data,
+                timestamp: new Date().toISOString()
+            });
+
             if (data?.data?.url) {
                 localStorage.setItem('auth_redirect', window.location.pathname);
+                console.log('Redirecting to Google OAuth:', {
+                    url: data.data.url,
+                    redirect: localStorage.getItem('auth_redirect'),
+                    timestamp: new Date().toISOString()
+                });
                 window.location.href = data.data.url;
             } else {
                 throw new Error('Invalid response format');
             }
         } catch (error) {
+            console.error('Google login failed:', {
+                error: error.message,
+                stack: error.stack,
+                timestamp: new Date().toISOString()
+            });
             const handledError = handleApiError(error);
             throw handledError;
         }
