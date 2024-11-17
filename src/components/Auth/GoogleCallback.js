@@ -11,11 +11,18 @@ export const GoogleCallback = () => {
     useEffect(() => {
         const handleCallback = async () => {
             try {
-                console.log('Google callback details:', {
-                    url: window.location.href,
-                    search: location.search,
-                    pathname: location.pathname,
-                    referrer: document.referrer,
+                console.log('Device information:', {
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform,
+                    vendor: navigator.vendor,
+                    cookiesEnabled: navigator.cookieEnabled,
+                    language: navigator.language,
+                    timestamp: new Date().toISOString()
+                });
+
+                console.log('Current cookies:', {
+                    all: document.cookie,
+                    parsed: document.cookie.split(';').map(c => c.trim()),
                     timestamp: new Date().toISOString()
                 });
 
@@ -69,10 +76,10 @@ export const GoogleCallback = () => {
                     navigate(redirectPath, { replace: true });
                 }
             } catch (error) {
-                console.error('Callback error details:', {
+                console.error('Callback error:', {
                     error: error.message,
                     stack: error.stack,
-                    url: window.location.href,
+                    location: window.location.href,
                     cookies: document.cookie,
                     timestamp: new Date().toISOString()
                 });
