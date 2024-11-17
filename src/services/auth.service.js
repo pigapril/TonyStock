@@ -9,23 +9,34 @@ class AuthService {
     // 檢查認證狀態
     async checkStatus() {
         try {
-            console.log('Auth check details:', {
+            // 請求前記錄
+            console.log('Auth check request details:', {
+                url: `${this.baseUrl}/api/auth/status`,
                 userAgent: navigator.userAgent,
                 platform: navigator.platform,
                 cookiesEnabled: navigator.cookieEnabled,
                 localStorage: !!window.localStorage,
-                currentURL: window.location.href
+                currentURL: window.location.href,
+                requestHeaders: {
+                    credentials: 'include',
+                    origin: window.location.origin
+                }
             });
 
             const response = await fetch(`${this.baseUrl}/api/auth/status`, {
                 credentials: 'include'
             });
             
+            // 響應後記錄
             console.log('Auth status response details:', {
                 status: response.status,
                 ok: response.ok,
                 headers: Object.fromEntries(response.headers.entries()),
-                cookies: document.cookie
+                cookies: document.cookie,
+                corsHeaders: {
+                    'access-control-allow-credentials': response.headers.get('access-control-allow-credentials'),
+                    'access-control-allow-origin': response.headers.get('access-control-allow-origin')
+                }
             });
 
             if (!response.ok) {
@@ -111,6 +122,17 @@ class AuthService {
             const handledError = handleApiError(error);
             throw handledError;
         }
+    }
+
+    // Google 登入回調頁面也加上日誌
+    async handleGoogleCallback() {
+        console.log('Google callback received:', {
+            url: window.location.href,
+            cookies: document.cookie,
+            localStorage: {
+                redirect: localStorage.getItem('auth_redirect')
+            }
+        });
     }
 }
 
