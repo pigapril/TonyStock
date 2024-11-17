@@ -11,17 +11,13 @@ export const GoogleCallback = () => {
     useEffect(() => {
         const handleCallback = async () => {
             try {
-                console.log('Starting auth callback process');
-                
                 const response = await fetch(`/api/auth/google/callback${location.search}`, {
                     credentials: 'include'
                 });
                 
                 const data = await response.json();
-                console.log('Auth response:', data);
                 
                 if (data.status === 'success' && data.data.user) {
-                    console.log('Auth successful, user:', data.data.user);
                     await checkAuthStatus();
                     
                     const redirectPath = localStorage.getItem('auth_redirect') || '/';
@@ -34,9 +30,8 @@ export const GoogleCallback = () => {
                     });
 
                     navigate(redirectPath, { replace: true });
-                } else {
-                    console.error('Auth response format unexpected:', data);
-                    throw new Error('登入回應格式異常');
+                } else if (data.status === 'error') {
+                    throw new Error(data.error.message);
                 }
             } catch (error) {
                 console.error('Auth callback failed:', error);
