@@ -18,7 +18,7 @@ import {
   TimeScale
 } from 'chart.js';
 import DatePicker from 'react-datepicker';
-import { FaChartLine, FaInfoCircle, FaChartBar, FaHeartbeat, FaBars, FaFacebook } from 'react-icons/fa';
+import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook } from 'react-icons/fa';
 
 // 樣式引入
 import './App.css';
