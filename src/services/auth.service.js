@@ -11,7 +11,12 @@ class AuthService {
                 'Content-Type': 'application/json'
             }
         };
-        console.log('AuthService initialized with baseUrl:', this.baseUrl);
+        
+        console.log('AuthService initialized:', {
+            baseUrl: this.baseUrl,
+            nodeEnv: process.env.NODE_ENV,
+            apiUrl: process.env.REACT_APP_API_BASE_URL
+        });
     }
 
     // 檢查認證狀態
@@ -132,48 +137,34 @@ class AuthService {
     // Google 登入
     async googleLogin() {
         try {
-            console.log('Starting Google login...', {
-                baseUrl: this.baseUrl,
-                currentUrl: window.location.href
+            console.log('Starting Google login with options:', {
+                url: `${this.baseUrl}/api/auth/google/login`,
+                options: this.defaultOptions,
+                cookies: document.cookie
             });
 
             const response = await fetch(`${this.baseUrl}/api/auth/google/login`, {
-                credentials: 'include',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
+                ...this.defaultOptions,
+                credentials: 'include'
             });
 
-            // 添加詳細的響應日誌
             const responseData = await response.json();
-            console.log('Google OAuth Response:', {
+            console.log('Google login response:', {
                 status: response.status,
                 headers: Object.fromEntries(response.headers.entries()),
-                data: responseData,
-                oauthUrl: responseData?.data?.url // 這是我們需要的 URL
+                cookies: document.cookie,
+                data: responseData
             });
 
             if (!responseData?.data?.url) {
                 throw new Error('Missing OAuth URL in response');
             }
 
-            // 在重定向前暫停（用於測試）
-            console.log('準備重定向到 Google OAuth URL:', responseData.data.url);
-            
-            // 儲存當前路徑
             localStorage.setItem('auth_redirect', window.location.pathname);
-            
-            // 延遲重定向（方便我們看到 URL）
-            setTimeout(() => {
-                window.location.href = responseData.data.url;
-            }, 1000); // 延遲 1 秒
+            window.location.href = responseData.data.url;
 
         } catch (error) {
-            console.error('Google login failed:', {
-                error: error.message,
-                stack: error.stack
-            });
+            console.error('Google login failed:', error);
             throw error;
         }
     }
