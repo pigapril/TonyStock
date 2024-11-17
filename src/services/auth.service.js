@@ -9,20 +9,23 @@ class AuthService {
     // 檢查認證狀態
     async checkStatus() {
         try {
-            console.log('Checking auth status...', {
+            console.log('Auth check details:', {
                 userAgent: navigator.userAgent,
                 platform: navigator.platform,
-                cookiesEnabled: navigator.cookieEnabled
+                cookiesEnabled: navigator.cookieEnabled,
+                localStorage: !!window.localStorage,
+                currentURL: window.location.href
             });
 
             const response = await fetch(`${this.baseUrl}/api/auth/status`, {
                 credentials: 'include'
             });
             
-            console.log('Auth status response:', {
+            console.log('Auth status response details:', {
                 status: response.status,
                 ok: response.ok,
-                headers: Object.fromEntries(response.headers.entries())
+                headers: Object.fromEntries(response.headers.entries()),
+                cookies: document.cookie
             });
 
             if (!response.ok) {
@@ -34,9 +37,12 @@ class AuthService {
             console.log('Auth status data:', data);
             return data.data;
         } catch (error) {
-            console.error('Auth status check failed:', error);
-            const handledError = handleApiError(error);
-            throw handledError;
+            console.error('Auth check error details:', {
+                error: error.message,
+                stack: error.stack,
+                userAgent: navigator.userAgent
+            });
+            throw error;
         }
     }
 
