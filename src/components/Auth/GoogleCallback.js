@@ -15,10 +15,12 @@ export const GoogleCallback = () => {
                     url: window.location.href,
                     search: location.search,
                     pathname: location.pathname,
+                    referrer: document.referrer,
                     timestamp: new Date().toISOString()
                 });
 
                 const searchParams = new URLSearchParams(location.search);
+                console.log('URL parameters:', Object.fromEntries(searchParams.entries()));
                 const error = searchParams.get('error');
                 const success = searchParams.get('success');
                 const code = searchParams.get('code');
