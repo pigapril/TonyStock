@@ -9,18 +9,32 @@ class AuthService {
     // 檢查認證狀態
     async checkStatus() {
         try {
+            console.log('Checking auth status...', {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                cookiesEnabled: navigator.cookieEnabled
+            });
+
             const response = await fetch(`${this.baseUrl}/api/auth/status`, {
                 credentials: 'include'
             });
             
+            console.log('Auth status response:', {
+                status: response.status,
+                ok: response.ok,
+                headers: Object.fromEntries(response.headers.entries())
+            });
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(JSON.stringify(errorData));
             }
 
             const data = await response.json();
+            console.log('Auth status data:', data);
             return data.data;
         } catch (error) {
+            console.error('Auth status check failed:', error);
             const handledError = handleApiError(error);
             throw handledError;
         }
