@@ -24,19 +24,34 @@ class AuthService {
             };
             console.log('Checking auth status... Device info:', JSON.stringify(deviceInfo, null, 2));
 
+            console.log('Auth check details:', {
+                cookies: document.cookie,
+                localStorage: {
+                    auth_redirect: localStorage.getItem('auth_redirect'),
+                    // 其他相關的 localStorage 項目...
+                },
+                url: `${this.baseUrl}/api/auth/status`,
+                requestOptions: {
+                    ...this.defaultOptions,
+                    credentials: 'include'
+                },
+                timestamp: new Date().toISOString()
+            });
+
             const response = await fetch(`${this.baseUrl}/api/auth/status`, {
                 ...this.defaultOptions,
                 credentials: 'include'
             });
-            
-            const responseDetails = {
-                ok: response.ok,
-                status: response.status,
+
+            console.log('Response details:', {
                 headers: Object.fromEntries(response.headers.entries()),
-                cookies: document.cookie,
+                status: response.status,
+                statusText: response.statusText,
+                type: response.type,
+                url: response.url,
+                redirected: response.redirected,
                 timestamp: new Date().toISOString()
-            };
-            console.log('Auth status response details:', JSON.stringify(responseDetails, null, 2));
+            });
 
             if (!response.ok) {
                 const errorData = await response.json();
