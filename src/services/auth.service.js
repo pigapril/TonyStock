@@ -4,23 +4,34 @@ import { handleApiError } from '../utils/errorHandler';
 class AuthService {
     constructor() {
         this.baseUrl = process.env.REACT_APP_API_BASE_URL;
+        console.log('AuthService initialized with baseUrl:', this.baseUrl);
     }
 
     // 檢查認證狀態
     async checkStatus() {
         try {
+            console.log('Checking auth status...');
             const response = await fetch(`${this.baseUrl}/api/auth/status`, {
                 credentials: 'include'
             });
             
+            console.log('Auth status response:', {
+                ok: response.ok,
+                status: response.status,
+                headers: Object.fromEntries(response.headers.entries())
+            });
+
             if (!response.ok) {
                 const errorData = await response.json();
+                console.error('Auth status error:', errorData);
                 throw new Error(JSON.stringify(errorData));
             }
 
             const data = await response.json();
+            console.log('Auth status success:', data);
             return data.data;
         } catch (error) {
+            console.error('Auth status check failed:', error);
             const handledError = handleApiError(error);
             throw handledError;
         }
@@ -51,18 +62,28 @@ class AuthService {
     // 更新 access token
     async refreshToken() {
         try {
+            console.log('Refreshing token...');
             const response = await fetch(`${this.baseUrl}/api/auth/refresh`, {
                 credentials: 'include'
+            });
+            
+            console.log('Refresh token response:', {
+                ok: response.ok,
+                status: response.status,
+                headers: Object.fromEntries(response.headers.entries())
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
+                console.error('Refresh token error:', errorData);
                 throw new Error(JSON.stringify(errorData));
             }
 
             const data = await response.json();
+            console.log('Refresh token success:', data);
             return data.data;
         } catch (error) {
+            console.error('Refresh token failed:', error);
             const handledError = handleApiError(error);
             throw handledError;
         }

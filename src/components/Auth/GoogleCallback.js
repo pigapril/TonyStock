@@ -11,36 +11,52 @@ export const GoogleCallback = () => {
     useEffect(() => {
         const handleCallback = async () => {
             try {
+                console.log('Google callback initiated', {
+                    search: location.search,
+                    pathname: location.pathname
+                });
+
                 const searchParams = new URLSearchParams(location.search);
                 const error = searchParams.get('error');
                 const success = searchParams.get('success');
 
+                console.log('Callback parameters:', { error, success });
+
                 if (error) {
+                    console.error('Google callback error:', error);
                     throw new Error(decodeURIComponent(error));
                 }
 
                 if (success) {
+                    console.log('Starting auth status check...');
                     await checkAuthStatus();
                     
                     const redirectPath = localStorage.getItem('auth_redirect') || '/';
-                    localStorage.removeItem('auth_redirect');
+                    console.log('Redirecting to:', redirectPath);
                     
                     Analytics.auth.login({
                         method: 'google',
-                        status: 'success'
+                        status: 'success',
+                        platform: navigator.userAgent
                     });
 
                     navigate(redirectPath, { replace: true });
                 }
             } catch (error) {
+                console.error('Callback handling failed:', {
+                    error: error.message,
+                    stack: error.stack
+                });
+                
                 Analytics.error({
                     status: 'error',
                     errorCode: 'GOOGLE_CALLBACK_ERROR',
-                    message: error.message
+                    message: error.message,
+                    userAgent: navigator.userAgent
                 });
                 
                 const redirectPath = localStorage.getItem('auth_redirect') || '/';
-                localStorage.removeItem('auth_redirect');
+                console.log('Error redirect to:', redirectPath);
                 
                 navigate(redirectPath, { 
                     replace: true,

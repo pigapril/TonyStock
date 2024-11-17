@@ -18,7 +18,7 @@ import {
   TimeScale
 } from 'chart.js';
 import DatePicker from 'react-datepicker';
-import { FaChartLine, FaInfoCircle, FaChartBar, FaHeartbeat, FaBars } from 'react-icons/fa';
+import { FaChartLine, FaInfoCircle, FaChartBar, FaHeartbeat, FaBars, FaFacebook } from 'react-icons/fa';
 
 // 樣式引入
 import './App.css';
@@ -34,6 +34,8 @@ import { GoogleCallback } from './components/Auth/GoogleCallback';
 import { AuthDialog } from './components/Auth/AuthDialog';
 import { UserProfile } from './components/Auth/UserProfile';
 import { PageViewTracker } from './components/Common/PageViewTracker';
+import { Legal } from './pages/Legal';
+import { About } from './pages/About';
 
 // Context 和 Hooks
 import { AuthProvider } from './contexts/AuthContext';
@@ -540,9 +542,15 @@ function AppContent() {
             </li>
             <li>
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
-                <FaInfoCircle />
+                <FaFacebook />
                 <span>Facebook 關鍵圖表</span>
               </a>
+            </li>
+            <li>
+              <Link to="/about" onClick={() => isMobile && setSidebarOpen(false)}>
+                <FaInfoCircle />
+                <span>關於 NikuStock</span>
+              </Link>
             </li>
           </ul>
         </nav>
@@ -829,6 +837,16 @@ function AppContent() {
                 } 
               />
               <Route path="/auth/callback" element={<GoogleCallback />} />
+              <Route path="/legal" element={
+                <PageContainer>
+                  <Legal />
+                </PageContainer>
+              } />
+              <Route path="/about" element={
+                <PageContainer>
+                  <About />
+                </PageContainer>
+              } />
             </Routes>
           </div>
         </main>
