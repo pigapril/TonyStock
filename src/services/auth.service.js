@@ -3,7 +3,7 @@ import { handleApiError } from '../utils/errorHandler';
 
 class AuthService {
     constructor() {
-        this.baseUrl = process.env.REACT_APP_API_BASE_URL;
+        this.baseUrl = process.env.REACT_APP_API_BASE_URL || '';
     }
 
     // 檢查認證狀態
