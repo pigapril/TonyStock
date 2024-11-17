@@ -13,15 +13,15 @@ export const GoogleCallback = () => {
             try {
                 console.log('Starting auth callback process');
                 
-                // 直接從當前 URL 獲取回調數據
                 const response = await fetch(`/api/auth/google/callback${location.search}`, {
                     credentials: 'include'
                 });
                 
                 const data = await response.json();
+                console.log('Auth response:', data);
                 
-                if (data.status === 'success') {
-                    console.log('Auth successful, updating status');
+                if (data.status === 'success' && data.data.user) {
+                    console.log('Auth successful, user:', data.data.user);
                     await checkAuthStatus();
                     
                     const redirectPath = localStorage.getItem('auth_redirect') || '/';
@@ -29,14 +29,24 @@ export const GoogleCallback = () => {
                     
                     Analytics.auth.login({
                         method: 'google',
-                        status: 'success'
+                        status: 'success',
+                        userId: data.data.user.id
                     });
 
                     navigate(redirectPath, { replace: true });
+                } else {
+                    console.error('Auth response format unexpected:', data);
+                    throw new Error('登入回應格式異常');
                 }
             } catch (error) {
                 console.error('Auth callback failed:', error);
-                // ... 錯誤處理邏輯 ...
+                
+                navigate('/auth/error', { 
+                    state: { 
+                        error: error.message,
+                        returnPath: localStorage.getItem('auth_redirect') || '/'
+                    }
+                });
             }
         };
 
