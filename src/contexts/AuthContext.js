@@ -12,11 +12,28 @@ export function AuthProvider({ children }) {
 
     // 檢查認證狀態
     const checkAuthStatus = useCallback(async () => {
+        console.log('CheckAuthStatus initiated:', {
+            currentCookies: document.cookie,
+            timestamp: new Date().toISOString()
+        });
+
         try {
             const { user: userData } = await authService.checkStatus();
+            console.log('CheckAuthStatus response:', {
+                hasUser: !!userData,
+                cookies: document.cookie,
+                timestamp: new Date().toISOString()
+            });
+
             setUser(userData);
             Analytics.auth.statusCheck({ status: 'success' });
         } catch (error) {
+            console.log('CheckAuthStatus error:', {
+                error: error.message,
+                cookies: document.cookie,
+                timestamp: new Date().toISOString()
+            });
+
             setUser(null);
             handleError(error);
         } finally {

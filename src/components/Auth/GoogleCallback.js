@@ -11,6 +11,12 @@ export const GoogleCallback = () => {
     useEffect(() => {
         const handleCallback = async () => {
             try {
+                console.log('Google Callback initiated:', {
+                    search: location.search,
+                    currentCookies: document.cookie,
+                    timestamp: new Date().toISOString()
+                });
+
                 const searchParams = new URLSearchParams(location.search);
                 const error = searchParams.get('error');
                 const success = searchParams.get('success');
@@ -20,7 +26,17 @@ export const GoogleCallback = () => {
                 }
 
                 if (success) {
+                    console.log('Auth success, before checkAuthStatus:', {
+                        cookies: document.cookie,
+                        timestamp: new Date().toISOString()
+                    });
+
                     await checkAuthStatus();
+                    
+                    console.log('After checkAuthStatus:', {
+                        cookies: document.cookie,
+                        timestamp: new Date().toISOString()
+                    });
                     
                     const redirectPath = localStorage.getItem('auth_redirect') || '/';
                     localStorage.removeItem('auth_redirect');
@@ -33,6 +49,12 @@ export const GoogleCallback = () => {
                     navigate(redirectPath, { replace: true });
                 }
             } catch (error) {
+                console.log('Callback error state:', {
+                    error: error.message,
+                    cookies: document.cookie,
+                    timestamp: new Date().toISOString()
+                });
+                
                 Analytics.error({
                     status: 'error',
                     errorCode: 'GOOGLE_CALLBACK_ERROR',
