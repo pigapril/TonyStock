@@ -4,6 +4,13 @@ import { handleApiError } from '../utils/errorHandler';
 class AuthService {
     constructor() {
         this.baseUrl = process.env.REACT_APP_API_BASE_URL;
+        this.defaultOptions = {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        };
         console.log('AuthService initialized with baseUrl:', this.baseUrl);
     }
 
@@ -18,6 +25,7 @@ class AuthService {
             console.log('Checking auth status... Device info:', JSON.stringify(deviceInfo, null, 2));
 
             const response = await fetch(`${this.baseUrl}/api/auth/status`, {
+                ...this.defaultOptions,
                 credentials: 'include'
             });
             
