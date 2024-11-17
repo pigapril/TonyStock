@@ -6,52 +6,62 @@ import { Analytics } from '../../utils/analytics';
 export const GoogleCallback = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { checkAuthStatus } = useAuth();
+    const { handleGoogleCallback } = useAuth();
 
     useEffect(() => {
-        const handleCallback = async () => {
+        const processCallback = async () => {
             try {
-                const response = await fetch(`/api/auth/google/callback${location.search}`, {
-                    credentials: 'include'
-                });
+                console.log('Starting callback process...', location.search);
                 
-                const data = await response.json();
+                const user = await handleGoogleCallback(location.search);
+                console.log('Callback successful, user:', user);
+
+                const redirectPath = localStorage.getItem('auth_redirect') || '/';
+                localStorage.removeItem('auth_redirect');
                 
-                if (data.status === 'success' && data.data.user) {
-                    await checkAuthStatus();
-                    
-                    const redirectPath = localStorage.getItem('auth_redirect') || '/';
-                    localStorage.removeItem('auth_redirect');
-                    
+                console.log('Redirecting to:', redirectPath);
+
+                if (user && user.id) {
                     Analytics.auth.login({
                         method: 'google',
                         status: 'success',
-                        userId: data.data.user.id
+                        userId: user.id
                     });
-
-                    navigate(redirectPath, { replace: true });
-                } else if (data.status === 'error') {
-                    throw new Error(data.error.message);
                 }
+
+                navigate(redirectPath, { replace: true });
             } catch (error) {
                 console.error('Auth callback failed:', error);
                 
-                navigate('/auth/error', { 
-                    state: { 
-                        error: error.message,
-                        returnPath: localStorage.getItem('auth_redirect') || '/'
+                Analytics.auth.login({
+                    method: 'google',
+                    status: 'error',
+                    error: error.message
+                });
+
+                navigate('/', {
+                    replace: true,
+                    state: {
+                        error: '登入失敗，請稍後再試'
                     }
                 });
             }
         };
 
-        handleCallback();
-    }, [location, navigate, checkAuthStatus]);
+        processCallback();
+    }, [location.search, navigate, handleGoogleCallback]);
 
     return (
-        <div className="loading-container">
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            backgroundColor: '#fff'
+        }}>
             <div className="loading-spinner"></div>
-            <p>處理登入中...</p>
+            <p style={{ marginTop: '20px', color: '#333' }}>登入處理中，請稍候...</p>
         </div>
     );
 }; 

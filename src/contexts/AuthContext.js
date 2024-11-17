@@ -65,26 +65,29 @@ export function AuthProvider({ children }) {
 
     const resetError = () => setError(null);
 
-    const handleGoogleCallback = async (code, state) => {
+    const handleGoogleCallback = useCallback(async (searchParams) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL || ''}/api/auth/google/callback`, {
+            const response = await fetch(`/api/auth/google/callback${searchParams}`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Accept': 'application/json'
                 }
             });
 
-            if (!response.ok) {
-                throw new Error('Google callback failed');
+            const data = await response.json();
+            
+            if (data.status === 'success' && data.data.user) {
+                await checkAuthStatus();
+                return data.data.user;
+            } else {
+                throw new Error('認證失敗');
             }
-
-            await checkAuthStatus();  // 重新檢查認證狀態
         } catch (error) {
             handleError(error);
             throw error;
         }
-    };
+    }, [checkAuthStatus]);
 
     const value = {
         user,
