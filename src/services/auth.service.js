@@ -10,43 +10,45 @@ class AuthService {
     // 檢查認證狀態
     async checkStatus() {
         try {
-            console.log('Checking auth status...', {
+            const deviceInfo = {
                 userAgent: navigator.userAgent,
                 platform: navigator.platform,
                 isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-            });
+            };
+            console.log('Checking auth status... Device info:', JSON.stringify(deviceInfo, null, 2));
 
             const response = await fetch(`${this.baseUrl}/api/auth/status`, {
                 credentials: 'include'
             });
             
-            console.log('Auth status response details:', {
+            const responseDetails = {
                 ok: response.ok,
                 status: response.status,
                 headers: Object.fromEntries(response.headers.entries()),
-                cookies: document.cookie,  // 檢查當前的 cookies
+                cookies: document.cookie,
                 timestamp: new Date().toISOString()
-            });
+            };
+            console.log('Auth status response details:', JSON.stringify(responseDetails, null, 2));
 
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error('Auth status error:', errorData);
+                console.error('Auth status error:', JSON.stringify(errorData, null, 2));
                 throw new Error(JSON.stringify(errorData));
             }
 
             const data = await response.json();
-            console.log('Auth status success details:', {
+            console.log('Auth status success details:', JSON.stringify({
                 data,
                 timestamp: new Date().toISOString()
-            });
+            }, null, 2));
             return data.data;
         } catch (error) {
-            console.error('Auth status check failed:', {
+            console.error('Auth status check failed:', JSON.stringify({
                 error: error.message,
                 stack: error.stack,
                 userAgent: navigator.userAgent,
                 timestamp: new Date().toISOString()
-            });
+            }, null, 2));
             const handledError = handleApiError(error);
             throw handledError;
         }
