@@ -5,7 +5,7 @@ import './styles/SignInButton.css';
 
 export const SignInButton = ({ variant = 'default' }) => {
     const buttonRef = useRef(null);
-    const { renderGoogleButton, loading } = useAuth();
+    const { renderGoogleButton, loading, isGoogleInitialized } = useAuth();
     const [browserSupport, setBrowserSupport] = useState(null);
     
     useEffect(() => {
@@ -31,7 +31,7 @@ export const SignInButton = ({ variant = 'default' }) => {
     }, []);
 
     useEffect(() => {
-        if (!loading && buttonRef.current) {
+        if (!loading && isGoogleInitialized && buttonRef.current) {
             renderGoogleButton(buttonRef.current);
             
             Analytics.auth.login({ 
@@ -41,7 +41,15 @@ export const SignInButton = ({ variant = 'default' }) => {
                 browserSupport
             });
         }
-    }, [loading, renderGoogleButton, variant, browserSupport]);
+    }, [loading, isGoogleInitialized, renderGoogleButton, variant, browserSupport]);
+
+    if (!isGoogleInitialized) {
+        return (
+            <div className={`signin-button-loading signin-button-loading--${variant}`}>
+                載入中...
+            </div>
+        );
+    }
 
     return (
         <div 

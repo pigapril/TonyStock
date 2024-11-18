@@ -9,6 +9,7 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isGoogleInitialized, setIsGoogleInitialized] = useState(false);
 
     // 檢查瀏覽器相容性
     const checkBrowserCompatibility = useCallback(() => {
@@ -41,8 +42,8 @@ export function AuthProvider({ children }) {
         const initializeGoogleIdentity = () => {
             const { isCompatible, useLegacy } = checkBrowserCompatibility();
             
-            if (!window.google) {
-                console.warn('Google Identity Service not loaded');
+            if (!window.google?.accounts?.id) {
+                console.warn('Google Identity Service not loaded, waiting...');
                 return;
             }
 
@@ -63,16 +64,26 @@ export function AuthProvider({ children }) {
                     }
                 });
 
+                setIsGoogleInitialized(true);
                 Analytics.auth.identityService.initialize({ 
                     status: 'success',
                     useLegacy 
                 });
             } catch (error) {
                 console.error('Initialize failed:', error);
+                setIsGoogleInitialized(false);
             }
         };
 
-        initializeGoogleIdentity();
+        // 監聽 Google SDK 載入
+        if (window.google?.accounts?.id) {
+            initializeGoogleIdentity();
+        } else {
+            window.googleSDKLoaded = () => {
+                console.log('Google SDK loaded, initializing...');
+                initializeGoogleIdentity();
+            };
+        }
     }, [checkBrowserCompatibility]);
 
     // 處理 Google 登入回調
@@ -202,6 +213,11 @@ export function AuthProvider({ children }) {
             return;
         }
 
+        if (!isGoogleInitialized) {
+            console.warn('Google Identity Service not initialized yet');
+            return;
+        }
+
         try {
             window.google.accounts.id.renderButton(buttonElement, {
                 type: 'standard',
@@ -216,7 +232,7 @@ export function AuthProvider({ children }) {
         } catch (error) {
             console.error('Button render error:', error);
         }
-    }, [checkBrowserCompatibility]);
+    }, [checkBrowserCompatibility, isGoogleInitialized]);
 
     const testOriginAccess = () => {
         // 修改測試方式
@@ -257,7 +273,8 @@ export function AuthProvider({ children }) {
         resetError,
         logout,
         checkAuthStatus,
-        renderGoogleButton  // 新增此方法供元件使用
+        renderGoogleButton,
+        isGoogleInitialized
     };
 
     return (
