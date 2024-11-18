@@ -10,48 +10,22 @@ export function useAuth() {
         throw new Error('useAuth must be used within an AuthProvider');
     }
 
-    const { user, loading, error, logout, checkAuthStatus } = context;
-
-    const googleLogin = useCallback(async () => {
-        try {
-            Analytics.auth.login({ method: 'google', status: 'start' });
-            await authService.googleLogin();
-        } catch (error) {
-            Analytics.auth.login({ 
-                method: 'google', 
-                status: 'error',
-                error: error.message 
-            });
-            throw error;
-        }
-    }, []);
-
-    const handleGoogleCallback = useCallback(async () => {
-        try {
-            await checkAuthStatus();
-            
-            Analytics.auth.login({ 
-                method: 'google', 
-                status: 'success' 
-            });
-        } catch (error) {
-            Analytics.auth.login({ 
-                method: 'google', 
-                status: 'error',
-                error: error.message 
-            });
-            throw error;
-        }
-    }, [checkAuthStatus]);
+    const { 
+        user, 
+        loading, 
+        error, 
+        logout, 
+        checkAuthStatus,
+        renderGoogleButton 
+    } = context;
 
     return {
         user,
         loading,
         error,
         isAuthenticated: Boolean(user),
-        googleLogin,
         logout,
         checkAuthStatus,
-        handleGoogleCallback
+        renderGoogleButton
     };
 } 

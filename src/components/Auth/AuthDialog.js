@@ -2,25 +2,25 @@ import { useDialog } from '../../hooks/useDialog';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { Dialog } from '../Common/Dialog';
+import { useRef, useEffect } from 'react';
+import { Analytics } from '../../utils/analytics';
 
 export function AuthDialog() {
     const { dialog, closeDialog } = useDialog();
-    const { googleLogin } = useAuth();
+    const { renderGoogleButton } = useAuth();
     const navigate = useNavigate();
+    const buttonRef = useRef(null);
 
-    const handleLogin = async () => {
-        try {
-            await googleLogin();
-            closeDialog();
+    useEffect(() => {
+        if (buttonRef.current && dialog.isOpen) {
+            renderGoogleButton(buttonRef.current);
             
-            // 如果有返回路徑，則導向該路徑
-            if (dialog.props?.returnPath) {
-                navigate(dialog.props.returnPath);
-            }
-        } catch (error) {
-            console.error('Login failed:', error);
+            Analytics.ui.dialog.open({
+                type: 'auth',
+                source: dialog.source || 'user_action'
+            });
         }
-    };
+    }, [dialog.isOpen, renderGoogleButton]);
 
     if (dialog.type !== 'auth') return null;
 
@@ -32,18 +32,17 @@ export function AuthDialog() {
             titleClassName="auth-dialog-title"
             description={
                 <div className="auth-dialog-description">
-                    <p>登入 Google 帳戶，盡情查看更多內容</p>
-                    <p>我們也會努力推出更多個人化功能！</p>
+                    <div>登入 Google 帳戶，盡情查看更多內容</div>
+                    <div>我們也會努力推出更多個人化功能！</div>
                 </div>
             }
         >
             <div className="auth-dialog-content">
-                <button
-                    onClick={handleLogin}
-                    className="google-login-button"
-                >
-                    使用 Google 帳號登入
-                </button>
+                <div 
+                    ref={buttonRef} 
+                    className="google-button-container" 
+                    style={{ minHeight: '40px' }}
+                />
             </div>
         </Dialog>
     );

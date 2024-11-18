@@ -27,7 +27,6 @@ const ErrorMessages = {
     GOOGLE_AUTH_FAILED: 'Google 登入失敗，請稍後再試',
     GOOGLE_AUTH_CANCELLED: '已取消 Google 登入',
     GOOGLE_AUTH_POPUP_BLOCKED: '請允許彈出視窗以完成登入',
-    GOOGLE_AUTH_INVALID_STATE: '登入狀態無效，請重新嘗試',
     GOOGLE_AUTH_NETWORK_ERROR: 'Google 登入網路連線異常',
     GOOGLE_AUTH_SERVER_ERROR: 'Google 登入伺服器錯誤',
     
@@ -51,7 +50,7 @@ export const handleApiError = (error) => {
         return errorData;
     };
 
-    // 處理 Google OAuth 特定錯誤
+    // 處理 Google Identity Service 特定錯誤
     if (error.response?.data?.errorCode?.startsWith('GOOGLE_AUTH_')) {
         return trackError({
             status: 'error',

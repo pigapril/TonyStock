@@ -3,9 +3,10 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useDialog } from '../../hooks/useDialog';
 import { Analytics } from '../../utils/analytics';
+import './styles/ProtectedRoute.css';
 
 export function ProtectedRoute({ children, requireAuth = true }) {
-    const { isAuthenticated, loading, error } = useAuth();
+    const { user, loading } = useAuth();
     const { openDialog } = useDialog();
     const location = useLocation();
 
@@ -19,39 +20,30 @@ export function ProtectedRoute({ children, requireAuth = true }) {
         );
     }
 
-    // 處理錯誤狀態
-    if (error) {
-        Analytics.error({
-            status: 'error',
-            errorCode: 'AUTH_ERROR',
-            message: error.message,
-            path: location.pathname
-        });
-        
-        openDialog('auth', {
-            returnPath: location.pathname,
-            message: error.message,
-            isError: true
-        });
-        
-        return <Navigate to="/" state={{ from: location }} replace />;
-    }
-
     // 需要認證但未登入
-    if (requireAuth && !isAuthenticated) {
-        Analytics.auth.statusCheck({
+    if (requireAuth && !user) {
+        Analytics.auth.routeProtection({
             status: 'dialog_shown',
-            from: location.pathname,
-            reason: 'unauthenticated'
+            from: location.pathname
         });
 
+        // 開啟登入對話框，保持一致的使用者體驗
         openDialog('auth', {
             returnPath: location.pathname,
             message: '請先登入以繼續'
         });
 
-        return <Navigate to="/" state={{ from: location }} replace />;
+        return <Navigate 
+            to="/" 
+            state={{ from: location.pathname }}
+            replace 
+        />;
     }
+
+    Analytics.auth.routeProtection({
+        status: 'success',
+        path: location.pathname
+    });
 
     return children;
 } 

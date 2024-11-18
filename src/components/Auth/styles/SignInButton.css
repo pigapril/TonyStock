@@ -41,4 +41,22 @@
 
 .signin-button--full {
     width: 100%;
+}
+
+.signin-button-container {
+    display: inline-block;
+    min-width: 200px;
+}
+
+.signin-button-container--compact {
+    min-width: 160px;
+}
+
+.signin-button-container--full {
+    width: 100%;
+}
+
+/* Google 按鈕的自定義樣式 */
+.signin-button-container iframe {
+    width: 100% !important;
 } 

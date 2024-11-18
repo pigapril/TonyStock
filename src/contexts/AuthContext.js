@@ -10,6 +10,119 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // 檢查瀏覽器相容性
+    const checkBrowserCompatibility = useCallback(() => {
+        const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+        const chromeVersion = parseInt((/Chrome\/([0-9]+)/.exec(navigator.userAgent) || [])[1], 10);
+        
+        // 檢查 FedCM 支援
+        const hasFedCMSupport = !!(
+            window.google?.accounts?.id?.initialize &&
+            'FederatedCredential' in window
+        );
+
+        const compatibility = {
+            isCompatible: isChrome && chromeVersion >= 117 && hasFedCMSupport,
+            useLegacy: !isChrome || chromeVersion < 117 || !hasFedCMSupport
+        };
+
+        console.log('Browser compatibility check:', {
+            isChrome,
+            chromeVersion,
+            hasFedCMSupport,
+            useLegacy: compatibility.useLegacy
+        });
+
+        return compatibility;
+    }, []);
+
+    // 初始化 Google Identity Service
+    useEffect(() => {
+        const initializeGoogleIdentity = () => {
+            const { isCompatible, useLegacy } = checkBrowserCompatibility();
+            
+            if (!window.google) {
+                console.warn('Google Identity Service not loaded');
+                return;
+            }
+
+            try {
+                window.google.accounts.id.initialize({
+                    client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+                    callback: handleGoogleCredential,
+                    auto_select: false,
+                    cancel_on_tap_outside: true,
+                    use_fedcm_for_prompt: isCompatible, // 只在支援的瀏覽器啟用 FedCM
+                    state_cookie_domain: window.location.hostname,
+                    error_callback: (error) => {
+                        console.error('Google Identity error:', error);
+                        Analytics.auth.identityService.error({
+                            errorType: error.type,
+                            errorMessage: error.message
+                        });
+                    }
+                });
+
+                Analytics.auth.identityService.initialize({ 
+                    status: 'success',
+                    useLegacy 
+                });
+            } catch (error) {
+                console.error('Initialize failed:', error);
+            }
+        };
+
+        initializeGoogleIdentity();
+    }, [checkBrowserCompatibility]);
+
+    // 處理 Google 登入回調
+    const handleGoogleCredential = async (response) => {
+        console.log('Google credential response:', {
+            hasResponse: !!response,
+            hasCredential: !!response?.credential,
+            credentialLength: response?.credential?.length,
+            timestamp: new Date().toISOString()
+        });
+
+        try {
+            setLoading(true);
+            console.log('Before verifyGoogleToken:', {
+                timestamp: new Date().toISOString()
+            });
+
+            const { user: userData } = await authService.verifyGoogleToken(response.credential);
+            
+            console.log('After verifyGoogleToken:', {
+                hasUserData: !!userData,
+                timestamp: new Date().toISOString()
+            });
+
+            setUser(userData);
+            Analytics.auth.login({ 
+                method: 'google', 
+                status: 'success',
+                variant: 'identity_service'
+            });
+        } catch (error) {
+            console.error('Google credential error:', {
+                message: error.message,
+                type: error.constructor.name,
+                stack: error.stack,
+                timestamp: new Date().toISOString()
+            });
+
+            handleError(error);
+            Analytics.auth.login({ 
+                method: 'google', 
+                status: 'error',
+                variant: 'identity_service',
+                error: error.message
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // 檢查認證狀態
     const checkAuthStatus = useCallback(async () => {
         console.log('CheckAuthStatus initiated:', {
@@ -51,7 +164,22 @@ export function AuthProvider({ children }) {
         try {
             await authService.logout();
             setUser(null);
-            Analytics.auth.logout({ status: 'success' });
+            
+            let identityServiceRevoked = false;
+            if (window.google?.accounts?.id) {
+                try {
+                    window.google.accounts.id.revoke();
+                    identityServiceRevoked = true;
+                } catch (error) {
+                    console.error('Google Identity Service revoke failed:', error);
+                }
+            }
+
+            Analytics.auth.logout({ 
+                status: 'success',
+                source: 'user_action',
+                identityServiceRevoked
+            });
         } catch (error) {
             handleError(error);
         }
@@ -65,29 +193,62 @@ export function AuthProvider({ children }) {
 
     const resetError = () => setError(null);
 
-    const handleGoogleCallback = useCallback(async (searchParams) => {
-        try {
-            const response = await fetch(`/api/auth/google/callback${searchParams}`, {
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-
-            const data = await response.json();
-            
-            if (data.status === 'success' && data.data.user) {
-                await checkAuthStatus();
-                return data.data.user;
-            } else {
-                throw new Error('認證失敗');
-            }
-        } catch (error) {
-            handleError(error);
-            throw error;
+    // 提供 Google 登入按鈕渲染方法
+    const renderGoogleButton = useCallback((buttonElement) => {
+        const { useLegacy } = checkBrowserCompatibility();
+        
+        if (!window.google?.accounts?.id) {
+            console.warn('Google Identity Service not available');
+            return;
         }
-    }, [checkAuthStatus]);
+
+        try {
+            window.google.accounts.id.renderButton(buttonElement, {
+                type: 'standard',
+                theme: 'outline',
+                size: 'large',
+                text: 'continue_with',
+                width: undefined,
+                logo_alignment: 'center',
+                // 在不支援 FedCM 的瀏覽器使用傳統模式
+                ux_mode: useLegacy ? 'popup' : undefined
+            });
+        } catch (error) {
+            console.error('Button render error:', error);
+        }
+    }, [checkBrowserCompatibility]);
+
+    const testOriginAccess = () => {
+        // 修改測試方式
+        window.google.accounts.id.initialize({
+            client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+            callback: (response) => {
+                console.log('Test callback response:', response);
+            },
+            // 新增這些選項
+            ux_mode: 'popup',
+            context: 'signin',
+            itp_support: true
+        });
+
+        // 直接嘗試渲染按鈕到一個臨時元素
+        const testDiv = document.createElement('div');
+        testDiv.style.display = 'none';
+        document.body.appendChild(testDiv);
+
+        try {
+            window.google.accounts.id.renderButton(testDiv, {
+                type: 'standard',
+                theme: 'outline',
+                size: 'large'
+            });
+            console.log('Test render successful');
+        } catch (error) {
+            console.error('Test render failed:', error);
+        } finally {
+            document.body.removeChild(testDiv);
+        }
+    };
 
     const value = {
         user,
@@ -96,7 +257,7 @@ export function AuthProvider({ children }) {
         resetError,
         logout,
         checkAuthStatus,
-        handleGoogleCallback
+        renderGoogleButton  // 新增此方法供元件使用
     };
 
     return (

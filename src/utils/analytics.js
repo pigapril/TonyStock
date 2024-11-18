@@ -36,20 +36,53 @@ export const Analytics = {
         method: data.method,
         status: data.status,
         variant: data.variant,
-        component: data.component
+        component: data.component,
+        identity_service: data.variant === 'identity_service' ? {
+          error_type: data.error,
+          button_type: data.buttonType,
+          auto_select: data.autoSelect
+        } : undefined
       });
     },
     
     logout: (data) => {
       pushToDataLayer('auth_logout', {
-        status: data.status
+        status: data.status,
+        source: data.source,
+        identity_service_revoked: data.identityServiceRevoked
       });
     },
     
     statusCheck: (data) => {
       pushToDataLayer('auth_status_check', {
-        status: data.status
+        status: data.status,
+        identity_service_initialized: data.identityServiceInitialized
       });
+    },
+
+    identityService: {
+      initialize: (data) => {
+        pushToDataLayer('auth_identity_service_init', {
+          status: data.status,
+          error: data.error
+        });
+      },
+      
+      buttonRender: (data) => {
+        pushToDataLayer('auth_identity_service_button_render', {
+          status: data.status,
+          type: data.type,
+          variant: data.variant
+        });
+      },
+
+      error: (data) => {
+        pushToDataLayer('auth_identity_service_error', {
+          error_type: data.errorType,
+          error_message: data.errorMessage,
+          component: data.component
+        });
+      }
     }
   },
 

@@ -30,7 +30,6 @@ import 'chartjs-plugin-crosshair';
 import MarketSentimentIndex from './components/MarketSentimentIndex';
 import PageContainer from './components/PageContainer';
 import ULBandChart from './components/ULBandChart';
-import { GoogleCallback } from './components/Auth/GoogleCallback';
 import { AuthDialog } from './components/Auth/AuthDialog';
 import { UserProfile } from './components/Auth/UserProfile';
 import { PageViewTracker } from './components/Common/PageViewTracker';
@@ -843,7 +842,6 @@ function AppContent() {
                   <About />
                 </PageContainer>
               } />
-              <Route path="/auth/callback" element={<GoogleCallback />} />
               <Route path="/legal" element={
                 <PageContainer>
                   <Legal />

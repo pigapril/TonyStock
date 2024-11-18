@@ -95,4 +95,15 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.google-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 16px 0;
+}
+
+.google-button-container iframe {
+    width: 100% !important;
 } 

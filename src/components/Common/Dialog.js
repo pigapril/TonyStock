@@ -40,9 +40,9 @@ export function Dialog({
                 </h2>
                 
                 {description && (
-                    <p id="dialog-description" className="dialog-description">
+                    <div id="dialog-description" className="dialog-description">
                         {description}
-                    </p>
+                    </div>
                 )}
 
                 <div className="dialog-content">

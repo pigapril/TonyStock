@@ -1,53 +1,54 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Analytics } from '../../utils/analytics';
 import './styles/SignInButton.css';
-import { handleApiError } from '../../utils/errorHandler';
 
 export const SignInButton = ({ variant = 'default' }) => {
-    const { googleLogin, loading } = useAuth();
+    const buttonRef = useRef(null);
+    const { renderGoogleButton, loading } = useAuth();
+    const [browserSupport, setBrowserSupport] = useState(null);
     
-    const handleClick = async () => {
-        if (!loading) {
-            try {
-                Analytics.auth.login({ 
-                    method: 'google', 
-                    status: 'initiated',
-                    variant 
-                });
-                await googleLogin();
-            } catch (error) {
-                const handledError = handleApiError(error);
-                Analytics.error({
-                    status: handledError.status,
-                    errorCode: handledError.errorCode,
-                    message: handledError.message
-                });
-            }
-        }
-    };
+    useEffect(() => {
+        const checkBrowser = () => {
+            const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+            const chromeVersion = parseInt((/Chrome\/([0-9]+)/.exec(navigator.userAgent) || [])[1], 10);
+            const hasFedCMSupport = !!(
+                window.google?.accounts?.id?.initialize &&
+                'FederatedCredential' in window
+            );
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            handleClick();
+            setBrowserSupport({
+                isSupported: isChrome && chromeVersion >= 117 && hasFedCMSupport,
+                browserInfo: {
+                    isChrome,
+                    chromeVersion,
+                    hasFedCMSupport
+                }
+            });
+        };
+
+        checkBrowser();
+    }, []);
+
+    useEffect(() => {
+        if (!loading && buttonRef.current) {
+            renderGoogleButton(buttonRef.current);
+            
+            Analytics.auth.login({ 
+                method: 'google', 
+                status: 'button_rendered',
+                variant,
+                browserSupport
+            });
         }
-    };
+    }, [loading, renderGoogleButton, variant, browserSupport]);
 
     return (
-        <button 
-            className={`signin-button signin-button--${variant}`}
-            onClick={handleClick}
-            onKeyPress={handleKeyPress}
-            disabled={loading}
+        <div 
+            ref={buttonRef}
+            className={`signin-button-container signin-button-container--${variant}`}
             aria-label="使用 Google 登入"
-            tabIndex={0}
-        >
-            <img 
-                src="/google-icon.svg" 
-                alt="Google" 
-                className="signin-button__icon"
-            />
-            {loading ? '登入中...' : '使用 Google 登入'}
-        </button>
+            data-fedcm-support={browserSupport?.isSupported}
+        />
     );
 }; 

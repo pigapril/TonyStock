@@ -79,60 +79,76 @@ class AuthService {
         }
     }
 
-    // 更新 access token
-    async refreshToken() {
+    // 更新為處理 Google ID token
+    async verifyGoogleToken(credential) {
+        console.log('Starting verifyGoogleToken:', {
+            hasCredential: !!credential,
+            credentialLength: credential?.length,
+            baseUrl: this.baseUrl,
+            timestamp: new Date().toISOString()
+        });
+
         try {
-            const response = await fetch(`${this.baseUrl}/api/auth/refresh`, {
-                credentials: 'include'
+            const response = await fetch(`${this.baseUrl}/api/auth/google/verify`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ credential })
+            });
+
+            console.log('Google verify response:', {
+                status: response.status,
+                ok: response.ok,
+                headers: Object.fromEntries(response.headers.entries()),
+                cookies: document.cookie,
+                corsHeaders: {
+                    'access-control-allow-credentials': response.headers.get('access-control-allow-credentials'),
+                    'access-control-allow-origin': response.headers.get('access-control-allow-origin')
+                },
+                timestamp: new Date().toISOString()
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
+                console.error('Verify response error:', {
+                    status: response.status,
+                    errorData,
+                    timestamp: new Date().toISOString()
+                });
                 throw new Error(JSON.stringify(errorData));
             }
 
             const data = await response.json();
+            console.log('Verify success response:', {
+                hasData: !!data,
+                hasUser: !!data?.data?.user,
+                timestamp: new Date().toISOString()
+            });
+
+            Analytics.auth.login({ 
+                method: 'google', 
+                status: 'success' 
+            });
+
             return data.data;
         } catch (error) {
-            const handledError = handleApiError(error);
-            throw handledError;
-        }
-    }
-
-    // Google 登入
-    async googleLogin() {
-        try {
-            const response = await fetch(`${this.baseUrl}/api/auth/google/login`, {
-                credentials: 'include'
+            console.error('Verify token error:', {
+                message: error.message,
+                type: error.constructor.name,
+                stack: error.stack,
+                timestamp: new Date().toISOString()
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(JSON.stringify(errorData));
-            }
-
-            const data = await response.json();
-            if (data?.data?.url) {
-                localStorage.setItem('auth_redirect', window.location.pathname);
-                window.location.href = data.data.url;
-            } else {
-                throw new Error('Invalid response format');
-            }
-        } catch (error) {
+            Analytics.auth.login({ 
+                method: 'google', 
+                status: 'error',
+                error: error.message 
+            });
             const handledError = handleApiError(error);
             throw handledError;
         }
-    }
-
-    // Google 登入回調頁面也加上日誌
-    async handleGoogleCallback() {
-        console.log('Google callback received:', {
-            url: window.location.href,
-            cookies: document.cookie,
-            localStorage: {
-                redirect: localStorage.getItem('auth_redirect')
-            }
-        });
     }
 }
 
