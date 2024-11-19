@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useCallback } from 'react';
 import { Analytics } from '../utils/analytics';
 import authService from '../services/auth.service';
 import { handleApiError } from '../utils/errorHandler';
+import { useDialog } from '../hooks/useDialog';
 
 export const AuthContext = createContext(null);
 
@@ -109,6 +110,8 @@ export function AuthProvider({ children }) {
             });
 
             setUser(userData);
+            window.dispatchEvent(new CustomEvent('loginSuccess'));
+            
             Analytics.auth.login({ 
                 method: 'google', 
                 status: 'success',
