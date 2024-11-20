@@ -132,5 +132,32 @@ export const Analytics = {
         });
       }
     }
+  },
+
+  // 添加市場情緒指標相關追蹤
+  marketSentiment: {
+    // 切換指標標籤
+    switchIndicator: (data) => {
+      pushToDataLayer('sentiment_indicator_switch', {
+        indicator_name: data.indicatorName,
+        from_indicator: data.fromIndicator
+      });
+    },
+    
+    // 切換時間範圍
+    changeTimeRange: (data) => {
+      pushToDataLayer('sentiment_timerange_change', {
+        time_range: data.timeRange,
+        indicator_name: data.currentIndicator
+      });
+    },
+
+    // 切換視圖模式（最新情緒指數/歷史數據）
+    switchViewMode: (data) => {
+      pushToDataLayer('sentiment_view_mode_switch', {
+        view_mode: data.viewMode,
+        indicator_name: data.currentIndicator
+      });
+    }
   }
 };

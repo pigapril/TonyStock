@@ -198,6 +198,10 @@ const MarketSentimentIndex = () => {
   }, []);
 
   const handleTimeRangeChange = (e) => {
+    Analytics.marketSentiment.changeTimeRange({
+      timeRange: e.target.value,
+      currentIndicator: INDICATOR_NAME_MAP[activeTab] || activeTab
+    });
     setSelectedTimeRange(e.target.value);
   };
 
@@ -361,11 +365,19 @@ const MarketSentimentIndex = () => {
 
   // 新增：處理標籤切換的函數
   const handleTabChange = (tabKey) => {
+    Analytics.marketSentiment.switchIndicator({
+      indicatorName: INDICATOR_NAME_MAP[tabKey] || tabKey,
+      fromIndicator: INDICATOR_NAME_MAP[activeTab] || activeTab
+    });
     setActiveTab(tabKey);
   };
 
   // 新增：處理視圖模式切換的函數
   const handleViewModeChange = (mode) => {
+    Analytics.marketSentiment.switchViewMode({
+      viewMode: mode,
+      currentIndicator: INDICATOR_NAME_MAP[activeTab] || activeTab
+    });
     setViewMode(mode);
   };
 
