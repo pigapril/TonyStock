@@ -3,8 +3,9 @@
   publish = "build"
 
 [build.environment]
-  NODE_VERSION = "18"
-  NPM_VERSION = "9"
+  NODE_VERSION = "18.16.0"
+  NPM_VERSION = "9.5.1"
+  CI = "false"
 
 [[redirects]]
   from = "/api/*"

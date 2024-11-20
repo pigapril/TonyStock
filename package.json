@@ -26,7 +26,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "prebuild": "npm install --save-dev @babel/plugin-proposal-private-property-in-object",
+    "prebuild": "npm install",
     "build": "react-scripts build",
     "start": "react-scripts start",
     "test": "react-scripts test",
@@ -51,7 +51,10 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/core": "^7.22.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-react": "^7.22.5",
+    "babel-preset-react-app": "^10.0.1"
   }
 }
