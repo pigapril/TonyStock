@@ -212,11 +212,21 @@ export function AuthProvider({ children }) {
         
         if (!window.google?.accounts?.id) {
             console.warn('Google Identity Service not available');
+            Analytics.auth.identityService.buttonRender({
+                status: 'error',
+                type: 'standard',
+                variant: 'service_unavailable'
+            });
             return;
         }
 
         if (!isGoogleInitialized) {
             console.warn('Google Identity Service not initialized yet');
+            Analytics.auth.identityService.buttonRender({
+                status: 'error',
+                type: 'standard',
+                variant: 'not_initialized'
+            });
             return;
         }
 
@@ -231,8 +241,20 @@ export function AuthProvider({ children }) {
                 // 在不支援 FedCM 的瀏覽器使用傳統模式
                 ux_mode: useLegacy ? 'popup' : undefined
             });
+            
+            Analytics.auth.identityService.buttonRender({
+                status: 'success',
+                type: 'standard',
+                variant: useLegacy ? 'legacy' : 'fedcm'
+            });
         } catch (error) {
             console.error('Button render error:', error);
+            Analytics.auth.identityService.buttonRender({
+                status: 'error',
+                type: 'standard',
+                variant: useLegacy ? 'legacy' : 'fedcm',
+                error: error.message
+            });
         }
     }, [checkBrowserCompatibility, isGoogleInitialized]);
 
