@@ -43,7 +43,7 @@ export function AuthDialog() {
             }
             window.removeEventListener('loginSuccess', handleLoginSuccess);
         };
-    }, [dialog.isOpen, renderGoogleButton, closeDialog]);
+    }, [dialog.isOpen, renderGoogleButton, closeDialog, dialog.source]);
 
     const handleClose = () => {
         closeDialog();

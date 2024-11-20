@@ -2,7 +2,6 @@ import { createContext, useState, useEffect, useCallback } from 'react';
 import { Analytics } from '../utils/analytics';
 import authService from '../services/auth.service';
 import { handleApiError } from '../utils/errorHandler';
-import { useDialog } from '../hooks/useDialog';
 
 export const AuthContext = createContext(null);
 
@@ -11,6 +10,62 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isGoogleInitialized, setIsGoogleInitialized] = useState(false);
+
+    const handleError = (error) => {
+        const errorData = handleApiError(error);
+        setError(errorData.data);
+        setLoading(false);
+    };
+
+    // 將 handleGoogleCredential 移到這裡，在 useEffect 之前
+    const handleGoogleCredential = useCallback(async (response) => {
+        console.log('Google credential response:', {
+            hasResponse: !!response,
+            hasCredential: !!response?.credential,
+            credentialLength: response?.credential?.length,
+            timestamp: new Date().toISOString()
+        });
+
+        try {
+            setLoading(true);
+            console.log('Before verifyGoogleToken:', {
+                timestamp: new Date().toISOString()
+            });
+
+            const { user: userData } = await authService.verifyGoogleToken(response.credential);
+            
+            console.log('After verifyGoogleToken:', {
+                hasUserData: !!userData,
+                timestamp: new Date().toISOString()
+            });
+
+            setUser(userData);
+            window.dispatchEvent(new CustomEvent('loginSuccess'));
+            
+            Analytics.auth.login({ 
+                method: 'google', 
+                status: 'success',
+                variant: 'identity_service'
+            });
+        } catch (error) {
+            console.error('Google credential error:', {
+                message: error.message,
+                type: error.constructor.name,
+                stack: error.stack,
+                timestamp: new Date().toISOString()
+            });
+
+            handleError(error);
+            Analytics.auth.login({ 
+                method: 'google', 
+                status: 'error',
+                variant: 'identity_service',
+                error: error.message
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);  // 使用 useCallback 並添加必要的依賴
 
     // 檢查瀏覽器相容性
     const checkBrowserCompatibility = useCallback(() => {
@@ -85,57 +140,7 @@ export function AuthProvider({ children }) {
                 initializeGoogleIdentity();
             };
         }
-    }, [checkBrowserCompatibility]);
-
-    // 處理 Google 登入回調
-    const handleGoogleCredential = async (response) => {
-        console.log('Google credential response:', {
-            hasResponse: !!response,
-            hasCredential: !!response?.credential,
-            credentialLength: response?.credential?.length,
-            timestamp: new Date().toISOString()
-        });
-
-        try {
-            setLoading(true);
-            console.log('Before verifyGoogleToken:', {
-                timestamp: new Date().toISOString()
-            });
-
-            const { user: userData } = await authService.verifyGoogleToken(response.credential);
-            
-            console.log('After verifyGoogleToken:', {
-                hasUserData: !!userData,
-                timestamp: new Date().toISOString()
-            });
-
-            setUser(userData);
-            window.dispatchEvent(new CustomEvent('loginSuccess'));
-            
-            Analytics.auth.login({ 
-                method: 'google', 
-                status: 'success',
-                variant: 'identity_service'
-            });
-        } catch (error) {
-            console.error('Google credential error:', {
-                message: error.message,
-                type: error.constructor.name,
-                stack: error.stack,
-                timestamp: new Date().toISOString()
-            });
-
-            handleError(error);
-            Analytics.auth.login({ 
-                method: 'google', 
-                status: 'error',
-                variant: 'identity_service',
-                error: error.message
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
+    }, [checkBrowserCompatibility, handleGoogleCredential]);
 
     // 檢查認證狀態
     const checkAuthStatus = useCallback(async () => {
@@ -199,12 +204,6 @@ export function AuthProvider({ children }) {
         }
     };
 
-    const handleError = (error) => {
-        const errorData = handleApiError(error);
-        setError(errorData.data);
-        setLoading(false);
-    };
-
     const resetError = () => setError(null);
 
     // 提供 Google 登入按鈕渲染方法
@@ -236,38 +235,6 @@ export function AuthProvider({ children }) {
             console.error('Button render error:', error);
         }
     }, [checkBrowserCompatibility, isGoogleInitialized]);
-
-    const testOriginAccess = () => {
-        // 修改測試方式
-        window.google.accounts.id.initialize({
-            client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-            callback: (response) => {
-                console.log('Test callback response:', response);
-            },
-            // 新增這些選項
-            ux_mode: 'popup',
-            context: 'signin',
-            itp_support: true
-        });
-
-        // 直接嘗試渲染按鈕到一個臨時元素
-        const testDiv = document.createElement('div');
-        testDiv.style.display = 'none';
-        document.body.appendChild(testDiv);
-
-        try {
-            window.google.accounts.id.renderButton(testDiv, {
-                type: 'standard',
-                theme: 'outline',
-                size: 'large'
-            });
-            console.log('Test render successful');
-        } catch (error) {
-            console.error('Test render failed:', error);
-        } finally {
-            document.body.removeChild(testDiv);
-        }
-    };
 
     const value = {
         user,

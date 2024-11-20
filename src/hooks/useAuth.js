@@ -1,7 +1,5 @@
-import { useContext, useCallback } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import { Analytics } from '../utils/analytics';
-import authService from '../services/auth.service';
 
 export function useAuth() {
     const context = useContext(AuthContext);
