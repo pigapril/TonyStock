@@ -1,6 +1,6 @@
 [build]
-  command = "cd frontend && SKIP_PREFLIGHT_CHECK=true CI=false npm run build"
-  publish = "frontend/build"
+  command = "SKIP_PREFLIGHT_CHECK=true CI=false npm run build"
+  publish = "build"
 
 [build.environment]
   NODE_VERSION = "18.16.0"
