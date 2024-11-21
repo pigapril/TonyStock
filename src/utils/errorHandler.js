@@ -96,6 +96,18 @@ export const handleApiError = (error) => {
         });
     }
     
+    // Watchlist 相關錯誤
+    const watchlistErrors = {
+        DUPLICATE_STOCK: '此股票已在追蹤清單中',
+        CATEGORY_NOT_FOUND: '找不到指定的分類',
+        CATEGORY_LIMIT_EXCEEDED: '已達到分類數量上限',
+        // ... 其他錯誤類型
+    };
+
+    if (error.code in watchlistErrors) {
+        return new Error(watchlistErrors[error.code]);
+    }
+
     // 預設錯誤
     return trackError({
         status: 'error',

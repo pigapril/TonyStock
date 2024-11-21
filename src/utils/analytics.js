@@ -159,5 +159,18 @@ export const Analytics = {
         indicator_name: data.currentIndicator
       });
     }
+  },
+
+  // 新增 watchlist 相關事件追蹤
+  watchlist: {
+    addStock: ({ categoryId, stockSymbol }) => {
+      // 追蹤添加股票事件
+    },
+    removeStock: ({ categoryId, stockSymbol }) => {
+      // 追蹤移除股票事件
+    },
+    createCategory: ({ categoryName }) => {
+      // 追蹤建立分類事件
+    }
   }
 };

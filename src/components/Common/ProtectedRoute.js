@@ -6,7 +6,7 @@ import { Analytics } from '../../utils/analytics';
 import './styles/ProtectedRoute.css';
 
 export function ProtectedRoute({ children, requireAuth = true }) {
-    const { user, loading } = useAuth();
+    const { user, loading, watchlistAccess } = useAuth();
     const { openDialog } = useDialog();
     const location = useLocation();
 
@@ -44,6 +44,11 @@ export function ProtectedRoute({ children, requireAuth = true }) {
         status: 'success',
         path: location.pathname
     });
+
+    // watchlist 頁面需要額外的權限檢查
+    if (location.pathname.startsWith('/watchlist') && !watchlistAccess) {
+        return <Navigate to="/unauthorized" replace />;
+    }
 
     return children;
 } 

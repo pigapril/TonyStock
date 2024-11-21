@@ -3,7 +3,14 @@ import { Analytics } from '../utils/analytics';
 import authService from '../services/auth.service';
 import { handleApiError } from '../utils/errorHandler';
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext({
+    user: null,
+    isAuthenticated: false,
+    watchlistAccess: false,
+    loading: true,
+    error: null,
+    isGoogleInitialized: false
+});
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);

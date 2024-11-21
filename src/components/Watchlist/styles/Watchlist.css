@@ -1,0 +1,224 @@
+/* 容器樣式 */
+.watchlist-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 標題區域 */
+.watchlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.watchlist-header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+/* 按鈕樣式 */
+.create-category-button,
+.add-stock-button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    background-color: #1a73e8;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.create-category-button:hover,
+.add-stock-button:hover {
+    background-color: #1557b0;
+}
+
+/* 分類區塊 */
+.watchlist-category {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 16px;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.category-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.category-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* 編輯和刪除按鈕 */
+.edit-category-button,
+.delete-category-button {
+    padding: 4px 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+    transition: color 0.2s;
+}
+
+.edit-category-button:hover {
+    color: #1a73e8;
+}
+
+.delete-category-button:hover {
+    color: #dc3545;
+}
+
+/* 股票列表 */
+.stock-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.stock-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.stock-item:hover {
+    background: #e9ecef;
+}
+
+.stock-symbol {
+    font-family: monospace;
+    font-size: 14px;
+    color: #333;
+}
+
+.remove-stock-button {
+    border: none;
+    background: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.remove-stock-button:hover {
+    color: #dc3545;
+}
+
+/* 空狀態 */
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.empty-state p {
+    margin-bottom: 16px;
+}
+
+/* 載入中狀態 */
+.loading-container,
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: #666;
+}
+
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #1a73e8;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 錯誤狀態 */
+.error-container {
+    padding: 16px;
+    color: #dc3545;
+    text-align: center;
+}
+
+/* Toast 通知 */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 24px;
+    border-radius: 4px;
+    background: #333;
+    color: white;
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+}
+
+.toast.success {
+    background: #28a745;
+}
+
+.toast.error {
+    background: #dc3545;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .watchlist-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .stock-list {
+        grid-template-columns: 1fr;
+    }
+
+    .category-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .category-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}

@@ -1,6 +1,6 @@
 // React 相關
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, Navigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 
 // 第三方庫
@@ -18,7 +18,7 @@ import {
   TimeScale
 } from 'chart.js';
 import DatePicker from 'react-datepicker';
-import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook } from 'react-icons/fa';
+import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList } from 'react-icons/fa';
 
 // 樣式引入
 import './App.css';
@@ -35,6 +35,7 @@ import { UserProfile } from './components/Auth/UserProfile';
 import { PageViewTracker } from './components/Common/PageViewTracker';
 import { About } from './pages/About';
 import { Legal } from './pages/Legal';
+import { WatchlistContainer } from './components/Watchlist/WatchlistContainer';
 
 // Context 和 Hooks
 import { AuthProvider } from './contexts/AuthContext';
@@ -81,6 +82,7 @@ function getTimeUnit(dates) {
 
 // 建立 AppContent 元件來使用 useAuth
 function AppContent() {
+  const { isAuthenticated } = useAuth();
   const [stockCode, setStockCode] = useState('');
   const [years, setYears] = useState('3.5');
   const [yearsError, setYearsError] = useState('');
@@ -553,6 +555,15 @@ function AppContent() {
               </Link>
             </li>
             */}
+            {isAuthenticated && (
+                <Link 
+                    to="/watchlist" 
+                    className="sidebar-item" 
+                    onClick={closeSidebar}
+                >
+                    <FaList /> 我的追蹤清單
+                </Link>
+            )}
           </ul>
         </nav>
 
@@ -847,6 +858,21 @@ function AppContent() {
                   <Legal />
                 </PageContainer>
               } />
+              <Route 
+                path="/watchlist" 
+                element={
+                    isAuthenticated ? (
+                        <PageContainer
+                            title="我的追蹤清單"
+                            description="管理您感興趣的股票"
+                        >
+                            <WatchlistContainer />
+                        </PageContainer>
+                    ) : (
+                        <Navigate to="/" replace />
+                    )
+                } 
+              />
             </Routes>
           </div>
         </main>
