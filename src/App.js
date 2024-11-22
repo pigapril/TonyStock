@@ -54,6 +54,8 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || ''; // 使用環境�
 
 // 設定 axios 的預設 baseURL
 axios.defaults.baseURL = API_BASE_URL;
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 

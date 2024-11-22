@@ -24,7 +24,12 @@ class AuthService {
             });
 
             const response = await fetch(`${this.baseUrl}/api/auth/status`, {
-                credentials: 'include'
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
             });
             
             // 響應後記錄
