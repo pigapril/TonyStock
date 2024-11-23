@@ -6,15 +6,21 @@ import { Analytics } from '../../utils/analytics';
 
 export function AuthDialog() {
     const { dialog, closeDialog } = useDialog();
-    const { loading, renderGoogleButton } = useAuth();
+    const { loading, renderGoogleButton, user } = useAuth();
     const buttonRef = useRef(null);
 
     useEffect(() => {
         const handleLoginSuccess = () => {
+            console.log('Login success event received');
             closeDialog();
         };
 
         window.addEventListener('loginSuccess', handleLoginSuccess);
+        
+        if (user) {
+            console.log('User state updated, closing dialog');
+            closeDialog();
+        }
 
         if (buttonRef.current && dialog.isOpen) {
             if (window.google?.accounts?.id) {
@@ -43,7 +49,7 @@ export function AuthDialog() {
             }
             window.removeEventListener('loginSuccess', handleLoginSuccess);
         };
-    }, [dialog.isOpen, renderGoogleButton, closeDialog, dialog.source]);
+    }, [dialog.isOpen, renderGoogleButton, closeDialog, dialog.source, user]);
 
     const handleClose = () => {
         closeDialog();

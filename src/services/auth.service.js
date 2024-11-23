@@ -126,9 +126,12 @@ class AuthService {
             }
 
             const data = await response.json();
-            console.log('Verify success response:', {
-                hasData: !!data,
+            
+            console.log('Token verification complete:', {
+                status: response.status,
                 hasUser: !!data?.data?.user,
+                userData: data?.data?.user,
+                cookies: document.cookie,
                 timestamp: new Date().toISOString()
             });
 

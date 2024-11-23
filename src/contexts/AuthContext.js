@@ -41,13 +41,12 @@ export function AuthProvider({ children }) {
 
             const { user: userData } = await authService.verifyGoogleToken(response.credential);
             
-            console.log('After verifyGoogleToken:', {
-                hasUserData: !!userData,
-                timestamp: new Date().toISOString()
-            });
-
+            console.log('Setting user data:', userData);
             setUser(userData);
-            window.dispatchEvent(new CustomEvent('loginSuccess'));
+            
+            setTimeout(() => {
+                window.dispatchEvent(new CustomEvent('loginSuccess'));
+            }, 0);
             
             Analytics.auth.login({ 
                 method: 'google', 
