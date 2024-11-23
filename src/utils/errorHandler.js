@@ -50,31 +50,52 @@ export const handleApiError = (error) => {
         return errorData;
     };
 
+    // 如果是 API 回傳的 AppError
+    if (error.statusCode && error.status) {
+        return trackError({
+            status: error.status,
+            errorCode: error.errorCode || 'API_ERROR',
+            message: error.message || ErrorMessages.DEFAULT_ERROR
+        });
+    }
+
+    // 如果是 API 回傳的標準錯誤格式
+    if (error.response?.data) {
+        const errorData = error.response.data;
+        return trackError({
+            status: errorData.status || 'error',
+            errorCode: errorData.errorCode || 'API_ERROR',
+            message: errorData.message || ErrorMessages[errorData.errorCode] || ErrorMessages.DEFAULT_ERROR
+        });
+    }
+
+    // Watchlist 特定錯誤處理
+    const watchlistErrors = {
+        CATEGORY_NOT_FOUND: '找不到指定的分類',
+        CATEGORY_UNAUTHORIZED: '無權限存取此分類',
+        CANNOT_MODIFY_DEFAULT: '無法修改預設分類',
+        CANNOT_DELETE_DEFAULT: '無法刪除預設分類',
+        CANNOT_DELETE_LAST: '無法刪除最後一個分類',
+        DUPLICATE_CATEGORY_NAME: '分類名稱已存在',
+        DUPLICATE_STOCK: '此股票已在追蹤清單中',
+        CATEGORY_LIMIT_EXCEEDED: '已達到分類數量上限',
+        INVALID_STOCK_SYMBOL: '無效的股票代碼'
+    };
+
+    if (error.errorCode && watchlistErrors[error.errorCode]) {
+        return trackError({
+            status: 'error',
+            errorCode: error.errorCode,
+            message: watchlistErrors[error.errorCode]
+        });
+    }
+
     // 處理 Google Identity Service 特定錯誤
     if (error.response?.data?.errorCode?.startsWith('GOOGLE_AUTH_')) {
         return trackError({
             status: 'error',
             errorCode: error.response.data.errorCode,
             message: ErrorMessages[error.response.data.errorCode] || ErrorMessages.GOOGLE_AUTH_FAILED
-        });
-    }
-    
-    // 如果是 API 回傳的錯誤
-    if (error.response?.data) {
-        const { status, data } = error.response.data;
-        return trackError({
-            status,
-            errorCode: data.errorCode,
-            message: ErrorMessages[data.errorCode] || data.message || ErrorMessages.DEFAULT_ERROR
-        });
-    }
-
-    // 處理 Invalid response format 錯誤
-    if (error.message === 'Invalid response format') {
-        return trackError({
-            status: 'error',
-            errorCode: 'GOOGLE_AUTH_FAILED',
-            message: ErrorMessages.GOOGLE_AUTH_FAILED
         });
     }
     
@@ -96,18 +117,6 @@ export const handleApiError = (error) => {
         });
     }
     
-    // Watchlist 相關錯誤
-    const watchlistErrors = {
-        DUPLICATE_STOCK: '此股票已在追蹤清單中',
-        CATEGORY_NOT_FOUND: '找不到指定的分類',
-        CATEGORY_LIMIT_EXCEEDED: '已達到分類數量上限',
-        // ... 其他錯誤類型
-    };
-
-    if (error.code in watchlistErrors) {
-        return new Error(watchlistErrors[error.code]);
-    }
-
     // 預設錯誤
     return trackError({
         status: 'error',
