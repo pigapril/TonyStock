@@ -11,13 +11,17 @@ import debounce from 'lodash/debounce';
 class WatchlistService {
     constructor() {
         this.baseUrl = process.env.REACT_APP_API_BASE_URL || '';
+        console.log('WatchlistService initialized with baseUrl:', this.baseUrl);
     }
 
     // 獲取分類列表
     async getCategories() {
         try {
-            console.log('開始獲取分類列表');
-            const response = await fetch(`${this.baseUrl}/api/watchlist/categories`, {
+            console.log('開始獲取分類列表請求');
+            const url = `${this.baseUrl}/api/watchlist/categories`;
+            console.log('請求 URL:', url);
+
+            const response = await fetch(url, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -25,15 +29,33 @@ class WatchlistService {
                 }
             });
 
+            console.log('收到響應:', {
+                status: response.status,
+                statusText: response.statusText,
+                headers: Object.fromEntries(response.headers.entries())
+            });
+
             if (!response.ok) {
-                throw await response.json();
+                const errorData = await response.json();
+                console.error('響應不成功:', errorData);
+                throw errorData;
             }
 
-            const { data } = await response.json();
-            console.log('獲取分類成功:', data);
-            return data.categories;
+            const responseData = await response.json();
+            console.log('解析響應數據:', responseData);
+            
+            if (!responseData.data) {
+                console.warn('響應數據缺少 data 字段:', responseData);
+                return [];
+            }
+
+            return responseData.data.categories || [];
         } catch (error) {
-            console.error('獲取分類失敗:', error);
+            console.error('獲取分類失敗:', {
+                error,
+                message: error.message,
+                stack: error.stack
+            });
             throw error;
         }
     }
@@ -63,22 +85,40 @@ class WatchlistService {
 
     // 使用專門的 GET 請求方法
     async fetchGet(endpoint) {
-        const options = {
-            ...this.defaultOptions,
-            method: 'GET'
-        };
-        
-        console.log('發送 GET 請求:', endpoint, options);
-        const response = await fetch(`${this.baseUrl}${endpoint}`, options);
-        console.log('收到響應:', response.status);
-        
-        if (!response.ok) {
-            const error = await response.json();
-            console.error('請求失敗:', error);
+        const url = `${this.baseUrl}${endpoint}`;
+        console.log('發送 GET 請求:', {
+            url,
+            options: this.defaultOptions
+        });
+
+        try {
+            const response = await fetch(url, {
+                ...this.defaultOptions,
+                method: 'GET'
+            });
+
+            console.log('收到 GET 響應:', {
+                status: response.status,
+                statusText: response.statusText
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                console.error('GET 請求失敗:', error);
+                throw error;
+            }
+
+            const data = await response.json();
+            console.log('GET 請求成功:', data);
+            return data;
+        } catch (error) {
+            console.error('GET 請求異常:', {
+                endpoint,
+                error: error.message,
+                stack: error.stack
+            });
             throw error;
         }
-        
-        return response.json();
     }
 
     // 使用專門的 POST 請求方法
@@ -314,24 +354,46 @@ export function WatchlistContainer() {
     }, []);
 
     const loadCategories = useCallback(async () => {
+        console.log('開始載入觀察清單分類', {
+            user: user?.id,
+            timestamp: new Date().toISOString()
+        });
+
         try {
-            console.log('開始載入觀察清單分類');
             setLoading(true);
+            console.log('發送獲取分類請求');
+            
             const categories = await watchlistService.getCategories();
-            console.log('獲取到的分類數據:', categories);
+            console.log('獲取分類響應:', {
+                categoriesCount: categories?.length,
+                categories
+            });
+
             setCategories(categories);
             setError(null);
+            
+            console.log('分類數據已更新到狀態');
         } catch (err) {
-            console.error('載入分類失敗:', err);
+            console.error('載入分類失敗:', {
+                error: err,
+                message: err.message,
+                stack: err.stack
+            });
+            
             setError(getErrorMessage(err));
             showToast(getErrorMessage(err), 'error');
         } finally {
-            console.log('載入完成，設置 loading 為 false');
+            console.log('載入完成，更新 loading 狀態');
             setLoading(false);
         }
-    }, [showToast]);
+    }, [user, showToast]);
 
     useEffect(() => {
+        console.log('WatchlistContainer useEffect 觸發', {
+            hasUser: !!user,
+            userId: user?.id
+        });
+
         if (user) {
             loadCategories();
         }
