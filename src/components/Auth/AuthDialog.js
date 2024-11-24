@@ -17,30 +17,33 @@ export function AuthDialog() {
 
         window.addEventListener('loginSuccess', handleLoginSuccess);
         
-        if (user) {
-            console.log('User state updated, closing dialog');
-            closeDialog();
-        }
-
-        if (buttonRef.current && dialog.isOpen) {
-            if (window.google?.accounts?.id) {
-                window.google.accounts.id.cancel();
+        if (dialog.isOpen && dialog.type === 'auth') {
+            if (user) {
+                console.log('Auth dialog closing due to user presence');
+                closeDialog();
+                return;
             }
 
-            renderGoogleButton(buttonRef.current, {
-                type: 'standard',
-                theme: 'outline',
-                size: 'large',
-                text: 'signin_with',
-                shape: 'rectangular',
-                logo_alignment: 'left',
-                context: 'dialog'
-            });
-            
-            Analytics.ui.dialog.open({
-                type: 'auth',
-                source: dialog.source || 'user_action'
-            });
+            if (buttonRef.current) {
+                if (window.google?.accounts?.id) {
+                    window.google.accounts.id.cancel();
+                }
+
+                renderGoogleButton(buttonRef.current, {
+                    type: 'standard',
+                    theme: 'outline',
+                    size: 'large',
+                    text: 'signin_with',
+                    shape: 'rectangular',
+                    logo_alignment: 'left',
+                    context: dialog.source || 'dialog'
+                });
+                
+                Analytics.ui.dialog.open({
+                    type: 'auth',
+                    source: dialog.source || 'user_action'
+                });
+            }
         }
 
         return () => {
@@ -49,7 +52,14 @@ export function AuthDialog() {
             }
             window.removeEventListener('loginSuccess', handleLoginSuccess);
         };
-    }, [dialog.isOpen, renderGoogleButton, closeDialog, dialog.source, user]);
+    }, [
+        dialog.isOpen, 
+        dialog.type, 
+        dialog.source,
+        closeDialog,
+        renderGoogleButton,
+        user
+    ]);
 
     const handleClose = () => {
         closeDialog();
