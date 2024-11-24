@@ -13,29 +13,98 @@ class WatchlistService {
         this.baseUrl = process.env.REACT_APP_API_BASE_URL || '';
     }
 
+    // 獲取分類列表
     async getCategories() {
         try {
+            console.log('開始獲取分類列表');
             const response = await fetch(`${this.baseUrl}/api/watchlist/categories`, {
-                credentials: 'include'
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json'
+                }
             });
-            if (!response.ok) throw await response.json();
+
+            if (!response.ok) {
+                throw await response.json();
+            }
+
             const { data } = await response.json();
+            console.log('獲取分類成功:', data);
             return data.categories;
         } catch (error) {
-            throw handleApiError(error);
+            console.error('獲取分類失敗:', error);
+            throw error;
         }
     }
 
+    // 創建新分類
+    async createCategory(name) {
+        try {
+            const response = await fetch(`${this.baseUrl}/api/watchlist/categories`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ name })
+            });
+
+            if (!response.ok) {
+                throw await response.json();
+            }
+
+            return (await response.json()).data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // 使用專門的 GET 請求方法
+    async fetchGet(endpoint) {
+        const options = {
+            ...this.defaultOptions,
+            method: 'GET'
+        };
+        
+        console.log('發送 GET 請求:', endpoint, options);
+        const response = await fetch(`${this.baseUrl}${endpoint}`, options);
+        console.log('收到響應:', response.status);
+        
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('請求失敗:', error);
+            throw error;
+        }
+        
+        return response.json();
+    }
+
+    // 使用專門的 POST 請求方法
+    async fetchPost(endpoint, data) {
+        const options = {
+            ...this.defaultOptions,
+            method: 'POST',
+            headers: {
+                ...this.defaultOptions.headers,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+        
+        const response = await fetch(`${this.baseUrl}${endpoint}`, options);
+        if (!response.ok) throw await response.json();
+        return response.json();
+    }
+
+    // 其他方法也使用新的請求方法
     async addStock(categoryId, stockSymbol) {
         try {
-            const response = await fetch(`${this.baseUrl}/api/watchlist/categories/${categoryId}/stocks`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ stockSymbol })
-            });
-            if (!response.ok) throw await response.json();
-            return (await response.json()).data;
+            return await this.fetchPost(
+                `/api/watchlist/categories/${categoryId}/stocks`,
+                { stockSymbol }
+            );
         } catch (error) {
             throw handleApiError(error);
         }
@@ -63,21 +132,6 @@ class WatchlistService {
                 `${this.baseUrl}/api/watchlist/search?keyword=${encodeURIComponent(keyword)}`,
                 { credentials: 'include' }
             );
-            if (!response.ok) throw await response.json();
-            return (await response.json()).data;
-        } catch (error) {
-            throw handleApiError(error);
-        }
-    }
-
-    async createCategory(name) {
-        try {
-            const response = await fetch(`${this.baseUrl}/api/watchlist/categories`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ name })
-            });
             if (!response.ok) throw await response.json();
             return (await response.json()).data;
         } catch (error) {
@@ -261,14 +315,18 @@ export function WatchlistContainer() {
 
     const loadCategories = useCallback(async () => {
         try {
+            console.log('開始載入觀察清單分類');
             setLoading(true);
-            const data = await watchlistService.getCategories();
-            setCategories(data);
+            const categories = await watchlistService.getCategories();
+            console.log('獲取到的分類數據:', categories);
+            setCategories(categories);
             setError(null);
         } catch (err) {
+            console.error('載入分類失敗:', err);
             setError(getErrorMessage(err));
             showToast(getErrorMessage(err), 'error');
         } finally {
+            console.log('載入完成，設置 loading 為 false');
             setLoading(false);
         }
     }, [showToast]);
@@ -278,23 +336,6 @@ export function WatchlistContainer() {
             loadCategories();
         }
     }, [user, loadCategories]);
-
-    useEffect(() => {
-        if (categories.length === 0) {
-            const createDefaultCategory = async () => {
-                try {
-                    const defaultCategory = await watchlistService.createCategory('ETF');
-                    await watchlistService.addStock(defaultCategory.id, 'SPY');
-                    await watchlistService.addStock(defaultCategory.id, '0050.TW');
-                    loadCategories();
-                } catch (error) {
-                    setError(getErrorMessage(error));
-                    showToast(getErrorMessage(error), 'error');
-                }
-            };
-            createDefaultCategory();
-        }
-    }, [categories, loadCategories, showToast]);
 
     const handleOpenAddStockDialog = (categoryId) => {
         openDialog(
