@@ -216,121 +216,6 @@ class WatchlistService {
 
 const watchlistService = new WatchlistService();
 
-// 添加股票對話框元件
-function AddStockDialog({ categoryId, onAdd, onClose, showToast }) {
-    const [keyword, setKeyword] = useState('');
-    const [results, setResults] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    // 將搜尋邏輯抽出來
-    const searchStocks = useCallback(async (value) => {
-        if (!value.trim()) {
-            setResults([]);
-            setLoading(false);
-            return;
-        }
-
-        setLoading(true);
-        try {
-            const data = await watchlistService.searchStocks(value);
-            setResults(data.results);
-            Analytics.ui.search({
-                type: 'stock',
-                keyword: value,
-                resultsCount: data.results.length
-            });
-        } catch (error) {
-            setError(getErrorMessage(error.errorCode));
-            Analytics.error({
-                component: 'AddStockDialog',
-                action: 'search',
-                error: error.message
-            });
-        } finally {
-            setLoading(false);
-        }
-    }, []);  // 因為使用的都是組件內的狀態更新函數，不需要添加依賴
-
-    // 使用 useMemo 創建 debounced 函數
-    const debouncedSearchStocks = useMemo(
-        () => debounce(searchStocks, 300),
-        [searchStocks]
-    );
-
-    // 在組件卸載時清理 debounce
-    useEffect(() => {
-        return () => {
-            debouncedSearchStocks.cancel();
-        };
-    }, [debouncedSearchStocks]);
-
-    // 處理輸入變更
-    const handleInputChange = useCallback((e) => {
-        const value = e.target.value;
-        setKeyword(value);
-        debouncedSearchStocks(value);
-    }, [debouncedSearchStocks]);
-
-    // 處理添加股票
-    const handleAddStockToCategory = async (stock) => {
-        try {
-            await watchlistService.addStock(categoryId, stock.symbol);
-            showToast(`已添加 ${stock.symbol} 到追蹤清單`, 'success');
-            onAdd();
-            Analytics.watchlist.stockAdd({
-                categoryId,
-                symbol: stock.symbol
-            });
-        } catch (error) {
-            showToast(error.message, 'error');
-            Analytics.error({
-                component: 'AddStockDialog',
-                action: 'add_stock',
-                error: error.message
-            });
-        }
-    };
-
-    return (
-        <Dialog
-            open={true}
-            onClose={onClose}
-            title="添加股票"
-            description="搜尋並添加股票到您的追蹤清單"
-        >
-            <div className="add-stock-dialog">
-                <input
-                    type="text"
-                    value={keyword}
-                    onChange={handleInputChange}
-                    placeholder="輸入股票代碼或名稱..."
-                    className="stock-search-input"
-                />
-                
-                {loading && <div className="loading">搜尋中...</div>}
-                {error && <div className="error-message">{error}</div>}
-                
-                <div className="search-results">
-                    {results.map((stock) => (
-                        <button
-                            key={stock.symbol}
-                            onClick={() => handleAddStockToCategory(stock)}
-                            className="stock-result-item"
-                        >
-                            <span className="stock-symbol">{stock.symbol}</span>
-                            <span className="stock-name">{stock.name}</span>
-                            {stock.market && (
-                                <span className="stock-market">{stock.market}</span>
-                            )}
-                        </button>
-                    ))}
-                </div>
-            </div>
-        </Dialog>
-    );
-}
-
 // 添加 Toast 通知元件
 const Toast = ({ message, type, onClose }) => (
     <div className={`toast toast-${type}`}>
@@ -342,11 +227,16 @@ const Toast = ({ message, type, onClose }) => (
 // Watchlist 主元件
 export function WatchlistContainer() {
     const { user } = useAuth();
-    const { openDialog, closeDialog } = useDialog();
+    const { dialog, openDialog, closeDialog } = useDialog();
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [toast, setToast] = useState(null);
+    const [categoryName, setCategoryName] = useState('');
+    const [keyword, setKeyword] = useState('');
+    const [results, setResults] = useState([]);
+    const [searchLoading, setSearchLoading] = useState(false);
+    const [searchError, setSearchError] = useState(null);
 
     const showToast = useCallback((message, type = 'info') => {
         setToast({ message, type });
@@ -400,14 +290,11 @@ export function WatchlistContainer() {
     }, [user, loadCategories]);
 
     const handleOpenAddStockDialog = (categoryId) => {
-        openDialog(
-            <AddStockDialog
-                categoryId={categoryId}
-                onAdd={loadCategories}
-                onClose={closeDialog}
-                showToast={showToast}
-            />
-        );
+        openDialog('addStock', {
+            categoryId,
+            onAdd: loadCategories,
+            showToast
+        });
     };
 
     const handleRemoveStock = async (categoryId, itemId) => {
@@ -427,19 +314,7 @@ export function WatchlistContainer() {
     };
 
     const handleCreateCategory = () => {
-        openDialog('ADD_CATEGORY', {
-            onAdd: async (name) => {
-                try {
-                    await watchlistService.createCategory(name);
-                    showToast('分類已創建', 'success');
-                    loadCategories();
-                    closeDialog();
-                } catch (error) {
-                    showToast(error.message, 'error');
-                }
-            },
-            onClose: closeDialog
-        });
+        openDialog('createCategory');
     };
 
     const handleEditCategory = (categoryId) => {
@@ -487,6 +362,19 @@ export function WatchlistContainer() {
         }
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await watchlistService.createCategory(categoryName);
+            closeDialog();
+            setCategoryName('');  // 清空輸入
+            await loadCategories();  // 重新載入表
+            showToast('分類創建成功', 'success');
+        } catch (error) {
+            showToast(getErrorMessage(error), 'error');
+        }
+    };
+
     const ErrorBoundary = ({ children }) => {
         const [hasError, setHasError] = useState(false);
         
@@ -507,6 +395,82 @@ export function WatchlistContainer() {
         }
         
         return children;
+    };
+
+    // 修改 closeDialog 的處理方式
+    const handleCloseDialog = () => {
+        closeDialog();
+        setCategoryName('');
+    };
+
+    // 搜尋股票的邏輯
+    const searchStocks = useCallback(async (value) => {
+        if (!value.trim()) {
+            setResults([]);
+            setSearchLoading(false);
+            return;
+        }
+
+        setSearchLoading(true);
+        try {
+            const data = await watchlistService.searchStocks(value);
+            setResults(data.results);
+            Analytics.ui.search({
+                type: 'stock',
+                keyword: value,
+                resultsCount: data.results.length
+            });
+        } catch (error) {
+            setSearchError(getErrorMessage(error.errorCode));
+            Analytics.error({
+                component: 'AddStockDialog',
+                action: 'search',
+                error: error.message
+            });
+        } finally {
+            setSearchLoading(false);
+        }
+    }, []);
+
+    // 使用 debounce
+    const debouncedSearchStocks = useMemo(
+        () => debounce(searchStocks, 300),
+        [searchStocks]
+    );
+
+    // 清理 debounce
+    useEffect(() => {
+        return () => {
+            debouncedSearchStocks.cancel();
+        };
+    }, [debouncedSearchStocks]);
+
+    // 處理輸入變更
+    const handleInputChange = useCallback((e) => {
+        const value = e.target.value;
+        setKeyword(value);
+        debouncedSearchStocks(value);
+    }, [debouncedSearchStocks]);
+
+    // 處理添加股票
+    const handleAddStockToCategory = async (stock) => {
+        try {
+            await watchlistService.addStock(dialog.props.categoryId, stock.symbol);
+            showToast(`已添加 ${stock.symbol} 到追蹤清單`, 'success');
+            loadCategories();
+            closeDialog();
+            Analytics.watchlist.stockAdd({
+                categoryId: dialog.props.categoryId,
+                symbol: stock.symbol
+            });
+        } catch (error) {
+            showToast(error.message, 'error');
+            Analytics.error({
+                component: 'AddStockDialog',
+                action: 'add_stock',
+                error: error.message
+            });
+        }
     };
 
     return (
@@ -600,6 +564,61 @@ export function WatchlistContainer() {
                         onClose={() => setToast(null)}
                     />
                 )}
+
+                <Dialog
+                    open={dialog.isOpen && dialog.type === 'createCategory'}
+                    onClose={handleCloseDialog}
+                    title="新增分類"
+                >
+                    <form onSubmit={handleSubmit} className="add-category-form">
+                        <input
+                            type="text"
+                            value={categoryName}
+                            onChange={(e) => setCategoryName(e.target.value)}
+                            placeholder="請輸入分類名稱"
+                            required
+                        />
+                        <div className="dialog-actions">
+                            <button type="submit">確認</button>
+                            <button type="button" onClick={handleCloseDialog}>取消</button>
+                        </div>
+                    </form>
+                </Dialog>
+
+                <Dialog
+                    open={dialog.isOpen && dialog.type === 'addStock'}
+                    onClose={closeDialog}
+                    title="添加股票"
+                >
+                    <div className="add-stock-dialog">
+                        <input
+                            type="text"
+                            value={keyword}
+                            onChange={handleInputChange}
+                            placeholder="輸入股票代碼或名稱..."
+                            className="stock-search-input"
+                        />
+                        
+                        {searchLoading && <div className="loading">搜尋中...</div>}
+                        {searchError && <div className="error-message">{searchError}</div>}
+                        
+                        <div className="search-results">
+                            {results.map((stock) => (
+                                <button
+                                    key={stock.symbol}
+                                    onClick={() => handleAddStockToCategory(stock)}
+                                    className="stock-result-item"
+                                >
+                                    <span className="stock-symbol">{stock.symbol}</span>
+                                    <span className="stock-name">{stock.name}</span>
+                                    {stock.market && (
+                                        <span className="stock-market">{stock.market}</span>
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </Dialog>
             </div>
         </ErrorBoundary>
     );
