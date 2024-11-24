@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { useDialog } from '../../hooks/useDialog';
 import { Dialog } from '../Common/Dialog';
 import { Analytics } from '../../utils/analytics';
 import { handleApiError, getErrorMessage } from '../../utils/errorHandler';
@@ -63,6 +62,7 @@ class WatchlistService {
     // 創建新分類
     async createCategory(name) {
         try {
+            console.log('開始創建分類:', { name });
             const response = await fetch(`${this.baseUrl}/api/watchlist/categories`, {
                 method: 'POST',
                 credentials: 'include',
@@ -73,12 +73,22 @@ class WatchlistService {
                 body: JSON.stringify({ name })
             });
 
+            console.log('創建分類響應狀態:', {
+                status: response.status,
+                statusText: response.statusText
+            });
+
             if (!response.ok) {
-                throw await response.json();
+                const error = await response.json();
+                console.error('創建分類失敗:', error);
+                throw error;
             }
 
-            return (await response.json()).data;
+            const result = await response.json();
+            console.log('創建分類成功，API 回傳:', result);
+            return result.data;
         } catch (error) {
+            console.error('創建分類出錯:', error);
             throw error;
         }
     }
@@ -224,19 +234,152 @@ const Toast = ({ message, type, onClose }) => (
     </div>
 );
 
-// Watchlist 主元件
-export function WatchlistContainer() {
-    const { user } = useAuth();
-    const { dialog, openDialog, closeDialog } = useDialog();
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [toast, setToast] = useState(null);
-    const [categoryName, setCategoryName] = useState('');
+// CreateCategoryDialog.js
+function CreateCategoryDialog({ open, onClose, onSubmit }) {
+    const [name, setName] = useState('');
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmit(name);
+        setName('');
+        onClose();
+    };
+
+    return (
+        <Dialog open={open} onClose={onClose} title="新增分類">
+            <form onSubmit={handleSubmit} className="add-category-form">
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="請輸入分類名稱"
+                    required
+                />
+                <div className="dialog-actions">
+                    <button type="submit">確認</button>
+                    <button type="button" onClick={onClose}>取消</button>
+                </div>
+            </form>
+        </Dialog>
+    );
+}
+
+// AddStockDialog.js
+function AddStockDialog({ open, onClose, categoryId, onAdd }) {
     const [keyword, setKeyword] = useState('');
     const [results, setResults] = useState([]);
     const [searchLoading, setSearchLoading] = useState(false);
     const [searchError, setSearchError] = useState(null);
+
+    // 搜尋邏輯
+    const searchStocks = useCallback(async (value) => {
+        if (!value.trim()) {
+            setResults([]);
+            return;
+        }
+
+        setSearchLoading(true);
+        try {
+            const data = await watchlistService.searchStocks(value);
+            setResults(data.results);
+        } catch (error) {
+            setSearchError(getErrorMessage(error));
+        } finally {
+            setSearchLoading(false);
+        }
+    }, []);
+
+    const debouncedSearch = useMemo(
+        () => debounce(searchStocks, 300),
+        [searchStocks]
+    );
+
+    return (
+        <Dialog open={open} onClose={onClose} title="添加股票">
+            <div className="add-stock-dialog">
+                <input
+                    type="text"
+                    value={keyword}
+                    onChange={(e) => {
+                        setKeyword(e.target.value);
+                        debouncedSearch(e.target.value);
+                    }}
+                    placeholder="輸入股票代碼或名稱..."
+                    className="stock-search-input"
+                />
+                
+                {searchLoading && <div className="loading">搜尋中...</div>}
+                {searchError && <div className="error-message">{searchError}</div>}
+                
+                <div className="search-results">
+                    {results.map((stock) => (
+                        <button
+                            key={stock.symbol}
+                            onClick={() => {
+                                onAdd(categoryId, stock);
+                                onClose();
+                            }}
+                            className="stock-result-item"
+                        >
+                            <span className="stock-symbol">{stock.symbol}</span>
+                            <span className="stock-name">{stock.name}</span>
+                            {stock.market && (
+                                <span className="stock-market">{stock.market}</span>
+                            )}
+                        </button>
+                    ))}
+                </div>
+            </div>
+        </Dialog>
+    );
+}
+
+// EditCategoryDialog.js
+function EditCategoryDialog({ open, onClose, category, onSubmit }) {
+    const [name, setName] = useState('');
+
+    useEffect(() => {
+        if (category) {
+            setName(category.name);
+        }
+    }, [category]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmit(name);
+    };
+
+    return (
+        <Dialog open={open} onClose={onClose} title="編輯分類">
+            <form onSubmit={handleSubmit} className="edit-category-form">
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="請輸入分類名稱"
+                    required
+                />
+                <div className="dialog-actions">
+                    <button type="submit">確認</button>
+                    <button type="button" onClick={onClose}>取消</button>
+                </div>
+            </form>
+        </Dialog>
+    );
+}
+
+// Watchlist 主元件
+export function WatchlistContainer() {
+    const { user } = useAuth();
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [toast, setToast] = useState(null);
+    const [createCategoryOpen, setCreateCategoryOpen] = useState(false);
+    const [addStockOpen, setAddStockOpen] = useState(false);
+    const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+    const [editCategoryOpen, setEditCategoryOpen] = useState(false);
+    const [editingCategory, setEditingCategory] = useState(null);
 
     const showToast = useCallback((message, type = 'info') => {
         setToast({ message, type });
@@ -290,11 +433,13 @@ export function WatchlistContainer() {
     }, [user, loadCategories]);
 
     const handleOpenAddStockDialog = (categoryId) => {
-        openDialog('addStock', {
-            categoryId,
-            onAdd: loadCategories,
-            showToast
-        });
+        setSelectedCategoryId(categoryId);
+        setAddStockOpen(true);
+    };
+
+    const handleCloseAddStockDialog = () => {
+        setAddStockOpen(false);
+        setSelectedCategoryId(null);
     };
 
     const handleRemoveStock = async (categoryId, itemId) => {
@@ -313,26 +458,58 @@ export function WatchlistContainer() {
         }
     };
 
-    const handleCreateCategory = () => {
-        openDialog('createCategory');
+    const handleOpenCreateCategory = () => {
+        setCreateCategoryOpen(true);
+    };
+
+    const handleCreateCategory = async (name) => {
+        console.log('開始處理創建分類:', { name });
+        try {
+            setLoading(true);
+            const result = await watchlistService.createCategory(name);
+            console.log('API 回傳結果:', result);
+
+            // 檢查回傳格式
+            const newCategory = result.category || result;
+            console.log('處理後的分類資料:', newCategory);
+            
+            // 更新本地狀態前的檢查
+            console.log('更新前的分類列表:', categories);
+            setCategories(prevCategories => {
+                const updatedCategories = [...prevCategories, {
+                    ...newCategory,
+                    stocks: []
+                }];
+                console.log('更新後的分類列表:', updatedCategories);
+                return updatedCategories;
+            });
+            
+            setCreateCategoryOpen(false);
+            showToast('分類創建成功', 'success');
+        } catch (error) {
+            console.error('創建分類失敗:', error);
+            showToast(getErrorMessage(error), 'error');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleEditCategory = (categoryId) => {
         const category = categories.find(c => c.id === categoryId);
-        openDialog('EDIT_CATEGORY_DIALOG', {
-            categoryId,
-            initialName: category?.name,
-            onSave: async (name) => {
-                try {
-                    await watchlistService.updateCategory(categoryId, name);
-                    showToast('分類已更新', 'success');
-                    loadCategories();
-                    closeDialog();
-                } catch (error) {
-                    showToast(error.message, 'error');
-                }
-            }
-        });
+        setEditingCategory(category);
+        setEditCategoryOpen(true);
+    };
+
+    const handleUpdateCategory = async (name) => {
+        try {
+            await watchlistService.updateCategory(editingCategory.id, name);
+            showToast('分類已更新', 'success');
+            await loadCategories();
+            setEditCategoryOpen(false);
+            setEditingCategory(null);
+        } catch (error) {
+            showToast(getErrorMessage(error), 'error');
+        }
     };
 
     const handleDeleteCategory = async (categoryId) => {
@@ -362,19 +539,6 @@ export function WatchlistContainer() {
         }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await watchlistService.createCategory(categoryName);
-            closeDialog();
-            setCategoryName('');  // 清空輸入
-            await loadCategories();  // 重新載入表
-            showToast('分類創建成功', 'success');
-        } catch (error) {
-            showToast(getErrorMessage(error), 'error');
-        }
-    };
-
     const ErrorBoundary = ({ children }) => {
         const [hasError, setHasError] = useState(false);
         
@@ -397,79 +561,13 @@ export function WatchlistContainer() {
         return children;
     };
 
-    // 修改 closeDialog 的處理方式
-    const handleCloseDialog = () => {
-        closeDialog();
-        setCategoryName('');
-    };
-
-    // 搜尋股票的邏輯
-    const searchStocks = useCallback(async (value) => {
-        if (!value.trim()) {
-            setResults([]);
-            setSearchLoading(false);
-            return;
-        }
-
-        setSearchLoading(true);
+    const handleAddStock = async (categoryId, stock) => {
         try {
-            const data = await watchlistService.searchStocks(value);
-            setResults(data.results);
-            Analytics.ui.search({
-                type: 'stock',
-                keyword: value,
-                resultsCount: data.results.length
-            });
-        } catch (error) {
-            setSearchError(getErrorMessage(error.errorCode));
-            Analytics.error({
-                component: 'AddStockDialog',
-                action: 'search',
-                error: error.message
-            });
-        } finally {
-            setSearchLoading(false);
-        }
-    }, []);
-
-    // 使用 debounce
-    const debouncedSearchStocks = useMemo(
-        () => debounce(searchStocks, 300),
-        [searchStocks]
-    );
-
-    // 清理 debounce
-    useEffect(() => {
-        return () => {
-            debouncedSearchStocks.cancel();
-        };
-    }, [debouncedSearchStocks]);
-
-    // 處理輸入變更
-    const handleInputChange = useCallback((e) => {
-        const value = e.target.value;
-        setKeyword(value);
-        debouncedSearchStocks(value);
-    }, [debouncedSearchStocks]);
-
-    // 處理添加股票
-    const handleAddStockToCategory = async (stock) => {
-        try {
-            await watchlistService.addStock(dialog.props.categoryId, stock.symbol);
+            await watchlistService.addStock(categoryId, stock.symbol);
+            await loadCategories();
             showToast(`已添加 ${stock.symbol} 到追蹤清單`, 'success');
-            loadCategories();
-            closeDialog();
-            Analytics.watchlist.stockAdd({
-                categoryId: dialog.props.categoryId,
-                symbol: stock.symbol
-            });
         } catch (error) {
-            showToast(error.message, 'error');
-            Analytics.error({
-                component: 'AddStockDialog',
-                action: 'add_stock',
-                error: error.message
-            });
+            showToast(getErrorMessage(error), 'error');
         }
     };
 
@@ -479,7 +577,7 @@ export function WatchlistContainer() {
                 <div className="watchlist-header">
                     <h1>我的追蹤清單</h1>
                     <button 
-                        onClick={handleCreateCategory}
+                        onClick={handleOpenCreateCategory}
                         className="create-category-button"
                         disabled={loading}
                         aria-label="新增分類"
@@ -565,60 +663,28 @@ export function WatchlistContainer() {
                     />
                 )}
 
-                <Dialog
-                    open={dialog.isOpen && dialog.type === 'createCategory'}
-                    onClose={handleCloseDialog}
-                    title="新增分類"
-                >
-                    <form onSubmit={handleSubmit} className="add-category-form">
-                        <input
-                            type="text"
-                            value={categoryName}
-                            onChange={(e) => setCategoryName(e.target.value)}
-                            placeholder="請輸入分類名稱"
-                            required
-                        />
-                        <div className="dialog-actions">
-                            <button type="submit">確認</button>
-                            <button type="button" onClick={handleCloseDialog}>取消</button>
-                        </div>
-                    </form>
-                </Dialog>
+                <CreateCategoryDialog
+                    open={createCategoryOpen}
+                    onClose={() => setCreateCategoryOpen(false)}
+                    onSubmit={handleCreateCategory}
+                />
+                
+                <AddStockDialog
+                    open={addStockOpen}
+                    onClose={handleCloseAddStockDialog}
+                    categoryId={selectedCategoryId}
+                    onAdd={handleAddStock}
+                />
 
-                <Dialog
-                    open={dialog.isOpen && dialog.type === 'addStock'}
-                    onClose={closeDialog}
-                    title="添加股票"
-                >
-                    <div className="add-stock-dialog">
-                        <input
-                            type="text"
-                            value={keyword}
-                            onChange={handleInputChange}
-                            placeholder="輸入股票代碼或名稱..."
-                            className="stock-search-input"
-                        />
-                        
-                        {searchLoading && <div className="loading">搜尋中...</div>}
-                        {searchError && <div className="error-message">{searchError}</div>}
-                        
-                        <div className="search-results">
-                            {results.map((stock) => (
-                                <button
-                                    key={stock.symbol}
-                                    onClick={() => handleAddStockToCategory(stock)}
-                                    className="stock-result-item"
-                                >
-                                    <span className="stock-symbol">{stock.symbol}</span>
-                                    <span className="stock-name">{stock.name}</span>
-                                    {stock.market && (
-                                        <span className="stock-market">{stock.market}</span>
-                                    )}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </Dialog>
+                <EditCategoryDialog
+                    open={editCategoryOpen}
+                    onClose={() => {
+                        setEditCategoryOpen(false);
+                        setEditingCategory(null);
+                    }}
+                    category={editingCategory}
+                    onSubmit={handleUpdateCategory}
+                />
             </div>
         </ErrorBoundary>
     );
