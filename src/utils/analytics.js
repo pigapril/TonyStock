@@ -164,13 +164,26 @@ export const Analytics = {
   // 新增 watchlist 相關事件追蹤
   watchlist: {
     addStock: ({ categoryId, stockSymbol }) => {
-      // 追蹤添加股票事件
+      pushToDataLayer('watchlist_add_stock', {
+        category_id: categoryId,
+        stock_symbol: stockSymbol
+      });
     },
     removeStock: ({ categoryId, stockSymbol }) => {
-      // 追蹤移除股票事件
+      pushToDataLayer('watchlist_remove_stock', {
+        category_id: categoryId,
+        stock_symbol: stockSymbol
+      });
     },
     createCategory: ({ categoryName }) => {
-      // 追蹤建立分類事件
+      pushToDataLayer('watchlist_create_category', {
+        category_name: categoryName
+      });
+    },
+    categoryDelete: ({ categoryId }) => {
+      pushToDataLayer('watchlist_delete_category', {
+        category_id: categoryId
+      });
     }
   }
 };
