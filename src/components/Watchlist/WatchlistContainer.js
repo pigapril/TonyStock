@@ -5,6 +5,7 @@ import { Analytics } from '../../utils/analytics';
 import { handleApiError, getErrorMessage } from '../../utils/errorHandler';
 import './styles/Watchlist.css';
 import debounce from 'lodash/debounce';
+import { FaPlus, FaFolder, FaEdit, FaTrash } from 'react-icons/fa';
 
 // Watchlist API 服務
 class WatchlistService {
@@ -126,12 +127,21 @@ class WatchlistService {
 const watchlistService = new WatchlistService();
 
 // 添加 Toast 通知元件
-const Toast = ({ message, type, onClose }) => (
-    <div className={`toast toast-${type}`}>
-        {message}
-        <button onClick={onClose}>✕</button>
-    </div>
-);
+const Toast = ({ message, type, onClose }) => {
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            onClose();
+        }, 3000);  // 3秒後自動消失
+        return () => clearTimeout(timer);
+    }, [onClose]);
+
+    return (
+        <div className={`toast toast-${type}`}>
+            {message}
+            <button onClick={onClose}>✕</button>
+        </div>
+    );
+};
 
 // CreateCategoryDialog.js
 function CreateCategoryDialog({ open, onClose, onSubmit }) {
@@ -265,9 +275,11 @@ function EditCategoryDialog({ open, onClose, category, onSubmit }) {
         }
     }, [category]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit(name);
+        await onSubmit(name);  // 只執行更新，不處理關閉
+        // 移除這行，讓父組件控制關閉
+        // onClose();
     };
 
     return (
@@ -289,74 +301,122 @@ function EditCategoryDialog({ open, onClose, category, onSubmit }) {
     );
 }
 
+// CategoryManagerDialog.js
+function CategoryManagerDialog({ open, onClose, categories, onEdit, onDelete, onCreate }) {
+    return (
+        <Dialog open={open} onClose={onClose} title="管理分類">
+            <div className="category-manager-dialog">
+                <button 
+                    onClick={onCreate}
+                    className="create-category-button"
+                >
+                    <FaPlus /> 新增分類
+                </button>
+                
+                <div className="category-list">
+                    {categories.map(category => (
+                        !category.isDefault && (
+                            <div key={category.id} className="category-item">
+                                <span className="category-name">{category.name}</span>
+                                <div className="category-actions">
+                                    <button
+                                        onClick={() => onEdit(category.id)}
+                                        className="edit-button"
+                                        aria-label="編輯分類"
+                                    >
+                                        <FaEdit />
+                                    </button>
+                                    <button
+                                        onClick={() => onDelete(category.id)}
+                                        className="delete-button"
+                                        aria-label="刪除分類"
+                                    >
+                                        <FaTrash />
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    ))}
+                </div>
+            </div>
+        </Dialog>
+    );
+}
+
 // Watchlist 主元件
 export function WatchlistContainer() {
-    const { user } = useAuth();
+    const { user, isAuthenticated } = useAuth();
+    
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [toast, setToast] = useState(null);
-    const [createCategoryOpen, setCreateCategoryOpen] = useState(false);
-    const [addStockOpen, setAddStockOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState(null);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-    const [editCategoryOpen, setEditCategoryOpen] = useState(false);
+    const [dialogStates, setDialogStates] = useState({
+        categoryManager: false,
+        createCategory: false,
+        editCategory: false,
+        addStock: false
+    });
     const [editingCategory, setEditingCategory] = useState(null);
+    const [toast, setToast] = useState(null);
 
-    const showToast = useCallback((message, type = 'info') => {
+    const showToast = useCallback((message, type) => {
         setToast({ message, type });
-        setTimeout(() => setToast(null), 3000);
     }, []);
 
-    const loadCategories = useCallback(async () => {
-        console.log('開始載入觀察清單分類', {
-            user: user?.id,
-            timestamp: new Date().toISOString()
+    const handleOperationError = useCallback((error, operation) => {
+        const errorData = handleApiError(error);
+        
+        // 特別處理身份驗證相關錯誤
+        if (errorData.errorCode === 'UNAUTHORIZED' || errorData.errorCode === 'SESSION_EXPIRED') {
+            showToast('請重新登入', 'error');
+            return;
+        }
+        
+        showToast(errorData.message, 'error');
+        Analytics.error({
+            component: 'WatchlistContainer',
+            action: operation,
+            error: errorData,
+            userId: user?.id  // 添加用戶 ID 用於追蹤
         });
+    }, [showToast, user]);
 
+    const loadCategories = useCallback(async () => {
         try {
             setLoading(true);
-            console.log('發送獲取分類請求');
-            
-            const categories = await watchlistService.getCategories();
-            console.log('獲取分類響應:', {
-                categoriesCount: categories?.length,
-                categories
-            });
-
-            setCategories(Array.isArray(categories) ? categories : []);
-            setError(null);
-            
-            console.log('分類數據已更新到狀態');
-        } catch (err) {
-            console.error('載入分類失敗:', err);
-            setError(getErrorMessage(err));
-            showToast(getErrorMessage(err), 'error');
-            setCategories([]);
+            const data = await watchlistService.getCategories();
+            setCategories(data);
+            if (data.length > 0 && !activeTab) {
+                setActiveTab(data[0].id);
+            }
+        } catch (error) {
+            handleOperationError(error, 'load_categories');
         } finally {
-            console.log('載入完成，更新 loading 狀態');
             setLoading(false);
         }
-    }, [user, showToast]);
+    }, [activeTab, handleOperationError]);
 
-    useEffect(() => {
-        console.log('WatchlistContainer useEffect 觸發', {
-            hasUser: !!user,
-            userId: user?.id
-        });
+    const handleTabChange = (categoryId) => {
+        setActiveTab(categoryId);
+        setSelectedCategoryId(categoryId);
+    };
 
-        if (user) {
-            loadCategories();
-        }
-    }, [user, loadCategories]);
+    // 統一的對話框控制函數
+    const updateDialogState = useCallback((dialogName, isOpen) => {
+        setDialogStates(prev => ({
+            ...prev,
+            [dialogName]: isOpen
+        }));
+    }, []);
 
     const handleOpenAddStockDialog = (categoryId) => {
-        setSelectedCategoryId(categoryId);
-        setAddStockOpen(true);
+        updateDialogState('addStock', true);
     };
 
     const handleCloseAddStockDialog = () => {
-        setAddStockOpen(false);
-        setSelectedCategoryId(null);
+        updateDialogState('addStock', false);
     };
 
     const handleRemoveStock = async (categoryId, itemId) => {
@@ -376,7 +436,7 @@ export function WatchlistContainer() {
     };
 
     const handleOpenCreateCategory = () => {
-        setCreateCategoryOpen(true);
+        updateDialogState('createCategory', true);
     };
 
     const handleCreateCategory = async (name) => {
@@ -401,7 +461,7 @@ export function WatchlistContainer() {
                 return updatedCategories;
             });
             
-            setCreateCategoryOpen(false);
+            updateDialogState('createCategory', false);
             showToast('分類創建成功', 'success');
         } catch (error) {
             console.error('創建分類失敗:', error);
@@ -413,46 +473,48 @@ export function WatchlistContainer() {
 
     const handleEditCategory = (categoryId) => {
         const category = categories.find(c => c.id === categoryId);
-        setEditingCategory(category);
-        setEditCategoryOpen(true);
+        if (category) {
+            setEditingCategory(category);
+            updateDialogState('editCategory', true);
+        }
     };
 
     const handleUpdateCategory = async (name) => {
         try {
+            if (!editingCategory) return;
+            
             await watchlistService.updateCategory(editingCategory.id, name);
-            showToast('分類已更新', 'success');
-            await loadCategories();
-            setEditCategoryOpen(false);
+            
+            // 先關閉對話框
+            updateDialogState('editCategory', false);
             setEditingCategory(null);
+            
+            // 然後更新數據和顯示提示
+            await loadCategories();
+            showToast('分類已更新', 'success');
+            
         } catch (error) {
-            showToast(getErrorMessage(error), 'error');
+            handleOperationError(error, 'update_category');
         }
     };
 
     const handleDeleteCategory = async (categoryId) => {
         try {
-            // 確認對話框
             if (!window.confirm('確定要刪除此分類嗎？此操作無法復原。')) {
                 return;
             }
 
             await watchlistService.deleteCategory(categoryId);
+            await loadCategories();
             showToast('分類已刪除', 'success');
-            loadCategories();  // 重新載入分類列表
             
-            // 記錄分析數據
             Analytics.watchlist.categoryDelete({
                 categoryId,
                 component: 'WatchlistContainer',
                 action: 'delete_category'
             });
         } catch (error) {
-            showToast(error.message, 'error');
-            Analytics.error({
-                component: 'WatchlistContainer',
-                action: 'delete_category',
-                error: error.message
-            });
+            handleOperationError(error, 'delete_category');
         }
     };
 
@@ -480,49 +542,36 @@ export function WatchlistContainer() {
 
     const handleAddStock = async (categoryId, stock) => {
         try {
-            console.log('開始添加股票:', {
-                categoryId,
-                stockSymbol: stock.symbol
-            });
-            
-            const response = await watchlistService.addStock(categoryId, stock.symbol);
-            console.log('添加股票響應:', response);
-            
+            await watchlistService.addStock(categoryId, stock.symbol);
             await loadCategories();
             showToast(`已添加 ${stock.symbol} 到追蹤清單`, 'success');
         } catch (error) {
-            console.error('添加股票失敗:', {
-                error,
-                name: error.name,
-                message: error.message,
-                response: error.response
-            });
-
-            // 檢查是否為重複添加的錯誤
+            // 特殊處理重複添加的情況
             if (error.name === 'SequelizeUniqueConstraintError') {
                 showToast(`${stock.symbol} 已在此分類中`, 'warning');
             } else {
-                showToast(getErrorMessage(error), 'error');
+                handleOperationError(error, 'add_stock');
             }
         }
     };
 
+    // 檢查用戶是否已登入
+    useEffect(() => {
+        if (!isAuthenticated) {
+            showToast('請先登入後再使用此功能', 'warning');
+            return;
+        }
+        loadCategories();
+    }, [isAuthenticated, loadCategories, showToast]);
+
     return (
         <ErrorBoundary>
             <div className="watchlist-container">
-                <div className="watchlist-header">
-                    <h1>我的追蹤清單</h1>
-                    <button 
-                        onClick={handleOpenCreateCategory}
-                        className="create-category-button"
-                        disabled={loading}
-                        aria-label="新增分類"
-                    >
-                        新增分類
-                    </button>
-                </div>
-                
-                {loading ? (
+                {!isAuthenticated ? (
+                    <div className="auth-required">
+                        <p>請先登入後再使用此功能</p>
+                    </div>
+                ) : loading ? (
                     <div className="loading-spinner">
                         <div className="spinner"></div>
                         <p>載入中...</p>
@@ -531,35 +580,37 @@ export function WatchlistContainer() {
                     <>
                         {categories.length === 0 ? (
                             <div className="empty-state">
-                                <p>您還沒有任何追蹤清單</p>
                                 <button onClick={handleCreateCategory}>
                                     建立第一個分類
                                 </button>
                             </div>
                         ) : (
-                            categories.map((category) => (
-                                <div key={category.id} className="watchlist-category">
-                                    <div className="category-header">
-                                        <h2>{category.name}</h2>
+                            <div className="watchlist-content">
+                                <div className="category-tabs">
+                                    <button
+                                        onClick={() => updateDialogState('categoryManager', true)}
+                                        className="category-tab folder-tab"
+                                        aria-label="管理分類"
+                                    >
+                                        <FaFolder />
+                                    </button>
+                                    {categories.map((category) => (
+                                        <button
+                                            key={category.id}
+                                            className={`category-tab ${activeTab === category.id ? 'active' : ''}`}
+                                            onClick={() => handleTabChange(category.id)}
+                                        >
+                                            {category.name}
+                                        </button>
+                                    ))}
+                                </div>
+                                
+                                {categories.map((category) => (
+                                    <div
+                                        key={category.id}
+                                        className={`category-content ${activeTab === category.id ? 'active' : ''}`}
+                                    >
                                         <div className="category-actions">
-                                            {!category.isDefault && (
-                                                <>
-                                                    <button
-                                                        onClick={() => handleEditCategory(category.id)}
-                                                        className="edit-category-button"
-                                                        aria-label="編輯分類"
-                                                    >
-                                                        ✎
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleDeleteCategory(category.id)}
-                                                        className="delete-category-button"
-                                                        aria-label="刪除分類"
-                                                    >
-                                                        🗑
-                                                    </button>
-                                                </>
-                                            )}
                                             <button
                                                 onClick={() => handleOpenAddStockDialog(category.id)}
                                                 className="add-stock-button"
@@ -567,26 +618,35 @@ export function WatchlistContainer() {
                                                 添加股票
                                             </button>
                                         </div>
+                                        
+                                        <div className="stock-list">
+                                            {category.stocks.map((stock) => (
+                                                <div key={stock.id} className="stock-item">
+                                                    <span className="stock-symbol">
+                                                        {stock.symbol}
+                                                    </span>
+                                                    <button
+                                                        onClick={() => handleRemoveStock(category.id, stock.id)}
+                                                        className="remove-stock-button"
+                                                        aria-label={`移除 ${stock.symbol}`}
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
-                                    
-                                    <div className="stock-list">
-                                        {category.stocks.map((stock) => (
-                                            <div key={stock.id} className="stock-item">
-                                                <span className="stock-symbol">
-                                                    {stock.symbol}
-                                                </span>
-                                                <button
-                                                    onClick={() => handleRemoveStock(category.id, stock.id)}
-                                                    className="remove-stock-button"
-                                                    aria-label={`移除 ${stock.symbol}`}
-                                                >
-                                                    ✕
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))
+                                ))}
+                                
+                                <CategoryManagerDialog
+                                    open={dialogStates.categoryManager}
+                                    onClose={() => updateDialogState('categoryManager', false)}
+                                    categories={categories}
+                                    onEdit={handleEditCategory}
+                                    onDelete={handleDeleteCategory}
+                                    onCreate={handleOpenCreateCategory}
+                                />
+                            </div>
                         )}
                     </>
                 )}
@@ -595,28 +655,36 @@ export function WatchlistContainer() {
                     <Toast
                         message={toast.message}
                         type={toast.type}
-                        onClose={() => setToast(null)}
+                        onClose={() => {
+                            // 使用 requestAnimationFrame 確保平滑過渡
+                            requestAnimationFrame(() => {
+                                setToast(null);
+                            });
+                        }}
                     />
                 )}
 
                 <CreateCategoryDialog
-                    open={createCategoryOpen}
-                    onClose={() => setCreateCategoryOpen(false)}
+                    open={dialogStates.createCategory}
+                    onClose={() => updateDialogState('createCategory', false)}
                     onSubmit={handleCreateCategory}
                 />
                 
                 <AddStockDialog
-                    open={addStockOpen}
+                    open={dialogStates.addStock}
                     onClose={handleCloseAddStockDialog}
                     categoryId={selectedCategoryId}
                     onAdd={handleAddStock}
                 />
 
                 <EditCategoryDialog
-                    open={editCategoryOpen}
+                    open={dialogStates.editCategory}
                     onClose={() => {
-                        setEditCategoryOpen(false);
-                        setEditingCategory(null);
+                        // 確保在同一個事件循環中完成所有狀態更新
+                        requestAnimationFrame(() => {
+                            updateDialogState('editCategory', false);
+                            setEditingCategory(null);
+                        });
                     }}
                     category={editingCategory}
                     onSubmit={handleUpdateCategory}

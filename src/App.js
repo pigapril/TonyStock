@@ -866,7 +866,6 @@ function AppContent() {
                     isAuthenticated ? (
                         <PageContainer
                             title="我的追蹤清單"
-                            description="管理您感興趣的股票"
                         >
                             <WatchlistContainer />
                         </PageContainer>

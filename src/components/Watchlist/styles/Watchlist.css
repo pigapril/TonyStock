@@ -7,16 +7,7 @@
 
 /* 標題區域 */
 .watchlist-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-}
-
-.watchlist-header h1 {
-    margin: 0;
-    font-size: 24px;
-    color: #333;
+    display: none;
 }
 
 /* 按鈕樣式 */
@@ -221,4 +212,140 @@
         width: 100%;
         justify-content: flex-end;
     }
+}
+
+.category-tabs {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.category-tab {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+.category-tab.active {
+    border-bottom: 2px solid #007bff;
+    color: #007bff;
+}
+
+.tab-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.category-tab:hover .tab-actions {
+    opacity: 1;
+}
+
+.category-content {
+    display: none;
+}
+
+.category-content.active {
+    display: block;
+}
+
+.watchlist-content {
+    width: 100%;
+}
+
+.add-category-tab {
+    padding: 10px;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s;
+}
+
+.add-category-tab:hover {
+    color: #007bff;
+}
+
+.add-category-tab:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.folder-tab {
+    color: #666;
+    transition: color 0.2s;
+}
+
+.folder-tab:hover {
+    color: #007bff;
+}
+
+.category-manager-dialog {
+    padding: 20px;
+    min-width: 300px;
+}
+
+.category-manager-dialog .create-category-button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.category-manager-dialog .category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-manager-dialog .category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+.category-manager-dialog .category-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.category-manager-dialog .edit-button,
+.category-manager-dialog .delete-button {
+    padding: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s;
+}
+
+.category-manager-dialog .edit-button:hover {
+    color: #007bff;
+}
+
+.category-manager-dialog .delete-button:hover {
+    color: #dc3545;
 }
