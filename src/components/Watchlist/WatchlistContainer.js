@@ -315,27 +315,27 @@ function CategoryManagerDialog({ open, onClose, categories, onEdit, onDelete, on
                 
                 <div className="category-list">
                     {categories.map(category => (
-                        !category.isDefault && (
-                            <div key={category.id} className="category-item">
-                                <span className="category-name">{category.name}</span>
-                                <div className="category-actions">
-                                    <button
-                                        onClick={() => onEdit(category.id)}
-                                        className="edit-button"
-                                        aria-label="編輯分類"
-                                    >
-                                        <FaEdit />
-                                    </button>
-                                    <button
-                                        onClick={() => onDelete(category.id)}
-                                        className="delete-button"
-                                        aria-label="刪除分類"
-                                    >
-                                        <FaTrash />
-                                    </button>
-                                </div>
+                        <div key={category.id} className="category-item">
+                            <span className="category-name">
+                                {category.name}
+                            </span>
+                            <div className="category-actions">
+                                <button
+                                    onClick={() => onEdit(category.id)}
+                                    className="edit-button"
+                                    aria-label="編輯分類"
+                                >
+                                    <FaEdit />
+                                </button>
+                                <button
+                                    onClick={() => onDelete(category.id)}
+                                    className="delete-button"
+                                    aria-label="刪除分類"
+                                >
+                                    <FaTrash />
+                                </button>
                             </div>
-                        )
+                        </div>
                     ))}
                 </div>
             </div>
