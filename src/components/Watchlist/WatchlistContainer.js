@@ -5,7 +5,7 @@ import { Analytics } from '../../utils/analytics';
 import { handleApiError, getErrorMessage } from '../../utils/errorHandler';
 import './styles/Watchlist.css';
 import debounce from 'lodash/debounce';
-import { FaPlus, FaFolder, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaSearch, FaListUl } from 'react-icons/fa';
 
 // Watchlist API 服務
 class WatchlistService {
@@ -224,41 +224,62 @@ function AddStockDialog({ open, onClose, categoryId, onAdd }) {
     );
 
     return (
-        <Dialog open={open} onClose={onClose} title="添加股票">
+        <Dialog open={open} onClose={onClose} title="搜尋股票代碼">
             <div className="add-stock-dialog">
-                <input
-                    type="text"
-                    value={keyword}
-                    onChange={handleInputChange}
-                    placeholder="輸入股票代碼..."
-                    className="stock-search-input"
-                />
+                {/* 搜尋框容器 */}
+                <div className="search-container">
+                    <span className="search-icon">
+                        <FaSearch />
+                    </span>
+                    <input
+                        type="text"
+                        value={keyword}
+                        onChange={handleInputChange}
+                        placeholder="搜尋股票代號或名稱..."
+                        className="search-input"
+                    />
+                </div>
                 
-                {searchLoading && <div className="loading">搜尋中...</div>}
-                {searchError && <div className="error-message">{searchError}</div>}
-                
-                <div className="search-results">
-                    {results.map((stock) => (
-                        <button
-                        key={stock.symbol}
-                        onClick={async () => {
-                            try {
-                                await onAdd(categoryId, stock);
-                                onClose();
-                            } catch (error) {
-                                // 錯誤已在 handleAddStock 中處理
-                                console.error('點擊處理失敗:', error);
-                                }
-                            }}
-                            className="stock-result-item"
-                        >
-                            <span className="stock-symbol">{stock.symbol}</span>
-                            <span className="stock-name">{stock.name}</span>
-                            {stock.market && (
-                                <span className="stock-market">{stock.market}</span>
-                            )}
-                        </button>
-                    ))}
+                {/* 搜尋結果容器 */}
+                <div className="search-results-container">
+                    {searchLoading ? (
+                        <div className="search-loading">
+                            <div className="spinner" />
+                            <span>搜尋中...</span>
+                        </div>
+                    ) : searchError ? (
+                        <div className="search-empty-state">
+                            <span className="icon">⚠️</span>
+                            <span className="message">{searchError}</span>
+                        </div>
+                    ) : results.length === 0 && keyword.trim() ? (
+                        <div className="search-empty-state">
+                            <span className="icon">🔍</span>
+                            <span className="message">找不到符合的股票</span>
+                        </div>
+                    ) : results.length > 0 ? (
+                        <div className="search-results">
+                            {results.map((stock) => (
+                                <div
+                                    key={stock.symbol}
+                                    className="stock-result-item"
+                                    onClick={() => {
+                                        onAdd(categoryId, stock);
+                                        onClose();
+                                    }}
+                                >
+                                    <span className="stock-symbol">{stock.symbol}</span>
+                                    <span className="stock-name">{stock.name}</span>
+                                    <span 
+                                        className="stock-market"
+                                        data-market={stock.market}
+                                    >
+                                        {stock.market}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    ) : null}
                 </div>
             </div>
         </Dialog>
@@ -360,6 +381,7 @@ export function WatchlistContainer() {
     });
     const [editingCategory, setEditingCategory] = useState(null);
     const [toast, setToast] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
 
     const showToast = useCallback((message, type) => {
         setToast({ message, type });
@@ -592,7 +614,7 @@ export function WatchlistContainer() {
                                         className="category-tab folder-tab"
                                         aria-label="管理分類"
                                     >
-                                        <FaFolder />
+                                        <FaListUl />
                                     </button>
                                     {categories.map((category) => (
                                         <button
@@ -608,21 +630,31 @@ export function WatchlistContainer() {
                                 {categories.map((category) => (
                                     <div
                                         key={category.id}
-                                        className={`category-content ${activeTab === category.id ? 'active' : ''}`}
+                                        className={`category-content ${activeTab === category.id ? 'active' : ''} ${isEditing ? 'editing' : ''}`}
                                     >
-                                        <div className="category-actions">
-                                            <button
-                                                onClick={() => handleOpenAddStockDialog(category.id)}
-                                                className="add-stock-button"
-                                            >
-                                                添加股票
-                                            </button>
-                                        </div>
+                                        {activeTab === category.id && (
+                                            <div className="category-operations">
+                                                <button
+                                                    onClick={() => handleOpenAddStockDialog(category.id)}
+                                                    className="add-stock-button"
+                                                    aria-label="添加股票"
+                                                >
+                                                    <FaPlus size={20} />
+                                                </button>
+                                                <button
+                                                    onClick={() => setIsEditing(!isEditing)}
+                                                    className={`edit-mode-button ${isEditing ? 'active' : ''}`}
+                                                    aria-label="編輯模式"
+                                                >
+                                                    <FaTrash size={18} />
+                                                </button>
+                                            </div>
+                                        )}
                                         
                                         <div className="stock-list">
                                             {category.stocks.map((stock) => (
                                                 <div key={stock.id} className="stock-item">
-                                                    <span className="stock-symbol">
+                                                    <span className="watchlist-stock-symbol">
                                                         {stock.symbol}
                                                     </span>
                                                     <button

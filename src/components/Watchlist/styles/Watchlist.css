@@ -10,21 +10,60 @@
     display: none;
 }
 
-/* 按鈕樣式 */
-.create-category-button,
-.add-stock-button {
-    padding: 8px 16px;
-    border-radius: 4px;
-    border: none;
-    background-color: #1a73e8;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.2s;
+/* 操作按鈕容器 */
+.category-operations {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;  /* 確保按鈕在最上層 */
 }
 
-.create-category-button:hover,
-.add-stock-button:hover {
-    background-color: #1557b0;
+/* 添加股票按鈕和編輯模式按鈕共用樣式 */
+.category-operations .add-stock-button,
+.category-operations .edit-mode-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0;  /* 重置內邊距 */
+}
+
+/* 添加按鈕樣式 */
+.category-operations .add-stock-button {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.category-operations .add-stock-button:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 編輯模式按鈕樣式 */
+.category-operations .edit-mode-button {
+    background-color: #f3f4f6;
+    color: #666;
+}
+
+.category-operations .edit-mode-button:hover {
+    background-color: #e5e7eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.category-operations .edit-mode-button.active {
+    background-color: #dc2626;
+    color: white;
 }
 
 /* 分類區塊 */
@@ -75,45 +114,65 @@
     color: #dc3545;
 }
 
-/* 股票列表 */
+/* 股票列表容器 */
 .stock-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    padding-top: 72px;  /* 為按鈕預留更多空間 */
 }
 
+/* 股票項目 */
 .stock-item {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 100px 1fr auto;  /* 代碼固定寬度，中間區域自適應，右側自動 */
     align-items: center;
-    padding: 8px 12px;
+    padding: 12px 16px;
     background: #f8f9fa;
-    border-radius: 4px;
+    border-radius: 6px;
     transition: background-color 0.2s;
+    width: 100%;  /* 確保寬度填滿 */
 }
 
 .stock-item:hover {
     background: #e9ecef;
 }
 
-.stock-symbol {
-    font-family: monospace;
+/* 股票代碼 */
+.watchlist-stock-symbol {
+    font-weight: 600;
+    color: #1f2937;
     font-size: 14px;
-    color: #333;
 }
 
+/* 為未來的額外資訊預留空間 */
+.stock-item-info {
+    /* 預留給未來的股票資訊 */
+}
+
+/* 移除按鈕 */
 .remove-stock-button {
     border: none;
     background: none;
     color: #666;
     cursor: pointer;
-    padding: 4px;
+    padding: 8px;
     font-size: 14px;
     transition: color 0.2s;
+    margin-left: auto;  /* 推到右側 */
 }
 
 .remove-stock-button:hover {
     color: #dc3545;
+}
+
+/* 響應式調整 */
+@media (max-width: 640px) {
+    .stock-item {
+        grid-template-columns: 80px 1fr auto;  /* 在小螢幕上縮小代碼寬度 */
+        padding: 10px 12px;
+    }
 }
 
 /* 空狀態 */
@@ -249,12 +308,15 @@
     opacity: 1;
 }
 
+/* 修改分類內容的樣式 */
 .category-content {
-    display: none;
+    position: relative;
+    padding: 16px;
+    display: none;  /* 預設隱藏所有分類內容 */
 }
 
 .category-content.active {
-    display: block;
+    display: block;  /* 只顯示激活的分類 */
 }
 
 .watchlist-content {
@@ -348,4 +410,207 @@
 
 .category-manager-dialog .delete-button:hover {
     color: #dc3545;
+}
+
+/* 對話框容器 */
+.add-stock-dialog {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 搜尋框容器 */
+.search-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+}
+
+/* 搜尋輸入框 */
+.search-input {
+    width: 100%;
+    padding: 8px 36px;
+    height: 40px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    font-size: 14px;
+    color: #1f2937;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    background: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+/* 搜尋圖標 */
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 16px;
+}
+
+/* 搜尋結果容器 - 基礎樣式 */
+.search-results-container {
+    width: 100%;
+    max-height: 320px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    overflow-y: auto;
+}
+
+/* 當有搜尋結果或正在載入時才顯示邊框和背景 */
+.search-results-container:not(:empty) {
+    border: 1px solid #e2e8f0;
+    background: white;
+}
+
+/* 載入中狀態 */
+.search-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    color: #64748b;
+    gap: 12px;
+    background: white;  /* 確保載入狀態有背景色 */
+}
+
+.search-loading .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e2e8f0;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* 空狀態 */
+.search-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    color: #94a3b8;
+    text-align: center;
+}
+
+.search-empty-state .icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: #cbd5e1;
+}
+
+.search-empty-state .message {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* 動畫 */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 響應式調整 */
+@media (max-width: 640px) {
+    .search-loading,
+    .search-empty-state {
+        padding: 20px 16px;
+    }
+    
+    .search-empty-state .icon {
+        font-size: 20px;
+    }
+}
+
+/* 搜尋結果項目 */
+.stock-result-item {
+    display: grid;
+    grid-template-columns: 80px 1fr 60px;  /* 固定寬度的三列布局 */
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.stock-result-item:last-child {
+    border-bottom: none;
+}
+
+/* 搜尋結果中的股票資訊 */
+.stock-result-item .stock-symbol {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 14px;
+    min-width: 80px;      /* 使用 min-width 確保最小寬度 */
+    padding-right: 8px;   /* 添加右側間距 */
+}
+
+.stock-result-item .stock-name {
+    color: #64748b;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 8px;      /* 添加兩側間距 */
+}
+
+.stock-result-item .stock-market {
+    min-width: 60px;     /* 使用 min-width 確保最小寬度 */
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* 響應式設計 */
+@media (max-width: 640px) {
+    .dialog {
+        width: 95%;
+        padding: 16px;
+    }
+    
+    .search-input {
+        padding: 10px 36px;
+    }
+    
+    .search-results-container {
+        max-height: 320px;
+    }
+    
+    .stock-result-item {
+        grid-template-columns: 70px 1fr 50px;  /* 調整小螢幕時的寬度比例 */
+        padding: 8px 12px;
+    }
+    
+    .stock-result-item .stock-symbol {
+        min-width: 70px;
+    }
+    
+    .stock-result-item .stock-market {
+        min-width: 50px;
+        padding: 3px 6px;
+        font-size: 11px;
+    }
+}
+
+/* 股票項目中的刪除按鈕，預設隱藏 */
+.remove-stock-button {
+    display: none;
+}
+
+/* 編輯模式時顯示刪除按鈕 */
+.editing .remove-stock-button {
+    display: block;
 }
