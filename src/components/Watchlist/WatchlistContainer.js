@@ -126,19 +126,18 @@ class WatchlistService {
 
 const watchlistService = new WatchlistService();
 
-// 添加 Toast 通知元件
+// 修改 Toast 組件
 const Toast = ({ message, type, onClose }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             onClose();
-        }, 3000);  // 3秒後自動消失
+        }, 1000);  // 保持 1 秒的顯示時間
         return () => clearTimeout(timer);
     }, [onClose]);
 
     return (
         <div className={`toast toast-${type}`}>
             {message}
-            <button onClick={onClose}>✕</button>
         </div>
     );
 };
@@ -597,6 +596,10 @@ export function WatchlistContainer() {
         loadCategories();
     }, [isAuthenticated, loadCategories, showToast]);
 
+    const toggleEditMode = () => {
+        setIsEditing(prev => !prev);
+    };
+
     return (
         <ErrorBoundary>
             <div className="watchlist-container">
@@ -650,45 +653,57 @@ export function WatchlistContainer() {
                                                     className="add-stock-button"
                                                     aria-label="添加股票"
                                                 >
-                                                    <FaPlus size={20} />
+                                                    <FaPlus />
                                                 </button>
                                                 <button
-                                                    onClick={() => setIsEditing(!isEditing)}
+                                                    onClick={toggleEditMode}
                                                     className={`edit-mode-button ${isEditing ? 'active' : ''}`}
                                                     aria-label="編輯模式"
                                                 >
-                                                    <FaTrash size={18} />
+                                                    <FaTrash />
                                                 </button>
                                             </div>
                                         )}
                                         
                                         <div className="stock-list">
+                                            {/* 表格標題列 */}
+                                            <div className="stock-list-header">
+                                                <span>股票代碼</span>
+                                                <span>最新價格</span>
+                                                <span></span>
+                                            </div>
+                                            
+                                            {/* 股票列表 */}
                                             {category.stocks.map((stock) => (
                                                 <div key={stock.id} className="stock-item">
-                                                    <div className="stock-logo">
-                                                        {stock.logo ? (
-                                                            <img 
-                                                                src={stock.logo} 
-                                                                alt={`${stock.symbol} logo`}
-                                                                onError={(e) => {
-                                                                    e.target.src = '/default-stock-logo.png';
-                                                                }}
-                                                            />
-                                                        ) : (
-                                                            <div className="default-logo">
-                                                                {stock.symbol[0]}
-                                                            </div>
-                                                        )}
+                                                    <div className="stock-info">
+                                                        <div className="stock-logo">
+                                                            {stock.logo ? (
+                                                                <img 
+                                                                    src={stock.logo} 
+                                                                    alt={`${stock.symbol} logo`}
+                                                                    onError={(e) => {
+                                                                        e.target.src = '/default-stock-logo.png';
+                                                                    }}
+                                                                />
+                                                            ) : (
+                                                                <div className="default-logo">
+                                                                    {stock.symbol[0]}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                        <span className="watchlist-stock-symbol">
+                                                            {stock.symbol}
+                                                        </span>
                                                     </div>
-                                                    <span className="watchlist-stock-symbol">
-                                                        {stock.symbol}
-                                                    </span>
+                                                    
                                                     <span className="watchlist-stock-price">
                                                         {stock.price 
                                                             ? `$${stock.price.toFixed(2)}` 
                                                             : '-'
                                                         }
                                                     </span>
+                                                    
                                                     <button
                                                         onClick={() => handleRemoveStock(category.id, stock.id)}
                                                         className="remove-stock-button"

@@ -65,9 +65,11 @@
     color: white;
 }
 
-/* 移除按鈕樣式 */
+/* 移除按鈕的基礎樣式 */
 .remove-stock-button {
-    display: none;  /* 預設隱藏 */
+    display: none;  /* 改為預設不顯示 */
+    align-items: center;
+    justify-content: center;
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -80,18 +82,18 @@
     transition: all 0.2s ease;
 }
 
-.remove-stock-button:hover {
+/* 只在編輯模式下顯示刪除按鈕 */
+.editing .stock-item .remove-stock-button {
+    display: flex;
+    opacity: 1;
     background-color: #dc2626;
     color: white;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* 編輯模式時顯示刪除按鈕 */
-.editing .remove-stock-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* 編輯模式下按鈕的點擊效果 */
+.editing .stock-item .remove-stock-button:active {
+    transform: scale(0.95);
+    background-color: #b91c1c;
 }
 
 /* 分類區塊 */
@@ -142,64 +144,100 @@
     color: #dc3545;
 }
 
-/* 股票列表容器 */
+/* 表格容器 */
 .stock-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 16px;
-    padding-top: 72px;  /* 為按鈕預留更多空間 */
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 16px;
+    padding-top: 0;
+}
+
+/* 表格標題列 */
+.stock-list-header {
+    display: grid;
+    grid-template-columns: minmax(200px, 1fr) 120px 60px;  /* 股票資訊/價格/操作按鈕 */
+    padding: 12px;
+    background-color: #f9fafb;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.stock-list-header > span {
+    padding: 0 12px;
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.stock-list-header > span:nth-child(2) {
+    text-align: right;  /* 價格靠右對齊 */
 }
 
 /* 股票項目 */
 .stock-item {
     display: grid;
-    grid-template-columns: 40px 1fr 100px 40px;
+    grid-template-columns: minmax(200px, 1fr) 120px 60px;  /* 保持與標題列一致 */
     align-items: center;
-    gap: 12px;
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--border-color);
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s;
 }
 
+/* 股票資訊組合（logo + 代碼） */
+.stock-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Logo 樣式 */
 .stock-logo {
     width: 32px;
     height: 32px;
+    min-width: 32px;
+    min-height: 32px;
     border-radius: 50%;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #f3f4f6;
 }
 
 .stock-logo img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
-.default-logo {
-    width: 100%;
-    height: 100%;
-    background-color: var(--primary-color);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 16px;
-}
-
+/* 股票代碼樣式 */
 .watchlist-stock-symbol {
     font-weight: 500;
+    color: #1f2937;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+/* 價格欄位 */
 .watchlist-stock-price {
-    text-align: right;
     font-family: var(--mono-font);
     color: var(--text-secondary);
+    font-weight: 500;
+    text-align: right;
+    padding: 0 12px;
 }
 
+/* 移除按鈕 */
 .remove-stock-button {
+    justify-self: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: #f3f4f6;
+    color: #666;
+    cursor: pointer;
     opacity: 0;
     transition: opacity 0.2s;
 }
@@ -208,16 +246,17 @@
     opacity: 1;
 }
 
-/* 為未來的額外資訊預留空間 */
-.stock-item-info {
-    /* 預留給未來的股票資訊 */
-}
-
 /* 響應式調整 */
 @media (max-width: 640px) {
     .stock-item {
-        grid-template-columns: 80px 1fr auto;  /* 在小螢幕上縮小代碼寬度 */
-        padding: 10px 12px;
+        grid-template-columns: minmax(160px, 1fr) 100px 50px;
+    }
+    
+    .stock-logo {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        min-height: 28px;
     }
 }
 
@@ -526,7 +565,7 @@
     padding: 24px;
     color: #64748b;
     gap: 12px;
-    background: white;  /* 確保載入狀態有背景色 */
+    background: white;  /* 確保載入狀態背景色 */
 }
 
 .search-loading .spinner {
@@ -636,7 +675,7 @@
     }
     
     .stock-result-item {
-        grid-template-columns: 70px 1fr 50px;  /* 調整小螢幕時的寬度比例 */
+        grid-template-columns: 70px 1fr 50px;  /* 調整螢幕時的寬度比例 */
         padding: 8px 12px;
     }
     
