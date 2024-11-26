@@ -157,11 +157,23 @@
 .stock-list-header,
 .stock-item {
     display: grid;
-    grid-template-columns: 130px 120px 60px;  /* 固定寬度，不要使用 1fr */
+    grid-template-columns: 130px 100px 140px 60px;
     align-items: center;
     padding: 12px;
     border-bottom: 1px solid #e5e7eb;
     position: relative;
+}
+
+/* 新增：表格標題文字置中 */
+.stock-list-header {
+    background-color: #f9fafb;  /* 淺灰色背景 */
+    font-weight: 500;
+}
+
+.stock-list-header > span {
+    text-align: center;  /* 文字置中 */
+    color: #4b5563;     /* 深灰色文字 */
+    font-size: 0.9em;   /* 稍微縮小字體 */
 }
 
 /* 添加縱線 */
@@ -677,5 +689,69 @@
         min-width: 50px;
         padding: 3px 6px;
         font-size: 11px;
+    }
+}
+
+/* 分析數據容器 */
+.watchlist-stock-analysis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-family: var(--mono-font);
+    font-size: 0.9em;
+}
+
+/* 分析數值樣式 */
+.analysis-value {
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.analysis-value.support {
+    color: #10b981;  /* 綠色 */
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+.analysis-value.resistance {
+    color: #ef4444;  /* 紅色 */
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.analysis-separator {
+    color: #9ca3af;
+}
+
+/* 分析載入中狀態 */
+.analysis-loading {
+    color: #9ca3af;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+    .stock-list-header,
+    .stock-item {
+        grid-template-columns: 120px 80px 120px 50px;
+        font-size: 0.9em;
+    }
+
+    .watchlist-stock-analysis {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 640px) {
+    .stock-list-header,
+    .stock-item {
+        grid-template-columns: 100px 70px 110px 40px;
+        padding: 8px;
+        font-size: 0.85em;
+    }
+
+    .watchlist-stock-analysis {
+        font-size: 0.75em;
     }
 }

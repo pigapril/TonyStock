@@ -670,6 +670,7 @@ export function WatchlistContainer() {
                                             <div className="stock-list-header">
                                                 <span>股票代碼</span>
                                                 <span>最新價格</span>
+                                                <span>恐懼貪婪價位</span>
                                                 <span></span>
                                             </div>
                                             
@@ -703,6 +704,23 @@ export function WatchlistContainer() {
                                                             : '-'
                                                         }
                                                     </span>
+                                                    
+                                                    {/* 新增: SD分析結果 */}
+                                                    <div className="watchlist-stock-analysis">
+                                                        {stock.analysis ? (
+                                                            <>
+                                                                <span className="analysis-value support" title="支撐">
+                                                                    {stock.analysis.tl_minus_2sd.toFixed(2)}
+                                                                </span>
+                                                                <span className="analysis-separator">-</span>
+                                                                <span className="analysis-value resistance" title="壓力">
+                                                                    {stock.analysis.tl_plus_2sd.toFixed(2)}
+                                                                </span>
+                                                            </>
+                                                        ) : (
+                                                            <span className="analysis-loading">分析中</span>
+                                                        )}
+                                                    </div>
                                                     
                                                     <button
                                                         onClick={() => handleRemoveStock(category.id, stock.id)}
