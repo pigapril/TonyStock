@@ -154,24 +154,58 @@
 /* 股票項目 */
 .stock-item {
     display: grid;
-    grid-template-columns: 100px 1fr auto;  /* 代碼固定寬度，中間區域自適應，右側自動 */
+    grid-template-columns: 40px 1fr 100px 40px;
     align-items: center;
-    padding: 12px 16px;
-    background: #f8f9fa;
-    border-radius: 6px;
-    transition: background-color 0.2s;
-    width: 100%;  /* 確保寬度填滿 */
+    gap: 12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.stock-item:hover {
-    background: #e9ecef;
+.stock-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* 股票代碼 */
+.stock-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.default-logo {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
 .watchlist-stock-symbol {
-    font-weight: 600;
-    color: #1f2937;
-    font-size: 14px;
+    font-weight: 500;
+}
+
+.watchlist-stock-price {
+    text-align: right;
+    font-family: var(--mono-font);
+    color: var(--text-secondary);
+}
+
+.remove-stock-button {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.stock-item:hover .remove-stock-button {
+    opacity: 1;
 }
 
 /* 為未來的額外資訊預留空間 */
@@ -484,7 +518,7 @@
     background: white;
 }
 
-/* 載入中���態 */
+/* 載入中狀態 */
 .search-loading {
     display: flex;
     align-items: center;

@@ -411,7 +411,9 @@ export function WatchlistContainer() {
             const data = await watchlistService.getCategories();
             setCategories(data);
             if (data.length > 0 && !activeTab) {
-                setActiveTab(data[0].id);
+                const initialCategoryId = data[0].id;
+                setActiveTab(initialCategoryId);
+                setSelectedCategoryId(initialCategoryId);
             }
         } catch (error) {
             handleOperationError(error, 'load_categories');
@@ -434,6 +436,11 @@ export function WatchlistContainer() {
     }, []);
 
     const handleOpenAddStockDialog = (categoryId) => {
+        if (!categoryId) {
+            showToast('請先選擇分類', 'warning');
+            return;
+        }
+        setSelectedCategoryId(categoryId);
         updateDialogState('addStock', true);
     };
 
@@ -563,12 +570,16 @@ export function WatchlistContainer() {
     };
 
     const handleAddStock = async (categoryId, stock) => {
+        if (!categoryId) {
+            showToast('請先選擇分類', 'warning');
+            return;
+        }
+        
         try {
             await watchlistService.addStock(categoryId, stock.symbol);
             await loadCategories();
             showToast(`已添加 ${stock.symbol} 到追蹤清單`, 'success');
         } catch (error) {
-            // 特殊處理重複添加的情況
             if (error.name === 'SequelizeUniqueConstraintError') {
                 showToast(`${stock.symbol} 已在此分類中`, 'warning');
             } else {
@@ -654,8 +665,29 @@ export function WatchlistContainer() {
                                         <div className="stock-list">
                                             {category.stocks.map((stock) => (
                                                 <div key={stock.id} className="stock-item">
+                                                    <div className="stock-logo">
+                                                        {stock.logo ? (
+                                                            <img 
+                                                                src={stock.logo} 
+                                                                alt={`${stock.symbol} logo`}
+                                                                onError={(e) => {
+                                                                    e.target.src = '/default-stock-logo.png';
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <div className="default-logo">
+                                                                {stock.symbol[0]}
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                     <span className="watchlist-stock-symbol">
                                                         {stock.symbol}
+                                                    </span>
+                                                    <span className="watchlist-stock-price">
+                                                        {stock.price 
+                                                            ? `$${stock.price.toFixed(2)}` 
+                                                            : '-'
+                                                        }
                                                     </span>
                                                     <button
                                                         onClick={() => handleRemoveStock(category.id, stock.id)}
