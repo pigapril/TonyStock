@@ -153,34 +153,35 @@
     padding-top: 0;
 }
 
-/* 表格標題列 */
-.stock-list-header {
-    display: grid;
-    grid-template-columns: minmax(200px, 1fr) 120px 60px;  /* 股票資訊/價格/操作按鈕 */
-    padding: 12px;
-    background-color: #f9fafb;
-    border-bottom: 2px solid #e5e7eb;
-}
-
-.stock-list-header > span {
-    padding: 0 12px;
-    color: #6b7280;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.stock-list-header > span:nth-child(2) {
-    text-align: right;  /* 價格靠右對齊 */
-}
-
-/* 股票項目 */
+/* 表格標題列和股票項目的共同樣式 */
+.stock-list-header,
 .stock-item {
     display: grid;
-    grid-template-columns: minmax(200px, 1fr) 120px 60px;  /* 保持與標題列一致 */
+    grid-template-columns: 130px 120px 60px;  /* 固定寬度，不要使用 1fr */
     align-items: center;
     padding: 12px;
     border-bottom: 1px solid #e5e7eb;
-    transition: background-color 0.2s;
+    position: relative;
+}
+
+/* 添加縱線 */
+.stock-list-header > span,
+.stock-item > div,
+.stock-item > span {
+    position: relative;
+    padding: 0 12px;
+}
+
+.stock-list-header > span:not(:last-child)::after,
+.stock-item > div:not(:last-child)::after,
+.stock-item > span:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #e5e7eb;
 }
 
 /* 股票資訊組合（logo + 代碼） */
@@ -225,7 +226,7 @@
     color: var(--text-secondary);
     font-weight: 500;
     text-align: right;
-    padding: 0 12px;
+    padding-right: 24px !important;  /* 確保與右側有足夠間距 */
 }
 
 /* 移除按鈕 */
@@ -233,11 +234,6 @@
     justify-self: center;
     width: 28px;
     height: 28px;
-    border-radius: 50%;
-    border: none;
-    background: #f3f4f6;
-    color: #666;
-    cursor: pointer;
     opacity: 0;
     transition: opacity 0.2s;
 }
@@ -248,15 +244,9 @@
 
 /* 響應式調整 */
 @media (max-width: 640px) {
+    .stock-list-header,
     .stock-item {
         grid-template-columns: minmax(160px, 1fr) 100px 50px;
-    }
-    
-    .stock-logo {
-        width: 28px;
-        height: 28px;
-        min-width: 28px;
-        min-height: 28px;
     }
 }
 
