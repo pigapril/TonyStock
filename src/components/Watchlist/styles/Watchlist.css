@@ -18,14 +18,13 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    z-index: 10;  /* 確保按鈕在最上層 */
+    z-index: 10;
 }
 
-/* 添加股票按鈕和編輯模式按鈕共用樣式 */
-.category-operations .add-stock-button,
-.category-operations .edit-mode-button {
-    width: 40px;
-    height: 40px;
+/* 所有圓形按鈕的共用基礎樣式 */
+.category-operations button {
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
@@ -33,37 +32,66 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
+    background-color: #f3f4f6;
+    color: #666;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 0;  /* 重置內邊距 */
 }
 
-/* 添加按鈕樣式 */
+/* 添加按鈕特殊樣式 */
 .category-operations .add-stock-button {
-    background-color: #3b82f6;
-    color: white;
+    background-color: #f3f4f6;  /* 改為與刪除按鈕相同的背景色 */
+    color: #666;  /* 改為與刪除按鈕相同的文字顏色 */
+}
+
+/* 按鈕懸浮效果 */
+.category-operations button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .category-operations .add-stock-button:hover {
-    background-color: #2563eb;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* 編輯模式按鈕樣式 */
-.category-operations .edit-mode-button {
-    background-color: #f3f4f6;
-    color: #666;
+    background-color: #3b82f6;  /* 懸浮時變為藍色 */
+    color: white;
 }
 
 .category-operations .edit-mode-button:hover {
-    background-color: #e5e7eb;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #dc2626;  /* 懸浮時變為紅色 */
+    color: white;
 }
 
+/* 編輯模式按鈕激活狀態 */
 .category-operations .edit-mode-button.active {
     background-color: #dc2626;
     color: white;
+}
+
+/* 移除按鈕樣式 */
+.remove-stock-button {
+    display: none;  /* 預設隱藏 */
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: #f3f4f6;
+    color: #666;
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.remove-stock-button:hover {
+    background-color: #dc2626;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 編輯模式時顯示刪除按鈕 */
+.editing .remove-stock-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* 分類區塊 */
@@ -149,22 +177,6 @@
 /* 為未來的額外資訊預留空間 */
 .stock-item-info {
     /* 預留給未來的股票資訊 */
-}
-
-/* 移除按鈕 */
-.remove-stock-button {
-    border: none;
-    background: none;
-    color: #666;
-    cursor: pointer;
-    padding: 8px;
-    font-size: 14px;
-    transition: color 0.2s;
-    margin-left: auto;  /* 推到右側 */
-}
-
-.remove-stock-button:hover {
-    color: #dc3545;
 }
 
 /* 響應式調整 */
@@ -472,7 +484,7 @@
     background: white;
 }
 
-/* 載入中狀態 */
+/* 載入中���態 */
 .search-loading {
     display: flex;
     align-items: center;
@@ -603,14 +615,4 @@
         padding: 3px 6px;
         font-size: 11px;
     }
-}
-
-/* 股票項目中的刪除按鈕，預設隱藏 */
-.remove-stock-button {
-    display: none;
-}
-
-/* 編輯模式時顯示刪除按鈕 */
-.editing .remove-stock-button {
-    display: block;
 }
