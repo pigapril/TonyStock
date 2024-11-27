@@ -6,6 +6,7 @@ import { handleApiError, getErrorMessage } from '../../utils/errorHandler';
 import './styles/Watchlist.css';
 import debounce from 'lodash/debounce';
 import { FaPlus, FaEdit, FaTrash, FaSearch, FaListUl } from 'react-icons/fa';
+import { StockGauge } from './StockGauge';
 
 // Watchlist API 服務
 class WatchlistService {
@@ -476,7 +477,7 @@ export function WatchlistContainer() {
 
             // 檢查回傳格式
             const newCategory = result.category || result;
-            console.log('處理後的分類資料:', newCategory);
+            console.log('處理後的分��資料:', newCategory);
             
             // 更新本地狀態前的檢查
             console.log('更新前的分類列表:', categories);
@@ -670,7 +671,8 @@ export function WatchlistContainer() {
                                             <div className="stock-list-header">
                                                 <span>股票代碼</span>
                                                 <span>最新價格</span>
-                                                <span>恐懼貪婪價位</span>
+                                                <span>支撐壓力</span>
+                                                <span>Gauge</span>
                                                 <span></span>
                                             </div>
                                             
@@ -717,6 +719,19 @@ export function WatchlistContainer() {
                                                                     {stock.analysis.tl_plus_2sd.toFixed(2)}
                                                                 </span>
                                                             </>
+                                                        ) : (
+                                                            <span className="analysis-loading">分析中</span>
+                                                        )}
+                                                    </div>
+                                                    
+                                                    {/* 新增：Gauge 儀表圖 */}
+                                                    <div className="watchlist-stock-gauge">
+                                                        {stock.analysis ? (
+                                                            <StockGauge
+                                                                price={stock.price}
+                                                                support={stock.analysis.tl_minus_2sd}
+                                                                resistance={stock.analysis.tl_plus_2sd}
+                                                            />
                                                         ) : (
                                                             <span className="analysis-loading">分析中</span>
                                                         )}
