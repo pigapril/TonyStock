@@ -7,6 +7,7 @@ import './styles/Watchlist.css';
 import debounce from 'lodash/debounce';
 import { FaPlus, FaEdit, FaTrash, FaSearch, FaListUl } from 'react-icons/fa';
 import { StockGauge } from './StockGauge';
+import NewsDialog from './NewsDialog';
 
 // Watchlist API 服務
 class WatchlistService {
@@ -382,6 +383,8 @@ export function WatchlistContainer() {
     const [editingCategory, setEditingCategory] = useState(null);
     const [toast, setToast] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [selectedNews, setSelectedNews] = useState(null);
+    const [newsDialogOpen, setNewsDialogOpen] = useState(false);
 
     const showToast = useCallback((message, type) => {
         setToast({ message, type });
@@ -601,6 +604,11 @@ export function WatchlistContainer() {
         setIsEditing(prev => !prev);
     };
 
+    const handleNewsClick = (news) => {
+        setSelectedNews(news);
+        setNewsDialogOpen(true);
+    };
+
     return (
         <ErrorBoundary>
             <div className="watchlist-container">
@@ -672,6 +680,7 @@ export function WatchlistContainer() {
                                                 <span>股票代碼</span>
                                                 <span>最新價格</span>
                                                 <span>恐懼貪婪指標</span>
+                                                <span>相關新聞</span>
                                                 <span></span>
                                             </div>
                                             
@@ -717,6 +726,19 @@ export function WatchlistContainer() {
                                                         ) : (
                                                             <span className="analysis-loading">分析中</span>
                                                         )}
+                                                    </div>
+                                                    
+                                                    <div className="stock-news-list">
+                                                        {stock.news?.slice(0, 3).map((news, index) => (
+                                                            <div
+                                                                key={index}
+                                                                className="stock-news-item"
+                                                                onClick={() => handleNewsClick(news)}
+                                                                title={news.title}
+                                                            >
+                                                                {news.title}
+                                                            </div>
+                                                        ))}
                                                     </div>
                                                     
                                                     <button
@@ -782,6 +804,15 @@ export function WatchlistContainer() {
                     }}
                     category={editingCategory}
                     onSubmit={handleUpdateCategory}
+                />
+
+                <NewsDialog
+                    news={selectedNews}
+                    open={newsDialogOpen}
+                    onClose={() => {
+                        setNewsDialogOpen(false);
+                        setSelectedNews(null);
+                    }}
                 />
             </div>
         </ErrorBoundary>
