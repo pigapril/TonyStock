@@ -477,7 +477,7 @@ export function WatchlistContainer() {
 
             // 檢查回傳格式
             const newCategory = result.category || result;
-            console.log('處理後的分��資料:', newCategory);
+            console.log('處理後的分資料:', newCategory);
             
             // 更新本地狀態前的檢查
             console.log('更新前的分類列表:', categories);
@@ -671,8 +671,7 @@ export function WatchlistContainer() {
                                             <div className="stock-list-header">
                                                 <span>股票代碼</span>
                                                 <span>最新價格</span>
-                                                <span>支撐壓力</span>
-                                                <span>Gauge</span>
+                                                <span>恐懼貪婪指標</span>
                                                 <span></span>
                                             </div>
                                             
@@ -707,24 +706,7 @@ export function WatchlistContainer() {
                                                         }
                                                     </span>
                                                     
-                                                    {/* 新增: SD分析結果 */}
-                                                    <div className="watchlist-stock-analysis">
-                                                        {stock.analysis ? (
-                                                            <>
-                                                                <span className="analysis-value support" title="支撐">
-                                                                    {stock.analysis.tl_minus_2sd.toFixed(2)}
-                                                                </span>
-                                                                <span className="analysis-separator">-</span>
-                                                                <span className="analysis-value resistance" title="壓力">
-                                                                    {stock.analysis.tl_plus_2sd.toFixed(2)}
-                                                                </span>
-                                                            </>
-                                                        ) : (
-                                                            <span className="analysis-loading">分析中</span>
-                                                        )}
-                                                    </div>
-                                                    
-                                                    {/* 新增：Gauge 儀表圖 */}
+                                                    {/* 只保留 Gauge 儀表圖 */}
                                                     <div className="watchlist-stock-gauge">
                                                         {stock.analysis ? (
                                                             <StockGauge

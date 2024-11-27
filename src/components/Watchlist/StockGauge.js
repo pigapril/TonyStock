@@ -3,10 +3,11 @@ import { RadialBarChart, RadialBar, PolarAngleAxis } from 'recharts';
 
 export const StockGauge = ({ price, support, resistance }) => {
     const COLORS = {
-        low: 'rgba(34, 197, 94, 0.25)',      // green-500
-        medium: 'rgba(59, 130, 246, 0.25)',   // blue-500
-        high: 'rgba(239, 68, 68, 0.25)',      // red-500
-        background: 'rgba(226, 232, 240, 0.6)' // slate-200
+        veryLow: 'rgba(34, 197, 94, 0.3)',      // green-500 (支撐線以下)
+        low: 'rgba(59, 130, 246, 0.3)',         // blue-500 (支撐線到趨勢線)
+        medium: 'rgba(234, 179, 8, 0.3)',       // yellow-500 (趨勢線到壓力線)
+        high: 'rgba(239, 68, 68, 0.3)',         // red-500 (壓力線以上)
+        background: 'rgba(226, 232, 240, 0.3)'   // slate-200
     };
 
     // 計算百分比
@@ -18,9 +19,10 @@ export const StockGauge = ({ price, support, resistance }) => {
 
     // 決定顏色
     const getColor = (percent) => {
-        if (percent <= 35) return COLORS.low;
-        if (percent <= 75) return COLORS.medium;
-        return COLORS.high;
+        if (percent <= 25) return COLORS.veryLow;      // 
+        if (percent <= 50) return COLORS.low;          // 藍色區間
+        if (percent <= 75) return COLORS.medium;       // 黃色區間
+        return COLORS.high;                            // 紅色區間
     };
 
     const percent = calculatePercent();

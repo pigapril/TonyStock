@@ -157,7 +157,7 @@
 .stock-list-header,
 .stock-item {
     display: grid;
-    grid-template-columns: 130px 100px 140px 120px 60px;
+    grid-template-columns: 130px 100px 120px 60px;
     align-items: center;
     padding: 12px;
     border-bottom: 1px solid #e5e7eb;
@@ -255,10 +255,19 @@
 }
 
 /* 響應式調整 */
+@media (max-width: 768px) {
+    .stock-list-header,
+    .stock-item {
+        grid-template-columns: 120px 80px 100px 50px;
+    }
+}
+
 @media (max-width: 640px) {
     .stock-list-header,
     .stock-item {
-        grid-template-columns: minmax(160px, 1fr) 100px 50px;
+        grid-template-columns: 100px 70px 80px 40px;
+        padding: 8px;
+        font-size: 0.85em;
     }
 }
 
@@ -607,7 +616,7 @@
     100% { transform: rotate(360deg); }
 }
 
-/* 響應式��整 */
+/* 響應式整 */
 @media (max-width: 640px) {
     .search-loading,
     .search-empty-state {
@@ -797,7 +806,7 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* 響應式調�� */
+/* 響應式調整 */
 @media (max-width: 768px) {
     .watchlist-stock-gauge svg {
         width: 80px;
