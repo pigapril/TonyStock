@@ -957,3 +957,10 @@
     color: #1557b0;
     text-decoration: underline;
 }
+
+.default-logo.tw-stock {
+    background-color: #23a6d5;  /* 台股使用特殊顏色 */
+    color: white;
+    font-size: 0.8em;  /* 稍微縮小字體，因為是兩個字母 */
+    font-weight: bold;
+}

@@ -689,7 +689,11 @@ export function WatchlistContainer() {
                                                 <div key={stock.id} className="stock-item">
                                                     <div className="stock-info">
                                                         <div className="stock-logo">
-                                                            {stock.logo ? (
+                                                            {stock.logo === 'TW' ? (
+                                                                <div className="default-logo tw-stock">
+                                                                    TW
+                                                                </div>
+                                                            ) : stock.logo ? (
                                                                 <img 
                                                                     src={stock.logo} 
                                                                     alt={`${stock.symbol} logo`}
