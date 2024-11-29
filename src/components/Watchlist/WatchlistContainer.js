@@ -8,6 +8,8 @@ import debounce from 'lodash/debounce';
 import { FaPlus, FaEdit, FaTrash, FaSearch, FaListUl } from 'react-icons/fa';
 import { StockGauge } from './StockGauge';
 import NewsDialog from './NewsDialog';
+import twFlag from '../../assets/flags/tw-flag.svg';
+import usFlag from '../../assets/flags/us-flag.svg';
 
 // Watchlist API 服務
 class WatchlistService {
@@ -691,7 +693,19 @@ export function WatchlistContainer() {
                                                         <div className="stock-logo">
                                                             {stock.logo === 'TW' ? (
                                                                 <div className="default-logo tw-stock">
-                                                                    TW
+                                                                    <img 
+                                                                        src={twFlag}
+                                                                        alt="Taiwan Flag"
+                                                                        className="flag-icon"
+                                                                    />
+                                                                </div>
+                                                            ) : stock.logo === 'US_ETF' ? (
+                                                                <div className="default-logo us-etf">
+                                                                    <img 
+                                                                        src={usFlag}
+                                                                        alt="US Flag"
+                                                                        className="flag-icon"
+                                                                    />
                                                                 </div>
                                                             ) : stock.logo ? (
                                                                 <img 
