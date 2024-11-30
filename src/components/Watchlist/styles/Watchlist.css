@@ -59,41 +59,51 @@
     color: white;
 }
 
-/* 編輯模式按鈕激活狀態 */
+/* 移除舊的編輯模式相關樣式 */
+.category-operations .edit-mode-button,
 .category-operations .edit-mode-button.active {
-    background-color: #dc2626;
-    color: white;
+    display: none;
 }
 
-/* 移除按鈕的基礎樣式 */
+/* 更新移除按鈕樣式 */
 .remove-stock-button {
-    display: none;  /* 改為預設不顯示 */
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: none;
-    background: #f3f4f6;
-    color: #666;
+    background: transparent;
+    color: #dc2626;  /* 紅色愛心 */
     cursor: pointer;
-    padding: 0;
-    font-size: 14px;
+    display: flex !important;  /* 強制永遠顯示 */
+    align-items: center;
+    justify-content: center;
     transition: all 0.2s ease;
+    opacity: 1 !important;  /* 強制永遠顯示 */
+    z-index: 10;
+    pointer-events: auto;  /* 確保按鈕可以點擊 */
+    visibility: visible !important;  /* 確保按鈕可見 */
 }
 
-/* 只在編輯模式下顯示刪除按鈕 */
-.editing .stock-item .remove-stock-button {
-    display: flex;
-    opacity: 1;
-    background-color: #dc2626;
-    color: white;
+/* 按鈕懸停效果 */
+.remove-stock-button:hover {
+    transform: scale(1.1);
+    background-color: rgba(220, 38, 38, 0.1);  /* 紅色半透明背景 */
 }
 
-/* 編輯模式下按鈕的點擊效果 */
-.editing .stock-item .remove-stock-button:active {
+/* 按鈕點擊效果 */
+.remove-stock-button:active {
     transform: scale(0.95);
-    background-color: #b91c1c;
+}
+
+/* 移除所有可能影響愛心顯示的懸停效果 */
+.stock-item:hover .remove-stock-button,
+.stock-item .remove-stock-button {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* 分類區塊 */
@@ -170,7 +180,7 @@
     position: relative;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    overflow: hidden;
+    overflow: visible;  /* 改為 visible 確保愛心按鈕不會被裁切 */
 }
 
 .stock-item:hover {

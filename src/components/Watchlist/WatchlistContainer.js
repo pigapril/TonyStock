@@ -5,7 +5,7 @@ import { Analytics } from '../../utils/analytics';
 import { handleApiError, getErrorMessage } from '../../utils/errorHandler';
 import './styles/Watchlist.css';
 import debounce from 'lodash/debounce';
-import { FaPlus, FaEdit, FaTrash, FaSearch, FaListUl } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaSearch, FaListUl, FaHeart } from 'react-icons/fa';
 import { StockGauge } from './StockGauge';
 import NewsDialog from './NewsDialog';
 import twFlag from '../../assets/flags/tw-flag.svg';
@@ -469,7 +469,7 @@ export function WatchlistContainer() {
             component: 'WatchlistContainer',
             action: operation,
             error: errorData,
-            userId: user?.id  // 添加用戶 ID 用於追蹤
+            userId: user?.id  // 添加用戶 ID 用於追
         });
     }, [showToast, user]);
 
@@ -718,8 +718,18 @@ export function WatchlistContainer() {
                                 {categories.map((category) => (
                                     <div
                                         key={category.id}
-                                        className={`category-content ${activeTab === category.id ? 'active' : ''}`}
+                                        className={`category-content ${activeTab === category.id ? 'active' : ''} ${isEditing ? 'editing' : ''}`}
                                     >
+                                        <div className="category-operations">
+                                            <button
+                                                className={`edit-mode-button ${isEditing ? 'active' : ''}`}
+                                                onClick={toggleEditMode}
+                                                title={isEditing ? '完成編輯' : '編輯模式'}
+                                            >
+                                                <FaEdit />
+                                            </button>
+                                        </div>
+                                        
                                         {activeTab === category.id && (
                                             <SearchBox
                                                 onSelect={handleAddStock}
@@ -818,9 +828,10 @@ export function WatchlistContainer() {
                                                     <button
                                                         onClick={() => handleRemoveStock(category.id, stock.id)}
                                                         className="remove-stock-button"
-                                                        aria-label={`移除 ${stock.symbol}`}
+                                                        aria-label={`取消追蹤 ${stock.symbol}`}
+                                                        title="取消追蹤"
                                                     >
-                                                        ✕
+                                                        <FaHeart />
                                                     </button>
                                                 </div>
                                             ))}
