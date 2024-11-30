@@ -14,7 +14,7 @@
 .category-operations {
     position: absolute;
     right: 16px;
-    top: 16px;
+    top: 8px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -144,10 +144,10 @@
     color: #dc3545;
 }
 
-/* 表格容器 */
+/* 表格容器 - 基礎樣式 */
 .stock-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)) !important;
     gap: 16px;
     padding: 16px;
     border: none;
@@ -254,7 +254,7 @@
 .watchlist-stock-price {
     position: absolute;
     left: 50%;
-    top: 35%;  /* 從 50% 改為 35% 將位置上移 */
+    top: 45%;  /* 從 35% 改為 45% */
     transform: translate(-50%, -50%);
     font-size: 1.8em;
     font-weight: 600;
@@ -271,6 +271,7 @@
     padding: 16px;
     width: 100%;
     height: 160px;
+    margin-top: 10px;  /* 增加上邊距 */
 }
 
 .watchlist-stock-gauge svg {
@@ -311,13 +312,26 @@
 .watchlist-stock-analysis {
     position: absolute;
     width: 100%;
-    top: 25%;
+    top: 35%;
     display: flex;
     justify-content: space-between;
-    padding: 0 40px;
+    padding: 0 32px;
     box-sizing: border-box;
     z-index: 1;
     font-family: var(--mono-font);
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+    .watchlist-stock-analysis {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 640px) {
+    .watchlist-stock-analysis {
+        padding: 0 10px;
+    }
 }
 
 /* 支撐值樣式 */
@@ -419,13 +433,14 @@
     flex-direction: column;
     gap: 8px;
     padding: 8px 0;
+    margin-top: -75px;
 }
 
 /* 移除按鈕位置調整 */
 .remove-stock-button {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 8px;
+    right: 8px;
     opacity: 0;
 }
 
@@ -436,40 +451,37 @@
 /* 響應式調整 */
 @media (max-width: 1200px) {
     .stock-list {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)) !important;
+        padding: 12px;
     }
 }
 
 @media (max-width: 768px) {
     .stock-list {
-        grid-template-columns: 1fr;  /* 改為單列 */
+        grid-template-columns: 1fr !important;  /* 單列全寬 */
         padding: 12px;
         gap: 12px;
     }
     
     .stock-item {
-        padding: 12px;  /* 減少內邊距 */
-    }
-    
-    .watchlist-stock-gauge {
-        height: 140px;
-        padding: 12px;
+        width: 100%;  /* 確保卡片佔滿容器寬度 */
+        margin: 0;    /* 移除可能的外邊距 */
+        box-sizing: border-box;
     }
 }
 
 @media (max-width: 640px) {
+    .watchlist-container {
+        padding: 1px;  /* 減少容器內邊距 */
+    }
+    
     .stock-list {
-        padding: 8px;
-        gap: 8px;
+        padding: 0;    /* 移除列表內邊距 */
+        gap: 10px;
     }
     
-    .stock-item {
-        padding: 8px;
-    }
-    
-    .watchlist-stock-gauge {
-        height: 120px;
-        padding: 8px;
+    .category-content {
+        padding: 8px;  /* 減少分類內容內邊距 */
     }
 }
 
@@ -850,7 +862,7 @@
     font-weight: 600;
     color: #1f2937;
     font-size: 14px;
-    min-width: 80px;      /* 使用 min-width 確保最小寬度 */
+    min-width: 80px;      /* 使�� min-width 確保最小寬度 */
     padding-right: 8px;   /* 添加右側間距 */
 }
 
