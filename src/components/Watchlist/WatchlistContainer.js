@@ -367,6 +367,36 @@ function CategoryManagerDialog({ open, onClose, categories, onEdit, onDelete, on
     );
 }
 
+// 添加價格格式化函數
+const formatPrice = (price) => {
+    if (!price && price !== 0) return '-';
+    
+    // 將價格轉換為數字確保安全
+    const numPrice = Number(price);
+    
+    // 根據數字大小決定小數位數
+    if (numPrice >= 100) {
+        return numPrice.toFixed(0);  // 三位數以上不顯示小數
+    } else if (numPrice >= 10) {
+        return numPrice.toFixed(1);  // 二位數顯示到小數第一位
+    } else {
+        return numPrice.toFixed(2);  // 一位數顯示到小數第二位
+    }
+};
+
+// 添加判斷端點的函數
+const isNearEdge = (price, support, resistance) => {
+    if (!price || !support || !resistance) return { isNearUpper: false, isNearLower: false };
+    
+    const upperThreshold = (resistance - support) * 0.1; // 上下邊界的 10% 範圍
+    const lowerThreshold = (resistance - support) * 0.1;
+    
+    return {
+        isNearUpper: (resistance - price) <= upperThreshold,
+        isNearLower: (price - support) <= lowerThreshold
+    };
+};
+
 // Watchlist 主元件
 export function WatchlistContainer() {
     const { user, isAuthenticated } = useAuth();
@@ -677,16 +707,6 @@ export function WatchlistContainer() {
                                         )}
                                         
                                         <div className="stock-list">
-                                            {/* 表格標題列 */}
-                                            <div className="stock-list-header">
-                                                <span>股票代碼</span>
-                                                <span>最新價格</span>
-                                                <span>恐懼貪婪指標</span>
-                                                <span>相關新聞</span>
-                                                <span></span>
-                                            </div>
-                                            
-                                            {/* 股票列表 */}
                                             {category.stocks.map((stock) => (
                                                 <div key={stock.id} className="stock-item">
                                                     <div className="stock-info">
@@ -726,21 +746,35 @@ export function WatchlistContainer() {
                                                         </span>
                                                     </div>
                                                     
-                                                    <span className="watchlist-stock-price">
-                                                        {stock.price 
-                                                            ? `$${stock.price.toFixed(2)}` 
-                                                            : '-'
-                                                        }
-                                                    </span>
-                                                    
-                                                    {/* 只保留 Gauge 儀表圖 */}
                                                     <div className="watchlist-stock-gauge">
                                                         {stock.analysis ? (
-                                                            <StockGauge
-                                                                price={stock.price}
-                                                                support={stock.analysis.tl_minus_2sd}
-                                                                resistance={stock.analysis.tl_plus_2sd}
-                                                            />
+                                                            <>
+                                                                <StockGauge
+                                                                    price={stock.price}
+                                                                    support={stock.analysis.tl_minus_2sd}
+                                                                    resistance={stock.analysis.tl_plus_2sd}
+                                                                />
+                                                                <div className={`watchlist-stock-analysis ${
+                                                                    isNearEdge(stock.price, stock.analysis.tl_minus_2sd, stock.analysis.tl_plus_2sd).isNearUpper ? 'near-upper-edge' : ''
+                                                                } ${
+                                                                    isNearEdge(stock.price, stock.analysis.tl_minus_2sd, stock.analysis.tl_plus_2sd).isNearLower ? 'near-lower-edge' : ''
+                                                                }`}>
+                                                                    <span className={`analysis-value support ${
+                                                                        isNearEdge(stock.price, stock.analysis.tl_minus_2sd, stock.analysis.tl_plus_2sd).isNearLower ? 'pulse' : ''
+                                                                    }`}>
+                                                                        {formatPrice(stock.analysis.tl_minus_2sd)}
+                                                                    </span>
+                                                                    <span className="analysis-separator">-</span>
+                                                                    <span className={`analysis-value resistance ${
+                                                                        isNearEdge(stock.price, stock.analysis.tl_minus_2sd, stock.analysis.tl_plus_2sd).isNearUpper ? 'pulse' : ''
+                                                                    }`}>
+                                                                        {formatPrice(stock.analysis.tl_plus_2sd)}
+                                                                    </span>
+                                                                </div>
+                                                                <span className="watchlist-stock-price">
+                                                                    {stock.price ? `$${formatPrice(stock.price)}` : '-'}
+                                                                </span>
+                                                            </>
                                                         ) : (
                                                             <span className="analysis-loading">分析中</span>
                                                         )}

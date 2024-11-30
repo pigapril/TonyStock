@@ -46,9 +46,9 @@ export const StockGauge = ({ price, support, resistance }) => {
                 height={52}
                 cx={50}
                 cy={50}
-                innerRadius={25}
+                innerRadius={30}
                 outerRadius={45}
-                barSize={8}
+                barSize={9}
                 data={data}
                 startAngle={180}
                 endAngle={0}
@@ -63,24 +63,21 @@ export const StockGauge = ({ price, support, resistance }) => {
                 <RadialBar
                     background={{ 
                         fill: COLORS.background,
+                        strokeLinecap: 'round'
                     }}
                     dataKey="value"
-                    cornerRadius={30}
-                    fill={getColor(percent)}
+                    cornerRadius={1}
                     style={{
-                        filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.03))',
-                        transition: 'all 0.3s ease'
+                        strokeLinecap: 'round'
                     }}
+                    startAngle={180}
+                    endAngle={0}
+                    animationBegin={0}
+                    animationDuration={750}
+                    animationEasing="ease-in-out"
+                    isAnimationActive={true}
                 />
             </RadialBarChart>
-            <div className={`gauge-values ${isNearUpperEdge ? 'near-upper-edge' : ''} ${isNearLowerEdge ? 'near-lower-edge' : ''}`}>
-                <span className={`gauge-support ${isNearLowerEdge ? 'pulse' : ''}`}>
-                    {support.toFixed(2)}
-                </span>
-                <span className={`gauge-resistance ${isNearUpperEdge ? 'pulse' : ''}`}>
-                    {resistance.toFixed(2)}
-                </span>
-            </div>
         </div>
     );
 };

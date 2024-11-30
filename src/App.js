@@ -514,17 +514,8 @@ function AppContent() {
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
           <div className="sidebar-header">
             <img src="/logo.png" alt="Logo" className="logo" />
-            {/*<h2>市場溫度計</h2>*/}
           </div>
           <ul>
-            {/* 移除或註釋掉這個 "首頁" 的 li 項
-            <li>
-              <Link to="/" onClick={() => isMobile && setSidebarOpen(false)}>
-                <FaHome />
-                <span>首頁</span>
-              </Link>
-            </li>
-            */}
             <li>
               <Link to="/" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaChartLine />
@@ -535,6 +526,12 @@ function AppContent() {
               <Link to="/market-sentiment" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaHeartbeat />
                 <span>市場情緒分析</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/watchlist" onClick={() => isMobile && setSidebarOpen(false)}>
+                <FaList />
+                <span>我的追蹤清單</span>
               </Link>
             </li>
             <li>
@@ -557,15 +554,6 @@ function AppContent() {
               </Link>
             </li>
             */}
-            {isAuthenticated && (
-                <Link 
-                    to="/watchlist" 
-                    className="sidebar-item" 
-                    onClick={closeSidebar}
-                >
-                    <FaList /> 我的追蹤清單
-                </Link>
-            )}
           </ul>
         </nav>
 
