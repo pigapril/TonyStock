@@ -862,7 +862,7 @@
     font-weight: 600;
     color: #1f2937;
     font-size: 14px;
-    min-width: 80px;      /* 使�� min-width 確保最小寬度 */
+    min-width: 80px;      /* 使 min-width 確保最小寬度 */
     padding-right: 8px;   /* 添加右側間距 */
 }
 
@@ -1071,4 +1071,51 @@
     height: 100%;
     object-fit: cover;
     display: block;
+}
+
+/* 新增搜尋區域樣式 */
+.watchlist-search-area {
+    position: relative;
+    margin-bottom: 16px;
+    z-index: 100;
+    max-width: 350px; /* 添加最大寬度 */
+    margin-left: auto;  /* 靠右對齊 */
+    margin-right: auto; /* 水平置中 */
+}
+
+/* 更新搜尋容器樣式 */
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 350px; /* 確保與搜尋區域一致 */
+}
+
+/* 更新搜尋結果容器樣式 */
+.search-results-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-width: 350px; /* 確保與搜尋框同寬 */
+    width: 100%;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    max-height: 320px;
+    overflow-y: auto;
+    margin-top: 4px;
+}
+
+/* 響應式調整 */
+@media (max-width: 640px) {
+    .watchlist-search-area {
+        max-width: 100%; /* 在小螢幕上占滿寬度 */
+        padding: 0 px; /* 添加左右間距 */
+    }
+
+    .search-container,
+    .search-results-container {
+        max-width: 100%;
+    }
 }

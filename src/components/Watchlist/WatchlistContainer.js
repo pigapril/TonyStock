@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Dialog } from '../Common/Dialog';
 import { Analytics } from '../../utils/analytics';
@@ -10,6 +10,7 @@ import { StockGauge } from './StockGauge';
 import NewsDialog from './NewsDialog';
 import twFlag from '../../assets/flags/tw-flag.svg';
 import usFlag from '../../assets/flags/us-flag.svg';
+import { SearchBox } from './SearchBox';
 
 // Watchlist API 服務
 class WatchlistService {
@@ -417,6 +418,38 @@ export function WatchlistContainer() {
     const [isEditing, setIsEditing] = useState(false);
     const [selectedNews, setSelectedNews] = useState(null);
     const [newsDialogOpen, setNewsDialogOpen] = useState(false);
+    const [keyword, setKeyword] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [searchLoading, setSearchLoading] = useState(false);
+    const [searchError, setSearchError] = useState(null);
+    const [showSearchResults, setShowSearchResults] = useState(false);
+
+    // 使用 useRef 來保持搜尋框的狀態
+    const searchRef = useRef(null);
+    const [searchState, setSearchState] = useState({
+        keyword: '',
+        results: [],
+        loading: false,
+        error: null,
+        showResults: false
+    });
+
+    // 處理點擊外部關閉搜尋結果
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (searchRef.current && !searchRef.current.contains(event.target)) {
+                setSearchState(prev => ({
+                    ...prev,
+                    showResults: false
+                }));
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const showToast = useCallback((message, type) => {
         setToast({ message, type });
@@ -685,25 +718,14 @@ export function WatchlistContainer() {
                                 {categories.map((category) => (
                                     <div
                                         key={category.id}
-                                        className={`category-content ${activeTab === category.id ? 'active' : ''} ${isEditing ? 'editing' : ''}`}
+                                        className={`category-content ${activeTab === category.id ? 'active' : ''}`}
                                     >
                                         {activeTab === category.id && (
-                                            <div className="category-operations">
-                                                <button
-                                                    onClick={() => handleOpenAddStockDialog(category.id)}
-                                                    className="add-stock-button"
-                                                    aria-label="添加股票"
-                                                >
-                                                    <FaPlus />
-                                                </button>
-                                                <button
-                                                    onClick={toggleEditMode}
-                                                    className={`edit-mode-button ${isEditing ? 'active' : ''}`}
-                                                    aria-label="編輯模式"
-                                                >
-                                                    <FaTrash />
-                                                </button>
-                                            </div>
+                                            <SearchBox
+                                                onSelect={handleAddStock}
+                                                watchlistService={watchlistService}
+                                                categoryId={category.id}
+                                            />
                                         )}
                                         
                                         <div className="stock-list">
