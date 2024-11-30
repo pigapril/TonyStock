@@ -5,7 +5,7 @@ import { Analytics } from '../../utils/analytics';
 import { handleApiError, getErrorMessage } from '../../utils/errorHandler';
 import './styles/Watchlist.css';
 import debounce from 'lodash/debounce';
-import { FaPlus, FaEdit, FaTrash, FaSearch, FaListUl, FaHeart } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaSearch, FaListUl, FaHeart, FaPencilAlt } from 'react-icons/fa';
 import { StockGauge } from './StockGauge';
 import NewsDialog from './NewsDialog';
 import twFlag from '../../assets/flags/tw-flag.svg';
@@ -702,7 +702,7 @@ export function WatchlistContainer() {
                                         className="category-tab folder-tab"
                                         aria-label="管理分類"
                                     >
-                                        <FaListUl />
+                                        <FaPencilAlt />
                                     </button>
                                     {categories.map((category) => (
                                         <button

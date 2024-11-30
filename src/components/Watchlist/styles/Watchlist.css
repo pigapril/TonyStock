@@ -436,14 +436,37 @@
     }
 }
 
-/* 新聞列表區域 */
+/* 新聞列表區域 - 移除舊的樣式 */
 .stock-news-list {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: 8px 0;
-    margin-top: -75px;
+    margin-top: -75px;  /* 移除負的 margin-top */
+    position: relative;  /* 添加相對定位 */
+    z-index: 5;  /* 確保新聞列表在正確的層級 */
+}
+
+/* 新聞項目樣式 */
+.stock-news-item {
+    font-size: 0.9em;
+    color: #1a73e8;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.2s;
+    padding: 4px 8px;  /* 添加內邊距增加可點擊區域 */
+    border-radius: 4px;  /* 添加圓角 */
+    position: relative;  /* 確保可以正確接收點擊事件 */
+    z-index: 10;  /* 確保在其他元素之上 */
+}
+
+.stock-news-item:hover {
+    color: #1557b0;
+    text-decoration: underline;
+    background-color: rgba(26, 115, 232, 0.05);  /* 添加懸停背景色 */
 }
 
 /* 移除按鈕位置調整 */
