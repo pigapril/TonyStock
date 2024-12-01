@@ -506,6 +506,22 @@ function AppContent() {
     setActiveChart(chartType);
   };
 
+  // 新增處理追蹤清單點擊的函數
+  const handleWatchlistClick = (e) => {
+    if (!user) {
+      e.preventDefault(); // 阻止預設的導航行為
+      openDialog('auth', {
+        returnPath: '/watchlist',
+        message: '請先登入以使用追蹤清單功能'
+      });
+      
+      // 如果是手機版，關閉側邊欄
+      if (isMobile) {
+        setSidebarOpen(false);
+      }
+    }
+  };
+
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <PageViewTracker />
@@ -529,7 +545,10 @@ function AppContent() {
               </Link>
             </li>
             <li>
-              <Link to="/watchlist" onClick={() => isMobile && setSidebarOpen(false)}>
+              <Link 
+                to="/watchlist" 
+                onClick={handleWatchlistClick}
+              >
                 <FaList />
                 <span>我的追蹤清單</span>
               </Link>
