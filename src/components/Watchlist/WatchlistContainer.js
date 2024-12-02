@@ -773,9 +773,27 @@ export function WatchlistContainer() {
                                                                 </div>
                                                             )}
                                                         </div>
-                                                        <span className="watchlist-stock-symbol">
-                                                            {stock.symbol}
-                                                        </span>
+                                                        <div className="stock-text-info">
+                                                            <span className="watchlist-stock-symbol">
+                                                                {stock.symbol}
+                                                            </span>
+                                                            <div className="stock-names">
+                                                                {stock.name !== stock.nameEn ? (
+                                                                    <>
+                                                                        <span className="stock-name-zh">
+                                                                            {stock.name}
+                                                                        </span>
+                                                                        <span className="stock-name-en">
+                                                                            {stock.nameEn}
+                                                                        </span>
+                                                                    </>
+                                                                ) : (
+                                                                    <span className="stock-name">
+                                                                        {stock.name}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     
                                                     <div className="watchlist-stock-gauge">

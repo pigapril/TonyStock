@@ -255,9 +255,9 @@
 
 /* 股票代碼樣式 */
 .watchlist-stock-symbol {
-    font-weight: 600;
-    color: #1f2937;
     font-size: 1.1em;
+    font-weight: 600;
+    color: #1f2937;  /* 深色 */
 }
 
 /* 移除舊的價格樣式，改為新的位置 */
@@ -775,11 +775,12 @@
     padding: 8px 36px;
     height: 40px;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 20px;  /* 改為 20px 使兩端更圓 */
     background: #f8fafc;
     font-size: 14px;
     color: #1f2937;
     box-sizing: border-box;
+    transition: all 0.2s ease;  /* 添加過渡效果 */
 }
 
 .search-input:focus {
@@ -805,8 +806,10 @@
     max-height: 320px;
     margin-top: 4px;
     box-sizing: border-box;
-    border-radius: 8px;
-    overflow-y: auto;
+    border-radius: 16px;  /* 改為 16px 使搜尋結果框也更圓潤 */
+    margin-top: 8px;      /* 增加與搜尋框的間距 */
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 /* 當有搜尋結果或正在載入時才顯示邊框和背景 */
@@ -1150,5 +1153,42 @@
     .search-container,
     .search-results-container {
         max-width: 100%;
+    }
+}
+
+.stock-text-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    min-width: 0; /* 確保文字會正確截斷 */
+}
+
+.watchlist-stock-symbol {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+
+.stock-names {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.stock-name-zh,
+.stock-name-en,
+.stock-name {  /* 新增 .stock-name 統一樣式 */
+    font-size: 0.8em;  /* 比股票代碼小 */
+    color: #6b7280;    /* 更淺的顏色 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 在較小螢幕上調整最大寬度 */
+@media (max-width: 768px) {
+    .stock-name-zh,
+    .stock-name-en {
+        /* 移除 max-width 限制 */
     }
 }
