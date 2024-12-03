@@ -1,0 +1,39 @@
+.error-boundary {
+    padding: 24px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 16px;
+}
+
+.error-boundary h2 {
+    color: #dc2626;
+    margin-bottom: 16px;
+    font-size: 1.5em;
+}
+
+.error-boundary p {
+    color: #4b5563;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.retry-button {
+    padding: 8px 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.retry-button:hover {
+    background-color: #2563eb;
+}
+
+.retry-button:active {
+    background-color: #1d4ed8;
+} 

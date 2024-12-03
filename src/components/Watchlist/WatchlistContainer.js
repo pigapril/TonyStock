@@ -18,6 +18,7 @@ import { CategoryTabs } from './components/CategoryTabs';
 import { useToastManager } from './hooks/useToastManager';
 import { StockCard } from './components/StockCard/StockCard';
 import { AddStockDialog } from './components/AddStockDialog';
+import { ErrorBoundary } from '../Common/ErrorBoundary/ErrorBoundary';
 
 // 添加價格格式化函數
 const formatPrice = (price) => {
@@ -185,28 +186,6 @@ export function WatchlistContainer() {
         }
     };
 
-    const ErrorBoundary = ({ children }) => {
-        const [hasError, setHasError] = useState(false);
-        
-        if (hasError || error) {
-            return (
-                <div className="error-boundary">
-                    <h2>很抱歉，發生了一些問題</h2>
-                    <p>{error}</p>
-                    <button onClick={() => {
-                        setHasError(false);
-                        setError(null);
-                        loadCategories();
-                    }}>
-                        重試
-                    </button>
-                </div>
-            );
-        }
-        
-        return children;
-    };
-
     const handleAddStock = async (categoryId, stock) => {
         if (!categoryId) {
             showToast('請先選擇分類', 'warning');
@@ -295,7 +274,13 @@ export function WatchlistContainer() {
     };
 
     return (
-        <ErrorBoundary>
+        <ErrorBoundary
+            message={error}
+            onRetry={() => {
+                setError(null);
+                loadCategories();
+            }}
+        >
             <div className="watchlist-container">
                 {error && (
                     <div className="error-message">
