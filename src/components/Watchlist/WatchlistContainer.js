@@ -11,171 +11,13 @@ import NewsDialog from './NewsDialog';
 import twFlag from '../../assets/flags/tw-flag.svg';
 import usFlag from '../../assets/flags/us-flag.svg';
 import { SearchBox } from './SearchBox';
-
-// Watchlist API 服務
-class WatchlistService {
-    constructor() {
-        this.baseUrl = process.env.REACT_APP_API_BASE_URL || '';
-        this.defaultOptions = {
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json'
-            }
-        };
-    }
-
-    async fetchRequest(endpoint, options = {}) {
-        try {
-            const url = `${this.baseUrl}${endpoint}`;
-            console.log('發送請求:', { url, options });
-            
-            const requestOptions = {
-                ...this.defaultOptions,
-                ...options,
-                headers: {
-                    ...this.defaultOptions.headers,
-                    ...options.headers
-                }
-            };
-
-            const response = await fetch(url, requestOptions);
-            
-            if (!response.ok) {
-                throw await handleApiError(response);
-            }
-
-            const data = await response.json();
-            console.log('API 響應:', data);
-
-            if (data.status === 'success' && data.data) {
-                return data.data;
-            }
-            
-            return data;
-        } catch (error) {
-            console.error('Request failed:', error);
-            throw handleApiError(error);
-        }
-    }
-
-    async getCategories() {
-        const response = await this.fetchRequest('/api/watchlist/categories', {
-            method: 'GET'
-        });
-        
-        // 確保返回的是數組
-        if (Array.isArray(response)) {
-            return response;
-        } else if (response.categories && Array.isArray(response.categories)) {
-            return response.categories;
-        }
-        
-        console.warn('Unexpected categories response format:', response);
-        return [];
-    }
-
-    async createCategory(name) {
-        return this.fetchRequest('/api/watchlist/categories', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name })
-        });
-    }
-
-    async addStock(categoryId, stockSymbol) {
-        return this.fetchRequest(`/api/watchlist/categories/${categoryId}/stocks`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ stockSymbol })
-        });
-    }
-
-    async removeStock(categoryId, itemId) {
-        return this.fetchRequest(
-            `/api/watchlist/categories/${categoryId}/stocks/${itemId}`,
-            { method: 'DELETE' }
-        );
-    }
-
-    async searchStocks(keyword) {
-        return this.fetchRequest(
-            `/api/watchlist/search?keyword=${encodeURIComponent(keyword)}`,
-            { method: 'GET' }
-        );
-    }
-
-    async deleteCategory(categoryId) {
-        return this.fetchRequest(
-            `/api/watchlist/categories/${categoryId}`,
-            { method: 'DELETE' }
-        );
-    }
-
-    async updateCategory(categoryId, name) {
-        return this.fetchRequest(
-            `/api/watchlist/categories/${categoryId}`,
-            {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name })
-            }
-        );
-    }
-}
-
-const watchlistService = new WatchlistService();
-
-// 修改 Toast 組件
-const Toast = ({ message, type, onClose }) => {
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            onClose();
-        }, 1000);  // 保持 1 秒的顯示時間
-        return () => clearTimeout(timer);
-    }, [onClose]);
-
-    return (
-        <div className={`toast toast-${type}`}>
-            {message}
-        </div>
-    );
-};
-
-// CreateCategoryDialog.js
-function CreateCategoryDialog({ open, onClose, onSubmit }) {
-    const [name, setName] = useState('');
-    
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit(name);
-        setName('');
-        onClose();
-    };
-
-    return (
-        <Dialog open={open} onClose={onClose} title="新增分類">
-            <form onSubmit={handleSubmit} className="add-category-form">
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="請輸入分類名稱"
-                    required
-                />
-                <div className="dialog-actions">
-                    <button type="submit">確認</button>
-                    <button type="button" onClick={onClose}>取消</button>
-                </div>
-            </form>
-        </Dialog>
-    );
-}
+import watchlistService from './services/watchlistService';
+import { Toast } from './components/Toast';
+import { CategoryManagerDialog } from './components/CategoryManagerDialog';
+import { CreateCategoryDialog } from './components/CreateCategoryDialog';
+import { EditCategoryDialog } from './components/EditCategoryDialog';
+import { useCategories } from './hooks/useCategories';
+import { CategoryTabs } from './components/CategoryTabs';
 
 // AddStockDialog.js
 function AddStockDialog({ open, onClose, categoryId, onAdd }) {
@@ -290,84 +132,6 @@ function AddStockDialog({ open, onClose, categoryId, onAdd }) {
     );
 }
 
-// EditCategoryDialog.js
-function EditCategoryDialog({ open, onClose, category, onSubmit }) {
-    const [name, setName] = useState('');
-
-    useEffect(() => {
-        if (category) {
-            setName(category.name);
-        }
-    }, [category]);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        await onSubmit(name);  // 只執行更新，不處理關閉
-        // 移除這行，讓父組件控制關閉
-        // onClose();
-    };
-
-    return (
-        <Dialog open={open} onClose={onClose} title="編輯分類">
-            <form onSubmit={handleSubmit} className="edit-category-form">
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="請輸入分類名稱"
-                    required
-                />
-                <div className="dialog-actions">
-                    <button type="submit">確認</button>
-                    <button type="button" onClick={onClose}>取消</button>
-                </div>
-            </form>
-        </Dialog>
-    );
-}
-
-// CategoryManagerDialog.js
-function CategoryManagerDialog({ open, onClose, categories, onEdit, onDelete, onCreate }) {
-    return (
-        <Dialog open={open} onClose={onClose} title="管理分類">
-            <div className="category-manager-dialog">
-                <button 
-                    onClick={onCreate}
-                    className="create-category-button"
-                >
-                    <FaPlus /> 新增分類
-                </button>
-                
-                <div className="category-list">
-                    {categories.map(category => (
-                        <div key={category.id} className="category-item">
-                            <span className="category-name">
-                                {category.name}
-                            </span>
-                            <div className="category-actions">
-                                <button
-                                    onClick={() => onEdit(category.id)}
-                                    className="edit-button"
-                                    aria-label="編輯分類"
-                                >
-                                    <FaEdit />
-                                </button>
-                                <button
-                                    onClick={() => onDelete(category.id)}
-                                    className="delete-button"
-                                    aria-label="刪除分類"
-                                >
-                                    <FaTrash />
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </Dialog>
-    );
-}
-
 // 添加價格格式化函數
 const formatPrice = (price) => {
     if (!price && price !== 0) return '-';
@@ -402,9 +166,27 @@ const isNearEdge = (price, support, resistance) => {
 export function WatchlistContainer() {
     const { user, isAuthenticated } = useAuth();
     
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [toast, setToast] = useState(null);
+    
+    // Toast 顯示函數
+    const showToast = useCallback((message, type = 'info') => {
+        setToast({ message, type });
+    }, []);
+
+    // 使用 useCategories hook
+    const {
+        categories,
+        loading,
+        editingCategory,
+        setEditingCategory,
+        loadCategories,
+        createCategory,
+        updateCategory,
+        deleteCategory,
+        handleCategoryDeleted
+    } = useCategories(watchlistService, showToast);
+
     const [activeTab, setActiveTab] = useState(null);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
     const [dialogStates, setDialogStates] = useState({
@@ -413,8 +195,6 @@ export function WatchlistContainer() {
         editCategory: false,
         addStock: false
     });
-    const [editingCategory, setEditingCategory] = useState(null);
-    const [toast, setToast] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [selectedNews, setSelectedNews] = useState(null);
     const [newsDialogOpen, setNewsDialogOpen] = useState(false);
@@ -451,10 +231,6 @@ export function WatchlistContainer() {
         };
     }, []);
 
-    const showToast = useCallback((message, type) => {
-        setToast({ message, type });
-    }, []);
-
     const handleOperationError = useCallback((error, operation) => {
         const errorData = handleApiError(error);
         
@@ -472,23 +248,6 @@ export function WatchlistContainer() {
             userId: user?.id  // 添加用戶 ID 用於追
         });
     }, [showToast, user]);
-
-    const loadCategories = useCallback(async () => {
-        try {
-            setLoading(true);
-            const data = await watchlistService.getCategories();
-            setCategories(data);
-            if (data.length > 0 && !activeTab) {
-                const initialCategoryId = data[0].id;
-                setActiveTab(initialCategoryId);
-                setSelectedCategoryId(initialCategoryId);
-            }
-        } catch (error) {
-            handleOperationError(error, 'load_categories');
-        } finally {
-            setLoading(false);
-        }
-    }, [activeTab, handleOperationError]);
 
     const handleTabChange = (categoryId) => {
         setActiveTab(categoryId);
@@ -536,82 +295,11 @@ export function WatchlistContainer() {
         updateDialogState('createCategory', true);
     };
 
-    const handleCreateCategory = async (name) => {
-        console.log('開始處理創建分類:', { name });
-        try {
-            setLoading(true);
-            const result = await watchlistService.createCategory(name);
-            console.log('API 回傳結果:', result);
-
-            // 檢查回傳格式
-            const newCategory = result.category || result;
-            console.log('處理後的分資料:', newCategory);
-            
-            // 更新本地狀態前的檢查
-            console.log('更新前的分類列表:', categories);
-            setCategories(prevCategories => {
-                const updatedCategories = [...prevCategories, {
-                    ...newCategory,
-                    stocks: []
-                }];
-                console.log('更新後的分類列表:', updatedCategories);
-                return updatedCategories;
-            });
-            
-            updateDialogState('createCategory', false);
-            showToast('分類創建成功', 'success');
-        } catch (error) {
-            console.error('創建分類失敗:', error);
-            showToast(getErrorMessage(error), 'error');
-        } finally {
-            setLoading(false);
-        }
-    };
-
     const handleEditCategory = (categoryId) => {
         const category = categories.find(c => c.id === categoryId);
         if (category) {
             setEditingCategory(category);
             updateDialogState('editCategory', true);
-        }
-    };
-
-    const handleUpdateCategory = async (name) => {
-        try {
-            if (!editingCategory) return;
-            
-            await watchlistService.updateCategory(editingCategory.id, name);
-            
-            // 先關閉對話框
-            updateDialogState('editCategory', false);
-            setEditingCategory(null);
-            
-            // 然後更新數據和顯示提示
-            await loadCategories();
-            showToast('分類已更新', 'success');
-            
-        } catch (error) {
-            handleOperationError(error, 'update_category');
-        }
-    };
-
-    const handleDeleteCategory = async (categoryId) => {
-        try {
-            if (!window.confirm('確定要刪除此分類嗎？此操作無法復原。')) {
-                return;
-            }
-
-            await watchlistService.deleteCategory(categoryId);
-            await loadCategories();
-            showToast('分類已刪除', 'success');
-            
-            Analytics.watchlist.categoryDelete({
-                categoryId,
-                component: 'WatchlistContainer',
-                action: 'delete_category'
-            });
-        } catch (error) {
-            handleOperationError(error, 'delete_category');
         }
     };
 
@@ -662,8 +350,21 @@ export function WatchlistContainer() {
             showToast('請先登入後再使用此功能', 'warning');
             return;
         }
-        loadCategories();
-    }, [isAuthenticated, loadCategories, showToast]);
+        
+        // 載入分類並自動選擇第一個
+        const initializeCategories = async () => {
+            const loadedCategories = await loadCategories();
+            
+            // 如果有分類且沒有選擇任何分類，則自動選擇第一個
+            if (loadedCategories?.length > 0 && !activeTab) {
+                const firstCategory = loadedCategories[0];
+                setActiveTab(firstCategory.id);
+                setSelectedCategoryId(firstCategory.id);
+            }
+        };
+
+        initializeCategories();
+    }, [isAuthenticated, loadCategories, showToast, activeTab]);
 
     const toggleEditMode = () => {
         setIsEditing(prev => !prev);
@@ -674,9 +375,53 @@ export function WatchlistContainer() {
         setNewsDialogOpen(true);
     };
 
+    // 處理創建分類
+    const handleCreateCategory = async (name) => {
+        try {
+            await createCategory(name);
+            updateDialogState('createCategory', false);
+        } catch (error) {
+            console.error('創建分類失敗:', error);
+        }
+    };
+
+    // 處理更新分類
+    const handleUpdateCategory = async (name) => {
+        try {
+            if (!editingCategory) return;
+            await updateCategory(editingCategory.id, name);
+            // 關閉對話框
+            updateDialogState('editCategory', false);
+            setEditingCategory(null);
+        } catch (error) {
+            console.error('更新分類失敗:', error);
+        }
+    };
+
+    // 處理刪除分類
+    const handleDeleteCategory = async (categoryId) => {
+        try {
+            const result = await deleteCategory(categoryId);
+            if (result.success) {
+                // 處理分類刪除後的重選邏輯
+                handleCategoryDeleted(categoryId, result.updatedCategories);
+                updateDialogState('categoryManager', false);
+            }
+        } catch (error) {
+            console.error('刪除分類失敗:', error);
+        }
+    };
+
     return (
         <ErrorBoundary>
             <div className="watchlist-container">
+                {error && (
+                    <div className="error-message">
+                        {error}
+                        <button onClick={() => setError(null)}>關閉</button>
+                    </div>
+                )}
+                
                 {!isAuthenticated ? (
                     <div className="auth-required">
                         <p>請先登入後再使用此功能</p>
@@ -696,24 +441,12 @@ export function WatchlistContainer() {
                             </div>
                         ) : (
                             <div className="watchlist-content">
-                                <div className="category-tabs">
-                                    <button
-                                        onClick={() => updateDialogState('categoryManager', true)}
-                                        className="category-tab folder-tab"
-                                        aria-label="管理分類"
-                                    >
-                                        <FaPencilAlt />
-                                    </button>
-                                    {categories.map((category) => (
-                                        <button
-                                            key={category.id}
-                                            className={`category-tab ${activeTab === category.id ? 'active' : ''}`}
-                                            onClick={() => handleTabChange(category.id)}
-                                        >
-                                            {category.name}
-                                        </button>
-                                    ))}
-                                </div>
+                                <CategoryTabs
+                                    categories={categories}
+                                    activeTab={activeTab}
+                                    onTabChange={handleTabChange}
+                                    onManageCategories={() => updateDialogState('categoryManager', true)}
+                                />
                                 
                                 {categories.map((category) => (
                                     <div
@@ -863,7 +596,7 @@ export function WatchlistContainer() {
                                     categories={categories}
                                     onEdit={handleEditCategory}
                                     onDelete={handleDeleteCategory}
-                                    onCreate={handleOpenCreateCategory}
+                                    onCreate={() => updateDialogState('createCategory', true)}
                                 />
                             </div>
                         )}
@@ -899,7 +632,6 @@ export function WatchlistContainer() {
                 <EditCategoryDialog
                     open={dialogStates.editCategory}
                     onClose={() => {
-                        // 確保在同一個事件循環中完成所有狀態更新
                         requestAnimationFrame(() => {
                             updateDialogState('editCategory', false);
                             setEditingCategory(null);

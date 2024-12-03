@@ -1,0 +1,88 @@
+.category-manager-dialog {
+    padding: 20px;
+    min-width: 300px;
+}
+
+.create-category-button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.create-category-button:hover {
+    background-color: #0056b3;
+}
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    transition: background-color 0.2s;
+}
+
+.category-item:hover {
+    background-color: #e9ecef;
+}
+
+.category-name {
+    font-size: 14px;
+    color: #333;
+}
+
+.category-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-button,
+.delete-button {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #6c757d;
+    transition: color 0.2s;
+}
+
+.edit-button:hover {
+    color: #007bff;
+}
+
+.delete-button:hover {
+    color: #dc3545;
+}
+
+/* 響應式設計 */
+@media (max-width: 480px) {
+    .category-manager-dialog {
+        padding: 16px;
+        min-width: auto;
+    }
+
+    .category-item {
+        padding: 6px;
+    }
+
+    .category-name {
+        font-size: 13px;
+    }
+} 
