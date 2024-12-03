@@ -4,10 +4,15 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 8px 0;
-    margin-top: -75px;
+    padding: 8px 0 16px 0;
+    margin-top: -100px;
     position: relative;
     z-index: 5;
+}
+
+/* 只有一條新聞時的特殊處理 */
+.stock-news-list.single-news {
+    padding-bottom: 0px;
 }
 
 .stock-news-item {
@@ -20,12 +25,66 @@
     transition: color 0.2s;
     padding: 4px 8px;
     border-radius: 4px;
-    position: relative;
-    z-index: 10;
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+}
+
+/* 只有一條新聞時 */
+.stock-news-list.single-news .stock-news-item {
+    animation: none;
+    opacity: 1;
+    position: static;
+    transform: none;
+}
+
+/* 有兩條新聞時 */
+.stock-news-list.two-news .stock-news-item {
+    animation: newsSlide 6s infinite;
+}
+
+.stock-news-list.two-news .stock-news-item:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.stock-news-list.two-news .stock-news-item:nth-child(2) {
+    animation-delay: 3s;
+}
+
+/* 有三條新聞時 */
+.stock-news-list.three-news .stock-news-item {
+    animation: newsSlide 9s infinite;
+}
+
+.stock-news-list.three-news .stock-news-item:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.stock-news-list.three-news .stock-news-item:nth-child(2) {
+    animation-delay: 3s;
+}
+
+.stock-news-list.three-news .stock-news-item:nth-child(3) {
+    animation-delay: 6s;
 }
 
 .stock-news-item:hover {
     color: #1557b0;
     text-decoration: underline;
     background-color: rgba(26, 115, 232, 0.05);
+}
+
+@keyframes newsSlide {
+    0%, 5% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    10%, 28% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    33%, 100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 } 

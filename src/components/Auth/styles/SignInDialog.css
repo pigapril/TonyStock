@@ -16,11 +16,13 @@
     background: white;
     border-radius: 8px;
     padding: 24px;
-    width: 90%;
-    max-width: 400px;
+    width: 80%;
+    max-width: 360px;
+    max-height: 85vh;
     position: relative;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     animation: slideIn 0.3s ease;
+    overflow-y: auto;
 }
 
 .signin-dialog__close {
@@ -41,9 +43,12 @@
 }
 
 .signin-dialog__title {
-    font-size: 24px;
-    margin: 0 0 8px;
-    color: #333;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .signin-dialog__description {
@@ -101,9 +106,102 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin: 16px 0;
+    align-items: center;
+    margin: 0px 0;
+    min-height: 40px;
 }
 
-.google-button-container iframe {
-    width: 100% !important;
-} 
+.google-button-container iframe,
+.google-button-container > * {
+    margin: 0 auto;
+    display: block;
+}
+
+/* 從 AuthDialog.css 合併過來的樣式 */
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px auto 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 280px;
+}
+
+.feature-list li {
+    margin: 5px auto;
+    padding: 8px 16px;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+    animation: featureHighlight 5s infinite;
+    width: fit-content;
+    min-width: 180px;
+    max-width: 100%;
+}
+
+/* 調整每個 li 的動畫延遲，使其完美接續 */
+.feature-list li:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.feature-list li:nth-child(2) {
+    animation-delay: 1s;
+}
+
+.feature-list li:nth-child(3) {
+    animation-delay: 2s;
+}
+
+/* 重新定義動畫，增加停留時間 */
+@keyframes featureHighlight {
+    0%, 20%, 100% {
+        transform: translateY(0);
+        background-color: rgba(0, 0, 0, 0.03);
+        box-shadow: none;
+    }
+    5%, 15% {
+        transform: translateY(-3px);
+        background-color: rgba(255, 255, 255, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.auth-dialog-description {
+    text-align: center;
+    margin: 15px 0;
+    color: #666;
+}
+
+/* 新增功能說明文字的樣式 */
+.feature-description {
+    text-align: center;
+    margin: 15px 0;
+    color: #666;
+    width: 100%;
+}
+
+.auth-dialog-content {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-dialog-preview-image {
+    width: 90%;
+    max-width: 320px;
+    margin: 16px auto;
+    height: auto;
+    max-height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: block;
+    object-fit: cover;
+}

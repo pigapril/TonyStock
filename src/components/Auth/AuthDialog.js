@@ -76,13 +76,15 @@ export function AuthDialog() {
         <Dialog
             open={dialog.isOpen}
             onClose={handleClose}
-            title="🚀 登入享受完整體驗！"
+            title={dialog.props.customTitle || "🚀 登入享受完整體驗！"}
             titleClassName="auth-dialog-title"
             description={
-                <div className="auth-dialog-description">
-                    <div>登入 Google 帳戶，盡情查看更多內容</div>
-                    <div>我們也會努力推出更多個人化功能！</div>
-                </div>
+                dialog.props.customDescription || (
+                    <div className="auth-dialog-description">
+                        <div>登入 Google 帳戶，盡情查看更多內容</div>
+                        <div>我們也會努力推出更多個人化功能！</div>
+                    </div>
+                )
             }
         >
             <div className="auth-dialog-content">

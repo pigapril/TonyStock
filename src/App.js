@@ -22,6 +22,7 @@ import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList } from
 
 // 樣式引入
 import './App.css';
+import './components/Auth/styles/SignInDialog.css';
 import "react-datepicker/dist/react-datepicker.css";
 import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-crosshair';
@@ -506,19 +507,32 @@ function AppContent() {
     setActiveChart(chartType);
   };
 
-  // 新增處理追蹤清單點擊的函數
+  // 修改 handleWatchlistClick 函數
   const handleWatchlistClick = (e) => {
     if (!user) {
-      e.preventDefault(); // 阻止預設的導航行為
+      e.preventDefault();
       openDialog('auth', {
         returnPath: '/watchlist',
-        message: '請先登入以使用追蹤清單功能'
+        customDescription: (
+          <div className="auth-dialog-description">
+            <img 
+              src="/images/watchlist-preview.png" 
+              alt="追蹤清單功能預覽"
+              className="auth-dialog-preview-image"
+            />
+            <ul className="feature-list"> 
+              <li>🎯 追蹤感興趣的股票</li>
+              <li>📊 即時查看分析結果</li>
+              <li>📱 跨裝置同步追蹤清單</li>
+            </ul>
+          </div>
+        )
       });
-      
-      // 如果是手機版，關閉側邊欄
-      if (isMobile) {
-        setSidebarOpen(false);
-      }
+    }
+    
+    // 無論是否登入，在行動裝置版都關閉側邊欄
+    if (isMobile) {
+      setSidebarOpen(false);
     }
   };
 
