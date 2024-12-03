@@ -19,36 +19,7 @@ import { useToastManager } from './hooks/useToastManager';
 import { StockCard } from './components/StockCard/StockCard';
 import { AddStockDialog } from './components/AddStockDialog';
 import { ErrorBoundary } from '../Common/ErrorBoundary/ErrorBoundary';
-
-// 添加價格格式化函數
-const formatPrice = (price) => {
-    if (!price && price !== 0) return '-';
-    
-    // 將價格轉換為數字確保安全
-    const numPrice = Number(price);
-    
-    // 根據數字大小決定小數位數
-    if (numPrice >= 100) {
-        return numPrice.toFixed(0);  // 三位數以上不顯示小數
-    } else if (numPrice >= 10) {
-        return numPrice.toFixed(1);  // 二位數顯示到小數第一位
-    } else {
-        return numPrice.toFixed(2);  // 一位數顯示到小數第二位
-    }
-};
-
-// 添加判斷端點的函數
-const isNearEdge = (price, support, resistance) => {
-    if (!price || !support || !resistance) return { isNearUpper: false, isNearLower: false };
-    
-    const upperThreshold = (resistance - support) * 0.1; // 上下邊界的 10% 範圍
-    const lowerThreshold = (resistance - support) * 0.1;
-    
-    return {
-        isNearUpper: (resistance - price) <= upperThreshold,
-        isNearLower: (price - support) <= lowerThreshold
-    };
-};
+import { formatPrice, isNearEdge } from './utils/priceUtils';
 
 // Watchlist 主元件
 export function WatchlistContainer() {
