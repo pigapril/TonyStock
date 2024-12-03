@@ -1,0 +1,31 @@
+/* 新聞列表樣式 */
+.stock-news-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 0;
+    margin-top: -75px;
+    position: relative;
+    z-index: 5;
+}
+
+.stock-news-item {
+    font-size: 0.9em;
+    color: #1a73e8;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.2s;
+    padding: 4px 8px;
+    border-radius: 4px;
+    position: relative;
+    z-index: 10;
+}
+
+.stock-news-item:hover {
+    color: #1557b0;
+    text-decoration: underline;
+    background-color: rgba(26, 115, 232, 0.05);
+} 

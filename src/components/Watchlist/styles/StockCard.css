@@ -1,0 +1,34 @@
+/* 股票卡片基礎樣式 */
+.stock-item {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+.stock-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 移動到這裡，因為這些樣式依賴父元素 .stock-item */
+.stock-item:hover .remove-stock-button {
+    opacity: 1;
+}
+
+.stock-item .remove-stock-button:hover {
+    transform: scale(1.1);
+}
+
+.remove-stock-button {
+    opacity: 1 !important;  /* 讓愛心永遠顯示 */
+} 

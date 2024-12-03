@@ -1,0 +1,53 @@
+.stock-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: none;
+}
+
+.stock-logo {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6;
+}
+
+.stock-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.stock-text-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    min-width: 0;
+}
+
+.watchlist-stock-symbol {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.stock-names {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.stock-name-zh,
+.stock-name-en {
+    font-size: 0.8em;
+    color: #6b7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+} 

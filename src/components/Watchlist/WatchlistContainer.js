@@ -5,11 +5,8 @@ import { Analytics } from '../../utils/analytics';
 import { handleApiError, getErrorMessage } from '../../utils/errorHandler';
 import './styles/Watchlist.css';
 import debounce from 'lodash/debounce';
-import { FaPlus, FaEdit, FaTrash, FaSearch, FaListUl, FaHeart, FaPencilAlt } from 'react-icons/fa';
-import { StockGauge } from './StockGauge';
+import { FaPlus, FaEdit, FaTrash, FaSearch, FaListUl } from 'react-icons/fa';
 import NewsDialog from './NewsDialog';
-import twFlag from '../../assets/flags/tw-flag.svg';
-import usFlag from '../../assets/flags/us-flag.svg';
 import { SearchBox } from './SearchBox';
 import watchlistService from './services/watchlistService';
 import { Toast } from './components/Toast';
@@ -18,6 +15,8 @@ import { CreateCategoryDialog } from './components/CreateCategoryDialog';
 import { EditCategoryDialog } from './components/EditCategoryDialog';
 import { useCategories } from './hooks/useCategories';
 import { CategoryTabs } from './components/CategoryTabs';
+import { useToastManager } from './hooks/useToastManager';
+import { StockCard } from './components/StockCard/StockCard';
 
 // AddStockDialog.js
 function AddStockDialog({ open, onClose, categoryId, onAdd }) {
@@ -165,15 +164,10 @@ const isNearEdge = (price, support, resistance) => {
 // Watchlist 主元件
 export function WatchlistContainer() {
     const { user, isAuthenticated } = useAuth();
+    const { toast, showToast, hideToast } = useToastManager();
     
     const [error, setError] = useState(null);
-    const [toast, setToast] = useState(null);
     
-    // Toast 顯示函數
-    const showToast = useCallback((message, type = 'info') => {
-        setToast({ message, type });
-    }, []);
-
     // 使用 useCategories hook
     const {
         categories,
@@ -473,118 +467,12 @@ export function WatchlistContainer() {
                                         
                                         <div className="stock-list">
                                             {category.stocks.map((stock) => (
-                                                <div key={stock.id} className="stock-item">
-                                                    <div className="stock-info">
-                                                        <div className="stock-logo">
-                                                            {stock.logo === 'TW' ? (
-                                                                <div className="default-logo tw-stock">
-                                                                    <img 
-                                                                        src={twFlag}
-                                                                        alt="Taiwan Flag"
-                                                                        className="flag-icon"
-                                                                    />
-                                                                </div>
-                                                            ) : stock.logo === 'US_ETF' ? (
-                                                                <div className="default-logo us-etf">
-                                                                    <img 
-                                                                        src={usFlag}
-                                                                        alt="US Flag"
-                                                                        className="flag-icon"
-                                                                    />
-                                                                </div>
-                                                            ) : stock.logo ? (
-                                                                <img 
-                                                                    src={stock.logo} 
-                                                                    alt={`${stock.symbol} logo`}
-                                                                    onError={(e) => {
-                                                                        e.target.src = '/default-stock-logo.png';
-                                                                    }}
-                                                                />
-                                                            ) : (
-                                                                <div className="default-logo">
-                                                                    {stock.symbol[0]}
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                        <div className="stock-text-info">
-                                                            <span className="watchlist-stock-symbol">
-                                                                {stock.symbol}
-                                                            </span>
-                                                            <div className="stock-names">
-                                                                {stock.name !== stock.nameEn ? (
-                                                                    <>
-                                                                        <span className="stock-name-zh">
-                                                                            {stock.name}
-                                                                        </span>
-                                                                        <span className="stock-name-en">
-                                                                            {stock.nameEn}
-                                                                        </span>
-                                                                    </>
-                                                                ) : (
-                                                                    <span className="stock-name">
-                                                                        {stock.name}
-                                                                    </span>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div className="watchlist-stock-gauge">
-                                                        {stock.analysis ? (
-                                                            <>
-                                                                <StockGauge
-                                                                    price={stock.price}
-                                                                    support={stock.analysis.tl_minus_2sd}
-                                                                    resistance={stock.analysis.tl_plus_2sd}
-                                                                />
-                                                                <div className={`watchlist-stock-analysis ${
-                                                                    isNearEdge(stock.price, stock.analysis.tl_minus_2sd, stock.analysis.tl_plus_2sd).isNearUpper ? 'near-upper-edge' : ''
-                                                                } ${
-                                                                    isNearEdge(stock.price, stock.analysis.tl_minus_2sd, stock.analysis.tl_plus_2sd).isNearLower ? 'near-lower-edge' : ''
-                                                                }`}>
-                                                                    <span className={`analysis-value support ${
-                                                                        isNearEdge(stock.price, stock.analysis.tl_minus_2sd, stock.analysis.tl_plus_2sd).isNearLower ? 'pulse' : ''
-                                                                    }`}>
-                                                                        {formatPrice(stock.analysis.tl_minus_2sd)}
-                                                                    </span>
-                                                                    <span className="analysis-separator">-</span>
-                                                                    <span className={`analysis-value resistance ${
-                                                                        isNearEdge(stock.price, stock.analysis.tl_minus_2sd, stock.analysis.tl_plus_2sd).isNearUpper ? 'pulse' : ''
-                                                                    }`}>
-                                                                        {formatPrice(stock.analysis.tl_plus_2sd)}
-                                                                    </span>
-                                                                </div>
-                                                                <span className="watchlist-stock-price">
-                                                                    {stock.price ? `$${formatPrice(stock.price)}` : '-'}
-                                                                </span>
-                                                            </>
-                                                        ) : (
-                                                            <span className="analysis-loading">分析中</span>
-                                                        )}
-                                                    </div>
-                                                    
-                                                    <div className="stock-news-list">
-                                                        {stock.news?.slice(0, 3).map((news, index) => (
-                                                            <div
-                                                                key={index}
-                                                                className="stock-news-item"
-                                                                onClick={() => handleNewsClick(news)}
-                                                                title={news.title}
-                                                            >
-                                                                {news.title}
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                    
-                                                    <button
-                                                        onClick={() => handleRemoveStock(category.id, stock.id)}
-                                                        className="remove-stock-button"
-                                                        aria-label={`取消追蹤 ${stock.symbol}`}
-                                                        title="取消追蹤"
-                                                    >
-                                                        <FaHeart />
-                                                    </button>
-                                                </div>
+                                                <StockCard
+                                                    key={stock.id}
+                                                    stock={stock}
+                                                    onNewsClick={handleNewsClick}
+                                                    onRemove={() => handleRemoveStock(category.id, stock.id)}
+                                                />
                                             ))}
                                         </div>
                                     </div>
@@ -607,12 +495,7 @@ export function WatchlistContainer() {
                     <Toast
                         message={toast.message}
                         type={toast.type}
-                        onClose={() => {
-                            // 使用 requestAnimationFrame 確保平滑過渡
-                            requestAnimationFrame(() => {
-                                setToast(null);
-                            });
-                        }}
+                        onClose={hideToast}
                     />
                 )}
 
