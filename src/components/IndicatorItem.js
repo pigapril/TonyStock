@@ -204,7 +204,12 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
           </div>
         </>
       ) : (
-        <p>載入中...</p>
+        <div className="loading-container">
+          <div className="loading-spinner">
+            <div className="spinner"></div>
+            <span>載入中...</span>
+          </div>
+        </div>
       )}
     </div>
   );

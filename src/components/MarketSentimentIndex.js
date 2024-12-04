@@ -411,7 +411,14 @@ const MarketSentimentIndex = () => {
   }, [isDataLoaded]);
 
   if (loading) {
-    return <div>載入中...</div>;
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner">
+          <div className="spinner"></div>
+          <span>載入中...</span>
+        </div>
+      </div>
+    );
   }
 
   if (!sentimentData) {

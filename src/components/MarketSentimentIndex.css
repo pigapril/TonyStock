@@ -1,3 +1,6 @@
+/* 引入 Loading 樣式 */
+@import './shared/styles/Loading.css';
+
 .market-sentiment {
   padding: 20px;
 }
