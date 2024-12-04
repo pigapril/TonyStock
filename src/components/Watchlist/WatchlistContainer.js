@@ -133,11 +133,11 @@ export function WatchlistContainer() {
         try {
             await watchlistService.removeStock(categoryId, itemId);
             loadCategories();
-            Analytics.button.click({
-                component: 'WatchlistContainer',
-                action: 'remove_stock',
+            
+            // 添加追蹤事件
+            Analytics.watchlist.removeStock({
                 categoryId,
-                itemId
+                stockSymbol: itemId // 假設 itemId 是股票代碼
             });
         } catch (error) {
             setError(getErrorMessage(error));
@@ -167,6 +167,12 @@ export function WatchlistContainer() {
             await watchlistService.addStock(categoryId, stock.symbol);
             await loadCategories();
             showToast(`已添加 ${stock.symbol} 到追蹤清單`, 'success');
+            
+            // 添加追蹤事件
+            Analytics.watchlist.addStock({
+                categoryId,
+                stockSymbol: stock.symbol
+            });
         } catch (error) {
             if (error.name === 'SequelizeUniqueConstraintError') {
                 showToast(`${stock.symbol} 已在此分類中`, 'warning');
@@ -212,6 +218,11 @@ export function WatchlistContainer() {
         try {
             await createCategory(name);
             updateDialogState('createCategory', false);
+            
+            // 添加追蹤事件
+            Analytics.watchlist.createCategory({
+                categoryName: name
+            });
         } catch (error) {
             console.error('創建分類失敗:', error);
         }
@@ -238,6 +249,11 @@ export function WatchlistContainer() {
                 // 處理分類刪除後的重選邏輯
                 handleCategoryDeleted(categoryId, result.updatedCategories);
                 updateDialogState('categoryManager', false);
+                
+                // 添加追蹤事件
+                Analytics.watchlist.categoryDelete({
+                    categoryId
+                });
             }
         } catch (error) {
             console.error('刪除分類失敗:', error);
