@@ -52,14 +52,7 @@ export function AuthDialog() {
             }
             window.removeEventListener('loginSuccess', handleLoginSuccess);
         };
-    }, [
-        dialog.isOpen, 
-        dialog.type, 
-        dialog.source,
-        closeDialog,
-        renderGoogleButton,
-        user
-    ]);
+    }, [dialog.isOpen, dialog.type, dialog.source, closeDialog, renderGoogleButton, user]);
 
     const handleClose = () => {
         closeDialog();
@@ -72,20 +65,28 @@ export function AuthDialog() {
 
     if (dialog.type !== 'auth') return null;
 
+    const defaultDescription = (
+        <div className="auth-dialog-description">
+            <img 
+                src="/images/watchlist-preview.png" 
+                alt="追蹤清單功能預覽"
+                className="auth-dialog-preview-image"
+            />
+            <ul className="feature-list">
+                <li>🎯 追蹤感興趣的股票</li>
+                <li>📊 即時查看分析結果</li>
+                <li>📱 跨裝置同步追蹤清單</li>
+            </ul>
+        </div>
+    );
+
     return (
         <Dialog
             open={dialog.isOpen}
             onClose={handleClose}
-            title={dialog.props.customTitle || "🚀 登入享受完整體驗！"}
+            title={dialog.props?.customTitle || "🚀 登入享受完整體驗！"}
             titleClassName="auth-dialog-title"
-            description={
-                dialog.props.customDescription || (
-                    <div className="auth-dialog-description">
-                        <div>登入 Google 帳戶，盡情查看更多內容</div>
-                        <div>我們也會努力推出更多個人化功能！</div>
-                    </div>
-                )
-            }
+            description={dialog.props?.customDescription || defaultDescription}
         >
             <div className="auth-dialog-content">
                 {loading ? (

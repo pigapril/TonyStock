@@ -675,68 +675,6 @@ input[type="date"].form-control {
     }
 }
 
-/* Google 登入按鈕樣式 */
-.google-login-button {
-  background-color: #ffffff;
-  color: #757575;
-  border: 1px solid #dadce0;
-  border-radius: 4px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-
-.google-login-button:hover {
-  background-color: #f8f9fa;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-}
-
-.google-login-button:before {
-  content: '';
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=');
-  width: 18px;
-  height: 18px;
-  margin-right: 10px;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-/* 對話框內容樣式 */
-.auth-dialog-content {
-  padding: 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* 對話框描述文字樣式 */
-.auth-dialog-description {
-    text-align: center;
-}
-
-.auth-dialog-description p {
-    margin: 8px 0;
-    line-height: 1.5;
-}
-
-/* 對話框標題樣式 */
-.dialog-title {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-/* 自定義標題大小 */
-.auth-dialog-title {
-    font-size: 1rem !important;  /* 使用 !important 確保覆蓋預設樣式 */
-}
 
 /* 關於本站頁面樣式 */
 .about-page {

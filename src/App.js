@@ -510,24 +510,10 @@ function AppContent() {
   // 修改 handleWatchlistClick 函數
   const handleWatchlistClick = (e) => {
     if (!user) {
-      e.preventDefault();
-      openDialog('auth', {
-        returnPath: '/watchlist',
-        customDescription: (
-          <div className="auth-dialog-description">
-            <img 
-              src="/images/watchlist-preview.png" 
-              alt="追蹤清單功能預覽"
-              className="auth-dialog-preview-image"
-            />
-            <ul className="feature-list"> 
-              <li>🎯 追蹤感興趣的股票</li>
-              <li>📊 即時查看分析結果</li>
-              <li>📱 跨裝置同步追蹤清單</li>
-            </ul>
-          </div>
-        )
-      });
+        e.preventDefault();
+        openDialog('auth', {
+            returnPath: '/watchlist'
+        });
     }
     
     // 無論是否登入，在行動裝置版都關閉側邊欄
