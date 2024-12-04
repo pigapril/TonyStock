@@ -3,6 +3,16 @@
     flex-direction: column;
     gap: 16px;
     padding: 16px;
+    align-items: center;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.input-container {
+    position: relative;
+    width: 180px;
+    margin: 0 auto;
 }
 
 .create-category-form input {
@@ -12,6 +22,7 @@
     border-radius: 6px;
     font-size: 14px;
     transition: border-color 0.2s;
+    box-sizing: border-box;
 }
 
 .create-category-form input:focus {
@@ -19,10 +30,22 @@
     border-color: #3b82f6;
 }
 
+.error-message {
+    color: #dc2626;
+    font-size: 12px;
+    margin-top: -8px;
+    width: 180px;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .dialog-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 8px;
+    width: 180px;
+    margin: 0 auto;
 }
 
 .dialog-actions button {

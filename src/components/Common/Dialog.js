@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { IoArrowBack } from 'react-icons/io5';
 import './styles/Dialog.css';
 
 export function Dialog({ 
@@ -9,19 +10,35 @@ export function Dialog({
     description, 
     children 
 }) {
-    if (!open) return null;
+    const [isClosing, setIsClosing] = useState(false);
+
+    useEffect(() => {
+        if (open) {
+            setIsClosing(false);
+        }
+    }, [open]);
+
+    const handleClose = () => {
+        setIsClosing(true);
+        setTimeout(() => {
+            setIsClosing(false);
+            onClose();
+        }, 300);
+    };
+
+    if (!open && !isClosing) return null;
 
     return (
         <div 
-            className="dialog-overlay"
+            className={`dialog-overlay ${isClosing ? 'dialog-overlay--closing' : ''}`}
             onClick={(e) => {
                 if (e.target === e.currentTarget) {
-                    onClose();
+                    handleClose();
                 }
             }}
         >
             <div 
-                className="dialog"
+                className={`dialog ${isClosing ? 'dialog--closing' : ''}`}
                 role="dialog"
                 aria-labelledby="dialog-title"
                 aria-describedby="dialog-description"
@@ -29,10 +46,10 @@ export function Dialog({
             >
                 <button 
                     className="dialog-close"
-                    onClick={onClose}
-                    aria-label="關閉對話框"
+                    onClick={handleClose}
+                    aria-label="返回"
                 >
-                    ✕
+                    <IoArrowBack />
                 </button>
                 
                 <h2 id="dialog-title" className={`dialog-title ${titleClassName || ''}`}>

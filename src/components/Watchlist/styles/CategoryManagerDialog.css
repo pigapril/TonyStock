@@ -1,88 +1,118 @@
 .category-manager-dialog {
     padding: 20px;
-    min-width: 300px;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
 }
 
 .create-category-button {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
+    padding: 12px;
+    margin-bottom: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background-color: #007bff;
+    background-color: #3b82f6;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .create-category-button:hover {
-    background-color: #0056b3;
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .category-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+    width: 100%;
 }
 
 .category-item {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: center;
-    padding: 8px;
-    border-radius: 4px;
-    background-color: #f8f9fa;
-    transition: background-color 0.2s;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .category-item:hover {
-    background-color: #e9ecef;
+    background-color: #f1f5f9;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .category-name {
     font-size: 14px;
-    color: #333;
+    color: #1f2937;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 16px;
 }
 
 .category-actions {
     display: flex;
-    gap: 8px;
+    gap: 12px;
+    flex-shrink: 0;
 }
 
 .edit-button,
 .delete-button {
-    padding: 4px;
+    padding: 6px;
+    width: 28px;
+    height: 28px;
     border: none;
     background: none;
     cursor: pointer;
-    color: #6c757d;
-    transition: color 0.2s;
+    color: #64748b;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .edit-button:hover {
-    color: #007bff;
+    color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.1);
 }
 
 .delete-button:hover {
-    color: #dc3545;
+    color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.1);
 }
 
 /* 響應式設計 */
 @media (max-width: 480px) {
     .category-manager-dialog {
         padding: 16px;
-        min-width: auto;
     }
 
     .category-item {
-        padding: 6px;
+        padding: 10px 12px;
     }
 
     .category-name {
+        font-size: 13px;
+    }
+
+    .create-category-button {
+        padding: 10px;
         font-size: 13px;
     }
 } 

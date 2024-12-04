@@ -12,6 +12,10 @@
     animation: fadeIn 0.2s ease;
 }
 
+.dialog-overlay--closing {
+    animation: fadeOut 0.2s ease forwards;
+}
+
 .dialog {
     background: white;
     border-radius: 16px;
@@ -21,30 +25,43 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     animation: slideIn 0.3s ease;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dialog--closing {
+    animation: slideOut 0.3s ease forwards;
 }
 
 .dialog-close {
     position: absolute;
     top: 16px;
-    right: 16px;
+    left: 16px;
+    width: 32px;
+    height: 32px;
     border: none;
-    background: transparent;
-    font-size: 20px;
+    background: none;
     cursor: pointer;
-    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
     color: #666;
-    transition: color 0.2s ease;
+    font-size: 20px;
 }
 
-.dialog-close:hover {
-    color: #333;
+.dialog-close::before,
+.dialog-close::after {
+    display: none;
 }
 
 .dialog-title {
     font-size: 20px;
     margin: 0 0 24px;
     color: #1f2937;
-    padding-right: 24px;
+    text-align: center;
+    padding: 0 32px;
 }
 
 .dialog-description {
@@ -57,11 +74,19 @@
     margin-top: 0;
     width: 100%;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 
 @keyframes slideIn {
@@ -72,5 +97,16 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px);
     }
 } 
