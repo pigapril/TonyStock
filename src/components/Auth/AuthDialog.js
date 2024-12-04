@@ -75,7 +75,7 @@ export function AuthDialog() {
             <ul className="feature-list">
                 <li>🎯 追蹤感興趣的股票</li>
                 <li>📊 即時查看分析結果</li>
-                <li>📱 跨裝置同步追蹤清單</li>
+                <li>📱 跨裝置的追蹤清單</li>
             </ul>
         </div>
     );
@@ -86,7 +86,6 @@ export function AuthDialog() {
             onClose={handleClose}
             title={dialog.props?.customTitle || "🚀 登入享受完整體驗！"}
             titleClassName="auth-dialog-title"
-            description={dialog.props?.customDescription || defaultDescription}
         >
             <div className="auth-dialog-content">
                 {loading ? (
@@ -97,9 +96,10 @@ export function AuthDialog() {
                     <div 
                         ref={buttonRef} 
                         className="google-button-container" 
-                        style={{ minHeight: '40px' }}
                     />
                 )}
+                
+                {dialog.props?.customDescription || defaultDescription}
             </div>
         </Dialog>
     );
