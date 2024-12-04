@@ -3,40 +3,86 @@
     position: fixed;
     bottom: 24px;
     right: 24px;
-    padding: 12px 24px;
-    border-radius: 4px;
-    background: #333;
-    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #333333;
     z-index: 1000;
+    min-width: 300px;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
     animation: slideIn 0.3s ease-out;
+    border-left: 4px solid #333333;
 }
 
+/* 成功樣式 */
 .toast.toast-success {
-    background: #28a745;
+    background: #f0fdf4;
+    border-left-color: #22c55e;
+    color: #166534;
 }
 
+/* 錯誤樣式 */
 .toast.toast-error {
-    background: #dc3545;
+    background: #fef2f2;
+    border-left-color: #ef4444;
+    color: #991b1b;
 }
 
+/* 警告樣式 */
 .toast.toast-warning {
-    background: #ffc107;
-    color: #333;
+    background: #fffbeb;
+    border-left-color: #f59e0b;
+    color: #92400e;
 }
 
+/* 資訊樣式 */
 .toast.toast-info {
-    background: #17a2b8;
+    background: #f0f9ff;
+    border-left-color: #0ea5e9;
+    color: #075985;
 }
 
+/* 動畫效果 */
 @keyframes slideIn {
     from {
-        transform: translateY(100%);
+        transform: translateX(100%);
         opacity: 0;
     }
     to {
-        transform: translateY(0);
+        transform: translateX(0);
         opacity: 1;
     }
+}
+
+/* 添加圖示 */
+.toast::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.toast.toast-success::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2322c55e'%3E%3Cpath d='M20.3 5.3L9 16.6l-5.3-5.3-1.4 1.4 6.7 6.7 12.7-12.7z'/%3E%3C/svg%3E");
+}
+
+.toast.toast-error::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ef4444'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
+}
+
+.toast.toast-warning::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f59e0b'%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E");
+}
+
+.toast.toast-info::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230ea5e9'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E");
 }
 
 /* 響應式設計 */
@@ -45,6 +91,14 @@
         bottom: 16px;
         right: 16px;
         left: 16px;
-        text-align: center;
+        min-width: auto;
+        max-width: none;
+        text-align: left;
+        padding: 12px 20px;
     }
+}
+
+/* 多個 Toast 堆疊時的間距 */
+.toast + .toast {
+    margin-bottom: 8px;
 } 

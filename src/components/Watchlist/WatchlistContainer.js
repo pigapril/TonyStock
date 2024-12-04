@@ -162,6 +162,13 @@ export function WatchlistContainer() {
             showToast('請先選擇分類', 'warning');
             return;
         }
+
+        // 檢查股票是否已在分類中
+        const category = categories.find(c => c.id === categoryId);
+        if (category && category.stocks.some(s => s.symbol === stock.symbol)) {
+            showToast(`${stock.symbol} 已在此分類中`, 'warning');
+            return;
+        }
         
         try {
             await watchlistService.addStock(categoryId, stock.symbol);
@@ -174,7 +181,10 @@ export function WatchlistContainer() {
                 stockSymbol: stock.symbol
             });
         } catch (error) {
-            if (error.name === 'SequelizeUniqueConstraintError') {
+            // 檢查是否為重複添加的錯誤
+            if (error.name === 'SequelizeUniqueConstraintError' || 
+                error.message?.includes('unique constraint') ||
+                error.code === 'ER_DUP_ENTRY') {
                 showToast(`${stock.symbol} 已在此分類中`, 'warning');
             } else {
                 handleOperationError(error, 'add_stock');
