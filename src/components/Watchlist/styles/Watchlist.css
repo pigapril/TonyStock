@@ -1,3 +1,6 @@
+/* 引入 Loading 樣式 */
+@import '../../../components/shared/styles/Loading.css';
+
 /* 容器樣式 */
 .watchlist-container {
     padding: 20px;
@@ -527,31 +530,6 @@
 
 .empty-state p {
     margin-bottom: 16px;
-}
-
-/* 載入中狀態 */
-.loading-container,
-.loading-spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-    color: #666;
-}
-
-.spinner {
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #1a73e8;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    animation: spin 1s linear infinite;
-    margin-right: 8px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 /* 錯誤狀態 */
