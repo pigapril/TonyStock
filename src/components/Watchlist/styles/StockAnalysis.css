@@ -69,7 +69,7 @@
 @media (max-width: 768px) {
     .watchlist-stock-gauge {
         height: 160px;
-        padding: 12px;
+        padding: 1px;
     }
     
     .watchlist-stock-price {
