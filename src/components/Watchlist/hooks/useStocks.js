@@ -26,25 +26,20 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
             return true;
             
         } catch (error) {
-            const errorData = handleApiError(error);
+            console.error('Add stock error:', error);
             
-            const stockErrors = {
-                DUPLICATE_STOCK: '此股票已在追蹤清單中',
-                INVALID_STOCK_SYMBOL: '無效的股票代碼',
-                CATEGORY_NOT_FOUND: '分類不存在',
-                STOCK_LIMIT_EXCEEDED: '已達到股票數量上限'
-            };
-
-            const errorMessage = stockErrors[errorData.errorCode] || errorData.message;
-            showToast(errorMessage, errorData.errorCode === 'DUPLICATE_STOCK' ? 'warning' : 'error');
-            
-            if (!stockErrors[errorData.errorCode]) {
-                Analytics.error({
-                    component: 'useStocks',
-                    action: 'add_stock',
-                    error: errorData
-                });
+            if (error.data?.message) {
+                showToast(error.data.message, 'error');
+            } else {
+                const errorData = handleApiError(error);
+                showToast(errorData.message, 'error');
             }
+            
+            Analytics.error({
+                component: 'useStocks',
+                action: 'add_stock',
+                error
+            });
             
             return false;
         } finally {

@@ -33,7 +33,10 @@ const ErrorMessages = {
     // 新增按鈕相關錯誤
     BUTTON_DISABLED: '按鈕暫時無法使用',
     BUTTON_NETWORK_ERROR: '網路連線異常，請重試',
-    BUTTON_TIMEOUT: '操作逾時，請重試'
+    BUTTON_TIMEOUT: '操作逾時，請重試',
+    
+    // Watchlist 相關錯誤
+    STOCK_LIMIT_EXCEEDED: '已達到股票數量上限'
 };
 
 export const handleApiError = (error) => {
@@ -79,7 +82,8 @@ export const handleApiError = (error) => {
         DUPLICATE_CATEGORY_NAME: '分類名稱已存在',
         DUPLICATE_STOCK: '此股票已在追蹤清單中',
         CATEGORY_LIMIT_EXCEEDED: '已達到分類數量上限',
-        INVALID_STOCK_SYMBOL: '無效的股票代碼'
+        INVALID_STOCK_SYMBOL: '無效的股票代碼',
+        STOCK_LIMIT_EXCEEDED: '已達到股票數量上限'
     };
 
     if (error.errorCode && watchlistErrors[error.errorCode]) {
