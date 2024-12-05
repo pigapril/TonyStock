@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { FaSearch } from 'react-icons/fa';
 import debounce from 'lodash/debounce';
 import { getErrorMessage } from '../../utils/errorHandler';
+import './styles/SearchBox.css';
 
 export const SearchBox = ({ onSelect, watchlistService, categoryId }) => {
     const searchRef = useRef(null);
@@ -94,7 +95,15 @@ export const SearchBox = ({ onSelect, watchlistService, categoryId }) => {
     }, [debouncedSearch]);
 
     const handleSelect = useCallback((stock) => {
-        onSelect(categoryId, stock);
+        if (!stock || !stock.symbol) {
+            console.error('Invalid stock data:', stock);
+            return;
+        }
+        onSelect(categoryId, {
+            symbol: stock.symbol,
+            name: stock.name,
+            market: stock.market
+        });
         setSearchState(prev => ({
             ...prev,
             keyword: '',

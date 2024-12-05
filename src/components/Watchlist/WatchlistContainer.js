@@ -17,9 +17,9 @@ import { useCategories } from './hooks/useCategories';
 import { CategoryTabs } from './components/CategoryTabs';
 import { useToastManager } from './hooks/useToastManager';
 import { StockCard } from './components/StockCard/StockCard';
-import { AddStockDialog } from './components/AddStockDialog';
 import { ErrorBoundary } from '../Common/ErrorBoundary/ErrorBoundary';
 import { formatPrice, isNearEdge } from './utils/priceUtils';
+import { useStocks } from './hooks/useStocks';
 
 // Watchlist 主元件
 export function WatchlistContainer() {
@@ -31,7 +31,7 @@ export function WatchlistContainer() {
     // 使用 useCategories hook
     const {
         categories,
-        loading,
+        loading: categoriesLoading,
         editingCategory,
         setEditingCategory,
         loadCategories,
@@ -41,13 +41,26 @@ export function WatchlistContainer() {
         handleCategoryDeleted
     } = useCategories(watchlistService, showToast);
 
+    // 股票相關邏輯
+    const handleStockOperationSuccess = useCallback(() => {
+        loadCategories();  // 重新載入分類資料
+    }, [loadCategories]);
+
+    const {
+        loading: stocksLoading,
+        handleAddStock: onAddStock,
+        handleRemoveStock: onRemoveStock
+    } = useStocks(watchlistService, showToast, handleStockOperationSuccess);  // 添加成功回調
+
+    // 合併 loading 狀態
+    const isLoading = categoriesLoading || stocksLoading;
+
     const [activeTab, setActiveTab] = useState(null);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
     const [dialogStates, setDialogStates] = useState({
         categoryManager: false,
         createCategory: false,
-        editCategory: false,
-        addStock: false
+        editCategory: false
     });
     const [isEditing, setIsEditing] = useState(false);
     const [selectedNews, setSelectedNews] = useState(null);
@@ -116,35 +129,6 @@ export function WatchlistContainer() {
         }));
     }, []);
 
-    const handleOpenAddStockDialog = (categoryId) => {
-        if (!categoryId) {
-            showToast('請先選擇分類', 'warning');
-            return;
-        }
-        setSelectedCategoryId(categoryId);
-        updateDialogState('addStock', true);
-    };
-
-    const handleCloseAddStockDialog = () => {
-        updateDialogState('addStock', false);
-    };
-
-    const handleRemoveStock = async (categoryId, itemId) => {
-        try {
-            await watchlistService.removeStock(categoryId, itemId);
-            loadCategories();
-            
-            // 添加追蹤事件
-            Analytics.watchlist.removeStock({
-                categoryId,
-                stockSymbol: itemId // 假設 itemId 是股票代碼
-            });
-        } catch (error) {
-            setError(getErrorMessage(error));
-            showToast(getErrorMessage(error), 'error');
-        }
-    };
-
     const handleOpenCreateCategory = () => {
         updateDialogState('createCategory', true);
     };
@@ -154,41 +138,6 @@ export function WatchlistContainer() {
         if (category) {
             setEditingCategory(category);
             updateDialogState('editCategory', true);
-        }
-    };
-
-    const handleAddStock = async (categoryId, stock) => {
-        if (!categoryId) {
-            showToast('請先選擇分類', 'warning');
-            return;
-        }
-
-        // 檢查股票是否已在分類中
-        const category = categories.find(c => c.id === categoryId);
-        if (category && category.stocks.some(s => s.symbol === stock.symbol)) {
-            showToast(`${stock.symbol} 已在此分類中`, 'warning');
-            return;
-        }
-        
-        try {
-            await watchlistService.addStock(categoryId, stock.symbol);
-            await loadCategories();
-            showToast(`已添加 ${stock.symbol} 到追蹤清單`, 'success');
-            
-            // 添加追蹤事件
-            Analytics.watchlist.addStock({
-                categoryId,
-                stockSymbol: stock.symbol
-            });
-        } catch (error) {
-            // 檢查是否為重複添加的錯誤
-            if (error.name === 'SequelizeUniqueConstraintError' || 
-                error.message?.includes('unique constraint') ||
-                error.code === 'ER_DUP_ENTRY') {
-                showToast(`${stock.symbol} 已在此分類中`, 'warning');
-            } else {
-                handleOperationError(error, 'add_stock');
-            }
         }
     };
 
@@ -256,7 +205,7 @@ export function WatchlistContainer() {
         try {
             const result = await deleteCategory(categoryId);
             if (result.success) {
-                // 處理分類刪除後的重選邏輯
+                // 處理分類刪除的重選邏輯
                 handleCategoryDeleted(categoryId, result.updatedCategories);
                 updateDialogState('categoryManager', false);
                 
@@ -290,7 +239,7 @@ export function WatchlistContainer() {
                     <div className="auth-required">
                         <p>請先登入後再使用此功能</p>
                     </div>
-                ) : loading ? (
+                ) : isLoading ? (
                     <div className="loading-spinner">
                         <div className="spinner"></div>
                         <p>載入中...</p>
@@ -329,7 +278,7 @@ export function WatchlistContainer() {
                                         
                                         {activeTab === category.id && (
                                             <SearchBox
-                                                onSelect={handleAddStock}
+                                                onSelect={onAddStock}
                                                 watchlistService={watchlistService}
                                                 categoryId={category.id}
                                             />
@@ -341,7 +290,7 @@ export function WatchlistContainer() {
                                                     key={stock.id}
                                                     stock={stock}
                                                     onNewsClick={handleNewsClick}
-                                                    onRemove={() => handleRemoveStock(category.id, stock.id)}
+                                                    onRemove={() => onRemoveStock(category.id, stock.id)}
                                                 />
                                             ))}
                                         </div>
@@ -375,13 +324,6 @@ export function WatchlistContainer() {
                     onSubmit={handleCreateCategory}
                 />
                 
-                <AddStockDialog
-                    open={dialogStates.addStock}
-                    onClose={handleCloseAddStockDialog}
-                    categoryId={selectedCategoryId}
-                    onAdd={handleAddStock}
-                />
-
                 <EditCategoryDialog
                     open={dialogStates.editCategory}
                     onClose={() => {

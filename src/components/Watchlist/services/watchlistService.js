@@ -71,21 +71,39 @@ class WatchlistService {
         });
     }
 
-    async addStock(categoryId, stockSymbol) {
-        return this.fetchRequest(`/api/watchlist/categories/${categoryId}/stocks`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ stockSymbol })
-        });
+    async addStock(categoryId, stock) {
+        try {
+            // 確保傳入的是正確的 stock symbol
+            const stockSymbol = typeof stock === 'string' ? stock : stock.symbol;
+            
+            const result = await this.fetchRequest(`/api/watchlist/categories/${categoryId}/stocks`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ stockSymbol })
+            });
+            
+            return result;
+        } catch (error) {
+            console.error('Add stock failed:', error);
+            throw error;
+        }
     }
 
     async removeStock(categoryId, itemId) {
-        return this.fetchRequest(
-            `/api/watchlist/categories/${categoryId}/stocks/${itemId}`,
-            { method: 'DELETE' }
-        );
+        try {
+            const result = await this.fetchRequest(
+                `/api/watchlist/categories/${categoryId}/stocks/${itemId}`,
+                { method: 'DELETE' }
+            );
+            
+            // 確保返回正確的資料結構
+            return result;
+        } catch (error) {
+            console.error('Remove stock failed:', error);
+            throw error;  // 讓錯誤繼續往上傳遞
+        }
     }
 
     async searchStocks(keyword) {
