@@ -28,9 +28,11 @@ class WatchlistService {
             const response = await fetch(url, requestOptions);
             
             if (!response.ok) {
-                throw await handleApiError(response);
+                const errorData = await response.json();
+                console.log('API 錯誤回應:', errorData);
+                throw errorData;
             }
-
+            
             const data = await response.json();
             console.log('API 響應:', data);
 
@@ -40,8 +42,9 @@ class WatchlistService {
             
             return data;
         } catch (error) {
+            console.log('完整錯誤物件:', error);
             console.error('Request failed:', error);
-            throw handleApiError(error);
+            throw error;
         }
     }
 
@@ -72,23 +75,15 @@ class WatchlistService {
     }
 
     async addStock(categoryId, stock) {
-        try {
-            // 確保傳入的是正確的 stock symbol
-            const stockSymbol = typeof stock === 'string' ? stock : stock.symbol;
-            
-            const result = await this.fetchRequest(`/api/watchlist/categories/${categoryId}/stocks`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ stockSymbol })
-            });
-            
-            return result;
-        } catch (error) {
-            console.error('Add stock failed:', error);
-            throw error;
-        }
+        const stockSymbol = typeof stock === 'string' ? stock : stock.symbol;
+        
+        return this.fetchRequest(`/api/watchlist/categories/${categoryId}/stocks`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ stockSymbol })
+        });
     }
 
     async removeStock(categoryId, itemId) {

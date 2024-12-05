@@ -4,19 +4,15 @@ import { Analytics } from '../../../utils/analytics';
 
 export const useCategoryEdit = (watchlistService, showToast, { setCategories, setLoading }) => {
     const handleOperationError = useCallback((error, operation) => {
-        const errorData = handleApiError(error);
+        console.log('handleOperationError 收到的錯誤:', error);
         
-        if (errorData.errorCode === 'UNAUTHORIZED' || errorData.errorCode === 'SESSION_EXPIRED') {
-            showToast('請重新登入', 'error');
+        if (error.data?.message) {
+            showToast(error.data.message, 'error');
             return;
         }
-        
+
+        const errorData = handleApiError(error);
         showToast(errorData.message, 'error');
-        Analytics.error({
-            component: 'WatchlistContainer',
-            action: operation,
-            error: errorData
-        });
     }, [showToast]);
 
     const loadCategories = useCallback(async () => {
@@ -37,16 +33,20 @@ export const useCategoryEdit = (watchlistService, showToast, { setCategories, se
         try {
             setLoading(true);
             const result = await watchlistService.createCategory(name);
-            const newCategory = result.category || result;
             
-            setCategories(prevCategories => [
-                ...prevCategories,
-                { ...newCategory, stocks: [] }
-            ]);
+            const newCategory = {
+                ...result.category,
+                stocks: []
+            };
+            
+            setCategories(prevCategories => [...prevCategories, newCategory]);
             
             showToast('分類創建成功', 'success');
-            return newCategory;
+            Analytics.watchlist.createCategory({ categoryName: name });
+            
+            return result.category;
         } catch (error) {
+            console.error('Create category error:', error);
             handleOperationError(error, 'create_category');
             throw error;
         } finally {

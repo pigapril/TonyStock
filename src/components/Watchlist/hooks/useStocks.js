@@ -7,46 +7,45 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
     const [error, setError] = useState(null);
 
     const handleAddStock = useCallback(async (categoryId, stock) => {
-        if (!categoryId) {
-            showToast('請先選擇分類', 'warning');
-            return false;
-        }
-
-        if (!stock || (!stock.symbol && typeof stock !== 'string')) {
-            showToast('無效的股票資料', 'error');
+        if (!categoryId || !stock) {
+            showToast('無效的操作參數', 'error');
             return false;
         }
 
         setLoading(true);
         try {
-            await watchlistService.addStock(categoryId, stock);
-            showToast(`已添加 ${typeof stock === 'string' ? stock : stock.symbol} 到追蹤清單`, 'success');
+            const result = await watchlistService.addStock(categoryId, stock);
+            const stockSymbol = typeof stock === 'string' ? stock : stock.symbol;
             
-            Analytics.watchlist.addStock({
-                categoryId,
-                stockSymbol: typeof stock === 'string' ? stock : stock.symbol
-            });
-
+            showToast(`已添加 ${stockSymbol} 到追蹤清單`, 'success');
+            Analytics.watchlist.addStock({ categoryId, stockSymbol });
+            
             if (onSuccess) {
                 onSuccess();
             }
-
             return true;
+            
         } catch (error) {
             const errorData = handleApiError(error);
             
-            if (errorData.errorCode === 'DUPLICATE_STOCK') {
-                showToast(`${typeof stock === 'string' ? stock : stock.symbol} 已在此分類中`, 'warning');
-            } else if (errorData.errorCode === 'INVALID_STOCK_SYMBOL') {
-                showToast('無效的股票代碼', 'error');
-            } else {
-                showToast(errorData.message, 'error');
+            const stockErrors = {
+                DUPLICATE_STOCK: '此股票已在追蹤清單中',
+                INVALID_STOCK_SYMBOL: '無效的股票代碼',
+                CATEGORY_NOT_FOUND: '分類不存在',
+                STOCK_LIMIT_EXCEEDED: '已達到股票數量上限'
+            };
+
+            const errorMessage = stockErrors[errorData.errorCode] || errorData.message;
+            showToast(errorMessage, errorData.errorCode === 'DUPLICATE_STOCK' ? 'warning' : 'error');
+            
+            if (!stockErrors[errorData.errorCode]) {
                 Analytics.error({
                     component: 'useStocks',
                     action: 'add_stock',
                     error: errorData
                 });
             }
+            
             return false;
         } finally {
             setLoading(false);

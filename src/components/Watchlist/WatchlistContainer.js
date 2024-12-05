@@ -183,7 +183,7 @@ export function WatchlistContainer() {
                 categoryName: name
             });
         } catch (error) {
-            console.error('創建分類失敗:', error);
+            updateDialogState('createCategory', false);
         }
     };
 
