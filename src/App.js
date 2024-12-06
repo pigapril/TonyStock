@@ -26,6 +26,7 @@ import './components/Auth/styles/SignInDialog.css';
 import "react-datepicker/dist/react-datepicker.css";
 import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-crosshair';
+import './styles/NewFeatureBadge.css';
 
 // 自定義組件
 import MarketSentimentIndex from './components/MarketSentimentIndex';
@@ -43,6 +44,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { DialogProvider } from './contexts/DialogContext';
 import { useAuth } from './hooks/useAuth';
 import { useDialog } from './hooks/useDialog';
+import { useNewFeatureNotification } from './hooks/useNewFeatureNotification';
 
 // 工具函數
 import { Analytics } from './utils/analytics';
@@ -484,6 +486,7 @@ function AppContent() {
 
   const { user } = useAuth(); // 使用 auth context
   const { openDialog } = useDialog(); // 添加 useDialog
+  const { hasNewFeature, markFeatureAsSeen } = useNewFeatureNotification();
 
   useEffect(() => {
     // 重置側邊欄寬度
@@ -509,14 +512,18 @@ function AppContent() {
 
   // 修改 handleWatchlistClick 函數
   const handleWatchlistClick = (e) => {
+    // 保留原有的登入檢查邏輯
     if (!user) {
-        e.preventDefault();
-        openDialog('auth', {
-            returnPath: '/watchlist'
-        });
+      e.preventDefault();
+      openDialog('auth', {
+        returnPath: '/watchlist'
+      });
     }
     
-    // 無論是否登入，在行動裝置版都關閉側邊欄
+    // 標記新功能已被查看
+    markFeatureAsSeen();
+    
+    // 保留原有的行動裝置側邊欄關閉邏輯
     if (isMobile) {
       setSidebarOpen(false);
     }
@@ -549,8 +556,11 @@ function AppContent() {
                 to="/watchlist" 
                 onClick={handleWatchlistClick}
               >
-                <FaList />
-                <span>我的追蹤清單</span>
+                <div className="sidebar-item-content">
+                  <FaList />
+                  <span>我的追蹤清單</span>
+                </div>
+                {hasNewFeature && <span className="new-feature-badge">NEW</span>}
               </Link>
             </li>
             <li>
@@ -580,8 +590,14 @@ function AppContent() {
         <main className="main-content">
           {/* 頂部導航欄 */}
           <header className="top-nav">
-            <div className="menu-toggle" onClick={toggleSidebar}>
-              <FaBars />
+            <div className="menu-toggle-wrapper">
+              <FaBars
+                className="menu-toggle"
+                onClick={toggleSidebar}
+              />
+              {hasNewFeature && isMobile && (
+                <span className="notification-dot" />
+              )}
             </div>
             <div className="user-actions">
               {user ? (
