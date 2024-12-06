@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# 忽略 待刪除 目錄  
+Deprecated/
+
 # testing
 /coverage
 
