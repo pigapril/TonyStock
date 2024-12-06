@@ -47,6 +47,15 @@ export const useCategoryEdit = (watchlistService, showToast, { setCategories, se
             return result.category;
         } catch (error) {
             console.error('Create category error:', error);
+            
+            if (error.data?.code === 'CATEGORY_LIMIT_EXCEEDED') {
+                Analytics.watchlist.limitError({
+                    type: 'category_limit',
+                    currentCount: error.data?.currentCount,
+                    maxLimit: error.data?.maxLimit
+                });
+            }
+            
             handleOperationError(error, 'create_category');
             throw error;
         } finally {

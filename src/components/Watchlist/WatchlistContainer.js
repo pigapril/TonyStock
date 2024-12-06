@@ -177,11 +177,6 @@ export function WatchlistContainer() {
         try {
             await createCategory(name);
             updateDialogState('createCategory', false);
-            
-            // 添加追蹤事件
-            Analytics.watchlist.createCategory({
-                categoryName: name
-            });
         } catch (error) {
             updateDialogState('createCategory', false);
         }
@@ -208,11 +203,6 @@ export function WatchlistContainer() {
                 // 處理分類刪除的重選邏輯
                 handleCategoryDeleted(categoryId, result.updatedCategories);
                 updateDialogState('categoryManager', false);
-                
-                // 添加追蹤事件
-                Analytics.watchlist.categoryDelete({
-                    categoryId
-                });
             }
         } catch (error) {
             console.error('刪除分類失敗:', error);

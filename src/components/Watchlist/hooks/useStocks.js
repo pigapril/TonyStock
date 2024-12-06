@@ -41,6 +41,14 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
                 error
             });
             
+            if (error.data?.code === 'STOCK_LIMIT_EXCEEDED') {
+                Analytics.watchlist.limitError({
+                    type: 'stock_limit',
+                    currentCount: error.data?.currentCount,
+                    maxLimit: error.data?.maxLimit
+                });
+            }
+            
             return false;
         } finally {
             setLoading(false);

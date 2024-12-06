@@ -184,6 +184,14 @@ export const Analytics = {
       pushToDataLayer('watchlist_delete_category', {
         category_id: categoryId
       });
+    },
+
+    limitError: ({ type, currentCount, maxLimit }) => {
+      pushToDataLayer('watchlist_limit_error', {
+        error_type: type,  // 'stock_limit' 或 'category_limit'
+        current_count: currentCount,
+        max_limit: maxLimit
+      });
     }
   }
 };
