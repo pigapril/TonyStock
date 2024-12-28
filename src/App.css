@@ -29,7 +29,8 @@ body {
 .sidebar {
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
+  left: auto;
   height: 100vh;
   width: 250px;
   min-width: 250px;
@@ -37,7 +38,7 @@ body {
   color: #333333;
   transition: all 0.3s ease;
   overflow-y: auto;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  box-shadow: -2px 0 5px rgba(0,0,0,0.1);
   z-index: 1000;
 }
 
@@ -127,18 +128,16 @@ body {
 
 /* 主內容區域樣式 */
 .main-content {
-  margin-left: 250px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  margin-left: 0;
+  margin-top: 50px;
+  width: 100%;
 }
 
 .top-nav {
   position: fixed;
   top: 0;
   right: 0;
-  left: 250px;
+  left: 0;
   background-color: white;
   padding: 5px 20px;
   display: flex;
@@ -147,7 +146,6 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   height: 50px;
   z-index: 999;
-  transition: left 0.3s, transform 0.3s;  /* 添加過渡效果 */
 }
 
 .menu-toggle {
@@ -203,7 +201,7 @@ body {
   }
 
   .sidebar {
-    transform: translateX(-100%);
+    transform: translateX(100%);
     position: fixed;
     z-index: 1001;  /* 確保側邊欄在 overlay 上方 */
   }
@@ -216,13 +214,13 @@ body {
   .sidebar:not(.open) ul li,
   .sidebar:not(.open) ul a {  /* 添加 a 選擇器 */
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateX(20px);
   }
 
   .sidebar.open ul li,
   .sidebar.open ul a {  /* 添加 a 選擇器 */
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
 
   /* 為每個選單項目設置不同的延遲時間 */
@@ -584,5 +582,110 @@ body {
   
   .about-content {
     padding: 1rem;
+  }
+}
+
+/* 新增桌面版導航項目容器 */
+.desktop-nav-items {
+  display: none;  /* 預設隱藏 */
+}
+
+/* 桌面版顯示方式 */
+@media (min-width: 769px) {
+  /* 隱藏側邊欄 */
+  .sidebar {
+    display: none;
+  }
+  
+  /* 顯示頂部導航項目 */
+  .desktop-nav-items {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-right: auto;
+    margin-left: 20px;
+  }
+
+  /* 隱藏漢堡選單按鈕 */
+  .menu-toggle-wrapper {
+    display: none;
+  }
+
+  /* 調整導航項目樣式 */
+  .desktop-nav-items a {
+    color: #333;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .desktop-nav-items a:hover {
+    background-color: rgba(59, 130, 246, 0.08);
+    color: #3b82f6;
+  }
+
+  .desktop-nav-items svg {
+    font-size: 16px;
+  }
+}
+
+/* 保持手機版的原有樣式 */
+@media (max-width: 768px) {
+  .desktop-nav-items {
+    display: none;
+  }
+  
+  /* 保持原有的側邊欄相關樣式 */
+}
+
+/* Logo 樣式 */
+.top-nav-logo {
+  display: flex;
+  align-items: center;
+}
+
+.top-nav-logo .logo {
+  width: 40px;
+  height: 40px;
+}
+
+/* 調整頂部導航欄布局 */
+.top-nav {
+  display: flex;
+  align-items: center;
+  padding: 5px 20px;
+}
+
+/* 響應式設計調整 */
+@media (max-width: 768px) {
+  .top-nav {
+    justify-content: space-between; /* 確保元素間距均勻 */
+    padding: 5px 15px;
+  }
+
+  .top-nav-logo {
+    display: flex; /* 移除原本的 display: none */
+  }
+
+  .top-nav-logo .logo {
+    width: 32px; /* 手機版稍微縮小 logo */
+    height: 32px;
+    margin-right: 0; /* 移除右側邊距 */
+  }
+
+  .user-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 0; /* 重設邊距 */
+  }
+
+  /* 調整漢堡選單位置 */
+  .menu-toggle-wrapper {
+    margin-left: 8px;
   }
 }

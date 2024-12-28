@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Line } from 'react-chartjs-2';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import './PriceAnalysisPage.css';
+import './PriceAnalysis.css';
 import PageContainer from '../components/PageContainer';
 import ULBandChart from '../components/ULBandChart';
 import axios from 'axios';
@@ -32,7 +32,7 @@ function getTimeUnit(dates) {
  *
  * 專門負責：1) 抓取API資料 2) 處理表單 3) 顯示標準差圖表 or ULBandChart
  */
-export function PriceAnalysisPage() {
+export function PriceAnalysis() {
   // 這裡保留所有原本在 App.js 中標準差分析需要的狀態
   const [stockCode, setStockCode] = useState('SPY');
   const [years, setYears] = useState('3.5');

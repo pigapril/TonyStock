@@ -27,7 +27,7 @@ import { Legal } from './pages/Legal';
 import { WatchlistContainer } from './components/Watchlist/WatchlistContainer';
 
 // 導入拆分後的價格標準差分析頁面
-import { PriceAnalysisPage } from './pages/PriceAnalysisPage';
+import { PriceAnalysis } from './components/PriceAnalysis';
 
 // Context 和 Hooks
 import { AuthProvider } from './contexts/AuthContext';
@@ -105,7 +105,7 @@ function AppContent() {
             <li>
               <Link to="/priceanalysis" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaChartLine />
-                <span>價格標準差分析</span>
+                <span>價格趨勢分析</span>
               </Link>
             </li>
             <li>
@@ -158,23 +158,47 @@ function AppContent() {
         <main className="main-content">
           {/* 頂部導航欄 */}
           <header className="top-nav">
-            <div className="menu-toggle-wrapper">
-              <FaBars className="menu-toggle" onClick={toggleSidebar} />
-              {/* 如在手機狀態且有新功能提示 */}
-              {hasNewFeature && isMobile && (
-                <span className="notification-dot" />
-              )}
+            {/* Logo 區域 */}
+            <div className="top-nav-logo">
+              <Link to="/">
+                <img src="/logo.png" alt="Logo" className="logo" />
+              </Link>
             </div>
+            
+            {/* 桌面版導航項目 */}
+            <div className="desktop-nav-items">
+              <Link to="/priceanalysis">
+                <FaChartLine />
+                <span>價格趨勢分析</span>
+              </Link>
+              <Link to="/market-sentiment">
+                <FaHeartbeat />
+                <span>市場情緒分析</span>
+              </Link>
+              <Link to="/watchlist" onClick={handleWatchlistClick}>
+                <FaList />
+                <span>我的追蹤清單</span>
+                {hasNewFeature && <span className="new-feature-badge">NEW</span>}
+              </Link>
+              <a href="https://vocus.cc/salon/daily_chart" target="_blank" rel="noopener noreferrer">
+                <FaChartBar />
+                <span>關鍵圖表</span>
+              </a>
+              <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
+                <FaFacebook />
+                <span>Facebook 關鍵圖表</span>
+              </a>
+            </div>
+
+            {/* 使用者操作和選單按鈕 */}
             <div className="user-actions">
-              {user ? (
-                <UserProfile />
-              ) : (
-                <button
-                  className="btn-primary"
-                  onClick={() => openDialog('auth')}
-                >
-                  登入
-                </button>
+              {user ? <UserProfile /> : <button className="btn-primary" onClick={() => openDialog('auth')}>登入</button>}
+              {/* 只在手機版顯示漢堡選單 */}
+              {isMobile && (
+                <div className="menu-toggle-wrapper">
+                  <FaBars className="menu-toggle" onClick={toggleSidebar} />
+                  {hasNewFeature && <span className="notification-dot" />}
+                </div>
               )}
             </div>
           </header>
@@ -185,7 +209,7 @@ function AppContent() {
               <Route path="/" element={<HomePage />} />
 
               {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
-              <Route path="/priceanalysis" element={<PriceAnalysisPage />} />
+              <Route path="/priceanalysis" element={<PriceAnalysis />} />
 
               <Route
                 path="/market-sentiment"
