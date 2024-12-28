@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Line } from 'react-chartjs-2';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import './PriceAnalysisPage.css';
 import PageContainer from '../components/PageContainer';
 import ULBandChart from '../components/ULBandChart';
 import axios from 'axios';
@@ -196,8 +197,8 @@ export function PriceAnalysisPage() {
 
   return (
     <PageContainer
-      title="價格標準差分析"
-      description="價格標準差分析(樂活五線譜)，分析股價長期趨勢，利用均值回歸搭配標準差，當價格漲至最上緣時可能代表過度樂觀；當價格跌至最下緣時可能代表過度悲觀。當價格達到標準差的極端上下緣時，可以再搭配超漲超跌通道(樂活通道)，觀察價格是否突破通道的上下緣，可能代表超漲或超跌，趨勢或許將持續，可以等再次回到通道時再做買賣。"
+      title="價格趨勢分析"
+      description="源自樂活五線譜和樂活通道，分析股價長期趨勢，利用均值回歸搭配標準差，當價格漲至最上緣時可能代表過度樂觀；當價格跌至最下緣時可能代表過度悲觀。當價格達到標準差的極端上下緣時，可以再搭配超漲超跌通道，觀察價格是否突破通道的上下緣，可能代表超漲或超跌，趨勢或許將持續，可以等再次回到通道時再做買賣。"
     >
       <div className="dashboard">
         {/* 主圖表區塊 */}
@@ -427,7 +428,7 @@ export function PriceAnalysisPage() {
               type="submit"
               disabled={loading}
             >
-              {loading ? '分析���' : '開始分析'}
+              {loading ? '分析中' : '開始分析'}
             </button>
             {timeoutMessage && <p>{timeoutMessage}</p>}
           </form>

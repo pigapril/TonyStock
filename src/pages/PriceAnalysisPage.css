@@ -1,0 +1,162 @@
+/* 圖表和分析卡片樣式 */
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.chart-card {
+  flex: 1 1 65%;
+  min-width: 300px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+  overflow: hidden;
+}
+
+.stock-analysis-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+  flex: 1 1 15%;
+  min-width: 200px;
+  max-width: 300px;
+  box-sizing: border-box;
+}
+
+/* 圖表容器樣式 */
+.chart-container {
+  width: 100%;
+  height: 400px;
+  max-width: 100%;
+  position: relative;
+  overflow: visible;
+  margin-bottom: 20px;
+}
+
+.chart-content {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  padding: 10px 10px 30px 10px;
+}
+
+/* 圖表標題和標籤樣式 */
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+  margin-top: -5px;
+}
+
+.chart-title {
+  font-size: 0.95em;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.chart-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+}
+
+.chart-tab {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.chart-tab.active {
+  border-bottom: 2px solid #007bff;
+  color: #007bff;
+}
+
+/* 表單樣式 */
+.input-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  width: 100%;
+  max-width: 150px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* DatePicker 特定樣式 */
+.react-datepicker-wrapper {
+  width: 150px !important;
+  display: inline-block;
+}
+
+.react-datepicker__input-container {
+  width: 150px !important;
+}
+
+.react-datepicker__input-container input {
+  width: 150px !important;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* 確保在 iOS 設備上日期輸入框的文字大小一致 */
+@supports (-webkit-touch-callout: none) {
+    input[type="date"].form-control {
+      font-size: 16px !important;
+    }
+  }
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .chart-title {
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .stock-analysis-card {
+    flex: 1 1 100%;
+    min-width: 100%;
+    max-width: none;
+    width: 100%;
+    padding: 15px;
+  }
+
+  .input-group {
+    width: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-control,
+  .react-datepicker-wrapper,
+  .react-datepicker__input-container,
+  .react-datepicker__input-container input {
+    width: 150px !important;
+    max-width: 150px !important;
+  }
+} 

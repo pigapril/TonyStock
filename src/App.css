@@ -196,49 +196,6 @@ body {
   margin-top: -10px; /* 減少頂部間距 */
 }
 
-/* 圖表和分析卡片樣式 */
-.dashboard {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-between; /* 添加這行 */
-}
-
-.chart-card, .stock-analysis-card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  padding: 20px;
-}
-
-.chart-card {
-  flex: 1 1 65%; /* 增加度比例 */
-  min-width: 300px;
-  overflow: hidden;
-}
-
-.stock-analysis-card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  padding: 20px;
-  flex: 1 1 15%;  /* 桌面版預設寬度比例 */
-  min-width: 200px;
-  max-width: 300px;  /* 桌面版最大寬度 */
-  box-sizing: border-box;
-}
-
-.chart-container {
-  width: 100%;
-  height: 400px;
-  max-width: 100%;
-  position: relative;
-  overflow: hidden;
-  padding-right: 10px;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
 /* 響應式設計 */
 @media (max-width: 768px) {
   .App-inner {
@@ -247,14 +204,12 @@ body {
 
   .sidebar {
     transform: translateX(-100%);
-    height: 100vh;  /* 改回 100vh，確保延伸到底部 */
-    max-height: 100vh;  /* 同樣設為 100vh */
-    overflow-y: auto;  /* 允許內容滾動 */
+    position: fixed;
+    z-index: 1001;  /* 確保側邊欄在 overlay 上方 */
   }
 
   .sidebar.open {
     transform: translateX(0);
-    height: 100vh;  /* 確保開啟時也是全高 */
   }
 
   /* 為每個選單項目添加延遲動畫 */
@@ -293,22 +248,14 @@ body {
     margin-left: 0;
   }
 
-  .App.sidebar-open .main-content {
-    transform: translateX(250px);
-  }
-
-  .App.sidebar-open .top-nav {
-    transform: translateX(250px);
-  }
-
-  .menu-toggle {
-    display: block;
-  }
-
   .top-nav {
     left: 0;
     width: 100%;
     padding: 5px 15px;
+  }
+
+  .menu-toggle {
+    display: block;
   }
 
   .content-area {
@@ -317,12 +264,20 @@ body {
     padding: 15px;
   }
 
-  .stock-analysis-card {
-    flex: 1 1 100%;  /* 行動版使用全寬 */
-    min-width: 100%;
-    max-width: none;  /* 移除最大寬度限制 */
-    width: 100%;
-    padding: 15px;
+  /* 確保 overlay 在側邊欄打開時正確顯示 */
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  .overlay.visible {
+    display: block;
   }
 }
 
@@ -378,40 +333,6 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* 表單樣式 */
-.input-group {
-  margin-bottom: 15px;
-}
-
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.form-control {
-  width: 100%;
-  max-width: 150px;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-/* 為日期輸入框添加特定樣式 */
-input[type="date"].form-control {
-  padding-right: 10px;  /* 為日曆圖標留出空間 */
-}
-
-/* 確保在 iOS 設備上日期輸入框的文字大小一致 */
-@supports (-webkit-touch-callout: none) {
-  input[type="date"].form-control {
-    font-size: 16px !important;
-  }
-}
 
 /* 多股票圖表樣式 */
 .multi-stock-dashboard {
@@ -486,24 +407,6 @@ input[type="date"].form-control {
   .market-sentiment-index {
     padding: 0 10px; /* 減少左右內邊距 */
   }
-
-  /* 在行動裝置上調整輸入區塊的寬度 */
-  .input-group {
-    width: 100%;
-    padding: 0;  /* 移除內邊距 */
-  }
-
-  .form-control {
-    max-width: 100%;  /* 在行動裝置上允許更寬 */
-  }
-
-  /* 確保日期選擇器的寬度也跟隨父容器 */
-  .react-datepicker-wrapper,
-  .react-datepicker__input-container,
-  .react-datepicker__input-container input {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
 }
 
 
@@ -528,82 +431,6 @@ input[type="date"].form-control {
 
 .tab-button.active:hover {
     background-color: #1557b0;
-}
-
-.chart-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 10px;  /* 將上下內邊距從 10px 減少到 5px */
-  margin-top: -5px;   /* 添加負的上邊距使整個標題區域往上移 */
-}
-
-.chart-title {
-  font-size: 0.95em;  /* 將文字大小從 1.1em 調整為 0.95em */
-  font-weight: bold;
-  color: #333;
-  margin: 0;
-}
-
-.chart-tabs {
-  display: flex;
-  gap: 10px;
-  margin: 0;  /* 移除標籤的預設邊距 */
-}
-
-.chart-tab {
-  padding: 8px 16px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.chart-tab.active {
-  border-bottom: 2px solid #007bff;
-  color: #007bff;
-}
-
-.chart-content {
-  position: relative;
-  width: 100%;
-  height: 400px;
-  padding: 10px 10px 0 10px;  /* 移除底部內邊距 */
-}
-
-
-
-/* 添加響應式設計 */
-@media (max-width: 768px) {
-  .chart-title {
-    font-size: 0.9em;  /* 在行動裝置上進一步縮小文字 */
-    white-space: nowrap;  /* 確保文字保持在一行 */
-    overflow: hidden;
-    text-overflow: ellipsis;  /* 如果文字太長，顯示省略號 */
-  }
-}
-
-/* 為 DatePicker 添加特定樣式 */
-.react-datepicker-wrapper {
-  width: 150px !important;  /* 強制設定寬 */
-}
-
-.react-datepicker__input-container {
-  width: 100%;  /* 使輸入框填滿容器 */
-}
-
-.react-datepicker__input-container input {
-  width: 150px !important;  /* 強制設定輸入框寬度 */
-}
-
-/* 調整頂部導航欄的使用者操作區域 */
-.user-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: auto;
-    padding-right: 5px;
 }
 
 /* UserProfile 在頂部導航欄中的特定樣式 */
