@@ -8,7 +8,7 @@ import axios from 'axios';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-crosshair';
-import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList } from 'react-icons/fa';
+import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome } from 'react-icons/fa';
 
 // 樣式引入
 import './App.css';
@@ -17,6 +17,7 @@ import './styles/NewFeatureBadge.css';
 import "react-datepicker/dist/react-datepicker.css";
 
 // 自定義組件
+import { Home } from './pages/Home'; 
 import MarketSentimentIndex from './components/MarketSentimentIndex';
 import PageContainer from './components/PageContainer';
 import { AuthDialog } from './components/Auth/AuthDialog';
@@ -98,10 +99,13 @@ function AppContent() {
       <div className="App-inner">
         {/* 側邊欄區塊 */}
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-          <div className="sidebar-header">
-            <img src="/logo.png" alt="Logo" className="logo" />
-          </div>
           <ul>
+            <li>
+              <Link to="/" onClick={() => isMobile && setSidebarOpen(false)}>
+                <FaHome />
+                <span>首頁</span>
+              </Link>
+            </li>
             <li>
               <Link to="/priceanalysis" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaChartLine />
@@ -206,7 +210,11 @@ function AppContent() {
           {/* 內容路由 */}
           <div className="content-area">
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={
+                <PageContainer>
+                  <Home />
+                </PageContainer>
+              } />
 
               {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
               <Route path="/priceanalysis" element={<PriceAnalysis />} />
@@ -259,17 +267,6 @@ function AppContent() {
       </div>
       <AuthDialog />
     </div>
-  );
-}
-
-function HomePage() {
-  return (
-    <PageContainer title="網站首頁" description="這裡是您的網站首頁...">
-      <div className="homepage-content">
-        <h2>歡迎來到 Niku Stock 網站</h2>
-        <p>這裡用來放置首頁介紹、最新消息或其他重要資訊。</p>
-      </div>
-    </PageContainer>
   );
 }
 

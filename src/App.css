@@ -40,17 +40,16 @@ body {
   overflow-y: auto;
   box-shadow: -2px 0 5px rgba(0,0,0,0.1);
   z-index: 1000;
+  padding-top: 20px;  /* 加上適當的頂部間距 */
 }
 
 .sidebar-header {
-  padding: 20px;
-  text-align: center;
-  border-bottom: none; /* 移除底部邊框 */
+  display: none;  /* 或直接刪除這個區塊 */
 }
 
 .sidebar-header .logo {
-  width: 80px;
-  height: 80px;
+  width: auto;  /* 改為自動寬度 */
+  height: 40px;  /* 調整高度，保持比例 */
   margin-bottom: 10px;
 }
 
@@ -128,9 +127,9 @@ body {
 
 /* 主內容區域樣式 */
 .main-content {
-  margin-left: 0;
-  margin-top: 50px;
+  flex: 1;
   width: 100%;
+  position: relative;
 }
 
 .top-nav {
@@ -174,7 +173,7 @@ body {
 }
 
 .content-area {
-  margin-top: 50px;
+  margin-top: 30px;
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
@@ -646,46 +645,51 @@ body {
 .top-nav-logo {
   display: flex;
   align-items: center;
+  max-width: 200px;  /* 限制最大寬度 */
 }
 
 .top-nav-logo .logo {
-  width: 40px;
-  height: 40px;
+  width: auto;
+  height: 40px;  /* 調整高度 */
+  margin-right: 20px;
 }
 
 /* 調整頂部導航欄布局 */
 .top-nav {
   display: flex;
   align-items: center;
-  padding: 5px 20px;
+  padding: 8px 20px;  /* 增加上下內邊距 */
+  height: 60px;  /* 增加導航列高度 */
+}
+
+/* 桌面版顯示方式 */
+@media (min-width: 769px) {
+  .desktop-nav-items {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: 40px;  /* 增加與 logo 的間距 */
+  }
 }
 
 /* 響應式設計調整 */
 @media (max-width: 768px) {
   .top-nav {
-    justify-content: space-between; /* 確保元素間距均勻 */
+    height: 50px;  /* 手機版稍微降低高度 */
     padding: 5px 15px;
   }
 
   .top-nav-logo {
-    display: flex; /* 移除原本的 display: none */
+    max-width: 150px;  /* 手機版限制 logo 容器寬度 */
   }
 
   .top-nav-logo .logo {
-    width: 32px; /* 手機版稍微縮小 logo */
-    height: 32px;
-    margin-right: 0; /* 移除右側邊距 */
+    height: 32px;  /* 手機版縮小 logo */
+    margin-right: 10px;
   }
+}
 
-  .user-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 0; /* 重設邊距 */
-  }
-
-  /* 調整漢堡選單位置 */
-  .menu-toggle-wrapper {
-    margin-left: 8px;
-  }
+/* 確保所有選項的間距一致 */
+.sidebar ul li {
+  margin-bottom: 5px;
 }
