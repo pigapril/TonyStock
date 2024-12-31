@@ -160,8 +160,8 @@
 /* 表格容器 - 基礎樣式 */
 .stock-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)) !important;
-    gap: 16px;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px;
     padding: 16px;
     border: none;
     border-radius: 0;
@@ -263,181 +263,7 @@
     color: #1f2937;  /* 深色 */
 }
 
-/* 移除舊的價格樣式，改為新的位置 */
-.watchlist-stock-price {
-    position: absolute;
-    left: 50%;
-    top: 45%;  /* 從 35% 改為 45% */
-    transform: translate(-50%, -50%);
-    font-size: 1.8em;
-    font-weight: 600;
-    color: #111827;
-    z-index: 2;
-}
 
-/* 重新設計儀表圖容器 */
-.watchlist-stock-gauge {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    padding: 16px;
-    width: 100%;
-    height: 160px;
-    margin-top: 10px;  /* 增加上邊距 */
-}
-
-.watchlist-stock-gauge svg {
-    width: 280px !important;
-    height: 140px !important;
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    overflow: visible;
-}
-
-/* 確保所有路徑的過渡動畫一致 */
-.recharts-radial-bar-background-sector,
-.recharts-radial-bar-sector {
-    stroke-linecap: round;
-}
-
-/* 移除可能影響對齊的樣式 */
-.watchlist-stock-gauge .gauge-background,
-.watchlist-stock-gauge .gauge-foreground {
-    display: none;
-}
-
-/* 確保路徑容器位置正確 */
-.watchlist-stock-gauge .gauge-paths {
-    transform-origin: center;  /* 確保旋轉中心點正確 */
-}
-
-/* 移除新增的 gauge-values 相關樣式 */
-.gauge-values,
-.gauge-support,
-.gauge-resistance {
-    display: none;  /* 隱藏新增的樣式 */
-}
-
-/* 調整原有的分析數據容器樣式 */
-.watchlist-stock-analysis {
-    position: absolute;
-    width: 100%;
-    top: 35%;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 32px;
-    box-sizing: border-box;
-    z-index: 1;
-    font-family: var(--mono-font);
-}
-
-/* 響應式調整 */
-@media (max-width: 768px) {
-    .watchlist-stock-analysis {
-        padding: 0 16px;
-    }
-}
-
-@media (max-width: 640px) {
-    .watchlist-stock-analysis {
-        padding: 0 10px;
-    }
-}
-
-/* 支撐值樣式 */
-.analysis-value.support {
-    color: #22c55e;
-    background-color: rgba(34, 197, 94, 0.08);
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-weight: 500;
-    font-size: 1.1em;
-    transition: all 0.2s ease;
-}
-
-/* 壓力值樣式 */
-.analysis-value.resistance {
-    color: #ef4444;
-    background-color: rgba(239, 68, 68, 0.08);
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-weight: 500;
-    font-size: 1.1em;
-    transition: all 0.2s ease;
-}
-
-/* 端點警效果 */
-.analysis-value.resistance.pulse {
-    animation: pulsateRed 2s ease-in-out infinite;
-    box-shadow: 0 0 0 rgba(239, 68, 68, 0.2);
-}
-
-.analysis-value.support.pulse {
-    animation: pulsateGreen 2s ease-in-out infinite;
-    box-shadow: 0 0 0 rgba(34, 197, 94, 0.2);
-}
-
-/* 當接近端點時的額外樣式 */
-.near-upper-edge .analysis-value.resistance {
-    font-weight: 600;
-    background-color: rgba(239, 68, 68, 0.15);
-}
-
-.near-lower-edge .analysis-value.support {
-    font-weight: 600;
-    background-color: rgba(34, 197, 94, 0.15);
-}
-
-/* 隱藏分隔符 */
-.analysis-separator {
-    display: none;
-}
-
-/* 移除舊的響應式價格位置設定 */
-@media (max-width: 768px) {
-    .watchlist-stock-gauge {
-        height: 160px;
-        padding: 12px;
-    }
-    
-    .watchlist-stock-gauge svg {
-        width: 260px !important;
-    }
-    
-    .watchlist-stock-price {
-        font-size: 1.6em;
-        top: 38%;
-    }
-    
-    .gauge-values {
-        padding: 0 32px;
-        top: 28%;
-    }
-}
-
-@media (max-width: 640px) {
-    .watchlist-stock-gauge {
-        height: 140px;
-        padding: 8px;
-    }
-    
-    .watchlist-stock-gauge svg {
-        width: 240px !important;
-    }
-    
-    .watchlist-stock-price {
-        font-size: 1.5em;
-        top: 38%;
-    }
-    
-    .gauge-values {
-        padding: 0 28px;
-        top: 28%;
-    }
-}
 
 /* 新聞列表區域 - 移除舊的樣式 */
 .stock-news-list {
@@ -487,37 +313,25 @@
 /* 響應式調整 */
 @media (max-width: 1200px) {
     .stock-list {
-        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)) !important;
+        grid-template-columns: repeat(2, 1fr) !important;
         padding: 12px;
-    }
-}
-
-@media (max-width: 768px) {
-    .stock-list {
-        grid-template-columns: 1fr !important;  /* 單列全寬 */
-        padding: 12px;
-        gap: 12px;
-    }
-    
-    .stock-item {
-        width: 100%;  /* 確保卡片佔滿容器寬度 */
-        margin: 0;    /* 移除可能的外邊距 */
-        box-sizing: border-box;
+        gap: 16px;
     }
 }
 
 @media (max-width: 640px) {
-    .watchlist-container {
-        padding: 1px;  /* 減少容器內邊距 */
-    }
-    
     .stock-list {
-        padding: 0;    /* 移除列表內邊距 */
+        grid-template-columns: 1fr !important;
+        padding: 0;
         gap: 10px;
     }
     
+    .watchlist-container {
+        padding: 1px;
+    }
+    
     .category-content {
-        padding: 8px;  /* 減少分類內容內邊距 */
+        padding: 8px;
     }
 }
 
@@ -663,52 +477,6 @@
     .search-results-container {
         max-height: 320px;
     }
-}
-
-/* 端點警示效果 */
-.gauge-resistance.pulse {
-    animation: pulsateRed 2s ease-in-out infinite;
-    box-shadow: 0 0 0 rgba(239, 68, 68, 0.2);
-}
-
-.gauge-support.pulse {
-    animation: pulsateGreen 2s ease-in-out infinite;
-    box-shadow: 0 0 0 rgba(34, 197, 94, 0.2);
-}
-
-@keyframes pulsateRed {
-    0% {
-        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
-    }
-    70% {
-        box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-    }
-}
-
-@keyframes pulsateGreen {
-    0% {
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
-    }
-    70% {
-        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-    }
-}
-
-/* 當接近端點時的額外樣式 */
-.near-upper-edge .gauge-resistance {
-    font-weight: 600;
-    background-color: rgba(239, 68, 68, 0.15);
-}
-
-.near-lower-edge .gauge-support {
-    font-weight: 600;
-    background-color: rgba(34, 197, 94, 0.15);
 }
 
 /* 新聞列表樣式 */

@@ -194,7 +194,7 @@ body {
 }
 
 /* 響應式設計 */
-@media (max-width: 768px) {
+@media (max-width: 820px) {
   .App-inner {
     flex-direction: column;
   }
@@ -202,7 +202,7 @@ body {
   .sidebar {
     transform: translateX(100%);
     position: fixed;
-    z-index: 1001;  /* 確保側邊欄在 overlay 上方 */
+    z-index: 1001;
   }
 
   .sidebar.open {
@@ -399,7 +399,7 @@ body {
 
 
 /* 響應式設計調整 */
-@media (max-width: 768px) {
+@media (max-width: 820px) {
   .standard-deviation-page,
   .market-sentiment-index {
     padding: 0 10px; /* 減少左右內邊距 */
@@ -473,7 +473,7 @@ body {
 }
 
 /* 響應式調整 */
-@media (max-width: 768px) {
+@media (max-width: 820px) {
     .user-actions {
         padding-right: 0;  /* 移除右側內邊距 */
         margin-right: 20px;  /* 添加右側外邊距 */
@@ -566,7 +566,7 @@ body {
 }
 
 /* 響應式設計 */
-@media (max-width: 768px) {
+@media (max-width: 820px) {
   .about-page {
     padding: 1rem;
   }
@@ -590,7 +590,7 @@ body {
 }
 
 /* 桌面版顯示方式 */
-@media (min-width: 769px) {
+@media (min-width: 821px) {
   /* 隱藏側邊欄 */
   .sidebar {
     display: none;
@@ -633,7 +633,7 @@ body {
 }
 
 /* 保持手機版的原有樣式 */
-@media (max-width: 768px) {
+@media (max-width: 820px) {
   .desktop-nav-items {
     display: none;
   }
@@ -663,7 +663,7 @@ body {
 }
 
 /* 桌面版顯示方式 */
-@media (min-width: 769px) {
+@media (min-width: 821px) {
   .desktop-nav-items {
     display: flex;
     align-items: center;
@@ -673,7 +673,7 @@ body {
 }
 
 /* 響應式設計調整 */
-@media (max-width: 768px) {
+@media (max-width: 820px) {
   .top-nav {
     height: 50px;  /* 手機版稍微降低高度 */
     padding: 5px 15px;
