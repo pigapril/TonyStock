@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { FaChartLine, FaList, FaHeartbeat, FaChevronDown } from 'react-icons/fa';
 import './Home.css';
 import { useDialog } from '../hooks/useDialog';
+import { useAuth } from '../hooks/useAuth';
 
 export const Home = () => {
   const { openDialog } = useDialog();
+  const { isAuthenticated } = useAuth();
 
   return (
     <div className="home-page">
@@ -14,7 +16,7 @@ export const Home = () => {
         <section className="hero-section">
           <h1>掌握市場情緒</h1>
           <p className="hero-subtitle">
-            用客觀數據，判斷市場當前是恐懼還是貪婪，克服人性弱點
+            用客觀數據，<br /> 判斷市場當前是恐懼還是貪婪，<br /> 克服人性弱點
           </p>
           
           <FaChevronDown 
@@ -66,13 +68,15 @@ export const Home = () => {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="cta-section">
-          <p>登入體驗完整功能</p>
-          <button className="cta-button" onClick={() => openDialog('auth')}>
-            立即登入
-          </button>
-        </section>
+        {/* CTA Section - 只在未登入時顯示 */}
+        {!isAuthenticated && (
+          <section className="cta-section">
+            <p>登入體驗完整功能</p>
+            <button className="cta-button" onClick={() => openDialog('auth')}>
+              立即登入
+            </button>
+          </section>
+        )}
       </div>
     </div>
   );

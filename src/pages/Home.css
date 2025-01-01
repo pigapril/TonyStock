@@ -84,9 +84,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.2;
+  background-size: 110%;
+  background-position: center 39%;
+  background-repeat: no-repeat;
+  opacity: 0.4;
   z-index: -1;
   transition: opacity 0.3s ease;
 }
@@ -144,7 +145,7 @@
 }
 
 .feature-link {
-  margin-top: 20px;
+  margin-top: 10px;
   color: #007AFF;
   text-decoration: none;
   font-weight: 500;
@@ -152,6 +153,7 @@
   align-items: center;
   gap: 8px;
 }
+
 
 .arrow {
   transition: transform 0.3s ease;
@@ -229,12 +231,10 @@
     /* 移除手機版的變形效果 */
     transform: none !important;  /* 使用 !important 確保覆蓋 hover 效果 */
     transition: none;  /* 移除過渡效果 */
-    min-height: 250px;
+    min-height: 350px;
   }
 
-  .feature-card::before {
-    opacity: 0.1;
-  }
+
 
   .feature-card h2 {
     font-size: 1.5rem;
@@ -264,7 +264,7 @@
 /* 添加動態箭頭樣式 */
 .scroll-arrow {
   position: absolute;
-  bottom: 40px;
+  bottom: 70px;
   left: 50%;
   transform: translateX(-50%);
   animation: bounce 2s infinite;
@@ -296,7 +296,7 @@
 /* 響應式調整 */
 @media (max-width: 768px) {
   .scroll-arrow {
-    bottom: 30px;
+    bottom: 60px;
     font-size: 1.5rem;
   }
 } 

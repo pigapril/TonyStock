@@ -57,7 +57,7 @@ function AppContent() {
   const { isAuthenticated, user } = useAuth();
   const { openDialog } = useDialog();
   const { hasNewFeature, markFeatureAsSeen } = useNewFeatureNotification();
-  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' });
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 

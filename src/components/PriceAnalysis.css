@@ -159,4 +159,26 @@
     width: 150px !important;
     max-width: 150px !important;
   }
+
+  .chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .chart-tabs {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .chart-tab {
+    flex: 1;
+    text-align: center;
+    padding: 8px 8px;
+    font-size: 0.9em;
+  }
+
+  .chart-card {
+    padding: 20px 20px 50px 20px;
+  }
 } 

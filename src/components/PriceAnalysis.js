@@ -8,6 +8,7 @@ import ULBandChart from '../components/ULBandChart';
 import axios from 'axios';
 import { Analytics } from '../utils/analytics';
 import { handleApiError } from '../utils/errorHandler';
+import { useMediaQuery } from 'react-responsive';
 
 // 假設你在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -33,6 +34,8 @@ function getTimeUnit(dates) {
  * 專門負責：1) 抓取API資料 2) 處理表單 3) 顯示標準差圖表 or ULBandChart
  */
 export function PriceAnalysis() {
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
   // 這裡保留所有原本在 App.js 中標準差分析需要的狀態
   const [stockCode, setStockCode] = useState('SPY');
   const [years, setYears] = useState('3.5');
@@ -245,10 +248,13 @@ export function PriceAnalysis() {
                           tooltipFormat: 'yyyy/MM/dd'
                         },
                         ticks: {
-                          maxTicksLimit: 6,
+                          maxTicksLimit: isMobile ? 4 : 6,
                           autoSkip: true,
-                          maxRotation: 0,
-                          minRotation: 0
+                          maxRotation: isMobile ? 45 : 0,
+                          minRotation: isMobile ? 45 : 0,
+                          font: {
+                            size: isMobile ? 10 : 12
+                          }
                         }
                       },
                       y: {
