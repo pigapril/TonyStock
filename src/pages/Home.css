@@ -87,7 +87,7 @@
   background-size: 110%;
   background-position: center 39%;
   background-repeat: no-repeat;
-  opacity: 0.4;
+  opacity: 0.7;
   z-index: -1;
   transition: opacity 0.3s ease;
 }
@@ -140,6 +140,7 @@
 .feature-card p {
   color: #666;
   line-height: 1.6;
+  top: 8px;
   margin: 0;
   font-size: 1.1rem;
 }
