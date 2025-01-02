@@ -71,9 +71,8 @@ export const Home = () => {
         {/* CTA Section - 只在未登入時顯示 */}
         {!isAuthenticated && (
           <section className="cta-section">
-            <p>登入體驗完整功能</p>
             <button className="cta-button" onClick={() => openDialog('auth')}>
-              立即登入
+              立即登入體驗完整功能
             </button>
           </section>
         )}

@@ -26,6 +26,8 @@ import { PageViewTracker } from './components/Common/PageViewTracker';
 import { About } from './pages/About';
 import { Legal } from './pages/Legal';
 import { WatchlistContainer } from './components/Watchlist/WatchlistContainer';
+import { AdBanner } from './components/Common/AdBanner';
+import { Footer } from './components/Common/Footer';
 
 // 導入拆分後的價格標準差分析頁面
 import { PriceAnalysis } from './components/PriceAnalysis';
@@ -264,8 +266,14 @@ function AppContent() {
 
         {/* 添加遮罩層 (mobile 狀態下點擊收合側邊欄) */}
         <Overlay isVisible={sidebarOpen && isMobile} onClick={closeSidebar} />
+        
+        {/* 將 Footer 移到這裡 */}
+        <Footer />
       </div>
       <AuthDialog />
+      {/* 暫時註釋掉廣告橫幅 
+      <AdBanner />
+      */}
     </div>
   );
 }

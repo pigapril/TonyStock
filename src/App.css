@@ -22,6 +22,7 @@ body {
 
 .App-inner {
   display: flex;
+  flex-direction: column;
   width: 100%;
 }
 
@@ -178,6 +179,7 @@ body {
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
+  margin-bottom: 40px;
 }
 
 .content-area h2 {
