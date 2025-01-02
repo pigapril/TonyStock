@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaEnvelope } from 'react-icons/fa';
 import aboutImage from '../assets/images/aboutme.jpg';
 import './About.css';
 
@@ -38,6 +39,16 @@ export const About = () => {
                 我認為股價除了反應基本面，也有同樣的比重在反應市場的情緒，創立網站的初衷就是要用簡單的圖表和數據，
                 將市場當前的情緒轉化爲重要的投資指標，幫助大家克服自身的不理性，避免跟著情緒追高殺低。
               </p>
+            </section>
+
+            <section className="contact-section">
+              <h2>聯絡我</h2>
+              <div className="contact-info">
+                <FaEnvelope className="contact-icon" />
+                <a href="mailto:sentimentinsideout@gmail.com">
+                sentimentinsideout@gmail.com
+                </a>
+              </div>
             </section>
           </div>
         </div>
