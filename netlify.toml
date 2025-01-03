@@ -12,18 +12,19 @@
   to = "https://sentimentinsideout.com/:splat"
   status = 301
   force = true
-  conditions = {host = ["niku-stock.netlify.app"]}
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+  conditions = {host = "niku-stock.netlify.app"}
 
 [[redirects]]
   from = "/api/*"
   to = "https://stockdatabase.publicvm.com/api/:splat"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
 
 [context.production.environment]
   REACT_APP_API_BASE_URL = ""
