@@ -7,19 +7,22 @@
   NPM_VERSION = "9.5.1"
   CI = "false"
 
+# 保留 Netlify 子域名重定向
 [[redirects]]
   from = "/*"
   to = "https://sentimentinsideout.com/:splat"
   status = 301
   force = true
-  conditions = {host = "niku-stock.netlify.app"}
+  conditions = {Host = ["niku-stock.netlify.app"]}
 
+# API 代理
 [[redirects]]
   from = "/api/*"
   to = "https://stockdatabase.publicvm.com/api/:splat"
   status = 200
   force = true
 
+# SPA 回退路由
 [[redirects]]
   from = "/*"
   to = "/index.html"
