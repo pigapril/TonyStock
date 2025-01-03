@@ -8,16 +8,12 @@
   CI = "false"
 
 [[redirects]]
-  from = "/"
-  to = "https://sentimentinsideout.com"
-  status = 301
-  force = true
-
-[[redirects]]
   from = "/*"
   to = "https://sentimentinsideout.com"
   status = 301
   force = true
+  conditions = {host = "niku-stock.netlify.app"}
+
 
 [[redirects]]
   from = "/api/*"
