@@ -8,15 +8,22 @@
   CI = "false"
 
 [[redirects]]
-  from = "/api/*"
-  to = "https://stockdatabase.publicvm.com/api/:splat"
-  status = 200
+  from = "/"
+  to = "https://sentimentinsideout.com"
+  status = 301
   force = true
 
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "https://sentimentinsideout.com"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://stockdatabase.publicvm.com/api/:splat"
   status = 200
+  force = true
 
 [context.production.environment]
   REACT_APP_API_BASE_URL = ""
