@@ -12,7 +12,12 @@
   to = "https://sentimentinsideout.com/:splat"
   status = 301
   force = true
-  conditions = {host = "niku-stock.netlify.app"}
+  conditions = {host = ["niku-stock.netlify.app"]}
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 [[redirects]]
   from = "/api/*"
