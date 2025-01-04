@@ -9,22 +9,12 @@
   margin-bottom: 20px;
 }
 
-.time-range-selector {
-  margin-bottom: 20px;
-}
 
 .indicators-list {
   display: flex;
   flex-direction: column;
 }
 
-.indicator-item {
-  border: none;  /* 移除邊框 */
-  padding: 0;    /* 移除內邊距 */
-  margin-bottom: 20px;
-  box-shadow: none;  /* 移除陰影 */
-  overflow: hidden; /* 隱藏溢出內容 */
-}
 
 .real-data {
   color: green;
@@ -58,13 +48,6 @@
   margin-bottom: 20px;
 }
 
-.indicator-list {
-  display: flex;
-  flex-direction: column; /* 垂直排列 */
-  gap: 20px;
-  width: 100%;
-  box-sizing: border-box;
-}
 
 /* 新增以下部分 */
 @media (max-width: 768px) {
@@ -143,13 +126,6 @@
   padding-bottom: 10px;  /* 增加底部內邊距 */
 }
 
-/* 在小螢幕上調整 */
-@media (max-width: 768px) {
-  .indicator-chart-container {
-    margin-bottom: 20px;
-    padding-bottom: 10px;  /* 在小螢幕上使用較小的內邊距 */
-  }
-}
 
 /* 平板電腦和桌面版面配置 */
 @media (min-width: 768px) {
@@ -227,9 +203,7 @@
   padding: 0;
 }
 
-.indicator-item {
-  margin-bottom: 20px;
-}
+
 
 /* 確保在觸摸設備上的滾動行為正常 */
 @media (hover: none) and (pointer: coarse) {
@@ -326,11 +300,11 @@
     font-size: 20px;
     width: 40px; /* 調整小螢幕上的寬度 */
     height: 40px; /* 調整小螢幕上的高度 */
-    bottom: 35px; /* 調整小螢幕上的底部距離 */
+    bottom: 50px; /* 調整小螢幕上的底部距離 */
   }
 
   .gauge-labels {
-    bottom: 20px;
+    bottom: 40px;
   }
 }
 
@@ -344,7 +318,8 @@
 
 @media (max-width: 768px) {
   .indicator-chart-container {
-    margin-bottom: 20px; /* 在小螢幕上使用較小的間距 */
+    margin-bottom: 0px; /* 在小螢幕上使用較小的間距 */
+    padding-bottom: 0px;
   }
 
   .analysis-description {
@@ -356,7 +331,7 @@
   text-align: center;
   color: #666;
   font-size: 12px;
-  margin-top: 118px;  /* 增加上方間距 */
+  margin-top: 0px;  /* 增加上方間距 */
   margin-bottom: 15px;
   position: relative;  /* 確保位置正確 */
   z-index: 1;  /* 確保文字在最上層 */
