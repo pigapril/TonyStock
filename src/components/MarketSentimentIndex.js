@@ -477,16 +477,6 @@ const MarketSentimentIndex = () => {
             <div className="indicator-chart-container">
               {viewMode === 'overview' ? (
                 <div className="gauge-chart">
-                  <div 
-                    className="gauge-value-bubble"
-                    style={{
-                      left: `calc(50% + ${Math.cos((sentimentData.totalScore / 100 - 0.5) * Math.PI) * BUBBLE_RADIUS}px)`,
-                      bottom: `${Math.sin((sentimentData.totalScore / 100 - 0.5) * Math.PI) * BUBBLE_RADIUS + BUBBLE_Y_OFFSET}px`,
-                      transform: `translate(-50%, 50%) rotate(${(sentimentData.totalScore / 100 - 0.5) * 180}deg)`
-                    }}
-                  >
-                    {Math.round(sentimentData.totalScore)}
-                  </div>
                   {renderGaugeChart()}
                   <svg width="0" height="0">
                     <defs>
