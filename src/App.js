@@ -111,7 +111,7 @@ function AppContent() {
             <li>
               <Link to="/priceanalysis" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaChartLine />
-                <span>價格趨勢分析</span>
+                <span>樂活五線譜</span>
               </Link>
             </li>
             <li>
