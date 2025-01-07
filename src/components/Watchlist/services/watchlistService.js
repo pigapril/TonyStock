@@ -7,7 +7,8 @@ class WatchlistService {
             credentials: 'include',
             headers: {
                 'Accept': 'application/json'
-            }
+            },
+            timeout: 60000  // 60秒
         };
     }
 
@@ -16,9 +17,14 @@ class WatchlistService {
             const url = `${this.baseUrl}${endpoint}`;
             console.log('發送請求:', { url, options });
             
+            const controller = new AbortController();
+            const timeout = options.timeout || this.defaultOptions.timeout;
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+
             const requestOptions = {
                 ...this.defaultOptions,
                 ...options,
+                signal: controller.signal,
                 headers: {
                     ...this.defaultOptions.headers,
                     ...options.headers
@@ -26,6 +32,7 @@ class WatchlistService {
             };
 
             const response = await fetch(url, requestOptions);
+            clearTimeout(timeoutId);
             
             if (!response.ok) {
                 const errorData = await response.json();
@@ -42,6 +49,14 @@ class WatchlistService {
             
             return data;
         } catch (error) {
+            if (error.name === 'AbortError') {
+                console.log('請求超時，繼續等待...');
+                return this.fetchRequest(endpoint, {
+                    ...options,
+                    timeout: (options.timeout || this.defaultOptions.timeout) + 30000 // 增加30秒
+                });
+            }
+            
             console.log('完整錯誤物件:', error);
             console.error('Request failed:', error);
             throw error;

@@ -148,15 +148,27 @@ export function WatchlistContainer() {
             return;
         }
         
-        // 載入分類並自動選擇第一個
+        let retryCount = 0;
+        const maxRetries = 3;
+        
         const initializeCategories = async () => {
-            const loadedCategories = await loadCategories();
-            
-            // 如果有分類且沒有選擇任何分類，則自動選擇第一個
-            if (loadedCategories?.length > 0 && !activeTab) {
-                const firstCategory = loadedCategories[0];
-                setActiveTab(firstCategory.id);
-                setSelectedCategoryId(firstCategory.id);
+            try {
+                const loadedCategories = await loadCategories();
+                
+                if (loadedCategories?.length > 0 && !activeTab) {
+                    const firstCategory = loadedCategories[0];
+                    setActiveTab(firstCategory.id);
+                    setSelectedCategoryId(firstCategory.id);
+                }
+            } catch (error) {
+                if (retryCount < maxRetries) {
+                    retryCount++;
+                    showToast(`載入中，請稍候... (${retryCount}/${maxRetries})`, 'info');
+                    // 延遲 5 秒後重試
+                    setTimeout(initializeCategories, 5000);
+                } else {
+                    setError('載入失敗，請重新整理頁面');
+                }
             }
         };
 
@@ -238,9 +250,6 @@ export function WatchlistContainer() {
                     <>
                         {categories.length === 0 ? (
                             <div className="empty-state">
-                                <button onClick={handleCreateCategory}>
-                                    建立第一個分類
-                                </button>
                             </div>
                         ) : (
                             <div className="watchlist-content">
