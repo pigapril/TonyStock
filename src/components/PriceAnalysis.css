@@ -182,3 +182,21 @@
     padding: 20px 20px 50px 20px;
   }
 } 
+
+.turnstile-container {
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.turnstile-container > div {
+  transform: scale(0.85);
+  transform-origin: center;
+}
+
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 5px;
+} 

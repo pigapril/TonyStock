@@ -8,7 +8,7 @@ class WatchlistService {
             headers: {
                 'Accept': 'application/json'
             },
-            timeout: 60000  // 60秒
+            timeout: 120000  // 120秒
         };
     }
 

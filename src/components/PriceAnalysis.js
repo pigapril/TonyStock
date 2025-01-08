@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Analytics } from '../utils/analytics';
 import { handleApiError } from '../utils/errorHandler';
 import { useMediaQuery } from 'react-responsive';
+import Turnstile from 'react-turnstile';
 
 // 假設你在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -47,6 +48,8 @@ export function PriceAnalysis() {
   const [displayedStockCode, setDisplayedStockCode] = useState('');
   const [activeChart, setActiveChart] = useState('sd');
   const [ulbandData, setUlbandData] = useState(null);
+  const [turnstileToken, setTurnstileToken] = useState(null);
+  const [turnstileVisible, setTurnstileVisible] = useState(true);
 
   // 處理股票代碼的全形/半形轉換
   const handleStockCodeChange = (e) => {
@@ -63,8 +66,21 @@ export function PriceAnalysis() {
     setActiveChart(chartType);
   };
 
+  // 處理 Turnstile 回調
+  const handleTurnstileSuccess = useCallback((token) => {
+    setTurnstileToken(token);
+    setTimeout(() => {
+      setTurnstileVisible(false);
+    }, 1000);
+  }, []);
+
   // 資料抓取函式（原本在 App.js）
-  const fetchStockData = useCallback(async (stock, yrs, testDate) => {
+  const fetchStockData = useCallback(async (stock, yrs, testDate, bypassTurnstile = false) => {
+    if (!bypassTurnstile && !turnstileToken) {
+      handleApiError(new Error('請先完成驗證'));
+      return;
+    }
+
     setLoading(true);
     setTimeoutMessage('');
 
@@ -74,6 +90,9 @@ export function PriceAnalysis() {
           stockCode: stock,
           years: yrs,
           backTestDate: testDate
+        },
+        headers: {
+          'CF-Turnstile-Token': bypassTurnstile ? undefined : turnstileToken
         },
         timeout: 30000
       });
@@ -165,7 +184,7 @@ export function PriceAnalysis() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [turnstileToken]);
 
   // 表單送出
   const handleSubmit = (e) => {
@@ -194,7 +213,7 @@ export function PriceAnalysis() {
 
   // 初始化資料 (componentDidMount)
   useEffect(() => {
-    fetchStockData(stockCode, parseFloat(years) || 3.5, backTestDate);
+    fetchStockData(stockCode, parseFloat(years) || 3.5, backTestDate, true);
     // eslint-disable-next-line
   }, []);
 
@@ -432,11 +451,28 @@ export function PriceAnalysis() {
             <button
               className={`btn-primary ${loading ? 'btn-loading' : ''}`}
               type="submit"
-              disabled={loading}
+              disabled={loading || !turnstileToken}
             >
-              {loading ? '分析中' : '開始分析'}
+              {loading ? '分析中' : turnstileToken ? '開始分析' : '請完成下方驗證'}
             </button>
             {timeoutMessage && <p>{timeoutMessage}</p>}
+            {turnstileVisible && (
+              <div className="turnstile-container">
+                <Turnstile
+                  sitekey={process.env.REACT_APP_TURNSTILE_SITE_KEY}
+                  onSuccess={handleTurnstileSuccess}
+                  onError={() => {
+                    setTurnstileToken(null);
+                    handleApiError(new Error('驗證失敗，請重試'));
+                  }}
+                  onExpire={() => {
+                    setTurnstileToken(null);
+                    handleApiError(new Error('驗證已過期，請重新驗證'));
+                  }}
+                  refreshExpired="auto"
+                />
+              </div>
+            )}
           </form>
         </div>
       </div>
