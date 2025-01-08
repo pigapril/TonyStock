@@ -441,7 +441,7 @@ export function PriceAnalysis() {
               <DatePicker
                 selected={backTestDate ? new Date(backTestDate) : null}
                 onChange={(date) => setBackTestDate(date ? date.toISOString().split('T')[0] : '')}
-                placeholderText="預設為今日"
+                placeholderText="預設為今天"
                 className="form-control"
                 dateFormat="yyyy/MM/dd"
                 isClearable
