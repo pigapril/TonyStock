@@ -220,7 +220,7 @@ export function PriceAnalysis() {
   return (
     <PageContainer
       title="樂活五線譜"
-      description="分析股價長期趨勢，利用均值回歸搭配標準差，當價格漲至最上緣時可能代表過度樂觀；當價格跌至最下緣時可能代表過度悲觀。當價格達到標準差的極端上下緣時，可以再搭配樂活通道，觀察價格是否突破通道的上下緣，可能代表超漲或超跌，趨勢或許將持續，可以等再次回到通道時再做買賣。"
+      description="分析股價趨勢，利用股價長期均值回歸的特性，搭配標準差，當價格漲至最上緣時可能代表過度樂觀；當價格跌至最下緣時可能代表過度悲觀。當價格達到標準差的極端上下緣時，可以再搭配樂活通道，觀察價格是否突破通道的上下緣，可能代表超漲或超跌，趨勢或許將持續，可以等再次回到通道時再做買賣。"
     >
       <div className="dashboard">
         {/* 主圖表區塊 */}
@@ -235,13 +235,13 @@ export function PriceAnalysis() {
                   className={`chart-tab ${activeChart === 'sd' ? 'active' : ''}`}
                   onClick={() => handleChartSwitch('sd')}
                 >
-                  標準差分析
+                  樂活五線譜
                 </button>
                 <button
                   className={`chart-tab ${activeChart === 'ulband' ? 'active' : ''}`}
                   onClick={() => handleChartSwitch('ulband')}
                 >
-                  超漲超跌通道
+                  樂活通道
                 </button>
               </div>
             </div>
