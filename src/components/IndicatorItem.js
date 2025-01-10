@@ -32,7 +32,7 @@ ChartJS.register(
   Legend
 );
 
-// 將 INDICATOR_NAME_MAP 導出
+// 只保留 INDICATOR_NAME_MAP
 export const INDICATOR_NAME_MAP = {
   'AAII Bull-Bear Spread': 'AAII 投資人情緒調查',
   'CBOE Put/Call Ratio 5-Day Avg': 'CBOE 買/賣權比例',
@@ -42,26 +42,6 @@ export const INDICATOR_NAME_MAP = {
   'Junk Bond Spread': '垃圾債殖利率差',
   "S&P 500 COT Index": '期貨投機淨持倉指數',
   'NAAIM Exposure Index': 'NAAIM 經理人曝險指數',
-};
-
-// 指標敘述映射
-const INDICATOR_DESCRIPTION_MAP = {
-  'AAII Bull-Bear Spread':
-    'AAII 投資者情緒調查淨看多值。計算方式為看多者百分比減去看空者百分比。正值表示市場樂觀，負值表示市場悲觀。',
-  'CBOE Put/Call Ratio 5-Day Avg':
-    'CBOE 買/賣權比例計算方式是將買入賣權（看空）合約數量除以買入買權（看多）合約數量，並且將原始數值進行 5 日平均減少波動。比例越低，表示投資者預期市場上漲，情緒偏樂觀。',
-  'Market Momentum':
-    '市場動能指標是藉由比較S&P500指數與其125日移動平均線，計算當前價格相對於長期平均的差異。正值表示上升樂觀趨勢，負值表示下降悲觀趨勢。',
-  'VIX MA50':
-    'VIX 指數的 50 日移動平均線，反映市場對未來波動率的預期。VIX 趨勢上升表示市場預期波動加大，情緒較為悲觀；下降則表示預期波動減小，情緒較為樂觀。',
-  'Safe Haven Demand':
-    '避險需求指標衡量的是資金在股市與債市之間的流動。計算過去20日內股債報酬率的差異。正值表示資金入股市，情緒樂觀；負值表示流入債市，情緒悲觀。',
-  'Junk Bond Spread':
-    '垃圾債券殖利率與投資級債券殖利率的利差。利差越小，表示風險偏好情緒上升，投資者願意承擔更多風險；利差越大，表示避險情緒上升，市場情緒偏悲觀。',
-  "S&P 500 COT Index":
-    'S&P 500 期貨投機淨持倉指數，反映投機者與避險者之間的持倉差異。淨多頭表示市場樂觀，淨空頭表示市場悲觀。',
-  'NAAIM Exposure Index':
-    'NAAIM 投資經理人曝險指數，反映專業投資經理人對美國股市的曝險程度。數值越高，代表經理人對市場更有信心，情緒樂觀。',
 };
 
 // 新增：獲取時間單位的函數
@@ -81,7 +61,6 @@ function getTimeUnit(dates) {
 
 function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
   const indicatorName = INDICATOR_NAME_MAP[indicatorKey] || indicatorKey;
-  const indicatorDescription = INDICATOR_DESCRIPTION_MAP[indicatorKey] || '';
 
   const [historicalData, setHistoricalData] = useState([]);
 
@@ -196,7 +175,6 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
       <h3>{indicatorName}</h3>
       {historicalData.length > 0 ? (
         <>
-          <p>{indicatorDescription}</p>
           <p>最新數據: {indicator.value ? indicator.value.toFixed(2) : 'N/A'}</p>
           <p>恐懼貪婪分數: {indicator.percentileRank ? Math.round(indicator.percentileRank) : 'N/A'}</p>
           <div className="indicator-chart">

@@ -6,6 +6,8 @@ import './MarketSentimentIndex.css';
 import 'chartjs-adapter-date-fns';
 import GaugeChart from 'react-gauge-chart';
 import styled from 'styled-components';
+import { ExpandableDescription } from './Common/ExpandableDescription/ExpandableDescription';
+import PageContainer from '../components/PageContainer';
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -117,6 +119,82 @@ const gradients = [
   ['#C4501B', '#D05E2A'],  // 貪婪 - 橙紅色
   ['#A0361B', '#B13D1F']   // 極度貪婪 - 深紅褐色
 ];
+
+// 定義指標描述的映射表
+const INDICATOR_DESCRIPTION_MAP = {
+  composite: {
+    shortDescription: "分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入的機會。",
+    sections: [
+      {
+        content: "回顧歷史數據，例如在金融海嘯期間股市最低點2009年3月、疫情爆發後股市最低點2020年3月、以及聯準會2022年的連續升息期間，市場情緒綜合指數都曾經低於10、甚至接近0，回頭看都是相當好的買點。市場情緒指標能幫助投資人了解當前市場的心理狀態。過度樂觀可能預示風險，而過度悲觀則可能帶來機會。"
+      },
+    ]
+  },
+  'AAII Bull-Bear Spread': {
+    shortDescription: "AAII 投資者情緒調查，又稱美國散戶情緒指標。計算方式為看多者百分比減去看空者百分比。正值表示市場樂觀，負值表示市場悲觀。",
+    sections: [
+      {
+        content: "AAII（美國個人投資者協會）每週進行的投資者情緒調查，旨在了解個人投資者對未來市場的看法。調查結果分為三類：看多、看空和中性。淨看多值是看多者百分比減去看空者百分比，數值愈高表示市場愈樂觀，愈低則表示市場愈悲觀。這項調查被廣泛用作市場情緒的指標，因為它能反映出散戶的心理狀態，並可能預示市場的未來走勢。過度的樂觀可能預示著市場的泡沫，而過度的悲觀則可能是潛在的買入機會。"
+      },
+    ]
+  },
+  'CBOE Put/Call Ratio 5-Day Avg': {
+    shortDescription: "CBOE 買/賣權比例計算方式是將買入賣權（看空）合約數量除以買入買權（看多）合約數量。比例越低，表示投資者預期市場上漲，情緒偏樂觀。",
+    sections: [
+      {
+        content: "CBOE 買/賣權比例衡量市場情緒的方式，是透過比較個股看跌期權（Put）和看漲期權（Call）的交易量。比例越低，表示投資者預期市場上漲，情緒偏樂觀。此指標將原始數值進行 5 日平均減少波動，以平緩指標的波動。"
+      },
+    ]
+  },
+  'Market Momentum': {
+    shortDescription: "S&P500 市場動能衡量 S&P500 指數的動量。正值表示市場動能強勁，負值表示市場動能疲弱。",
+    sections: [
+      {
+        content: "動能指標是藉由比較S&P500指數與其125日移動平均線，計算當前價格相對於長期平均的差異。正值表示樂觀趨勢，負值表示悲觀趨勢。"
+      },
+    ]
+  },
+  'VIX MA50': {
+    shortDescription: "VIX 恐慌指數衡量市場對未來 30 天波動性的預期。VIX 通常被稱為「恐慌指數」，因為它在市場下跌時往往會飆升。",
+    sections: [
+      {
+        content: "VIX 的數值越高，表示市場預期未來波動性越大，投資者對市場的未來走勢感到不安。此指標計算出 VIX 指數的 50 日移動平均線，平緩指標的波動。趨勢上升表示市場預期波動加大，情緒較為悲觀；下降則表示預期波動減小，情緒較為樂觀。"
+      },
+    ]
+  },
+  'Safe Haven Demand': {
+    shortDescription: "債券需求衡量投資者對避險資產的需求。此指標數值愈高表示市場情緒愈樂觀。",
+    sections: [
+      {
+        content: "避險需求指標衡量的是資金在股市與債市之間的流動。計算過去20日內股債報酬率的差異。正值表示資金入股市，情緒樂觀；負值表示流入債市，情緒悲觀。"
+      },
+    ]
+  },
+  'Junk Bond Spread': {
+    shortDescription: "垃圾債殖利率差衡量高收益債券（又稱垃圾債券）與投資級債券之間的收益率差異。此數值愈低，表示利差縮小，表示市場情緒愈樂觀。",
+    sections: [
+      {
+        content: "垃圾債券殖利率與投資級債券殖利率的利差。利差越小，表示風險偏好情緒上升，投資者願意承擔更多風險；利差越大，表示避險情緒上升，市場情緒偏悲觀。"
+      },
+    ]
+  },
+  "S&P 500 COT Index": {
+    shortDescription: "S&P 500 期貨投機淨持倉指數，反映投機者與避險者之間的持倉差異。此數值愈高，表示市場情緒愈樂觀。",
+    sections: [
+      {
+        content: "期貨投機淨持倉指數是一個衡量 S&P 500 期貨市場中投機者的淨持倉量的指標。正值表示投機者看多，負值表示投機者看空。這個指標可以幫助投資者了解市場中投機者的情緒。"
+      },
+    ]
+  },
+  'NAAIM Exposure Index': {
+    shortDescription: "NAAIM 投資經理人曝險指數，反映專業投資經理人對美國股市的曝險程度。數值越高，代表經理人對市場更有信心，情緒樂觀。",
+    sections: [
+      {
+        content: "NAAIM 經理人曝險指數是一個衡量 NAAIM 成員的股票曝險程度的指標。正值表示經理人看多，負值表示經理人看空。這個指標可以幫助投資者了解專業經理人對市場的看法。"
+      },
+    ]
+  },
+};
 
 const MarketSentimentIndex = () => {
   const [sentimentData, setSentimentData] = useState(null);
@@ -410,6 +488,9 @@ const MarketSentimentIndex = () => {
     }
   }, [isDataLoaded]);
 
+  // 根據 activeTab 獲取描述內容
+  const currentDescription = INDICATOR_DESCRIPTION_MAP[activeTab] || INDICATOR_DESCRIPTION_MAP.composite;
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -426,17 +507,7 @@ const MarketSentimentIndex = () => {
   }
 
   return (
-    <>
-      <div className="time-range-selector">
-        <label htmlFor="timeRange">選擇期間：</label>
-        <select id="timeRange" value={selectedTimeRange} onChange={handleTimeRangeChange}>
-          {TIME_RANGES.map((range) => (
-            <option key={range.value} value={range.value}>
-              {range.label}
-            </option>
-          ))}
-        </select>
-      </div>
+    <PageContainer title="市場情緒分析">
       <div className="tabs-grid">
         <button
           className={`tab-button ${activeTab === 'composite' ? 'active' : ''}`}
@@ -456,66 +527,74 @@ const MarketSentimentIndex = () => {
           )
         ))}
       </div>
+      <div className="time-range-selector">
+        <label htmlFor="timeRange">選擇期間：</label>
+        <select id="timeRange" value={selectedTimeRange} onChange={handleTimeRangeChange}>
+          {TIME_RANGES.map((range) => (
+            <option key={range.value} value={range.value}>
+              {range.label}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="tab-content">
-        {activeTab === 'composite' && (
-          <div className="indicator-item">
-            <h3>市場情緒綜合指數</h3>
-            <div className="view-mode-selector">
-              <button
-                className={`view-mode-button ${viewMode === 'overview' ? 'active' : ''}`}
-                onClick={() => handleViewModeChange('overview')}
-              >
-                最新情緒指數
-              </button>
-              <button
-                className={`view-mode-button ${viewMode === 'timeline' ? 'active' : ''}`}
-                onClick={() => handleViewModeChange('timeline')}
-              >
-                歷史數據
-              </button>
+        {
+          activeTab === 'composite' && (
+            <div className="indicator-item">
+              <h3>市場情緒綜合指數</h3>
+              <div className="view-mode-selector">
+                <button
+                  className={`view-mode-button ${viewMode === 'overview' ? 'active' : ''}`}
+                  onClick={() => handleViewModeChange('overview')}
+                >
+                  最新情緒指數
+                </button>
+                <button
+                  className={`view-mode-button ${viewMode === 'timeline' ? 'active' : ''}`}
+                  onClick={() => handleViewModeChange('timeline')}
+                >
+                  歷史數據
+                </button>
+              </div>
+              <div className="indicator-chart-container">
+                {viewMode === 'overview' ? (
+                  <div className="gauge-chart">
+                    {renderGaugeChart()}
+                    <svg width="0" height="0">
+                      <defs>
+                        <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
+                          <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
+                          <feOffset in="blur" dx="2" dy="2" result="offsetBlur" />
+                          <feComposite in="SourceGraphic" in2="offsetBlur" operator="over" />
+                        </filter>
+                        {gradients.map((gradient, index) => (
+                          <linearGradient key={index} id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor={gradient[0]} />
+                            <stop offset="100%" stopColor={gradient[1]} />
+                          </linearGradient>
+                        ))}
+                      </defs>
+                    </svg>
+                    <div className="gauge-center-value">
+                      {Math.round(sentimentData.totalScore)}
+                    </div>
+                    <div className="gauge-labels">
+                      <span className="gauge-label gauge-label-left">極度恐懼</span>
+                      <span className="gauge-label gauge-label-right">極度貪婪</span>
+                    </div>
+                    <div className="last-update-time">
+                      最後更新時間: {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString('zh-TW')}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="indicator-chart">
+                    <Line data={chartData} options={chartOptions} />
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="indicator-chart-container">
-              {viewMode === 'overview' ? (
-                <div className="gauge-chart">
-                  {renderGaugeChart()}
-                  <svg width="0" height="0">
-                    <defs>
-                      <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
-                        <feOffset in="blur" dx="2" dy="2" result="offsetBlur" />
-                        <feComposite in="SourceGraphic" in2="offsetBlur" operator="over" />
-                      </filter>
-                      {gradients.map((gradient, index) => (
-                        <linearGradient key={index} id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor={gradient[0]} />
-                          <stop offset="100%" stopColor={gradient[1]} />
-                        </linearGradient>
-                      ))}
-                    </defs>
-                  </svg>
-                  <div className="gauge-center-value">
-                    {Math.round(sentimentData.totalScore)}
-                  </div>
-                  <div className="gauge-labels">
-                    <span className="gauge-label gauge-label-left">極度恐懼</span>
-                    <span className="gauge-label gauge-label-right">極度貪婪</span>
-                  </div>
-                  <div className="last-update-time">
-                    最後更新時間: {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString('zh-TW')}
-                  </div>
-                </div>
-              ) : (
-                <div className="indicator-chart">
-                  <Line data={chartData} options={chartOptions} />
-                </div>
-              )}
-            </div>
-            <p className="analysis-description">
-              綜合多個代表市場情緒的數據，包含AAII投資人調查、VIX指數...等等，用來衡量整體投資市場的氛圍。當數值愈接近100，代表市場極度樂觀；當數值接近0，代表市場極度悲觀。<br /><br />
-              回顧歷史數據，例如在金融海嘯期間股市最低點2009年3月、疫情爆發後股市最低點2020年3月、以及聯準會2022年的連續升息期間，市場情緒綜合指數都曾經低於10、甚至接近0，回頭看都是相當好的買點。
-            </p>
-          </div>
-        )}
+          )
+        }
         {Object.entries(indicatorsData).map(([key, indicator]) => (
           key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield' && activeTab === key && (
             <IndicatorItem
@@ -527,7 +606,13 @@ const MarketSentimentIndex = () => {
           )
         ))}
       </div>
-    </>
+      <ExpandableDescription
+        shortDescription={currentDescription.shortDescription}
+        sections={currentDescription.sections}
+        expandButtonText="了解更多"
+        collapseButtonText="收合"
+      />
+    </PageContainer>
   );
 };
 

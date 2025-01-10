@@ -177,7 +177,7 @@ function AppContent() {
                 <FaChartLine />
                 <span>樂活五線譜</span>
               </Link>
-              <Link to="/market-sentiment">
+              <Link to="/market-sentiment" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaHeartbeat />
                 <span>市場情緒分析</span>
               </Link>
@@ -223,14 +223,7 @@ function AppContent() {
 
               <Route
                 path="/market-sentiment"
-                element={
-                  <PageContainer
-                    title="市場情緒分析"
-                    description="分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入的機會。"
-                  >
-                    <MarketSentimentIndex />
-                  </PageContainer>
-                }
+                element={<MarketSentimentIndex />}
               />
               <Route
                 path="/about"
