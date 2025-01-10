@@ -39,4 +39,4 @@
   REACT_APP_API_BASE_URL = ""
 
 [dev]
-  command = "npm start" 
+  command = "npm start"
