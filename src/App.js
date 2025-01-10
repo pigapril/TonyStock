@@ -175,7 +175,7 @@ function AppContent() {
             <div className="desktop-nav-items">
               <Link to="/priceanalysis">
                 <FaChartLine />
-                <span>價格趨勢分析</span>
+                <span>樂活五線譜</span>
               </Link>
               <Link to="/market-sentiment">
                 <FaHeartbeat />

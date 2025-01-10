@@ -11,6 +11,7 @@ import { handleApiError } from '../utils/errorHandler';
 import { useMediaQuery } from 'react-responsive';
 import Turnstile from 'react-turnstile';
 import { formatPrice } from './Common/priceUtils';
+import { ExpandableDescription } from '../components/Common/ExpandableDescription/ExpandableDescription';
 
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -187,21 +188,27 @@ export function PriceAnalysis() {
         const lastPrice = prices[prices.length - 1];
         const { trendLine, tl_plus_2sd, tl_plus_sd, tl_minus_sd, tl_minus_2sd } = sdAnalysis;
         const lastTrendLine = trendLine[trendLine.length - 1];
-        const lastTlPlus2Sd = tl_plus_2sd[tl_plus_2sd.length - 1];
         const lastTlPlusSd = tl_plus_sd[tl_plus_sd.length - 1];
         const lastTlMinusSd = tl_minus_sd[tl_minus_sd.length - 1];
-        const lastTlMinus2Sd = tl_minus_2sd[tl_minus_2sd.length - 1];
+
+        // 計算趨勢線的上下2.5%範圍
+        const upperNeutralBound = lastTrendLine * 1.025;
+        const lowerNeutralBound = lastTrendLine * 0.975;
 
         let sentiment = '中性';
-        if (lastPrice >= lastTlPlus2Sd) {
+        
+        // 判斷市場情緒
+        if (lastPrice >= lastTlPlusSd) {
           sentiment = '極度樂觀';
-        } else if (lastPrice >= lastTlPlusSd) {
+        } else if (lastPrice > upperNeutralBound) {
           sentiment = '樂觀';
-        } else if (lastPrice <= lastTlMinus2Sd) {
-          sentiment = '極度悲觀';
         } else if (lastPrice <= lastTlMinusSd) {
+          sentiment = '極度悲觀';
+        } else if (lastPrice < lowerNeutralBound) {
           sentiment = '悲觀';
         }
+        // 如果在趨勢線上下2.5%範圍內，維持中性
+        
         setAnalysisResult({
           price: lastPrice.toFixed(2),
           sentiment: sentiment
@@ -252,7 +259,40 @@ export function PriceAnalysis() {
   return (
     <PageContainer
       title="樂活五線譜"
-      description="分析股價趨勢，利用股價長期均值回歸的特性，搭配標準差，當價格漲至最上緣時可能代表過度樂觀；當價格跌至最下緣時可能代表過度悲觀。當價格達到標準差的極端上下緣時，可以再搭配樂活通道，觀察價格是否突破通道的上下緣，可能代表超漲或超跌，趨勢或許將持續，可以等再次回到通道時再做買賣。"
+      description={
+        <ExpandableDescription
+          shortDescription="分析當前股價是否過度樂觀或悲觀。利用股價均值回歸的統計特性，追蹤長期趨勢、判斷股價所處位置。"
+          sections={[
+            {
+              title: "樂活五線譜",
+              type: "list",
+              content: [
+                "中間的趨勢線為長期移動平均線，是評估股價長期趨勢的基準，以此為基準，上下分別添加兩個標準差。",
+                "愈遠離中間的趨勢線，代表股價愈遠離長期平均值，回歸趨勢線的機率將逐漸增加。",
+                "當股價觸及最上緣，表示股價短期內強烈超買，市場極度樂觀，有回調的風險。",
+                "當股價觸及最下緣，表示股價短期內強烈超賣，市場極度悲觀，有反彈的機會。",
+              ],
+            },
+            {
+              title: "樂活通道",
+              type: "list",
+              content: [
+                "樂活通道是更敏感的指標，用來輔助判斷短期內的超買超賣。",
+                "當股價突破樂活通道上緣時，表示短期可能過熱。",
+                "當股價跌破樂活通道下緣時，表示短期可能過冷。",
+              ],
+            },
+            {
+              title: "兩者搭配使用",
+              type: "list",
+              content: [  
+                "當股價觸及五線譜的最上緣或是最下緣時，若同時也突破了樂活通道，可能代表趨勢的延續，可以等回到通道內再進行操作。",
+                "建議使用在指數型ETF或具有趨勢性的大型股票，搭配基本面分析，不應單獨作為買賣依據。"
+              ]
+            },
+          ]}
+        />
+      }
     >
       <div className="dashboard">
         {/* 將 stock-analysis-card 移到 chart-card 上方 */}

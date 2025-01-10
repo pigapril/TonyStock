@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;  
 }
 
@@ -314,4 +314,11 @@
 .stock-analysis-card button {
   margin-top: 15px;
   align-self: center;
+} 
+
+/* 確保描述容器不超出畫面 */
+.description-container {
+  width: 100%; /* 確保寬度為100% */
+  max-width: 100%; /* 確保不超出父容器 */
+  box-sizing: border-box; /* 包含padding和border在內 */
 } 
