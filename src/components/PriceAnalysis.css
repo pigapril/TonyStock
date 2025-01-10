@@ -314,7 +314,51 @@
 .stock-analysis-card button {
   margin-top: 15px;
   align-self: center;
-} 
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(
+    135deg,
+    #FF00FF 0%,    /* 亮紫色 */
+    #4B0082 25%,   /* 靛青色 */
+    #0000FF 50%,   /* 藍色 */
+    #00BFFF 75%,   /* 天藍色 */
+    #1E90FF 100%   /* 道奇藍 */
+  );
+  background-size: 200% 200%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 255, 0.2);
+}
+
+.stock-analysis-card button:hover {
+  background-position: right center;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 0, 255, 0.3);
+}
+
+.stock-analysis-card button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 255, 0.2);
+}
+
+/* 禁用狀態 */
+.stock-analysis-card button:disabled {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 255, 0.5) 0%,
+    rgba(75, 0, 130, 0.5) 25%,
+    rgba(0, 0, 255, 0.5) 50%,
+    rgba(0, 191, 255, 0.5) 75%,
+    rgba(30, 144, 255, 0.5) 100%
+  );
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
 
 /* 確保描述容器不超出畫面 */
 .description-container {
