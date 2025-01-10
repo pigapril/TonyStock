@@ -255,6 +255,76 @@ export function PriceAnalysis() {
       description="分析股價趨勢，利用股價長期均值回歸的特性，搭配標準差，當價格漲至最上緣時可能代表過度樂觀；當價格跌至最下緣時可能代表過度悲觀。當價格達到標準差的極端上下緣時，可以再搭配樂活通道，觀察價格是否突破通道的上下緣，可能代表超漲或超跌，趨勢或許將持續，可以等再次回到通道時再做買賣。"
     >
       <div className="dashboard">
+        {/* 將 stock-analysis-card 移到 chart-card 上方 */}
+        <div className="stock-analysis-card">
+          <form onSubmit={handleSubmit}>
+            <div className="input-group">
+              <label>股票代碼：</label>
+              <input
+                className="form-control"
+                type="text"
+                value={stockCode}
+                onChange={handleStockCodeChange}
+                placeholder="例如:2330、AAPL"
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label>查詢年數：</label>
+              <input
+                className="form-control"
+                type="text"
+                value={years}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === '' || /^[0-9０-９.．。]*$/.test(value)) {
+                    setYears(value);
+                  }
+                }}
+                placeholder="輸入年數，如 3.5"
+                required
+              />
+              {yearsError && <div className="error-message">{yearsError}</div>}
+            </div>
+            <div className="input-group">
+              <label>回測日期：</label>
+              <DatePicker
+                selected={backTestDate ? new Date(backTestDate) : null}
+                onChange={(date) => setBackTestDate(date ? date.toISOString().split('T')[0] : '')}
+                placeholderText="預設今天"
+                className="form-control"
+                dateFormat="yyyy/MM/dd"
+                isClearable
+              />
+            </div>
+            <button
+              className={`btn-primary ${loading ? 'btn-loading' : ''}`}
+              type="submit"
+              disabled={loading || !turnstileToken}
+            >
+              {loading ? '分析中' : turnstileToken ? '開始分析' : '請完成下方驗證'}
+            </button>
+            {timeoutMessage && <p>{timeoutMessage}</p>}
+            {turnstileVisible && (
+              <div className="turnstile-container">
+                <Turnstile
+                  sitekey={process.env.REACT_APP_TURNSTILE_SITE_KEY}
+                  onSuccess={handleTurnstileSuccess}
+                  onError={() => {
+                    setTurnstileToken(null);
+                    handleApiError(new Error('驗證失敗，請重試'));
+                  }}
+                  onExpire={() => {
+                    setTurnstileToken(null);
+                    handleApiError(new Error('驗證已過期，請重新驗證'));
+                  }}
+                  refreshExpired="auto"
+                />
+              </div>
+            )}
+          </form>
+        </div>
+
         {/* 主圖表區塊 */}
         <div className="chart-card">
           <div className="chart-container">
@@ -452,79 +522,6 @@ export function PriceAnalysis() {
               )}
             </div>
           </div>
-        </div>
-
-        {/* 搜尋/輸入區塊 */}
-        <div className="stock-analysis-card">
-          <form onSubmit={handleSubmit}>
-            <div className="input-group">
-              <label>股票代碼：</label>
-              <input
-                className="form-control"
-                type="text"
-                value={stockCode}
-                onChange={handleStockCodeChange}
-                placeholder="例如:2330、AAPL"
-                required
-                style={{ width: '150px' }}
-              />
-            </div>
-            <div className="input-group">
-              <label>查詢期間（年）：</label>
-              <input
-                className="form-control"
-                type="text"
-                value={years}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === '' || /^[0-9０-９.．。]*$/.test(value)) {
-                    setYears(value);
-                  }
-                }}
-                placeholder="輸入年數，如 3.5"
-                required
-                style={{ width: '150px' }}
-              />
-              {yearsError && <div className="error-message">{yearsError}</div>}
-            </div>
-            <div className="input-group">
-              <label>回測日期：</label>
-              <DatePicker
-                selected={backTestDate ? new Date(backTestDate) : null}
-                onChange={(date) => setBackTestDate(date ? date.toISOString().split('T')[0] : '')}
-                placeholderText="預設為今天"
-                className="form-control"
-                dateFormat="yyyy/MM/dd"
-                isClearable
-                style={{ width: '150px' }}
-              />
-            </div>
-            <button
-              className={`btn-primary ${loading ? 'btn-loading' : ''}`}
-              type="submit"
-              disabled={loading || !turnstileToken}
-            >
-              {loading ? '分析中' : turnstileToken ? '開始分析' : '請完成下方驗證'}
-            </button>
-            {timeoutMessage && <p>{timeoutMessage}</p>}
-            {turnstileVisible && (
-              <div className="turnstile-container">
-                <Turnstile
-                  sitekey={process.env.REACT_APP_TURNSTILE_SITE_KEY}
-                  onSuccess={handleTurnstileSuccess}
-                  onError={() => {
-                    setTurnstileToken(null);
-                    handleApiError(new Error('驗證失敗，請重試'));
-                  }}
-                  onExpire={() => {
-                    setTurnstileToken(null);
-                    handleApiError(new Error('驗證已過期，請重新驗證'));
-                  }}
-                  refreshExpired="auto"
-                />
-              </div>
-            )}
-          </form>
         </div>
       </div>
     </PageContainer>
