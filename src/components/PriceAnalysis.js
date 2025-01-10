@@ -11,7 +11,7 @@ import { handleApiError } from '../utils/errorHandler';
 import { useMediaQuery } from 'react-responsive';
 import Turnstile from 'react-turnstile';
 
-// 假設你在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
+// 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
