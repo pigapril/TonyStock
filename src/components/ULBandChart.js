@@ -200,10 +200,7 @@ const ULBandChart = ({ data }) => {
     };
 
     return (
-        <div className="chart-container" style={{ 
-            height: '400px',  // 增加容器高度
-            marginBottom: '0'  // 移除底部邊距
-        }}>
+        <div className="chart-content">
             <Line data={chartData} options={options} />
         </div>
     );

@@ -10,6 +10,7 @@ import { Analytics } from '../utils/analytics';
 import { handleApiError } from '../utils/errorHandler';
 import { useMediaQuery } from 'react-responsive';
 import Turnstile from 'react-turnstile';
+import { formatPrice } from './Common/priceUtils';
 
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -50,6 +51,11 @@ export function PriceAnalysis() {
   const [ulbandData, setUlbandData] = useState(null);
   const [turnstileToken, setTurnstileToken] = useState(null);
   const [turnstileVisible, setTurnstileVisible] = useState(true);
+  // 新增分析結果狀態
+  const [analysisResult, setAnalysisResult] = useState({
+    price: null,
+    sentiment: null
+  });
 
   // 處理股票代碼的全形/半形轉換
   const handleStockCodeChange = (e) => {
@@ -175,6 +181,32 @@ export function PriceAnalysis() {
         lowerBand,
         ma20
       });
+
+      // 計算情緒分析
+      if (prices && prices.length > 0 && sdAnalysis) {
+        const lastPrice = prices[prices.length - 1];
+        const { trendLine, tl_plus_2sd, tl_plus_sd, tl_minus_sd, tl_minus_2sd } = sdAnalysis;
+        const lastTrendLine = trendLine[trendLine.length - 1];
+        const lastTlPlus2Sd = tl_plus_2sd[tl_plus_2sd.length - 1];
+        const lastTlPlusSd = tl_plus_sd[tl_plus_sd.length - 1];
+        const lastTlMinusSd = tl_minus_sd[tl_minus_sd.length - 1];
+        const lastTlMinus2Sd = tl_minus_2sd[tl_minus_2sd.length - 1];
+
+        let sentiment = '中性';
+        if (lastPrice >= lastTlPlus2Sd) {
+          sentiment = '極度樂觀';
+        } else if (lastPrice >= lastTlPlusSd) {
+          sentiment = '樂觀';
+        } else if (lastPrice <= lastTlMinus2Sd) {
+          sentiment = '極度悲觀';
+        } else if (lastPrice <= lastTlMinusSd) {
+          sentiment = '悲觀';
+        }
+        setAnalysisResult({
+          price: lastPrice.toFixed(2),
+          sentiment: sentiment
+        });
+      }
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
         setTimeoutMessage('分析超時，請稍後重試或縮短歷史查詢期間。');
@@ -227,25 +259,44 @@ export function PriceAnalysis() {
         <div className="chart-card">
           <div className="chart-container">
             <div className="chart-header">
-              <div className="chart-title">
-                {displayedStockCode && `${displayedStockCode} 分析結果`}
-              </div>
-              <div className="chart-tabs">
-                <button
-                  className={`chart-tab ${activeChart === 'sd' ? 'active' : ''}`}
-                  onClick={() => handleChartSwitch('sd')}
-                >
-                  樂活五線譜
-                </button>
-                <button
-                  className={`chart-tab ${activeChart === 'ulband' ? 'active' : ''}`}
-                  onClick={() => handleChartSwitch('ulband')}
-                >
-                  樂活通道
-                </button>
+              <div className="analysis-result">
+                <div className="analysis-item">
+                  <span className="analysis-label">股票代碼</span>
+                  <span className="analysis-value">
+                    {displayedStockCode}
+                  </span>
+                </div>
+                <div className="analysis-item">
+                  <span className="analysis-label">股票價格</span>
+                  <span className="analysis-value">
+                    ${formatPrice(analysisResult.price)}
+                  </span>
+                </div>
+                <div className="analysis-item">
+                  <span className="analysis-label">市場情緒</span>
+                  <span className={`analysis-value sentiment-${analysisResult.sentiment}`}>
+                    {analysisResult.sentiment}
+                  </span>
+                </div>
               </div>
             </div>
             <div className="chart-content">
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
+                <div className="chart-tabs">
+                  <button
+                    className={`chart-tab ${activeChart === 'sd' ? 'active' : ''}`}
+                    onClick={() => handleChartSwitch('sd')}
+                  >
+                    樂活五線譜
+                  </button>
+                  <button
+                    className={`chart-tab ${activeChart === 'ulband' ? 'active' : ''}`}
+                    onClick={() => handleChartSwitch('ulband')}
+                  >
+                    樂活通道
+                  </button>
+                </div>
+              </div>
               {activeChart === 'sd' && chartData && (
                 <Line
                   data={chartData}

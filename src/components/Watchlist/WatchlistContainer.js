@@ -18,7 +18,7 @@ import { CategoryTabs } from './components/CategoryTabs';
 import { useToastManager } from './hooks/useToastManager';
 import { StockCard } from './components/StockCard/StockCard';
 import { ErrorBoundary } from '../Common/ErrorBoundary/ErrorBoundary';
-import { formatPrice, isNearEdge } from './utils/priceUtils';
+import { formatPrice, isNearEdge } from '../Common/priceUtils';
 import { useStocks } from './hooks/useStocks';
 
 // Watchlist 主元件

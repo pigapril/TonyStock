@@ -12,8 +12,9 @@
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  padding: 20px;
+  padding: 20px 20px 40px 20px;
   overflow: hidden;
+  height: auto;
 }
 
 .stock-analysis-card {
@@ -30,7 +31,7 @@
 /* 圖表容器樣式 */
 .chart-container {
   width: 100%;
-  height: 400px;
+  height: 450px;
   max-width: 100%;
   position: relative;
   overflow: visible;
@@ -40,15 +41,14 @@
 .chart-content {
   position: relative;
   width: 100%;
-  height: 400px;
-  padding: 10px 10px 30px 10px;
+  height: 350px;
 }
 
 /* 圖表標題和標籤樣式 */
 .chart-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 5px 10px;
   margin-top: -5px;
 }
@@ -60,10 +60,14 @@
   margin: 0;
 }
 
+/* 圖表切換按鈕樣式 */
 .chart-tabs {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
+  background-color: #f5f5f7;
+  padding: 4px;
+  border-radius: 8px;
 }
 
 .chart-tab {
@@ -71,13 +75,24 @@
   border: none;
   background: none;
   cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.3s ease;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #86868b;
+  transition: all 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+
+.chart-tab:hover {
+  color: #1d1d1f;
 }
 
 .chart-tab.active {
-  border-bottom: 2px solid #007bff;
-  color: #007bff;
+  background-color: #ffffff;
+  color: #1d1d1f;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* 表單樣式 */
@@ -168,18 +183,20 @@
 
   .chart-tabs {
     width: 100%;
-    justify-content: space-between;
+    justify-content: stretch;
+    background-color: #f5f5f7;
+    padding: 3px;
   }
 
   .chart-tab {
     flex: 1;
     text-align: center;
     padding: 8px 8px;
-    font-size: 0.9em;
+    font-size: 13px;
   }
 
   .chart-card {
-    padding: 20px 20px 50px 20px;
+    padding: 20px 20px 30px 20px;
   }
 } 
 
@@ -199,4 +216,80 @@
   color: #dc3545;
   font-size: 0.875rem;
   margin-top: 5px;
+} 
+
+/* 分析結果樣式 */
+.analysis-result {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding: 15px 20px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.analysis-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 100px;
+  max-width: 150px;
+  flex-shrink: 1;
+  align-items: center;
+}
+
+.analysis-label {
+  font-size: 0.85em;
+  color: #6c757d;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.analysis-value {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: #2c3e50;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* 情緒狀態顏色 */
+.sentiment-極度樂觀 {
+  color: #A0361B;  /* 與圖表上軌顏色一致 - 深紅褐色 */
+}
+
+.sentiment-樂觀 {
+  color: #C14C20;  /* 較淺的紅褐色 */
+}
+
+.sentiment-中性 {
+  color: #E9972D;  /* 與 MA20 顏色一致 - 橙黃色 */
+}
+
+.sentiment-悲觀 {
+  color: #1E5B3C;  /* 較淺的墨綠色 */
+}
+
+.sentiment-極度悲觀 {
+  color: #143829;  /* 與圖表下軌顏色一致 - 深墨綠色 */
+}
+
+/* 響應式設計調整 */
+@media (max-width: 768px) {
+  .analysis-result {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .analysis-item {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .analysis-value {
+    font-size: 1.2em;
+  }
 } 
