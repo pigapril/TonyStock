@@ -322,7 +322,8 @@
 
 /* 確保按鈕置中 */
 .stock-analysis-card button {
-  margin-top: 15px;
+  margin-top: 5px;
+  margin-bottom: 0px;
   align-self: center;
   padding: 10px 24px;
   font-size: 16px;
