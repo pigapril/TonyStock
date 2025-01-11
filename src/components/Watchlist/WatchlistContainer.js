@@ -20,6 +20,7 @@ import { StockCard } from './components/StockCard/StockCard';
 import { ErrorBoundary } from '../Common/ErrorBoundary/ErrorBoundary';
 import { formatPrice, isNearEdge } from '../Common/priceUtils';
 import { useStocks } from './hooks/useStocks';
+import { InfoTool } from '../Common/InfoTool/InfoTool';
 
 // Watchlist 主元件
 export function WatchlistContainer() {
@@ -273,6 +274,13 @@ export function WatchlistContainer() {
                                             >
                                                 <FaEdit />
                                             </button>
+                                            <div className="info-tool-wrapper">
+                                                <InfoTool
+                                                    content="添加股票後，將自動根據股票長期(3.5年)趨勢，計算出極度悲觀和極度樂觀價格，方便同時查看和比較不同股票價格的情緒位階"
+                                                    position="bottom-right"
+                                                    className="watchlist-infotool"
+                                                />
+                                            </div>
                                         </div>
                                         
                                         {activeTab === category.id && (

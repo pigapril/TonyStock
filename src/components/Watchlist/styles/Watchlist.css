@@ -21,7 +21,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    z-index: 10;
+    width: 100%;
 }
 
 /* 所有圓形按鈕的共用基礎樣式 */
@@ -477,6 +477,7 @@
     .search-results-container {
         max-height: 320px;
     }
+    
 }
 
 /* 新聞列表樣式 */
@@ -623,12 +624,13 @@
     max-height: 320px;
     overflow-y: auto;
     margin-top: 8px;      /* 增加與搜尋框的間距 */
+    z-index: 100;  /* 保持較低的 z-index */
 }
 
 /* 響應式調整 */
 @media (max-width: 640px) {
     .watchlist-search-area {
-        max-width: 100%; /* 在小螢幕上占滿寬度 */
+        max-width: 65%; /* 在小螢幕上占滿寬度 */
         padding: 0 px; /* 添加左右間距 */
     }
 
@@ -636,6 +638,7 @@
     .search-results-container {
         max-width: 100%;
     }
+
 }
 
 .stock-text-info {
@@ -673,4 +676,50 @@
     .stock-name-en {
         /* 移除 max-width 限制 */
     }
+}
+
+/* 調整其他可能會影響到 InfoTool 的元素 z-index */
+.category-operations {
+    position: absolute;
+    right: 16px;
+    top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.info-tool-wrapper {
+    position: absolute;
+    right: 350px;
+    top: 0;
+}
+
+/* 響應式調整 InfoTool 位置 */
+@media (max-width: 1200px) {
+    .info-tool-wrapper {
+        right: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .info-tool-wrapper {
+        right: 30px;
+    }
+}
+
+@media (max-width: 640px) {
+    .info-tool-wrapper {
+        right: 0px;
+    }
+}
+
+/* 確保搜尋結果不會蓋住 InfoTool */
+.search-results-container {
+    z-index: 100;  /* 保持較低的 z-index */
+}
+
+/* 確保對話框不會蓋住 InfoTool */
+.dialog-overlay {
+    z-index: 1000;  /* 保持較低的 z-index */
 }
