@@ -4,6 +4,7 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .chart-card {
@@ -12,7 +13,7 @@
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  padding: 20px 20px 40px 20px;
+  padding: 5px 5px 20px 20px;
   overflow: hidden;
   height: auto;
 }
@@ -211,7 +212,11 @@
   }
 
   .chart-card {
-    padding: 20px 20px 30px 20px;
+    padding: 20px 20px 10px 10px;
+  }
+
+  .dashboard {
+    margin-bottom: 20px;
   }
 } 
 
@@ -296,8 +301,8 @@
 @media (max-width: 768px) {
   .analysis-result {
     align-items: flex-start;
-    gap: 12px;
-    padding: 12px;
+    gap: 2px;
+    padding: 0px;
   }
   
   .analysis-item {
@@ -307,6 +312,11 @@
   
   .analysis-value {
     font-size: 1.2em;
+  }
+
+  .description-container {
+    margin-top: 10px;
+    padding-top: 25px;
   }
 } 
 
@@ -365,4 +375,7 @@
   width: 100%; /* 確保寬度為100% */
   max-width: 100%; /* 確保不超出父容器 */
   box-sizing: border-box; /* 包含padding和border在內 */
+  margin-top: 10px;
+  padding-top: 30px;
+  border-top: 1px solid #e5e5e5;
 } 

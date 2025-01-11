@@ -15,6 +15,9 @@ import {
   Legend,
 } from 'chart.js';
 import './IndicatorItem.css';
+import TimeRangeSelector from './Common/TimeRangeSelector/TimeRangeSelector';
+import { filterDataByTimeRange } from '../utils/timeUtils';
+import { getSentiment } from '../utils/sentimentUtils';
 
 // 添加這行來定義 API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -59,9 +62,8 @@ function getTimeUnit(dates) {
   }
 }
 
-function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
+function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeRangeChange }) {
   const indicatorName = INDICATOR_NAME_MAP[indicatorKey] || indicatorKey;
-
   const [historicalData, setHistoricalData] = useState([]);
 
   useEffect(() => {
@@ -156,8 +158,9 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
           display: true,
           text: '百分等級',
         },
-        min: 0,
-        max: 100,
+        grid: {
+          drawOnChartArea: false,
+        },
       },
     },
     plugins: {
@@ -170,13 +173,36 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
     maintainAspectRatio: false,
   };
 
+  // 計算市場情緒
+  const sentiment = indicator.percentileRank ? getSentiment(Math.round(indicator.percentileRank)) : 'N/A';
+
   return (
     <div className="indicator-item">
       <h3>{indicatorName}</h3>
       {historicalData.length > 0 ? (
         <>
-          <p>最新數據: {indicator.value ? indicator.value.toFixed(2) : 'N/A'}</p>
-          <p>恐懼貪婪分數: {indicator.percentileRank ? Math.round(indicator.percentileRank) : 'N/A'}</p>
+          <div className="analysis-result">
+            <div className="analysis-item">
+              <span className="analysis-label">最新數據</span>
+              <span className="analysis-value">
+                {indicator.value ? indicator.value.toFixed(2) : 'N/A'}
+              </span>
+            </div>
+            <div className="analysis-item">
+              <span className="analysis-label">恐懼貪婪分數</span>
+              <span className="analysis-value">
+                {indicator.percentileRank ? Math.round(indicator.percentileRank) : 'N/A'}
+              </span>
+            </div>
+            <div className="analysis-item">
+              <span className="analysis-label">市場情緒</span>
+              <span className={`analysis-value sentiment-${sentiment}`}>{sentiment}</span>
+            </div>
+          </div>
+          <TimeRangeSelector
+            selectedTimeRange={selectedTimeRange}
+            handleTimeRangeChange={handleTimeRangeChange}
+          />
           <div className="indicator-chart">
             <Line data={chartData} options={chartOptions} />
           </div>
@@ -191,44 +217,6 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange }) {
       )}
     </div>
   );
-}
-
-// 過濾數據的函數
-function filterDataByTimeRange(data, timeRange) {
-  const endDate = new Date();
-  let startDate;
-
-  switch (timeRange) {
-    case '1M':
-      startDate = new Date();
-      startDate.setMonth(endDate.getMonth() - 1);
-      break;
-    case '3M':
-      startDate = new Date();
-      startDate.setMonth(endDate.getMonth() - 3);
-      break;
-    case '6M':
-      startDate = new Date();
-      startDate.setMonth(endDate.getMonth() - 6);
-      break;
-    case '1Y':
-      startDate = new Date();
-      startDate.setFullYear(endDate.getFullYear() - 1);
-      break;
-    case '5Y':
-      startDate = new Date();
-      startDate.setFullYear(endDate.getFullYear() - 5);
-      break;
-    default:
-      startDate = null;
-      break;
-  }
-
-  if (startDate) {
-    return data.filter((item) => item.date >= startDate && item.date <= endDate);
-  } else {
-    return data;
-  }
 }
 
 export default IndicatorItem;

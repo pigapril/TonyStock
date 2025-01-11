@@ -16,3 +16,65 @@
     height: 200px; /* 在小螢幕上調整圖表高度 */
   }
 }
+
+/* 引入 analysis-result 樣式 */
+.analysis-result {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.analysis-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 100px;
+  max-width: 150px;
+  flex-shrink: 1;
+  align-items: center;
+}
+
+.analysis-label {
+  font-size: 0.85em;
+  color: #6c757d;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.analysis-value {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: #2c3e50;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* 新增情緒狀態顏色 */
+.analysis-value.sentiment-極度恐懼 {
+  color: #143829 !important; /* 深墨綠色 */
+}
+
+.analysis-value.sentiment-恐懼 {
+  color: #1E5B3C !important; /* 較淺的墨綠色 */
+}
+
+.analysis-value.sentiment-中性 {
+  color: #E9972D !important; /* 橙黃色 */
+}
+
+.analysis-value.sentiment-貪婪 {
+  color: #C14C20 !important; /* 較淺的紅褐色 */
+}
+
+.analysis-value.sentiment-極度貪婪 {
+  color: #8B0000 !important; /* 深紅色 */
+}
+
+/* 在指標項目中置中 TimeRangeSelector */
+.indicator-item .time-range-selector {
+  justify-content: center;
+  margin: 20px auto;
+  width: fit-content;
+}

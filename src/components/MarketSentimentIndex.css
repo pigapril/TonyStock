@@ -44,11 +44,6 @@
   box-sizing: border-box;
 }
 
-.time-range-selector {
-  margin-bottom: 20px;
-}
-
-
 /* 新增以下部分 */
 @media (max-width: 768px) {
   .indicator-list {
@@ -335,3 +330,75 @@
   position: relative;  /* 確保位置正確 */
   z-index: 1;  /* 確保文字在最上層 */
 }
+
+/* 在市場情緒指數頁面中置中 TimeRangeSelector */
+.indicator-item .time-range-selector {
+  justify-content: center;
+  margin: 20px auto;
+  width: fit-content;
+}
+
+/* 新增：確保 analysis-result 置中 */
+.indicator-item .analysis-result {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.view-mode-selector-container {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  background-color: #f5f5f7;
+  padding: 4px;
+  border-radius: 8px;
+  width: fit-content;
+  margin: 20px auto;
+}
+
+.view-mode-button {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #86868b;
+  transition: all 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+
+.view-mode-button:hover {
+  color: #1d1d1f;
+}
+
+.view-mode-button.active {
+  background-color: #ffffff;
+  color: #1d1d1f;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 適配移動設備 */
+@media (max-width: 768px) {
+  .view-mode-selector-container {
+    width: 100%;
+    justify-content: stretch;
+    background-color: #f5f5f7;
+    padding: 3px;
+  }
+
+  .view-mode-button {
+    flex: 1;
+    text-align: center;
+    padding: 8px 8px;
+    font-size: 13px;
+  }
+}
+

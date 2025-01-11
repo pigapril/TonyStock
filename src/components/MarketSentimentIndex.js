@@ -8,6 +8,9 @@ import GaugeChart from 'react-gauge-chart';
 import styled from 'styled-components';
 import { ExpandableDescription } from './Common/ExpandableDescription/ExpandableDescription';
 import PageContainer from '../components/PageContainer';
+import TimeRangeSelector from './Common/TimeRangeSelector/TimeRangeSelector';
+import { filterDataByTimeRange } from '../utils/timeUtils';
+import { getSentiment } from '../utils/sentimentUtils';
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -41,16 +44,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
-// 時間範圍選項
-const TIME_RANGES = [
-  { value: '1M', label: '最近1個月' },
-  { value: '3M', label: '最近3個月' },
-  { value: '6M', label: '最近6個月' },
-  { value: '1Y', label: '最近1年' },
-  { value: '5Y', label: '最近5年' },
-  { value: 'ALL', label: '全部' },
-];
 
 // 添加這行來定義 API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -247,7 +240,7 @@ const MarketSentimentIndex = () => {
       isMounted = false;
     };
   }, []);
-
+  
   useEffect(() => {
     async function fetchHistoricalData() {
       try {
@@ -281,43 +274,6 @@ const MarketSentimentIndex = () => {
       currentIndicator: INDICATOR_NAME_MAP[activeTab] || activeTab
     });
     setSelectedTimeRange(e.target.value);
-  };
-
-  const filterDataByTimeRange = (data, timeRange) => {
-    const endDate = new Date();
-    let startDate;
-
-    switch (timeRange) {
-      case '1M':
-        startDate = new Date();
-        startDate.setMonth(endDate.getMonth() - 1);
-        break;
-      case '3M':
-        startDate = new Date();
-        startDate.setMonth(endDate.getMonth() - 3);
-        break;
-      case '6M':
-        startDate = new Date();
-        startDate.setMonth(endDate.getMonth() - 6);
-        break;
-      case '1Y':
-        startDate = new Date();
-        startDate.setFullYear(endDate.getFullYear() - 1);
-        break;
-      case '5Y':
-        startDate = new Date();
-        startDate.setFullYear(endDate.getFullYear() - 5);
-        break;
-      default:
-        startDate = null;
-        break;
-    }
-
-    if (startDate) {
-      return data.filter((item) => item.date >= startDate && item.date <= endDate);
-    } else {
-      return data;
-    }
   };
 
   const filteredData = filterDataByTimeRange(historicalData, selectedTimeRange);
@@ -459,7 +415,7 @@ const MarketSentimentIndex = () => {
     setViewMode(mode);
   };
 
-  // 修改 GaugeChart 的渲染
+  // 修改 GaugeChart
   const renderGaugeChart = () => (
     <StyledGaugeChart
       id="gauge-chart"
@@ -527,35 +483,29 @@ const MarketSentimentIndex = () => {
           )
         ))}
       </div>
-      <div className="time-range-selector">
-        <label htmlFor="timeRange">選擇期間：</label>
-        <select id="timeRange" value={selectedTimeRange} onChange={handleTimeRangeChange}>
-          {TIME_RANGES.map((range) => (
-            <option key={range.value} value={range.value}>
-              {range.label}
-            </option>
-          ))}
-        </select>
-      </div>
       <div className="tab-content">
         {
           activeTab === 'composite' && (
             <div className="indicator-item">
               <h3>市場情緒綜合指數</h3>
-              <div className="view-mode-selector">
-                <button
-                  className={`view-mode-button ${viewMode === 'overview' ? 'active' : ''}`}
-                  onClick={() => handleViewModeChange('overview')}
-                >
-                  最新情緒指數
-                </button>
-                <button
-                  className={`view-mode-button ${viewMode === 'timeline' ? 'active' : ''}`}
-                  onClick={() => handleViewModeChange('timeline')}
-                >
-                  歷史數據
-                </button>
+              <div className="analysis-result">
+                <div className="analysis-item">
+                  <span className="analysis-label">恐懼貪婪分數</span>
+                  <span className="analysis-value">
+                    {sentimentData.totalScore ? Math.round(sentimentData.totalScore) : 'N/A'}
+                  </span>
+                </div>
+                <div className="analysis-item">
+                  <span className="analysis-label">市場情緒</span>
+                  <span className={`analysis-value sentiment-${getSentiment(Math.round(sentimentData.totalScore))}`}>{getSentiment(Math.round(sentimentData.totalScore))}</span>
+                </div>
               </div>
+              {viewMode === 'timeline' && (
+                <TimeRangeSelector
+                  selectedTimeRange={selectedTimeRange}
+                  handleTimeRangeChange={handleTimeRangeChange}
+                />
+              )}
               <div className="indicator-chart-container">
                 {viewMode === 'overview' ? (
                   <div className="gauge-chart">
@@ -592,6 +542,20 @@ const MarketSentimentIndex = () => {
                   </div>
                 )}
               </div>
+              <div className="view-mode-selector-container">
+                <button
+                  className={`view-mode-button ${viewMode === 'overview' ? 'active' : ''}`}
+                  onClick={() => handleViewModeChange('overview')}
+                >
+                  最新情緒指數
+                </button>
+                <button
+                  className={`view-mode-button ${viewMode === 'timeline' ? 'active' : ''}`}
+                  onClick={() => handleViewModeChange('timeline')}
+                >
+                  歷史數據
+                </button>
+              </div>
             </div>
           )
         }
@@ -602,6 +566,7 @@ const MarketSentimentIndex = () => {
               indicatorKey={key}
               indicator={indicator}
               selectedTimeRange={selectedTimeRange}
+              handleTimeRangeChange={handleTimeRangeChange}
             />
           )
         ))}
