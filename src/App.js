@@ -9,8 +9,6 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-crosshair';
 import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaBook } from 'react-icons/fa';
-import CMS from 'decap-cms-app';
-
 
 // 樣式引入
 import './App.css';
@@ -153,14 +151,12 @@ function AppContent() {
                 <span>Facebook 關鍵圖表</span>
               </a>
             </li>
-            {/* 隱藏文章連結
             <li>
               <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaBook />
                 <span>使用指南</span>
               </Link>
             </li>
-            */}
             {/* 暫時註釋掉關於本站選項
             <li>
               <Link to="/about" onClick={() => isMobile && setSidebarOpen(false)}>
@@ -206,12 +202,6 @@ function AppContent() {
                 <FaFacebook />
                 <span>Facebook 關鍵圖表</span>
               </a>
-              {/* 隱藏文章連結
-              <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
-                <FaBook />
-                <span>使用指南</span>
-              </Link>
-              */}
             </div>
 
             {/* 使用者操作和選單按鈕 */}
@@ -300,10 +290,6 @@ function App() {
   return (
     <AuthProvider>
       <DialogProvider>
-        {/* 將 CMS 路由移到這裡 */}
-        <Routes>
-          <Route path="/admin/*" element={<CMS />} />
-        </Routes>
         <AppContent />
       </DialogProvider>
     </AuthProvider>
