@@ -153,12 +153,14 @@ function AppContent() {
                 <span>Facebook 關鍵圖表</span>
               </a>
             </li>
+            {/* 隱藏文章連結
             <li>
               <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaBook />
                 <span>使用指南</span>
               </Link>
             </li>
+            */}
             {/* 暫時註釋掉關於本站選項
             <li>
               <Link to="/about" onClick={() => isMobile && setSidebarOpen(false)}>
@@ -204,6 +206,12 @@ function AppContent() {
                 <FaFacebook />
                 <span>Facebook 關鍵圖表</span>
               </a>
+              {/* 隱藏文章連結
+              <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
+                <FaBook />
+                <span>使用指南</span>
+              </Link>
+              */}
             </div>
 
             {/* 使用者操作和選單按鈕 */}
