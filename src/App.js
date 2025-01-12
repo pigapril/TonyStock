@@ -289,16 +289,12 @@ function AppContent() {
 
 // App 元件：包裹 Context
 function App() {
-  const isDevelopment = process.env.NODE_ENV === 'development';
-
   return (
     <AuthProvider>
       <DialogProvider>
         {/* 將 CMS 路由移到這裡 */}
         <Routes>
-          {isDevelopment && (
-            <Route path="/admin/*" element={<CMS />} />
-          )}
+          <Route path="/admin/*" element={<CMS />} />
         </Routes>
         <AppContent />
       </DialogProvider>
