@@ -1,0 +1,171 @@
+/* 文章詳情頁面樣式 */
+.article-detail-page {
+    max-width: 100%;
+    margin: 0 auto;
+    background: #fff;
+}
+
+.article-header {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 60px 20px 40px;
+    text-align: center;
+}
+
+.article-detail-page h1 {
+    font-size: 56px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: #1d1d1f;
+    margin: 0 0 20px;
+    line-height: 1.1;
+}
+
+.article-meta {
+    font-size: 17px;
+    color: #6e6e73;
+    margin-bottom: 40px;
+}
+
+.article-content {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    font-size: 19px;
+    line-height: 1.7;
+    color: #1d1d1f;
+}
+
+/* 文章內容樣式 */
+.article-content p {
+    margin: 1.4em 0;
+}
+
+.article-content h2 {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 1.8em 0 0.8em;
+    letter-spacing: -0.003em;
+}
+
+.article-content h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 1.5em 0 0.6em;
+}
+
+.article-content ul, 
+.article-content ol {
+    margin: 1.4em 0;
+    padding-left: 1.2em;
+}
+
+.article-content li {
+    margin: 0.6em 0;
+}
+
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 2em 0;
+}
+
+.article-content blockquote {
+    margin: 2em 0;
+    padding: 0 0 0 1.4em;
+    border-left: 3px solid #1d1d1f;
+    font-style: italic;
+    color: #6e6e73;
+}
+
+.article-content code {
+    background: #f5f5f7;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.article-content pre {
+    background: #f5f5f7;
+    padding: 1.2em;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.4em 0;
+}
+
+.article-content pre code {
+    background: none;
+    padding: 0;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .article-header {
+        padding: 40px 16px 24px;
+    }
+
+    .article-detail-page h1 {
+        font-size: 36px;
+    }
+
+    .article-meta {
+        font-size: 15px;
+        margin-bottom: 24px;
+    }
+
+    .article-content {
+        font-size: 17px;
+        padding: 0 16px 40px;
+    }
+
+    .article-content h2 {
+        font-size: 26px;
+    }
+
+    .article-content h3 {
+        font-size: 20px;
+    }
+}
+
+/* 深色模式支援 */
+@media (prefers-color-scheme: dark) {
+    .article-detail-page {
+        background: #000;
+    }
+
+    .article-detail-page h1,
+    .article-content {
+        color: #f5f5f7;
+    }
+
+    .article-meta {
+        color: #86868b;
+    }
+
+    .article-content blockquote {
+        border-left-color: #86868b;
+        color: #86868b;
+    }
+
+    .article-content code,
+    .article-content pre {
+        background: #1c1c1e;
+    }
+}
+
+/* 動畫效果 */
+.article-detail-page {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 

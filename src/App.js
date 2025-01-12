@@ -8,7 +8,9 @@ import axios from 'axios';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-crosshair';
-import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome } from 'react-icons/fa';
+import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaBook } from 'react-icons/fa';
+import CMS from 'decap-cms-app';
+
 
 // 樣式引入
 import './App.css';
@@ -31,6 +33,8 @@ import { Footer } from './components/Common/Footer';
 
 // 導入拆分後的價格標準差分析頁面
 import { PriceAnalysis } from './components/PriceAnalysis';
+import { Articles } from './pages/Articles';
+import { ArticleDetail } from './pages/ArticleDetail';
 
 // Context 和 Hooks
 import { AuthProvider } from './contexts/AuthContext';
@@ -149,6 +153,12 @@ function AppContent() {
                 <span>Facebook 關鍵圖表</span>
               </a>
             </li>
+            <li>
+              <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
+                <FaBook />
+                <span>使用指南</span>
+              </Link>
+            </li>
             {/* 暫時註釋掉關於本站選項
             <li>
               <Link to="/about" onClick={() => isMobile && setSidebarOpen(false)}>
@@ -253,6 +263,12 @@ function AppContent() {
                   )
                 }
               />
+              <Route path="/articles" element={
+                <PageContainer title="使用指南">
+                  <Articles />
+                </PageContainer>
+              } />
+              <Route path="/articles/:slug" element={<ArticleDetail />} />
             </Routes>
           </div>
         </main>
@@ -273,9 +289,17 @@ function AppContent() {
 
 // App 元件：包裹 Context
 function App() {
+  const isDevelopment = process.env.NODE_ENV === 'development';
+
   return (
     <AuthProvider>
       <DialogProvider>
+        {/* 將 CMS 路由移到這裡 */}
+        <Routes>
+          {isDevelopment && (
+            <Route path="/admin/*" element={<CMS />} />
+          )}
+        </Routes>
         <AppContent />
       </DialogProvider>
     </AuthProvider>

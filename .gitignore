@@ -13,6 +13,7 @@ Deprecated/
 
 # production
 /build
+/public/admin
 
 # misc
 .DS_Store
