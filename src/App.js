@@ -39,7 +39,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { DialogProvider } from './contexts/DialogContext';
 import { useAuth } from './hooks/useAuth';
 import { useDialog } from './hooks/useDialog';
-import { useNewFeatureNotification } from './hooks/useNewFeatureNotification';
+import { useNewFeatureNotification, FEATURES } from './hooks/useNewFeatureNotification';
 
 // 工具函數
 import { Analytics } from './utils/analytics';
@@ -60,7 +60,14 @@ const Overlay = ({ isVisible, onClick }) => (
 function AppContent() {
   const { isAuthenticated, user } = useAuth();
   const { openDialog } = useDialog();
-  const { hasNewFeature, markFeatureAsSeen } = useNewFeatureNotification();
+  const { 
+    hasNewFeature: hasNewWatchlist, 
+    markFeatureAsSeen: markWatchlistSeen 
+  } = useNewFeatureNotification(FEATURES.WATCHLIST);
+  const { 
+    hasNewFeature: hasNewArticles, 
+    markFeatureAsSeen: markArticlesSeen 
+  } = useNewFeatureNotification(FEATURES.ARTICLES);
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' });
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
@@ -73,13 +80,21 @@ function AppContent() {
     setSidebarOpen(false);
   };
 
-  // 未登入時，點「我的追蹤清單」需跳轉登入
+  // 處理追蹤清單點擊
   const handleWatchlistClick = (e) => {
     if (!user) {
       e.preventDefault();
       openDialog('auth', { returnPath: '/watchlist' });
     }
-    markFeatureAsSeen();
+    markWatchlistSeen();
+    if (isMobile) {
+      setSidebarOpen(false);
+    }
+  };
+
+  // 處理文章點擊
+  const handleArticlesClick = () => {
+    markArticlesSeen();
     if (isMobile) {
       setSidebarOpen(false);
     }
@@ -128,16 +143,16 @@ function AppContent() {
                   <FaList />
                   <span>我的追蹤清單</span>
                 </div>
-                {hasNewFeature && <span className="new-feature-badge">NEW</span>}
+                {hasNewWatchlist && <span className="new-feature-badge">NEW</span>}
               </Link>
             </li>
             <li>
-              <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
+              <Link to="/articles" onClick={handleArticlesClick}>
                 <div className="sidebar-item-content">
                   <FaChartBar />
                   <span>分析專欄</span>
                 </div>
-                {hasNewFeature && <span className="new-feature-badge">NEW</span>}
+                {hasNewArticles && <span className="new-feature-badge">NEW</span>}
               </Link>
             </li>
             <li>
@@ -177,12 +192,12 @@ function AppContent() {
               <Link to="/watchlist" onClick={handleWatchlistClick}>
                 <FaList />
                 <span>我的追蹤清單</span>
-                {hasNewFeature && <span className="new-feature-badge">NEW</span>}
+                {hasNewWatchlist && <span className="new-feature-badge">NEW</span>}
               </Link>
-              <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
+              <Link to="/articles" onClick={handleArticlesClick}>
                 <FaChartBar />
                 <span>分析專欄</span>
-                {hasNewFeature && <span className="new-feature-badge">NEW</span>}
+                {hasNewArticles && <span className="new-feature-badge">NEW</span>}
               </Link>
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
@@ -197,7 +212,7 @@ function AppContent() {
               {isMobile && (
                 <div className="menu-toggle-wrapper">
                   <FaBars className="menu-toggle" onClick={toggleSidebar} />
-                  {hasNewFeature && <span className="notification-dot" />}
+                  {hasNewWatchlist && <span className="notification-dot" />}
                 </div>
               )}
             </div>

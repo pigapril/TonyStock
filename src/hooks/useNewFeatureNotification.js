@@ -1,9 +1,15 @@
 import { useState, useEffect } from 'react';
 
+// 定義不同功能的 ID
+const FEATURES = {
+  WATCHLIST: 'watchlist',
+  ARTICLES: 'articles'
+};
+
 // 控制是否啟用新功能標記的常數
 const FEATURE_ENABLED = true; // 你可以在這裡控制開關
 
-export function useNewFeatureNotification() {
+export function useNewFeatureNotification(featureId) {
   const [hasNewFeature, setHasNewFeature] = useState(false);
   
   useEffect(() => {
@@ -13,23 +19,22 @@ export function useNewFeatureNotification() {
       return;
     }
 
-    // 檢查本地儲存是否已經看過新功能
-    const hasSeenNewFeature = localStorage.getItem('hasSeenWatchlistFeature');
+    // 檢查特定功能是否已經看過
+    const hasSeenFeature = localStorage.getItem(`hasSeenFeature_${featureId}`);
     
-    // 如果沒看過，顯示新功能標記
-    if (!hasSeenNewFeature) {
+    if (!hasSeenFeature) {
       setHasNewFeature(true);
     }
-  }, []);
+  }, [featureId]);
 
   const markFeatureAsSeen = () => {
-    localStorage.setItem('hasSeenWatchlistFeature', 'true');
+    localStorage.setItem(`hasSeenFeature_${featureId}`, 'true');
     setHasNewFeature(false);
   };
 
-  // 新增重置功能（用於測試）
+  // 重置特定功能的狀態（用於測試）
   const resetFeatureSeen = () => {
-    localStorage.removeItem('hasSeenWatchlistFeature');
+    localStorage.removeItem(`hasSeenFeature_${featureId}`);
     setHasNewFeature(FEATURE_ENABLED);
   };
 
@@ -38,4 +43,7 @@ export function useNewFeatureNotification() {
     markFeatureAsSeen,
     resetFeatureSeen // 匯出重置功能
   };
-} 
+}
+
+// 導出功能 ID 常數
+export { FEATURES }; 
