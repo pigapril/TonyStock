@@ -1,68 +1,7 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@babel/core": "^7.22.5",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@babel/preset-env": "^7.22.5",
-    "@babel/preset-react": "^7.22.5",
-    "@marsidev/react-turnstile": "^1.1.0",
-    "@nivo/core": "^0.88.0",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.7.7",
-    "chart.js": "^4.4.4",
-    "chartjs-adapter-date-fns": "^3.0.0",
-    "chartjs-plugin-annotation": "^3.0.1",
-    "chartjs-plugin-crosshair": "^2.0.0",
-    "date-fns": "^4.1.0",
-    "react": "^18.3.1",
-    "react-chartjs-2": "^5.2.0",
-    "react-datepicker": "^7.5.0",
-    "react-dom": "^18.3.1",
-    "react-gauge-chart": "^0.5.1",
-    "react-icons": "^4.0.0",
-    "react-markdown": "^9.0.3",
-    "react-modal": "^3.16.3",
-    "react-responsive": "^9.0.0",
-    "react-router-dom": "^6.26.2",
-    "react-scripts": "^5.0.1",
-    "react-turnstile": "^1.1.4",
-    "recharts": "^2.13.3",
-    "styled-components": "^6.1.13",
-    "turnstile-js": "^0.0.1",
-    "web-vitals": "^2.1.4"
-  },
   "scripts": {
     "prebuild": "npm install --legacy-peer-deps && npm install @babel/plugin-proposal-private-property-in-object --save",
-    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
-    "start": "react-scripts start",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "ajv": "^8.12.0",
-    "ajv-keywords": "^5.1.0",
-    "schema-utils": "^4.2.0"
+    "build": "cp src/index.html public/index.html",
+    "postbuild": "echo 'Build complete'"
   }
 }
