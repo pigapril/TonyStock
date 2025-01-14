@@ -132,14 +132,10 @@ function AppContent() {
               </Link>
             </li>
             <li>
-              <a
-                href="https://vocus.cc/salon/daily_chart"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaChartBar />
-                <span>關鍵圖表</span>
-              </a>
+                <span>分析專欄</span>
+              </Link>
             </li>
             <li>
               <a
@@ -151,20 +147,6 @@ function AppContent() {
                 <span>Facebook 關鍵圖表</span>
               </a>
             </li>
-            <li>
-              <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
-                <FaBook />
-                <span>使用指南</span>
-              </Link>
-            </li>
-            {/* 暫時註釋掉關於本站選項
-            <li>
-              <Link to="/about" onClick={() => isMobile && setSidebarOpen(false)}>
-                <FaInfoCircle />
-                <span>關於本站</span>
-              </Link>
-            </li>
-            */}
           </ul>
         </nav>
 
@@ -194,10 +176,10 @@ function AppContent() {
                 <span>我的追蹤清單</span>
                 {hasNewFeature && <span className="new-feature-badge">NEW</span>}
               </Link>
-              <a href="https://vocus.cc/salon/daily_chart" target="_blank" rel="noopener noreferrer">
+              <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaChartBar />
-                <span>關鍵圖表</span>
-              </a>
+                <span>分析專欄</span>
+              </Link>
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
                 <span>Facebook 關鍵圖表</span>
@@ -262,7 +244,7 @@ function AppContent() {
                 }
               />
               <Route path="/articles" element={
-                <PageContainer title="使用指南">
+                <PageContainer title="分析專欄">
                   <Articles />
                 </PageContainer>
               } />

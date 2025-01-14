@@ -20,6 +20,7 @@ export const Footer = () => {
           <div className="footer-section">
             <h3>其他資源</h3>
             <ul>
+              <li><Link to="/articles">分析專欄</Link></li>
               <li>
                 <a href="https://vocus.cc/salon/daily_chart" 
                    target="_blank" 

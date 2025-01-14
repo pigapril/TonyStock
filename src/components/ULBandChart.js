@@ -25,7 +25,7 @@ const ULBandChart = ({ data }) => {
         labels: data.dates,
         datasets: [
             {
-                label: '上軌',
+                label: '上緣',
                 data: data.upperBand,
                 borderColor: '#A0361B',  // 極度貪婪 - 深紅褐色
                 borderWidth: 1,
@@ -49,7 +49,7 @@ const ULBandChart = ({ data }) => {
                 pointRadius: 0
             },
             {
-                label: '下軌',
+                label: '下緣',
                 data: data.lowerBand,
                 borderColor: '#143829',  // 極度恐懼 - 深墨綠色
                 borderWidth: 1,
@@ -87,7 +87,7 @@ const ULBandChart = ({ data }) => {
                         const titleLines = tooltipModel.title || [];
 
                         // 定義想要顯示的數據集標籤順序
-                        const desiredLabels = ['上軌', 'MA20', '價格', '下軌'];
+                        const desiredLabels = ['上緣', 'MA20', '價格', '下緣'];
 
                         // 過濾並排序數據點
                         const sortedItems = tooltipModel.dataPoints
