@@ -1,40 +1,9 @@
 [build]
-  command = "SKIP_PREFLIGHT_CHECK=true CI=false npm run build"
-  publish = "build"
+  # 移除 build 指令
+  # command = "SKIP_PREFLIGHT_CHECK=true CI=false npm run build"
+  publish = "public" # 設定發佈目錄為 public
 
-[build.environment]
-  NODE_VERSION = "18.16.0"
-  NPM_VERSION = "9.5.1"
-  CI = "false"
-
-# 保留 Netlify 子域名重定向
-[[redirects]]
-  from = "/*"
-  to = "https://sentimentinsideout.com/:splat"
-  status = 301
-  force = true
-  conditions = {Host = ["niku-stock.netlify.app"]}
-
-# API 代理
-[[redirects]]
-  from = "/api/*"
-  to = "https://stockdatabase.publicvm.com/api/:splat"
-  status = 200
-  force = true
-
-# SPA 回退路由
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = false
-
-[context.production.environment]
-  REACT_APP_API_BASE_URL = ""
-
-[context.deploy-preview.environment]
-  REACT_APP_API_BASE_URL = ""
-
-[context.branch-deploy.environment]
-  REACT_APP_API_BASE_URL = ""
-  
