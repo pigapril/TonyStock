@@ -1,7 +1,6 @@
 [build]
-  # 移除 build 指令
-  # command = "SKIP_PREFLIGHT_CHECK=true CI=false npm run build"
-  publish = "public" # 設定發佈目錄為 public
+  command = "npm run build"
+  publish = "public"
 
 [[redirects]]
   from = "/*"
