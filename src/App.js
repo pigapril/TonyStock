@@ -133,8 +133,11 @@ function AppContent() {
             </li>
             <li>
               <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
-                <FaChartBar />
-                <span>分析專欄</span>
+                <div className="sidebar-item-content">
+                  <FaChartBar />
+                  <span>分析專欄</span>
+                </div>
+                {hasNewFeature && <span className="new-feature-badge">NEW</span>}
               </Link>
             </li>
             <li>
@@ -179,6 +182,7 @@ function AppContent() {
               <Link to="/articles" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaChartBar />
                 <span>分析專欄</span>
+                {hasNewFeature && <span className="new-feature-badge">NEW</span>}
               </Link>
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
