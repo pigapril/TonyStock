@@ -1,8 +1,0 @@
-# 處理 niku-stock.netlify.app 的重定向
-https://niku-stock.netlify.app/* https://sentimentinsideout.com/:splat 301!
-
-# API 代理
-/api/* https://stockdatabase.publicvm.com/api/:splat 200
-
-# SPA 回退路由
-/* /index.html 200 
