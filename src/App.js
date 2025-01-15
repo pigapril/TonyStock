@@ -1,6 +1,6 @@
 // React 相關
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, Route, Routes, Navigate } from 'react-router-dom';
+import { Link, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 
 // 第三方庫
@@ -8,7 +8,7 @@ import axios from 'axios';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-crosshair';
-import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaBook } from 'react-icons/fa';
+import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaBook, FaPiggyBank } from 'react-icons/fa';
 
 // 樣式引入
 import './App.css';
@@ -70,6 +70,7 @@ function AppContent() {
     markFeatureAsSeen: markArticlesSeen 
   } = useNewFeatureNotification(FEATURES.ARTICLES);
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' });
+  const location = useLocation();
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
@@ -113,6 +114,11 @@ function AppContent() {
     });
   }, []);
 
+  // 每次路由改變時滾動到頂部
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <PageViewTracker />
@@ -120,25 +126,25 @@ function AppContent() {
         {/* 側邊欄區塊 */}
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
           <ul>
-            <li>
+            <li className="sidebar-item-1">
               <Link to="/" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaHome />
                 <span>首頁</span>
               </Link>
             </li>
-            <li>
+            <li className="sidebar-item-2">
               <Link to="/priceanalysis" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaChartLine />
                 <span>樂活五線譜</span>
               </Link>
             </li>
-            <li>
+            <li className="sidebar-item-3">
               <Link to="/market-sentiment" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaHeartbeat />
                 <span>市場情緒分析</span>
               </Link>
             </li>
-            <li>
+            <li className="sidebar-item-4">
               <Link to="/watchlist" onClick={handleWatchlistClick}>
                 <div className="sidebar-item-content">
                   <FaList />
@@ -147,7 +153,7 @@ function AppContent() {
                 {hasNewWatchlist && <span className="new-feature-badge">NEW</span>}
               </Link>
             </li>
-            <li>
+            <li className="sidebar-item-5">
               <Link to="/articles" onClick={handleArticlesClick}>
                 <div className="sidebar-item-content">
                   <FaChartBar />
@@ -156,7 +162,13 @@ function AppContent() {
                 {hasNewArticles && <span className="new-feature-badge">NEW</span>}
               </Link>
             </li>
-            <li>
+            <li className="sidebar-item-6">
+              <Link to="/sponsor-us" onClick={() => isMobile && setSidebarOpen(false)}>
+                <FaPiggyBank />
+                <span>小豬撲滿</span>
+              </Link>
+            </li>
+            <li className="sidebar-item-7">
               <a
                 href="https://www.facebook.com/profile.php?id=61565751412240"
                 target="_blank"
@@ -199,6 +211,10 @@ function AppContent() {
                 <FaChartBar />
                 <span>分析專欄</span>
                 {hasNewArticles && <span className="new-feature-badge">NEW</span>}
+              </Link>
+              <Link to="/sponsor-us">
+                <FaPiggyBank />
+                <span>小豬撲滿</span>
               </Link>
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
