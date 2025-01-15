@@ -43,6 +43,7 @@ export const Footer = () => {
             <ul>
               <li><Link to="/about">關於本站</Link></li>
               <li><Link to="/legal">隱私權政策與服務條款</Link></li>
+              <li><Link to="/sponsor-us">小豬撲滿</Link></li>
             </ul>
           </div>
         </div>

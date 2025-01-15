@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { FaEnvelope } from 'react-icons/fa';
 import aboutImage from '../assets/images/aboutme.jpg';
 import './About.css';
@@ -13,7 +12,7 @@ export const About = () => {
         </div>
         
         <div className="about-content">
-          <h1 className="about-title">關於 Sentiment Inside Out</h1>
+          <h1 className="about-title">市場情緒分析平台</h1>
           
           <div className="about-text">
             <section className="about-section">

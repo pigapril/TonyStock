@@ -33,6 +33,7 @@ import { Footer } from './components/Common/Footer';
 import { PriceAnalysis } from './components/PriceAnalysis';
 import { Articles } from './pages/Articles';
 import { ArticleDetail } from './pages/ArticleDetail';
+import { SponsorUs } from './pages/SponsorUs';
 
 // Context 和 Hooks
 import { AuthProvider } from './contexts/AuthContext';
@@ -268,6 +269,11 @@ function AppContent() {
                 </PageContainer>
               } />
               <Route path="/articles/:slug" element={<ArticleDetail />} />
+              <Route path="/sponsor-us" element={
+                  <PageContainer>
+                    <SponsorUs />
+                  </PageContainer>
+              } />
             </Routes>
           </div>
         </main>
