@@ -94,7 +94,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 320px;
+    width: 340px;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -126,11 +126,11 @@
 }
   
 .donation-card.expanded img {
-    max-width: 60%;
+    max-width: 85%;
     max-height: none;
     width: auto;
     height: auto;
-    margin-top: 10px;
+    margin-top: 0px;
 }
   
 .donation-card h3 {
