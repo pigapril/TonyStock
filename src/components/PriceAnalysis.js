@@ -533,7 +533,15 @@ export function PriceAnalysis() {
 
       {/* 將 ExpandableDescription 移到 dashboard 下方 */}
       <ExpandableDescription
-        shortDescription="分析當前股價是否過度樂觀或悲觀。利用股價均值回歸的統計特性，追蹤長期趨勢、判斷股價所處位置。"
+        shortDescription={
+          <>
+            分析當前股價是否過度樂觀或悲觀。利用股價均值回歸的統計特性，追蹤長期趨勢、判斷股價所處位置。<br />
+            詳細使用方式請參考：
+            <a href="https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92" target="_blank" rel="noopener noreferrer">
+              用樂活五線譜分析價格趨勢與情緒
+            </a>
+          </>
+        }
         sections={[
           {
             title: "樂活五線譜",
