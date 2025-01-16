@@ -606,7 +606,7 @@ body {
     align-items: center;
     gap: 20px;
     margin-right: auto;
-    margin-left: 20px;
+    margin-left: auto;
   }
 
   /* 隱藏漢堡選單按鈕 */
@@ -666,15 +666,7 @@ body {
   height: 60px;  /* 增加導航列高度 */
 }
 
-/* 桌面版顯示方式 */
-@media (min-width: 1025px) {
-  .desktop-nav-items {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-left: 40px;  /* 增加與 logo 的間距 */
-  }
-}
+
 
 /* 響應式設計調整 */
 @media (max-width: 1024px) {
