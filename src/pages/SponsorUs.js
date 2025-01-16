@@ -23,7 +23,7 @@ const SponsorUs = () => {
       description: (
         <>
           <a href="https://service.jkopay.com/r/transfer?j=Transfer:900112965" target="_blank" rel="noopener noreferrer" style={{display: 'inline'}}>點此</a>
-          開啟街口支付，或是掃描下方 QR Code
+          開啟街口，或用街口掃描下方 QR Code
         </>
       ),
     },
@@ -31,7 +31,7 @@ const SponsorUs = () => {
       name: 'Line Pay (iPass Money)',
       logo: linepay_logo, // Line Pay Logo 圖片路徑
       image: linepay_qrcode, // Line Pay QR Code 圖片路徑
-      description: '掃描下方 QR Code',
+      description: '用 Line Pay 掃描下方 QR Code',
     },
     {
       name: 'Richart (台新銀行)',
@@ -40,7 +40,7 @@ const SponsorUs = () => {
       description: (
         <>
           <a href="https://mobile.richart.tw/TSDIB_RichartWeb/RC04/RC040300?token=8E0E498D2E4392B5DD6EB5D452677114" target="_blank" rel="noopener noreferrer" style={{display: 'inline'}}>點此</a>
-          開啟 Richart，或是掃描下方 QR Code
+          開啟 Richart，或是掃描下方 QR Code 自動帶入帳號資訊，也可以手動輸入底下帳戶資訊
         </>
       ), // 您可以根據實際情況修改描述
     },
@@ -48,7 +48,7 @@ const SponsorUs = () => {
       name: '國泰世華銀行',
       logo: cathay_logo, // cathay Logo 圖片路徑 (假設您有)
       image: cathay_qrcode, // cathay QR Code 圖片路徑 (假設您有)
-      description: '掃描下方 QRcode。',
+      description: '用銀行 App 掃描下方 QRcode 可以自動帶入，或是手動輸入底下帳戶資訊',
     },
     // 可以繼續添加其他的收款方式
   ];
@@ -110,12 +110,13 @@ const SponsorUs = () => {
         <div className="text-description-section">
           <h2>一起幫助更多人</h2>
           <p>
-            Sentiment Inside Out 網站的後台維護、工具和內容創作都是由我這個一人團隊打造的，<br></br>
-            我希望藉由分享這些免費、簡單的工具，能幫助更多人在投資上獲得超越大盤的回報。<br></br>
-            但要維持網站的運作，每一天都有一定的費用支出，長期下來其實也是不小的開銷。<br></br>
-            因此我想誠摯地邀請你/妳，一起和我幫助更多人，讓這個網站能繼續營運下去;<br></br>
-            或者就當作是請我喝個咖啡、吃個飯，我也會非常感激。<br></br>
-            不論有無贊助，都祝福你/妳投資順利，一切都會更好！
+            Sentiment Inside Out 網站的建置、投資工具和內容創作、防範網路攻擊...等等，<br></br>
+            背後其實只有一個人在維護。<br></br><br></br>
+            我希望藉由分享這些免費、簡單的工具，<br></br>幫助更多人在投資上獲得超越大盤的回報。<br></br><br></br>
+            但要維持網站的運作，<br></br>每一天都要付出一定的費用和時間，<br></br>長期下來其實也是不小的負擔。<br></br><br></br>
+            因此我想誠摯地邀請你/妳，<br></br>一起和我幫助更多人，<br></br>讓這個網站能繼續營運下去;<br></br>
+            或者就當作是請我喝個咖啡、吃個飯，<br></br>我也會非常感激。<br></br><br></br>
+            不論有無贊助，<br></br>都祝福你/妳投資順利、一切都更好！
           </p>
         </div>
 
