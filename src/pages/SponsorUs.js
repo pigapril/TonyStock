@@ -9,6 +9,7 @@ import richart_qrcode from '../assets/images/sponsor-us/richart_qrcode.png'; // 
 import richart_logo from '../assets/images/sponsor-us/richart_logo.png';   // 引入 Richart Logo (假設您有)
 import cathay_qrcode from '../assets/images/sponsor-us/cathay_qrcode.jpg';
 import cathay_logo from '../assets/images/sponsor-us/cathay_logo.jpg';
+import { Helmet } from 'react-helmet-async';
 
 const SponsorUs = () => {
   const [expandedCard, setExpandedCard] = useState(null);
@@ -100,6 +101,17 @@ const SponsorUs = () => {
 
   return (
     <div className="sponsor-us-page">
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "贊助我們",
+            "description": "有你/妳的幫助，網站將能持續運作、提供簡單實用的投資工具，造福更多人。",
+            "url": "https://sentimentinsideout.com/sponsor-us"
+          })}
+        </script>
+      </Helmet>
       <div className="sponsor-us-container">
         {/* 主要圖片區塊 */}
         <div className="main-image-section">
@@ -108,7 +120,7 @@ const SponsorUs = () => {
 
         {/* 文字說明區塊 */}
         <div className="text-description-section">
-          <h2>一起幫助更多人</h2>
+          <h1>贊助網站，一起幫助更多人</h1>
           <p>
             Sentiment Inside Out 網站的建置、投資工具和內容創作、防範網路攻擊...等等，<br></br>
             背後其實只有一個人在維護。<br></br><br></br>

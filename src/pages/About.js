@@ -2,17 +2,29 @@ import React from 'react';
 import { FaEnvelope } from 'react-icons/fa';
 import aboutImage from '../assets/images/aboutme.jpg';
 import './About.css';
+import { Helmet } from 'react-helmet-async';
 
 export const About = () => {
   return (
     <div className="about-page">
+        <Helmet>
+            <script type="application/ld+json">
+                {JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "AboutPage",
+                    "name": "關於 Sentiment Inside Out",
+                    "description": "了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化爲重要的投資指標，幫助大家克服自身的恐懼與貪婪心態。",
+                    "url": "https://sentimentinsideout.com/about"
+                })}
+            </script>
+        </Helmet>
       <div className="about-container">
         <div className="about-image">
           <img src={aboutImage} alt="About Sentiment Inside Out" />
         </div>
         
         <div className="about-content">
-          <h1 className="about-title">市場情緒分析平台</h1>
+          <h1 className="about-title">關於 Sentiment Inside Out</h1>
           
           <div className="about-text">
             <section className="about-section">

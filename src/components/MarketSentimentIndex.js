@@ -11,6 +11,7 @@ import PageContainer from '../components/PageContainer';
 import TimeRangeSelector from './Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../utils/timeUtils';
 import { getSentiment } from '../utils/sentimentUtils';
+import { Helmet } from 'react-helmet-async';
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -472,7 +473,24 @@ const MarketSentimentIndex = () => {
   }
 
   return (
-    <PageContainer title="市場情緒分析">
+    <PageContainer>
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "市場情緒分析",
+            "description": "即時追蹤市場情緒，避免追高殺低。提供多個市場情緒指標，幫助投資人判斷當前市場情緒是恐懼還是貪婪。",
+            "url": "https://sentimentinsideout.com/market-sentiment",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://sentimentinsideout.com/market-sentiment?timeRange={timeRange}&indicator={indicator}",
+              "query-input": "required name=timeRange,indicator"
+            }
+          })}
+        </script>
+      </Helmet>
+      <h1>市場情緒分析</h1>
       <div className="tabs-grid">
         <button
           className={`tab-button ${activeTab === 'composite' ? 'active' : ''}`}

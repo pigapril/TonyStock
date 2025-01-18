@@ -239,22 +239,28 @@ function AppContent() {
           <div className="content-area">
             <Routes>
               <Route path="/" element={
-                <PageContainer>
+                <PageContainer title="首頁" description="市場情緒追蹤平台。">
                   <Home />
                 </PageContainer>
               } />
 
               {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
-              <Route path="/priceanalysis" element={<PriceAnalysis />} />
+              <Route path="/priceanalysis" element={
+                <PageContainer title="樂活五線譜" description="分析股價的長期趨勢，判斷價格高低點。">
+                  <PriceAnalysis />
+                </PageContainer>
+              } />
 
               <Route
                 path="/market-sentiment"
-                element={<MarketSentimentIndex />}
-              />
+                element={<PageContainer title="市場情緒分析" description="即時追蹤市場情緒指標，克服恐懼與貪婪。">
+                  <MarketSentimentIndex />
+                </PageContainer>
+              } />
               <Route
                 path="/about"
                 element={
-                  <PageContainer>
+                  <PageContainer title="關於本站" description="了解 Sentiment Inside Out 的創立理念和目標。">
                     <About />
                   </PageContainer>
                 }
@@ -262,7 +268,7 @@ function AppContent() {
               <Route
                 path="/legal"
                 element={
-                  <PageContainer>
+                  <PageContainer title="法律聲明" description="網站使用條款和隱私權政策。">
                     <Legal />
                   </PageContainer>
                 }
@@ -271,7 +277,7 @@ function AppContent() {
                 path="/watchlist"
                 element={
                   isAuthenticated ? (
-                    <PageContainer title="我的追蹤清單">
+                    <PageContainer title="我的追蹤清單" description="追蹤您感興趣的股票，快速掌握多個標的價格情緒。">
                       <WatchlistContainer />
                     </PageContainer>
                   ) : (
@@ -280,15 +286,15 @@ function AppContent() {
                 }
               />
               <Route path="/articles" element={
-                <PageContainer title="分析專欄">
+                <PageContainer title="分析專欄" description="分析市場情緒和投資策略。">
                   <Articles />
                 </PageContainer>
               } />
               <Route path="/articles/:slug" element={<ArticleDetail />} />
               <Route path="/sponsor-us" element={
-                  <PageContainer>
-                    <SponsorUs />
-                  </PageContainer>
+                <PageContainer title="贊助網站" description="支持 Sentiment Inside Out 的發展，一起幫助更多人。">
+                  <SponsorUs />
+                </PageContainer>
               } />
             </Routes>
           </div>

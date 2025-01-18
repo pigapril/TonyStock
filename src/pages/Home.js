@@ -4,6 +4,7 @@ import { FaChartLine, FaList, FaHeartbeat, FaChevronDown } from 'react-icons/fa'
 import './Home.css';
 import { useDialog } from '../hooks/useDialog';
 import { useAuth } from '../hooks/useAuth';
+import { Helmet } from 'react-helmet-async';
 
 export const Home = () => {
   const { openDialog } = useDialog();
@@ -11,6 +12,17 @@ export const Home = () => {
 
   return (
     <div className="home-page">
+        <Helmet>
+            <script type="application/ld+json">
+                {JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "WebSite",
+                    "name": "Sentiment Inside Out",
+                    "description": "用客觀數據，判斷市場當前情緒是恐懼還是貪婪，克服人性弱點。提供價格趨勢分析、我的追蹤清單、市場情緒指標等工具。",
+                    "url": "https://sentimentinsideout.com/"
+                })}
+            </script>
+        </Helmet>
       <div className="home-container">
         {/* Hero Section */}
         <section className="hero-section">

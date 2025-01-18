@@ -12,6 +12,7 @@ import { useMediaQuery } from 'react-responsive';
 import Turnstile from 'react-turnstile';
 import { formatPrice } from './Common/priceUtils';
 import { ExpandableDescription } from '../components/Common/ExpandableDescription/ExpandableDescription';
+import { Helmet } from 'react-helmet-async';
 
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -257,10 +258,28 @@ export function PriceAnalysis() {
   }, []);
 
   return (
-    <PageContainer
-      title="樂活五線譜"
-    >
+    <PageContainer>
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "樂活五線譜",
+            "description": "利用標準差分析股價趨勢，判斷市場情緒。分析當前股價是否過度樂觀或悲觀。利用股價均值回歸的統計特性，追蹤長期趨勢、判斷股價所處位置。",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "url": "https://sentimentinsideout.com/priceanalysis",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://sentimentinsideout.com/priceanalysis?stockCode={stockCode}&years={years}&backTestDate={backTestDate}",
+              "query-input": "required name=stockCode,years,backTestDate"
+            }
+          })}
+        </script>
+      </Helmet>
+      <h1>樂活五線譜</h1>
       <div className="dashboard">
+        
         {/* 將 stock-analysis-card 移到 chart-card 上方 */}
         <div className="stock-analysis-card">
           <form onSubmit={handleSubmit}>
@@ -536,7 +555,7 @@ export function PriceAnalysis() {
         shortDescription={
           <>
             分析當前股價是否過度樂觀或悲觀。利用股價均值回歸的統計特性，追蹤長期趨勢、判斷股價所處位置。<br />
-            詳細使用方式請參考：
+            詳細使用方式請參考文章：
             <a href="https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92" target="_blank" rel="noopener noreferrer">
               用樂活五線譜分析價格趨勢與情緒
             </a>

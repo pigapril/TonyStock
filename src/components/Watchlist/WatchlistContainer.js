@@ -21,6 +21,7 @@ import { ErrorBoundary } from '../Common/ErrorBoundary/ErrorBoundary';
 import { formatPrice, isNearEdge } from '../Common/priceUtils';
 import { useStocks } from './hooks/useStocks';
 import { InfoTool } from '../Common/InfoTool/InfoTool';
+import { Helmet } from 'react-helmet-async';
 
 // Watchlist 主元件
 export function WatchlistContainer() {
@@ -230,7 +231,24 @@ export function WatchlistContainer() {
                 loadCategories();
             }}
         >
+            <Helmet>
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "WebPage",
+                        "name": "我的追蹤清單",
+                        "description": "追蹤您感興趣的股票，掌握價格情緒位階。方便同時查看多個股票在長期趨勢之下的價格位階，避免買在高點、賣在低點。",
+                        "url": "https://sentimentinsideout.com/watchlist",
+                        "potentialAction": {
+                            "@type": "SearchAction",
+                            "target": "https://sentimentinsideout.com/watchlist?category={category}&stock={stock}",
+                            "query-input": "required name=category,stock"
+                        }
+                    })}
+                </script>
+            </Helmet>
             <div className="watchlist-container">
+                <h1>我的追蹤清單</h1>
                 {error && (
                     <div className="error-message">
                         {error}
