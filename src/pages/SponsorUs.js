@@ -17,40 +17,40 @@ const SponsorUs = () => {
   const cardRefs = useRef([]); // 使用 useRef 來儲存卡片的 ref
 
   const donationMethods = [
-    {
-      name: '街口支付',
-      logo: jko_logo,
-      image: jko_qrcode,
-      description: (
-        <>
-          <a href="https://service.jkopay.com/r/transfer?j=Transfer:900112965" target="_blank" rel="noopener noreferrer" style={{display: 'inline'}}>點此</a>
-          開啟街口，或用街口掃描下方 QR Code
-        </>
-      ),
-    },
-    {
-      name: 'Line Pay (iPass Money)',
-      logo: linepay_logo, // Line Pay Logo 圖片路徑
-      image: linepay_qrcode, // Line Pay QR Code 圖片路徑
-      description: '用 Line Pay 掃描下方 QR Code',
-    },
-    {
-      name: 'Richart (台新銀行)',
-      logo: richart_logo, // Richart Logo 圖片路徑 (假設您有)
-      image: richart_qrcode, // Richart QR Code 圖片路徑 (假設您有)
-      description: (
-        <>
-          <a href="https://mobile.richart.tw/TSDIB_RichartWeb/RC04/RC040300?token=8E0E498D2E4392B5DD6EB5D452677114" target="_blank" rel="noopener noreferrer" style={{display: 'inline'}}>點此</a>
-          開啟 Richart，或是掃描下方 QR Code 自動帶入帳號資訊，也可以手動輸入底下帳戶資訊
-        </>
-      ), // 您可以根據實際情況修改描述
-    },
-    {
-      name: '國泰世華銀行',
-      logo: cathay_logo, // cathay Logo 圖片路徑 (假設您有)
-      image: cathay_qrcode, // cathay QR Code 圖片路徑 (假設您有)
-      description: '用銀行 App 掃描下方 QRcode 可以自動帶入，或是手動輸入底下帳戶資訊',
-    },
+    // {
+    //   name: '街口支付',
+    //   logo: jko_logo,
+    //   image: jko_qrcode,
+    //   description: (
+    //     <>
+    //       <a href="https://service.jkopay.com/r/transfer?j=Transfer:900112965" target="_blank" rel="noopener noreferrer" style={{display: 'inline'}}>點此</a>
+    //       開啟街口，或用街口掃描下方 QR Code
+    //     </>
+    //   ),
+    // },
+    // {
+    //   name: 'Line Pay (iPass Money)',
+    //   logo: linepay_logo, // Line Pay Logo 圖片路徑
+    //   image: linepay_qrcode, // Line Pay QR Code 圖片路徑
+    //   description: '用 Line Pay 掃描下方 QR Code',
+    // },
+    // {
+    //   name: 'Richart (台新銀行)',
+    //   logo: richart_logo, // Richart Logo 圖片路徑 (假設您有)
+    //   image: richart_qrcode, // Richart QR Code 圖片路徑 (假設您有)
+    //   description: (
+    //     <>
+    //       <a href="https://mobile.richart.tw/TSDIB_RichartWeb/RC04/RC040300?token=8E0E498D2E4392B5DD6EB5D452677114" target="_blank" rel="noopener noreferrer" style={{display: 'inline'}}>點此</a>
+    //       開啟 Richart，或是掃描下方 QR Code 自動帶入帳號資訊，也可以手動輸入底下帳戶資訊
+    //     </>
+    //   ), // 您可以根據實際情況修改描述
+    // },
+    // {
+    //   name: '國泰世華銀行',
+    //   logo: cathay_logo, // cathay Logo 圖片路徑 (假設您有)
+    //   image: cathay_qrcode, // cathay QR Code 圖片路徑 (假設您有)
+    //   description: '用銀行 App 掃描下方 QRcode 可以自動帶入，或是手動輸入底下帳戶資訊',
+    // },
     // 可以繼續添加其他的收款方式
   ];
 
@@ -134,7 +134,7 @@ const SponsorUs = () => {
 
         {/* 多個小卡片展示收款方式 */}
         <div className="donation-methods-section">
-          <h2>選擇您的贊助方式</h2>
+          <h2>若有贊助意願，請私訊 Facebook 粉絲專頁</h2>
           <div className="donation-cards-container">
             {donationMethods.map((method, index) => (
               <div
