@@ -9,6 +9,7 @@ import richart_qrcode from '../assets/images/sponsor-us/richart_qrcode.png'; // 
 import richart_logo from '../assets/images/sponsor-us/richart_logo.png';   // 引入 Richart Logo (假設您有)
 import cathay_qrcode from '../assets/images/sponsor-us/cathay_qrcode.jpg';
 import cathay_logo from '../assets/images/sponsor-us/cathay_logo.jpg';
+import ctb_logo from '../assets/images/sponsor-us/ctbc_logo.png';   // 引入中國信託 Logo
 import { Helmet } from 'react-helmet-async';
 
 const SponsorUs = () => {
@@ -51,30 +52,74 @@ const SponsorUs = () => {
     //   image: cathay_qrcode, // cathay QR Code 圖片路徑 (假設您有)
     //   description: '用銀行 App 掃描下方 QRcode 可以自動帶入，或是手動輸入底下帳戶資訊',
     // },
+    {
+      name: '中國信託銀行',
+      logo: ctb_logo,
+      description: (
+        <>
+          <p>
+            您可以選擇以下不同的贊助金額，匯款至對應的專屬帳號。<br />
+            如果有其他金額需求，請私訊粉絲專頁或者來信<br />
+            <a href="mailto:support@sentimentinsideout.com">support@sentimentinsideout.com</a>
+          </p>
+          <p>
+            匯款銀行：中國信託銀行 (822)
+          </p>
+          <div className="ctb-account-list">
+            <div>
+              贊助金額：100元<br />
+              專屬帳號：9502300003632878
+              <button className="copy-button" onClick={() => handleCopy('9502300003632878')}>複製帳號</button>
+            </div>
+            <div>
+              贊助金額：500元<br />
+              專屬帳號：9502300003632881
+              <button className="copy-button" onClick={() => handleCopy('9502300003632881')}>複製帳號</button>
+            </div>
+            <div>
+              贊助金額：1000元<br />
+              專屬帳號：9502300003632894
+              <button className="copy-button" onClick={() => handleCopy('9502300003632894')}>複製帳號</button>
+            </div>
+            <div>
+              贊助金額：1500元<br />
+              專屬帳號：9502300003632904
+              <button className="copy-button" onClick={() => handleCopy('9502300003632904')}>複製帳號</button>
+            </div>
+          </div>
+        </>
+      ),
+    },
     // 可以繼續添加其他的收款方式
   ];
 
-  const handleCardClick = (index) => {
-    const cardElement = cardRefs.current[index];
-    if (cardElement) {
-      cardElement.classList.add('overlay-active'); // 添加 overlay-active 類別
-      setTimeout(() => {
-        cardElement.classList.remove('overlay-active'); // 移除 overlay-active 類別
-      }, 1000); // 1 秒後移除覆蓋層
-    }
+  const handleCardClick = (index, event) => {
+    event.stopPropagation();
+    // const cardElement = cardRefs.current[index];
+    // if (cardElement) {
+    //   cardElement.classList.add('overlay-active'); // 添加 overlay-active 類別
+    //   setTimeout(() => {
+    //     cardElement.classList.remove('overlay-active'); // 移除 overlay-active 類別
+    //   }, 1000); // 1 秒後移除覆蓋層
+    // }
 
-    if (expandedCard === index) {
-      // 如果點擊的是已展開的卡片，則開始收合動畫
-      setIsCollapsing(index);
-      setTimeout(() => {
-        setExpandedCard(null);
-        setIsCollapsing(null);
-      }, 400); // 等待收合動畫結束後，再將 expandedCard 設為 null
-    } else {
+    // if (expandedCard === index) {
+    //   // 如果點擊的是已展開的卡片，則開始收合動畫
+    //   setIsCollapsing(index);
+    //   setTimeout(() => {
+    //     setExpandedCard(null);
+    //     setIsCollapsing(null);
+    //   }, 400); // 等待收合動畫結束後，再將 expandedCard 設為 null
+    // } else {
       // 如果點擊的是未展開的卡片，則展開
       setExpandedCard(index);
       setIsCollapsing(null);
-    }
+    // }
+  };
+
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    alert('已複製帳號：' + text);
   };
 
   useEffect(() => {
@@ -134,14 +179,14 @@ const SponsorUs = () => {
 
         {/* 多個小卡片展示收款方式 */}
         <div className="donation-methods-section">
-          <h2>若有贊助意願，請私訊 Facebook 粉絲專頁</h2>
+          <h2>請選擇以下贊助方式</h2>
           <div className="donation-cards-container">
             {donationMethods.map((method, index) => (
               <div
                 ref={(el) => (cardRefs.current[index] = el)}
                 className={`donation-card ${expandedCard === index ? 'expanded' : ''} ${isCollapsing === index ? 'collapsing' : ''}`}
                 key={index}
-                onClick={() => handleCardClick(index)}
+                onClick={(event) => handleCardClick(index, event)}
               >
                 <div className="overlay"></div> {/* 添加覆蓋層 */}
                 <div className="content">

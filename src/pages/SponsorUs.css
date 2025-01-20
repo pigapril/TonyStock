@@ -72,7 +72,7 @@
     padding: 15px;
     text-align: center;
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.05);
-    width: 90px;
+    width: 150px;
     height: 60px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out, box-shadow 0.3s ease, opacity 0.3s ease;
@@ -94,7 +94,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 340px;
+    width: 430px;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -171,6 +171,54 @@
 .donation-card.expanded a:hover {
     background-color: transparent;
     color: #2980b9;
+}
+  
+.donation-card.expanded p {
+    font-size: 1em;
+    color: #777;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+  
+.donation-card.expanded p a {
+    display: inline-block;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+}
+  
+.ctb-account-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+    margin-top: 10px;
+}
+  
+.ctb-account-list div {
+    font-size: 0.9em;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+  
+.copy-button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+  
+.copy-button:hover {
+    background-color: #2980b9;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
   
 /* Media query for desktop screens */
