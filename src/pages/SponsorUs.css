@@ -238,3 +238,90 @@
         transform: scale(1.05);
     }
 }
+
+/* 捐款人公告區塊樣式 */
+.donor-announcement-section {
+    margin: 50px auto;
+    padding: 10px;
+    background: linear-gradient(135deg, #fff6e5, #fff9f0);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    text-align: center;
+    max-width: 800px;
+}
+
+.donor-announcement-section p {
+    font-size: 1.8em;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    color: #ff9f43;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+}
+
+.donor-announcement-section p::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, #ff9f43, #ffd6a5);
+    border-radius: 2px;
+}
+
+.donor-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.donor-list li {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-size: 1em;
+    color: #666;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.donor-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    color: #ff9f43;
+}
+
+.donor-list li::before {
+    content: '♥';
+    margin-right: 8px;
+    color: #ff9f43;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .donor-announcement-section {
+        padding: 20px;
+        margin: 30px auto;
+    }
+
+    .donor-announcement-section h2 {
+        font-size: 1.5em;
+    }
+
+    .donor-list li {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+}

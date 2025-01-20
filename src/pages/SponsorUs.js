@@ -16,6 +16,7 @@ const SponsorUs = () => {
   const [expandedCard, setExpandedCard] = useState(null);
   const [isCollapsing, setIsCollapsing] = useState(null); // 新增一個 state 來追蹤是否正在收合
   const cardRefs = useRef([]); // 使用 useRef 來儲存卡片的 ref
+  const [donors, setDonors] = useState(['wei', '吳＊叡']); // 新增一個 state 來儲存捐款人列表，並初始化為 wei 和 吳＊叡
 
   const donationMethods = [
     // {
@@ -122,6 +123,11 @@ const SponsorUs = () => {
     alert('已複製帳號：' + text);
   };
 
+  // 新增一個函數來更新捐款人列表
+  const addDonor = (donorName) => {
+    setDonors((prevDonors) => [...prevDonors, donorName]);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (expandedCard !== null) {
@@ -175,6 +181,16 @@ const SponsorUs = () => {
             或者就當作是請我喝個咖啡、吃個飯，<br></br>我也會非常感激。<br></br><br></br>
             不論有無贊助，<br></br>都祝福你/妳投資順利、一切都更好！
           </p>
+        </div>
+
+        {/* 捐款人公告區塊 */}
+        <div className="donor-announcement-section">
+          <p>感謝近期溫暖的支持者</p>
+          <ul className="donor-list">
+            {donors.map((donor, index) => (
+              <li key={index}>{donor}</li>
+            ))}
+          </ul>
         </div>
 
         {/* 多個小卡片展示收款方式 */}
