@@ -34,6 +34,7 @@ import { PriceAnalysis } from './components/PriceAnalysis';
 import { Articles } from './pages/Articles';
 import { ArticleDetail } from './pages/ArticleDetail';
 import { SponsorUs } from './pages/SponsorUs';
+import { SponsorSuccess } from './pages/SponsorSuccess';
 
 // Context 和 Hooks
 import { AuthProvider } from './contexts/AuthContext';
@@ -294,6 +295,11 @@ function AppContent() {
               <Route path="/sponsor-us" element={
                 <PageContainer title="贊助網站" description="支持 Sentiment Inside Out 的發展，一起幫助更多人。">
                   <SponsorUs />
+                </PageContainer>
+              } />
+              <Route path="/sponsor-success" element={
+                <PageContainer title="贊助成功" description="感謝您的贊助，您的支持是我們前進的動力！">
+                  <SponsorSuccess />
                 </PageContainer>
               } />
             </Routes>
