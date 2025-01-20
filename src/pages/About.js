@@ -56,7 +56,7 @@ export const About = () => {
               <h2>聯絡我</h2>
               <div className="contact-info">
                 <FaEnvelope className="contact-icon" />
-                <a href="mailto:sentimentinsideout@gmail.com">
+                <a href="mailto:support@sentimentinsideout.com">
                 sentimentinsideout@gmail.com
                 </a>
               </div>
