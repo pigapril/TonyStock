@@ -7,8 +7,11 @@ export const TIME_RANGES = [
   { value: '3M', label: '最近3個月' },
   { value: '6M', label: '最近6個月' },
   { value: '1Y', label: '最近1年' },
+  { value: '2Y', label: '最近2年' },
+  { value: '3Y', label: '最近3年' },
   { value: '5Y', label: '最近5年' },
-  { value: 'ALL', label: '全部' },
+  { value: '10Y', label: '最近10年' },
+  { value: '20Y', label: '最近20年' },
 ];
 
 function TimeRangeSelector({ selectedTimeRange, handleTimeRangeChange }) {

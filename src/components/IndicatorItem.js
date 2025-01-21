@@ -62,11 +62,14 @@ function getTimeUnit(dates) {
   }
 }
 
-function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeRangeChange }) {
+function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeRangeChange, historicalSPYData }) {
   const indicatorName = INDICATOR_NAME_MAP[indicatorKey] || indicatorKey;
   const [historicalData, setHistoricalData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`${API_BASE_URL}/api/indicator-history`, {
         params: {
@@ -87,6 +90,9 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
       })
       .catch((error) => {
         console.error(`獲取 ${indicatorName} 的歷史數據時出錯:`, error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [indicatorKey, indicatorName]);
 
@@ -96,6 +102,11 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
     return data;
   }, [historicalData, selectedTimeRange]);
 
+  // 過濾 SPY 數據以匹配當前指標的時間範圍
+  const filteredSPYData = React.useMemo(() => {
+    return filterDataByTimeRange(historicalSPYData, selectedTimeRange);
+  }, [historicalSPYData, selectedTimeRange]);
+
   // 獲取時間單位
   const timeUnit = getTimeUnit(filteredData.map(item => item.date));
 
@@ -104,7 +115,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
     labels: filteredData.map((item) => item.date),
     datasets: [
       {
-        label: '實際數據',
+        label: indicatorName,
         yAxisID: 'left-axis',
         data: filteredData.map((item) => item.value),
         borderColor: 'rgba(75,192,192,1)',
@@ -113,12 +124,25 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         pointRadius: 0,
       },
       {
-        label: '百分等級',
+        label: `${indicatorName}(百分等級)`,
         yAxisID: 'right-axis',
         data: filteredData.map((item) => item.percentileRank),
         borderColor: 'rgba(153,102,255,1)',
         fill: false,
         tension: 0.1,
+        pointRadius: 0,
+      },
+      {
+        label: 'SPY 價格',
+        yAxisID: 'spy-axis',
+        data: filteredSPYData.map((item) => ({
+          x: item.date,
+          y: item.spyClose,
+        })),
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: true,
+        tension: 0.4,
         pointRadius: 0,
       },
     ],
@@ -149,14 +173,24 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         position: 'left',
         title: {
           display: true,
-          text: '實際數據',
+          text: indicatorName,
         },
       },
       'right-axis': {
         position: 'right',
         title: {
           display: true,
-          text: '百分等級',
+          text: `${indicatorName}(百分等級)`,
+        },
+        grid: {
+          drawOnChartArea: false,
+        },
+      },
+      'spy-axis': {
+        position: 'right',
+        title: {
+          display: true,
+          text: 'SPY 價格',
         },
         grid: {
           drawOnChartArea: false,
@@ -176,10 +210,26 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
   // 計算市場情緒
   const sentiment = indicator.percentileRank ? getSentiment(Math.round(indicator.percentileRank)) : 'N/A';
 
+  const handleMouseEnter = (event) => {
+    setIsTooltipVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsTooltipVisible(false);
+  };
+
+  const handleTouchStart = (event) => {
+    setIsTooltipVisible(true);
+  };
+
+  const handleTouchEnd = () => {
+      setIsTooltipVisible(false);
+  };
+
   return (
     <div className="indicator-item">
       <h3>{indicatorName}</h3>
-      {historicalData.length > 0 ? (
+      {!loading ? (
         <>
           <div className="analysis-result">
             <div className="analysis-item">
@@ -188,11 +238,23 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
                 {indicator.value ? indicator.value.toFixed(2) : 'N/A'}
               </span>
             </div>
-            <div className="analysis-item">
-              <span className="analysis-label">恐懼貪婪分數</span>
+            <div className="analysis-item"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
+              <span className="analysis-label">
+                <span className="interactive-label">恐懼貪婪分數</span>
+              </span>
               <span className="analysis-value">
                 {indicator.percentileRank ? Math.round(indicator.percentileRank) : 'N/A'}
               </span>
+              {isTooltipVisible && (
+                <div className="tooltip">
+                  為方便統一衡量不同指標，將實際數值依據歷史位階轉換為百分標準，作為恐懼貪婪分數(0~100)。分數愈高代表市場愈貪婪；分數愈低代表市場愈恐懼
+                </div>
+              )}
             </div>
             <div className="analysis-item">
               <span className="analysis-label">市場情緒</span>

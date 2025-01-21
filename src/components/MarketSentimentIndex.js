@@ -594,6 +594,7 @@ const MarketSentimentIndex = () => {
               indicator={indicator}
               selectedTimeRange={selectedTimeRange}
               handleTimeRangeChange={handleTimeRangeChange}
+              historicalSPYData={filteredData}
             />
           )
         ))}

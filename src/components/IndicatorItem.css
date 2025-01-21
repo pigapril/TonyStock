@@ -3,6 +3,7 @@
 
 .indicator-item {
   margin-bottom: 20px;
+  position: relative; /* 將 indicator-item 設定為 relative */
 }
 
 .indicator-chart {
@@ -17,64 +18,33 @@
   }
 }
 
-/* 引入 analysis-result 樣式 */
-.analysis-result {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+.tooltip {
+    position: absolute;
+    z-index: 10;
+    background-color: #333;
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    white-space: normal;
+    width: 200px;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100%);
+    margin-top: 5px;
 }
 
 .analysis-item {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 100px;
-  max-width: 150px;
-  flex-shrink: 1;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
-.analysis-label {
-  font-size: 0.85em;
-  color: #6c757d;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.analysis-value {
-  font-size: 1.3em;
-  font-weight: 600;
-  color: #2c3e50;
-  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-/* 新增情緒狀態顏色 */
-.analysis-value.sentiment-極度恐懼 {
-  color: #143829 !important; /* 深墨綠色 */
-}
-
-.analysis-value.sentiment-恐懼 {
-  color: #1E5B3C !important; /* 較淺的墨綠色 */
-}
-
-.analysis-value.sentiment-中性 {
-  color: #E9972D !important; /* 橙黃色 */
-}
-
-.analysis-value.sentiment-貪婪 {
-  color: #C14C20 !important; /* 較淺的紅褐色 */
-}
-
-.analysis-value.sentiment-極度貪婪 {
-  color: #8B0000 !important; /* 深紅色 */
-}
-
-/* 在指標項目中置中 TimeRangeSelector */
-.indicator-item .time-range-selector {
-  justify-content: center;
-  margin: 20px auto;
-  width: fit-content;
+.interactive-label {
+    text-decoration: underline dotted #007bff; /* 使用藍色虛線底線 */
+    text-underline-offset: 3px; /* 調整虛線與文字的距離 */
+    text-decoration-thickness: 1.5px; /* 加粗虛線 */
+    cursor: help; /* 顯示滑鼠指標為問號 */
+    color: inherit; /* 保持文字顏色不變 */
 }

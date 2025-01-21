@@ -8,8 +8,8 @@
     cursor: pointer;
     color: #666;
     font-size: 1.1em;
-    padding: 6px 10px;
-    border-radius: 50%;
+    padding: 1px 1px;
+    border-radius: 5%;
     transition: all 0.2s ease;
     user-select: none;
     background: rgba(255, 255, 255, 0.1);

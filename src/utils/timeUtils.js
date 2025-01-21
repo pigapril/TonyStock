@@ -20,9 +20,25 @@ export function filterDataByTimeRange(data, timeRange) {
       startDate = new Date();
       startDate.setFullYear(endDate.getFullYear() - 1);
       break;
+    case '2Y':
+      startDate = new Date();
+      startDate.setFullYear(endDate.getFullYear() - 2);
+      break;
+    case '3Y':
+      startDate = new Date();
+      startDate.setFullYear(endDate.getFullYear() - 3);
+      break;
     case '5Y':
       startDate = new Date();
       startDate.setFullYear(endDate.getFullYear() - 5);
+      break;
+    case '10Y':
+      startDate = new Date();
+      startDate.setFullYear(endDate.getFullYear() - 10);
+      break;
+    case '20Y':
+      startDate = new Date();
+      startDate.setFullYear(endDate.getFullYear() - 20);
       break;
     default:
       startDate = null;
