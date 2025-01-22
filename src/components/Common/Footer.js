@@ -58,7 +58,7 @@ export const Footer = () => {
               本網站提供之數據、資料、分析結果、工具和說明內容僅供參考，任何投資行為須自行判斷並承擔風險，實際資訊需以官方公佈資料為準。本網站不負擔盈虧之法律責任。
             </p>
             <p>
-              歡迎分享本網站提供之資訊連結，如需轉載內容務必經由本網站同意。
+              歡迎分享本網站提供之資訊連結，如需轉載內容務必經由本網站同意。聯絡信箱：<a href="mailto:support@sentimentinsideout.com">support@sentimentinsideout.com</a>
             </p>
           </div>
         </div>

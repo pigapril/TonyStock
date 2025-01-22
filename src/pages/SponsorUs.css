@@ -32,6 +32,8 @@
     text-align: center;
     margin-bottom: 40px;
     color: #888;
+    width: 110%;
+    margin-left: -5%;
 }
   
 .text-description-section h1 {
@@ -94,7 +96,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 430px;
+    width: 380px;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -252,6 +254,7 @@
 
 .donor-announcement-section p {
     font-size: 1.8em;
+    margin: -10px;
     margin-top: 10px;
     margin-bottom: 25px;
     color: #ff9f43;

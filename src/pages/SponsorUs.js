@@ -59,7 +59,7 @@ const SponsorUs = () => {
       description: (
         <>
           <p>
-            您可以選擇以下不同的贊助金額，匯款至對應的專屬帳號。<br />
+            請選擇有意贊助的金額，匯款至對應的專屬帳號。<br />
             如果有其他金額需求，請私訊粉絲專頁或者來信<br />
             <a href="mailto:support@sentimentinsideout.com">support@sentimentinsideout.com</a>
           </p>
