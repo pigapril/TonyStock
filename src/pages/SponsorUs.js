@@ -16,7 +16,7 @@ const SponsorUs = () => {
   const [expandedCard, setExpandedCard] = useState(null);
   const [isCollapsing, setIsCollapsing] = useState(null); // 新增一個 state 來追蹤是否正在收合
   const cardRefs = useRef([]); // 使用 useRef 來儲存卡片的 ref
-  const [donors, setDonors] = useState(['wei', '吳＊叡']); // 新增一個 state 來儲存捐款人列表，並初始化為 wei 和 吳＊叡
+  const [donors, setDonors] = useState(['wei', '吳＊叡', '末三碼984']); // 新增一個 state 來儲存捐款人列表，並初始化為 wei 和 吳＊叡
 
   const donationMethods = [
     // {
