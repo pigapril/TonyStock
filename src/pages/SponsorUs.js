@@ -74,7 +74,7 @@ const SponsorUs = () => {
             </div>
             <div>
               贊助金額：500元<br />
-              專屬帳號：9502300003632881
+              專屬帳號：9502300003640585
               <button className="copy-button" onClick={() => handleCopy('9502300003632881')}>複製帳號</button>
             </div>
             <div>
