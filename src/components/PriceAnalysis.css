@@ -324,7 +324,7 @@
 } 
 
 /* 確保按鈕置中 */
-.stock-analysis-card button {
+.stock-analysis-card .analysis-button {
   margin-top: 5px;
   margin-bottom: 0px;
   align-self: center;
@@ -348,19 +348,19 @@
   box-shadow: 0 2px 10px rgba(0, 0, 255, 0.2);
 }
 
-.stock-analysis-card button:hover {
+.stock-analysis-card .analysis-button:hover {
   background-position: right center;
   transform: translateY(-1px);
   box-shadow: 0 4px 15px rgba(0, 0, 255, 0.3);
 }
 
-.stock-analysis-card button:active {
+.stock-analysis-card .analysis-button:active {
   transform: translateY(1px);
   box-shadow: 0 2px 8px rgba(0, 0, 255, 0.2);
 }
 
 /* 禁用狀態 */
-.stock-analysis-card button:disabled {
+.stock-analysis-card .analysis-button:disabled {
   background: linear-gradient(
     135deg,
     rgba(255, 0, 255, 0.5) 0%,

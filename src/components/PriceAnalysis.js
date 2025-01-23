@@ -320,10 +320,11 @@ export function PriceAnalysis() {
                 className="form-control"
                 dateFormat="yyyy/MM/dd"
                 isClearable
+                popperPlacement="bottom-start"
               />
             </div>
             <button
-              className={`btn-primary ${loading ? 'btn-loading' : ''}`}
+              className={`btn-primary analysis-button ${loading ? 'btn-loading' : ''}`}
               type="submit"
               disabled={loading || !turnstileToken}
             >
