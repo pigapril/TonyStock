@@ -320,7 +320,7 @@ export function PriceAnalysis() {
                 className="form-control"
                 dateFormat="yyyy/MM/dd"
                 isClearable
-                popperPlacement="bottom-start"
+                popperPlacement="auto"
               />
             </div>
             <button

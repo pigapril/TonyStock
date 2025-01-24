@@ -221,6 +221,11 @@
   .dashboard {
     margin-bottom: 20px;
   }
+
+  .react-datepicker-popper {
+    margin-top: 40px;
+    margin-left: -30px; /* 嘗試使用 margin-left 往左移動，您可以根據需要調整數值 */
+  }
 } 
 
 .turnstile-container {
@@ -382,4 +387,8 @@
   margin-top: 10px;
   padding-top: 30px;
   border-top: 1px solid #e5e5e5;
+} 
+
+.react-datepicker__triangle {
+  display: none; /* 隱藏三角形箭頭 */
 } 
