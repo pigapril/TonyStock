@@ -154,6 +154,11 @@
   box-sizing: border-box;
 }
 
+.react-datepicker-popper {
+  margin-top: 40px;
+  margin-left: -30px; /* 嘗試使用 margin-left 往左移動，您可以根據需要調整數值 */
+}
+
 /* 確保在 iOS 設備上日期輸入框的文字大小一致 */
 @supports (-webkit-touch-callout: none) {
     input[type="date"].form-control {
@@ -222,10 +227,6 @@
     margin-bottom: 20px;
   }
 
-  .react-datepicker-popper {
-    margin-top: 40px;
-    margin-left: -30px; /* 嘗試使用 margin-left 往左移動，您可以根據需要調整數值 */
-  }
 } 
 
 .turnstile-container {
