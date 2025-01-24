@@ -16,7 +16,7 @@ const SponsorUs = () => {
   const [expandedCard, setExpandedCard] = useState(null);
   const [isCollapsing, setIsCollapsing] = useState(null); // 新增一個 state 來追蹤是否正在收合
   const cardRefs = useRef([]); // 使用 useRef 來儲存卡片的 ref
-  const [donors, setDonors] = useState(['wei', '吳＊叡', '末三碼984']); // 新增一個 state 來儲存捐款人列表，並初始化為 wei 和 吳＊叡
+  const [donors, setDonors] = useState(['wei', '吳＊叡', '末三碼984', '末三碼585']); // 新增一個 state 來儲存捐款人列表，並初始化為 wei 和 吳＊叡
 
   const donationMethods = [
     // {
@@ -74,8 +74,8 @@ const SponsorUs = () => {
             </div>
             <div>
               贊助金額：500元<br />
-              專屬帳號：9502300003640585
-              <button className="copy-button" onClick={() => handleCopy('9502300003640585')}>複製帳號</button>
+              專屬帳號：9502300003640598
+              <button className="copy-button" onClick={() => handleCopy('9502300003640598')}>複製帳號</button>
             </div>
             <div>
               贊助金額：1000元<br />
