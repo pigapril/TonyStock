@@ -93,7 +93,7 @@ export function PriceAnalysis() {
     setTimeoutMessage('');
 
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/integrated-analysis`, {
+      const response = await axios.get(`${API_BASE_URL}/api/stock/integrated-analysis`, {
         params: {
           stockCode: stock,
           years: yrs,

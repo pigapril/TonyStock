@@ -35,6 +35,7 @@ import { Articles } from './pages/Articles';
 import { ArticleDetail } from './pages/ArticleDetail';
 import { SponsorUs } from './pages/SponsorUs';
 import { SponsorSuccess } from './pages/SponsorSuccess';
+import { GoogleTrendsPage } from './pages/GoogleTrendsPage';
 
 // Context 和 Hooks
 import { AuthProvider } from './contexts/AuthContext';
@@ -154,6 +155,12 @@ function AppContent() {
                 {hasNewWatchlist && <span className="new-feature-badge">NEW</span>}
               </Link>
             </li>
+            <li className="sidebar-item-8">
+              <Link to="/google-trends" onClick={() => isMobile && setSidebarOpen(false)}>
+                <FaChartLine />
+                <span>Google 熱門趨勢</span>
+              </Link>
+            </li>
             <li className="sidebar-item-5">
               <Link to="/articles" onClick={handleArticlesClick}>
                 <div className="sidebar-item-content">
@@ -207,6 +214,10 @@ function AppContent() {
                 <FaList />
                 <span>我的追蹤清單</span>
                 {hasNewWatchlist && <span className="new-feature-badge">NEW</span>}
+              </Link>
+              <Link to="/google-trends">
+                <FaChartLine />
+                <span>Google 熱門趨勢</span>
               </Link>
               <Link to="/articles" onClick={handleArticlesClick}>
                 <FaChartBar />
@@ -286,6 +297,11 @@ function AppContent() {
                   )
                 }
               />
+              <Route path="/google-trends" element={
+                <PageContainer title="Google 熱門趨勢" description="比較 Google 搜尋熱度與股價的關係">
+                  <GoogleTrendsPage />
+                </PageContainer>
+              } />
               <Route path="/articles" element={
                 <PageContainer title="分析專欄" description="分析市場情緒和投資策略。">
                   <Articles />

@@ -1,0 +1,24 @@
+.googletrends-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f9;
+}
+
+.googletrends-page h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.googletrends-page .search-box-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.googletrends-page .chart-container {
+    /* 可以設定圖表容器的樣式，例如寬度、對齊等 */
+    width: 100%;
+    max-width: 1200px; /* 限制最大寬度 */
+    margin: 0 auto; /* 水平居中 */
+} 

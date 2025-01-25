@@ -1,0 +1,45 @@
+.googletrends-chart-container {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.googletrends-chart-container h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+    text-align: center;
+}
+
+.googletrends-chart-container .chart-placeholder {
+    width: 100%;
+    height: 400px; /* 設定圖表預留空間高度 */
+    background-color: #f9f9f9;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #777;
+    font-style: italic;
+}
+
+.googletrends-chart-container .chart-description {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.googletrends-chart-container .no-data-message {
+    padding: 20px;
+    text-align: center;
+    color: #777;
+    font-style: italic;
+} 

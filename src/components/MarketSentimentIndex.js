@@ -216,7 +216,7 @@ const MarketSentimentIndex = () => {
     async function fetchSentimentData() {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/api/market-sentiment`);
+        const response = await axios.get(`${API_BASE_URL}/api/sentiment/market-sentiment`);
         
         if (isMounted) {
           setSentimentData(response.data);
@@ -254,7 +254,7 @@ const MarketSentimentIndex = () => {
   useEffect(() => {
     async function fetchHistoricalData() {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/composite-historical-data`);
+        const response = await axios.get(`${API_BASE_URL}/api/sentiment/composite-historical-data`);
         const formattedData = response.data
           .filter(item => item.compositeScore != null && item.spyClose != null)
           .map((item) => ({

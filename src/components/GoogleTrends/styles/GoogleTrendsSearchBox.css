@@ -1,0 +1,101 @@
+.googletrends-search-area {
+    position: relative;
+    width: 300px; /* 或您需要的寬度 */
+}
+
+.googletrends-search-area .search-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: white;
+}
+
+.googletrends-search-area .search-icon {
+    margin-right: 8px;
+    color: #777;
+}
+
+.googletrends-search-area .search-input {
+    border: none;
+    flex-grow: 1;
+    font-size: 1rem;
+    outline: none;
+}
+
+.googletrends-search-area .search-results-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.googletrends-search-area .search-loading,
+.googletrends-search-area .search-empty-state {
+    padding: 10px;
+    text-align: center;
+    color: #777;
+}
+
+.googletrends-search-area .search-loading .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-top-color: #333;
+    border-radius: 50%;
+    animation: search-spin 1s linear infinite;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+@keyframes search-spin {
+    to { transform: rotate(360deg); }
+}
+
+.googletrends-search-area .search-empty-state .icon {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.googletrends-search-area .search-results {
+    display: flex;
+    flex-direction: column;
+}
+
+.googletrends-search-area .stock-result-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.googletrends-search-area .stock-result-item:last-child {
+    border-bottom: none;
+}
+
+.googletrends-search-area .stock-result-item:hover {
+    background-color: #f0f0f0;
+}
+
+.googletrends-search-area .stock-symbol {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.googletrends-search-area .stock-market {
+    margin-left: auto;
+    color: #777;
+    font-size: 0.9rem;
+} 

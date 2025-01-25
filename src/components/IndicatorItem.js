@@ -71,7 +71,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${API_BASE_URL}/api/indicator-history`, {
+      .get(`${API_BASE_URL}/api/sentiment/indicator-history`, {
         params: {
           indicator: indicatorKey,
         },
