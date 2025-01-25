@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../Auth/useAuth'; // 更新路徑
 import { Dialog } from '../Common/Dialog';
 import { Analytics } from '../../utils/analytics';
 import { handleApiError, getErrorMessage } from '../../utils/errorHandler';

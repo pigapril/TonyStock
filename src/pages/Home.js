@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaChartLine, FaList, FaHeartbeat, FaChevronDown } from 'react-icons/fa';
 import './Home.css';
 import { useDialog } from '../hooks/useDialog';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../components/Auth/useAuth'; // 更新為正確的路徑
 import { Helmet } from 'react-helmet-async';
 
 export const Home = () => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../Auth/useAuth'; // 更新路徑
 import { Analytics } from '../../utils/analytics';
 import './styles/SignInButton.css';
 

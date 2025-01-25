@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
-import { Analytics } from '../utils/analytics';
-import authService from '../services/auth.service';
-import { handleApiError } from '../utils/errorHandler';
+import { Analytics } from '../../utils/analytics';
+import authService from '../../components/Auth/auth.service';
+import { handleApiError } from '../../utils/errorHandler';
 
 export const AuthContext = createContext({
     user: null,

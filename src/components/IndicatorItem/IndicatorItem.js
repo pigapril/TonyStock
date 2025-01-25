@@ -15,9 +15,9 @@ import {
   Legend,
 } from 'chart.js';
 import './IndicatorItem.css';
-import TimeRangeSelector from './Common/TimeRangeSelector/TimeRangeSelector';
-import { filterDataByTimeRange } from '../utils/timeUtils';
-import { getSentiment } from '../utils/sentimentUtils';
+import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
+import { filterDataByTimeRange } from '../../utils/timeUtils';
+import { getSentiment } from '../../utils/sentimentUtils';
 
 // 添加這行來定義 API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';

@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { handleApiError } from '../utils/errorHandler';
-import { Analytics } from '../utils/analytics';
+import { handleApiError } from '../../utils/errorHandler';
+import { Analytics } from '../../utils/analytics';
 import './MarketSentimentIndex.css';
 import 'chartjs-adapter-date-fns';
 import GaugeChart from 'react-gauge-chart';
 import styled from 'styled-components';
-import { ExpandableDescription } from './Common/ExpandableDescription/ExpandableDescription';
-import PageContainer from '../components/PageContainer';
-import TimeRangeSelector from './Common/TimeRangeSelector/TimeRangeSelector';
-import { filterDataByTimeRange } from '../utils/timeUtils';
-import { getSentiment } from '../utils/sentimentUtils';
+import { ExpandableDescription } from '../Common/ExpandableDescription/ExpandableDescription';
+import PageContainer from '../PageContainer';
+import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
+import { filterDataByTimeRange } from '../../utils/timeUtils';
+import { getSentiment } from '../../utils/sentimentUtils';
 import { Helmet } from 'react-helmet-async';
 
 // 引入必要的 Chart.js 元件和插件
@@ -31,7 +31,7 @@ import {
 import { Line } from 'react-chartjs-2';
 
 // 引入 IndicatorItem 組件
-import IndicatorItem, { INDICATOR_NAME_MAP } from './IndicatorItem';
+import IndicatorItem, { INDICATOR_NAME_MAP } from '../IndicatorItem/IndicatorItem';
 
 // 註冊 Chart.js 的元件和插件
 ChartJS.register(

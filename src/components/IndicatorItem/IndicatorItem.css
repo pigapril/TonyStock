@@ -1,5 +1,5 @@
 /* 引入 Loading 樣式 */
-@import './shared/styles/Loading.css';
+@import '../shared/styles/Loading.css';
 
 .indicator-item {
   margin-bottom: 20px;

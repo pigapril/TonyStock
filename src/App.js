@@ -18,7 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 // 自定義組件
 import { Home } from './pages/Home'; 
-import MarketSentimentIndex from './components/MarketSentimentIndex';
+import MarketSentimentIndex from './components/MarketSentimentIndex/MarketSentimentIndex';
 import PageContainer from './components/PageContainer';
 import { AuthDialog } from './components/Auth/AuthDialog';
 import { UserProfile } from './components/Auth/UserProfile';
@@ -30,16 +30,17 @@ import { AdBanner } from './components/Common/AdBanner';
 import { Footer } from './components/Common/Footer';
 
 // 導入拆分後的價格標準差分析頁面
-import { PriceAnalysis } from './components/PriceAnalysis';
+import { PriceAnalysis } from './components/PriceAnalysis/PriceAnalysis';
 import { Articles } from './pages/Articles';
 import { ArticleDetail } from './pages/ArticleDetail';
 import { SponsorUs } from './pages/SponsorUs';
 import { SponsorSuccess } from './pages/SponsorSuccess';
+import { GoogleTrendsPage } from './pages/GoogleTrendsPage';
 
 // Context 和 Hooks
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './components/Auth/AuthContext';
 import { DialogProvider } from './contexts/DialogContext';
-import { useAuth } from './hooks/useAuth';
+import { useAuth } from './components/Auth/useAuth'; // 更新路徑
 import { useDialog } from './hooks/useDialog';
 import { useNewFeatureNotification, FEATURES } from './hooks/useNewFeatureNotification';
 
@@ -146,6 +147,12 @@ function AppContent() {
               </Link>
             </li>
             <li className="sidebar-item-4">
+              <Link to="/googletrends" onClick={() => isMobile && setSidebarOpen(false)}>
+                <FaChartLine />
+                <span>Google 搜尋熱度</span>
+              </Link>
+            </li>
+            <li className="sidebar-item-5">
               <Link to="/watchlist" onClick={handleWatchlistClick}>
                 <div className="sidebar-item-content">
                   <FaList />
@@ -154,7 +161,7 @@ function AppContent() {
                 {hasNewWatchlist && <span className="new-feature-badge">NEW</span>}
               </Link>
             </li>
-            <li className="sidebar-item-5">
+            <li className="sidebar-item-6">
               <Link to="/articles" onClick={handleArticlesClick}>
                 <div className="sidebar-item-content">
                   <FaChartBar />
@@ -163,13 +170,13 @@ function AppContent() {
                 {hasNewArticles && <span className="new-feature-badge">NEW</span>}
               </Link>
             </li>
-            <li className="sidebar-item-6">
+            <li className="sidebar-item-7">
               <Link to="/sponsor-us" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaPiggyBank />
                 <span>小豬撲滿</span>
               </Link>
             </li>
-            <li className="sidebar-item-7">
+            <li className="sidebar-item-8">
               <a
                 href="https://www.facebook.com/profile.php?id=61565751412240"
                 target="_blank"
@@ -202,6 +209,10 @@ function AppContent() {
               <Link to="/market-sentiment" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaHeartbeat />
                 <span>市場情緒分析</span>
+              </Link>
+              <Link to="/googletrends">
+                <FaChartLine />
+                <span>Google 搜尋熱度</span>
               </Link>
               <Link to="/watchlist" onClick={handleWatchlistClick}>
                 <FaList />
@@ -302,6 +313,12 @@ function AppContent() {
                   <SponsorSuccess />
                 </PageContainer>
               } />
+              <Route
+                path="/googletrends"
+                element={
+                  <GoogleTrendsPage />
+                }
+              />
             </Routes>
           </div>
         </main>

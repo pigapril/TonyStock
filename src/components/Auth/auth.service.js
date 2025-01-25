@@ -1,5 +1,5 @@
-import { Analytics } from '../utils/analytics';
-import { handleApiError } from '../utils/errorHandler';
+import { Analytics } from '../../utils/analytics';
+import { handleApiError } from '../../utils/errorHandler';
 
 class AuthService {
     constructor() {
