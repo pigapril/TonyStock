@@ -4,7 +4,7 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // 從環境變數取�
 
 export const fetchGoogleTrendsData = async (symbol) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/googletrends/trends?symbol=${symbol}`);
+        const response = await axios.get(`${API_BASE_URL}/api/googletrends/trends?symbol=${symbol}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching Google Trends data:', error);
@@ -14,10 +14,11 @@ export const fetchGoogleTrendsData = async (symbol) => {
 
 export const fetchStockSuggestions = async (keyword) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/googletrends/stock-suggestions?keyword=${keyword}`); // 假設後端 API 路由為 /googletrends/stock-suggestions
-        return response.data; // 假設後端返回股票建議列表
+        // 修改為使用 Yahoo Finance 搜尋 API
+        const response = await axios.get(`${API_BASE_URL}/api/googletrends/yahoo-suggestions?keyword=${keyword}`);
+        return response.data;
     } catch (error) {
         console.error('Error fetching stock suggestions:', error);
-        throw error; // 向上拋出錯誤，讓元件處理
+        throw error;
     }
 }; 
