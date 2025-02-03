@@ -1,0 +1,39 @@
+/* 參考自 GoogleTrendsSymbolContainer.css，但將 class 名稱調整為 market 專屬 */
+.google-trends-market-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.google-trends-market-chart-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    overflow: hidden;  /* 確保內容不會超出圓角 */
+}
+
+.chart-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.empty-state {
+    text-align: center;
+    color: #888;
+    margin-top: 20px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .google-trends-market-container {
+        padding: 10px;
+    }
+
+    .google-trends-market-chart-card {
+        padding: 15px;
+    }
+} 

@@ -36,6 +36,7 @@ import { ArticleDetail } from './pages/ArticleDetail';
 import { SponsorUs } from './pages/SponsorUs';
 import { SponsorSuccess } from './pages/SponsorSuccess';
 import { GoogleTrendsSymbolPage } from './pages/GoogleTrendsSymbolPage';
+import { GoogleTrendsMarketPage } from './pages/GoogleTrendsMarketPage';
 
 // Context 和 Hooks
 import { AuthProvider } from './components/Auth/AuthContext';
@@ -319,6 +320,7 @@ function AppContent() {
                   <GoogleTrendsSymbolPage />
                 }
               />
+              <Route path="/googletrendsmarket" element={<GoogleTrendsMarketPage />} />
             </Routes>
           </div>
         </main>

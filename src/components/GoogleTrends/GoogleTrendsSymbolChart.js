@@ -8,26 +8,37 @@ const GoogleTrendsSymbolChart = ({ data }) => {
         return <div className="no-data-message">無可顯示的數據</div>;
     }
 
-    // 確保數據格式正確
-    const formattedData = data.map(item => ({
-        ...item,
-        date: new Date(item.date).toISOString(),
-        trend_index: Number(item.trend_index),
-        price: Number(item.price)
-    }));
+    // 格式化資料：日期轉成 ISO 字串，股價轉數字，所有趨勢資料也轉數字
+    const formattedData = data.map(item => {
+        let formattedItem = {
+            ...item,
+            date: new Date(item.date).toISOString(),
+            price: Number(item.price)
+        };
+        Object.keys(item).forEach(key => {
+            if (key.startsWith('trend_')) {
+                formattedItem[key] = Number(item[key]);
+            }
+        });
+        return formattedItem;
+    });
 
-    // 新增：記錄格式化後的數據樣本
-    if (formattedData && formattedData.length > 0) {
-        console.log('Formatted data sample:', formattedData[0]);
-    }
+    // 自動找出所有趨勢資料的 key (例如 "trend_short_interest_ratio", "trend_options_trading")
+    const trendKeys = formattedData && formattedData.length > 0
+        ? Object.keys(formattedData[0]).filter(key => key.startsWith('trend_'))
+        : [];
+
+    // 定義趨勢線的顏色（可依需求擴充）
+    const trendColors = ['#8884d8', '#ff7300', '#82ca9d', '#888888'];
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
                 <div className="google-trends-tooltip">
                     <p>{`日期: ${new Date(label).toLocaleDateString()}`}</p>
-                    <p>{`搜尋熱度: ${payload[0].value}`}</p>
-                    <p>{`股價: $${payload[1].value.toFixed(2)}`}</p>
+                    {payload.map((entry, index) => (
+                        <p key={`tooltip-${index}`}>{`${entry.name}: ${entry.value}`}</p>
+                    ))}
                 </div>
             );
         }
@@ -58,19 +69,24 @@ const GoogleTrendsSymbolChart = ({ data }) => {
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
+                {/* 動態產生每個搜尋主題的趨勢折線 */}
+                {trendKeys.map((trendKey, index) => (
+                    <Line 
+                        key={trendKey}
+                        yAxisId="left"
+                        type="monotone"
+                        dataKey={trendKey}
+                        stroke={trendColors[index % trendColors.length]}
+                        name={trendKey.replace('trend_', '').replace(/_/g, ' ')}
+                        dot={false}
+                    />
+                ))}
+                {/* 繪製 SPY 股價折線 */}
                 <Line 
-                    yAxisId="left" 
-                    type="monotone" 
-                    dataKey="trend_index" 
-                    stroke="#8884d8" 
-                    name="搜尋熱度"
-                    dot={false}
-                />
-                <Line 
-                    yAxisId="right" 
-                    type="monotone" 
-                    dataKey="price" 
-                    stroke="#82ca9d" 
+                    yAxisId="right"
+                    type="monotone"
+                    dataKey="price"
+                    stroke="#82ca9d"
                     name="股價"
                     dot={false}
                 />
@@ -83,8 +99,8 @@ GoogleTrendsSymbolChart.propTypes = {
     data: PropTypes.arrayOf(
         PropTypes.shape({
             date: PropTypes.string.isRequired,
-            trend_index: PropTypes.number,
             price: PropTypes.number,
+            // 趨勢數據的 key 為動態產生
         })
     ).isRequired,
 };

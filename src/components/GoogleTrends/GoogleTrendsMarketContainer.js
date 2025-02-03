@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import GoogleTrendsSymbolChart from './GoogleTrendsSymbolChart';
-import { fetchGoogleTrendsData } from './googleTrends.service';
+import { fetchGoogleTrendsMarketData } from './googleTrends.service';
 import '../shared/styles/Loading.css';
 import './GoogleTrendsMarketContainer.css'; // 可自行建立此 CSS 檔來定義樣式
 
@@ -9,17 +9,12 @@ const GoogleTrendsMarketContainer = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // 這裡預設傳送的 symbol，即由後端定義 q 參數的值
-    const DEFAULT_SYMBOL = 'market';
-
-    const fetchData = useCallback(async (symbol) => {
-        if (!symbol) return;
-        
+    const fetchData = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
-            console.log('Fetching data for symbol:', symbol);
-            const data = await fetchGoogleTrendsData(symbol);
+            console.log('Fetching market data...');
+            const data = await fetchGoogleTrendsMarketData();
             console.log('Received data:', data);
             
             if (data && data.data && Array.isArray(data.data)) {
@@ -37,8 +32,8 @@ const GoogleTrendsMarketContainer = () => {
     }, []);
 
     useEffect(() => {
-        // 一進入頁面就使用預設 symbol 請求數據
-        fetchData(DEFAULT_SYMBOL);
+        // 進入此頁面就呼叫 fetchData() 取得市場資料
+        fetchData();
     }, [fetchData]);
 
     return (

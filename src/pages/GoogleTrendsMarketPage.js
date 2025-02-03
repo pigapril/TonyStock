@@ -3,7 +3,7 @@ import PageContainer from '../components/PageContainer';
 import GoogleTrendsMarketContainer from '../components/GoogleTrends/GoogleTrendsMarketContainer';
 import './GoogleTrendsMarketPage.css'; // 可自行建立此 CSS 檔來定義頁面樣式
 
-const GoogleTrendsMarketPage = () => {
+export const GoogleTrendsMarketPage = () => {
     return (
         <PageContainer 
             title="Google 市場趨勢" 

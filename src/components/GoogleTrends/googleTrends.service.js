@@ -12,6 +12,17 @@ export const fetchGoogleTrendsData = async (symbol) => {
     }
 };
 
+export const fetchGoogleTrendsMarketData = async () => {
+    try {
+        // 呼叫新後端 API，此 API 為 /market，不需要傳遞參數
+        const response = await axios.get(`${API_BASE_URL}/api/googletrends/market`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching Google Trends Market data:', error);
+        throw error;
+    }
+};
+
 export const fetchStockSuggestions = async (keyword) => {
     try {
         // 修改為使用 Yahoo Finance 搜尋 API
