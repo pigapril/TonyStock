@@ -1,7 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import GoogleTrendsSearch from './GoogleTrendsSearch';
-import GoogleTrendsChart from './GoogleTrendsChart';
+import GoogleTrendsSymbolSearch from './GoogleTrendsSymbolSearch';
+import GoogleTrendsSymbolChart from './GoogleTrendsSymbolChart';
 import { fetchGoogleTrendsData } from './googleTrends.service';
+import '../shared/styles/Loading.css';  // 確保引入載入動畫樣式
+import './GoogleTrendsContainer.css';  // 引入 Container 樣式
 
 const GoogleTrendsContainer = () => {
     const [chartData, setChartData] = useState(null);
@@ -45,16 +47,20 @@ const GoogleTrendsContainer = () => {
     }, []);
 
     return (
-        <div>
-            <h2>Google 搜尋熱度 vs. 股價</h2>
-            <GoogleTrendsSearch onSearch={handleSearch} />
+        <div className="google-trends-container">
+            <GoogleTrendsSymbolSearch onSearch={handleSearch} />
 
-            {loading && <div className="loading-indicator">載入中...</div>}
+            {loading && (
+                <div className="loading-spinner">
+                    <div className="spinner"></div>
+                    <span>載入中...</span>
+                </div>
+            )}
             {error && <div className="error-message">錯誤: {error}</div>}
 
             {chartData && !loading && !error ? (
-                <div>
-                    <GoogleTrendsChart data={chartData} />
+                <div className="google-trends-chart-card">
+                    <GoogleTrendsSymbolChart data={chartData} />
                     <p className="chart-description">
                         本圖表比較了 {symbol} 的 Google 搜尋熱度與股價走勢。
                         搜尋熱度曲線 (藍色) 反映了市場對該標的的關注度，

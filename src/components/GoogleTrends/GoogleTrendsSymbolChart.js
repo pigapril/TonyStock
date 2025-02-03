@@ -1,8 +1,9 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import PropTypes from 'prop-types';
+import './GoogleTrendsSymbolChart.css';  // 引入 Chart 樣式
 
-const GoogleTrendsChart = ({ data }) => {
+const GoogleTrendsSymbolChart = ({ data }) => {
     if (!data || data.length === 0) {
         return <div className="no-data-message">無可顯示的數據</div>;
     }
@@ -78,7 +79,7 @@ const GoogleTrendsChart = ({ data }) => {
     );
 };
 
-GoogleTrendsChart.propTypes = {
+GoogleTrendsSymbolChart.propTypes = {
     data: PropTypes.arrayOf(
         PropTypes.shape({
             date: PropTypes.string.isRequired,
@@ -88,4 +89,4 @@ GoogleTrendsChart.propTypes = {
     ).isRequired,
 };
 
-export default GoogleTrendsChart; 
+export default GoogleTrendsSymbolChart; 

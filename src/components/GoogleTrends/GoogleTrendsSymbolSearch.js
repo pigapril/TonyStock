@@ -1,10 +1,13 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { FaSearch } from 'react-icons/fa';
 import debounce from 'lodash/debounce';
 import { getErrorMessage } from '../../utils/errorHandler';
 import { fetchStockSuggestions } from './googleTrends.service';
+import '../shared/styles/Loading.css';
+import './GoogleTrendsSymbolSearch.css';
 
-const GoogleTrendsSearch = ({ onSearch }) => {
+const GoogleTrendsSymbolSearch = ({ onSearch }) => {
     const searchRef = useRef(null);
     const [searchState, setSearchState] = useState({
         keyword: '',
@@ -50,7 +53,7 @@ const GoogleTrendsSearch = ({ onSearch }) => {
             const data = await fetchStockSuggestions(value);
             setSearchState(prev => ({
                 ...prev,
-                results: data,
+                results: data.slice(0, 4),
                 loading: false
             }));
         } catch (error) {
@@ -73,8 +76,15 @@ const GoogleTrendsSearch = ({ onSearch }) => {
             showResults: true
         }));
 
-        if (value) {
-            debouncedSearch(value);
+        const processedValue = value
+            .replace(/[０-９Ａ-Ｚａ-ｚ]/g, char => 
+                String.fromCharCode(char.charCodeAt(0) - 0xFEE0)
+            )
+            .replace(/[^A-Za-z0-9]/g, '')
+            .toUpperCase();
+
+        if (processedValue) {
+            debouncedSearch(processedValue);
         } else {
             setSearchState(prev => ({
                 ...prev,
@@ -101,19 +111,22 @@ const GoogleTrendsSearch = ({ onSearch }) => {
     return (
         <div className="google-trends-search-area" ref={searchRef}>
             <div className="search-container">
+                <span className="search-icon">
+                    <FaSearch />
+                </span>
                 <input
                     type="text"
                     value={searchState.keyword}
                     onChange={handleSearchInput}
-                    placeholder="輸入股票代號 (例如 TSLA)"
+                    placeholder="輸入股票代號"
                     className="search-input"
                 />
             </div>
             {searchState.showResults && (
                 <div className="search-results-container">
                     {searchState.loading ? (
-                        <div className="search-loading">
-                            <div className="spinner" />
+                        <div className="loading-spinner">
+                            <div className="spinner"></div>
                             <span>搜尋中...</span>
                         </div>
                     ) : searchState.error ? (
@@ -147,8 +160,8 @@ const GoogleTrendsSearch = ({ onSearch }) => {
     );
 };
 
-GoogleTrendsSearch.propTypes = {
+GoogleTrendsSymbolSearch.propTypes = {
     onSearch: PropTypes.func.isRequired,
 };
 
-export default GoogleTrendsSearch; 
+export default GoogleTrendsSymbolSearch; 
