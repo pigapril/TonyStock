@@ -24,7 +24,7 @@ const GoogleTrendsSymbolChart = ({ data }) => {
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
-                <div className="custom-tooltip">
+                <div className="google-trends-tooltip">
                     <p>{`日期: ${new Date(label).toLocaleDateString()}`}</p>
                     <p>{`搜尋熱度: ${payload[0].value}`}</p>
                     <p>{`股價: $${payload[1].value.toFixed(2)}`}</p>

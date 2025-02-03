@@ -35,7 +35,7 @@ import { Articles } from './pages/Articles';
 import { ArticleDetail } from './pages/ArticleDetail';
 import { SponsorUs } from './pages/SponsorUs';
 import { SponsorSuccess } from './pages/SponsorSuccess';
-import { GoogleTrendsPage } from './pages/GoogleTrendsPage';
+import { GoogleTrendsSymbolPage } from './pages/GoogleTrendsSymbolPage';
 
 // Context 和 Hooks
 import { AuthProvider } from './components/Auth/AuthContext';
@@ -316,7 +316,7 @@ function AppContent() {
               <Route
                 path="/googletrends"
                 element={
-                  <GoogleTrendsPage />
+                  <GoogleTrendsSymbolPage />
                 }
               />
             </Routes>

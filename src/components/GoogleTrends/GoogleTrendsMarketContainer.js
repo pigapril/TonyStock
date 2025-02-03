@@ -1,24 +1,25 @@
-import React, { useState, useCallback } from 'react';
-import GoogleTrendsSymbolSearch from './GoogleTrendsSymbolSearch';
+import React, { useState, useEffect, useCallback } from 'react';
 import GoogleTrendsSymbolChart from './GoogleTrendsSymbolChart';
 import { fetchGoogleTrendsData } from './googleTrends.service';
-import '../shared/styles/Loading.css';  // 確保引入載入動畫樣式
-import './GoogleTrendsContainer.css';  // 引入 Container 樣式
+import '../shared/styles/Loading.css';
+import './GoogleTrendsMarketContainer.css'; // 可自行建立此 CSS 檔來定義樣式
 
-const GoogleTrendsContainer = () => {
+const GoogleTrendsMarketContainer = () => {
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [symbol, setSymbol] = useState('');
 
-    const fetchData = useCallback(async (currentSymbol) => {
-        if (!currentSymbol) return;
+    // 這裡預設傳送的 symbol，即由後端定義 q 參數的值
+    const DEFAULT_SYMBOL = 'market';
+
+    const fetchData = useCallback(async (symbol) => {
+        if (!symbol) return;
         
         setLoading(true);
         setError(null);
         try {
-            console.log('Fetching data for symbol:', currentSymbol);
-            const data = await fetchGoogleTrendsData(currentSymbol);
+            console.log('Fetching data for symbol:', symbol);
+            const data = await fetchGoogleTrendsData(symbol);
             console.log('Received data:', data);
             
             if (data && data.data && Array.isArray(data.data)) {
@@ -35,21 +36,13 @@ const GoogleTrendsContainer = () => {
         }
     }, []);
 
-    React.useEffect(() => {
-        if (symbol) {
-            fetchData(symbol);
-        }
-    }, [fetchData, symbol]);
-
-    const handleSearch = useCallback((searchSymbol) => {
-        console.log('Search triggered with symbol:', searchSymbol);
-        setSymbol(searchSymbol);
-    }, []);
+    useEffect(() => {
+        // 一進入頁面就使用預設 symbol 請求數據
+        fetchData(DEFAULT_SYMBOL);
+    }, [fetchData]);
 
     return (
-        <div className="google-trends-container">
-            <GoogleTrendsSymbolSearch onSearch={handleSearch} />
-
+        <div className="google-trends-market-container">
             {loading && (
                 <div className="loading-spinner">
                     <div className="spinner"></div>
@@ -59,21 +52,19 @@ const GoogleTrendsContainer = () => {
             {error && <div className="error-message">錯誤: {error}</div>}
 
             {chartData && !loading && !error ? (
-                <div className="google-trends-chart-card">
+                <div className="google-trends-market-chart-card">
                     <GoogleTrendsSymbolChart data={chartData} />
                     <p className="chart-description">
-                        本圖表比較了 {symbol} 的 Google 搜尋熱度與股價走勢。
-                        搜尋熱度曲線 (藍色) 反映了市場對該標的的關注度，
-                        股價曲線 (綠色) 顯示了實際價格變化。
+                        本圖表比較了市場的 Google 搜尋熱度與股價走勢。
                     </p>
                 </div>
             ) : !loading && !error && (
                 <div className="empty-state">
-                    <p>請在上方搜尋框輸入股票代號來查看數據</p>
+                    <p>無可顯示的數據</p>
                 </div>
             )}
         </div>
     );
 };
 
-export default GoogleTrendsContainer; 
+export default GoogleTrendsMarketContainer;
