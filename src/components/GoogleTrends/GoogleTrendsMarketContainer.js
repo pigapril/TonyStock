@@ -50,7 +50,7 @@ const GoogleTrendsMarketContainer = () => {
                 <div className="google-trends-market-chart-card">
                     <GoogleTrendsSymbolChart data={chartData} />
                     <p className="chart-description">
-                        本圖表比較了市場的 Google 搜尋熱度與股價走勢。
+                        本圖表比較了多個市場關鍵字的 Google 搜尋熱度與 S&P500 (SPY) 股價走勢。
                     </p>
                 </div>
             ) : !loading && !error && (

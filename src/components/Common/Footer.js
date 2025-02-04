@@ -11,8 +11,10 @@ export const Footer = () => {
           <div className="footer-section">
             <h3>分析工具</h3>
             <ul>
-              <li><Link to="/priceanalysis">價格趨勢分析</Link></li>
+              <li><Link to="/priceanalysis">樂活五線譜</Link></li>
               <li><Link to="/market-sentiment">市場情緒分析</Link></li>
+              <li><Link to="/googletrends">Google 搜尋熱度-單一標的</Link></li>
+              <li><Link to="/googletrendsmarket">Google 搜尋熱度-整體市場</Link></li>
               <li><Link to="/watchlist">我的追蹤清單</Link></li>
             </ul>
           </div>

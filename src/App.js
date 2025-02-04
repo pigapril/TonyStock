@@ -76,6 +76,14 @@ function AppContent() {
   const location = useLocation();
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [googleTrendsDropdownOpen, setGoogleTrendsDropdownOpen] = React.useState(false);
+
+  // 當側邊欄關閉時，自動收合Google搜尋熱度下拉選單
+  React.useEffect(() => {
+    if (!sidebarOpen) {
+      setGoogleTrendsDropdownOpen(false);
+    }
+  }, [sidebarOpen]);
 
   // 切換側邊欄
   const toggleSidebar = () => {
@@ -147,11 +155,40 @@ function AppContent() {
                 <span>市場情緒分析</span>
               </Link>
             </li>
-            <li className="sidebar-item-4">
-              <Link to="/googletrends" onClick={() => isMobile && setSidebarOpen(false)}>
+            <li className="sidebar-item dropdown">
+              <div
+                className="sidebar-dropdown-title"
+                onClick={() => setGoogleTrendsDropdownOpen(!googleTrendsDropdownOpen)}
+              >
                 <FaChartLine />
                 <span>Google 搜尋熱度</span>
-              </Link>
+              </div>
+              {googleTrendsDropdownOpen && (
+                <ul className="dropdown-menu">
+                  <li>
+                    <Link
+                      to="/googletrends"
+                      onClick={() => {
+                        setSidebarOpen(false);
+                        setGoogleTrendsDropdownOpen(false);
+                      }}
+                    >
+                      <span>單一標的熱度</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/googletrendsmarket"
+                      onClick={() => {
+                        setSidebarOpen(false);
+                        setGoogleTrendsDropdownOpen(false);
+                      }}
+                    >
+                      <span>整體市場熱度</span>
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
             <li className="sidebar-item-5">
               <Link to="/watchlist" onClick={handleWatchlistClick}>
@@ -211,10 +248,26 @@ function AppContent() {
                 <FaHeartbeat />
                 <span>市場情緒分析</span>
               </Link>
-              <Link to="/googletrends">
-                <FaChartLine />
-                <span>Google 搜尋熱度</span>
-              </Link>
+              <div
+                className="desktop-nav-item dropdown"
+                onMouseEnter={() => setGoogleTrendsDropdownOpen(true)}
+                onMouseLeave={() => setGoogleTrendsDropdownOpen(false)}
+              >
+                <Link to="/googletrends">
+                  <FaChartLine />
+                  <span>Google 搜尋熱度</span>
+                </Link>
+                {googleTrendsDropdownOpen && (
+                  <div className="desktop-dropdown-menu">
+                    <Link to="/googletrends">
+                      <span>單一標的熱度</span>
+                    </Link>
+                    <Link to="/googletrendsmarket">
+                      <span>整體市場熱度</span>
+                    </Link>
+                  </div>
+                )}
+              </div>
               <Link to="/watchlist" onClick={handleWatchlistClick}>
                 <FaList />
                 <span>我的追蹤清單</span>
@@ -314,12 +367,7 @@ function AppContent() {
                   <SponsorSuccess />
                 </PageContainer>
               } />
-              <Route
-                path="/googletrends"
-                element={
-                  <GoogleTrendsSymbolPage />
-                }
-              />
+              <Route path="/googletrends" element={<GoogleTrendsSymbolPage />} />
               <Route path="/googletrendsmarket" element={<GoogleTrendsMarketPage />} />
             </Routes>
           </div>
