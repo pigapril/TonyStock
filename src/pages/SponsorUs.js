@@ -10,13 +10,17 @@ import richart_logo from '../assets/images/sponsor-us/richart_logo.png';   // �
 import cathay_qrcode from '../assets/images/sponsor-us/cathay_qrcode.jpg';
 import cathay_logo from '../assets/images/sponsor-us/cathay_logo.jpg';
 import ctb_logo from '../assets/images/sponsor-us/ctbc_logo.png';   // 引入中國信託 Logo
+import creditcard_logo from '../assets/images/sponsor-us/creditcard_logo.jpg';
+import creditcard_qrcode from '../assets/images/sponsor-us/creditcard_qrcode.png';
+import wiretransfer_logo from '../assets/images/sponsor-us/wiretransfer_logo.png';
+import wiretransfer_qrcode from '../assets/images/sponsor-us/wiretransfer_qrcode.png';
 import { Helmet } from 'react-helmet-async';
 
 const SponsorUs = () => {
   const [expandedCard, setExpandedCard] = useState(null);
   const [isCollapsing, setIsCollapsing] = useState(null); // 新增一個 state 來追蹤是否正在收合
   const cardRefs = useRef([]); // 使用 useRef 來儲存卡片的 ref
-  const [donors, setDonors] = useState(['wei', '吳＊叡', '末三碼984', '末三碼585']); // 新增一個 state 來儲存捐款人列表，並初始化為 wei 和 吳＊叡
+  const [donors, setDonors] = useState(['wei', '吳＊叡', '末三碼984', '末三碼585']); // 初始化捐款人列表
 
   const donationMethods = [
     // {
@@ -53,6 +57,7 @@ const SponsorUs = () => {
     //   image: cathay_qrcode, // cathay QR Code 圖片路徑 (假設您有)
     //   description: '用銀行 App 掃描下方 QRcode 可以自動帶入，或是手動輸入底下帳戶資訊',
     // },
+    /*
     {
       name: '中國信託銀行',
       logo: ctb_logo,
@@ -91,31 +96,36 @@ const SponsorUs = () => {
         </>
       ),
     },
-    // 可以繼續添加其他的收款方式
+    */
+    
+    {
+      name: '信用卡',
+      logo: creditcard_logo,
+      image: creditcard_qrcode,
+      description: (
+        <>
+          請<a href="https://p.ecpay.com.tw/2820E78" target="_blank" rel="noopener noreferrer">點擊連結</a>或掃描 QR Code 進行付款。
+        </>
+      ),
+      link: 'https://p.ecpay.com.tw/2820E78'
+    },
+    {
+      name: '銀行轉帳',
+      logo: wiretransfer_logo,
+      image: wiretransfer_qrcode,
+      description: (
+        <>
+          請<a href="https://p.ecpay.com.tw/F1295F8" target="_blank" rel="noopener noreferrer">點擊連結</a>或掃描 QR Code 進行付款。
+        </>
+      ),
+      link: 'https://p.ecpay.com.tw/F1295F8'
+    },
   ];
 
   const handleCardClick = (index, event) => {
     event.stopPropagation();
-    // const cardElement = cardRefs.current[index];
-    // if (cardElement) {
-    //   cardElement.classList.add('overlay-active'); // 添加 overlay-active 類別
-    //   setTimeout(() => {
-    //     cardElement.classList.remove('overlay-active'); // 移除 overlay-active 類別
-    //   }, 1000); // 1 秒後移除覆蓋層
-    // }
-
-    // if (expandedCard === index) {
-    //   // 如果點擊的是已展開的卡片，則開始收合動畫
-    //   setIsCollapsing(index);
-    //   setTimeout(() => {
-    //     setExpandedCard(null);
-    //     setIsCollapsing(null);
-    //   }, 400); // 等待收合動畫結束後，再將 expandedCard 設為 null
-    // } else {
-      // 如果點擊的是未展開的卡片，則展開
-      setExpandedCard(index);
-      setIsCollapsing(null);
-    // }
+    setExpandedCard(index);
+    setIsCollapsing(null);
   };
 
   const handleCopy = (text) => {
@@ -184,6 +194,7 @@ const SponsorUs = () => {
         </div>
 
         {/* 捐款人公告區塊 */}
+        {/*
         <div className="donor-announcement-section">
           <p>感謝近期溫暖的支持者</p>
           <ul className="donor-list">
@@ -198,24 +209,27 @@ const SponsorUs = () => {
           <h2>請選擇以下贊助方式</h2>
           <div className="donation-cards-container">
             {donationMethods.map((method, index) => (
-              <div
-                ref={(el) => (cardRefs.current[index] = el)}
-                className={`donation-card ${expandedCard === index ? 'expanded' : ''} ${isCollapsing === index ? 'collapsing' : ''}`}
-                key={index}
-                onClick={(event) => handleCardClick(index, event)}
-              >
-                <div className="overlay"></div> {/* 添加覆蓋層 */}
-                <div className="content">
-                  {expandedCard !== index && method.logo && <img src={method.logo} alt={method.name} />}
-                  {expandedCard === index && (
-                    <>
-                      <h3>{method.name}</h3>
-                      <p>{method.description}</p>
-                      {method.image && <img src={method.image} alt={method.name} />}
-                      {method.link && <a href={method.link} target="_blank" rel="noopener noreferrer">前往贊助</a>}
-                    </>
-                  )}
+              <div className="donation-card-wrapper" key={index}>
+                <div
+                  ref={(el) => (cardRefs.current[index] = el)}
+                  className={`donation-card ${expandedCard === index ? 'expanded' : ''} ${isCollapsing === index ? 'collapsing' : ''}`}
+                  onClick={(event) => handleCardClick(index, event)}
+                >
+                  <div className="overlay"></div> {/* 添加覆蓋層 */}
+                  <div className="content">
+                    {expandedCard !== index && method.logo && <img src={method.logo} alt={method.name} />}
+                    {expandedCard === index && (
+                      <>
+                        <h3>{method.name}</h3>
+                        <p>{method.description}</p>
+                        {method.image && <img src={method.image} alt={method.name} />}
+                      </>
+                    )}
+                  </div>
                 </div>
+                {expandedCard !== index && (
+                  <div className="donation-card-label">{method.name}</div>
+                )}
               </div>
             ))}
           </div>

@@ -71,7 +71,6 @@
 .donation-card {
     background-color: #fff;
     border-radius: 10px;
-    padding: 15px;
     text-align: center;
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.05);
     width: 150px;
@@ -132,7 +131,8 @@
     max-height: none;
     width: auto;
     height: auto;
-    margin-top: 0px;
+    margin-top: 10px;
+    margin-bottom: 40px;
 }
   
 .donation-card h3 {
@@ -327,4 +327,18 @@
         padding: 10px 20px;
         font-size: 0.9em;
     }
+}
+
+/* 新增捐款方式卡片 wrapper 與卡片下方名稱 */
+.donation-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.donation-card-label {
+    margin-top: 8px;
+    font-size: 1em;
+    color: #2c3e50;
+    text-align: center;
 }

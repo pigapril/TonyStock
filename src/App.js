@@ -155,6 +155,7 @@ function AppContent() {
                 <span>市場情緒分析</span>
               </Link>
             </li>
+            {/*
             <li className="sidebar-item dropdown">
               <div
                 className="sidebar-dropdown-title"
@@ -190,6 +191,7 @@ function AppContent() {
                 </ul>
               )}
             </li>
+            */}
             <li className="sidebar-item-5">
               <Link to="/watchlist" onClick={handleWatchlistClick}>
                 <div className="sidebar-item-content">
@@ -248,8 +250,8 @@ function AppContent() {
                 <FaHeartbeat />
                 <span>市場情緒分析</span>
               </Link>
-              <div
-                className="desktop-nav-item dropdown"
+              {/*
+              <div className="desktop-nav-item dropdown"
                 onMouseEnter={() => setGoogleTrendsDropdownOpen(true)}
                 onMouseLeave={() => setGoogleTrendsDropdownOpen(false)}
               >
@@ -268,6 +270,7 @@ function AppContent() {
                   </div>
                 )}
               </div>
+              */}
               <Link to="/watchlist" onClick={handleWatchlistClick}>
                 <FaList />
                 <span>我的追蹤清單</span>
