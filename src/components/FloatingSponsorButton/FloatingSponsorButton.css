@@ -1,0 +1,46 @@
+.floating-sponsor-button {
+  position: fixed; /* 固定定位，使其漂浮在頁面上 */
+  bottom: 20px; /* 修改 top 為 bottom，調整到頁面底部 */
+  right: 20px; /* 距離右側一些距離 */
+  z-index: 1000; /* 確保它在最上層，不會被其他內容遮蔽 */
+  display: block; /* 確保是 block 元素，方便設定寬高等 */
+  width: 70px; /* 設定按鈕寬度 */
+  height: 70px; /* 設定按鈕高度，使其為正圓形 */
+  border-radius: 50%; /* 圓角，使其變成圓形 */
+  overflow: hidden; /* 確保圖片不會超出圓形範圍 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 增加陰影，使其看起來更立體 */
+  transition: transform 0.3s ease; /* 添加動畫效果 */
+  animation: pulse 2s infinite; /* 新增動畫屬性 */
+}
+
+.floating-sponsor-button:hover {
+  transform: scale(1.1); /* hover 時稍微放大 */
+}
+
+.floating-sponsor-button img {
+  display: block; /* 確保圖片是 block 元素，填滿整個按鈕 */
+  width: 100%; /* 圖片寬度 100% */
+  height: 100%; /* 圖片高度 100% */
+  object-fit: cover; /* 圖片等比例填充並覆蓋容器 */
+}
+
+@media (max-width: 768px) { /* 手機螢幕尺寸 */
+  .floating-sponsor-button {
+    width: 70px; /* 在小螢幕上稍微縮小 */
+    height: 70px;
+    bottom: 10px; /* 修改 top 為 bottom，調整小螢幕上的位置 */
+    right: 10px;
+  }
+}
+
+@keyframes pulse { /* 定義關鍵影格動畫 */
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05); /* 稍微放大 */
+  }
+  100% {
+    transform: scale(1);
+  }
+} 

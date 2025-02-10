@@ -28,6 +28,7 @@ import { Legal } from './pages/Legal';
 import { WatchlistContainer } from './components/Watchlist/WatchlistContainer';
 import { AdBanner } from './components/Common/AdBanner';
 import { Footer } from './components/Common/Footer';
+import FloatingSponsorButton from './components/FloatingSponsorButton/FloatingSponsorButton';
 
 // 導入拆分後的價格標準差分析頁面
 import { PriceAnalysis } from './components/PriceAnalysis/PriceAnalysis';
@@ -375,6 +376,9 @@ function AppContent() {
             </Routes>
           </div>
         </main>
+
+        {/* 添加浮動贊助按鈕元件 */}
+        <FloatingSponsorButton />
 
         {/* 添加遮罩層 (mobile 狀態下點擊收合側邊欄) */}
         <Overlay isVisible={sidebarOpen && isMobile} onClick={closeSidebar} />
