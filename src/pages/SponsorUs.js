@@ -115,10 +115,10 @@ const SponsorUs = () => {
       image: wiretransfer_qrcode,
       description: (
         <>
-          請<a href="https://p.ecpay.com.tw/F1295F8" target="_blank" rel="noopener noreferrer">點擊連結</a>或掃描 QR Code。
+          請<a href="https://p.ecpay.com.tw/FBECD48" target="_blank" rel="noopener noreferrer">點擊連結</a>或掃描 QR Code。
         </>
       ),
-      link: 'https://p.ecpay.com.tw/F1295F8'
+      link: 'https://p.ecpay.com.tw/FBECD48'
     },
   ];
 
