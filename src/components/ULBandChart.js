@@ -139,7 +139,7 @@ const ULBandChart = ({ data }) => {
                 left: 10,
                 right: 30,
                 top: 20,
-                bottom: 25  // 增加底部邊距，確保 x 軸標籤完全可見
+                bottom: 25
             }
         }
     };
