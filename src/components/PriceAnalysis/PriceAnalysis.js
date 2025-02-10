@@ -122,7 +122,7 @@ export function PriceAnalysis() {
         labels: dates,
         datasets: [
           {
-            label: 'Price',
+            label: '價格',
             data: prices,
             borderColor: 'blue',
             borderWidth: 2,
@@ -130,7 +130,7 @@ export function PriceAnalysis() {
             pointRadius: 0
           },
           {
-            label: 'Trend Line',
+            label: '趨勢線',
             data: sdAnalysis.trendLine,
             borderColor: '#E9972D',
             borderWidth: 2,
@@ -138,7 +138,7 @@ export function PriceAnalysis() {
             pointRadius: 0
           },
           {
-            label: 'TL-2SD',
+            label: '-2個標準差',
             data: sdAnalysis.tl_minus_2sd,
             borderColor: '#143829',
             borderWidth: 2,
@@ -146,7 +146,7 @@ export function PriceAnalysis() {
             pointRadius: 0
           },
           {
-            label: 'TL-SD',
+            label: '-1個標準差',
             data: sdAnalysis.tl_minus_sd,
             borderColor: '#2B5B3F',
             borderWidth: 2,
@@ -154,7 +154,7 @@ export function PriceAnalysis() {
             pointRadius: 0
           },
           {
-            label: 'TL+SD',
+            label: '+1個標準差',
             data: sdAnalysis.tl_plus_sd,
             borderColor: '#C4501B',
             borderWidth: 2,
@@ -162,7 +162,7 @@ export function PriceAnalysis() {
             pointRadius: 0
           },
           {
-            label: 'TL+2SD',
+            label: '+2個標準差',
             data: sdAnalysis.tl_plus_2sd,
             borderColor: '#A0361B',
             borderWidth: 2,
@@ -432,83 +432,27 @@ export function PriceAnalysis() {
                     },
                     plugins: {
                       legend: { 
-                        display: false  // 隱藏圖例
+                        display: false
                       },
                       tooltip: {
-                        enabled: false,
                         mode: 'index',
                         intersect: false,
-                        external: function(context) {
-                          const tooltipModel = context.tooltip;
-                          let tooltipEl = document.getElementById('chartjs-tooltip-sd');
-
-                          if (!tooltipEl) {
-                            tooltipEl = document.createElement('div');
-                            tooltipEl.id = 'chartjs-tooltip-sd';
-                            document.body.appendChild(tooltipEl);
+                        usePointStyle: true,
+                        callbacks: {
+                          labelColor: function(context) {
+                            return {
+                              backgroundColor: context.dataset.borderColor,
+                              borderColor: context.dataset.borderColor,
+                              borderWidth: 0
+                            };
+                          },
+                          label: function(context) {
+                            const label = context.dataset.label || '';
+                            const value = context.parsed.y;
+                            return `${label}: ${formatPrice(value)}`;
                           }
-
-                          if (tooltipModel.opacity === 0) {
-                            tooltipEl.style.opacity = 0;
-                            return;
-                          }
-
-                          if (tooltipModel.body) {
-                            const titleLines = tooltipModel.title || [];
-
-                            // 定義想要顯示的數據集標籤順序
-                            const desiredLabels = ['Price', 'Trend Line', 'TL+2SD', 'TL+SD', 'TL-SD', 'TL-2SD'];
-
-                            // 過濾並排序數據點
-                            const sortedItems = tooltipModel.dataPoints
-                              .filter(item => desiredLabels.includes(item.dataset.label))
-                              .sort((a, b) => b.raw - a.raw);
-
-                            let innerHtml = `<div class="custom-tooltip">`;
-                            innerHtml += `<div class="tooltip-title">${titleLines[0]}</div>`;
-
-                            sortedItems.forEach(item => {
-                              const label = item.dataset.label;
-                              const value = item.raw.toFixed(2);
-                              const color = item.dataset.borderColor;
-                              innerHtml += `
-                                <div class="tooltip-item" style="display: flex; align-items: center;">
-                                  <div style="width: 10px; height: 10px; background-color: ${color}; margin-right: 5px;"></div>
-                                  <span>${label}: ${value}</span>
-                                </div>
-                              `;
-                            });
-
-                            innerHtml += `</div>`;
-                            tooltipEl.innerHTML = innerHtml;
-                          }
-
-                          const position = context.chart.canvas.getBoundingClientRect();
-                          const bodyWidth = document.body.clientWidth;
-                          const tooltipWidth = Math.min(200, bodyWidth * 0.8);
-                          let left = position.left + window.pageXOffset + tooltipModel.caretX;
-
-                          if (left + tooltipWidth > bodyWidth) {
-                            left = bodyWidth - tooltipWidth;
-                          }
-                          if (left < 0) {
-                            left = 0;
-                          }
-
-                          tooltipEl.style.opacity = 1;
-                          tooltipEl.style.position = 'absolute';
-                          tooltipEl.style.left = left + 'px';
-                          tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
-                          tooltipEl.style.font = tooltipModel.options.bodyFont.string;
-                          tooltipEl.style.padding = tooltipModel.options.padding + 'px ' + tooltipModel.options.padding + 'px';
-                          tooltipEl.style.pointerEvents = 'none';
-                          tooltipEl.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-                          tooltipEl.style.color = 'white';
-                          tooltipEl.style.borderRadius = '3px';
-                          tooltipEl.style.zIndex = 1000;
-                          tooltipEl.style.maxWidth = tooltipWidth + 'px';
-                          tooltipEl.style.width = 'auto';
-                        }
+                        },
+                        itemSort: (a, b) => b.parsed.y - a.parsed.y
                       },
                       crosshair: {
                         line: {
