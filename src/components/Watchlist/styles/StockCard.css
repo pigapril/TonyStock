@@ -5,7 +5,7 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 25px;
     background: white;
     border-radius: 12px;
     padding: 16px;
