@@ -2,7 +2,7 @@
 https://niku-stock.netlify.app/* https://sentimentinsideout.com/:splat 301!
 
 # API 代理
-/api/* https://sentiment-staging.publicvm.com/api/:splat 200
+/api/* https://stockdatabase.publicvm.com/api/:splat 200
 
 # SPA 回退路由
 /* /index.html 200 
