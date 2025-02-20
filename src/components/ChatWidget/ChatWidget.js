@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ChatWidget.css';
+import { useAuth } from '../Auth/useAuth';
+import { useDialog } from '../../hooks/useDialog';
+import { Analytics } from '../../utils/analytics'; // 引入 Analytics
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,6 +11,8 @@ const ChatWidget = () => {
   const chatWidgetRef = useRef(null);
   const chatBodyRef = useRef(null);
   const [isComposing, setIsComposing] = useState(false);
+  const { user } = useAuth();
+  const { openDialog } = useDialog();
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
@@ -15,6 +20,16 @@ const ChatWidget = () => {
 
   const sendMessage = async () => {
     if (!input.trim()) return;
+    
+    if (!user) {
+      Analytics.auth.loginRequired({
+        from: 'chat_widget'
+      });
+      openDialog('auth', {
+        message: '需要登入才能使用客服功能'
+      });
+      return;
+    }
     
     const userMessage = { role: 'user', content: input };
     const newMessages = [...messages, userMessage];

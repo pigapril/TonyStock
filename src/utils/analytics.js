@@ -60,6 +60,13 @@ export const Analytics = {
       });
     },
 
+    loginRequired: (data) => {
+      pushToDataLayer('auth_login_required', {
+        from: data.from,
+        // 可以根據需要添加更多 context data
+      });
+    },
+
     identityService: {
       initialize: (data) => {
         pushToDataLayer('auth_identity_service_init', {

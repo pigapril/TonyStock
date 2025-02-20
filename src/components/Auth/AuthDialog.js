@@ -74,8 +74,8 @@ export function AuthDialog() {
             />
             <ul className="feature-list">
                 <li>🎯 追蹤感興趣的股票</li>
-                <li>📊 即時查看分析結果</li>
-                <li>📱 跨裝置的追蹤清單</li>
+                <li>📊 一次分析多個結果</li>
+                <li>💬 由AI客服回答問題</li>
             </ul>
         </div>
     );
@@ -84,7 +84,7 @@ export function AuthDialog() {
         <Dialog
             open={dialog.isOpen}
             onClose={handleClose}
-            title={dialog.props?.customTitle || "🚀 登入享受完整體驗！"}
+            title={dialog.props?.customTitle || "🚀 登入就能使用完整功能！"}
             titleClassName="auth-dialog-title"
         >
             <div className="auth-dialog-content">
