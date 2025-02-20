@@ -29,6 +29,7 @@ import { WatchlistContainer } from './components/Watchlist/WatchlistContainer';
 import { AdBanner } from './components/Common/AdBanner';
 import { Footer } from './components/Common/Footer';
 import FloatingSponsorButton from './components/FloatingSponsorButton/FloatingSponsorButton';
+import ChatWidget from './components/ChatWidget/ChatWidget';
 
 // 導入拆分後的價格標準差分析頁面
 import { PriceAnalysis } from './components/PriceAnalysis/PriceAnalysis';
@@ -379,6 +380,8 @@ function AppContent() {
 
         {/* 添加浮動贊助按鈕元件 */}
         <FloatingSponsorButton />
+        {/* 添加文字對話客服元件 */}
+        <ChatWidget />
 
         {/* 添加遮罩層 (mobile 狀態下點擊收合側邊欄) */}
         <Overlay isVisible={sidebarOpen && isMobile} onClick={closeSidebar} />
