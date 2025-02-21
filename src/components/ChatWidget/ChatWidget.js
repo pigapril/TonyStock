@@ -3,6 +3,7 @@ import './ChatWidget.css';
 import { useAuth } from '../Auth/useAuth';
 import { useDialog } from '../../hooks/useDialog';
 import { Analytics } from '../../utils/analytics'; // 引入 Analytics
+import { useMediaQuery } from 'react-responsive';
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +14,8 @@ const ChatWidget = () => {
   const [isComposing, setIsComposing] = useState(false);
   const { user } = useAuth();
   const { openDialog } = useDialog();
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' }); // 判斷是否為行動裝置
+  const inputRef = useRef(null); // 建立 input 元素的 ref
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
@@ -58,6 +61,9 @@ const ChatWidget = () => {
       if (data.reply) {
         const reply = {role: 'assistant', content: data.reply};
         setMessages(prev => [...prev, reply]);
+        if (inputRef.current) {
+          inputRef.current.blur(); // 讓 input 失去焦點，收起鍵盤
+        }
       } else {
         console.error("無回覆訊息", data);
       }
@@ -68,7 +74,7 @@ const ChatWidget = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isOpen && chatWidgetRef.current && !chatWidgetRef.current.contains(event.target)) {
+      if (isOpen && chatWidgetRef.current && !chatWidgetRef.current.contains(event.target) && !event.target.classList.contains('chat-toggle-button')) {
         setIsOpen(false);
       }
     };
@@ -85,11 +91,16 @@ const ChatWidget = () => {
     }
   }, [messages]);
 
-  
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isOpen]);
+
   return (
     <>
       {isOpen && (
-        <div className="chat-widget" ref={chatWidgetRef}>
+        <div className="chat-widget" ref={chatWidgetRef} /* onClick={toggleChat} */>
           <div className="chat-header">
             小豬客服
             <button className="close-button" onClick={toggleChat}>✖</button>
@@ -113,12 +124,14 @@ const ChatWidget = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && !isComposing) {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
                   sendMessage();
                 }
               }}
               onCompositionStart={() => setIsComposing(true)}
               onCompositionEnd={() => setIsComposing(false)}
+              ref={inputRef}
             />
             <button onClick={sendMessage} className="send-button">
             </button>
