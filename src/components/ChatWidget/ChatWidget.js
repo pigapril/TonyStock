@@ -38,7 +38,7 @@ const ChatWidget = () => {
 
     // API 金鑰請從環境變數中獲取，避免前端暴露金鑰
     const apiKey = process.env.REACT_APP_AKASHCHAT_API_KEY || ''
-    const backendUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001'; // 從環境變數讀取後端 URL
+    const backendUrl = process.env.REACT_APP_API_BASE_URL || ''; // 從環境變數讀取後端 URL
 
     const requestOptions = {
       method: 'POST',
