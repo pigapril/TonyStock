@@ -61,8 +61,8 @@ const ChatWidget = () => {
       if (data.reply) {
         const reply = {role: 'assistant', content: data.reply};
         setMessages(prev => [...prev, reply]);
-        if (inputRef.current) {
-          inputRef.current.blur(); // 讓 input 失去焦點，收起鍵盤
+        if (isMobile && inputRef.current) {
+          inputRef.current.blur(); // 讓 input 失去焦點，收起鍵盤 (僅限行動裝置)
         }
       } else {
         console.error("無回覆訊息", data);
@@ -126,7 +126,9 @@ const ChatWidget = () => {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
-                  sendMessage();
+                  if (!isComposing) {
+                    sendMessage();
+                  }
                 }
               }}
               onCompositionStart={() => setIsComposing(true)}
