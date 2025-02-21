@@ -48,3 +48,24 @@
     cursor: help; /* 顯示滑鼠指標為問號 */
     color: inherit; /* 保持文字顏色不變 */
 }
+
+/* 新增情緒文字顏色 */
+.analysis-value.sentiment-極度恐懼 {
+  color: #143829; /* 極度恐懼 - 深綠色 */
+}
+
+.analysis-value.sentiment-恐懼 {
+  color: #2B5B3F; /* 恐懼 - 綠色 */
+}
+
+.analysis-value.sentiment-中性 {
+  color: #E9972D; /* 中性 - 黃色 */
+}
+
+.analysis-value.sentiment-貪婪 {
+  color: #C4501B; /* 貪婪 - 橘色 */
+}
+
+.analysis-value.sentiment-極度貪婪 {
+  color: #A0361B; /* 極度貪婪 - 紅色 */
+}
