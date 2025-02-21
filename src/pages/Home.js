@@ -65,7 +65,16 @@ export const Home = () => {
             <div className="feature-content">
               <h2>我的追蹤清單</h2>
               <p>建立屬於你的個人清單，輕鬆查看多個標的五線譜價格位階</p>
-              <Link to="/watchlist" className="feature-link">
+              <Link
+                to="/watchlist"
+                className="feature-link"
+                onClick={(e) => {
+                  if (!isAuthenticated) {
+                    e.preventDefault(); // 阻止默認連結行為
+                    openDialog('auth', { returnPath: '/watchlist' }); // 開啟登入對話框
+                  }
+                }}
+              >
                 了解更多 <span className="arrow">→</span>
               </Link>
             </div>
