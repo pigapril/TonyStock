@@ -58,6 +58,10 @@ export function PriceAnalysis() {
     price: null,
     sentiment: null
   });
+  // 新增狀態來切換簡易/進階查詢
+  const [isAdvancedQuery, setIsAdvancedQuery] = useState(false);
+  // 新增狀態來記錄分析期間的選擇
+  const [analysisPeriod, setAnalysisPeriod] = useState('長期'); // 預設為長期
 
   // 處理股票代碼的全形/半形轉換
   const handleStockCodeChange = (e) => {
@@ -191,25 +195,23 @@ export function PriceAnalysis() {
         const lastTrendLine = trendLine[trendLine.length - 1];
         const lastTlPlusSd = tl_plus_sd[tl_plus_sd.length - 1];
         const lastTlMinusSd = tl_minus_sd[tl_minus_sd.length - 1];
-
-        // 計算趨勢線的上下2.5%範圍
-        const upperNeutralBound = lastTrendLine * 1.025;
-        const lowerNeutralBound = lastTrendLine * 0.975;
+        const lastTlPlus2Sd = tl_plus_2sd[tl_plus_2sd.length - 1]; // 取得 +2 標準差數值
+        const lastTlMinus2Sd = tl_minus_2sd[tl_minus_2sd.length - 1]; // 取得 -2 標準差數值
 
         let sentiment = '中性';
-        
-        // 判斷市場情緒
-        if (lastPrice >= lastTlPlusSd) {
+
+        // 判斷市場情緒 (調整後)
+        if (lastPrice >= lastTlPlus2Sd) {
           sentiment = '極度樂觀';
-        } else if (lastPrice > upperNeutralBound) {
+        } else if (lastPrice > lastTlPlusSd) {
           sentiment = '樂觀';
-        } else if (lastPrice <= lastTlMinusSd) {
+        } else if (lastPrice <= lastTlMinus2Sd) {
           sentiment = '極度悲觀';
-        } else if (lastPrice < lowerNeutralBound) {
+        } else if (lastPrice < lastTlMinusSd) {
           sentiment = '悲觀';
         }
-        // 如果在趨勢線上下2.5%範圍內，維持中性
-        
+        // 如果在 -1sd 和 +1sd 之間，維持中性
+
         setAnalysisResult({
           price: lastPrice.toFixed(2),
           sentiment: sentiment
@@ -229,16 +231,34 @@ export function PriceAnalysis() {
   // 表單送出
   const handleSubmit = (e) => {
     e.preventDefault();
-    const convertedYears = years
-      .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
-      .replace(/[．。]/g, '.');
-    const numYears = parseFloat(convertedYears);
+    let numYears;
+    if (isAdvancedQuery) {
+      // 進階查詢模式下，使用使用者輸入的年數
+      const convertedYears = years
+        .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
+        .replace(/[．。]/g, '.');
+      numYears = parseFloat(convertedYears);
 
-    if (isNaN(numYears) || numYears <= 0) {
-      setYearsError('請輸入有效的查詢期間（年），且必須大於零。');
-      return;
+      if (isNaN(numYears) || numYears <= 0) {
+        setYearsError('請輸入有效的查詢期間（年），且必須大於零。');
+        return;
+      }
+      setYearsError('');
+    } else {
+      // 簡易查詢模式下，根據分析期間選擇年數
+      switch (analysisPeriod) {
+        case '短期':
+          numYears = 0.5;
+          break;
+        case '中期':
+          numYears = 1.5;
+          break;
+        case '長期':
+        default:
+          numYears = 3.5;
+          break;
+      }
     }
-    setYearsError('');
 
     // 記錄分析事件
     Analytics.stockAnalysis.search({
@@ -256,6 +276,11 @@ export function PriceAnalysis() {
     fetchStockData(stockCode, parseFloat(years) || 3.5, backTestDate, true);
     // eslint-disable-next-line
   }, []);
+
+  // 切換簡易/進階查詢模式
+  const toggleQueryMode = () => {
+    setIsAdvancedQuery(!isAdvancedQuery);
+  };
 
   return (
     <PageContainer>
@@ -294,35 +319,69 @@ export function PriceAnalysis() {
                 required
               />
             </div>
+
+            {/* 簡易查詢欄位容器 */}
+            {!isAdvancedQuery && (
+              <div className="input-group query-mode-inputs">
+                <label>分析期間：</label>
+                <select
+                  className="form-control"
+                  value={analysisPeriod}
+                  onChange={(e) => setAnalysisPeriod(e.target.value)}
+                >
+                  <option value="短期">短期 (0.5年)</option>
+                  <option value="中期">中期 (1.5年)</option>
+                  <option value="長期">長期 (3.5年)</option>
+                </select>
+              </div>
+            )}
+
+            {/* 進階查詢欄位容器 */}
+            {isAdvancedQuery && (
+              <div className="input-group query-mode-inputs advanced-query-mode-inputs">
+                <div className="input-group">
+                  <label>查詢年數：</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    value={years}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === '' || /^[0-9０-９.．。]*$/.test(value)) {
+                        setYears(value);
+                      }
+                    }}
+                    placeholder="輸入年數，如 3.5"
+                    required
+                  />
+                  {yearsError && <div className="error-message">{yearsError}</div>}
+                </div>
+                <div className="input-group">
+                  <label>回測日期：</label>
+                  <DatePicker
+                    selected={backTestDate ? new Date(backTestDate) : null}
+                    onChange={(date) => setBackTestDate(date ? date.toISOString().split('T')[0] : '')}
+                    placeholderText="預設今天"
+                    className="form-control"
+                    dateFormat="yyyy/MM/dd"
+                    isClearable
+                    popperPlacement="auto"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* 進階/簡易 查詢切換按鈕 (保持在下方) */}
             <div className="input-group">
-              <label>查詢年數：</label>
-              <input
-                className="form-control"
-                type="text"
-                value={years}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === '' || /^[0-9０-９.．。]*$/.test(value)) {
-                    setYears(value);
-                  }
-                }}
-                placeholder="輸入年數，如 3.5"
-                required
-              />
-              {yearsError && <div className="error-message">{yearsError}</div>}
+              <button
+                type="button"
+                className="btn-secondary query-mode-button"
+                onClick={toggleQueryMode}
+              >
+                {isAdvancedQuery ? '簡易設定' : '進階設定'}
+              </button>
             </div>
-            <div className="input-group">
-              <label>回測日期：</label>
-              <DatePicker
-                selected={backTestDate ? new Date(backTestDate) : null}
-                onChange={(date) => setBackTestDate(date ? date.toISOString().split('T')[0] : '')}
-                placeholderText="預設今天"
-                className="form-control"
-                dateFormat="yyyy/MM/dd"
-                isClearable
-                popperPlacement="auto"
-              />
-            </div>
+
             <button
               className={`btn-primary analysis-button ${loading ? 'btn-loading' : ''}`}
               type="submit"

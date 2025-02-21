@@ -14,7 +14,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   padding: 0px 5px 20px 20px;
-  overflow: hidden;
+  overflow: visible;
   height: auto;
 }
 
@@ -47,7 +47,6 @@
   width: 100%;
   height: 450px;
   max-width: 100%;
-  position: relative;
   overflow: visible;
   margin-bottom: 20px;
 }
@@ -113,13 +112,12 @@
 
 /* 表單樣式 */
 .input-group {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   width: 100%;
   max-width: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 .input-group label {
@@ -131,7 +129,7 @@
   width: 120px;
   min-width: 60px;
   max-width: 150px;
-  padding: 8px;
+  padding: 6px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
@@ -154,9 +152,19 @@
   box-sizing: border-box;
 }
 
-.react-datepicker-popper {
-  margin-top: 40px;
-  margin-left: -30px; /* 嘗試使用 margin-left 往左移動，您可以根據需要調整數值 */
+.input-group.query-mode-inputs.advanced-query-mode-inputs,
+.input-group {
+  overflow: visible !important;
+}
+
+.stock-analysis-card .react-datepicker-popper {
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0;
+  margin-left: 0;
+  z-index: 9999 !important;
 }
 
 /* 確保在 iOS 設備上日期輸入框的文字大小一致 */
@@ -392,4 +400,53 @@
 
 .react-datepicker__triangle {
   display: none; /* 隱藏三角形箭頭 */
+} 
+
+/* 查詢模式切換按鈕樣式 */
+.stock-analysis-card .query-mode-button {
+  margin-top: 1%;
+  margin-bottom: 20px; /* 與其他 input-group 間距一致 */
+  align-self: center;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff; /* 白色文字 */
+  border: none; /* 移除邊框 */
+  border-radius: 8px; /* 更圓潤的邊角 */
+  cursor: pointer;
+  background-color: #586e86; /* 藍色背景，更現代的顏色 */
+  transition: background-color 0.3s ease; /* 更平滑的過渡效果 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* 增加輕微陰影 */
+}
+
+.stock-analysis-card .query-mode-button:hover {
+  background-color: #2a4c6f; /* Hover 時顏色加深 */
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2); /* Hover 時陰影更明顯 */
+}
+
+.stock-analysis-card .query-mode-button:active {
+  background-color: #004085; /* Active 時顏色更深 */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); /* Active 時陰影縮小 */
+  transform: translateY(1px); /* 輕微向下位移 */
+}
+
+/* 進階查詢模式 - 輸入欄位容器樣式 (垂直排列) */
+.stock-analysis-card .query-mode-inputs.advanced-query-mode-inputs {
+  position: relative;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column; /* 垂直排列 */
+}
+
+/* 所有查詢模式 - 輸入欄位容器樣式 (通用樣式) */
+.stock-analysis-card .query-mode-inputs {
+  margin-bottom: 15px; /* 與其他 input-group 間距一致 */
+}
+
+/* 確保 input-group 在容器內水平置中 */
+.stock-analysis-card .query-mode-inputs .input-group {
+  margin-bottom: 8px;
+  flex-direction: row; /* 水平排列 */
+  display: flex;
+  align-items: center;
 } 
