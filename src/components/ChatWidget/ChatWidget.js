@@ -93,7 +93,9 @@ const ChatWidget = () => {
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      inputRef.current.focus();
+      if (!isMobile) {
+        inputRef.current.focus();
+      }
     }
   }, [isOpen]);
 
