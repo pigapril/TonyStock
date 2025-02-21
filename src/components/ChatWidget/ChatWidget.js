@@ -100,7 +100,7 @@ const ChatWidget = () => {
   return (
     <>
       {isOpen && (
-        <div className="chat-widget" ref={chatWidgetRef} /* onClick={toggleChat} */>
+        <div className={`chat-widget ${!isOpen ? 'closed' : ''} ${isMobile ? 'mobile-fullscreen' : ''}`} ref={chatWidgetRef} /* onClick={toggleChat} */>
           <div className="chat-header">
             小豬客服
             <button className="close-button" onClick={toggleChat}>✖</button>
