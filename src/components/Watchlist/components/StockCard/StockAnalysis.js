@@ -9,37 +9,26 @@ export const StockAnalysis = memo(function StockAnalysis({ price, analysis }) {
     }
 
     const { isNearUpper, isNearLower } = isNearEdge(
-        price, 
-        analysis.tl_minus_2sd, 
+        price,
+        analysis.tl_minus_2sd,
         analysis.tl_plus_2sd
     );
 
     return (
-        <div className="watchlist-stock-gauge">
-            <StockGauge
-                price={price}
-                support={analysis.tl_minus_2sd}
-                resistance={analysis.tl_plus_2sd}
-            />
-            <div className={`watchlist-stock-analysis ${
-                isNearUpper ? 'near-upper-edge' : ''
-            } ${
-                isNearLower ? 'near-lower-edge' : ''
-            }`}>
-                <span className={`analysis-value support ${
-                    isNearLower ? 'pulse' : ''
-                }`}>
+        <div className="stock-analysis-container">
+            <div className="stock-analysis-content">
+                <span className={`analysis-value support ${isNearLower ? 'pulse' : ''}`}>
                     {formatPrice(analysis.tl_minus_2sd)}
                 </span>
-                <span className={`analysis-value resistance ${
-                    isNearUpper ? 'pulse' : ''
-                }`}>
+                <StockGauge
+                    price={price}
+                    support={analysis.tl_minus_2sd}
+                    resistance={analysis.tl_plus_2sd}
+                />
+                <span className={`analysis-value resistance ${isNearUpper ? 'pulse' : ''}`}>
                     {formatPrice(analysis.tl_plus_2sd)}
                 </span>
             </div>
-            <span className="watchlist-stock-price">
-                {price ? `$${formatPrice(price)}` : '-'}
-            </span>
         </div>
     );
-}); 
+});

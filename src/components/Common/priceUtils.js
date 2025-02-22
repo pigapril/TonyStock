@@ -7,7 +7,7 @@ export const formatPrice = (price) => {
     if (numPrice >= 100) {
         return numPrice.toFixed(0);
     } else if (numPrice >= 10) {
-        return numPrice.toFixed(1);
+        return numPrice.toFixed(0);
     } else {
         return numPrice.toFixed(2);
     }

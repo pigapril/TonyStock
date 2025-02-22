@@ -1,20 +1,15 @@
-/* 新聞列表樣式 */
+/* News list styles */
 .stock-news-list {
-    flex: 1;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 8px 0 16px 0;
-    margin-top: -90px;
     position: relative;
-    z-index: 5;
+    padding: 0;
+    margin: 0;
 }
 
-/* 只有一條新聞時的特殊處理 */
-.stock-news-list.single-news {
-    padding-bottom: 0px;
-}
-
+/* News item styles */
 .stock-news-item {
     font-size: 0.9em;
     color: #1a73e8;
@@ -25,20 +20,29 @@
     transition: color 0.2s;
     padding: 4px 8px;
     border-radius: 4px;
-    position: absolute;
     width: 100%;
-    opacity: 0;
+    position: absolute;
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Start in the middle */
+    opacity: 0; /* Hidden until animation starts */
 }
 
-/* 只有一條新聞時 */
+.stock-news-item:hover {
+    color: #1557b0;
+    text-decoration: underline;
+    background-color: rgba(26, 115, 232, 0.05);
+}
+
+/* Single news - no animation, stays centered */
 .stock-news-list.single-news .stock-news-item {
     animation: none;
     opacity: 1;
-    position: static;
-    transform: none;
+    position: absolute; /* Keep absolute for consistency */
+    top: 50%;
+    transform: translateY(-50%); /* Centered */
 }
 
-/* 有兩條新聞時 */
+/* Two news items */
 .stock-news-list.two-news .stock-news-item {
     animation: newsSlide 6s infinite;
 }
@@ -51,7 +55,7 @@
     animation-delay: 3s;
 }
 
-/* 有三條新聞時 */
+/* Three news items */
 .stock-news-list.three-news .stock-news-item {
     animation: newsSlide 9s infinite;
 }
@@ -68,23 +72,30 @@
     animation-delay: 6s;
 }
 
-.stock-news-item:hover {
-    color: #1557b0;
-    text-decoration: underline;
-    background-color: rgba(26, 115, 232, 0.05);
-}
-
+/* Animation keyframes - Start and end in the middle */
 @keyframes newsSlide {
-    0%, 5% {
+    0% {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(-50%); /* Start centered */
     }
-    10%, 28% {
+    10% {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(-50%); /* Stay centered */
     }
-    33%, 100% {
+    28% {
+        opacity: 1;
+        transform: translateY(-50%); /* Stay centered */
+    }
+    33% {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-20px); /* Move up */
     }
-} 
+    66% {
+        opacity: 0;
+        transform: translateY(20px); /* Move down */
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50%); /* Return to center */
+    }
+}

@@ -42,8 +42,8 @@
 
 /* 添加按鈕特殊樣式 */
 .category-operations .add-stock-button {
-    background-color: #f3f4f6;  /* 改為與刪除按鈕相同的背景色 */
-    color: #666;  /* 改為與刪除按鈕相同的文字顏色 */
+    background-color: #f3f4f6;
+    color: #666;
 }
 
 /* 按鈕懸浮效果 */
@@ -53,12 +53,12 @@
 }
 
 .category-operations .add-stock-button:hover {
-    background-color: #3b82f6;  /* 懸浮時變為藍色 */
+    background-color: #3b82f6;
     color: white;
 }
 
 .category-operations .edit-mode-button:hover {
-    background-color: #dc2626;  /* 懸浮時變為紅色 */
+    background-color: #dc2626;
     color: white;
 }
 
@@ -66,47 +66,6 @@
 .category-operations .edit-mode-button,
 .category-operations .edit-mode-button.active {
     display: none;
-}
-
-/* 更新移除按鈕樣式 */
-.remove-stock-button {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    color: #dc2626;  /* 紅色愛心 */
-    cursor: pointer;
-    display: flex !important;  /* 強制永遠顯示 */
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    opacity: 1 !important;  /* 強制永遠顯示 */
-    z-index: 10;
-    pointer-events: auto;  /* 確保按鈕可以點擊 */
-    visibility: visible !important;  /* 確保按鈕可見 */
-}
-
-/* 按鈕懸停效果 */
-.remove-stock-button:hover {
-    transform: scale(1.1);
-    background-color: rgba(220, 38, 38, 0.1);  /* 紅色半透明背景 */
-}
-
-/* 按鈕點擊效果 */
-.remove-stock-button:active {
-    transform: scale(0.95);
-}
-
-/* 移除所有可能影響愛心顯示的懸停效果 */
-.stock-item:hover .remove-stock-button,
-.stock-item .remove-stock-button {
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
 }
 
 /* 分類區塊 */
@@ -160,32 +119,20 @@
 /* 表格容器 - 基礎樣式 */
 .stock-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 20px;
-    padding: 16px;
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+    padding: 0;
     border: none;
     border-radius: 0;
     overflow: hidden;
     max-width: 100%;
 }
 
-
-
-
-/* 股票基本信息區域 */
-.stock-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-bottom: 12px;
-    border-bottom: none;
-}
-
 /* Logo 容器樣式 */
 .stock-logo {
     width: 32px;
     height: 32px;
-    min-width: 32px;  /* 添加最小寬度確保不被壓縮 */
+    min-width: 32px;
     border-radius: 50%;
     overflow: hidden;
     display: flex;
@@ -205,7 +152,7 @@
 .default-logo {
     width: 32px;
     height: 32px;
-    min-width: 32px;  /* 添加最小寬度確保不被壓縮 */
+    min-width: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -220,7 +167,7 @@
 .default-logo.us-etf {
     width: 32px;
     height: 32px;
-    min-width: 32px;  /* 添加最小寬度確保不被壓縮 */
+    min-width: 32px;
     border-radius: 50%;
     overflow: hidden;
     display: flex;
@@ -241,59 +188,16 @@
 .watchlist-stock-symbol {
     font-size: 1.1em;
     font-weight: 600;
-    color: #1f2937;  /* 深色 */
-}
-
-
-
-/* 新聞列表區域 - 移除舊的樣式 */
-.stock-news-list {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 8px 0;
-    margin-top: -75px;  /* 移除負的 margin-top */
-    position: relative;  /* 添加相對定位 */
-    z-index: 5;  /* 確保新聞列表在正確的層級 */
-}
-
-/* 新聞項目樣式 */
-.stock-news-item {
-    font-size: 0.9em;
-    color: #1e2a3d;
-    cursor: pointer;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    transition: color 0.2s;
-    padding: 4px 8px;  /* 添加內邊距增加可點擊區域 */
-    border-radius: 4px;  /* 添加圓角 */
-    position: relative;  /* 確保可以正確接收點擊事件 */
-    z-index: 10;  /* 確保在其他元素之上 */
-}
-
-.stock-news-item:hover {
-    color: #1557b0;
-    text-decoration: underline;
-    background-color: rgba(26, 115, 232, 0.05);  /* 添加懸停背景色 */
-}
-
-/* 移除按鈕位置調整 */
-.remove-stock-button {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    opacity: 0;
+    color: #1f2937;
 }
 
 
 /* 響應式調整 */
 @media (max-width: 1200px) {
     .stock-list {
-        grid-template-columns: repeat(2, 1fr) !important;
-        padding: 12px;
-        gap: 16px;
+        grid-template-columns: 1fr !important;
+        padding: 0;
+        gap: 10px;
     }
 }
 
@@ -393,11 +297,11 @@
 .category-content {
     position: relative;
     padding: 16px;
-    display: none;  /* 預設隱藏所有分類內容 */
+    display: none;
 }
 
 .category-content.active {
-    display: block;  /* 只顯示激活的分類 */
+    display: block;
 }
 
 .watchlist-content {
@@ -455,30 +359,6 @@
     .search-results-container {
         max-height: 320px;
     }
-    
-}
-
-/* 新聞列表樣式 */
-.stock-news-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 4px 0;
-}
-
-.stock-news-item {
-    font-size: 0.9em;
-    color: #1a73e8;
-    cursor: pointer;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    transition: color 0.2s;
-}
-
-.stock-news-item:hover {
-    color: #1557b0;
-    text-decoration: underline;
 }
 
 /* 新聞對話框樣式 */
@@ -551,40 +431,21 @@
     text-decoration: underline;
 }
 
-.default-logo.tw-stock,
-.default-logo.us-etf {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-}
-
-.flag-icon {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
 /* 新增搜尋區域樣式 */
 .watchlist-search-area {
     position: relative;
     margin-bottom: 16px;
     z-index: 100;
-    max-width: 350px; /* 添加最大寬度 */
-    margin-left: auto;  /* 靠右對齊 */
-    margin-right: auto; /* 水平置中 */
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* 更新搜尋容器樣式 */
 .search-container {
     position: relative;
     width: 100%;
-    max-width: 350px; /* 確保與搜尋區域一致 */
+    max-width: 350px;
 }
 
 /* 更新搜尋結果容器樣式 */
@@ -593,37 +454,36 @@
     top: 100%;
     left: 0;
     right: 0;
-    max-width: 350px; /* 確保與搜尋框同寬 */
+    max-width: 350px;
     width: 100%;
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 16px;  /* 改為 16px 使搜尋結果框也更圓潤 */
+    border-radius: 16px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     max-height: 320px;
     overflow-y: auto;
-    margin-top: 8px;      /* 增加與搜尋框的間距 */
-    z-index: 100;  /* 保持較低的 z-index */
+    margin-top: 8px;
+    z-index: 100;
 }
 
 /* 響應式調整 */
 @media (max-width: 640px) {
     .watchlist-search-area {
-        max-width: 65%; /* 在小螢幕上占滿寬度 */
-        padding: 0 px; /* 添加左右間距 */
+        max-width: 65%;
+        padding: 0 px;
     }
 
     .search-container,
     .search-results-container {
         max-width: 100%;
     }
-
 }
 
 .stock-text-info {
     display: flex;
     flex-direction: column;
     margin-left: 10px;
-    min-width: 0; /* 確保文字會正確截斷 */
+    min-width: 0;
 }
 
 .watchlist-stock-symbol {
@@ -640,9 +500,9 @@
 
 .stock-name-zh,
 .stock-name-en,
-.stock-name {  /* 新增 .stock-name 統一樣式 */
-    font-size: 0.8em;  /* 比股票代碼小 */
-    color: #6b7280;    /* 更淺的顏色 */
+.stock-name {
+    font-size: 0.8em;
+    color: #6b7280;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -657,16 +517,6 @@
 }
 
 /* 調整其他可能會影響到 InfoTool 的元素 z-index */
-.category-operations {
-    position: absolute;
-    right: 16px;
-    top: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-}
-
 .info-tool-wrapper {
     position: absolute;
     right: 350px;
@@ -694,10 +544,10 @@
 
 /* 確保搜尋結果不會蓋住 InfoTool */
 .search-results-container {
-    z-index: 100;  /* 保持較低的 z-index */
+    z-index: 100;
 }
 
 /* 確保對話框不會蓋住 InfoTool */
 .dialog-overlay {
-    z-index: 1000;  /* 保持較低的 z-index */
+    z-index: 1000;
 }

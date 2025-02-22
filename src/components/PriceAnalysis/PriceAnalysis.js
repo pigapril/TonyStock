@@ -340,7 +340,7 @@ export function PriceAnalysis() {
             {isAdvancedQuery && (
               <div className="input-group query-mode-inputs advanced-query-mode-inputs">
                 <div className="input-group">
-                  <label>查詢年數：</label>
+                  <label>分析期間：</label>
                   <input
                     className="form-control"
                     type="text"

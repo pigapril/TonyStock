@@ -1,83 +1,75 @@
 import React from 'react';
-import { RadialBarChart, RadialBar, PolarAngleAxis } from 'recharts';
+import { formatPrice } from '../Common/priceUtils';
+import './styles/StockGauge.css';
 
 export const StockGauge = ({ price, support, resistance }) => {
+    // Colors from PriceAnalysis.css
     const COLORS = {
-        veryLow: 'rgba(34, 197, 94, 0.3)',      // green-500 (支撐線以下)
-        low: 'rgba(59, 130, 246, 0.3)',         // blue-500 (支撐線到趨勢線)
-        medium: 'rgba(234, 179, 8, 0.3)',       // yellow-500 (趨勢線到壓力線)
-        high: 'rgba(239, 68, 68, 0.3)',         // red-500 (壓力線以上)
-        background: 'rgba(226, 232, 240, 0.3)'   // slate-200
+        extremePessimism: '#143829',  // 極度悲觀 (matches tl_minus_2sd)
+        pessimism: '#1E5B3C',         // 悲觀
+        neutral: '#E9972D',           // 中性 (matches trendLine)
+        optimism: '#C14C20',          // 樂觀
+        extremeOptimism: '#A0361B',   // 極度樂觀 (matches tl_plus_2sd)
+        neutralBackground: 'rgba(226, 232, 240, 0.3)' // Slate-200 for unfilled portion
     };
 
-    // 計算百分比
+    // Calculate percentage (same as before)
     const calculatePercent = () => {
         if (price <= support) return 0;
         if (price >= resistance) return 100;
         return ((price - support) / (resistance - support)) * 100;
     };
 
-    // 決定顏色
-    const getColor = (percent) => {
-        if (percent <= 25) return COLORS.veryLow;      // 
-        if (percent <= 50) return COLORS.low;          // 藍色區間
-        if (percent <= 75) return COLORS.medium;       // 黃色區間
-        return COLORS.high;                            // 紅色區間
+    // Sentiment logic from PriceAnalysis
+    const getSentimentColor = (price, support, resistance) => {
+        const tlMinus2sd = support; // tl_minus_2sd
+        const tlPlus2sd = resistance; // tl_plus_2sd
+        const range = resistance - support;
+        const tlMinusSd = support + (range * 0.25); // Approximate -1sd (25%)
+        const tlPlusSd = support + (range * 0.75);  // Approximate +1sd (75%)
+        const trendLine = support + (range * 0.5);  // Approximate trendLine (50%)
+
+        if (price >= tlPlus2sd) {
+            return COLORS.extremeOptimism;
+        } else if (price > tlPlusSd) {
+            return COLORS.optimism;
+        } else if (price <= tlMinus2sd) {
+            return COLORS.extremePessimism;
+        } else if (price < tlMinusSd) {
+            return COLORS.pessimism;
+        } else {
+            return COLORS.neutral;
+        }
     };
 
     const percent = calculatePercent();
-    
-    // 判斷是否接近端點
-    const isNearUpperEdge = percent >= 90;
-    const isNearLowerEdge = percent <= 10;
-
-    const data = [
-        {
-            name: 'Price',
-            value: percent,
-            fill: getColor(percent)
-        }
-    ];
+    const barColor = getSentimentColor(price, support, resistance);
 
     return (
-        <div className="watchlist-stock-gauge">
-            <RadialBarChart
-                width={100}
-                height={52}
-                cx={50}
-                cy={50}
-                innerRadius={30}
-                outerRadius={45}
-                barSize={9}
-                data={data}
-                startAngle={180}
-                endAngle={0}
-            >
-                <PolarAngleAxis
-                    type="number"
-                    domain={[0, 100]}
-                    angleAxisId={0}
-                    tick={false}
-                />
-                
-                <RadialBar
-                    background={{ 
-                        fill: COLORS.background,
-                        strokeLinecap: 'round'
-                    }}
-                    dataKey="value"
-                    cornerRadius={1}
+        <div className="stock-gauge-container">
+            {/* Price label */}
+            <div className="price-label" style={{ left: `${percent}%`, transform: 'translateX(-50%)' }}>
+                ${formatPrice(price)}
+            </div>
+            {/* Gauge bar with filled portion */}
+            <div className="gauge-bar">
+                <div
+                    className="gauge-fill"
                     style={{
-                        strokeLinecap: 'round'
+                        width: `${percent}%`,
+                        backgroundColor: barColor,
                     }}
-                    startAngle={180}
-                    endAngle={0}
-                    animationBegin={0}
-                    animationDuration={750}
-                    animationEasing="ease-in-out"
-                    isAnimationActive={true}
                 />
-            </RadialBarChart>
+                <div
+                    className="price-indicator"
+                    style={{
+                        left: `${percent}%`,
+                        backgroundColor: barColor,
+                    }}
+                />
+                <div className="support-marker" style={{ left: '0%' }} />
+                <div className="resistance-marker" style={{ left: '100%' }} />
+            </div>
         </div>
     );
 };
