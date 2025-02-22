@@ -263,7 +263,7 @@ export function WatchlistContainer() {
                 ) : isLoading ? (
                     <div className="loading-spinner">
                         <div className="spinner"></div>
-                        <p>追蹤清單一次分析多個標的，若長時間未查看會載入比較久，請耐心等候...</p>
+                        <p>追蹤清單一次分析多個標的，若長時間未查看會需要稍微等候，謝謝你的耐心</p>
                     </div>
                 ) : (
                     <>
