@@ -56,10 +56,22 @@
     justify-content: center;
 }
 
+.stock-analysis-result-section { /* Added to align with sentiment header */
+    flex: 0 1 15%; /* Matches current-price-section for consistency */
+    min-width: 60px;
+    max-width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .stock-news-section {
-    flex: 1 1 35%;
+    flex: 1 1 20%; /* Adjusted to account for remove-button-section */
     min-width: 180px;
-    max-width: 40%;
+    max-width: 25%; /* Reduced to fit remove-button-section */
     margin-left: clamp(8px, 2vw, 40px);
     overflow: hidden;
     position: relative;
@@ -140,23 +152,23 @@
 
 /* 修改：情緒特定樣式，使用漸層背景 (取代原 sentiment-xxx 樣式) - 新顏色方案 */
 .status-label.status-極度樂觀 {
-    background: linear-gradient(135deg, #a63c3c 0%, #5b101f 100%); /* 極度樂觀：深紅色漸層 */
+    background: linear-gradient(135deg, #a63c3c 0%, #5b101f 100%);
 }
 
 .status-label.status-樂觀 {
-    background: linear-gradient(135deg, #cf6357 0%, #ab5454 100%); /* 樂觀：淺橙紅色漸層 */
+    background: linear-gradient(135deg, #cf6357 0%, #ab5454 100%);
 }
 
 .status-label.status-中性 {
-    background: linear-gradient(135deg, #F0AD4E 0%, #E9972D 100%); /* 中性：淺金黃色漸層 (調整後更柔和) */
+    background: linear-gradient(135deg, #F0AD4E 0%, #E9972D 100%);
 }
 
 .status-label.status-悲觀 {
-    background: linear-gradient(135deg, #499749 0%, #246f48 100%); /* 悲觀：淺綠色漸層 */
+    background: linear-gradient(135deg, #499749 0%, #246f48 100%);
 }
 
 .status-label.status-極度悲觀 {
-    background: linear-gradient(135deg, #1E5B3C 0%, #143829 100%); /* 修改：極度悲觀 - 顏色從淺到深漸層 */ /*  修改：顏色順序調整，從淺綠到深綠 */
+    background: linear-gradient(135deg, #1E5B3C 0%, #143829 100%);
 }
 
 /* 修改：Hover 效果 (取代原 analysis-result:hover 樣式) */
@@ -168,29 +180,57 @@
 /* Responsive adjustments for medium screens */
 @media (max-width: 1024px) {
     .stock-item {
-        flex-wrap: wrap; /* Allow wrapping on medium screens */
         padding: 8px;
     }
 
+    
     .stock-header-section {
-        flex: 1 1 25%;
-        max-width: 30%;
+        flex: 1 1 30%;
+        max-width: 15%;
     }
 
+    .current-price-title {
+        display: none;
+    }
     .current-price-section {
-        flex: 0 1 20%;
+        display: none;
     }
 
     .stock-analysis-section {
-        flex: 1 1 40%;
+        flex: 1 1 35%;
+        margin-left: 10%;
+    }
+
+    .stock-analysis-result-section {
+        flex: 0 1 17%;
+        margin-left: 10%;
     }
 
     .stock-news-section {
-        flex: 1 1 100%; /* Full width on wrap */
+        flex: 1 1 100%;
         margin-left: 0;
         margin-top: 8px;
     }
 }
+
+@media (max-width: 820px) {
+    .stock-analysis-title {
+        margin-left: 10%;
+    }
+    .stock-sentiment-title {
+        margin-left: 12%;
+    }
+}
+
+@media (max-width: 768px) {
+    .stock-analysis-title {
+        margin-left: 10%;
+    }
+    .stock-sentiment-title {
+        margin-left: 10%;
+    }
+}
+
 
 /* Responsive adjustments for small screens (mobile) */
 @media (max-width: 640px) {
@@ -218,33 +258,32 @@
         justify-content: flex-start;
     }
 
-    /* 修改：分析區塊容器，用於水平排列 analysis 和 result */
     .stock-analysis-container-mobile {
         margin-top: 8%;
         display: flex;
         flex-direction: row;
-        align-items: center; /* 垂直對齊 */
-        width: 100%; /* 佔滿容器寬度 */
-        margin-bottom: 8px; /* 與新聞區塊間隔 */
-        justify-content: center; /*  修改：水平置中對齊 */
+        align-items: center;
+        width: 100%;
+        margin-bottom: 8px;
+        justify-content: center;
     }
 
     .stock-analysis-section {
-        flex: 2; /* analysis 區塊佔較多空間 */
-        min-width: 0; /* 允許縮小 */
-        max-width: 70%; /* 限制最大寬度，可調整 */
+        flex: 2;
+        min-width: 0;
+        max-width: 70%;
         height: 100%;
         overflow: visible;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 0; /* 移除原有的 margin-bottom */
+        margin-bottom: 0;
     }
 
     .stock-analysis-result-section {
-        flex: 1; /* result 區塊佔較少空間 */
-        min-width: 0; /* 允許縮小 */
-        max-width: 30%; /* 限制最大寬度，可調整 */
+        flex: 1;
+        min-width: 0;
+        max-width: 30%;
         height: 100%;
         overflow: visible;
         display: flex;
@@ -259,8 +298,8 @@
         margin-left: 0;
         margin-bottom: 8px;
         max-height: 150px;
-        overflow: hidden; /* 修改：移除 scrollbar，超出內容隱藏 */
-        margin-top: 0; /* 確保新聞區塊在分析區塊下方 */
+        overflow: hidden;
+        margin-top: 0;
     }
 
     .remove-button-section {
@@ -270,7 +309,6 @@
         margin-left: 0;
     }
 
-    /* 修改：行動裝置特定調整 (取代原 analysis-result 在 @media 內的樣式) */
     .status-label {
         min-width: 50px;
         padding: 4px 8px;
@@ -293,3 +331,57 @@
     }
 }
 
+/* Header row styles */
+.stock-card-header-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.9em;
+    color: #777;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.stock-card-header-row span {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stock-header-title {
+    flex: 1 1 20%;
+    min-width: 100px;
+    max-width: 18%;
+    margin-left: -1.5%;
+    margin-right: 1.5%;
+}
+
+.current-price-title {
+    flex: 0 1 15%;
+    min-width: 60px;
+    max-width: 100px;
+}
+
+.stock-analysis-title {
+    flex: 1 1 30%;
+    min-width: 150px;
+    max-width: 25%;
+}
+
+.stock-sentiment-title {
+    flex: 0 1 15%; /* Matches stock-analysis-result-section */
+    min-width: 60px;
+    max-width: 100px;
+}
+
+.stock-news-title {
+    flex: 1 1 20%; /* Adjusted to match stock-news-section */
+    min-width: 180px;
+    max-width: 25%;
+}
+
+/* No header for remove-button-section, so we leave a gap implicitly */

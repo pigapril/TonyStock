@@ -294,7 +294,7 @@ export function WatchlistContainer() {
                                             </button>
                                             <div className="info-tool-wrapper">
                                                 <InfoTool
-                                                    content="添加股票後，將自動根據股票長期(3.5年)趨勢，計算出極度悲觀和極度樂觀價格，方便同時查看和比較不同股票價格的情緒位階"
+                                                    content="添加股票後，將自動根據股票長期(3.5年)趨勢，計算出極度悲觀(綠色)和極度樂觀(紅色)價格，方便查看股票當前價格所在的情緒位階"
                                                     position="bottom-right"
                                                     className="watchlist-infotool"
                                                 />
@@ -310,12 +310,13 @@ export function WatchlistContainer() {
                                         )}
                                         
                                         <div className="stock-list">
-                                            {category.stocks.map((stock) => (
+                                            {category.stocks.map((stock, index) => (
                                                 <StockCard
                                                     key={stock.id}
                                                     stock={stock}
                                                     onNewsClick={handleNewsClick}
                                                     onRemove={() => onRemoveStock(category.id, stock.id)}
+                                                    isFirstInCategory={index === 0}
                                                 />
                                             ))}
                                         </div>
