@@ -99,8 +99,8 @@
 .remove-stock-button {
     opacity: 1 !important;
     position: static;
-    width: clamp(26px, 4vw, 33px);
-    height: clamp(26px, 4vw, 33px);
+    width: clamp(30px, 4vw, 35px);
+    height: clamp(30px, 4vw, 35px);
     border-radius: 50%;
     border: none;
     background: transparent;
