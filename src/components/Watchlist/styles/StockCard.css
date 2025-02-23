@@ -99,8 +99,8 @@
 .remove-stock-button {
     opacity: 1 !important;
     position: static;
-    width: clamp(24px, 4vw, 32px);
-    height: clamp(24px, 4vw, 32px);
+    width: clamp(26px, 4vw, 33px);
+    height: clamp(26px, 4vw, 33px);
     border-radius: 50%;
     border: none;
     background: transparent;
@@ -220,6 +220,14 @@
     .stock-sentiment-title {
         margin-left: 12%;
     }
+    .stock-news-section {
+        min-width: 50px;
+        max-width: 150px;
+        margin-right: 5%;
+    }
+    .remove-button-section {
+        margin-left: -40px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -227,7 +235,16 @@
         margin-left: 10%;
     }
     .stock-sentiment-title {
-        margin-left: 10%;
+        margin-right: 0%;
+    }
+
+    .stock-news-section {
+        min-width: 50px;
+        max-width: 150px;
+        margin-right: 5%;
+    }
+    .remove-button-section {
+        margin-left: -40px;
     }
 }
 
