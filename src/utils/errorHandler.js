@@ -39,7 +39,10 @@ const ErrorMessages = {
     STOCK_LIMIT_EXCEEDED: '已達到股票數量上限'
 };
 
-export const handleApiError = (error) => {
+// 修改 handleApiError 函數，使其接受 showToast 作為參數
+export const handleApiError = (error, showToast) => {
+    console.log("Error object:", error);
+
     // 統一錯誤追蹤格式
     const trackError = (errorData) => {
         Analytics.error({
@@ -53,23 +56,33 @@ export const handleApiError = (error) => {
         return errorData;
     };
 
-    // 如果是 API 回傳的 AppError
-    if (error.statusCode && error.status) {
-        return trackError({
-            status: error.status,
-            errorCode: error.errorCode || 'API_ERROR',
-            message: error.message || ErrorMessages.DEFAULT_ERROR
-        });
-    }
-
-    // 如果是 API 回傳的標準錯誤格式
+    // 如果是 API 回傳的標準錯誤格式 (使用 error.response?.data 安全地存取)
     if (error.response?.data) {
         const errorData = error.response.data;
-        return trackError({
+        const status = error.response.status;
+        console.log("API error response data:", errorData); // 打印 API 回應的 data
+
+        let errorCode = errorData?.data?.errorCode; // 安全地取得 errorCode
+        console.log("Error code from API:", errorCode); // 打印 errorCode
+        let message = ErrorMessages[errorCode]; // 嘗試根據 errorCode 取得訊息
+
+        // 如果根據 errorCode 找不到訊息，且 HTTP 狀態碼為 500，則使用通用錯誤訊息
+        if (!message && status === 500) {
+            message = ErrorMessages.DEFAULT_ERROR; // 使用通用錯誤訊息
+        }
+
+        // 移除 message.includes 判斷，直接使用 errorCode 或通用訊息
+        message = message || ErrorMessages.DEFAULT_ERROR; // 確保 message 有值，否則使用預設錯誤
+
+        console.log("Error message from ErrorMessages:", message); // 打印從 ErrorMessages 取得的訊息
+        const trackedErrorData = trackError({
             status: errorData.status || 'error',
-            errorCode: errorData.errorCode || 'API_ERROR',
-            message: errorData.message || ErrorMessages[errorData.errorCode] || ErrorMessages.DEFAULT_ERROR
+            errorCode: errorCode || 'API_ERROR', // 使用 errorCode 或 'API_ERROR'
+            message: message
         });
+        showToast(trackedErrorData.message, 'error'); // 顯示 Toast
+        console.log("Toast message:", trackedErrorData.message); // 確認訊息內容
+        return trackedErrorData;
     }
 
     // Watchlist 特定錯誤處理
@@ -87,46 +100,58 @@ export const handleApiError = (error) => {
     };
 
     if (error.errorCode && watchlistErrors[error.errorCode]) {
-        return trackError({
+        const errorData = trackError({
             status: 'error',
             errorCode: error.errorCode,
             message: watchlistErrors[error.errorCode]
         });
+        showToast(errorData.message, 'error'); // 顯示 Toast
+        return errorData;
     }
 
     // 處理 Google Identity Service 特定錯誤
     if (error.response?.data?.errorCode?.startsWith('GOOGLE_AUTH_')) {
-        return trackError({
+        const errorData = trackError({
             status: 'error',
             errorCode: error.response.data.errorCode,
             message: ErrorMessages[error.response.data.errorCode] || ErrorMessages.GOOGLE_AUTH_FAILED
         });
+        showToast(errorData.message, 'error'); // 顯示 Toast
+        return errorData;
     }
     
     // 處理網路錯誤
     if (error.message === 'Network Error') {
-        return trackError({
+        const errorData = trackError({
             status: 'error',
             errorCode: 'NETWORK_ERROR',
             message: ErrorMessages.NETWORK_ERROR
         });
+        showToast(errorData.message, 'error'); // 顯示 Toast
+        return errorData;
     }
     
     // 處理超時
     if (error.code === 'ECONNABORTED') {
-        return trackError({
+        const errorData = trackError({
             status: 'error',
             errorCode: 'TIMEOUT_ERROR',
             message: ErrorMessages.TIMEOUT_ERROR
         });
+        showToast(errorData.message, 'error'); // 顯示 Toast
+        return errorData;
     }
     
     // 預設錯誤
-    return trackError({
+    console.log("Using default error message"); // 如果使用預設錯誤訊息，打印此訊息
+    const defaultErrorData = trackError({
         status: 'error',
         errorCode: 'UNKNOWN_ERROR',
         message: ErrorMessages.DEFAULT_ERROR
     });
+    showToast(defaultErrorData.message, 'error'); // 顯示 Toast
+    console.log("Toast message:", defaultErrorData.message); // 確認訊息內容
+    return defaultErrorData;
 };
 
 // 導出錯誤訊息供其他模組使用

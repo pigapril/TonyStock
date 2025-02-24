@@ -13,6 +13,8 @@ import Turnstile from 'react-turnstile';
 import { formatPrice } from '../Common/priceUtils';
 import { ExpandableDescription } from '../Common/ExpandableDescription/ExpandableDescription';
 import { Helmet } from 'react-helmet-async';
+import { useToastManager } from '../Watchlist/hooks/useToastManager';
+import { Toast } from '../Watchlist/components/Toast';
 
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -39,6 +41,7 @@ function getTimeUnit(dates) {
  */
 export function PriceAnalysis() {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+  const { showToast, toast, hideToast } = useToastManager();
 
   // 這裡保留所有原本在 App.js 中標準差分析需要的狀態
   const [stockCode, setStockCode] = useState('SPY');
@@ -89,7 +92,7 @@ export function PriceAnalysis() {
   // 資料抓取函式（原本在 App.js）
   const fetchStockData = useCallback(async (stock, yrs, testDate, bypassTurnstile = false) => {
     if (!bypassTurnstile && !turnstileToken) {
-      handleApiError(new Error('請先完成驗證'));
+      handleApiError(new Error('請先完成驗證'), showToast);
       return;
     }
 
@@ -221,12 +224,13 @@ export function PriceAnalysis() {
       if (error.code === 'ECONNABORTED') {
         setTimeoutMessage('分析超時，請稍後重試或縮短歷史查詢期間。');
       } else {
-        handleApiError(error);
+        const errorData = handleApiError(error, showToast);
+        setTimeoutMessage(errorData.message);
       }
     } finally {
       setLoading(false);
     }
-  }, [turnstileToken]);
+  }, [turnstileToken, showToast]);
 
   // 表單送出
   const handleSubmit = (e) => {
@@ -389,7 +393,6 @@ export function PriceAnalysis() {
             >
               {loading ? '分析中' : turnstileToken ? '開始分析' : '請完成下方驗證'}
             </button>
-            {timeoutMessage && <p>{timeoutMessage}</p>}
             {turnstileVisible && (
               <div className="turnstile-container">
                 <Turnstile
@@ -397,11 +400,11 @@ export function PriceAnalysis() {
                   onSuccess={handleTurnstileSuccess}
                   onError={() => {
                     setTurnstileToken(null);
-                    handleApiError(new Error('驗證失敗，請重試'));
+                    handleApiError(new Error('驗證失敗，請重試'), showToast);
                   }}
                   onExpire={() => {
                     setTurnstileToken(null);
-                    handleApiError(new Error('驗證已過期，請重新驗證'));
+                    handleApiError(new Error('驗證已過期，請重新驗證'), showToast);
                   }}
                   refreshExpired="auto"
                 />
@@ -597,6 +600,15 @@ export function PriceAnalysis() {
         expandButtonText="了解更多"
         collapseButtonText="收合"
       />
+
+      {/* 條件式渲染 Toast 元件 */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+        />
+      )}
     </PageContainer>
   );
 } 

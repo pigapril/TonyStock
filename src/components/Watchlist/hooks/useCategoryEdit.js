@@ -11,7 +11,7 @@ export const useCategoryEdit = (watchlistService, showToast, { setCategories, se
             return;
         }
 
-        const errorData = handleApiError(error);
+        const errorData = handleApiError(error, showToast);
         showToast(errorData.message, 'error');
     }, [showToast]);
 

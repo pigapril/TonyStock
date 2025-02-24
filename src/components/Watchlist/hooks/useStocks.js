@@ -71,7 +71,7 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
 
             return true;
         } catch (error) {
-            const errorData = handleApiError(error);
+            const errorData = handleApiError(error, showToast);
             showToast(errorData.message, 'error');
             Analytics.error({
                 component: 'useStocks',
