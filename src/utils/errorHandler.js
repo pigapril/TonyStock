@@ -39,9 +39,12 @@ const ErrorMessages = {
     STOCK_LIMIT_EXCEEDED: '已達到股票數量上限'
 };
 
-// 修改 handleApiError 函數，使其接受 showToast 作為參數
+// 修改 handleApiError 函數，使其接受 showToast 作為可選參數
 export const handleApiError = (error, showToast) => {
     console.log("Error object:", error);
+
+    // 確認 showToast 是否為函數
+    const isShowToastFunction = typeof showToast === 'function';
 
     // 統一錯誤追蹤格式
     const trackError = (errorData) => {
@@ -80,8 +83,15 @@ export const handleApiError = (error, showToast) => {
             errorCode: errorCode || 'API_ERROR', // 使用 errorCode 或 'API_ERROR'
             message: message
         });
-        showToast(trackedErrorData.message, 'error'); // 顯示 Toast
-        console.log("Toast message:", trackedErrorData.message); // 確認訊息內容
+        
+        // 只有在 showToast 是函數時才調用
+        if (isShowToastFunction) {
+            showToast(trackedErrorData.message, 'error'); // 顯示 Toast
+            console.log("Toast message:", trackedErrorData.message); // 確認訊息內容
+        } else {
+            console.error("Toast could not be shown:", trackedErrorData.message);
+        }
+        
         return trackedErrorData;
     }
 
@@ -105,7 +115,14 @@ export const handleApiError = (error, showToast) => {
             errorCode: error.errorCode,
             message: watchlistErrors[error.errorCode]
         });
-        showToast(errorData.message, 'error'); // 顯示 Toast
+        
+        // 只有在 showToast 是函數時才調用
+        if (isShowToastFunction) {
+            showToast(errorData.message, 'error'); // 顯示 Toast
+        } else {
+            console.error("Toast could not be shown:", errorData.message);
+        }
+        
         return errorData;
     }
 
@@ -116,7 +133,14 @@ export const handleApiError = (error, showToast) => {
             errorCode: error.response.data.errorCode,
             message: ErrorMessages[error.response.data.errorCode] || ErrorMessages.GOOGLE_AUTH_FAILED
         });
-        showToast(errorData.message, 'error'); // 顯示 Toast
+        
+        // 只有在 showToast 是函數時才調用
+        if (isShowToastFunction) {
+            showToast(errorData.message, 'error'); // 顯示 Toast
+        } else {
+            console.error("Toast could not be shown:", errorData.message);
+        }
+        
         return errorData;
     }
     
@@ -127,7 +151,14 @@ export const handleApiError = (error, showToast) => {
             errorCode: 'NETWORK_ERROR',
             message: ErrorMessages.NETWORK_ERROR
         });
-        showToast(errorData.message, 'error'); // 顯示 Toast
+        
+        // 只有在 showToast 是函數時才調用
+        if (isShowToastFunction) {
+            showToast(errorData.message, 'error'); // 顯示 Toast
+        } else {
+            console.error("Toast could not be shown:", errorData.message);
+        }
+        
         return errorData;
     }
     
@@ -138,7 +169,14 @@ export const handleApiError = (error, showToast) => {
             errorCode: 'TIMEOUT_ERROR',
             message: ErrorMessages.TIMEOUT_ERROR
         });
-        showToast(errorData.message, 'error'); // 顯示 Toast
+        
+        // 只有在 showToast 是函數時才調用
+        if (isShowToastFunction) {
+            showToast(errorData.message, 'error'); // 顯示 Toast
+        } else {
+            console.error("Toast could not be shown:", errorData.message);
+        }
+        
         return errorData;
     }
     
@@ -149,8 +187,15 @@ export const handleApiError = (error, showToast) => {
         errorCode: 'UNKNOWN_ERROR',
         message: ErrorMessages.DEFAULT_ERROR
     });
-    showToast(defaultErrorData.message, 'error'); // 顯示 Toast
-    console.log("Toast message:", defaultErrorData.message); // 確認訊息內容
+    
+    // 只有在 showToast 是函數時才調用
+    if (isShowToastFunction) {
+        showToast(defaultErrorData.message, 'error'); // 顯示 Toast
+        console.log("Toast message:", defaultErrorData.message); // 確認訊息內容
+    } else {
+        console.error("Toast could not be shown:", defaultErrorData.message);
+    }
+    
     return defaultErrorData;
 };
 

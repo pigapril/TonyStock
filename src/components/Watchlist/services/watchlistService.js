@@ -35,7 +35,9 @@ class WatchlistService {
             clearTimeout(timeoutId);
             
             if (!response.ok) {
-                const errorData = await response.json();
+                const errorData = await response.json().catch(() => {
+                    return { message: `HTTP錯誤: ${response.status}` };
+                });
                 console.log('API 錯誤回應:', errorData);
                 throw errorData;
             }
@@ -45,6 +47,8 @@ class WatchlistService {
 
             if (data.status === 'success' && data.data) {
                 return data.data;
+            } else if (data.status === 'error') {
+                throw { message: data.message || '未知錯誤' };
             }
             
             return data;
@@ -117,10 +121,23 @@ class WatchlistService {
     }
 
     async searchStocks(keyword) {
-        return this.fetchRequest(
-            `/api/watchlist/search?keyword=${encodeURIComponent(keyword)}`,
-            { method: 'GET' }
-        );
+        try {
+            // 確保關鍵字不為空
+            if (!keyword || keyword.trim() === '') {
+                return [];
+            }
+            
+            const result = await this.fetchRequest(
+                `/api/watchlist/search?keyword=${encodeURIComponent(keyword)}`,
+                { method: 'GET' }
+            );
+            
+            // 確保返回的是陣列
+            return Array.isArray(result) ? result : [];
+        } catch (error) {
+            console.error('搜尋股票失敗:', error);
+            return []; // 出錯時返回空陣列而非拋出錯誤
+        }
     }
 
     async deleteCategory(categoryId) {

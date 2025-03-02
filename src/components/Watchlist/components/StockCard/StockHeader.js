@@ -37,11 +37,15 @@ export const StockHeader = memo(function StockHeader({ stock }) {
                 />
             );
         } else {
-            return (
-                <div className="default-logo">
-                    {stock.symbol[0]}
-                </div>
-            );
+            if (stock && stock.symbol) {
+                return (
+                    <div className="default-logo">
+                        {stock.symbol[0]}
+                    </div>
+                );
+            } else {
+                return null;
+            }
         }
     };
 
