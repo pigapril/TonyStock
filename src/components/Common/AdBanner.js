@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import './AdBanner.css';
 import { useMediaQuery } from 'react-responsive';
 
 export const AdBanner = () => {
   const [isVisible, setIsVisible] = useState(true);
-  const isMobile = useMediaQuery({ maxWidth: 768 });
-
+  const [isAdLoaded, setIsAdLoaded] = useState(false);
+  const isMobile = useMediaQuery({ maxWidth: 720 });
+  const isTablet = useMediaQuery({ minWidth: 721, maxWidth: 969 });
   const handleClose = () => {
     setIsVisible(false);
   };
+  const adContentRef = useRef(null);
 
   useEffect(() => {
     if (isVisible) {
@@ -17,30 +19,40 @@ export const AdBanner = () => {
       const timer = setTimeout(() => {
         try {
           // 推送廣告，根據裝置類型推送不同尺寸的廣告
-          if (isMobile) {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-          } else {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-          }
+          (window.adsbygoogle = window.adsbygoogle || []).push({
+            callback: () => {
+              if (adContentRef.current && adContentRef.current.children.length > 0) {
+                setIsAdLoaded(true);
+              } else {
+                setIsAdLoaded(false);
+              }
+            }
+          });
         } catch (error) {
           console.error("AdSense push error:", error);
+          setIsAdLoaded(false);
         }
       }, 100); // 延遲一小段時間，確保組件已渲染
       return () => clearTimeout(timer);
     }
-  }, [isVisible, isMobile]);
+  }, [isVisible, isMobile, isTablet]);
 
-  if (!isVisible) return null;
+  if (!isVisible || !isAdLoaded) return null;
 
   return (
     <div className="ad-banner">
-      <div className="ad-content">
+      <div className="ad-content" ref={adContentRef}>
         {/* 根據裝置類型渲染不同的廣告內容 */}
         {isMobile ? (
           <ins className="adsbygoogle"
                style={{ display: "inline-block", width: "300px", height: "100px" }}
                data-ad-client="ca-pub-9124378768777425"
                data-ad-slot="2305447757"></ins>
+        ) : isTablet ? (
+          <ins className="adsbygoogle"
+               style={{ display: "inline-block", width: "728px", height: "90px" }}
+               data-ad-client="ca-pub-9124378768777425"
+               data-ad-slot="6690581177"></ins>
         ) : (
           <ins className="adsbygoogle"
                style={{ display: "inline-block", width: "970px", height: "90px" }}

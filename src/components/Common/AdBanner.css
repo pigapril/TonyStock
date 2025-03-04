@@ -36,30 +36,58 @@
 
 .ad-close-button {
   position: absolute;
+  top: 10px;
   right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
   background: none;
   border: none;
+  color: #888;
+  font-size: 1rem;
   cursor: pointer;
-  padding: 8px;
-  color: #666;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  z-index: 1001;
+  padding: 0;
+  width: 20px;
+  height: 20px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   border-radius: 50%;
-  transition: background-color 0.2s;
 }
 
 .ad-close-button:hover {
+  opacity: 1;
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 768px) {
+.ad-close-button svg {
+  width: 10px;
+  height: 10px;
+}
+
+@media (max-width: 720px) {
+  .ad-banner {
+    width: 320px;
+    max-width: none;
+    margin: 0 auto;
+    left: auto;
+    transform: none;
+  }
   .ad-content {
     min-height: 50px;
     max-height: 100px;
     min-width: 0;
     max-width: 728px;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 969px) {
+  .ad-banner {
+    max-width: 748px;
+    width: 100%;
+  }
+  .ad-content {
+    max-width: 728px;
+    min-width: 0;
   }
 } 
