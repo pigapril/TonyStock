@@ -18,7 +18,6 @@
     right: 85px;
     min-width: 290px;
     max-width: 100%;
-    bottom: 70px;
   }
 
   .chat-widget.mobile-fullscreen {
@@ -126,6 +125,8 @@
   box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
 
+
+
 .chat-input button {
   background-image: url('../../assets/images/send.png');
   padding: 10px 10px;
@@ -192,7 +193,7 @@
   .chat-toggle-button {
     width: 70px;
     height: 70px;
-    bottom: 70px;
+    bottom: 100px;
     right: 10px;
   }
 }

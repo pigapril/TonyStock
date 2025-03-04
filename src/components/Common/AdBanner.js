@@ -34,7 +34,7 @@ export const AdBanner = () => {
       <div className="ad-content" ref={adContentRef}>
         {/* 廣告預留位置，AdSense 會在此處載入廣告 */}
         <div className="ad-placeholder">
-          廣告載入中...
+          loading...
         </div>
         {isMobile ? (
           <ins className="adsbygoogle"
