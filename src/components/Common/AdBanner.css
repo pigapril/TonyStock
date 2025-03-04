@@ -69,8 +69,10 @@
   .ad-banner {
     width: 320px;
     max-width: none;
-    margin: 0 auto;
-    left: auto;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
     transform: none;
   }
   .ad-content {
