@@ -28,7 +28,7 @@
   .floating-sponsor-button {
     width: 70px; /* 在小螢幕上稍微縮小 */
     height: 70px;
-    bottom: 10px; /* 修改 top 為 bottom，調整小螢幕上的位置 */
+    bottom: 150px; /* 將 bottom 值調高，避免與手機廣告重疊 */
     right: 10px;
   }
 }

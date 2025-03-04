@@ -10,16 +10,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  max-height: 100px;
-  max-width: 850px;
+  max-height: 95px;
+  max-width: 975px;
   width: 100%;
 }
 
 .ad-content {
-  max-width: 750px;
+  max-width: 970px;
   width: 100%;
   height: 100%;
   position: relative;
+  min-width: 728px;
 }
 
 .ad-placeholder {
@@ -56,6 +57,9 @@
 
 @media (max-width: 768px) {
   .ad-content {
-    height: 60px;
+    min-height: 50px;
+    max-height: 100px;
+    min-width: 0;
+    max-width: 728px;
   }
 } 
