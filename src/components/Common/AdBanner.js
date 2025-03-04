@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import './AdBanner.css';
 
@@ -9,15 +9,32 @@ export const AdBanner = () => {
     setIsVisible(false);
   };
 
+  useEffect(() => {
+    if (isVisible) {
+      // 確保廣告在組件掛載後再推送到 AdSense
+      const timer = setTimeout(() => {
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (error) {
+          console.error("AdSense push error:", error);
+        }
+      }, 100); // 延遲一小段時間，確保組件已渲染
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible]);
+
   if (!isVisible) return null;
 
   return (
     <div className="ad-banner">
       <div className="ad-content">
         {/* 在這裡放置您的廣告內容 */}
-        <div className="ad-placeholder">
-          廣告版位
-        </div>
+        <ins className="adsbygoogle"
+             style={{ display: "block" }}
+             data-ad-client="ca-pub-9124378768777425"
+             data-ad-slot="6690581177"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
       </div>
       <button className="ad-close-button" onClick={handleClose}>
         <FaTimes />

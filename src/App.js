@@ -76,6 +76,7 @@ function AppContent() {
   } = useNewFeatureNotification(FEATURES.ARTICLES);
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' });
   const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [googleTrendsDropdownOpen, setGoogleTrendsDropdownOpen] = React.useState(false);
@@ -390,9 +391,8 @@ function AppContent() {
         <Footer />
       </div>
       <AuthDialog />
-      {/* 暫時註釋掉廣告橫幅 
-      <AdBanner />
-      */}
+      {/* 根據是否為首頁決定是否渲染 AdBanner */}
+      {!isHomePage && <AdBanner />}
     </div>
   );
 }
