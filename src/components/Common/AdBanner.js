@@ -21,7 +21,6 @@ export const AdBanner = () => {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
           } else {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
           }
         } catch (error) {
           console.error("AdSense push error:", error);
@@ -43,16 +42,10 @@ export const AdBanner = () => {
                data-ad-client="ca-pub-9124378768777425"
                data-ad-slot="2305447757"></ins>
         ) : (
-          <>
-            <ins className="adsbygoogle"
-                 style={{ display: "inline-block", width: "970px", height: "90px" }}
-                 data-ad-client="ca-pub-9124378768777425"
-                 data-ad-slot="3736248809"></ins>
-            <ins className="adsbygoogle"
-                 style={{ display: "inline-block", width: "728px", height: "90px" }}
-                 data-ad-client="ca-pub-9124378768777425"
-                 data-ad-slot="6690581177"></ins>
-          </>
+          <ins className="adsbygoogle"
+               style={{ display: "inline-block", width: "970px", height: "90px" }}
+               data-ad-client="ca-pub-9124378768777425"
+               data-ad-slot="3736248809"></ins>
         )}
       </div>
       <button className="ad-close-button" onClick={handleClose}>
