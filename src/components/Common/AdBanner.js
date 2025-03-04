@@ -37,27 +37,35 @@ export const AdBanner = () => {
     }
   }, [isVisible, isMobile, isTablet]);
 
-  if (!isVisible || !isAdLoaded) return null;
+  if (!isVisible) return null;
 
   return (
     <div className="ad-banner">
       <div className="ad-content" ref={adContentRef}>
-        {/* 根據裝置類型渲染不同的廣告內容 */}
-        {isMobile ? (
-          <ins className="adsbygoogle"
-               style={{ display: "inline-block", width: "300px", height: "100px" }}
-               data-ad-client="ca-pub-9124378768777425"
-               data-ad-slot="2305447757"></ins>
-        ) : isTablet ? (
-          <ins className="adsbygoogle"
-               style={{ display: "inline-block", width: "728px", height: "90px" }}
-               data-ad-client="ca-pub-9124378768777425"
-               data-ad-slot="6690581177"></ins>
+        {/* 根據 isAdLoaded 條件渲染廣告內容 */}
+        {isAdLoaded ? (
+          <>
+            {isMobile ? (
+              <ins className="adsbygoogle"
+                   style={{ display: "inline-block", width: "300px", height: "100px" }}
+                   data-ad-client="ca-pub-9124378768777425"
+                   data-ad-slot="2305447757"></ins>
+            ) : isTablet ? (
+              <ins className="adsbygoogle"
+                   style={{ display: "inline-block", width: "728px", height: "90px" }}
+                   data-ad-client="ca-pub-9124378768777425"
+                   data-ad-slot="6690581177"></ins>
+            ) : (
+              <ins className="adsbygoogle"
+                   style={{ display: "inline-block", width: "970px", height: "90px" }}
+                   data-ad-client="ca-pub-9124378768777425"
+                   data-ad-slot="3736248809"></ins>
+            )}
+          </>
         ) : (
-          <ins className="adsbygoogle"
-               style={{ display: "inline-block", width: "970px", height: "90px" }}
-               data-ad-client="ca-pub-9124378768777425"
-               data-ad-slot="3736248809"></ins>
+          <div className="ad-placeholder">
+            廣告載入中...
+          </div>
         )}
       </div>
       <button className="ad-close-button" onClick={handleClose}>
