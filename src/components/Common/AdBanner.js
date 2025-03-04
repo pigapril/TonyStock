@@ -5,7 +5,6 @@ import { useMediaQuery } from 'react-responsive';
 
 export const AdBanner = () => {
   const [isVisible, setIsVisible] = useState(true);
-  const [isAdLoaded, setIsAdLoaded] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 720 });
   const isTablet = useMediaQuery({ minWidth: 721, maxWidth: 969 });
   const handleClose = () => {
@@ -19,18 +18,9 @@ export const AdBanner = () => {
       const timer = setTimeout(() => {
         try {
           // 推送廣告，根據裝置類型推送不同尺寸的廣告
-          (window.adsbygoogle = window.adsbygoogle || []).push({
-            callback: () => {
-              if (adContentRef.current && adContentRef.current.children.length > 0) {
-                setIsAdLoaded(true);
-              } else {
-                setIsAdLoaded(false);
-              }
-            }
-          });
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (error) {
           console.error("AdSense push error:", error);
-          setIsAdLoaded(false);
         }
       }, 100); // 延遲一小段時間，確保組件已渲染
       return () => clearTimeout(timer);
@@ -42,30 +32,25 @@ export const AdBanner = () => {
   return (
     <div className="ad-banner">
       <div className="ad-content" ref={adContentRef}>
-        {/* 根據 isAdLoaded 條件渲染廣告內容 */}
-        {isAdLoaded ? (
-          <>
-            {isMobile ? (
-              <ins className="adsbygoogle"
-                   style={{ display: "inline-block", width: "300px", height: "100px" }}
-                   data-ad-client="ca-pub-9124378768777425"
-                   data-ad-slot="2305447757"></ins>
-            ) : isTablet ? (
-              <ins className="adsbygoogle"
-                   style={{ display: "inline-block", width: "728px", height: "90px" }}
-                   data-ad-client="ca-pub-9124378768777425"
-                   data-ad-slot="6690581177"></ins>
-            ) : (
-              <ins className="adsbygoogle"
-                   style={{ display: "inline-block", width: "970px", height: "90px" }}
-                   data-ad-client="ca-pub-9124378768777425"
-                   data-ad-slot="3736248809"></ins>
-            )}
-          </>
+        {/* 廣告預留位置，AdSense 會在此處載入廣告 */}
+        <div className="ad-placeholder">
+          廣告載入中...
+        </div>
+        {isMobile ? (
+          <ins className="adsbygoogle"
+               style={{ display: "inline-block", width: "300px", height: "100px" }}
+               data-ad-client="ca-pub-9124378768777425"
+               data-ad-slot="2305447757"></ins>
+        ) : isTablet ? (
+          <ins className="adsbygoogle"
+               style={{ display: "inline-block", width: "728px", height: "90px" }}
+               data-ad-client="ca-pub-9124378768777425"
+               data-ad-slot="6690581177"></ins>
         ) : (
-          <div className="ad-placeholder">
-            廣告載入中...
-          </div>
+          <ins className="adsbygoogle"
+               style={{ display: "inline-block", width: "970px", height: "90px" }}
+               data-ad-client="ca-pub-9124378768777425"
+               data-ad-slot="3736248809"></ins>
         )}
       </div>
       <button className="ad-close-button" onClick={handleClose}>
