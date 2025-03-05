@@ -18,7 +18,7 @@ export const AdBanner = () => {
           bannerRef.current.classList.remove('ad-banner--collapsed');
           setIsCollapsed(false);
         }
-      }, 180000);
+      }, 600000); //10 minutes
     }
   };
 
@@ -37,12 +37,24 @@ export const AdBanner = () => {
   const bannerRef = useRef(null);
 
   useEffect(() => {
-    if (isCollapsed) {
+    // 在組件掛載時初始化廣告
+    const timer = setTimeout(() => {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (error) {
+        console.error("AdSense initialization error:", error);
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []); // 空依賴陣列表示只在掛載時執行一次
+
+  useEffect(() => {
+    if (!isCollapsed) {
       const timer = setTimeout(() => {
         try {
           (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (error) {
-          console.error("AdSense push error:", error);
+          console.error("AdSense push error on state change:", error);
         }
       }, 100);
       return () => clearTimeout(timer);
