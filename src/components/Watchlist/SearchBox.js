@@ -50,7 +50,7 @@ export const SearchBox = ({ onSelect, watchlistService, categoryId }) => {
             const data = await watchlistService.searchStocks(value);
             setSearchState(prev => ({
                 ...prev,
-                results: data.results,
+                results: data,
                 loading: false
             }));
         } catch (error) {

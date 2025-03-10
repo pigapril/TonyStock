@@ -132,11 +132,18 @@ class WatchlistService {
                 { method: 'GET' }
             );
             
-            // 確保返回的是陣列
-            return Array.isArray(result) ? result : [];
+            // 若 result 為陣列則直接回傳，
+            // 若 result 為物件且具有 results 陣列，則回傳該陣列
+            if (Array.isArray(result)) {
+                return result;
+            } else if (result && Array.isArray(result.results)) {
+                return result.results;
+            }
+            
+            return [];
         } catch (error) {
             console.error('搜尋股票失敗:', error);
-            return []; // 出錯時返回空陣列而非拋出錯誤
+            return []; // 出錯時返回空陣列
         }
     }
 
