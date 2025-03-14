@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { formatPrice } from '../Common/priceUtils';
 import './GoogleTrendsSymbolChart.css';  // 引入 Chart 樣式
 
-const GoogleTrendsSymbolChart = ({ data }) => {
+const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {
     if (!data || data.length === 0) {
         return <div className="no-data-message">無可顯示的數據</div>;
     }
@@ -44,7 +44,7 @@ const GoogleTrendsSymbolChart = ({ data }) => {
                     <p>{`日期: ${new Date(label).toLocaleDateString()}`}</p>
                     {payload.map((entry, index) => (
                         <p key={`tooltip-${index}`}>
-                            {entry.name}: {entry.name === '股價' ? formatPrice(entry.value) : entry.value}
+                            {entry.name}: {entry.name.includes('股價') ? formatPrice(entry.value) : entry.value}
                         </p>
                     ))}
                 </div>
@@ -86,21 +86,20 @@ const GoogleTrendsSymbolChart = ({ data }) => {
                         type="monotone"
                         dataKey={trendKey}
                         stroke={trendColors[index % trendColors.length]}
-                        name={trendKey.replace('trend_', '').replace(/_/g, ' ')}
+                        name={`${symbol}搜尋熱度`}
                         dot={false}
                     />
                 ))}
-                {/* 繪製 SPY 股價折線，修改為醒目的特殊樣式 */}
+                {/* 繪製股價折線，使用傳入的 symbol 參數 */}
                 <Line 
                     yAxisId="right"
                     type="monotone"
                     dataKey="price"
-                    // 將線條顏色改為鮮豔的橘紅色，設定較粗且使用虛線模式
                     stroke="#FF4500"
                     strokeWidth={4}
                     dot={false}
                     strokeDasharray="5 5"
-                    name="SPY股價"
+                    name={`${symbol}股價`}
                 />
             </LineChart>
         </ResponsiveContainer>
@@ -115,6 +114,7 @@ GoogleTrendsSymbolChart.propTypes = {
             // 趨勢數據的 key 為動態產生
         })
     ).isRequired,
+    symbol: PropTypes.string
 };
 
 export default GoogleTrendsSymbolChart; 

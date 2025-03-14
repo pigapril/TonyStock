@@ -48,7 +48,7 @@ const GoogleTrendsMarketContainer = () => {
 
             {chartData && !loading && !error ? (
                 <div className="google-trends-market-chart-card">
-                    <GoogleTrendsSymbolChart data={chartData} />
+                    <GoogleTrendsSymbolChart data={chartData} symbol="SPY" />
                     <p className="chart-description">
                         本圖表比較了多個市場關鍵字的 Google 搜尋熱度與 S&P500 (SPY) 股價走勢。
                     </p>

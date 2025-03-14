@@ -60,11 +60,11 @@ const GoogleTrendsSymbolContainer = () => {
 
             {chartData && !loading && !error ? (
                 <div className="google-trends-symbol-chart-card">
-                    <GoogleTrendsSymbolChart data={chartData} />
+                    <GoogleTrendsSymbolChart data={chartData} symbol={symbol} />
                     <p className="chart-description">
                         本圖表比較了 {symbol} 的 Google 搜尋熱度與股價走勢。
-                        搜尋熱度曲線 (藍色) 反映了市場對該標的的關注度，
-                        股價曲線 (綠色) 顯示了實際價格變化。
+                        搜尋熱度反映了市場對該標的的關注度，
+                        股價顯示了實際價格變化。
                     </p>
                 </div>
             ) : !loading && !error && (
