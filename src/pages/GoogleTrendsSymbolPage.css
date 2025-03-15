@@ -7,11 +7,10 @@
   
   /* 標題樣式 */
   .google-trends-page-title {
-    font-size: 2rem;
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 30px;
-    font-weight: 600;
+    text-align: left;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #333;
   }
   
   /* 儀表板佈局 */

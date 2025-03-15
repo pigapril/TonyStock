@@ -10,7 +10,7 @@ export const GoogleTrendsMarketPage = () => {
             description="比較 Google 市場搜尋熱度與股價走勢。"
             className="google-trends-market-page-container"
         >
-            <h1 className="google-trends-market-page-title">Google 市場趨勢分析</h1>
+            <h1 className="google-trends-page-title">Google 市場趨勢分析</h1>
             <GoogleTrendsMarketContainer />
         </PageContainer>
     );

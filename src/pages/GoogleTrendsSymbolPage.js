@@ -10,7 +10,7 @@ export const GoogleTrendsSymbolPage = () => {
             description="比較 Google 標的搜尋熱度與股價的關係。"
             className="google-trends-symbol-page-container"
         >
-            <h1 className="google-trends-symbol-page-title">Google 標的搜尋熱度分析</h1>
+            <h1 className="google-trends-page-title">Google 標的搜尋熱度分析</h1>
             <GoogleTrendsSymbolContainer />
         </PageContainer>
     );

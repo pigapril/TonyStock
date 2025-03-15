@@ -59,7 +59,7 @@ const GoogleTrendsSymbolContainer = () => {
             {error && <div className="error-message">錯誤: {error}</div>}
 
             {chartData && !loading && !error ? (
-                <div className="google-trends-symbol-chart-card">
+                <div className="google-trends-chart-card">
                     <GoogleTrendsSymbolChart data={chartData} symbol={symbol} />
                     <p className="chart-description">
                         本圖表比較了 {symbol} 的 Google 搜尋熱度與股價走勢。

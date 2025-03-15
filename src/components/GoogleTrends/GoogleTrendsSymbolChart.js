@@ -62,34 +62,62 @@ const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
                     dataKey="date" 
-                    tickFormatter={(tick) => new Date(tick).toLocaleDateString()} 
+                    tickFormatter={(tick) => {
+                        const date = new Date(tick);
+                        return `${date.getMonth() + 1}/${date.getDate()}`;
+                    }}
+                    interval={1}
+                    angle={-30}
+                    textAnchor="end"
+                    height={60}
                 />
                 <YAxis 
                     yAxisId="left" 
                     domain={[0, 100]}
-                    label={{ value: 'Google 搜尋熱度 (0-100)', angle: -90, position: 'insideLeft' }} 
+                    label={{ 
+                        value: 'Google 搜尋熱度 (0-100)', 
+                        angle: -90, 
+                        position: 'insideLeft',
+                        offset: 10,  // 調整位置
+                        style: { textAnchor: 'middle' }  // 設置為中間對齊
+                    }} 
                 />
                 <YAxis 
                     yAxisId="right" 
                     orientation="right"
                     domain={['auto', 'auto']}
                     tickFormatter={formatPrice}
-                    label={{ value: '股價 ($)', angle: 90, position: 'insideRight' }} 
+                    label={{ 
+                        value: '股價 ($)', 
+                        angle: 90, 
+                        position: 'insideRight',
+                        offset: 10,  // 調整位置
+                        style: { textAnchor: 'middle' }  // 設置為中間對齊
+                    }} 
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
                 {/* 動態產生每個搜尋主題的趨勢折線 */}
-                {trendKeys.map((trendKey, index) => (
-                    <Line 
-                        key={trendKey}
-                        yAxisId="left"
-                        type="monotone"
-                        dataKey={trendKey}
-                        stroke={trendColors[index % trendColors.length]}
-                        name={`${symbol}搜尋熱度`}
-                        dot={false}
-                    />
-                ))}
+                {trendKeys.map((trendKey, index) => {
+                    // 從 trendKey 提取實際的關鍵詞名稱
+                    // 例如從 "trend_short_interest_ratio" 提取為 "Short interest ratio"
+                    const keyNameParts = trendKey.replace('trend_', '').split('_');
+                    const keyName = keyNameParts.map(part => 
+                        part.charAt(0).toUpperCase() + part.slice(1)
+                    ).join(' ');
+                    
+                    return (
+                        <Line 
+                            key={trendKey}
+                            yAxisId="left"
+                            type="monotone"
+                            dataKey={trendKey}
+                            stroke={trendColors[index % trendColors.length]}
+                            name={keyName} // 使用提取出的關鍵詞名稱
+                            dot={false}
+                        />
+                    );
+                })}
                 {/* 繪製股價折線，使用傳入的 symbol 參數 */}
                 <Line 
                     yAxisId="right"
