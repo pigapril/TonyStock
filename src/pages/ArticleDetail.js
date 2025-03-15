@@ -4,6 +4,7 @@ import PageContainer from '../components/PageContainer';
 import ReactMarkdown from 'react-markdown';
 import { getArticleInfoFromSlug } from '../utils/articleUtils';
 import './ArticleDetail.css';
+import { Helmet } from 'react-helmet-async';
 
 // 新增一個通用的 ID 處理函數
 const generateId = (text) => {
@@ -21,6 +22,7 @@ export function ArticleDetail() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [meta, setMeta] = useState({});
 
     useEffect(() => {
         const fetchArticle = async () => {
@@ -33,9 +35,32 @@ export function ArticleDetail() {
                 }
                 const content = await response.text();
                 
+                // 解析 Frontmatter
+                const frontmatterRegex = /^---([\s\S]+?)---/;
+                const frontmatterMatch = content.match(frontmatterRegex);
+                let frontmatter = {};
+                let markdownContent = content;
+
+                if (frontmatterMatch) {
+                    try {
+                        frontmatter = JSON.parse(frontmatterMatch[1]); // 嘗試解析 JSON
+                    } catch (e) {
+                        // 如果 JSON 解析失敗，嘗試 YAML 簡易解析
+                        const yamlLines = frontmatterMatch[1].trim().split('\n');
+                        yamlLines.forEach(line => {
+                            const parts = line.split(':').map(p => p.trim());
+                            if (parts.length === 2) {
+                                frontmatter[parts[0]] = parts[1];
+                            }
+                        });
+                    }
+                    markdownContent = content.replace(frontmatterRegex, '').trim(); // 移除 frontmatter
+                    setMeta(frontmatter); // 設定 meta state
+                }
+
                 setArticle({
                     ...getArticleInfoFromSlug(slug),
-                    content,
+                    content: markdownContent,
                     basePath: `/articles/${slug}`
                 });
             } catch (error) {
@@ -96,6 +121,11 @@ export function ArticleDetail() {
 
     return (
         <div className="article-detail-page">
+            <Helmet>
+                <title>{meta.title || article.title}</title>
+                <meta name="description" content={meta.description} />
+                <meta name="keywords" content={meta.keywords} />
+            </Helmet>
             <PageContainer>
                 <div className="article-header">
                     <h1>{article.title}</h1>
