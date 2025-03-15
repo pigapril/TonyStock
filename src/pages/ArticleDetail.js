@@ -108,25 +108,31 @@ export function ArticleDetail() {
     };
 
     if (loading) {
-        return <div>載入中...</div>;
+        return <PageContainer title="載入中..." description="載入文章內容中..."><div>載入中...</div></PageContainer>;
     }
 
     if (error) {
-        return <div>載入文章失敗：{error.message}</div>;
+        return <PageContainer title="錯誤" description="載入文章失敗">
+            <div>載入文章失敗：{error.message}</div>
+        </PageContainer>;
     }
 
     if (!article) {
-        return <div>找不到該文章。</div>;
+        return <PageContainer title="找不到文章" description="找不到該文章">
+            <div>找不到該文章。</div>
+        </PageContainer>;
     }
 
     return (
-        <div className="article-detail-page">
-            <Helmet>
-                <title>{meta.title || article.title}</title>
-                <meta name="description" content={meta.description} />
-                <meta name="keywords" content={meta.keywords} />
-            </Helmet>
-            <PageContainer>
+        <PageContainer 
+            title={meta.title || article.title} 
+            description={meta.description}
+        >
+            <div className="article-detail-page">
+                <Helmet>
+                    <meta name="keywords" content={meta.keywords} />
+                    {/* 其他特定於文章的 meta 標籤 */}
+                </Helmet>
                 <div className="article-header">
                     <h1>{article.title}</h1>
                 </div>
@@ -174,7 +180,7 @@ export function ArticleDetail() {
                         {article.content}
                     </ReactMarkdown>
                 </div>
-            </PageContainer>
-        </div>
+            </div>
+        </PageContainer>
     );
 } 
