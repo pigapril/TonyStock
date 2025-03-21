@@ -14,7 +14,7 @@ import creditcard_logo from '../assets/images/sponsor-us/creditcard_logo.jpg';
 import creditcard_qrcode from '../assets/images/sponsor-us/creditcard_qrcode.png';
 import wiretransfer_logo from '../assets/images/sponsor-us/wiretransfer_logo.png';
 import wiretransfer_qrcode from '../assets/images/sponsor-us/wiretransfer_qrcode.png';
-import { Helmet } from 'react-helmet-async';
+import PageContainer from '../components/PageContainer';
 
 const SponsorUs = () => {
   const [expandedCard, setExpandedCard] = useState(null);
@@ -160,106 +160,99 @@ const SponsorUs = () => {
     };
   }, [expandedCard, cardRefs, setIsCollapsing, setExpandedCard]);
 
+  // 定義用於結構化數據的 JSON-LD
+  const sponsorUsJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "贊助我們",
+    "description": "有你/妳的幫助，網站將能持續運作、提供簡單實用的投資工具，造福更多人。",
+    "url": "https://sentimentinsideout.com/sponsor-us",
+    "potentialAction": {
+      "@type": "DonateAction",
+      "recipient": {
+        "@type": "Organization",
+        "name": "Sentiment Inside Out"
+      }
+    }
+  };
+
   return (
-    <div className="sponsor-us-page">
-      <Helmet>
-        <title>贊助我們</title>
-        <meta name="description" content="有你/妳的幫助，Sentiment Inside Out 將能持續運作、提供簡單實用的投資工具，造福更多投資人。您的贊助將支持網站維護和發展。" />
-        <meta name="keywords" content="贊助網站,支持投資工具,投資分析平台,市場情緒分析" />
-        
-        {/* Open Graph 標籤 */}
-        <meta property="og:title" content="贊助我們 - 市場情緒分析平台" />
-        <meta property="og:description" content="有你/妳的幫助，Sentiment Inside Out 將能持續運作、提供簡單實用的投資工具，造福更多投資人。" />
-        <meta property="og:image" content="/images/sponsor-og.png" />
-        <meta property="og:url" content="https://sentimentinsideout.com/sponsor-us" />
-        <meta property="og:type" content="website" />
-        
-        {/* Twitter Card 標籤 */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="贊助我們 - 市場情緒分析平台" />
-        <meta name="twitter:description" content="有你/妳的幫助，Sentiment Inside Out 將能持續運作、提供簡單實用的投資工具，造福更多投資人。" />
-        <meta name="twitter:image" content="/images/sponsor-og.png" />
-        
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "贊助我們",
-            "description": "有你/妳的幫助，網站將能持續運作、提供簡單實用的投資工具，造福更多人。",
-            "url": "https://sentimentinsideout.com/sponsor-us",
-            "potentialAction": {
-              "@type": "DonateAction",
-              "recipient": {
-                "@type": "Organization",
-                "name": "Sentiment Inside Out"
-              }
-            }
-          })}
-        </script>
-      </Helmet>
-      <div className="sponsor-us-container">
-        {/* 主要圖片區塊 */}
-        <div className="main-image-section">
-          <img src={sponsorImage} alt="小豬撲滿" />
-        </div>
+    <PageContainer
+      title="贊助我們"
+      description="有你/妳的幫助，Sentiment Inside Out 將能持續運作、提供簡單實用的投資工具，造福更多投資人。您的贊助將支持網站維護和發展。"
+      keywords="贊助網站,支持投資工具,投資分析平台,市場情緒分析"
+      ogImage="/images/sponsor-og.png"
+      ogUrl="https://sentimentinsideout.com/sponsor-us"
+      ogType="website"
+      twitterCard="summary_large_image"
+      twitterImage="/images/sponsor-og.png"
+      jsonLd={sponsorUsJsonLd}
+    >
+      <div className="sponsor-us-page">
+        <div className="sponsor-us-container">
+          {/* 主要圖片區塊 */}
+          <div className="main-image-section">
+            <img src={sponsorImage} alt="小豬撲滿" />
+          </div>
 
-        {/* 文字說明區塊 */}
-        <div className="text-description-section">
-          <h1>贊助網站，一起幫助更多人</h1>
-          <p>
-            Sentiment Inside Out 網站的建置、投資工具和內容創作、防範網路攻擊...等等，<br></br>
-            背後其實只有一個人在維護。<br></br><br></br>
-            我希望藉由分享這些免費、簡單的工具，<br></br>幫助更多人在投資上獲得超越大盤的回報。<br></br><br></br>
-            但要維持網站的運作，<br></br>每一天都要付出一定的費用和時間，<br></br>長期下來其實也是不小的負擔。<br></br><br></br>
-            因此我想誠摯地邀請你/妳，<br></br>一起和我幫助更多人，<br></br>讓這個網站能繼續營運下去;<br></br>
-            或者就當作是請我喝個咖啡、吃個飯，<br></br>我也會非常感激。<br></br><br></br>
-            不論有無贊助，<br></br>都祝福你/妳投資順利、一切都更好！
-          </p>
-        </div>
+          {/* 文字說明區塊 */}
+          <div className="text-description-section">
+            <h1>贊助網站，一起幫助更多人</h1>
+            <p>
+              Sentiment Inside Out 網站的建置、投資工具和內容創作、防範網路攻擊...等等，<br></br>
+              背後其實只有一個人在維護。<br></br><br></br>
+              我希望藉由分享這些免費、簡單的工具，<br></br>幫助更多人在投資上獲得超越大盤的回報。<br></br><br></br>
+              但要維持網站的運作，<br></br>每一天都要付出一定的費用和時間，<br></br>長期下來其實也是不小的負擔。<br></br><br></br>
+              因此我想誠摯地邀請你/妳，<br></br>一起和我幫助更多人，<br></br>讓這個網站能繼續營運下去;<br></br>
+              或者就當作是請我喝個咖啡、吃個飯，<br></br>我也會非常感激。<br></br><br></br>
+              不論有無贊助，<br></br>都祝福你/妳投資順利、一切都更好！
+            </p>
+          </div>
 
-        {/* 捐款人公告區塊 */}
-        {/*
-        <div className="donor-announcement-section">
-          <p>感謝近期溫暖的支持者</p>
-          <ul className="donor-list">
-            {donors.map((donor, index) => (
-              <li key={index}>{donor}</li>
-            ))}
-          </ul>
-        </div>
+          {/* 捐款人公告區塊 */}
+          {/*
+          <div className="donor-announcement-section">
+            <p>感謝近期溫暖的支持者</p>
+            <ul className="donor-list">
+              {donors.map((donor, index) => (
+                <li key={index}>{donor}</li>
+              ))}
+            </ul>
+          </div>
 
-        {/* 多個小卡片展示收款方式 */}
-        <div className="donation-methods-section">
-          <h2>請選擇以下贊助方式</h2>
-          <div className="donation-cards-container">
-            {donationMethods.map((method, index) => (
-              <div className="donation-card-wrapper" key={index}>
-                <div
-                  ref={(el) => (cardRefs.current[index] = el)}
-                  className={`donation-card ${expandedCard === index ? 'expanded' : ''} ${isCollapsing === index ? 'collapsing' : ''}`}
-                  onClick={(event) => handleCardClick(index, event)}
-                >
-                  <div className="overlay"></div> {/* 添加覆蓋層 */}
-                  <div className="content">
-                    {expandedCard !== index && method.logo && <img src={method.logo} alt={method.name} />}
-                    {expandedCard === index && (
-                      <>
-                        <h3>{method.name}</h3>
-                        <p>{method.description}</p>
-                        {method.image && <img src={method.image} alt={method.name} />}
-                      </>
-                    )}
+          {/* 多個小卡片展示收款方式 */}
+          <div className="donation-methods-section">
+            <h2>請選擇以下贊助方式</h2>
+            <div className="donation-cards-container">
+              {donationMethods.map((method, index) => (
+                <div className="donation-card-wrapper" key={index}>
+                  <div
+                    ref={(el) => (cardRefs.current[index] = el)}
+                    className={`donation-card ${expandedCard === index ? 'expanded' : ''} ${isCollapsing === index ? 'collapsing' : ''}`}
+                    onClick={(event) => handleCardClick(index, event)}
+                  >
+                    <div className="overlay"></div> {/* 添加覆蓋層 */}
+                    <div className="content">
+                      {expandedCard !== index && method.logo && <img src={method.logo} alt={method.name} />}
+                      {expandedCard === index && (
+                        <>
+                          <h3>{method.name}</h3>
+                          <p>{method.description}</p>
+                          {method.image && <img src={method.image} alt={method.name} />}
+                        </>
+                      )}
+                    </div>
                   </div>
+                  {expandedCard !== index && (
+                    <div className="donation-card-label">{method.name}</div>
+                  )}
                 </div>
-                {expandedCard !== index && (
-                  <div className="donation-card-label">{method.name}</div>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 
