@@ -163,13 +163,37 @@ const SponsorUs = () => {
   return (
     <div className="sponsor-us-page">
       <Helmet>
+        <title>贊助我們</title>
+        <meta name="description" content="有你/妳的幫助，Sentiment Inside Out 將能持續運作、提供簡單實用的投資工具，造福更多投資人。您的贊助將支持網站維護和發展。" />
+        <meta name="keywords" content="贊助網站,支持投資工具,投資分析平台,市場情緒分析" />
+        
+        {/* Open Graph 標籤 */}
+        <meta property="og:title" content="贊助我們 - 市場情緒分析平台" />
+        <meta property="og:description" content="有你/妳的幫助，Sentiment Inside Out 將能持續運作、提供簡單實用的投資工具，造福更多投資人。" />
+        <meta property="og:image" content="/images/sponsor-og.png" />
+        <meta property="og:url" content="https://sentimentinsideout.com/sponsor-us" />
+        <meta property="og:type" content="website" />
+        
+        {/* Twitter Card 標籤 */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="贊助我們 - 市場情緒分析平台" />
+        <meta name="twitter:description" content="有你/妳的幫助，Sentiment Inside Out 將能持續運作、提供簡單實用的投資工具，造福更多投資人。" />
+        <meta name="twitter:image" content="/images/sponsor-og.png" />
+        
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
             "name": "贊助我們",
             "description": "有你/妳的幫助，網站將能持續運作、提供簡單實用的投資工具，造福更多人。",
-            "url": "https://sentimentinsideout.com/sponsor-us"
+            "url": "https://sentimentinsideout.com/sponsor-us",
+            "potentialAction": {
+              "@type": "DonateAction",
+              "recipient": {
+                "@type": "Organization",
+                "name": "Sentiment Inside Out"
+              }
+            }
           })}
         </script>
       </Helmet>

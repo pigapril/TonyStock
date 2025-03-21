@@ -12,10 +12,8 @@ import { useMediaQuery } from 'react-responsive';
 import Turnstile from 'react-turnstile';
 import { formatPrice } from '../Common/priceUtils';
 import { ExpandableDescription } from '../Common/ExpandableDescription/ExpandableDescription';
-import { Helmet } from 'react-helmet-async';
-import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { Toast } from '../Watchlist/components/Toast';
-
+import { useToastManager } from '../Watchlist/hooks/useToastManager';
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
@@ -286,26 +284,32 @@ export function PriceAnalysis() {
     setIsAdvancedQuery(!isAdvancedQuery);
   };
 
+  // 定義用於結構化數據的 JSON-LD
+  const priceAnalysisJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "樂活五線譜",
+    "description": "利用標準差分析股價趨勢，判斷市場情緒。分析當前股價是否過度樂觀或悲觀。利用股價均值回歸的統計特性，追蹤長期趨勢、判斷股價所處位置。",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "url": "https://sentimentinsideout.com/priceanalysis",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://sentimentinsideout.com/priceanalysis?stockCode={stockCode}&years={years}&backTestDate={backTestDate}",
+      "query-input": "required name=stockCode,years,backTestDate"
+    }
+  };
+
   return (
-    <PageContainer>
-      <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "樂活五線譜",
-            "description": "利用標準差分析股價趨勢，判斷市場情緒。分析當前股價是否過度樂觀或悲觀。利用股價均值回歸的統計特性，追蹤長期趨勢、判斷股價所處位置。",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Web",
-            "url": "https://sentimentinsideout.com/priceanalysis",
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": "https://sentimentinsideout.com/priceanalysis?stockCode={stockCode}&years={years}&backTestDate={backTestDate}",
-              "query-input": "required name=stockCode,years,backTestDate"
-            }
-          })}
-        </script>
-      </Helmet>
+    <PageContainer 
+      title="樂活五線譜 - 價格趨勢分析"
+      description="利用股價均值回歸的特性，分析價格趨勢，並判斷當前市場情緒是否過度樂觀或是悲觀，提升進出場的勝率。"
+      keywords="樂活五線譜,價格趨勢分析,股價分析,市場情緒,均值回歸,超買超賣,樂活通道"
+      ogImage="/images/price-analysis-og.png"
+      ogUrl="https://sentimentinsideout.com/priceanalysis"
+      ogType="website"
+      jsonLd={priceAnalysisJsonLd}
+    >
       <h1>樂活五線譜</h1>
       <div className="dashboard">
         

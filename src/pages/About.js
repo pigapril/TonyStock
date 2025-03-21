@@ -7,17 +7,39 @@ import { Helmet } from 'react-helmet-async';
 export const About = () => {
   return (
     <div className="about-page">
-        <Helmet>
-            <script type="application/ld+json">
-                {JSON.stringify({
-                    "@context": "https://schema.org",
-                    "@type": "AboutPage",
-                    "name": "關於 Sentiment Inside Out",
-                    "description": "了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化爲重要的投資指標，幫助大家克服自身的恐懼與貪婪心態。",
-                    "url": "https://sentimentinsideout.com/about"
-                })}
-            </script>
-        </Helmet>
+      <Helmet>
+        <title>關於本站</title>
+        <meta name="description" content="了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化為重要的投資指標，幫助投資者克服恐懼與貪婪心態。" />
+        <meta name="keywords" content="市場情緒,投資心理,恐懼與貪婪,投資指標,情緒分析,投資策略" />
+        
+        {/* Open Graph 標籤 */}
+        <meta property="og:title" content="關於 Sentiment Inside Out - 市場情緒分析平台" />
+        <meta property="og:description" content="了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化為重要的投資指標。" />
+        <meta property="og:image" content="/images/about-og.png" />
+        <meta property="og:url" content="https://sentimentinsideout.com/about" />
+        <meta property="og:type" content="website" />
+        
+        {/* Twitter Card 標籤 */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="關於 Sentiment Inside Out - 市場情緒分析平台" />
+        <meta name="twitter:description" content="了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化為重要的投資指標。" />
+        <meta name="twitter:image" content="/images/about-og.png" />
+        
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            "name": "關於 Sentiment Inside Out",
+            "description": "了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化爲重要的投資指標，幫助大家克服自身的恐懼與貪婪心態。",
+            "url": "https://sentimentinsideout.com/about",
+            "mainEntity": {
+              "@type": "Organization",
+              "name": "Sentiment Inside Out",
+              "email": "support@sentimentinsideout.com"
+            }
+          })}
+        </script>
+      </Helmet>
       <div className="about-container">
         <div className="about-image">
           <img src={aboutImage} alt="About Sentiment Inside Out" />

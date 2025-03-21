@@ -457,6 +457,20 @@ const MarketSentimentIndex = () => {
   // 根據 activeTab 獲取描述內容
   const currentDescription = INDICATOR_DESCRIPTION_MAP[activeTab] || INDICATOR_DESCRIPTION_MAP.composite;
 
+  // 定義用於結構化數據的 JSON-LD
+  const marketSentimentJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "市場情緒分析",
+    "description": "即時追蹤市場情緒，避免追高殺低。提供多個市場情緒指標，幫助投資人判斷當前市場情緒是恐懼還是貪婪。",
+    "url": "https://sentimentinsideout.com/market-sentiment",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://sentimentinsideout.com/market-sentiment?timeRange={timeRange}&indicator={indicator}",
+      "query-input": "required name=timeRange,indicator"
+    }
+  };
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -473,23 +487,14 @@ const MarketSentimentIndex = () => {
   }
 
   return (
-    <PageContainer>
-      <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "市場情緒分析",
-            "description": "即時追蹤市場情緒，避免追高殺低。提供多個市場情緒指標，幫助投資人判斷當前市場情緒是恐懼還是貪婪。",
-            "url": "https://sentimentinsideout.com/market-sentiment",
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": "https://sentimentinsideout.com/market-sentiment?timeRange={timeRange}&indicator={indicator}",
-              "query-input": "required name=timeRange,indicator"
-            }
-          })}
-        </script>
-      </Helmet>
+    <PageContainer 
+      title="市場情緒分析"
+      description="即時追蹤市場情緒，避免追高殺低。提供多個市場情緒指標，幫助投資人判斷當前市場情緒是恐懼還是貪婪。"
+      keywords="市場情緒,恐懼貪婪指數,市場情緒指標,投資情緒,市場溫度計,台股分析,SPY分析"
+      ogImage="/images/market-sentiment-og.png"
+      ogUrl="https://sentimentinsideout.com/market-sentiment"
+      jsonLd={marketSentimentJsonLd}
+    >
       <h1>市場情緒分析</h1>
       <div className="tabs-grid">
         <button
