@@ -290,7 +290,7 @@ function AppContent() {
               </Link>
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
-                <span>Facebook 關鍵圖表</span>
+                <span>Facebook 粉絲專頁</span>
               </a>
             </div>
 
