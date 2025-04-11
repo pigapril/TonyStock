@@ -226,7 +226,7 @@ function AppContent() {
                 rel="noopener noreferrer"
               >
                 <FaFacebook />
-                <span>Facebook 關鍵圖表</span>
+                <span>Facebook</span>
               </a>
             </li>
           </ul>

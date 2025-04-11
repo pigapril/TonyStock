@@ -36,7 +36,7 @@ export const Footer = () => {
                 <a href="https://www.facebook.com/profile.php?id=61565751412240" 
                    target="_blank" 
                    rel="noopener noreferrer">
-                  Facebook 關鍵圖表
+                  Facebook 粉絲專頁
                 </a>
               </li>
             </ul>
