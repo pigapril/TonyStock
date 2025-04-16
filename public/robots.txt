@@ -1,6 +1,3 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow: /priceanalysis?*
-Disallow: /search?*
-
-Sitemap: https://sentimentinsideout.com/sitemap.xml
+Disallow:
