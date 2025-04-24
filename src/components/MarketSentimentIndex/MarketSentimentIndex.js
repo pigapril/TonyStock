@@ -359,7 +359,7 @@ const MarketSentimentIndex = () => {
         ticks: {
           maxTicksLimit: 6,
           autoSkip: true,
-          maxRotation: 0,
+          maxRotation: 45,
           minRotation: 0
         }
       },

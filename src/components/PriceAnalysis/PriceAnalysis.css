@@ -55,6 +55,12 @@
   position: relative;
   width: 100%;
   height: 300px;
+  margin-top: -10px;
+}
+
+.chart-content canvas {
+  position: relative; /* 確保 transform 生效 */
+  transform: translateY(-10px); /* 將 canvas 向上移動 20px */
 }
 
 /* 圖表標題和標籤樣式 */
