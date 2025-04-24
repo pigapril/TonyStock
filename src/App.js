@@ -201,7 +201,6 @@ function AppContent() {
                   <FaList />
                   <span>我的追蹤清單</span>
                 </div>
-                {hasNewWatchlist && <span className="new-feature-badge">NEW</span>}
               </Link>
             </li>
             <li className="sidebar-item-6">
@@ -210,7 +209,6 @@ function AppContent() {
                   <FaChartBar />
                   <span>分析專欄</span>
                 </div>
-                {hasNewArticles && <span className="new-feature-badge">NEW</span>}
               </Link>
             </li>
             <li className="sidebar-item-7">
@@ -277,12 +275,10 @@ function AppContent() {
               <Link to="/watchlist" onClick={handleWatchlistClick}>
                 <FaList />
                 <span>我的追蹤清單</span>
-                {hasNewWatchlist && <span className="new-feature-badge">NEW</span>}
               </Link>
               <Link to="/articles" onClick={handleArticlesClick}>
                 <FaChartBar />
                 <span>分析專欄</span>
-                {hasNewArticles && <span className="new-feature-badge">NEW</span>}
               </Link>
               <Link to="/sponsor-us">
                 <FaPiggyBank />
