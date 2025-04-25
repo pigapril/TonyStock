@@ -26,6 +26,7 @@
   height: 100%;
   position: relative;
   min-width: 728px;
+  text-align: center;
 }
 
 .ad-placeholder {
@@ -85,6 +86,7 @@
     max-height: 100px;
     min-width: 0;
     max-width: 728px;
+    text-align: center;
   }
   .ad-close-button {
     width: 40px;
@@ -111,6 +113,7 @@
   .ad-content {
     max-width: 728px;
     min-width: 0;
+    text-align: center;
   }
 }
 
