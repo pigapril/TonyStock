@@ -15,7 +15,8 @@ import { ExpandableDescription } from '../Common/ExpandableDescription/Expandabl
 import { Toast } from '../Watchlist/components/Toast';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { useSearchParams, useLocation } from 'react-router-dom'; // 引入 useLocation
-import { InterstitialAdModal } from '../InterstitialAdModal/InterstitialAdModal'; // 引入新的 Modal 元件
+import { useAdContext } from '../../contexts/AdContext'; // 導入 useAdContext
+
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
@@ -44,6 +45,7 @@ export function PriceAnalysis() {
   const location = useLocation(); // <--- 獲取 location 物件
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const { showToast, toast, hideToast } = useToastManager();
+  const { requestAdDisplay } = useAdContext(); // 從 Context 獲取函數
 
   // 從 URL 參數或預設值初始化狀態
   const initialStockCode = searchParams.get('stockCode') || 'SPY';
@@ -72,9 +74,11 @@ export function PriceAnalysis() {
   const [isAdvancedQuery, setIsAdvancedQuery] = useState(false);
   // 新增狀態來記錄分析期間的選擇
   const [analysisPeriod, setAnalysisPeriod] = useState('長期'); // 預設為長期
-  const [analysisClickCount, setAnalysisClickCount] = useState(0); // 新增：追蹤點擊次數
-  const [showInterstitialAd, setShowInterstitialAd] = useState(false); // 新增：控制廣告 Modal 顯示
-  const AD_DISPLAY_THRESHOLD = 15; // 新增：定義觸發廣告的點擊次數閾值
+  const [analysisClickCount, setAnalysisClickCount] = useState(0);
+  const [showInterstitialAd, setShowInterstitialAd] = useState(false);
+  const AD_DISPLAY_THRESHOLD = 3; // <--- 修改閾值為 3
+  const [isAdCooldownActive, setIsAdCooldownActive] = useState(false); // 新增：追蹤廣告冷卻狀態
+  const cooldownTimeoutRef = useRef(null); // 新增：保存冷卻計時器 ID
 
   // 處理股票代碼的全形/半形轉換
   const handleStockCodeChange = (e) => {
@@ -246,20 +250,12 @@ export function PriceAnalysis() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // --- 開始：廣告觸發邏輯 ---
-    const nextClickCount = analysisClickCount + 1;
-    setAnalysisClickCount(nextClickCount);
+    // --- 調用 Context 的函數來請求廣告 ---
+    // 提供觸發來源 'priceAnalysis' 和閾值 3
+    requestAdDisplay('priceAnalysis', 3);
+    // --- 廣告請求結束 ---
 
-    if (nextClickCount >= AD_DISPLAY_THRESHOLD) {
-      console.log(`Analysis button clicked ${nextClickCount} times. Showing ad.`);
-      setShowInterstitialAd(true);
-      setAnalysisClickCount(0); // 重置計數器
-      // 注意：這裡我們在顯示廣告後 *仍然* 繼續執行分析。
-      // 如果你想在顯示廣告時 *不* 執行分析，可以在這裡 return。
-      // return;
-    }
-    // --- 結束：廣告觸發邏輯 ---
-
+    // --- 開始：原有的表單處理邏輯 ---
     let numYears;
     if (isAdvancedQuery) {
       const convertedYears = years
@@ -269,11 +265,10 @@ export function PriceAnalysis() {
 
       if (isNaN(numYears) || numYears <= 0) {
         setYearsError('請輸入有效的查詢期間（年），且必須大於零。');
-        // 清除可能存在的舊圖表和結果
         setChartData(null);
         setUlbandData(null);
         setAnalysisResult({ price: null, sentiment: null });
-        setDisplayedStockCode(''); // 清除顯示的代碼，因為輸入無效
+        setDisplayedStockCode('');
         return;
       }
       setYearsError('');
@@ -290,7 +285,8 @@ export function PriceAnalysis() {
       years: numYears,
       backTestDate
     });
-    fetchStockData(stockCode, numYears, backTestDate, false); // 手動提交，bypassTurnstile 為 false
+    fetchStockData(stockCode, numYears, backTestDate, false);
+    // --- 結束：原有的表單處理邏輯 ---
   };
 
   // 初始化資料 (componentDidMount 或 URL/location.state 變化時)
@@ -418,11 +414,6 @@ export function PriceAnalysis() {
       "target": "https://sentimentinsideout.com/priceanalysis?stockCode={stockCode}&years={years}&backTestDate={backTestDate}",
       "query-input": "required name=stockCode,years,backTestDate"
     }
-  };
-
-  // 新增：關閉廣告 Modal 的函數
-  const handleCloseAd = () => {
-    setShowInterstitialAd(false);
   };
 
   return (
@@ -766,11 +757,6 @@ export function PriceAnalysis() {
           type={toast.type}
           onClose={hideToast}
         />
-      )}
-
-      {/* 新增：條件渲染插頁式廣告 Modal */}
-      {showInterstitialAd && (
-        <InterstitialAdModal onClose={handleCloseAd} />
       )}
     </PageContainer>
   );

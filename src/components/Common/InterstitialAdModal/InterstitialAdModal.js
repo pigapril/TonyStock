@@ -16,9 +16,8 @@ export function InterstitialAdModal({ onClose }) {
 
   return (
     <div className="interstitial-ad-modal-overlay" onClick={onClose}>
+      <button className="interstitial-ad-modal-close" onClick={onClose}>關閉廣告</button>
       <div className="interstitial-ad-modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="interstitial-ad-modal-close" onClick={onClose}>&times;</button>
-        <p>廣告載入中...</p> {/* 可以加載指示器 */}
         {/* AdSense 廣告代碼 */}
         <ins className="adsbygoogle"
              style={{ display: 'block' }}

@@ -5,6 +5,7 @@ import { StockAnalysis } from './StockAnalysis';
 import { StockNews } from './StockNews';
 import { RemoveButton } from './RemoveButton';
 import { formatPrice } from '../../../Common/priceUtils'; // Import formatPrice
+import { useAdContext } from '../../../../contexts/AdContext'; // <--- 1. 導入 useAdContext
 import '../../styles/StockCard.css';
 
 export const StockCard = memo(function StockCard({
@@ -14,6 +15,7 @@ export const StockCard = memo(function StockCard({
     isFirstInCategory
 }) {
     const navigate = useNavigate(); // 獲取 navigate 函數
+    const { requestAdDisplay } = useAdContext(); // <--- 2. 獲取 requestAdDisplay
     // Function to check if it's a mobile screen (you can adjust the breakpoint if needed)
     const isMobile = () => window.innerWidth <= 640;
 
@@ -25,6 +27,12 @@ export const StockCard = memo(function StockCard({
             // 如果點擊的目標不在任何允許的區塊內，則不執行跳轉
             return;
         }
+
+        // --- 3. 在導航前請求廣告顯示 ---
+        // 使用 'watchlistCardClick' 作為來源，閾值設為 1 (可以按需調整)
+        requestAdDisplay('watchlistCardClick', 1);
+        // --- 廣告請求結束 ---
+
         // 導航到 PriceAnalysis 頁面，並帶上參數和 state
         navigate(
             `/priceanalysis?stockCode=${stock.symbol}&years=3.5`,

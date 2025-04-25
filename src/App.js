@@ -46,6 +46,7 @@ import { DialogProvider } from './contexts/DialogContext';
 import { useAuth } from './components/Auth/useAuth'; // 更新路徑
 import { useDialog } from './hooks/useDialog';
 import { useNewFeatureNotification, FEATURES } from './hooks/useNewFeatureNotification';
+import { AdProvider } from './contexts/AdContext';
 
 // 工具函數
 import { Analytics } from './utils/analytics';
@@ -398,7 +399,9 @@ function App() {
   return (
     <AuthProvider>
       <DialogProvider>
-        <AppContent />
+        <AdProvider>
+          <AppContent />
+        </AdProvider>
       </DialogProvider>
     </AuthProvider>
   );

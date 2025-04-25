@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
 import { handleApiError } from '../../utils/errorHandler';
 import { Analytics } from '../../utils/analytics';
@@ -12,6 +12,7 @@ import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
 import { getSentiment } from '../../utils/sentimentUtils';
 import { Helmet } from 'react-helmet-async';
+import { useAdContext } from '../../contexts/AdContext';
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -209,6 +210,7 @@ const MarketSentimentIndex = () => {
   const [viewMode, setViewMode] = useState('overview'); // 修改：默認顯示概覽（最新情緒指數）
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const initialRenderRef = useRef(true);
+  const { requestAdDisplay } = useAdContext();
 
   useEffect(() => {
     let isMounted = true;
@@ -221,7 +223,6 @@ const MarketSentimentIndex = () => {
         if (isMounted) {
           setSentimentData(response.data);
           setIndicatorsData(response.data.indicators);
-          // 使用 setTimeout 確保數據完全載入後再設置 isDataLoaded
           setTimeout(() => {
             setIsDataLoaded(true);
           }, 100);
@@ -416,8 +417,9 @@ const MarketSentimentIndex = () => {
     setActiveTab(tabKey);
   };
 
-  // 新增：處理視圖模式切換的函數
+  // 修改：處理視圖模式切換的函數
   const handleViewModeChange = (mode) => {
+    requestAdDisplay('marketSentimentViewModeChange', 1);
     Analytics.marketSentiment.switchViewMode({
       viewMode: mode,
       currentIndicator: INDICATOR_NAME_MAP[activeTab] || activeTab
