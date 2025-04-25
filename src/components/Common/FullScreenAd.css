@@ -1,0 +1,76 @@
+.fullscreen-ad-overlay {
+  position: fixed; /* 固定位置，覆蓋整個視窗 */
+  top: 0;
+  left: 0;
+  width: 100vw; /* 視窗寬度 */
+  height: 100vh; /* 視窗高度 */
+  background-color: rgba(0, 0, 0, 0.7); /* 半透明黑色背景遮罩 (可選) */
+  z-index: 2147483646; /* 非常高的 z-index，確保在最上層，但比 AdSense 內建的低一點 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* 防止滾動 */
+}
+
+.fullscreen-ad-container {
+  position: relative; /* 相對定位，以便 AdSense 內容可以定位 */
+  width: 100%; /* 容器寬度盡可能大 */
+  height: 100%; /* 容器高度盡可能大 */
+  max-width: 100vw; /* 最大寬度不超過視窗 */
+  max-height: 100vh; /* 最大高度不超過視窗 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* AdSense <ins> 標籤的樣式 */
+.fullscreen-ad-container .adsbygoogle {
+  /* AdSense 會自動調整大小，這裡確保它至少是 block 元素 */
+  display: block;
+  /* 您可以根據需要調整 AdSense 廣告單元的最小/最大尺寸，
+     但 data-ad-format="auto" 和 data-full-width-responsive="true"
+     通常會讓 AdSense 自動處理 */
+}
+
+/* Google AdSense 通常會自己添加關閉按鈕，
+   如果需要自訂關閉按鈕，可以在這裡添加樣式 */
+/*
+.custom-close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  z-index: 2147483647;
+}
+*/ 
+
+/* 全螢幕廣告的手動關閉按鈕樣式 */
+.fullscreen-ad-manual-close-button {
+    position: fixed; /* 固定位置，不隨頁面滾動 */
+    top: 15px; /* 距離頂部 */
+    right: 15px; /* 距離右側 */
+    z-index: 2147483647; /* 設定非常高的 z-index，確保在廣告之上 */
+    background-color: rgba(40, 40, 40, 0.8); /* 半透明黑色背景 */
+    color: white; /* 白色文字 (叉叉) */
+    border: none; /* 無邊框 */
+    border-radius: 50%; /* 圓形按鈕 */
+    width: 35px; /* 按鈕寬度 */
+    height: 35px; /* 按鈕高度 */
+    font-size: 24px; /* 叉叉的大小 */
+    line-height: 35px; /* 垂直居中叉叉 */
+    text-align: center; /* 水平居中叉叉 */
+    cursor: pointer; /* 手型游標 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* 添加陰影增加立體感 */
+    transition: background-color 0.2s ease; /* 滑鼠懸停時背景色平滑過渡 */
+  }
+  
+  .fullscreen-ad-manual-close-button:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* 滑鼠懸停時加深背景色 */
+  }

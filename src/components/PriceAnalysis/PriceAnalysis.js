@@ -15,6 +15,7 @@ import { ExpandableDescription } from '../Common/ExpandableDescription/Expandabl
 import { Toast } from '../Watchlist/components/Toast';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { useSearchParams, useLocation } from 'react-router-dom'; // 引入 useLocation
+import { FullScreenAd } from '../Common/FullScreenAd'; // 引入全螢幕廣告組件
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
@@ -71,6 +72,10 @@ export function PriceAnalysis() {
   const [isAdvancedQuery, setIsAdvancedQuery] = useState(false);
   // 新增狀態來記錄分析期間的選擇
   const [analysisPeriod, setAnalysisPeriod] = useState('長期'); // 預設為長期
+  // 新增狀態來計算分析按鈕點擊次數
+  const [analysisClickCount, setAnalysisClickCount] = useState(0); // <--- 新增點擊計數器狀態
+  // 新增狀態來控制全螢幕廣告的顯示
+  const [showFullScreenAd, setShowFullScreenAd] = useState(false); // <--- 新增廣告顯示狀態
 
   // 處理股票代碼的全形/半形轉換
   const handleStockCodeChange = (e) => {
@@ -242,6 +247,8 @@ export function PriceAnalysis() {
   const handleSubmit = (e) => {
     e.preventDefault();
     let numYears;
+    let localYearsError = ''; // 使用局部變數來處理錯誤，避免異步狀態問題
+
     if (isAdvancedQuery) {
       const convertedYears = years
         .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
@@ -249,21 +256,34 @@ export function PriceAnalysis() {
       numYears = parseFloat(convertedYears);
 
       if (isNaN(numYears) || numYears <= 0) {
-        setYearsError('請輸入有效的查詢期間（年），且必須大於零。');
+        localYearsError = '請輸入有效的查詢期間（年），且必須大於零。';
+        setYearsError(localYearsError); // 更新狀態以顯示錯誤
         // 清除可能存在的舊圖表和結果
         setChartData(null);
         setUlbandData(null);
         setAnalysisResult({ price: null, sentiment: null });
         setDisplayedStockCode(''); // 清除顯示的代碼，因為輸入無效
-        return;
+        return; // 如果驗證失敗，停止執行
       }
-      setYearsError('');
     } else {
       switch (analysisPeriod) {
         case '短期': numYears = 0.5; break;
         case '中期': numYears = 1.5; break;
         case '長期': default: numYears = 3.5; break;
       }
+    }
+
+    setYearsError(''); // 如果驗證通過，清除錯誤訊息
+
+    // 增加點擊次數計數器
+    const newClickCount = analysisClickCount + 1;
+    setAnalysisClickCount(newClickCount);
+
+    // 檢查點擊次數是否達到 3 的倍數
+    if (newClickCount > 0 && newClickCount % 15 === 0) {
+      setShowFullScreenAd(true); // 顯示全螢幕廣告
+      // 可選：記錄廣告顯示事件
+      // Analytics.ad.display('fullscreen_analysis_trigger');
     }
 
     Analytics.stockAnalysis.search({
@@ -383,6 +403,13 @@ export function PriceAnalysis() {
             case '長期': default: setYears('3.5'); break;
         }
     }
+  };
+
+  // 處理廣告關閉的函數
+  const handleAdClose = () => {
+    setShowFullScreenAd(false);
+    // 可選：記錄廣告關閉事件
+    // Analytics.ad.close('fullscreen_analysis_trigger');
   };
 
   // 定義用於結構化數據的 JSON-LD
@@ -743,6 +770,9 @@ export function PriceAnalysis() {
           onClose={hideToast}
         />
       )}
+
+      {/* 條件渲染全螢幕廣告組件，並傳遞 onClose 函數 */}
+      <FullScreenAd showAd={showFullScreenAd} onClose={handleAdClose} />
     </PageContainer>
   );
 } 
