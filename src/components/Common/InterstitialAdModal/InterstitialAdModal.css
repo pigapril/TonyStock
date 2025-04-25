@@ -36,29 +36,35 @@
 }
 
 .interstitial-ad-modal-close {
-  position: absolute; /* 相對於 overlay 定位 */
-  top: 15px; /* 稍微調整位置 */
+  position: absolute;
+  top: 15px;
   right: 15px;
-  background: rgb(255, 255, 255); /* 保留背景以便點擊 */
+  background: rgb(255, 255, 255);
   border: none;
-  border-radius: 5px; /* 改為小圓角或移除 */
-  /* 移除固定的 width 和 height */
-  /* width: 30px; */
-  /* height: 30px; */
-  padding: 5px 10px; /* 調整 padding 以適應文字 */
-  font-size: 0.9rem; /* 可以調整字體大小 */
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 0.9rem;
   color: rgb(89, 87, 87);
   cursor: pointer;
-  /* line-height: 30px; <-- 移除或調整 */
-  text-align: center; /* 保留文字居中 */
-  z-index: 1051; /* 確保按鈕在 overlay 之上 */
-  /* 添加過渡效果 */
-  transition: background-color 0.2s ease;
+  text-align: center;
+  z-index: 1051;
+  /* --- 新增/修改 --- */
+  opacity: 0; /* 初始透明度為 0 */
+  visibility: hidden; /* 初始隱藏，輔助 opacity */
+  pointer-events: none; /* 初始不可點擊 */
+}
+
+/* 新增：當按鈕有 'visible' class 時的樣式 */
+.interstitial-ad-modal-close.visible {
+  opacity: 1; /* 完全可見 */
+  visibility: visible; /* 變為可見 */
+  pointer-events: auto; /* 允許點擊 */
 }
 
 .interstitial-ad-modal-close:hover {
-  color: #fff; /* 懸停時保持白色 */
-  background: rgba(0, 0, 0, 0.9); /* 加深背景 */
+  /* 保持 hover 效果，但只在 visible 時有效 */
+  color: #fff;
+  background: rgba(0, 0, 0, 0.9);
 }
 
 /* 確保 AdSense 容器有基本樣式 */
