@@ -3,10 +3,10 @@
   top: 0;
   left: 0;
   width: 100vw; /* 視窗寬度 */
-  height: 100vh; /* 視窗高度 */
+  height: 100vh !important; /* 保留 !important 對抗 AdSense */
   background-color: rgba(0, 0, 0, 0.7); /* 半透明黑色背景遮罩 (可選) */
   z-index: 2147483646; /* 非常高的 z-index，確保在最上層，但比 AdSense 內建的低一點 */
-  display: flex;
+  display: flex; /* 用於置中 .fullscreen-ad-container (雖然它通常是 100% 寬高) */
   justify-content: center;
   align-items: center;
   overflow: hidden; /* 防止滾動 */
@@ -14,28 +14,42 @@
 
 .fullscreen-ad-container {
   position: relative; /* 相對定位，以便 AdSense 內容可以定位 */
-  width: 100%; /* 容器寬度盡可能大 */
-  height: 100%; /* 容器高度盡可能大 */
+  width: 100%; /* 容器寬度佔滿 overlay */
+  height: 100% !important; /* 保留 !important 對抗 AdSense */
   max-width: 100vw; /* 最大寬度不超過視窗 */
   max-height: 100vh; /* 最大高度不超過視窗 */
-  /* 移除內部的 flex 置中，因為容器本身已由 overlay 置中，
-     且內部的 <ins> 應填滿此容器 */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
+  /* 新增/恢復：使用 Flexbox 將內部的 <ins> 廣告置中 */
+  display: flex;
+  justify-content: center; /* 水平置中 */
+  align-items: center; /* 垂直置中 */
 }
 
 /* AdSense <ins> 標籤的樣式 */
+/* 移除之前強制設定的 width/height 和 !important */
+/* 可以保留 display: block 或 inline-block，或者完全移除讓 AdSense 控制 */
+/* 為了簡單起見，我們先嘗試移除這個規則，讓 AdSense 決定 <ins> 的 display */
+/*
 .fullscreen-ad-container .adsbygoogle {
-  /* AdSense 會自動調整大小，這裡確保它至少是 block 元素 */
   display: block;
-  /* 明確設定寬度和高度，讓它嘗試填滿容器 */
-  width: 100%;
-  height: 100%;
-  /* 您可以根據需要調整 AdSense 廣告單元的最小/最大尺寸，
-     但 data-ad-format="auto" 和 data-full-width-responsive="true"
-     通常會讓 AdSense 自動處理 */
 }
+*/
+
+/* 移除：不再需要強制設定 AdSense iframe 的尺寸 */
+/*
+.fullscreen-ad-container .adsbygoogle iframe,
+.fullscreen-ad-container .adsbygoogle ins > div > iframe {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+*/
 
 /* Google AdSense 通常會自己添加關閉按鈕，
    如果需要自訂關閉按鈕，可以在這裡添加樣式 */
@@ -58,24 +72,28 @@
 
 /* 全螢幕廣告的手動關閉按鈕樣式 */
 .fullscreen-ad-manual-close-button {
-    position: fixed; /* 固定位置，不隨頁面滾動 */
-    top: 15px; /* 距離頂部 */
-    right: 15px; /* 距離右側 */
-    z-index: 2147483647; /* 設定非常高的 z-index，確保在廣告之上 */
-    background-color: rgba(40, 40, 40, 0.8); /* 半透明黑色背景 */
-    color: white; /* 白色文字 (叉叉) */
-    border: none; /* 無邊框 */
-    border-radius: 50%; /* 圓形按鈕 */
-    width: 35px; /* 按鈕寬度 */
-    height: 35px; /* 按鈕高度 */
-    font-size: 24px; /* 叉叉的大小 */
-    line-height: 35px; /* 垂直居中叉叉 */
-    text-align: center; /* 水平居中叉叉 */
-    cursor: pointer; /* 手型游標 */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* 添加陰影增加立體感 */
-    transition: background-color 0.2s ease; /* 滑鼠懸停時背景色平滑過渡 */
-  }
-  
-  .fullscreen-ad-manual-close-button:hover {
-    background-color: rgba(0, 0, 0, 0.8); /* 滑鼠懸停時加深背景色 */
-  }
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: rgba(40, 40, 40, 0.8); /* 深灰色半透明背景 */
+  color: #ffffff; /* 白色文字 */
+  border: none;
+  border-radius: 50%; /* 圓形按鈕 */
+  width: 35px; /* 固定寬度 */
+  height: 35px; /* 固定高度 */
+  font-size: 24px; /* 稍大的字體 */
+  line-height: 35px; /* 垂直居中 'x' */
+  text-align: center; /* 水平居中 'x' */
+  cursor: pointer;
+  z-index: 2147483647; /* 確保在廣告之上 */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* 添加陰影增加可見性 */
+  transition: background-color 0.2s ease; /* 平滑過渡效果 */
+}
+
+.fullscreen-ad-manual-close-button:hover {
+  background-color: rgba(0, 0, 0, 0.9); /* 滑鼠懸停時更深的背景 */
+}
+
+.fullscreen-ad-manual-close-button:active {
+  transform: scale(0.95); /* 點擊時輕微縮小 */
+}

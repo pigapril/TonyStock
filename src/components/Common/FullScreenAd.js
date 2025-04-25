@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom'; // 引入 ReactDOM
 import './FullScreenAd.css'; // 引入對應的 CSS 檔案
 
 // 接收 showAd 和 onClose 作為 props
 export const FullScreenAd = ({ showAd, onClose }) => {
   const adRef = useRef(null);
   const animationFrameRef = useRef(null); // 用於存儲 requestAnimationFrame 的 ID
+  const portalRoot = document.getElementById('ad-portal-root'); // 獲取 Portal 目標節點
 
   useEffect(() => {
     // 取消上一次可能存在的 animation frame
@@ -38,13 +40,13 @@ export const FullScreenAd = ({ showAd, onClose }) => {
 
   }, [showAd]); // 當 showAd 狀態改變時觸發
 
-  // 如果 showAd 為 false，則不渲染任何內容
-  if (!showAd) {
+  // 如果 showAd 為 false 或找不到 portalRoot，則不渲染任何內容
+  if (!showAd || !portalRoot) {
     return null;
   }
 
-  // 渲染廣告容器、AdSense 廣告單元和關閉按鈕
-  return (
+  // 使用 ReactDOM.createPortal 將內容渲染到 #ad-portal-root
+  return ReactDOM.createPortal(
     <div className="fullscreen-ad-overlay">
       <div className="fullscreen-ad-container" ref={adRef}>
         {/* FullScreenAd */}
@@ -64,7 +66,8 @@ export const FullScreenAd = ({ showAd, onClose }) => {
       >
         &times; {/* 使用 HTML 實體顯示 'x' */}
       </button>
-    </div>
+    </div>,
+    portalRoot // 指定 Portal 的目標 DOM 節點
   );
 };
 
