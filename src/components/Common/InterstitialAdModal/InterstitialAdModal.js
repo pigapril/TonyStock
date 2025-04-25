@@ -38,11 +38,11 @@ export function InterstitialAdModal({ onClose }) {
     };
 
     // --- Fallback 計時器 ---
-    // 如果 0.5 秒內廣告仍未被檢測到載入，也強制顯示關閉按鈕，防止用戶卡住
+    // 如果 1 秒內廣告仍未被檢測到載入，也強制顯示關閉按鈕，防止用戶卡住
     timeoutRef.current = setTimeout(() => {
       console.warn('Ad load detection timeout. Forcing close button visibility.');
       showButton();
-    }, 500); // 0.5 秒後觸發
+    }, 1000); // 1 秒後觸發
 
     // --- Mutation Observer ---
     // 觀察 <ins> 元素的子節點變化 (即 AdSense 注入 iframe 或內容時)
