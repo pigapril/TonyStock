@@ -27,6 +27,9 @@
 .fullscreen-ad-container .adsbygoogle {
   /* AdSense 會自動調整大小，這裡確保它至少是 block 元素 */
   display: block;
+  /* 新增：明確設定寬度和高度，讓它嘗試填滿容器 */
+  width: 100%;
+  height: 100%;
   /* 您可以根據需要調整 AdSense 廣告單元的最小/最大尺寸，
      但 data-ad-format="auto" 和 data-full-width-responsive="true"
      通常會讓 AdSense 自動處理 */
