@@ -14,6 +14,7 @@ import { formatPrice } from '../Common/priceUtils';
 import { ExpandableDescription } from '../Common/ExpandableDescription/ExpandableDescription';
 import { Toast } from '../Watchlist/components/Toast';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
+import { useSearchParams, useLocation } from 'react-router-dom'; // 引入 useLocation
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
@@ -38,14 +39,21 @@ function getTimeUnit(dates) {
  * 專門負責：1) 抓取API資料 2) 處理表單 3) 顯示標準差圖表 or ULBandChart
  */
 export function PriceAnalysis() {
+  const [searchParams] = useSearchParams();
+  const location = useLocation(); // <--- 獲取 location 物件
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const { showToast, toast, hideToast } = useToastManager();
 
+  // 從 URL 參數或預設值初始化狀態
+  const initialStockCode = searchParams.get('stockCode') || 'SPY';
+  const initialYears = searchParams.get('years') || '3.5';
+  const initialBackTestDate = searchParams.get('backTestDate') || ''; // 如果需要也可以從 URL 讀取
+
   // 這裡保留所有原本在 App.js 中標準差分析需要的狀態
-  const [stockCode, setStockCode] = useState('SPY');
-  const [years, setYears] = useState('3.5');
+  const [stockCode, setStockCode] = useState(''); // 初始值改為空，由 useEffect 決定
+  const [years, setYears] = useState('');       // 初始值改為空
   const [yearsError, setYearsError] = useState('');
-  const [backTestDate, setBackTestDate] = useState('');
+  const [backTestDate, setBackTestDate] = useState(''); // 初始值改為空
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [timeoutMessage, setTimeoutMessage] = useState('');
@@ -235,7 +243,6 @@ export function PriceAnalysis() {
     e.preventDefault();
     let numYears;
     if (isAdvancedQuery) {
-      // 進階查詢模式下，使用使用者輸入的年數
       const convertedYears = years
         .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
         .replace(/[．。]/g, '.');
@@ -243,45 +250,139 @@ export function PriceAnalysis() {
 
       if (isNaN(numYears) || numYears <= 0) {
         setYearsError('請輸入有效的查詢期間（年），且必須大於零。');
+        // 清除可能存在的舊圖表和結果
+        setChartData(null);
+        setUlbandData(null);
+        setAnalysisResult({ price: null, sentiment: null });
+        setDisplayedStockCode(''); // 清除顯示的代碼，因為輸入無效
         return;
       }
       setYearsError('');
     } else {
-      // 簡易查詢模式下，根據分析期間選擇年數
       switch (analysisPeriod) {
-        case '短期':
-          numYears = 0.5;
-          break;
-        case '中期':
-          numYears = 1.5;
-          break;
-        case '長期':
-        default:
-          numYears = 3.5;
-          break;
+        case '短期': numYears = 0.5; break;
+        case '中期': numYears = 1.5; break;
+        case '長期': default: numYears = 3.5; break;
       }
     }
 
-    // 記錄分析事件
     Analytics.stockAnalysis.search({
       stockCode,
       years: numYears,
       backTestDate
     });
-
-    // 呼叫 fetchStockData
-    fetchStockData(stockCode, numYears, backTestDate);
+    fetchStockData(stockCode, numYears, backTestDate, false); // 手動提交，bypassTurnstile 為 false
   };
 
-  // 初始化資料 (componentDidMount)
+  // 初始化資料 (componentDidMount 或 URL/location.state 變化時)
   useEffect(() => {
-    fetchStockData(stockCode, parseFloat(years) || 3.5, backTestDate, true);
-    // eslint-disable-next-line
-  }, []);
+    const isFromWatchlist = location.state?.fromWatchlist;
+    const urlStockCode = searchParams.get('stockCode');
+    const urlYears = searchParams.get('years');
+    const urlBackTestDate = searchParams.get('backTestDate');
+
+    // 確定要使用的股票代碼、年份和日期 (從 URL 或預設值)
+    let fetchStock = urlStockCode || 'SPY';
+    let fetchYears = urlYears || '3.5';
+    let fetchDate = urlBackTestDate || '';
+
+    // 更新 state 以反映 URL/預設值，讓表單顯示正確
+    setStockCode(fetchStock);
+    setBackTestDate(fetchDate);
+    if (['0.5', '1.5', '3.5'].includes(fetchYears)) {
+        setIsAdvancedQuery(false);
+        switch (fetchYears) {
+            case '0.5': setAnalysisPeriod('短期'); break;
+            case '1.5': setAnalysisPeriod('中期'); break;
+            case '3.5': setAnalysisPeriod('長期'); break;
+            default: break;
+        }
+        setYears(fetchYears);
+    } else {
+        setIsAdvancedQuery(true);
+        setYears(fetchYears);
+    }
+    if (fetchDate) {
+        setIsAdvancedQuery(true);
+    }
+
+    // 驗證執行分析所需的參數
+    const numYears = parseFloat(fetchYears);
+    const areParamsSufficientForFetch = fetchStock && !isNaN(numYears) && numYears > 0;
+
+    // 判斷是否應該自動執行初始查詢
+    let shouldAutoFetch = false;
+    if (areParamsSufficientForFetch) {
+        // 如果參數有效，檢查是否來自 Watchlist 或 股票代碼是 SPY
+        if (isFromWatchlist || fetchStock.toUpperCase() === 'SPY') {
+             shouldAutoFetch = true;
+        }
+    }
+
+    // 根據判斷結果執行操作
+    if (shouldAutoFetch) {
+        // 清除舊圖表，避免顯示上一次的結果
+        setChartData(null);
+        setUlbandData(null);
+        setAnalysisResult({ price: null, sentiment: null });
+        setDisplayedStockCode(''); // 清除舊代碼
+        setTimeoutMessage(''); // 清除舊訊息
+        setYearsError(''); // 清除舊錯誤
+        // 執行初始查詢，bypassTurnstile 為 true
+        fetchStockData(fetchStock, numYears, fetchDate, true);
+    } else if (urlYears && (isNaN(numYears) || numYears <= 0)) {
+        // 如果 URL 明確提供了無效的年份參數 (即使不自動查詢也要處理)
+        console.error("Invalid years parameter from URL:", fetchYears);
+        showToast('從 URL 讀取的查詢期間無效。', 'error');
+        // 清除圖表數據
+        setChartData(null);
+        setUlbandData(null);
+        setAnalysisResult({ price: null, sentiment: null });
+        setDisplayedStockCode('');
+        setTimeoutMessage('');
+        setYearsError('查詢期間參數無效。'); // 在表單中顯示錯誤
+    } else {
+        // 非自動查詢情況 (例如直接訪問非 SPY 股票, 刷新非 SPY 股票頁面等)
+        // 清除可能殘留的圖表數據 (除非正在手動載入)
+        if (!loading) {
+             setChartData(null);
+             setUlbandData(null);
+             setAnalysisResult({ price: null, sentiment: null });
+             setDisplayedStockCode(''); // 清除舊代碼
+             setTimeoutMessage(''); // 清除舊訊息
+             // 保留 yearsError，因為可能是使用者手動輸入錯誤後刷新
+        }
+    }
+
+    // 可選：清除 location state
+    // if (location.state?.fromWatchlist) {
+    //     // 注意：直接使用 navigate 可能會觸發此 useEffect 重新運行，需要謹慎
+    //     // window.history.replaceState({}, document.title) // 另一種方式，不觸發 React Router 更新
+    // }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, location.state]); // 依賴 location.state
 
   // 切換簡易/進階查詢模式
   const toggleQueryMode = () => {
     setIsAdvancedQuery(!isAdvancedQuery);
+    // 切換模式時，如果從進階切回簡易，可能需要重置年份為預設值或清空錯誤
+    if (!isAdvancedQuery) {
+        setYearsError(''); // 清除可能存在的年份錯誤
+        // 可以選擇是否將 years state 設回 analysisPeriod 對應的值
+        // switch (analysisPeriod) {
+        //     case '短期': setYears('0.5'); break;
+        //     case '中期': setYears('1.5'); break;
+        //     case '長期': default: setYears('3.5'); break;
+        // }
+    } else {
+        // 從簡易切到進階時，將 analysisPeriod 對應的值填入 years 輸入框
+        switch (analysisPeriod) {
+            case '短期': setYears('0.5'); break;
+            case '中期': setYears('1.5'); break;
+            case '長期': default: setYears('3.5'); break;
+        }
+    }
   };
 
   // 定義用於結構化數據的 JSON-LD
@@ -419,47 +520,71 @@ export function PriceAnalysis() {
 
         {/* 主圖表區塊 */}
         <div className="chart-card">
+          {/* 顯示超時或 API 錯誤訊息 */}
+          {timeoutMessage && !loading && (
+            <div className="error-message chart-error-message">{timeoutMessage}</div>
+          )}
           <div className="chart-container">
-            <div className="chart-header">
-              <div className="analysis-result">
-                <div className="analysis-item">
-                  <span className="analysis-label">股票代碼</span>
-                  <span className="analysis-value">
-                    {displayedStockCode}
-                  </span>
-                </div>
-                <div className="analysis-item">
-                  <span className="analysis-label">股票價格</span>
-                  <span className="analysis-value">
-                    ${formatPrice(analysisResult.price)}
-                  </span>
-                </div>
-                <div className="analysis-item">
-                  <span className="analysis-label">市場情緒</span>
-                  <span className={`analysis-value sentiment-${analysisResult.sentiment}`}>
-                    {analysisResult.sentiment}
-                  </span>
+            {/* 只有在 loading 或有數據時才顯示圖表標頭 */}
+            {(loading || chartData || ulbandData) && (
+              <div className="chart-header">
+                <div className="analysis-result">
+                  <div className="analysis-item">
+                    <span className="analysis-label">股票代碼</span>
+                    <span className="analysis-value">
+                      {displayedStockCode}
+                    </span>
+                  </div>
+                  <div className="analysis-item">
+                    <span className="analysis-label">股票價格</span>
+                    <span className="analysis-value">
+                      ${formatPrice(analysisResult.price)}
+                    </span>
+                  </div>
+                  <div className="analysis-item">
+                    <span className="analysis-label">市場情緒</span>
+                    <span className={`analysis-value sentiment-${analysisResult.sentiment}`}>
+                      {analysisResult.sentiment}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
             <div className="chart-content">
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
-                <div className="chart-tabs">
-                  <button
-                    className={`chart-tab ${activeChart === 'sd' ? 'active' : ''}`}
-                    onClick={() => handleChartSwitch('sd')}
-                  >
-                    樂活五線譜
-                  </button>
-                  <button
-                    className={`chart-tab ${activeChart === 'ulband' ? 'active' : ''}`}
-                    onClick={() => handleChartSwitch('ulband')}
-                  >
-                    樂活通道
-                  </button>
+              {/* 圖表 Tabs */}
+              {(chartData || ulbandData || loading) && ( // 只有在有數據或載入中才顯示 Tabs
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
+                  <div className="chart-tabs">
+                    <button
+                      className={`chart-tab ${activeChart === 'sd' ? 'active' : ''}`}
+                      onClick={() => handleChartSwitch('sd')}
+                      disabled={loading} // 載入中禁用切換
+                    >
+                      樂活五線譜
+                    </button>
+                    <button
+                      className={`chart-tab ${activeChart === 'ulband' ? 'active' : ''}`}
+                      onClick={() => handleChartSwitch('ulband')}
+                      disabled={loading} // 載入中禁用切換
+                    >
+                      樂活通道
+                    </button>
+                  </div>
                 </div>
-              </div>
-              {activeChart === 'sd' && chartData && (
+              )}
+
+              {/* Loading 指示器 (使用 Loading.css 樣式) */}
+              {loading && (
+                <div className="chart-loading-indicator"> {/* 新增容器用於定位 */}
+                  <div className="loading-spinner"> {/* 使用 Loading.css 的 class */}
+                    <div className="spinner"></div>
+                    <span>Loading...</span>
+                  </div>
+                </div>
+              )}
+
+              {/* 圖表 (僅在非 loading 狀態下顯示) */}
+              {!loading && activeChart === 'sd' && chartData && (
                 <Line
                   data={chartData}
                   options={{
@@ -553,11 +678,16 @@ export function PriceAnalysis() {
                   }}
                 />
               )}
-              {activeChart === 'ulband' && ulbandData && (
+              {!loading && activeChart === 'ulband' && ulbandData && (
                 <ULBandChart data={ulbandData} />
               )}
             </div>
           </div>
+
+          {/* 可選：當沒有數據且不在載入時顯示佔位符 */}
+          {!loading && !chartData && !ulbandData && !timeoutMessage && !yearsError && (
+             <div className="chart-placeholder">請輸入條件並點擊「開始分析」。</div>
+          )}
         </div>
       </div>
 

@@ -55,12 +55,12 @@
   position: relative;
   width: 100%;
   height: 300px;
-  margin-top: -10px;
+  margin-top: 0px;
 }
 
 .chart-content canvas {
   position: relative; /* 確保 transform 生效 */
-  transform: translateY(-10px); /* 將 canvas 向上移動 20px */
+  transform: translateY(-10px); 
 }
 
 /* 圖表標題和標籤樣式 */
@@ -456,3 +456,46 @@
   display: flex;
   align-items: center;
 } 
+
+/* 新增：圖表載入指示器的樣式 */
+.chart-loading-indicator {
+  position: absolute; /* 相對於 .chart-content 定位 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* 佔滿 .chart-content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8); /* 半透明背景，可選 */
+  z-index: 10; /* 確保在圖表之上 */
+}
+
+/* 確保 Loading.css 中的 spinner 樣式能正確顯示 */
+.chart-loading-indicator .loading-spinner {
+  min-height: auto; /* 覆蓋 Loading.css 中可能存在的 min-height */
+  color: #666; /* 確保文字顏色可見 */
+  /* 可能需要根據 Loading.css 的具體實現調整其他樣式 */
+}
+
+/* 佔位符樣式 (可選) */
+.chart-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px; /* 與 chart-content 高度一致 */
+  color: #999;
+  font-size: 1rem;
+}
+
+/* 響應式設計調整 */
+@media (max-width: 768px) {
+  .chart-content {
+    height: 300px; /* 在移動裝置上也保持高度 */
+    margin-top: 0px;
+  }
+
+  .chart-placeholder {
+    height: 300px; /* 在移動裝置上也保持高度 */
+  }
+}

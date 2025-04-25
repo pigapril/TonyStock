@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { useNavigate } from 'react-router-dom'; // 引入 useNavigate
 import { StockHeader } from './StockHeader';
 import { StockAnalysis } from './StockAnalysis';
 import { StockNews } from './StockNews';
@@ -12,8 +13,24 @@ export const StockCard = memo(function StockCard({
     onRemove,
     isFirstInCategory
 }) {
+    const navigate = useNavigate(); // 獲取 navigate 函數
     // Function to check if it's a mobile screen (you can adjust the breakpoint if needed)
     const isMobile = () => window.innerWidth <= 640;
+
+    // 點擊卡片時的處理函數
+    const handleCardClick = (e) => {
+        // 正向表列：檢查點擊目標是否在允許的區塊內
+        const allowedSections = '.stock-header-section, .current-price-section, .stock-analysis-section, .stock-analysis-result-section';
+        if (!e.target.closest(allowedSections)) {
+            // 如果點擊的目標不在任何允許的區塊內，則不執行跳轉
+            return;
+        }
+        // 導航到 PriceAnalysis 頁面，並帶上參數和 state
+        navigate(
+            `/priceanalysis?stockCode=${stock.symbol}&years=3.5`,
+            { state: { fromWatchlist: true } } // <--- 新增 state
+        );
+    };
 
     return (
         <>
@@ -26,7 +43,7 @@ export const StockCard = memo(function StockCard({
                     <span className="stock-news-title">新聞</span>
                 </div>
             )}
-            <div className="stock-item">
+            <div className="stock-item" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
                 <div className="stock-header-section">
                     <StockHeader stock={stock} />
                 </div>
