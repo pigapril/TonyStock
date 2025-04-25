@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -15,6 +15,7 @@ import { ExpandableDescription } from '../Common/ExpandableDescription/Expandabl
 import { Toast } from '../Watchlist/components/Toast';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { useSearchParams, useLocation } from 'react-router-dom'; // 引入 useLocation
+import { InterstitialAdModal } from '../InterstitialAdModal/InterstitialAdModal'; // 引入新的 Modal 元件
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
@@ -71,6 +72,9 @@ export function PriceAnalysis() {
   const [isAdvancedQuery, setIsAdvancedQuery] = useState(false);
   // 新增狀態來記錄分析期間的選擇
   const [analysisPeriod, setAnalysisPeriod] = useState('長期'); // 預設為長期
+  const [analysisClickCount, setAnalysisClickCount] = useState(0); // 新增：追蹤點擊次數
+  const [showInterstitialAd, setShowInterstitialAd] = useState(false); // 新增：控制廣告 Modal 顯示
+  const AD_DISPLAY_THRESHOLD = 15; // 新增：定義觸發廣告的點擊次數閾值
 
   // 處理股票代碼的全形/半形轉換
   const handleStockCodeChange = (e) => {
@@ -241,6 +245,21 @@ export function PriceAnalysis() {
   // 表單送出
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // --- 開始：廣告觸發邏輯 ---
+    const nextClickCount = analysisClickCount + 1;
+    setAnalysisClickCount(nextClickCount);
+
+    if (nextClickCount >= AD_DISPLAY_THRESHOLD) {
+      console.log(`Analysis button clicked ${nextClickCount} times. Showing ad.`);
+      setShowInterstitialAd(true);
+      setAnalysisClickCount(0); // 重置計數器
+      // 注意：這裡我們在顯示廣告後 *仍然* 繼續執行分析。
+      // 如果你想在顯示廣告時 *不* 執行分析，可以在這裡 return。
+      // return;
+    }
+    // --- 結束：廣告觸發邏輯 ---
+
     let numYears;
     if (isAdvancedQuery) {
       const convertedYears = years
@@ -399,6 +418,11 @@ export function PriceAnalysis() {
       "target": "https://sentimentinsideout.com/priceanalysis?stockCode={stockCode}&years={years}&backTestDate={backTestDate}",
       "query-input": "required name=stockCode,years,backTestDate"
     }
+  };
+
+  // 新增：關閉廣告 Modal 的函數
+  const handleCloseAd = () => {
+    setShowInterstitialAd(false);
   };
 
   return (
@@ -742,6 +766,11 @@ export function PriceAnalysis() {
           type={toast.type}
           onClose={hideToast}
         />
+      )}
+
+      {/* 新增：條件渲染插頁式廣告 Modal */}
+      {showInterstitialAd && (
+        <InterstitialAdModal onClose={handleCloseAd} />
       )}
     </PageContainer>
   );

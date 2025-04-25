@@ -1,0 +1,51 @@
+.interstitial-ad-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* 半透明黑色背景 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 確保在最上層 */
+  cursor: pointer; /* 提示可以點擊關閉 */
+}
+
+.interstitial-ad-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  min-width: 300px; /* 最小寬度 */
+  max-width: 90%; /* 最大寬度 */
+  max-height: 90%; /* 最大高度 */
+  overflow: auto; /* 如果內容過多則顯示滾動條 */
+  text-align: center;
+  cursor: default; /* 內容區域恢復默認鼠標 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.interstitial-ad-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem; /* 放大關閉按鈕 */
+  color: #aaa;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.interstitial-ad-modal-close:hover {
+  color: #333;
+}
+
+/* 確保 AdSense 容器有基本樣式 */
+.interstitial-ad-modal-content .adsbygoogle {
+  margin-top: 15px; /* 與提示文字間隔 */
+  min-height: 50px; /* 避免廣告未載入時高度塌陷 */
+  background-color: #f0f0f0; /* 廣告載入前的佔位背景色 */
+} 
