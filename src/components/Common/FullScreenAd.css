@@ -18,16 +18,18 @@
   height: 100%; /* 容器高度盡可能大 */
   max-width: 100vw; /* 最大寬度不超過視窗 */
   max-height: 100vh; /* 最大高度不超過視窗 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* 移除內部的 flex 置中，因為容器本身已由 overlay 置中，
+     且內部的 <ins> 應填滿此容器 */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 
 /* AdSense <ins> 標籤的樣式 */
 .fullscreen-ad-container .adsbygoogle {
   /* AdSense 會自動調整大小，這裡確保它至少是 block 元素 */
   display: block;
-  /* 新增：明確設定寬度和高度，讓它嘗試填滿容器 */
+  /* 明確設定寬度和高度，讓它嘗試填滿容器 */
   width: 100%;
   height: 100%;
   /* 您可以根據需要調整 AdSense 廣告單元的最小/最大尺寸，
