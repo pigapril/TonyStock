@@ -52,8 +52,8 @@
   transition: opacity 0.2s ease, background-color 0.2s ease;
   z-index: 1001;
   padding: 0;
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,15 +66,15 @@
 }
 
 .ad-close-button svg {
-  width: 12px;
-  height: 12px;
+  width: 15px;
+  height: 15px;
 }
 
 @media (max-width: 720px) {
   .ad-banner-container {
     width: 320px;
     max-width: none;
-    left: 0;
+    left: -5%;
     right: 0;
     margin-left: auto;
     margin-right: auto;
@@ -86,12 +86,27 @@
     min-width: 0;
     max-width: 728px;
   }
+  .ad-close-button {
+    width: 40px;
+    height: 40px;
+    color: #888;
+    top: -15px;
+    left: 5px;
+  }
+  .ad-close-button svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 @media (min-width: 721px) and (max-width: 969px) {
   .ad-banner-container {
     max-width: 748px;
     width: 100%;
+    left: 49%;
+  }
+  .ad-banner {
+    max-width: 748px;
   }
   .ad-content {
     max-width: 728px;
@@ -132,7 +147,7 @@
 }
 
 .ad-banner--collapsed .ad-close-button svg {
-  width: 12px;
-  height: 12px;
+  width: 15px;
+  height: 15px;
   color: #666;
 } 
