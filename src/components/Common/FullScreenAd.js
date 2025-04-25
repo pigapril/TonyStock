@@ -4,18 +4,36 @@ import './FullScreenAd.css'; // 引入對應的 CSS 檔案
 // 接收 showAd 和 onClose 作為 props
 export const FullScreenAd = ({ showAd, onClose }) => {
   const adRef = useRef(null);
+  const pushTimeoutRef = useRef(null); // 用於存儲 setTimeout 的 ID
 
   useEffect(() => {
+    // 清除上一次可能存在的 timeout
+    if (pushTimeoutRef.current) {
+      clearTimeout(pushTimeoutRef.current);
+    }
+
     // 只有在 showAd 為 true 且 adRef.current 存在時才嘗試加載廣告
     if (showAd && adRef.current) {
-      try {
-        // 確保 adsbygoogle 陣列存在
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        console.log('AdSense push called for FullScreenAd');
-      } catch (error) {
-        console.error("AdSense push error in FullScreenAd:", error);
-      }
+      // 稍微延遲 push 操作，給 DOM 一點時間渲染
+      pushTimeoutRef.current = setTimeout(() => {
+        try {
+          // 確保 adsbygoogle 陣列存在
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+          console.log('AdSense push called for FullScreenAd after delay');
+        } catch (error) {
+          console.error("AdSense push error in FullScreenAd:", error);
+        }
+      }, 500); // 延遲 100 毫秒，可以根據需要調整
+
     }
+
+    // 組件卸載或 showAd 變為 false 時清除 timeout
+    return () => {
+      if (pushTimeoutRef.current) {
+        clearTimeout(pushTimeoutRef.current);
+      }
+    };
+
   }, [showAd]); // 當 showAd 狀態改變時觸發
 
   // 如果 showAd 為 false，則不渲染任何內容
