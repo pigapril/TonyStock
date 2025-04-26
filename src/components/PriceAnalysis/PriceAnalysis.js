@@ -16,6 +16,7 @@ import { Toast } from '../Watchlist/components/Toast';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { useSearchParams, useLocation } from 'react-router-dom'; // 引入 useLocation
 import { useAdContext } from '../../contexts/AdContext'; // 導入 useAdContext
+import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebouncedCallback
 
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -59,11 +60,9 @@ export function PriceAnalysis() {
   // 這裡保留所有原本在 App.js 中標準差分析需要的狀態
   const [stockCode, setStockCode] = useState(''); // 初始值改為空，由 useEffect 決定
   const [years, setYears] = useState('');       // 初始值改為空
-  const [yearsError, setYearsError] = useState('');
   const [backTestDate, setBackTestDate] = useState(''); // 初始值改為空
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [timeoutMessage, setTimeoutMessage] = useState('');
   const [displayedStockCode, setDisplayedStockCode] = useState('');
   const [activeChart, setActiveChart] = useState('sd');
   const [ulbandData, setUlbandData] = useState(null);
@@ -85,13 +84,39 @@ export function PriceAnalysis() {
   const cooldownTimeoutRef = useRef(null); // 新增：保存冷卻計時器 ID
   const [isPending, startTransition] = useTransition(); // 添加 useTransition
 
-  // 處理股票代碼的全形/半形轉換
+  // --- Debounced State Setters ---
+  // Debounce setStockCode with a 300ms delay
+  const debouncedSetStockCode = useDebouncedCallback((value) => {
+    setStockCode(value);
+  }, 300);
+
+  // Debounce setYears with a 300ms delay
+  const debouncedSetYears = useDebouncedCallback((value) => {
+    setYears(value);
+  }, 300);
+  // --- End Debounced State Setters ---
+
+  // 處理股票代碼的全形/半形轉換 (現在調用 debounced setter)
   const handleStockCodeChange = (e) => {
     const value = e.target.value;
     const convertedValue = value.replace(/[０-９Ａ-Ｚａ-ｚ]/g, (char) =>
       String.fromCharCode(char.charCodeAt(0) - 0xFEE0)
     );
-    setStockCode(convertedValue.toUpperCase());
+    // 直接更新 input value (如果需要立即反饋，否則瀏覽器會處理)
+    // e.target.value = convertedValue.toUpperCase(); // 可能不需要，取決於是否需要立即看到轉換後的值
+    // 調用 debounced 函數來更新狀態
+    debouncedSetStockCode(convertedValue.toUpperCase());
+  };
+
+  // 處理查詢期間輸入 (現在調用 debounced setter)
+  const handleYearsChange = (e) => {
+    const value = e.target.value;
+    if (value === '' || /^[0-9０-９.．。]*$/.test(value)) {
+      // 直接更新 input value (如果需要立即反饋)
+      // e.target.value = value; // 可能不需要
+      // 調用 debounced 函數來更新狀態
+      debouncedSetYears(value);
+    }
   };
 
   // 切換主圖表 (標準差 or ULBand)
@@ -178,13 +203,7 @@ export function PriceAnalysis() {
         setAnalysisResult({ price: null, sentiment: null });
         setDisplayedStockCode('');
       });
-      if (error.code === 'ECONNABORTED') {
-        setTimeoutMessage('分析超時，請稍後重試或縮短歷史查詢期間。');
-      } else {
-        const errorData = handleApiError(error, showToast);
-        // 確保即使 errorData.message 未定義也有訊息
-        setTimeoutMessage(errorData?.message || '分析時發生錯誤，請稍後再試。');
-      }
+      handleApiError(error, showToast); // 直接調用 handleApiError，它會處理超時等錯誤並顯示 Toast
     } finally {
       // 即使 transition 未完成，也結束 Loading 狀態，讓 UI 可以響應
       // 注意：如果 transition 非常慢，Loading 可能會比數據出現早消失
@@ -198,32 +217,34 @@ export function PriceAnalysis() {
 
     // --- 立即更新 UI 反饋 ---
     setLoading(true);
-    setTimeoutMessage('');
-    setYearsError('');
-    // 立即清除舊圖表數據，讓 Loading 指示器顯示
-    setChartData(null);
-    setUlbandData(null);
-    setAnalysisResult({ price: null, sentiment: null });
-    setDisplayedStockCode('');
+    // 立即清除舊圖表數據
+    startTransition(() => { // 將清除操作也放入 transition
+        setChartData(null);
+        setUlbandData(null);
+        setAnalysisResult({ price: null, sentiment: null });
+        setDisplayedStockCode(''); // 清除舊代碼顯示
+    });
     // --- UI 反饋結束 ---
 
-    // --- 調用 Context 的函數來請求廣告 (假設此函數很快) ---
+    // --- 調用 Context 的函數來請求廣告 ---
     requestAdDisplay('priceAnalysis', 3);
     // --- 廣告請求結束 ---
 
     // --- 開始：表單處理邏輯 ---
     let numYears;
-    let stockToFetch = stockCode; // 使用局部變數
+    // 使用 state 中的 stockCode 和 years，它們是由 debounced 函數更新的
+    let stockToFetch = stockCode;
     let dateToFetch = backTestDate;
 
     if (isAdvancedQuery) {
-      const convertedYears = years
+      // 驗證 years 狀態
+      const convertedYears = years // 使用 state 中的 years
         .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
         .replace(/[．。]/g, '.');
       numYears = parseFloat(convertedYears);
 
       if (isNaN(numYears) || numYears <= 0) {
-        setYearsError('請輸入有效的查詢期間（年），且必須大於零。');
+        showToast('請輸入有效的查詢期間（年），且必須大於零。', 'error');
         setLoading(false); // 驗證失敗，結束 Loading
         return;
       }
@@ -235,7 +256,7 @@ export function PriceAnalysis() {
       }
     }
 
-    // 延遲分析事件發送，不阻塞 UI
+    // 延遲分析事件發送
     setTimeout(() => {
       Analytics.stockAnalysis.search({
         stockCode: stockToFetch,
@@ -244,7 +265,7 @@ export function PriceAnalysis() {
       });
     }, 0);
 
-    // 觸發數據抓取 (內部會處理 loading 狀態)
+    // 觸發數據抓取
     fetchStockData(stockToFetch, numYears, dateToFetch, false);
     // --- 結束：表單處理邏輯 ---
   };
@@ -301,8 +322,6 @@ export function PriceAnalysis() {
         setUlbandData(null);
         setAnalysisResult({ price: null, sentiment: null });
         setDisplayedStockCode(''); // 清除舊代碼
-        setTimeoutMessage(''); // 清除舊訊息
-        setYearsError(''); // 清除舊錯誤
         // 執行初始查詢，bypassTurnstile 為 true
         fetchStockData(fetchStock, numYears, fetchDate, true);
     } else if (urlYears && (isNaN(numYears) || numYears <= 0)) {
@@ -314,8 +333,6 @@ export function PriceAnalysis() {
         setUlbandData(null);
         setAnalysisResult({ price: null, sentiment: null });
         setDisplayedStockCode('');
-        setTimeoutMessage('');
-        setYearsError('查詢期間參數無效。'); // 在表單中顯示錯誤
     } else {
         // 非自動查詢情況 (例如直接訪問非 SPY 股票, 刷新非 SPY 股票頁面等)
         // 清除可能殘留的圖表數據 (除非正在手動載入)
@@ -324,8 +341,6 @@ export function PriceAnalysis() {
              setUlbandData(null);
              setAnalysisResult({ price: null, sentiment: null });
              setDisplayedStockCode(''); // 清除舊代碼
-             setTimeoutMessage(''); // 清除舊訊息
-             // 保留 yearsError，因為可能是使用者手動輸入錯誤後刷新
         }
     }
 
@@ -343,7 +358,6 @@ export function PriceAnalysis() {
     setIsAdvancedQuery(!isAdvancedQuery);
     // 切換模式時，如果從進階切回簡易，可能需要重置年份為預設值或清空錯誤
     if (!isAdvancedQuery) {
-        setYearsError(''); // 清除可能存在的年份錯誤
         // 可以選擇是否將 years state 設回 analysisPeriod 對應的值
         // switch (analysisPeriod) {
         //     case '短期': setYears('0.5'); break;
@@ -455,10 +469,11 @@ export function PriceAnalysis() {
             <div className="input-group">
               <label>股票代碼：</label>
               <input
-                className="form-control"
                 type="text"
-                value={stockCode}
-                onChange={handleStockCodeChange}
+                className="form-control"
+                // defaultValue={stockCode} // 使用 defaultValue 或 value 取決於是否需要完全受控
+                // value={stockCode} // 如果直接用 debounced set, 可能不需要 value
+                onChange={handleStockCodeChange} // <--- 使用新的處理函數
                 placeholder="例如:2330、AAPL"
                 required
               />
@@ -486,27 +501,25 @@ export function PriceAnalysis() {
                 <div className="input-group">
                   <label>分析期間：</label>
                   <input
+                    type="text" // 保持 text 以允許小數點
+                    inputMode="decimal" // 提示數字鍵盤（含小數點）
                     className="form-control"
-                    type="text"
-                    value={years}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value === '' || /^[0-9０-９.．。]*$/.test(value)) {
-                        setYears(value);
-                      }
-                    }}
+                    // defaultValue={years} // 使用 defaultValue 或 value
+                    // value={years} // 如果直接用 debounced set, 可能不需要 value
+                    onChange={handleYearsChange} // <--- 使用新的處理函數
                     placeholder="輸入年數，如 3.5"
                     required
                   />
-                  {yearsError && <div className="error-message">{yearsError}</div>}
+                  {/* {yearsError && <div className="error-message">{yearsError}</div>} */}
                 </div>
                 <div className="input-group">
                   <label>回測日期：</label>
                   <DatePicker
                     selected={backTestDate ? new Date(backTestDate) : null}
+                    // DatePicker 的 onChange 頻率低，暫不 debounce
                     onChange={(date) => setBackTestDate(date ? date.toISOString().split('T')[0] : '')}
                     placeholderText="預設今天"
-                    className="form-control"
+                    className="form-control" // 確保 class 正確
                     dateFormat="yyyy/MM/dd"
                     isClearable
                     popperPlacement="auto"
@@ -555,10 +568,6 @@ export function PriceAnalysis() {
 
         {/* 主圖表區塊 */}
         <div className="chart-card">
-          {/* 顯示超時或 API 錯誤訊息 */}
-          {timeoutMessage && !loading && (
-            <div className="error-message chart-error-message">{timeoutMessage}</div>
-          )}
           <div className="chart-container">
             {/* 只有在 loading 或有數據時才顯示圖表標頭 */}
             {(loading || chartData || ulbandData) && (
@@ -630,13 +639,15 @@ export function PriceAnalysis() {
                 // 使用 Memoized 版本
                 <MemoizedULBandChart data={ulbandData} />
               )}
+
+              {/* --- 修改：將佔位符移入 chart-content --- */}
+              {/* 可選：當沒有數據且不在載入時顯示佔位符 */}
+              {!loading && !chartData && !ulbandData && (
+                 <div className="chart-placeholder">請輸入條件並點擊「開始分析」。</div>
+              )}
+              {/* --- 修改結束 --- */}
             </div>
           </div>
-
-          {/* 可選：當沒有數據且不在載入時顯示佔位符 */}
-          {!loading && !chartData && !ulbandData && !timeoutMessage && !yearsError && (
-             <div className="chart-placeholder">請輸入條件並點擊「開始分析」。</div>
-          )}
         </div>
       </div>
 

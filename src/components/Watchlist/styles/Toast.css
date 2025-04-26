@@ -1,7 +1,7 @@
 /* Toast 通知 */
 .toast {
     position: fixed;
-    bottom: 24px;
+    top: 90px;
     right: 24px;
     padding: 16px 24px;
     border-radius: 8px;
@@ -88,7 +88,7 @@
 /* 響應式設計 */
 @media (max-width: 768px) {
     .toast {
-        bottom: 16px;
+        top: 50px;
         right: 16px;
         left: 16px;
         min-width: auto;
