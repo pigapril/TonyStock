@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo, useTransition } from 'react';
 import { Line } from 'react-chartjs-2';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -34,6 +34,10 @@ function getTimeUnit(dates) {
     return 'day';
   }
 }
+
+// 在組件外部或文件末尾創建 Memoized 版本
+const MemoizedULBandChart = React.memo(ULBandChart);
+const MemoizedExpandableDescription = React.memo(ExpandableDescription);
 
 /**
  * 價格標準差分析頁面 (PriceAnalysisPage)
@@ -79,6 +83,7 @@ export function PriceAnalysis() {
   const AD_DISPLAY_THRESHOLD = 3; // <--- 修改閾值為 3
   const [isAdCooldownActive, setIsAdCooldownActive] = useState(false); // 新增：追蹤廣告冷卻狀態
   const cooldownTimeoutRef = useRef(null); // 新增：保存冷卻計時器 ID
+  const [isPending, startTransition] = useTransition(); // 添加 useTransition
 
   // 處理股票代碼的全形/半形轉換
   const handleStockCodeChange = (e) => {
@@ -103,160 +108,114 @@ export function PriceAnalysis() {
     }, 1000);
   }, []);
 
-  // 資料抓取函式（原本在 App.js）
+  // 資料抓取函式
   const fetchStockData = useCallback(async (stock, yrs, testDate, bypassTurnstile = false) => {
+    // 驗證 Turnstile Token
     if (!bypassTurnstile && !turnstileToken) {
       handleApiError(new Error('請先完成驗證'), showToast);
+      setLoading(false); // 結束 Loading
       return;
     }
 
-    setLoading(true);
-    setTimeoutMessage('');
+    // setLoading(true) 和清除訊息已移至 handleSubmit
 
     try {
       const response = await axios.get(`${API_BASE_URL}/api/integrated-analysis`, {
-        params: {
-          stockCode: stock,
-          years: yrs,
-          backTestDate: testDate
-        },
-        headers: {
-          'CF-Turnstile-Token': bypassTurnstile ? undefined : turnstileToken
-        },
+        params: { stockCode: stock, years: yrs, backTestDate: testDate },
+        headers: { 'CF-Turnstile-Token': bypassTurnstile ? undefined : turnstileToken },
         timeout: 30000
       });
 
       const { data } = response.data;
-      const {
-        dates,
-        prices,
-        sdAnalysis,
-        weeklyDates,
-        weeklyPrices,
-        upperBand,
-        lowerBand,
-        ma20
-      } = data;
+      const { dates, prices, sdAnalysis, weeklyDates, weeklyPrices, upperBand, lowerBand, ma20 } = data;
 
-      // 設置標準差圖表數據
-      setChartData({
-        labels: dates,
-        datasets: [
-          {
-            label: '價格',
-            data: prices,
-            borderColor: 'blue',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: '趨勢線',
-            data: sdAnalysis.trendLine,
-            borderColor: '#E9972D',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: '-2個標準差',
-            data: sdAnalysis.tl_minus_2sd,
-            borderColor: '#143829',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: '-1個標準差',
-            data: sdAnalysis.tl_minus_sd,
-            borderColor: '#2B5B3F',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: '+1個標準差',
-            data: sdAnalysis.tl_plus_sd,
-            borderColor: '#C4501B',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          },
-          {
-            label: '+2個標準差',
-            data: sdAnalysis.tl_plus_2sd,
-            borderColor: '#A0361B',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0
-          }
-        ],
-        timeUnit: getTimeUnit(dates)
-      });
+      // 使用 startTransition 包裹耗時的狀態更新
+      startTransition(() => {
+        setChartData({
+          labels: dates,
+          datasets: [
+            { label: '價格', data: prices, borderColor: 'blue', borderWidth: 2, fill: false, pointRadius: 0 },
+            { label: '趨勢線', data: sdAnalysis.trendLine, borderColor: '#E9972D', borderWidth: 2, fill: false, pointRadius: 0 },
+            { label: '-2個標準差', data: sdAnalysis.tl_minus_2sd, borderColor: '#143829', borderWidth: 2, fill: false, pointRadius: 0 },
+            { label: '-1個標準差', data: sdAnalysis.tl_minus_sd, borderColor: '#2B5B3F', borderWidth: 2, fill: false, pointRadius: 0 },
+            { label: '+1個標準差', data: sdAnalysis.tl_plus_sd, borderColor: '#C4501B', borderWidth: 2, fill: false, pointRadius: 0 },
+            { label: '+2個標準差', data: sdAnalysis.tl_plus_2sd, borderColor: '#A0361B', borderWidth: 2, fill: false, pointRadius: 0 }
+          ],
+          timeUnit: getTimeUnit(dates)
+        });
 
+        setUlbandData({ dates: weeklyDates, prices: weeklyPrices, upperBand, lowerBand, ma20 });
+
+        // 計算情緒分析
+        if (prices && prices.length > 0 && sdAnalysis) {
+          const lastPrice = prices[prices.length - 1];
+          const { trendLine, tl_plus_2sd, tl_plus_sd, tl_minus_sd, tl_minus_2sd } = sdAnalysis;
+          const lastTlPlus2Sd = tl_plus_2sd[tl_plus_2sd.length - 1];
+          const lastTlMinus2Sd = tl_minus_2sd[tl_minus_2sd.length - 1];
+          const lastTlPlusSd = tl_plus_sd[tl_plus_sd.length - 1];
+          const lastTlMinusSd = tl_minus_sd[tl_minus_sd.length - 1];
+
+          let sentiment = '中性';
+          if (lastPrice >= lastTlPlus2Sd) sentiment = '極度樂觀';
+          else if (lastPrice > lastTlPlusSd) sentiment = '樂觀';
+          else if (lastPrice <= lastTlMinus2Sd) sentiment = '極度悲觀';
+          else if (lastPrice < lastTlMinusSd) sentiment = '悲觀';
+
+          setAnalysisResult({ price: lastPrice.toFixed(2), sentiment: sentiment });
+        } else {
+          setAnalysisResult({ price: null, sentiment: null }); // 清空
+        }
+      }); // end startTransition
+
+      // 這個更新通常很快，可以在 transition 外部
       setDisplayedStockCode(stock);
 
-      // 設置超漲超跌通道數據
-      setUlbandData({
-        dates: weeklyDates,
-        prices: weeklyPrices,
-        upperBand,
-        lowerBand,
-        ma20
-      });
-
-      // 計算情緒分析
-      if (prices && prices.length > 0 && sdAnalysis) {
-        const lastPrice = prices[prices.length - 1];
-        const { trendLine, tl_plus_2sd, tl_plus_sd, tl_minus_sd, tl_minus_2sd } = sdAnalysis;
-        const lastTrendLine = trendLine[trendLine.length - 1];
-        const lastTlPlusSd = tl_plus_sd[tl_plus_sd.length - 1];
-        const lastTlMinusSd = tl_minus_sd[tl_minus_sd.length - 1];
-        const lastTlPlus2Sd = tl_plus_2sd[tl_plus_2sd.length - 1]; // 取得 +2 標準差數值
-        const lastTlMinus2Sd = tl_minus_2sd[tl_minus_2sd.length - 1]; // 取得 -2 標準差數值
-
-        let sentiment = '中性';
-
-        // 判斷市場情緒 (調整後)
-        if (lastPrice >= lastTlPlus2Sd) {
-          sentiment = '極度樂觀';
-        } else if (lastPrice > lastTlPlusSd) {
-          sentiment = '樂觀';
-        } else if (lastPrice <= lastTlMinus2Sd) {
-          sentiment = '極度悲觀';
-        } else if (lastPrice < lastTlMinusSd) {
-          sentiment = '悲觀';
-        }
-        // 如果在 -1sd 和 +1sd 之間，維持中性
-
-        setAnalysisResult({
-          price: lastPrice.toFixed(2),
-          sentiment: sentiment
-        });
-      }
     } catch (error) {
+      // 錯誤時也用 transition 清空數據
+      startTransition(() => {
+        setChartData(null);
+        setUlbandData(null);
+        setAnalysisResult({ price: null, sentiment: null });
+        setDisplayedStockCode('');
+      });
       if (error.code === 'ECONNABORTED') {
         setTimeoutMessage('分析超時，請稍後重試或縮短歷史查詢期間。');
       } else {
         const errorData = handleApiError(error, showToast);
-        setTimeoutMessage(errorData.message);
+        // 確保即使 errorData.message 未定義也有訊息
+        setTimeoutMessage(errorData?.message || '分析時發生錯誤，請稍後再試。');
       }
     } finally {
+      // 即使 transition 未完成，也結束 Loading 狀態，讓 UI 可以響應
+      // 注意：如果 transition 非常慢，Loading 可能會比數據出現早消失
       setLoading(false);
     }
-  }, [turnstileToken, showToast]);
+  }, [turnstileToken, showToast, startTransition]); // 添加 startTransition 依賴
 
   // 表單送出
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // --- 調用 Context 的函數來請求廣告 ---
-    // 提供觸發來源 'priceAnalysis' 和閾值 3
+    // --- 立即更新 UI 反饋 ---
+    setLoading(true);
+    setTimeoutMessage('');
+    setYearsError('');
+    // 立即清除舊圖表數據，讓 Loading 指示器顯示
+    setChartData(null);
+    setUlbandData(null);
+    setAnalysisResult({ price: null, sentiment: null });
+    setDisplayedStockCode('');
+    // --- UI 反饋結束 ---
+
+    // --- 調用 Context 的函數來請求廣告 (假設此函數很快) ---
     requestAdDisplay('priceAnalysis', 3);
     // --- 廣告請求結束 ---
 
-    // --- 開始：原有的表單處理邏輯 ---
+    // --- 開始：表單處理邏輯 ---
     let numYears;
+    let stockToFetch = stockCode; // 使用局部變數
+    let dateToFetch = backTestDate;
+
     if (isAdvancedQuery) {
       const convertedYears = years
         .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
@@ -265,13 +224,9 @@ export function PriceAnalysis() {
 
       if (isNaN(numYears) || numYears <= 0) {
         setYearsError('請輸入有效的查詢期間（年），且必須大於零。');
-        setChartData(null);
-        setUlbandData(null);
-        setAnalysisResult({ price: null, sentiment: null });
-        setDisplayedStockCode('');
+        setLoading(false); // 驗證失敗，結束 Loading
         return;
       }
-      setYearsError('');
     } else {
       switch (analysisPeriod) {
         case '短期': numYears = 0.5; break;
@@ -280,13 +235,18 @@ export function PriceAnalysis() {
       }
     }
 
-    Analytics.stockAnalysis.search({
-      stockCode,
-      years: numYears,
-      backTestDate
-    });
-    fetchStockData(stockCode, numYears, backTestDate, false);
-    // --- 結束：原有的表單處理邏輯 ---
+    // 延遲分析事件發送，不阻塞 UI
+    setTimeout(() => {
+      Analytics.stockAnalysis.search({
+        stockCode: stockToFetch,
+        years: numYears,
+        backTestDate: dateToFetch
+      });
+    }, 0);
+
+    // 觸發數據抓取 (內部會處理 loading 狀態)
+    fetchStockData(stockToFetch, numYears, dateToFetch, false);
+    // --- 結束：表單處理邏輯 ---
   };
 
   // 初始化資料 (componentDidMount 或 URL/location.state 變化時)
@@ -416,6 +376,66 @@ export function PriceAnalysis() {
     }
   };
 
+  // 優化 Line Chart Options
+  const lineChartOptions = useMemo(() => {
+    // 基本配置
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            // unit 會在下方動態添加
+            displayFormats: { day: 'MM/dd', week: 'MM/dd', month: 'yyyy/MM', quarter: 'yyyy/[Q]Q', year: 'yyyy' },
+            tooltipFormat: 'yyyy/MM/dd'
+          },
+          ticks: {
+            maxTicksLimit: isMobile ? 4 : 6,
+            autoSkip: true,
+            maxRotation: isMobile ? 45 : 0,
+            minRotation: isMobile ? 45 : 0,
+            font: { size: isMobile ? 10 : 12 }
+          }
+        },
+        y: { position: 'right', grid: { drawBorder: true } }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          mode: 'index',
+          intersect: false,
+          usePointStyle: true,
+          callbacks: {
+            labelColor: (context) => ({
+              backgroundColor: context.dataset.borderColor,
+              borderColor: context.dataset.borderColor,
+              borderWidth: 0
+            }),
+            label: (context) => `${context.dataset.label || ''}: ${formatPrice(context.parsed.y)}`
+          },
+          itemSort: (a, b) => b.parsed.y - a.parsed.y
+        },
+        crosshair: {
+          line: { color: '#F66', width: 1, dashPattern: [5, 5] },
+          sync: { enabled: false },
+          zoom: { enabled: false }
+        }
+      },
+      interaction: { mode: 'index', intersect: false },
+      hover: { mode: 'index', intersect: false },
+      layout: { padding: { left: 10, right: 30, top: 20, bottom: 25 } }
+    };
+
+    // 動態添加 time unit (如果 chartData 存在)
+    if (chartData?.timeUnit) {
+      options.scales.x.time.unit = chartData.timeUnit;
+    }
+
+    return options;
+  // 依賴 isMobile 和 chartData?.timeUnit (安全訪問)
+  }, [isMobile, chartData?.timeUnit]);
+
   return (
     <PageContainer 
       title="樂活五線譜 - 價格趨勢分析"
@@ -511,7 +531,7 @@ export function PriceAnalysis() {
               type="submit"
               disabled={loading || !turnstileToken}
             >
-              {loading ? '分析中' : turnstileToken ? '開始分析' : '請完成下方驗證'}
+              {loading ? (isPending ? '處理數據中...' : '分析中...') : turnstileToken ? '開始分析' : '請完成下方驗證'}
             </button>
             {turnstileVisible && (
               <div className="turnstile-container">
@@ -588,12 +608,13 @@ export function PriceAnalysis() {
                 </div>
               )}
 
-              {/* Loading 指示器 (使用 Loading.css 樣式) */}
+              {/* Loading 指示器 */}
               {loading && (
-                <div className="chart-loading-indicator"> {/* 新增容器用於定位 */}
-                  <div className="loading-spinner"> {/* 使用 Loading.css 的 class */}
+                <div className="chart-loading-indicator">
+                  <div className="loading-spinner">
                     <div className="spinner"></div>
-                    <span>Loading...</span>
+                    {/* 根據 isPending 顯示不同文本 */}
+                    <span>{isPending ? '圖表生成中...' : 'Loading...'}</span>
                   </div>
                 </div>
               )}
@@ -602,99 +623,12 @@ export function PriceAnalysis() {
               {!loading && activeChart === 'sd' && chartData && (
                 <Line
                   data={chartData}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                      x: {
-                        type: 'time',
-                        time: {
-                          unit: chartData.timeUnit || 'day',
-                          displayFormats: {
-                            day: 'MM/dd',
-                            week: 'MM/dd',
-                            month: 'yyyy/MM',
-                            quarter: 'yyyy/[Q]Q',
-                            year: 'yyyy'
-                          },
-                          tooltipFormat: 'yyyy/MM/dd'
-                        },
-                        ticks: {
-                          maxTicksLimit: isMobile ? 4 : 6,
-                          autoSkip: true,
-                          maxRotation: isMobile ? 45 : 0,
-                          minRotation: isMobile ? 45 : 0,
-                          font: {
-                            size: isMobile ? 10 : 12
-                          }
-                        }
-                      },
-                      y: {
-                        position: 'right',
-                        grid: {
-                          drawBorder: true
-                        }
-                      }
-                    },
-                    plugins: {
-                      legend: { 
-                        display: false
-                      },
-                      tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        usePointStyle: true,
-                        callbacks: {
-                          labelColor: function(context) {
-                            return {
-                              backgroundColor: context.dataset.borderColor,
-                              borderColor: context.dataset.borderColor,
-                              borderWidth: 0
-                            };
-                          },
-                          label: function(context) {
-                            const label = context.dataset.label || '';
-                            const value = context.parsed.y;
-                            return `${label}: ${formatPrice(value)}`;
-                          }
-                        },
-                        itemSort: (a, b) => b.parsed.y - a.parsed.y
-                      },
-                      crosshair: {
-                        line: {
-                          color: '#F66',
-                          width: 1,
-                          dashPattern: [5, 5]
-                        },
-                        sync: {
-                          enabled: false
-                        },
-                        zoom: {
-                          enabled: false
-                        }
-                      }
-                    },
-                    interaction: {
-                      mode: 'index',
-                      intersect: false
-                    },
-                    hover: {
-                      mode: 'index',
-                      intersect: false
-                    },
-                    layout: {
-                      padding: {
-                        left: 10,
-                        right: 30,
-                        top: 20,
-                        bottom: 25
-                      }
-                    }
-                  }}
+                  options={lineChartOptions} // <--- 使用 useMemo 優化後的 options
                 />
               )}
               {!loading && activeChart === 'ulband' && ulbandData && (
-                <ULBandChart data={ulbandData} />
+                // 使用 Memoized 版本
+                <MemoizedULBandChart data={ulbandData} />
               )}
             </div>
           </div>
@@ -707,7 +641,7 @@ export function PriceAnalysis() {
       </div>
 
       {/* 將 ExpandableDescription 移到 dashboard 下方 */}
-      <ExpandableDescription
+      <MemoizedExpandableDescription
         shortDescription={
           <>
             分析當前股價是否過度樂觀或悲觀。利用股價均值回歸的統計特性，追蹤長期趨勢、判斷股價所處位置。<br />
@@ -740,7 +674,7 @@ export function PriceAnalysis() {
           {
             title: "兩者搭配使用",
             type: "list",
-            content: [  
+            content: [
               "當股價觸及五線譜的最上緣或是最下緣時，若同時也突破了樂活通道，可能代表趨勢的延續，可以等回到通道內再進行操作。",
               "建議使用在指數型ETF或具有趨勢性的大型股票，搭配基本面分析，不應該單獨作為買賣依據。"
             ]
