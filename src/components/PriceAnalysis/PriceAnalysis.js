@@ -4,18 +4,18 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './PriceAnalysis.css';
 import axios from 'axios';
-import PageContainer from '../PageContainer';
-import ULBandChart from '../ULBandChart';
+import PageContainer from '../PageContainer/PageContainer';
+import ULBandChart from '../ULBandChart/ULBandChart';
 import { Analytics } from '../../utils/analytics';
 import { handleApiError } from '../../utils/errorHandler';
 import { useMediaQuery } from 'react-responsive';
 import Turnstile from 'react-turnstile';
-import { formatPrice } from '../Common/priceUtils';
+import { formatPrice } from '../../utils/priceUtils';
 import { ExpandableDescription } from '../Common/ExpandableDescription/ExpandableDescription';
 import { Toast } from '../Watchlist/components/Toast';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { useSearchParams, useLocation } from 'react-router-dom'; // 引入 useLocation
-import { useAdContext } from '../../contexts/AdContext'; // 導入 useAdContext
+import { useAdContext } from '../../components/Common/InterstitialAdModal/AdContext'; // 導入 useAdContext
 import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebouncedCallback
 
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import GoogleTrendsSymbolChart from './GoogleTrendsSymbolChart';
 import { fetchGoogleTrendsMarketData } from './googleTrends.service';
-import '../shared/styles/Loading.css';
+import '../Loading/Loading.css';
 import './GoogleTrendsMarketContainer.css'; // 可自行建立此 CSS 檔來定義樣式
 
 const GoogleTrendsMarketContainer = () => {

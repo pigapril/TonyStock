@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { StockGauge } from '../../StockGauge';
-import { formatPrice, isNearEdge } from '../../../Common/priceUtils';
+import { formatPrice, isNearEdge } from '../../../../utils/priceUtils';
 import '../../styles/StockAnalysis.css';
 
 export const StockAnalysis = memo(function StockAnalysis({ price, analysis }) {

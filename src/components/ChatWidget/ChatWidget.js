@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ChatWidget.css';
 import { useAuth } from '../Auth/useAuth';
-import { useDialog } from '../../hooks/useDialog';
+import { useDialog } from '../../components/Common/Dialog/useDialog';
 import { Analytics } from '../../utils/analytics'; // 引入 Analytics
 import { useMediaQuery } from 'react-responsive';
 

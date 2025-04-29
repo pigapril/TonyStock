@@ -7,12 +7,12 @@ import 'chartjs-adapter-date-fns';
 import GaugeChart from 'react-gauge-chart';
 import styled from 'styled-components';
 import { ExpandableDescription } from '../Common/ExpandableDescription/ExpandableDescription';
-import PageContainer from '../PageContainer';
+import PageContainer from '../PageContainer/PageContainer';
 import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
 import { getSentiment } from '../../utils/sentimentUtils';
 import { Helmet } from 'react-helmet-async';
-import { useAdContext } from '../../contexts/AdContext';
+import { useAdContext } from '../../components/Common/InterstitialAdModal/AdContext';
 
 // 引入必要的 Chart.js 元件和插件
 import {

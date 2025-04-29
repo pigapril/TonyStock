@@ -4,8 +4,8 @@ import { StockHeader } from './StockHeader';
 import { StockAnalysis } from './StockAnalysis';
 import { StockNews } from './StockNews';
 import { RemoveButton } from './RemoveButton';
-import { formatPrice } from '../../../Common/priceUtils'; // Import formatPrice
-import { useAdContext } from '../../../../contexts/AdContext'; // <--- 1. 導入 useAdContext
+import { formatPrice } from '../../../../utils/priceUtils'; // Import formatPrice
+import { useAdContext } from '../../../../components/Common/InterstitialAdModal/AdContext'; // <--- 1. 導入 useAdContext
 import '../../styles/StockCard.css';
 
 export const StockCard = memo(function StockCard({

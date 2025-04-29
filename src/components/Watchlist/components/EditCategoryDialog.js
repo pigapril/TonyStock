@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog } from '../../Common/Dialog';
+import { Dialog } from '../../Common/Dialog/Dialog';
 import '../styles/EditCategoryDialog.css';
 
 export const EditCategoryDialog = ({ open, onClose, category, onSubmit }) => {

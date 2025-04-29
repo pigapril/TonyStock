@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatPrice } from '../Common/priceUtils';
+import { formatPrice } from '../../utils/priceUtils';
 import './styles/StockGauge.css';
 
 export const StockGauge = ({ price, support, resistance }) => {

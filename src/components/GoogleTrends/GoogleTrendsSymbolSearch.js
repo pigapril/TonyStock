@@ -4,7 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import debounce from 'lodash/debounce';
 import { getErrorMessage } from '../../utils/errorHandler';
 import { fetchStockSuggestions } from './googleTrends.service';
-import '../shared/styles/Loading.css';
+import '../Loading/Loading.css';
 import './GoogleTrendsSymbolSearch.css';
 
 const GoogleTrendsSymbolSearch = ({ onSearch }) => {

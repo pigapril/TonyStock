@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog } from '../../Common/Dialog';
+import { Dialog } from '../../Common/Dialog/Dialog';
 import '../styles/CreateCategoryDialog.css';
 
 export const CreateCategoryDialog = ({ open, onClose, onSubmit }) => {

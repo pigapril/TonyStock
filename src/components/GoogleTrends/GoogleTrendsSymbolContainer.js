@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import GoogleTrendsSymbolSearch from './GoogleTrendsSymbolSearch';
 import GoogleTrendsSymbolChart from './GoogleTrendsSymbolChart';
 import { fetchGoogleTrendsData } from './googleTrends.service';
-import '../shared/styles/Loading.css';  // 確保引入載入動畫樣式
+import '../Loading/Loading.css';  // 確保引入載入動畫樣式
 import './GoogleTrendsSymbolContainer.css';  // 引入 Container 樣式
 
 const GoogleTrendsSymbolContainer = () => {

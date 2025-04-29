@@ -13,40 +13,40 @@ import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHom
 // 樣式引入
 import './App.css';
 import './components/Auth/styles/SignInDialog.css';
-import './styles/NewFeatureBadge.css';
+import './components/NewFeatureBadge/NewFeatureBadge.css';
 import "react-datepicker/dist/react-datepicker.css";
 
 // 自定義組件
-import { Home } from './pages/Home'; 
+import { Home } from './components/Home/Home'; 
 import MarketSentimentIndex from './components/MarketSentimentIndex/MarketSentimentIndex';
-import PageContainer from './components/PageContainer';
+import PageContainer from './components/PageContainer/PageContainer';
 import { AuthDialog } from './components/Auth/AuthDialog';
 import { UserProfile } from './components/Auth/UserProfile';
 import { PageViewTracker } from './components/Common/PageViewTracker';
-import { About } from './pages/About';
-import { Legal } from './pages/Legal';
+import { About } from './components/About/About';
+import { Legal } from './components/Legal/Legal';
 import { WatchlistContainer } from './components/Watchlist/WatchlistContainer';
-import { AdBanner } from './components/Common/AdBanner';
-import { Footer } from './components/Common/Footer';
+import { AdBanner } from './components/Common/AdBanner/AdBanner';
+import { Footer } from './components/Common/Footer/Footer';
 import FloatingSponsorButton from './components/FloatingSponsorButton/FloatingSponsorButton';
 import ChatWidget from './components/ChatWidget/ChatWidget';
 
 // 導入拆分後的價格標準差分析頁面
 import { PriceAnalysis } from './components/PriceAnalysis/PriceAnalysis';
-import { Articles } from './pages/Articles';
-import { ArticleDetail } from './pages/ArticleDetail';
-import { SponsorUs } from './pages/SponsorUs';
-import { SponsorSuccess } from './pages/SponsorSuccess';
-import { GoogleTrendsSymbolPage } from './pages/GoogleTrendsSymbolPage';
-import { GoogleTrendsMarketPage } from './pages/GoogleTrendsMarketPage';
+import { Articles } from './components/Articles/Articles';
+import { ArticleDetail } from './components/ArticleDetail/ArticleDetail';
+import { SponsorUs } from './components/SponsorUs/SponsorUs';
+import { SponsorSuccess } from './components/SponsorSuccess/SponsorSuccess';
+import { GoogleTrendsSymbolPage } from './components/GoogleTrendsSymbolPage/GoogleTrendsSymbolPage';
+import { GoogleTrendsMarketPage } from './components/GoogleTrendsMarketPage/GoogleTrendsMarketPage';
 
 // Context 和 Hooks
 import { AuthProvider } from './components/Auth/AuthContext';
-import { DialogProvider } from './contexts/DialogContext';
+import { DialogProvider } from './components/Common/Dialog/DialogContext';
 import { useAuth } from './components/Auth/useAuth'; // 更新路徑
-import { useDialog } from './hooks/useDialog';
-import { useNewFeatureNotification, FEATURES } from './hooks/useNewFeatureNotification';
-import { AdProvider } from './contexts/AdContext';
+import { useDialog } from './components/Common/Dialog/useDialog';
+import { useNewFeatureNotification, FEATURES } from './components/NewFeatureBadge/useNewFeatureNotification';
+import { AdProvider } from './components/Common/InterstitialAdModal/AdContext';
 
 // 工具函數
 import { Analytics } from './utils/analytics';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import PropTypes from 'prop-types';
-import { formatPrice } from '../Common/priceUtils';
+import { formatPrice } from '../../utils/priceUtils';
 import './GoogleTrendsSymbolChart.css';  // 引入 Chart 樣式
 
 const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {

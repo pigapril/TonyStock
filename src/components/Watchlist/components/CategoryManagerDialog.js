@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dialog } from '../../Common/Dialog';
+import { Dialog } from '../../Common/Dialog/Dialog';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import '../styles/CategoryManagerDialog.css';
 

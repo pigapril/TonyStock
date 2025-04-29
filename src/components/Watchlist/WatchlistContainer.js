@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
-import { Dialog } from '../Common/Dialog';
+import { Dialog } from '../Common/Dialog/Dialog';
 import { Analytics } from '../../utils/analytics';
 import { handleApiError, getErrorMessage } from '../../utils/errorHandler';
 import './styles/Watchlist.css';
@@ -18,7 +18,7 @@ import { CategoryTabs } from './components/CategoryTabs';
 import { useToastManager } from './hooks/useToastManager';
 import { StockCard } from './components/StockCard/StockCard';
 import { ErrorBoundary } from '../Common/ErrorBoundary/ErrorBoundary';
-import { formatPrice, isNearEdge } from '../Common/priceUtils';
+import { formatPrice, isNearEdge } from '../../utils/priceUtils';
 import { useStocks } from './hooks/useStocks';
 import { InfoTool } from '../Common/InfoTool/InfoTool';
 import { Helmet } from 'react-helmet-async';

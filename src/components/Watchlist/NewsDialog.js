@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog } from '../Common/Dialog';
+import { Dialog } from '../Common/Dialog/Dialog';
 
 function NewsDialog({ news, open, onClose }) {
     if (!news) return null;

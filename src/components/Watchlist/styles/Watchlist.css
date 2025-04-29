@@ -1,5 +1,5 @@
 /* 引入 Loading 樣式 */
-@import '../../../components/shared/styles/Loading.css';
+@import '../../Loading/Loading.css';
 
 /* 容器樣式 */
 .watchlist-container {

@@ -1,6 +1,6 @@
-import { useDialog } from '../../hooks/useDialog';
+import { useDialog } from '../../components/Common/Dialog/useDialog';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
-import { Dialog } from '../Common/Dialog';
+import { Dialog } from '../Common/Dialog/Dialog';
 import { useRef, useEffect } from 'react';
 import { Analytics } from '../../utils/analytics';
 
