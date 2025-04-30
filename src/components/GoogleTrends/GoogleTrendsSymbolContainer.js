@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import GoogleTrendsSymbolSearch from './GoogleTrendsSymbolSearch';
 import GoogleTrendsSymbolChart from './GoogleTrendsSymbolChart';
 import { fetchGoogleTrendsData } from './googleTrends.service';
@@ -6,6 +7,7 @@ import '../Loading/Loading.css';  // 確保引入載入動畫樣式
 import './GoogleTrendsSymbolContainer.css';  // 引入 Container 樣式
 
 const GoogleTrendsSymbolContainer = () => {
+    const { t } = useTranslation();
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -24,16 +26,16 @@ const GoogleTrendsSymbolContainer = () => {
             if (data && data.data && Array.isArray(data.data)) {
                 setChartData(data.data);
             } else {
-                setError('無效的數據格式');
+                setError(t('googleTrendsSymbol.invalidData'));
                 console.error('Invalid data format:', data);
             }
         } catch (err) {
-            setError(err.message || '獲取數據時發生錯誤');
+            setError(err.message || t('googleTrendsSymbol.fetchError'));
             console.error('Error details:', err);
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [t]);
 
     React.useEffect(() => {
         if (symbol) {
@@ -53,23 +55,21 @@ const GoogleTrendsSymbolContainer = () => {
             {loading && (
                 <div className="loading-spinner">
                     <div className="spinner"></div>
-                    <span>載入中...</span>
+                    <span>{t('common.loading')}</span>
                 </div>
             )}
-            {error && <div className="error-message">錯誤: {error}</div>}
+            {error && <div className="error-message">{t('common.errorPrefix')}: {error}</div>}
 
             {chartData && !loading && !error ? (
                 <div className="google-trends-chart-card">
                     <GoogleTrendsSymbolChart data={chartData} symbol={symbol} />
                     <p className="chart-description">
-                        本圖表比較了 {symbol} 的 Google 搜尋熱度與股價走勢。
-                        搜尋熱度反映了市場對該標的的關注度，
-                        股價顯示了實際價格變化。
+                        {t('googleTrendsSymbol.chartDescription', { symbol })}
                     </p>
                 </div>
             ) : !loading && !error && (
                 <div className="empty-state">
-                    <p>請在上方搜尋框輸入股票代號來查看數據</p>
+                    <p>{t('googleTrendsSymbol.prompt')}</p>
                 </div>
             )}
         </div>

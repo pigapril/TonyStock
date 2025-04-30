@@ -1,8 +1,10 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import { formatPrice } from '../../utils/priceUtils';
+import { useTranslation } from 'react-i18next';
 
 const ULBandChart = ({ data }) => {
+    const { t } = useTranslation();
     if (!data) return null;
 
     // 計算合適的時間單位
@@ -26,7 +28,7 @@ const ULBandChart = ({ data }) => {
         labels: data.dates,
         datasets: [
             {
-                label: '上緣',
+                label: t('ulBandChart.upperBandLabel'),
                 data: data.upperBand,
                 borderColor: '#A0361B',  // 極度貪婪 - 深紅褐色
                 borderWidth: 1,
@@ -34,7 +36,7 @@ const ULBandChart = ({ data }) => {
                 pointRadius: 0
             },
             {
-                label: 'MA20',
+                label: t('ulBandChart.ma20Label'),
                 data: data.ma20,
                 borderColor: '#E9972D',  // 中性 - 橙黃色
                 borderWidth: 1,
@@ -42,7 +44,7 @@ const ULBandChart = ({ data }) => {
                 pointRadius: 0
             },
             {
-                label: '價格',
+                label: t('ulBandChart.priceLabel'),
                 data: data.prices,
                 borderColor: 'blue',     // 保持與標準差分析相同的藍色
                 borderWidth: 1,
@@ -50,7 +52,7 @@ const ULBandChart = ({ data }) => {
                 pointRadius: 0
             },
             {
-                label: '下緣',
+                label: t('ulBandChart.lowerBandLabel'),
                 data: data.lowerBand,
                 borderColor: '#143829',  // 極度恐懼 - 深墨綠色
                 borderWidth: 1,

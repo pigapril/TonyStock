@@ -1,14 +1,16 @@
 import { useState, useCallback } from 'react';
 import { Analytics } from '../../../utils/analytics';
 import { handleApiError } from '../../../utils/errorHandler';
+import { useTranslation } from 'react-i18next';
 
 export const useStocks = (watchlistService, showToast, onSuccess) => {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const handleAddStock = useCallback(async (categoryId, stock) => {
         if (!categoryId || !stock) {
-            showToast('無效的操作參數', 'error');
+            showToast(t('common.invalidParams'), 'error');
             return false;
         }
 
@@ -17,7 +19,7 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
             const result = await watchlistService.addStock(categoryId, stock);
             const stockSymbol = typeof stock === 'string' ? stock : stock.symbol;
             
-            showToast(`已添加 ${stockSymbol} 到追蹤清單`, 'success');
+            showToast(t('watchlist.stock.addSuccess', { symbol: stockSymbol }), 'success');
             Analytics.watchlist.addStock({ categoryId, stockSymbol });
             
             if (onSuccess) {
@@ -53,7 +55,7 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
         } finally {
             setLoading(false);
         }
-    }, [watchlistService, showToast, onSuccess]);
+    }, [watchlistService, showToast, onSuccess, t]);
 
     const handleRemoveStock = useCallback(async (categoryId, itemId) => {
         setLoading(true);
@@ -71,8 +73,7 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
 
             return true;
         } catch (error) {
-            const errorData = handleApiError(error, showToast);
-            showToast(errorData.message, 'error');
+            const errorData = handleApiError(error, showToast, t);
             Analytics.error({
                 component: 'useStocks',
                 action: 'remove_stock',
@@ -82,7 +83,7 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
         } finally {
             setLoading(false);
         }
-    }, [watchlistService, showToast, onSuccess]);
+    }, [watchlistService, showToast, onSuccess, t]);
 
     return {
         loading,

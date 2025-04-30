@@ -1,12 +1,16 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next'; // 1. 引入 useTranslation
 import { formatPrice } from '../../utils/priceUtils';
 import './GoogleTrendsSymbolChart.css';  // 引入 Chart 樣式
 
 const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {
+    const { t } = useTranslation(); // 2. 使用 hook
+
     if (!data || data.length === 0) {
-        return <div className="no-data-message">無可顯示的數據</div>;
+        // 3. 替換文字
+        return <div className="no-data-message">{t('common.noData')}</div>;
     }
 
     // 格式化資料：日期轉 ISO 字串，股價及趨勢資料轉為數字
@@ -41,10 +45,15 @@ const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {
         if (active && payload && payload.length) {
             return (
                 <div className="google-trends-tooltip">
-                    <p>{`日期: ${new Date(label).toLocaleDateString()}`}</p>
+                    {/* 3. 替換文字 */}
+                    <p>{`${t('googleTrendsChart.tooltipDate')}: ${new Date(label).toLocaleDateString()}`}</p>
                     {payload.map((entry, index) => (
                         <p key={`tooltip-${index}`}>
-                            {entry.name}: {entry.name.includes('股價') ? formatPrice(entry.value) : entry.value}
+                            {/* 判斷是否為股價，使用翻譯後的名稱 */}
+                            {entry.name === t('googleTrendsChart.priceLineName', { symbol }) ?
+                                `${entry.name}: ${formatPrice(entry.value)}` :
+                                `${entry.name}: ${entry.value}`
+                            }
                         </p>
                     ))}
                 </div>
@@ -75,7 +84,7 @@ const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {
                     yAxisId="left" 
                     domain={[0, 100]}
                     label={{ 
-                        value: 'Google 搜尋熱度 (0-100)', 
+                        value: t('googleTrendsChart.yAxisTrend'),
                         angle: -90, 
                         position: 'insideLeft',
                         offset: 10,  // 調整位置
@@ -88,7 +97,7 @@ const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {
                     domain={['auto', 'auto']}
                     tickFormatter={formatPrice}
                     label={{ 
-                        value: '股價 ($)', 
+                        value: t('googleTrendsChart.yAxisPrice'),
                         angle: 90, 
                         position: 'insideRight',
                         offset: 10,  // 調整位置
@@ -127,7 +136,7 @@ const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {
                     strokeWidth={4}
                     dot={false}
                     strokeDasharray="5 5"
-                    name={`${symbol}股價`}
+                    name={t('googleTrendsChart.priceLineName', { symbol })}
                 />
             </LineChart>
         </ResponsiveContainer>

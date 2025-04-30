@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withTranslation } from 'react-i18next';
 import './ErrorBoundary.css';
 
-export class ErrorBoundary extends Component {
+class BaseErrorBoundary extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -39,7 +40,7 @@ export class ErrorBoundary extends Component {
 
     render() {
         const { hasError, error } = this.state;
-        const { message, fallback } = this.props;
+        const { message, fallback, children, t } = this.props;
 
         // 如果有錯誤且提供了自定義的 fallback，則使用它
         if (hasError && fallback) {
@@ -50,26 +51,30 @@ export class ErrorBoundary extends Component {
         if (hasError) {
             return (
                 <div className="error-boundary">
-                    <h2>很抱歉，發生了一些問題</h2>
-                    <p>{message || error?.message || '發生未知錯誤'}</p>
+                    <h2>{t('errorBoundary.title')}</h2>
+                    <p>{message || error?.message || t('errorBoundary.defaultMessage')}</p>
                     <button 
                         className="retry-button"
                         onClick={this.handleRetry}
                     >
-                        重試
+                        {t('errorBoundary.retryButton')}
                     </button>
                 </div>
             );
         }
 
-        return this.props.children;
+        return children;
     }
 }
 
-ErrorBoundary.propTypes = {
+BaseErrorBoundary.propTypes = {
     children: PropTypes.node.isRequired,
     message: PropTypes.string,
     onError: PropTypes.func,
     onRetry: PropTypes.func,
-    fallback: PropTypes.func
-}; 
+    fallback: PropTypes.func,
+    t: PropTypes.func.isRequired,
+};
+
+// Wrap the component with withTranslation
+export const ErrorBoundary = withTranslation()(BaseErrorBoundary); 

@@ -1,0 +1,56 @@
+.language-switcher {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px; /* Add some space to the right */
+}
+
+.language-switcher-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em; /* Adjust icon size */
+  color: var(--text-color-primary); /* Use variable if available, or specific color */
+}
+
+.language-switcher-button:hover {
+  opacity: 0.8;
+}
+
+.language-dropdown {
+  position: absolute;
+  top: 100%; /* Position below the button */
+  right: 0; /* Align to the right */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  z-index: 100; /* Ensure it's above other content */
+  min-width: 100px; /* Minimum width */
+  padding: 5px 0;
+}
+
+.language-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 8px 15px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9em;
+  color: #333;
+}
+
+.language-dropdown button:hover {
+  background-color: #f0f0f0;
+}
+
+.language-dropdown button:disabled {
+  cursor: default;
+  opacity: 0.6;
+  background-color: transparent;
+} 

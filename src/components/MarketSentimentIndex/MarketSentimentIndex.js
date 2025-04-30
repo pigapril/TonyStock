@@ -12,7 +12,8 @@ import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
 import { getSentiment } from '../../utils/sentimentUtils';
 import { Helmet } from 'react-helmet-async';
-import { useAdContext } from '../../components/Common/InterstitialAdModal/AdContext';
+import { useAdContext } from '../Common/InterstitialAdModal/AdContext';
+import { useTranslation } from 'react-i18next';
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -32,7 +33,7 @@ import {
 import { Line } from 'react-chartjs-2';
 
 // 引入 IndicatorItem 組件
-import IndicatorItem, { INDICATOR_NAME_MAP } from '../IndicatorItem/IndicatorItem';
+import IndicatorItem from '../IndicatorItem/IndicatorItem';
 
 // 註冊 Chart.js 的元件和插件
 ChartJS.register(
@@ -115,99 +116,39 @@ const gradients = [
   ['#A0361B', '#B13D1F']   // 極度貪婪 - 深紅褐色
 ];
 
-// 定義指標描述的映射表
-const INDICATOR_DESCRIPTION_MAP = {
-  composite: {
-    shortDescription: (
-      <>
-        分析市場情緒的目的，是因為當市場極度貪婪時，投資人往往忽視風險，股市泡沫隨之擴大，可能是賣出的時機。而當市場充滿恐懼時，投資人也容易過度悲觀，反而可能是買入的機會。
-        <br />
-        詳細說明可以參考以下文章：
-        <a href="https://sentimentinsideout.com/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F" target="_blank" rel="noopener noreferrer">
-          用市場情緒綜合指數判斷買賣時機
-        </a>
-      </>
-    ),
-    sections: [
-      {
-        content: "回顧歷史數據，例如在金融海嘯期間股市最低點2009年3月、疫情爆發後股市最低點2020年3月、以及聯準會2022年的連續升息期間，市場情緒綜合指數都曾經低於10、甚至接近0，回頭看都是相當好的買點。市場情緒指標能幫助投資人了解當前市場的心理狀態。過度樂觀可能預示風險，而過度悲觀則可能帶來機會。"
-      },
-    ]
-  },
-  'AAII Bull-Bear Spread': {
-    shortDescription: "AAII 投資者情緒調查，又稱美國散戶情緒指標。計算方式為看多者百分比減去看空者百分比。正值表示市場樂觀，負值表示市場悲觀。",
-    sections: [
-      {
-        content: "AAII（美國個人投資者協會）每週進行的投資者情緒調查，旨在了解個人投資者對未來市場的看法。調查結果分為三類：看多、看空和中性。淨看多值是看多者百分比減去看空者百分比，數值愈高表示市場愈樂觀，愈低則表示市場愈悲觀。這項調查被廣泛用作市場情緒的指標，因為它能反映出散戶的心理狀態，並可能預示市場的未來走勢。過度的樂觀可能預示著市場的泡沫，而過度的悲觀則可能是潛在的買入機會。"
-      },
-    ]
-  },
-  'CBOE Put/Call Ratio 5-Day Avg': {
-    shortDescription: "CBOE 買/賣權比例計算方式是將買入賣權（看空）合約數量除以買入買權（看多）合約數量。比例越低，表示投資者預期市場上漲，情緒偏樂觀。",
-    sections: [
-      {
-        content: "CBOE 買/賣權比例衡量市場情緒的方式，是透過比較個股看跌期權（Put）和看漲期權（Call）的交易量。比例越低，表示投資者預期市場上漲，情緒偏樂觀。此指標將原始數值進行 5 日平均減少波動，以平緩指標的波動。"
-      },
-    ]
-  },
-  'Market Momentum': {
-    shortDescription: "S&P500 市場動能衡量 S&P500 指數的動量。正值表示市場動能強勁，負值表示市場動能疲弱。",
-    sections: [
-      {
-        content: "動能指標是藉由比較S&P500指數與其125日移動平均線，計算當前價格相對於長期平均的差異。正值表示樂觀趨勢，負值表示悲觀趨勢。"
-      },
-    ]
-  },
-  'VIX MA50': {
-    shortDescription: "VIX 恐慌指數衡量市場對未來 30 天波動性的預期。VIX 通常被稱為「恐慌指數」，因為它在市場下跌時往往會飆升。",
-    sections: [
-      {
-        content: "VIX 的數值越高，表示市場預期未來波動性越大，投資者對市場的未來走勢感到不安。此指標計算出 VIX 指數的 50 日移動平均線，平緩指標的波動。趨勢上升表示市場預期波動加大，情緒較為悲觀；下降則表示預期波動減小，情緒較為樂觀。"
-      },
-    ]
-  },
-  'Safe Haven Demand': {
-    shortDescription: "債券需求衡量投資者對避險資產的需求。此指標數值愈高表示市場情緒愈樂觀。",
-    sections: [
-      {
-        content: "避險需求指標衡量的是資金在股市與債市之間的流動。計算過去20日內股債報酬率的差異。正值表示資金入股市，情緒樂觀；負值表示流入債市，情緒悲觀。"
-      },
-    ]
-  },
-  'Junk Bond Spread': {
-    shortDescription: "垃圾債殖利率差衡量高收益債券（又稱垃圾債券）與投資級債券之間的收益率差異。此數值愈低，表示利差縮小，表示市場情緒愈樂觀。",
-    sections: [
-      {
-        content: "垃圾債券殖利率與投資級債券殖利率的利差。利差越小，表示風險偏好情緒上升，投資者願意承擔更多風險；利差越大，表示避險情緒上升，市場情緒偏悲觀。"
-      },
-    ]
-  },
-  "S&P 500 COT Index": {
-    shortDescription: "S&P 500 期貨投機淨持倉指數，反映投機者與避險者之間的持倉差異。此數值愈高，表示市場情緒愈樂觀。",
-    sections: [
-      {
-        content: "期貨投機淨持倉指數是一個衡量 S&P 500 期貨市場中投機者的淨持倉量的指標。正值表示投機者看多，負值表示投機者看空。這個指標可以幫助投資者了解市場中投機者的情緒。"
-      },
-    ]
-  },
-  'NAAIM Exposure Index': {
-    shortDescription: "NAAIM 投資經理人曝險指數，反映專業投資經理人對美國股市的曝險程度。數值越高，代表經理人對市場更有信心，情緒樂觀。",
-    sections: [
-      {
-        content: "NAAIM 經理人曝險指數是一個衡量 NAAIM 成員的股票曝險程度的指標。正值表示經理人看多，負值表示經理人看空。這個指標可以幫助投資者了解專業經理人對市場的看法。"
-      },
-    ]
-  },
+// 創建一個映射，將原始 key 映射到翻譯鍵中使用的簡化 key
+const INDICATOR_TRANSLATION_KEY_MAP = {
+  'AAII Bull-Bear Spread': 'indicators.aaiiSpread',
+  'CBOE Put/Call Ratio 5-Day Avg': 'indicators.cboeRatio',
+  'Market Momentum': 'indicators.marketMomentum',
+  'VIX MA50': 'indicators.vixMA50',
+  'Safe Haven Demand': 'indicators.safeHaven',
+  'Junk Bond Spread': 'indicators.junkBond',
+  "S&P 500 COT Index": 'indicators.cotIndex',
+  'NAAIM Exposure Index': 'indicators.naaimIndex',
+};
+
+// 新增：創建一個映射，將原始 key 映射到描述翻譯鍵中使用的簡化 key
+const INDICATOR_DESCRIPTION_KEY_MAP = {
+  'AAII Bull-Bear Spread': 'aaiiSpread',
+  'CBOE Put/Call Ratio 5-Day Avg': 'cboeRatio',
+  'Market Momentum': 'marketMomentum',
+  'VIX MA50': 'vixMA50',
+  'Safe Haven Demand': 'safeHaven',
+  'Junk Bond Spread': 'junkBond',
+  "S&P 500 COT Index": 'cotIndex',
+  'NAAIM Exposure Index': 'naaimIndex',
 };
 
 const MarketSentimentIndex = () => {
+  const { t } = useTranslation();
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedTimeRange, setSelectedTimeRange] = useState('1Y');
   const [indicatorsData, setIndicatorsData] = useState({});
   const [historicalData, setHistoricalData] = useState([]);
-  const [activeTab, setActiveTab] = useState('composite'); // 新增：用於跟踪當前活動的標籤
-  const [viewMode, setViewMode] = useState('overview'); // 修改：默認顯示概覽（最新情緒指數）
+  const [activeTab, setActiveTab] = useState('composite');
+  const [viewMode, setViewMode] = useState('overview');
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const initialRenderRef = useRef(true);
   const { requestAdDisplay } = useAdContext();
@@ -282,22 +223,22 @@ const MarketSentimentIndex = () => {
   const handleTimeRangeChange = (e) => {
     Analytics.marketSentiment.changeTimeRange({
       timeRange: e.target.value,
-      currentIndicator: INDICATOR_NAME_MAP[activeTab] || activeTab
+      currentIndicator: activeTab
     });
     setSelectedTimeRange(e.target.value);
   };
 
-  const filteredData = filterDataByTimeRange(historicalData, selectedTimeRange);
+  const filteredData = useMemo(() => filterDataByTimeRange(historicalData, selectedTimeRange), [historicalData, selectedTimeRange]);
   
   // 獲取時間單位
-  const timeUnit = getTimeUnit(filteredData.map(item => item.date));
+  const timeUnit = useMemo(() => getTimeUnit(filteredData.map(item => item.date)), [filteredData]);
 
   // 構建圖表數據
-  const chartData = {
+  const chartData = useMemo(() => ({
     labels: filteredData.map((item) => item.date),
     datasets: [
       {
-        label: '市場情緒指數',
+        label: t('marketSentiment.chart.compositeIndexLabel'),
         yAxisID: 'left-axis',
         data: filteredData.map((item) => item.compositeScore),
         borderColor: '#C78F57',
@@ -319,7 +260,7 @@ const MarketSentimentIndex = () => {
         pointRadius: 0,
       },
       {
-        label: 'SPY 價格',
+        label: t('marketSentiment.chart.spyPriceLabel'),
         yAxisID: 'right-axis',
         data: filteredData.map((item) => item.spyClose),
         borderColor: 'rgba(54, 162, 235, 1)',
@@ -341,10 +282,10 @@ const MarketSentimentIndex = () => {
         pointRadius: 0,
       },
     ],
-  };
+  }), [filteredData, t]);
 
   // 修改圖表選項
-  const chartOptions = {
+  const chartOptions = useMemo(() => ({
     scales: {
       x: {
         type: 'time',
@@ -368,14 +309,14 @@ const MarketSentimentIndex = () => {
         position: 'left',
         title: {
           display: true,
-          text: '市場情緒指數',
+          text: t('marketSentiment.chart.compositeIndexAxisLabel'),
         },
       },
       'right-axis': {
         position: 'right',
         title: {
           display: true,
-          text: 'SPY 價格',
+          text: t('marketSentiment.chart.spyPriceAxisLabel'),
         },
         grid: {
           drawOnChartArea: false,
@@ -406,13 +347,13 @@ const MarketSentimentIndex = () => {
     },
     responsive: true,
     maintainAspectRatio: false,
-  };
+  }), [timeUnit, t]);
 
   // 新增：處理標籤切換的函數
   const handleTabChange = (tabKey) => {
     Analytics.marketSentiment.switchIndicator({
-      indicatorName: INDICATOR_NAME_MAP[tabKey] || tabKey,
-      fromIndicator: INDICATOR_NAME_MAP[activeTab] || activeTab
+      indicatorName: tabKey,
+      fromIndicator: activeTab
     });
     setActiveTab(tabKey);
   };
@@ -422,7 +363,7 @@ const MarketSentimentIndex = () => {
     requestAdDisplay('marketSentimentViewModeChange', 1);
     Analytics.marketSentiment.switchViewMode({
       viewMode: mode,
-      currentIndicator: INDICATOR_NAME_MAP[activeTab] || activeTab
+      currentIndicator: activeTab
     });
     setViewMode(mode);
   };
@@ -456,54 +397,81 @@ const MarketSentimentIndex = () => {
     }
   }, [isDataLoaded]);
 
-  // 根據 activeTab 獲取描述內容
-  const currentDescription = INDICATOR_DESCRIPTION_MAP[activeTab] || INDICATOR_DESCRIPTION_MAP.composite;
+  // 根據 activeTab 獲取描述內容的翻譯鍵
+  const descriptionKey = useMemo(() => {
+    if (activeTab === 'composite') {
+      return 'composite';
+    }
+    return INDICATOR_DESCRIPTION_KEY_MAP[activeTab] || 'composite'; // Fallback to composite if key not found
+  }, [activeTab]);
+
+  const descriptionBasePath = useMemo(() => `marketSentiment.descriptions.${descriptionKey}`, [descriptionKey]);
+
+  // 使用 t 函數獲取翻譯後的描述內容
+  // 注意：這需要 i18next 配置支持 returnObjects: true
+  const translatedShortDescription = useMemo(() => t(`${descriptionBasePath}.shortDescription`, { defaultValue: '' }), [t, descriptionBasePath]);
+  const translatedSections = useMemo(() => {
+    const sections = t(`${descriptionBasePath}.sections`, { returnObjects: true, defaultValue: [] });
+    // 確保返回的是陣列，且每個元素都有 title 和 content
+    if (Array.isArray(sections)) {
+      return sections.map(section => ({
+        title: section.title || '',
+        content: section.content || ''
+      }));
+    }
+    return [];
+  }, [t, descriptionBasePath]);
 
   // 定義用於結構化數據的 JSON-LD
-  const marketSentimentJsonLd = {
+  const marketSentimentJsonLd = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "市場情緒分析",
-    "description": "即時追蹤市場情緒，避免追高殺低。提供多個市場情緒指標，幫助投資人判斷當前市場情緒是恐懼還是貪婪。",
+    "name": t('pageTitle.marketSentiment'),
+    "description": t('pageDescription.marketSentiment'),
     "url": "https://sentimentinsideout.com/market-sentiment",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "https://sentimentinsideout.com/market-sentiment?timeRange={timeRange}&indicator={indicator}",
       "query-input": "required name=timeRange,indicator"
     }
-  };
+  }), [t]);
 
   if (loading) {
     return (
       <div className="loading-container">
         <div className="loading-spinner">
           <div className="spinner"></div>
-          <span>載入中...</span>
+          <span>{t('common.loading')}</span>
         </div>
       </div>
     );
   }
 
   if (!sentimentData) {
-    return <div>未能獲取市場情緒數據。</div>;
+    return <div>{t('marketSentiment.error.fetchFailed')}</div>;
   }
 
+  // 計算綜合指數的情緒鍵和翻譯
+  const compositeSentimentKey = getSentiment(sentimentData.totalScore ? Math.round(sentimentData.totalScore) : null);
+  const compositeSentiment = t(compositeSentimentKey);
+  const compositeRawSentiment = compositeSentimentKey.split('.').pop(); // 用於 CSS class
+
   return (
-    <PageContainer 
-      title="市場情緒分析"
-      description="即時追蹤市場情緒，避免追高殺低。提供多個市場情緒指標，幫助投資人判斷當前市場情緒是恐懼還是貪婪。"
-      keywords="市場情緒,恐懼貪婪指數,市場情緒指標,投資情緒,市場溫度計,台股分析,SPY分析"
+    <PageContainer
+      title={t('pageTitle.marketSentiment')}
+      description={t('pageDescription.marketSentiment')}
+      keywords={t('marketSentiment.keywords')}
       ogImage="/images/market-sentiment-og.png"
       ogUrl="https://sentimentinsideout.com/market-sentiment"
       jsonLd={marketSentimentJsonLd}
     >
-      <h1>市場情緒分析</h1>
+      <h1>{t('marketSentiment.heading')}</h1>
       <div className="tabs-grid">
         <button
           className={`tab-button ${activeTab === 'composite' ? 'active' : ''}`}
           onClick={() => handleTabChange('composite')}
         >
-          市場情緒綜合指數
+          {t('marketSentiment.tabs.compositeIndex')}
         </button>
         {Object.keys(indicatorsData).map((key) => (
           key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield' && (
@@ -512,7 +480,7 @@ const MarketSentimentIndex = () => {
               className={`tab-button ${activeTab === key ? 'active' : ''}`}
               onClick={() => handleTabChange(key)}
             >
-              {INDICATOR_NAME_MAP[key] || key} {/* 使用 INDICATOR_NAME_MAP 中的中文名稱 */}
+              {t(INDICATOR_TRANSLATION_KEY_MAP[key] || key)}
             </button>
           )
         ))}
@@ -521,17 +489,17 @@ const MarketSentimentIndex = () => {
         {
           activeTab === 'composite' && (
             <div className="indicator-item">
-              <h3>市場情緒綜合指數</h3>
+              <h3>{t('marketSentiment.tabs.compositeIndex')}</h3>
               <div className="analysis-result">
                 <div className="analysis-item">
-                  <span className="analysis-label">恐懼貪婪分數</span>
+                  <span className="analysis-label">{t('marketSentiment.composite.scoreLabel')}</span>
                   <span className="analysis-value">
-                    {sentimentData.totalScore ? Math.round(sentimentData.totalScore) : 'N/A'}
+                    {sentimentData.totalScore ? Math.round(sentimentData.totalScore) : t('common.notAvailable')}
                   </span>
                 </div>
                 <div className="analysis-item">
-                  <span className="analysis-label">市場情緒</span>
-                  <span className={`analysis-value sentiment-${getSentiment(Math.round(sentimentData.totalScore))}`}>{getSentiment(Math.round(sentimentData.totalScore))}</span>
+                  <span className="analysis-label">{t('marketSentiment.composite.sentimentLabel')}</span>
+                  <span className={`analysis-value sentiment-${compositeRawSentiment}`}>{compositeSentiment}</span>
                 </div>
               </div>
               {viewMode === 'timeline' && (
@@ -563,11 +531,11 @@ const MarketSentimentIndex = () => {
                       {Math.round(sentimentData.totalScore)}
                     </div>
                     <div className="gauge-labels">
-                      <span className="gauge-label gauge-label-left">極度恐懼</span>
-                      <span className="gauge-label gauge-label-right">極度貪婪</span>
+                      <span className="gauge-label gauge-label-left">{t('sentiment.extremeFear')}</span>
+                      <span className="gauge-label gauge-label-right">{t('sentiment.extremeGreed')}</span>
                     </div>
                     <div className="last-update-time">
-                      最後更新時間: {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString('zh-TW')}
+                      {t('marketSentiment.lastUpdateLabel')}: {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString('zh-TW')}
                     </div>
                   </div>
                 ) : (
@@ -580,37 +548,37 @@ const MarketSentimentIndex = () => {
                 <button
                   className={`view-mode-button ${viewMode === 'overview' ? 'active' : ''}`}
                   onClick={() => handleViewModeChange('overview')}
+                  aria-label={t('marketSentiment.viewMode.overviewAria')}
                 >
-                  最新情緒指數
+                  <span>{t('marketSentiment.viewMode.overview')}</span>
                 </button>
                 <button
                   className={`view-mode-button ${viewMode === 'timeline' ? 'active' : ''}`}
                   onClick={() => handleViewModeChange('timeline')}
+                  aria-label={t('marketSentiment.viewMode.timelineAria')}
                 >
-                  歷史數據
+                  <span>{t('marketSentiment.viewMode.timeline')}</span>
                 </button>
               </div>
             </div>
           )
         }
-        {Object.entries(indicatorsData).map(([key, indicator]) => (
-          key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield' && activeTab === key && (
+        {
+          activeTab !== 'composite' && indicatorsData[activeTab] && (
             <IndicatorItem
-              key={key}
-              indicatorKey={key}
-              indicator={indicator}
+              key={activeTab}
+              indicatorKey={activeTab}
+              indicator={indicatorsData[activeTab]}
               selectedTimeRange={selectedTimeRange}
               handleTimeRangeChange={handleTimeRangeChange}
-              historicalSPYData={filteredData}
+              historicalSPYData={historicalData}
             />
           )
-        ))}
+        }
       </div>
       <ExpandableDescription
-        shortDescription={currentDescription.shortDescription}
-        sections={currentDescription.sections}
-        expandButtonText="了解更多"
-        collapseButtonText="收合"
+        shortDescription={translatedShortDescription}
+        sections={translatedSections}
       />
     </PageContainer>
   );

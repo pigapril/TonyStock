@@ -1,8 +1,9 @@
-// 新增：計算市場情緒的函數
+// 修改：計算市場情緒的函數，返回翻譯鍵
 export const getSentiment = (score) => {
-  if (score <= 20) return '極度恐懼';
-  if (score <= 40) return '恐懼';
-  if (score <= 60) return '中性';
-  if (score <= 80) return '貪婪';
-  return '極度貪婪';
+  if (score === null || score === undefined) return 'sentiment.notAvailable';
+  if (score <= 20) return 'sentiment.extremeFear';
+  if (score <= 40) return 'sentiment.fear';
+  if (score <= 60) return 'sentiment.neutral';
+  if (score <= 80) return 'sentiment.greed';
+  return 'sentiment.extremeGreed';
 }; 

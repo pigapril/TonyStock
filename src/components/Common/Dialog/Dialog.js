@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IoArrowBack } from 'react-icons/io5';
+import { useTranslation } from 'react-i18next';
 import './Dialog.css';
 
 export function Dialog({ 
@@ -10,6 +11,7 @@ export function Dialog({
     description, 
     children 
 }) {
+    const { t } = useTranslation();
     const [isClosing, setIsClosing] = useState(false);
 
     useEffect(() => {
@@ -47,7 +49,7 @@ export function Dialog({
                 <button 
                     className="dialog-close"
                     onClick={handleClose}
-                    aria-label="返回"
+                    aria-label={t('dialog.closeAriaLabel')}
                 >
                     <IoArrowBack />
                 </button>

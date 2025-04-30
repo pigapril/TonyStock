@@ -151,23 +151,24 @@
 }
 
 /* 修改：情緒特定樣式，使用漸層背景 (取代原 sentiment-xxx 樣式) - 新顏色方案 */
-.status-label.status-極度樂觀 {
+/* 將中文 class 修改為英文 */
+.status-label.status-extremeOptimism { /* 原為 status-極度樂觀 */
     background: linear-gradient(135deg, #a63c3c 0%, #5b101f 100%);
 }
 
-.status-label.status-樂觀 {
+.status-label.status-optimism { /* 原為 status-樂觀 */
     background: linear-gradient(135deg, #cf6357 0%, #ab5454 100%);
 }
 
-.status-label.status-中性 {
+.status-label.status-neutral { /* 原為 status-中性 */
     background: linear-gradient(135deg, #F0AD4E 0%, #E9972D 100%);
 }
 
-.status-label.status-悲觀 {
+.status-label.status-pessimism { /* 原為 status-悲觀 */
     background: linear-gradient(135deg, #499749 0%, #246f48 100%);
 }
 
-.status-label.status-極度悲觀 {
+.status-label.status-extremePessimism { /* 原為 status-極度悲觀 */
     background: linear-gradient(135deg, #1E5B3C 0%, #143829 100%);
 }
 

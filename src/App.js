@@ -1,14 +1,15 @@
 // React 相關
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { Link, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import { useTranslation } from 'react-i18next';
 
 // 第三方庫
 import axios from 'axios';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-crosshair';
-import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaBook, FaPiggyBank } from 'react-icons/fa';
+import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaBook, FaPiggyBank, FaGlobe } from 'react-icons/fa';
 
 // 樣式引入
 import './App.css';
@@ -30,6 +31,7 @@ import { AdBanner } from './components/Common/AdBanner/AdBanner';
 import { Footer } from './components/Common/Footer/Footer';
 import FloatingSponsorButton from './components/FloatingSponsorButton/FloatingSponsorButton';
 import ChatWidget from './components/ChatWidget/ChatWidget';
+import LanguageSwitcher from './components/LanguageSwitcher/LanguageSwitcher';
 
 // 導入拆分後的價格標準差分析頁面
 import { PriceAnalysis } from './components/PriceAnalysis/PriceAnalysis';
@@ -43,7 +45,7 @@ import { GoogleTrendsMarketPage } from './components/GoogleTrendsMarketPage/Goog
 // Context 和 Hooks
 import { AuthProvider } from './components/Auth/AuthContext';
 import { DialogProvider } from './components/Common/Dialog/DialogContext';
-import { useAuth } from './components/Auth/useAuth'; // 更新路徑
+import { useAuth } from './components/Auth/useAuth';
 import { useDialog } from './components/Common/Dialog/useDialog';
 import { useNewFeatureNotification, FEATURES } from './components/NewFeatureBadge/useNewFeatureNotification';
 import { AdProvider } from './components/Common/InterstitialAdModal/AdContext';
@@ -65,6 +67,7 @@ const Overlay = ({ isVisible, onClick }) => (
 
 // 建立 AppContent
 function AppContent() {
+  const { t, i18n } = useTranslation();
   const { isAuthenticated, user } = useAuth();
   const { openDialog } = useDialog();
   const { 
@@ -144,19 +147,19 @@ function AppContent() {
             <li className="sidebar-item-1">
               <Link to="/" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaHome />
-                <span>首頁</span>
+                <span>{t('nav.home')}</span>
               </Link>
             </li>
             <li className="sidebar-item-2">
               <Link to="/priceanalysis" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaChartLine />
-                <span>樂活五線譜</span>
+                <span>{t('nav.priceAnalysis')}</span>
               </Link>
             </li>
             <li className="sidebar-item-3">
               <Link to="/market-sentiment" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaHeartbeat />
-                <span>市場情緒分析</span>
+                <span>{t('nav.marketSentiment')}</span>
               </Link>
             </li>
             {/*
@@ -200,7 +203,7 @@ function AppContent() {
               <Link to="/watchlist" onClick={handleWatchlistClick}>
                 <div className="sidebar-item-content">
                   <FaList />
-                  <span>我的追蹤清單</span>
+                  <span>{t('nav.watchlist')}</span>
                 </div>
               </Link>
             </li>
@@ -208,14 +211,14 @@ function AppContent() {
               <Link to="/articles" onClick={handleArticlesClick}>
                 <div className="sidebar-item-content">
                   <FaChartBar />
-                  <span>分析專欄</span>
+                  <span>{t('nav.articles')}</span>
                 </div>
               </Link>
             </li>
             <li className="sidebar-item-7">
               <Link to="/sponsor-us" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaPiggyBank />
-                <span>小豬撲滿</span>
+                <span>{t('nav.sponsor')}</span>
               </Link>
             </li>
             <li className="sidebar-item-8">
@@ -225,7 +228,7 @@ function AppContent() {
                 rel="noopener noreferrer"
               >
                 <FaFacebook />
-                <span>Facebook</span>
+                <span>{t('nav.facebook')}</span>
               </a>
             </li>
           </ul>
@@ -238,7 +241,7 @@ function AppContent() {
             {/* Logo 區域 */}
             <div className="top-nav-logo">
               <Link to="/">
-                <img src="/logo.png" alt="Logo" className="logo" />
+                <img src="/logo.png" alt={t('appName')} className="logo" />
               </Link>
             </div>
             
@@ -246,11 +249,11 @@ function AppContent() {
             <div className="desktop-nav-items">
               <Link to="/priceanalysis">
                 <FaChartLine />
-                <span>樂活五線譜</span>
+                <span>{t('nav.priceAnalysis')}</span>
               </Link>
               <Link to="/market-sentiment" onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaHeartbeat />
-                <span>市場情緒分析</span>
+                <span>{t('nav.marketSentiment')}</span>
               </Link>
               {/*
               <div className="desktop-nav-item dropdown"
@@ -275,25 +278,26 @@ function AppContent() {
               */}
               <Link to="/watchlist" onClick={handleWatchlistClick}>
                 <FaList />
-                <span>我的追蹤清單</span>
+                <span>{t('nav.watchlist')}</span>
               </Link>
               <Link to="/articles" onClick={handleArticlesClick}>
                 <FaChartBar />
-                <span>分析專欄</span>
+                <span>{t('nav.articles')}</span>
               </Link>
               <Link to="/sponsor-us">
                 <FaPiggyBank />
-                <span>小豬撲滿</span>
+                <span>{t('nav.sponsor')}</span>
               </Link>
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
-                <span>Facebook 粉絲專頁</span>
+                <span>{t('nav.facebookLong')}</span>
               </a>
             </div>
 
             {/* 使用者操作和選單按鈕 */}
             <div className="user-actions">
-              {user ? <UserProfile /> : <button className="btn-primary" onClick={() => openDialog('auth')}>登入</button>}
+              <LanguageSwitcher />
+              {user ? <UserProfile /> : <button className="btn-primary" onClick={() => openDialog('auth')}>{t('userActions.login')}</button>}
               {/* 只在手機版顯示漢堡選單 */}
               {isMobile && (
                 <div className="menu-toggle-wrapper">
@@ -308,28 +312,28 @@ function AppContent() {
           <div className="content-area">
             <Routes>
               <Route path="/" element={
-                <PageContainer title="首頁" description="市場情緒追蹤平台。">
+                <PageContainer title={t('pageTitle.home')} description={t('pageDescription.home')}>
                   <Home />
                 </PageContainer>
               } />
 
               {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
               <Route path="/priceanalysis" element={
-                <PageContainer title="樂活五線譜" description="分析股價的長期趨勢，判斷價格高低點。">
+                <PageContainer title={t('pageTitle.priceAnalysis')} description={t('pageDescription.priceAnalysis')}>
                   <PriceAnalysis />
                 </PageContainer>
               } />
 
               <Route
                 path="/market-sentiment"
-                element={<PageContainer title="市場情緒分析" description="即時追蹤市場情緒指標，克服恐懼與貪婪。">
+                element={<PageContainer title={t('pageTitle.marketSentiment')} description={t('pageDescription.marketSentiment')}>
                   <MarketSentimentIndex />
                 </PageContainer>
               } />
               <Route
                 path="/about"
                 element={
-                  <PageContainer title="關於本站" description="了解 Sentiment Inside Out 的創立理念和目標。">
+                  <PageContainer title={t('pageTitle.about')} description={t('pageDescription.about')}>
                     <About />
                   </PageContainer>
                 }
@@ -337,7 +341,7 @@ function AppContent() {
               <Route
                 path="/legal"
                 element={
-                  <PageContainer title="法律聲明" description="網站使用條款和隱私權政策。">
+                  <PageContainer title={t('pageTitle.legal')} description={t('pageDescription.legal')}>
                     <Legal />
                   </PageContainer>
                 }
@@ -346,7 +350,7 @@ function AppContent() {
                 path="/watchlist"
                 element={
                   isAuthenticated ? (
-                    <PageContainer title="我的追蹤清單" description="追蹤您感興趣的股票，快速掌握多個標的價格情緒。">
+                    <PageContainer title={t('pageTitle.watchlist')} description={t('pageDescription.watchlist')}>
                       <WatchlistContainer />
                     </PageContainer>
                   ) : (
@@ -355,18 +359,18 @@ function AppContent() {
                 }
               />
               <Route path="/articles" element={
-                <PageContainer title="分析專欄" description="分析市場情緒和投資策略。">
+                <PageContainer title={t('pageTitle.articles')} description={t('pageDescription.articles')}>
                   <Articles />
                 </PageContainer>
               } />
               <Route path="/articles/:slug" element={<ArticleDetail />} />
               <Route path="/sponsor-us" element={
-                <PageContainer title="贊助網站" description="支持 Sentiment Inside Out 的發展，一起幫助更多人。">
+                <PageContainer title={t('pageTitle.sponsor')} description={t('pageDescription.sponsor')}>
                   <SponsorUs />
                 </PageContainer>
               } />
               <Route path="/sponsor-success" element={
-                <PageContainer title="贊助成功" description="感謝您的贊助，您的支持是我們前進的動力！">
+                <PageContainer title={t('pageTitle.sponsorSuccess')} description={t('pageDescription.sponsorSuccess')}>
                   <SponsorSuccess />
                 </PageContainer>
               } />

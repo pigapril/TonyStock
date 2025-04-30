@@ -27,7 +27,7 @@ export const getAllArticles = async () => {
                 id: index + 1,
                 ...getArticleInfoFromSlug(slug),
                 content,
-                date: dateMatch ? `${dateMatch[1]} 年 ${dateMatch[2]} 月 ${dateMatch[3]} 日` : '',
+                date: dateMatch ? `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}` : '',
                 category: categoryMatch ? categoryMatch[1] : ''  // 如果沒有分類，預設空白
             };
         } catch (error) {

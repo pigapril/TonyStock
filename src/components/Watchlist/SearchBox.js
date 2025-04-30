@@ -3,8 +3,10 @@ import { FaSearch } from 'react-icons/fa';
 import debounce from 'lodash/debounce';
 import { getErrorMessage } from '../../utils/errorHandler';
 import './styles/SearchBox.css';
+import { useTranslation } from 'react-i18next';
 
 export const SearchBox = ({ onSelect, watchlistService, categoryId }) => {
+    const { t } = useTranslation();
     const searchRef = useRef(null);
     const [searchState, setSearchState] = useState({
         keyword: '',
@@ -122,7 +124,7 @@ export const SearchBox = ({ onSelect, watchlistService, categoryId }) => {
                     type="text"
                     value={searchState.keyword}
                     onChange={handleSearchInput}
-                    placeholder="輸入股票代號"
+                    placeholder={t('watchlist.searchBox.placeholder')}
                     className="search-input"
                 />
             </div>
@@ -132,7 +134,7 @@ export const SearchBox = ({ onSelect, watchlistService, categoryId }) => {
                     {searchState.loading ? (
                         <div className="search-loading">
                             <div className="spinner" />
-                            <span>搜尋中...</span>
+                            <span>{t('watchlist.searchBox.loading')}</span>
                         </div>
                     ) : searchState.error ? (
                         <div className="search-empty-state">
@@ -142,7 +144,7 @@ export const SearchBox = ({ onSelect, watchlistService, categoryId }) => {
                     ) : searchState.results.length === 0 && searchState.keyword.trim() ? (
                         <div className="search-empty-state">
                             <span className="icon">🔍</span>
-                            <span className="message">找不到符合的股票</span>
+                            <span className="message">{t('watchlist.searchBox.noResults')}</span>
                         </div>
                     ) : searchState.results.length > 0 ? (
                         <div className="search-results">

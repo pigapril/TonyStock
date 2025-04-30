@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-date-fns';
@@ -18,6 +18,7 @@ import './IndicatorItem.css';
 import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
 import { getSentiment } from '../../utils/sentimentUtils';
+import { useTranslation } from 'react-i18next';
 
 // 添加這行來定義 API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -35,18 +36,6 @@ ChartJS.register(
   Legend
 );
 
-// 只保留 INDICATOR_NAME_MAP
-export const INDICATOR_NAME_MAP = {
-  'AAII Bull-Bear Spread': 'AAII 投資人情緒調查',
-  'CBOE Put/Call Ratio 5-Day Avg': 'CBOE 買/賣權比例',
-  'Market Momentum': 'S&P500 市場動能',
-  'VIX MA50': 'VIX 恐慌指數',
-  'Safe Haven Demand': '債券避險需求',
-  'Junk Bond Spread': '垃圾債殖利率差',
-  "S&P 500 COT Index": '期貨投機淨持倉指數',
-  'NAAIM Exposure Index': 'NAAIM 經理人曝險指數',
-};
-
 // 新增：獲取時間單位的函數
 function getTimeUnit(dates) {
   const start = new Date(dates[0]);
@@ -63,7 +52,22 @@ function getTimeUnit(dates) {
 }
 
 function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeRangeChange, historicalSPYData }) {
-  const indicatorName = INDICATOR_NAME_MAP[indicatorKey] || indicatorKey;
+  const { t } = useTranslation();
+  const indicatorName = useMemo(() => {
+    const keyMap = {
+      'AAII Bull-Bear Spread': 'indicators.aaiiSpread',
+      'CBOE Put/Call Ratio 5-Day Avg': 'indicators.cboeRatio',
+      'Market Momentum': 'indicators.marketMomentum',
+      'VIX MA50': 'indicators.vixMA50',
+      'Safe Haven Demand': 'indicators.safeHaven',
+      'Junk Bond Spread': 'indicators.junkBond',
+      "S&P 500 COT Index": 'indicators.cotIndex',
+      'NAAIM Exposure Index': 'indicators.naaimIndex',
+    };
+    const translationKey = keyMap[indicatorKey] || indicatorKey;
+    return t(translationKey);
+  }, [indicatorKey, t]);
+
   const [historicalData, setHistoricalData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
@@ -89,12 +93,12 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         setHistoricalData(formattedData);
       })
       .catch((error) => {
-        console.error(`獲取 ${indicatorName} 的歷史數據時出錯:`, error);
+        console.error(t('indicatorItem.fetchError', { indicatorName }), error);
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [indicatorKey, indicatorName]);
+  }, [indicatorKey, indicatorName, t]);
 
   // 過濾數據
   const filteredData = React.useMemo(() => {
@@ -111,7 +115,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
   const timeUnit = getTimeUnit(filteredData.map(item => item.date));
 
   // 構建圖表數據
-  const chartData = {
+  const chartData = useMemo(() => ({
     labels: filteredData.map((item) => item.date),
     datasets: [
       {
@@ -124,7 +128,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         pointRadius: 0,
       },
       {
-        label: `${indicatorName}(百分等級)`,
+        label: t('indicatorItem.percentileRankLabel', { indicatorName }),
         yAxisID: 'right-axis',
         data: filteredData.map((item) => item.percentileRank),
         borderColor: 'rgba(153,102,255,1)',
@@ -133,7 +137,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         pointRadius: 0,
       },
       {
-        label: 'SPY 價格',
+        label: t('indicatorItem.spyPriceLabel'),
         yAxisID: 'spy-axis',
         data: filteredSPYData.map((item) => ({
           x: item.date,
@@ -146,10 +150,10 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         pointRadius: 0,
       },
     ],
-  };
+  }), [filteredData, filteredSPYData, indicatorName, t]);
 
   // 圖表選項
-  const chartOptions = {
+  const chartOptions = useMemo(() => ({
     scales: {
       x: {
         type: 'time',
@@ -180,7 +184,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         position: 'right',
         title: {
           display: true,
-          text: `${indicatorName}(百分等級)`,
+          text: t('indicatorItem.percentileRankLabel', { indicatorName }),
         },
         grid: {
           drawOnChartArea: false,
@@ -190,7 +194,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         position: 'right',
         title: {
           display: true,
-          text: 'SPY 價格',
+          text: t('indicatorItem.spyPriceLabel'),
         },
         grid: {
           drawOnChartArea: false,
@@ -205,10 +209,17 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
     },
     responsive: true,
     maintainAspectRatio: false,
-  };
+  }), [indicatorName, t, timeUnit]);
 
-  // 計算市場情緒
-  const sentiment = indicator.percentileRank ? getSentiment(Math.round(indicator.percentileRank)) : 'N/A';
+  // 計算市場情緒鍵
+  const sentimentKey = useMemo(() =>
+    getSentiment(indicator.percentileRank !== null && indicator.percentileRank !== undefined ? Math.round(indicator.percentileRank) : null),
+    [indicator.percentileRank]
+  );
+  // 翻譯市場情緒
+  const sentiment = t(sentimentKey);
+  // 獲取原始情緒（用於 CSS class）
+  const rawSentiment = sentimentKey.split('.').pop();
 
   const handleMouseEnter = (event) => {
     setIsTooltipVisible(true);
@@ -233,9 +244,9 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         <>
           <div className="analysis-result">
             <div className="analysis-item">
-              <span className="analysis-label">最新數據</span>
+              <span className="analysis-label">{t('indicatorItem.latestDataLabel')}</span>
               <span className="analysis-value">
-                {indicator.value ? indicator.value.toFixed(2) : 'N/A'}
+                {indicator.value ? indicator.value.toFixed(2) : t('indicatorItem.notAvailable')}
               </span>
             </div>
             <div className="analysis-item"
@@ -245,20 +256,20 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
               onTouchEnd={handleTouchEnd}
             >
               <span className="analysis-label">
-                <span className="interactive-label">恐懼貪婪分數</span>
+                <span className="interactive-label">{t('indicatorItem.fearGreedScoreLabel')}</span>
               </span>
               <span className="analysis-value">
-                {indicator.percentileRank ? Math.round(indicator.percentileRank) : 'N/A'}
+                {indicator.percentileRank !== null && indicator.percentileRank !== undefined ? Math.round(indicator.percentileRank) : t('indicatorItem.notAvailable')}
               </span>
               {isTooltipVisible && (
                 <div className="tooltip">
-                  為方便統一衡量不同指標，將實際數值依據歷史位階轉換為百分標準，作為恐懼貪婪分數(0~100)。分數愈高代表市場愈貪婪；分數愈低代表市場愈恐懼
+                  {t('indicatorItem.fearGreedTooltip')}
                 </div>
               )}
             </div>
             <div className="analysis-item">
-              <span className="analysis-label">市場情緒</span>
-              <span className={`analysis-value sentiment-${sentiment}`}>{sentiment}</span>
+              <span className="analysis-label">{t('indicatorItem.marketSentimentLabel')}</span>
+              <span className={`analysis-value sentiment-${rawSentiment}`}>{sentiment}</span>
             </div>
           </div>
           <TimeRangeSelector
@@ -273,7 +284,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         <div className="loading-container">
           <div className="loading-spinner">
             <div className="spinner"></div>
-            <span>載入中...</span>
+            <span>{t('indicatorItem.loading')}</span>
           </div>
         </div>
       )}

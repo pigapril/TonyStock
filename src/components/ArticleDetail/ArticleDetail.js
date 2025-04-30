@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import { getArticleInfoFromSlug } from '../../utils/articleUtils';
 import './ArticleDetail.css';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 // 新增一個通用的 ID 處理函數
 const generateId = (text) => {
@@ -17,6 +18,7 @@ const generateId = (text) => {
 };
 
 export function ArticleDetail() {
+    const { t } = useTranslation();
     const { slug } = useParams();
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -108,18 +110,18 @@ export function ArticleDetail() {
     };
 
     if (loading) {
-        return <PageContainer title="載入中..." description="載入文章內容中..."><div>載入中...</div></PageContainer>;
+        return <PageContainer title={t('articleDetail.loadingTitle')} description={t('articleDetail.loadingDescription')}><div>{t('articleDetail.loadingText')}</div></PageContainer>;
     }
 
     if (error) {
-        return <PageContainer title="錯誤" description="載入文章失敗">
-            <div>載入文章失敗：{error.message}</div>
+        return <PageContainer title={t('articleDetail.errorTitle')} description={t('articleDetail.errorDescription')}>
+            <div>{t('articleDetail.errorText')}{error.message}</div>
         </PageContainer>;
     }
 
     if (!article) {
-        return <PageContainer title="找不到文章" description="找不到該文章">
-            <div>找不到該文章。</div>
+        return <PageContainer title={t('articleDetail.notFoundTitle')} description={t('articleDetail.notFoundDescription')}>
+            <div>{t('articleDetail.notFoundText')}</div>
         </PageContainer>;
     }
 

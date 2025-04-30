@@ -4,8 +4,10 @@ import { useAuth } from '../Auth/useAuth';
 import { useDialog } from '../../components/Common/Dialog/useDialog';
 import { Analytics } from '../../utils/analytics'; // 引入 Analytics
 import { useMediaQuery } from 'react-responsive';
+import { useTranslation } from 'react-i18next'; // 1. 引入 useTranslation
 
 const ChatWidget = () => {
+  const { t } = useTranslation(); // 2. 使用 hook
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -29,7 +31,7 @@ const ChatWidget = () => {
         from: 'chat_widget'
       });
       openDialog('auth', {
-        message: '需要登入才能使用客服功能'
+        message: t('chatWidget.loginRequired')
       });
       return;
     }
@@ -104,14 +106,15 @@ const ChatWidget = () => {
       {isOpen && (
         <div className={`chat-widget ${!isOpen ? 'closed' : ''} ${isMobile ? 'mobile-fullscreen' : ''}`} ref={chatWidgetRef} /* onClick={toggleChat} */>
           <div className="chat-header">
-            小豬客服
-            <button className="close-button" onClick={toggleChat}>✖</button>
+            {t('chatWidget.headerTitle')}
+            <button className="close-button" onClick={toggleChat}>{t('chatWidget.closeButton')}</button>
           </div>
           <div className="chat-body" ref={chatBodyRef}>
             {messages.length === 0 && (
-              <div className="welcome-message">
-                你好~<br />對網站功能有疑問嗎？<br />由小豬客服解答！
-              </div>
+              <div
+                className="welcome-message"
+                dangerouslySetInnerHTML={{ __html: t('chatWidget.welcomeMessage') }}
+              />
             )}
             {messages.map((msg, index) => (
               <div key={index} className={`chat-message ${msg.role}`}>
@@ -122,7 +125,7 @@ const ChatWidget = () => {
           <div className="chat-input">
             <input 
               type="text"
-              placeholder="輸入訊息..."
+              placeholder={t('chatWidget.inputPlaceholder')}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -137,12 +140,12 @@ const ChatWidget = () => {
               onCompositionEnd={() => setIsComposing(false)}
               ref={inputRef}
             />
-            <button onClick={sendMessage} className="send-button">
+            <button onClick={sendMessage} className="send-button" aria-label={t('chatWidget.sendButton')}>
             </button>
           </div>
         </div>
       )}
-      <button className="chat-toggle-button" onClick={toggleChat}>
+      <button className="chat-toggle-button" onClick={toggleChat} aria-label={t('chatWidget.headerTitle')}>
         
       </button>
     </>

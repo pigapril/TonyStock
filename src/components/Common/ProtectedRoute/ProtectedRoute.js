@@ -1,11 +1,13 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
 import { useDialog } from '../../hooks/useDialog';
 import { Analytics } from '../../utils/analytics';
 import './ProtectedRoute.css';
 
 export function ProtectedRoute({ children, requireAuth = true }) {
+    const { t } = useTranslation();
     const { user, loading, watchlistAccess } = useAuth();
     const { openDialog } = useDialog();
     const location = useLocation();
@@ -15,7 +17,7 @@ export function ProtectedRoute({ children, requireAuth = true }) {
         return (
             <div className="loading-container">
                 <div className="loading-spinner"></div>
-                <p>載入中...</p>
+                <p>{t('protectedRoute.loading')}</p>
             </div>
         );
     }
@@ -30,7 +32,7 @@ export function ProtectedRoute({ children, requireAuth = true }) {
         // 開啟登入對話框，保持一致的使用者體驗
         openDialog('auth', {
             returnPath: location.pathname,
-            message: '請先登入以繼續'
+            message: t('protectedRoute.loginRequired')
         });
 
         return <Navigate 

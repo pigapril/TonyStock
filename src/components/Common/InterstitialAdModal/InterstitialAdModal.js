@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import './InterstitialAdModal.css'; // 我們需要創建這個 CSS 檔案
 
 export function InterstitialAdModal({ onClose }) {
+  const { t } = useTranslation(); // 2. Initialize t function
   const [isCloseButtonVisible, setIsCloseButtonVisible] = useState(false); // 狀態：控制按鈕可見性
   const adInsRef = useRef(null); // Ref：獲取 <ins> 元素的引用
   const observerRef = useRef(null); // Ref：保存 MutationObserver 實例以便清理
@@ -104,7 +106,8 @@ export function InterstitialAdModal({ onClose }) {
         onClick={onClose}
         aria-hidden={!isCloseButtonVisible} // 輔助技術：按鈕不可見時隱藏
       >
-        關閉廣告
+        {/* 3. Replace button text with t() */}
+        {t('interstitialAd.closeButton')}
       </button>
       <div className="interstitial-ad-modal-content" onClick={(e) => e.stopPropagation()}>
         {/* AdSense 廣告代碼 */}

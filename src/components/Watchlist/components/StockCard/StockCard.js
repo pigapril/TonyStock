@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { useNavigate } from 'react-router-dom'; // 引入 useNavigate
+import { useTranslation } from 'react-i18next'; // 引入 useTranslation
 import { StockHeader } from './StockHeader';
 import { StockAnalysis } from './StockAnalysis';
 import { StockNews } from './StockNews';
@@ -7,6 +8,34 @@ import { RemoveButton } from './RemoveButton';
 import { formatPrice } from '../../../../utils/priceUtils'; // Import formatPrice
 import { useAdContext } from '../../../../components/Common/InterstitialAdModal/AdContext'; // <--- 1. 導入 useAdContext
 import '../../styles/StockCard.css';
+
+// New component for the analysis result - Moved outside StockCard for clarity
+const StockAnalysisResult = memo(function StockAnalysisResult({ price, analysis }) {
+    const { t } = useTranslation(); // 使用 hook
+
+    if (!analysis) {
+        return <span className="status-label">{t('watchlist.stockCard.analysis.loading')}</span>;
+    }
+
+    const { tl_plus_2sd, tl_plus_sd, tl_minus_sd, tl_minus_2sd } = analysis;
+    let sentimentKey = 'sentiment.neutral'; // 預設為中性
+
+    if (price >= tl_plus_2sd) {
+        sentimentKey = 'sentiment.extremeOptimism'; // 極度樂觀
+    } else if (price > tl_plus_sd) {
+        sentimentKey = 'sentiment.optimism'; // 樂觀
+    } else if (price <= tl_minus_2sd) {
+        sentimentKey = 'sentiment.extremePessimism'; // 極度悲觀
+    } else if (price < tl_minus_sd) {
+        sentimentKey = 'sentiment.pessimism'; // 悲觀
+    }
+
+    return (
+        <span className={`status-label status-${sentimentKey.split('.')[1]}`}>
+            {t(sentimentKey)}
+        </span>
+    );
+});
 
 export const StockCard = memo(function StockCard({
     stock,
@@ -16,6 +45,7 @@ export const StockCard = memo(function StockCard({
 }) {
     const navigate = useNavigate(); // 獲取 navigate 函數
     const { requestAdDisplay } = useAdContext(); // <--- 2. 獲取 requestAdDisplay
+    const { t } = useTranslation(); // 在 StockCard 中也使用 hook
     // Function to check if it's a mobile screen (you can adjust the breakpoint if needed)
     const isMobile = () => window.innerWidth <= 640;
 
@@ -44,11 +74,11 @@ export const StockCard = memo(function StockCard({
         <>
             {isFirstInCategory && !isMobile() && (
                 <div className="stock-card-header-row">
-                    <span className="stock-header-title">股票代碼</span>
-                    <span className="current-price-title">當前價格</span>
-                    <span className="stock-analysis-title">價格分析</span>
-                    <span className="stock-sentiment-title">當前情緒</span>
-                    <span className="stock-news-title">新聞</span>
+                    <span className="stock-header-title">{t('watchlist.stockCard.header.symbol')}</span>
+                    <span className="current-price-title">{t('watchlist.stockCard.header.price')}</span>
+                    <span className="stock-analysis-title">{t('watchlist.stockCard.header.analysis')}</span>
+                    <span className="stock-sentiment-title">{t('watchlist.stockCard.header.sentiment')}</span>
+                    <span className="stock-news-title">{t('watchlist.stockCard.header.news')}</span>
                 </div>
             )}
             <div className="stock-item" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
@@ -105,31 +135,5 @@ export const StockCard = memo(function StockCard({
                 </div>
             </div>
         </>
-    );
-});
-
-// New component for the analysis result
-const StockAnalysisResult = memo(function StockAnalysisResult({ price, analysis }) {
-    if (!analysis) {
-        return <span className="status-label">分析中</span>;
-    }
-
-    const { tl_plus_2sd, tl_plus_sd, tl_minus_sd, tl_minus_2sd } = analysis;
-    let sentiment = '中性';
-
-    if (price >= tl_plus_2sd) {
-        sentiment = '極度樂觀';
-    } else if (price > tl_plus_sd) {
-        sentiment = '樂觀';
-    } else if (price <= tl_minus_2sd) {
-        sentiment = '極度悲觀';
-    } else if (price < tl_minus_sd) {
-        sentiment = '悲觀';
-    }
-
-    return (
-        <span className={`status-label status-${sentiment}`}>
-            {sentiment}
-        </span>
     );
 });

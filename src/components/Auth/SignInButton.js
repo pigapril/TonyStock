@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
 import { Analytics } from '../../utils/analytics';
+import { useTranslation } from 'react-i18next';
 import './styles/SignInButton.css';
 
 export const SignInButton = ({ variant = 'default' }) => {
     const buttonRef = useRef(null);
     const { renderGoogleButton, loading, isGoogleInitialized } = useAuth();
     const [browserSupport, setBrowserSupport] = useState(null);
+    const { t } = useTranslation();
     
     useEffect(() => {
         const checkBrowser = () => {
@@ -46,7 +48,7 @@ export const SignInButton = ({ variant = 'default' }) => {
     if (!isGoogleInitialized) {
         return (
             <div className={`signin-button-loading signin-button-loading--${variant}`}>
-                載入中...
+                {t('signInButton.loading')}
             </div>
         );
     }
@@ -55,7 +57,7 @@ export const SignInButton = ({ variant = 'default' }) => {
         <div 
             ref={buttonRef}
             className={`signin-button-container signin-button-container--${variant}`}
-            aria-label="使用 Google 登入"
+            aria-label={t('signInButton.googleAriaLabel')}
             data-fedcm-support={browserSupport?.isSupported}
         />
     );

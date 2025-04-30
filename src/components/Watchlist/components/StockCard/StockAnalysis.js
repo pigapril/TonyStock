@@ -1,11 +1,14 @@
 import React, { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StockGauge } from '../../StockGauge';
 import { formatPrice, isNearEdge } from '../../../../utils/priceUtils';
 import '../../styles/StockAnalysis.css';
 
 export const StockAnalysis = memo(function StockAnalysis({ price, analysis }) {
+    const { t } = useTranslation();
+
     if (!analysis) {
-        return <span className="analysis-loading">分析中</span>;
+        return <span className="analysis-loading">{t('watchlist.stockCard.analysis.loading')}</span>;
     }
 
     const { isNearUpper, isNearLower } = isNearEdge(

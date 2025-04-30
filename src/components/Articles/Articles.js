@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import PageContainer from '../PageContainer/PageContainer';
 import { getAllArticles } from '../../utils/articleUtils';
 import './Articles.css';
+import { useTranslation } from 'react-i18next';
 
 export function Articles() {
+    const { t } = useTranslation();
     const [articles, setArticles] = useState([]);
 
     useEffect(() => {
@@ -19,22 +21,22 @@ export function Articles() {
     const articlesJsonLd = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": "分析專欄",
-        "description": "深入分析市場趨勢和投資策略以及如何使用網站工具判斷市場情緒。",
+        "name": t('articles.jsonLdName'),
+        "description": t('articles.jsonLdDescription'),
         "url": "https://sentimentinsideout.com/articles"
     };
 
     return (
         <div className="articles-page">
             <PageContainer
-                title="分析專欄"
-                description="深入分析市場趨勢和投資策略以及如何使用網站工具判斷市場情緒。"
-                keywords="市場分析,投資策略,市場情緒,投資文章,金融分析,教學"
+                title={t('articles.pageTitle')}
+                description={t('articles.pageDescription')}
+                keywords={t('articles.keywords')}
                 ogImage="/articles-og-image.png"
                 ogUrl="https://sentimentinsideout.com/articles"
                 jsonLd={articlesJsonLd}
             >
-                <h1>分析專欄</h1>
+                <h1>{t('articles.heading')}</h1>
                 <ul className="articles-list">
                     {articles.map(article => (
                         <li key={article.id} className="article-item">

@@ -1,0 +1,704 @@
+{
+  "nav": {
+    "home": "Home",
+    "priceAnalysis": "Price Channel Analysis",
+    "marketSentiment": "Market Sentiment Analysis",
+    "watchlist": "My Watchlist",
+    "articles": "Insights & Analysis",
+    "sponsor": "Sponsor Us",
+    "facebook": "Facebook",
+    "facebookLong": "Facebook Page"
+  },
+  "pageTitle": {
+    "home": "Home",
+    "priceAnalysis": "Price Channel Analysis",
+    "marketSentiment": "Market Sentiment Analysis",
+    "about": "About Us",
+    "legal": "Legal Notice",
+    "watchlist": "My Watchlist",
+    "articles": "Insights & Analysis",
+    "sponsor": "Sponsor Us",
+    "sponsorSuccess": "Sponsorship Successful"
+  },
+  "pageDescription": {
+    "home": "Market sentiment tracking platform.",
+    "priceAnalysis": "Analyze long-term stock price trends to determine price highs and lows.",
+    "marketSentiment": "Track market sentiment indicators in real-time to overcome fear and greed.",
+    "about": "Learn about the founding philosophy and goals of Sentiment Inside Out.",
+    "legal": "Website terms of use and privacy policy.",
+    "watchlist": "Track stocks you are interested in and quickly grasp the price sentiment of multiple targets.",
+    "articles": "Analyze market sentiment and investment strategies.",
+    "sponsor": "Support the development of Sentiment Inside Out and help more people together.",
+    "sponsorSuccess": "Thank you for your sponsorship! Your support is our driving force!"
+  },
+  "userActions": {
+    "login": "Login"
+  },
+  "language": {
+    "change": "Change Language",
+    "zhTW": "繁體中文",
+    "en": "English"
+  },
+  "articles": {
+    "pageTitle": "Insights & Analysis",
+    "pageDescription": "In-depth analysis of market trends, investment strategies, and how to use website tools to gauge market sentiment.",
+    "keywords": "market analysis, investment strategy, market sentiment, investment articles, financial analysis, tutorials",
+    "heading": "Insights & Analysis",
+    "coverAlt": "Article Cover Image",
+    "jsonLdName": "Insights & Analysis",
+    "jsonLdDescription": "In-depth analysis of market trends, investment strategies, and how to use website tools to gauge market sentiment."
+  },
+  "articleDetail": {
+    "loadingTitle": "Loading...",
+    "loadingDescription": "Loading article content...",
+    "loadingText": "Loading...",
+    "errorTitle": "Error",
+    "errorDescription": "Failed to load article.",
+    "errorText": "Failed to load article: ",
+    "notFoundTitle": "Article Not Found",
+    "notFoundDescription": "The requested article could not be found.",
+    "notFoundText": "This article could not be found."
+  },
+  "about": {
+    "pageTitle": "About Us",
+    "pageDescription": "Learn about the philosophy of Sentiment Inside Out and how simple analysis tools can turn market sentiment into key investment indicators, helping investors overcome fear and greed.",
+    "keywords": "market sentiment, investment psychology, fear and greed, investment indicators, sentiment analysis, investment strategy",
+    "ogTitle": "About Sentiment Inside Out - Market Sentiment Analysis Platform",
+    "heading": "About Sentiment Inside Out",
+    "imageAlt": "About Sentiment Inside Out",
+    "section1Title": "Market = Funds + Psychology",
+    "section1Text": "This is a famous quote from André Kostolany, author of 'The Speculator's Confession'. Funds = Fundamentals = Macroeconomics. Psychology = Investor Sentiment = Human Nature. I believe cycles stem from human irrationality, creating the peaks and troughs of the economy and stock market.",
+    "section2Title": "Fear and Greed",
+    "section2Text": "Economic data and company reports change monthly or quarterly, yet the capital market can fluctuate dramatically in short periods. This shows that sentiment's impact on price is no less than fundamentals. Some sell fearing it's too expensive; others buy fearing they'll miss out. As market participants, we should understand whether the market is currently in a state of fear or greed.",
+    "section3Title": "Overcoming Our Own Nature",
+    "section3Text": "I believe stock prices reflect market sentiment just as much as fundamentals. The website was founded with the goal of using simple charts and data to transform current market sentiment into important investment indicators, helping everyone overcome their irrationality and avoid chasing highs and selling lows based on emotion.",
+    "contactTitle": "Contact Me",
+    "jsonLdName": "About Sentiment Inside Out",
+    "jsonLdDescription": "Learn about the philosophy of the Sentiment Inside Out website, and how to use simple analysis tools to transform current market sentiment into important investment indicators, helping everyone overcome their own fear and greed."
+  },
+  "authDialog": {
+    "previewAlt": "Watchlist feature preview",
+    "feature1": "🎯 Track stocks you're interested in",
+    "feature2": "📊 Analyze multiple results at once",
+    "feature3": "💬 Get answers from AI customer service",
+    "title": "🚀 Log in to unlock full features!",
+    "loading": "Loading..."
+  },
+  "userProfile": {
+    "openMenuAria": "Open user menu",
+    "avatarAlt": "{{username}}'s avatar",
+    "menuAria": "User menu",
+    "logout": "Logout"
+  },
+  "chatWidget": {
+    "loginRequired": "Login required to use customer service",
+    "headerTitle": "Piggy Customer Service",
+    "closeButton": "✖",
+    "welcomeMessage": "Hello~<br />Have questions about the website features?<br />Ask Piggy Customer Service!",
+    "inputPlaceholder": "Enter message...",
+    "sendButton": "Send"
+  },
+  "dialog": {
+    "closeAriaLabel": "Back"
+  },
+  "errorBoundary": {
+    "title": "Sorry, something went wrong",
+    "defaultMessage": "An unknown error occurred",
+    "retryButton": "Retry"
+  },
+  "signInButton": {
+    "loading": "Loading...",
+    "googleAriaLabel": "Sign in with Google"
+  },
+  "footer": {
+    "analysisTools": "Analysis Tools",
+    "priceAnalysis": "Price Channel Analysis",
+    "marketSentiment": "Market Sentiment Analysis",
+    "googleTrendsSymbol": "Google Trends - Symbol",
+    "googleTrendsMarket": "Google Trends - Market",
+    "watchlist": "My Watchlist",
+    "otherResources": "Other Resources",
+    "articles": "Insights & Analysis",
+    "keyCharts": "Key Charts",
+    "facebook": "Facebook Page",
+    "aboutUs": "About",
+    "aboutSite": "About Us",
+    "legal": "Privacy Policy & Terms",
+    "sponsor": "Sponsor Us",
+    "copyright": "Copyright © {{year}} Sentiment Inside Out",
+    "disclaimer1": "Data, analysis, tools, and descriptions provided on this website are for reference only. Investment decisions must be made independently, assuming all risks. Official information prevails. This website bears no legal responsibility for profits or losses.",
+    "disclaimer2": "Feel free to share links to information provided on this website. Reproduction of content requires prior consent. Contact: {{emailLink}}"
+  },
+  "infoTool": {
+    "moreInfoAriaLabel": "More information"
+  },
+  "interstitialAd": {
+    "closeButton": "Close Ad"
+  },
+  "protectedRoute": {
+    "loading": "Loading...",
+    "loginRequired": "Please log in to continue"
+  },
+  "timeRangeSelector": {
+    "label": "Time Range",
+    "month1": "Last 1 Month",
+    "month3": "Last 3 Months",
+    "month6": "Last 6 Months",
+    "year1": "Last 1 Year",
+    "year2": "Last 2 Years",
+    "year3": "Last 3 Years",
+    "year5": "Last 5 Years",
+    "year10": "Last 10 Years",
+    "year20": "Last 20 Years"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "collapse": "Collapse",
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "error": "Error",
+    "success": "Success",
+    "noData": "No data to display",
+    "notAvailable": "N/A",
+    "invalidParams": "Invalid operation parameters",
+    "close": "Close"
+  },
+  "googleTrendsMarket": {
+    "invalidData": "Invalid data format",
+    "fetchError": "An error occurred while fetching data",
+    "chartDescription": "This chart compares the Google search trends of multiple market keywords with the S&P 500 (SPY) stock price trend.",
+    "pageTitle": "Google Trends - Market",
+    "pageDescription": "Track overall market sentiment using Google search trends for key financial terms compared to the S&P 500 index.",
+    "heading": "Google Market Trends Analysis"
+  },
+  "googleTrendsSymbol": {
+    "invalidData": "Invalid data format",
+    "fetchError": "An error occurred while fetching data",
+    "chartDescription": "This chart compares the Google search trend for {symbol} with its stock price trend. Search trend reflects market attention, while stock price shows actual price changes.",
+    "prompt": "Please enter a stock symbol in the search box above to view data",
+    "pageTitle": "Google Trends - Symbol",
+    "pageDescription": "Analyze the relationship between Google search trends and stock prices for individual symbols.",
+    "heading": "Google Symbol Trends Analysis"
+  },
+  "googleTrendsChart": {
+    "tooltipDate": "Date",
+    "yAxisPrice": "Stock Price ($)",
+    "yAxisTrend": "Google Search Trend (0-100)",
+    "priceLineName": "{symbol} Price"
+  },
+  "googleTrendsSearch": {
+    "placeholder": "Enter stock symbol",
+    "searching": "Searching...",
+    "errorIcon": "⚠️",
+    "noResultsIcon": "🔍",
+    "noResults": "No matching stocks found"
+  },
+  "home": {
+    "pageTitle": "Master Market Sentiment, Overcome Investment Weaknesses",
+    "pageDescription": "Use objective data to determine if the current market sentiment is fear or greed, overcoming human weaknesses. Provides tools like price trend analysis, my watchlist, and market sentiment indicators.",
+    "keywords": "market sentiment, price trend analysis, watchlist, market sentiment indicators, fear greed index, stock market, investment tools",
+    "jsonLd": {
+      "description": "Use objective data to determine if the current market sentiment is fear or greed, overcoming human weaknesses. Provides tools like price trend analysis, my watchlist, and market sentiment indicators."
+    },
+    "hero": {
+      "title": "Master Market Sentiment",
+      "subtitle": "Use objective data,\njudge if the market is fearful or greedy,\novercome human weaknesses"
+    },
+    "feature1": {
+      "title": "Price Trend Analysis",
+      "text": "Utilize price channel levels to capture ETF or individual stock price trends, improving entry and exit win rates.",
+      "alt": "Price Trend Analysis"
+    },
+    "feature2": {
+      "title": "My Watchlist",
+      "text": "Create your personal list to easily view the price channel levels of multiple targets.",
+      "alt": "My Watchlist"
+    },
+    "feature3": {
+      "title": "Market Sentiment Indicators",
+      "text": "Interpret market sentiment, overcome human weaknesses, and seize entry opportunities during market fear.",
+      "alt": "Market Sentiment Indicators"
+    },
+    "feature": {
+      "link": "Learn More"
+    },
+    "cta": {
+      "button": "Log in now to experience full features"
+    }
+  },
+  "indicatorItem": {
+    "fetchError": "Error fetching historical data for {{indicatorName}}:",
+    "percentileRankLabel": "{{indicatorName}} (Percentile Rank)",
+    "spyPriceLabel": "SPY Price",
+    "latestDataLabel": "Latest Data",
+    "fearGreedScoreLabel": "Sentiment Score",
+    "fearGreedTooltip": "For consistent measurement across indicators, the actual value is converted to a percentile based on historical rank, serving as the Sentiment Score (0-100). Higher scores indicate more greed; lower scores indicate more fear.",
+    "marketSentimentLabel": "Market Sentiment",
+    "loading": "Loading...",
+    "notAvailable": "N/A"
+  },
+  "indicators": {
+    "aaiiSpread": "AAII Investor Sentiment Survey",
+    "cboeRatio": "CBOE Put/Call Ratio",
+    "marketMomentum": "S&P 500 Market Momentum",
+    "vixMA50": "VIX Volatility Index",
+    "safeHaven": "Safe Haven Demand",
+    "junkBond": "Junk Bond Spread",
+    "cotIndex": "COT Index (Speculative Net Positions)",
+    "naaimIndex": "NAAIM Exposure Index"
+  },
+  "sentiment": {
+    "extremeFear": "Extreme Fear",
+    "fear": "Fear",
+    "neutral": "Neutral",
+    "greed": "Greed",
+    "extremeGreed": "Extreme Greed",
+    "notAvailable": "N/A",
+    "extremeOptimism": "EX-Optimism",
+    "optimism": "Optimism",
+    "pessimism": "Pessimism",
+    "extremePessimism": "EX-Pessimism"
+  },
+  "marketSentiment": {
+    "keywords": "market sentiment, fear greed index, market sentiment indicators, investor sentiment, market thermometer, stock analysis, SPY analysis",
+    "heading": "Market Sentiment Analysis",
+    "tabs": {
+      "compositeIndex": "Market Sentiment Composite Index"
+    },
+    "composite": {
+      "scoreLabel": "Sentiment Score",
+      "sentimentLabel": "Market Sentiment"
+    },
+    "chart": {
+      "compositeIndexLabel": "Market Sentiment Index",
+      "spyPriceLabel": "SPY Price",
+      "compositeIndexAxisLabel": "Market Sentiment Index",
+      "spyPriceAxisLabel": "SPY Price"
+    },
+    "viewMode": {
+      "overview": "Latest Sentiment",
+      "timeline": "Historical Trend",
+      "overviewAria": "Switch to latest sentiment view",
+      "timelineAria": "Switch to historical trend view"
+    },
+    "error": {
+      "fetchFailed": "Failed to fetch market sentiment data."
+    },
+    "lastUpdateLabel": "Last Updated",
+    "descriptions": {
+      "composite": {
+        "shortDescription": "The purpose of analyzing market sentiment is to understand the current psychological state of market participants—whether they lean towards fear or greed. This helps investors remain calm during irrational market fluctuations and avoid chasing highs or selling lows.",
+        "sections": [
+          {
+            "title": "Historical Data Review",
+            "content": "Reviewing historical data, the market sentiment index often reaches extreme fear at market bottoms and extreme greed at market tops. Using these extreme sentiments as contrarian indicators can potentially identify better buying and selling points."
+          },
+          {
+            "title": "Composite Index Explanation",
+            "content": "The Market Sentiment Composite Index combines multiple sentiment indicators from different aspects to provide a more comprehensive market psychology thermometer. A single indicator might have noise or limitations; the composite index reflects the overall trend more smoothly."
+          }
+        ]
+      },
+      "aaiiSpread": {
+        "shortDescription": "The AAII Investor Sentiment Survey weekly asks members their outlook for the stock market over the next six months (bullish, bearish, neutral). The Bull-Bear Spread (bullish percentage minus bearish percentage) is a common measure of retail investor sentiment.",
+        "sections": [
+          {
+            "title": "Indicator Interpretation",
+            "content": "An extremely high Bull-Bear Spread (well above the historical average) usually indicates excessive market optimism and could be a potential sell signal. Conversely, an extremely low Spread (well below the historical average, even negative) indicates excessive pessimism and could be a potential buying opportunity."
+          },
+          {
+            "title": "Note",
+            "content": "This indicator reflects retail sentiment, which is often considered a contrarian indicator. Professional investors might use extreme retail sentiment for counter-trading."
+          }
+        ]
+      },
+      "cboeRatio": {
+        "shortDescription": "The CBOE Put/Call Ratio is an important indicator of market speculation sentiment. It calculates the ratio of traded put option contracts to call option contracts.",
+        "sections": [
+          {
+            "title": "Indicator Interpretation",
+            "content": "A high Put/Call Ratio (typically above 1) indicates investors are buying more puts for hedging or bearish bets, suggesting market fear. A low Put/Call Ratio (typically below 0.7) indicates investors are buying more calls for speculation or bullish bets, suggesting market greed. Using a 5-day average smooths the data for better trend observation."
+          },
+          {
+            "title": "Contrarian Indicator",
+            "content": "Similar to the AAII survey, extremely high Put/Call Ratios often occur at market bottoms, while extremely low ratios often occur at market tops, exhibiting contrarian characteristics."
+          }
+        ]
+      },
+      "marketMomentum": {
+        "shortDescription": "The Market Momentum indicator measures the S&P 500 index's position relative to its 125-day moving average (approximately the half-year line). It reflects the strength of the market's medium-term trend.",
+        "sections": [
+          {
+            "title": "Indicator Interpretation",
+            "content": "When the S&P 500 is significantly above its 125-day MA, it indicates a strong uptrend, strong momentum, and market greed. When the index is significantly below the MA, it indicates a downtrend, weak momentum, and market fear."
+          },
+          {
+            "title": "Combine with Other Indicators",
+            "content": "Market momentum is a trend-following indicator and can be used in conjunction with other contrarian indicators (like the Put/Call Ratio) for a more comprehensive market assessment."
+          }
+        ]
+      },
+      "vixMA50": {
+        "shortDescription": "The VIX Index (Volatility Index), often called the 'fear index,' measures the market's expectation of 30-day volatility for the S&P 500. Here, we use the VIX relative to its 50-day moving average to observe changes in fear sentiment.",
+        "sections": [
+          {
+            "title": "Indicator Interpretation",
+            "content": "When the VIX is significantly above its 50-day MA, it indicates a sharp increase in market fear and demand for hedging, leaning towards extreme fear. When the VIX is significantly below its 50-day MA, it indicates relative market calm and higher investor risk appetite, leaning towards greed."
+          },
+          {
+            "title": "Extreme Value Significance",
+            "content": "Extreme spikes in the VIX often accompany sharp market declines and are considered one signal for buying opportunities. However, a persistently low VIX might indicate complacency and warrant caution."
+          }
+        ]
+      },
+      "safeHaven": {
+        "shortDescription": "The Safe Haven Demand indicator compares the difference between the total return of Treasury bonds (safe-haven asset) and stocks (risk asset) over the past 20 trading days. It reflects the extent of fund flows into safe-haven assets.",
+        "sections": [
+          {
+            "title": "Indicator Interpretation",
+            "content": "When bond returns significantly outperform stock returns (high indicator value), it indicates investors are flocking to safe-haven assets, suggesting market fear. When stock returns significantly outperform bond returns (low indicator value), it indicates higher risk appetite and fund flows into risk assets, suggesting market greed."
+          },
+          {
+            "title": "Observing Fund Flows",
+            "content": "This indicator provides a window into changes in overall market risk appetite and is an important reference for judging market sentiment."
+          }
+        ]
+      },
+      "junkBond": {
+        "shortDescription": "The yield spread between junk bonds (high-yield corporate bonds) and investment-grade corporate bonds reflects the market's attitude towards credit risk. Junk bonds are riskier and typically have higher yields.",
+        "sections": [
+          {
+            "title": "Indicator Interpretation",
+            "content": "When the spread widens (high indicator value), it means investors demand higher risk compensation to hold junk bonds. This usually happens when the market worries about economic prospects or tightening liquidity, indicating market fear. When the spread narrows (low indicator value), it means investors' risk tolerance increases, indicating market greed."
+          },
+          {
+            "title": "Credit Market Signal",
+            "content": "The junk bond spread is an important leading indicator for observing the health of the credit market and overall market risk appetite."
+          }
+        ]
+      },
+      "cotIndex": {
+        "shortDescription": "The COT Index (Commitments of Traders Index), based on the weekly report from the CFTC, measures the net position (longs minus shorts) of large speculators (often considered more informed traders) in the S&P 500 futures market relative to historical levels.",
+        "sections": [
+          {
+            "title": "Indicator Interpretation",
+            "content": "A COT Index near 100% indicates large speculators' net long positions are at historical highs, suggesting the market might be overly bullish and leaning towards extreme greed. An index near 0% indicates net short positions are at historical highs (or net longs are extremely low), suggesting the market might be overly bearish and leaning towards extreme fear."
+          },
+          {
+            "title": "Smart Money Movement",
+            "content": "Tracking the position changes of large speculators helps understand the outlook of the so-called 'smart money' on future market direction."
+          }
+        ]
+      },
+      "naaimIndex": {
+        "shortDescription": "The NAAIM Exposure Index (National Association of Active Investment Managers Exposure Index) surveys its members (active investment managers) weekly on their current equity market exposure level (0% = no stocks, 100% = fully invested, >100% = leveraged).",
+        "sections": [
+          {
+            "title": "Indicator Interpretation",
+            "content": "An extremely high exposure index (e.g., near or above 100%) indicates fund managers are generally bullish and actively holding stocks, suggesting market greed. An extremely low exposure index (e.g., near 0% or negative, indicating short positions) indicates managers are generally bearish and reducing stock holdings, suggesting market fear."
+          },
+          {
+            "title": "Institutional Sentiment",
+            "content": "This indicator reflects the sentiment and positioning adjustments of professional investment institutions, serving as an important reference for observing the mainstream market view."
+          }
+        ]
+      }
+    }
+  },
+  "pageContainer": {
+    "defaultTitle": "Sentiment Inside Out - Market Sentiment Analysis",
+    "defaultDescription": "Master market sentiment, overcome investment fear and greed.",
+    "defaultKeywords": "market sentiment, sentiment indicators, investment strategy, stock analysis, sentiment tracking"
+  },
+  "sponsorSuccess": {
+    "pageTitle": "Sponsorship Successful",
+    "pageDescription": "Thank you for your contribution, your support is our driving force!",
+    "heading": "Thank you for your abundant love!",
+    "messageLine1": "Sincere thanks for your support of Sentiment Inside Out!",
+    "messageLine2": "Your contribution will help maintain the website's operation and motivate me to continue providing services and content,",
+    "messageLine3": "and more importantly, help make the investment journey smoother for more people.",
+    "messageLine4": "We deeply appreciate your trust and encouragement,",
+    "messageLine5": "and sincerely wish you successful investments and a wonderful life!",
+    "signature": "— Sincerely, Sentiment Inside Out"
+  },
+  "legal": {
+    "pageTitle": "Legal Notice",
+    "pageDescription": "Website terms of use and privacy policy.",
+    "mainHeading": "Privacy Policy & Terms of Service",
+    "privacyPolicyTitle": "Privacy Policy",
+    "dataCollectionTitle": "1. Data Collection",
+    "dataCollectionIntro": "This website only collects necessary user data:",
+    "dataCollectionItem1": "Google Account basic information (username)",
+    "dataCollectionItem2": "Email address",
+    "dataCollectionItem3": "Profile picture",
+    "dataUsageTitle": "2. Purpose of Data Use",
+    "dataUsageIntro": "This website uses this data to:",
+    "dataUsageItem1": "Provide personalized services: such as stock code tracking",
+    "dataUsageItem2": "Send important notifications",
+    "dataUsageItem3": "Improve user experience",
+    "dataProtectionTitle": "3. Data Protection",
+    "dataProtectionIntro": "We take the following measures to protect your data:",
+    "dataProtectionItem1": "Use encryption technology to protect data transmission",
+    "dataProtectionItem2": "Conduct regular security checks",
+    "dataProtectionItem3": "Strictly control data access permissions",
+    "userRightsTitle": "4. User Rights",
+    "userRightsIntro": "You have the following rights:",
+    "userRightsItem1": "View your personal data",
+    "userRightsItem2": "Update or correct your data",
+    "userRightsItem3": "Request deletion of your account and data",
+    "userRightsItem4": "Revoke authorization at any time",
+    "termsOfServiceTitle": "Terms of Service",
+    "serviceDescriptionTitle": "1. Service Description",
+    "serviceDescriptionIntro": "Sentiment Inside Out provides:",
+    "serviceDescriptionItem1": "Stock market information tracking",
+    "serviceDescriptionItem2": "Market analysis tools",
+    "usageRulesTitle": "2. Usage Rules",
+    "usageRulesIntro": "Users must agree to:",
+    "usageRulesItem1": "Provide true and accurate information",
+    "usageRulesItem2": "Protect account security",
+    "usageRulesItem3": "Comply with relevant laws and regulations",
+    "usageRulesItem4": "Not engage in any malicious behavior",
+    "disclaimerTitle": "3. Disclaimer",
+    "disclaimerIntro": "This service:",
+    "disclaimerItem1": "Does not provide investment advice",
+    "disclaimerItem2": "Does not guarantee timeliness and accuracy of information",
+    "disclaimerItem3": "Is not responsible for investment losses"
+  },
+  "sponsorUs": {
+    "pageTitle": "Sponsor Us",
+    "pageDescription": "With your help, Sentiment Inside Out can continue operating, providing simple and practical investment tools to benefit more investors. Your sponsorship will support website maintenance and development.",
+    "keywords": "sponsor website, support investment tools, investment analysis platform, market sentiment analysis",
+    "heading": "Sponsor the Website, Help More People Together",
+    "intro1": "The construction of the Sentiment Inside Out website, investment tools and content creation, prevention of cyber attacks... etc.,",
+    "intro2": "is actually maintained by only one person behind the scenes.",
+    "intro3": "I hope by sharing these free and simple tools,",
+    "intro4": "to help more people achieve returns exceeding the market in their investments.",
+    "intro5": "However, maintaining the website's operation",
+    "intro6": "requires a certain amount of cost and time every day,",
+    "intro7": "which is actually a considerable burden in the long run.",
+    "intro8": "Therefore, I sincerely invite you",
+    "intro9": "to join me in helping more people,",
+    "intro10": "so that this website can continue to operate;",
+    "intro11": "Or just treat me to a coffee or a meal,",
+    "intro12": "I would be very grateful.",
+    "intro13": "Regardless of sponsorship,",
+    "intro14": "I wish you successful investments and all the best!",
+    "methodsHeading": "Please choose a sponsorship method below",
+    "methodCreditCard": "Credit Card",
+    "methodWireTransfer": "Bank Transfer",
+    "methodDescriptionHtml": "Please <a href=\"{{link}}\" target=\"_blank\" rel=\"noopener noreferrer\">click the link</a> or scan the QR Code.",
+    "copySuccessAlert": "Account copied: {{text}}"
+  },
+  "ulBandChart": {
+    "upperBandLabel": "Upper Band",
+    "ma20Label": "MA20",
+    "priceLabel": "Price",
+    "lowerBandLabel": "Lower Band"
+  },
+  "priceAnalysis": {
+    "pageTitle": "Price Channel - Price Trend Analysis",
+    "pageDescription": "Analyze price trends using the characteristics of stock price mean reversion, determine if current market sentiment is overly optimistic or pessimistic, and improve entry/exit win rates.",
+    "keywords": "Price Channel, Price Trend Analysis, Stock Analysis, Market Sentiment, Mean Reversion, Overbought Oversold, UL Band, Standard Deviation",
+    "jsonLd": {
+      "name": "Price Channel Analysis",
+      "description": "Utilize standard deviation to analyze stock price trends and gauge market sentiment. Assess whether the current price reflects excessive optimism or pessimism. Track long-term trends and determine price position using statistical mean reversion properties."
+    },
+    "form": {
+      "stockCodeLabel": "Stock Symbol:",
+      "stockCodePlaceholder": "e.g., SPY, AAPL",
+      "analysisPeriodLabel": "Analysis Period:",
+      "periodShort": "Short-term (0.5Y)",
+      "periodMedium": "Mid-term (1.5Y)",
+      "periodLong": "Long-term (3.5Y)",
+      "yearsPlaceholder": "Enter years, e.g., 3.5",
+      "backTestDateLabel": "Backtest Date:",
+      "backTestDatePlaceholder": "Default: Today",
+      "toggleAdvanced": "Advanced Settings",
+      "toggleSimple": "Simple Settings",
+      "analyzeButton": {
+        "default": "Start Analysis",
+        "loading": "Analyzing...",
+        "processing": "Processing data...",
+        "verify": "Please complete verification below"
+      }
+    },
+    "result": {
+      "stockCode": "Symbol",
+      "stockPrice": "Price",
+      "marketSentiment": "Sentiment"
+    },
+    "sentiment": {
+      "extremeOptimism": "Extreme Optimism",
+      "optimism": "Optimism",
+      "neutral": "Neutral",
+      "pessimism": "Pessimism",
+      "extremePessimism": "Extreme Pessimism"
+    },
+    "chart": {
+      "tabs": {
+        "sd": "Price Channel",
+        "ulband": "UL Band"
+      },
+      "loading": {
+        "fetching": "Loading...",
+        "generating": "Generating chart..."
+      },
+      "label": {
+        "price": "Price",
+        "trendLine": "Trend Line",
+        "minus2sd": "-2 Standard Deviation",
+        "minus1sd": "-1 Standard Deviation",
+        "plus1sd": "+1 Standard Deviation",
+        "plus2sd": "+2 Standard Deviation"
+      }
+    },
+    "prompt": {
+      "enterSymbol": "Please enter conditions and click 'Start Analysis'."
+    },
+    "explanation": {
+      "shortDescription": "Analyze whether the current stock price is overly optimistic or pessimistic. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
+      "readMorePrefix": "For detailed usage, please refer to the article:",
+      "readMoreLinkText": "Analyze Price Trends and Sentiment with Price Channel",
+      "sd": {
+        "title": "Price Channel (Standard Deviation)",
+        "l1": "The middle trend line is a long-term moving average, serving as the baseline for assessing the long-term price trend. Two standard deviations are added above and below this baseline.",
+        "l2": "The further the price moves from the middle trend line, the further it deviates from the long-term average, increasing the probability of reverting to the trend line.",
+        "l3": "When the price touches the uppermost band, it indicates a strong short-term overbought condition and extreme market optimism, posing a risk of pullback.",
+        "l4": "When the price touches the lowermost band, it indicates a strong short-term oversold condition and extreme market pessimism, presenting an opportunity for a rebound."
+      },
+      "ulBand": {
+        "title": "UL Band (Upper/Lower Band)",
+        "l1": "The UL Band is a more sensitive indicator used to help determine short-term overbought and oversold conditions.",
+        "l2": "When the price breaks above the upper UL Band, it may indicate short-term overheating.",
+        "l3": "When the price breaks below the lower UL Band, it may indicate short-term cooling."
+      },
+      "combined": {
+        "title": "Using Both Together",
+        "l1": "When the price touches the uppermost or lowermost band of the Price Channel and simultaneously breaks the UL Band, it might signify a continuation of the trend. Consider waiting for the price to return within the UL Band before taking action.",
+        "l2": "It is recommended for use with index ETFs or large-cap stocks with clear trends, in conjunction with fundamental analysis. It should not be used as the sole basis for buy/sell decisions."
+      }
+    },
+    "toast": {
+      "invalidYears": "Please enter a valid query period (years), which must be greater than zero.",
+      "turnstileRequired": "Please complete the verification first",
+      "turnstileError": "Verification failed, please try again",
+      "turnstileExpired": "Verification expired, please verify again",
+      "invalidUrlYears": "Invalid query period read from URL."
+    }
+  },
+  "watchlist": {
+    "pageTitle": "My Watchlist",
+    "pageDescription": "Track stocks you are interested in and quickly grasp the price sentiment of multiple targets.",
+    "keywords": "my watchlist, custom stocks, stock monitoring, market sentiment, price analysis",
+    "jsonLd": {
+      "name": "My Watchlist",
+      "description": "Track stocks you are interested in and grasp their price sentiment levels. Conveniently view the price levels of multiple stocks within their long-term trends to avoid buying high and selling low.",
+      "url": "https://sentimentinsideout.com/watchlist",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://sentimentinsideout.com/watchlist?category={category}&stock={stock}",
+        "query-input": "required name=category,stock"
+      }
+    },
+    "loadingRetry": "Loading, please wait... ({{count}}/{{max}})",
+    "loadFailed": "Load failed, please refresh the page",
+    "loginRequiredMessage": "Please log in to use this feature",
+    "loadingMessage": "The watchlist analyzes multiple symbols at once. If you haven't viewed it for a while, it might take a moment. Thank you for your patience.",
+    "editMode": {
+      "finish": "Finish Editing",
+      "start": "Edit Mode"
+    },
+    "infoTooltip": "After adding a stock, prices for extreme pessimism (green) and extreme optimism (red) will be automatically calculated based on the stock's long-term (3.5 years) trend, making it easy to see the current price's sentiment level.",
+    "categoryTabs": {
+      "manageCategoriesAria": "Manage Categories"
+    },
+    "createCategoryDialog": {
+      "title": "Create New Category",
+      "placeholder": "Enter category name",
+      "confirmButton": "Confirm",
+      "cancelButton": "Cancel"
+    },
+    "editCategoryDialog": {
+      "title": "Edit Category",
+      "placeholder": "Enter category name",
+      "confirmButton": "Confirm",
+      "cancelButton": "Cancel"
+    },
+    "categoryDialogErrors": {
+      "emptyName": "Category name cannot be empty",
+      "nameTooLongGeneric": "Name is too long, please shorten it!",
+      "nameTooLongChars": "Category name cannot exceed {{maxLength}} characters"
+    },
+    "category": {
+      "createSuccess": "Category created successfully",
+      "updateSuccess": "Category updated",
+      "deleteConfirm": "Are you sure you want to delete this category? This action cannot be undone.",
+      "deleteSuccess": "Category deleted"
+    },
+    "stock": {
+      "addSuccess": "{{symbol}} added to watchlist"
+    },
+    "stockCard": {
+      "removeButton": {
+        "ariaLabel": "Remove {{symbol}} from watchlist",
+        "title": "Remove from watchlist"
+      },
+      "analysis": {
+        "loading": "Analyzing..."
+      },
+      "header": {
+        "symbol": "Symbol",
+        "price": "Current Price",
+        "analysis": "Price Analysis",
+        "sentiment": "Current Sentiment",
+        "news": "News",
+        "twFlagAlt": "Taiwan Flag",
+        "usFlagAlt": "US Flag",
+        "logoAlt": "{{symbol}} logo"
+      }
+    },
+    "newsDialog": {
+      "title": "News Details",
+      "readFullStory": "Read Full Story →"
+    },
+    "searchBox": {
+      "placeholder": "Enter stock symbol",
+      "loading": "Searching...",
+      "noResults": "No matching stocks found"
+    }
+  },
+  "errorMessages": {
+    "STOCK_NOT_FOUND": "Stock symbol not found",
+    "GENERAL_ERROR": "An error occurred, please try again later",
+    "VALIDATION_ERROR": "Invalid input data, please check and retry",
+    "NOT_FOUND": "Resource not found",
+    "NETWORK_ERROR": "Network connection error, please check your network settings",
+    "TIMEOUT_ERROR": "Request timed out, please try again later",
+    "AUTH_ERROR": "Login failed, please try again later",
+    "SESSION_EXPIRED": "Login session expired, please log in again",
+    "UNAUTHORIZED": "Please log in to continue",
+    "SENTIMENT_DATA_ERROR": "Failed to retrieve market sentiment data",
+    "HISTORICAL_DATA_ERROR": "Failed to retrieve historical data",
+    "DEFAULT_ERROR": "An error occurred, please try again later",
+    "GOOGLE_AUTH_FAILED": "Google login failed, please try again later",
+    "GOOGLE_AUTH_CANCELLED": "Google login cancelled",
+    "GOOGLE_AUTH_POPUP_BLOCKED": "Please allow pop-ups to complete login",
+    "GOOGLE_AUTH_NETWORK_ERROR": "Google login network connection error",
+    "GOOGLE_AUTH_SERVER_ERROR": "Google login server error",
+    "BUTTON_DISABLED": "Button is temporarily unavailable",
+    "BUTTON_NETWORK_ERROR": "Network connection error, please retry",
+    "BUTTON_TIMEOUT": "Operation timed out, please retry",
+    "STOCK_LIMIT_EXCEEDED": "Stock limit exceeded",
+    "CATEGORY_NOT_FOUND": "Specified category not found",
+    "CATEGORY_UNAUTHORIZED": "Unauthorized access to this category",
+    "CANNOT_MODIFY_DEFAULT": "Cannot modify the default category",
+    "CANNOT_DELETE_DEFAULT": "Cannot delete the default category",
+    "CANNOT_DELETE_LAST": "Cannot delete the last category",
+    "DUPLICATE_CATEGORY_NAME": "Category name already exists",
+    "DUPLICATE_STOCK": "This stock is already in the watchlist",
+    "CATEGORY_LIMIT_EXCEEDED": "Category limit exceeded",
+    "INVALID_STOCK_SYMBOL": "Invalid stock symbol",
+    "API_ERROR": "API Error",
+    "UNKNOWN_ERROR": "Unknown error"
+  }
+}

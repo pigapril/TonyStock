@@ -17,6 +17,7 @@ import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { useSearchParams, useLocation } from 'react-router-dom'; // 引入 useLocation
 import { useAdContext } from '../../components/Common/InterstitialAdModal/AdContext'; // 導入 useAdContext
 import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebouncedCallback
+import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -46,6 +47,7 @@ const MemoizedExpandableDescription = React.memo(ExpandableDescription);
  * 專門負責：1) 抓取API資料 2) 處理表單 3) 顯示標準差圖表 or ULBandChart
  */
 export function PriceAnalysis() {
+  const { t } = useTranslation(); // 2. Initialize useTranslation
   const [searchParams] = useSearchParams();
   const location = useLocation(); // <--- 獲取 location 物件
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
@@ -68,10 +70,11 @@ export function PriceAnalysis() {
   const [ulbandData, setUlbandData] = useState(null);
   const [turnstileToken, setTurnstileToken] = useState(null);
   const [turnstileVisible, setTurnstileVisible] = useState(true);
-  // 新增分析結果狀態
+  // 修改分析結果狀態，包含 key 和 value
   const [analysisResult, setAnalysisResult] = useState({
     price: null,
-    sentiment: null
+    sentimentKey: null, // <-- 新增 sentimentKey
+    sentimentValue: null // <-- 原 sentiment 改為 sentimentValue
   });
   // 新增狀態來切換簡易/進階查詢
   const [isAdvancedQuery, setIsAdvancedQuery] = useState(false);
@@ -126,18 +129,34 @@ export function PriceAnalysis() {
   };
 
   // 處理 Turnstile 回調
-  const handleTurnstileSuccess = useCallback((token) => {
-    setTurnstileToken(token);
-    setTimeout(() => {
-      setTurnstileVisible(false);
-    }, 1000);
-  }, []);
+  const handleTurnstileVerify = (response) => {
+    console.log("Turnstile verified:", response);
+    setTurnstileToken(response);
+    setTurnstileVisible(false); // 驗證成功後隱藏
+  };
+
+  const handleTurnstileError = (response) => {
+    console.error("Turnstile error:", response);
+    // 將 t 傳遞給 handleApiError
+    handleApiError(new Error(t('priceAnalysis.toast.turnstileFailed')), showToast, t);
+    setTurnstileToken(null); // 清除 token
+    setTurnstileVisible(true); // 保持可見以便重試
+  };
+
+  const handleTurnstileExpire = () => {
+    console.warn("Turnstile expired");
+    // 將 t 傳遞給 handleApiError
+    handleApiError(new Error(t('priceAnalysis.toast.turnstileExpired')), showToast, t);
+    setTurnstileToken(null); // 清除 token
+    setTurnstileVisible(true); // 顯示以便重新驗證
+  };
 
   // 資料抓取函式
   const fetchStockData = useCallback(async (stock, yrs, testDate, bypassTurnstile = false) => {
     // 驗證 Turnstile Token
     if (!bypassTurnstile && !turnstileToken) {
-      handleApiError(new Error('請先完成驗證'), showToast);
+      // 使用 t() 翻譯錯誤訊息，並傳遞 t 給 handleApiError
+      handleApiError(new Error(t('priceAnalysis.toast.turnstileRequired')), showToast, t);
       setLoading(false); // 結束 Loading
       return;
     }
@@ -159,12 +178,13 @@ export function PriceAnalysis() {
         setChartData({
           labels: dates,
           datasets: [
-            { label: '價格', data: prices, borderColor: 'blue', borderWidth: 2, fill: false, pointRadius: 0 },
-            { label: '趨勢線', data: sdAnalysis.trendLine, borderColor: '#E9972D', borderWidth: 2, fill: false, pointRadius: 0 },
-            { label: '-2個標準差', data: sdAnalysis.tl_minus_2sd, borderColor: '#143829', borderWidth: 2, fill: false, pointRadius: 0 },
-            { label: '-1個標準差', data: sdAnalysis.tl_minus_sd, borderColor: '#2B5B3F', borderWidth: 2, fill: false, pointRadius: 0 },
-            { label: '+1個標準差', data: sdAnalysis.tl_plus_sd, borderColor: '#C4501B', borderWidth: 2, fill: false, pointRadius: 0 },
-            { label: '+2個標準差', data: sdAnalysis.tl_plus_2sd, borderColor: '#A0361B', borderWidth: 2, fill: false, pointRadius: 0 }
+            // 使用 t() 翻譯 dataset labels
+            { label: t('priceAnalysis.chart.label.price'), data: prices, borderColor: 'blue', borderWidth: 2, fill: false, pointRadius: 0 },
+            { label: t('priceAnalysis.chart.label.trendLine'), data: sdAnalysis.trendLine, borderColor: '#E9972D', borderWidth: 2, fill: false, pointRadius: 0 },
+            { label: t('priceAnalysis.chart.label.minus2sd'), data: sdAnalysis.tl_minus_2sd, borderColor: '#143829', borderWidth: 2, fill: false, pointRadius: 0 },
+            { label: t('priceAnalysis.chart.label.minus1sd'), data: sdAnalysis.tl_minus_sd, borderColor: '#2B5B3F', borderWidth: 2, fill: false, pointRadius: 0 },
+            { label: t('priceAnalysis.chart.label.plus1sd'), data: sdAnalysis.tl_plus_sd, borderColor: '#C4501B', borderWidth: 2, fill: false, pointRadius: 0 },
+            { label: t('priceAnalysis.chart.label.plus2sd'), data: sdAnalysis.tl_plus_2sd, borderColor: '#A0361B', borderWidth: 2, fill: false, pointRadius: 0 }
           ],
           timeUnit: getTimeUnit(dates)
         });
@@ -180,15 +200,22 @@ export function PriceAnalysis() {
           const lastTlPlusSd = tl_plus_sd[tl_plus_sd.length - 1];
           const lastTlMinusSd = tl_minus_sd[tl_minus_sd.length - 1];
 
-          let sentiment = '中性';
-          if (lastPrice >= lastTlPlus2Sd) sentiment = '極度樂觀';
-          else if (lastPrice > lastTlPlusSd) sentiment = '樂觀';
-          else if (lastPrice <= lastTlMinus2Sd) sentiment = '極度悲觀';
-          else if (lastPrice < lastTlMinusSd) sentiment = '悲觀';
+          // 決定 sentimentKey
+          let sentimentKey = 'priceAnalysis.sentiment.neutral'; // Default key
+          if (lastPrice >= lastTlPlus2Sd) sentimentKey = 'priceAnalysis.sentiment.extremeOptimism';
+          else if (lastPrice > lastTlPlusSd) sentimentKey = 'priceAnalysis.sentiment.optimism';
+          else if (lastPrice <= lastTlMinus2Sd) sentimentKey = 'priceAnalysis.sentiment.extremePessimism';
+          else if (lastPrice < lastTlMinusSd) sentimentKey = 'priceAnalysis.sentiment.pessimism';
 
-          setAnalysisResult({ price: lastPrice.toFixed(2), sentiment: sentiment });
+          // 同時設定 key 和翻譯後的 value
+          setAnalysisResult({
+            price: lastPrice.toFixed(2),
+            sentimentKey: sentimentKey,
+            sentimentValue: t(sentimentKey) // 使用 t() 獲取翻譯值
+          });
         } else {
-          setAnalysisResult({ price: null, sentiment: null }); // 清空
+          // 清空時也清空 key 和 value
+          setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
         }
       }); // end startTransition
 
@@ -200,16 +227,18 @@ export function PriceAnalysis() {
       startTransition(() => {
         setChartData(null);
         setUlbandData(null);
-        setAnalysisResult({ price: null, sentiment: null });
+        // 清空時也清空 key 和 value
+        setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
         setDisplayedStockCode('');
       });
-      handleApiError(error, showToast); // 直接調用 handleApiError，它會處理超時等錯誤並顯示 Toast
+      // 將 t 傳遞給 handleApiError
+      handleApiError(error, showToast, t);
     } finally {
       // 即使 transition 未完成，也結束 Loading 狀態，讓 UI 可以響應
       // 注意：如果 transition 非常慢，Loading 可能會比數據出現早消失
       setLoading(false);
     }
-  }, [turnstileToken, showToast, startTransition]); // 添加 startTransition 依賴
+  }, [turnstileToken, showToast, startTransition, t]);
 
   // 表單送出
   const handleSubmit = (e) => {
@@ -217,12 +246,12 @@ export function PriceAnalysis() {
 
     // --- 立即更新 UI 反饋 ---
     setLoading(true);
-    // 立即清除舊圖表數據
-    startTransition(() => { // 將清除操作也放入 transition
+    startTransition(() => {
         setChartData(null);
         setUlbandData(null);
-        setAnalysisResult({ price: null, sentiment: null });
-        setDisplayedStockCode(''); // 清除舊代碼顯示
+        // 清空時也清空 key 和 value
+        setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
+        setDisplayedStockCode('');
     });
     // --- UI 反饋結束 ---
 
@@ -232,7 +261,6 @@ export function PriceAnalysis() {
 
     // --- 開始：表單處理邏輯 ---
     let numYears;
-    // 使用 state 中的 stockCode 和 years，它們是由 debounced 函數更新的
     let stockToFetch = stockCode;
     let dateToFetch = backTestDate;
 
@@ -244,8 +272,9 @@ export function PriceAnalysis() {
       numYears = parseFloat(convertedYears);
 
       if (isNaN(numYears) || numYears <= 0) {
-        showToast('請輸入有效的查詢期間（年），且必須大於零。', 'error');
-        setLoading(false); // 驗證失敗，結束 Loading
+        // 使用 t() 翻譯錯誤訊息
+        showToast(t('priceAnalysis.toast.invalidYears'), 'error');
+        setLoading(false);
         return;
       }
     } else {
@@ -317,21 +346,24 @@ export function PriceAnalysis() {
 
     // 根據判斷結果執行操作
     if (shouldAutoFetch) {
-        // 清除舊圖表，避免顯示上一次的結果
+        // 清除舊圖表
         setChartData(null);
         setUlbandData(null);
-        setAnalysisResult({ price: null, sentiment: null });
-        setDisplayedStockCode(''); // 清除舊代碼
-        // 執行初始查詢，bypassTurnstile 為 true
+        // 清空時也清空 key 和 value
+        setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
+        setDisplayedStockCode('');
+        // 執行初始查詢
         fetchStockData(fetchStock, numYears, fetchDate, true);
     } else if (urlYears && (isNaN(numYears) || numYears <= 0)) {
-        // 如果 URL 明確提供了無效的年份參數 (即使不自動查詢也要處理)
         console.error("Invalid years parameter from URL:", fetchYears);
-        showToast('從 URL 讀取的查詢期間無效。', 'error');
+        // 使用 t() 翻譯錯誤訊息 (假設有此 key)
+        // showToast(t('priceAnalysis.toast.invalidUrlYears'), 'error');
+        showToast('從 URL 讀取的查詢期間無效。', 'error'); // 暫時保留硬編碼，或添加新 key
         // 清除圖表數據
         setChartData(null);
         setUlbandData(null);
-        setAnalysisResult({ price: null, sentiment: null });
+        // 清空時也清空 key 和 value
+        setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
         setDisplayedStockCode('');
     } else {
         // 非自動查詢情況 (例如直接訪問非 SPY 股票, 刷新非 SPY 股票頁面等)
@@ -339,8 +371,9 @@ export function PriceAnalysis() {
         if (!loading) {
              setChartData(null);
              setUlbandData(null);
-             setAnalysisResult({ price: null, sentiment: null });
-             setDisplayedStockCode(''); // 清除舊代碼
+             // 清空時也清空 key 和 value
+             setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
+             setDisplayedStockCode('');
         }
     }
 
@@ -351,7 +384,7 @@ export function PriceAnalysis() {
     // }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, location.state]); // 依賴 location.state
+  }, [searchParams, location.state]); // <--- 修改：移除 fetchStockData, showToast, loading
 
   // 切換簡易/進階查詢模式
   const toggleQueryMode = () => {
@@ -375,11 +408,12 @@ export function PriceAnalysis() {
   };
 
   // 定義用於結構化數據的 JSON-LD
-  const priceAnalysisJsonLd = {
+  const priceAnalysisJsonLd = useMemo(() => ({ // 使用 useMemo 避免每次渲染都重新創建
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "樂活五線譜",
-    "description": "利用標準差分析股價趨勢，判斷市場情緒。分析當前股價是否過度樂觀或悲觀。利用股價均值回歸的統計特性，追蹤長期趨勢、判斷股價所處位置。",
+    // 使用 t() 翻譯 name 和 description
+    "name": t('priceAnalysis.jsonLd.name'),
+    "description": t('priceAnalysis.jsonLd.description'),
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
     "url": "https://sentimentinsideout.com/priceanalysis",
@@ -388,7 +422,8 @@ export function PriceAnalysis() {
       "target": "https://sentimentinsideout.com/priceanalysis?stockCode={stockCode}&years={years}&backTestDate={backTestDate}",
       "query-input": "required name=stockCode,years,backTestDate"
     }
-  };
+  // 添加 t 作為依賴
+  }), [t]);
 
   // 優化 Line Chart Options
   const lineChartOptions = useMemo(() => {
@@ -450,47 +485,84 @@ export function PriceAnalysis() {
   // 依賴 isMobile 和 chartData?.timeUnit (安全訪問)
   }, [isMobile, chartData?.timeUnit]);
 
+  // 建立 ExpandableDescription 的 sections (使用 useMemo 和 t)
+  const expandableSections = useMemo(() => [
+    {
+      title: t('priceAnalysis.explanation.sd.title'), // 翻譯標題
+      type: "list",
+      content: [ // 翻譯列表內容
+        t('priceAnalysis.explanation.sd.l1'),
+        t('priceAnalysis.explanation.sd.l2'),
+        t('priceAnalysis.explanation.sd.l3'),
+        t('priceAnalysis.explanation.sd.l4'),
+      ],
+    },
+    {
+      title: t('priceAnalysis.explanation.ulBand.title'), // 翻譯標題
+      type: "list",
+      content: [ // 翻譯列表內容
+        t('priceAnalysis.explanation.ulBand.l1'),
+        t('priceAnalysis.explanation.ulBand.l2'),
+        t('priceAnalysis.explanation.ulBand.l3'),
+      ],
+    },
+    {
+      title: t('priceAnalysis.explanation.combined.title'),
+      type: "list",
+      content: [
+        t('priceAnalysis.explanation.combined.l1'),
+        t('priceAnalysis.explanation.combined.l2'),
+      ]
+    },
+  ], [t]); // 添加 t 作為依賴
+
   return (
-    <PageContainer 
-      title="樂活五線譜 - 價格趨勢分析"
-      description="利用股價均值回歸的特性，分析價格趨勢，並判斷當前市場情緒是否過度樂觀或是悲觀，提升進出場的勝率。"
-      keywords="樂活五線譜,價格趨勢分析,股價分析,市場情緒,均值回歸,超買超賣,樂活通道"
+    <PageContainer
+      // 使用 t() 翻譯 PageContainer props
+      title={t('pageTitle.priceAnalysis')}
+      description={t('pageDescription.priceAnalysis')}
+      keywords={t('pageKeywords.priceAnalysis')} // 假設您有定義這個 key
       ogImage="/images/price-analysis-og.png"
       ogUrl="https://sentimentinsideout.com/priceanalysis"
       ogType="website"
       jsonLd={priceAnalysisJsonLd}
     >
-      <h1>樂活五線譜</h1>
+      {/* 使用 t() 翻譯標題 */}
+      <h1>{t('priceAnalysis.pageTitle')}</h1>
       <div className="dashboard">
         
         {/* 將 stock-analysis-card 移到 chart-card 上方 */}
         <div className="stock-analysis-card">
           <form onSubmit={handleSubmit}>
             <div className="input-group">
-              <label>股票代碼：</label>
+              {/* 使用 t() 翻譯 label */}
+              <label>{t('priceAnalysis.form.stockCodeLabel')}</label>
               <input
                 type="text"
                 className="form-control"
-                // defaultValue={stockCode} // 使用 defaultValue 或 value 取決於是否需要完全受控
-                // value={stockCode} // 如果直接用 debounced set, 可能不需要 value
-                onChange={handleStockCodeChange} // <--- 使用新的處理函數
-                placeholder="例如:2330、AAPL"
+                onChange={handleStockCodeChange}
+                // 使用 t() 翻譯 placeholder
+                placeholder={t('priceAnalysis.form.stockCodePlaceholder')}
                 required
+                // 保持 defaultValue 或 value 的邏輯不變 (如果需要)
+                defaultValue={stockCode} // 根據原始碼，這裡使用 defaultValue
               />
             </div>
 
             {/* 簡易查詢欄位容器 */}
             {!isAdvancedQuery && (
               <div className="input-group query-mode-inputs">
-                <label>分析期間：</label>
+                {/* 使用 t() 翻譯 label */}
+                <label>{t('priceAnalysis.form.analysisPeriodLabel')}</label>
                 <select
                   className="form-control"
                   value={analysisPeriod}
                   onChange={(e) => setAnalysisPeriod(e.target.value)}
                 >
-                  <option value="短期">短期 (0.5年)</option>
-                  <option value="中期">中期 (1.5年)</option>
-                  <option value="長期">長期 (3.5年)</option>
+                  {/* 使用 t() 翻譯 options */}
+                  <option value="短期">{t('priceAnalysis.form.periodShort')}</option>
+                  <option value="中期">{t('priceAnalysis.form.periodMedium')}</option>
+                  <option value="長期">{t('priceAnalysis.form.periodLong')}</option>
                 </select>
               </div>
             )}
@@ -499,27 +571,29 @@ export function PriceAnalysis() {
             {isAdvancedQuery && (
               <div className="input-group query-mode-inputs advanced-query-mode-inputs">
                 <div className="input-group">
-                  <label>分析期間：</label>
+                  {/* 使用 t() 翻譯 label */}
+                  <label>{t('priceAnalysis.form.analysisPeriodLabel')}</label>
                   <input
-                    type="text" // 保持 text 以允許小數點
-                    inputMode="decimal" // 提示數字鍵盤（含小數點）
+                    type="text"
+                    inputMode="decimal"
                     className="form-control"
-                    // defaultValue={years} // 使用 defaultValue 或 value
-                    // value={years} // 如果直接用 debounced set, 可能不需要 value
-                    onChange={handleYearsChange} // <--- 使用新的處理函數
-                    placeholder="輸入年數，如 3.5"
+                    onChange={handleYearsChange}
+                    // 使用 t() 翻譯 placeholder
+                    placeholder={t('priceAnalysis.form.yearsPlaceholder')}
                     required
+                    // 保持 defaultValue 或 value 的邏輯不變
+                    defaultValue={years} // 根據原始碼，這裡使用 defaultValue
                   />
-                  {/* {yearsError && <div className="error-message">{yearsError}</div>} */}
                 </div>
                 <div className="input-group">
-                  <label>回測日期：</label>
+                  {/* 使用 t() 翻譯 label */}
+                  <label>{t('priceAnalysis.form.backTestDateLabel')}</label>
                   <DatePicker
                     selected={backTestDate ? new Date(backTestDate) : null}
-                    // DatePicker 的 onChange 頻率低，暫不 debounce
                     onChange={(date) => setBackTestDate(date ? date.toISOString().split('T')[0] : '')}
-                    placeholderText="預設今天"
-                    className="form-control" // 確保 class 正確
+                    // 使用 t() 翻譯 placeholder
+                    placeholderText={t('priceAnalysis.form.backTestDatePlaceholder')}
+                    className="form-control"
                     dateFormat="yyyy/MM/dd"
                     isClearable
                     popperPlacement="auto"
@@ -528,14 +602,15 @@ export function PriceAnalysis() {
               </div>
             )}
 
-            {/* 進階/簡易 查詢切換按鈕 (保持在下方) */}
+            {/* 進階/簡易 查詢切換按鈕 */}
             <div className="input-group">
               <button
                 type="button"
                 className="btn-secondary query-mode-button"
                 onClick={toggleQueryMode}
               >
-                {isAdvancedQuery ? '簡易設定' : '進階設定'}
+                {/* 使用 t() 翻譯按鈕文字 */}
+                {isAdvancedQuery ? t('priceAnalysis.form.switchToSimple') : t('priceAnalysis.form.switchToAdvanced')}
               </button>
             </div>
 
@@ -544,21 +619,21 @@ export function PriceAnalysis() {
               type="submit"
               disabled={loading || !turnstileToken}
             >
-              {loading ? (isPending ? '處理數據中...' : '分析中...') : turnstileToken ? '開始分析' : '請完成下方驗證'}
+              {/* 使用 t() 翻譯按鈕文字 */}
+              {loading
+                ? (isPending ? t('priceAnalysis.form.buttonProcessing') : t('priceAnalysis.form.buttonAnalyzing'))
+                : turnstileToken
+                  ? t('priceAnalysis.form.buttonStartAnalysis')
+                  : t('priceAnalysis.form.buttonCompleteVerification')
+              }
             </button>
             {turnstileVisible && (
               <div className="turnstile-container">
                 <Turnstile
                   sitekey={process.env.REACT_APP_TURNSTILE_SITE_KEY}
-                  onSuccess={handleTurnstileSuccess}
-                  onError={() => {
-                    setTurnstileToken(null);
-                    handleApiError(new Error('驗證失敗，請重試'), showToast);
-                  }}
-                  onExpire={() => {
-                    setTurnstileToken(null);
-                    handleApiError(new Error('驗證已過期，請重新驗證'), showToast);
-                  }}
+                  onSuccess={handleTurnstileVerify}
+                  onError={handleTurnstileError}
+                  onExpire={handleTurnstileExpire}
                   refreshExpired="auto"
                 />
               </div>
@@ -574,21 +649,25 @@ export function PriceAnalysis() {
               <div className="chart-header">
                 <div className="analysis-result">
                   <div className="analysis-item">
-                    <span className="analysis-label">股票代碼</span>
+                    {/* 使用 t() 翻譯 label */}
+                    <span className="analysis-label">{t('priceAnalysis.result.stockCode')}</span>
                     <span className="analysis-value">
                       {displayedStockCode}
                     </span>
                   </div>
                   <div className="analysis-item">
-                    <span className="analysis-label">股票價格</span>
+                    {/* 使用 t() 翻譯 label */}
+                    <span className="analysis-label">{t('priceAnalysis.result.stockPrice')}</span>
                     <span className="analysis-value">
                       ${formatPrice(analysisResult.price)}
                     </span>
                   </div>
                   <div className="analysis-item">
-                    <span className="analysis-label">市場情緒</span>
-                    <span className={`analysis-value sentiment-${analysisResult.sentiment}`}>
-                      {analysisResult.sentiment}
+                    {/* 使用 t() 翻譯 label */}
+                    <span className="analysis-label">{t('priceAnalysis.result.marketSentiment')}</span>
+                    {/* 使用 sentimentKey 設定 class，使用 sentimentValue 顯示文字 */}
+                    <span className={`analysis-value sentiment-${analysisResult.sentimentKey || 'neutral'}`}>
+                      {analysisResult.sentimentValue}
                     </span>
                   </div>
                 </div>
@@ -596,22 +675,24 @@ export function PriceAnalysis() {
             )}
             <div className="chart-content">
               {/* 圖表 Tabs */}
-              {(chartData || ulbandData || loading) && ( // 只有在有數據或載入中才顯示 Tabs
+              {(chartData || ulbandData || loading) && (
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
                   <div className="chart-tabs">
                     <button
                       className={`chart-tab ${activeChart === 'sd' ? 'active' : ''}`}
                       onClick={() => handleChartSwitch('sd')}
-                      disabled={loading} // 載入中禁用切換
+                      disabled={loading}
                     >
-                      樂活五線譜
+                      {/* 使用 t() 翻譯 Tab 文字 */}
+                      {t('priceAnalysis.chart.tabs.sd')}
                     </button>
                     <button
                       className={`chart-tab ${activeChart === 'ulband' ? 'active' : ''}`}
                       onClick={() => handleChartSwitch('ulband')}
-                      disabled={loading} // 載入中禁用切換
+                      disabled={loading}
                     >
-                      樂活通道
+                      {/* 使用 t() 翻譯 Tab 文字 */}
+                      {t('priceAnalysis.chart.tabs.ulband')}
                     </button>
                   </div>
                 </div>
@@ -622,8 +703,8 @@ export function PriceAnalysis() {
                 <div className="chart-loading-indicator">
                   <div className="loading-spinner">
                     <div className="spinner"></div>
-                    {/* 根據 isPending 顯示不同文本 */}
-                    <span>{isPending ? '圖表生成中...' : 'Loading...'}</span>
+                    {/* 使用 t() 翻譯 Loading 文字 */}
+                    <span>{isPending ? t('priceAnalysis.chart.loading.generating') : t('priceAnalysis.chart.loading.fetching')}</span>
                   </div>
                 </div>
               )}
@@ -640,12 +721,11 @@ export function PriceAnalysis() {
                 <MemoizedULBandChart data={ulbandData} />
               )}
 
-              {/* --- 修改：將佔位符移入 chart-content --- */}
-              {/* 可選：當沒有數據且不在載入時顯示佔位符 */}
+              {/* 佔位符 */}
               {!loading && !chartData && !ulbandData && (
-                 <div className="chart-placeholder">請輸入條件並點擊「開始分析」。</div>
+                 // 使用 t() 翻譯佔位符文字
+                 <div className="chart-placeholder">{t('priceAnalysis.prompt.enterSymbol')}</div>
               )}
-              {/* --- 修改結束 --- */}
             </div>
           </div>
         </div>
@@ -653,46 +733,22 @@ export function PriceAnalysis() {
 
       {/* 將 ExpandableDescription 移到 dashboard 下方 */}
       <MemoizedExpandableDescription
+        // 使用 t() 翻譯 shortDescription (注意保留連結)
         shortDescription={
           <>
-            分析當前股價是否過度樂觀或悲觀。利用股價均值回歸的統計特性，追蹤長期趨勢、判斷股價所處位置。<br />
-            詳細使用方式請參考文章：
+            {t('priceAnalysis.explanation.shortDescription')}
+            <br />
+            {t('priceAnalysis.explanation.readMorePrefix')}
             <a href="https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92" target="_blank" rel="noopener noreferrer">
-              用樂活五線譜分析價格趨勢與情緒
+              {t('priceAnalysis.explanation.readMoreLinkText')}
             </a>
           </>
         }
-        sections={[
-          {
-            title: "樂活五線譜",
-            type: "list",
-            content: [
-              "中間的趨勢線為長期移動平均線，是評估股價長期趨勢的基準，以此為基準，上下分別添加兩個標準差。",
-              "愈遠離中間的趨勢線，代表股價愈遠離長期平均值，回歸趨勢線的機率將逐漸增加。",
-              "當股價觸及最上緣，表示股價短期內強烈超買，市場極度樂觀，有回調的風險。",
-              "當股價觸及最下緣，表示股價短期內強烈超賣，市場極度悲觀，有反彈的機會。",
-            ],
-          },
-          {
-            title: "樂活通道",
-            type: "list",
-            content: [
-              "樂活通道是更敏感的指標，用來輔助判斷短期內的超買超賣。",
-              "當股價突破樂活通道上緣時，表示短期可能過熱。",
-              "當股價跌破樂活通道下緣時，表示短期可能過冷。",
-            ],
-          },
-          {
-            title: "兩者搭配使用",
-            type: "list",
-            content: [
-              "當股價觸及五線譜的最上緣或是最下緣時，若同時也突破了樂活通道，可能代表趨勢的延續，可以等回到通道內再進行操作。",
-              "建議使用在指數型ETF或具有趨勢性的大型股票，搭配基本面分析，不應該單獨作為買賣依據。"
-            ]
-          },
-        ]}
-        expandButtonText="了解更多"
-        collapseButtonText="收合"
+        // 使用 useMemo 創建的 sections
+        sections={expandableSections}
+        // 使用 t() 翻譯按鈕文字
+        expandButtonText={t('common.learnMore')} // 假設有通用 key
+        collapseButtonText={t('common.collapse')} // 假設有通用 key
       />
 
       {/* 條件式渲染 Toast 元件 */}

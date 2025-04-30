@@ -3,8 +3,10 @@ import { useAuth } from '../Auth/useAuth'; // 更新路徑
 import { Dialog } from '../Common/Dialog/Dialog';
 import { useRef, useEffect } from 'react';
 import { Analytics } from '../../utils/analytics';
+import { useTranslation } from 'react-i18next';
 
 export function AuthDialog() {
+    const { t } = useTranslation();
     const { dialog, closeDialog } = useDialog();
     const { loading, renderGoogleButton, user } = useAuth();
     const buttonRef = useRef(null);
@@ -69,13 +71,13 @@ export function AuthDialog() {
         <div className="auth-dialog-description">
             <img 
                 src="/images/watchlist-preview.png" 
-                alt="追蹤清單功能預覽"
+                alt={t('authDialog.previewAlt')}
                 className="auth-dialog-preview-image"
             />
             <ul className="feature-list">
-                <li>🎯 追蹤感興趣的股票</li>
-                <li>📊 一次分析多個結果</li>
-                <li>💬 由AI客服回答問題</li>
+                <li>{t('authDialog.feature1')}</li>
+                <li>{t('authDialog.feature2')}</li>
+                <li>{t('authDialog.feature3')}</li>
             </ul>
         </div>
     );
@@ -84,13 +86,13 @@ export function AuthDialog() {
         <Dialog
             open={dialog.isOpen}
             onClose={handleClose}
-            title={dialog.props?.customTitle || "🚀 登入就能使用完整功能！"}
+            title={dialog.props?.customTitle || t('authDialog.title')}
             titleClassName="auth-dialog-title"
         >
             <div className="auth-dialog-content">
                 {loading ? (
                     <div className="signin-dialog__loading">
-                        載入中...
+                        {t('authDialog.loading')}
                     </div>
                 ) : (
                     <div 

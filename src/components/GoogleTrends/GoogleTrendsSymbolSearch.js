@@ -2,12 +2,14 @@ import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
 import debounce from 'lodash/debounce';
+import { useTranslation } from 'react-i18next';
 import { getErrorMessage } from '../../utils/errorHandler';
 import { fetchStockSuggestions } from './googleTrends.service';
 import '../Loading/Loading.css';
 import './GoogleTrendsSymbolSearch.css';
 
 const GoogleTrendsSymbolSearch = ({ onSearch }) => {
+    const { t } = useTranslation();
     const searchRef = useRef(null);
     const [searchState, setSearchState] = useState({
         keyword: '',
@@ -118,7 +120,7 @@ const GoogleTrendsSymbolSearch = ({ onSearch }) => {
                     type="text"
                     value={searchState.keyword}
                     onChange={handleSearchInput}
-                    placeholder="輸入股票代號"
+                    placeholder={t('googleTrendsSearch.placeholder')}
                     className="search-input"
                 />
             </div>
@@ -127,17 +129,17 @@ const GoogleTrendsSymbolSearch = ({ onSearch }) => {
                     {searchState.loading ? (
                         <div className="loading-spinner">
                             <div className="spinner"></div>
-                            <span>搜尋中...</span>
+                            <span>{t('googleTrendsSearch.searching')}</span>
                         </div>
                     ) : searchState.error ? (
                         <div className="search-empty-state">
-                            <span className="icon">⚠️</span>
+                            <span className="icon">{t('googleTrendsSearch.errorIcon')}</span>
                             <span className="message">{searchState.error}</span>
                         </div>
                     ) : searchState.results.length === 0 && searchState.keyword.trim() ? (
                         <div className="search-empty-state">
-                            <span className="icon">🔍</span>
-                            <span className="message">找不到符合的股票</span>
+                            <span className="icon">{t('googleTrendsSearch.noResultsIcon')}</span>
+                            <span className="message">{t('googleTrendsSearch.noResults')}</span>
                         </div>
                     ) : searchState.results.length > 0 ? (
                         <div className="search-results">

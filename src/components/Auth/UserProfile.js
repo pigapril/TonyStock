@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
 import { Analytics } from '../../utils/analytics';
 import './styles/UserProfile.css';
+import { useTranslation } from 'react-i18next'; // 1. 引入 useTranslation
 
 export const UserProfile = () => {
+    const { t } = useTranslation(); // 2. 使用 hook
     const { user, logout, loading } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef(null);
@@ -53,11 +55,11 @@ export const UserProfile = () => {
                 onKeyPress={handleKeyPress}
                 aria-expanded={isOpen}
                 aria-haspopup="true"
-                aria-label="開啟使用者選單"
+                aria-label={t('userProfile.openMenuAria')}
             >
                 <img 
                     src={user.avatarUrl} 
-                    alt={`${user.username} 的頭像`}
+                    alt={t('userProfile.avatarAlt', { username: user.username })}
                     className="user-profile__avatar"
                 />
                 <span className="user-profile__name">{user.username}</span>
@@ -67,7 +69,7 @@ export const UserProfile = () => {
                 <div 
                     className="user-profile__menu"
                     role="menu"
-                    aria-label="使用者選單"
+                    aria-label={t('userProfile.menuAria')}
                 >
                     <div className="user-profile__info">
                         <p className="user-profile__name">{user.username}</p>
@@ -78,7 +80,7 @@ export const UserProfile = () => {
                         onClick={handleLogout}
                         role="menuitem"
                     >
-                        登出
+                        {t('userProfile.logout')}
                     </button>
                 </div>
             )}

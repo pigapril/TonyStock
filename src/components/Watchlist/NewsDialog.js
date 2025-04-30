@@ -1,7 +1,9 @@
 import React from 'react';
 import { Dialog } from '../Common/Dialog/Dialog';
+import { useTranslation } from 'react-i18next';
 
 function NewsDialog({ news, open, onClose }) {
+    const { t } = useTranslation();
     if (!news) return null;
 
     const formatDate = (dateString) => {
@@ -19,7 +21,7 @@ function NewsDialog({ news, open, onClose }) {
         <Dialog 
             open={open} 
             onClose={onClose}
-            title="新聞詳情"
+            title={t('watchlist.newsDialog.title')}
             maxWidth="md"
         >
             <div className="news-dialog-content" style={{ 
@@ -57,7 +59,7 @@ function NewsDialog({ news, open, onClose }) {
                     rel="noopener noreferrer"
                     className="news-dialog-link"
                 >
-                    閱讀完整新聞 →
+                    {t('watchlist.newsDialog.readFullStory')}
                 </a>
             </div>
         </Dialog>

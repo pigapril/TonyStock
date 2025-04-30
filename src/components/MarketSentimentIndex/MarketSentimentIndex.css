@@ -152,9 +152,10 @@
 
 .tabs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* 減小最小寬度 */
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 減小最小寬度 */
   gap: 8px; /* 稍微減小間距 */
   margin-bottom: 20px;
+  justify-content: center; /* 水平分布 */
 }
 
 .tab-button {
@@ -346,8 +347,9 @@
   align-items: center;
   margin: 10px auto;
   overflow: hidden;
-  width: fit-content;
+  width: 95%;
 }
+
 
 .view-mode-selector-container {
   display: flex;
@@ -403,23 +405,24 @@
 }
 
 /* 新增情緒文字顏色 */
-.analysis-value.sentiment-極度恐懼 {
+/* 更新：使用英文鍵名 */
+.analysis-value.sentiment-extremeFear {
   color: #143829; /* 極度恐懼 - 深綠色 */
 }
 
-.analysis-value.sentiment-恐懼 {
+.analysis-value.sentiment-fear {
   color: #2B5B3F; /* 恐懼 - 綠色 */
 }
 
-.analysis-value.sentiment-中性 {
+.analysis-value.sentiment-neutral {
   color: #E9972D; /* 中性 - 黃色 */
 }
 
-.analysis-value.sentiment-貪婪 {
+.analysis-value.sentiment-greed {
   color: #C4501B; /* 貪婪 - 橘色 */
 }
 
-.analysis-value.sentiment-極度貪婪 {
+.analysis-value.sentiment-extremeGreed {
   color: #A0361B; /* 極度貪婪 - 紅色 */
 }
 

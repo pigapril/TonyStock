@@ -1,16 +1,19 @@
 import React, { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import twFlag from '../../../../assets/flags/tw-flag.svg';
 import usFlag from '../../../../assets/flags/us-flag.svg';
 import '../../styles/StockHeader.css';
 
 export const StockHeader = memo(function StockHeader({ stock }) {
+    const { t } = useTranslation();
+
     const renderLogo = () => {
         if (stock.logo === 'TW') {
             return (
                 <div className="default-logo tw-stock">
                     <img 
                         src={twFlag}
-                        alt="Taiwan Flag"
+                        alt={t('watchlist.stockCard.header.twFlagAlt')}
                         className="flag-icon"
                     />
                 </div>
@@ -20,7 +23,7 @@ export const StockHeader = memo(function StockHeader({ stock }) {
                 <div className="default-logo us-etf">
                     <img 
                         src={usFlag}
-                        alt="US Flag"
+                        alt={t('watchlist.stockCard.header.usFlagAlt')}
                         className="flag-icon"
                     />
                 </div>
@@ -29,10 +32,11 @@ export const StockHeader = memo(function StockHeader({ stock }) {
             return (
                 <img 
                     src={stock.logo} 
-                    alt={`${stock.symbol} logo`}
+                    alt={t('watchlist.stockCard.header.logoAlt', { symbol: stock.symbol })}
                     className="stock-logo-img"
                     onError={(e) => {
                         e.target.src = '/default-stock-logo.png';
+                        e.target.alt = t('watchlist.stockCard.header.logoAlt', { symbol: stock.symbol });
                     }}
                 />
             );

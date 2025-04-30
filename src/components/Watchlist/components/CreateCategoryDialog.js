@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog } from '../../Common/Dialog/Dialog';
 import '../styles/CreateCategoryDialog.css';
+import { useTranslation } from 'react-i18next';
 
 export const CreateCategoryDialog = ({ open, onClose, onSubmit }) => {
+    const { t } = useTranslation();
     const [name, setName] = useState('');
     const [error, setError] = useState('');
     const MAX_LENGTH = 26;
@@ -23,11 +25,11 @@ export const CreateCategoryDialog = ({ open, onClose, onSubmit }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (name.trim().length === 0) {
-            setError('分類名稱不能為空');
+            setError(t('watchlist.categoryDialogErrors.emptyName'));
             return;
         }
         if (getStringLength(name) > MAX_LENGTH) {
-            setError(`名稱太長啦，縮短一點！`);
+            setError(t('watchlist.categoryDialogErrors.nameTooLongGeneric'));
             return;
         }
         onSubmit(name.trim());
@@ -44,26 +46,26 @@ export const CreateCategoryDialog = ({ open, onClose, onSubmit }) => {
             setName(value);
             setError('');
         } else {
-            setError(`名稱太長啦，縮短一點！`);
+            setError(t('watchlist.categoryDialogErrors.nameTooLongGeneric'));
         }
     };
 
     return (
-        <Dialog open={open} onClose={onClose} title="新增分類">
+        <Dialog open={open} onClose={onClose} title={t('watchlist.createCategoryDialog.title')}>
             <form onSubmit={handleSubmit} className="create-category-form">
                 <div className="input-container">
                     <input
                         type="text"
                         value={name}
                         onChange={handleChange}
-                        placeholder="請輸入分類名稱"
+                        placeholder={t('watchlist.createCategoryDialog.placeholder')}
                         required
                     />
                 </div>
                 {error && <div className="error-message">{error}</div>}
                 <div className="dialog-actions">
-                    <button type="submit">確認</button>
-                    <button type="button" onClick={onClose}>取消</button>
+                    <button type="submit">{t('watchlist.createCategoryDialog.confirmButton')}</button>
+                    <button type="button" onClick={onClose}>{t('watchlist.createCategoryDialog.cancelButton')}</button>
                 </div>
             </form>
         </Dialog>

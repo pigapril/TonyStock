@@ -22,9 +22,11 @@ import { formatPrice, isNearEdge } from '../../utils/priceUtils';
 import { useStocks } from './hooks/useStocks';
 import { InfoTool } from '../Common/InfoTool/InfoTool';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 // Watchlist 主元件
 export function WatchlistContainer() {
+    const { t } = useTranslation();
     const { user, isAuthenticated } = useAuth();
     const { toast, showToast, hideToast } = useToastManager();
     
@@ -105,7 +107,7 @@ export function WatchlistContainer() {
         
         // 特別處理身份驗證相關錯誤
         if (errorData.errorCode === 'UNAUTHORIZED' || errorData.errorCode === 'SESSION_EXPIRED') {
-            showToast('請重新登入', 'error');
+            showToast(t('protectedRoute.loginRequired'), 'error');
             return;
         }
         
@@ -116,7 +118,7 @@ export function WatchlistContainer() {
             error: errorData,
             userId: user?.id  // 添加用戶 ID 用於追
         });
-    }, [showToast, user]);
+    }, [showToast, user, t]);
 
     const handleTabChange = (categoryId) => {
         setActiveTab(categoryId);
@@ -146,7 +148,7 @@ export function WatchlistContainer() {
     // 檢查用戶是否已登入
     useEffect(() => {
         if (!isAuthenticated) {
-            showToast('請先登入後再使用此功能', 'warning');
+            showToast(t('watchlist.loginRequiredMessage'), 'warning');
             return;
         }
         
@@ -165,17 +167,17 @@ export function WatchlistContainer() {
             } catch (error) {
                 if (retryCount < maxRetries) {
                     retryCount++;
-                    showToast(`載入中，請稍候... (${retryCount}/${maxRetries})`, 'info');
+                    showToast(t('watchlist.loadingRetry', { count: retryCount, max: maxRetries }), 'info');
                     // 延遲 5 秒後重試
                     setTimeout(initializeCategories, 5000);
                 } else {
-                    setError('載入失敗，請重新整理頁面');
+                    setError(t('watchlist.loadFailed'));
                 }
             }
         };
 
         initializeCategories();
-    }, [isAuthenticated, loadCategories, showToast, activeTab]);
+    }, [isAuthenticated, loadCategories, showToast, activeTab, t]);
 
     const toggleEditMode = () => {
         setIsEditing(prev => !prev);
@@ -236,8 +238,8 @@ export function WatchlistContainer() {
                     {JSON.stringify({
                         "@context": "https://schema.org",
                         "@type": "WebPage",
-                        "name": "我的追蹤清單",
-                        "description": "追蹤您感興趣的股票，掌握價格情緒位階。方便同時查看多個股票在長期趨勢之下的價格位階，避免買在高點、賣在低點。",
+                        "name": t('watchlist.jsonLd.name'),
+                        "description": t('watchlist.jsonLd.description'),
                         "url": "https://sentimentinsideout.com/watchlist",
                         "potentialAction": {
                             "@type": "SearchAction",
@@ -248,22 +250,22 @@ export function WatchlistContainer() {
                 </script>
             </Helmet>
             <div className="watchlist-container">
-                <h1>我的追蹤清單</h1>
+                <h1>{t('pageTitle.watchlist')}</h1>
                 {error && (
                     <div className="error-message">
                         {error}
-                        <button onClick={() => setError(null)}>關閉</button>
+                        <button onClick={() => setError(null)}>{t('common.close')}</button>
                     </div>
                 )}
                 
                 {!isAuthenticated ? (
                     <div className="auth-required">
-                        <p>請先登入後再使用此功能</p>
+                        <p>{t('watchlist.loginRequiredMessage')}</p>
                     </div>
                 ) : isLoading ? (
                     <div className="loading-spinner">
                         <div className="spinner"></div>
-                        <p>追蹤清單一次分析多個標的，若長時間未查看會需要稍微等候，謝謝你的耐心</p>
+                        <p>{t('watchlist.loadingMessage')}</p>
                     </div>
                 ) : (
                     <>
@@ -288,13 +290,13 @@ export function WatchlistContainer() {
                                             <button
                                                 className={`edit-mode-button ${isEditing ? 'active' : ''}`}
                                                 onClick={toggleEditMode}
-                                                title={isEditing ? '完成編輯' : '編輯模式'}
+                                                title={isEditing ? t('watchlist.editMode.finish') : t('watchlist.editMode.start')}
                                             >
                                                 <FaEdit />
                                             </button>
                                             <div className="info-tool-wrapper">
                                                 <InfoTool
-                                                    content="添加股票後，將自動根據股票長期(3.5年)趨勢，計算出極度悲觀(綠色)和極度樂觀(紅色)價格，方便查看股票當前價格所在的情緒位階"
+                                                    content={t('watchlist.infoTooltip')}
                                                     position="bottom-right"
                                                     className="watchlist-infotool"
                                                 />

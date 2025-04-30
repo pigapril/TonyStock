@@ -15,8 +15,10 @@ import creditcard_qrcode from '../../assets/images/sponsor-us/creditcard_qrcode.
 import wiretransfer_logo from '../../assets/images/sponsor-us/wiretransfer_logo.png';
 import wiretransfer_qrcode from '../../assets/images/sponsor-us/wiretransfer_qrcode.png';
 import PageContainer from '../PageContainer/PageContainer';
+import { useTranslation } from 'react-i18next';
 
 const SponsorUs = () => {
+  const { t } = useTranslation();
   const [expandedCard, setExpandedCard] = useState(null);
   const [isCollapsing, setIsCollapsing] = useState(null); // 新增一個 state 來追蹤是否正在收合
   const cardRefs = useRef([]); // 使用 useRef 來儲存卡片的 ref
@@ -99,24 +101,20 @@ const SponsorUs = () => {
     */
     
     {
-      name: '信用卡',
+      name: t('sponsorUs.methodCreditCard'),
       logo: creditcard_logo,
       image: creditcard_qrcode,
       description: (
-        <>
-          請<a href="https://p.ecpay.com.tw/2820E78" target="_blank" rel="noopener noreferrer">點擊連結</a>或掃描 QR Code。
-        </>
+        <span dangerouslySetInnerHTML={{ __html: t('sponsorUs.methodDescriptionHtml', { link: 'https://p.ecpay.com.tw/2820E78' }) }} />
       ),
       link: 'https://p.ecpay.com.tw/2820E78'
     },
     {
-      name: '銀行轉帳',
+      name: t('sponsorUs.methodWireTransfer'),
       logo: wiretransfer_logo,
       image: wiretransfer_qrcode,
       description: (
-        <>
-          請<a href="https://p.ecpay.com.tw/FBECD48" target="_blank" rel="noopener noreferrer">點擊連結</a>或掃描 QR Code。
-        </>
+        <span dangerouslySetInnerHTML={{ __html: t('sponsorUs.methodDescriptionHtml', { link: 'https://p.ecpay.com.tw/FBECD48' }) }} />
       ),
       link: 'https://p.ecpay.com.tw/FBECD48'
     },
@@ -130,7 +128,7 @@ const SponsorUs = () => {
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
-    alert('已複製帳號：' + text);
+    alert(t('sponsorUs.copySuccessAlert', { text }));
   };
 
   // 新增一個函數來更新捐款人列表
@@ -164,8 +162,8 @@ const SponsorUs = () => {
   const sponsorUsJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "贊助我們",
-    "description": "有你/妳的幫助，網站將能持續運作、提供簡單實用的投資工具，造福更多人。",
+    "name": t('sponsorUs.pageTitle'),
+    "description": t('sponsorUs.pageDescription'),
     "url": "https://sentimentinsideout.com/sponsor-us",
     "potentialAction": {
       "@type": "DonateAction",
@@ -178,9 +176,9 @@ const SponsorUs = () => {
 
   return (
     <PageContainer
-      title="贊助我們"
-      description="有你/妳的幫助，Sentiment Inside Out 將能持續運作、提供簡單實用的投資工具，造福更多投資人。您的贊助將支持網站維護和發展。"
-      keywords="贊助網站,支持投資工具,投資分析平台,市場情緒分析"
+      title={t('sponsorUs.pageTitle')}
+      description={t('sponsorUs.pageDescription')}
+      keywords={t('sponsorUs.keywords')}
       ogImage="/images/sponsor-og.png"
       ogUrl="https://sentimentinsideout.com/sponsor-us"
       ogType="website"
@@ -192,20 +190,27 @@ const SponsorUs = () => {
         <div className="sponsor-us-container">
           {/* 主要圖片區塊 */}
           <div className="main-image-section">
-            <img src={sponsorImage} alt="小豬撲滿" />
+            <img src={sponsorImage} alt={t('sponsorUs.pageTitle')} />
           </div>
 
           {/* 文字說明區塊 */}
           <div className="text-description-section">
-            <h1>贊助網站，一起幫助更多人</h1>
+            <h1>{t('sponsorUs.heading')}</h1>
             <p>
-              Sentiment Inside Out 網站的建置、投資工具和內容創作、防範網路攻擊...等等，<br></br>
-              背後其實只有一個人在維護。<br></br><br></br>
-              我希望藉由分享這些免費、簡單的工具，<br></br>幫助更多人在投資上獲得超越大盤的回報。<br></br><br></br>
-              但要維持網站的運作，<br></br>每一天都要付出一定的費用和時間，<br></br>長期下來其實也是不小的負擔。<br></br><br></br>
-              因此我想誠摯地邀請你/妳，<br></br>一起和我幫助更多人，<br></br>讓這個網站能繼續營運下去;<br></br>
-              或者就當作是請我喝個咖啡、吃個飯，<br></br>我也會非常感激。<br></br><br></br>
-              不論有無贊助，<br></br>都祝福你/妳投資順利、一切都更好！
+              {t('sponsorUs.intro1')}<br />
+              {t('sponsorUs.intro2')}<br /><br />
+              {t('sponsorUs.intro3')}<br />
+              {t('sponsorUs.intro4')}<br /><br />
+              {t('sponsorUs.intro5')}<br />
+              {t('sponsorUs.intro6')}<br />
+              {t('sponsorUs.intro7')}<br /><br />
+              {t('sponsorUs.intro8')}<br />
+              {t('sponsorUs.intro9')}<br />
+              {t('sponsorUs.intro10')}<br />
+              {t('sponsorUs.intro11')}<br />
+              {t('sponsorUs.intro12')}<br /><br />
+              {t('sponsorUs.intro13')}<br />
+              {t('sponsorUs.intro14')}
             </p>
           </div>
 
@@ -222,7 +227,7 @@ const SponsorUs = () => {
 
           {/* 多個小卡片展示收款方式 */}
           <div className="donation-methods-section">
-            <h2>請選擇以下贊助方式</h2>
+            <h2>{t('sponsorUs.methodsHeading')}</h2>
             <div className="donation-cards-container">
               {donationMethods.map((method, index) => (
                 <div className="donation-card-wrapper" key={index}>

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './InfoTool.css';
 
 const InfoTool = ({ 
@@ -7,6 +8,7 @@ const InfoTool = ({
     icon = 'ⓘ',
     width = 'auto'
 }) => {
+    const { t } = useTranslation();
     const [isVisible, setIsVisible] = useState(false);
     const [adjustedPosition, setAdjustedPosition] = useState(position);
     const tooltipRef = useRef(null);
@@ -93,7 +95,7 @@ const InfoTool = ({
                 onMouseLeave={handleMouseLeave}
                 role="button"
                 tabIndex={0}
-                aria-label="更多資訊"
+                aria-label={t('infoTool.moreInfoAriaLabel')}
             >
                 {icon}
             </span>

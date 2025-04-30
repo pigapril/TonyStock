@@ -34,12 +34,16 @@
     margin-top: 5px;
 }
 
-.analysis-item {
+.indicator-item.analysis-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 10px;
+    white-space: nowrap;
+    margin: 10px 5%;
 }
+
+
 
 .interactive-label {
     text-decoration: underline dotted #007bff; /* 使用藍色虛線底線 */
@@ -50,22 +54,23 @@
 }
 
 /* 新增情緒文字顏色 */
-.analysis-value.sentiment-極度恐懼 {
+/* 更新：使用英文鍵名 */
+.analysis-value.sentiment-extremeFear {
   color: #143829; /* 極度恐懼 - 深綠色 */
 }
 
-.analysis-value.sentiment-恐懼 {
+.analysis-value.sentiment-fear {
   color: #2B5B3F; /* 恐懼 - 綠色 */
 }
 
-.analysis-value.sentiment-中性 {
+.analysis-value.sentiment-neutral {
   color: #E9972D; /* 中性 - 黃色 */
 }
 
-.analysis-value.sentiment-貪婪 {
+.analysis-value.sentiment-greed {
   color: #C4501B; /* 貪婪 - 橘色 */
 }
 
-.analysis-value.sentiment-極度貪婪 {
+.analysis-value.sentiment-extremeGreed {
   color: #A0361B; /* 極度貪婪 - 紅色 */
 }

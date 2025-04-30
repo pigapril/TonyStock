@@ -1,6 +1,7 @@
 import React from 'react';
 import './PageContainer.css';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 const PageContainer = ({ 
   children, 
@@ -14,11 +15,13 @@ const PageContainer = ({
   twitterImage,
   jsonLd
 }) => {
-  const defaultTitle = "Sentiment Inside Out - 市場情緒分析";
-  const defaultDescription = "掌握市場情緒，克服投資上的恐懼和貪婪心態。";
-  const defaultKeywords = "市場情緒,情緒指標,投資策略,台股分析,情緒追蹤";
+  const { t } = useTranslation();
 
-  const pageTitle = title ? `${title} | ${defaultTitle}` : defaultTitle;
+  const defaultTitle = t('pageContainer.defaultTitle');
+  const defaultDescription = t('pageContainer.defaultDescription');
+  const defaultKeywords = t('pageContainer.defaultKeywords');
+
+  const pageTitle = title ? `${title} | ${t('pageContainer.defaultTitle')}` : defaultTitle;
   const pageDescription = description || defaultDescription;
   const pageKeywords = keywords || defaultKeywords;
   
