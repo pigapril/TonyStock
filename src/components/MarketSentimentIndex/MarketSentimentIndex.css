@@ -349,6 +349,16 @@
   overflow: hidden;
   width: 95%;
 }
+@media (max-width: 768px) {
+  .indicator-item {
+    padding:20px 15px;
+  }
+  .indicator-item .analysis-result {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+}
 
 
 .view-mode-selector-container {

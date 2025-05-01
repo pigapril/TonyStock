@@ -16,6 +16,33 @@
   .indicator-chart {
     height: 200px; /* 在小螢幕上調整圖表高度 */
   }
+
+  /* 移除或註解掉之前對父元素的修改 */
+  /* .indicator-item.analysis-item {
+    white-space: normal;
+    word-break: break-word;
+  } */
+
+  /* 更新：使用正確的後代選擇器，並重置可能衝突的樣式 */
+  .indicator-item .analysis-item .analysis-label { /* 正確的後代選擇器 */
+    white-space: normal !important; /* 允許文字換行 */
+    word-break: break-word !important; /* 允許長單字斷詞換行 */
+    /* text-transform: none !important; 重置 text-transform */
+    /* letter-spacing: normal !important; 重置 letter-spacing */
+    text-align: center; /* 可選：讓換行後的文字居中 */
+    /* min-width: 60px; 可選：給標籤一個最小寬度 */
+    /* 移除 font-size 覆蓋，讓 PriceAnalysis.css 的 font-size 生效 */
+    /* font-size: 0.85em; */ /* 如果需要覆蓋 PriceAnalysis 的字體大小，可以取消註解 */
+  }
+
+  /* 新增：讓 analysis-value 也能換行 */
+  .indicator-item .analysis-item .analysis-value {
+    white-space: normal !important; /* 允許文字/數字換行 */
+    word-break: break-word !important; /* 對於數字或無空格字串，強制斷開 */
+    display: block; /* 視為塊級元素 */
+    width: 100%; /* 佔滿父容器寬度 */
+    text-align: center; /* 保持居中 */
+  }
 }
 
 .tooltip {
@@ -39,11 +66,9 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 10px;
-    white-space: nowrap;
+    /* white-space: nowrap; */ /* 考慮移除或註解掉這裡的 nowrap，因為子元素需要換行 */
     margin: 10px 5%;
 }
-
-
 
 .interactive-label {
     text-decoration: underline dotted #007bff; /* 使用藍色虛線底線 */

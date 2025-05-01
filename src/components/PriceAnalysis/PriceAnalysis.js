@@ -41,6 +41,13 @@ function getTimeUnit(dates) {
 const MemoizedULBandChart = React.memo(ULBandChart);
 const MemoizedExpandableDescription = React.memo(ExpandableDescription);
 
+// 新增輔助函數：從翻譯鍵提取後綴
+const getSentimentSuffix = (key) => {
+  if (!key) return 'neutral'; // 如果沒有 key，返回 'neutral'
+  const parts = key.split('.');
+  return parts[parts.length - 1]; // 返回最後一部分，例如 'pessimism'
+};
+
 /**
  * 價格標準差分析頁面 (PriceAnalysisPage)
  *
@@ -136,17 +143,23 @@ export function PriceAnalysis() {
   };
 
   const handleTurnstileError = (response) => {
-    console.error("Turnstile error:", response);
-    // 將 t 傳遞給 handleApiError
-    handleApiError(new Error(t('priceAnalysis.toast.turnstileFailed')), showToast, t);
+    console.error("Turnstile error:", response); // 保留日誌以供調試
+    // 建立帶有 errorCode 的錯誤物件，並使用現有的翻譯鍵
+    const turnstileError = new Error(t('errors.TURNSTILE_ERROR'));
+    turnstileError.errorCode = 'TURNSTILE_ERROR'; // 關鍵：添加 errorCode 屬性
+    // 將新的錯誤物件和 t 傳遞給 handleApiError
+    handleApiError(turnstileError, showToast, t);
     setTurnstileToken(null); // 清除 token
     setTurnstileVisible(true); // 保持可見以便重試
   };
 
   const handleTurnstileExpire = () => {
     console.warn("Turnstile expired");
-    // 將 t 傳遞給 handleApiError
-    handleApiError(new Error(t('priceAnalysis.toast.turnstileExpired')), showToast, t);
+    // 建立帶有 errorCode 的錯誤物件，並使用現有的翻譯鍵
+    const turnstileExpiredError = new Error(t('errors.TURNSTILE_EXPIRED'));
+    turnstileExpiredError.errorCode = 'TURNSTILE_EXPIRED'; // 關鍵：添加 errorCode 屬性
+    // 將新的錯誤物件和 t 傳遞給 handleApiError
+    handleApiError(turnstileExpiredError, showToast, t);
     setTurnstileToken(null); // 清除 token
     setTurnstileVisible(true); // 顯示以便重新驗證
   };
@@ -155,9 +168,14 @@ export function PriceAnalysis() {
   const fetchStockData = useCallback(async (stock, yrs, testDate, bypassTurnstile = false) => {
     // 驗證 Turnstile Token
     if (!bypassTurnstile && !turnstileToken) {
-      // 使用 t() 翻譯錯誤訊息，並傳遞 t 給 handleApiError
-      handleApiError(new Error(t('priceAnalysis.toast.turnstileRequired')), showToast, t);
-      setLoading(false); // 結束 Loading
+      // 可以直接調用 showToast 或通過 handleApiError
+      // 方式一：直接調用
+      // showToast(t('errors.TURNSTILE_REQUIRED'), 'error');
+      // 方式二：通過 handleApiError (如果希望統一追蹤)
+      const turnstileError = new Error(t('errors.TURNSTILE_REQUIRED'));
+      turnstileError.errorCode = 'TURNSTILE_REQUIRED'; // 添加 errorCode
+      handleApiError(turnstileError, showToast, t);
+      setLoading(false);
       return;
     }
 
@@ -238,7 +256,7 @@ export function PriceAnalysis() {
       // 注意：如果 transition 非常慢，Loading 可能會比數據出現早消失
       setLoading(false);
     }
-  }, [turnstileToken, showToast, startTransition, t]);
+  }, [turnstileToken, showToast, startTransition, t, requestAdDisplay, isAdCooldownActive, analysisClickCount]); // 確保 t 在依賴項中
 
   // 表單送出
   const handleSubmit = (e) => {
@@ -272,7 +290,8 @@ export function PriceAnalysis() {
       numYears = parseFloat(convertedYears);
 
       if (isNaN(numYears) || numYears <= 0) {
-        // 使用 t() 翻譯錯誤訊息
+        // 對於純前端驗證，可以直接顯示 Toast
+        // showToast(t('errors.INVALID_YEARS_INPUT'), 'error'); 
         showToast(t('priceAnalysis.toast.invalidYears'), 'error');
         setLoading(false);
         return;
@@ -521,7 +540,7 @@ export function PriceAnalysis() {
       // 使用 t() 翻譯 PageContainer props
       title={t('pageTitle.priceAnalysis')}
       description={t('pageDescription.priceAnalysis')}
-      keywords={t('pageKeywords.priceAnalysis')} // 假設您有定義這個 key
+      keywords={t('priceAnalysis.keywords')}
       ogImage="/images/price-analysis-og.png"
       ogUrl="https://sentimentinsideout.com/priceanalysis"
       ogType="website"
@@ -665,8 +684,8 @@ export function PriceAnalysis() {
                   <div className="analysis-item">
                     {/* 使用 t() 翻譯 label */}
                     <span className="analysis-label">{t('priceAnalysis.result.marketSentiment')}</span>
-                    {/* 使用 sentimentKey 設定 class，使用 sentimentValue 顯示文字 */}
-                    <span className={`analysis-value sentiment-${analysisResult.sentimentKey || 'neutral'}`}>
+                    {/* 修改 className：使用 getSentimentSuffix 提取後綴 */}
+                    <span className={`analysis-value sentiment-${getSentimentSuffix(analysisResult.sentimentKey)}`}>
                       {analysisResult.sentimentValue}
                     </span>
                   </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import axios from 'axios';
 import { handleApiError } from '../../utils/errorHandler';
 import { Analytics } from '../../utils/analytics';
@@ -14,6 +14,8 @@ import { getSentiment } from '../../utils/sentimentUtils';
 import { Helmet } from 'react-helmet-async';
 import { useAdContext } from '../Common/InterstitialAdModal/AdContext';
 import { useTranslation } from 'react-i18next';
+import { useToastManager } from '../Watchlist/hooks/useToastManager';
+import { Toast } from '../Watchlist/components/Toast';
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -142,6 +144,7 @@ const INDICATOR_DESCRIPTION_KEY_MAP = {
 
 const MarketSentimentIndex = () => {
   const { t } = useTranslation();
+  const { showToast, toast, hideToast } = useToastManager();
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedTimeRange, setSelectedTimeRange] = useState('1Y');
@@ -169,16 +172,8 @@ const MarketSentimentIndex = () => {
           }, 100);
         }
       } catch (error) {
-        if (isMounted) {
-          const handledError = handleApiError(error);
-          Analytics.error({
-            status: handledError.status,
-            errorCode: handledError.errorCode,
-            message: handledError.message,
-            component: 'MarketSentimentIndex',
-            action: 'fetchSentimentData'
-          });
-        }
+        handleApiError(error, showToast, t);
+        setSentimentData(null);
       } finally {
         if (isMounted) {
           setLoading(false);
@@ -191,7 +186,7 @@ const MarketSentimentIndex = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [showToast, t]);
   
   useEffect(() => {
     async function fetchHistoricalData() {
@@ -206,19 +201,12 @@ const MarketSentimentIndex = () => {
           }));
         setHistoricalData(formattedData);
       } catch (error) {
-        const handledError = handleApiError(error);
-        Analytics.error({
-          status: handledError.status,
-          errorCode: handledError.errorCode,
-          message: handledError.message,
-          component: 'MarketSentimentIndex',
-          action: 'fetchHistoricalData'
-        });
+        handleApiError(error, showToast, t);
       }
     }
 
     fetchHistoricalData();
-  }, []);
+  }, [showToast, t]);
 
   const handleTimeRangeChange = (e) => {
     Analytics.marketSentiment.changeTimeRange({
@@ -436,6 +424,7 @@ const MarketSentimentIndex = () => {
     }
   }), [t]);
 
+  // 1. 檢查載入狀態
   if (loading) {
     return (
       <div className="loading-container">
@@ -447,11 +436,18 @@ const MarketSentimentIndex = () => {
     );
   }
 
+  // 2. 新增：在載入完成後，檢查 sentimentData 是否存在
+  // 如果 API 請求失敗，sentimentData 會是 null
   if (!sentimentData) {
-    return <div>{t('marketSentiment.error.fetchFailed')}</div>;
+    return (
+      <div className="error-container">
+        <span>{t('marketSentiment.error.fetchFailed')}</span>
+      </div>
+    );
   }
 
   // 計算綜合指數的情緒鍵和翻譯
+  // 只有在 sentimentData 確定存在後才執行這些計算
   const compositeSentimentKey = getSentiment(sentimentData.totalScore ? Math.round(sentimentData.totalScore) : null);
   const compositeSentiment = t(compositeSentimentKey);
   const compositeRawSentiment = compositeSentimentKey.split('.').pop(); // 用於 CSS class
@@ -580,6 +576,13 @@ const MarketSentimentIndex = () => {
         shortDescription={translatedShortDescription}
         sections={translatedSections}
       />
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+        />
+      )}
     </PageContainer>
   );
 };

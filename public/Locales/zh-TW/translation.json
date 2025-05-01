@@ -665,19 +665,18 @@
       "noResults": "找不到符合的股票"
     }
   },
-  "errorMessages": {
-    "STOCK_NOT_FOUND": "股票代碼不存在",
-    "GENERAL_ERROR": "發生錯誤，請稍後再試",
-    "VALIDATION_ERROR": "輸入資料有誤，請檢查後重試",
-    "NOT_FOUND": "找不到資源",
-    "NETWORK_ERROR": "網路連線異常，請檢查網路設定",
+  "errors": {
+    "STOCK_NOT_FOUND": "找不到指定的股票代碼",
+    "GENERAL_ERROR": "發生一般性錯誤",
+    "VALIDATION_ERROR": "輸入驗證失敗",
+    "NOT_FOUND": "找不到請求的資源",
+    "NETWORK_ERROR": "網路連線失敗，請檢查您的網路連線",
     "TIMEOUT_ERROR": "請求超時，請稍後再試",
     "AUTH_ERROR": "登入失敗，請稍後再試",
     "SESSION_EXPIRED": "登入階段已過期，請重新登入",
     "UNAUTHORIZED": "請先登入後再繼續",
     "SENTIMENT_DATA_ERROR": "無法取得市場情緒數據",
     "HISTORICAL_DATA_ERROR": "無法取得歷史數據",
-    "DEFAULT_ERROR": "發生錯誤，請稍後再試",
     "GOOGLE_AUTH_FAILED": "Google 登入失敗，請稍後再試",
     "GOOGLE_AUTH_CANCELLED": "已取消 Google 登入",
     "GOOGLE_AUTH_POPUP_BLOCKED": "請允許彈出視窗以完成登入",
@@ -696,7 +695,26 @@
     "DUPLICATE_STOCK": "此股票已在追蹤清單中",
     "CATEGORY_LIMIT_EXCEEDED": "已達到分類數量上限",
     "INVALID_STOCK_SYMBOL": "無效的股票代碼",
-    "API_ERROR": "API 錯誤",
-    "UNKNOWN_ERROR": "未知錯誤"
+    "API_ERROR": "與伺服器通訊時發生錯誤",
+    "UNKNOWN_ERROR": "發生未知錯誤，若問題持續發生請聯繫客服",
+    "TURNSTILE_REQUIRED": "請先完成安全驗證",
+    "TURNSTILE_ERROR": "安全驗證失敗，請重試",
+    "TURNSTILE_EXPIRED": "安全驗證已過期，請重新驗證",
+    "TURNSTILE_SERVICE_UNAVAILABLE": "Turnstile 驗證服務目前無法使用，請稍後再試。",
+    "GET_WATCHLIST_FAILED": "無法載入您的追蹤清單資料",
+    "USER_NOT_FOUND": "找不到使用者帳號",
+    "CREATE_CATEGORY_FAILED": "建立新分類失敗",
+    "CATEGORY_NOT_FOUND_OR_UNAUTHORIZED": "找不到分類或您沒有權限",
+    "DUPLICATE_STOCK_IN_CATEGORY": "此股票已存在於此分類中",
+    "ADD_STOCK_FAILED": "將股票加入分類失敗",
+    "STOCK_NOT_FOUND_IN_CATEGORY": "在此分類中找不到此股票",
+    "REMOVE_STOCK_FAILED": "從分類中移除股票失敗",
+    "UPDATE_CATEGORY_FAILED": "更新分類名稱失敗",
+    "CANNOT_DELETE_LAST_CATEGORY": "無法刪除最後一個分類",
+    "DELETE_CATEGORY_FAILED": "刪除分類失敗"
+  },
+  "expandableDescription": {
+    "expand": "了解更多",
+    "collapse": "收合"
   }
 }

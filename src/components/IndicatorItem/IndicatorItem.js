@@ -19,6 +19,9 @@ import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
 import { getSentiment } from '../../utils/sentimentUtils';
 import { useTranslation } from 'react-i18next';
+import { useToastManager } from '../Watchlist/hooks/useToastManager';
+import { handleApiError } from '../../utils/errorHandler';
+import { Toast } from '../Watchlist/components/Toast';
 
 // 添加這行來定義 API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -53,6 +56,7 @@ function getTimeUnit(dates) {
 
 function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeRangeChange, historicalSPYData }) {
   const { t } = useTranslation();
+  const { showToast, toast, hideToast } = useToastManager();
   const indicatorName = useMemo(() => {
     const keyMap = {
       'AAII Bull-Bear Spread': 'indicators.aaiiSpread',
@@ -93,12 +97,13 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         setHistoricalData(formattedData);
       })
       .catch((error) => {
-        console.error(t('indicatorItem.fetchError', { indicatorName }), error);
+        handleApiError(error, showToast, t);
+        setHistoricalData([]);
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [indicatorKey, indicatorName, t]);
+  }, [indicatorKey, indicatorName, t, showToast]);
 
   // 過濾數據
   const filteredData = React.useMemo(() => {
@@ -128,7 +133,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         pointRadius: 0,
       },
       {
-        label: t('indicatorItem.percentileRankLabel', { indicatorName }),
+        label: t('indicatorItem.fearGreedScoreLabel'),
         yAxisID: 'right-axis',
         data: filteredData.map((item) => item.percentileRank),
         borderColor: 'rgba(153,102,255,1)',
@@ -184,7 +189,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         position: 'right',
         title: {
           display: true,
-          text: t('indicatorItem.percentileRankLabel', { indicatorName }),
+          text: t('indicatorItem.fearGreedScoreLabel'),
         },
         grid: {
           drawOnChartArea: false,
@@ -277,7 +282,11 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
             handleTimeRangeChange={handleTimeRangeChange}
           />
           <div className="indicator-chart">
-            <Line data={chartData} options={chartOptions} />
+            {filteredData.length > 0 ? (
+              <Line data={chartData} options={chartOptions} />
+            ) : (
+              <div className="chart-placeholder">{t('indicatorItem.noData')}</div>
+            )}
           </div>
         </>
       ) : (
@@ -287,6 +296,13 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
             <span>{t('indicatorItem.loading')}</span>
           </div>
         </div>
+      )}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+        />
       )}
     </div>
   );

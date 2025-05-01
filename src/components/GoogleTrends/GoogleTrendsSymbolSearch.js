@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
 import debounce from 'lodash/debounce';
 import { useTranslation } from 'react-i18next';
-import { getErrorMessage } from '../../utils/errorHandler';
+import { translateApiError } from '../../utils/errorHandler';
 import { fetchStockSuggestions } from './googleTrends.service';
 import '../Loading/Loading.css';
 import './GoogleTrendsSymbolSearch.css';
@@ -59,13 +59,14 @@ const GoogleTrendsSymbolSearch = ({ onSearch }) => {
                 loading: false
             }));
         } catch (error) {
+            const errorMessage = translateApiError(error, t);
             setSearchState(prev => ({
                 ...prev,
-                error: getErrorMessage(error),
+                error: errorMessage,
                 loading: false
             }));
         }
-    }, []);
+    }, [t]);
 
     const debouncedSearch = useMemo(() => debounce(searchStocksAPI, 300), [searchStocksAPI]);
 

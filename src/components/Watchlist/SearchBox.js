@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import debounce from 'lodash/debounce';
-import { getErrorMessage } from '../../utils/errorHandler';
+import { translateApiError } from '../../utils/errorHandler';
 import './styles/SearchBox.css';
 import { useTranslation } from 'react-i18next';
 
@@ -56,13 +56,14 @@ export const SearchBox = ({ onSelect, watchlistService, categoryId }) => {
                 loading: false
             }));
         } catch (error) {
+            const errorMessage = translateApiError(error, t);
             setSearchState(prev => ({
                 ...prev,
-                error: getErrorMessage(error),
+                error: errorMessage,
                 loading: false
             }));
         }
-    }, [watchlistService]);
+    }, [watchlistService, t]);
 
     const debouncedSearch = useMemo(
         () => debounce(searchStocks, 300),

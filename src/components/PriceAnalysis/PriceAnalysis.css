@@ -299,24 +299,24 @@
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* 情緒狀態顏色 */
-.sentiment-極度樂觀 {
+/* 情緒狀態顏色 (修改選擇器) */
+.sentiment-extremeOptimism { /* 原 .sentiment-極度樂觀 */
   color: #A0361B;  /* 與圖表上軌顏色一致 - 深紅褐色 */
 }
 
-.sentiment-樂觀 {
+.sentiment-optimism { /* 原 .sentiment-樂觀 */
   color: #C14C20;  /* 較淺的紅褐色 */
 }
 
-.sentiment-中性 {
+.sentiment-neutral { /* 原 .sentiment-中性 */
   color: #E9972D;  /* 與 MA20 顏色一致 - 橙黃色 */
 }
 
-.sentiment-悲觀 {
+.sentiment-pessimism { /* 原 .sentiment-悲觀 */
   color: #1E5B3C;  /* 較淺的墨綠色 */
 }
 
-.sentiment-極度悲觀 {
+.sentiment-extremePessimism { /* 原 .sentiment-極度悲觀 */
   color: #143829;  /* 與圖表下軌顏色一致 - 深墨綠色 */
 }
 

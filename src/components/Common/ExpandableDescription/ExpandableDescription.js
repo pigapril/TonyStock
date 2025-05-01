@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './ExpandableDescription.css';
 
 export function ExpandableDescription({ 
   shortDescription,  // 簡短說明
   sections,          // 詳細說明的各個段落
   initialExpanded = false, // 是否預設展開
-  expandButtonText = '了解更多',  // 展開按鈕文字
-  collapseButtonText = '收合'     // 收起按鈕文字
 }) {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(initialExpanded);
+
+  const expandButtonText = t('expandableDescription.expand');
+  const collapseButtonText = t('expandableDescription.collapse');
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);

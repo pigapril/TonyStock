@@ -29,25 +29,25 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
             
         } catch (error) {
             console.error('Add stock error:', error);
-            
-            if (error.data?.message) {
-                showToast(error.data.message, 'error');
-            } else {
-                const errorData = handleApiError(error);
-                showToast(errorData.message, 'error');
-            }
-            
+
+            const errorData = handleApiError(error, showToast, t);
+
             Analytics.error({
                 component: 'useStocks',
                 action: 'add_stock',
-                error
+                error: {
+                    errorCode: errorData.errorCode,
+                    message: errorData.message,
+                    originalMessage: error.message,
+                    status: error.response?.status
+                }
             });
-            
-            if (error.data?.code === 'STOCK_LIMIT_EXCEEDED') {
+
+            if (errorData.errorCode === 'STOCK_LIMIT_EXCEEDED') {
                 Analytics.watchlist.limitError({
                     type: 'stock_limit',
-                    currentCount: error.data?.currentCount,
-                    maxLimit: error.data?.maxLimit
+                    currentCount: error.response?.data?.data?.currentCount,
+                    maxLimit: error.response?.data?.data?.maxLimit
                 });
             }
             
