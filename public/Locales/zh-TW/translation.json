@@ -9,28 +9,7 @@
     "facebook": "Facebook",
     "facebookLong": "Facebook 粉絲專頁"
   },
-  "pageTitle": {
-    "home": "首頁",
-    "priceAnalysis": "樂活五線譜",
-    "marketSentiment": "市場情緒分析",
-    "about": "關於本站",
-    "legal": "法律聲明",
-    "watchlist": "我的追蹤清單",
-    "articles": "分析專欄",
-    "sponsor": "贊助網站",
-    "sponsorSuccess": "贊助成功"
-  },
-  "pageDescription": {
-    "home": "市場情緒追蹤平台。",
-    "priceAnalysis": "分析股價的長期趨勢，判斷價格高低點。",
-    "marketSentiment": "即時追蹤市場情緒指標，克服恐懼與貪婪。",
-    "about": "了解 Sentiment Inside Out 的創立理念和目標。",
-    "legal": "網站使用條款和隱私權政策。",
-    "watchlist": "追蹤您感興趣的股票，快速掌握多個標的價格情緒。",
-    "articles": "分析市場情緒和投資策略。",
-    "sponsor": "支持 Sentiment Inside Out 的發展，一起幫助更多人。",
-    "sponsorSuccess": "感謝您的贊助，您的支持是我們前進的動力！"
-  },
+  
   "userActions": {
     "login": "登入"
   },
@@ -129,7 +108,7 @@
     "sponsor": "小豬撲滿",
     "copyright": "Copyright © {{year}} Sentiment Inside Out",
     "disclaimer1": "本網站提供之數據、資料、分析結果、工具和說明內容僅供參考，任何投資行為須自行判斷並承擔風險，實際資訊需以官方公佈資料為準。本網站不負擔盈虧之法律責任。",
-    "disclaimer2": "歡迎分享本網站提供之資訊連結，如需轉載內容務必經由本網站同意。聯絡信箱：{{emailLink}}"
+    "disclaimer2": "歡迎分享本網站提供之資訊連結，如需轉載內容務必經由本網站同意。聯絡信箱：support@sentimentinsideout.com"
   },
   "infoTool": {
     "moreInfoAriaLabel": "更多資訊"
@@ -262,6 +241,8 @@
     "extremePessimism": "極度悲觀"
   },
   "marketSentiment": {
+    "pageTitle": "市場情緒分析",
+    "pageDescription": "即時追蹤市場情緒指標，克服恐懼與貪婪。",
     "keywords": "市場情緒,恐懼貪婪指數,市場情緒指標,投資情緒,市場溫度計,台股分析,SPY分析",
     "heading": "市場情緒分析",
     "tabs": {
@@ -426,6 +407,7 @@
   "legal": {
     "pageTitle": "法律聲明",
     "pageDescription": "網站使用條款和隱私權政策。",
+    "keywords": "法律聲明,隱私權政策,使用條款,資料保護,用戶權利,網站條款",
     "mainHeading": "隱私權政策與服務條款",
     "privacyPolicyTitle": "隱私權政策",
     "dataCollectionTitle": "1. 資料收集",

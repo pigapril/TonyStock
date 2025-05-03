@@ -1,26 +1,27 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { FaChevronDown } from 'react-icons/fa';
 import './Home.css';
 import { useDialog } from '../../components/Common/Dialog/useDialog';
 import { useAuth } from '../../components/Auth/useAuth';
-import { Helmet } from 'react-helmet-async';
 import PageContainer from '../PageContainer/PageContainer';
 import { useTranslation } from 'react-i18next';
 
 export const Home = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
   const { openDialog } = useDialog();
   const { isAuthenticated } = useAuth();
 
-  // 定義用於結構化數據的 JSON-LD
-  const homeJsonLd = {
+  // 使用 useMemo 定義用於結構化數據的 JSON-LD，並加入 currentLang 依賴
+  const homeJsonLd = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Sentiment Inside Out",
+    "name": t('home.jsonLd.name', 'Sentiment Inside Out'),
     "description": t('home.jsonLd.description'),
-    "url": "https://sentimentinsideout.com/"
-  };
+    "url": `${window.location.origin}/${currentLang}`,
+    "inLanguage": currentLang
+  }), [t, currentLang]);
 
   // Helper to render text with line breaks
   const renderTextWithLineBreaks = (text) => {
@@ -38,7 +39,7 @@ export const Home = () => {
       description={t('home.pageDescription')}
       keywords={t('home.keywords')}
       ogImage="/home-og-image.png"
-      ogUrl="https://sentimentinsideout.com/"
+      ogUrl={`${window.location.origin}/${currentLang}`}
       jsonLd={homeJsonLd}
     >
       <div className="home-page">

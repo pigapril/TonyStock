@@ -6,7 +6,8 @@ import PageContainer from '../PageContainer/PageContainer';
 import { useTranslation } from 'react-i18next';
 
 export const About = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
 
   // 定義 JSON-LD 結構化數據
   const aboutJsonLd = {
@@ -14,7 +15,8 @@ export const About = () => {
     "@type": "AboutPage",
     "name": t('about.jsonLdName'),
     "description": t('about.jsonLdDescription'),
-    "url": "https://sentimentinsideout.com/about",
+    "url": `${window.location.origin}/${currentLang}/about`,
+    "inLanguage": currentLang,
     "mainEntity": {
       "@type": "Organization",
       "name": "Sentiment Inside Out",
@@ -28,7 +30,6 @@ export const About = () => {
       description={t('about.pageDescription')}
       keywords={t('about.keywords')}
       ogImage="/images/about-og.png"
-      ogUrl="https://sentimentinsideout.com/about"
       ogType="website"
       ogTitle={t('about.ogTitle')}
       twitterCard="summary_large_image"

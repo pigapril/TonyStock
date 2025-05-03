@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import PageContainer from '../PageContainer/PageContainer';
 import { getAllArticles } from '../../utils/articleUtils';
@@ -6,7 +6,8 @@ import './Articles.css';
 import { useTranslation } from 'react-i18next';
 
 export function Articles() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const currentLang = i18n.language;
     const [articles, setArticles] = useState([]);
 
     useEffect(() => {
@@ -17,14 +18,15 @@ export function Articles() {
         loadArticles();
     }, []);
 
-    // 定義結構化數據
-    const articlesJsonLd = {
+    // 使用 useMemo 定義結構化數據，並加入 currentLang 依賴
+    const articlesJsonLd = useMemo(() => ({
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         "name": t('articles.jsonLdName'),
         "description": t('articles.jsonLdDescription'),
-        "url": "https://sentimentinsideout.com/articles"
-    };
+        "url": `${window.location.origin}/${currentLang}/articles`,
+        "inLanguage": currentLang
+    }), [t, currentLang]);
 
     return (
         <div className="articles-page">
@@ -33,14 +35,14 @@ export function Articles() {
                 description={t('articles.pageDescription')}
                 keywords={t('articles.keywords')}
                 ogImage="/articles-og-image.png"
-                ogUrl="https://sentimentinsideout.com/articles"
+                ogUrl={`${window.location.origin}/${currentLang}/articles`}
                 jsonLd={articlesJsonLd}
             >
                 <h1>{t('articles.heading')}</h1>
                 <ul className="articles-list">
                     {articles.map(article => (
                         <li key={article.id} className="article-item">
-                            <Link to={`/articles/${article.slug}`}>
+                            <Link to={`/${currentLang}/articles/${article.slug}`}>
                                 <div className="article-cover">
                                     <img 
                                         src={`/articles/${article.slug}/image-cover.png`}

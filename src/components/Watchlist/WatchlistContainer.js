@@ -26,7 +26,8 @@ import { useTranslation } from 'react-i18next';
 
 // Watchlist 主元件
 export function WatchlistContainer() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const currentLang = i18n.language; // 取得當前語言
     const { user, isAuthenticated } = useAuth();
     const { toast, showToast, hideToast } = useToastManager();
     
@@ -225,6 +226,30 @@ export function WatchlistContainer() {
         }
     };
 
+    // 3. 使用 useMemo 來定義 JSON-LD，並加入 currentLang 作為依賴
+    const watchlistJsonLd = useMemo(() => ({
+        "@context": "https://schema.org",
+        "@type": "WebPage", // 或者更適合的類型，例如 CollectionPage
+        "name": t('watchlist.jsonLd.name'), // 從翻譯檔讀取
+        "description": t('watchlist.jsonLd.description'), // 從翻譯檔讀取
+        // 4. 動態生成包含語言的 URL
+        "url": `${window.location.origin}/${currentLang}/watchlist`,
+        "inLanguage": currentLang, // 5. 添加 inLanguage 屬性
+        "potentialAction": {
+            "@type": "SearchAction",
+            // 6. (可選) 更新 target URL 以包含語言，或確保後端能處理
+            "target": `${window.location.origin}/${currentLang}/watchlist?category={category}&stock={stock}`,
+            "query-input": "required name=category,stock"
+        }
+        // 如果頁面主要內容是關於列表，可以考慮添加 mainEntity
+        // "mainEntity": {
+        //   "@type": "ItemList",
+        //   "name": t('watchlist.jsonLd.itemListTitle'), // e.g., "My Watchlist Stocks"
+        //   // 如果可能，可以列出一些項目
+        //   // "itemListElement": [ ... ]
+        // }
+    }), [t, currentLang]); // 加入 currentLang 作為依賴
+
     return (
         <ErrorBoundary
             message={error}
@@ -233,24 +258,19 @@ export function WatchlistContainer() {
                 loadCategories();
             }}
         >
+            {/* 7. 在 Helmet 中使用定義好的 watchlistJsonLd */}
             <Helmet>
+                <title>{t('watchlist.pageTitle')} | Sentiment Inside Out</title>
+                <meta name="description" content={t('watchlist.pageDescription')} />
+                {/* 其他 meta 標籤... */}
                 <script type="application/ld+json">
-                    {JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "WebPage",
-                        "name": t('watchlist.jsonLd.name'),
-                        "description": t('watchlist.jsonLd.description'),
-                        "url": "https://sentimentinsideout.com/watchlist",
-                        "potentialAction": {
-                            "@type": "SearchAction",
-                            "target": "https://sentimentinsideout.com/watchlist?category={category}&stock={stock}",
-                            "query-input": "required name=category,stock"
-                        }
-                    })}
+                    {JSON.stringify(watchlistJsonLd)}
                 </script>
+                {/* 注意：hreflang 標籤應該由 App.js 中的 PageContainer 或類似的全局組件處理，
+                    這裡不需要重複添加，除非 WatchlistContainer 是獨立渲染的入口 */}
             </Helmet>
             <div className="watchlist-container">
-                <h1>{t('pageTitle.watchlist')}</h1>
+                <h1>{t('watchlist.pageTitle')}</h1>
                 {error && (
                     <div className="error-message">
                         {error}

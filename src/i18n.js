@@ -14,7 +14,7 @@ i18n
   // 初始化 i18next
   .init({
     // 預設語言，如果偵測不到或不支援使用者語言時使用
-    fallbackLng: 'zh-TW',
+    fallbackLng: 'en',
     // 在開發環境中啟用 debug 輸出
     debug: process.env.NODE_ENV === 'development',
     // 支援的語言列表

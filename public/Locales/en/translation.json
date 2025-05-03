@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Home",
-    "priceAnalysis": "Price Channel Analysis",
+    "priceAnalysis": "LOHAS Five-Line Analysis",
     "marketSentiment": "Market Sentiment Analysis",
     "watchlist": "My Watchlist",
     "articles": "Insights & Analysis",
@@ -9,28 +9,7 @@
     "facebook": "Facebook",
     "facebookLong": "Facebook Page"
   },
-  "pageTitle": {
-    "home": "Home",
-    "priceAnalysis": "Price Channel Analysis",
-    "marketSentiment": "Market Sentiment Analysis",
-    "about": "About Us",
-    "legal": "Legal Notice",
-    "watchlist": "My Watchlist",
-    "articles": "Insights & Analysis",
-    "sponsor": "Sponsor Us",
-    "sponsorSuccess": "Sponsorship Successful"
-  },
-  "pageDescription": {
-    "home": "Market sentiment tracking platform.",
-    "priceAnalysis": "Analyze long-term stock price trends to determine price highs and lows.",
-    "marketSentiment": "Track market sentiment indicators in real-time to overcome fear and greed.",
-    "about": "Learn about the founding philosophy and goals of Sentiment Inside Out.",
-    "legal": "Website terms of use and privacy policy.",
-    "watchlist": "Track stocks you are interested in and quickly grasp the price sentiment of multiple targets.",
-    "articles": "Analyze market sentiment and investment strategies.",
-    "sponsor": "Support the development of Sentiment Inside Out and help more people together.",
-    "sponsorSuccess": "Thank you for your sponsorship! Your support is our driving force!"
-  },
+  
   "userActions": {
     "login": "Login"
   },
@@ -114,7 +93,7 @@
   },
   "footer": {
     "analysisTools": "Analysis Tools",
-    "priceAnalysis": "Price Channel Analysis",
+    "priceAnalysis": "LOHAS Five-Line Analysis",
     "marketSentiment": "Market Sentiment Analysis",
     "googleTrendsSymbol": "Google Trends - Symbol",
     "googleTrendsMarket": "Google Trends - Market",
@@ -129,7 +108,7 @@
     "sponsor": "Sponsor Us",
     "copyright": "Copyright © {{year}} Sentiment Inside Out",
     "disclaimer1": "Data, analysis, tools, and descriptions provided on this website are for reference only. Investment decisions must be made independently, assuming all risks. Official information prevails. This website bears no legal responsibility for profits or losses.",
-    "disclaimer2": "Feel free to share links to information provided on this website. Reproduction of content requires prior consent. Contact: {{emailLink}}"
+    "disclaimer2": "Feel free to share links to information provided on this website. Reproduction of content requires prior consent. Contact: support@sentimentinsideout.com"
   },
   "infoTool": {
     "moreInfoAriaLabel": "More information"
@@ -208,12 +187,12 @@
     },
     "feature1": {
       "title": "Price Trend Analysis",
-      "text": "Utilize price channel levels to capture ETF or individual stock price trends, improving entry and exit win rates.",
+      "text": "Utilize LOHAS Five-Line Analysis to capture ETF or individual stock price trends, improving entry and exit win rates.",
       "alt": "Price Trend Analysis"
     },
     "feature2": {
       "title": "My Watchlist",
-      "text": "Create your personal list to easily view the price channel levels of multiple targets.",
+      "text": "Create your personal list to easily view the LOHAS Five-Line Analysis levels of multiple targets.",
       "alt": "My Watchlist"
     },
     "feature3": {
@@ -262,6 +241,8 @@
     "extremePessimism": "EX-Pessimism"
   },
   "marketSentiment": {
+    "pageTitle": "Market Sentiment Analysis",
+    "pageDescription": "Track market sentiment indicators in real-time to overcome fear and greed.",
     "keywords": "market sentiment, fear greed index, market sentiment indicators, investor sentiment, market thermometer, stock analysis, SPY analysis",
     "heading": "Market Sentiment Analysis",
     "tabs": {
@@ -426,6 +407,7 @@
   "legal": {
     "pageTitle": "Legal Notice",
     "pageDescription": "Website terms of use and privacy policy.",
+    "keywords": "legal notice, privacy policy, terms of service, data protection, user rights, website terms",
     "mainHeading": "Privacy Policy & Terms of Service",
     "privacyPolicyTitle": "Privacy Policy",
     "dataCollectionTitle": "1. Data Collection",
@@ -498,11 +480,11 @@
     "lowerBandLabel": "Lower Band"
   },
   "priceAnalysis": {
-    "pageTitle": "Price Channel - Price Trend Analysis",
+    "pageTitle": "LOHAS Five-Line Analysis - Price Trend Analysis",
     "pageDescription": "Analyze price trends using the characteristics of stock price mean reversion, determine if current market sentiment is overly optimistic or pessimistic, and improve entry/exit win rates.",
-    "keywords": "Price Channel, Price Trend Analysis, Stock Analysis, Market Sentiment, Mean Reversion, Overbought Oversold, UL Band, Standard Deviation",
+    "keywords": "LOHAS Five-Line Analysis, Price Trend Analysis, Stock Analysis, Market Sentiment, Mean Reversion, Overbought Oversold, Lohas Channel, Standard Deviation",
     "jsonLd": {
-      "name": "Price Channel Analysis",
+      "name": "LOHAS Five-Line Analysis",
       "description": "Utilize standard deviation to analyze stock price trends and gauge market sentiment. Assess whether the current price reflects excessive optimism or pessimism. Track long-term trends and determine price position using statistical mean reversion properties."
     },
     "form": {
@@ -536,8 +518,8 @@
     },
     "chart": {
       "tabs": {
-        "sd": "Price Channel",
-        "ulband": "UL Band"
+        "sd": "LOHAS Five-Line Analysis",
+        "ulband": "Lohas Channel"
       },
       "loading": {
         "fetching": "Loading...",
@@ -558,23 +540,23 @@
     "explanation": {
       "shortDescription": "Analyze whether the current stock price is overly optimistic or pessimistic. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
       "readMorePrefix": "For detailed usage, please refer to the article:",
-      "readMoreLinkText": "Analyze Price Trends and Sentiment with Price Channel",
+      "readMoreLinkText": "Analyze Price Trends and Sentiment with LOHAS Five-Line Analysis",
       "sd": {
-        "title": "Price Channel (Standard Deviation)",
+        "title": "LOHAS Five-Line Analysis (Standard Deviation)",
         "l1": "The middle trend line is a long-term moving average, serving as the baseline for assessing the long-term price trend. Two standard deviations are added above and below this baseline.",
         "l2": "The further the price moves from the middle trend line, the further it deviates from the long-term average, increasing the probability of reverting to the trend line.",
         "l3": "When the price touches the uppermost band, it indicates a strong short-term overbought condition and extreme market optimism, posing a risk of pullback.",
         "l4": "When the price touches the lowermost band, it indicates a strong short-term oversold condition and extreme market pessimism, presenting an opportunity for a rebound."
       },
       "ulBand": {
-        "title": "UL Band (Upper/Lower Band)",
-        "l1": "The UL Band is a more sensitive indicator used to help determine short-term overbought and oversold conditions.",
-        "l2": "When the price breaks above the upper UL Band, it may indicate short-term overheating.",
-        "l3": "When the price breaks below the lower UL Band, it may indicate short-term cooling."
+        "title": "Lohas Channel (Upper/Lower Band)",
+        "l1": "The Lohas Channel is a more sensitive indicator used to help determine short-term overbought and oversold conditions.",
+        "l2": "When the price breaks above the upper Lohas Channel, it may indicate short-term overheating.",
+        "l3": "When the price breaks below the lower Lohas Channel, it may indicate short-term cooling."
       },
       "combined": {
         "title": "Using Both Together",
-        "l1": "When the price touches the uppermost or lowermost band of the Price Channel and simultaneously breaks the UL Band, it might signify a continuation of the trend. Consider waiting for the price to return within the UL Band before taking action.",
+        "l1": "When the price touches the uppermost or lowermost band of the LOHAS Five-Line Analysis and simultaneously breaks the Lohas Channel, it might signify a continuation of the trend. Consider waiting for the price to return within the Lohas Channel before taking action.",
         "l2": "It is recommended for use with index ETFs or large-cap stocks with clear trends, in conjunction with fundamental analysis. It should not be used as the sole basis for buy/sell decisions."
       }
     },

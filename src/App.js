@@ -324,71 +324,39 @@ function AppContent() {
           {/* 內容路由 */}
           <div className="content-area">
             <Routes>
-              <Route path="/" element={
-                <PageContainer title={t('pageTitle.home')} description={t('pageDescription.home')}>
-                  <Home />
-                </PageContainer>
-              } />
+              <Route path="/" element={<Home />} />
 
               {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
-              <Route path="priceanalysis" element={
-                <PageContainer title={t('pageTitle.priceAnalysis')} description={t('pageDescription.priceAnalysis')}>
-                  <PriceAnalysis />
-                </PageContainer>
-              } />
+              <Route path="priceanalysis" element={<PriceAnalysis />} />
 
               <Route
                 path="market-sentiment"
-                element={<PageContainer title={t('pageTitle.marketSentiment')} description={t('pageDescription.marketSentiment')}>
-                  <MarketSentimentIndex />
-                </PageContainer>
-              } />
+                element={<MarketSentimentIndex />}
+              />
               <Route
                 path="about"
-                element={
-                  <PageContainer title={t('pageTitle.about')} description={t('pageDescription.about')}>
-                    <About />
-                  </PageContainer>
-                }
+                element={<About />}
               />
               <Route
                 path="legal"
-                element={
-                  <PageContainer title={t('pageTitle.legal')} description={t('pageDescription.legal')}>
-                    <Legal />
-                  </PageContainer>
-                }
+                element={<Legal />}
               />
               <Route
                 path="watchlist"
                 element={
                   isAuthenticated ? (
-                    <PageContainer title={t('pageTitle.watchlist')} description={t('pageDescription.watchlist')}>
-                      <WatchlistContainer />
-                    </PageContainer>
+                    <WatchlistContainer />
                   ) : (
                     <Navigate to={`/${lang}/`} replace />
                   )
                 }
               />
-              <Route path="articles" element={
-                <PageContainer title={t('pageTitle.articles')} description={t('pageDescription.articles')}>
-                  <Articles />
-                </PageContainer>
-              } />
+              <Route path="articles" element={<Articles />} />
               <Route path="articles/:slug" element={<ArticleDetail />} />
-              <Route path="sponsor-us" element={
-                <PageContainer title={t('pageTitle.sponsor')} description={t('pageDescription.sponsor')}>
-                  <SponsorUs />
-                </PageContainer>
-              } />
-              <Route path="sponsor-success" element={
-                <PageContainer title={t('pageTitle.sponsorSuccess')} description={t('pageDescription.sponsorSuccess')}>
-                  <SponsorSuccess />
-                </PageContainer>
-              } />
-              <Route path="googletrends" element={<GoogleTrendsSymbolPage />} />
-              <Route path="googletrendsmarket" element={<GoogleTrendsMarketPage />} />
+              <Route path="sponsor-us" element={<SponsorUs />} />
+              <Route path="sponsor-success" element={<SponsorSuccess />} />
+              <Route path="google-trends/symbol/:symbol" element={<GoogleTrendsSymbolPage />} />
+              <Route path="google-trends/market" element={<GoogleTrendsMarketPage />} />
 
               {/* 可以添加一個捕獲無效相對路徑的路由 */}
               <Route path="*" element={<Navigate to={`/${lang}/`} replace />} />

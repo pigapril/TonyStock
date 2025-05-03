@@ -54,7 +54,8 @@ const getSentimentSuffix = (key) => {
  * 專門負責：1) 抓取API資料 2) 處理表單 3) 顯示標準差圖表 or ULBandChart
  */
 export function PriceAnalysis() {
-  const { t } = useTranslation(); // 2. Initialize useTranslation
+  const { t, i18n } = useTranslation(); // 確保引入並使用 useTranslation
+  const currentLang = i18n.language; // 取得當前語言
   const [searchParams] = useSearchParams();
   const location = useLocation(); // <--- 獲取 location 物件
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
@@ -427,22 +428,21 @@ export function PriceAnalysis() {
   };
 
   // 定義用於結構化數據的 JSON-LD
-  const priceAnalysisJsonLd = useMemo(() => ({ // 使用 useMemo 避免每次渲染都重新創建
+  const priceAnalysisJsonLd = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    // 使用 t() 翻譯 name 和 description
     "name": t('priceAnalysis.jsonLd.name'),
     "description": t('priceAnalysis.jsonLd.description'),
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
-    "url": "https://sentimentinsideout.com/priceanalysis",
+    "url": `${window.location.origin}/${currentLang}/priceanalysis`,
+    "inLanguage": currentLang,
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://sentimentinsideout.com/priceanalysis?stockCode={stockCode}&years={years}&backTestDate={backTestDate}",
+      "target": `${window.location.origin}/${currentLang}/priceanalysis?stockCode={stockCode}&years={years}&backTestDate={backTestDate}`,
       "query-input": "required name=stockCode,years,backTestDate"
     }
-  // 添加 t 作為依賴
-  }), [t]);
+  }), [t, currentLang]);
 
   // 優化 Line Chart Options
   const lineChartOptions = useMemo(() => {
@@ -538,11 +538,11 @@ export function PriceAnalysis() {
   return (
     <PageContainer
       // 使用 t() 翻譯 PageContainer props
-      title={t('pageTitle.priceAnalysis')}
-      description={t('pageDescription.priceAnalysis')}
+      title={t('priceAnalysis.pageTitle')}
+      description={t('priceAnalysis.pageDescription')}
       keywords={t('priceAnalysis.keywords')}
       ogImage="/images/price-analysis-og.png"
-      ogUrl="https://sentimentinsideout.com/priceanalysis"
+      ogUrl={`${window.location.origin}/${currentLang}/priceanalysis`}
       ogType="website"
       jsonLd={priceAnalysisJsonLd}
     >

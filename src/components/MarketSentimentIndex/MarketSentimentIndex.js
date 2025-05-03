@@ -143,7 +143,7 @@ const INDICATOR_DESCRIPTION_KEY_MAP = {
 };
 
 const MarketSentimentIndex = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { showToast, toast, hideToast } = useToastManager();
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -155,6 +155,7 @@ const MarketSentimentIndex = () => {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const initialRenderRef = useRef(true);
   const { requestAdDisplay } = useAdContext();
+  const currentLang = i18n.language;
 
   useEffect(() => {
     let isMounted = true;
@@ -416,13 +417,14 @@ const MarketSentimentIndex = () => {
     "@type": "WebPage",
     "name": t('pageTitle.marketSentiment'),
     "description": t('pageDescription.marketSentiment'),
-    "url": "https://sentimentinsideout.com/market-sentiment",
+    "url": `${window.location.origin}/${currentLang}/market-sentiment`,
+    "inLanguage": currentLang,
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://sentimentinsideout.com/market-sentiment?timeRange={timeRange}&indicator={indicator}",
+      "target": `${window.location.origin}/${currentLang}/market-sentiment?timeRange={timeRange}&indicator={indicator}`,
       "query-input": "required name=timeRange,indicator"
     }
-  }), [t]);
+  }), [t, currentLang]);
 
   // 1. 檢查載入狀態
   if (loading) {
@@ -454,11 +456,11 @@ const MarketSentimentIndex = () => {
 
   return (
     <PageContainer
-      title={t('pageTitle.marketSentiment')}
-      description={t('pageDescription.marketSentiment')}
+      title={t('marketSentiment.pageTitle')}
+      description={t('marketSentiment.pageDescription')}
       keywords={t('marketSentiment.keywords')}
       ogImage="/images/market-sentiment-og.png"
-      ogUrl="https://sentimentinsideout.com/market-sentiment"
+      ogUrl={`${window.location.origin}/${currentLang}/market-sentiment`}
       jsonLd={marketSentimentJsonLd}
     >
       <h1>{t('marketSentiment.heading')}</h1>

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import './SponsorUs.css'; // 引入樣式表
 import sponsorImage from '../../assets/images/sponsor-us/sponsorus.png';
 import jko_qrcode from '../../assets/images/sponsor-us/jko_qrcode.jpg';
@@ -18,7 +18,8 @@ import PageContainer from '../PageContainer/PageContainer';
 import { useTranslation } from 'react-i18next';
 
 const SponsorUs = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
   const [expandedCard, setExpandedCard] = useState(null);
   const [isCollapsing, setIsCollapsing] = useState(null); // 新增一個 state 來追蹤是否正在收合
   const cardRefs = useRef([]); // 使用 useRef 來儲存卡片的 ref
@@ -158,21 +159,24 @@ const SponsorUs = () => {
     };
   }, [expandedCard, cardRefs, setIsCollapsing, setExpandedCard]);
 
-  // 定義用於結構化數據的 JSON-LD
-  const sponsorUsJsonLd = {
+  // 定義用於結構化數據的 JSON-LD (使用 useMemo)
+  const sponsorUsJsonLd = useMemo(() => ({
     "@context": "https://schema.org",
-    "@type": "WebPage",
+    "@type": "WebPage", // 或者更適合的類型如 FundingCampaign
     "name": t('sponsorUs.pageTitle'),
     "description": t('sponsorUs.pageDescription'),
-    "url": "https://sentimentinsideout.com/sponsor-us",
+    // 動態生成包含語言的 URL
+    "url": `${window.location.origin}/${currentLang}/sponsor-us`,
+    "inLanguage": currentLang, // 明確指定內容語言
     "potentialAction": {
       "@type": "DonateAction",
       "recipient": {
         "@type": "Organization",
         "name": "Sentiment Inside Out"
       }
+      // DonateAction 通常不需要 target URL，但如果您的收款頁面有語言版本，可以考慮添加
     }
-  };
+  }), [t, currentLang]); // 依賴 t 和 currentLang
 
   return (
     <PageContainer
@@ -180,11 +184,10 @@ const SponsorUs = () => {
       description={t('sponsorUs.pageDescription')}
       keywords={t('sponsorUs.keywords')}
       ogImage="/images/sponsor-og.png"
-      ogUrl="https://sentimentinsideout.com/sponsor-us"
       ogType="website"
       twitterCard="summary_large_image"
       twitterImage="/images/sponsor-og.png"
-      jsonLd={sponsorUsJsonLd}
+      jsonLd={sponsorUsJsonLd} // 傳遞更新後的 JSON-LD
     >
       <div className="sponsor-us-page">
         <div className="sponsor-us-container">
