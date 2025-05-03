@@ -96,7 +96,9 @@
     "closeButton": "✖",
     "welcomeMessage": "你好~<br />對網站功能有疑問嗎？<br />由小豬客服解答！",
     "inputPlaceholder": "輸入訊息...",
-    "sendButton": "傳送"
+    "sendButton": "傳送",
+    "quickReplyTitle": "對網站有疑問嗎？<br />點選下方問題分類，<br />或是直接輸入問題",
+    "sendMessageError": "糟糕，訊息好像迷路了，請稍後再試一次！"
   },
   "dialog": {
     "closeAriaLabel": "返回"

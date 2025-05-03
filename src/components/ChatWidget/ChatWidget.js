@@ -19,9 +19,15 @@ const ChatWidget = () => {
   const { openDialog } = useDialog();
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' }); // 判斷是否為行動裝置
   const inputRef = useRef(null); // 建立 input 元素的 ref
+  const [categorizedFaqs, setCategorizedFaqs] = useState({}); // **修改：儲存分類化的 FAQ 資料**
+  const [initialQuickRepliesLoaded, setInitialQuickRepliesLoaded] = useState(false);
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
+    if (!isOpen) {
+        setInitialQuickRepliesLoaded(false);
+        // setMessages([]); // 選擇性：關閉時清空對話
+    }
   };
 
   const sendMessage = async () => {
@@ -76,11 +82,105 @@ const ChatWidget = () => {
       }
     } catch (error) {
       console.error("發送訊息錯誤：", error);
-      // **考慮：這裡也可以加入多語言錯誤訊息**
-      // const errorReply = { role: 'assistant', content: t('chatWidget.sendMessageError') };
-      // setMessages(prev => [...prev, errorReply]);
+      const errorReply = { role: 'assistant', content: t('chatWidget.sendMessageError') };
+      setMessages(prev => [...prev, errorReply]);
     }
   };
+
+  const handleQuickReplyClick = (question, answer) => {
+    const userMessage = { role: 'user', content: question };
+    const assistantMessage = { role: 'assistant', content: answer };
+    setMessages(prev => [...prev, userMessage, assistantMessage]);
+  };
+
+  // **修改：處理分類點擊，支援巢狀結構**
+  const handleCategoryClick = (name, dataSlice) => {
+    if (!dataSlice || typeof dataSlice !== 'object') return;
+
+    // 檢查 dataSlice 的第一個 value 是否為 object，判斷是子分類還是問題列表
+    const firstValue = Object.values(dataSlice)[0];
+    // 確保 firstValue 是物件且不是 null 或陣列 (FAQ 答案是字串)
+    const hasSubCategories = typeof firstValue === 'object' && firstValue !== null && !Array.isArray(firstValue);
+
+    let newMessage;
+    const messageTitle = name; // 使用點擊的分類名稱作為標題
+
+    if (hasSubCategories) {
+      // 包含子分類：顯示子分類按鈕
+      const subCategories = Object.keys(dataSlice);
+      newMessage = {
+        role: 'system',
+        type: 'quick-replies',
+        subType: 'categories',
+        id: `qr-cat-${Date.now()}`,
+        title: messageTitle, // **新增：設定標題**
+        categories: subCategories.map(subCatName => ({
+          name: subCatName,
+          data: dataSlice[subCatName]
+        }))
+      };
+    } else {
+      const questions = Object.keys(dataSlice).map(q => ({
+        question: q,
+        answer: dataSlice[q]
+      }));
+      newMessage = {
+        role: 'system',
+        type: 'quick-replies',
+        subType: 'questions',
+        id: `qr-q-${Date.now()}`,
+        title: messageTitle, // **新增：設定標題**
+        questions: questions
+      };
+    }
+    setMessages(prev => [...prev, newMessage]);
+  };
+
+  // **修改：useEffect 加入初始標題**
+  useEffect(() => {
+    const fetchFaqAndSetInitialMessage = async () => {
+      if (!isOpen || messages.length > 0 || initialQuickRepliesLoaded) {
+        return;
+      }
+
+      const currentLanguage = i18n.language || 'zh-TW';
+      const backendUrl = process.env.REACT_APP_API_BASE_URL || '';
+      try {
+        const response = await fetch(`${backendUrl}/api/chatwidget/faq/${currentLanguage}`);
+        const data = await response.json();
+        if (data && typeof data.faq === 'object' && Object.keys(data.faq).length > 0) {
+          setCategorizedFaqs(data.faq);
+          const topLevelCategories = Object.keys(data.faq);
+          // **新增：過濾掉指定的分類**
+          const filteredCategories = topLevelCategories.filter(
+            categoryName => categoryName !== '其他建議與回饋' && categoryName !== 'Suggestions & Feedback'
+          );
+          const quickReplyMessage = {
+            role: 'system',
+            type: 'quick-replies',
+            subType: 'categories',
+            id: `qr-cat-initial-${Date.now()}`,
+            title: t('chatWidget.quickReplyTitle'), // **新增：設定初始標題**
+            // **修改：使用過濾後的分類列表**
+            categories: filteredCategories.map(catName => ({
+              name: catName,
+              data: data.faq[catName]
+            }))
+          };
+          setMessages([quickReplyMessage]);
+          setInitialQuickRepliesLoaded(true);
+        } else {
+          console.error("Invalid FAQ data structure received:", data);
+          // 可以考慮顯示錯誤訊息給使用者
+        }
+      } catch (error) {
+        console.error('Error fetching FAQ data:', error);
+        // 可以考慮顯示錯誤訊息給使用者
+      }
+    };
+
+    fetchFaqAndSetInitialMessage();
+  }, [isOpen, i18n.language, initialQuickRepliesLoaded, t]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -112,26 +212,77 @@ const ChatWidget = () => {
   return (
     <>
       {isOpen && (
-        <div className={`chat-widget ${!isOpen ? 'closed' : ''} ${isMobile ? 'mobile-fullscreen' : ''}`} ref={chatWidgetRef} /* onClick={toggleChat} */>
+        <div className={`chat-widget ${!isOpen ? 'closed' : ''} ${isMobile ? 'mobile-fullscreen' : ''}`} ref={chatWidgetRef}>
           <div className="chat-header">
             {t('chatWidget.headerTitle')}
-            <button className="close-button" onClick={toggleChat}>{t('chatWidget.closeButton')}</button>
+            <button className="close-button" onClick={toggleChat}>{t('chatWidget.closeButton', '關閉')}</button> {/* 提供預設值 */}
           </div>
           <div className="chat-body" ref={chatBodyRef}>
-            {messages.length === 0 && (
-              <div
-                className="welcome-message"
-                dangerouslySetInnerHTML={{ __html: t('chatWidget.welcomeMessage') }}
-              />
-            )}
-            {messages.map((msg, index) => (
-              <div key={index} className={`chat-message ${msg.role}`}>
-                {msg.content}
-              </div>
-            ))}
+            {(() => {
+              return messages.map((msg, index) => {
+                if (msg.type === 'quick-replies') {
+                  // **修改：總是顯示標題 (如果存在)**
+                  return (
+                    <div key={msg.id || index} className={`chat-message ${msg.role || 'system'} quick-replies-message-container`}>
+                      {/* 檢查 msg.title 是否存在，並顯示 */}
+                      {msg.title && (
+                        <p
+                          className="quick-replies-title"
+                          // 初始標題可能包含 HTML，其他層級標題是純文字
+                          {...(index === 0 && msg.title === t('chatWidget.quickReplyTitle') // 假設初始標題總是第一個訊息
+                            ? { dangerouslySetInnerHTML: { __html: msg.title } }
+                            : {})}
+                        >
+                          {/* 如果不是初始標題，直接顯示文字 */}
+                          {index !== 0 || msg.title !== t('chatWidget.quickReplyTitle') ? msg.title : null}
+                        </p>
+                      )}
+
+                      {/* 情況一：顯示分類或子分類按鈕 */}
+                      {msg.subType === 'categories' && msg.categories && (
+                        <>
+                          {msg.categories.map((categoryData) => (
+                            <button
+                              key={categoryData.name}
+                              className="quick-reply-button-inline"
+                              onClick={() => handleCategoryClick(categoryData.name, categoryData.data)}
+                            >
+                              {categoryData.name}
+                            </button>
+                          ))}
+                        </>
+                      )}
+                      {/* 情況二：顯示問題按鈕 */}
+                      {msg.subType === 'questions' && msg.questions && (
+                        <>
+                          {msg.questions.map((q) => (
+                            <button
+                              key={q.question}
+                              className="quick-reply-button-inline"
+                              onClick={() => handleQuickReplyClick(q.question, q.answer)}
+                            >
+                              {q.question}
+                            </button>
+                          ))}
+                        </>
+                      )}
+                    </div>
+                  );
+                }
+                // 渲染一般使用者或助理訊息
+                else if (msg.role && msg.content) {
+                  return (
+                    <div key={msg.id || index} className={`chat-message ${msg.role}`}>
+                      {msg.content}
+                    </div>
+                  );
+                }
+                return null;
+              });
+            })()}
           </div>
           <div className="chat-input">
-            <input 
+            <input
               type="text"
               placeholder={t('chatWidget.inputPlaceholder')}
               value={input}
@@ -154,7 +305,7 @@ const ChatWidget = () => {
         </div>
       )}
       <button className="chat-toggle-button" onClick={toggleChat} aria-label={t('chatWidget.headerTitle')}>
-        
+
       </button>
     </>
   );

@@ -96,7 +96,9 @@
     "closeButton": "✖",
     "welcomeMessage": "Hello~<br />Have questions about the website features?<br />Ask Piggy Customer Service!",
     "inputPlaceholder": "Enter message...",
-    "sendButton": "Send"
+    "sendButton": "Send",
+    "quickReplyTitle": "Have questions about the website features?<br />Click on the question categories below,<br > or directly enter your questions",
+    "sendMessageError": "Oops, the message seems lost. Please try again later!"
   },
   "dialog": {
     "closeAriaLabel": "Back"
