@@ -1,6 +1,6 @@
 // React 相關
 import React, { useState, useEffect, useCallback, Suspense } from 'react';
-import { Link, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { Link, Route, Routes, Navigate, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
 
@@ -68,6 +68,8 @@ const Overlay = ({ isVisible, onClick }) => (
 // 建立 AppContent
 function AppContent() {
   const { t, i18n } = useTranslation();
+  const { lang } = useParams();
+  const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
   const { openDialog } = useDialog();
   const { 
@@ -80,10 +82,21 @@ function AppContent() {
   } = useNewFeatureNotification(FEATURES.ARTICLES);
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' });
   const location = useLocation();
-  const isHomePage = location.pathname === '/';
+  const isHomePage = location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [googleTrendsDropdownOpen, setGoogleTrendsDropdownOpen] = React.useState(false);
+
+  useEffect(() => {
+    if (lang && i18n.options.supportedLngs.includes(lang)) {
+      if (i18n.language !== lang) {
+        i18n.changeLanguage(lang);
+      }
+    } else {
+      const currentPathWithoutLang = location.pathname.replace(/^\/[^/]+/, '');
+      navigate(`/${i18n.options.fallbackLng}${currentPathWithoutLang || '/'}`, { replace: true });
+    }
+  }, [lang, i18n, navigate, location.pathname]);
 
   // 當側邊欄關閉時，自動收合Google搜尋熱度下拉選單
   React.useEffect(() => {
@@ -104,7 +117,7 @@ function AppContent() {
   const handleWatchlistClick = (e) => {
     if (!user) {
       e.preventDefault();
-      openDialog('auth', { returnPath: '/watchlist' });
+      openDialog('auth', { returnPath: `/${lang}/watchlist` });
     }
     markWatchlistSeen();
     if (isMobile) {
@@ -130,7 +143,7 @@ function AppContent() {
         title: document.title,
       },
     });
-  }, []);
+  }, [location.pathname]);
 
   // 每次路由改變時滾動到頂部
   React.useEffect(() => {
@@ -145,19 +158,19 @@ function AppContent() {
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
           <ul>
             <li className="sidebar-item-1">
-              <Link to="/" onClick={() => isMobile && setSidebarOpen(false)}>
+              <Link to={`/${lang}/`} onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaHome />
                 <span>{t('nav.home')}</span>
               </Link>
             </li>
             <li className="sidebar-item-2">
-              <Link to="/priceanalysis" onClick={() => isMobile && setSidebarOpen(false)}>
+              <Link to={`/${lang}/priceanalysis`} onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaChartLine />
                 <span>{t('nav.priceAnalysis')}</span>
               </Link>
             </li>
             <li className="sidebar-item-3">
-              <Link to="/market-sentiment" onClick={() => isMobile && setSidebarOpen(false)}>
+              <Link to={`/${lang}/market-sentiment`} onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaHeartbeat />
                 <span>{t('nav.marketSentiment')}</span>
               </Link>
@@ -200,7 +213,7 @@ function AppContent() {
             </li>
             */}
             <li className="sidebar-item-5">
-              <Link to="/watchlist" onClick={handleWatchlistClick}>
+              <Link to={`/${lang}/watchlist`} onClick={handleWatchlistClick}>
                 <div className="sidebar-item-content">
                   <FaList />
                   <span>{t('nav.watchlist')}</span>
@@ -208,7 +221,7 @@ function AppContent() {
               </Link>
             </li>
             <li className="sidebar-item-6">
-              <Link to="/articles" onClick={handleArticlesClick}>
+              <Link to={`/${lang}/articles`} onClick={handleArticlesClick}>
                 <div className="sidebar-item-content">
                   <FaChartBar />
                   <span>{t('nav.articles')}</span>
@@ -216,7 +229,7 @@ function AppContent() {
               </Link>
             </li>
             <li className="sidebar-item-7">
-              <Link to="/sponsor-us" onClick={() => isMobile && setSidebarOpen(false)}>
+              <Link to={`/${lang}/sponsor-us`} onClick={() => isMobile && setSidebarOpen(false)}>
                 <FaPiggyBank />
                 <span>{t('nav.sponsor')}</span>
               </Link>
@@ -240,18 +253,18 @@ function AppContent() {
           <header className="top-nav">
             {/* Logo 區域 */}
             <div className="top-nav-logo">
-              <Link to="/">
+              <Link to={`/${lang}/`}>
                 <img src="/logo.png" alt={t('appName')} className="logo" />
               </Link>
             </div>
             
             {/* 桌面版導航項目 */}
             <div className="desktop-nav-items">
-              <Link to="/priceanalysis">
+              <Link to={`/${lang}/priceanalysis`}>
                 <FaChartLine />
                 <span>{t('nav.priceAnalysis')}</span>
               </Link>
-              <Link to="/market-sentiment" onClick={() => isMobile && setSidebarOpen(false)}>
+              <Link to={`/${lang}/market-sentiment`}>
                 <FaHeartbeat />
                 <span>{t('nav.marketSentiment')}</span>
               </Link>
@@ -276,15 +289,15 @@ function AppContent() {
                 )}
               </div>
               */}
-              <Link to="/watchlist" onClick={handleWatchlistClick}>
+              <Link to={`/${lang}/watchlist`} onClick={handleWatchlistClick}>
                 <FaList />
                 <span>{t('nav.watchlist')}</span>
               </Link>
-              <Link to="/articles" onClick={handleArticlesClick}>
+              <Link to={`/${lang}/articles`} onClick={handleArticlesClick}>
                 <FaChartBar />
                 <span>{t('nav.articles')}</span>
               </Link>
-              <Link to="/sponsor-us">
+              <Link to={`/${lang}/sponsor-us`}>
                 <FaPiggyBank />
                 <span>{t('nav.sponsor')}</span>
               </Link>
@@ -318,20 +331,20 @@ function AppContent() {
               } />
 
               {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
-              <Route path="/priceanalysis" element={
+              <Route path="priceanalysis" element={
                 <PageContainer title={t('pageTitle.priceAnalysis')} description={t('pageDescription.priceAnalysis')}>
                   <PriceAnalysis />
                 </PageContainer>
               } />
 
               <Route
-                path="/market-sentiment"
+                path="market-sentiment"
                 element={<PageContainer title={t('pageTitle.marketSentiment')} description={t('pageDescription.marketSentiment')}>
                   <MarketSentimentIndex />
                 </PageContainer>
               } />
               <Route
-                path="/about"
+                path="about"
                 element={
                   <PageContainer title={t('pageTitle.about')} description={t('pageDescription.about')}>
                     <About />
@@ -339,7 +352,7 @@ function AppContent() {
                 }
               />
               <Route
-                path="/legal"
+                path="legal"
                 element={
                   <PageContainer title={t('pageTitle.legal')} description={t('pageDescription.legal')}>
                     <Legal />
@@ -347,35 +360,38 @@ function AppContent() {
                 }
               />
               <Route
-                path="/watchlist"
+                path="watchlist"
                 element={
                   isAuthenticated ? (
                     <PageContainer title={t('pageTitle.watchlist')} description={t('pageDescription.watchlist')}>
                       <WatchlistContainer />
                     </PageContainer>
                   ) : (
-                    <Navigate to="/" replace />
+                    <Navigate to={`/${lang}/`} replace />
                   )
                 }
               />
-              <Route path="/articles" element={
+              <Route path="articles" element={
                 <PageContainer title={t('pageTitle.articles')} description={t('pageDescription.articles')}>
                   <Articles />
                 </PageContainer>
               } />
-              <Route path="/articles/:slug" element={<ArticleDetail />} />
-              <Route path="/sponsor-us" element={
+              <Route path="articles/:slug" element={<ArticleDetail />} />
+              <Route path="sponsor-us" element={
                 <PageContainer title={t('pageTitle.sponsor')} description={t('pageDescription.sponsor')}>
                   <SponsorUs />
                 </PageContainer>
               } />
-              <Route path="/sponsor-success" element={
+              <Route path="sponsor-success" element={
                 <PageContainer title={t('pageTitle.sponsorSuccess')} description={t('pageDescription.sponsorSuccess')}>
                   <SponsorSuccess />
                 </PageContainer>
               } />
-              <Route path="/googletrends" element={<GoogleTrendsSymbolPage />} />
-              <Route path="/googletrendsmarket" element={<GoogleTrendsMarketPage />} />
+              <Route path="googletrends" element={<GoogleTrendsSymbolPage />} />
+              <Route path="googletrendsmarket" element={<GoogleTrendsMarketPage />} />
+
+              {/* 可以添加一個捕獲無效相對路徑的路由 */}
+              <Route path="*" element={<Navigate to={`/${lang}/`} replace />} />
             </Routes>
           </div>
         </main>
@@ -398,13 +414,91 @@ function AppContent() {
   );
 }
 
-// App 元件：包裹 Context
+// --- 確保 LanguageWrapper 的定義存在 ---
+function LanguageWrapper() {
+  const { lang } = useParams();
+  const { i18n } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // 找到標準的大小寫格式 (假設 supportedLngs 存儲的是標準格式)
+    const standardLang = i18n.options.supportedLngs.find(
+      supportedLang => supportedLang.toLowerCase() === lang?.toLowerCase()
+    );
+
+    if (lang && standardLang) {
+      // 如果 URL 中的 lang 與標準格式的大小寫不同，則重定向
+      if (lang !== standardLang) {
+        const newPath = location.pathname.replace(`/${lang}`, `/${standardLang}`);
+        navigate(newPath + location.search + location.hash, { replace: true });
+        return; // 停止後續處理，等待重定向生效
+      }
+
+      // 如果大小寫正確，則設置 i18n 語言
+      if (i18n.language !== standardLang) {
+        i18n.changeLanguage(standardLang);
+      }
+    }
+    // AppContent 中的 useEffect 會處理無效 lang (完全不匹配 supportedLngs) 的情況
+    // 但這裡也可以加上處理，如果 standardLang 未找到
+    // else if (lang) {
+    //   // 如果 lang 存在但不在 supportedLngs 中 (即使忽略大小寫)
+    //   // 導向預設語言
+    //   const currentPathWithoutLang = location.pathname.replace(/^\/[^/]+/, '');
+    //   navigate(`/${i18n.options.fallbackLng}${currentPathWithoutLang || '/'}`, { replace: true });
+    // }
+
+  }, [lang, i18n, navigate, location]); // 添加 location 到依賴
+
+  // 確保在語言驗證/重定向前不渲染 AppContent
+  // 檢查標準格式是否存在且與當前 URL 的 lang 匹配
+  const isValidLang = lang && i18n.options.supportedLngs.includes(lang);
+
+  if (!isValidLang) {
+     // 如果語言無效或正在重定向，返回 null 或 Loading
+     // AppContent 的 useEffect 也會處理重定向，但這裡提前處理更好
+     return null;
+  }
+
+  return <AppContent />;
+}
+
+// --- 確保 InitialRedirect 的定義存在 ---
+function InitialRedirect() {
+  const navigate = useNavigate();
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const userLang = navigator.language || navigator.userLanguage;
+    let targetLang = i18n.options.fallbackLng;
+
+    if (userLang.startsWith('en') && i18n.options.supportedLngs.includes('en')) {
+      targetLang = 'en';
+    }
+    else if (userLang.toLowerCase().startsWith('zh') && i18n.options.supportedLngs.includes('zh-TW')) {
+       targetLang = 'zh-TW';
+    }
+
+    navigate(`/${targetLang}`, { replace: true });
+  }, [navigate, i18n]);
+
+  return null;
+}
+
+// App 元件：包裹 Context 和新的路由結構
 function App() {
   return (
     <AuthProvider>
       <DialogProvider>
         <AdProvider>
-          <AppContent />
+          <Routes>
+            {/* --- 確保這裡使用的是正確定義的 InitialRedirect --- */}
+            <Route path="/" element={<InitialRedirect />} />
+            {/* --- 確保這裡使用的是正確定義的 LanguageWrapper --- */}
+            <Route path="/:lang/*" element={<LanguageWrapper />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </AdProvider>
       </DialogProvider>
     </AuthProvider>
