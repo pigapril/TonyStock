@@ -5,6 +5,7 @@ import { useDialog } from '../../components/Common/Dialog/useDialog';
 import { Analytics } from '../../utils/analytics'; // 引入 Analytics
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next'; // 1. 引入 useTranslation
+import i18n from '../../i18n'; // **新增：直接引入 i18n 實例**
 
 const ChatWidget = () => {
   const { t } = useTranslation(); // 2. 使用 hook
@@ -45,6 +46,9 @@ const ChatWidget = () => {
     const apiKey = process.env.REACT_APP_AKASHCHAT_API_KEY || ''
     const backendUrl = process.env.REACT_APP_API_BASE_URL || ''; // 從環境變數讀取後端 URL
 
+    // **取得當前語言**
+    const currentLanguage = i18n.language || 'zh-TW'; // 從 i18n 實例取得，設定預設值
+
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -52,7 +56,8 @@ const ChatWidget = () => {
         'Authorization': `Bearer ${apiKey}` //如果後端需要驗證，才需要這個
       },
       body: JSON.stringify({
-        messages: newMessages // 將先前的對話紀錄也傳給後端
+        messages: newMessages, // 將先前的對話紀錄也傳給後端
+        language: currentLanguage // **新增：將語言代碼傳給後端**
       })
     };
 
@@ -71,6 +76,9 @@ const ChatWidget = () => {
       }
     } catch (error) {
       console.error("發送訊息錯誤：", error);
+      // **考慮：這裡也可以加入多語言錯誤訊息**
+      // const errorReply = { role: 'assistant', content: t('chatWidget.sendMessageError') };
+      // setMessages(prev => [...prev, errorReply]);
     }
   };
 

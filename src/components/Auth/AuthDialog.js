@@ -37,7 +37,7 @@ export function AuthDialog() {
                     size: 'large',
                     text: 'signin_with',
                     shape: 'rectangular',
-                    logo_alignment: 'left',
+                    logo_alignment: 'center',
                     context: dialog.source || 'dialog'
                 });
                 

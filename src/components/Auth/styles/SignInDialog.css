@@ -108,14 +108,8 @@
     justify-content: center;
     align-items: center;
     margin: 0px 0 0;
-    height: 40px;
+    height: 100%;
     position: relative;
-}
-
-.google-button-container iframe,
-.google-button-container > * {
-    margin: 0 auto;
-    display: block;
 }
 
 /* 從 AuthDialog.css 合併過來的樣式 */
@@ -125,7 +119,7 @@
     margin: 25px auto 8px;
     text-align: center;
     width: 90%;
-    max-width: 240px;
+    max-width: 340px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -320,6 +314,9 @@
 @media (max-width: 768px) {
     .auth-dialog-content {
         padding: 0 10px;
+        width: 95%;
+        align-items: center;
+        justify-content: center;
     }
     
     .auth-dialog-preview-image {
@@ -330,5 +327,13 @@
     
     .dialog-title {
         font-size: 1.2rem;
+    }
+    .feature-list {
+        width: 100%;
+    }
+    .feature-list li {
+        width: 100%;
+        margin-left: -20px;
+        justify-content: center;
     }
 }

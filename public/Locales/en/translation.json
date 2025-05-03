@@ -79,8 +79,8 @@
   "authDialog": {
     "previewAlt": "Watchlist feature preview",
     "feature1": "🎯 Track stocks you're interested in",
-    "feature2": "📊 Analyze multiple results at once",
-    "feature3": "💬 Get answers from AI customer service",
+    "feature2": "📊 Analyze multiple stocks at once",
+    "feature3": "💬 Get answers from AI chat service",
     "title": "🚀 Log in to unlock full features!",
     "loading": "Loading..."
   },
