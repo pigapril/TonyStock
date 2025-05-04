@@ -58,7 +58,10 @@ export const Footer = () => {
             <ul>
               <li><Link to={`${langPrefix}/about`}>{t('footer.aboutSite')}</Link></li>
               <li><Link to={`${langPrefix}/legal`}>{t('footer.legal')}</Link></li>
-              <li><Link to={`${langPrefix}/sponsor-us`}>{t('footer.sponsor')}</Link></li>
+              {/* 只有在 zh-TW 語系下顯示贊助連結 */}
+              {lang === 'zh-TW' && (
+                <li><Link to={`${langPrefix}/sponsor-us`}>{t('footer.sponsor')}</Link></li>
+              )}
             </ul>
           </div>
         </div>

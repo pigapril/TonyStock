@@ -25,7 +25,9 @@
     "heading": "分析專欄",
     "coverAlt": "文章封面圖片",
     "jsonLdName": "分析專欄",
-    "jsonLdDescription": "深入分析市場趨勢和投資策略以及如何使用網站工具判斷市場情緒。"
+    "jsonLdDescription": "深入分析市場趨勢和投資策略以及如何使用網站工具判斷市場情緒。",
+    "noCategory": "未分類",
+    "noDate": "無日期"
   },
   "articleDetail": {
     "loadingTitle": "載入中...",
@@ -76,7 +78,7 @@
     "welcomeMessage": "你好~<br />對網站功能有疑問嗎？<br />由小豬客服解答！",
     "inputPlaceholder": "輸入訊息...",
     "sendButton": "傳送",
-    "quickReplyTitle": "對網站有疑問嗎？<br />點選下方問題分類，<br />或是直接輸入問題",
+    "quickReplyTitle": "對網站有疑問嗎？<br />點選下方常見問題，<br />或是直接與小豬客服對話",
     "sendMessageError": "糟糕，訊息好像迷路了，請稍後再試一次！"
   },
   "dialog": {
@@ -590,7 +592,7 @@
       "finish": "完成編輯",
       "start": "編輯模式"
     },
-    "infoTooltip": "添加股票後，將自動根據股票長期(3.5年)趨勢，計算出極度悲觀(綠色)和極度樂觀(紅色)價格，方便查看股票當前價格所在的情緒位階",
+    "infoTooltip": "添加股票後，將自動根據股票長期(3.5年)趨勢，計算出當前價格的情緒位階，包括極度悲觀、悲觀、中性、樂觀、極度樂觀，點擊該股票可跳轉至樂活五線譜頁面查看詳情",
     "categoryTabs": {
       "manageCategoriesAria": "管理分類"
     },

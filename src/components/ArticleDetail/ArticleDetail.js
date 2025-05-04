@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PageContainer from '../PageContainer/PageContainer';
 import ReactMarkdown from 'react-markdown';
-import { getArticleInfoFromSlug } from '../../utils/articleUtils';
 import './ArticleDetail.css';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +17,8 @@ const generateId = (text) => {
 };
 
 export function ArticleDetail() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const currentLang = i18n.language;
     const { slug } = useParams();
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -29,41 +29,47 @@ export function ArticleDetail() {
     useEffect(() => {
         const fetchArticle = async () => {
             setLoading(true);
+            setError(null);
             try {
                 const articleName = slug.replace(/^\d+\./, '');
-                const response = await fetch(`/articles/${slug}/${articleName}.ini.md`);
+                const fileName = `${articleName}.${currentLang}.ini.md`;
+                const filePath = `/articles/${slug}/${fileName}`;
+
+                const response = await fetch(filePath);
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`Article not found for lang '${currentLang}': ${filePath} (Status: ${response.status})`);
                 }
                 const content = await response.text();
                 
-                // 解析 Frontmatter
                 const frontmatterRegex = /^---([\s\S]+?)---/;
                 const frontmatterMatch = content.match(frontmatterRegex);
-                let frontmatter = {};
+                let parsedFrontmatter = {};
                 let markdownContent = content;
 
                 if (frontmatterMatch) {
                     try {
-                        frontmatter = JSON.parse(frontmatterMatch[1]); // 嘗試解析 JSON
-                    } catch (e) {
-                        // 如果 JSON 解析失敗，嘗試 YAML 簡易解析
                         const yamlLines = frontmatterMatch[1].trim().split('\n');
                         yamlLines.forEach(line => {
                             const parts = line.split(':').map(p => p.trim());
                             if (parts.length === 2) {
-                                frontmatter[parts[0]] = parts[1];
+                                parsedFrontmatter[parts[0].toLowerCase()] = parts[1];
                             }
                         });
+                    } catch (e) {
+                        console.error(`Error parsing frontmatter for ${slug} (${currentLang}):`, e);
                     }
-                    markdownContent = content.replace(frontmatterRegex, '').trim(); // 移除 frontmatter
-                    setMeta(frontmatter); // 設定 meta state
+                    markdownContent = content.replace(frontmatterRegex, '').trim();
+                    setMeta(parsedFrontmatter);
+                } else {
+                    setMeta({});
                 }
 
                 setArticle({
-                    ...getArticleInfoFromSlug(slug),
+                    title: parsedFrontmatter.title || slug.replace(/^\d+\./, '').replace(/-/g, ' '),
+                    slug: slug,
                     content: markdownContent,
-                    basePath: `/articles/${slug}`
+                    basePath: `/articles/${slug}`,
+                    lang: currentLang
                 });
             } catch (error) {
                 console.error("Could not fetch the article:", error);
@@ -74,7 +80,7 @@ export function ArticleDetail() {
         };
 
         fetchArticle();
-    }, [slug]);
+    }, [slug, currentLang]);
 
     // 自定義圖片渲染組件
     const ImageRenderer = ({ src, alt }) => {
@@ -110,7 +116,7 @@ export function ArticleDetail() {
     };
 
     if (loading) {
-        return <PageContainer title={t('articleDetail.loadingTitle')} description={t('articleDetail.loadingDescription')}><div>{t('articleDetail.loadingText')}</div></PageContainer>;
+        return <PageContainer title={t('articleDetail.loadingTitle')} description={t('articleDetail.loadingDescription')}><div>{t('common.loading')}</div></PageContainer>;
     }
 
     if (error) {
@@ -128,12 +134,12 @@ export function ArticleDetail() {
     return (
         <PageContainer 
             title={meta.title || article.title} 
-            description={meta.description}
+            description={meta.description || ''}
         >
             <div className="article-detail-page">
                 <Helmet>
-                    <meta name="keywords" content={meta.keywords} />
-                    {/* 其他特定於文章的 meta 標籤 */}
+                    {meta.keywords && <meta name="keywords" content={meta.keywords} />}
+                    <meta property="og:locale" content={currentLang === 'zh' ? 'zh_TW' : 'en_US'} />
                 </Helmet>
                 <div className="article-header">
                     <h1>{article.title}</h1>
@@ -143,39 +149,43 @@ export function ArticleDetail() {
                         components={{
                             img: ImageRenderer,
                             h2: ({node, ...props}) => {
-                                const title = Array.isArray(node.children) && node.children[0]?.value ? node.children[0].value : '';
-                                const id = generateId(title);
-                                console.log("h2 title:", title, "generated id:", id);
+                                const titleText = Array.isArray(node.children) && node.children[0]?.value ? node.children[0].value : '';
+                                const id = generateId(titleText);
                                 return <h2 id={id} {...props} />;
                             },
                             h3: ({node, ...props}) => {
-                                const title = Array.isArray(node.children) && node.children[0]?.value ? node.children[0].value : '';
-                                const id = generateId(title);
-                                console.log("h3 title:", title, "generated id:", id);
+                                const titleText = Array.isArray(node.children) && node.children[0]?.value ? node.children[0].value : '';
+                                const id = generateId(titleText);
                                 return <h3 id={id} {...props} />;
                             },
                             a: ({node, ...props}) => {
                                 if (props.href?.startsWith('#')) {
                                     const href = props.href.slice(1);
-                                    const decodedHref = decodeURIComponent(href);
-                                    const id = generateId(decodedHref);
-                                    console.log("link href:", href, "target id:", id);
-                                    return (
-                                        <a
-                                            {...props}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                const element = document.getElementById(id);
-                                                if (element) {
-                                                    element.scrollIntoView({ behavior: 'smooth' });
-                                                } else {
-                                                    console.warn("Element not found with id:", id);
-                                                }
-                                            }}
-                                        />
-                                    );
+                                    try {
+                                        const decodedHref = decodeURIComponent(href);
+                                        const id = generateId(decodedHref);
+                                        return (
+                                            <a
+                                                {...props}
+                                                href={`#${id}`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    const element = document.getElementById(id);
+                                                    if (element) {
+                                                        element.scrollIntoView({ behavior: 'smooth' });
+                                                        window.history.pushState(null, '', `#${id}`);
+                                                    } else {
+                                                        console.warn("Element not found with id:", id);
+                                                    }
+                                                }}
+                                            />
+                                        );
+                                    } catch (e) {
+                                        console.error("Error decoding or generating ID for anchor:", href, e);
+                                        return <a {...props} />;
+                                    }
                                 }
-                                return <a {...props} />;
+                                return <a {...props} target="_blank" rel="noopener noreferrer"/>;
                             }
                         }}
                     >

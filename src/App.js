@@ -297,10 +297,13 @@ function AppContent() {
                 <FaChartBar />
                 <span>{t('nav.articles')}</span>
               </Link>
-              <Link to={`/${lang}/sponsor-us`}>
-                <FaPiggyBank />
-                <span>{t('nav.sponsor')}</span>
-              </Link>
+              {/* 只有在 zh-TW 語系下顯示贊助連結 */}
+              {lang === 'zh-TW' && (
+                <Link to={`/${lang}/sponsor-us`}>
+                  <FaPiggyBank />
+                  <span>{t('nav.sponsor')}</span>
+                </Link>
+              )}
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
                 <span>{t('nav.facebookLong')}</span>

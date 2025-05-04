@@ -6,10 +6,16 @@ import { Analytics } from '../../utils/analytics';
 import { useTranslation } from 'react-i18next';
 
 export function AuthDialog() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const currentLang = i18n.language;
     const { dialog, closeDialog } = useDialog();
     const { loading, renderGoogleButton, user } = useAuth();
     const buttonRef = useRef(null);
+
+    const getImagePath = (baseName, extension = 'png') => {
+        const langSuffix = currentLang !== 'zh-TW' ? '-en' : '';
+        return `/images/${baseName}${langSuffix}.${extension}`;
+    };
 
     useEffect(() => {
         const handleLoginSuccess = () => {
@@ -70,7 +76,7 @@ export function AuthDialog() {
     const defaultDescription = (
         <div className="auth-dialog-description">
             <img 
-                src="/images/watchlist-preview.png" 
+                src={getImagePath('watchlist-preview')}
                 alt={t('authDialog.previewAlt')}
                 className="auth-dialog-preview-image"
             />

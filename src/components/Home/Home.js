@@ -13,6 +13,12 @@ export const Home = () => {
   const { openDialog } = useDialog();
   const { isAuthenticated } = useAuth();
 
+  // **新增：根據語言決定圖片路徑的輔助函數**
+  const getImagePath = (baseName, extension = 'png') => {
+    const langSuffix = currentLang !== 'zh-TW' ? '-en' : '';
+    return `/images/${baseName}${langSuffix}.${extension}`;
+  };
+
   // 使用 useMemo 定義用於結構化數據的 JSON-LD，並加入 currentLang 依賴
   const homeJsonLd = useMemo(() => ({
     "@context": "https://schema.org",
@@ -64,7 +70,8 @@ export const Home = () => {
           <section className="feature-section feature1" id="features">
             <div className="feature-container">
               <div className="feature-media">
-                <img src="/images/home-feature1.png" alt={t('home.feature1.alt')} />
+                {/* **修改：使用 getImagePath 函數** */}
+                <img src={getImagePath('home-feature1')} alt={t('home.feature1.alt')} />
               </div>
               <div className="feature-content">
                 <h2>{t('home.feature1.title')}</h2>
@@ -79,7 +86,8 @@ export const Home = () => {
           <section className="feature-section feature2">
             <div className="feature-container reverse">
               <div className="feature-media">
-                <img src="/images/home-feature2.png" alt={t('home.feature2.alt')} />
+                {/* **修改：使用 getImagePath 函數** */}
+                <img src={getImagePath('home-feature2')} alt={t('home.feature2.alt')} />
               </div>
               <div className="feature-content">
                 <h2>{t('home.feature2.title')}</h2>
@@ -103,7 +111,8 @@ export const Home = () => {
           <section className="feature-section feature3">
             <div className="feature-container">
               <div className="feature-media">
-                <img src="/images/home-feature3.png" alt={t('home.feature3.alt')} />
+                {/* **修改：使用 getImagePath 函數** */}
+                <img src={getImagePath('home-feature3')} alt={t('home.feature3.alt')} />
               </div>
               <div className="feature-content">
                 <h2>{t('home.feature3.title')}</h2>

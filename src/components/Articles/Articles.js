@@ -9,16 +9,26 @@ export function Articles() {
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language;
     const [articles, setArticles] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const loadArticles = async () => {
-            const articleList = await getAllArticles();
-            setArticles(articleList);
+            setLoading(true);
+            setError(null);
+            try {
+                const articleList = await getAllArticles(currentLang);
+                setArticles(articleList);
+            } catch (err) {
+                console.error("Failed to load articles:", err);
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
         };
         loadArticles();
-    }, []);
+    }, [currentLang]);
 
-    // 使用 useMemo 定義結構化數據，並加入 currentLang 依賴
     const articlesJsonLd = useMemo(() => ({
         "@context": "https://schema.org",
         "@type": "CollectionPage",
@@ -27,6 +37,22 @@ export function Articles() {
         "url": `${window.location.origin}/${currentLang}/articles`,
         "inLanguage": currentLang
     }), [t, currentLang]);
+
+    if (loading) {
+        return (
+            <PageContainer title={t('articles.pageTitle')} description={t('articles.pageDescription')}>
+                <div>{t('common.loading')}</div>
+            </PageContainer>
+        );
+    }
+
+    if (error) {
+        return (
+            <PageContainer title={t('articles.pageTitle')} description={t('articles.pageDescription')}>
+                <div>{t('common.errorLoading')}</div>
+            </PageContainer>
+        );
+    }
 
     return (
         <div className="articles-page">
@@ -40,7 +66,7 @@ export function Articles() {
             >
                 <h1>{t('articles.heading')}</h1>
                 <ul className="articles-list">
-                    {articles.map(article => (
+                    {articles.filter(article => article.content).map(article => (
                         <li key={article.id} className="article-item">
                             <Link to={`/${currentLang}/articles/${article.slug}`}>
                                 <div className="article-cover">
@@ -51,9 +77,9 @@ export function Articles() {
                                     />
                                 </div>
                                 <div className="article-content">
-                                    <div className="article-tag">{article.category}</div>
+                                    <div className="article-tag">{article.category || t('articles.noCategory')}</div>
                                     <h3>{article.title}</h3>
-                                    <div className="article-date">{article.date}</div>
+                                    <div className="article-date">{article.date || t('articles.noDate')}</div>
                                 </div>
                             </Link>
                         </li>

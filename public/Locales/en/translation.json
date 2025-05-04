@@ -25,7 +25,9 @@
     "heading": "Insights & Analysis",
     "coverAlt": "Article Cover Image",
     "jsonLdName": "Insights & Analysis",
-    "jsonLdDescription": "In-depth analysis of market trends, investment strategies, and how to use website tools to gauge market sentiment."
+    "jsonLdDescription": "In-depth analysis of market trends, investment strategies, and how to use website tools to gauge market sentiment.",
+    "noCategory": "Uncategorized",
+    "noDate": "No Date"
   },
   "articleDetail": {
     "loadingTitle": "Loading...",
@@ -53,7 +55,7 @@
     "section3Text": "I believe stock prices reflect market sentiment just as much as fundamentals. The website was founded with the goal of using simple charts and data to transform current market sentiment into important investment indicators, helping everyone overcome their irrationality and avoid chasing highs and selling lows based on emotion.",
     "contactTitle": "Contact Me",
     "jsonLdName": "About Sentiment Inside Out",
-    "jsonLdDescription": "Learn about the philosophy of the Sentiment Inside Out website, and how to use simple analysis tools to transform current market sentiment into important investment indicators, helping everyone overcome their own fear and greed."
+    "jsonLdDescription": "Learn about the philosophy of the Sentiment Inside Out website, and how to use simple analysis tools to transform current market sentiment into important investment indicators, helping investors overcome their irrationality and avoid emotionally-driven decisions like chasing highs or selling lows."
   },
   "authDialog": {
     "previewAlt": "Watchlist feature preview",
@@ -76,7 +78,7 @@
     "welcomeMessage": "Hello~<br />Have questions about the website features?<br />Ask Piggy Customer Service!",
     "inputPlaceholder": "Enter message...",
     "sendButton": "Send",
-    "quickReplyTitle": "Have questions about the website features?<br />Click on the question categories below,<br > or directly enter your questions",
+    "quickReplyTitle": "Have questions about the website features?<br />Click on the FAQ below,<br > or chat with Piggy Customer Service",
     "sendMessageError": "Oops, the message seems lost. Please try again later!"
   },
   "dialog": {
@@ -107,8 +109,8 @@
     "legal": "Privacy Policy & Terms",
     "sponsor": "Sponsor Us",
     "copyright": "Copyright © {{year}} Sentiment Inside Out",
-    "disclaimer1": "Data, analysis, tools, and descriptions provided on this website are for reference only. Investment decisions must be made independently, assuming all risks. Official information prevails. This website bears no legal responsibility for profits or losses.",
-    "disclaimer2": "Feel free to share links to information provided on this website. Reproduction of content requires prior consent. Contact: support@sentimentinsideout.com"
+    "disclaimer1": "Data, analysis, tools, and descriptions provided on this website are for reference only. Investment decisions must be made independently, assuming all risks. Verify information with official sources. This website assumes no legal responsibility for any profits or losses incurred.",
+    "disclaimer2": "Feel free to share links to information provided on this website. Reproduction of content requires prior consent. Contact us at: support@sentimentinsideout.com"
   },
   "infoTool": {
     "moreInfoAriaLabel": "More information"
@@ -259,7 +261,7 @@
       "spyPriceAxisLabel": "SPY Price"
     },
     "viewMode": {
-      "overview": "Latest Sentiment",
+      "overview": "Current Sentiment",
       "timeline": "Historical Trend",
       "overviewAria": "Switch to latest sentiment view",
       "timelineAria": "Switch to historical trend view"
@@ -480,22 +482,22 @@
     "lowerBandLabel": "Lower Band"
   },
   "priceAnalysis": {
-    "pageTitle": "LOHAS Five-Line Analysis - Price Trend Analysis",
+    "pageTitle": "LOHAS Five-Line Analysis",
     "pageDescription": "Analyze price trends using the characteristics of stock price mean reversion, determine if current market sentiment is overly optimistic or pessimistic, and improve entry/exit win rates.",
-    "keywords": "LOHAS Five-Line Analysis, Price Trend Analysis, Stock Analysis, Market Sentiment, Mean Reversion, Overbought Oversold, Lohas Channel, Standard Deviation",
+    "keywords": "LOHAS Five-Line Analysis, Price Trend Analysis, Stock Analysis, Market Sentiment, Mean Reversion, Overbought Oversold, LOHAS Channel, Standard Deviation",
     "jsonLd": {
       "name": "LOHAS Five-Line Analysis",
       "description": "Utilize standard deviation to analyze stock price trends and gauge market sentiment. Assess whether the current price reflects excessive optimism or pessimism. Track long-term trends and determine price position using statistical mean reversion properties."
     },
     "form": {
-      "stockCodeLabel": "Stock Symbol:",
+      "stockCodeLabel": "Stock Symbol：",
       "stockCodePlaceholder": "e.g., SPY, AAPL",
-      "analysisPeriodLabel": "Analysis Period:",
+      "analysisPeriodLabel": "Analysis Period：",
       "periodShort": "Short-term (0.5Y)",
       "periodMedium": "Mid-term (1.5Y)",
       "periodLong": "Long-term (3.5Y)",
       "yearsPlaceholder": "Enter years, e.g., 3.5",
-      "backTestDateLabel": "Backtest Date:",
+      "backTestDateLabel": "Backtest Date：",
       "backTestDatePlaceholder": "Default: Today",
       "switchToAdvanced": "Advanced Settings",
       "switchToSimple": "Simple Settings",
@@ -519,7 +521,7 @@
     "chart": {
       "tabs": {
         "sd": "LOHAS Five-Line Analysis",
-        "ulband": "Lohas Channel"
+        "ulband": "LOHAS Channel"
       },
       "loading": {
         "fetching": "Loading...",
@@ -528,10 +530,10 @@
       "label": {
         "price": "Price",
         "trendLine": "Trend Line",
-        "minus2sd": "-2 Standard Deviation",
-        "minus1sd": "-1 Standard Deviation",
-        "plus1sd": "+1 Standard Deviation",
-        "plus2sd": "+2 Standard Deviation"
+        "minus2sd": "-2 SD",
+        "minus1sd": "-1 SD",
+        "plus1sd": "+1 SD",
+        "plus2sd": "+2 SD"
       }
     },
     "prompt": {
@@ -539,24 +541,24 @@
     },
     "explanation": {
       "shortDescription": "Analyze whether the current stock price is overly optimistic or pessimistic. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
-      "readMorePrefix": "For detailed usage, please refer to the article:",
+      "readMorePrefix": "For detailed instructions, please see the article:",
       "readMoreLinkText": "Analyze Price Trends and Sentiment with LOHAS Five-Line Analysis",
       "sd": {
-        "title": "LOHAS Five-Line Analysis (Standard Deviation)",
+        "title": "LOHAS Five-Line Analysis",
         "l1": "The middle trend line is a long-term moving average, serving as the baseline for assessing the long-term price trend. Two standard deviations are added above and below this baseline.",
         "l2": "The further the price moves from the middle trend line, the further it deviates from the long-term average, increasing the probability of reverting to the trend line.",
         "l3": "When the price touches the uppermost band, it indicates a strong short-term overbought condition and extreme market optimism, posing a risk of pullback.",
         "l4": "When the price touches the lowermost band, it indicates a strong short-term oversold condition and extreme market pessimism, presenting an opportunity for a rebound."
       },
       "ulBand": {
-        "title": "Lohas Channel (Upper/Lower Band)",
-        "l1": "The Lohas Channel is a more sensitive indicator used to help determine short-term overbought and oversold conditions.",
-        "l2": "When the price breaks above the upper Lohas Channel, it may indicate short-term overheating.",
-        "l3": "When the price breaks below the lower Lohas Channel, it may indicate short-term cooling."
+        "title": "LOHAS Channel",
+        "l1": "The LOHAS Channel is a more sensitive indicator used to help determine short-term overbought and oversold conditions.",
+        "l2": "When the price breaks above the upper LOHAS Channel, it may indicate short-term overheating.",
+        "l3": "When the price breaks below the lower LOHAS Channel, it may indicate short-term cooling."
       },
       "combined": {
         "title": "Using Both Together",
-        "l1": "When the price touches the uppermost or lowermost band of the LOHAS Five-Line Analysis and simultaneously breaks the Lohas Channel, it might signify a continuation of the trend. Consider waiting for the price to return within the Lohas Channel before taking action.",
+        "l1": "When the price touches the uppermost or lowermost band of the LOHAS Five-Line Analysis and simultaneously breaks the LOHAS Channel, it might signify a continuation of the trend. Consider waiting for the price to return within the LOHAS Channel before taking action.",
         "l2": "It is recommended for use with index ETFs or large-cap stocks with clear trends, in conjunction with fundamental analysis. It should not be used as the sole basis for buy/sell decisions."
       }
     },
@@ -590,7 +592,7 @@
       "finish": "Finish Editing",
       "start": "Edit Mode"
     },
-    "infoTooltip": "After adding a stock, prices for extreme pessimism (green) and extreme optimism (red) will be automatically calculated based on the stock's long-term (3.5 years) trend, making it easy to see the current price's sentiment level.",
+    "infoTooltip": "Add a stock, and we'll automatically determine its current price position within the LOHAS Five-Line sentiment bands (Extreme Pessimism to Extreme Optimism) based on its 3.5-year trend. Click the stock for the full LOHAS Five-Line Analysis chart.",
     "categoryTabs": {
       "manageCategoriesAria": "Manage Categories"
     },
@@ -632,7 +634,7 @@
         "symbol": "Symbol",
         "price": "Current Price",
         "analysis": "Price Analysis",
-        "sentiment": "Current Sentiment",
+        "sentiment": "Sentiment",
         "news": "News",
         "twFlagAlt": "Taiwan Flag",
         "usFlagAlt": "US Flag",
@@ -650,7 +652,7 @@
     }
   },
   "errors": {
-    "STOCK_NOT_FOUND": "Stock symbol not found in our database.",
+    "STOCK_NOT_FOUND": "The specified stock symbol was not found.",
     "GENERAL_ERROR": "An unexpected error occurred. Please try again later.",
     "VALIDATION_ERROR": "Input validation failed. Please check your data.",
     "NOT_FOUND": "The requested resource was not found.",

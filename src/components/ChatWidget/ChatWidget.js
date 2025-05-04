@@ -151,10 +151,16 @@ const ChatWidget = () => {
         if (data && typeof data.faq === 'object' && Object.keys(data.faq).length > 0) {
           setCategorizedFaqs(data.faq);
           const topLevelCategories = Object.keys(data.faq);
-          // **新增：過濾掉指定的分類**
-          const filteredCategories = topLevelCategories.filter(
-            categoryName => categoryName !== '其他建議與回饋' && categoryName !== 'Suggestions & Feedback'
-          );
+          // **修改：根據語言過濾分類**
+          const filteredCategories = topLevelCategories.filter(categoryName => {
+            const isFeedbackZh = categoryName === '其他建議與回饋';
+            const isFeedbackEn = categoryName === 'Feedback & Suggestions';
+            const isSponsorEn = categoryName === 'Sponsor Us';
+            // 如果語言不是 zh-TW 且分類是 'Sponsor Us'，則隱藏
+            const shouldHideSponsor = currentLanguage !== 'zh-TW' && isSponsorEn;
+            // 總是隱藏回饋分類，並根據條件隱藏贊助分類
+            return !isFeedbackZh && !isFeedbackEn && !shouldHideSponsor;
+          });
           const quickReplyMessage = {
             role: 'system',
             type: 'quick-replies',
