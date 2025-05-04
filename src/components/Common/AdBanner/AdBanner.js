@@ -10,6 +10,7 @@ export const AdBanner = () => {
   const isTablet = useMediaQuery({ minWidth: 721, maxWidth: 969 });
   const collapseTimer = useRef(null);
   const location = useLocation();
+  const bannerRef = useRef(null);
 
   const handleCollapse = () => {
     setIsCollapsed(true);
@@ -35,46 +36,25 @@ export const AdBanner = () => {
     }
   };
 
-  const adContentRef = useRef(null);
-  const bannerRef = useRef(null);
+  const adKey = `${location.pathname}-${isMobile}-${isTablet}-${isCollapsed}`;
 
   useEffect(() => {
-    // 在組件掛載時初始化廣告
-    const timer = setTimeout(() => {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (error) {
-        console.error("AdSense initialization error:", error);
-      }
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []); // 空依賴陣列表示只在掛載時執行一次
-
-  useEffect(() => {
+    // Only attempt to push ads if the banner is not collapsed
     if (!isCollapsed) {
+      // Use a short timeout to let React finish DOM updates after key change
       const timer = setTimeout(() => {
         try {
+          console.log(`AdBanner: Attempting to push ad for key: ${adKey}`);
           (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (error) {
-          console.error("AdSense push error on state change:", error);
+          // Log errors, the "already have ads" error should be less frequent now
+          console.error("AdSense push error:", error);
         }
-      }, 100);
+      }, 50); // 50ms delay might be sufficient
       return () => clearTimeout(timer);
     }
-  }, [isCollapsed, isMobile, isTablet]);
-
-  useEffect(() => {
-    if (!isCollapsed) {
-      const timer = setTimeout(() => {
-        try {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (error) {
-          console.error("AdSense push error on state/route change:", error);
-        }
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [isCollapsed, isMobile, isTablet, location.pathname]);
+    // This effect runs when the adKey changes
+  }, [adKey]);
 
   return (
     <div className="ad-banner-container">
@@ -83,22 +63,26 @@ export const AdBanner = () => {
         ref={bannerRef}
         onClick={isCollapsed ? handleExpand : undefined}
       >
-        <div className="ad-content" ref={adContentRef}>
-          {isMobile ? (
-            <ins className="adsbygoogle"
-                 style={{ display: "inline-block", width: "300px", height: "100px" }}
-                 data-ad-client="ca-pub-9124378768777425"
-                 data-ad-slot="2305447757"></ins>
-          ) : isTablet ? (
-            <ins className="adsbygoogle"
-                 style={{ display: "inline-block", width: "728px", height: "90px" }}
-                 data-ad-client="ca-pub-9124378768777425"
-                 data-ad-slot="6690581177"></ins>
-          ) : (
-            <ins className="adsbygoogle"
-                 style={{ display: "inline-block", width: "970px", height: "90px" }}
-                 data-ad-client="ca-pub-9124378768777425"
-                 data-ad-slot="3736248809"></ins>
+        <div key={adKey} className="ad-content">
+          {!isCollapsed && (
+            <>
+              {isMobile ? (
+                <ins className="adsbygoogle"
+                     style={{ display: "inline-block", width: "300px", height: "100px" }}
+                     data-ad-client="ca-pub-9124378768777425"
+                     data-ad-slot="2305447757"></ins>
+              ) : isTablet ? (
+                <ins className="adsbygoogle"
+                     style={{ display: "inline-block", width: "728px", height: "90px" }}
+                     data-ad-client="ca-pub-9124378768777425"
+                     data-ad-slot="6690581177"></ins>
+              ) : (
+                <ins className="adsbygoogle"
+                     style={{ display: "inline-block", width: "970px", height: "90px" }}
+                     data-ad-client="ca-pub-9124378768777425"
+                     data-ad-slot="3736248809"></ins>
+              )}
+            </>
           )}
         </div>
       </div>
