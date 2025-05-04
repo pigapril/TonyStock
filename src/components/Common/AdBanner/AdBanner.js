@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import './AdBanner.css';
 import { useMediaQuery } from 'react-responsive';
@@ -8,6 +9,7 @@ export const AdBanner = () => {
   const isMobile = useMediaQuery({ maxWidth: 720 });
   const isTablet = useMediaQuery({ minWidth: 721, maxWidth: 969 });
   const collapseTimer = useRef(null);
+  const location = useLocation();
 
   const handleCollapse = () => {
     setIsCollapsed(true);
@@ -60,6 +62,19 @@ export const AdBanner = () => {
       return () => clearTimeout(timer);
     }
   }, [isCollapsed, isMobile, isTablet]);
+
+  useEffect(() => {
+    if (!isCollapsed) {
+      const timer = setTimeout(() => {
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (error) {
+          console.error("AdSense push error on state/route change:", error);
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isCollapsed, isMobile, isTablet, location.pathname]);
 
   return (
     <div className="ad-banner-container">
