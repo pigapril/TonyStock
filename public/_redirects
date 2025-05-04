@@ -1,8 +1,25 @@
 # 處理 niku-stock.netlify.app 的重定向
 https://niku-stock.netlify.app/* https://sentimentinsideout.com/:splat 301!
 
-# API 代理 
+# --- 新增：將舊的靜態頁面 URL 永久重定向到 zh-TW 版本 ---
+/about    /zh-TW/about    301
+/legal    /zh-TW/legal    301
+/priceanalysis  /zh-TW/priceanalysis  301
+/watchlist  /zh-TW/watchlist  301
+/market-sentiment  /zh-TW/market-sentiment  301
+/sponsor-us  /zh-TW/sponsor-us  301
+/about  /zh-TW/about  301
+
+# ... 為其他需要重定向的舊頁面添加規則 ...
+
+# --- 將舊文章 URL 永久重定向到 zh-TW 版本 ---
+/articles/:slug /zh-TW/articles/:slug 301
+
+# --- 考慮是否需要將根路徑重定向到預設語言首頁 ---
+# /         /zh-TW/         301  # 如果您希望訪問 / 直接跳轉到 /zh-TW/
+
+# API 代理
 /api/* https://stockdatabase.publicvm.com/api/:splat 200
 
-# SPA 回退路由
+# SPA 回退路由 (保持在最後)
 /* /index.html 200 
