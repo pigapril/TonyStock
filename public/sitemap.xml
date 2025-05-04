@@ -1,68 +1,382 @@
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url>
-<loc>https://sentimentinsideout.com/google25f6009ddcb7b9fd</loc>
-<lastmod>2025-01-08T08:54:57Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.8</priority>
-</url>
-<url>
-<loc>https://sentimentinsideout.com/</loc>
-<lastmod>2025-01-08T08:55:33Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1.0</priority>
-</url>
-<url>
-<loc>https://sentimentinsideout.com/priceanalysis</loc>
-<lastmod>2025-01-12T10:00:33Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.8</priority>
-</url>
-<url>
-<loc>https://sentimentinsideout.com/market-sentiment</loc>
-<lastmod>2025-01-12T10:00:33Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.8</priority>
-</url>
-<url>
-<loc>https://sentimentinsideout.com/watchlist</loc>
-<lastmod>2025-01-12T10:00:33Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92</loc>
-<lastmod>2025-03-14T11:30:00Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://sentimentinsideout.com/articles/2.%E7%94%A8%E5%B8%B8%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F</loc>
-<lastmod>2025-03-14T11:30:00Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://sentimentinsideout.com/sponsor-us</loc>
-<lastmod>2025-01-16T13:30:00Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.6</priority>
-</url>
-<url>
-<loc>https://sentimentinsideout.com/about</loc>
-<lastmod>2025-01-08T08:55:33Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.5</priority>
-</url>
-<url>
-<loc>https://sentimentinsideout.com/legal</loc>
-<lastmod>2025-01-08T08:55:33Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.5</priority>
-</url>
-<url>
-<loc>https://sentimentinsideout.com/articles</loc>
-<lastmod>2025-01-16T14:00:00Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.9</priority>
-</url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+
+  <!-- Google Verification - 通常不需要多語系 -->
+  <url>
+    <loc>https://sentimentinsideout.com/google25f6009ddcb7b9fd</loc>
+    <lastmod>2025-05-04T08:54:57Z</lastmod>
+    <changefreq>yearly</changefreq> <!-- 驗證文件通常不變 -->
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Home Page -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/</loc>
+    <lastmod>2025-05-04T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/</loc>
+    <lastmod>2025-05-04T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/"/>
+  </url>
+
+  <!-- Price Analysis Page -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/priceanalysis</loc>
+    <lastmod>2025-05-04T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/priceanalysis"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/priceanalysis"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/priceanalysis"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/priceanalysis</loc>
+    <lastmod>2025-05-04T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/priceanalysis"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/priceanalysis"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/priceanalysis"/>
+  </url>
+
+  <!-- Market Sentiment Page -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/market-sentiment</loc>
+    <lastmod>2025-05-04T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/market-sentiment"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/market-sentiment"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/market-sentiment"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/market-sentiment</loc>
+    <lastmod>2025-05-04T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/market-sentiment"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/market-sentiment"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/market-sentiment"/>
+  </url>
+
+  <!-- Watchlist Page -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/watchlist</loc>
+    <lastmod>2025-05-04T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/watchlist"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/watchlist"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/watchlist"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/watchlist</loc>
+    <lastmod>2025-05-04T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/watchlist"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/watchlist"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/watchlist"/>
+  </url>
+
+  <!-- Articles Index Page -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/articles</loc>
+    <lastmod>2025-05-04T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/articles"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/articles"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/articles"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/articles</loc>
+    <lastmod>2025-05-04T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/articles"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/articles"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/articles"/>
+  </url>
+
+  <!-- Article: 1. 用樂活五線譜分析價格趨勢與情緒 / Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92</loc>
+    <lastmod>2025-05-04T10:00:00Z</lastmod> <!-- 更新日期 -->
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis"/> <!-- 更新英文 URL -->
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis</loc> <!-- 更新英文 URL -->
+    <lastmod>2025-05-04T10:00:00Z</lastmod> <!-- 更新日期 -->
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis"/> <!-- 更新英文 URL -->
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis"/>
+  </url>
+
+  <!-- Article: 2. 用市場情緒綜合指數判斷買賣時機 / Using the Market Sentiment Composite Index to Time Buys and Sells -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/articles/2.%E7%94%A8%E5%B8%B8%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F</loc>
+    <lastmod>2025-05-04T10:00:00Z</lastmod> <!-- 更新日期 -->
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells"/> <!-- 更新英文 URL -->
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/articles/2.%E7%94%A8%E5%B8%B8%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells</loc> <!-- 更新英文 URL -->
+    <lastmod>2025-05-04T10:00:00Z</lastmod> <!-- 更新日期 -->
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells"/> <!-- 更新英文 URL -->
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/articles/2.%E7%94%A8%E5%B8%B8%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells"/>
+  </url>
+  <!-- ... 其他文章 ... -->
+
+  <!-- Sponsor Us Page (假設只有 zh-TW 有此頁面) -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/sponsor-us</loc>
+    <lastmod>2025-01-16T13:30:00Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/sponsor-us"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/zh-TW/sponsor-us"/>
+  </url>
+  <!-- 英文版 Sponsor Us (如果存在) -->
+  <!--
+  <url>
+    <loc>https://sentimentinsideout.com/en/sponsor-us</loc>
+    <lastmod>2025-01-16T13:30:00Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link ... />
+    <xhtml:link ... />
+    <xhtml:link ... />
+  </url>
+  -->
+
+  <!-- About Page -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/about</loc>
+    <lastmod>2025-01-08T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/about"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/about"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/about"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/about</loc>
+    <lastmod>2025-05-04T10:00:00Z</lastmod> <!-- 更新日期 -->
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/about"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/about"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/about"/>
+  </url>
+
+  <!-- Legal Page -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/legal</loc>
+    <lastmod>2025-05-04T10:00:00Z</lastmod> <!-- 更新日期 -->
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/legal"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/legal"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/legal"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/legal</loc>
+    <lastmod>2025-01-08T08:55:33Z</lastmod> <!-- 請更新為實際日期 -->
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/legal"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/legal"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/legal"/>
+  </url>
+
 </urlset>
