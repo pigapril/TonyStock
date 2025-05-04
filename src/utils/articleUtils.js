@@ -8,88 +8,101 @@ export const getArticleInfoFromSlug = (slug) => {
     };
 };
 
-export const getAllArticles = async (lang) => {
-    const articleSlugs = [
-        '1.用樂活五線譜分析價格趨勢與情緒',
-        '2.用市場情緒綜合指數判斷買賣時機'
-        // 未來新增的文章 slug 也放這裡
-    ];
+// **新增：定義 Slug 映射**
+// 將原始 slug (資料夾名稱) 映射到其對應的英文 slug 和英文檔名
+const articleMappings = {
+    '1.用樂活五線譜分析價格趨勢與情緒': {
+        enSlug: 'analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis', // 您的英文 URL Slug
+        enFilename: 'Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis.en.ini.md'
+    },
+    '2.用市場情緒綜合指數判斷買賣時機': {
+        enSlug: 'using-market-sentiment-composite-index-to-time-buys-and-sells', // 您的英文 URL Slug
+        enFilename: 'using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md'
+    }
+    // 未來新增的文章也加在這裡
+};
 
+// 獲取所有原始 slugs (資料夾名稱)
+const originalArticleSlugs = Object.keys(articleMappings);
+
+export const getAllArticles = async (lang) => {
     // 讀取每篇文章的內容
-    const articles = await Promise.all(articleSlugs.map(async (slug, index) => {
-        const articleName = slug.replace(/^\d+\./, '');
-        // 根據語言代碼拼接檔案名稱
-        const fileName = `${articleName}.${lang}.ini.md`;
-        const filePath = `/articles/${slug}/${fileName}`;
+    const articles = await Promise.all(originalArticleSlugs.map(async (originalSlug, index) => {
+        const mapping = articleMappings[originalSlug];
+        let displaySlug = originalSlug; // 預設使用原始 slug
+        let fileName;
+
+        // 根據語言決定要顯示的 slug 和檔案名稱
+        if (lang === 'en' && mapping?.enSlug && mapping?.enFilename) {
+            displaySlug = mapping.enSlug; // 英文模式下使用英文 slug
+            fileName = mapping.enFilename;
+        } else {
+            // 中文或其他語言，使用原始 slug 和對應語言的檔名
+            const articleName = originalSlug.replace(/^\d+\./, '');
+            fileName = `${articleName}.${lang}.ini.md`;
+        }
+
+        const filePath = `/articles/${originalSlug}/${fileName}`; // **注意：路徑仍用 originalSlug**
 
         try {
             const response = await fetch(filePath);
-            // 如果找不到特定語言檔案，可以考慮回退到預設語言或拋出錯誤
             if (!response.ok) {
-                // 簡單處理：如果找不到，返回空內容
-                console.warn(`Article not found for lang '${lang}': ${filePath}`);
-                 return {
+                console.warn(`Article content not found for lang '${lang}': ${filePath}`);
+                // 即使內容找不到，也嘗試回傳基本資訊，使用正確的 displaySlug
+                return {
                     id: index + 1,
-                    ...getArticleInfoFromSlug(slug),
+                    slug: displaySlug, // **使用 displaySlug**
+                    originalSlug: originalSlug, // 保留原始 slug 供內部使用
+                    title: getArticleInfoFromSlug(originalSlug).title, // 初始標題
                     content: '',
                     date: '',
                     category: '',
-                    lang: lang // 可以加上語言標記
+                    lang: lang
                 };
-                // 或者拋出錯誤: throw new Error(`Article not found: ${filePath}`);
             }
 
             const content = await response.text();
-            // 從內容中解析 frontmatter (如果需要列表頁顯示的話)
             const frontmatterRegex = /^---([\s\S]+?)---/;
             const frontmatterMatch = content.match(frontmatterRegex);
-            let title = getArticleInfoFromSlug(slug).title; // 預設標題
+            let title = getArticleInfoFromSlug(originalSlug).title; // 預設標題
             let category = '';
-            let date = ''; // 初始化日期
+            let date = '';
 
             if (frontmatterMatch) {
-                 try {
+                try {
                     const yamlLines = frontmatterMatch[1].trim().split('\n');
                     yamlLines.forEach(line => {
                         const parts = line.split(':').map(p => p.trim());
-                        if (parts.length >= 2) { // 允許多個冒號，取第一個之前和之後的部分
-                            const key = parts[0].toLowerCase(); // key 轉小寫
-                            const value = parts.slice(1).join(':').trim(); // 處理值中可能包含冒號的情況
+                        if (parts.length >= 2) {
+                            const key = parts[0].toLowerCase();
+                            const value = parts.slice(1).join(':').trim();
                             if (key === 'title') title = value;
                             if (key === 'category') category = value;
-                            if (key === 'date') date = value; // 直接從 frontmatter 讀取 date
+                            if (key === 'date') date = value;
                         }
                     });
                 } catch (e) {
-                    console.error(`Error parsing frontmatter for ${slug} (${lang}):`, e);
+                    console.error(`Error parsing frontmatter for ${originalSlug} (${lang}):`, e);
                 }
             }
 
-            // 移除備用的中文正則表達式解析，因為我們現在強制使用 frontmatter
-            // const dateMatch = content.match(/文章發佈時間：(\d{4})\/(\d{1,2})\/(\d{1,2})\s*$/m);
-            // const categoryMatch = content.match(/文章分類：(.+)$/m);
-            // if (!date && dateMatch) {
-            //      date = `${dateMatch[1]}-${dateMatch[2].padStart(2, '0')}-${dateMatch[3].padStart(2, '0')}`; // 格式化為 YYYY-MM-DD
-            // }
-            //  if (!category && categoryMatch) {
-            //      category = categoryMatch[1];
-            //  }
-
-
             return {
                 id: index + 1,
-                slug: slug,
+                slug: displaySlug, // **使用 displaySlug** (用於連結)
+                originalSlug: originalSlug, // 保留原始 slug (用於圖片等)
                 title: title,
-                content: content, // 列表頁可能不需要完整內容，但先保留
-                date: date, // 使用從 frontmatter 解析的日期
+                content: content,
+                date: date,
                 category: category,
-                lang: lang // 可以加上語言標記
+                lang: lang
             };
         } catch (error) {
-            console.error(`Error loading article ${slug} for lang ${lang}:`, error);
+            console.error(`Error loading article ${originalSlug} for lang ${lang}:`, error);
             return {
                 id: index + 1,
-                ...getArticleInfoFromSlug(slug),
+                slug: displaySlug, // **使用 displaySlug**
+                originalSlug: originalSlug,
+                title: getArticleInfoFromSlug(originalSlug).title,
                 content: '',
                 date: '',
                 category: '',
@@ -98,7 +111,5 @@ export const getAllArticles = async (lang) => {
         }
     }));
 
-    // 過濾掉讀取失敗的文章 (如果上面選擇返回 null 的話)
-    // return articles.filter(article => article !== null);
     return articles;
 }; 

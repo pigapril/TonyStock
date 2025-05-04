@@ -71,7 +71,7 @@ export function Articles() {
                             <Link to={`/${currentLang}/articles/${article.slug}`}>
                                 <div className="article-cover">
                                     <img 
-                                        src={`/articles/${article.slug}/image-cover.png`}
+                                        src={`/articles/${article.originalSlug}/image-cover.png`}
                                         alt={article.title}
                                         loading="lazy"
                                     />

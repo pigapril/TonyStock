@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import PageContainer from '../PageContainer/PageContainer';
 import ReactMarkdown from 'react-markdown';
@@ -16,28 +16,71 @@ const generateId = (text) => {
         .replace(/[^a-z0-9\u4E00-\u9FFF-]/g, ''); // 只保留英文、數字、中文和連字符
 };
 
+// 從 articleUtils.js 引入或複製 articleMappings
+const articleMappings = {
+    '1.用樂活五線譜分析價格趨勢與情緒': {
+        enSlug: 'analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis',
+        enFilename: 'Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis.en.ini.md'
+    },
+    '2.用市場情緒綜合指數判斷買賣時機': {
+        enSlug: 'using-market-sentiment-composite-index-to-time-buys-and-sells',
+        enFilename: 'using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md'
+    }
+};
+
+// 建立反向映射 (英文 Slug -> 原始 Slug)
+const englishSlugToOriginalMap = Object.entries(articleMappings).reduce((acc, [original, mapping]) => {
+    if (mapping.enSlug) {
+        acc[mapping.enSlug] = original;
+    }
+    return acc;
+}, {});
+
 export function ArticleDetail() {
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language;
-    const { slug } = useParams();
+    const { slug: slugFromUrl } = useParams(); // 從 URL 獲取的 slug (可能是中文或英文)
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [meta, setMeta] = useState({});
 
+    // 使用 useMemo 避免每次渲染都重新計算 originalSlug
+    const originalSlug = useMemo(() => {
+        if (currentLang === 'en' && englishSlugToOriginalMap[slugFromUrl]) {
+            return englishSlugToOriginalMap[slugFromUrl];
+        }
+        // 如果不是英文，或者在英文模式下找不到對應的原始 slug (例如直接訪問了中文 slug 的英文 URL)，
+        // 則假定 URL 中的 slug 就是原始 slug
+        return slugFromUrl;
+    }, [slugFromUrl, currentLang]);
+
     useEffect(() => {
         const fetchArticle = async () => {
             setLoading(true);
             setError(null);
             try {
-                const articleName = slug.replace(/^\d+\./, '');
-                const fileName = `${articleName}.${currentLang}.ini.md`;
-                const filePath = `/articles/${slug}/${fileName}`;
+                // 使用 originalSlug 來查找映射和構建路徑
+                const mapping = articleMappings[originalSlug];
+                let fileName;
+
+                // 根據語言和映射決定檔案名稱
+                if (currentLang === 'en' && mapping?.enFilename) {
+                    fileName = mapping.enFilename;
+                } else {
+                    // 中文或其他語言
+                    const articleName = originalSlug.replace(/^\d+\./, '');
+                    fileName = `${articleName}.${currentLang}.ini.md`;
+                }
+
+                // 使用 originalSlug 構建檔案路徑
+                const filePath = `/articles/${originalSlug}/${fileName}`;
 
                 const response = await fetch(filePath);
                 if (!response.ok) {
-                    throw new Error(`Article not found for lang '${currentLang}': ${filePath} (Status: ${response.status})`);
+                    // 嘗試提供更明確的錯誤信息
+                    throw new Error(`Article content not found. Lang: '${currentLang}', URL Slug: '${slugFromUrl}', Original Slug: '${originalSlug}', Path: ${filePath} (Status: ${response.status})`);
                 }
                 const content = await response.text();
                 
@@ -51,12 +94,13 @@ export function ArticleDetail() {
                         const yamlLines = frontmatterMatch[1].trim().split('\n');
                         yamlLines.forEach(line => {
                             const parts = line.split(':').map(p => p.trim());
-                            if (parts.length === 2) {
-                                parsedFrontmatter[parts[0].toLowerCase()] = parts[1];
+                            // 保持原樣，允許值中包含冒號
+                            if (parts.length >= 2) {
+                                parsedFrontmatter[parts[0].toLowerCase()] = parts.slice(1).join(':').trim();
                             }
                         });
                     } catch (e) {
-                        console.error(`Error parsing frontmatter for ${slug} (${currentLang}):`, e);
+                        console.error(`Error parsing frontmatter for ${originalSlug} (${currentLang}):`, e);
                     }
                     markdownContent = content.replace(frontmatterRegex, '').trim();
                     setMeta(parsedFrontmatter);
@@ -65,10 +109,13 @@ export function ArticleDetail() {
                 }
 
                 setArticle({
-                    title: parsedFrontmatter.title || slug.replace(/^\d+\./, '').replace(/-/g, ' '),
-                    slug: slug,
+                    // 標題優先使用 frontmatter，其次是從 originalSlug 生成
+                    title: parsedFrontmatter.title || originalSlug.replace(/^\d+\./, '').replace(/-/g, ' '),
+                    slug: slugFromUrl, // 可以保留 URL 中的 slug
+                    originalSlug: originalSlug, // 保存原始 slug
                     content: markdownContent,
-                    basePath: `/articles/${slug}`,
+                    // basePath 仍然使用 originalSlug
+                    basePath: `/articles/${originalSlug}`,
                     lang: currentLang
                 });
             } catch (error) {
@@ -79,13 +126,24 @@ export function ArticleDetail() {
             }
         };
 
-        fetchArticle();
-    }, [slug, currentLang]);
+        // 檢查 originalSlug 是否有效 (如果需要)
+        // 例如，如果 originalSlug 不在 articleMappings 中，可能表示 URL 無效
+        if (!articleMappings[originalSlug]) {
+             console.warn(`Invalid original slug derived: ${originalSlug} from URL slug: ${slugFromUrl}`);
+             // 可以選擇設置錯誤狀態或導向 404
+             setError(new Error(`Article not found for slug: ${slugFromUrl}`));
+             setLoading(false);
+        } else {
+            fetchArticle();
+        }
+        // useEffect 的依賴項應包含 originalSlug 和 currentLang
+    }, [originalSlug, currentLang, slugFromUrl]); // 加入 slugFromUrl 以確保 URL 變更時觸發
 
     // 自定義圖片渲染組件
     const ImageRenderer = ({ src, alt }) => {
-        const imageSrc = src.startsWith('./') 
-            ? `${article.basePath}/${src.slice(2)}` 
+        // 確保圖片路徑使用 article.basePath (基於 originalSlug)
+        const imageSrc = src.startsWith('./') && article?.basePath
+            ? `${article.basePath}/${src.slice(2)}`
             : src;
         
         return (
@@ -131,15 +189,20 @@ export function ArticleDetail() {
         </PageContainer>;
     }
 
+    // 確保 PageContainer 的 og:url 使用當前 URL
+    const pageOgUrl = typeof window !== 'undefined' ? window.location.href : '';
+
     return (
-        <PageContainer 
-            title={meta.title || article.title} 
+        <PageContainer
+            title={meta.title || article.title}
             description={meta.description || ''}
+            // og:url 應反映當前頁面的實際 URL
+            ogUrl={pageOgUrl}
         >
             <div className="article-detail-page">
                 <Helmet>
                     {meta.keywords && <meta name="keywords" content={meta.keywords} />}
-                    <meta property="og:locale" content={currentLang === 'zh' ? 'zh_TW' : 'en_US'} />
+                    {/* og:locale 已在 PageContainer 中處理 */}
                 </Helmet>
                 <div className="article-header">
                     <h1>{article.title}</h1>
