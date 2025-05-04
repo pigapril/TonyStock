@@ -75,6 +75,9 @@ const PageContainer = ({
         <meta name="twitter:description" content={pageDescription} />
         <meta name="twitter:image" content={pageTwitterImage} />
         
+        {/* Canonical 標籤：指定此頁面的首選 URL */}
+        <link rel="canonical" href={pageOgUrl} />
+        
         {/* Hreflang 標籤 */}
         {supportedLngs
           .filter(lng => lng !== 'cimode')
