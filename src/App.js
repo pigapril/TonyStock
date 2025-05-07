@@ -228,12 +228,15 @@ function AppContent() {
                 </div>
               </Link>
             </li>
-            <li className="sidebar-item-7">
-              <Link to={`/${lang}/sponsor-us`} onClick={() => isMobile && setSidebarOpen(false)}>
-                <FaPiggyBank />
-                <span>{t('nav.sponsor')}</span>
-              </Link>
-            </li>
+            {/* 只有在 zh-TW 語系下顯示贊助連結 */}
+            {lang === 'zh-TW' && (
+              <li className="sidebar-item-7">
+                <Link to={`/${lang}/sponsor-us`} onClick={() => isMobile && setSidebarOpen(false)}>
+                  <FaPiggyBank />
+                  <span>{t('nav.sponsor')}</span>
+                </Link>
+              </li>
+            )}
             <li className="sidebar-item-8">
               <a
                 href="https://www.facebook.com/profile.php?id=61565751412240"
