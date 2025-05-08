@@ -79,7 +79,7 @@ const MarketSentimentIndex = React.lazy(() => import('./components/MarketSentime
 
 // 建立 AppContent
 function AppContent() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation(); // 只獲取 t 函數，語言設定由 LanguageWrapper 處理
   const { lang } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
@@ -98,17 +98,6 @@ function AppContent() {
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [googleTrendsDropdownOpen, setGoogleTrendsDropdownOpen] = React.useState(false);
-
-  useEffect(() => {
-    if (lang && i18n.options.supportedLngs.includes(lang)) {
-      if (i18n.language !== lang) {
-        i18n.changeLanguage(lang);
-      }
-    } else {
-      const currentPathWithoutLang = location.pathname.replace(/^\/[^/]+/, '');
-      navigate(`/${i18n.options.fallbackLng}${currentPathWithoutLang || '/'}`, { replace: true });
-    }
-  }, [lang, i18n, navigate, location.pathname]);
 
   // 當側邊欄關閉時，自動收合Google搜尋熱度下拉選單
   React.useEffect(() => {
@@ -408,45 +397,66 @@ function LanguageWrapper() {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLanguageReady, setIsLanguageReady] = React.useState(false); // 新增狀態追蹤語言是否就緒
 
-  useEffect(() => {
-    // 找到標準的大小寫格式 (假設 supportedLngs 存儲的是標準格式)
-    const standardLang = i18n.options.supportedLngs.find(
-      supportedLang => supportedLang.toLowerCase() === lang?.toLowerCase()
-    );
+  React.useEffect(() => {
+    let active = true; // 用於處理組件卸載時的異步操作
 
-    if (lang && standardLang) {
-      // 如果 URL 中的 lang 與標準格式的大小寫不同，則重定向
-      if (lang !== standardLang) {
-        const newPath = location.pathname.replace(`/${lang}`, `/${standardLang}`);
-        navigate(newPath + location.search + location.hash, { replace: true });
-        return; // 停止後續處理，等待重定向生效
+    const setupLanguage = async () => {
+      // 找到標準的大小寫格式 (假設 supportedLngs 存儲的是標準格式)
+      const standardLang = i18n.options.supportedLngs.find(
+        supportedLang => supportedLang.toLowerCase() === lang?.toLowerCase()
+      );
+
+      if (lang && standardLang) {
+        // 如果 URL 中的 lang 與標準格式的大小寫不同，則重定向
+        if (lang !== standardLang) {
+          const newPath = location.pathname.replace(`/${lang}`, `/${standardLang}`);
+          navigate(newPath + location.search + location.hash, { replace: true });
+          return; // 等待重定向生效
+        }
+
+        // 如果大小寫正確，則設置 i18n 語言
+        if (i18n.language !== standardLang) {
+          try {
+            await i18n.changeLanguage(standardLang); // 等待語言切換完成
+            if (active) setIsLanguageReady(true);
+          } catch (error) {
+            console.error("Failed to change language in LanguageWrapper:", error);
+            // 發生錯誤，嘗試導向到備援語言
+            if (active) {
+              const currentPathWithoutLang = location.pathname.replace(/^\/[^/]+/, '');
+              navigate(`/${i18n.options.fallbackLng}${currentPathWithoutLang || '/'}`, { replace: true });
+            }
+          }
+        } else {
+          if (active) setIsLanguageReady(true); // 語言已正確，直接設為 ready
+        }
+      } else if (lang) { // lang 參數存在但無效 (不在 supportedLngs 中)
+        const currentPathWithoutLang = location.pathname.replace(/^\/[^/]+/, '');
+        navigate(`/${i18n.options.fallbackLng}${currentPathWithoutLang || '/'}`, { replace: true });
+      } else {
+        // lang 參數不存在於 URL 中 (例如直接訪問 /priceanalysis 而非 /en/priceanalysis)
+        // InitialRedirect 應該會處理根路徑 "/" 的情況
+        // 對於其他沒有 lang 的路徑，也導向到備援語言
+        // 這段邏輯可能需要根據你的 InitialRedirect 行為調整
+        const fallbackLang = i18n.options.fallbackLng || 'en'; // 確保有備援
+        navigate(`/${fallbackLang}${location.pathname || '/'}`, { replace: true });
       }
+    };
 
-      // 如果大小寫正確，則設置 i18n 語言
-      if (i18n.language !== standardLang) {
-        i18n.changeLanguage(standardLang);
-      }
-    }
-    // AppContent 中的 useEffect 會處理無效 lang (完全不匹配 supportedLngs) 的情況
-    // 但這裡也可以加上處理，如果 standardLang 未找到
-    // else if (lang) {
-    //   // 如果 lang 存在但不在 supportedLngs 中 (即使忽略大小寫)
-    //   // 導向預設語言
-    //   const currentPathWithoutLang = location.pathname.replace(/^\/[^/]+/, '');
-    //   navigate(`/${i18n.options.fallbackLng}${currentPathWithoutLang || '/'}`, { replace: true });
-    // }
+    setupLanguage();
 
-  }, [lang, i18n, navigate, location]); // 添加 location 到依賴
+    return () => {
+      active = false; // 清理函數，防止在已卸載組件上更新狀態
+    };
+  }, [lang, i18n, navigate, location]);
 
   // 確保在語言驗證/重定向前不渲染 AppContent
   // 檢查標準格式是否存在且與當前 URL 的 lang 匹配
-  const isValidLang = lang && i18n.options.supportedLngs.includes(lang);
-
-  if (!isValidLang) {
-     // 如果語言無效或正在重定向，返回 null 或 Loading
-     // AppContent 的 useEffect 也會處理重定向，但這裡提前處理更好
-     return null;
+  if (!isLanguageReady) {
+     // 如果語言無效或正在重定向，或語言尚未設定完成，返回 loading 或 null
+     return <div className="page-loading-spinner">Initializing language...</div>; // 或其他 loading UI
   }
 
   return <AppContent />;
