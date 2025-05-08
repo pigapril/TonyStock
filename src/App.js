@@ -456,7 +456,13 @@ function LanguageWrapper() {
   // 檢查標準格式是否存在且與當前 URL 的 lang 匹配
   if (!isLanguageReady) {
      // 如果語言無效或正在重定向，或語言尚未設定完成，返回 loading 或 null
-     return <div className="page-loading-spinner">Initializing language...</div>; // 或其他 loading UI
+     return (
+       <div className="loading-spinner"> {/* 使用 Loading.css 中的 class */}
+         <div className="spinner"></div> {/* 旋轉動畫元素 */}
+         {/* 你可以選擇性地翻譯這段文字，如果需要的話 */}
+         Loading...
+       </div>
+     );
   }
 
   return <AppContent />;
