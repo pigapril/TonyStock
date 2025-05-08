@@ -1,5 +1,5 @@
 // React 相關
-import React, { useState, useEffect, useCallback, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, Suspense, lazy } from 'react';
 import { Link, Route, Routes, Navigate, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
@@ -18,15 +18,12 @@ import './components/NewFeatureBadge/NewFeatureBadge.css';
 import "react-datepicker/dist/react-datepicker.css";
 
 // 自定義組件
-import { Home } from './components/Home/Home'; 
-import MarketSentimentIndex from './components/MarketSentimentIndex/MarketSentimentIndex';
+//import { Home } from './components/Home/Home'; 
+//import MarketSentimentIndex from './components/MarketSentimentIndex/MarketSentimentIndex';
 import PageContainer from './components/PageContainer/PageContainer';
 import { AuthDialog } from './components/Auth/AuthDialog';
 import { UserProfile } from './components/Auth/UserProfile';
 import { PageViewTracker } from './components/Common/PageViewTracker';
-import { About } from './components/About/About';
-import { Legal } from './components/Legal/Legal';
-import { WatchlistContainer } from './components/Watchlist/WatchlistContainer';
 import { AdBanner } from './components/Common/AdBanner/AdBanner';
 import { Footer } from './components/Common/Footer/Footer';
 import FloatingSponsorButton from './components/FloatingSponsorButton/FloatingSponsorButton';
@@ -34,13 +31,13 @@ import ChatWidget from './components/ChatWidget/ChatWidget';
 import LanguageSwitcher from './components/LanguageSwitcher/LanguageSwitcher';
 
 // 導入拆分後的價格標準差分析頁面
-import { PriceAnalysis } from './components/PriceAnalysis/PriceAnalysis';
-import { Articles } from './components/Articles/Articles';
-import { ArticleDetail } from './components/ArticleDetail/ArticleDetail';
-import { SponsorUs } from './components/SponsorUs/SponsorUs';
-import { SponsorSuccess } from './components/SponsorSuccess/SponsorSuccess';
-import { GoogleTrendsSymbolPage } from './components/GoogleTrendsSymbolPage/GoogleTrendsSymbolPage';
-import { GoogleTrendsMarketPage } from './components/GoogleTrendsMarketPage/GoogleTrendsMarketPage';
+// import { PriceAnalysis } from './components/PriceAnalysis/PriceAnalysis';
+//import { Articles } from './components/Articles/Articles';
+//import { ArticleDetail } from './components/ArticleDetail/ArticleDetail';
+//import { SponsorUs } from './components/SponsorUs/SponsorUs';
+//import { SponsorSuccess } from './components/SponsorSuccess/SponsorSuccess';
+//import { GoogleTrendsSymbolPage } from './components/GoogleTrendsSymbolPage/GoogleTrendsSymbolPage';
+//import { GoogleTrendsMarketPage } from './components/GoogleTrendsMarketPage/GoogleTrendsMarketPage';
 
 // Context 和 Hooks
 import { AuthProvider } from './components/Auth/AuthContext';
@@ -64,6 +61,21 @@ const Overlay = ({ isVisible, onClick }) => (
     onClick={onClick}
   />
 );
+
+// --- Lazy Loaded Components ---
+const About = React.lazy(() => import('./components/About/About').then(module => ({ default: module.About })));
+const Legal = React.lazy(() => import('./components/Legal/Legal').then(module => ({ default: module.Legal })));
+const WatchlistContainer = React.lazy(() => import('./components/Watchlist/WatchlistContainer').then(module => ({ default: module.WatchlistContainer })));
+const PriceAnalysis = React.lazy(() => import('./components/PriceAnalysis/PriceAnalysis').then(module => ({ default: module.PriceAnalysis })));
+const Articles = React.lazy(() => import('./components/Articles/Articles').then(module => ({ default: module.Articles })));
+const ArticleDetail = React.lazy(() => import('./components/ArticleDetail/ArticleDetail').then(module => ({ default: module.ArticleDetail })));
+const SponsorUs = React.lazy(() => import('./components/SponsorUs/SponsorUs').then(module => ({ default: module.SponsorUs })));
+const SponsorSuccess = React.lazy(() => import('./components/SponsorSuccess/SponsorSuccess').then(module => ({ default: module.SponsorSuccess })));
+const GoogleTrendsSymbolPage = React.lazy(() => import('./components/GoogleTrendsSymbolPage/GoogleTrendsSymbolPage').then(module => ({ default: module.GoogleTrendsSymbolPage })));
+const GoogleTrendsMarketPage = React.lazy(() => import('./components/GoogleTrendsMarketPage/GoogleTrendsMarketPage').then(module => ({ default: module.GoogleTrendsMarketPage })));
+const Home = React.lazy(() => import('./components/Home/Home').then(module => ({ default: module.Home })));
+const MarketSentimentIndex = React.lazy(() => import('./components/MarketSentimentIndex/MarketSentimentIndex'));
+
 
 // 建立 AppContent
 function AppContent() {
@@ -329,44 +341,46 @@ function AppContent() {
 
           {/* 內容路由 */}
           <div className="content-area">
-            <Routes>
-              <Route path="/" element={<Home />} />
+            <Suspense fallback={<div className="page-loading-spinner">Loading...</div>}> {/* Fallback UI for lazy loaded components */}
+              <Routes>
+                <Route path="/" element={<Home />} />
 
-              {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
-              <Route path="priceanalysis" element={<PriceAnalysis />} />
+                {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
+                <Route path="priceanalysis" element={<PriceAnalysis />} />
 
-              <Route
-                path="market-sentiment"
-                element={<MarketSentimentIndex />}
-              />
-              <Route
-                path="about"
-                element={<About />}
-              />
-              <Route
-                path="legal"
-                element={<Legal />}
-              />
-              <Route
-                path="watchlist"
-                element={
-                  isAuthenticated ? (
-                    <WatchlistContainer />
-                  ) : (
-                    <Navigate to={`/${lang}/`} replace />
-                  )
-                }
-              />
-              <Route path="articles" element={<Articles />} />
-              <Route path="articles/:slug" element={<ArticleDetail />} />
-              <Route path="sponsor-us" element={<SponsorUs />} />
-              <Route path="sponsor-success" element={<SponsorSuccess />} />
-              <Route path="google-trends/symbol/:symbol" element={<GoogleTrendsSymbolPage />} />
-              <Route path="google-trends/market" element={<GoogleTrendsMarketPage />} />
+                <Route
+                  path="market-sentiment"
+                  element={<MarketSentimentIndex />}
+                />
+                <Route
+                  path="about"
+                  element={<About />}
+                />
+                <Route
+                  path="legal"
+                  element={<Legal />}
+                />
+                <Route
+                  path="watchlist"
+                  element={
+                    isAuthenticated ? (
+                      <WatchlistContainer />
+                    ) : (
+                      <Navigate to={`/${lang}/`} replace />
+                    )
+                  }
+                />
+                <Route path="articles" element={<Articles />} />
+                <Route path="articles/:slug" element={<ArticleDetail />} />
+                <Route path="sponsor-us" element={<SponsorUs />} />
+                <Route path="sponsor-success" element={<SponsorSuccess />} />
+                <Route path="google-trends/symbol/:symbol" element={<GoogleTrendsSymbolPage />} />
+                <Route path="google-trends/market" element={<GoogleTrendsMarketPage />} />
 
-              {/* 可以添加一個捕獲無效相對路徑的路由 */}
-              <Route path="*" element={<Navigate to={`/${lang}/`} replace />} />
-            </Routes>
+                {/* 可以添加一個捕獲無效相對路徑的路由 */}
+                <Route path="*" element={<Navigate to={`/${lang}/`} replace />} />
+              </Routes>
+            </Suspense>
           </div>
         </main>
 
