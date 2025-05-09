@@ -3,13 +3,13 @@ import './SponsorUs.css'; // 引入樣式表
 import sponsorImage from '../../assets/images/sponsor-us/sponsorus.png';
 import mobile_payment_qrcode from '../../assets/images/sponsor-us/mobile_payment_qrcode.png';
 import mobile_payment_logo from '../../assets/images/sponsor-us/mobile_payment_logo.png';
-import linepay_qrcode from '../../assets/images/sponsor-us/linepay_qrcode.jpg';
-import linepay_logo from '../../assets/images/sponsor-us/linepay_logo.png'; // 引入 Line Pay Logo
-import richart_qrcode from '../../assets/images/sponsor-us/richart_qrcode.png'; // 引入 Richart QR Code (假設您有)
-import richart_logo from '../../assets/images/sponsor-us/richart_logo.png';   // 引入 Richart Logo (假設您有)
-import cathay_qrcode from '../../assets/images/sponsor-us/cathay_qrcode.jpg';
-import cathay_logo from '../../assets/images/sponsor-us/cathay_logo.jpg';
-import ctb_logo from '../../assets/images/sponsor-us/ctbc_logo.png';   // 引入中國信託 Logo
+//import linepay_qrcode from '../../assets/images/sponsor-us/linepay_qrcode.jpg';
+//import linepay_logo from '../../assets/images/sponsor-us/linepay_logo.png';
+//import richart_qrcode from '../../assets/images/sponsor-us/richart_qrcode.png'; 
+//import richart_logo from '../../assets/images/sponsor-us/richart_logo.png';  
+//import cathay_qrcode from '../../assets/images/sponsor-us/cathay_qrcode.jpg';
+//import cathay_logo from '../../assets/images/sponsor-us/cathay_logo.jpg';
+//import ctb_logo from '../../assets/images/sponsor-us/ctbc_logo.png';  
 import creditcard_logo from '../../assets/images/sponsor-us/creditcard_logo.jpg';
 import creditcard_qrcode from '../../assets/images/sponsor-us/creditcard_qrcode.png';
 import wiretransfer_logo from '../../assets/images/sponsor-us/wiretransfer_logo.png';

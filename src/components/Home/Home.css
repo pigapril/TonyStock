@@ -11,7 +11,16 @@
   width: 100%;
   padding: 0;
   text-align: center;
+  /* 1. 為不支援 image-set() 的舊版瀏覽器提供 PNG 備援 */
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../assets/images/home-top.png');
+  /* 2. 現代瀏覽器使用 image-set()，優先選擇 WebP，若無則用 PNG。
+     漸層背景需要與 image-set() 一起定義在同一個 background 宣告中，
+     因為它們共同構成背景圖層。 */
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+              image-set(
+                url('../../assets/images/home-top.webp') type('image/webp'), 
+                url('../../assets/images/home-top.png') type('image/png')
+              );
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -63,7 +72,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 1200px;
+  max-width: 1600px;
   width: 100%;
   gap: 40px;
 }
@@ -87,7 +96,7 @@
 
 .feature-content {
   flex: 1;
-  max-width: 50%;
+  max-width: 30%;
   padding: 20px;
 }
 

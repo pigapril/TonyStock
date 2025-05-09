@@ -71,7 +71,10 @@ export const Home = () => {
             <div className="feature-container">
               <div className="feature-media">
                 {/* **修改：使用 getImagePath 函數** */}
-                <img src={getImagePath('home-feature1')} alt={t('home.feature1.alt')} />
+                <picture>
+                  <source srcSet={getImagePath('home-feature1', 'webp')} type="image/webp" />
+                  <img src={getImagePath('home-feature1', 'png')} alt={t('home.feature1.alt')} />
+                </picture>
               </div>
               <div className="feature-content">
                 <h2>{t('home.feature1.title')}</h2>
@@ -87,7 +90,10 @@ export const Home = () => {
             <div className="feature-container reverse">
               <div className="feature-media">
                 {/* **修改：使用 getImagePath 函數** */}
-                <img src={getImagePath('home-feature2')} alt={t('home.feature2.alt')} />
+                <picture>
+                  <source srcSet={getImagePath('home-feature2', 'webp')} type="image/webp" />
+                  <img src={getImagePath('home-feature2', 'png')} alt={t('home.feature2.alt')} />
+                </picture>
               </div>
               <div className="feature-content">
                 <h2>{t('home.feature2.title')}</h2>
@@ -112,7 +118,10 @@ export const Home = () => {
             <div className="feature-container">
               <div className="feature-media">
                 {/* **修改：使用 getImagePath 函數** */}
-                <img src={getImagePath('home-feature3')} alt={t('home.feature3.alt')} />
+                <picture>
+                  <source srcSet={getImagePath('home-feature3', 'webp')} type="image/webp" />
+                  <img src={getImagePath('home-feature3', 'png')} alt={t('home.feature3.alt')} />
+                </picture>
               </div>
               <div className="feature-content">
                 <h2>{t('home.feature3.title')}</h2>
