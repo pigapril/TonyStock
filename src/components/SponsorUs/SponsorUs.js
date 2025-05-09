@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import './SponsorUs.css'; // 引入樣式表
 import sponsorImage from '../../assets/images/sponsor-us/sponsorus.png';
-import jko_qrcode from '../../assets/images/sponsor-us/jko_qrcode.jpg';
-import jko_logo from '../../assets/images/sponsor-us/jko_logo.png'; // 引入街口支付 Logo
+import mobile_payment_qrcode from '../../assets/images/sponsor-us/mobile_payment_qrcode.png';
+import mobile_payment_logo from '../../assets/images/sponsor-us/mobile_payment_logo.png';
 import linepay_qrcode from '../../assets/images/sponsor-us/linepay_qrcode.jpg';
 import linepay_logo from '../../assets/images/sponsor-us/linepay_logo.png'; // 引入 Line Pay Logo
 import richart_qrcode from '../../assets/images/sponsor-us/richart_qrcode.png'; // 引入 Richart QR Code (假設您有)
@@ -26,17 +26,12 @@ const SponsorUs = () => {
   const [donors, setDonors] = useState(['wei', '吳＊叡', '末三碼984', '末三碼585']); // 初始化捐款人列表
 
   const donationMethods = [
-    // {
-    //   name: '街口支付',
-    //   logo: jko_logo,
-    //   image: jko_qrcode,
-    //   description: (
-    //     <>
-    //       <a href="https://service.jkopay.com/r/transfer?j=Transfer:900112965" target="_blank" rel="noopener noreferrer" style={{display: 'inline'}}>點此</a>
-    //       開啟街口，或用街口掃描下方 QR Code
-    //     </>
-    //   ),
-    // },
+    {
+      name: t('sponsorUs.methodMobilePayment'),
+      logo: mobile_payment_logo,
+      image: mobile_payment_qrcode,
+      description: t('sponsorUs.methodMobilePaymentDescription'),
+    },
     // {
     //   name: 'Line Pay (iPass Money)',
     //   logo: linepay_logo, // Line Pay Logo 圖片路徑

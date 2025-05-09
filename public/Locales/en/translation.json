@@ -472,6 +472,8 @@
     "methodsHeading": "Please choose a sponsorship method below",
     "methodCreditCard": "Credit Card",
     "methodWireTransfer": "Bank Transfer",
+    "methodMobilePayment": "Mobile Payment",
+    "methodMobilePaymentDescription": "Please scan the QR Code with the following App",
     "methodDescriptionHtml": "Please <a href=\"{{link}}\" target=\"_blank\" rel=\"noopener noreferrer\">click the link</a> or scan the QR Code.",
     "copySuccessAlert": "Account copied: {{text}}"
   },

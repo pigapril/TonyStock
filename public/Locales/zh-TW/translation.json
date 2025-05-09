@@ -472,6 +472,8 @@
     "methodsHeading": "請選擇以下贊助方式",
     "methodCreditCard": "信用卡",
     "methodWireTransfer": "銀行轉帳",
+    "methodMobilePayment": "行動支付",
+    "methodMobilePaymentDescription": "請開啟以下任一款 App 掃描 QR Code",
     "methodDescriptionHtml": "請<a href=\"{{link}}\" target=\"_blank\" rel=\"noopener noreferrer\">點擊連結</a>或掃描 QR Code。",
     "copySuccessAlert": "已複製帳號：{{text}}"
   },
