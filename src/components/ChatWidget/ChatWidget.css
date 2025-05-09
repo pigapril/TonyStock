@@ -224,13 +224,27 @@
   height: 70px;
   border: none;
   border-radius: 50%;
-  background: url('../../assets/images/chatbot.png') no-repeat center center;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   transition: transform 0.2s ease-in-out;
   z-index: 1000;
-  background-position: right center;
-  background-size:  cover;
+
+  /* 1. 為不支援 image-set() 的舊版瀏覽器提供 PNG 備援 */
+  /* 使用 background 簡寫來包含所有相關屬性 */
+  background: url('../../assets/images/chatbot.png') no-repeat center center / cover;
+
+  /* 2. 現代瀏覽器使用 image-set()，優先選擇 WebP */
+  /* 再次使用 background 簡寫來確保所有屬性被正確應用和覆蓋 */
+  background: image-set(
+              url('../../assets/images/chatbot.webp') type('image/webp'),
+              url('../../assets/images/chatbot.png') type('image/png')
+            ) no-repeat center center / cover;
+  /* 舊版 Webkit 前綴的 image-set (可以考慮是否仍需要) */
+  /* 如果要加，也需要完整的 background 宣告 */
+  /* background: -webkit-image-set(
+              url('../../assets/images/chatbot.webp') 1x,
+              url('../../assets/images/chatbot.png') 1x
+            ) no-repeat center center / cover; */
 }
 
 .chat-toggle-button:hover {
