@@ -18,7 +18,7 @@ import { useSearchParams, useLocation } from 'react-router-dom'; // 引入 useLo
 import { useAdContext } from '../../components/Common/InterstitialAdModal/AdContext'; // 導入 useAdContext
 import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebouncedCallback
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
-
+import '../Common/global-styles.css';
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 

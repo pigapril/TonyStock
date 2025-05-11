@@ -1,49 +1,52 @@
 .legal-page {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 40px 20px;
-  color: #333;
+  padding: var(--space-xl, 40px) var(--space-m, 20px);
+  color: var(--color-text-primary, #333);
+  background-color: var(--color-bg-page, #f9f9f9);
 }
 
 .legal-title {
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 2rem;
-  color: #1a1a1a;
+  margin-bottom: var(--space-xl, 2rem);
+  color: var(--color-text-primary, #1a1a1a);
   text-align: center;
 }
 
 .legal-section {
-  margin-bottom: 4rem;
+  margin-bottom: var(--space-xl, 4rem);
+  background-color: var(--color-bg-card, #ffffff);
+  padding: var(--space-l, 20px);
+  border-radius: var(--border-radius-large, 12px);
+  box-shadow: var(--shadow-m, 0 5px 15px rgba(0,0,0,0.05));
 }
 
 .section-title {
   font-size: 2rem;
   font-weight: 600;
-  margin-bottom: 2rem;
-  color: #2a2a2a;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #eaeaea;
+  margin-bottom: var(--space-l, 2rem);
+  color: var(--color-text-primary, #2a2a2a);
+  padding-bottom: var(--space-s, 0.5rem);
+  border-bottom: 2px solid var(--color-border-divider, #eaeaea);
 }
 
 .subsection {
-  margin-bottom: 2rem;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: var(--space-l, 2rem);
+  padding: var(--space-m, 20px);
 }
 
 .subsection-title {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 1rem;
-  color: #3a3a3a;
+  margin-bottom: var(--space-m, 1rem);
+  color: var(--color-text-primary, #3a3a3a);
 }
 
 .subsection-content {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-m, 1rem);
   line-height: 1.8;
+  color: var(--color-text-secondary, #555);
 }
 
 .legal-list {
@@ -53,8 +56,9 @@
 }
 
 .legal-list li {
-  margin-bottom: 0.8rem;
+  margin-bottom: var(--space-s, 0.8rem);
   line-height: 1.6;
+  color: var(--color-text-secondary, #555);
 }
 
 /* 響應式設計 */

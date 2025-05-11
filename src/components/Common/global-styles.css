@@ -1,0 +1,41 @@
+/* 建議放在一個全域的 CSS 檔案或 :root 選擇器中 */
+:root {
+  /* 背景顏色 */
+  --color-bg-page: #f5f5f7; /* 或 #ffffff */
+  --color-bg-card: #ffffff;
+  --color-bg-elevated: #ffffff; /* 用於彈窗等更高層級的元素 */
+  --color-bg-subtle: #f0f0f0; /* 細微背景，用於輕微區分區塊或 active 狀態 */
+
+  /* 文字顏色 */
+  --color-text-primary: rgba(0, 0, 0, 0.85); /* 主要文字，接近黑色 */
+  --color-text-secondary: rgba(0, 0, 0, 0.60); /* 次要文字 */
+  --color-text-tertiary: rgba(0, 0, 0, 0.40); /* 輔助文字、提示文字 */
+  --color-text-link: #007aff; /* 蘋果藍 */
+  --accent-color-blue: #007aff; /* 強調色 - 蘋果藍 (用於主要操作、正面強烈 CTA) */
+  --color-destructive-red: #ff3b30; /* 蘋果標準紅 (用於刪除、警告等破壞性操作) */
+
+  /* 邊框顏色 */
+  --color-border-soft: #e5e5e5;
+  --color-border-default: #d1d1d6; /* 類似 iOS 輸入框 */
+  --color-border-divider: #ebebeb; /* 分隔線 */
+
+  /* 圓角 */
+  --border-radius-small: 6px;
+  --border-radius-medium: 10px;
+  --border-radius-large: 14px;
+  --border-radius-xlarge: 18px; /* 用於較大卡片或圖片 */
+
+  /* 陰影 */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-s: 0 2px 6px rgba(0,0,0,0.05);
+  --shadow-m: 0 5px 15px rgba(0,0,0,0.07);
+  --shadow-l: 0 10px 30px rgba(0,0,0,0.08);
+  --shadow-focus-ring: 0 0 0 4px rgba(0, 122, 255, 0.3); /* 輸入框 focus 效果 */
+
+  /* 間距 (範例) */
+  --space-xs: 4px;
+  --space-s: 8px;
+  --space-m: 16px;
+  --space-l: 24px;
+  --space-xl: 32px;
+} 

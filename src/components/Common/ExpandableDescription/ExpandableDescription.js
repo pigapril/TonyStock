@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './ExpandableDescription.css';
-
+import '../global-styles.css';
 export function ExpandableDescription({ 
   shortDescription,  // 簡短說明
   sections,          // 詳細說明的各個段落

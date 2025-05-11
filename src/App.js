@@ -16,6 +16,7 @@ import './App.css';
 import './components/Auth/styles/SignInDialog.css';
 import './components/NewFeatureBadge/NewFeatureBadge.css';
 import "react-datepicker/dist/react-datepicker.css";
+import './components/Common/global-styles.css';
 
 // 自定義組件
 import { Home } from './components/Home/Home'; 

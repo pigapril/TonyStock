@@ -9,7 +9,7 @@
 /* 英雄區（Hero Section） */
 .hero-section {
   width: 100%;
-  padding: 0;
+  padding: var(--space-xl, 60px) var(--space-m, 20px);
   text-align: center;
   /* 1. 為不支援 image-set() 的舊版瀏覽器提供 PNG 備援 */
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../assets/images/home-top.png');
@@ -24,7 +24,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  color: white;
+  color: var(--color-bg-card, white);
   position: relative;
   height: 88vh;
   display: flex;
@@ -36,11 +36,11 @@
 .hero-section h1 {
   font-size: 3.5rem;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-m, 1rem);
   background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.8));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 1;
 }
@@ -48,13 +48,13 @@
 .hero-subtitle {
   font-size: 1.5rem;
   color: rgba(255, 255, 255, 0.9);
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.8;
+  max-width: 700px;
+  margin-bottom: var(--space-l, 2rem);
+  line-height: 1.6;
   padding: 0 20px;
   position: relative;
   z-index: 1;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 
 /* 特點區段（Feature Sections） */
@@ -64,8 +64,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
-  background-color: #f9f9f9;
+  padding: var(--space-xl, 60px) 0;
+  border-bottom: 1px solid var(--color-border-soft, #e0e0e0);
+}
+
+.feature-section:last-child {
+  border-bottom: none;
 }
 
 .feature-container {
@@ -74,7 +78,7 @@
   justify-content: center;
   max-width: 1600px;
   width: 100%;
-  gap: 40px;
+  gap: var(--space-xl, 40px);
 }
 
 .feature-container.reverse {
@@ -101,25 +105,29 @@
 }
 
 .feature-content h2 {
-  font-size: 2rem;
-  color: #1d1d1f;
-  margin-bottom: 20px;
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: var(--space-m, 1rem);
+  color: var(--color-text-primary, #2c3e50);
 }
 
 .feature-content p {
-  font-size: 1.2rem;
-  color: #666;
-  margin-bottom: 30px;
-  line-height: 1.6;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: var(--space-l, 1.5rem);
+  color: var(--color-text-secondary, #555);
 }
 
 .feature-link {
-  color: #007AFF;
+  display: inline-block;
+  background-color: var(--accent-color-blue, #3498db);
+  color: var(--color-bg-card, white);
+  padding: var(--space-s, 10px) var(--space-m, 20px);
+  border-radius: var(--border-radius-small, 5px);
   text-decoration: none;
   font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0,0,0,0.05));
 }
 
 .feature-link .arrow {
@@ -130,28 +138,36 @@
   transform: translateX(5px);
 }
 
+.feature-link:hover {
+  background-color: color-mix(in srgb, var(--accent-color-blue, #2980b9) 85%, black);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-s, 0 4px 8px rgba(0,0,0,0.1));
+}
+
 /* 行動呼籲區（CTA Section） */
 .cta-section {
-  background: #f5f5f7;
-  padding: 80px 20px;
   text-align: center;
+  padding: var(--space-xl, 50px) var(--space-m, 20px);
+  background-color: var(--color-bg-page);
 }
 
 .cta-button {
-  background: #007AFF;
-  color: white;
+  background-color: var(--accent-color-blue, #007aff);
+  color: var(--color-bg-card, white);
   border: none;
-  padding: 15px 40px;
-  border-radius: 30px;
-  font-size: 1.1rem;
-  font-weight: 500;
+  padding: var(--space-m, 15px) var(--space-xl, 30px);
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: var(--border-radius-medium, 8px);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: var(--shadow-s, 0 3px 6px rgba(0,0,0,0.1));
 }
 
 .cta-button:hover {
-  background: #0056b3;
-  transform: scale(1.05);
+  background-color: color-mix(in srgb, var(--accent-color-blue, #2980b9) 85%, black);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-m, 0 5px 10px rgba(0,0,0,0.15));
 }
 
 /* 響應式設計 */
@@ -259,4 +275,10 @@
     bottom: 60px;
     font-size: 1.5rem;
   }
+}
+
+.home-page {
+  /* 確保 home-page 使用全域的頁面背景色 */
+  background-color: var(--color-bg-page);
+  color: var(--color-text-primary, #333);
 }

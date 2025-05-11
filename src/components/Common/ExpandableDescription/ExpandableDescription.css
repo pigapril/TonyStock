@@ -1,20 +1,20 @@
 .description-container {
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-l, 24px);
   width: 100%;
   max-width: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  color: rgba(29, 29, 31, 0.8);
-  border-radius: 12px;
-  background-color: #fbfbfd;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  color: var(--color-text-secondary, rgba(29, 29, 31, 0.8));
+  border-radius: var(--border-radius-large, 12px);
+  background-color: var(--color-bg-card, #fbfbfd);
+  padding: var(--space-l, 20px);
+  box-shadow: var(--shadow-s, 0 2px 4px rgba(0, 0, 0, 0.05));
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .description-container:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-m, 0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 .description-short {
@@ -111,7 +111,6 @@
   background: none;
   border: none;
   padding: 0;
-  margin-top: 16px;
   transition: color 0.3s ease;
   display: flex;
   align-items: center;
