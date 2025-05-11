@@ -429,7 +429,17 @@ const MarketSentimentIndex = () => {
   // 1. 檢查載入狀態
   if (loading) {
     return (
-      <div className="loading-container">
+      <div
+        className="loading-container"
+        style={{
+          minHeight: '60vh', // 設定最小高度，減少頁腳跳動。你可以根據實際內容調整此值
+          display: 'flex',
+          flexDirection: 'column', // 讓文字在 spinner 下方
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px', // 增加一些內邊距，讓視覺效果好一點
+        }}
+      >
         <div className="loading-spinner">
           <div className="spinner"></div>
           <span>{t('common.loading')}</span>
@@ -442,7 +452,18 @@ const MarketSentimentIndex = () => {
   // 如果 API 請求失敗，sentimentData 會是 null
   if (!sentimentData) {
     return (
-      <div className="error-container">
+      <div
+        className="error-container"
+        style={{
+          minHeight: '60vh', // 同樣設定最小高度
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px',
+          textAlign: 'center', // 確保錯誤訊息文字居中
+        }}
+      >
         <span>{t('marketSentiment.error.fetchFailed')}</span>
       </div>
     );
