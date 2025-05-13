@@ -143,12 +143,13 @@
   word-wrap: break-word;
 }
 
-.indicator-item h3 {
+/* 移除以下 h3 樣式 */
+/* .indicator-item h3 {
   font-size: 20px;
   color: #333;
   margin: 0 0 10px 0;
   padding: 0;
-}
+} */
 
 .tabs-grid {
   display: grid;

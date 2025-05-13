@@ -45,6 +45,15 @@
   }
 }
 
+/* 新增 h3 樣式並置中 */
+.indicator-item h3 {
+  font-size: 20px; /* 從 MarketSentimentIndex.css 移過來 */
+  color: #333; /* 從 MarketSentimentIndex.css 移過來 */
+  margin: 0 0 15px 0; /* 稍微增加底部間距 */
+  padding: 0;
+  text-align: center; /* 置中文字 */
+}
+
 .tooltip {
     position: absolute;
     z-index: 10;
