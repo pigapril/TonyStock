@@ -248,7 +248,7 @@
     "keywords": "market sentiment, fear greed index, market sentiment indicators, investor sentiment, market thermometer, stock analysis, SPY analysis",
     "heading": "Market Sentiment Analysis",
     "tabs": {
-      "compositeIndex": "Market Sentiment Composite Index"
+      "compositeIndex": "SIO Fear & Greed Index"
     },
     "composite": {
       "scoreLabel": "Sentiment Score",
@@ -276,11 +276,11 @@
         "sections": [
           {
             "title": "Historical Data Review",
-            "content": "Reviewing historical data, the market sentiment index often reaches extreme fear at market bottoms and extreme greed at market tops. Using these extreme sentiments as contrarian indicators can potentially identify better buying and selling points."
+            "content": "Historically, whenever the Sentiment Inside Out Fear & Greed Index (SIO Fear & Greed Index) reached around 10 points, it marked a bear market bottom (including the 2009 financial crisis, the 2020 COVID-19 pandemic, and the 2022 Russo-Ukrainian War). Seizing these moments presented excellent buying opportunities."
           },
           {
             "title": "Composite Index Explanation",
-            "content": "The Market Sentiment Composite Index combines multiple sentiment indicators from different aspects to provide a more comprehensive market psychology thermometer. A single indicator might have noise or limitations; the composite index reflects the overall trend more smoothly."
+            "content": "The SIO Fear & Greed Index is a sentiment indicator that synthesizes multiple US stock market data points, represented by a score from 0 to 100. A score closer to 0 indicates greater market fear and a higher buying win rate; a score closer to 100 indicates greater market greed, suggesting one should avoid chasing highs. Compared to the CNN Fear & Greed Index, it incorporates more comprehensive indicators, including the AAII Investor Sentiment Survey (often called the 'US retail investor indicator'), to more accurately reflect the relationship between long-term market sentiment and prices."
           }
         ]
       },

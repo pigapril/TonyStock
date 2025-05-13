@@ -1,16 +1,16 @@
 ---
-title: Using the Market Sentiment Composite Index to Time Buys and Sells
+title: Using the SIO Fear & Greed Index to Time Buys and Sells
 category: Tool Tutorial
 date: 2025-05-04
-description: Gain a deeper understanding of market sentiment and use our unique Market Sentiment Composite Index to grasp long-term market fear and greed, serving as a key indicator for timing buy and sell decisions.
-keywords: Market Sentiment, Sentiment Index, Fear Greed, Investment Indicator, Market Timing, Stock Market Analysis, VIX Index, Safe Haven Demand, Junk Bond Spread, S&P 500 COT Index, NAAIM Exposure Index, AAII Sentiment Survey, CBOE Put Call Ratio, Market Momentum, Market Sentiment Composite Index, CNN Fear Greed Index
+description: Gain a deeper understanding of market sentiment and use our unique SIO Fear & Greed Index to grasp long-term market fear and greed, serving as a key indicator for timing buy and sell decisions.
+keywords: Market Sentiment, Sentiment Index, Fear Greed, Investment Indicator, Market Timing, Stock Market Analysis, VIX Index, Safe Haven Demand, Junk Bond Spread, S&P 500 COT Index, NAAIM Exposure Index, AAII Sentiment Survey, CBOE Put Call Ratio, Market Momentum, SIO Fear & Greed Index, CNN Fear & Greed Index
 ---
-Following up on our previous article, [Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis](https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92), we now know how to use the LOHAS tool to identify price trends and deviations. But beyond individual stock prices, how else can we determine if the *overall market* is in a state of extreme sentiment? This article will introduce several important data points and show how to use the Market Sentiment Composite Index to help time buy and sell decisions.
+Following up on our previous article, [Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis](https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92), we now know how to use the LOHAS tool to identify price trends and deviations. But beyond individual stock prices, how else can we determine if the *overall market* is in a state of extreme sentiment? This article will introduce several important data points and show how to use the SIO Fear & Greed Index to help time buy and sell decisions.
 
 ## Table of Contents
 
 1. [Pros and Cons of Common Sentiment Indicators](#pros-and-cons-of-common-sentiment-indicators)
-2. [Market Sentiment Composite Index: A Long-Term Fear & Greed Indicator](#market-sentiment-composite-index-a-long-term-fear--greed-indicator)
+2. [SIO Fear & Greed Index: A Long-Term Fear & Greed Indicator](#sio-fear--greed-index-a-long-term-fear--greed-indicator)
 3. [Analyzing Individual Sentiment Indicators](#analyzing-individual-sentiment-indicators)
    - [AAII Investor Sentiment Survey](#1-aaii-investor-sentiment-survey-the-aaii-investor-sentiment-survey)
    - [CBOE Put/Call Ratio](#2-cboe-putcall-ratio-cboe-putcall-ratio-5-day-avg)
@@ -20,7 +20,7 @@ Following up on our previous article, [Analyzing Price Trends and Sentiment with
    - [Junk Bond Spread](#6-junk-bond-spread)
    - [S&P 500 COT Index](#7-sp-500-futures-speculative-net-position-index-sp-500-cot-index)
    - [NAAIM Exposure Index](#8-naaim-exposure-index-naaim-exposure-index)
-4. [How to Interpret the Market Sentiment Composite Index?](#how-to-interpret-the-market-sentiment-composite-index)
+4. [How to Interpret the SIO Fear & Greed Index?](#how-to-interpret-the-sio-fear--greed-index)
 
 ## Pros and Cons of Common Sentiment Indicators
 
@@ -34,13 +34,13 @@ However, the CNN index has a drawback: it fluctuates frequently and sharply. If 
 
 > **While common, the CNN Fear & Greed Index is quite sensitive and arguably better suited for short-term trading.**
 
-## Market Sentiment Composite Index: A Long-Term Fear & Greed Indicator
+## SIO Fear & Greed Index: A Long-Term Fear & Greed Indicator
 
-In contrast to the CNN index, the [Market Sentiment Composite Index](https://sentimentinsideout.com/market-sentiment) (pictured below) was specifically designed to reflect *long-term* overall market fear and greed. This tool integrates multiple market sentiment indicators, adjusts them based on their individual characteristics to reduce noise, and calculates a composite score that intuitively shows the current overall market mood. Backtesting against the S&P 500 ETF (SPY) shows that during major lows in 2009, 2020, and 2022, when the Sentiment Index was near or below 10, these periods proved to be excellent long-term buying opportunities.
+In contrast to the CNN index, the [SIO Fear & Greed Index](https://sentimentinsideout.com/market-sentiment) (pictured below) was specifically designed to reflect *long-term* overall market fear and greed. This tool integrates multiple market sentiment indicators, adjusts them based on their individual characteristics to reduce noise, and calculates a composite score that intuitively shows the current overall market mood. Backtesting against the S&P 500 ETF (SPY) shows that during major lows in 2009, 2020, and 2022, when the Sentiment Index was near or below 10, these periods proved to be excellent long-term buying opportunities.
 
 ![image2](./image2-en.png)
 
-> **The Market Sentiment Index is a long-term indicator. Readings near or below 10 have historically been excellent long-term buying points.**
+> **The SIO Fear & Greed Index is a long-term indicator. Readings near or below 10 have historically been excellent long-term buying points.**
 
 ## Analyzing Individual Sentiment Indicators
 
@@ -175,11 +175,11 @@ The NAAIM Index is a contrarian indicator: very high exposure among managers can
 
 > **Market sentiment might seem abstract, but it can indeed be measured and interpreted through data.**
 
-## How to Interpret the Market Sentiment Composite Index?
+## How to Interpret the SIO Fear & Greed Index?
 
 After reviewing all these indicators, and comparing them to the S&P 500, we can see that while some might catch tops or bottoms, no single indicator is perfectly reliable. This is why relying on a single metric isn't advisable, and why we need a comprehensive view.
 
-Since these indicators have different scales, comparing them directly is difficult. Therefore, the website converts each one into a standardized 'Fear & Greed Score' from 0 to 100, making it easy to intuitively grasp the sentiment level represented by the current data. The 'Market Sentiment Composite Index' takes this a step further by combining all these individual scores into a single value from 0 to 100, categorized into five levels:
+Since these indicators have different scales, comparing them directly is difficult. Therefore, the website converts each one into a standardized 'Fear & Greed Score' from 0 to 100, making it easy to intuitively grasp the sentiment level represented by the current data. The 'SIO Fear & Greed Index' takes this a step further by combining all these individual scores into a single value from 0 to 100, categorized into five levels:
 
 * **0-20: Extreme Fear**: Signals extreme pessimism, historically a strong 'buy the dip' signal.
 * **21-40: Fear**: Suggests pessimism, consider starting to scale into positions.
@@ -193,6 +193,6 @@ If you don't have time to delve into each indicator, don't worry! This composite
 
 > **Looking back at historical data, periods of Extreme Fear have consistently proven to be excellent buying opportunities for long-term investors.**
 
-By effectively using the 'LOHAS Five-Line Analysis' and the 'Market Sentiment Composite Index' tools provided on the site, you can make decisions based on both price analysis and emotional readings. While these tools won't guarantee you'll catch every minor market turn, I'm confident they can significantly help you identify major opportunities, make sounder decisions, and conquer your own fear and greed!
+By effectively using the 'LOHAS Five-Line Analysis' and the 'SIO Fear & Greed Index' tools provided on the site, you can make decisions based on both price analysis and emotional readings. While these tools won't guarantee you'll catch every minor market turn, I'm confident they can significantly help you identify major opportunities, make sounder decisions, and conquer your own fear and greed!
 I hope this article helps you better understand and utilize the website's tools. Happy investing!
 
