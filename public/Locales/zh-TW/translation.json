@@ -255,9 +255,9 @@
       "sentimentLabel": "市場情緒"
     },
     "chart": {
-      "compositeIndexLabel": "市場情緒指數",
+      "compositeIndexLabel": "SIO恐懼貪婪指標",
       "spyPriceLabel": "SPY 價格",
-      "compositeIndexAxisLabel": "市場情緒指數",
+      "compositeIndexAxisLabel": "SIO恐懼貪婪指標",
       "spyPriceAxisLabel": "SPY 價格"
     },
     "viewMode": {

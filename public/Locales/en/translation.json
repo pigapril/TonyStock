@@ -255,9 +255,9 @@
       "sentimentLabel": "Market Sentiment"
     },
     "chart": {
-      "compositeIndexLabel": "Market Sentiment Index",
+      "compositeIndexLabel": "SIO Fear & Greed Index",
       "spyPriceLabel": "SPY Price",
-      "compositeIndexAxisLabel": "Market Sentiment Index",
+      "compositeIndexAxisLabel": "SIO Fear & Greed Index",
       "spyPriceAxisLabel": "SPY Price"
     },
     "viewMode": {
