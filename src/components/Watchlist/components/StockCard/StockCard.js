@@ -60,7 +60,7 @@ export const StockCard = memo(function StockCard({
 
         // --- 3. 在導航前請求廣告顯示 ---
         // 使用 'watchlistCardClick' 作為來源，閾值設為 1 (可以按需調整)
-        // requestAdDisplay('watchlistCardClick', 1);
+        requestAdDisplay('watchlistCardClick', 1);
         // --- 廣告請求結束 ---
 
         // 導航到 PriceAnalysis 頁面，並帶上參數和 state
