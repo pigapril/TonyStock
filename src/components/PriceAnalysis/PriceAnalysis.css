@@ -408,9 +408,7 @@
   width: 100%; /* 確保寬度為100% */
   max-width: 100%; /* 確保不超出父容器 */
   box-sizing: border-box; /* 包含padding和border在內 */
-  margin-top: 10px;
-  padding-top: 30px;
-  border-top: 1px solid #e5e5e5;
+
 } 
 
 .react-datepicker__triangle {

@@ -504,101 +504,107 @@ const MarketSentimentIndex = () => {
           )
         ))}
       </div>
-      <div className="tab-content">
-        {
-          activeTab === 'composite' && (
-            <div className="indicator-item">
-              <h3>{t('marketSentiment.tabs.compositeIndex')}</h3>
-              <div className="analysis-result">
-                <div className="analysis-item">
-                  <span className="analysis-label">{t('marketSentiment.composite.scoreLabel')}</span>
-                  <span className="analysis-value">
-                    {sentimentData.totalScore ? Math.round(sentimentData.totalScore) : t('common.notAvailable')}
-                  </span>
-                </div>
-                <div className="analysis-item">
-                  <span className="analysis-label">{t('marketSentiment.composite.sentimentLabel')}</span>
-                  <span className={`analysis-value sentiment-${compositeRawSentiment}`}>{compositeSentiment}</span>
-                </div>
-              </div>
-              {viewMode === 'timeline' && (
-                <TimeRangeSelector
-                  selectedTimeRange={selectedTimeRange}
-                  handleTimeRangeChange={handleTimeRangeChange}
-                />
-              )}
-              <div className="indicator-chart-container">
-                {viewMode === 'overview' ? (
-                  <div className="gauge-chart">
-                    {renderGaugeChart()}
-                    <svg width="0" height="0">
-                      <defs>
-                        <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
-                          <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
-                          <feOffset in="blur" dx="2" dy="2" result="offsetBlur" />
-                          <feComposite in="SourceGraphic" in2="offsetBlur" operator="over" />
-                        </filter>
-                        {gradients.map((gradient, index) => (
-                          <linearGradient key={index} id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor={gradient[0]} />
-                            <stop offset="100%" stopColor={gradient[1]} />
-                          </linearGradient>
-                        ))}
-                      </defs>
-                    </svg>
-                    <div className="gauge-center-value">
-                      {Math.round(sentimentData.totalScore)}
-                    </div>
-                    <div className="gauge-labels">
-                      <span className="gauge-label gauge-label-left">{t('sentiment.extremeFear')}</span>
-                      <span className="gauge-label gauge-label-right">{t('sentiment.extremeGreed')}</span>
-                    </div>
-                    <div className="last-update-time">
-                      {t('marketSentiment.lastUpdateLabel')}: {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString('zh-TW')}
-                    </div>
+      <div className="content-layout-container">
+        <div className="tab-content">
+          {
+            activeTab === 'composite' && (
+              <div className="indicator-item">
+                <h3>{t('marketSentiment.tabs.compositeIndex')}</h3>
+                <div className="analysis-result">
+                  <div className="analysis-item">
+                    <span className="analysis-label">{t('marketSentiment.composite.scoreLabel')}</span>
+                    <span className="analysis-value">
+                      {sentimentData.totalScore ? Math.round(sentimentData.totalScore) : t('common.notAvailable')}
+                    </span>
                   </div>
-                ) : (
-                  <div className="indicator-chart">
-                    <Line data={chartData} options={chartOptions} />
+                  <div className="analysis-item">
+                    <span className="analysis-label">{t('marketSentiment.composite.sentimentLabel')}</span>
+                    <span className={`analysis-value sentiment-${compositeRawSentiment}`}>{compositeSentiment}</span>
                   </div>
+                </div>
+                {viewMode === 'timeline' && (
+                  <TimeRangeSelector
+                    selectedTimeRange={selectedTimeRange}
+                    handleTimeRangeChange={handleTimeRangeChange}
+                  />
                 )}
+                <div className="indicator-chart-container">
+                  {viewMode === 'overview' ? (
+                    <div className="gauge-chart">
+                      {renderGaugeChart()}
+                      <svg width="0" height="0">
+                        <defs>
+                          <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
+                            <feOffset in="blur" dx="2" dy="2" result="offsetBlur" />
+                            <feComposite in="SourceGraphic" in2="offsetBlur" operator="over" />
+                          </filter>
+                          {gradients.map((gradient, index) => (
+                            <linearGradient key={index} id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor={gradient[0]} />
+                              <stop offset="100%" stopColor={gradient[1]} />
+                            </linearGradient>
+                          ))}
+                        </defs>
+                      </svg>
+                      <div className="gauge-center-value">
+                        {Math.round(sentimentData.totalScore)}
+                      </div>
+                      <div className="gauge-labels">
+                        <span className="gauge-label gauge-label-left">{t('sentiment.extremeFear')}</span>
+                        <span className="gauge-label gauge-label-right">{t('sentiment.extremeGreed')}</span>
+                      </div>
+                      <div className="last-update-time">
+                        {t('marketSentiment.lastUpdateLabel')}: {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString('zh-TW')}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="indicator-chart">
+                      <Line data={chartData} options={chartOptions} />
+                    </div>
+                  )}
+                </div>
+                <div className="view-mode-selector-container">
+                  <button
+                    className={`view-mode-button ${viewMode === 'overview' ? 'active' : ''}`}
+                    onClick={() => handleViewModeChange('overview')}
+                    aria-label={t('marketSentiment.viewMode.overviewAria')}
+                  >
+                    <span>{t('marketSentiment.viewMode.overview')}</span>
+                  </button>
+                  <button
+                    className={`view-mode-button ${viewMode === 'timeline' ? 'active' : ''}`}
+                    onClick={() => handleViewModeChange('timeline')}
+                    aria-label={t('marketSentiment.viewMode.timelineAria')}
+                  >
+                    <span>{t('marketSentiment.viewMode.timeline')}</span>
+                  </button>
+                </div>
               </div>
-              <div className="view-mode-selector-container">
-                <button
-                  className={`view-mode-button ${viewMode === 'overview' ? 'active' : ''}`}
-                  onClick={() => handleViewModeChange('overview')}
-                  aria-label={t('marketSentiment.viewMode.overviewAria')}
-                >
-                  <span>{t('marketSentiment.viewMode.overview')}</span>
-                </button>
-                <button
-                  className={`view-mode-button ${viewMode === 'timeline' ? 'active' : ''}`}
-                  onClick={() => handleViewModeChange('timeline')}
-                  aria-label={t('marketSentiment.viewMode.timelineAria')}
-                >
-                  <span>{t('marketSentiment.viewMode.timeline')}</span>
-                </button>
-              </div>
-            </div>
-          )
-        }
-        {
-          activeTab !== 'composite' && indicatorsData[activeTab] && (
-            <IndicatorItem
-              key={activeTab}
-              indicatorKey={activeTab}
-              indicator={indicatorsData[activeTab]}
-              selectedTimeRange={selectedTimeRange}
-              handleTimeRangeChange={handleTimeRangeChange}
-              historicalSPYData={historicalData}
+            )
+          }
+          {
+            activeTab !== 'composite' && indicatorsData[activeTab] && (
+              <IndicatorItem
+                key={activeTab}
+                indicatorKey={activeTab}
+                indicator={indicatorsData[activeTab]}
+                selectedTimeRange={selectedTimeRange}
+                handleTimeRangeChange={handleTimeRangeChange}
+                historicalSPYData={historicalData}
+              />
+            )
+          }
+        </div>
+        <div className="description-container-wrapper">
+          <div className="description-scroll-content">
+            <ExpandableDescription
+              shortDescription={translatedShortDescription}
+              sections={translatedSections}
             />
-          )
-        }
+          </div>
+        </div>
       </div>
-      <ExpandableDescription
-        shortDescription={translatedShortDescription}
-        sections={translatedSections}
-      />
       {toast && (
         <Toast
           message={toast.message}

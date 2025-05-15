@@ -44,6 +44,23 @@
   box-sizing: border-box;
 }
 
+/* 在市場情緒指數頁面中置中 TimeRangeSelector */
+.indicator-item .time-range-selector {
+  justify-content: center;
+  margin: 20px auto;
+  width: fit-content;
+}
+
+.last-update-time {
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  margin-top: 0px;  /* 增加上方間距 */
+  margin-bottom: 15px;
+  position: relative;  /* 確保位置正確 */
+  z-index: 1;  /* 確保文字在最上層 */
+}
+
 /* 新增以下部分 */
 @media (max-width: 768px) {
   .indicator-list {
@@ -108,25 +125,23 @@
 
 /* 調整圖表區域的樣式 */
 .indicator-chart {
-  width: 100%;
-  height: 400px;
+  height: 35vh;
+  max-height: 35vh ;
+}
+
+@media (min-width: 1920px) {
+  .indicator-chart {
+    height: 40vh;
+    max-height: 40vh ;
+  }
 }
 
 .indicator-chart-container {
   width: 100%;
-  max-height: 400px;
   overflow: hidden;
-  margin-bottom: 30px;
-  padding-bottom: 10px;  /* 增加底部內邊距 */
+
 }
 
-
-/* 平板電腦和桌面版面配置 */
-@media (min-width: 768px) {
-  .indicator-chart {
-    height: 450px;
-  }
-}
 
 /* 移除大螢幕桌面版面配置的特殊處理 */
 
@@ -193,13 +208,111 @@
 }
 
 .tab-content {
-  background-color: white;
-  border-radius: 8px;
-  padding: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  /* background-color: white; */ /* 移除背景色 */
+  /* border-radius: 8px; */ /* 如果 indicator-item 總是有 radius，這裡也可以考慮移除 */
+  /* padding: 0; */ 
+  /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */ /* 移除陰影 */
+  /* indicator-item 將提供卡片視覺效果 */
 }
 
+/* 新增：主內容區域佈局 */
+.content-layout-container {
+  display: flex;
+  flex-direction: column; /* 預設垂直排列，適用於小螢幕 */
+  gap: 20px; /* 垂直和水平間距 */
+  margin-top: 20px; /* 與上方 tabs 的間距 */
+  height: 70vh; /* 改為 70% 的 viewport height */
+  max-height: 70vh; /* 全局最大高度限制也改為 70vh */
+}
 
+/* .tab-content 的樣式已在上方定義，此處註解掉重複或不再需要的規則 */
+/* .tab-content { */
+  /* box-shadow 和 border-radius 已有，保持即可 */
+  /* 移除固定的 padding，讓子元件控制 */
+  /* padding: 0; */ 
+  /* 在 flex 佈局中，不需要 width: 100% */
+/* } */
+
+.description-container-wrapper {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0; /* 改為 0，padding 移至 description-scroll-content */
+  display: flex; /* 設為基礎樣式 */
+  flex-direction: column; /* 設為基礎樣式 */
+  min-height: 0; /* 設為基礎樣式，防止內容撐開 */
+  flex-grow: 1; /* 新增：讓其在垂直方向上填滿剩餘空間 (手機) */
+}
+
+.description-scroll-content {
+  padding: 20px; /* 設為基礎樣式 */
+  overflow-y: auto; /* 設為基礎樣式，內容超出時顯示垂直捲軸 */
+  flex-grow: 1; /* 設為基礎樣式，填滿 description-container-wrapper 的剩餘高度 */
+  
+  /* 美化捲軸 (可選，主要針對 WebKit 瀏覽器) - 設為基礎樣式 */
+}
+.description-scroll-content::-webkit-scrollbar {
+  width: 8px;
+}
+.description-scroll-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.description-scroll-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+.description-scroll-content::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+@media (max-width: 430px) {
+  .content-layout-container {
+    height: 100vh;
+    max-height: 100vh;
+  }
+  .content-layout-container .tab-content .indicator-item {
+    height: 500px;
+    max-height: 500px; /* 全局最大高度限制 */
+  }
+  .indicator-item .indicator-chart {
+    height: 250px;
+  }
+  .indicator-item .indicator-chart-container .gauge-chart {
+    margin-top:15%;
+    height: 195px;
+  }
+  .description-scroll-content .description-container {
+    padding-top: 5px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .content-layout-container {
+    flex-direction: row; /* 大螢幕改為水平排列 */
+    align-items: stretch; /* 讓子元素等高 */
+  }
+
+  .tab-content {
+    flex: 2; /* tab-content 佔據約 2/3 空間 */
+    display: flex; 
+    flex-direction: column; 
+  }
+
+  /* 新增：讓 indicator-item 在 tab-content 內部伸展 */
+  .tab-content > .indicator-item {
+    flex-grow: 1; /* 允許 indicator-item 填滿可用空間 */
+    margin-bottom: 0; /* 移除底部邊距，確保高度準確匹配 */
+  }
+  
+
+  .description-container-wrapper {
+    flex: 1; /* description 佔據約 1/3 空間 (此處會覆蓋基礎的 flex-grow) */
+    /* display: flex, flex-direction: column, padding: 0, min-height: 0 已是基礎樣式 */
+  }
+
+  /* .description-scroll-content 的樣式已是基礎樣式，無需重複 */
+}
 
 /* 確保在觸摸設備上的滾動行為正常 */
 @media (hover: none) and (pointer: coarse) {
@@ -233,39 +346,39 @@
 
 .gauge-chart {
   position: relative;
-  width: 300px;
-  height: 170px;
+  width: 600px;
+  height: 340px;
+  padding-top: 40px;
   margin: 0 auto;
-  padding-top: 20px;
 }
 
 .gauge-center-value {
   position: absolute;
-  bottom: 30px; /* 調整底部距離 */
+  bottom: 60px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 24px;
+  font-size: 48px;
   font-weight: bold;
   color: #4a4a4a;
   background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(240,240,240,1) 100%);
-  width: 45px; /* 增加寬度 */
-  height: 45px; /* 增加高度 */
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 10;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 添加陰影效果 */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .gauge-labels {
   position: absolute;
-  bottom: 20px;
+  bottom: 40px;
   left: 0;
   right: 0;
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 28px; /* For large screens */
   color: #333;
   font-weight: bold;
 }
@@ -285,22 +398,47 @@
   transform: translateX(50%);
 }
 
+@media (max-width: 1280px) {
+  .indicator-item .analysis-result{
+    padding: 0px 10px;
+  }
+  .indicator-item .time-range-selector {
+    margin: 5px auto;
+  }
+  .indicator-chart-container .gauge-chart {
+    max-width: 600px; /* Use max-width for responsiveness */
+    width: 100%; /* Allow it to shrink if container is smaller */
+    height: auto; /* Adjust height automatically */
+    padding-top: 0px; 
+    padding-bottom: 0px; 
+  }
+  .last-update-time {
+    margin-top: -20px;
+  }
+}
+
 @media (max-width: 768px) {
   .gauge-chart {
-    max-width: 250px;
-    padding-top: 0px; /* 移除上方的內邊距 */
-    padding-bottom: 0px;
+    /* Revert to original small screen size */
+    max-width: 250px; /* Use max-width for responsiveness */
+    width: 100%; /* Allow it to shrink if container is smaller */
+    height: auto; /* Adjust height automatically */
+    padding-top: 0px; 
+    padding-bottom: 0px; /* Explicitly set if needed, or rely on content */
   }
 
   .gauge-center-value {
+    /* Revert to original small screen size */
     font-size: 20px;
-    width: 40px; /* 調整小螢幕上的寬度 */
-    height: 40px; /* 調整小螢幕上的高度 */
-    bottom: 50px; /* 調整小螢幕上的底部距離 */
+    width: 40px; 
+    height: 40px; 
+    bottom: 50px; 
   }
 
   .gauge-labels {
+    /* Revert to original small screen size */
     bottom: 40px;
+    font-size: 14px; /* Explicitly set to original small screen font size */
   }
 }
 
@@ -323,22 +461,15 @@
   }
 }
 
-.last-update-time {
-  text-align: center;
-  color: #666;
-  font-size: 12px;
-  margin-top: 0px;  /* 增加上方間距 */
-  margin-bottom: 15px;
-  position: relative;  /* 確保位置正確 */
-  z-index: 1;  /* 確保文字在最上層 */
+
+
+@media (min-width: 1024px) {
+  .last-update-time {
+    font-size: 20px;
+  }
 }
 
-/* 在市場情緒指數頁面中置中 TimeRangeSelector */
-.indicator-item .time-range-selector {
-  justify-content: center;
-  margin: 20px auto;
-  width: fit-content;
-}
+
 
 /* 新增：確保 analysis-result 置中 */
 .indicator-item .analysis-result {
@@ -365,12 +496,13 @@
 .view-mode-selector-container {
   display: flex;
   gap: 8px;
-  margin: 0;
   background-color: #f5f5f7;
   padding: 4px;
   border-radius: 8px;
-  width: fit-content;
-  margin: 20px auto;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .view-mode-button {
@@ -401,7 +533,7 @@
 /* 適配移動設備 */
 @media (max-width: 768px) {
   .view-mode-selector-container {
-    width: 100%;
+    width: 80%;
     justify-content: stretch;
     background-color: #f5f5f7;
     padding: 3px;
