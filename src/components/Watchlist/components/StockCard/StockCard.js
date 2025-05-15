@@ -45,7 +45,7 @@ export const StockCard = memo(function StockCard({
 }) {
     const navigate = useNavigate(); // 獲取 navigate 函數
     const { requestAdDisplay } = useAdContext(); // <--- 2. 獲取 requestAdDisplay
-    const { t } = useTranslation(); // 在 StockCard 中也使用 hook
+    const { t, i18n } = useTranslation(); // 在 StockCard 中也使用 hook
     // Function to check if it's a mobile screen (you can adjust the breakpoint if needed)
     const isMobile = () => window.innerWidth <= 640;
 
@@ -65,7 +65,7 @@ export const StockCard = memo(function StockCard({
 
         // 導航到 PriceAnalysis 頁面，並帶上參數和 state
         navigate(
-            `/priceanalysis?stockCode=${stock.symbol}&years=3.5`,
+            `/${i18n.language}/priceanalysis?stockCode=${stock.symbol}&years=3.5`,
             { state: { fromWatchlist: true } } // <--- 新增 state
         );
     };
