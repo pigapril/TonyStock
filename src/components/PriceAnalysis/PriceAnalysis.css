@@ -4,7 +4,7 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: space-between;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */ /* 由 content-layout-container 的 gap 控制 */
 }
 
 .chart-card,
@@ -56,7 +56,7 @@
 .chart-content {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 80%;
   margin-top: 0px;
 }
 
@@ -134,7 +134,7 @@
 }
 
 .form-control {
-  width: 120px;
+  width: 150px;
   min-width: 60px;
   max-width: 150px;
   padding: 6px;
@@ -153,13 +153,13 @@
 
 /* DatePicker 特定樣式 */
 .react-datepicker-wrapper {
-  width: 120px !important;
-  min-width: 60px !important;
+  width: 150px ;
+  min-width: 60px ;
 }
 
 .react-datepicker__input-container input {
-  width: 120px !important;
-  max-width: 150px !important;
+  width: 100% ; /* 修改：使其填滿父層寬度 */
+  max-width: 100% ; /* 修改：確保不超過父層寬度 */
   padding: 8px;
   border: 1px solid var(--color-border-default, #ddd);
   border-radius: var(--border-radius-small, 4px);
@@ -172,13 +172,10 @@
   overflow: visible !important;
 }
 
+
 .stock-analysis-card .react-datepicker-popper {
-  position: fixed;
-  top: 100px;
-  left: 50%;
   transform: translateX(-50%);
-  margin-top: 0;
-  margin-left: 0;
+  margin-top: 40px;
   z-index: 9999 !important;
 }
 
@@ -199,10 +196,13 @@
   }
 
   .stock-analysis-card {
-    flex: 1 1 100%;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    width: 100%;
     min-width: 100%;
     max-width: none;
-    width: 100%;
+    padding: 20px 10px 0px 10px;
   }
 
   .input-group {
@@ -212,13 +212,6 @@
     align-items: center;
   }
 
-  .form-control,
-  .react-datepicker-wrapper,
-  .react-datepicker__input-container,
-  .react-datepicker__input-container input {
-    width: 150px !important;
-    max-width: 150px !important;
-  }
 
   .chart-header {
     flex-direction: column;
@@ -243,14 +236,22 @@
   }
 
   .chart-card {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
+    width: 100%;
+    min-width: 0;
     padding: 20px 10px 0px 10px;
+    box-sizing: border-box;
   }
 
-  .dashboard {
-    margin-bottom: 20px;
+  .chart-placeholder {
+    height: 300px;
   }
-
-} 
+  .content-layout-container .dashboard {
+    flex-direction: column;
+  }
+}
 
 .turnstile-container {
   margin: 15px 0;
@@ -355,7 +356,7 @@
 /* 確保按鈕置中 */
 .stock-analysis-card .analysis-button {
   margin-top: 5px;
-  margin-bottom: 0px;
+  margin-bottom: 15px;
   align-self: center;
   padding: 10px 24px;
   font-size: 16px;
@@ -495,14 +496,134 @@
   font-size: 1rem;
 }
 
-/* 響應式設計調整 */
-@media (max-width: 768px) {
-  .chart-content {
-    height: 300px; /* 在移動裝置上也保持高度 */
-    margin-top: 0px;
+/* 新增：主內容區域佈局 (仿效 MarketSentimentIndex) */
+.content-layout-container {
+  display: flex;
+  flex-direction: column; /* 預設垂直排列，適用於小螢幕 */
+  gap: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px; /* 增加底部間距 */
+}
+
+/* 桌面版面配置 */
+@media (min-width: 1024px) {
+  .content-layout-container {
+    flex-direction: row;
+    align-items: stretch; /* 讓子元素等高 */
+    height: 60vh; /* 設定固定高度，讓內部可以滾動 */
+    max-height: 60vh; /* 確保不超過此高度 */
   }
 
-  .chart-placeholder {
-    height: 300px; /* 在移動裝置上也保持高度 */
+  /* 主要容器：.dashboard 和 .description-container-wrapper */
+  .content-layout-container .dashboard {
+    flex: 3.5; /* <--- 可調整此值，控制 dashboard (包含表單和圖表) 的相對寬度 */
+    display: flex;
+    flex-direction: row; 
+    flex-wrap: nowrap; 
+    overflow: hidden; 
+  }
+  
+  /* .dashboard 內部的物件：.stock-analysis-card 和 .chart-card */
+  .content-layout-container .dashboard .stock-analysis-card {
+    flex-shrink: 0; 
+    /* 這裡通常是固定寬度 (max-width: 300px) 或基於內容自適應 */
+    /* 如果要讓它也參與 flex 比例分配，可以給它 flex-basis 或 flex-grow */
+    /* 例如：flex: 0 0 280px; (不增長，不收縮，基礎寬度280px) */
+    /* 或者，如果想讓它也按比例：flex-grow: 1; */
+    height: fit-content; 
+    max-height: 100%; 
+    overflow-y: auto; 
+    flex-grow: 1.9;
+  }
+
+  .content-layout-container .dashboard .chart-card {
+    flex-grow: 1; /* <--- 控制 chart-card 在 .dashboard 內部填滿剩餘空間 */
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden; 
+  }
+   .content-layout-container .dashboard .chart-card .chart-container {
+    flex-grow: 1; 
+    min-height: 0; 
+   }
+
+  .content-layout-container .description-container-wrapper {
+    flex: 0.8; /* <--- 可調整此值，控制右側說明區塊的相對寬度 */
+  }
+}
+
+@media (min-width: 1500px) {
+  .content-layout-container {
+    height: 50vh; /* 設定固定高度，讓內部可以滾動 */
+    max-height: 50vh; /* 確保不超過此高度 */
+  }
+}
+
+
+/* 新增：說明區塊容器 (仿效 MarketSentimentIndex) */
+.description-container-wrapper {
+  background-color: var(--color-bg-card, white);
+  border-radius: var(--border-radius-large, 8px);
+  box-shadow: var(--shadow-m, 0 2px 4px rgba(0,0,0,0.1));
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* 防止內容撐開 */
+  overflow: hidden; /* 確保 wrapper 本身不出現滾動條 */
+}
+
+@media (min-width: 1024px) {
+  .content-layout-container .description-container-wrapper {
+    flex: 0.8; /* 右側說明區塊佔比較小空間 */
+  }
+}
+
+@media (max-width: 1023px) { /* 手機螢幕 */
+   .description-container-wrapper {
+     flex-grow: 1;
+     min-height: 300px; /* 給一個最小高度 */
+     max-height: 60vh; /* 也限制一下最大高度 */
+   }
+}
+
+.description-scroll-content {
+  padding: var(--space-l, 20px);
+  overflow-y: auto;
+  flex-grow: 1;
+}
+.description-scroll-content::-webkit-scrollbar {
+  width: 8px;
+}
+.description-scroll-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.description-scroll-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+.description-scroll-content::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+@media (max-width: 430px) {
+  .stock-analysis-card .input-group {
+    align-items: center;
+    width: 300px;           /* 確保佔滿父容器寬度 */
+    max-width: none;       /* 移除或覆蓋全域的 max-width: 300px 限制 */
+    /* padding: 0 5px; 如果希望內容與邊緣有一點點間距，可以取消註解此行，並加上 box-sizing: border-box; */
+    /* box-sizing: border-box; */
+  }
+  .stock-analysis-card .form-control {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .stock-analysis-card .react-datepicker__input-container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .stock-analysis-card .react-datepicker-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 }

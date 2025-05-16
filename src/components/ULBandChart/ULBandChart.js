@@ -147,9 +147,7 @@ const ULBandChart = ({ data }) => {
     };
 
     return (
-        <div className="chart-content">
-            <Line data={chartData} options={options} />
-        </div>
+        <Line data={chartData} options={options} />
     );
 };
 

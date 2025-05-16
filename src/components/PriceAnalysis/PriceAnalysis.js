@@ -548,227 +548,236 @@ export function PriceAnalysis() {
     >
       {/* 使用 t() 翻譯標題 */}
       <h1>{t('priceAnalysis.pageTitle')}</h1>
-      <div className="dashboard">
-        
-        {/* 將 stock-analysis-card 移到 chart-card 上方 */}
-        <div className="stock-analysis-card">
-          <form onSubmit={handleSubmit}>
-            <div className="input-group">
-              {/* 使用 t() 翻譯 label */}
-              <label>{t('priceAnalysis.form.stockCodeLabel')}</label>
-              <input
-                type="text"
-                className="form-control"
-                onChange={handleStockCodeChange}
-                // 使用 t() 翻譯 placeholder
-                placeholder={t('priceAnalysis.form.stockCodePlaceholder')}
-                required
-                // 保持 defaultValue 或 value 的邏輯不變 (如果需要)
-                defaultValue={stockCode} // 根據原始碼，這裡使用 defaultValue
-              />
-            </div>
-
-            {/* 簡易查詢欄位容器 */}
-            {!isAdvancedQuery && (
-              <div className="input-group query-mode-inputs">
+      <div className="content-layout-container"> {/* 新增：佈局容器 */}
+        <div className="dashboard">
+          
+          {/* 將 stock-analysis-card 移到 chart-card 上方 */}
+          <div className="stock-analysis-card">
+            <form onSubmit={handleSubmit}>
+              <div className="input-group">
                 {/* 使用 t() 翻譯 label */}
-                <label>{t('priceAnalysis.form.analysisPeriodLabel')}</label>
-                <select
+                <label>{t('priceAnalysis.form.stockCodeLabel')}</label>
+                <input
+                  type="text"
                   className="form-control"
-                  value={analysisPeriod}
-                  onChange={(e) => setAnalysisPeriod(e.target.value)}
-                >
-                  {/* 使用 t() 翻譯 options */}
-                  <option value="短期">{t('priceAnalysis.form.periodShort')}</option>
-                  <option value="中期">{t('priceAnalysis.form.periodMedium')}</option>
-                  <option value="長期">{t('priceAnalysis.form.periodLong')}</option>
-                </select>
+                  onChange={handleStockCodeChange}
+                  // 使用 t() 翻譯 placeholder
+                  placeholder={t('priceAnalysis.form.stockCodePlaceholder')}
+                  required
+                  // 保持 defaultValue 或 value 的邏輯不變 (如果需要)
+                  defaultValue={stockCode} // 根據原始碼，這裡使用 defaultValue
+                />
               </div>
-            )}
 
-            {/* 進階查詢欄位容器 */}
-            {isAdvancedQuery && (
-              <div className="input-group query-mode-inputs advanced-query-mode-inputs">
-                <div className="input-group">
+              {/* 簡易查詢欄位容器 */}
+              {!isAdvancedQuery && (
+                <div className="input-group query-mode-inputs">
                   {/* 使用 t() 翻譯 label */}
                   <label>{t('priceAnalysis.form.analysisPeriodLabel')}</label>
-                  <input
-                    type="text"
-                    inputMode="decimal"
+                  <select
                     className="form-control"
-                    onChange={handleYearsChange}
-                    // 使用 t() 翻譯 placeholder
-                    placeholder={t('priceAnalysis.form.yearsPlaceholder')}
-                    required
-                    // 保持 defaultValue 或 value 的邏輯不變
-                    defaultValue={years} // 根據原始碼，這裡使用 defaultValue
-                  />
+                    value={analysisPeriod}
+                    onChange={(e) => setAnalysisPeriod(e.target.value)}
+                  >
+                    {/* 使用 t() 翻譯 options */}
+                    <option value="短期">{t('priceAnalysis.form.periodShort')}</option>
+                    <option value="中期">{t('priceAnalysis.form.periodMedium')}</option>
+                    <option value="長期">{t('priceAnalysis.form.periodLong')}</option>
+                  </select>
                 </div>
-                <div className="input-group">
-                  {/* 使用 t() 翻譯 label */}
-                  <label>{t('priceAnalysis.form.backTestDateLabel')}</label>
-                  <DatePicker
-                    selected={backTestDate ? new Date(backTestDate) : null}
-                    onChange={(date) => setBackTestDate(date ? date.toISOString().split('T')[0] : '')}
-                    // 使用 t() 翻譯 placeholder
-                    placeholderText={t('priceAnalysis.form.backTestDatePlaceholder')}
-                    className="form-control"
-                    dateFormat="yyyy/MM/dd"
-                    isClearable
-                    popperPlacement="auto"
-                  />
-                </div>
-              </div>
-            )}
+              )}
 
-            {/* 進階/簡易 查詢切換按鈕 */}
-            <div className="input-group">
+              {/* 進階查詢欄位容器 */}
+              {isAdvancedQuery && (
+                <div className="input-group query-mode-inputs advanced-query-mode-inputs">
+                  <div className="input-group">
+                    {/* 使用 t() 翻譯 label */}
+                    <label>{t('priceAnalysis.form.analysisPeriodLabel')}</label>
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      className="form-control"
+                      onChange={handleYearsChange}
+                      // 使用 t() 翻譯 placeholder
+                      placeholder={t('priceAnalysis.form.yearsPlaceholder')}
+                      required
+                      // 保持 defaultValue 或 value 的邏輯不變
+                      defaultValue={years} // 根據原始碼，這裡使用 defaultValue
+                    />
+                  </div>
+                  <div className="input-group">
+                    {/* 使用 t() 翻譯 label */}
+                    <label>{t('priceAnalysis.form.backTestDateLabel')}</label>
+                    <DatePicker
+                      selected={backTestDate ? new Date(backTestDate) : null}
+                      onChange={(date) => setBackTestDate(date ? date.toISOString().split('T')[0] : '')}
+                      // 使用 t() 翻譯 placeholder
+                      placeholderText={t('priceAnalysis.form.backTestDatePlaceholder')}
+                      className="form-control"
+                      dateFormat="yyyy/MM/dd"
+                      isClearable
+                      popperPlacement="auto"
+                      popperProps={{
+                        strategy: 'fixed', // <--- 新增：讓彈出框使用固定定位
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* 進階/簡易 查詢切換按鈕 */}
+              <div className="input-group">
+                <button
+                  type="button"
+                  className="btn-secondary query-mode-button"
+                  onClick={toggleQueryMode}
+                >
+                  {/* 使用 t() 翻譯按鈕文字 */}
+                  {isAdvancedQuery ? t('priceAnalysis.form.switchToSimple') : t('priceAnalysis.form.switchToAdvanced')}
+                </button>
+              </div>
+
               <button
-                type="button"
-                className="btn-secondary query-mode-button"
-                onClick={toggleQueryMode}
+                className={`btn-primary analysis-button ${loading ? 'btn-loading' : ''}`}
+                type="submit"
+                disabled={loading || !turnstileToken}
               >
                 {/* 使用 t() 翻譯按鈕文字 */}
-                {isAdvancedQuery ? t('priceAnalysis.form.switchToSimple') : t('priceAnalysis.form.switchToAdvanced')}
+                {loading
+                  ? (isPending ? t('priceAnalysis.form.buttonProcessing') : t('priceAnalysis.form.buttonAnalyzing'))
+                  : turnstileToken
+                    ? t('priceAnalysis.form.buttonStartAnalysis')
+                    : t('priceAnalysis.form.buttonCompleteVerification')
+                }
               </button>
-            </div>
+              {turnstileVisible && (
+                <div className="turnstile-container">
+                  <Turnstile
+                    sitekey={process.env.REACT_APP_TURNSTILE_SITE_KEY}
+                    onSuccess={handleTurnstileVerify}
+                    onError={handleTurnstileError}
+                    onExpire={handleTurnstileExpire}
+                    refreshExpired="auto"
+                  />
+                </div>
+              )}
+            </form>
+          </div>
 
-            <button
-              className={`btn-primary analysis-button ${loading ? 'btn-loading' : ''}`}
-              type="submit"
-              disabled={loading || !turnstileToken}
-            >
-              {/* 使用 t() 翻譯按鈕文字 */}
-              {loading
-                ? (isPending ? t('priceAnalysis.form.buttonProcessing') : t('priceAnalysis.form.buttonAnalyzing'))
-                : turnstileToken
-                  ? t('priceAnalysis.form.buttonStartAnalysis')
-                  : t('priceAnalysis.form.buttonCompleteVerification')
-              }
-            </button>
-            {turnstileVisible && (
-              <div className="turnstile-container">
-                <Turnstile
-                  sitekey={process.env.REACT_APP_TURNSTILE_SITE_KEY}
-                  onSuccess={handleTurnstileVerify}
-                  onError={handleTurnstileError}
-                  onExpire={handleTurnstileExpire}
-                  refreshExpired="auto"
-                />
+          {/* 主圖表區塊 */}
+          <div className="chart-card">
+            <div className="chart-container">
+              {/* 只有在 loading 或有數據時才顯示圖表標頭 */}
+              {(loading || chartData || ulbandData) && (
+                <div className="chart-header">
+                  <div className="analysis-result">
+                    <div className="analysis-item">
+                      {/* 使用 t() 翻譯 label */}
+                      <span className="analysis-label">{t('priceAnalysis.result.stockCode')}</span>
+                      <span className="analysis-value">
+                        {displayedStockCode}
+                      </span>
+                    </div>
+                    <div className="analysis-item">
+                      {/* 使用 t() 翻譯 label */}
+                      <span className="analysis-label">{t('priceAnalysis.result.stockPrice')}</span>
+                      <span className="analysis-value">
+                        ${formatPrice(analysisResult.price)}
+                      </span>
+                    </div>
+                    <div className="analysis-item">
+                      {/* 使用 t() 翻譯 label */}
+                      <span className="analysis-label">{t('priceAnalysis.result.marketSentiment')}</span>
+                      {/* 修改 className：使用 getSentimentSuffix 提取後綴 */}
+                      <span className={`analysis-value sentiment-${getSentimentSuffix(analysisResult.sentimentKey)}`}>
+                        {analysisResult.sentimentValue}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className="chart-content">
+                {/* 圖表 Tabs */}
+                {(chartData || ulbandData || loading) && (
+                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
+                    <div className="chart-tabs">
+                      <button
+                        className={`chart-tab ${activeChart === 'sd' ? 'active' : ''}`}
+                        onClick={() => handleChartSwitch('sd')}
+                        disabled={loading}
+                      >
+                        {/* 使用 t() 翻譯 Tab 文字 */}
+                        {t('priceAnalysis.chart.tabs.sd')}
+                      </button>
+                      <button
+                        className={`chart-tab ${activeChart === 'ulband' ? 'active' : ''}`}
+                        onClick={() => handleChartSwitch('ulband')}
+                        disabled={loading}
+                      >
+                        {/* 使用 t() 翻譯 Tab 文字 */}
+                        {t('priceAnalysis.chart.tabs.ulband')}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Loading 指示器 */}
+                {loading && (
+                  <div className="chart-loading-indicator">
+                    <div className="loading-spinner">
+                      <div className="spinner"></div>
+                      {/* 使用 t() 翻譯 Loading 文字 */}
+                      <span>{isPending ? t('priceAnalysis.chart.loading.generating') : t('priceAnalysis.chart.loading.fetching')}</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* 圖表 (僅在非 loading 狀態下顯示) */}
+                {!loading && activeChart === 'sd' && chartData && (
+                  <Line
+                    data={chartData}
+                    options={lineChartOptions} // <--- 使用 useMemo 優化後的 options
+                  />
+                )}
+                {!loading && activeChart === 'ulband' && ulbandData && (
+                  // 使用 Memoized 版本
+                  <MemoizedULBandChart data={ulbandData} />
+                )}
+
+                {/* 佔位符 */}
+                {!loading && !chartData && !ulbandData && (
+                   // 使用 t() 翻譯佔位符文字
+                   <div className="chart-placeholder">{t('priceAnalysis.prompt.enterSymbol')}</div>
+                )}
               </div>
-            )}
-          </form>
-        </div>
-
-        {/* 主圖表區塊 */}
-        <div className="chart-card">
-          <div className="chart-container">
-            {/* 只有在 loading 或有數據時才顯示圖表標頭 */}
-            {(loading || chartData || ulbandData) && (
-              <div className="chart-header">
-                <div className="analysis-result">
-                  <div className="analysis-item">
-                    {/* 使用 t() 翻譯 label */}
-                    <span className="analysis-label">{t('priceAnalysis.result.stockCode')}</span>
-                    <span className="analysis-value">
-                      {displayedStockCode}
-                    </span>
-                  </div>
-                  <div className="analysis-item">
-                    {/* 使用 t() 翻譯 label */}
-                    <span className="analysis-label">{t('priceAnalysis.result.stockPrice')}</span>
-                    <span className="analysis-value">
-                      ${formatPrice(analysisResult.price)}
-                    </span>
-                  </div>
-                  <div className="analysis-item">
-                    {/* 使用 t() 翻譯 label */}
-                    <span className="analysis-label">{t('priceAnalysis.result.marketSentiment')}</span>
-                    {/* 修改 className：使用 getSentimentSuffix 提取後綴 */}
-                    <span className={`analysis-value sentiment-${getSentimentSuffix(analysisResult.sentimentKey)}`}>
-                      {analysisResult.sentimentValue}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-            <div className="chart-content">
-              {/* 圖表 Tabs */}
-              {(chartData || ulbandData || loading) && (
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
-                  <div className="chart-tabs">
-                    <button
-                      className={`chart-tab ${activeChart === 'sd' ? 'active' : ''}`}
-                      onClick={() => handleChartSwitch('sd')}
-                      disabled={loading}
-                    >
-                      {/* 使用 t() 翻譯 Tab 文字 */}
-                      {t('priceAnalysis.chart.tabs.sd')}
-                    </button>
-                    <button
-                      className={`chart-tab ${activeChart === 'ulband' ? 'active' : ''}`}
-                      onClick={() => handleChartSwitch('ulband')}
-                      disabled={loading}
-                    >
-                      {/* 使用 t() 翻譯 Tab 文字 */}
-                      {t('priceAnalysis.chart.tabs.ulband')}
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Loading 指示器 */}
-              {loading && (
-                <div className="chart-loading-indicator">
-                  <div className="loading-spinner">
-                    <div className="spinner"></div>
-                    {/* 使用 t() 翻譯 Loading 文字 */}
-                    <span>{isPending ? t('priceAnalysis.chart.loading.generating') : t('priceAnalysis.chart.loading.fetching')}</span>
-                  </div>
-                </div>
-              )}
-
-              {/* 圖表 (僅在非 loading 狀態下顯示) */}
-              {!loading && activeChart === 'sd' && chartData && (
-                <Line
-                  data={chartData}
-                  options={lineChartOptions} // <--- 使用 useMemo 優化後的 options
-                />
-              )}
-              {!loading && activeChart === 'ulband' && ulbandData && (
-                // 使用 Memoized 版本
-                <MemoizedULBandChart data={ulbandData} />
-              )}
-
-              {/* 佔位符 */}
-              {!loading && !chartData && !ulbandData && (
-                 // 使用 t() 翻譯佔位符文字
-                 <div className="chart-placeholder">{t('priceAnalysis.prompt.enterSymbol')}</div>
-              )}
             </div>
           </div>
         </div>
-      </div>
 
-      {/* 將 ExpandableDescription 移到 dashboard 下方 */}
-      <MemoizedExpandableDescription
-        // 使用 t() 翻譯 shortDescription (注意保留連結)
-        shortDescription={
-          <>
-            {t('priceAnalysis.explanation.shortDescription')}
-            <br />
-            {t('priceAnalysis.explanation.readMorePrefix')}
-            <a href="https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92" target="_blank" rel="noopener noreferrer">
-              {t('priceAnalysis.explanation.readMoreLinkText')}
-            </a>
-          </>
-        }
-        // 使用 useMemo 創建的 sections
-        sections={expandableSections}
-        // 使用 t() 翻譯按鈕文字
-        expandButtonText={t('common.learnMore')} // 假設有通用 key
-        collapseButtonText={t('common.collapse')} // 假設有通用 key
-      />
+        {/* 將 ExpandableDescription 移到此處並包裹 */}
+        <div className="description-container-wrapper">
+          <div className="description-scroll-content">
+            <MemoizedExpandableDescription
+              // 使用 t() 翻譯 shortDescription (注意保留連結)
+              shortDescription={
+                <>
+                  {t('priceAnalysis.explanation.shortDescription')}
+                  <br />
+                  {t('priceAnalysis.explanation.readMorePrefix')}
+                  <a href="https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92" target="_blank" rel="noopener noreferrer">
+                    {t('priceAnalysis.explanation.readMoreLinkText')}
+                  </a>
+                </>
+              }
+              // 使用 useMemo 創建的 sections
+              sections={expandableSections}
+              // 使用 t() 翻譯按鈕文字
+              expandButtonText={t('common.learnMore')} // 假設有通用 key
+              collapseButtonText={t('common.collapse')} // 假設有通用 key
+            />
+          </div>
+        </div>
+      </div> {/* 結束 content-layout-container */}
 
       {/* 條件式渲染 Toast 元件 */}
       {toast && (
