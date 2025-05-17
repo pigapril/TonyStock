@@ -1,5 +1,5 @@
 /* 圖表和分析卡片樣式 */
-.dashboard {
+.price-analysis-view .dashboard {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -7,15 +7,15 @@
   /* margin-bottom: 20px; */ /* 由 content-layout-container 的 gap 控制 */
 }
 
-.chart-card,
-.stock-analysis-card {
+.price-analysis-view .chart-card,
+.price-analysis-view .stock-analysis-card {
   background-color: var(--color-bg-card, white);
   border-radius: var(--border-radius-large, 8px); /* 嘗試更大的圓角 */
   box-shadow: var(--shadow-m, 0 2px 4px rgba(0,0,0,0.1));
   /* padding: 20px; */ /* 統一 padding */
 }
 
-.chart-card {
+.price-analysis-view .chart-card {
   flex: 1 1 65%;
   min-width: 300px;
   padding: 0px 5px var(--space-l, 20px) var(--space-l, 20px);
@@ -23,7 +23,7 @@
   height: auto;
 }
 
-.stock-analysis-card {
+.price-analysis-view .stock-analysis-card {
   padding: var(--space-l, 20px);
   flex: 1 1 15%;
   min-width: 200px;
@@ -36,7 +36,7 @@
   width: 100%;  
 }
 
-.stock-analysis-card form {
+.price-analysis-view .stock-analysis-card form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,7 +45,7 @@
 }
 
 /* 圖表容器樣式 */
-.chart-container {
+.price-analysis-view .chart-container {
   width: 100%;
   height: 450px;
   max-width: 100%;
@@ -53,20 +53,20 @@
   margin-bottom: 20px;
 }
 
-.chart-content {
+.price-analysis-view .chart-content {
   position: relative;
   width: 100%;
   height: 80%;
   margin-top: 0px;
 }
 
-.chart-content canvas {
+.price-analysis-view .chart-content canvas {
   position: relative; /* 確保 transform 生效 */
   transform: translateY(-10px); 
 }
 
 /* 圖表標題和標籤樣式 */
-.chart-header {
+.price-analysis-view .chart-header {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,7 +76,7 @@
   flex-direction: column;
 }
 
-.chart-title {
+.price-analysis-view .chart-title {
   font-size: 0.95em;
   font-weight: bold;
   color: #333;
@@ -84,7 +84,7 @@
 }
 
 /* 圖表切換按鈕樣式 */
-.chart-tabs {
+.price-analysis-view .chart-tabs {
   display: flex;
   gap: 8px;
   margin: 0;
@@ -93,7 +93,7 @@
   border-radius: var(--border-radius-medium, 8px);
 }
 
-.chart-tab {
+.price-analysis-view .chart-tab {
   padding: 8px 16px;
   border: none;
   background: none;
@@ -108,18 +108,18 @@
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 }
 
-.chart-tab:hover {
+.price-analysis-view .chart-tab:hover {
   color: #1d1d1f;
 }
 
-.chart-tab.active {
+.price-analysis-view .chart-tab.active {
   background-color: var(--color-bg-card, #ffffff);
   color: var(--color-text-primary, #1d1d1f);
   box-shadow: var(--shadow-xs, 0 1px 3px rgba(0, 0, 0, 0.1)); /* 更細微的陰影 */
 }
 
 /* 表單樣式 */
-.input-group {
+.price-analysis-view .input-group {
   margin-bottom: 8px;
   width: 100%;
   max-width: 300px;
@@ -128,12 +128,12 @@
   justify-content: center;
 }
 
-.input-group label {
+.price-analysis-view .input-group label {
   margin-bottom: 0;
   white-space: nowrap;
 }
 
-.form-control {
+.price-analysis-view .form-control {
   width: 150px;
   min-width: 60px;
   max-width: 150px;
@@ -144,20 +144,20 @@
   box-sizing: border-box;
 }
 
-.form-control:focus,
-.react-datepicker__input-container input:focus {
+.price-analysis-view .form-control:focus,
+.price-analysis-view .react-datepicker__input-container input:focus {
   border-color: var(--accent-color-blue, #007aff);
   box-shadow: var(--shadow-focus-ring, 0 0 0 4px rgba(0, 122, 255, 0.3));
   outline: none;
 }
 
 /* DatePicker 特定樣式 */
-.react-datepicker-wrapper {
+.price-analysis-view .react-datepicker-wrapper {
   width: 150px ;
   min-width: 60px ;
 }
 
-.react-datepicker__input-container input {
+.price-analysis-view .react-datepicker__input-container input {
   width: 100% ; /* 修改：使其填滿父層寬度 */
   max-width: 100% ; /* 修改：確保不超過父層寬度 */
   padding: 8px;
@@ -167,13 +167,13 @@
   box-sizing: border-box;
 }
 
-.input-group.query-mode-inputs.advanced-query-mode-inputs,
-.input-group {
+.price-analysis-view .input-group.query-mode-inputs.advanced-query-mode-inputs,
+.price-analysis-view .input-group {
   overflow: visible !important;
 }
 
 
-.stock-analysis-card .react-datepicker-popper {
+.price-analysis-view .stock-analysis-card .react-datepicker-popper {
   transform: translateX(-50%);
   margin-top: 40px;
   z-index: 9999 !important;
@@ -181,21 +181,21 @@
 
 /* 確保在 iOS 設備上日期輸入框的文字大小一致 */
 @supports (-webkit-touch-callout: none) {
-    input[type="date"].form-control {
+    .price-analysis-view input[type="date"].form-control {
       font-size: 16px !important;
     }
   }
 
 /* 響應式設計 */
 @media (max-width: 768px) {
-  .chart-title {
+  .price-analysis-view .chart-title {
     font-size: 0.9em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .stock-analysis-card {
+  .price-analysis-view .stock-analysis-card {
     flex-grow: 0;
     flex-shrink: 1;
     flex-basis: auto;
@@ -205,7 +205,7 @@
     padding: 20px 10px 0px 10px;
   }
 
-  .input-group {
+  .price-analysis-view .input-group {
     width: 100%;
     padding: 0;
     display: flex;
@@ -213,7 +213,7 @@
   }
 
 
-  .chart-header {
+  .price-analysis-view .chart-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
@@ -221,21 +221,21 @@
     margin-bottom: 0px;
   }
 
-  .chart-tabs {
+  .price-analysis-view .chart-tabs {
     width: 100%;
     justify-content: stretch;
     background-color: #f5f5f7;
     padding: 3px;
   }
 
-  .chart-tab {
+  .price-analysis-view .chart-tab {
     flex: 1;
     text-align: center;
     padding: 8px 8px;
     font-size: 13px;
   }
 
-  .chart-card {
+  .price-analysis-view .chart-card {
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: auto;
@@ -245,34 +245,34 @@
     box-sizing: border-box;
   }
 
-  .chart-placeholder {
+  .price-analysis-view .chart-placeholder {
     height: 300px;
   }
-  .content-layout-container .dashboard {
+  .price-analysis-view .content-layout-container .dashboard {
     flex-direction: column;
   }
 }
 
-.turnstile-container {
+.price-analysis-view .turnstile-container {
   margin: 15px 0;
   display: flex;
   justify-content: center;
 }
 
-.turnstile-container > div {
+.price-analysis-view .turnstile-container > div {
   transform: scale(0.85);
   transform-origin: center;
 }
 
 
-.error-message {
+.price-analysis-view .error-message {
   color: #dc3545;
   font-size: 0.875rem;
   margin-top: 5px;
 } 
 
 /* 分析結果樣式 */
-.analysis-result {
+.price-analysis-view .analysis-result {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -284,7 +284,7 @@
   width: 100%;
 }
 
-.analysis-item {
+.price-analysis-view .analysis-item {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -294,15 +294,15 @@
   align-items: center;
 }
 
-.analysis-label {
-  font-size: 0.85em;
+.price-analysis-view .analysis-label {
+  font-size: 1em;
   color: #6c757d;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.analysis-value {
+.price-analysis-view .analysis-value {
   font-size: 1.3em;
   font-weight: 600;
   color: #2c3e50;
@@ -310,51 +310,51 @@
 }
 
 /* 情緒狀態顏色 (修改選擇器) */
-.sentiment-extremeOptimism { /* 原 .sentiment-極度樂觀 */
+.price-analysis-view .sentiment-extremeOptimism { /* 原 .sentiment-極度樂觀 */
   color: #A0361B;  /* 與圖表上軌顏色一致 - 深紅褐色 */
 }
 
-.sentiment-optimism { /* 原 .sentiment-樂觀 */
+.price-analysis-view .sentiment-optimism { /* 原 .sentiment-樂觀 */
   color: #C14C20;  /* 較淺的紅褐色 */
 }
 
-.sentiment-neutral { /* 原 .sentiment-中性 */
+.price-analysis-view .sentiment-neutral { /* 原 .sentiment-中性 */
   color: #E9972D;  /* 與 MA20 顏色一致 - 橙黃色 */
 }
 
-.sentiment-pessimism { /* 原 .sentiment-悲觀 */
+.price-analysis-view .sentiment-pessimism { /* 原 .sentiment-悲觀 */
   color: #1E5B3C;  /* 較淺的墨綠色 */
 }
 
-.sentiment-extremePessimism { /* 原 .sentiment-極度悲觀 */
+.price-analysis-view .sentiment-extremePessimism { /* 原 .sentiment-極度悲觀 */
   color: #143829;  /* 與圖表下軌顏色一致 - 深墨綠色 */
 }
 
 /* 響應式設計調整 */
 @media (max-width: 768px) {
-  .analysis-result {
+  .price-analysis-view .analysis-result {
     align-items: flex-start;
     gap: 2px;
     padding: 0px;
   }
   
-  .analysis-item {
+  .price-analysis-view .analysis-item {
     width: 100%;
     max-width: none;
   }
   
-  .analysis-value {
+  .price-analysis-view .analysis-value {
     font-size: 1.2em;
   }
 
-  .description-container {
+  .price-analysis-view .description-container {
     margin-top: 10px;
     padding-top: 25px;
   }
 } 
 
 /* 確保按鈕置中 */
-.stock-analysis-card .analysis-button {
+.price-analysis-view .stock-analysis-card .analysis-button {
   margin-top: 5px;
   margin-bottom: 15px;
   align-self: center;
@@ -378,19 +378,19 @@
   box-shadow: 0 2px 10px rgba(0, 0, 255, 0.2);
 }
 
-.stock-analysis-card .analysis-button:hover {
+.price-analysis-view .stock-analysis-card .analysis-button:hover {
   background-position: right center;
   transform: translateY(-1px);
   box-shadow: 0 4px 15px rgba(0, 0, 255, 0.3);
 }
 
-.stock-analysis-card .analysis-button:active {
+.price-analysis-view .stock-analysis-card .analysis-button:active {
   transform: translateY(1px);
   box-shadow: 0 2px 8px rgba(0, 0, 255, 0.2);
 }
 
 /* 禁用狀態 */
-.stock-analysis-card .analysis-button:disabled {
+.price-analysis-view .stock-analysis-card .analysis-button:disabled {
   background: linear-gradient(
     135deg,
     rgba(255, 0, 255, 0.5) 0%,
@@ -405,19 +405,19 @@
 }
 
 /* 確保描述容器不超出畫面 */
-.description-container {
+.price-analysis-view .description-container {
   width: 100%; /* 確保寬度為100% */
   max-width: 100%; /* 確保不超出父容器 */
   box-sizing: border-box; /* 包含padding和border在內 */
 
 } 
 
-.react-datepicker__triangle {
+.price-analysis-view .react-datepicker__triangle {
   display: none; /* 隱藏三角形箭頭 */
 } 
 
 /* 查詢模式切換按鈕樣式 */
-.stock-analysis-card .query-mode-button {
+.price-analysis-view .stock-analysis-card .query-mode-button {
   margin-top: 1%;
   margin-bottom: 20px; /* 與其他 input-group 間距一致 */
   align-self: center;
@@ -433,19 +433,19 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* 增加輕微陰影 */
 }
 
-.stock-analysis-card .query-mode-button:hover {
+.price-analysis-view .stock-analysis-card .query-mode-button:hover {
   background-color: #2a4c6f; /* Hover 時顏色加深 */
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2); /* Hover 時陰影更明顯 */
 }
 
-.stock-analysis-card .query-mode-button:active {
+.price-analysis-view .stock-analysis-card .query-mode-button:active {
   background-color: #004085; /* Active 時顏色更深 */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); /* Active 時陰影縮小 */
   transform: translateY(1px); /* 輕微向下位移 */
 }
 
 /* 進階查詢模式 - 輸入欄位容器樣式 (垂直排列) */
-.stock-analysis-card .query-mode-inputs.advanced-query-mode-inputs {
+.price-analysis-view .stock-analysis-card .query-mode-inputs.advanced-query-mode-inputs {
   position: relative;
   margin-bottom: 15px;
   display: flex;
@@ -453,12 +453,12 @@
 }
 
 /* 所有查詢模式 - 輸入欄位容器樣式 (通用樣式) */
-.stock-analysis-card .query-mode-inputs {
+.price-analysis-view .stock-analysis-card .query-mode-inputs {
   margin-bottom: 15px; /* 與其他 input-group 間距一致 */
 }
 
 /* 確保 input-group 在容器內水平置中 */
-.stock-analysis-card .query-mode-inputs .input-group {
+.price-analysis-view .stock-analysis-card .query-mode-inputs .input-group {
   margin-bottom: 8px;
   flex-direction: row; /* 水平排列 */
   display: flex;
@@ -466,7 +466,7 @@
 } 
 
 /* 新增：圖表載入指示器的樣式 */
-.chart-loading-indicator {
+.price-analysis-view .chart-loading-indicator {
   position: absolute; /* 相對於 .chart-content 定位 */
   top: 0;
   left: 0;
@@ -480,14 +480,14 @@
 }
 
 /* 確保 Loading.css 中的 spinner 樣式能正確顯示 */
-.chart-loading-indicator .loading-spinner {
+.price-analysis-view .chart-loading-indicator .loading-spinner {
   min-height: auto; /* 覆蓋 Loading.css 中可能存在的 min-height */
   color: #666; /* 確保文字顏色可見 */
   /* 可能需要根據 Loading.css 的具體實現調整其他樣式 */
 }
 
 /* 佔位符樣式 (可選) */
-.chart-placeholder {
+.price-analysis-view .chart-placeholder {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -497,7 +497,7 @@
 }
 
 /* 新增：主內容區域佈局 (仿效 MarketSentimentIndex) */
-.content-layout-container {
+.price-analysis-view .content-layout-container {
   display: flex;
   flex-direction: column; /* 預設垂直排列，適用於小螢幕 */
   gap: 20px;
@@ -507,7 +507,7 @@
 
 /* 桌面版面配置 */
 @media (min-width: 1024px) {
-  .content-layout-container {
+  .price-analysis-view .content-layout-container {
     flex-direction: row;
     align-items: stretch; /* 讓子元素等高 */
     height: 60vh; /* 設定固定高度，讓內部可以滾動 */
@@ -515,7 +515,7 @@
   }
 
   /* 主要容器：.dashboard 和 .description-container-wrapper */
-  .content-layout-container .dashboard {
+  .price-analysis-view .content-layout-container .dashboard {
     flex: 3.5; /* <--- 可調整此值，控制 dashboard (包含表單和圖表) 的相對寬度 */
     display: flex;
     flex-direction: row; 
@@ -524,7 +524,7 @@
   }
   
   /* .dashboard 內部的物件：.stock-analysis-card 和 .chart-card */
-  .content-layout-container .dashboard .stock-analysis-card {
+  .price-analysis-view .content-layout-container .dashboard .stock-analysis-card {
     flex-shrink: 0; 
     /* 這裡通常是固定寬度 (max-width: 300px) 或基於內容自適應 */
     /* 如果要讓它也參與 flex 比例分配，可以給它 flex-basis 或 flex-grow */
@@ -535,24 +535,24 @@
     flex-grow: 4;
   }
 
-  .content-layout-container .dashboard .chart-card {
+  .price-analysis-view .content-layout-container .dashboard .chart-card {
     flex-grow: 1; /* <--- 控制 chart-card 在 .dashboard 內部填滿剩餘空間 */
     display: flex; 
     flex-direction: column; 
     overflow: hidden; 
   }
-   .content-layout-container .dashboard .chart-card .chart-container {
+   .price-analysis-view .content-layout-container .dashboard .chart-card .chart-container {
     flex-grow: 1; 
     min-height: 0; 
    }
 
-  .content-layout-container .description-container-wrapper {
+  .price-analysis-view .content-layout-container .description-container-wrapper {
     flex: 0.8; /* <--- 可調整此值，控制右側說明區塊的相對寬度 */
   }
 }
 
 @media (min-width: 1500px) {
-  .content-layout-container {
+  .price-analysis-view .content-layout-container {
     height: 50vh; /* 設定固定高度，讓內部可以滾動 */
     max-height: 50vh; /* 確保不超過此高度 */
   }
@@ -560,7 +560,7 @@
 
 
 /* 新增：說明區塊容器 (仿效 MarketSentimentIndex) */
-.description-container-wrapper {
+.price-analysis-view .description-container-wrapper {
   background-color: var(--color-bg-card, white);
   border-radius: var(--border-radius-large, 8px);
   box-shadow: var(--shadow-m, 0 2px 4px rgba(0,0,0,0.1));
@@ -572,56 +572,56 @@
 }
 
 @media (min-width: 1024px) {
-  .content-layout-container .description-container-wrapper {
+  .price-analysis-view .content-layout-container .description-container-wrapper {
     flex: 0.8; /* 右側說明區塊佔比較小空間 */
   }
 }
 
 @media (max-width: 1023px) { /* 手機螢幕 */
-   .description-container-wrapper {
+   .price-analysis-view .description-container-wrapper {
      flex-grow: 1;
      min-height: 300px; /* 給一個最小高度 */
      max-height: 60vh; /* 也限制一下最大高度 */
    }
 }
 
-.description-scroll-content {
+.price-analysis-view .description-scroll-content {
   padding: var(--space-l, 20px);
   overflow-y: auto;
   flex-grow: 1;
 }
-.description-scroll-content::-webkit-scrollbar {
+.price-analysis-view .description-scroll-content::-webkit-scrollbar {
   width: 8px;
 }
-.description-scroll-content::-webkit-scrollbar-track {
+.price-analysis-view .description-scroll-content::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
-.description-scroll-content::-webkit-scrollbar-thumb {
+.price-analysis-view .description-scroll-content::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 10px;
 }
-.description-scroll-content::-webkit-scrollbar-thumb:hover {
+.price-analysis-view .description-scroll-content::-webkit-scrollbar-thumb:hover {
   background: #aaa;
 }
 
 @media (max-width: 430px) {
-  .stock-analysis-card .input-group {
+  .price-analysis-view .stock-analysis-card .input-group {
     align-items: center;
     width: 300px;           /* 確保佔滿父容器寬度 */
     max-width: none;       /* 移除或覆蓋全域的 max-width: 300px 限制 */
     /* padding: 0 5px; 如果希望內容與邊緣有一點點間距，可以取消註解此行，並加上 box-sizing: border-box; */
     /* box-sizing: border-box; */
   }
-  .stock-analysis-card .form-control {
+  .price-analysis-view .stock-analysis-card .form-control {
     width: 100% !important;
     max-width: 100% !important;
   }
-  .stock-analysis-card .react-datepicker__input-container {
+  .price-analysis-view .stock-analysis-card .react-datepicker__input-container {
     width: 100% !important;
     max-width: 100% !important;
   }
-  .stock-analysis-card .react-datepicker-wrapper {
+  .price-analysis-view .stock-analysis-card .react-datepicker-wrapper {
     width: 100% !important;
     max-width: 100% !important;
   }

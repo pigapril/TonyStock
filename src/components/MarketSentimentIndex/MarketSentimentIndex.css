@@ -37,7 +37,7 @@
 }
 
 /* 確保市場情緒指數頁面在小螢幕上顯示良好 */
-.market-sentiment-index {
+.market-sentiment-view .market-sentiment-index {
   overscroll-behavior: contain;
   width: 100%;
   max-width: 100%;
@@ -45,13 +45,13 @@
 }
 
 /* 在市場情緒指數頁面中置中 TimeRangeSelector */
-.indicator-item .time-range-selector {
+.market-sentiment-view .indicator-item .time-range-selector {
   justify-content: center;
   margin: 20px auto;
   width: fit-content;
 }
 
-.last-update-time {
+.market-sentiment-view .last-update-time {
   text-align: center;
   color: #666;
   font-size: 12px;
@@ -63,24 +63,24 @@
 
 /* 新增以下部分 */
 @media (max-width: 768px) {
-  .indicator-list {
+  .market-sentiment-view .indicator-list {
     flex-direction: column; /* 小螢幕上垂直排列 */
   }
 
-  .indicator-chart {
+  .market-sentiment-view .indicator-chart {
     height: 200px; /* 調整圖表高度 */
   }
 }
 
 /* 確保圖表卡片的寬度一致 */
-.sentiment-dashboard {
+.market-sentiment-view .sentiment-dashboard {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 20px;
 }
 
-.sentiment-chart-card {
+.market-sentiment-view .sentiment-chart-card {
   width: calc(33.333% - 20px); /* 每列顯示三個圖表卡片減去間距 */
   background-color: white;
   border-radius: 1px;
@@ -89,22 +89,22 @@
 }
 
 @media (max-width: 1024px) {
-  .sentiment-chart-card {
+  .market-sentiment-view .sentiment-chart-card {
     width: calc(50% - 20px); /* 中等螢幕每列顯示兩個圖表卡片 */
   }
 }
 
 @media (max-width: 768px) {
-  .sentiment-dashboard {
+  .market-sentiment-view .sentiment-dashboard {
     flex-direction: column;
   }
-  .sentiment-chart-card {
+  .market-sentiment-view .sentiment-chart-card {
     width: 100%; /* 小螢幕上圖表卡片佔據全寬 */
   }
 }
 
 /* 調整指標列表的佈局 */
-.indicator-list {
+.market-sentiment-view .indicator-list {
   display: flex;
   flex-direction: column; /* 垂直排列 */
   gap: 20px;
@@ -113,7 +113,7 @@
 }
 
 /* 調整指標項目的樣式 */
-.indicator-item {
+.market-sentiment-view .indicator-item {
   width: 100%;
   background-color: white;
   padding: 20px;
@@ -124,19 +124,19 @@
 }
 
 /* 調整圖表區域的樣式 */
-.indicator-chart {
+.market-sentiment-view .indicator-chart {
   height: 35vh;
   max-height: 35vh ;
 }
 
 @media (min-width: 1920px) {
-  .indicator-chart {
+  .market-sentiment-view .indicator-chart {
     height: 40vh;
     max-height: 40vh ;
   }
 }
 
-.indicator-chart-container {
+.market-sentiment-view .indicator-chart-container {
   width: 100%;
   overflow: hidden;
 
@@ -145,7 +145,7 @@
 
 /* 移除大螢幕桌面版面配置的特殊處理 */
 
-.analysis-description {
+.market-sentiment-view .analysis-description {
   margin-top: 30px; /* 增加頂部間距 */
   margin-bottom: 20px;
   font-size: 16px;
@@ -166,7 +166,7 @@
   padding: 0;
 } */
 
-.tabs-grid {
+.market-sentiment-view .tabs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 減小最小寬度 */
   gap: 8px; /* 稍微減小間距 */
@@ -174,7 +174,7 @@
   justify-content: center; /* 水平分布 */
 }
 
-.tab-button {
+.market-sentiment-view .tab-button {
   padding: 8px 5px; /* 減小上下內邊距，左右內邊距更小 */
   border: none;
   border-radius: 5px;
@@ -190,24 +190,24 @@
   line-height: 1.2; /* 調整行高 */
 }
 
-.tab-button.active {
+.market-sentiment-view .tab-button.active {
   background-color: #4a4a4a;
   color: white;
 }
 
 /* 在小螢幕上進一步調整 */
 @media (max-width: 768px) {
-  .tabs-grid {
+  .market-sentiment-view .tabs-grid {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* 進一步減小最小寬度 */
   }
 
-  .tab-button {
+  .market-sentiment-view .tab-button {
     font-size: 11px; /* 在小螢幕上進一步減小字體 */
     padding: 6px 4px; /* 在小螢幕上進一步減小內邊距 */
   }
 }
 
-.tab-content {
+.market-sentiment-view .tab-content {
   /* background-color: white; */ /* 移除背景色 */
   /* border-radius: 8px; */ /* 如果 indicator-item 總是有 radius，這裡也可以考慮移除 */
   /* padding: 0; */ 
@@ -216,7 +216,7 @@
 }
 
 /* 新增：主內容區域佈局 */
-.content-layout-container {
+.market-sentiment-view .content-layout-container {
   display: flex;
   flex-direction: column; /* 預設垂直排列，適用於小螢幕 */
   gap: 20px; /* 垂直和水平間距 */
@@ -226,14 +226,14 @@
 }
 
 /* .tab-content 的樣式已在上方定義，此處註解掉重複或不再需要的規則 */
-/* .tab-content { */
+/* .market-sentiment-view .tab-content { */
   /* box-shadow 和 border-radius 已有，保持即可 */
   /* 移除固定的 padding，讓子元件控制 */
   /* padding: 0; */ 
   /* 在 flex 佈局中，不需要 width: 100% */
 /* } */
 
-.description-container-wrapper {
+.market-sentiment-view .description-container-wrapper {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -244,69 +244,69 @@
   flex-grow: 1; /* 新增：讓其在垂直方向上填滿剩餘空間 (手機) */
 }
 
-.description-scroll-content {
+.market-sentiment-view .description-scroll-content {
   padding: 20px; /* 設為基礎樣式 */
   overflow-y: auto; /* 設為基礎樣式，內容超出時顯示垂直捲軸 */
   flex-grow: 1; /* 設為基礎樣式，填滿 description-container-wrapper 的剩餘高度 */
   
   /* 美化捲軸 (可選，主要針對 WebKit 瀏覽器) - 設為基礎樣式 */
 }
-.description-scroll-content::-webkit-scrollbar {
+.market-sentiment-view .description-scroll-content::-webkit-scrollbar {
   width: 8px;
 }
-.description-scroll-content::-webkit-scrollbar-track {
+.market-sentiment-view .description-scroll-content::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
-.description-scroll-content::-webkit-scrollbar-thumb {
+.market-sentiment-view .description-scroll-content::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 10px;
 }
-.description-scroll-content::-webkit-scrollbar-thumb:hover {
+.market-sentiment-view .description-scroll-content::-webkit-scrollbar-thumb:hover {
   background: #aaa;
 }
 
 @media (max-width: 430px) {
-  .content-layout-container {
+  .market-sentiment-view .content-layout-container {
     height: 100vh;
     max-height: 100vh;
   }
-  .content-layout-container .tab-content .indicator-item {
+  .market-sentiment-view .content-layout-container .tab-content .indicator-item {
     height: 500px;
     max-height: 500px; /* 全局最大高度限制 */
   }
-  .indicator-item .indicator-chart {
+  .market-sentiment-view .indicator-item .indicator-chart {
     height: 250px;
   }
-  .indicator-item .indicator-chart-container .gauge-chart {
+  .market-sentiment-view .indicator-item .indicator-chart-container .gauge-chart {
     margin-top:15%;
-    height: 195px;
+    height: 200px;
   }
-  .description-scroll-content .description-container {
+  .market-sentiment-view .description-scroll-content .description-container {
     padding-top: 5px;
   }
 }
 
 @media (min-width: 1024px) {
-  .content-layout-container {
+  .market-sentiment-view .content-layout-container {
     flex-direction: row; /* 大螢幕改為水平排列 */
     align-items: stretch; /* 讓子元素等高 */
   }
 
-  .tab-content {
+  .market-sentiment-view .tab-content {
     flex: 2; /* tab-content 佔據約 2/3 空間 */
     display: flex; 
     flex-direction: column; 
   }
 
   /* 新增：讓 indicator-item 在 tab-content 內部伸展 */
-  .tab-content > .indicator-item {
+  .market-sentiment-view .tab-content > .indicator-item {
     flex-grow: 1; /* 允許 indicator-item 填滿可用空間 */
     margin-bottom: 0; /* 移除底部邊距，確保高度準確匹配 */
   }
   
 
-  .description-container-wrapper {
+  .market-sentiment-view .description-container-wrapper {
     flex: 1; /* description 佔據約 1/3 空間 (此處會覆蓋基礎的 flex-grow) */
     /* display: flex, flex-direction: column, padding: 0, min-height: 0 已是基礎樣式 */
   }
@@ -316,18 +316,18 @@
 
 /* 確保在觸摸設備上的滾動行為正常 */
 @media (hover: none) and (pointer: coarse) {
-  .indicator-chart-container {
+  .market-sentiment-view .indicator-chart-container {
     touch-action: pan-x pan-y;
   }
 }
 
-.view-mode-selector {
+.market-sentiment-view .view-mode-selector {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
 }
 
-.view-mode-button {
+.market-sentiment-view .view-mode-button {
   padding: 8px 16px;
   margin: 0 5px;
   border: none;
@@ -339,30 +339,30 @@
   color: #333;
 }
 
-.view-mode-button.active {
+.market-sentiment-view .view-mode-button.active {
   background-color: #4a4a4a;
   color: white;
 }
 
-.gauge-chart {
+.market-sentiment-view .gauge-chart {
   position: relative;
-  width: 600px;
-  height: 340px;
-  padding-top: 40px;
+  width: 480px; /* 600px * 0.8 */
+  height: 272px; /* 340px * 0.8 */
+  padding-top: 32px; /* 40px * 0.8 */
   margin: 0 auto;
 }
 
-.gauge-center-value {
+.market-sentiment-view .gauge-center-value {
   position: absolute;
-  bottom: 60px;
+  bottom: 48px; /* 60px * 0.8 */
   left: 50%;
   transform: translateX(-50%);
-  font-size: 48px;
+  font-size: 38px; /* 48px * 0.8, rounded */
   font-weight: bold;
   color: #4a4a4a;
   background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(240,240,240,1) 100%);
-  width: 90px;
-  height: 90px;
+  width: 72px; /* 90px * 0.8 */
+  height: 72px; /* 90px * 0.8 */
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -371,54 +371,54 @@
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.gauge-labels {
+.market-sentiment-view .gauge-labels {
   position: absolute;
-  bottom: 40px;
+  bottom: 32px; /* 40px * 0.8 */
   left: 0;
   right: 0;
   display: flex;
   justify-content: space-between;
-  font-size: 28px; /* For large screens */
+  font-size: 22px; /* 28px * 0.8, rounded */
   color: #333;
   font-weight: bold;
 }
 
-.gauge-label {
+.market-sentiment-view .gauge-label {
   position: absolute;
   bottom: 0;
 }
 
-.gauge-label-left {
+.market-sentiment-view .gauge-label-left {
   left: 10%;
   transform: translateX(-50%);
 }
 
-.gauge-label-right {
+.market-sentiment-view .gauge-label-right {
   right: 10%;
   transform: translateX(50%);
 }
 
 @media (max-width: 1280px) {
-  .indicator-item .analysis-result{
+  .market-sentiment-view .indicator-item .analysis-result{
     padding: 0px 10px;
   }
-  .indicator-item .time-range-selector {
+  .market-sentiment-view .indicator-item .time-range-selector {
     margin: 5px auto;
   }
-  .indicator-chart-container .gauge-chart {
-    max-width: 600px; /* Use max-width for responsiveness */
+  .market-sentiment-view .indicator-chart-container .gauge-chart {
+    max-width: 480px; /* 600px * 0.8 */
     width: 100%; /* Allow it to shrink if container is smaller */
     height: auto; /* Adjust height automatically */
     padding-top: 0px; 
     padding-bottom: 0px; 
   }
-  .last-update-time {
+  .market-sentiment-view .last-update-time {
     margin-top: -20px;
   }
 }
 
 @media (max-width: 768px) {
-  .gauge-chart {
+  .market-sentiment-view .gauge-chart {
     /* Revert to original small screen size */
     max-width: 250px; /* Use max-width for responsiveness */
     width: 100%; /* Allow it to shrink if container is smaller */
@@ -427,7 +427,7 @@
     padding-bottom: 0px; /* Explicitly set if needed, or rely on content */
   }
 
-  .gauge-center-value {
+  .market-sentiment-view .gauge-center-value {
     /* Revert to original small screen size */
     font-size: 20px;
     width: 40px; 
@@ -435,7 +435,7 @@
     bottom: 50px; 
   }
 
-  .gauge-labels {
+  .market-sentiment-view .gauge-labels {
     /* Revert to original small screen size */
     bottom: 40px;
     font-size: 14px; /* Explicitly set to original small screen font size */
@@ -443,7 +443,7 @@
 }
 
 /* 確保 GaugeChart 組件在容器中正確定位 */
-.gauge-chart > div:nth-child(2) {
+.market-sentiment-view .gauge-chart > div:nth-child(2) {
   position: absolute;
   bottom: 30px;
   left: 0;
@@ -451,12 +451,12 @@
 }
 
 @media (max-width: 768px) {
-  .indicator-chart-container {
+  .market-sentiment-view .indicator-chart-container {
     margin-bottom: 0px; /* 在小螢幕上使用較小的間距 */
     padding-bottom: 0px;
   }
 
-  .analysis-description {
+  .market-sentiment-view .analysis-description {
     margin-top: 20px; /* 在小螢幕上使用較小的間距 */
   }
 }
@@ -464,36 +464,73 @@
 
 
 @media (min-width: 1024px) {
-  .last-update-time {
-    font-size: 20px;
+  .market-sentiment-view .last-update-time {
+    font-size: 15px;
   }
 }
 
 
 
 /* 新增：確保 analysis-result 置中 */
-.indicator-item .analysis-result {
+.market-sentiment-view .indicator-item .analysis-result {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
-  margin: 10px auto;
+  gap: 30px;
+  padding: 15px 20px;
+  margin: 10px 0; /* PriceAnalysis 用的是 margin: 10px 0; MarketSentiment 原本是 margin: 10px auto; */
   overflow: hidden;
-  width: 95%;
 }
+
+.market-sentiment-view .indicator-item .analysis-result .analysis-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 100px;
+  max-width: 150px;
+  flex-shrink: 1;
+  align-items: center;
+  padding: 0px 7px;
+}
+
+.market-sentiment-view .indicator-item .analysis-result .analysis-label {
+  font-size: 1em;
+  color: #6c757d;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.market-sentiment-view .indicator-item .analysis-result .analysis-value {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: #2c3e50; /* 基礎顏色，會被下方的情緒顏色覆蓋 */
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* 響應式設計調整 for analysis-result */
 @media (max-width: 768px) {
-  .indicator-item {
-    padding:20px 15px;
-  }
-  .indicator-item .analysis-result {
-    width: 100%;
+  .market-sentiment-view .indicator-item .analysis-result {
     align-items: flex-start;
+    gap: 2px;
+    padding: 0px;
+  }
+  
+  .market-sentiment-view .indicator-item .analysis-result .analysis-item {
+    max-width: none;
+  }
+  
+  .market-sentiment-view .indicator-item .analysis-result .analysis-value {
+    font-size: 1.2em;
   }
 
+  /* 下方是原本 MarketSentimentIndex 在此斷點下的 .indicator-item padding，決定是否保留 */
+  .market-sentiment-view .indicator-item {
+    padding:20px 15px; 
+  }
 }
 
-
-.view-mode-selector-container {
+.market-sentiment-view .view-mode-selector-container {
   display: flex;
   gap: 8px;
   background-color: #f5f5f7;
@@ -505,7 +542,7 @@
   transform: translateX(-50%);
 }
 
-.view-mode-button {
+.market-sentiment-view .view-mode-button {
   padding: 8px 16px;
   border: none;
   background: none;
@@ -520,11 +557,11 @@
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 }
 
-.view-mode-button:hover {
+.market-sentiment-view .view-mode-button:hover {
   color: #1d1d1f;
 }
 
-.view-mode-button.active {
+.market-sentiment-view .view-mode-button.active {
   background-color: #ffffff;
   color: #1d1d1f;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -532,14 +569,14 @@
 
 /* 適配移動設備 */
 @media (max-width: 768px) {
-  .view-mode-selector-container {
+  .market-sentiment-view .view-mode-selector-container {
     width: 80%;
     justify-content: stretch;
     background-color: #f5f5f7;
     padding: 3px;
   }
 
-  .view-mode-button {
+  .market-sentiment-view .view-mode-button {
     flex: 1;
     text-align: center;
     padding: 8px 8px;
@@ -549,23 +586,53 @@
 
 /* 新增情緒文字顏色 */
 /* 更新：使用英文鍵名 */
-.analysis-value.sentiment-extremeFear {
+.market-sentiment-view .indicator-item .analysis-result .analysis-value.sentiment-extremeFear {
   color: #143829; /* 極度恐懼 - 深綠色 */
 }
 
-.analysis-value.sentiment-fear {
+.market-sentiment-view .indicator-item .analysis-result .analysis-value.sentiment-fear {
   color: #2B5B3F; /* 恐懼 - 綠色 */
 }
 
-.analysis-value.sentiment-neutral {
+.market-sentiment-view .indicator-item .analysis-result .analysis-value.sentiment-neutral {
   color: #E9972D; /* 中性 - 黃色 */
 }
 
-.analysis-value.sentiment-greed {
+.market-sentiment-view .indicator-item .analysis-result .analysis-value.sentiment-greed {
   color: #C4501B; /* 貪婪 - 橘色 */
 }
 
-.analysis-value.sentiment-extremeGreed {
+.market-sentiment-view .indicator-item .analysis-result .analysis-value.sentiment-extremeGreed {
   color: #A0361B; /* 極度貪婪 - 紅色 */
+}
+
+/* 新增：針對412px以下裝置的 gauge-label 換行 */
+@media (max-width: 430px) {
+  .market-sentiment-view .gauge-label {
+    white-space: normal; /* 確保允許文字在單字間換行 */
+    max-width: 70px;    /* 給予一個最大寬度以觸發換行，需要根據實際內容調整 */
+    bottom: -20px;
+    text-align: center;
+    /* text-align: center; 保留 gauge-label 原本的 text-align (如果有的話，或者預設) */
+    /* 不設定 word-break，讓單字保持完整 */
+  }
+
+  /* 如果 analysis-label 在此斷點下也需要強制換行，可以類似處理 */
+  .market-sentiment-view .indicator-item .analysis-result .analysis-label {
+    white-space: normal;
+    max-width: 100px; 
+  }
+}
+
+@media (max-width: 375px) {
+  .market-sentiment-view .indicator-item .analysis-result {
+    gap: 0px;
+  }
+  .market-sentiment-view .indicator-item .analysis-result .analysis-item {
+    padding: 0px 0px;
+  }
+  .market-sentiment-view .indicator-item .analysis-result .analysis-label {
+    font-size: 0.8em;
+  }
 }
 
