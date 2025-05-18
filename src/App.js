@@ -81,7 +81,7 @@ function AppContent() {
     hasNewFeature: hasNewArticles, 
     markFeatureAsSeen: markArticlesSeen 
   } = useNewFeatureNotification(FEATURES.ARTICLES);
-  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' });
+  const isMobile = useMediaQuery({ query: '(max-width: 1300px)' });
   const location = useLocation();
   const isHomePage = location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
 

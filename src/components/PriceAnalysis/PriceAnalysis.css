@@ -510,8 +510,8 @@
   .price-analysis-view .content-layout-container {
     flex-direction: row;
     align-items: stretch; /* 讓子元素等高 */
-    height: 60vh; /* 設定固定高度，讓內部可以滾動 */
-    max-height: 60vh; /* 確保不超過此高度 */
+    height: 70vh; /* 設定固定高度，讓內部可以滾動 */
+    max-height: 70vh; /* 確保不超過此高度 */
   }
 
   /* 主要容器：.dashboard 和 .description-container-wrapper */
@@ -553,8 +553,8 @@
 
 @media (min-width: 1500px) {
   .price-analysis-view .content-layout-container {
-    height: 50vh; /* 設定固定高度，讓內部可以滾動 */
-    max-height: 50vh; /* 確保不超過此高度 */
+    height: 70vh; /* 設定固定高度，讓內部可以滾動 */
+    max-height: 70vh; /* 確保不超過此高度 */
   }
 }
 
