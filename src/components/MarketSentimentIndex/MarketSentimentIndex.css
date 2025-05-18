@@ -427,31 +427,6 @@
   transform: translateX(50%);
 }
 
-@media (min-width: 769px) and (max-width: 1280px) {
-  .market-sentiment-view .content-layout-container {
-    height: 75vh;
-    max-height: 75vh;
-  }
-
-
-  .market-sentiment-view .indicator-item .analysis-result{
-    padding: 0px 10px;
-  }
-  .market-sentiment-view .indicator-item .time-range-selector {
-    margin: 5px auto;
-  }
-  .market-sentiment-view .indicator-chart-container .gauge-chart {
-    max-width: 480px;
-    width: 100%;
-    padding-top: 0px;
-    padding-bottom: 0px;
-  }
-  .market-sentiment-view .last-update-time {
-    /* margin-top: 20px; REMOVED */
-    /* margin-bottom: 50px; REMOVED */
-    /* Font size and other properties specific to this breakpoint can remain if needed */
-  }
-}
 
 @media (max-width: 1280px) {
   .market-sentiment-view .view-mode-selector-container {
@@ -528,8 +503,8 @@
   flex-direction: row;
   justify-content: center;
   gap: 30px;
-  padding: 15px 20px;
-  margin: 10px 0; /* PriceAnalysis 用的是 margin: 10px 0; MarketSentiment 原本是 margin: 10px auto; */
+  padding: 1% 2%;
+  margin: 0 0; /* PriceAnalysis 用的是 margin: 10px 0; MarketSentiment 原本是 margin: 10px auto; */
   overflow: visible;
   text-align: center;
 }
@@ -558,6 +533,33 @@
   font-weight: 600;
   color: #2c3e50; /* 基礎顏色，會被下方的情緒顏色覆蓋 */
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+
+@media (min-width: 769px) and (max-width: 1280px) {
+  .market-sentiment-view .content-layout-container {
+    height: 75vh;
+    max-height: 75vh;
+  }
+
+
+  .market-sentiment-view .indicator-item .analysis-result{
+    padding: 0px 10px;
+  }
+  .market-sentiment-view .indicator-item .time-range-selector {
+    margin: 5px auto;
+  }
+  .market-sentiment-view .indicator-chart-container .gauge-chart {
+    max-width: 480px;
+    width: 100%;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  .market-sentiment-view .last-update-time {
+    /* margin-top: 20px; REMOVED */
+    /* margin-bottom: 50px; REMOVED */
+    /* Font size and other properties specific to this breakpoint can remain if needed */
+  }
 }
 
 /* 響應式設計調整 for analysis-result */
@@ -707,7 +709,7 @@
 /* 新增滑桿容器樣式 */
 .market-sentiment-view .slider-container {
   width: 90%; /* 調整寬度以適應父容器 */
-  margin: 20px auto; /* 上下間距，並水平置中 */
+  margin: 0 auto; /* 上下間距，並水平置中 */
   padding: 10px;
 }
 
