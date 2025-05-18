@@ -37,6 +37,10 @@ import { Line } from 'react-chartjs-2';
 // 引入 IndicatorItem 組件
 import IndicatorItem from '../IndicatorItem/IndicatorItem';
 
+// 引入 rc-slider 和其樣式
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+
 // 註冊 Chart.js 的元件和插件
 ChartJS.register(
   LineElement,
@@ -157,6 +161,10 @@ const MarketSentimentIndex = () => {
   const { requestAdDisplay } = useAdContext();
   const currentLang = i18n.language;
 
+  // 新增滑桿相關狀態
+  const [sliderMinMax, setSliderMinMax] = useState([0, 0]); // [minTimestamp, maxTimestamp]
+  const [currentSliderRange, setCurrentSliderRange] = useState([0, 0]); // [startTimestamp, endTimestamp]
+
   useEffect(() => {
     let isMounted = true;
 
@@ -201,6 +209,20 @@ const MarketSentimentIndex = () => {
             spyClose: parseFloat(item.spyClose),
           }));
         setHistoricalData(formattedData);
+
+        if (formattedData.length > 0) {
+          const minTs = formattedData[0].date.getTime();
+          const maxTs = formattedData[formattedData.length - 1].date.getTime();
+          setSliderMinMax([minTs, maxTs]);
+          // 初始化 currentSliderRange
+          const initialRange = filterDataByTimeRange(formattedData, selectedTimeRange);
+          if (initialRange.length > 0) {
+            setCurrentSliderRange([initialRange[0].date.getTime(), initialRange[initialRange.length - 1].date.getTime()]);
+          } else {
+            setCurrentSliderRange([minTs, maxTs]);
+          }
+        }
+
       } catch (error) {
         handleApiError(error, showToast, t);
       }
@@ -208,6 +230,21 @@ const MarketSentimentIndex = () => {
 
     fetchHistoricalData();
   }, [showToast, t]);
+
+  // 當 selectedTimeRange 或 historicalData 變動時，更新滑桿的範圍
+  useEffect(() => {
+    if (historicalData.length === 0) return;
+
+    const newFilteredRange = filterDataByTimeRange(historicalData, selectedTimeRange);
+    if (newFilteredRange.length > 0) {
+      setCurrentSliderRange([
+        newFilteredRange[0].date.getTime(),
+        newFilteredRange[newFilteredRange.length - 1].date.getTime()
+      ]);
+    } else if (sliderMinMax[0] !== 0 && sliderMinMax[1] !== 0) { // Fallback to full range if filter result is empty
+      setCurrentSliderRange(sliderMinMax);
+    }
+  }, [selectedTimeRange, historicalData, sliderMinMax]);
 
   const handleTimeRangeChange = (e) => {
     Analytics.marketSentiment.changeTimeRange({
@@ -217,7 +254,15 @@ const MarketSentimentIndex = () => {
     setSelectedTimeRange(e.target.value);
   };
 
-  const filteredData = useMemo(() => filterDataByTimeRange(historicalData, selectedTimeRange), [historicalData, selectedTimeRange]);
+  const filteredData = useMemo(() => {
+    if (!historicalData || historicalData.length === 0 || currentSliderRange[0] === 0) {
+      return [];
+    }
+    return historicalData.filter(item => {
+      const itemTime = item.date.getTime();
+      return itemTime >= currentSliderRange[0] && itemTime <= currentSliderRange[1];
+    });
+  }, [historicalData, currentSliderRange]);
   
   // 獲取時間單位
   const timeUnit = useMemo(() => getTimeUnit(filteredData.map(item => item.date)), [filteredData]);
@@ -325,10 +370,10 @@ const MarketSentimentIndex = () => {
         },
         zoom: {
           wheel: {
-            enabled: false,
+            enabled: true,
           },
           pinch: {
-            enabled: false,
+            enabled: true,
           },
           mode: 'x',
         },
@@ -425,6 +470,16 @@ const MarketSentimentIndex = () => {
       "query-input": "required name=timeRange,indicator"
     }
   }), [t, currentLang]);
+
+  const handleSliderChange = (newRange) => {
+    setCurrentSliderRange(newRange);
+    // Analytics event for slider change can be added here if needed
+    /* Analytics.marketSentiment.sliderRangeChanged({
+      startDate: new Date(newRange[0]).toISOString().split('T')[0],
+      endDate: new Date(newRange[1]).toISOString().split('T')[0],
+      currentIndicator: activeTab
+    }); */
+  };
 
   // 1. 檢查載入狀態
   if (loading) {
@@ -565,6 +620,28 @@ const MarketSentimentIndex = () => {
                       </div>
                     )}
                   </div>
+                  {/* 新增：只在 composite tab 和 timeline viewMode 下顯示滑桿 */}
+                  {activeTab === 'composite' && viewMode === 'timeline' && historicalData.length > 0 && sliderMinMax[1] > sliderMinMax[0] && (
+                    <div className="slider-container">
+                      <Slider
+                        range
+                        min={sliderMinMax[0]}
+                        max={sliderMinMax[1]}
+                        value={currentSliderRange[0] === 0 ? sliderMinMax : currentSliderRange} // Ensure value is always valid
+                        onChange={handleSliderChange}
+                        allowCross={false}
+                        //  可以加入 marks 來顯示日期，但可能會讓 UI 雜亂，暫時不加
+                        // marks={{ [sliderMinMax[0]]: new Date(sliderMinMax[0]).toLocaleDateString(), [sliderMinMax[1]]: new Date(sliderMinMax[1]).toLocaleDateString() }}
+                        trackStyle={[{ backgroundColor: '#C78F57' }]}
+                        handleStyle={[{ borderColor: '#C78F57', backgroundColor: 'white' }, { borderColor: '#C78F57', backgroundColor: 'white' }]}
+                        railStyle={{ backgroundColor: '#e9e9e9' }}
+                      />
+                       <div className="slider-labels">
+                        <span>{currentSliderRange[0] !== 0 ? new Date(currentSliderRange[0]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
+                        <span>{currentSliderRange[1] !== 0 ? new Date(currentSliderRange[1]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
+                      </div>
+                    </div>
+                  )}
                   <div className="view-mode-selector-container">
                     <button
                       className={`view-mode-button ${viewMode === 'overview' ? 'active' : ''}`}

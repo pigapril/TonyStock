@@ -704,3 +704,63 @@
   }
 }
 
+/* 新增滑桿容器樣式 */
+.market-sentiment-view .slider-container {
+  width: 90%; /* 調整寬度以適應父容器 */
+  margin: 20px auto; /* 上下間距，並水平置中 */
+  padding: 10px;
+}
+
+/* 滑桿標籤樣式 */
+.market-sentiment-view .slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #555;
+}
+
+/* rc-slider 客製化樣式 */
+.market-sentiment-view .rc-slider-track {
+  background-color: #C78F57; /* 與圖表主色調一致 */
+}
+
+.market-sentiment-view .rc-slider-handle {
+  border-color: #C78F57;
+  background-color: white;
+  opacity: 1; /* 確保 handle 可見 */
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.market-sentiment-view .rc-slider-handle:focus {
+  box-shadow: 0 0 0 3px rgba(199, 143, 87, 0.4); /* 焦點樣式 */
+}
+
+.market-sentiment-view .rc-slider-rail {
+  background-color: #e9e9e9;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .market-sentiment-view .slider-container {
+    width: 95%; /* 在小螢幕上使用更大寬度 */
+    margin: 15px auto;
+  }
+
+  .market-sentiment-view .slider-labels {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .market-sentiment-view .slider-container {
+    padding: 5px;
+  }
+  .market-sentiment-view .slider-labels {
+    font-size: 10px;
+    /* 在非常小的螢幕上，可以考慮隱藏標籤或使其堆疊顯示 */
+    /* flex-direction: column; */
+    /* align-items: center; */
+  }
+}
+
