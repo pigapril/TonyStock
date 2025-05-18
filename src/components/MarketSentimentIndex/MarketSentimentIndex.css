@@ -47,18 +47,20 @@
 /* 在市場情緒指數頁面中置中 TimeRangeSelector */
 .market-sentiment-view .indicator-item .time-range-selector {
   justify-content: center;
-  margin: 20px auto;
+  margin: 1% auto;
   width: fit-content;
 }
 
 .market-sentiment-view .last-update-time {
+  position: absolute;
+  bottom: -8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
   text-align: center;
   color: #666;
   font-size: 12px;
-  margin-top: 0px;  /* 增加上方間距 */
-  margin-bottom: 15px;
-  position: relative;  /* 確保位置正確 */
-  z-index: 1;  /* 確保文字在最上層 */
+  z-index: 1;
 }
 
 /* 新增以下部分 */
@@ -117,31 +119,30 @@
 .market-sentiment-view .indicator-item {
   width: 100%;
   background-color: white;
-  padding: 20px 20px 70px 20px; /* 新的 padding (上 右 下 左) */
-  position: relative; /* 新增：使絕對定位的子元素相對於此 */
+  padding: 20px 20px 70px 20px; /* Padding accommodates absolutely positioned view-mode-selector */
+  position: relative;
   border-radius: 8px;
   box-sizing: border-box;
   margin-bottom: 30px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 /* 調整圖表區域的樣式 */
 .market-sentiment-view .indicator-chart {
-  height: 35vh;
-  max-height: 35vh ;
-}
-
-@media (min-width: 1920px) {
-  .market-sentiment-view .indicator-chart {
-    height: 40vh;
-    max-height: 40vh ;
-  }
+  height: 100%;
+  width: 100%;
+  flex-grow: 1;
 }
 
 .market-sentiment-view .indicator-chart-container {
   width: 100%;
   overflow: hidden;
-
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
 }
 
 
@@ -288,12 +289,22 @@
   .market-sentiment-view .indicator-item .indicator-chart {
     height: 250px;
   }
-  .market-sentiment-view .indicator-item .indicator-chart-container .gauge-chart {
-    margin-top:15%;
-    height: 200px;
+  .market-sentiment-view .indicator-item .time-range-selector {
+    margin: 3% auto;
   }
   .market-sentiment-view .description-scroll-content .description-container {
     padding-top: 5px;
+  }
+  .market-sentiment-view .gauge-center-value {
+    /* bottom: 80px; REMOVED */
+    bottom: 45px; /* ADJUSTED for more natural scaling */
+  }
+  .market-sentiment-view .gauge-labels {
+    white-space: normal; /* 確保允許文字在單字間換行 */
+    /* bottom: 70px; REMOVED */
+    bottom: 35px; /* ADJUSTED for more natural scaling */
+    text-align: center;
+    /* text-align: center; 保留 gauge-label 原本的 text-align (如果有的話，或者預設) */
   }
 }
 
@@ -305,14 +316,17 @@
 
   .market-sentiment-view .tab-content {
     flex: 2; /* tab-content 佔據約 2/3 空間 */
-    display: flex; 
-    flex-direction: column; 
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* 新增：確保 tab-content 可以被父元素的 align-items: stretch 正確拉伸 */
   }
 
   /* 新增：讓 indicator-item 在 tab-content 內部伸展 */
   .market-sentiment-view .tab-content > .indicator-item {
     flex-grow: 1; /* 允許 indicator-item 填滿可用空間 */
     margin-bottom: 0; /* 移除底部邊距，確保高度準確匹配 */
+    min-height: 0;    /* 作為 flex item 且可滾動時的最佳實踐 */
+    /* ENSURE no 'overflow: hidden;' or 'overflow-y: auto;' here */
   }
   
 
@@ -356,15 +370,20 @@
 
 .market-sentiment-view .gauge-chart {
   position: relative;
-  width: 480px; /* 600px * 0.8 */
-  height: 272px; /* 340px * 0.8 */
-  padding-top: 32px; /* 40px * 0.8 */
-  margin: 0 auto;
+  width: 60%;
+  max-width: 60vw;
+  height: 100%;
+  flex-grow: 1;
+  margin: 0 auto 10% auto;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .market-sentiment-view .gauge-center-value {
   position: absolute;
-  bottom: 48px; /* 60px * 0.8 */
+  bottom: 5%; /* 60px * 0.8 */
   left: 50%;
   transform: translateX(-50%);
   font-size: 38px; /* 48px * 0.8, rounded */
@@ -383,7 +402,7 @@
 
 .market-sentiment-view .gauge-labels {
   position: absolute;
-  bottom: 32px; /* 40px * 0.8 */
+  bottom: 5%; /* 40px * 0.8 */
   left: 0;
   right: 0;
   display: flex;
@@ -409,6 +428,12 @@
 }
 
 @media (min-width: 769px) and (max-width: 1280px) {
+  .market-sentiment-view .content-layout-container {
+    height: 75vh;
+    max-height: 75vh;
+  }
+
+
   .market-sentiment-view .indicator-item .analysis-result{
     padding: 0px 10px;
   }
@@ -416,24 +441,21 @@
     margin: 5px auto;
   }
   .market-sentiment-view .indicator-chart-container .gauge-chart {
-    max-width: 480px; /* 600px * 0.8 */
-    width: 100%; /* Allow it to shrink if container is smaller */
-    height: auto; /* Adjust height automatically */
-    padding-top: 0px; 
-    padding-bottom: 0px; 
+    max-width: 480px;
+    width: 100%;
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
   .market-sentiment-view .last-update-time {
-    margin-top: 20px;
-    margin-bottom: 50px;
+    /* margin-top: 20px; REMOVED */
+    /* margin-bottom: 50px; REMOVED */
+    /* Font size and other properties specific to this breakpoint can remain if needed */
   }
 }
 
 @media (max-width: 1280px) {
   .market-sentiment-view .view-mode-selector-container {
     margin-bottom: -1%;
-  }
-  .market-sentiment-view .indicator-item {
-    padding-bottom: 13px;
   }
 }
 
@@ -444,12 +466,10 @@
     font-size: 20px;
     width: 40px; 
     height: 40px; 
-    bottom: 50px; 
   }
 
   .market-sentiment-view .gauge-labels {
     /* Revert to original small screen size */
-    bottom: 40px;
     font-size: 14px; /* Explicitly set to original small screen font size */
   }
 
@@ -460,16 +480,17 @@
 
   .market-sentiment-view .indicator-chart-container .gauge-chart {
     /* Revert to original small screen size */
-    max-width: 250px; /* Use max-width for responsiveness */
-    width: 100%; /* Allow it to shrink if container is smaller */
-    height: auto; /* Adjust height automatically */
-    padding-top: 0px; 
-    padding-bottom: 0px; /* Explicitly set if needed, or rely on content */
+    max-width: 250px; /* Keep max-width */
+    width: 100%;
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
 
   .market-sentiment-view .last-update-time {
-    margin-top: 5px;
-    margin-bottom: 50px;
+    /* margin-top: 5px; REMOVED */
+    /* margin-bottom: 50px; REMOVED */
+    /* Adjust bottom positioning if needed for smaller screens, or let base style apply */
+    /* font-size can be adjusted here if needed */
   }
 
   .market-sentiment-view .analysis-description {
@@ -483,6 +504,16 @@
   bottom: 30px;
   left: 0;
   right: 0;
+}
+
+@media (min-width: 1920px) {
+  .market-sentiment-view .gauge-center-value {
+    bottom: 15%;
+  }
+  .market-sentiment-view .gauge-labels {
+    bottom: 15%;
+  }
+ 
 }
 
 @media (min-width: 1024px) {
@@ -499,7 +530,7 @@
   gap: 30px;
   padding: 15px 20px;
   margin: 10px 0; /* PriceAnalysis 用的是 margin: 10px 0; MarketSentiment 原本是 margin: 10px auto; */
-  overflow: hidden;
+  overflow: visible;
   text-align: center;
 }
 
@@ -638,7 +669,9 @@
   }
 
   .market-sentiment-view .gauge-center-value {
-    bottom: 80px;
+    bottom: 70px;
+    width: 35px;
+    height: 35px;
   }
   .market-sentiment-view .gauge-labels {
     white-space: normal; /* 確保允許文字在單字間換行 */
