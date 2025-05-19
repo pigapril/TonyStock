@@ -278,11 +278,11 @@
     "lastUpdateLabel": "Last Updated",
     "descriptions": {
       "composite": {
-        "shortDescription": "The purpose of analyzing market sentiment is to understand the current psychological state of market participants—whether they lean towards fear or greed. This helps investors remain calm during irrational market fluctuations and avoid chasing highs or selling lows.",
+        "shortDescription": "The Sentiment Inside Out Fear & Greed Indicator (SIO Fear & Greed Indicator) quantifies market sentiment into a score from 0 to 100. Its purpose is to gauge whether current market participants' psychology leans towards fear or greed, similar to the CNN Fear & Greed Index and the BofA Bull & Bear Indicator. It helps investors remain calm during irrational stock market volatility and avoid emotionally driven decisions like chasing highs and selling lows.",
         "sections": [
           {
             "title": "Composite Index Explanation",
-            "content": "The SIO Fear & Greed Index is a sentiment indicator that synthesizes multiple US stock market data points, represented by a score from 0 to 100. A score closer to 0 indicates greater market fear and a higher buying win rate; a score closer to 100 indicates greater market greed, suggesting one should avoid chasing highs. Compared to the CNN Fear & Greed Index, it incorporates more comprehensive indicators, including the AAII Investor Sentiment Survey (often called the 'US retail investor indicator'), to more accurately reflect the relationship between long-term market sentiment and prices."
+            "content": "The SIO Fear & Greed Indicator is a sentiment indicator calculated from a synthesis of multiple U.S. stock market data points, represented by a score from 0 to 100. A score closer to 0 signifies extreme fear in the market, potentially indicating a higher probability of success for buying at this time. Conversely, a score closer to 100 suggests extreme greed in the market, advising against chasing further highs. Compared to the CNN Fear & Greed Index, it incorporates a more comprehensive set of indicators, including the AAII Investor Sentiment Survey results—often considered a proxy for U.S. retail investor sentiment—to more accurately reflect the long-term relationship between market sentiment and prices."
           },
           {
             "title": "Historical Data Review",
@@ -343,11 +343,11 @@
         ]
       },
       "safeHaven": {
-        "shortDescription": "The Safe Haven Demand indicator compares the difference between the total return of Treasury bonds (safe-haven asset) and stocks (risk asset) over the past 20 trading days. It reflects the extent of fund flows into safe-haven assets.",
+        "shortDescription": "The Safe Haven Demand indicator compares the difference between the total return of stocks (risk asset) and US Treasury bonds (safe-haven asset)over the past 20 trading days. It reflects the extent of fund flows into safe-haven assets.",
         "sections": [
           {
             "title": "Indicator Interpretation",
-            "content": "When bond returns significantly outperform stock returns (high indicator value), it indicates investors are flocking to safe-haven assets, suggesting market fear. When stock returns significantly outperform bond returns (low indicator value), it indicates higher risk appetite and fund flows into risk assets, suggesting market greed."
+            "content": "When bond returns significantly outperform stock returns (low indicator value), it indicates investors are flocking to safe-haven assets, suggesting market fear. When stock returns significantly outperform bond returns (high indicator value), it indicates higher risk appetite and fund flows into risk assets, suggesting market greed."
           },
           {
             "title": "Observing Fund Flows",
