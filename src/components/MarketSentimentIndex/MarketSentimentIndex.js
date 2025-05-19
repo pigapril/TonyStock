@@ -584,6 +584,15 @@ const MarketSentimentIndex = () => {
     return [];
   }, [t, descriptionBasePath]);
 
+  // 新增：決定 ExpandableDescription 的主標題
+  const expandableMainTitle = useMemo(() => {
+    if (activeTab === 'composite') {
+      return t('marketSentiment.tabs.compositeIndex');
+    }
+    // Fallback to the key itself if translation is missing, though ideally all keys should be translated.
+    return t(INDICATOR_TRANSLATION_KEY_MAP[activeTab] || activeTab, activeTab);
+  }, [activeTab, t]);
+
   // 定義用於結構化數據的 JSON-LD
   const marketSentimentJsonLd = useMemo(() => ({
     "@context": "https://schema.org",
@@ -834,6 +843,7 @@ const MarketSentimentIndex = () => {
           <div className="description-container-wrapper">
             <div className="description-scroll-content">
               <ExpandableDescription
+                mainTitle={expandableMainTitle}
                 shortDescription={translatedShortDescription}
                 sections={translatedSections}
               />
@@ -899,6 +909,7 @@ const MarketSentimentIndex = () => {
                 />
                 <div className="modal-description">
                   <ExpandableDescription
+                    mainTitle={t(INDICATOR_TRANSLATION_KEY_MAP[selectedIndicatorKey] || selectedIndicatorKey, selectedIndicatorKey)}
                     shortDescription={t(`marketSentiment.descriptions.${INDICATOR_DESCRIPTION_KEY_MAP[selectedIndicatorKey]}.shortDescription`)}
                     sections={t(`marketSentiment.descriptions.${INDICATOR_DESCRIPTION_KEY_MAP[selectedIndicatorKey]}.sections`, { returnObjects: true })}
                   />

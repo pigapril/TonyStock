@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './ExpandableDescription.css';
 import '../global-styles.css';
-export function ExpandableDescription({ 
+export function ExpandableDescription({
+  mainTitle,
   shortDescription,  // 簡短說明
   sections,          // 詳細說明的各個段落
   initialExpanded = false, // 是否預設展開
@@ -18,10 +19,11 @@ export function ExpandableDescription({
   };
 
   return (
-    <div 
+    <div
       className={`description-container ${isExpanded ? 'description-expanded' : ''}`}
-      onClick={toggleExpand}
+      onClick={!isExpanded ? toggleExpand : undefined}
     >
+      {mainTitle && <h3 className="description-main-title">{mainTitle}</h3>}
       <div className="description-short">
         {shortDescription}
       </div>
@@ -41,9 +43,10 @@ export function ExpandableDescription({
           </div>
         ))}
       </div>
-      <button 
+      <button
         className={`description-toggle ${isExpanded ? 'expanded' : ''}`}
         aria-expanded={isExpanded}
+        onClick={isExpanded ? toggleExpand : undefined}
       >
         {isExpanded ? collapseButtonText : expandButtonText}
       </button>

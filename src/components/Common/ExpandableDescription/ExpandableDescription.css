@@ -162,4 +162,14 @@
 @media (max-width: 1068px) {
   .description-container {
   }
+}
+
+/* 新增主標題樣式 */
+.description-main-title {
+  font-size: 24px; /* 或者您偏好的大小 */
+  font-weight: 600; /* 加粗 */
+  color: var(--color-text-primary, #1d1d1f); /* 主要文字顏色 */
+  margin-bottom: 16px; /* 與下方內容的間距 */
+  line-height: 1.25;
+  letter-spacing: .007em;
 } 

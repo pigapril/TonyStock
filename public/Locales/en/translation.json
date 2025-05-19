@@ -281,12 +281,12 @@
         "shortDescription": "The purpose of analyzing market sentiment is to understand the current psychological state of market participants—whether they lean towards fear or greed. This helps investors remain calm during irrational market fluctuations and avoid chasing highs or selling lows.",
         "sections": [
           {
-            "title": "Historical Data Review",
-            "content": "Historically, whenever the Sentiment Inside Out Fear & Greed Index (SIO Fear & Greed Index) reached around 10 points, it marked a bear market bottom (including the 2009 financial crisis, the 2020 COVID-19 pandemic, and the 2022 Russo-Ukrainian War). Seizing these moments presented excellent buying opportunities."
-          },
-          {
             "title": "Composite Index Explanation",
             "content": "The SIO Fear & Greed Index is a sentiment indicator that synthesizes multiple US stock market data points, represented by a score from 0 to 100. A score closer to 0 indicates greater market fear and a higher buying win rate; a score closer to 100 indicates greater market greed, suggesting one should avoid chasing highs. Compared to the CNN Fear & Greed Index, it incorporates more comprehensive indicators, including the AAII Investor Sentiment Survey (often called the 'US retail investor indicator'), to more accurately reflect the relationship between long-term market sentiment and prices."
+          },
+          {
+            "title": "Historical Data Review",
+            "content": "Historically, whenever the Sentiment Inside Out Fear & Greed Index (SIO Fear & Greed Index) reached around 10 points, it marked a bear market bottom (including the 2009 financial crisis, the 2020 COVID-19 pandemic, and the 2022 Russo-Ukrainian War). Seizing these moments presented excellent buying opportunities."
           }
         ]
       },
@@ -548,6 +548,7 @@
       "enterSymbol": "Please enter conditions and click 'Start Analysis'."
     },
     "explanation": {
+      "mainTitle": "What is the LOHAS Five-Line Analysis?",
       "shortDescription": "Analyze whether the current stock price is overly optimistic or pessimistic. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
       "readMorePrefix": "For detailed instructions, please see the article:",
       "readMoreLinkText": "Analyze Price Trends and Sentiment with LOHAS Five-Line Analysis",

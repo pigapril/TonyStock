@@ -758,6 +758,7 @@ export function PriceAnalysis() {
           <div className="description-container-wrapper">
             <div className="description-scroll-content">
               <MemoizedExpandableDescription
+                mainTitle={t('priceAnalysis.explanation.mainTitle')}
                 // 使用 t() 翻譯 shortDescription (注意保留連結)
                 shortDescription={
                   <>
