@@ -54,7 +54,7 @@ function getTimeUnit(dates) {
   }
 }
 
-function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeRangeChange, historicalSPYData }) {
+function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeRangeChange, historicalSPYData, isInsideModal }) {
   const { t } = useTranslation();
   const { showToast, toast, hideToast } = useToastManager();
   const indicatorName = useMemo(() => {
@@ -77,15 +77,20 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
   useEffect(() => {
+    const controller = new AbortController(); // 建立 AbortController
     setLoading(true);
     axios
       .get(`${API_BASE_URL}/api/indicator-history`, {
         params: {
           indicator: indicatorKey,
         },
+        signal: controller.signal, // 將 signal傳遞給 axios
       })
       .then((response) => {
-        console.log(`Received data for ${indicatorKey}:`, response.data);
+        // 檢查請求是否已被取消
+        if (controller.signal.aborted) {
+          return;
+        }
         const formattedData = response.data.map((item) => ({
           date: new Date(item.date),
           value: parseFloat(item.value),
@@ -97,13 +102,25 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         setHistoricalData(formattedData);
       })
       .catch((error) => {
-        handleApiError(error, showToast, t);
-        setHistoricalData([]);
+        if (axios.isCancel(error)) {
+          console.log(`Request for ${indicatorKey} canceled:`, error.message);
+        } else {
+          handleApiError(error, showToast, t);
+          setHistoricalData([]);
+        }
       })
       .finally(() => {
+        // 檢查請求是否已被取消
+        if (controller.signal.aborted) return;
         setLoading(false);
       });
-  }, [indicatorKey, indicatorName, t, showToast]);
+
+    // Cleanup function
+    return () => {
+      console.log(`Aborting request for ${indicatorKey}`);
+      controller.abort(); // 當 effect 清理時，取消請求
+    };
+  }, [indicatorKey, t, showToast]); // 移除 indicatorName, 因為它已經是 indicatorKey 的衍伸
 
   // 過濾數據
   const filteredData = React.useMemo(() => {
@@ -204,6 +221,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         grid: {
           drawOnChartArea: false,
         },
+        display: !isInsideModal,
       },
     },
     plugins: {
@@ -214,7 +232,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
     },
     responsive: true,
     maintainAspectRatio: false,
-  }), [indicatorName, t, timeUnit]);
+  }), [indicatorName, t, timeUnit, isInsideModal]);
 
   // 計算市場情緒鍵
   const sentimentKey = useMemo(() =>
@@ -234,11 +252,12 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
     setIsTooltipVisible(false);
   };
 
-  const handleTouchStart = (event) => {
+  const handleTouchStartForTooltip = (event) => {
+    event.stopPropagation();
     setIsTooltipVisible(true);
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEndForTooltip = () => {
       setIsTooltipVisible(false);
   };
 
@@ -257,8 +276,8 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
             <div className="analysis-item"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              onTouchStart={handleTouchStart}
-              onTouchEnd={handleTouchEnd}
+              onTouchStart={handleTouchStartForTooltip}
+              onTouchEnd={handleTouchEndForTooltip}
             >
               <span className="analysis-label">
                 <span className="interactive-label">{t('indicatorItem.fearGreedScoreLabel')}</span>
@@ -267,7 +286,10 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
                 {indicator.percentileRank !== null && indicator.percentileRank !== undefined ? Math.round(indicator.percentileRank) : t('indicatorItem.notAvailable')}
               </span>
               {isTooltipVisible && (
-                <div className="tooltip">
+                <div 
+                  className="tooltip"
+                  onTouchStart={(e) => e.stopPropagation()}
+                >
                   {t('indicatorItem.fearGreedTooltip')}
                 </div>
               )}

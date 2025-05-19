@@ -218,16 +218,17 @@
     "fearGreedTooltip": "For consistent measurement across indicators, the actual value is converted to a percentile based on historical rank, serving as the Sentiment Score (0-100). Higher scores indicate more greed; lower scores indicate more fear.",
     "marketSentimentLabel": "Market Sentiment",
     "loading": "Loading...",
-    "notAvailable": "N/A"
+    "notAvailable": "N/A",
+    "noData": "No data available, please try again later"
   },
   "indicators": {
-    "aaiiSpread": "AAII Investor Sentiment Survey",
+    "aaiiSpread": "AAII Investor Sentiment",
     "cboeRatio": "CBOE Put/Call Ratio",
-    "marketMomentum": "S&P 500 Market Momentum",
+    "marketMomentum": "S&P500 Momentum",
     "vixMA50": "VIX Volatility Index",
     "safeHaven": "Safe Haven Demand",
     "junkBond": "Junk Bond Spread",
-    "cotIndex": "COT Index (Speculative Net Positions)",
+    "cotIndex": "Speculative Net Positions",
     "naaimIndex": "NAAIM Exposure Index"
   },
   "sentiment": {
@@ -265,6 +266,11 @@
       "timeline": "Historical Trend",
       "overviewAria": "Switch to latest sentiment view",
       "timelineAria": "Switch to historical trend view"
+    },
+    "cta": {
+      "latestData": "Current",
+      "history": "Trend",
+      "composition": "Components"
     },
     "error": {
       "fetchFailed": "Failed to fetch market sentiment data."

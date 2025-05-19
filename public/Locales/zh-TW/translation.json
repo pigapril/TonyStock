@@ -218,7 +218,8 @@
     "fearGreedTooltip": "為方便統一衡量不同指標，將實際數值依據歷史位階轉換為百分標準，作為恐懼貪婪分數(0~100)。分數愈高代表市場愈貪婪；分數愈低代表市場愈恐懼",
     "marketSentimentLabel": "市場情緒",
     "loading": "載入中...",
-    "notAvailable": "N/A"
+    "notAvailable": "N/A",
+    "noData": "暫無數據，請稍後重試"
   },
   "indicators": {
     "aaiiSpread": "AAII 投資人情緒調查",
@@ -265,6 +266,11 @@
       "timeline": "歷史走勢",
       "overviewAria": "切換至最新情緒視圖",
       "timelineAria": "切換至歷史走勢視圖"
+    },
+    "cta": {
+      "latestData": "最新情緒指數",
+      "history": "歷史走勢",
+      "composition": "成分指標"
     },
     "error": {
       "fetchFailed": "未能獲取市場情緒數據。"

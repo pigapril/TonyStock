@@ -14,11 +14,14 @@ i18n
   // 初始化 i18next
   .init({
     // 預設語言，如果偵測不到或不支援使用者語言時使用
-    fallbackLng: 'en',
+    fallbackLng: {
+      'zh': ['zh-TW', 'en'], // 如果是 'zh'，先試 'zh-TW'，再試 'en'
+      'default': ['en']     // 其他情況預設回退到 'en'
+    },
     // 在開發環境中啟用 debug 輸出
     debug: process.env.NODE_ENV === 'development',
     // 支援的語言列表
-    supportedLngs: ['en', 'zh-TW'], // 確保這裡包含所有支援的語言
+    supportedLngs: ['en', 'zh-TW', 'zh'], // 確保這裡包含所有支援的語言
     // React 不需要手動 escape，因為它本身會處理 XSS
     interpolation: {
       escapeValue: false,

@@ -46,8 +46,14 @@
   
 .text-description-section h1 {
     font-size: 1.8em;
-    margin-bottom: 20px;
+    font-weight: bold;
     color: #e67e22;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 0;
+    border-bottom: none;
+    line-height: 1.4;
+    text-align: center;
 }
   
 .text-description-section p {

@@ -165,6 +165,38 @@ const MarketSentimentIndex = () => {
   const [sliderMinMax, setSliderMinMax] = useState([0, 0]); // [minTimestamp, maxTimestamp]
   const [currentSliderRange, setCurrentSliderRange] = useState([0, 0]); // [startTimestamp, endTimestamp]
 
+  // 新增：漸進式導覽步驟狀態
+  const [compositeStep, setCompositeStep] = useState('latest');
+  // 新增：組成項目點擊後的 Modal 狀態
+  const [selectedIndicatorKey, setSelectedIndicatorKeyInternal] = useState(null);
+
+  // Throttling 相關 Refs
+  const lastCallTimeRef = useRef(0);
+  const throttleTimeoutRef = useRef(null);
+  const THROTTLE_DELAY = 2000; // 1 秒的延遲
+
+  // Throttled setSelectedIndicatorKey
+  const setSelectedIndicatorKey = useCallback((newKey) => {
+    const now = Date.now();
+    clearTimeout(throttleTimeoutRef.current);
+
+    if (now - lastCallTimeRef.current < THROTTLE_DELAY) {
+      throttleTimeoutRef.current = setTimeout(() => {
+        setSelectedIndicatorKeyInternal(newKey);
+        lastCallTimeRef.current = Date.now();
+      }, THROTTLE_DELAY - (now - lastCallTimeRef.current));
+    } else {
+      setSelectedIndicatorKeyInternal(newKey);
+      lastCallTimeRef.current = now;
+    }
+  }, [THROTTLE_DELAY]);
+
+  // Refs for swipe gesture
+  const touchStartXRef = useRef(null);
+  const touchEndXRef = useRef(null);
+  const MIN_SWIPE_DISTANCE = 50;
+  const currentModalContentRef = useRef(null);
+
   useEffect(() => {
     let isMounted = true;
 
@@ -245,6 +277,102 @@ const MarketSentimentIndex = () => {
       setCurrentSliderRange(sliderMinMax);
     }
   }, [selectedTimeRange, historicalData, sliderMinMax]);
+
+  // Keyboard and Swipe navigation for Modal
+  useEffect(() => {
+    if (!selectedIndicatorKey) {
+      return;
+    }
+
+    const keys = Object.keys(indicatorsData);
+    if (keys.length === 0 || !indicatorsData[selectedIndicatorKey]) {
+      return;
+    }
+    const currentIndex = keys.indexOf(selectedIndicatorKey);
+    if (currentIndex === -1) {
+      return;
+    }
+    const prevIndicatorKey = keys[(currentIndex - 1 + keys.length) % keys.length];
+    const nextIndicatorKey = keys[(currentIndex + 1) % keys.length];
+
+    const handleKeyDown = (event) => {
+      if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+        return;
+      }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        setSelectedIndicatorKey(prevIndicatorKey);
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        setSelectedIndicatorKey(nextIndicatorKey);
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        setSelectedIndicatorKeyInternal(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    const modalContentElement = currentModalContentRef.current;
+    const handleTouchStart = (e) => {
+      let target = e.target;
+      while (target && target !== modalContentElement) {
+        const style = window.getComputedStyle(target);
+        const overflowY = style.overflowY;
+        if ((overflowY === 'auto' || overflowY === 'scroll') && target.scrollHeight > target.clientHeight) {
+          touchStartXRef.current = null;
+          return;
+        }
+        if (target.tagName === 'BUTTON' || target.tagName === 'A' || typeof target.onclick === 'function') {
+          touchStartXRef.current = null;
+          return;
+        }
+        target = target.parentElement;
+      }
+      if (e.targetTouches.length === 1) {
+        touchStartXRef.current = e.targetTouches[0].clientX;
+        touchEndXRef.current = e.targetTouches[0].clientX;
+      } else {
+        touchStartXRef.current = null;
+      }
+    };
+    const handleTouchMove = (e) => {
+      if (touchStartXRef.current === null || e.targetTouches.length !== 1) {
+        return;
+      }
+      touchEndXRef.current = e.targetTouches[0].clientX;
+    };
+    const handleTouchEnd = () => {
+      if (touchStartXRef.current === null || touchEndXRef.current === null) {
+        return;
+      }
+      const distance = touchStartXRef.current - touchEndXRef.current;
+      const isLeftSwipe = distance > MIN_SWIPE_DISTANCE;
+      const isRightSwipe = distance < -MIN_SWIPE_DISTANCE;
+      if (isLeftSwipe) {
+        setSelectedIndicatorKey(nextIndicatorKey);
+      } else if (isRightSwipe) {
+        setSelectedIndicatorKey(prevIndicatorKey);
+      }
+      touchStartXRef.current = null;
+      touchEndXRef.current = null;
+    };
+
+    if (modalContentElement) {
+      modalContentElement.addEventListener('touchstart', handleTouchStart, { passive: true });
+      modalContentElement.addEventListener('touchmove', handleTouchMove, { passive: true });
+      modalContentElement.addEventListener('touchend', handleTouchEnd, { passive: true });
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      if (modalContentElement) {
+        modalContentElement.removeEventListener('touchstart', handleTouchStart);
+        modalContentElement.removeEventListener('touchmove', handleTouchMove);
+        modalContentElement.removeEventListener('touchend', handleTouchEnd);
+      }
+      clearTimeout(throttleTimeoutRef.current);
+    };
+  }, [selectedIndicatorKey, indicatorsData, setSelectedIndicatorKey, currentModalContentRef, MIN_SWIPE_DISTANCE]);
 
   const handleTimeRangeChange = (e) => {
     Analytics.marketSentiment.changeTimeRange({
@@ -578,14 +706,14 @@ const MarketSentimentIndex = () => {
                       <span className={`analysis-value sentiment-${compositeRawSentiment}`}>{compositeSentiment}</span>
                     </div>
                   </div>
-                  {viewMode === 'timeline' && (
+                  {compositeStep === 'history' && (
                     <TimeRangeSelector
                       selectedTimeRange={selectedTimeRange}
                       handleTimeRangeChange={handleTimeRangeChange}
                     />
                   )}
                   <div className="indicator-chart-container">
-                    {viewMode === 'overview' ? (
+                    {compositeStep === 'latest' ? (
                       <div className="gauge-chart">
                         {renderGaugeChart()}
                         <svg width="0" height="0">
@@ -614,24 +742,49 @@ const MarketSentimentIndex = () => {
                           {t('marketSentiment.lastUpdateLabel')}: {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString('zh-TW')}
                         </div>
                       </div>
-                    ) : (
+                    ) : compositeStep === 'history' ? (
                       <div className="indicator-chart">
                         <Line data={chartData} options={chartOptions} />
                       </div>
-                    )}
+                    ) : compositeStep === 'composition' ? (
+                      <div className="composition-list">
+                        {Object.entries(indicatorsData).map(([key, ind]) => {
+                          const sentimentKey = getSentiment(ind.percentileRank ? Math.round(ind.percentileRank) : null);
+                          const raw = sentimentKey.split('.').pop();
+                          return (
+                            <div
+                              key={key}
+                              className="composition-item"
+                              onClick={() => setSelectedIndicatorKey(key)}
+                              role="button"
+                              tabIndex={0}
+                            >
+                              <span className="composition-name">{t(INDICATOR_TRANSLATION_KEY_MAP[key] || key)}</span>
+                              <div className="composition-analysis-value">
+                                <div className="composition-bar-wrapper">
+                                  <div
+                                    className={`composition-bar sentiment-${raw}`}
+                                    style={{ width: `${ind.percentileRank || 0}%` }}
+                                  ></div>
+                                </div>
+                                <span className="composition-score-text">{ind.percentileRank ? `${Math.round(ind.percentileRank)}%` : '-'}</span>
+                              </div>
+                              <span className={`composition-sentiment sentiment-${raw}`}>{t(sentimentKey)}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : null}
                   </div>
-                  {/* 新增：只在 composite tab 和 timeline viewMode 下顯示滑桿 */}
-                  {activeTab === 'composite' && viewMode === 'timeline' && historicalData.length > 0 && sliderMinMax[1] > sliderMinMax[0] && (
+                  {compositeStep === 'history' && historicalData.length > 0 && sliderMinMax[1] > sliderMinMax[0] && (
                     <div className="slider-container">
                       <Slider
                         range
                         min={sliderMinMax[0]}
                         max={sliderMinMax[1]}
-                        value={currentSliderRange[0] === 0 ? sliderMinMax : currentSliderRange} // Ensure value is always valid
+                        value={currentSliderRange[0] === 0 ? sliderMinMax : currentSliderRange}
                         onChange={handleSliderChange}
                         allowCross={false}
-                        //  可以加入 marks 來顯示日期，但可能會讓 UI 雜亂，暫時不加
-                        // marks={{ [sliderMinMax[0]]: new Date(sliderMinMax[0]).toLocaleDateString(), [sliderMinMax[1]]: new Date(sliderMinMax[1]).toLocaleDateString() }}
                         trackStyle={[{ backgroundColor: '#C78F57' }]}
                         handleStyle={[{ borderColor: '#C78F57', backgroundColor: 'white' }, { borderColor: '#C78F57', backgroundColor: 'white' }]}
                         railStyle={{ backgroundColor: '#e9e9e9' }}
@@ -644,18 +797,22 @@ const MarketSentimentIndex = () => {
                   )}
                   <div className="view-mode-selector-container">
                     <button
-                      className={`view-mode-button ${viewMode === 'overview' ? 'active' : ''}`}
-                      onClick={() => handleViewModeChange('overview')}
-                      aria-label={t('marketSentiment.viewMode.overviewAria')}
+                      className={`view-mode-button ${compositeStep === 'latest' ? 'active' : ''}`}
+                      onClick={() => setCompositeStep('latest')}
                     >
-                      <span>{t('marketSentiment.viewMode.overview')}</span>
+                      {t('marketSentiment.cta.latestData')}
                     </button>
                     <button
-                      className={`view-mode-button ${viewMode === 'timeline' ? 'active' : ''}`}
-                      onClick={() => handleViewModeChange('timeline')}
-                      aria-label={t('marketSentiment.viewMode.timelineAria')}
+                      className={`view-mode-button ${compositeStep === 'history' ? 'active' : ''}`}
+                      onClick={() => setCompositeStep('history')}
                     >
-                      <span>{t('marketSentiment.viewMode.timeline')}</span>
+                      {t('marketSentiment.cta.history')}
+                    </button>
+                    <button
+                      className={`view-mode-button ${compositeStep === 'composition' ? 'active' : ''}`}
+                      onClick={() => setCompositeStep('composition')}
+                    >
+                      {t('marketSentiment.cta.composition')}
                     </button>
                   </div>
                 </div>
@@ -691,6 +848,83 @@ const MarketSentimentIndex = () => {
           onClose={hideToast}
         />
       )}
+      {selectedIndicatorKey && (() => {
+        const keys = Object.keys(indicatorsData);
+        if (keys.length === 0) return null; 
+        const idx = keys.indexOf(selectedIndicatorKey);
+        if (idx === -1) return null; 
+
+        const prevKeyForArrows = keys[(idx - 1 + keys.length) % keys.length];
+        const nextKeyForArrows = keys[(idx + 1) % keys.length];
+        
+        return (
+          <div
+            className="composition-modal-overlay"
+            onClick={() => setSelectedIndicatorKeyInternal(null)}
+          >
+            <div className="composition-carousel">
+              <div
+                className="composition-modal prev"
+                onClick={e => { e.stopPropagation(); setSelectedIndicatorKey(prevKeyForArrows); }}
+              >
+                <IndicatorItem
+                  indicatorKey={prevKeyForArrows}
+                  indicator={indicatorsData[prevKeyForArrows]}
+                  selectedTimeRange={selectedTimeRange}
+                  handleTimeRangeChange={handleTimeRangeChange}
+                  historicalSPYData={historicalData}
+                  isInsideModal={true}
+                />
+              </div>
+              <div 
+                className="carousel-arrow carousel-arrow--left"
+                onClick={e => { e.stopPropagation(); setSelectedIndicatorKey(prevKeyForArrows); }}
+              >◀</div>
+              <div
+                className="composition-modal current"
+                onClick={e => e.stopPropagation()}
+                ref={currentModalContentRef}
+              >
+                <button
+                  className="modal-close-btn"
+                  onClick={() => setSelectedIndicatorKeyInternal(null)}
+                >×</button>
+                <IndicatorItem
+                  indicatorKey={selectedIndicatorKey}
+                  indicator={indicatorsData[selectedIndicatorKey]}
+                  selectedTimeRange={selectedTimeRange}
+                  handleTimeRangeChange={handleTimeRangeChange}
+                  historicalSPYData={historicalData}
+                  isInsideModal={true}
+                />
+                <div className="modal-description">
+                  <ExpandableDescription
+                    shortDescription={t(`marketSentiment.descriptions.${INDICATOR_DESCRIPTION_KEY_MAP[selectedIndicatorKey]}.shortDescription`)}
+                    sections={t(`marketSentiment.descriptions.${INDICATOR_DESCRIPTION_KEY_MAP[selectedIndicatorKey]}.sections`, { returnObjects: true })}
+                  />
+                </div>
+              </div>
+              <div 
+                className="carousel-arrow carousel-arrow--right"
+                onClick={e => { e.stopPropagation(); setSelectedIndicatorKey(nextKeyForArrows); }}
+              >▶</div>
+              <div
+                className="composition-modal next"
+                onClick={e => { e.stopPropagation(); setSelectedIndicatorKey(nextKeyForArrows); }}
+              >
+                <IndicatorItem
+                  indicatorKey={nextKeyForArrows}
+                  indicator={indicatorsData[nextKeyForArrows]}
+                  selectedTimeRange={selectedTimeRange}
+                  handleTimeRangeChange={handleTimeRangeChange}
+                  historicalSPYData={historicalData}
+                  isInsideModal={true}
+                />
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </PageContainer>
   );
 };

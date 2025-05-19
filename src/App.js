@@ -1,6 +1,6 @@
 // React 相關
 import React, { useState, useEffect, useCallback, Suspense } from 'react';
-import { Link, Route, Routes, Navigate, useLocation, useParams, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes, Navigate, useLocation, useParams, useNavigate, NavLink } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
 
@@ -159,22 +159,37 @@ function AppContent() {
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
           <ul>
             <li className="sidebar-item-1">
-              <Link to={`/${lang}/`} onClick={() => isMobile && setSidebarOpen(false)}>
+              <NavLink 
+                to={`/${lang}/`} 
+                onClick={() => isMobile && setSidebarOpen(false)}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
                 <FaHome />
                 <span>{t('nav.home')}</span>
-              </Link>
+              </NavLink>
             </li>
             <li className="sidebar-item-2">
-              <Link to={`/${lang}/priceanalysis`} onClick={() => isMobile && setSidebarOpen(false)}>
+              <NavLink 
+                to={`/${lang}/priceanalysis`} 
+                onClick={() => isMobile && setSidebarOpen(false)}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
                 <FaChartLine />
                 <span>{t('nav.priceAnalysis')}</span>
-              </Link>
+              </NavLink>
             </li>
             <li className="sidebar-item-3">
-              <Link to={`/${lang}/market-sentiment`} onClick={() => isMobile && setSidebarOpen(false)}>
+              <NavLink 
+                to={`/${lang}/market-sentiment`} 
+                onClick={() => isMobile && setSidebarOpen(false)}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
                 <FaHeartbeat />
                 <span>{t('nav.marketSentiment')}</span>
-              </Link>
+              </NavLink>
             </li>
             {/*
             <li className="sidebar-item dropdown">
@@ -214,28 +229,43 @@ function AppContent() {
             </li>
             */}
             <li className="sidebar-item-5">
-              <Link to={`/${lang}/watchlist`} onClick={handleWatchlistClick}>
+              <NavLink 
+                to={`/${lang}/watchlist`} 
+                onClick={handleWatchlistClick}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
                 <div className="sidebar-item-content">
                   <FaList />
                   <span>{t('nav.watchlist')}</span>
                 </div>
-              </Link>
+              </NavLink>
             </li>
             <li className="sidebar-item-6">
-              <Link to={`/${lang}/articles`} onClick={handleArticlesClick}>
+              <NavLink 
+                to={`/${lang}/articles`} 
+                onClick={handleArticlesClick}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
                 <div className="sidebar-item-content">
                   <FaChartBar />
                   <span>{t('nav.articles')}</span>
                 </div>
-              </Link>
+              </NavLink>
             </li>
             {/* 只有在 zh-TW 語系下顯示贊助連結 */}
             {lang === 'zh-TW' && (
               <li className="sidebar-item-7">
-                <Link to={`/${lang}/sponsor-us`} onClick={() => isMobile && setSidebarOpen(false)}>
+                <NavLink 
+                  to={`/${lang}/sponsor-us`} 
+                  onClick={() => isMobile && setSidebarOpen(false)}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
                   <FaPiggyBank />
                   <span>{t('nav.sponsor')}</span>
-                </Link>
+                </NavLink>
               </li>
             )}
             <li className="sidebar-item-8">
@@ -257,21 +287,29 @@ function AppContent() {
           <header className="top-nav">
             {/* Logo 區域 */}
             <div className="top-nav-logo">
-              <Link to={`/${lang}/`}>
+              <NavLink to={`/${lang}/`}>
                 <img src="/logo.png" alt={t('appName')} className="logo" />
-              </Link>
+              </NavLink>
             </div>
             
             {/* 桌面版導航項目 */}
             <div className="desktop-nav-items">
-              <Link to={`/${lang}/priceanalysis`}>
+              <NavLink 
+                to={`/${lang}/priceanalysis`}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
                 <FaChartLine />
                 <span>{t('nav.priceAnalysis')}</span>
-              </Link>
-              <Link to={`/${lang}/market-sentiment`}>
+              </NavLink>
+              <NavLink 
+                to={`/${lang}/market-sentiment`}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
                 <FaHeartbeat />
                 <span>{t('nav.marketSentiment')}</span>
-              </Link>
+              </NavLink>
               {/*
               <div className="desktop-nav-item dropdown"
                 onMouseEnter={() => setGoogleTrendsDropdownOpen(true)}
@@ -293,20 +331,34 @@ function AppContent() {
                 )}
               </div>
               */}
-              <Link to={`/${lang}/watchlist`} onClick={handleWatchlistClick}>
+              <NavLink 
+                to={`/${lang}/watchlist`} 
+                onClick={handleWatchlistClick}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
                 <FaList />
                 <span>{t('nav.watchlist')}</span>
-              </Link>
-              <Link to={`/${lang}/articles`} onClick={handleArticlesClick}>
+              </NavLink>
+              <NavLink 
+                to={`/${lang}/articles`} 
+                onClick={handleArticlesClick}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
                 <FaChartBar />
                 <span>{t('nav.articles')}</span>
-              </Link>
+              </NavLink>
               {/* 只有在 zh-TW 語系下顯示贊助連結 */}
               {lang === 'zh-TW' && (
-                <Link to={`/${lang}/sponsor-us`}>
+                <NavLink 
+                  to={`/${lang}/sponsor-us`}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
                   <FaPiggyBank />
                   <span>{t('nav.sponsor')}</span>
-                </Link>
+                </NavLink>
               )}
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />

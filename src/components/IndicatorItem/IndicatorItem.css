@@ -5,7 +5,7 @@
   margin-bottom: 20px;
   position: relative; /* 將 indicator-item 設定為 relative */
   background-color: white; /* 新增 */
-  padding: 20px; /* 新增 */
+  padding: 0px; /* 新增 */
   border-radius: 8px; /* 新增 */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 新增 */
 }

@@ -88,8 +88,7 @@ body {
   color: #3b82f6;
 }
 
-.sidebar a.active,
-.sidebar-item.active {
+.sidebar .active-nav-link {
   background-color: rgba(59, 130, 246, 0.12);
   color: #3b82f6;
   font-weight: 500;
@@ -105,8 +104,7 @@ body {
 
 .sidebar a:hover svg,
 .sidebar-item:hover svg,
-.sidebar a.active svg,
-.sidebar-item.active svg {
+.sidebar .active-nav-link svg {
   color: #3b82f6;
 }
 
@@ -620,6 +618,22 @@ body {
 
   .desktop-nav-items a:hover {
     background-color: rgba(59, 130, 246, 0.08);
+    color: #3b82f6;
+  }
+
+  .desktop-nav-items svg {
+    font-size: 16px;
+  }
+
+  /* 新增：桌面導覽列活動連結樣式 */
+  .desktop-nav-items .active-nav-link {
+    background-color: rgba(59, 130, 246, 0.12); /* 與側邊欄活動狀態背景色一致 */
+    color: #3b82f6; /* 與側邊欄活動狀態文字顏色一致 */
+    font-weight: 500; /* 加粗字體 */
+  }
+  
+  /* 確保活動連結的 SVG 圖示顏色也改變 */
+  .desktop-nav-items .active-nav-link svg {
     color: #3b82f6;
   }
 
