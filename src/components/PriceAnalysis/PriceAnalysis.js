@@ -19,6 +19,7 @@ import { useAdContext } from '../../components/Common/InterstitialAdModal/AdCont
 import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebouncedCallback
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
+import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
 // 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
@@ -69,6 +70,7 @@ export function PriceAnalysis() {
 
   // 這裡保留所有原本在 App.js 中標準差分析需要的狀態
   const [stockCode, setStockCode] = useState(''); // 初始值改為空，由 useEffect 決定
+  const [displayStockCode, setDisplayStockCode] = useState(''); // 新增：用於輸入框即時顯示
   const [years, setYears] = useState('');       // 初始值改為空
   const [backTestDate, setBackTestDate] = useState(''); // 初始值改為空
   const [chartData, setChartData] = useState(null);
@@ -95,6 +97,10 @@ export function PriceAnalysis() {
   const cooldownTimeoutRef = useRef(null); // 新增：保存冷卻計時器 ID
   const [isPending, startTransition] = useTransition(); // 添加 useTransition
 
+  // 新增：熱門搜尋狀態
+  const [hotSearches, setHotSearches] = useState([]);
+  const [loadingHotSearches, setLoadingHotSearches] = useState(false);
+
   // --- Debounced State Setters ---
   // Debounce setStockCode with a 300ms delay
   const debouncedSetStockCode = useDebouncedCallback((value) => {
@@ -110,12 +116,13 @@ export function PriceAnalysis() {
   // 處理股票代碼的全形/半形轉換 (現在調用 debounced setter)
   const handleStockCodeChange = (e) => {
     const value = e.target.value;
+    // 更新 displayStockCode 以立即反映輸入
+    setDisplayStockCode(value.toUpperCase());
+
     const convertedValue = value.replace(/[０-９Ａ-Ｚａ-ｚ]/g, (char) =>
       String.fromCharCode(char.charCodeAt(0) - 0xFEE0)
     );
-    // 直接更新 input value (如果需要立即反饋，否則瀏覽器會處理)
-    // e.target.value = convertedValue.toUpperCase(); // 可能不需要，取決於是否需要立即看到轉換後的值
-    // 調用 debounced 函數來更新狀態
+    // 調用 debounced 函數來更新實際的 stockCode 狀態
     debouncedSetStockCode(convertedValue.toUpperCase());
   };
 
@@ -333,6 +340,7 @@ export function PriceAnalysis() {
 
     // 更新 state 以反映 URL/預設值，讓表單顯示正確
     setStockCode(fetchStock);
+    setDisplayStockCode(fetchStock); // <--- 新增：初始化 displayStockCode
     setBackTestDate(fetchDate);
     if (['0.5', '1.5', '3.5'].includes(fetchYears)) {
         setIsAdvancedQuery(false);
@@ -397,14 +405,40 @@ export function PriceAnalysis() {
         }
     }
 
-    // 可選：清除 location state
-    // if (location.state?.fromWatchlist) {
-    //     // 注意：直接使用 navigate 可能會觸發此 useEffect 重新運行，需要謹慎
-    //     // window.history.replaceState({}, document.title) // 另一種方式，不觸發 React Router 更新
-    // }
+    // 新增：useEffect 鉤子以獲取熱門搜尋數據
+    const fetchHotSearches = async () => {
+      setLoadingHotSearches(true);
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/hot-searches`, { timeout: 15000 });
+        // 假設 API 回應格式為 { data: { top_searches: [...] } }
+        if (response.data && response.data.data && Array.isArray(response.data.data.top_searches)) {
+          setHotSearches(response.data.data.top_searches);
+        } else {
+          setHotSearches([]);
+          console.warn('Hot searches data is not in expected format:', response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching hot searches:", error);
+        setHotSearches([]);
+        // 可以選擇是否顯示錯誤提示給用戶
+        // handleApiError(error, showToast, t); // 如果需要統一錯誤處理
+      } finally {
+        setLoadingHotSearches(false);
+      }
+    };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchHotSearches();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, location.state]); // <--- 修改：移除 fetchStockData, showToast, loading
+
+  // 新增：處理熱門搜尋項目點擊事件
+  const handleHotSearchClick = (clickedCode) => {
+    const upperClickedCode = clickedCode.toUpperCase();
+    setDisplayStockCode(upperClickedCode); // 更新輸入框顯示
+    setStockCode(upperClickedCode);       // 更新實際用於分析的股票代碼
+    // 可選：如果希望點擊後立即分析，可以在此觸發 handleSubmit 或 fetchStockData
+    // handleSubmit(new Event('submit')); // 這需要模擬事件對象，或者直接調用 fetchStockData
+  };
 
   // 切換簡易/進階查詢模式
   const toggleQueryMode = () => {
@@ -565,7 +599,7 @@ export function PriceAnalysis() {
                     placeholder={t('priceAnalysis.form.stockCodePlaceholder')}
                     required
                     // 保持 defaultValue 或 value 的邏輯不變 (如果需要)
-                    defaultValue={stockCode} // 根據原始碼，這裡使用 defaultValue
+                    value={displayStockCode} // 改為受控組件
                   />
                 </div>
 
@@ -664,6 +698,31 @@ export function PriceAnalysis() {
               </form>
             </div>
 
+            {/* 新增：熱門搜尋區塊 */}
+            <div className="hot-searches-section">
+              <h4>{t('priceAnalysis.hotSearches.title', '熱門搜尋')}</h4>
+              {loadingHotSearches ? (
+                <p>{t('priceAnalysis.hotSearches.loading', '載入中...')}</p>
+              ) : hotSearches.length > 0 ? (
+                <ul className="hot-search-list">
+                  {hotSearches.map((code, index) => (
+                    <li
+                      key={index}
+                      className="hot-search-item"
+                      onClick={() => handleHotSearchClick(code)}
+                      role="button" // 增加可訪問性
+                      tabIndex={0}  // 增加可訪問性
+                      onKeyPress={(e) => e.key === 'Enter' && handleHotSearchClick(code)} // 增加可訪問性
+                    >
+                      {code}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>{t('priceAnalysis.hotSearches.noData', '暫無熱門搜尋記錄')}</p>
+              )}
+            </div>
+
             {/* 主圖表區塊 */}
             <div className="chart-card">
               <div className="chart-container">
@@ -757,25 +816,36 @@ export function PriceAnalysis() {
           {/* 將 ExpandableDescription 移到此處並包裹 */}
           <div className="description-container-wrapper">
             <div className="description-scroll-content">
-              <MemoizedExpandableDescription
-                mainTitle={t('priceAnalysis.explanation.mainTitle')}
-                // 使用 t() 翻譯 shortDescription (注意保留連結)
-                shortDescription={
-                  <>
-                    {t('priceAnalysis.explanation.shortDescription')}
-                    <br />
-                    {t('priceAnalysis.explanation.readMorePrefix')}
-                    <a href="https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92" target="_blank" rel="noopener noreferrer">
-                      {t('priceAnalysis.explanation.readMoreLinkText')}
-                    </a>
-                  </>
-                }
-                // 使用 useMemo 創建的 sections
-                sections={expandableSections}
-                // 使用 t() 翻譯按鈕文字
-                expandButtonText={t('common.learnMore')} // 假設有通用 key
-                collapseButtonText={t('common.collapse')} // 假設有通用 key
-              />
+              {/* 新增：上半部內容容器 */}
+              <div className="description-content-top">
+                <MemoizedExpandableDescription
+                  mainTitle={t('priceAnalysis.explanation.mainTitle')}
+                  // 使用 t() 翻譯 shortDescription (注意保留連結)
+                  shortDescription={
+                    <>
+                      {t('priceAnalysis.explanation.shortDescription')}
+                      <br />
+                      {t('priceAnalysis.explanation.readMorePrefix')}
+                      <a href="https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92" target="_blank" rel="noopener noreferrer">
+                        {t('priceAnalysis.explanation.readMoreLinkText')}
+                      </a>
+                    </>
+                  }
+                  // 使用 useMemo 創建的 sections
+                  sections={expandableSections}
+                  // 使用 t() 翻譯按鈕文字
+                  expandButtonText={t('common.learnMore')} // 假設有通用 key
+                  collapseButtonText={t('common.collapse')} // 假設有通用 key
+                />
+              </div>
+              {/* 新增：下半部廣告容器 */}
+              <div className="description-content-ad">
+                <AdSense
+                  client="ca-pub-9124378768777425" // 更新 client ID
+                  slot="7874529667"         // 更新 slot ID
+                  format="auto"
+                />
+              </div>
             </div>
           </div>
         </div> {/* 結束 content-layout-container */}

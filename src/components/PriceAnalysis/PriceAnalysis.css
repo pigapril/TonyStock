@@ -589,7 +589,30 @@
   padding: var(--space-l, 20px);
   overflow-y: auto;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
+
+/* 新增：上半部內容容器樣式 */
+.price-analysis-view .description-content-top {
+  flex-basis: 50%;
+  overflow-y: auto;
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+
+/* 新增：下半部廣告容器樣式 */
+.price-analysis-view .description-content-ad {
+  flex-basis: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
 .price-analysis-view .description-scroll-content::-webkit-scrollbar {
   width: 8px;
 }
@@ -625,4 +648,56 @@
     width: 100% !important;
     max-width: 100% !important;
   }
+}
+
+/* 新增：熱門搜尋區塊樣式 */
+.price-analysis-view .stock-analysis-card .hot-searches-section {
+  margin-top: 20px;
+  width: 100%; /* 確保填滿卡片寬度 */
+  padding: 15px 10px;
+  border-top: 1px solid var(--color-border-default, #e0e0e0);
+  text-align: center; /* 讓標題和列表內容置中 */
+}
+
+.price-analysis-view .stock-analysis-card .hot-searches-section h4 {
+  font-size: 1.05em; /* 調整標題大小 */
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: var(--color-text-primary, #333);
+  font-weight: 600;
+}
+
+.price-analysis-view .stock-analysis-card .hot-searches-section p {
+  font-size: 0.9em;
+  color: var(--color-text-secondary, #666);
+}
+
+.price-analysis-view .stock-analysis-card .hot-search-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap; /* 允許項目換行 */
+  gap: 8px; /* 項目之間的間距 */
+  justify-content: center; /* 水平置中項目 */
+}
+
+.price-analysis-view .stock-analysis-card .hot-search-item {
+  padding: 6px 12px;
+  background-color: var(--color-bg-tertiary, #f0f2f5); /* 使用更中性的背景色 */
+  border-radius: var(--border-radius-pill, 16px); /* 膠囊狀圓角 */
+  cursor: pointer;
+  font-size: 0.85em; /* 調整字體大小 */
+  color: var(--color-text-link, #007aff); /* 使用連結顏色以示可點擊 */
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--color-border-subtle, #d1d1d6);
+}
+
+.price-analysis-view .stock-analysis-card .hot-search-item:hover,
+.price-analysis-view .stock-analysis-card .hot-search-item:focus {
+  background-color: var(--color-bg-tertiary-hover, #e5e7eb);
+  color: var(--color-text-link-hover, #0056b3);
+  border-color: var(--color-border-interactive, #007aff);
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0,0,0,0.05));
+  outline: none; /* 移除預設的 focus outline，因為已有 border 變化 */
 }

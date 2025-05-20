@@ -16,6 +16,7 @@ import { useAdContext } from '../Common/InterstitialAdModal/AdContext';
 import { useTranslation } from 'react-i18next';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { Toast } from '../Watchlist/components/Toast';
+import { formatPrice } from '../../utils/priceUtils';
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -473,6 +474,11 @@ const MarketSentimentIndex = () => {
           display: true,
           text: t('marketSentiment.chart.compositeIndexAxisLabel'),
         },
+        ticks: { 
+          callback: function(value, index, values) {
+            return formatPrice(value);
+          }
+        }
       },
       'right-axis': {
         position: 'right',
@@ -483,12 +489,29 @@ const MarketSentimentIndex = () => {
         grid: {
           drawOnChartArea: false,
         },
+        ticks: { 
+          callback: function(value, index, values) {
+            return formatPrice(value);
+          }
+        }
       },
     },
     plugins: {
       tooltip: {
         mode: 'index',
         intersect: false,
+        callbacks: {
+          label: function(tooltipItem) {
+            let label = tooltipItem.dataset.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (tooltipItem.parsed.y !== null) {
+              label += formatPrice(tooltipItem.parsed.y);
+            }
+            return label;
+          }
+        }
       },
       zoom: {
         pan: {

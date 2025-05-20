@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { handleApiError } from '../../utils/errorHandler';
 import { Toast } from '../Watchlist/components/Toast';
+import { formatPrice } from '../../utils/priceUtils';
 
 // 添加這行來定義 API_BASE_URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
@@ -201,6 +202,11 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
           display: true,
           text: indicatorName,
         },
+        ticks: {
+          callback: function(value, index, values) {
+            return formatPrice(value);
+          }
+        }
       },
       'right-axis': {
         position: 'right',
@@ -211,6 +217,12 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         grid: {
           drawOnChartArea: false,
         },
+        ticks: {
+          callback: function(value, index, values) {
+            // Right-axis always shows percentile rank (0-100)
+            return Math.round(value) + '%';
+          }
+        }
       },
       'spy-axis': {
         position: 'right',
@@ -222,17 +234,40 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
           drawOnChartArea: false,
         },
         display: !isInsideModal,
+        ticks: {
+          callback: function(value, index, values) {
+            return formatPrice(value);
+          }
+        }
       },
     },
     plugins: {
       tooltip: {
         mode: 'index',
         intersect: false,
+        callbacks: {
+          label: function(tooltipItem) {
+            let label = tooltipItem.dataset.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (tooltipItem.parsed.y !== null) {
+              if (tooltipItem.dataset.yAxisID === 'right-axis') {
+                // Percentile rank on right-axis, round and add %
+                label += Math.round(tooltipItem.parsed.y) + '%';
+              } else {
+                // Other axes (left-axis for indicator value, spy-axis for SPY price)
+                label += formatPrice(tooltipItem.parsed.y);
+              }
+            }
+            return label;
+          }
+        }
       },
     },
     responsive: true,
     maintainAspectRatio: false,
-  }), [indicatorName, t, timeUnit, isInsideModal]);
+  }), [indicatorName, t, timeUnit, isInsideModal]); // indicatorKey is no longer needed for formatting logic here
 
   // 計算市場情緒鍵
   const sentimentKey = useMemo(() =>
