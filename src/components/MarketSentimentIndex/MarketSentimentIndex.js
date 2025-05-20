@@ -813,13 +813,19 @@ const MarketSentimentIndex = () => {
                     </button>
                     <button
                       className={`view-mode-button ${compositeStep === 'history' ? 'active' : ''}`}
-                      onClick={() => setCompositeStep('history')}
+                      onClick={() => {
+                        setCompositeStep('history');
+                        requestAdDisplay('marketSentimentCompositeHistory', 1);
+                      }}
                     >
                       {t('marketSentiment.cta.history')}
                     </button>
                     <button
                       className={`view-mode-button ${compositeStep === 'composition' ? 'active' : ''}`}
-                      onClick={() => setCompositeStep('composition')}
+                      onClick={() => {
+                        setCompositeStep('composition');
+                        requestAdDisplay('marketSentimentCompositeComposition', 1);
+                      }}
                     >
                       {t('marketSentiment.cta.composition')}
                     </button>
