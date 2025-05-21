@@ -521,6 +521,18 @@
     flex-direction: row; 
     flex-wrap: nowrap; 
     overflow: hidden; 
+
+  }
+
+  /* 新增：包裹 stock-analysis-card 和 hot-searches-section 的容器 */
+  .price-analysis-view .content-layout-container .dashboard .analysis-controls-wrapper {
+    display: flex;
+    flex-direction: column; /* 垂直排列 stock-analysis-card 和 hot-searches */
+    flex-shrink: 0;
+    height: fit-content;
+    max-height: 100%;
+    /* flex-grow: 4; /* 移除或調整，因為現在是內部元素的容器 */
+    /* max-width: 300px; /* 可以保留或根據設計調整 */
   }
   
   /* .dashboard 內部的物件：.stock-analysis-card 和 .chart-card */
@@ -530,9 +542,23 @@
     /* 如果要讓它也參與 flex 比例分配，可以給它 flex-basis 或 flex-grow */
     /* 例如：flex: 0 0 280px; (不增長，不收縮，基礎寬度280px) */
     /* 或者，如果想讓它也按比例：flex-grow: 1; */
-    height: fit-content; 
-    max-height: 100%; 
-    flex-grow: 4;
+    /* height: fit-content;  由父層 analysis-controls-wrapper 控制 */
+    /* max-height: 100%; 由父層 analysis-controls-wrapper 控制 */
+    /* flex-grow: 4; 移除，因為現在是 analysis-controls-wrapper 的一部分 */
+    width: 100%; /* 確保填滿 analysis-controls-wrapper */
+  }
+
+  /* 熱門搜尋區塊在寬螢幕下的特定樣式調整 */
+  .price-analysis-view .content-layout-container .dashboard .analysis-controls-wrapper .hot-searches-section {
+    /* margin-top: 20px; /* 保持與 stock-analysis-card 的間距 */
+    /* width: 100%; /* 確保填滿 analysis-controls-wrapper */
+    /* padding: 15px 10px; /* 與手機版一致或調整 */
+    /* border-top: 1px solid var(--color-border-default, #e0e0e0); /* 與手機版一致或調整 */
+    /* text-align: center; /* 與手機版一致或調整 */
+    /* background-color: var(--color-bg-card, white); /* 可選：如果希望它有獨立背景 */
+    /* border-radius: var(--border-radius-large, 8px); /* 可選：如果希望它有圓角 */
+    /* box-shadow: var(--shadow-m, 0 2px 4px rgba(0,0,0,0.1)); /* 可選：如果希望它有陰影 */
+    /* margin-bottom: 0; /* 確保下方沒有多餘間距 */
   }
 
   .price-analysis-view .content-layout-container .dashboard .chart-card {
@@ -660,16 +686,17 @@
 }
 
 .price-analysis-view .stock-analysis-card .hot-searches-section h4 {
-  font-size: 1.05em; /* 調整標題大小 */
+  font-size: 1.1em; /* Slightly larger */
   margin-top: 0;
-  margin-bottom: 12px;
-  color: var(--color-text-primary, #333);
-  font-weight: 600;
+  margin-bottom: 15px; /* More space below title */
+  color: var(--color-text-primary, #1d1d1f); 
+  font-weight: 600; /* Bold */
 }
 
 .price-analysis-view .stock-analysis-card .hot-searches-section p {
   font-size: 0.9em;
-  color: var(--color-text-secondary, #666);
+  color: var(--color-text-secondary, #86868b); 
+  margin-bottom: 15px; /* Space before the list */
 }
 
 .price-analysis-view .stock-analysis-card .hot-search-list {
@@ -683,21 +710,31 @@
 }
 
 .price-analysis-view .stock-analysis-card .hot-search-item {
-  padding: 6px 12px;
-  background-color: var(--color-bg-tertiary, #f0f2f5); /* 使用更中性的背景色 */
-  border-radius: var(--border-radius-pill, 16px); /* 膠囊狀圓角 */
+  padding: 8px 15px;
+  background-color: #eef4ff; /* Light blue background */
+  border-radius: 6px; /* Softly rounded corners */
   cursor: pointer;
-  font-size: 0.85em; /* 調整字體大小 */
-  color: var(--color-text-link, #007aff); /* 使用連結顏色以示可點擊 */
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid var(--color-border-subtle, #d1d1d6);
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #0052cc; /* Medium blue text */
+  transition: all 0.2s ease-in-out;
+  border: 1px solid #c0d9ff; /* Light blue border */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  text-align: center;
 }
 
 .price-analysis-view .stock-analysis-card .hot-search-item:hover,
 .price-analysis-view .stock-analysis-card .hot-search-item:focus {
-  background-color: var(--color-bg-tertiary-hover, #e5e7eb);
-  color: var(--color-text-link-hover, #0056b3);
-  border-color: var(--color-border-interactive, #007aff);
-  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0,0,0,0.05));
-  outline: none; /* 移除預設的 focus outline，因為已有 border 變化 */
+  background-color: #0065ff; /* Primary blue background on hover */
+  color: white;
+  border-color: #0052cc; /* Darker blue border on hover */
+  box-shadow: 0 2px 5px rgba(0, 101, 255, 0.25);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.price-analysis-view .stock-analysis-card .hot-search-item:active {
+  background-color: #0052cc; /* Darker blue on active */
+  transform: translateY(0px);
+  box-shadow: 0 1px 2px rgba(0, 101, 255, 0.2);
 }

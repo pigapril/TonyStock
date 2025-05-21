@@ -434,10 +434,62 @@ export function PriceAnalysis() {
   // 新增：處理熱門搜尋項目點擊事件
   const handleHotSearchClick = (clickedCode) => {
     const upperClickedCode = clickedCode.toUpperCase();
-    setDisplayStockCode(upperClickedCode); // 更新輸入框顯示
-    setStockCode(upperClickedCode);       // 更新實際用於分析的股票代碼
-    // 可選：如果希望點擊後立即分析，可以在此觸發 handleSubmit 或 fetchStockData
-    // handleSubmit(new Event('submit')); // 這需要模擬事件對象，或者直接調用 fetchStockData
+    // 更新狀態以反映新的股票代碼
+    setDisplayStockCode(upperClickedCode);
+    setStockCode(upperClickedCode);
+
+    // 準備表單提交所需的參數
+    // 這裡我們假設點擊熱門搜尋時，使用預設的分析期間（例如 '長期' -> 3.5 年）
+    // 並且不使用回測日期，除非有特殊邏輯需要處理
+    let numYearsToFetch;
+    if (isAdvancedQuery) {
+        // 如果在進階模式，且 years 有效，則使用 years 的值
+        const convertedYears = years
+            .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
+            .replace(/[．。]/g, '.');
+        const parsedYears = parseFloat(convertedYears);
+        if (!isNaN(parsedYears) && parsedYears > 0) {
+            numYearsToFetch = parsedYears;
+        } else {
+            // 如果進階模式下的 years 無效，則退回簡易模式的預設值
+            numYearsToFetch = 3.5; // 或者根據 analysisPeriod
+            showToast(t('priceAnalysis.toast.invalidYearsHotSearch'), 'warning');
+        }
+    } else {
+        switch (analysisPeriod) {
+            case '短期': numYearsToFetch = 0.5; break;
+            case '中期': numYearsToFetch = 1.5; break;
+            case '長期': default: numYearsToFetch = 3.5; break;
+        }
+    }
+    const dateToFetch = isAdvancedQuery ? backTestDate : ''; // 進階模式才考慮回測日期
+
+    // --- 立即更新 UI 反饋 ---
+    setLoading(true);
+    startTransition(() => {
+        setChartData(null);
+        setUlbandData(null);
+        setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
+        setDisplayedStockCode(''); // 清空舊的 displayedStockCode，fetchStockData 成功後會更新
+    });
+    // --- UI 反饋結束 ---
+
+    // --- 調用 Context 的函數來請求廣告 ---
+    requestAdDisplay('priceAnalysis', 3);
+    // --- 廣告請求結束 ---
+
+    // 延遲分析事件發送
+    setTimeout(() => {
+        Analytics.stockAnalysis.search({
+            stockCode: upperClickedCode,
+            years: numYearsToFetch,
+            backTestDate: dateToFetch,
+            source: 'hotSearch' // 標記來源為熱門搜尋
+        });
+    }, 0);
+
+    // 直接調用 fetchStockData 執行分析
+    fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, false);
   };
 
   // 切換簡易/進階查詢模式
@@ -585,8 +637,9 @@ export function PriceAnalysis() {
         <div className="content-layout-container"> {/* 新增：佈局容器 */}
           <div className="dashboard">
             
-            {/* 將 stock-analysis-card 移到 chart-card 上方 */}
-            <div className="stock-analysis-card">
+            {/* 將 stock-analysis-card 和 hot-searches-section 包裹在 analysis-controls-wrapper 中 */}
+            <div className="analysis-controls-wrapper stock-analysis-card">
+              <div className="stock-analysis-card">
               <form onSubmit={handleSubmit}>
                 <div className="input-group">
                   {/* 使用 t() 翻譯 label */}
@@ -698,7 +751,7 @@ export function PriceAnalysis() {
               </form>
             </div>
 
-            {/* 新增：熱門搜尋區塊 */}
+            {/* 熱門搜尋區塊 (仍在 analysis-controls-wrapper 內) */}
             <div className="hot-searches-section">
               <h4>{t('priceAnalysis.hotSearches.title', '熱門搜尋')}</h4>
               {loadingHotSearches ? (
@@ -722,6 +775,7 @@ export function PriceAnalysis() {
                 <p>{t('priceAnalysis.hotSearches.noData', '暫無熱門搜尋記錄')}</p>
               )}
             </div>
+          </div> {/* 結束 analysis-controls-wrapper */}
 
             {/* 主圖表區塊 */}
             <div className="chart-card">
@@ -861,4 +915,4 @@ export function PriceAnalysis() {
       )}
     </PageContainer>
   );
-} 
+}
