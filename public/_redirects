@@ -19,7 +19,7 @@ https://niku-stock.netlify.app/* https://sentimentinsideout.com/:splat 301!
 # /         /zh-TW/         301  # 如果您希望訪問 / 直接跳轉到 /zh-TW/
 
 # API 代理
-/api/* https://sentiment-staging.publicvm.com/api/:splat 200
+/api/* https://stockdatabase.publicvm.com/api/:splat 200
 
 # SPA 回退路由 (保持在最後)
 /* /index.html 200 

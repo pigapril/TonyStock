@@ -407,22 +407,27 @@ export function PriceAnalysis() {
 
     // 新增：useEffect 鉤子以獲取熱門搜尋數據
     const fetchHotSearches = async () => {
+      console.log('Fetching hot searches...'); // 添加這行
       setLoadingHotSearches(true);
       try {
+        console.log(`Making API call to ${API_BASE_URL}/api/hot-searches`); // 添加這行
         const response = await axios.get(`${API_BASE_URL}/api/hot-searches`, { timeout: 15000 });
+        console.log('API response received:', response.data); // 添加這行
         // 假設 API 回應格式為 { data: { top_searches: [...] } }
         if (response.data && response.data.data && Array.isArray(response.data.data.top_searches)) {
+          console.log('Setting hot searches:', response.data.data.top_searches); // 添加這行
           setHotSearches(response.data.data.top_searches);
         } else {
           setHotSearches([]);
           console.warn('Hot searches data is not in expected format:', response.data);
         }
       } catch (error) {
-        console.error("Error fetching hot searches:", error);
+        console.error("Error fetching hot searches:", error); // 添加這行
         setHotSearches([]);
         // 可以選擇是否顯示錯誤提示給用戶
         // handleApiError(error, showToast, t); // 如果需要統一錯誤處理
       } finally {
+        console.log('Finished fetching hot searches.'); // 添加這行
         setLoadingHotSearches(false);
       }
     };
@@ -432,8 +437,8 @@ export function PriceAnalysis() {
   }, [searchParams, location.state]); // <--- 修改：移除 fetchStockData, showToast, loading
 
   // 新增：處理熱門搜尋項目點擊事件
-  const handleHotSearchClick = (clickedCode) => {
-    const upperClickedCode = clickedCode.toUpperCase();
+  const handleHotSearchClick = (searchItem) => { // 參數名稱改為 searchItem 以清晰表示它是一個物件
+    const upperClickedCode = searchItem.keyword.toUpperCase();
     // 更新狀態以反映新的股票代碼
     setDisplayStockCode(upperClickedCode);
     setStockCode(upperClickedCode);
@@ -758,16 +763,16 @@ export function PriceAnalysis() {
                 <p>{t('priceAnalysis.hotSearches.loading', '載入中...')}</p>
               ) : hotSearches.length > 0 ? (
                 <ul className="hot-search-list">
-                  {hotSearches.map((code, index) => (
+                  {hotSearches.map((searchItem, index) => (
                     <li
                       key={index}
                       className="hot-search-item"
-                      onClick={() => handleHotSearchClick(code)}
+                      onClick={() => handleHotSearchClick(searchItem)}
                       role="button" // 增加可訪問性
                       tabIndex={0}  // 增加可訪問性
-                      onKeyPress={(e) => e.key === 'Enter' && handleHotSearchClick(code)} // 增加可訪問性
+                      onKeyPress={(e) => e.key === 'Enter' && handleHotSearchClick(searchItem)} // 增加可訪問性
                     >
-                      {code}
+                      {searchItem.keyword}
                     </li>
                   ))}
                 </ul>
