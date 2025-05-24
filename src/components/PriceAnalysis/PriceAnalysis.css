@@ -649,18 +649,17 @@
 }
 
 .price-analysis-view .description-content-top::-webkit-scrollbar {
-  width: 8px;
+  width: 6px; /* 更細的捲動條 */
 }
 .price-analysis-view .description-content-top::-webkit-scrollbar-track {
-  background: #ffffff; /* 捲動條軌道背景色為白色 */
-  border-radius: 10px;
+  background: transparent; /* 軌道透明 */
 }
 .price-analysis-view .description-content-top::-webkit-scrollbar-thumb {
-  background: #ccc; /* 捲動條滑塊顏色 */
-  border-radius: 10px;
+  background: var(--color-scrollbar-thumb, #dcdcdc); /* 淡灰色滑塊 */
+  border-radius: 6px;
 }
 .price-analysis-view .description-content-top::-webkit-scrollbar-thumb:hover {
-  background: #aaa; /* 滑鼠懸停時滑塊顏色 */
+  background: var(--color-scrollbar-thumb-hover, #bfbfbf); /* 滑鼠懸停時略深 */
 }
 
 @media (max-width: 430px) {
@@ -685,85 +684,88 @@
   }
 }
 
-/* 新增：熱門搜尋區塊樣式 */
+/* 熱門搜尋區塊樣式 - 整體容器 */
 .price-analysis-view .stock-analysis-card .hot-searches-section {
   margin-top: 20px;
-  width: 100%; /* 確保填滿卡片寬度 */
+  width: 100%;
   padding: 15px 10px;
-  border-top: 1px solid var(--color-border-default, #e0e0e0);
-  text-align: center; /* 讓標題和列表內容置中 */
+  /* border-top: 1px solid var(--color-border-light, #f0f0f0); /* 可選：更淡的頂部分隔線 */
+  text-align: center;
 }
 
+/* 熱門搜尋區塊標題 */
 .price-analysis-view .stock-analysis-card .hot-searches-section h4 {
-  font-size: 1.1em; /* Slightly larger */
+  font-size: 1.0em; /* 略微調整，使其不過於突出 */
   margin-top: 0;
-  margin-bottom: 15px; /* More space below title */
-  color: var(--color-text-primary, #1d1d1f); 
-  font-weight: 600; /* Bold */
+  margin-bottom: 10px; /* 略微減少與下方文字的間距 */
+  color: var(--color-text-secondary, #555); /* 使用次要文字顏色，或更柔和的深灰色 */
+  font-weight: 500; /* 適中的字重 */
 }
 
+/* 熱門搜尋區塊說明文字 (如果有的話) */
 .price-analysis-view .stock-analysis-card .hot-searches-section p {
-  font-size: 0.9em;
-  color: var(--color-text-secondary, #86868b); 
-  margin-bottom: 15px; /* Space before the list */
+  font-size: 0.85em; /* 略微縮小 */
+  color: var(--color-text-tertiary, #888); /* 更淡的灰色 */
+  margin-bottom: 12px;
 }
 
+/* 熱門搜尋列表 */
 .price-analysis-view .stock-analysis-card .hot-search-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  flex-wrap: wrap; /* 允許項目換行 */
-  gap: 8px; /* 項目之間的間距 */
-  justify-content: center; /* 水平置中項目 */
-  max-height: 150px;
-  overflow-y: auto;  /* 當內容超出 max-height 時，顯示垂直捲動軸 */
-  padding-right: 5px; /* 為捲動軸留出一些空間，避免內容緊貼捲動軸 */
-
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-height: 150px; /* 保留滾動功能 */
+  overflow-y: auto;
+  padding-right: 5px; /* 為捲動軸留出空間 */
 }
 
+/* 熱門搜尋列表捲動條樣式 */
 .price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar {
-  width: 8px;
+  width: 6px; /* 更細的捲動條 */
 }
 .price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar-track {
-  background: #ffffff; /* 捲動條軌道背景色 */
-  border-radius: 10px;
+  background: transparent; /* 軌道透明 */
 }
 .price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar-thumb {
-  background: #ccc; /* 捲動條滑塊顏色 */
-  border-radius: 10px;
+  background: var(--color-scrollbar-thumb, #dcdcdc); /* 淡灰色滑塊 */
+  border-radius: 6px;
 }
 .price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar-thumb:hover {
-  background: #aaa; /* 滑鼠懸停時滑塊顏色 */
+  background: var(--color-scrollbar-thumb-hover, #bfbfbf); /* 滑鼠懸停時略深 */
 }
 
+/* 熱門搜尋項目 */
 .price-analysis-view .stock-analysis-card .hot-search-item {
-  padding: 8px 15px;
-  background-color: #eef4ff; /* Light blue background */
-  border-radius: 6px; /* Softly rounded corners */
+  padding: 7px 14px; /* 略微調整 padding */
+  background-color: var(--color-bg-muted, #f8f8f8); /* 非常淡的灰色背景，接近白色 */
+  border-radius: var(--border-radius-medium, 8px); /* 圓角與卡片一致或略小 */
   cursor: pointer;
-  font-size: 0.9em;
-  font-weight: 500;
-  color: #0052cc; /* Medium blue text */
-  transition: all 0.2s ease-in-out;
-  border: 1px solid #c0d9ff; /* Light blue border */
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  text-align: center;
+  font-size: 0.85em; /* 略微調整字體大小 */
+  font-weight: 400; /* 正常字重，不加粗 */
+  color: var(--color-text-secondary, #333333); /* 深灰色文字，確保對比度 */
+  transition: background-color 0.2s ease, color 0.2s ease; /* 平滑過渡 */
+  border: 1px solid var(--color-border-subtle, #eeeeee); /* 非常淡的邊框，或移除 border: none; */
+  /* box-shadow: none; /* 移除陰影以獲得更扁平的外觀 */
 }
 
+/* 熱門搜尋項目 - 滑鼠懸停/焦點狀態 */
 .price-analysis-view .stock-analysis-card .hot-search-item:hover,
 .price-analysis-view .stock-analysis-card .hot-search-item:focus {
-  background-color: #0065ff; /* Primary blue background on hover */
-  color: white;
-  border-color: #0052cc; /* Darker blue border on hover */
-  box-shadow: 0 2px 5px rgba(0, 101, 255, 0.25);
-  transform: translateY(-1px);
+  background-color: var(--color-bg-muted-hover, #efefef); /* 懸停時背景色略微加深 */
+  color: var(--color-text-primary, #000000); /* 懸停時文字顏色可略微加深或保持不變 */
+  /* border-color: var(--color-border-muted-hover, #e0e0e0); /* 懸停時邊框顏色略微加深 */
+  /* box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.03)); /* 可選：非常細微的陰影 */
   outline: none;
+  /* transform: none; /* 移除變形效果，保持穩定 */
 }
 
+/* 熱門搜尋項目 - 按下狀態 */
 .price-analysis-view .stock-analysis-card .hot-search-item:active {
-  background-color: #0052cc; /* Darker blue on active */
-  transform: translateY(0px);
-  box-shadow: 0 1px 2px rgba(0, 101, 255, 0.2);
+  background-color: var(--color-bg-muted-active, #e8e8e8); /* 按下時背景色更深一點 */
+  /* transform: none; /* 移除變形效果 */
+  /* box-shadow: none; /* 按下時移除陰影 */
 }
-
