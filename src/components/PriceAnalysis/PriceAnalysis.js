@@ -20,7 +20,7 @@ import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebounced
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
 import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
-// 假設在 .env 檔或 config 有定義 REACT_APP_API_BASE_URL
+import './HotSearches.css'; 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
@@ -758,9 +758,9 @@ export function PriceAnalysis() {
 
             {/* 熱門搜尋區塊 (仍在 analysis-controls-wrapper 內) */}
             <div className="hot-searches-section">
-              <h4>{t('priceAnalysis.hotSearches.title', '熱門搜尋')}</h4>
+              <h4>{t('priceAnalysis.hotSearches.title')}</h4>
               {loadingHotSearches ? (
-                <p>{t('priceAnalysis.hotSearches.loading', '載入中...')}</p>
+                <p>{t('common.Loading')}</p>
               ) : hotSearches.length > 0 ? (
                 <ul className="hot-search-list">
                   {hotSearches.map((searchItem, index) => (
@@ -777,7 +777,7 @@ export function PriceAnalysis() {
                   ))}
                 </ul>
               ) : (
-                <p>{t('priceAnalysis.hotSearches.noData', '暫無熱門搜尋記錄')}</p>
+                <p>{t('priceAnalysis.hotSearches.noData')}</p>
               )}
             </div>
           </div> {/* 結束 analysis-controls-wrapper */}

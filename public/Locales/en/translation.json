@@ -577,6 +577,10 @@
       "turnstileError": "Verification failed, please try again",
       "turnstileExpired": "Verification expired, please verify again",
       "invalidUrlYears": "Invalid query period read from URL."
+    },
+    "hotSearches": { 
+      "title": "Trending 🔥",
+      "noData": "No data available" 
     }
   },
   "watchlist": {

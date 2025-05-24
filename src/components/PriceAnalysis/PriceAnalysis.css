@@ -548,19 +548,6 @@
     width: 100%; /* 確保填滿 analysis-controls-wrapper */
   }
 
-  /* 熱門搜尋區塊在寬螢幕下的特定樣式調整 */
-  .price-analysis-view .content-layout-container .dashboard .analysis-controls-wrapper .hot-searches-section {
-    /* margin-top: 20px; /* 保持與 stock-analysis-card 的間距 */
-    /* width: 100%; /* 確保填滿 analysis-controls-wrapper */
-    /* padding: 15px 10px; /* 與手機版一致或調整 */
-    /* border-top: 1px solid var(--color-border-default, #e0e0e0); /* 與手機版一致或調整 */
-    /* text-align: center; /* 與手機版一致或調整 */
-    /* background-color: var(--color-bg-card, white); /* 可選：如果希望它有獨立背景 */
-    /* border-radius: var(--border-radius-large, 8px); /* 可選：如果希望它有圓角 */
-    /* box-shadow: var(--shadow-m, 0 2px 4px rgba(0,0,0,0.1)); /* 可選：如果希望它有陰影 */
-    /* margin-bottom: 0; /* 確保下方沒有多餘間距 */
-  }
-
   .price-analysis-view .content-layout-container .dashboard .chart-card {
     flex-grow: 1; /* <--- 控制 chart-card 在 .dashboard 內部填滿剩餘空間 */
     display: flex; 
@@ -674,67 +661,4 @@
     width: 100% !important;
     max-width: 100% !important;
   }
-}
-
-/* 新增：熱門搜尋區塊樣式 */
-.price-analysis-view .stock-analysis-card .hot-searches-section {
-  margin-top: 20px;
-  width: 100%; /* 確保填滿卡片寬度 */
-  padding: 15px 10px;
-  border-top: 1px solid var(--color-border-default, #e0e0e0);
-  text-align: center; /* 讓標題和列表內容置中 */
-}
-
-.price-analysis-view .stock-analysis-card .hot-searches-section h4 {
-  font-size: 1.1em; /* Slightly larger */
-  margin-top: 0;
-  margin-bottom: 15px; /* More space below title */
-  color: var(--color-text-primary, #1d1d1f); 
-  font-weight: 600; /* Bold */
-}
-
-.price-analysis-view .stock-analysis-card .hot-searches-section p {
-  font-size: 0.9em;
-  color: var(--color-text-secondary, #86868b); 
-  margin-bottom: 15px; /* Space before the list */
-}
-
-.price-analysis-view .stock-analysis-card .hot-search-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap; /* 允許項目換行 */
-  gap: 8px; /* 項目之間的間距 */
-  justify-content: center; /* 水平置中項目 */
-}
-
-.price-analysis-view .stock-analysis-card .hot-search-item {
-  padding: 8px 15px;
-  background-color: #eef4ff; /* Light blue background */
-  border-radius: 6px; /* Softly rounded corners */
-  cursor: pointer;
-  font-size: 0.9em;
-  font-weight: 500;
-  color: #0052cc; /* Medium blue text */
-  transition: all 0.2s ease-in-out;
-  border: 1px solid #c0d9ff; /* Light blue border */
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  text-align: center;
-}
-
-.price-analysis-view .stock-analysis-card .hot-search-item:hover,
-.price-analysis-view .stock-analysis-card .hot-search-item:focus {
-  background-color: #0065ff; /* Primary blue background on hover */
-  color: white;
-  border-color: #0052cc; /* Darker blue border on hover */
-  box-shadow: 0 2px 5px rgba(0, 101, 255, 0.25);
-  transform: translateY(-1px);
-  outline: none;
-}
-
-.price-analysis-view .stock-analysis-card .hot-search-item:active {
-  background-color: #0052cc; /* Darker blue on active */
-  transform: translateY(0px);
-  box-shadow: 0 1px 2px rgba(0, 101, 255, 0.2);
 }
