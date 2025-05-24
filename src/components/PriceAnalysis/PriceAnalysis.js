@@ -172,7 +172,7 @@ export function PriceAnalysis() {
   };
 
   // 資料抓取函式
-  const fetchStockData = useCallback(async (stock, yrs, testDate, bypassTurnstile = false) => {
+  const fetchStockData = useCallback(async (stock, yrs, testDate, bypassTurnstile = false, isManualSearch = false) => {
     // 驗證 Turnstile Token
     if (!bypassTurnstile && !turnstileToken) {
       // 可以直接調用 showToast 或通過 handleApiError
@@ -189,8 +189,13 @@ export function PriceAnalysis() {
     // setLoading(true) 和清除訊息已移至 handleSubmit
 
     try {
+      const params = { stockCode: stock, years: yrs, backTestDate: testDate };
+      if (isManualSearch) { // Add source if it's a manual search
+        params.source = 'manual_price_analysis';
+      }
+
       const response = await axios.get(`${API_BASE_URL}/api/integrated-analysis`, {
-        params: { stockCode: stock, years: yrs, backTestDate: testDate },
+        params: params,
         headers: { 'CF-Turnstile-Token': bypassTurnstile ? undefined : turnstileToken },
         timeout: 30000
       });
@@ -321,7 +326,7 @@ export function PriceAnalysis() {
     }, 0);
 
     // 觸發數據抓取
-    fetchStockData(stockToFetch, numYears, dateToFetch, false);
+    fetchStockData(stockToFetch, numYears, dateToFetch,  false, true);
     // --- 結束：表單處理邏輯 ---
   };
 
@@ -493,7 +498,7 @@ export function PriceAnalysis() {
     }, 0);
 
     // 直接調用 fetchStockData 執行分析
-    fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, false);
+    fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, false, true);
   };
 
   // 切換簡易/進階查詢模式
