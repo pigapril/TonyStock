@@ -651,6 +651,7 @@
         "news": "News",
         "twFlagAlt": "Taiwan Flag",
         "usFlagAlt": "US Flag",
+        "hkFlagAlt": "HK Flag",
         "logoAlt": "{{symbol}} logo"
       }
     },

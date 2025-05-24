@@ -2,6 +2,8 @@ import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import twFlag from '../../../../assets/flags/tw-flag.svg';
 import usFlag from '../../../../assets/flags/us-flag.svg';
+import hkFlag from '../../../../assets/flags/hk-flag.svg';
+
 import '../../styles/StockHeader.css';
 
 export const StockHeader = memo(function StockHeader({ stock }) {
@@ -18,6 +20,17 @@ export const StockHeader = memo(function StockHeader({ stock }) {
                     />
                 </div>
             );
+        } else if (stock.logo === 'HK') { // <--- 新增：對香港標識的判斷
+            return (
+                <div className="default-logo hk-stock"> {/* 你可以定義 hk-stock 的 CSS class */}
+                    <img 
+                        src={hkFlag} 
+                        alt={t('watchlist.stockCard.header.hkFlagAlt')} // 確保在翻譯檔案中添加此 key
+                        className="flag-icon"
+                    />
+                </div>
+            );
+            
         } else if (stock.logo === 'US_ETF') {
             return (
                 <div className="default-logo us-etf">
