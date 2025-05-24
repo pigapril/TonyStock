@@ -7,6 +7,7 @@
   background-color: transparent;
   transition: all 0.3s ease;
   cursor: pointer;
+
 }
 
 .description-container:hover {
@@ -32,7 +33,16 @@
   position: relative;
   max-height: 80px;
   overflow: hidden;
+
 }
+
+.description-container:not(.description-expanded) {
+  cursor: pointer; /* Keep cursor pointer for non-expanded state */
+}
+.description-container.description-expanded {
+  cursor: default; /* Change cursor when expanded as click is handled by button */
+}
+
 
 .description-full::after {
   content: '';
@@ -51,9 +61,9 @@
 }
 
 .description-expanded .description-full {
-  max-height: 2000px;
   opacity: 1;
-  display: block;
+  overflow: visible;
+  flex-grow: 1;     
 }
 
 .description-expanded .description-full::after {
@@ -173,3 +183,7 @@
   line-height: 1.25;
   letter-spacing: .007em;
 } 
+
+.description-container.description-expanded .description-toggle {
+  display: none;
+}

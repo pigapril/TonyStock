@@ -416,8 +416,19 @@
   width: 100%; /* 確保寬度為100% */
   max-width: 100%; /* 確保不超出父容器 */
   box-sizing: border-box; /* 包含padding和border在內 */
-
 } 
+
+.price-analysis-view .description-scroll-content {
+  display: flex; /* 設定為 flex 容器 */
+  flex-direction: column; /* 子元素垂直排列 */
+  flex-grow: 1; /* 讓此容器填滿其父容器 (description-container-wrapper) 的剩餘空間 */
+  min-height: 0; /* 在 flex 佈局中，確保它可以正確縮小 */
+  /* 在 description-text-card 和 description-ad-card 之間產生間距 */
+  gap: var(--space-m, 10px); /* 這裡的 var(--space-m, 10px) 與您原先在 wrapper 上的設定一致 */
+  overflow: hidden; /* 可選：如果內部卡片內容意外溢出，避免影響整體佈局。
+                       由於 .description-text-card 自身有 overflow-y: auto，
+                       這裡的 overflow: hidden 主要是針對 ad-card 或整體結構。 */
+}
 
 .price-analysis-view .react-datepicker__triangle {
   display: none; /* 隱藏三角形箭頭 */
@@ -604,6 +615,7 @@
   flex-direction: column;
   min-height: 0; /* 防止內容撐開 */
   overflow: hidden; /* 確保 wrapper 本身不出現滾動條 */
+  gap:  var(--space-m, 10px)
 }
 
 @media (min-width: 1024px) {
@@ -620,26 +632,24 @@
    }
 }
 
-.price-analysis-view .description-scroll-content {
-  padding: var(--space-l, 20px);
-  overflow-y: auto;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  max-height: 70vh;
-}
+
 
 /* 新增：上半部內容容器樣式 */
-.price-analysis-view .description-content-top {
+.price-analysis-view .description-text-card {
+  flex-grow:1;
+  flex-shrink: 1;
   flex-basis: 50%;
   overflow-y: auto;
-  padding-right: 10px;
+  min-height: 0;
+  padding: var(--space-l, 20px); /* Padding for the text content */
   box-sizing: border-box;
+  max-height: 50%;
 }
 
 /* 新增：下半部廣告容器樣式 */
-.price-analysis-view .description-content-ad {
+.price-analysis-view .description-ad-card {
+  flex-grow: 0;
+  flex-shrink: 0;
   flex-basis: 50%;
   display: flex;
   align-items: center;
@@ -652,17 +662,17 @@
   max-height: 50%; 
 }
 
-.price-analysis-view .description-content-top::-webkit-scrollbar {
+.price-analysis-view .description-text-card::-webkit-scrollbar {
   width: 6px; /* 更細的捲動條 */
 }
-.price-analysis-view .description-content-top::-webkit-scrollbar-track {
+.price-analysis-view .description-text-card::-webkit-scrollbar-track {
   background: transparent; /* 軌道透明 */
 }
-.price-analysis-view .description-content-top::-webkit-scrollbar-thumb {
+.price-analysis-view .description-text-card::-webkit-scrollbar-thumb {
   background: var(--color-scrollbar-thumb, #dcdcdc); /* 淡灰色滑塊 */
   border-radius: 6px;
 }
-.price-analysis-view .description-content-top::-webkit-scrollbar-thumb:hover {
+.price-analysis-view .description-text-card::-webkit-scrollbar-thumb:hover {
   background: var(--color-scrollbar-thumb-hover, #bfbfbf); /* 滑鼠懸停時略深 */
 }
 
@@ -690,7 +700,7 @@
 
 /* 熱門搜尋區塊樣式 - 整體容器 */
 .price-analysis-view .stock-analysis-card .hot-searches-section {
-  margin-top: 20px;
+  margin-top: 2%;
   width: 100%;
   padding: 15px 10px;
   /* border-top: 1px solid var(--color-border-light, #f0f0f0); /* 可選：更淡的頂部分隔線 */
@@ -722,7 +732,7 @@
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
-  max-height: 150px; /* 保留滾動功能 */
+  min-height: 50px;
   overflow-y: auto;
   padding-right: 5px; /* 為捲動軸留出空間 */
 }

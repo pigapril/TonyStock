@@ -880,7 +880,7 @@ export function PriceAnalysis() {
           <div className="description-container-wrapper">
             <div className="description-scroll-content">
               {/* 新增：上半部內容容器 */}
-              <div className="description-content-top">
+              <div className="description-text-card">
                 <MemoizedExpandableDescription
                   mainTitle={t('priceAnalysis.explanation.mainTitle')}
                   // 使用 t() 翻譯 shortDescription (注意保留連結)
@@ -902,7 +902,7 @@ export function PriceAnalysis() {
                 />
               </div>
               {/* 新增：下半部廣告容器 */}
-              <div className="description-content-ad">
+              <div className="description-ad-card">
                 <AdSense
                   client="ca-pub-9124378768777425" // 更新 client ID
                   slot="7874529667"         // 更新 slot ID
