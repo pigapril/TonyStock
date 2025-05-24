@@ -648,19 +648,19 @@
   box-sizing: border-box;
 }
 
-.price-analysis-view .description-scroll-content::-webkit-scrollbar {
+.price-analysis-view .description-content-top::-webkit-scrollbar {
   width: 8px;
 }
-.price-analysis-view .description-scroll-content::-webkit-scrollbar-track {
-  background: #f1f1f1;
+.price-analysis-view .description-content-top::-webkit-scrollbar-track {
+  background: #ffffff; /* 捲動條軌道背景色為白色 */
   border-radius: 10px;
 }
-.price-analysis-view .description-scroll-content::-webkit-scrollbar-thumb {
-  background: #ccc;
+.price-analysis-view .description-content-top::-webkit-scrollbar-thumb {
+  background: #ccc; /* 捲動條滑塊顏色 */
   border-radius: 10px;
 }
-.price-analysis-view .description-scroll-content::-webkit-scrollbar-thumb:hover {
-  background: #aaa;
+.price-analysis-view .description-content-top::-webkit-scrollbar-thumb:hover {
+  background: #aaa; /* 滑鼠懸停時滑塊顏色 */
 }
 
 @media (max-width: 430px) {
@@ -716,6 +716,25 @@
   flex-wrap: wrap; /* 允許項目換行 */
   gap: 8px; /* 項目之間的間距 */
   justify-content: center; /* 水平置中項目 */
+  max-height: 150px;
+  overflow-y: auto;  /* 當內容超出 max-height 時，顯示垂直捲動軸 */
+  padding-right: 5px; /* 為捲動軸留出一些空間，避免內容緊貼捲動軸 */
+
+}
+
+.price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar {
+  width: 8px;
+}
+.price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar-track {
+  background: #ffffff; /* 捲動條軌道背景色 */
+  border-radius: 10px;
+}
+.price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar-thumb {
+  background: #ccc; /* 捲動條滑塊顏色 */
+  border-radius: 10px;
+}
+.price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar-thumb:hover {
+  background: #aaa; /* 滑鼠懸停時滑塊顏色 */
 }
 
 .price-analysis-view .stock-analysis-card .hot-search-item {
@@ -747,3 +766,4 @@
   transform: translateY(0px);
   box-shadow: 0 1px 2px rgba(0, 101, 255, 0.2);
 }
+
