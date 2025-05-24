@@ -20,7 +20,6 @@ import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebounced
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
 import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
-import './HotSearches.css'; 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
