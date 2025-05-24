@@ -907,6 +907,7 @@ export function PriceAnalysis() {
                   client="ca-pub-9124378768777425" // 更新 client ID
                   slot="7874529667"         // 更新 slot ID
                   format="auto"
+                  responsive="true" // 如果這是個響應式廣告單元，考慮添加此 Google AdSense 支持的屬性
                 />
               </div>
             </div>
