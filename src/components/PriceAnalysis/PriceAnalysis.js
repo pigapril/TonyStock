@@ -902,14 +902,6 @@ export function PriceAnalysis() {
                   collapseButtonText={t('common.collapse')} // 假設有通用 key
                 />
               </div>
-              {/* 新增：下半部廣告容器 */}
-              <div className="description-content-ad">
-                <AdSense
-                  client="ca-pub-9124378768777425" // 更新 client ID
-                  slot="7874529667"         // 更新 slot ID
-                  format="auto"
-                />
-              </div>
             </div>
           </div>
         </div> {/* 結束 content-layout-container */}
