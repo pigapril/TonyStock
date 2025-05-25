@@ -209,7 +209,7 @@
     width: 100%;
     min-width: 100%;
     max-width: none;
-    padding: 20px 10px 0px 10px;
+    padding: 10px 10px 0px 10px;
   }
 
   .price-analysis-view .input-group {
@@ -696,11 +696,9 @@
 
 /* 熱門搜尋區塊標題 */
 .price-analysis-view .stock-analysis-card .hot-searches-section h4 {
-  font-size: 1.0em; /* 略微調整，使其不過於突出 */
   margin-top: 0;
   margin-bottom: 10px; /* 略微減少與下方文字的間距 */
-  color: var(--color-text-secondary, #555); /* 使用次要文字顏色，或更柔和的深灰色 */
-  font-weight: 500; /* 適中的字重 */
+  color: var(--color-text-secondary, #eb4646); /* 使用次要文字顏色，或更柔和的深灰色 */
 }
 
 /* 熱門搜尋區塊說明文字 (如果有的話) */
