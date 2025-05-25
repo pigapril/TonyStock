@@ -498,6 +498,7 @@
       "description": "Utilize standard deviation to analyze stock price trends and gauge market sentiment. Assess whether the current price reflects excessive optimism or pessimism. Track long-term trends and determine price position using statistical mean reversion properties."
     },
     "form": {
+      "title": "Stock Price Sentiment Analysis",
       "stockCodeLabel": "Stock Symbol：",
       "stockCodePlaceholder": "e.g., SPY, AAPL",
       "analysisPeriodLabel": "Analysis Period：",

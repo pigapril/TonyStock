@@ -649,6 +649,7 @@ export function PriceAnalysis() {
             {/* 將 stock-analysis-card 和 hot-searches-section 包裹在 analysis-controls-wrapper 中 */}
             <div className="analysis-controls-wrapper stock-analysis-card">
               <div className="stock-analysis-card">
+              <h4>{t('priceAnalysis.form.title')}</h4>
               <form onSubmit={handleSubmit}>
                 <div className="input-group">
                   {/* 使用 t() 翻譯 label */}
