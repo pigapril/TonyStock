@@ -327,6 +327,16 @@ const MarketSentimentIndex = () => {
           touchStartXRef.current = null;
           return;
         }
+        // 新增：如果事件目標在圖表或 tooltip 相關元素內部，則不觸發 modal 切換
+        if (target.classList && 
+            (target.classList.contains('indicator-chart') || 
+             target.classList.contains('tooltip') || 
+             target.closest('.indicator-chart') || 
+             target.closest('.tooltip'))
+        ) {
+          touchStartXRef.current = null;
+          return;
+        }
         target = target.parentElement;
       }
       if (e.targetTouches.length === 1) {
