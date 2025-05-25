@@ -689,8 +689,9 @@
   margin-top: 20px;
   width: 100%;
   padding: 15px 10px;
+  height: 30%;
   /* border-top: 1px solid var(--color-border-light, #f0f0f0); /* 可選：更淡的頂部分隔線 */
-  text-align: center;
+  text-align: center;  
 }
 
 /* 熱門搜尋區塊標題 */
@@ -718,7 +719,7 @@
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
-  max-height: 150px; /* 保留滾動功能 */
+  max-height: 100%; /* 保留滾動功能 */
   overflow-y: auto;
   padding-right: 5px; /* 為捲動軸留出空間 */
 }

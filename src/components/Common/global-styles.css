@@ -45,7 +45,7 @@ h1 {
   font-size: 2rem; /* 設定基礎字體大小 */
   color: var(--color-text-primary, #333333); /* 使用主要文字顏色 */
   font-weight: 600; /* 設定為半粗體 */
-  margin-top: 3%;    /* 移除瀏覽器預設的頂部外邊距 */
+  margin-top: var(--space-l, 24px);;    /* 移除瀏覽器預設的頂部外邊距 */
   margin-bottom: var(--space-l, 24px); /* 設定與下方內容的標準間距 */
   padding-bottom: var(--space-s, 8px);  /* 為底線預留空間 */
   border-bottom: 1px solid var(--color-border-divider, #eeeeee); /* 添加淺色細底線 */
