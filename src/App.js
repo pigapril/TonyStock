@@ -436,7 +436,7 @@ function AppContent() {
       </div>
       <AuthDialog />
       {/* 根據是否為首頁決定是否渲染 AdBanner */}
-      {/isHomePage && <AdBanner />}
+      {!isHomePage && <AdBanner />}
     </div>
   );
 }

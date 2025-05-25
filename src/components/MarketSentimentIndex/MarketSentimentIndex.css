@@ -809,14 +809,25 @@
 .composition-item {
   display: flex;
   align-items: center; /* Vertically align items */
-  padding: 12px 8px; /* Adjusted padding */
-  border-bottom: 1px solid #f0f0f0; /* Lighter border */
+  padding: 12px 15px; /* Slightly increased padding for a bit more space */
+  border-bottom: 1px solid #e8e8e8; /* Slightly darker border for better separation */
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease; /* Added more transitions */
+  border-radius: 6px; /* Added border-radius */
+  margin-bottom: 5px; /* Add some space between items if they are distinct cards now */
+  background-color: #ffffff; /* Ensure a base background color */
 }
 
 .composition-item:hover {
-  background-color: #f9f9f9; /* Subtle hover effect */
+  background-color: #f5f5f5; /* A bit more noticeable hover background */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Subtle shadow on hover */
+  transform: translateY(-1px); /* Slight lift effect on hover */
+}
+
+/* If you remove border-bottom from .composition-item because of margin-bottom, ensure the last item doesn't have extra margin or the list has a bottom border */
+.composition-list > .composition-item:last-child {
+  /* border-bottom: none; /* Optional: if you want to remove the border for the last item */
+  /* margin-bottom: 0; /* Optional: if you want to remove margin for the last item */
 }
 
 .composition-name {
