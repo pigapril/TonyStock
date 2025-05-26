@@ -152,24 +152,24 @@
 
 /* 修改：情緒特定樣式，使用漸層背景 (取代原 sentiment-xxx 樣式) - 新顏色方案 */
 /* 將中文 class 修改為英文 */
-.status-label.status-extremeOptimism { /* 原為 status-極度樂觀 */
-    background: linear-gradient(135deg, #a63c3c 0%, #5b101f 100%);
+.status-label.status-extremeOptimism { /* 原為 status-極度樂觀 - StockGauge: #D24A93 */
+    background: linear-gradient(135deg, #D24A93 0%, #A83B75 100%); /* #A83B75 is a darker shade of #D24A93 */
 }
 
-.status-label.status-optimism { /* 原為 status-樂觀 */
-    background: linear-gradient(135deg, #cf6357 0%, #ab5454 100%);
+.status-label.status-optimism { /* 原為 status-樂觀 - StockGauge: #F0B8CE */
+    background: linear-gradient(135deg, #F0B8CE 0%, #C093A4 100%); /* #C093A4 is a darker shade of #F0B8CE */
 }
 
-.status-label.status-neutral { /* 原為 status-中性 */
-    background: linear-gradient(135deg, #F0AD4E 0%, #E9972D 100%);
+.status-label.status-neutral { /* 原為 status-中性 - StockGauge: #708090 */
+    background: linear-gradient(135deg, #708090 0%, #596673 100%); /* #596673 is a darker shade of #708090 */
 }
 
-.status-label.status-pessimism { /* 原為 status-悲觀 */
-    background: linear-gradient(135deg, #499749 0%, #246f48 100%);
+.status-label.status-pessimism { /* 原為 status-悲觀 - StockGauge: #5B9BD5 */
+    background: linear-gradient(135deg, #5B9BD5 0%, #487CAA 100%); /* #487CAA is a darker shade of #5B9BD5 */
 }
 
-.status-label.status-extremePessimism { /* 原為 status-極度悲觀 */
-    background: linear-gradient(135deg, #1E5B3C 0%, #143829 100%);
+.status-label.status-extremePessimism { /* 原為 status-極度悲觀 - StockGauge: #0000FF */
+    background: linear-gradient(135deg, #0000FF 0%, #0000CC 100%); /* #0000CC is a darker shade of #0000FF */
 }
 
 /* 修改：Hover 效果 (取代原 analysis-result:hover 樣式) */

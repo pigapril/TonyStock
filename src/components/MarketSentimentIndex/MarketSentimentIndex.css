@@ -661,27 +661,27 @@
 /* 更新：使用英文鍵名 */
 .market-sentiment-view .indicator-item .analysis-result .analysis-value.sentiment-extremeFear,
 .composition-modal .indicator-item .analysis-result .analysis-value.sentiment-extremeFear {
-  color: #143829; /* 極度恐懼 - 深綠色 */
+  color: #0000FF; /* 極度恐懼 - 深綠色 */
 }
 
 .market-sentiment-view .indicator-item .analysis-result .analysis-value.sentiment-fear,
 .composition-modal .indicator-item .analysis-result .analysis-value.sentiment-fear {
-  color: #2B5B3F; /* 恐懼 - 綠色 */
+  color: #5B9BD5; /* 恐懼 - 綠色 */
 }
 
 .market-sentiment-view .indicator-item .analysis-result .analysis-value.sentiment-neutral,
 .composition-modal .indicator-item .analysis-result .analysis-value.sentiment-neutral {
-  color: #E9972D; /* 中性 - 黃色 */
+  color: #708090; /* 中性 - 黃色 */
 }
 
 .market-sentiment-view .indicator-item .analysis-result .analysis-value.sentiment-greed,
 .composition-modal .indicator-item .analysis-result .analysis-value.sentiment-greed {
-  color: #C4501B; /* 貪婪 - 橘色 */
+  color: #F0B8CE; /* 貪婪 - 橘色 */
 }
 
 .market-sentiment-view .indicator-item .analysis-result .analysis-value.sentiment-extremeGreed,
 .composition-modal .indicator-item .analysis-result .analysis-value.sentiment-extremeGreed {
-  color: #A0361B; /* 極度貪婪 - 紅色 */
+  color: #D24A93; /* 極度貪婪 - 紅色 */
 }
 
 @media (max-width: 430px) {
@@ -885,11 +885,11 @@
   }
 
 /* Bar colors based on sentiment */
-.composition-bar.sentiment-extremeFear { background-color: #143829; }
-.composition-bar.sentiment-fear { background-color: #2B5B3F; }
-.composition-bar.sentiment-neutral { background-color: #E9972D; }
-.composition-bar.sentiment-greed { background-color: #C4501B; }
-.composition-bar.sentiment-extremeGreed { background-color: #A0361B; }
+.composition-bar.sentiment-extremeFear { background-color: #0000FF; }
+.composition-bar.sentiment-fear { background-color: #5B9BD5; }
+.composition-bar.sentiment-neutral { background-color: #708090; }
+.composition-bar.sentiment-greed { background-color: #F0B8CE; }
+.composition-bar.sentiment-extremeGreed { background-color: #D24A93; }
 .composition-bar.sentiment-notAvailable { background-color: #ced4da; } /* Color for notAvailable */
 
 .composition-score-text {
@@ -911,11 +911,11 @@
 }
 
 /* Colors for composition-sentiment text */
-.composition-sentiment.sentiment-extremeFear { color: #143829; }
-.composition-sentiment.sentiment-fear { color: #2B5B3F; }
-.composition-sentiment.sentiment-neutral { color: #E9972D; }
-.composition-sentiment.sentiment-greed { color: #C4501B; }
-.composition-sentiment.sentiment-extremeGreed { color: #A0361B; }
+.composition-sentiment.sentiment-extremeFear { color: #0000FF;}
+.composition-sentiment.sentiment-fear { color: #5B9BD5; }
+.composition-sentiment.sentiment-neutral { color: #708090; }
+.composition-sentiment.sentiment-greed { color: #F0B8CE; }
+.composition-sentiment.sentiment-extremeGreed { color: #D24A93; }
 .composition-sentiment.sentiment-notAvailable { color: #6c757d; } /* Muted color for notAvailable */
 
 /* 當前及左右半顯示模態框佈局 */

@@ -5,11 +5,11 @@ import './styles/StockGauge.css';
 export const StockGauge = ({ price, support, resistance }) => {
     // Colors from PriceAnalysis.css
     const COLORS = {
-        extremePessimism: '#143829',  // 極度悲觀 (matches tl_minus_2sd)
-        pessimism: '#1E5B3C',         // 悲觀
-        neutral: '#E9972D',           // 中性 (matches trendLine)
-        optimism: '#C14C20',          // 樂觀
-        extremeOptimism: '#A0361B',   // 極度樂觀 (matches tl_plus_2sd)
+        extremePessimism: '#0000FF',  // 極度悲觀 (matches tl_minus_2sd)
+        pessimism: '#5B9BD5',         // 悲觀
+        neutral: '#708090',           // 中性 (matches trendLine)
+        optimism: '#F0B8CE',          // 樂觀
+        extremeOptimism: '#D24A93',   // 極度樂觀 (matches tl_plus_2sd)
         neutralBackground: 'rgba(226, 232, 240, 0.3)' // Slate-200 for unfilled portion
     };
 

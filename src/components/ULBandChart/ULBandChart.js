@@ -30,32 +30,32 @@ const ULBandChart = ({ data }) => {
             {
                 label: t('ulBandChart.upperBandLabel'),
                 data: data.upperBand,
-                borderColor: '#A0361B',  // 極度貪婪 - 深紅褐色
-                borderWidth: 1,
+                borderColor: '#D24A93',  // 極度貪婪 - 深紅褐色
+                borderWidth: 2,
                 fill: false,
                 pointRadius: 0
             },
             {
                 label: t('ulBandChart.ma20Label'),
                 data: data.ma20,
-                borderColor: '#E9972D',  // 中性 - 橙黃色
-                borderWidth: 1,
+                borderColor: '#708090',  // 中性 - 橙黃色
+                borderWidth: 2,
                 fill: false,
                 pointRadius: 0
             },
             {
                 label: t('ulBandChart.priceLabel'),
                 data: data.prices,
-                borderColor: 'blue',     // 保持與標準差分析相同的藍色
-                borderWidth: 1,
+                borderColor: '787878',     // 保持與標準差分析相同的藍色
+                borderWidth: 2,
                 fill: false,
                 pointRadius: 0
             },
             {
                 label: t('ulBandChart.lowerBandLabel'),
                 data: data.lowerBand,
-                borderColor: '#143829',  // 極度恐懼 - 深墨綠色
-                borderWidth: 1,
+                borderColor: '#0000FF',  // 極度恐懼 - 深墨綠色
+                borderWidth: 2,
                 fill: false,
                 pointRadius: 0
             }
