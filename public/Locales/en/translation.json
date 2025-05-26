@@ -330,15 +330,15 @@
         ]
       },
       "vixMA50": {
-        "shortDescription": "The VIX Index (Volatility Index), often called the 'fear index,' measures the market's expectation of 30-day volatility for the S&P 500. Here, we use the VIX relative to its 50-day moving average to observe changes in fear sentiment.",
+        "shortDescription": "The VIX Index (Volatility Index), often referred to as the 'Fear Gauge,' measures the market's expectation of 30-day forward-looking volatility of the S&P 500 Index. Here, the 50-day moving average of the VIX is calculated to observe long-term trends in market sentiment.",
         "sections": [
           {
             "title": "Indicator Interpretation",
-            "content": "When the VIX is significantly above its 50-day MA, it indicates a sharp increase in market fear and demand for hedging, leaning towards extreme fear. When the VIX is significantly below its 50-day MA, it indicates relative market calm and higher investor risk appetite, leaning towards greed."
+            "content": "An ascending VIX 50-day moving average indicates rising market fear and increased demand for hedging. Conversely, a descending VIX 50-day moving average suggests a relatively calm market, higher investor risk appetite, and a shift in market sentiment towards greed."
           },
           {
             "title": "Extreme Value Significance",
-            "content": "Extreme spikes in the VIX often accompany sharp market declines and are considered one signal for buying opportunities. However, a persistently low VIX might indicate complacency and warrant caution."
+            "content": "Extreme spikes in the VIX often accompany significant market downturns and can be considered a contrarian buy signal. Persistently low VIX levels, on the other hand, may indicate excessive greed in the market, warranting caution"
           }
         ]
       },
