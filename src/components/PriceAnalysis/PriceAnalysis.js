@@ -209,12 +209,12 @@ export function PriceAnalysis() {
           labels: dates,
           datasets: [
             // 使用 t() 翻譯 dataset labels
-            { label: t('priceAnalysis.chart.label.price'), data: prices, borderColor: 'blue', borderWidth: 2, fill: false, pointRadius: 0 },
-            { label: t('priceAnalysis.chart.label.trendLine'), data: sdAnalysis.trendLine, borderColor: '#E9972D', borderWidth: 2, fill: false, pointRadius: 0 },
-            { label: t('priceAnalysis.chart.label.minus2sd'), data: sdAnalysis.tl_minus_2sd, borderColor: '#143829', borderWidth: 2, fill: false, pointRadius: 0 },
-            { label: t('priceAnalysis.chart.label.minus1sd'), data: sdAnalysis.tl_minus_sd, borderColor: '#2B5B3F', borderWidth: 2, fill: false, pointRadius: 0 },
-            { label: t('priceAnalysis.chart.label.plus1sd'), data: sdAnalysis.tl_plus_sd, borderColor: '#C4501B', borderWidth: 2, fill: false, pointRadius: 0 },
-            { label: t('priceAnalysis.chart.label.plus2sd'), data: sdAnalysis.tl_plus_2sd, borderColor: '#A0361B', borderWidth: 2, fill: false, pointRadius: 0 }
+            { label: t('priceAnalysis.chart.label.price'), data: prices, borderColor: 'grey', borderWidth: 2, fill: false, pointRadius: 0 }, // 價格線顏色維持灰色
+            { label: t('priceAnalysis.chart.label.trendLine'), data: sdAnalysis.trendLine, borderColor: '#7B68EE', borderWidth: 2, fill: false, pointRadius: 0 }, // Neutral
+            { label: t('priceAnalysis.chart.label.minus2sd'), data: sdAnalysis.tl_minus_2sd, borderColor: '#0000CD', borderWidth: 2, fill: false, pointRadius: 0 }, // extremePessimism
+            { label: t('priceAnalysis.chart.label.minus1sd'), data: sdAnalysis.tl_minus_sd, borderColor: '#4169E1', borderWidth: 2, fill: false, pointRadius: 0 }, // pessimism
+            { label: t('priceAnalysis.chart.label.plus1sd'), data: sdAnalysis.tl_plus_sd, borderColor: '#E685FF', borderWidth: 2, fill: false, pointRadius: 0 }, // optimism
+            { label: t('priceAnalysis.chart.label.plus2sd'), data: sdAnalysis.tl_plus_2sd, borderColor: '#FF40FF', borderWidth: 2, fill: false, pointRadius: 0 }  // extremeOptimism
           ],
           timeUnit: getTimeUnit(dates)
         });
