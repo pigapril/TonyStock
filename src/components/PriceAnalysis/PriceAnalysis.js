@@ -211,10 +211,10 @@ export function PriceAnalysis() {
             // 使用 t() 翻譯 dataset labels
             { label: t('priceAnalysis.chart.label.price'), data: prices, borderColor: '787878', borderWidth: 2, fill: false, pointRadius: 0 }, // 價格線顏色維持灰色
             { label: t('priceAnalysis.chart.label.trendLine'), data: sdAnalysis.trendLine, borderColor: '#708090', borderWidth: 2, fill: false, pointRadius: 0 }, // Neutral
-            { label: t('priceAnalysis.chart.label.minus2sd'), data: sdAnalysis.tl_minus_2sd, borderColor: '#004C99', borderWidth: 2, fill: false, pointRadius: 0 }, // extremePessimism
+            { label: t('priceAnalysis.chart.label.minus2sd'), data: sdAnalysis.tl_minus_2sd, borderColor: '#0000FF', borderWidth: 2, fill: false, pointRadius: 0 }, // extremePessimism
             { label: t('priceAnalysis.chart.label.minus1sd'), data: sdAnalysis.tl_minus_sd, borderColor: '#5B9BD5', borderWidth: 2, fill: false, pointRadius: 0 }, // pessimism
-            { label: t('priceAnalysis.chart.label.plus1sd'), data: sdAnalysis.tl_plus_sd, borderColor: '#D24A93', borderWidth: 2, fill: false, pointRadius: 0 }, // optimism
-            { label: t('priceAnalysis.chart.label.plus2sd'), data: sdAnalysis.tl_plus_2sd, borderColor: '#A70000', borderWidth: 2, fill: false, pointRadius: 0 }  // extremeOptimism
+            { label: t('priceAnalysis.chart.label.plus1sd'), data: sdAnalysis.tl_plus_sd, borderColor: '#F0B8CE', borderWidth: 2, fill: false, pointRadius: 0 }, // optimism
+            { label: t('priceAnalysis.chart.label.plus2sd'), data: sdAnalysis.tl_plus_2sd, borderColor: '#D24A93', borderWidth: 2, fill: false, pointRadius: 0 }  // extremeOptimism
           ],
           timeUnit: getTimeUnit(dates)
         });
