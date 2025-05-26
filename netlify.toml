@@ -37,6 +37,13 @@
 [context.deploy-preview.environment]
   REACT_APP_API_BASE_URL = ""
 
+[context.branch-deploy]
+  command = "SKIP_PREFLIGHT_CHECK=true CI=false npm run build"
+  publish = "build"
+
 [context.branch-deploy.environment]
   REACT_APP_API_BASE_URL = ""
+  NODE_VERSION = "18.16.0"
+  NPM_VERSION = "9.5.1"
+  CI = "false"
   
