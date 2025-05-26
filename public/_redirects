@@ -18,6 +18,9 @@ https://niku-stock.netlify.app/* https://sentimentinsideout.com/:splat 301!
 # --- 考慮是否需要將根路徑重定向到預設語言首頁 ---
 # /         /zh-TW/         301  # 如果您希望訪問 / 直接跳轉到 /zh-TW/
 
+# 重定向舊的 sitemap.sentimentinsideout.com 網址
+https://sitemap.sentimentinsideout.com/priceanalysis https://sentimentinsideout.com/en/priceanalysis 301
+
 # API 代理
 /api/* https://stockdatabase.publicvm.com/api/:splat 200
 
