@@ -1,0 +1,64 @@
+.announcement-bar {
+  background-color: #f0f8ff; /* AliceBlue */
+  color: #333;
+  padding: 8px 15px;
+  text-align: center;
+  font-size: 0.9em;
+  border-bottom: 1px solid #e0e0e0;
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative; /* For close button positioning */
+}
+
+.announcement-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: marquee 20s linear infinite; /* Adjust duration as needed */
+}
+
+.announcement-message {
+  margin: 0;
+  padding-right: 20px; /* Space for the close button */
+}
+
+.announcement-close {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.2em;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 5px;
+}
+
+.announcement-close:hover {
+  color: #555;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Pause animation on hover */
+.announcement-bar:hover .announcement-content {
+  animation-play-state: paused;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .announcement-bar {
+    font-size: 0.8em;
+    padding: 6px 10px;
+    margin-top: 5%;
+  }
+  .announcement-close {
+    font-size: 1em;
+    right: 5px;
+  }
+}

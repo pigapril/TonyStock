@@ -573,11 +573,14 @@
       }
     },
     "toast": {
-      "invalidYears": "Please enter a valid query period (years), which must be greater than zero.",
+      "invalidYears": "Invalid query period, please enter a number greater than 0.",
       "turnstileRequired": "Please complete the verification first",
       "turnstileError": "Verification failed, please try again",
       "turnstileExpired": "Verification expired, please verify again",
       "invalidUrlYears": "Invalid query period read from URL."
+    },
+    "announcement": {
+      "message": "Due to recent data source issues, queries may fail or show missing stock codes, and watchlists might be affected. Please try again later. Thank you for your understanding."
     },
     "hotSearches": { 
       "title": "Trending 🔥",

@@ -20,6 +20,7 @@ import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebounced
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
 import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
+import AnnouncementBar from '../Common/AnnouncementBar/AnnouncementBar'; // 引入 AnnouncementBar
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
@@ -95,6 +96,8 @@ export function PriceAnalysis() {
   const [isAdCooldownActive, setIsAdCooldownActive] = useState(false); // 新增：追蹤廣告冷卻狀態
   const cooldownTimeoutRef = useRef(null); // 新增：保存冷卻計時器 ID
   const [isPending, startTransition] = useTransition(); // 添加 useTransition
+  const [announcementMessage, setAnnouncementMessage] = useState(''); // 公告訊息
+  const [showAnnouncement, setShowAnnouncement] = useState(false); // 控制公告顯示
 
   // 新增：熱門搜尋狀態
   const [hotSearches, setHotSearches] = useState([]);
@@ -440,6 +443,14 @@ export function PriceAnalysis() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, location.state]); // <--- 修改：移除 fetchStockData, showToast, loading
 
+  // 新增：useEffect 鉤子來設定公告訊息
+  useEffect(() => {
+    // 這裡可以從 API 獲取公告，或者直接設定
+    const message = t('priceAnalysis.announcement.message'); // 從翻譯文件獲取訊息
+    setAnnouncementMessage(message);
+    setShowAnnouncement(true); // 預設顯示公告
+  }, [t]);
+
   // 新增：處理熱門搜尋項目點擊事件
   const handleHotSearchClick = (searchItem) => { // 參數名稱改為 searchItem 以清晰表示它是一個物件
     const upperClickedCode = searchItem.keyword.toUpperCase();
@@ -641,6 +652,11 @@ export function PriceAnalysis() {
       ogType="website"
       jsonLd={priceAnalysisJsonLd}
     >
+      <AnnouncementBar
+        message={announcementMessage}
+        isVisible={showAnnouncement}
+        onClose={() => setShowAnnouncement(false)}
+      />
       <div className="price-analysis-view">
         <h1>{t('priceAnalysis.pageTitle')}</h1>
         <div className="content-layout-container"> {/* 新增：佈局容器 */}
@@ -765,7 +781,7 @@ export function PriceAnalysis() {
             <div className="hot-searches-section">
               <h4>{t('priceAnalysis.hotSearches.title')}</h4>
               {loadingHotSearches ? (
-                <p>{t('common.Loading')}</p>
+                <p>{t('common.loading')}</p>
               ) : hotSearches.length > 0 ? (
                 <ul className="hot-search-list">
                   {hotSearches.map((searchItem, index) => (
