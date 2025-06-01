@@ -14,13 +14,13 @@ const AnnouncementBar = ({ message, isVisible, onClose }) => {
     <div className="announcement-bar">
       <div className="announcement-content">
         <p className="announcement-message">{message}</p>
-        <button className="announcement-close" onClick={() => {
-          setShowBar(false);
-          if (onClose) onClose();
-        }}>
-          &times;
-        </button>
       </div>
+      <button className="announcement-close" onClick={() => {
+        setShowBar(false);
+        if (onClose) onClose();
+      }}>
+        &times;
+      </button>
     </div>
   );
 };
