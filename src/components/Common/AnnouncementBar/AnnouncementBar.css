@@ -63,4 +63,7 @@
     font-size: 1em;
     right: 5px;
   }
+  .announcement-content {
+    animation: marquee 35s linear infinite; /* Adjust duration as needed */
+  }
 }
