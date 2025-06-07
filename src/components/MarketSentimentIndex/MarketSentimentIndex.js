@@ -636,16 +636,36 @@ const MarketSentimentIndex = () => {
   const marketSentimentJsonLd = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": t('pageTitle.marketSentiment'),
-    "description": t('pageDescription.marketSentiment'),
+    "name": t('marketSentiment.pageTitle'), // 使用翻譯的頁面標題
+    "description": t('marketSentiment.pageDescription'), // 使用翻譯的頁面描述
     "url": `${window.location.origin}/${currentLang}/market-sentiment`,
     "inLanguage": currentLang,
+    "keywords": t('marketSentiment.keywords'), // 新增：關鍵字
+    "mainEntity": {
+      "@type": "Article",
+      "headline": t('marketSentiment.heading'), // 使用翻譯的主要標題
+      "author": {
+        "@type": "Organization",
+        "name": "Sentiment Inside Out"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Sentiment Inside Out",
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${window.location.origin}/logo.png` // 假設您在 public 資料夾有 logo.png
+        }
+      },
+      "datePublished": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
+      "dateModified": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
+      "image": `${window.location.origin}/images/market-sentiment-og.png` // 主要圖片
+    },
     "potentialAction": {
       "@type": "SearchAction",
       "target": `${window.location.origin}/${currentLang}/market-sentiment?timeRange={timeRange}&indicator={indicator}`,
       "query-input": "required name=timeRange,indicator"
     }
-  }), [t, currentLang]);
+  }), [t, currentLang, sentimentData?.compositeScoreLastUpdate]);
 
   const handleSliderChange = (newRange) => {
     setCurrentSliderRange(newRange);
@@ -708,9 +728,9 @@ const MarketSentimentIndex = () => {
 
   return (
     <PageContainer
-      title={t('marketSentiment.pageTitle')}
-      description={t('marketSentiment.pageDescription')}
-      keywords={t('marketSentiment.keywords')}
+      title={t('marketSentiment.pageTitle')} // 更新：使用新的翻譯鍵
+      description={t('marketSentiment.pageDescription')} // 更新：使用新的翻譯鍵
+      keywords={t('marketSentiment.keywords')} // 更新：使用新的翻譯鍵
       ogImage="/images/market-sentiment-og.png"
       ogUrl={`${window.location.origin}/${currentLang}/market-sentiment`}
       jsonLd={marketSentimentJsonLd}
@@ -905,9 +925,9 @@ const MarketSentimentIndex = () => {
       )}
       {selectedIndicatorKey && (() => {
         const keys = Object.keys(indicatorsData);
-        if (keys.length === 0) return null; 
+        if (keys.length === 0) return null;
         const idx = keys.indexOf(selectedIndicatorKey);
-        if (idx === -1) return null; 
+        if (idx === -1) return null;
 
         const prevKeyForArrows = keys[(idx - 1 + keys.length) % keys.length];
         const nextKeyForArrows = keys[(idx + 1) % keys.length];

@@ -245,9 +245,14 @@
   },
   "marketSentiment": {
     "pageTitle": "Market Sentiment Analysis",
-    "pageDescription": "Track market sentiment indicators in real-time to overcome fear and greed.",
-    "keywords": "market sentiment, fear greed index, market sentiment indicators, investor sentiment, market thermometer, stock analysis, SPY analysis",
-    "heading": "Market Sentiment Analysis",
+    "pageDescription": "Exclusive Fear & Greed Index, aggregating key indicators like VIX, Put/Call Ratio, AAII Investor Survey, etc., for real-time market sentiment updates and effective tracking of market fear and greed dynamics.",
+    "keywords": "market sentiment, investor sentiment, fear greed index, VIX analysis, Put Call Ratio, stock market psychology, investment strategy, market indicators, sentiment tracking, Taiwan stock sentiment, US stock sentiment",
+    "heading": "Market Sentiment Indicators Overview",
+    "meta": {
+      "title": "Market Sentiment Analysis",
+      "description": "Deep dive into real-time market sentiment through key indicators like VIX, Put/Call Ratio, and Fear & Greed Index. Gain insights into investor psychology to make better investment decisions and effectively track market fear and greed dynamics.",
+      "keywords": "market sentiment, investor sentiment, fear greed index, VIX analysis, Put Call Ratio, stock market psychology, investment strategy, market indicators, sentiment tracking, Taiwan stock sentiment, US stock sentiment"
+    },
     "tabs": {
       "compositeIndex": "SIO Fear & Greed Index"
     },

@@ -245,9 +245,14 @@
   },
   "marketSentiment": {
     "pageTitle": "市場情緒分析",
-    "pageDescription": "即時追蹤市場情緒指標，克服恐懼與貪婪。",
-    "keywords": "市場情緒,恐懼貪婪指數,市場情緒指標,投資情緒,市場溫度計,台股分析,SPY分析",
+    "pageDescription": "獨家恐懼貪婪指標，集結 VIX、Put/Call Ratio、AAII 散戶調查等關鍵指標，即時更新市場情緒，有效追蹤市場恐懼與貪婪動態。",
+    "keywords": "市場情緒,投資者情緒,恐懼貪婪指數,VIX分析,Put Call Ratio,股市心理學,投資策略,市場指標,情緒追蹤,台股情緒,美股情緒",
     "heading": "市場情緒分析",
+    "meta": {
+      "title": "市場情緒透視：掌握恐懼與貪婪指標",
+      "description": "透過VIX、Put/Call Ratio、恐懼貪婪指數等關鍵指標，深入分析即時市場情緒。洞察投資者心理，助您做出更佳投資決策，有效追蹤市場恐懼與貪婪動態。",
+      "keywords": "市場情緒,投資者情緒,恐懼貪婪指數,VIX分析,Put Call Ratio,股市心理學,投資策略,市場指標,情緒追蹤,台股情緒,美股情緒"
+    },
     "tabs": {
       "compositeIndex": "SIO恐懼貪婪指標"
     },
