@@ -495,7 +495,7 @@
     "lowerBandLabel": "下緣"
   },
   "priceAnalysis": {
-    "pageTitle": "股價趨勢與情緒分析 | 樂活五線譜",
+    "pageTitle": "樂活五線譜",
     "pageDescription": "股價太高還是太低？用樂活五線譜分析，基於均值回歸與標準差，判斷價格趨勢與市場情緒，幫助您找到更佳的買賣點。",
     "keywords": "樂活五線譜,價格趨勢分析,股價分析,市場情緒,均值回歸,超買超賣,樂活通道,標準差",
     "jsonLd": {
@@ -538,7 +538,7 @@
       "extremePessimism": "極度悲觀"
     },
     "form": {
-      "title": "股價情緒位階分析",
+      "title": "股價趨勢與情緒分析",
       "stockCodeLabel": "股票代碼：",
       "stockCodePlaceholder": "例如: 2330、AAPL",
       "analysisPeriodLabel": "分析期間：",
