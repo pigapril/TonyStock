@@ -294,7 +294,7 @@ export function PriceAnalysis() {
 
     // --- 開始：表單處理邏輯 ---
     let numYears;
-    let stockToFetch = stockCode;
+    let stockToFetch = displayStockCode;
     let dateToFetch = backTestDate;
 
     if (isAdvancedQuery) {
