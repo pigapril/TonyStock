@@ -177,8 +177,8 @@
     "noResults": "找不到符合的股票"
   },
   "home": {
-    "pageTitle": "掌握市場情緒，克服投資人性弱點",
-    "pageDescription": "用客觀數據，判斷市場當前情緒是恐懼還是貪婪，克服人性弱點。提供價格趨勢分析、我的追蹤清單、市場情緒指標等工具。",
+    "pageTitle": "Sentiment Inside Out | 掌握投資市場情緒，克服恐懼貪婪弱點",
+    "pageDescription": "透過獨家恐懼貪婪指標、樂活五線譜等數據工具，Sentiment Inside Out 助您洞悉市場心理，避開非理性決策，做出更聰明的投資。",
     "keywords": "市場情緒,價格趨勢分析,追蹤清單,市場情緒指標,恐懼貪婪指數,台股,投資工具",
     "jsonLd": {
       "description": "用客觀數據，判斷市場當前情緒是恐懼還是貪婪，克服人性弱點。提供價格趨勢分析、我的追蹤清單、市場情緒指標等工具。"
@@ -244,8 +244,8 @@
     "extremePessimism": "極度悲觀"
   },
   "marketSentiment": {
-    "pageTitle": "市場情緒分析",
-    "pageDescription": "獨家恐懼貪婪指標，集結 VIX、Put/Call Ratio、AAII 散戶調查等關鍵指標，即時更新市場情緒，有效追蹤市場恐懼與貪婪動態。",
+    "pageTitle": "每日更新恐懼貪婪指數 | 市場情緒儀表板",
+    "pageDescription": "每日追蹤市場恐懼與貪婪程度。我們的獨家指標整合VIX、Put/Call 比例、AAII散戶調查等多種數據，為您提供最全面的投資情緒分析。",
     "keywords": "市場情緒,投資者情緒,恐懼貪婪指數,VIX分析,Put Call Ratio,股市心理學,投資策略,市場指標,情緒追蹤,台股情緒,美股情緒",
     "heading": "市場情緒分析",
     "meta": {
@@ -495,8 +495,8 @@
     "lowerBandLabel": "下緣"
   },
   "priceAnalysis": {
-    "pageTitle": "樂活五線譜",
-    "pageDescription": "利用股價均值回歸的特性，分析價格趨勢，並判斷當前市場情緒是否過度樂觀或是悲觀，提升進出場的勝率。",
+    "pageTitle": "股價趨勢與情緒分析 | 樂活五線譜",
+    "pageDescription": "股價太高還是太低？用樂活五線譜分析，基於均值回歸與標準差，判斷價格趨勢與市場情緒，幫助您找到更佳的買賣點。",
     "keywords": "樂活五線譜,價格趨勢分析,股價分析,市場情緒,均值回歸,超買超賣,樂活通道,標準差",
     "jsonLd": {
       "name": "樂活五線譜",

@@ -178,7 +178,7 @@
   },
   "home": {
     "pageTitle": "Master Market Sentiment, Overcome Investment Weaknesses",
-    "pageDescription": "Use objective data to determine if the current market sentiment is fear or greed, overcoming human weaknesses. Provides tools like price trend analysis, my watchlist, and market sentiment indicators.",
+    "pageDescription": "Master market sentiment and overcome investment weaknesses. Sentiment Inside Out provides objective data tools like the Fear & Greed Index, Price Trend Analysis, and Market Sentiment Indicators to help you navigate market psychology.",
     "keywords": "market sentiment, price trend analysis, watchlist, market sentiment indicators, fear greed index, stock market, investment tools",
     "jsonLd": {
       "description": "Use objective data to determine if the current market sentiment is fear or greed, overcoming human weaknesses. Provides tools like price trend analysis, my watchlist, and market sentiment indicators."
@@ -244,8 +244,8 @@
     "extremePessimism": "EX-Pessimism"
   },
   "marketSentiment": {
-    "pageTitle": "Market Sentiment Analysis",
-    "pageDescription": "Exclusive Fear & Greed Index, aggregating key indicators like VIX, Put/Call Ratio, AAII Investor Survey, etc., for real-time market sentiment updates and effective tracking of market fear and greed dynamics.",
+    "pageTitle": "Daily Updated Fear & Greed Index | Market Sentiment Analysis",
+    "pageDescription": "Daily track market fear and greed with our exclusive index. We aggregate key indicators like VIX, Put/Call Ratio, AAII survey, etc. to provide a comprehensive view of investor sentiment.",
     "keywords": "market sentiment, investor sentiment, fear greed index, VIX analysis, Put Call Ratio, stock market psychology, investment strategy, market indicators, sentiment tracking, Taiwan stock sentiment, US stock sentiment",
     "heading": "Market Sentiment Indicators Overview",
     "meta": {
@@ -495,8 +495,8 @@
     "lowerBandLabel": "Lower Band"
   },
   "priceAnalysis": {
-    "pageTitle": "LOHAS Five-Line Analysis",
-    "pageDescription": "Analyze price trends using the characteristics of stock price mean reversion, determine if current market sentiment is overly optimistic or pessimistic, and improve entry/exit win rates.",
+    "pageTitle": "Price Trend & Sentiment Analysis | LOHAS Five-Line",
+    "pageDescription": "Is the stock price too high or too low? Use our LOHAS Five-Line Analysis to gauge price trends and sentiment based on mean reversion and standard deviation, helping you find better entry and exit points.",
     "keywords": "LOHAS Five-Line Analysis, Price Trend Analysis, Stock Analysis, Market Sentiment, Mean Reversion, Overbought Oversold, LOHAS Channel, Standard Deviation",
     "jsonLd": {
       "name": "LOHAS Five-Line Analysis",
