@@ -448,7 +448,7 @@ export function PriceAnalysis() {
     // 這裡可以從 API 獲取公告，或者直接設定
     const message = t('priceAnalysis.announcement.message'); // 從翻譯文件獲取訊息
     setAnnouncementMessage(message);
-    setShowAnnouncement(true); // 預設顯示公告
+    setShowAnnouncement(false); // 預設顯示公告
   }, [t]);
 
   // 新增：處理熱門搜尋項目點擊事件
