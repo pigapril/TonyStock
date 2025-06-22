@@ -66,10 +66,12 @@
     "loading": "載入中..."
   },
   "userProfile": {
+    "title":"個人資料",
     "openMenuAria": "開啟使用者選單",
     "avatarAlt": "{{username}} 的頭像",
     "menuAria": "使用者選單",
-    "logout": "登出"
+    "logout": "登出",
+    "notLoggedIn":"未登入"
   },
   "chatWidget": {
     "loginRequired": "需要登入才能使用客服功能",
@@ -132,7 +134,8 @@
     "year3": "最近3年",
     "year5": "最近5年",
     "year10": "最近10年",
-    "year20": "最近20年"
+    "year20": "最近20年",
+    "all":"全部"
   },
   "common": {
     "learnMore": "了解更多",
@@ -144,7 +147,10 @@
     "noData": "無可顯示的數據",
     "notAvailable": "N/A",
     "invalidParams": "無效的操作參數",
-    "close": "關閉"
+    "close": "關閉",
+    "done":"完成",
+    "cancel":"取消",
+    "dataLoadError":"資料載入發生錯誤"
   },
   "googleTrendsMarket": {
     "invalidData": "無效的數據格式",
@@ -264,8 +270,14 @@
       "compositeIndexLabel": "SIO恐懼貪婪指標",
       "spyPriceLabel": "SPY 價格",
       "compositeIndexAxisLabel": "SIO恐懼貪婪指標",
-      "spyPriceAxisLabel": "SPY 價格"
+      "spyPriceAxisLabel": "SPY 價格",
+      "tooltipScore":"情緒分數",
+      "tooltipSPY":"SPY 價格"
     },
+    "indicatorDetail": {
+      "valueLabel":"指標數值",
+      "sentimentScoreLabel":"情緒分數"
+    }, 
     "viewMode": {
       "overview": "最新情緒指數",
       "timeline": "歷史走勢",
@@ -639,9 +651,14 @@
       "createSuccess": "分類創建成功",
       "updateSuccess": "分類已更新",
       "deleteConfirm": "確定要刪除此分類嗎？此操作無法復原。",
-      "deleteSuccess": "分類已刪除"
+      "deleteSuccess": "分類已刪除",
+      "noCategory": "目前沒有任何分類",
+      "noCategoryMessage": "新增一個分類並開始追蹤你的股票吧！",
+      "emptyTitle": "這個分類是空的喔",
+      "emptyMessage": "點擊「新增股票」按鈕，開始追蹤標的吧！" 
     },
     "stock": {
+      "addTitle":"新增股票",
       "addSuccess": "已添加 {{symbol}} 到追蹤清單"
     },
     "stockCard": {
