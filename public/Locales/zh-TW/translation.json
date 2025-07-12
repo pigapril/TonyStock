@@ -1,4 +1,13 @@
 {
+  "launch":{
+    "loading":{
+      "authenticating" : "正在驗證登入資訊...",
+      "preparing" : "正在準備儀表板資訊..."
+    },
+    "login":{
+      "prompt":"登入以繼續"
+    }
+  },
   "nav": {
     "home": "首頁",
     "priceAnalysis": "樂活五線譜",
@@ -12,6 +21,26 @@
   
   "userActions": {
     "login": "登入"
+  },
+  "dashboard": {
+    "welcome": "歡迎！",
+    "greeting": "你好，%@！",
+    "subtitle": "這是您的市場快照。",
+    "marketSentimentCard": {
+      "title": "市場情緒",
+      "currentSentiment": "當前的情緒是"
+
+    },
+    "watchlistCard": {
+      "title": "近期清單中需要關注的股票",
+      "loginPrompt": "登入以查看您的個人化追蹤清單。",
+      "empty": "您的追蹤清單是空的，新增一些股票吧！"
+    },
+    "quickAnalysisCard": {
+      "title": "快速分析",
+      "placeholder": "輸入股票代碼",
+      "button": "分析"
+    }
   },
   "language": {
     "change": "更改語言",
@@ -271,12 +300,12 @@
       "spyPriceLabel": "SPY 價格",
       "compositeIndexAxisLabel": "SIO恐懼貪婪指標",
       "spyPriceAxisLabel": "SPY 價格",
-      "tooltipScore":"情緒分數",
+      "tooltipScore":"恐懼貪婪分數",
       "tooltipSPY":"SPY 價格"
     },
     "indicatorDetail": {
       "valueLabel":"指標數值",
-      "sentimentScoreLabel":"情緒分數"
+      "sentimentScoreLabel":"恐懼貪婪分數"
     }, 
     "viewMode": {
       "overview": "最新情緒指數",
@@ -522,7 +551,7 @@
       "invalidUrlYears": "從 URL 讀取的查詢期間無效。"
     },
     "announcement": {
-      "message": "由於近期的資料來源有些技術問題，導致查詢時可能出現錯誤或是找不到股票代碼的情況、追蹤清單也可能有異常。如果碰到類似問題，請稍後再嘗試，謝謝您的理解。"
+      "message": "近期 0050 (元大台灣50) 股票分割後，資料來源尚未進行調整，導致分析結果異常，建議先查詢 006208 (富邦台50) 作為替代，兩者結果是相似的"
     },
     "chart": {
       "tabs": {
@@ -605,6 +634,9 @@
     }
   },
   "watchlist": {
+    "loginPrompt": {
+        "message": "登入以建立並管理您的個人股票追蹤清單。"
+    },
     "pageTitle": "我的追蹤清單",
     "pageDescription": "追蹤您感興趣的股票，快速掌握多個標的價格情緒。",
     "keywords": "我的追蹤清單,自選股,股票監控,市場情緒,價格分析",
@@ -650,7 +682,9 @@
     "category": {
       "createSuccess": "分類創建成功",
       "updateSuccess": "分類已更新",
+      "deleteCategory": "刪除分類",
       "deleteConfirm": "確定要刪除此分類嗎？此操作無法復原。",
+      "delete": "刪除",
       "deleteSuccess": "分類已刪除",
       "noCategory": "目前沒有任何分類",
       "noCategoryMessage": "新增一個分類並開始追蹤你的股票吧！",
@@ -742,5 +776,51 @@
   "expandableDescription": {
     "expand": "了解更多",
     "collapse": "收合"
+  },
+  "paywall": {
+    "title": "一天只要不到 2 塊",
+    "feature1": "解鎖完整功能",
+    "feature2": "沒有廣告打擾",
+    "feature3": "未來優先功能更新",
+    "plan": {
+      "monthly": {
+        "title": "月繳方案",
+        "price": "NT$ 59",
+        "period": "/ 月",
+        "description": "每月自動續訂"
+      },
+      "annual": {
+        "title": "年繳方案",
+        "price": "NT$ 590",
+        "period": "/ 年",
+        "description": "年繳方案，現省 17%",
+        "badge": "贈送2個月"
+      }
+    },
+    "cta": {
+      "trial": "開始7天免費試用"
+    },
+    "terms": "首次訂閱享7天免費試用。試用結束後，將依您選擇的方案自動續訂，您可以隨時在 App Store 帳號設定中取消。",
+    "restore": "恢復購買"
+  },
+  "referral": {
+    "pageTitle": "邀請好友",
+    "title": "邀請好友，賺取免費資格！",
+    "description": "與朋友分享您的推薦碼。當他們註冊時，您們雙方都將免費獲得一個月的高級會員資格！",
+    "yourCodeLabel": "您的推薦碼",
+    "rewardStatus": "您已成功透過推薦賺取 %d 個月的免費資格。感謝您的支持！",
+    "shareButton": "分享我的推薦碼",
+    "apply": {
+      "title": "嗨~你有推薦碼嗎？",
+      "description": "在下方輸入推薦碼，即可領取獎勵並免費獲得一個月使用資格。",
+      "placeholder": "在這裡輸入代碼",
+      "submitButton": "使用推薦碼",
+      "skipButton": "我沒有推薦碼",
+      "successTitle": "成功！",
+      "successMessage": "一個月的免費高級會員資格已加入您的帳戶。"
+    },
+    "shareSheet": {
+      "text": "一起來使用 Sentiment Inside Out！使用我的推薦碼註冊，即可免費獲得一個月的高級會員資格：%@"
+    }
   }
 }

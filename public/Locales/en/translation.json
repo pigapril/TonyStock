@@ -1,8 +1,17 @@
 {
+  "launch":{
+    "loading":{
+      "authenticating" : "Verifying your information...",
+      "preparing" : "Preparing your dashboard..."
+    },
+    "login":{
+      "prompt":"Sign in to continue"
+    }
+  },
   "nav": {
     "home": "Home",
-    "priceAnalysis": "LOHAS Five-Line Analysis",
-    "marketSentiment": "Market Sentiment Analysis",
+    "priceAnalysis": "LOHAS Five-Line",
+    "marketSentiment": "Market Sentiment",
     "watchlist": "My Watchlist",
     "articles": "Insights & Analysis",
     "sponsor": "Sponsor Us",
@@ -12,6 +21,26 @@
   
   "userActions": {
     "login": "Login"
+  },
+  "dashboard": {
+    "welcome": "Welcome!",
+    "greeting": "Hello, %@!",
+    "subtitle": "Here's your market snapshot.",
+    "marketSentimentCard": {
+      "title": "Market Sentiment",
+      "currentSentiment": "The mood is now"
+
+    },
+    "watchlistCard": {
+      "title": "Noteworthy stocks from the watchlist",
+      "loginPrompt": "Log in to see your personalized watchlist.",
+      "empty": "Your watchlist is empty. Add some stocks to get started!"
+    },
+    "quickAnalysisCard": {
+      "title": "Quick Analysis",
+      "placeholder": "Enter Stock Symbol",
+      "button": "Analyze"
+    }
   },
   "language": {
     "change": "Change Language",
@@ -597,7 +626,7 @@
       "invalidUrlYears": "Invalid query period read from URL."
     },
     "announcement": {
-      "message": "Due to recent data source issues, queries may fail or show missing stock codes, and watchlists might be affected. Please try again later. Thank you for your understanding."
+      "message": "Following the recent stock split of 0050 (Yuanta Taiwan 50), our data source has not yet been adjusted, leading to abnormal analysis results. We recommend searching for 006208 (Fubon Taiwan 50) as an alternative, as the results for both are similar."
     },
     "hotSearches": { 
       "title": "Trending 🔥",
@@ -605,6 +634,9 @@
     }
   },
   "watchlist": {
+    "loginPrompt": {
+        "message": "Log in to create and manage your personal stock watchlist."
+    },
     "pageTitle": "My Watchlist",
     "pageDescription": "Track stocks you are interested in and quickly grasp the price sentiment of multiple targets.",
     "keywords": "my watchlist, custom stocks, stock monitoring, market sentiment, price analysis",
@@ -650,7 +682,9 @@
     "category": {
       "createSuccess": "Category created successfully",
       "updateSuccess": "Category updated",
+      "deleteCategory": "Delete Category",
       "deleteConfirm": "Are you sure you want to delete this category? This action cannot be undone.",
+      "delete": "Delete",
       "deleteSuccess": "Category deleted",
       "noCategory": "No categories yet",
       "noCategoryMessage": "Add a category and start tracking your stocks!",
@@ -743,5 +777,51 @@
   "expandableDescription": {
     "expand": "Read More",
     "collapse": "Collapse"
+  },
+  "paywall": {
+    "title": "Less than $2 a day",
+    "feature1": "Unlock full features",
+    "feature2": "No ads",
+    "feature3": "Future priority updates",
+    "plan": {
+      "monthly": {
+        "title": "Monthly Plan",
+        "price": "$59",
+        "period": "/ month",
+        "description": "Auto-renewal every month"
+      },
+      "annual": {
+        "title": "Annual Plan",
+        "price": "$590",
+        "period": "/ year",
+        "description": "Annual plan, save 17%",
+        "badge": "2 months free"
+      }
+    },
+    "cta": {
+      "trial": "Start 7-day free trial"
+    },
+    "terms": "First-time subscribers get a 7-day free trial. After the trial period, your subscription will automatically renew based on your chosen plan. You can cancel at any time in your App Store account settings.",
+    "restore": "Restore Purchase"
+  },
+  "referral": {
+    "pageTitle": "Invite & Earn",
+    "title": "Invite Friends, Get Free Access!",
+    "description": "Share your code with friends. When they sign up, you both get 1 month of premium access for free!",
+    "yourCodeLabel": "Your Referral Code",
+    "rewardStatus": "You have earned %d free months from successful referrals. Thank you!",
+    "shareButton": "Share My Code",
+    "apply": {
+      "title": "Have a Referral Code?",
+      "description": "Enter the code below to claim your reward and get one month of free premium access.",
+      "placeholder": "Enter code here",
+      "submitButton": "Apply Code",
+      "skipButton": "I don't have a code",
+      "successTitle": "Success!",
+      "successMessage": "1 month of free premium access has been added to your account."
+    },
+    "shareSheet": {
+      "text": "Join me on Sentiment Inside Out! Sign up with my referral code to get 1 month of free premium access: %@"
+    }
   }
 }

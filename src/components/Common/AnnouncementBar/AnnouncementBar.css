@@ -43,10 +43,14 @@
 }
 
 @keyframes marquee {
-  0% { transform: translateX(100%); }
+  0% { transform: translateX(100vw); }
   100% { transform: translateX(-100%); }
 }
 
+@keyframes marquee-mobile {
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(calc(-100% - 200%)); }
+}
 /* Pause animation on hover */
 .announcement-bar:hover .announcement-content {
   animation-play-state: paused;
@@ -64,6 +68,8 @@
     right: 5px;
   }
   .announcement-content {
-    animation: marquee 35s linear infinite; /* Adjust duration as needed */
+    animation-name: marquee-mobile;
+    animation-duration: 20s;
+    /* Adjust duration as needed */
   }
 }
