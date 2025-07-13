@@ -1,10 +1,14 @@
-import axios from 'axios';
+import apiClient from '../../api/apiClient'; // **新增：引入共用的 apiClient**
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // 從環境變數取得 API base URL
+// **移除：不再需要手動定義 API_BASE_URL**
+// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export const fetchGoogleTrendsData = async (symbol) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/api/googletrends/trends?symbol=${symbol}`);
+        // **修改：使用 apiClient.get，並用 params 物件傳遞查詢參數**
+        const response = await apiClient.get('/api/googletrends/trends', {
+            params: { symbol }
+        });
         return response.data;
     } catch (error) {
         console.error('Error fetching Google Trends data:', error);
@@ -14,8 +18,8 @@ export const fetchGoogleTrendsData = async (symbol) => {
 
 export const fetchGoogleTrendsMarketData = async () => {
     try {
-        // 呼叫新後端 API，此 API 為 /market，不需要傳遞參數
-        const response = await axios.get(`${API_BASE_URL}/api/googletrends/market`);
+        // **修改：使用 apiClient.get 呼叫 API**
+        const response = await apiClient.get('/api/googletrends/market');
         return response.data;
     } catch (error) {
         console.error('Error fetching Google Trends Market data:', error);
@@ -25,11 +29,13 @@ export const fetchGoogleTrendsMarketData = async () => {
 
 export const fetchStockSuggestions = async (keyword) => {
     try {
-        // 修改為使用 Yahoo Finance 搜尋 API
-        const response = await axios.get(`${API_BASE_URL}/api/googletrends/yahoo-suggestions?keyword=${keyword}`);
+        // **修改：使用 apiClient.get，並用 params 物件傳遞查詢參數**
+        const response = await apiClient.get('/api/googletrends/yahoo-suggestions', {
+            params: { keyword }
+        });
         return response.data;
     } catch (error) {
         console.error('Error fetching stock suggestions:', error);
         throw error;
     }
-}; 
+};

@@ -18,11 +18,7 @@
 # API 代理
 #staging網址 "https://sentiment-staging.publicvm.com/api/:splat"
 #production網址 "https://stockdatabase.publicvm.com/api/:splat"
-[[redirects]]
-  from = "/api/*"
-  to = "https://stockdatabase.publicvm.com/api/:splat"
-  status = 200
-  force = true
+
 
 # SPA 回退路由
 [[redirects]]

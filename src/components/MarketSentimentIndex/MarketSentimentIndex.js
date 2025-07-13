@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import axios from 'axios';
 import { handleApiError } from '../../utils/errorHandler';
 import { Analytics } from '../../utils/analytics';
 import './MarketSentimentIndex.css';
@@ -17,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { Toast } from '../Watchlist/components/Toast';
 import { formatPrice } from '../../utils/priceUtils';
+import apiClient from '../../api/apiClient';
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -55,8 +55,6 @@ ChartJS.register(
   Legend
 );
 
-// 添加這行來定義 API_BASE_URL
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
 // 在文件頂部添加這兩個常量
 const BUBBLE_RADIUS = 155; // 控制泡泡圍繞的圓的半徑
@@ -204,7 +202,7 @@ const MarketSentimentIndex = () => {
     async function fetchSentimentData() {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/api/market-sentiment`);
+        const response = await apiClient.get('/api/market-sentiment');
         
         if (isMounted) {
           setSentimentData(response.data);
@@ -233,7 +231,7 @@ const MarketSentimentIndex = () => {
   useEffect(() => {
     async function fetchHistoricalData() {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/composite-historical-data`);
+        const response = await apiClient.get('/api/composite-historical-data');
         const formattedData = response.data
           .filter(item => item.compositeScore != null && item.spyClose != null)
           .map((item) => ({

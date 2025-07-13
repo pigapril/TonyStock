@@ -3,7 +3,6 @@ import { Line } from 'react-chartjs-2';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './PriceAnalysis.css';
-import axios from 'axios';
 import PageContainer from '../PageContainer/PageContainer';
 import ULBandChart from '../ULBandChart/ULBandChart';
 import { Analytics } from '../../utils/analytics';
@@ -21,7 +20,7 @@ import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
 import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
 import AnnouncementBar from '../Common/AnnouncementBar/AnnouncementBar'; // 引入 AnnouncementBar
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
+import apiClient from '../../api/apiClient';
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
 function getTimeUnit(dates) {
@@ -197,7 +196,7 @@ export function PriceAnalysis() {
         params.source = 'manual_price_analysis';
       }
 
-      const response = await axios.get(`${API_BASE_URL}/api/integrated-analysis`, {
+      const response = await apiClient.get('/api/integrated-analysis', {
         params: params,
         headers: { 'CF-Turnstile-Token': bypassTurnstile ? undefined : turnstileToken },
         timeout: 30000
@@ -417,8 +416,7 @@ export function PriceAnalysis() {
       console.log('Fetching hot searches...'); // 添加這行
       setLoadingHotSearches(true);
       try {
-        console.log(`Making API call to ${API_BASE_URL}/api/hot-searches`); // 添加這行
-        const response = await axios.get(`${API_BASE_URL}/api/hot-searches`, { timeout: 15000 });
+        const response = await apiClient.get('/api/hot-searches', { timeout: 15000 });
         console.log('API response received:', response.data); // 添加這行
         // 假設 API 回應格式為 { data: { top_searches: [...] } }
         if (response.data && response.data.data && Array.isArray(response.data.data.top_searches)) {

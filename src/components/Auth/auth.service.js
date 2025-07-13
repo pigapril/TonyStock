@@ -1,60 +1,42 @@
 import { Analytics } from '../../utils/analytics';
 import { handleApiError } from '../../utils/errorHandler';
+import apiClient from '../../api/apiClient'; // 導入共用的 apiClient
 
 class AuthService {
-    constructor() {
-        this.baseUrl = process.env.REACT_APP_API_BASE_URL || '';
-    }
+    // constructor 已不再需要，因為 baseURL 由 apiClient 管理
+    // constructor() {
+    //     this.baseUrl = process.env.REACT_APP_API_BASE_URL || '';
+    // }
 
     // 檢查認證狀態
     async checkStatus() {
         try {
             // 請求前記錄
             console.log('Auth check request details:', {
-                url: `${this.baseUrl}/api/auth/status`,
+                url: `/api/auth/status`, // URL 已相對 apiClient 的 baseURL
                 userAgent: navigator.userAgent,
                 platform: navigator.platform,
-                cookiesEnabled: navigator.cookieEnabled,
-                localStorage: !!window.localStorage,
                 currentURL: window.location.href,
-                requestHeaders: {
-                    credentials: 'include',
-                    origin: window.location.origin
-                }
             });
 
-            const response = await fetch(`${this.baseUrl}/api/auth/status`, {
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            });
+            // 使用 apiClient.get 發送請求
+            const response = await apiClient.get('/api/auth/status');
             
-            // 響應後記錄
+            // 響應後記錄 (axios 的 response 物件結構不同)
             console.log('Auth status response details:', {
                 status: response.status,
-                ok: response.ok,
-                headers: Object.fromEntries(response.headers.entries()),
-                cookies: document.cookie,
-                corsHeaders: {
-                    'access-control-allow-credentials': response.headers.get('access-control-allow-credentials'),
-                    'access-control-allow-origin': response.headers.get('access-control-allow-origin')
-                }
+                headers: response.headers,
+                data: response.data, // 資料在 data 屬性中
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(JSON.stringify(errorData));
-            }
-
-            const data = await response.json();
-            console.log('Auth status data:', data);
-            return data.data;
+            
+            // axios 會對非 2xx 的狀態碼拋出錯誤，所以不需要手動檢查 response.ok
+            
+            console.log('Auth status data:', response.data);
+            return response.data.data; // API 回應的資料結構是 { data: ... }
         } catch (error) {
             console.error('Auth check error details:', {
-                error: error.message,
+                // axios 的 error 物件包含更多資訊
+                error: error.response ? error.response.data : error.message,
                 stack: error.stack,
                 userAgent: navigator.userAgent
             });
@@ -65,20 +47,13 @@ class AuthService {
     // 登出
     async logout() {
         try {
-            const response = await fetch(`${this.baseUrl}/api/auth/logout`, {
-                method: 'POST',
-                credentials: 'include'
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(JSON.stringify(errorData));
-            }
+            // 使用 apiClient.post 發送請求
+            const response = await apiClient.post('/api/auth/logout');
 
             Analytics.auth.logout({ status: 'success' });
-            const data = await response.json();
-            return data.data;
+            return response.data.data;
         } catch (error) {
+            // 統一錯誤處理
             const handledError = handleApiError(error);
             throw handledError;
         }
@@ -89,49 +64,25 @@ class AuthService {
         console.log('Starting verifyGoogleToken:', {
             hasCredential: !!credential,
             credentialLength: credential?.length,
-            baseUrl: this.baseUrl,
             timestamp: new Date().toISOString()
         });
 
         try {
-            const response = await fetch(`${this.baseUrl}/api/auth/google/verify`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify({ credential })
-            });
+            // POST 資料作為第二個參數傳遞
+            const response = await apiClient.post('/api/auth/google/verify', { credential });
 
             console.log('Google verify response:', {
                 status: response.status,
-                ok: response.ok,
-                headers: Object.fromEntries(response.headers.entries()),
-                cookies: document.cookie,
-                corsHeaders: {
-                    'access-control-allow-credentials': response.headers.get('access-control-allow-credentials'),
-                    'access-control-allow-origin': response.headers.get('access-control-allow-origin')
-                },
+                headers: response.headers,
                 timestamp: new Date().toISOString()
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error('Verify response error:', {
-                    status: response.status,
-                    errorData,
-                    timestamp: new Date().toISOString()
-                });
-                throw new Error(JSON.stringify(errorData));
-            }
-
-            const data = await response.json();
             
+            const data = response.data;
+
             console.log('Token verification complete:', {
                 status: response.status,
                 hasUser: !!data?.data?.user,
                 userData: data?.data?.user,
-                cookies: document.cookie,
                 timestamp: new Date().toISOString()
             });
 
@@ -143,7 +94,7 @@ class AuthService {
             return data.data;
         } catch (error) {
             console.error('Verify token error:', {
-                message: error.message,
+                message: error.response ? error.response.data : error.message,
                 type: error.constructor.name,
                 stack: error.stack,
                 timestamp: new Date().toISOString()
@@ -161,4 +112,4 @@ class AuthService {
 }
 
 const authService = new AuthService();
-export default authService; 
+export default authService;

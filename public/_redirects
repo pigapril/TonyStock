@@ -21,8 +21,7 @@ https://niku-stock.netlify.app/* https://sentimentinsideout.com/:splat 301!
 # 重定向舊的 sitemap.sentimentinsideout.com 網址
 https://sitemap.sentimentinsideout.com/priceanalysis https://sentimentinsideout.com/en/priceanalysis 301
 
-# API 代理
-/api/* https://stockdatabase.publicvm.com/api/:splat 200
+
 
 # SPA 回退路由 (保持在最後)
 /* /index.html 200 
