@@ -46,22 +46,29 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# --- 第二類：檔名固定的資源，應該短時間快取 ---
-# 這些檔案的內容可能會更新，但檔名不變，所以設定較短的快取時間（例如 2 小時）。
-[[headers]]
-  for = "/locales/*"
-  [headers.values]
-    Cache-Control = "public, max-age=7200, must-revalidate"
+# --- 第二類：檔名固定的資源 (根據變動頻率分層設定) ---
 
+# (A) 極少變動的資源：圖片、圖示等 (快取 10 天)
 [[headers]]
   for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=7200, must-revalidate"
-    
+    Cache-Control = "public, max-age=864000, must-revalidate" # 10 days
+
 [[headers]]
-  for = "/*.(ico|png|jpg|jpeg|gif|svg|json|txt|xml)"
+  for = "/*.(ico|png|jpg|jpeg|gif|svg|webp)"
   [headers.values]
-    Cache-Control = "public, max-age=7200, must-revalidate"
+    Cache-Control = "public, max-age=864000, must-revalidate" # 10 days
+
+# (B) 偶爾變動的資源：翻譯檔、設定檔 (快取 1 天)
+[[headers]]
+  for = "/locales/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate" # 24 hours
+
+[[headers]]
+  for = "/*.(json|txt|xml)"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate" # 24 hours
 
 # --- 第三類：入口 HTML 檔案，永遠不快取 ---
 # 為了確保使用者總能載入最新的網站版本，index.html 永遠不能被瀏覽器快取。
