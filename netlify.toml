@@ -36,25 +36,34 @@
   NODE_VERSION = "18.16.0"
   NPM_VERSION = "9.5.1"
   CI = "false"
-  
-[[headers]]
-  for = "/static/media/*" # 適用於所有位於 static/media/ 下的檔案 (包含 sponsor_icon.gif)
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable" # 快取一年，並標記為不可變 (適合帶哈希值的檔案名)
 
+網站快取策略
+# =================================================================
+
+# --- 第一類：檔名帶有亂數的資源，應該永久快取 ---
+# 這些檔案的內容若有變更，檔名也會跟著變，所以可以安全地快取一年。
 [[headers]]
-  for = "/images/*" # 也適用於 /public/images/ 下的圖片 (Home.js 使用的 home-featureX 圖片)
+  for = "/static/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# --- 第二類：檔名固定的資源，應該短時間快取 ---
+# 這些檔案的內容可能會更新，但檔名不變，所以設定較短的快取時間（例如 2 小時）。
 [[headers]]
-  for = "/*.(js|css)" # 對於 JavaScript 和 CSS 檔案也設定長快取
+  for = "/locales/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=7200, must-revalidate"
 
-# 針對其他靜態資源，例如根目錄下的 logo.png, manifest.json, favicons
-# 如果這些檔案名沒有哈希值，則不使用 immutable
 [[headers]]
-  for = "/*.(png|jpg|jpeg|gif|svg|ico|json|xml|txt)"
+  for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000"
+    Cache-Control = "public, max-age=7200, must-revalidate"
+    
+[[headers]]
+  for = "/*.(ico|png|jpg|jpeg|gif|svg|json|txt|xml)"
+  [headers.values]
+    Cache-Control = "public, max-age=7200, must-revalidate"
+
+# --- 第三類：入口 HTML 檔案，永遠不快取 ---
+# 為了確保使用者總能載入最新的網站版本，index.html 永遠不能被瀏覽器快取。
+# Netlify 會為所有未被上方規則匹配到的 HTML 檔案自動設定 no-cache，所以這裡無需額外設定。
