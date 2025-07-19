@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../Auth/useAuth'; // 更新路徑
-import { useDialog } from '../../hooks/useDialog';
-import { Analytics } from '../../utils/analytics';
+import { useAuth } from '../../Auth/useAuth';
+import { useDialog } from '../Dialog/useDialog';
+import { Analytics } from '../../../utils/analytics';
 import './ProtectedRoute.css';
 
 export function ProtectedRoute({ children, requireAuth = true }) {
@@ -11,35 +11,37 @@ export function ProtectedRoute({ children, requireAuth = true }) {
     const { user, loading, watchlistAccess } = useAuth();
     const { openDialog } = useDialog();
     const location = useLocation();
+    const dialogShownRef = useRef(false);
 
-    // 處理載入狀態
+    useEffect(() => {
+        if (requireAuth && !user && !loading && !dialogShownRef.current) {
+            openDialog('auth', {
+                returnPath: location.pathname,
+                message: t('protectedRoute.loginRequired')
+            });
+            dialogShownRef.current = true;
+        }
+        // 當 user 登入後，重置 dialogShownRef
+        if (user && dialogShownRef.current) {
+            dialogShownRef.current = false;
+        }
+    }, [requireAuth, user, loading, openDialog, location.pathname, t]);
+
     if (loading) {
         return (
             <div className="loading-container">
-                <div className="loading-spinner"></div>
-                <p>{t('protectedRoute.loading')}</p>
+                <div className="spinner"></div>
+                <span className="loading-text">{t('protectedRoute.loading')}</span>
             </div>
         );
     }
 
-    // 需要認證但未登入
     if (requireAuth && !user) {
         Analytics.auth.routeProtection({
             status: 'dialog_shown',
             from: location.pathname
         });
-
-        // 開啟登入對話框，保持一致的使用者體驗
-        openDialog('auth', {
-            returnPath: location.pathname,
-            message: t('protectedRoute.loginRequired')
-        });
-
-        return <Navigate 
-            to="/" 
-            state={{ from: location.pathname }}
-            replace 
-        />;
+        return <Navigate to="/" state={{ from: location.pathname }} replace />;
     }
 
     Analytics.auth.routeProtection({

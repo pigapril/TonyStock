@@ -21,6 +21,8 @@ import '../Common/global-styles.css';
 import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
 import AnnouncementBar from '../Common/AnnouncementBar/AnnouncementBar'; // 引入 AnnouncementBar
 import apiClient from '../../api/apiClient';
+import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
+import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDialog
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
 function getTimeUnit(dates) {
@@ -61,6 +63,8 @@ export function PriceAnalysis() {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const { showToast, toast, hideToast } = useToastManager();
   const { requestAdDisplay } = useAdContext(); // 從 Context 獲取函數
+  const { isAuthenticated } = useAuth(); // 新增：獲取認證狀態
+  const { openDialog } = useDialog(); // 新增：獲取對話框功能
 
   // 從 URL 參數或預設值初始化狀態
   const initialStockCode = searchParams.get('stockCode') || 'SPY';
@@ -276,6 +280,15 @@ export function PriceAnalysis() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // 新增：檢查登入狀態
+    if (!isAuthenticated) {
+      openDialog('auth', {
+        returnPath: location.pathname,
+        message: t('protectedRoute.loginRequired')
+      });
+      return;
+    }
+
     // --- 立即更新 UI 反饋 ---
     setLoading(true);
     startTransition(() => {
@@ -451,6 +464,15 @@ export function PriceAnalysis() {
 
   // 新增：處理熱門搜尋項目點擊事件
   const handleHotSearchClick = (searchItem) => { // 參數名稱改為 searchItem 以清晰表示它是一個物件
+    // 新增：檢查登入狀態
+    if (!isAuthenticated) {
+      openDialog('auth', {
+        returnPath: location.pathname,
+        message: t('protectedRoute.loginRequired')
+      });
+      return;
+    }
+
     const upperClickedCode = searchItem.keyword.toUpperCase();
     // 更新狀態以反映新的股票代碼
     setDisplayStockCode(upperClickedCode);

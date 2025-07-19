@@ -33,6 +33,7 @@ import { Footer } from './components/Common/Footer/Footer';
 import FloatingSponsorButton from './components/FloatingSponsorButton/FloatingSponsorButton';
 import ChatWidget from './components/ChatWidget/ChatWidget';
 import LanguageSwitcher from './components/LanguageSwitcher/LanguageSwitcher';
+import { ProtectedRoute } from './components/Common/ProtectedRoute/ProtectedRoute'; // 新增：引入 ProtectedRoute
 
 // 導入拆分後的價格標準差分析頁面
 import { PriceAnalysis } from './components/PriceAnalysis/PriceAnalysis';
@@ -390,7 +391,11 @@ function AppContent() {
 
               <Route
                 path="market-sentiment"
-                element={<MarketSentimentIndex />}
+                element={
+                  <ProtectedRoute>
+                    <MarketSentimentIndex />
+                  </ProtectedRoute>
+                }
               />
               <Route
                 path="about"

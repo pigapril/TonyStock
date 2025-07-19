@@ -90,7 +90,15 @@ export const Analytics = {
           component: data.component
         });
       }
-    }
+    },
+    // === 新增 routeProtection 方法 ===
+    routeProtection: (data) => {
+      pushToDataLayer('auth_route_protection', {
+        status: data.status,
+        from: data.from,
+        path: data.path
+      });
+    },
   },
 
   // 頁面瀏覽追蹤
