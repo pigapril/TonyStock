@@ -520,9 +520,9 @@ function App() {
       <DialogProvider>
         <AdProvider>
           <Routes>
-            {/* --- 確保這裡使用的是正確定義的 InitialRedirect --- */}
+            {/* --- 確保這裡使用正確定義的 InitialRedirect --- */}
             <Route path="/" element={<InitialRedirect />} />
-            {/* --- 確保這裡使用的是正確定義的 LanguageWrapper --- */}
+            {/* --- 確保這裡使用正確定義的 LanguageWrapper --- */}
             <Route path="/:lang/*" element={<LanguageWrapper />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
