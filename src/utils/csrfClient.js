@@ -140,7 +140,20 @@ class CSRFClient {
                     credentials: 'include'
                 };
                 
-                return await fetch(fullUrl, retryOptions);
+                const retryResponse = await fetch(fullUrl, retryOptions);
+                
+                // 如果重試後仍然是403，記錄詳細錯誤
+                if (retryResponse.status === 403) {
+                    console.error('CSRF token reinitialization failed, request still blocked');
+                    console.error('Request details:', {
+                        url: fullUrl,
+                        method: options.method || 'GET',
+                        hasToken: !!this.csrfToken,
+                        cookies: document.cookie
+                    });
+                }
+                
+                return retryResponse;
             }
             
             return response;
