@@ -626,7 +626,7 @@
       "invalidUrlYears": "Invalid query period read from URL."
     },
     "announcement": {
-      "message": "Following the recent stock split of 0050 (Yuanta Taiwan 50), our data source has not yet been adjusted, leading to abnormal analysis results. We recommend searching for 006208 (Fubon Taiwan 50) as an alternative, as the results for both are similar."
+      "message": "0050 (Yuanta Taiwan 50) has been corrected. Analysis results are now back to normal! 🥳 ｜ To prevent cyberattacks⚠️, most features now require login to use. Please rest assured, everything is still free! Thanks for your understanding😥"
     },
     "hotSearches": { 
       "title": "Trending 🔥",
