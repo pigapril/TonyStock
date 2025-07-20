@@ -1,7 +1,9 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Analytics } from '../../utils/analytics';
 import authService from '../../components/Auth/auth.service';
 import { handleApiError } from '../../utils/errorHandler';
+import csrfClient from '../../utils/csrfClient';
 
 export const AuthContext = createContext({
     user: null,
@@ -13,6 +15,7 @@ export const AuthContext = createContext({
 });
 
 export function AuthProvider({ children }) {
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -39,11 +42,16 @@ export function AuthProvider({ children }) {
                 timestamp: new Date().toISOString()
             });
 
-            const { user: userData } = await authService.verifyGoogleToken(response.credential);
+            const { user: userData, csrfToken } = await authService.verifyGoogleToken(response.credential);
             
             console.log('Setting user data:', userData);
             setUser(userData);
             
+            // 新增：若有 csrfToken，直接設置
+            if (csrfToken) {
+                csrfClient.setCSRFToken(csrfToken);
+            }
+
             setTimeout(() => {
                 window.dispatchEvent(new CustomEvent('loginSuccess'));
             }, 0);
@@ -164,6 +172,17 @@ export function AuthProvider({ children }) {
             });
 
             setUser(userData);
+            
+            // 如果用戶已登入，初始化 CSRF token
+            if (userData) {
+                try {
+                    await csrfClient.initializeCSRFToken();
+                    console.log('CSRF token initialized for existing user');
+                } catch (csrfError) {
+                    console.warn('Failed to initialize CSRF token for existing user:', csrfError);
+                }
+            }
+            
             Analytics.auth.statusCheck({ status: 'success' });
         } catch (error) {
             console.log('CheckAuthStatus error:', {
@@ -184,11 +203,15 @@ export function AuthProvider({ children }) {
         checkAuthStatus();
     }, [checkAuthStatus]);
 
-    // 登出處理
+        // 登出處理
     const logout = async () => {
         try {
             await authService.logout();
+            
+            // 立即清除用戶狀態
             setUser(null);
+            setError(null);
+            setLoading(false);
             
             let identityServiceRevoked = false;
             if (window.google?.accounts?.id) {
@@ -200,10 +223,19 @@ export function AuthProvider({ children }) {
                 }
             }
 
+            // 新增：登出時清除CSRF token
+            csrfClient.clearCSRFToken();
+
+            // 新增：觸發登出成功事件，讓其他組件可以重置狀態
+            window.dispatchEvent(new CustomEvent('logoutSuccess'));
+
+            // 新增：登出後自動導向首頁
+            navigate('/');
+
             Analytics.auth.logout({ 
                 status: 'success',
-                source: 'user_action',
-                identityServiceRevoked
+                source: 'user_action', 
+                identityServiceRevoked 
             });
         } catch (error) {
             handleError(error);

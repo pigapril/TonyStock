@@ -1,5 +1,6 @@
 import apiClient from '../../../api/apiClient';
 import { handleApiError } from '../../../utils/errorHandler';
+import csrfClient from '../../../utils/csrfClient'; // 導入 CSRF 客戶端
 
 class WatchlistService {
 
@@ -9,15 +10,7 @@ class WatchlistService {
      * @returns {import('axios').AxiosRequestConfig}
      */
     _getApiConfig() {
-        const headers = {
-            'Accept': 'application/json'
-        };
-        // 如果 window 中存在 CSRF token，則將其加入到請求標頭
-        if (window.csrfToken) {
-            headers['X-CSRF-Token'] = window.csrfToken;
-        }
         return {
-            headers: headers,
             timeout: 120000 // 120秒
         };
     }
@@ -25,18 +18,26 @@ class WatchlistService {
     /**
      * 處理 API 回應，更新 CSRF token 並解包(unwrap)資料。
      * @private
-     * @param {import('axios').AxiosResponse} response - Axios 的回應物件
+     * @param {Response|import('axios').AxiosResponse} response - Fetch 或 Axios 的回應物件
      * @returns {any} - API 回傳的業務資料
      */
-    _handleApiResponse(response) {
-        // Axios 將標頭轉為小寫，從 'x-csrf-token' 中獲取新的 token
-        const newCsrfToken = response.headers['x-csrf-token'];
+    async _handleApiResponse(response) {
+        // 從 'x-csrf-token' 標頭中獲取新的 token
+        const newCsrfToken = response.headers.get ? response.headers.get('x-csrf-token') : response.headers['x-csrf-token'];
         if (newCsrfToken) {
-            window.csrfToken = newCsrfToken;
             console.log('CSRF Token 更新:', newCsrfToken);
         }
 
-        const data = response.data;
+        // 根據回應類型處理資料
+        let data;
+        if (response.json) {
+            // Fetch 回應
+            data = await response.json();
+        } else {
+            // Axios 回應
+            data = response.data;
+        }
+
         // 檢查後端自訂的回應結構，如果成功且有 data 屬性，則返回 data.data
         if (data && data.status === 'success' && data.hasOwnProperty('data')) {
             return data.data;
@@ -60,8 +61,10 @@ class WatchlistService {
 
     async getCategories() {
         try {
-            const response = await apiClient.get('/api/watchlist/categories', this._getApiConfig());
-            const responseData = this._handleApiResponse(response);
+            const response = await csrfClient.fetchWithCSRF('/api/watchlist/categories', {
+                method: 'GET'
+            });
+            const responseData = await this._handleApiResponse(response);
 
             // 確保返回的是數組
             if (Array.isArray(responseData)) {
@@ -79,8 +82,8 @@ class WatchlistService {
 
     async createCategory(name) {
         try {
-            const response = await apiClient.post('/api/watchlist/categories', { name }, this._getApiConfig());
-            return this._handleApiResponse(response);
+            const response = await csrfClient.post('/api/watchlist/categories', { name });
+            return await this._handleApiResponse(response);
         } catch (error) {
             this._handleApiError(error, 'createCategory');
         }
@@ -89,8 +92,8 @@ class WatchlistService {
     async addStock(categoryId, stock) {
         try {
             const stockSymbol = typeof stock === 'string' ? stock : stock.symbol;
-            const response = await apiClient.post(`/api/watchlist/categories/${categoryId}/stocks`, { stockSymbol }, this._getApiConfig());
-            return this._handleApiResponse(response);
+            const response = await csrfClient.post(`/api/watchlist/categories/${categoryId}/stocks`, { stockSymbol });
+            return await this._handleApiResponse(response);
         } catch (error) {
             this._handleApiError(error, 'addStock');
         }
@@ -98,8 +101,8 @@ class WatchlistService {
 
     async removeStock(categoryId, itemId) {
         try {
-            const response = await apiClient.delete(`/api/watchlist/categories/${categoryId}/stocks/${itemId}`, this._getApiConfig());
-            return this._handleApiResponse(response);
+            const response = await csrfClient.delete(`/api/watchlist/categories/${categoryId}/stocks/${itemId}`);
+            return await this._handleApiResponse(response);
         } catch (error) {
             this._handleApiError(error, 'removeStock');
         }
@@ -110,10 +113,11 @@ class WatchlistService {
             if (!keyword || keyword.trim() === '') {
                 return [];
             }
-            // 對於 GET 請求，參數應放在 params 物件中
-            const config = { ...this._getApiConfig(), params: { keyword } };
-            const response = await apiClient.get('/api/watchlist/search', config);
-            const result = this._handleApiResponse(response);
+            // 對於 GET 請求，參數應放在 URL 中
+            const response = await csrfClient.fetchWithCSRF(`/api/watchlist/search?keyword=${encodeURIComponent(keyword)}`, {
+                method: 'GET'
+            });
+            const result = await this._handleApiResponse(response);
 
             if (Array.isArray(result)) {
                 return result;
@@ -130,8 +134,8 @@ class WatchlistService {
 
     async deleteCategory(categoryId) {
         try {
-            const response = await apiClient.delete(`/api/watchlist/categories/${categoryId}`, this._getApiConfig());
-            return this._handleApiResponse(response);
+            const response = await csrfClient.delete(`/api/watchlist/categories/${categoryId}`);
+            return await this._handleApiResponse(response);
         } catch (error) {
             this._handleApiError(error, 'deleteCategory');
         }
@@ -139,8 +143,8 @@ class WatchlistService {
 
     async updateCategory(categoryId, name) {
         try {
-            const response = await apiClient.put(`/api/watchlist/categories/${categoryId}`, { name }, this._getApiConfig());
-            return this._handleApiResponse(response);
+            const response = await csrfClient.put(`/api/watchlist/categories/${categoryId}`, { name });
+            return await this._handleApiResponse(response);
         } catch (error) {
             this._handleApiError(error, 'updateCategory');
         }

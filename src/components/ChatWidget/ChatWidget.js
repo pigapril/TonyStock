@@ -6,7 +6,8 @@ import { Analytics } from '../../utils/analytics';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
-import apiClient from '../../api/apiClient'; // **新增：引入共用的 apiClient**
+import apiClient from '../../api/apiClient';
+import csrfClient from '../../utils/csrfClient'; // **新增：引入共用的 apiClient**
 
 const ChatWidget = () => {
   const { t } = useTranslation();
@@ -57,7 +58,7 @@ const ChatWidget = () => {
 
     try {
       // **修改：使用 apiClient.post 取代 fetch**
-      const response = await apiClient.post('/api/chatwidget/chat', 
+      const response = await csrfClient.post('/api/chatwidget/chat', 
         { // 請求主體 (body)
           messages: newMessages,
           language: currentLanguage
@@ -69,8 +70,8 @@ const ChatWidget = () => {
         }
       );
       
-      // **修改：Axios 的回應資料在 response.data 中**
-      const data = response.data;
+      // **修改：Fetch 的回應資料需要解析 JSON**
+      const data = await response.json();
       if (data.reply) {
         const reply = {role: 'assistant', content: data.reply};
         setMessages(prev => [...prev, reply]);
@@ -142,11 +143,13 @@ const ChatWidget = () => {
       // **移除：不再需要手動讀取後端 URL**
       // const backendUrl = process.env.REACT_APP_API_BASE_URL || '';
       try {
-        // **修改：使用 apiClient.get 取代 fetch**
-        const response = await apiClient.get(`/api/chatwidget/faq/${currentLanguage}`);
+        // **修改：使用 csrfClient 的 fetchWithCSRF 方法**
+        const response = await csrfClient.fetchWithCSRF(`/api/chatwidget/faq/${currentLanguage}`, {
+          method: 'GET'
+        });
         
-        // **修改：Axios 的回應資料在 response.data 中**
-        const data = response.data;
+        // **修改：Fetch 的回應資料需要解析 JSON**
+        const data = await response.json();
         if (data && typeof data.faq === 'object' && Object.keys(data.faq).length > 0) {
           setCategorizedFaqs(data.faq);
           const topLevelCategories = Object.keys(data.faq);
@@ -207,6 +210,22 @@ const ChatWidget = () => {
       }
     }
   }, [isOpen]);
+
+  // 監聽登出事件，重置聊天狀態
+  useEffect(() => {
+    const handleLogout = () => {
+      setMessages([]);
+      setInput('');
+      setCategorizedFaqs({});
+      setInitialQuickRepliesLoaded(false);
+      setIsOpen(false);
+    };
+
+    window.addEventListener('logoutSuccess', handleLogout);
+    return () => {
+      window.removeEventListener('logoutSuccess', handleLogout);
+    };
+  }, []);
 
   return (
     <>

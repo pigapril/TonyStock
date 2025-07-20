@@ -43,6 +43,7 @@ import { SponsorUs } from './components/SponsorUs/SponsorUs';
 import { SponsorSuccess } from './components/SponsorSuccess/SponsorSuccess';
 import { GoogleTrendsSymbolPage } from './components/GoogleTrendsSymbolPage/GoogleTrendsSymbolPage';
 import { GoogleTrendsMarketPage } from './components/GoogleTrendsMarketPage/GoogleTrendsMarketPage';
+import CSRFExample from './components/Example/CSRFExample';
 
 // Context 和 Hooks
 import { AuthProvider } from './components/Auth/AuthContext';
@@ -151,6 +152,8 @@ function AppContent() {
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
+
+
 
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
@@ -421,6 +424,9 @@ function AppContent() {
               <Route path="sponsor-success" element={<SponsorSuccess />} />
               <Route path="google-trends/symbol/:symbol" element={<GoogleTrendsSymbolPage />} />
               <Route path="google-trends/market" element={<GoogleTrendsMarketPage />} />
+              {process.env.NODE_ENV === 'development' && (
+                <Route path="/test-csrf" element={<CSRFExample />} />
+              )}
 
               {/* 可以添加一個捕獲無效相對路徑的路由 */}
               <Route path="*" element={<Navigate to={`/${lang}/`} replace />} />

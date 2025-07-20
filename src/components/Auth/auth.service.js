@@ -1,6 +1,7 @@
 import { Analytics } from '../../utils/analytics';
 import { handleApiError } from '../../utils/errorHandler';
 import apiClient from '../../api/apiClient'; // 導入共用的 apiClient
+import csrfClient from '../../utils/csrfClient'; // 導入 CSRF 客戶端
 
 class AuthService {
     // constructor 已不再需要，因為 baseURL 由 apiClient 管理
@@ -19,24 +20,22 @@ class AuthService {
                 currentURL: window.location.href,
             });
 
-            // 使用 apiClient.get 發送請求
+            // 使用 apiClient 發送請求，因為這是一個 GET 請求
             const response = await apiClient.get('/api/auth/status');
             
-            // 響應後記錄 (axios 的 response 物件結構不同)
+            // 響應後記錄
             console.log('Auth status response details:', {
                 status: response.status,
                 headers: response.headers,
-                data: response.data, // 資料在 data 屬性中
+                ok: response.ok,
             });
             
-            // axios 會對非 2xx 的狀態碼拋出錯誤，所以不需要手動檢查 response.ok
-            
-            console.log('Auth status data:', response.data);
-            return response.data.data; // API 回應的資料結構是 { data: ... }
+            const data = response.data;
+            console.log('Auth status data:', data);
+            return data.data; // API 回應的資料結構是 { data: ... }
         } catch (error) {
             console.error('Auth check error details:', {
-                // axios 的 error 物件包含更多資訊
-                error: error.response ? error.response.data : error.message,
+                error: error.message,
                 stack: error.stack,
                 userAgent: navigator.userAgent
             });
@@ -47,11 +46,18 @@ class AuthService {
     // 登出
     async logout() {
         try {
-            // 使用 apiClient.post 發送請求
-            const response = await apiClient.post('/api/auth/logout');
+            // 使用 csrfClient.post 發送受保護的請求
+            const response = await csrfClient.post('/api/auth/logout');
 
             Analytics.auth.logout({ status: 'success' });
-            return response.data.data;
+            
+            // csrfClient 返回的是 fetch Response，需要解析 JSON
+            if (response.ok) {
+                const data = await response.json();
+                return data.data;
+            } else {
+                throw new Error(`Logout failed: ${response.status}`);
+            }
         } catch (error) {
             // 統一錯誤處理
             const handledError = handleApiError(error);
@@ -68,12 +74,13 @@ class AuthService {
         });
 
         try {
-            // POST 資料作為第二個參數傳遞
+            // 登入請求不需要 CSRF token，使用 apiClient
             const response = await apiClient.post('/api/auth/google/verify', { credential });
 
             console.log('Google verify response:', {
                 status: response.status,
                 headers: response.headers,
+                ok: response.ok,
                 timestamp: new Date().toISOString()
             });
             
@@ -83,6 +90,7 @@ class AuthService {
                 status: response.status,
                 hasUser: !!data?.data?.user,
                 userData: data?.data?.user,
+                hasCSRFToken: !!data?.data?.csrfToken,
                 timestamp: new Date().toISOString()
             });
 
@@ -94,7 +102,7 @@ class AuthService {
             return data.data;
         } catch (error) {
             console.error('Verify token error:', {
-                message: error.response ? error.response.data : error.message,
+                message: error.message,
                 type: error.constructor.name,
                 stack: error.stack,
                 timestamp: new Date().toISOString()

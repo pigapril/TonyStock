@@ -3,12 +3,23 @@ import { useAuth } from '../Auth/useAuth'; // 更新路徑
 import { Analytics } from '../../utils/analytics';
 import './styles/UserProfile.css';
 import { useTranslation } from 'react-i18next'; // 1. 引入 useTranslation
+import csrfClient from '../../utils/csrfClient';
 
 export const UserProfile = () => {
     const { t } = useTranslation(); // 2. 使用 hook
     const { user, logout, loading } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef(null);
+
+    // 監聽登出事件，確保狀態同步
+    useEffect(() => {
+        const handleLogoutSuccess = () => {
+            setIsOpen(false);
+        };
+
+        window.addEventListener('logoutSuccess', handleLogoutSuccess);
+        return () => window.removeEventListener('logoutSuccess', handleLogoutSuccess);
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -27,6 +38,7 @@ export const UserProfile = () => {
     const handleLogout = async () => {
         try {
             await logout();
+            csrfClient.clearCSRFToken(); // 登出時同步清除CSRF token
             setIsOpen(false);
         } catch (error) {
             Analytics.error({

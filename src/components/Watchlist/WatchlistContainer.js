@@ -180,6 +180,40 @@ export function WatchlistContainer() {
         initializeCategories();
     }, [isAuthenticated, loadCategories, showToast, activeTab, t]);
 
+    // 監聽登出事件，重置狀態
+    useEffect(() => {
+        const handleLogout = () => {
+            setActiveTab(null);
+            setSelectedCategoryId(null);
+            setDialogStates({
+                categoryManager: false,
+                createCategory: false,
+                editCategory: false
+            });
+            setIsEditing(false);
+            setSelectedNews(null);
+            setNewsDialogOpen(false);
+            setKeyword('');
+            setSearchResults([]);
+            setSearchLoading(false);
+            setSearchError(null);
+            setShowSearchResults(false);
+            setSearchState({
+                keyword: '',
+                results: [],
+                loading: false,
+                error: null,
+                showResults: false
+            });
+            setError(null);
+        };
+
+        window.addEventListener('logoutSuccess', handleLogout);
+        return () => {
+            window.removeEventListener('logoutSuccess', handleLogout);
+        };
+    }, []);
+
     const toggleEditMode = () => {
         setIsEditing(prev => !prev);
     };
