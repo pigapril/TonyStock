@@ -4,8 +4,8 @@ import { initReactI18next } from 'react-i18next';
 // import Backend from 'i18next-http-backend'; // 不再需要
 
 // 直接 import json 檔案
-import en from '../public/Locales/en/translation.json';
-import zhTW from '../public/Locales/zh-TW/translation.json';
+import en from './locales/en/translation.json';
+import zhTW from './locales/zh-TW/translation.json';
 
 // 初始化 i18n，直接用 resources
 i18n
