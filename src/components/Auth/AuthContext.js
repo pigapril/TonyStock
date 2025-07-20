@@ -176,10 +176,12 @@ export function AuthProvider({ children }) {
             // 如果用戶已登入，初始化 CSRF token
             if (userData) {
                 try {
+                    console.log('Initializing CSRF token for existing user...');
                     await csrfClient.initializeCSRFToken();
-                    console.log('CSRF token initialized for existing user');
+                    console.log('CSRF token initialized successfully for existing user');
                 } catch (csrfError) {
                     console.warn('Failed to initialize CSRF token for existing user:', csrfError);
+                    // 不拋出錯誤，讓用戶繼續使用（某些功能可能受限）
                 }
             }
             

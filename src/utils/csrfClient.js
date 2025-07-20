@@ -15,6 +15,7 @@ class CSRFClient {
      */
     async initializeCSRFToken() {
         try {
+            console.log('Initializing CSRF token...');
             const baseURL = process.env.REACT_APP_API_BASE_URL || '';
             const response = await fetch(`${baseURL}/api/auth/csrf-token`, {
                 method: 'GET',
@@ -24,23 +25,35 @@ class CSRFClient {
                 }
             });
 
+            console.log('CSRF token response:', {
+                status: response.status,
+                ok: response.ok,
+                headers: Object.fromEntries(response.headers.entries())
+            });
+
             if (!response.ok) {
                 throw new Error(`CSRF token request failed: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log('CSRF token response data:', data);
             
             if (data.status === 'success' && data.data.csrfToken) {
                 this.csrfToken = data.data.csrfToken;
                 this.isInitialized = true;
                 
-                console.log('CSRF token initialized successfully');
+                console.log('CSRF token initialized successfully', {
+                    tokenLength: this.csrfToken.length,
+                    isInitialized: this.isInitialized
+                });
                 return this.csrfToken;
             } else {
                 throw new Error('Invalid CSRF token response');
             }
         } catch (error) {
             console.error('Failed to initialize CSRF token:', error);
+            this.csrfToken = null;
+            this.isInitialized = false;
             throw error;
         }
     }
@@ -84,18 +97,25 @@ class CSRFClient {
     }
 
     /**
-     * 建立包含CSRF token的請求標頭
-     * @param {Object} additionalHeaders - 額外的標頭
-     * @returns {Object} 包含CSRF token的標頭物件
+     * 獲取請求標頭
+     * @param {Object} customHeaders - 自定義標頭
+     * @returns {Object} 請求標頭
      */
-    getHeaders(additionalHeaders = {}) {
+    getHeaders(customHeaders = {}) {
         const headers = {
             'Content-Type': 'application/json',
-            ...additionalHeaders
+            ...customHeaders
         };
 
-        if (this.isTokenInitialized()) {
+        // 如果有CSRF token，添加到標頭
+        if (this.csrfToken) {
             headers['X-CSRF-Token'] = this.csrfToken;
+            console.log('CSRF token added to headers:', {
+                tokenLength: this.csrfToken.length,
+                headerName: 'X-CSRF-Token'
+            });
+        } else {
+            console.warn('No CSRF token available for request');
         }
 
         return headers;
@@ -110,6 +130,7 @@ class CSRFClient {
     async fetchWithCSRF(url, options = {}) {
         // 確保CSRF token已初始化
         if (!this.isTokenInitialized()) {
+            console.log('CSRF token not initialized, initializing...');
             await this.initializeCSRFToken();
         }
 
@@ -117,6 +138,16 @@ class CSRFClient {
         const fullUrl = url.startsWith('http') ? url : `${baseURL}${url}`;
         
         const headers = this.getHeaders(options.headers);
+        
+        // 添加詳細的請求日誌
+        console.log('CSRF request details:', {
+            url: fullUrl,
+            method: options.method || 'GET',
+            hasToken: !!this.csrfToken,
+            tokenLength: this.csrfToken ? this.csrfToken.length : 0,
+            headers: headers,
+            credentials: 'include'
+        });
         
         const requestOptions = {
             ...options,
