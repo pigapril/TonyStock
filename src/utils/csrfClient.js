@@ -19,7 +19,7 @@ class CSRFClient {
             const baseURL = process.env.REACT_APP_API_BASE_URL || '';
             const response = await fetch(`${baseURL}/api/auth/csrf-token`, {
                 method: 'GET',
-                credentials: 'include', // 包含cookies
+                credentials: 'include', // 包含cookies。
                 headers: {
                     'Content-Type': 'application/json'
                 }
