@@ -71,7 +71,7 @@ class CSRFClient {
      * @returns {boolean} 是否已初始化
      */
     isTokenInitialized() {
-        return this.isInitialized && this.csrfToken !== null;
+        return this.isInitialized && !!this.csrfToken;
     }
 
     /**

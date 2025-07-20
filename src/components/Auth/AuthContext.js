@@ -183,6 +183,9 @@ export function AuthProvider({ children }) {
                     console.warn('Failed to initialize CSRF token for existing user:', csrfError);
                     // 不拋出錯誤，讓用戶繼續使用（某些功能可能受限）
                 }
+            } else {
+                // 如果用戶未登入，清除 CSRF token
+                csrfClient.clearCSRFToken();
             }
             
             Analytics.auth.statusCheck({ status: 'success' });
