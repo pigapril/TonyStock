@@ -44,7 +44,7 @@ export function InterstitialAdModal({ onClose }) {
     timeoutRef.current = setTimeout(() => {
       console.warn('Ad load detection timeout. Forcing close button visibility.');
       showButton();
-    }, 1000); // 1 秒後觸發
+    }, 1500); // 1.5 秒後觸發
 
     // --- Mutation Observer ---
     // 觀察 <ins> 元素的子節點變化 (即 AdSense 注入 iframe 或內容時)
@@ -89,18 +89,10 @@ export function InterstitialAdModal({ onClose }) {
     };
   }, []); // 空依賴數組，僅在掛載時執行一次
 
-  // 新增：處理遮罩層點擊的函數
-  const handleOverlayClick = () => {
-    // 只有當關閉按鈕可見時，才允許透過點擊遮罩層關閉
-    if (isCloseButtonVisible) {
-      onClose();
-    } else {
-      console.log('Overlay clicked, but close button is not visible yet.'); // 可選的日誌
-    }
-  };
+  // 刪除 handleOverlayClick 函數
 
   return (
-    <div className="interstitial-ad-modal-overlay" onClick={handleOverlayClick}>
+    <div className="interstitial-ad-modal-overlay"> {/* 移除 onClick */}
       <button
         className={`interstitial-ad-modal-close ${isCloseButtonVisible ? 'visible' : ''}`}
         onClick={onClose}
