@@ -17,12 +17,14 @@ import './components/Auth/styles/SignInDialog.css';
 import './components/NewFeatureBadge/NewFeatureBadge.css';
 import "react-datepicker/dist/react-datepicker.css";
 import './components/Common/global-styles.css';
+import './components/Common/Dialog/QuotaExceededDialog.css';
 
 // 自定義組件
 import { Home } from './components/Home/Home'; 
 import MarketSentimentIndex from './components/MarketSentimentIndex/MarketSentimentIndex';
 import PageContainer from './components/PageContainer/PageContainer';
 import { AuthDialog } from './components/Auth/AuthDialog';
+import { QuotaExceededDialog } from './components/Common/Dialog/QuotaExceededDialog';
 import { UserProfile } from './components/Auth/UserProfile';
 import { PageViewTracker } from './components/Common/PageViewTracker';
 import { About } from './components/About/About';
@@ -52,10 +54,13 @@ import { useAuth } from './components/Auth/useAuth';
 import { useDialog } from './components/Common/Dialog/useDialog';
 import { useNewFeatureNotification, FEATURES } from './components/NewFeatureBadge/useNewFeatureNotification';
 import { AdProvider } from './components/Common/InterstitialAdModal/AdContext';
+import { useToastManager } from './components/Watchlist/hooks/useToastManager';
+import { Toast } from './components/Watchlist/components/Toast';
 
 // 工具函數
 import { Analytics } from './utils/analytics';
 import { handleApiError } from './utils/errorHandler';
+import { initializeApiClient } from './api/setupApiClient';
 
 // 設定 ChartJS
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
@@ -73,8 +78,9 @@ function AppContent() {
   const { t, i18n } = useTranslation();
   const { lang } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const { openDialog } = useDialog();
+  const { showToast, toast, hideToast } = useToastManager();
   const { 
     hasNewFeature: hasNewWatchlist, 
     markFeatureAsSeen: markWatchlistSeen 
@@ -100,6 +106,17 @@ function AppContent() {
       navigate(`/${i18n.options.fallbackLng}${currentPathWithoutLang || '/'}`, { replace: true });
     }
   }, [lang, i18n, navigate, location.pathname]);
+
+  // 初始化 API Client 攔截器
+  useEffect(() => {
+    initializeApiClient({
+      authLogout: logout,
+      showToast: showToast,
+      openDialog: openDialog,
+      navigate: navigate,
+      t: t
+    });
+  }, [logout, showToast, openDialog, navigate, t]);
 
   // 當側邊欄關閉時，自動收合Google搜尋熱度下拉選單
   React.useEffect(() => {
@@ -390,7 +407,14 @@ function AppContent() {
               <Route path="/" element={<Home />} />
 
               {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
-              <Route path="priceanalysis" element={<PriceAnalysis />} />
+              <Route 
+                path="priceanalysis" 
+                element={
+                  <ProtectedRoute>
+                    <PriceAnalysis />
+                  </ProtectedRoute>
+                } 
+              />
 
               <Route
                 path="market-sentiment"
@@ -411,19 +435,31 @@ function AppContent() {
               <Route
                 path="watchlist"
                 element={
-                  isAuthenticated ? (
+                  <ProtectedRoute>
                     <WatchlistContainer />
-                  ) : (
-                    <Navigate to={`/${lang}/`} replace />
-                  )
+                  </ProtectedRoute>
                 }
               />
               <Route path="articles" element={<Articles />} />
               <Route path="articles/:slug" element={<ArticleDetail />} />
               <Route path="sponsor-us" element={<SponsorUs />} />
               <Route path="sponsor-success" element={<SponsorSuccess />} />
-              <Route path="google-trends/symbol/:symbol" element={<GoogleTrendsSymbolPage />} />
-              <Route path="google-trends/market" element={<GoogleTrendsMarketPage />} />
+              <Route 
+                path="google-trends/symbol/:symbol" 
+                element={
+                  <ProtectedRoute>
+                    <GoogleTrendsSymbolPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="google-trends/market" 
+                element={
+                  <ProtectedRoute>
+                    <GoogleTrendsMarketPage />
+                  </ProtectedRoute>
+                } 
+              />
               {process.env.NODE_ENV === 'development' && (
                 <Route path="/test-csrf" element={<CSRFExample />} />
               )}
@@ -446,8 +482,18 @@ function AppContent() {
         <Footer />
       </div>
       <AuthDialog />
+      <QuotaExceededDialog />
       {/* 根據是否為首頁決定是否渲染 AdBanner */}
       {!isHomePage && <AdBanner />}
+      
+      {/* Global Toast for API Client error handling */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+        />
+      )}
     </div>
   );
 }

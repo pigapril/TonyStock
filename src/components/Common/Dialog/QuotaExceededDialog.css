@@ -1,0 +1,242 @@
+/* Quota Exceeded Dialog Styles */
+.quota-dialog-title {
+    color: #e74c3c;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.quota-dialog-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.quota-dialog-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+}
+
+.quota-dialog-message {
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.quota-dialog-message p {
+    margin: 0.5rem 0;
+    color: #333;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.quota-details {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    width: 100%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.quota-details p {
+    margin: 0;
+    font-weight: 600;
+    color: #495057;
+    font-size: 1.1rem;
+}
+
+.quota-reset {
+    background-color: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    width: 100%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.quota-reset p {
+    margin: 0;
+    color: #1976d2;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.quota-dialog-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.quota-dialog-actions .btn-secondary,
+.quota-dialog-actions .btn-primary {
+    padding: 0.875rem 1.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    min-width: 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+.quota-dialog-actions .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: 2px solid transparent;
+}
+
+.quota-dialog-actions .btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.quota-dialog-actions .btn-secondary:focus {
+    outline: none;
+    border-color: #495057;
+    box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.25);
+}
+
+.quota-dialog-actions .btn-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border: 2px solid transparent;
+}
+
+.quota-dialog-actions .btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.quota-dialog-actions .btn-primary:focus {
+    outline: none;
+    border-color: #0056b3;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.quota-dialog-actions .btn-primary:active,
+.quota-dialog-actions .btn-secondary:active {
+    transform: translateY(0);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .quota-dialog-content {
+        padding: 1rem;
+        max-width: 100%;
+    }
+    
+    .quota-dialog-icon {
+        font-size: 2.5rem;
+    }
+    
+    .quota-dialog-message p {
+        font-size: 0.95rem;
+    }
+    
+    .quota-details,
+    .quota-reset {
+        padding: 0.875rem;
+    }
+    
+    .quota-dialog-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+    }
+    
+    .quota-dialog-actions .btn-secondary,
+    .quota-dialog-actions .btn-primary {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .quota-dialog-message p {
+        color: #e9ecef;
+    }
+    
+    .quota-details {
+        background-color: #343a40;
+        border-color: #495057;
+    }
+    
+    .quota-details p {
+        color: #e9ecef;
+    }
+    
+    .quota-reset {
+        background-color: #1e3a5f;
+        border-color: #2c5aa0;
+    }
+    
+    .quota-reset p {
+        color: #64b5f6;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .quota-dialog-title {
+        color: #d32f2f;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    .quota-details,
+    .quota-reset {
+        border-width: 2px;
+    }
+    
+    .quota-dialog-actions .btn-secondary,
+    .quota-dialog-actions .btn-primary {
+        border-width: 2px;
+        border-style: solid;
+    }
+    
+    .quota-dialog-actions .btn-secondary {
+        border-color: #495057;
+    }
+    
+    .quota-dialog-actions .btn-primary {
+        border-color: #0056b3;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .quota-dialog-icon {
+        animation: none;
+    }
+    
+    .quota-dialog-actions .btn-secondary,
+    .quota-dialog-actions .btn-primary {
+        transition: none;
+    }
+    
+    .quota-dialog-actions .btn-secondary:hover,
+    .quota-dialog-actions .btn-primary:hover {
+        transform: none;
+    }
+}

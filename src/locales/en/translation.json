@@ -748,6 +748,9 @@
     "BUTTON_TIMEOUT": "Operation timed out. Please try the action again.",
     "STOCK_LIMIT_EXCEEDED": "You have reached the maximum number of stocks in your watchlist.",
     "CATEGORY_NOT_FOUND": "The specified watchlist category was not found.",
+    "QUOTA_EXCEEDED": "You have exceeded your daily usage limit. Please try again later or upgrade your plan.",
+    "QUOTA_DETAILS": "Usage: {{usage}}/{{quota}}",
+    "QUOTA_RESET": "Resets at: {{resetTime}}",
     "CATEGORY_UNAUTHORIZED": "You do not have permission to access this category.",
     "CANNOT_MODIFY_DEFAULT": "The default watchlist category cannot be modified.",
     "CANNOT_DELETE_DEFAULT": "The default watchlist category cannot be deleted.",
@@ -823,5 +826,14 @@
     "shareSheet": {
       "text": "Join me on Sentiment Inside Out! Sign up with my referral code to get 1 month of free premium access: %@"
     }
+  },
+  "quotaDialog": {
+    "title": "Usage Limit Reached",
+    "message": "You have exceeded your daily usage limit",
+    "usage": "Usage: {{usage}}/{{quota}}",
+    "resetTime": "Resets at: {{resetTime}}",
+    "upgrade": "Upgrade Plan",
+    "warningIcon": "Warning",
+    "upgradeAriaLabel": "Upgrade your plan to get more usage"
   }
 }
