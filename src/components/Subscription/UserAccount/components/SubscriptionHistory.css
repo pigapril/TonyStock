@@ -1,0 +1,355 @@
+/* Apple-inspired Subscription History Component Styles */
+.subscription-history {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Timeline */
+.subscription-history__timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.subscription-history__item {
+  display: flex;
+  gap: 16px;
+  position: relative;
+}
+
+.subscription-history__timeline-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.subscription-history__timeline-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid white;
+  position: relative;
+  z-index: 2;
+}
+
+.subscription-history__timeline-icon {
+  font-size: 14px;
+  filter: grayscale(1) brightness(0) invert(1);
+}
+
+.subscription-history__timeline-line {
+  width: 2px;
+  height: 40px;
+  background: #E5E5EA;
+  margin-top: 8px;
+}
+
+.subscription-history__content {
+  flex: 1;
+  padding-bottom: 32px;
+}
+
+.subscription-history__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 16px;
+}
+
+.subscription-history__action {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.subscription-history__action-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.subscription-history__status {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.subscription-history__date {
+  font-size: 14px;
+  color: #86868B;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.subscription-history__details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.subscription-history__plan-change {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #F2F2F7;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.subscription-history__arrow {
+  color: #86868B;
+  flex-shrink: 0;
+}
+
+.subscription-history__amount {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 122, 255, 0.08);
+  border-radius: 6px;
+  border: 1px solid rgba(0, 122, 255, 0.12);
+}
+
+.subscription-history__amount-label {
+  font-size: 13px;
+  color: #86868B;
+  font-weight: 500;
+}
+
+.subscription-history__amount-value {
+  font-size: 14px;
+  color: #007AFF;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Loading State */
+.subscription-history__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.subscription-history__loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(0, 122, 255, 0.2);
+  border-top: 2px solid #007AFF;
+  border-radius: 50%;
+  animation: subscription-history-spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes subscription-history-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.subscription-history__loading p {
+  font-size: 14px;
+  color: #86868B;
+  margin: 0;
+}
+
+/* Empty State */
+.subscription-history__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.subscription-history__empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.subscription-history__empty-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0 0 8px 0;
+}
+
+.subscription-history__empty-description {
+  font-size: 16px;
+  color: #86868B;
+  margin: 0;
+  max-width: 300px;
+  line-height: 1.4;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .subscription-history__item {
+    gap: 12px;
+  }
+  
+  .subscription-history__timeline-dot {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .subscription-history__timeline-icon {
+    font-size: 12px;
+  }
+  
+  .subscription-history__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .subscription-history__action-title {
+    font-size: 15px;
+  }
+  
+  .subscription-history__date {
+    font-size: 13px;
+  }
+  
+  .subscription-history__plan-change {
+    padding: 10px;
+    gap: 8px;
+  }
+  
+  .subscription-history__amount {
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .subscription-history__item {
+    gap: 10px;
+  }
+  
+  .subscription-history__timeline-dot {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .subscription-history__timeline-icon {
+    font-size: 10px;
+  }
+  
+  .subscription-history__timeline-line {
+    height: 32px;
+  }
+  
+  .subscription-history__content {
+    padding-bottom: 24px;
+  }
+  
+  .subscription-history__action-title {
+    font-size: 14px;
+  }
+  
+  .subscription-history__status {
+    font-size: 12px;
+  }
+  
+  .subscription-history__date {
+    font-size: 12px;
+  }
+  
+  .subscription-history__empty {
+    padding: 40px 16px;
+  }
+  
+  .subscription-history__empty-icon {
+    font-size: 40px;
+  }
+  
+  .subscription-history__empty-title {
+    font-size: 18px;
+  }
+  
+  .subscription-history__empty-description {
+    font-size: 14px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .subscription-history__timeline-line {
+    background: #3A3A3C;
+  }
+  
+  .subscription-history__timeline-dot {
+    border-color: #1C1C1E;
+  }
+  
+  .subscription-history__action-title,
+  .subscription-history__empty-title {
+    color: #F2F2F7;
+  }
+  
+  .subscription-history__date,
+  .subscription-history__amount-label,
+  .subscription-history__loading p,
+  .subscription-history__empty-description {
+    color: #98989D;
+  }
+  
+  .subscription-history__arrow {
+    color: #98989D;
+  }
+  
+  .subscription-history__plan-change {
+    background: #2C2C2E;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .subscription-history__amount {
+    background: rgba(10, 132, 255, 0.15);
+    border-color: rgba(10, 132, 255, 0.25);
+  }
+  
+  .subscription-history__amount-value {
+    color: #0A84FF;
+  }
+  
+  .subscription-history__loading-spinner {
+    border-color: rgba(10, 132, 255, 0.2);
+    border-top-color: #0A84FF;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .subscription-history__timeline-dot {
+    border-width: 3px;
+  }
+  
+  .subscription-history__plan-change,
+  .subscription-history__amount {
+    border-width: 2px;
+  }
+  
+  .subscription-history__timeline-line {
+    width: 3px;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .subscription-history__loading-spinner {
+    animation: none;
+  }
+}

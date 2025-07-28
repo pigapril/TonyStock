@@ -1,0 +1,519 @@
+/* Usage Dashboard Styles */
+.usage-dashboard {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.dashboard-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Usage Overview */
+.usage-overview {
+  margin-bottom: 3rem;
+}
+
+.usage-overview h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.usage-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.usage-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.usage-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.usage-card.normal {
+  border-left: 4px solid #4caf50;
+}
+
+.usage-card.warning {
+  border-left: 4px solid #ff9800;
+}
+
+.usage-card.critical {
+  border-left: 4px solid #f44336;
+}
+
+.usage-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.usage-card-header h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.usage-percentage {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.usage-card.warning .usage-percentage {
+  color: #ff9800;
+}
+
+.usage-card.critical .usage-percentage {
+  color: #f44336;
+}
+
+.usage-bar {
+  width: 100%;
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.usage-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.usage-card.warning .usage-fill {
+  background: linear-gradient(90deg, #ff9800, #ffc107);
+}
+
+.usage-card.critical .usage-fill {
+  background: linear-gradient(90deg, #f44336, #ff5722);
+}
+
+.usage-numbers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.used {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.limit {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Chart Controls */
+.chart-controls {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.time-range-selector,
+.metric-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.time-range-selector label,
+.metric-selector label {
+  font-weight: 500;
+  color: #333;
+}
+
+.time-range-select,
+.metric-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.time-range-select:focus,
+.metric-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+/* Charts Section */
+.charts-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.chart-container {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container.full-width {
+  grid-column: 1 / -1;
+}
+
+.chart-container h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.chart-wrapper {
+  height: 300px;
+  position: relative;
+}
+
+.chart-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #666;
+  font-size: 1rem;
+}
+
+/* Usage Insights */
+.usage-insights {
+  margin-top: 3rem;
+}
+
+.usage-insights h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.insight-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.insight-card:hover {
+  transform: translateY(-2px);
+}
+
+.insight-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.insight-content h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.insight-content p {
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .usage-dashboard {
+    padding: 1.5rem;
+  }
+  
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-container.full-width {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .usage-dashboard {
+    padding: 1rem;
+  }
+  
+  .dashboard-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .usage-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .usage-card {
+    padding: 1rem;
+  }
+  
+  .chart-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .charts-section {
+    gap: 1rem;
+  }
+  
+  .chart-container {
+    padding: 1rem;
+  }
+  
+  .chart-wrapper {
+    height: 250px;
+  }
+  
+  .insights-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .insight-card {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .usage-dashboard {
+    padding: 0.5rem;
+  }
+  
+  .dashboard-header {
+    margin-bottom: 2rem;
+  }
+  
+  .dashboard-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .usage-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .usage-percentage {
+    font-size: 1rem;
+  }
+  
+  .chart-wrapper {
+    height: 200px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .usage-dashboard {
+    background: #1e1e1e;
+    color: #ffffff;
+  }
+  
+  .dashboard-header h2 {
+    color: #ffffff;
+  }
+  
+  .dashboard-header p {
+    color: #cccccc;
+  }
+  
+  .usage-overview h3 {
+    color: #ffffff;
+  }
+  
+  .usage-card {
+    background: #2d2d2d;
+    color: #ffffff;
+  }
+  
+  .usage-card-header h4 {
+    color: #ffffff;
+  }
+  
+  .used {
+    color: #ffffff;
+  }
+  
+  .limit {
+    color: #cccccc;
+  }
+  
+  .chart-controls {
+    background: #2d2d2d;
+  }
+  
+  .time-range-selector label,
+  .metric-selector label {
+    color: #ffffff;
+  }
+  
+  .time-range-select,
+  .metric-select {
+    background: #404040;
+    border-color: #555;
+    color: #ffffff;
+  }
+  
+  .chart-container {
+    background: #2d2d2d;
+  }
+  
+  .chart-container h3 {
+    color: #ffffff;
+  }
+  
+  .chart-loading {
+    color: #cccccc;
+  }
+  
+  .usage-insights h3 {
+    color: #ffffff;
+  }
+  
+  .insight-card {
+    background: #2d2d2d;
+  }
+  
+  .insight-content h4 {
+    color: #ffffff;
+  }
+  
+  .insight-content p {
+    color: #cccccc;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .usage-dashboard {
+    padding: 0;
+  }
+  
+  .chart-controls {
+    display: none;
+  }
+  
+  .charts-section {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .chart-container {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    page-break-inside: avoid;
+  }
+  
+  .usage-insights {
+    page-break-before: always;
+  }
+}
+
+/* Accessibility Enhancements */
+.usage-card:focus-within {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+.time-range-select:focus,
+.metric-select:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* Animation for better UX */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.usage-card,
+.chart-container,
+.insight-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Loading states */
+.usage-card.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.usage-card.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

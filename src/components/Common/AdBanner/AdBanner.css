@@ -18,6 +18,8 @@
   align-items: center;
   max-height: 95px;
   width: 100%;
+  /* 確保不影響主內容佈局 */
+  pointer-events: auto;
 }
 
 .ad-content {
@@ -132,16 +134,18 @@
 }
 
 .ad-banner--collapsed .ad-close-button {
-  position: static;
-  opacity: 1;
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  opacity: 0.7;
   background-color: #f0f2f5;
-  border-radius: 20px;
-  width: 25px;
-  height: 25px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 10px;
+  color: #888;
 }
 
 .ad-banner--collapsed .ad-close-button:hover {
@@ -152,5 +156,4 @@
 .ad-banner--collapsed .ad-close-button svg {
   width: 15px;
   height: 15px;
-  color: #666;
 } 

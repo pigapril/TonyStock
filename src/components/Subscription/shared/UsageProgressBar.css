@@ -1,0 +1,202 @@
+/* Apple-inspired Usage Progress Bar Component */
+.usage-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+}
+
+.usage-progress__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.usage-progress__label {
+  font-weight: 600;
+  color: #1D1D1F;
+  flex: 1;
+}
+
+.usage-progress__stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.usage-progress__numbers {
+  color: #86868B;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.usage-progress__percentage {
+  color: #86868B;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  min-width: 40px;
+  text-align: right;
+}
+
+.usage-progress__unlimited {
+  color: #007AFF;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Progress track */
+.usage-progress__track {
+  position: relative;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.usage-progress__fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+}
+
+/* Size variants */
+.usage-progress--small .usage-progress__label {
+  font-size: 14px;
+}
+
+.usage-progress--small .usage-progress__stats {
+  font-size: 12px;
+}
+
+.usage-progress--small .usage-progress__track {
+  height: 4px;
+}
+
+.usage-progress--medium .usage-progress__label {
+  font-size: 16px;
+}
+
+.usage-progress--medium .usage-progress__stats {
+  font-size: 14px;
+}
+
+.usage-progress--medium .usage-progress__track {
+  height: 6px;
+}
+
+.usage-progress--large .usage-progress__label {
+  font-size: 18px;
+}
+
+.usage-progress--large .usage-progress__stats {
+  font-size: 16px;
+}
+
+.usage-progress--large .usage-progress__track {
+  height: 8px;
+}
+
+/* Color variants */
+.usage-progress--blue .usage-progress__fill {
+  background: linear-gradient(90deg, #007AFF 0%, #0051D5 100%);
+}
+
+.usage-progress--orange .usage-progress__fill {
+  background: linear-gradient(90deg, #FF9500 0%, #FF6B00 100%);
+}
+
+.usage-progress--red .usage-progress__fill {
+  background: linear-gradient(90deg, #FF3B30 0%, #D70015 100%);
+}
+
+.usage-progress--orange .usage-progress__percentage {
+  color: #FF9500;
+}
+
+.usage-progress--red .usage-progress__percentage {
+  color: #FF3B30;
+}
+
+/* Warning message */
+.usage-progress__warning {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.usage-progress--orange .usage-progress__warning {
+  background: rgba(255, 149, 0, 0.1);
+  color: #FF9500;
+}
+
+.usage-progress--red .usage-progress__warning {
+  background: rgba(255, 59, 48, 0.1);
+  color: #FF3B30;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .usage-progress__label {
+    color: #F2F2F7;
+  }
+  
+  .usage-progress__numbers,
+  .usage-progress__percentage {
+    color: #98989D;
+  }
+  
+  .usage-progress__unlimited {
+    color: #0A84FF;
+  }
+  
+  .usage-progress__track {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .usage-progress--blue .usage-progress__fill {
+    background: linear-gradient(90deg, #0A84FF 0%, #0056CC 100%);
+  }
+  
+  .usage-progress--orange .usage-progress__percentage {
+    color: #FF9F0A;
+  }
+  
+  .usage-progress--red .usage-progress__percentage {
+    color: #FF453A;
+  }
+  
+  .usage-progress--orange .usage-progress__warning {
+    background: rgba(255, 159, 10, 0.2);
+    color: #FF9F0A;
+  }
+  
+  .usage-progress--red .usage-progress__warning {
+    background: rgba(255, 69, 58, 0.2);
+    color: #FF453A;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .usage-progress__fill {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .usage-progress__track {
+    border: 1px solid currentColor;
+  }
+  
+  .usage-progress__warning {
+    border: 1px solid currentColor;
+  }
+}

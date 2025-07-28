@@ -15,6 +15,7 @@
     "watchlist": "我的追蹤清單",
     "articles": "分析專欄",
     "sponsor": "小豬撲滿",
+    "subscriptionPlans": "訂閱方案",
     "facebook": "Facebook",
     "facebookLong": "Facebook 粉絲專頁"
   },
@@ -99,8 +100,18 @@
     "openMenuAria": "開啟使用者選單",
     "avatarAlt": "{{username}} 的頭像",
     "menuAria": "使用者選單",
+    "account": "帳戶",
     "logout": "登出",
     "notLoggedIn":"未登入"
+  },
+  "userAccount": {
+    "title": "用戶帳戶",
+    "notLoggedIn": "請登入以查看您的帳戶",
+    "avatarAlt": "用戶頭像",
+    "currentPlan": "目前方案",
+    "usageStats": "使用統計",
+    "subscriptionHistory": "訂閱記錄",
+    "accountSettings": "帳戶設定"
   },
   "chatWidget": {
     "loginRequired": "需要登入才能使用客服功能",
@@ -834,5 +845,133 @@
     "upgrade": "升級方案",
     "warningIcon": "警告",
     "upgradeAriaLabel": "升級您的方案以獲得更多使用量"
+  },
+  "subscription": {
+    "plans": {
+      "free": "免費方案",
+      "pro": "專業方案",
+      "ultra": "旗艦方案"
+    }
+  },
+  "subscriptionPlans": {
+    "title": "選擇適合您的方案",
+    "subtitle": "透過我們靈活的定價方案，解鎖強大的交易洞察和分析功能",
+    "currentPlan": "您目前的方案",
+    "period": {
+      "forever": "永久",
+      "month": "每月"
+    },
+    "free": {
+      "name": "免費方案",
+      "description": "適合入門使用",
+      "features": {
+        "api": "每日 1,000 次 API 呼叫",
+        "analysis": "每日 10 次價格分析",
+        "watchlist": "5 個觀察清單分類",
+        "support": "社群支援",
+        "ads": "廣告支援體驗"
+      },
+      "limitations": {
+        "quota": "每日使用限制",
+        "features": "進階功能受限"
+      }
+    },
+    "pro": {
+      "name": "專業方案",
+      "description": "適合認真的交易者和分析師",
+      "features": {
+        "api": "每日 10,000 次 API 呼叫",
+        "analysis": "每日 100 次價格分析",
+        "watchlist": "20 個觀察清單分類",
+        "support": "優先電子郵件支援",
+        "ads": "無廣告體驗",
+        "advanced": "進階分析工具",
+        "export": "資料匯出功能"
+      }
+    },
+    "ultra": {
+      "name": "旗艦方案",
+      "description": "適合專業機構",
+      "features": {
+        "api": "無限制 API 呼叫",
+        "analysis": "無限制價格分析",
+        "watchlist": "100 個觀察清單分類",
+        "support": "優先電話和即時聊天支援",
+        "ads": "無廣告體驗",
+        "advanced": "所有進階分析工具",
+        "export": "無限制資料匯出",
+        "api_access": "整合用 API 存取",
+        "custom": "自訂報告功能"
+      }
+    },
+    "cta": {
+      "title": "需要更多詳細資訊？",
+      "description": "並排比較所有功能，找到最適合您需求的方案",
+      "button": "比較所有功能"
+    },
+    "faq": {
+      "title": "常見問題",
+      "q1": "我可以隨時更改方案嗎？",
+      "a1": "是的，您可以隨時升級或降級方案。變更會立即生效。",
+      "q2": "您接受哪些付款方式？",
+      "a2": "我們接受所有主要信用卡和數位付款方式。付款處理安全且加密。",
+      "q3": "有免費試用嗎？",
+      "a3": "我們的免費方案讓您可以使用核心功能。您可以隨時升級以解鎖進階功能。"
+    }
+  },
+  "planCard": {
+    "free": "免費",
+    "popular": "最受歡迎",
+    "current": "目前",
+    "currentPlan": "目前方案",
+    "getStarted": "開始使用",
+    "upgrade": "立即升級",
+    "featuresIncluded": "包含功能",
+    "limitations": "限制",
+    "comingSoon": "付款整合即將推出！請聯繫客服進行方案升級。"
+  },
+  "planComparison": {
+    "title": "比較所有方案",
+    "subtitle": "選擇最適合您交易和分析需求的方案",
+    "features": "功能",
+    "current": "目前",
+    "popular": "最受歡迎",
+    "freePrice": "免費",
+    "unlimited": "無限制",
+    "limited": "有限制",
+    "full": "完整存取",
+    "categories": {
+      "usage": "使用限制",
+      "features": "功能",
+      "support": "支援"
+    },
+    "features": {
+      "apiCalls": "每日 API 呼叫次數",
+      "priceAnalysis": "每日價格分析次數",
+      "watchlistCategories": "觀察清單分類",
+      "newsAccess": "新聞和市場更新",
+      "advancedAnalytics": "進階分析工具",
+      "dataExport": "資料匯出",
+      "apiAccess": "整合用 API 存取",
+      "customReporting": "自訂報告",
+      "adFree": "無廣告體驗",
+      "communitySupport": "社群支援",
+      "emailSupport": "優先電子郵件支援",
+      "phoneSupport": "電話和即時聊天支援"
+    },
+    "tooltips": {
+      "apiCalls": "每日可進行的 API 請求次數，用於資料檢索",
+      "priceAnalysis": "使用樂活五線譜系統進行價格趨勢分析的每日限制",
+      "watchlistCategories": "可建立的自訂分類數量，用於整理您的觀察清單",
+      "newsAccess": "存取市場新聞和更新資訊",
+      "advancedAnalytics": "進階圖表工具和技術指標",
+      "dataExport": "匯出分析資料和報告的能力",
+      "apiAccess": "用於第三方整合的直接 API 存取",
+      "customReporting": "建立自訂報告和儀表板",
+      "adFree": "從平台移除所有廣告",
+      "communitySupport": "存取社群論壇和使用指南",
+      "emailSupport": "優先電子郵件支援，回應時間更快",
+      "phoneSupport": "直接電話和即時聊天支援"
+    }
   }
 }

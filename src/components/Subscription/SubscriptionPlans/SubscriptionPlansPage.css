@@ -1,0 +1,407 @@
+/* Apple-inspired Subscription Plans Page Styles */
+.subscription-plans-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #F2F2F7 0%, #E5E5EA 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+}
+
+.subscription-plans-page__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero Section */
+.subscription-plans-page__hero {
+  padding: 80px 0 60px;
+  text-align: center;
+}
+
+.subscription-plans-page__hero-content {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.view-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-top: 2rem;
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 4px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: #666;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn.active {
+  background: white;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-btn:hover:not(.active) {
+  color: #333;
+}
+
+.loading-skeleton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.subscription-plans-page__title {
+  font-size: 48px;
+  font-weight: 700;
+  color: #1D1D1F;
+  margin: 0 0 20px 0;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+.subscription-plans-page__subtitle {
+  font-size: 21px;
+  color: #86868B;
+  margin: 0 0 32px 0;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.subscription-plans-page__current-plan {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(0, 122, 255, 0.1);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+.subscription-plans-page__current-plan-label {
+  font-size: 14px;
+  color: #86868B;
+  font-weight: 500;
+}
+
+.subscription-plans-page__current-plan-name {
+  font-size: 14px;
+  color: #007AFF;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Plans Section */
+.subscription-plans-page__plans {
+  padding: 40px 0 80px;
+}
+
+.subscription-plans-page__plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.subscription-plans-page__plan-card {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.subscription-plans-page__plan-card:hover {
+  transform: translateY(-8px);
+}
+
+.subscription-plans-page__plan-card--popular {
+  transform: scale(1.05);
+  z-index: 2;
+  position: relative;
+}
+
+.subscription-plans-page__plan-card--popular:hover {
+  transform: scale(1.05) translateY(-8px);
+}
+
+/* CTA Section */
+.subscription-plans-page__cta {
+  padding: 60px 0;
+  text-align: center;
+}
+
+.subscription-plans-page__cta-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.subscription-plans-page__cta-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
+}
+
+.subscription-plans-page__cta-description {
+  font-size: 17px;
+  color: #86868B;
+  margin: 0 0 32px 0;
+  line-height: 1.4;
+}
+
+.subscription-plans-page__cta-button {
+  min-width: 200px;
+}
+
+/* Comparison Section */
+.subscription-plans-page__comparison {
+  padding: 80px 0;
+}
+
+/* FAQ Section */
+.subscription-plans-page__faq {
+  padding: 80px 0 120px;
+}
+
+.subscription-plans-page__faq-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.subscription-plans-page__faq-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1D1D1F;
+  margin: 0 0 48px 0;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.subscription-plans-page__faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.subscription-plans-page__faq-item {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.subscription-plans-page__faq-question {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.3px;
+}
+
+.subscription-plans-page__faq-answer {
+  font-size: 16px;
+  color: #86868B;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .subscription-plans-page__container {
+    padding: 0 16px;
+  }
+  
+  .subscription-plans-page__hero {
+    padding: 60px 0 40px;
+  }
+  
+  .subscription-plans-page__title {
+    font-size: 36px;
+  }
+  
+  .subscription-plans-page__subtitle {
+    font-size: 18px;
+  }
+  
+  .subscription-plans-page__plans {
+    padding: 32px 0 60px;
+  }
+  
+  .subscription-plans-page__plans-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .subscription-plans-page__plan-card--popular {
+    transform: none;
+  }
+  
+  .subscription-plans-page__plan-card--popular:hover {
+    transform: translateY(-8px);
+  }
+  
+  .subscription-plans-page__cta {
+    padding: 40px 0;
+  }
+  
+  .subscription-plans-page__cta-content {
+    padding: 32px 24px;
+  }
+  
+  .subscription-plans-page__cta-title {
+    font-size: 24px;
+  }
+  
+  .subscription-plans-page__comparison,
+  .subscription-plans-page__faq {
+    padding: 60px 0;
+  }
+  
+  .subscription-plans-page__faq-title {
+    font-size: 28px;
+  }
+  
+  .subscription-plans-page__faq-item {
+    padding: 24px;
+  }
+  
+  .subscription-plans-page__faq-question {
+    font-size: 18px;
+  }
+  
+  .subscription-plans-page__faq-answer {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .subscription-plans-page__hero {
+    padding: 40px 0 32px;
+  }
+  
+  .subscription-plans-page__title {
+    font-size: 28px;
+  }
+  
+  .subscription-plans-page__subtitle {
+    font-size: 16px;
+  }
+  
+  .subscription-plans-page__current-plan {
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 16px;
+  }
+  
+  .subscription-plans-page__plans {
+    padding: 24px 0 40px;
+  }
+  
+  .subscription-plans-page__plans-grid {
+    gap: 20px;
+  }
+  
+  .subscription-plans-page__cta-content {
+    padding: 24px 20px;
+  }
+  
+  .subscription-plans-page__cta-title {
+    font-size: 20px;
+  }
+  
+  .subscription-plans-page__cta-description {
+    font-size: 15px;
+  }
+  
+  .subscription-plans-page__faq-title {
+    font-size: 24px;
+  }
+  
+  .subscription-plans-page__faq-item {
+    padding: 20px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .subscription-plans-page {
+    background: linear-gradient(135deg, #000000 0%, #1C1C1E 100%);
+  }
+  
+  .subscription-plans-page__title,
+  .subscription-plans-page__cta-title,
+  .subscription-plans-page__faq-title,
+  .subscription-plans-page__faq-question {
+    color: #F2F2F7;
+  }
+  
+  .subscription-plans-page__subtitle,
+  .subscription-plans-page__current-plan-label,
+  .subscription-plans-page__cta-description,
+  .subscription-plans-page__faq-answer {
+    color: #98989D;
+  }
+  
+  .subscription-plans-page__current-plan {
+    background: rgba(10, 132, 255, 0.15);
+    border-color: rgba(10, 132, 255, 0.3);
+  }
+  
+  .subscription-plans-page__current-plan-name {
+    color: #0A84FF;
+  }
+  
+  .subscription-plans-page__cta-content,
+  .subscription-plans-page__faq-item {
+    background: #1C1C1E;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .subscription-plans-page__current-plan,
+  .subscription-plans-page__cta-content,
+  .subscription-plans-page__faq-item {
+    border-width: 2px;
+  }
+  
+  .subscription-plans-page__title,
+  .subscription-plans-page__cta-title,
+  .subscription-plans-page__faq-title {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .subscription-plans-page__plan-card {
+    transition: none;
+  }
+  
+  .subscription-plans-page__plan-card:hover,
+  .subscription-plans-page__plan-card--popular:hover {
+    transform: none;
+  }
+}

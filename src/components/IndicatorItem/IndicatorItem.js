@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-date-fns';
 import {
@@ -78,27 +79,28 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
   useEffect(() => {
-    const controller = new AbortController(); // 建立 AbortController
+    const controller = new AbortController();
     setLoading(true);
-    axios
-      .get(`${API_BASE_URL}/api/indicator-history`, {
-        params: {
-          indicator: indicatorKey,
-        },
-        signal: controller.signal, // 將 signal傳遞給 axios
+    
+    console.log('Fetching indicator history:', {
+      indicatorKey,
+      cookies: document.cookie,
+      timestamp: new Date().toISOString()
+    });
+    
+    // 使用 apiClient 而不是直接使用 axios，確保認證 cookies 被包含
+    apiClient
+      .get('/api/indicator-history', {
+        params: { indicator: indicatorKey },
+        signal: controller.signal,
       })
       .then((response) => {
-        // 檢查請求是否已被取消
-        if (controller.signal.aborted) {
-          return;
-        }
+        if (controller.signal.aborted) return;
+        
         const formattedData = response.data.map((item) => ({
           date: new Date(item.date),
           value: parseFloat(item.value),
-          percentileRank:
-            item.percentileRank !== null && item.percentileRank !== undefined
-              ? parseFloat(item.percentileRank)
-              : null,
+          percentileRank: item.percentileRank !== null ? parseFloat(item.percentileRank) : null,
         }));
         setHistoricalData(formattedData);
       })
@@ -106,20 +108,23 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         if (axios.isCancel(error)) {
           console.log(`Request for ${indicatorKey} canceled:`, error.message);
         } else {
+          console.error('Indicator history fetch error:', {
+            indicatorKey,
+            error: error.message,
+            status: error.response?.status,
+            cookies: document.cookie
+          });
           handleApiError(error, showToast, t);
           setHistoricalData([]);
         }
       })
       .finally(() => {
-        // 檢查請求是否已被取消
         if (controller.signal.aborted) return;
         setLoading(false);
       });
 
-    // Cleanup function
     return () => {
-      console.log(`Aborting request for ${indicatorKey}`);
-      controller.abort(); // 當 effect 清理時，取消請求
+      controller.abort();
     };
   }, [indicatorKey, t, showToast]); // 移除 indicatorName, 因為它已經是 indicatorKey 的衍伸
 

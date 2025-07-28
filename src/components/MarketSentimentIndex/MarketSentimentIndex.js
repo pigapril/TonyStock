@@ -202,6 +202,13 @@ const MarketSentimentIndex = () => {
     async function fetchSentimentData() {
       try {
         setLoading(true);
+        
+        // 添加認證狀態檢查
+        console.log('Fetching sentiment data - auth check:', {
+          cookies: document.cookie,
+          timestamp: new Date().toISOString()
+        });
+        
         const response = await apiClient.get('/api/market-sentiment');
         
         if (isMounted) {
@@ -212,6 +219,11 @@ const MarketSentimentIndex = () => {
           }, 100);
         }
       } catch (error) {
+        console.error('Market sentiment fetch error:', {
+          error: error.message,
+          status: error.response?.status,
+          cookies: document.cookie
+        });
         handleApiError(error, showToast, t);
         setSentimentData(null);
       } finally {

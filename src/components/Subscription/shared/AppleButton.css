@@ -1,0 +1,172 @@
+/* Apple-inspired Button Component */
+.apple-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  outline: none;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Primary variant - Apple blue */
+.apple-button--primary {
+  background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+}
+
+.apple-button--primary:hover:not(.apple-button--disabled) {
+  background: linear-gradient(135deg, #0051D5 0%, #003D99 100%);
+  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.apple-button--primary:active:not(.apple-button--disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+}
+
+/* Secondary variant */
+.apple-button--secondary {
+  background: rgba(0, 0, 0, 0.05);
+  color: #007AFF;
+  border: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+.apple-button--secondary:hover:not(.apple-button--disabled) {
+  background: rgba(0, 122, 255, 0.1);
+  border-color: rgba(0, 122, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Tertiary variant */
+.apple-button--tertiary {
+  background: transparent;
+  color: #007AFF;
+}
+
+.apple-button--tertiary:hover:not(.apple-button--disabled) {
+  background: rgba(0, 122, 255, 0.1);
+}
+
+/* Danger variant */
+.apple-button--danger {
+  background: linear-gradient(135deg, #FF3B30 0%, #D70015 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba(255, 59, 48, 0.3);
+}
+
+.apple-button--danger:hover:not(.apple-button--disabled) {
+  background: linear-gradient(135deg, #D70015 0%, #B8000F 100%);
+  box-shadow: 0 6px 20px rgba(255, 59, 48, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Size variants */
+.apple-button--small {
+  padding: 8px 16px;
+  font-size: 14px;
+  min-height: 36px;
+}
+
+.apple-button--medium {
+  padding: 12px 24px;
+  font-size: 16px;
+  min-height: 44px;
+}
+
+.apple-button--large {
+  padding: 16px 32px;
+  font-size: 18px;
+  min-height: 52px;
+}
+
+/* Disabled state */
+.apple-button--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Loading state */
+.apple-button--loading {
+  cursor: wait;
+}
+
+.apple-button__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: opacity 0.2s ease;
+}
+
+.apple-button__content--loading {
+  opacity: 0.7;
+}
+
+.apple-button__spinner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: apple-button-spin 1s linear infinite;
+}
+
+@keyframes apple-button-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Focus states for accessibility */
+.apple-button:focus-visible {
+  outline: 2px solid #007AFF;
+  outline-offset: 2px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .apple-button--secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #0A84FF;
+    border-color: rgba(10, 132, 255, 0.3);
+  }
+  
+  .apple-button--secondary:hover:not(.apple-button--disabled) {
+    background: rgba(10, 132, 255, 0.2);
+  }
+  
+  .apple-button--tertiary {
+    color: #0A84FF;
+  }
+  
+  .apple-button--tertiary:hover:not(.apple-button--disabled) {
+    background: rgba(10, 132, 255, 0.2);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .apple-button {
+    transition: none;
+  }
+  
+  .apple-button:hover:not(.apple-button--disabled) {
+    transform: none;
+  }
+  
+  .apple-button__spinner {
+    animation: none;
+  }
+}

@@ -45,16 +45,18 @@
     right: 0;
     margin-top: 8px;
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     min-width: 200px;
     z-index: 100;
-    animation: menuSlideIn 0.2s ease;
+    animation: menuSlideIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
 }
 
 .user-profile__info {
     padding: 16px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .user-profile__email {
@@ -64,25 +66,40 @@
     word-break: break-all;
 }
 
-.user-profile__logout {
+.user-profile__account {
     width: 100%;
-    padding: 12px 16px;
+    padding: 14px 16px;
     border: none;
     background: transparent;
     text-align: left;
     cursor: pointer;
-    color: #d32f2f;
-    font-size: 14px;
-    transition: background-color 0.2s ease;
+    color: #007AFF;
+    font-size: 15px;
+    font-weight: 500;
+    transition: background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 8px;
+    margin: 4px;
 }
 
-.user-profile__logout:hover {
-    background-color: rgba(211, 47, 47, 0.05);
+.user-profile__account:hover {
+    background-color: rgba(0, 122, 255, 0.08);
 }
 
-.user-profile__logout:focus {
+.user-profile__account:focus {
     outline: none;
-    background-color: rgba(211, 47, 47, 0.1);
+    background-color: rgba(0, 122, 255, 0.12);
+}
+
+.user-profile__account:active {
+    background-color: rgba(0, 122, 255, 0.15);
+}
+
+.user-profile__menu-icon {
+    flex-shrink: 0;
+    opacity: 0.8;
 }
 
 @keyframes menuSlideIn {
@@ -93,5 +110,65 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .user-profile__trigger:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .user-profile__name {
+        color: #F2F2F7;
+    }
+    
+    .user-profile__menu {
+        background: #1C1C1E;
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .user-profile__info {
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .user-profile__account {
+        color: #0A84FF;
+    }
+    
+    .user-profile__account:hover {
+        background-color: rgba(10, 132, 255, 0.15);
+    }
+    
+    .user-profile__account:focus {
+        background-color: rgba(10, 132, 255, 0.2);
+    }
+    
+    .user-profile__account:active {
+        background-color: rgba(10, 132, 255, 0.25);
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .user-profile__menu {
+        border-width: 2px;
+    }
+    
+    .user-profile__account {
+        font-weight: 600;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .user-profile__menu {
+        animation: none;
+    }
+    
+    .user-profile__trigger,
+    .user-profile__account {
+        transition: none;
     }
 } 

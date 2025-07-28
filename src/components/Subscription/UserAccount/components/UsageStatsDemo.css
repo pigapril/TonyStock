@@ -1,0 +1,175 @@
+/* UsageStats Demo Styles */
+.usage-stats-demo {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+}
+
+.usage-stats-demo__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.usage-stats-demo__header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1D1D1F;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.5px;
+}
+
+.usage-stats-demo__header p {
+  font-size: 18px;
+  color: #86868B;
+  margin: 0;
+}
+
+.usage-stats-demo__controls {
+  margin-bottom: 40px;
+  padding: 24px;
+  background: #F2F2F7;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.usage-stats-demo__controls h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0 0 16px 0;
+}
+
+.usage-stats-demo__buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.usage-stats-demo__button {
+  min-width: 120px;
+}
+
+.usage-stats-demo__preview {
+  margin-bottom: 40px;
+}
+
+.usage-stats-demo__preview h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0 0 16px 0;
+}
+
+.usage-stats-demo__component {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.usage-stats-demo__info {
+  padding: 24px;
+  background: #F2F2F7;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.usage-stats-demo__info h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0 0 16px 0;
+}
+
+.usage-stats-demo__json-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.usage-stats-demo__json-container h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0;
+}
+
+.usage-stats-demo__json {
+  background: #1D1D1F;
+  color: #F2F2F7;
+  padding: 16px;
+  border-radius: 8px;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-x: auto;
+  margin: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .usage-stats-demo {
+    padding: 20px 16px;
+  }
+  
+  .usage-stats-demo__header h1 {
+    font-size: 28px;
+  }
+  
+  .usage-stats-demo__header p {
+    font-size: 16px;
+  }
+  
+  .usage-stats-demo__controls,
+  .usage-stats-demo__component,
+  .usage-stats-demo__info {
+    padding: 20px;
+  }
+  
+  .usage-stats-demo__buttons {
+    flex-direction: column;
+  }
+  
+  .usage-stats-demo__button {
+    width: 100%;
+  }
+  
+  .usage-stats-demo__json-container {
+    gap: 12px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .usage-stats-demo__header h1,
+  .usage-stats-demo__controls h3,
+  .usage-stats-demo__preview h3,
+  .usage-stats-demo__info h3,
+  .usage-stats-demo__json-container h4 {
+    color: #F2F2F7;
+  }
+  
+  .usage-stats-demo__header p {
+    color: #98989D;
+  }
+  
+  .usage-stats-demo__controls,
+  .usage-stats-demo__info {
+    background: #2C2C2E;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .usage-stats-demo__component {
+    background: #1C1C1E;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .usage-stats-demo__json {
+    background: #000000;
+    color: #F2F2F7;
+  }
+}

@@ -1,0 +1,538 @@
+/* Apple-inspired Plan Comparison Styles */
+.plan-comparison {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Tooltip Styles */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-content {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1D1D1F;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+  max-width: 200px;
+  white-space: normal;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 8px;
+}
+
+.tooltip-content::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: #1D1D1F;
+}
+
+.plan-comparison__feature-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.plan-comparison__info-icon {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.plan-comparison__feature-label:hover .plan-comparison__info-icon {
+  opacity: 1;
+}
+
+.plan-comparison__header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.plan-comparison__title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1D1D1F;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
+}
+
+.plan-comparison__subtitle {
+  font-size: 18px;
+  color: #86868B;
+  margin: 0;
+  line-height: 1.4;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Desktop Table */
+.plan-comparison__table-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: block;
+}
+
+.plan-comparison__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.plan-comparison__header-row {
+  background: linear-gradient(135deg, #F2F2F7 0%, #E5E5EA 100%);
+}
+
+.plan-comparison__feature-header {
+  padding: 24px;
+  text-align: left;
+  font-weight: 600;
+  color: #1D1D1F;
+  font-size: 16px;
+  width: 35%;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.plan-comparison__plan-header {
+  padding: 24px 16px;
+  text-align: center;
+  position: relative;
+  width: 21.67%;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.plan-comparison__plan-header:last-child {
+  border-right: none;
+}
+
+.plan-comparison__plan-header--popular {
+  background: linear-gradient(135deg, rgba(0, 122, 255, 0.05) 0%, rgba(0, 122, 255, 0.02) 100%);
+  border-left: 2px solid #007AFF;
+  border-right: 2px solid #007AFF;
+}
+
+.plan-comparison__plan-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.plan-comparison__plan-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.plan-comparison__plan-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1D1D1F;
+}
+
+.plan-comparison__plan-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1D1D1F;
+  font-variant-numeric: tabular-nums;
+}
+
+.plan-comparison__plan-period {
+  font-size: 14px;
+  font-weight: 500;
+  color: #86868B;
+}
+
+.plan-comparison__popular-badge {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 0 0 12px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+.plan-comparison__current-badge {
+  background: linear-gradient(135deg, #34C759 0%, #28A745 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-top: 8px;
+}
+
+.plan-comparison__category-row {
+  background: #F9F9F9;
+}
+
+.plan-comparison__category-header {
+  padding: 16px 24px;
+  font-weight: 600;
+  color: #1D1D1F;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.plan-comparison__feature-row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.plan-comparison__feature-row:hover {
+  background: rgba(0, 122, 255, 0.02);
+}
+
+.plan-comparison__feature-name {
+  padding: 20px 24px;
+  font-weight: 500;
+  color: #1D1D1F;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.plan-comparison__feature-cell {
+  padding: 20px 16px;
+  text-align: center;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.plan-comparison__feature-cell:last-child {
+  border-right: none;
+}
+
+.plan-comparison__feature-cell--popular {
+  background: rgba(0, 122, 255, 0.02);
+}
+
+.plan-comparison__feature-value {
+  font-weight: 500;
+  color: #1D1D1F;
+}
+
+.plan-comparison__feature-value--free {
+  color: #86868B;
+}
+
+.plan-comparison__feature-value--pro {
+  color: #007AFF;
+}
+
+.plan-comparison__feature-value--ultra {
+  color: #AF52DE;
+}
+
+.plan-comparison__check-icon {
+  display: inline-block;
+}
+
+.plan-comparison__cross-icon {
+  display: inline-block;
+}
+
+/* Mobile Cards (hidden by default) */
+.plan-comparison__mobile-cards {
+  display: none;
+  gap: 24px;
+  flex-direction: column;
+}
+
+.plan-comparison__mobile-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.plan-comparison__mobile-card--popular {
+  border: 2px solid #007AFF;
+  background: linear-gradient(135deg, rgba(0, 122, 255, 0.02) 0%, white 100%);
+}
+
+.plan-comparison__mobile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.plan-comparison__mobile-plan-info {
+  flex: 1;
+}
+
+.plan-comparison__mobile-plan-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0 0 4px 0;
+}
+
+.plan-comparison__mobile-plan-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: #007AFF;
+}
+
+.plan-comparison__mobile-category {
+  margin-bottom: 24px;
+}
+
+.plan-comparison__mobile-category:last-child {
+  margin-bottom: 0;
+}
+
+.plan-comparison__mobile-category-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #86868B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px 0;
+}
+
+.plan-comparison__mobile-feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.plan-comparison__mobile-feature-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.plan-comparison__mobile-feature-name {
+  font-size: 14px;
+  color: #1D1D1F;
+  font-weight: 500;
+}
+
+.plan-comparison__mobile-feature-value {
+  display: flex;
+  align-items: center;
+}
+
+/* Tablet Responsiveness */
+@media (max-width: 1024px) {
+  .plan-comparison__table-container {
+    overflow-x: auto;
+  }
+  
+  .plan-comparison__table {
+    min-width: 800px;
+  }
+  
+  .plan-comparison__feature-header {
+    width: 30%;
+  }
+  
+  .plan-comparison__plan-header {
+    width: 23.33%;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .plan-comparison__title {
+    font-size: 28px;
+  }
+  
+  .plan-comparison__subtitle {
+    font-size: 16px;
+  }
+  
+  .plan-comparison__header {
+    margin-bottom: 32px;
+  }
+  
+  /* Hide desktop table on mobile */
+  .plan-comparison__table-container {
+    display: none;
+  }
+  
+  /* Show mobile cards */
+  .plan-comparison__mobile-cards {
+    display: flex;
+  }
+  
+  /* Mobile tooltip adjustments */
+  .tooltip-content {
+    max-width: 150px;
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .plan-comparison__title {
+    font-size: 24px;
+  }
+  
+  .plan-comparison__mobile-card {
+    padding: 20px;
+  }
+  
+  .plan-comparison__mobile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .plan-comparison__mobile-plan-info {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .plan-comparison__mobile-feature-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .plan-comparison__mobile-feature-value {
+    align-self: flex-end;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .plan-comparison__title {
+    color: #F2F2F7;
+  }
+  
+  .plan-comparison__subtitle {
+    color: #98989D;
+  }
+  
+  .plan-comparison__table-container,
+  .plan-comparison__mobile-card {
+    background: #1C1C1E;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .plan-comparison__header-row {
+    background: linear-gradient(135deg, #2C2C2E 0%, #1C1C1E 100%);
+  }
+  
+  .plan-comparison__category-row {
+    background: #2C2C2E;
+  }
+  
+  .plan-comparison__feature-header,
+  .plan-comparison__category-header,
+  .plan-comparison__feature-name,
+  .plan-comparison__plan-name,
+  .plan-comparison__plan-price,
+  .plan-comparison__feature-value,
+  .plan-comparison__mobile-plan-name,
+  .plan-comparison__mobile-feature-name {
+    color: #F2F2F7;
+  }
+  
+  .plan-comparison__plan-period,
+  .plan-comparison__feature-value--free,
+  .plan-comparison__mobile-category-title {
+    color: #98989D;
+  }
+  
+  .plan-comparison__feature-value--pro,
+  .plan-comparison__mobile-plan-price {
+    color: #0A84FF;
+  }
+  
+  .plan-comparison__feature-value--ultra {
+    color: #BF5AF2;
+  }
+  
+  .plan-comparison__feature-row:hover {
+    background: rgba(10, 132, 255, 0.05);
+  }
+  
+  .plan-comparison__feature-cell--popular {
+    background: rgba(10, 132, 255, 0.05);
+  }
+  
+  .plan-comparison__plan-header--popular {
+    background: linear-gradient(135deg, rgba(10, 132, 255, 0.1) 0%, rgba(10, 132, 255, 0.05) 100%);
+    border-color: #0A84FF;
+  }
+  
+  .plan-comparison__mobile-card--popular {
+    background: linear-gradient(135deg, rgba(10, 132, 255, 0.05) 0%, #1C1C1E 100%);
+    border-color: #0A84FF;
+  }
+  
+  /* Dark mode tooltip */
+  .tooltip-content {
+    background: #2C2C2E;
+    color: #F2F2F7;
+  }
+  
+  .tooltip-content::after {
+    border-top-color: #2C2C2E;
+  }
+  
+  .plan-comparison__info-icon {
+    stroke: #98989D;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .plan-comparison__table-container,
+  .plan-comparison__mobile-card {
+    border-width: 2px;
+  }
+  
+  .plan-comparison__plan-header--popular,
+  .plan-comparison__mobile-card--popular {
+    border-width: 3px;
+  }
+  
+  .plan-comparison__title,
+  .plan-comparison__plan-name,
+  .plan-comparison__feature-name {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .plan-comparison__feature-row {
+    transition: none;
+  }
+  
+  .plan-comparison__feature-row:hover {
+    background: none;
+  }
+}

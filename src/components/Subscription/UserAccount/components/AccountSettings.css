@@ -1,0 +1,277 @@
+/* Apple-inspired Account Settings Component Styles */
+.account-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+}
+
+.account-settings__section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.account-settings__section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+/* Account Information Grid */
+.account-settings__info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: #F2F2F7;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.account-settings__info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.account-settings__info-item:last-child {
+  border-bottom: none;
+}
+
+.account-settings__info-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #86868B;
+}
+
+.account-settings__info-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1D1D1F;
+  text-align: right;
+  word-break: break-word;
+}
+
+/* Actions */
+.account-settings__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.account-settings__action-btn,
+.account-settings__logout-btn,
+.account-settings__delete-btn {
+  align-self: flex-start;
+  min-width: 160px;
+}
+
+.account-settings__logout-btn {
+  background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+}
+
+.account-settings__delete-btn {
+  background: linear-gradient(135deg, #FF3B30 0%, #D70015 100%);
+}
+
+/* Privacy Note */
+.account-settings__privacy-note {
+  font-size: 13px;
+  color: #86868B;
+  line-height: 1.4;
+  margin: 8px 0 0 0;
+  padding: 12px;
+  background: rgba(0, 122, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 122, 255, 0.1);
+}
+
+/* Help Links */
+.account-settings__help-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.account-settings__help-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: #F2F2F7;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: #007AFF;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.account-settings__help-link:hover {
+  background: rgba(0, 122, 255, 0.08);
+  border-color: rgba(0, 122, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.account-settings__help-link:active {
+  transform: translateY(0);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .account-settings {
+    gap: 24px;
+  }
+  
+  .account-settings__section {
+    gap: 12px;
+  }
+  
+  .account-settings__section-title {
+    font-size: 16px;
+  }
+  
+  .account-settings__info-grid {
+    padding: 16px;
+  }
+  
+  .account-settings__info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 10px 0;
+  }
+  
+  .account-settings__info-value {
+    text-align: left;
+  }
+  
+  .account-settings__actions {
+    gap: 10px;
+  }
+  
+  .account-settings__action-btn,
+  .account-settings__logout-btn,
+  .account-settings__delete-btn {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .account-settings__help-links {
+    gap: 8px;
+  }
+  
+  .account-settings__help-link {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-settings {
+    gap: 20px;
+  }
+  
+  .account-settings__section-title {
+    font-size: 15px;
+  }
+  
+  .account-settings__info-grid {
+    padding: 12px;
+  }
+  
+  .account-settings__info-item {
+    padding: 8px 0;
+  }
+  
+  .account-settings__info-label,
+  .account-settings__info-value {
+    font-size: 13px;
+  }
+  
+  .account-settings__privacy-note {
+    font-size: 12px;
+    padding: 10px;
+  }
+  
+  .account-settings__help-link {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .account-settings__section-title,
+  .account-settings__info-value {
+    color: #F2F2F7;
+  }
+  
+  .account-settings__info-label {
+    color: #98989D;
+  }
+  
+  .account-settings__info-grid {
+    background: #2C2C2E;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .account-settings__info-item {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .account-settings__privacy-note {
+    color: #98989D;
+    background: rgba(10, 132, 255, 0.1);
+    border-color: rgba(10, 132, 255, 0.2);
+  }
+  
+  .account-settings__help-link {
+    background: #2C2C2E;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #0A84FF;
+  }
+  
+  .account-settings__help-link:hover {
+    background: rgba(10, 132, 255, 0.15);
+    border-color: rgba(10, 132, 255, 0.3);
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .account-settings__info-grid,
+  .account-settings__privacy-note,
+  .account-settings__help-link {
+    border-width: 2px;
+  }
+  
+  .account-settings__info-item {
+    border-bottom-width: 2px;
+  }
+  
+  .account-settings__section-title {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .account-settings__help-link {
+    transition: none;
+  }
+  
+  .account-settings__help-link:hover {
+    transform: none;
+  }
+  
+  .account-settings__help-link:active {
+    transform: none;
+  }
+}

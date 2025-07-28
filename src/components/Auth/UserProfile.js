@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
 import { Analytics } from '../../utils/analytics';
 import './styles/UserProfile.css';
@@ -7,6 +8,7 @@ import csrfClient from '../../utils/csrfClient';
 
 export const UserProfile = () => {
     const { t } = useTranslation(); // 2. 使用 hook
+    const navigate = useNavigate();
     const { user, logout, loading } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef(null);
@@ -35,18 +37,15 @@ export const UserProfile = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [isOpen]);
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-            csrfClient.clearCSRFToken(); // 登出時同步清除CSRF token
-            setIsOpen(false);
-        } catch (error) {
-            Analytics.error({
-                type: 'AUTH_ERROR',
-                code: error.code || 500,
-                message: error.message
-            });
-        }
+    const handleAccountClick = () => {
+        const lang = document.documentElement.lang || 'zh-TW';
+        navigate(`/${lang}/user-account`);
+        setIsOpen(false);
+        
+        Analytics.ui.navigation.click({
+            destination: 'userAccount',
+            source: 'userProfile'
+        });
     };
 
     const handleKeyPress = (e) => {
@@ -85,14 +84,17 @@ export const UserProfile = () => {
                 >
                     <div className="user-profile__info">
                         <p className="user-profile__name">{user.username}</p>
-                        <p className="user-profile__email">{user.email}</p>
                     </div>
                     <button 
-                        className="user-profile__logout"
-                        onClick={handleLogout}
+                        className="user-profile__account"
+                        onClick={handleAccountClick}
                         role="menuitem"
                     >
-                        {t('userProfile.logout')}
+                        <svg className="user-profile__menu-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 8C10.2091 8 12 6.20914 12 4C12 1.79086 10.2091 0 8 0C5.79086 0 4 1.79086 4 4C4 6.20914 5.79086 8 8 8Z" fill="currentColor"/>
+                            <path d="M8 10C3.58172 10 0 13.5817 0 18H16C16 13.5817 12.4183 10 8 10Z" fill="currentColor"/>
+                        </svg>
+                        {t('userProfile.account', 'Account')}
                     </button>
                 </div>
             )}

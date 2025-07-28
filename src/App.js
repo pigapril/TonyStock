@@ -26,6 +26,9 @@ import PageContainer from './components/PageContainer/PageContainer';
 import { AuthDialog } from './components/Auth/AuthDialog';
 import { QuotaExceededDialog } from './components/Common/Dialog/QuotaExceededDialog';
 import { UserProfile } from './components/Auth/UserProfile';
+import { UserAccountPage } from './components/Subscription/UserAccount/UserAccountPage';
+import { SubscriptionPlansPage } from './components/Subscription/SubscriptionPlans/SubscriptionPlansPage';
+import { SubscriptionProvider } from './components/Subscription/context/SubscriptionContext';
 import { PageViewTracker } from './components/Common/PageViewTracker';
 import { About } from './components/About/About';
 import { Legal } from './components/Legal/Legal';
@@ -275,20 +278,18 @@ function AppContent() {
                 </div>
               </NavLink>
             </li>
-            {/* 只有在 zh-TW 語系下顯示贊助連結 */}
-            {lang === 'zh-TW' && (
-              <li className="sidebar-item-7">
-                <NavLink 
-                  to={`/${lang}/sponsor-us`} 
-                  onClick={() => isMobile && setSidebarOpen(false)}
-                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                  aria-current={({ isActive }) => isActive ? "page" : undefined}
-                >
-                  <FaPiggyBank />
-                  <span>{t('nav.sponsor')}</span>
-                </NavLink>
-              </li>
-            )}
+            {/* 訂閱方案連結 */}
+            <li className="sidebar-item-7">
+              <NavLink 
+                to={`/${lang}/subscription-plans`} 
+                onClick={() => isMobile && setSidebarOpen(false)}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
+                <FaPiggyBank />
+                <span>{t('nav.subscriptionPlans', '訂閱方案')}</span>
+              </NavLink>
+            </li>
             <li className="sidebar-item-8">
               <a
                 href="https://www.facebook.com/profile.php?id=61565751412240"
@@ -371,16 +372,14 @@ function AppContent() {
                 <span>{t('nav.articles')}</span>
               </NavLink>
               {/* 只有在 zh-TW 語系下顯示贊助連結 */}
-              {lang === 'zh-TW' && (
-                <NavLink 
-                  to={`/${lang}/sponsor-us`}
-                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                  aria-current={({ isActive }) => isActive ? "page" : undefined}
-                >
-                  <FaPiggyBank />
-                  <span>{t('nav.sponsor')}</span>
-                </NavLink>
-              )}
+              <NavLink 
+                to={`/${lang}/subscription-plans`}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
+                <FaPiggyBank />
+                <span>{t('nav.subscriptionPlans', '訂閱方案')}</span>
+              </NavLink>
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
                 <span>{t('nav.facebookLong')}</span>
@@ -444,6 +443,18 @@ function AppContent() {
               <Route path="articles/:slug" element={<ArticleDetail />} />
               <Route path="sponsor-us" element={<SponsorUs />} />
               <Route path="sponsor-success" element={<SponsorSuccess />} />
+              <Route 
+                path="user-account" 
+                element={
+                  <ProtectedRoute>
+                    <UserAccountPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="subscription-plans" 
+                element={<SubscriptionPlansPage />} 
+              />
               <Route 
                 path="google-trends/symbol/:symbol" 
                 element={
@@ -574,8 +585,9 @@ function InitialRedirect() {
 function App() {
   return (
     <AuthProvider>
-      <DialogProvider>
-        <AdProvider>
+      <SubscriptionProvider>
+        <DialogProvider>
+          <AdProvider>
           <Routes>
             {/* --- 確保這裡使用正確定義的 InitialRedirect --- */}
             <Route path="/" element={<InitialRedirect />} />
@@ -583,8 +595,9 @@ function App() {
             <Route path="/:lang/*" element={<LanguageWrapper />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </AdProvider>
-      </DialogProvider>
+          </AdProvider>
+        </DialogProvider>
+      </SubscriptionProvider>
     </AuthProvider>
   );
 }

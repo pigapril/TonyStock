@@ -1,0 +1,261 @@
+/* Apple-inspired Plan Info Component Styles */
+.plan-info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+}
+
+.plan-info__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.plan-info__badge-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.plan-info__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plan-info__status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.plan-info__status-indicator--active {
+  background: #34C759;
+  box-shadow: 0 0 8px rgba(52, 199, 89, 0.4);
+}
+
+.plan-info__status-indicator--expired {
+  background: #FF3B30;
+  box-shadow: 0 0 8px rgba(255, 59, 48, 0.4);
+}
+
+.plan-info__status-indicator--cancelled {
+  background: #FF9500;
+  box-shadow: 0 0 8px rgba(255, 149, 0, 0.4);
+}
+
+.plan-info__status-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #86868B;
+  text-transform: capitalize;
+}
+
+.plan-info__upgrade-btn {
+  flex-shrink: 0;
+}
+
+.plan-info__details {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Features Section */
+.plan-info__features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.plan-info__features-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0;
+}
+
+.plan-info__features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.plan-info__feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #1D1D1F;
+  line-height: 1.4;
+}
+
+.plan-info__feature-icon {
+  flex-shrink: 0;
+}
+
+/* Dates Section */
+.plan-info__dates {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #F2F2F7;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.plan-info__date-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.plan-info__date-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #86868B;
+}
+
+.plan-info__date-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1D1D1F;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Loading State */
+.plan-info__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.plan-info__loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(0, 122, 255, 0.2);
+  border-top: 2px solid #007AFF;
+  border-radius: 50%;
+  animation: plan-info-spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes plan-info-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.plan-info__loading p {
+  font-size: 14px;
+  color: #86868B;
+  margin: 0;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .plan-info__header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  
+  .plan-info__badge-section {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .plan-info__upgrade-btn {
+    width: 100%;
+  }
+  
+  .plan-info__dates {
+    padding: 12px;
+  }
+  
+  .plan-info__date-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .plan-info {
+    gap: 20px;
+  }
+  
+  .plan-info__details {
+    gap: 20px;
+  }
+  
+  .plan-info__features {
+    gap: 12px;
+  }
+  
+  .plan-info__features-list {
+    gap: 10px;
+  }
+  
+  .plan-info__feature-item {
+    font-size: 13px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .plan-info__features-title,
+  .plan-info__feature-item,
+  .plan-info__date-value {
+    color: #F2F2F7;
+  }
+  
+  .plan-info__status-text,
+  .plan-info__date-label,
+  .plan-info__loading p {
+    color: #98989D;
+  }
+  
+  .plan-info__dates {
+    background: #2C2C2E;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .plan-info__loading-spinner {
+    border-color: rgba(10, 132, 255, 0.2);
+    border-top-color: #0A84FF;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .plan-info__dates {
+    border-width: 2px;
+  }
+  
+  .plan-info__status-indicator {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .plan-info__loading-spinner {
+    animation: none;
+  }
+  
+  .plan-info__status-indicator--active,
+  .plan-info__status-indicator--expired,
+  .plan-info__status-indicator--cancelled {
+    box-shadow: none;
+  }
+}

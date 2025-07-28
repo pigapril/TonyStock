@@ -15,6 +15,7 @@
     "watchlist": "My Watchlist",
     "articles": "Insights & Analysis",
     "sponsor": "Sponsor Us",
+    "subscriptionPlans": "Subscription Plans",
     "facebook": "Facebook",
     "facebookLong": "Facebook Page"
   },
@@ -99,8 +100,18 @@
     "openMenuAria": "Open user menu",
     "avatarAlt": "{{username}}'s avatar",
     "menuAria": "User menu",
+    "account": "Account",
     "logout": "Logout",
     "notLoggedIn":"Not Logged In"
+  },
+  "userAccount": {
+    "title": "User Account",
+    "notLoggedIn": "Please log in to view your account",
+    "avatarAlt": "User avatar",
+    "currentPlan": "Current Plan",
+    "usageStats": "Usage Statistics",
+    "subscriptionHistory": "Subscription History",
+    "accountSettings": "Account Settings"
   },
   "chatWidget": {
     "loginRequired": "Login required to use customer service",
@@ -835,5 +846,133 @@
     "upgrade": "Upgrade Plan",
     "warningIcon": "Warning",
     "upgradeAriaLabel": "Upgrade your plan to get more usage"
+  },
+  "subscription": {
+    "plans": {
+      "free": "Free",
+      "pro": "Pro",
+      "ultra": "Ultra"
+    }
+  },
+  "subscriptionPlans": {
+    "title": "Choose the plan that's right for you",
+    "subtitle": "Unlock powerful trading insights and analytics with our flexible pricing plans",
+    "currentPlan": "Your current plan",
+    "period": {
+      "forever": "Forever",
+      "month": "per month"
+    },
+    "free": {
+      "name": "Free",
+      "description": "Perfect for getting started",
+      "features": {
+        "api": "1,000 API calls per day",
+        "analysis": "10 price analyses per day",
+        "watchlist": "5 watchlist categories",
+        "support": "Community support",
+        "ads": "Ad-supported experience"
+      },
+      "limitations": {
+        "quota": "Daily usage limits",
+        "features": "Limited advanced features"
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "For serious traders and analysts",
+      "features": {
+        "api": "10,000 API calls per day",
+        "analysis": "100 price analyses per day",
+        "watchlist": "20 watchlist categories",
+        "support": "Priority email support",
+        "ads": "Ad-free experience",
+        "advanced": "Advanced analytics tools",
+        "export": "Data export capabilities"
+      }
+    },
+    "ultra": {
+      "name": "Ultra",
+      "description": "For professional institutions",
+      "features": {
+        "api": "Unlimited API calls",
+        "analysis": "Unlimited price analyses",
+        "watchlist": "100 watchlist categories",
+        "support": "Premium phone & chat support",
+        "ads": "Ad-free experience",
+        "advanced": "All advanced analytics tools",
+        "export": "Unlimited data export",
+        "api_access": "API access for integrations",
+        "custom": "Custom reporting features"
+      }
+    },
+    "cta": {
+      "title": "Need more details?",
+      "description": "Compare all features side by side to find the perfect plan for your needs",
+      "button": "Compare All Features"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "Can I change my plan anytime?",
+      "a1": "Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately.",
+      "q2": "What payment methods do you accept?",
+      "a2": "We accept all major credit cards and digital payment methods. Payment processing is secure and encrypted.",
+      "q3": "Is there a free trial?",
+      "a3": "Our Free plan gives you access to core features. You can upgrade anytime to unlock advanced capabilities."
+    }
+  },
+  "planCard": {
+    "free": "Free",
+    "popular": "Most Popular",
+    "current": "Current",
+    "currentPlan": "Current Plan",
+    "getStarted": "Get Started",
+    "upgrade": "Upgrade Now",
+    "featuresIncluded": "What's included",
+    "limitations": "Limitations",
+    "comingSoon": "Payment integration coming soon! Please contact support for plan upgrades."
+  },
+  "planComparison": {
+    "title": "Compare All Plans",
+    "subtitle": "Choose the plan that best fits your trading and analysis needs",
+    "features": "Features",
+    "current": "Current",
+    "popular": "Most Popular",
+    "freePrice": "$0",
+    "unlimited": "Unlimited",
+    "limited": "Limited",
+    "full": "Full Access",
+    "categories": {
+      "usage": "Usage Limits",
+      "features": "Features",
+      "support": "Support"
+    },
+    "features": {
+      "apiCalls": "API Calls per Day",
+      "priceAnalysis": "Price Analyses per Day",
+      "watchlistCategories": "Watchlist Categories",
+      "newsAccess": "News & Market Updates",
+      "advancedAnalytics": "Advanced Analytics Tools",
+      "dataExport": "Data Export",
+      "apiAccess": "API Access for Integrations",
+      "customReporting": "Custom Reporting",
+      "adFree": "Ad-Free Experience",
+      "communitySupport": "Community Support",
+      "emailSupport": "Priority Email Support",
+      "phoneSupport": "Phone & Chat Support"
+    },
+    "tooltips": {
+      "apiCalls": "Number of API requests you can make per day for data retrieval",
+      "priceAnalysis": "Daily limit for price trend analysis using our LOHAS Five-Line system",
+      "watchlistCategories": "Number of custom categories you can create to organize your watchlist",
+      "newsAccess": "Access to market news and updates",
+      "advancedAnalytics": "Advanced charting tools and technical indicators",
+      "dataExport": "Ability to export your analysis data and reports",
+      "apiAccess": "Direct API access for third-party integrations",
+      "customReporting": "Create custom reports and dashboards",
+      "adFree": "Remove all advertisements from the platform",
+      "communitySupport": "Access to community forums and user guides",
+      "emailSupport": "Priority email support with faster response times",
+      "phoneSupport": "Direct phone and live chat support"
+    }
   }
 }

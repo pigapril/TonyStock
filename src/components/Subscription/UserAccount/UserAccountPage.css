@@ -1,0 +1,262 @@
+/* Apple-inspired User Account Page Styles */
+.user-account-page {
+  min-height: 100vh;
+  background: #F2F2F7;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  padding: 20px;
+}
+
+.user-account-page__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Header Section */
+.user-account-page__header {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.user-account-page__user-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-account-page__avatar {
+  position: relative;
+}
+
+.user-account-page__avatar-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #007AFF;
+  box-shadow: 0 4px 16px rgba(0, 122, 255, 0.2);
+}
+
+.user-account-page__user-details {
+  flex: 1;
+}
+
+.user-account-page__username {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1D1D1F;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.user-account-page__email {
+  font-size: 16px;
+  color: #86868B;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Main Content */
+.user-account-page__main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.user-account-page__sections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.user-account-page__section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.user-account-page__section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.3px;
+}
+
+/* Loading State */
+.user-account-page__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+}
+
+.user-account-page__loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(0, 122, 255, 0.2);
+  border-top: 3px solid #007AFF;
+  border-radius: 50%;
+  animation: user-account-spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes user-account-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.user-account-page__loading p {
+  font-size: 16px;
+  color: #86868B;
+  margin: 0;
+}
+
+/* Error State */
+.user-account-page__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+}
+
+.user-account-page__error h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin: 0;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .user-account-page {
+    padding: 16px;
+  }
+  
+  .user-account-page__container {
+    gap: 20px;
+  }
+  
+  .user-account-page__header {
+    padding: 20px;
+  }
+  
+  .user-account-page__user-info {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  
+  .user-account-page__avatar-image {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .user-account-page__username {
+    font-size: 24px;
+  }
+  
+  .user-account-page__section {
+    padding: 20px;
+  }
+  
+  .user-account-page__section-title {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-account-page {
+    padding: 12px;
+  }
+  
+  .user-account-page__header {
+    padding: 16px;
+  }
+  
+  .user-account-page__section {
+    padding: 16px;
+  }
+  
+  .user-account-page__username {
+    font-size: 20px;
+  }
+  
+  .user-account-page__email {
+    font-size: 14px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .user-account-page {
+    background: #000000;
+  }
+  
+  .user-account-page__header,
+  .user-account-page__section,
+  .user-account-page__loading,
+  .user-account-page__error {
+    background: #1C1C1E;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .user-account-page__username,
+  .user-account-page__section-title,
+  .user-account-page__error h1 {
+    color: #F2F2F7;
+  }
+  
+  .user-account-page__email,
+  .user-account-page__loading p {
+    color: #98989D;
+  }
+  
+  .user-account-page__avatar-image {
+    border-color: #0A84FF;
+    box-shadow: 0 4px 16px rgba(10, 132, 255, 0.3);
+  }
+  
+  .user-account-page__loading-spinner {
+    border-color: rgba(10, 132, 255, 0.2);
+    border-top-color: #0A84FF;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .user-account-page__header,
+  .user-account-page__section,
+  .user-account-page__loading,
+  .user-account-page__error {
+    border-width: 2px;
+  }
+  
+  .user-account-page__avatar-image {
+    border-width: 4px;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .user-account-page__loading-spinner {
+    animation: none;
+  }
+}

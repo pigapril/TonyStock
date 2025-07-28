@@ -1,0 +1,78 @@
+/* Apple-inspired Plan Badge Component */
+.plan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+/* Size variants */
+.plan-badge--small {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.plan-badge--medium {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.plan-badge--large {
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+/* Color variants */
+.plan-badge--gray {
+  background: rgba(142, 142, 147, 0.12);
+  color: #8E8E93;
+}
+
+.plan-badge--blue {
+  background: rgba(0, 122, 255, 0.12);
+  color: #007AFF;
+}
+
+.plan-badge--purple {
+  background: rgba(175, 82, 222, 0.12);
+  color: #AF52DE;
+}
+
+.plan-badge__icon {
+  font-size: 1em;
+  line-height: 1;
+}
+
+.plan-badge__label {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .plan-badge--gray {
+    background: rgba(142, 142, 147, 0.24);
+    color: #98989D;
+  }
+  
+  .plan-badge--blue {
+    background: rgba(10, 132, 255, 0.24);
+    color: #0A84FF;
+  }
+  
+  .plan-badge--purple {
+    background: rgba(191, 90, 242, 0.24);
+    color: #BF5AF2;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .plan-badge {
+    border: 1px solid currentColor;
+  }
+}

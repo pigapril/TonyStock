@@ -127,6 +127,7 @@ body {
   flex: 1;
   width: 100%;
   position: relative;
+  margin-right: 250px; /* 為側邊欄留出空間 */
 }
 
 .top-nav {
@@ -175,7 +176,9 @@ body {
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-bottom: 0.5%;
+  margin-bottom: 120px; /* 為底部 AdBanner 留出空間 */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .content-area h2 {
@@ -228,6 +231,7 @@ body {
 
   .main-content {
     margin-left: 0;
+    margin-right: 0; /* 在響應式模式下移除右邊距 */
   }
 
   .top-nav {
@@ -244,6 +248,7 @@ body {
     margin-left: 0;
     margin-right: 0;
     padding: 15px;
+    margin-bottom: 140px; /* 移動設備上為 AdBanner 留出更多空間 */
   }
 
   /* 確保 overlay 在側邊欄打開時正確顯示 */
