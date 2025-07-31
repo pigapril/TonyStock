@@ -100,7 +100,9 @@
     "avatarAlt": "{{username}} 的頭像",
     "menuAria": "使用者選單",
     "logout": "登出",
-    "notLoggedIn":"未登入"
+    "notLoggedIn":"未登入",
+    "loginRequired": "需要登入",
+    "loginRequiredMessage": "請先登入以查看您的帳戶資訊"
   },
   "chatWidget": {
     "loginRequired": "需要登入才能使用客服功能",
@@ -869,7 +871,18 @@
       "accountSettings": "帳戶設定",
       "email": "電子郵件",
       "logout": "登出",
-      "viewAccount": "查看帳戶"
+      "viewAccount": "查看帳戶",
+      "planLoadError": "無法載入方案資訊",
+      "statsLoadError": "無法載入使用統計",
+      "userNotFound": "找不到用戶資料",
+      "emailVerified": "已驗證",
+      "accountActions": "帳戶操作",
+      "userInfo": "用戶資訊",
+      "userId": "用戶ID",
+      "username": "用戶名稱",
+      "joinDate": "加入日期",
+      "privacyTitle": "隱私保護",
+      "privacyDescription": "我們重視您的隱私，所有資料都經過加密保護。"
     },
     "subscriptionPlans": {
       "title": "選擇適合您的方案",
@@ -917,7 +930,12 @@
       "used": "已使用",
       "remaining": "剩餘",
       "resetTime": "重置時間",
-      "nextReset": "下次重置"
+      "nextReset": "下次重置",
+      "resetNow": "即將重置",
+      "resetInHours": "{{hours}} 小時後重置",
+      "resetInDays": "{{days}} 天後重置",
+      "totalUsed": "總使用量",
+      "period": "週期"
     },
     "history": {
       "title": "訂閱記錄",
@@ -936,7 +954,14 @@
         "completed": "已完成",
         "pending": "處理中",
         "failed": "失敗"
-      }
+      },
+      "noHistory": "暫無訂閱記錄",
+      "noHistoryDescription": "您的訂閱記錄將會顯示在這裡",
+      "totalEntries": "總記錄數",
+      "memberSince": "會員起始日期",
+      "startDate": "開始日期",
+      "endDate": "結束日期",
+      "renewalDate": "續約日期"
     },
     "comparison": {
       "title": "功能比較",
@@ -948,29 +973,6 @@
       "expired": "已過期",
       "cancelled": "已取消"
     },
-    "autoRenewEnabled": "自動續約已啟用",
-    "privacyTitle": "隱私保護",
-    "privacyDescription": "我們重視您的隱私，所有資料都經過加密保護。",
-    "userNotFound": "找不到用戶資料",
-    "planLoadError": "無法載入方案資訊",
-    "statsLoadError": "無法載入使用統計",
-    "emailVerified": "已驗證",
-    "accountActions": "帳戶操作",
-    "userInfo": "用戶資訊",
-    "userId": "用戶ID",
-    "username": "用戶名稱",
-    "joinDate": "加入日期",
-    "resetNow": "即將重置",
-    "resetInHours": "{{hours}} 小時後重置",
-    "resetInDays": "{{days}} 天後重置",
-    "totalUsed": "總使用量",
-    "period": "週期",
-    "noHistory": "暫無訂閱記錄",
-    "noHistoryDescription": "您的訂閱記錄將會顯示在這裡",
-    "totalEntries": "總記錄數",
-    "memberSince": "會員起始日期",
-    "startDate": "開始日期",
-    "endDate": "結束日期",
-    "renewalDate": "續約日期"
+    "autoRenewEnabled": "自動續約已啟用"
   }
 }

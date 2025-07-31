@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../Auth/useAuth';
 import { useSubscription } from '../SubscriptionContext';
 import { PlanCard } from './components/PlanCard';
-import { PlanComparison } from './components/PlanComparison';
 import { Analytics } from '../../../utils/analytics';
 import subscriptionService from '../../../api/subscriptionService';
 import './SubscriptionPlansPage.css';
@@ -42,7 +41,7 @@ export const SubscriptionPlansPage = () => {
   return (
     <div className="subscription-plans-page">
       <div className="subscription-plans-container">
-        {/* Upgrade Notification */}
+        {/* Upgrade Notification - 顯示在頁面頂部 */}
         {upgradeNotification && (
           <div className="upgrade-notification">
             <div className="upgrade-notification__content">
@@ -83,11 +82,6 @@ export const SubscriptionPlansPage = () => {
               isCurrentUser={!!user}
             />
           ))}
-        </section>
-
-        {/* Feature Comparison */}
-        <section className="subscription-plans-comparison">
-          <PlanComparison plans={availablePlans} />
         </section>
       </div>
     </div>

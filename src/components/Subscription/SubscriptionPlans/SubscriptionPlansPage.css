@@ -5,6 +5,80 @@
   padding: 40px 20px;
 }
 
+/* Upgrade Notification */
+.upgrade-notification {
+  background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 122, 255, 0.2);
+  animation: slideInFromTop 0.5s ease-out;
+}
+
+.upgrade-notification__content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.upgrade-notification__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+}
+
+.upgrade-notification__message {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.upgrade-notification__close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 300;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.upgrade-notification__close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.upgrade-notification__close:active {
+  transform: scale(0.95);
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .subscription-plans-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -46,10 +120,7 @@
   margin: 0 auto;
 }
 
-/* Feature Comparison Section */
-.subscription-plans-comparison {
-  margin-top: 32px;
-}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -73,6 +144,19 @@
     grid-template-columns: 1fr;
     gap: 24px;
   }
+  
+  .upgrade-notification {
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .upgrade-notification__title {
+    font-size: 18px;
+  }
+  
+  .upgrade-notification__message {
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -95,6 +179,26 @@
   .subscription-plans-cards {
     gap: 20px;
   }
+  
+  .upgrade-notification {
+    padding: 16px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+  }
+  
+  .upgrade-notification__title {
+    font-size: 16px;
+  }
+  
+  .upgrade-notification__message {
+    font-size: 14px;
+  }
+  
+  .upgrade-notification__close {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
 }
 
 /* Dark mode support */
@@ -109,5 +213,10 @@
   
   .subscription-plans-header__subtitle {
     color: rgba(235, 235, 245, 0.60);
+  }
+  
+  .upgrade-notification {
+    background: linear-gradient(135deg, #0A84FF 0%, #5E5CE6 100%);
+    box-shadow: 0 8px 32px rgba(10, 132, 255, 0.3);
   }
 }

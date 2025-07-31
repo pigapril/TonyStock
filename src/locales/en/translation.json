@@ -100,7 +100,9 @@
     "avatarAlt": "{{username}}'s avatar",
     "menuAria": "User menu",
     "logout": "Logout",
-    "notLoggedIn":"Not Logged In"
+    "notLoggedIn":"Not Logged In",
+    "loginRequired": "Login Required",
+    "loginRequiredMessage": "Please log in to view your account information"
   },
   "chatWidget": {
     "loginRequired": "Login required to use customer service",
@@ -870,7 +872,18 @@
       "accountSettings": "Account Settings",
       "email": "Email",
       "logout": "Logout",
-      "viewAccount": "View Account"
+      "viewAccount": "View Account",
+      "planLoadError": "Unable to load plan information",
+      "statsLoadError": "Unable to load usage statistics",
+      "userNotFound": "User data not found",
+      "emailVerified": "Verified",
+      "accountActions": "Account Actions",
+      "userInfo": "User Information",
+      "userId": "User ID",
+      "username": "Username",
+      "joinDate": "Join Date",
+      "privacyTitle": "Privacy Protection",
+      "privacyDescription": "We value your privacy and all data is encrypted and protected."
     },
     "subscriptionPlans": {
       "title": "Choose the plan that's right for you",
@@ -918,7 +931,12 @@
       "used": "Used",
       "remaining": "Remaining",
       "resetTime": "Reset Time",
-      "nextReset": "Next Reset"
+      "nextReset": "Next Reset",
+      "resetNow": "Resetting now",
+      "resetInHours": "Resets in {{hours}} hours",
+      "resetInDays": "Resets in {{days}} days",
+      "totalUsed": "Total Used",
+      "period": "Period"
     },
     "history": {
       "title": "Subscription History",
@@ -937,7 +955,14 @@
         "completed": "Completed",
         "pending": "Pending",
         "failed": "Failed"
-      }
+      },
+      "noHistory": "No subscription history",
+      "noHistoryDescription": "Your subscription history will appear here",
+      "totalEntries": "Total Entries",
+      "memberSince": "Member Since",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "renewalDate": "Renewal Date"
     },
     "comparison": {
       "title": "Feature Comparison",
@@ -949,29 +974,6 @@
       "expired": "Expired",
       "cancelled": "Cancelled"
     },
-    "autoRenewEnabled": "Auto-renewal enabled",
-    "privacyTitle": "Privacy Protection",
-    "privacyDescription": "We value your privacy and all data is encrypted and protected.",
-    "userNotFound": "User data not found",
-    "planLoadError": "Unable to load plan information",
-    "statsLoadError": "Unable to load usage statistics",
-    "emailVerified": "Verified",
-    "accountActions": "Account Actions",
-    "userInfo": "User Information",
-    "userId": "User ID",
-    "username": "Username",
-    "joinDate": "Join Date",
-    "resetNow": "Resetting now",
-    "resetInHours": "Resets in {{hours}} hours",
-    "resetInDays": "Resets in {{days}} days",
-    "totalUsed": "Total Used",
-    "period": "Period",
-    "noHistory": "No subscription history",
-    "noHistoryDescription": "Your subscription history will appear here",
-    "totalEntries": "Total Entries",
-    "memberSince": "Member Since",
-    "startDate": "Start Date",
-    "endDate": "End Date",
-    "renewalDate": "Renewal Date"
+    "autoRenewEnabled": "Auto-renewal enabled"
   }
 }
