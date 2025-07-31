@@ -12,6 +12,10 @@ const pushToDataLayer = (eventName, eventData) => {
 
 // 改為具名導出
 export const Analytics = {
+  // 通用追蹤方法
+  track: (eventName, eventData = {}) => {
+    pushToDataLayer(eventName, eventData);
+  },
   // 股票分析相關追蹤
   stockAnalysis: {
     search: (data) => {

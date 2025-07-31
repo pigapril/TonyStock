@@ -14,7 +14,7 @@
     "marketSentiment": "Market Sentiment",
     "watchlist": "My Watchlist",
     "articles": "Insights & Analysis",
-    "sponsor": "Sponsor Us",
+    "subscription": "Subscription",
     "facebook": "Facebook",
     "facebookLong": "Facebook Page"
   },
@@ -138,7 +138,7 @@
     "aboutUs": "About",
     "aboutSite": "About Us",
     "legal": "Privacy Policy & Terms",
-    "sponsor": "Sponsor Us",
+    "subscription": "Subscription",
     "copyright": "Copyright © {{year}} Sentiment Inside Out",
     "disclaimer1": "Data, analysis, tools, and descriptions provided on this website are for reference only. Investment decisions must be made independently, assuming all risks. Verify information with official sources. This website assumes no legal responsibility for any profits or losses incurred.",
     "disclaimer2": "Feel free to share links to information provided on this website. Reproduction of content requires prior consent. Contact us at: support@sentimentinsideout.com"
@@ -151,7 +151,8 @@
   },
   "protectedRoute": {
     "loading": "Loading...",
-    "loginRequired": "Please log in to continue"
+    "loginRequired": "Please log in to continue",
+    "watchlistUpgradeRequired": "Watchlist feature requires upgrading to Pro plan"
   },
   "timeRangeSelector": {
     "label": "Time Range",
@@ -178,6 +179,11 @@
     "invalidParams": "Invalid operation parameters",
     "close": "Close",
     "done": "Done",
+    "copied": "Copied",
+    "copyToClipboard": "Copy to clipboard",
+    "unknown": "Unknown",
+    "previous": "Previous",
+    "next": "Next",
     "cancel": "Cancel",
     "dataLoadError": "Data Load Error"
   },
@@ -835,5 +841,137 @@
     "upgrade": "Upgrade Plan",
     "warningIcon": "Warning",
     "upgradeAriaLabel": "Upgrade your plan to get more usage"
+  },
+  "subscription": {
+    "upgradeRequired": {
+      "title": "Upgrade Required"
+    },
+    "plans": {
+      "free": "Free Plan",
+      "pro": "Pro Plan"
+    },
+    "features": {
+      "lohasSpectrum": "Lohas Spectrum",
+      "lohasSpectrumDesc": "Stock technical analysis tool",
+      "marketSentiment": "Market Sentiment",
+      "marketSentimentDesc": "Market sentiment indicator analysis",
+      "watchlist": "Watchlist",
+      "watchlistDesc": "Personal stock tracking feature",
+      "ads": "Ads",
+      "adsDesc": "Whether ads are displayed",
+      "included": "Included Features",
+      "unavailable": "Feature unavailable"
+    },
+    "userAccount": {
+      "title": "User Account",
+      "currentPlan": "Current Plan",
+      "usageStats": "Usage Statistics",
+      "subscriptionHistory": "Subscription History",
+      "accountSettings": "Account Settings",
+      "email": "Email",
+      "logout": "Logout",
+      "viewAccount": "View Account"
+    },
+    "subscriptionPlans": {
+      "title": "Choose the plan that's right for you",
+      "subtitle": "Upgrade to unlock more features and unlimited usage",
+      "currentPlan": "Current Plan",
+      "popular": "Most Popular",
+      "upgrade": "Upgrade",
+      "downgrade": "Downgrade",
+      "current": "Current",
+      "freePlan": {
+        "name": "Free Plan",
+        "price": "Free",
+        "description": "Basic features for beginners",
+        "features": [
+          "Lohas Spectrum: 5 uses per month",
+          "Limited to 0050 & SPY stocks",
+          "Market Sentiment: 2 uses per month",
+          "Basic access only",
+          "Watchlist disabled",
+          "Includes ads"
+        ]
+      },
+      "proPlan": {
+        "name": "Pro Plan",
+        "price": "NT$299",
+        "priceYearly": "NT$2,990",
+        "period": "/month",
+        "periodYearly": "/year",
+        "description": "Complete features for professional investors",
+        "features": [
+          "Lohas Spectrum: Unlimited usage",
+          "All stocks, custom date ranges",
+          "Market Sentiment: Unlimited usage",
+          "Full component & historical access",
+          "Watchlist: 5 categories",
+          "Unlimited stocks per category",
+          "Ad-free experience"
+        ]
+      }
+    },
+    "usage": {
+      "daily": "Daily Usage",
+      "monthly": "Monthly Usage",
+      "unlimited": "Unlimited",
+      "used": "Used",
+      "remaining": "Remaining",
+      "resetTime": "Reset Time",
+      "nextReset": "Next Reset"
+    },
+    "history": {
+      "title": "Subscription History",
+      "date": "Date",
+      "action": "Action",
+      "plan": "Plan",
+      "status": "Status",
+      "amount": "Amount",
+      "actions": {
+        "upgrade": "Upgrade",
+        "downgrade": "Downgrade",
+        "renewal": "Renewal",
+        "cancellation": "Cancellation"
+      },
+      "statuses": {
+        "completed": "Completed",
+        "pending": "Pending",
+        "failed": "Failed"
+      }
+    },
+    "comparison": {
+      "title": "Feature Comparison",
+      "subtitle": "Compare features across all plans",
+      "features": "Features"
+    },
+    "statuses": {
+      "active": "Active",
+      "expired": "Expired",
+      "cancelled": "Cancelled"
+    },
+    "autoRenewEnabled": "Auto-renewal enabled",
+    "privacyTitle": "Privacy Protection",
+    "privacyDescription": "We value your privacy and all data is encrypted and protected.",
+    "userNotFound": "User data not found",
+    "planLoadError": "Unable to load plan information",
+    "statsLoadError": "Unable to load usage statistics",
+    "emailVerified": "Verified",
+    "accountActions": "Account Actions",
+    "userInfo": "User Information",
+    "userId": "User ID",
+    "username": "Username",
+    "joinDate": "Join Date",
+    "resetNow": "Resetting now",
+    "resetInHours": "Resets in {{hours}} hours",
+    "resetInDays": "Resets in {{days}} days",
+    "totalUsed": "Total Used",
+    "period": "Period",
+    "noHistory": "No subscription history",
+    "noHistoryDescription": "Your subscription history will appear here",
+    "totalEntries": "Total Entries",
+    "memberSince": "Member Since",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "renewalDate": "Renewal Date"
   }
 }

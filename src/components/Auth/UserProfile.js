@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
+import { useNavigate, useParams } from 'react-router-dom';
 import { Analytics } from '../../utils/analytics';
 import './styles/UserProfile.css';
 import { useTranslation } from 'react-i18next'; // 1. 引入 useTranslation
-import csrfClient from '../../utils/csrfClient';
 
 export const UserProfile = () => {
     const { t } = useTranslation(); // 2. 使用 hook
-    const { user, logout, loading } = useAuth();
+    const { user, loading } = useAuth();
+    const navigate = useNavigate();
+    const { lang } = useParams();
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef(null);
 
@@ -35,18 +37,13 @@ export const UserProfile = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [isOpen]);
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-            csrfClient.clearCSRFToken(); // 登出時同步清除CSRF token
-            setIsOpen(false);
-        } catch (error) {
-            Analytics.error({
-                type: 'AUTH_ERROR',
-                code: error.code || 500,
-                message: error.message
-            });
-        }
+    const handleViewAccount = () => {
+        navigate(`/${lang}/user-account`);
+        setIsOpen(false);
+        
+        Analytics.track('user_profile_account_clicked', {
+            userId: user?.id
+        });
     };
 
     const handleKeyPress = (e) => {
@@ -83,16 +80,12 @@ export const UserProfile = () => {
                     role="menu"
                     aria-label={t('userProfile.menuAria')}
                 >
-                    <div className="user-profile__info">
-                        <p className="user-profile__name">{user.username}</p>
-                        <p className="user-profile__email">{user.email}</p>
-                    </div>
                     <button 
-                        className="user-profile__logout"
-                        onClick={handleLogout}
+                        className="user-profile__menu-item"
+                        onClick={handleViewAccount}
                         role="menuitem"
                     >
-                        {t('userProfile.logout')}
+                        {t('subscription.userAccount.viewAccount')}
                     </button>
                 </div>
             )}

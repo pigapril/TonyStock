@@ -1,0 +1,198 @@
+/* Apple-inspired usage progress bar component */
+.usage-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+}
+
+.usage-progress__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.usage-progress__label {
+  font-weight: 500;
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.usage-progress__numbers {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  font-variant-numeric: tabular-nums;
+}
+
+.usage-progress__unlimited {
+  color: var(--accent-color-blue, #007aff);
+  font-weight: 500;
+}
+
+.usage-progress__track {
+  position: relative;
+  height: 6px;
+  background: var(--color-bg-subtle, #f0f0f0);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.usage-progress--small .usage-progress__track {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.usage-progress--large .usage-progress__track {
+  height: 8px;
+  border-radius: 4px;
+}
+
+.usage-progress__fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.usage-progress__glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: inherit;
+  opacity: 0.3;
+  filter: blur(2px);
+  transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Variants */
+.usage-progress--success .usage-progress__fill {
+  background: linear-gradient(90deg, #34c759 0%, #30d158 100%);
+}
+
+.usage-progress--success .usage-progress__glow {
+  background: linear-gradient(90deg, #34c759 0%, #30d158 100%);
+}
+
+.usage-progress--warning .usage-progress__fill {
+  background: linear-gradient(90deg, #ff9500 0%, #ffb340 100%);
+}
+
+.usage-progress--warning .usage-progress__glow {
+  background: linear-gradient(90deg, #ff9500 0%, #ffb340 100%);
+}
+
+.usage-progress--danger .usage-progress__fill {
+  background: linear-gradient(90deg, #ff3b30 0%, #ff6961 100%);
+}
+
+.usage-progress--danger .usage-progress__glow {
+  background: linear-gradient(90deg, #ff3b30 0%, #ff6961 100%);
+}
+
+.usage-progress--unlimited .usage-progress__fill {
+  background: linear-gradient(90deg, var(--accent-color-blue, #007aff) 0%, #5ac8fa 100%);
+}
+
+.usage-progress--unlimited .usage-progress__glow {
+  background: linear-gradient(90deg, var(--accent-color-blue, #007aff) 0%, #5ac8fa 100%);
+}
+
+.usage-progress__percentage {
+  align-self: flex-end;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  font-variant-numeric: tabular-nums;
+}
+
+.usage-progress__unlimited-badge {
+  align-self: flex-end;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--accent-color-blue, #007aff);
+  opacity: 0.8;
+}
+
+/* Size variants */
+.usage-progress--small .usage-progress__label {
+  font-size: 12px;
+}
+
+.usage-progress--small .usage-progress__numbers {
+  font-size: 11px;
+}
+
+.usage-progress--small .usage-progress__percentage {
+  font-size: 10px;
+}
+
+.usage-progress--large .usage-progress__label {
+  font-size: 16px;
+}
+
+.usage-progress--large .usage-progress__numbers {
+  font-size: 14px;
+}
+
+.usage-progress--large .usage-progress__percentage {
+  font-size: 14px;
+}
+
+/* Animation for initial load */
+@keyframes usage-progress-fill {
+  from {
+    width: 0%;
+  }
+}
+
+.usage-progress__fill {
+  animation: usage-progress-fill 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .usage-progress__label {
+    color: rgba(235, 235, 245, 0.85);
+  }
+  
+  .usage-progress__numbers {
+    color: rgba(235, 235, 245, 0.60);
+  }
+  
+  .usage-progress__track {
+    background: rgba(142, 142, 147, 0.24);
+  }
+  
+  .usage-progress__percentage {
+    color: rgba(235, 235, 245, 0.60);
+  }
+  
+  .usage-progress__unlimited {
+    color: #0a84ff;
+  }
+  
+  .usage-progress__unlimited-badge {
+    color: #0a84ff;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .usage-progress__header {
+    gap: 8px;
+  }
+  
+  .usage-progress__label {
+    font-size: 13px;
+  }
+  
+  .usage-progress__numbers {
+    font-size: 12px;
+  }
+}

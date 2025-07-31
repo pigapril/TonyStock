@@ -1,0 +1,123 @@
+/* Apple-inspired plan badge component */
+.plan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-large, 14px);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Colors */
+.plan-badge--gray {
+  background: rgba(142, 142, 147, 0.12);
+  color: rgba(60, 60, 67, 0.85);
+}
+
+.plan-badge--blue {
+  background: linear-gradient(135deg, rgba(0, 122, 255, 0.15) 0%, rgba(0, 86, 204, 0.15) 100%);
+  color: var(--accent-color-blue, #007aff);
+  border: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+.plan-badge--premium {
+  background: linear-gradient(135deg, rgba(255, 149, 0, 0.15) 0%, rgba(255, 95, 0, 0.15) 100%);
+  color: #ff9500;
+  border: 1px solid rgba(255, 149, 0, 0.2);
+}
+
+/* Sizes */
+.plan-badge--small {
+  padding: 2px 8px;
+  font-size: 10px;
+  gap: 4px;
+}
+
+.plan-badge--small .plan-badge__icon {
+  font-size: 10px;
+}
+
+.plan-badge--medium {
+  padding: 4px 12px;
+  font-size: 12px;
+  gap: 6px;
+}
+
+.plan-badge--medium .plan-badge__icon {
+  font-size: 12px;
+}
+
+.plan-badge--large {
+  padding: 6px 16px;
+  font-size: 14px;
+  gap: 8px;
+}
+
+.plan-badge--large .plan-badge__icon {
+  font-size: 14px;
+}
+
+/* Icon only variant */
+.plan-badge--icon-only {
+  padding: 6px;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  justify-content: center;
+}
+
+.plan-badge--icon-only.plan-badge--small {
+  padding: 4px;
+}
+
+.plan-badge--icon-only.plan-badge--large {
+  padding: 8px;
+}
+
+/* Icon styling */
+.plan-badge__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.plan-badge__label {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Hover effects for interactive badges */
+.plan-badge--interactive {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.plan-badge--interactive:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.plan-badge--interactive.plan-badge--blue:hover {
+  background: linear-gradient(135deg, rgba(0, 122, 255, 0.2) 0%, rgba(0, 86, 204, 0.2) 100%);
+  border-color: rgba(0, 122, 255, 0.3);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .plan-badge--gray {
+    background: rgba(142, 142, 147, 0.24);
+    color: rgba(235, 235, 245, 0.85);
+  }
+  
+  .plan-badge--blue {
+    background: linear-gradient(135deg, rgba(10, 132, 255, 0.2) 0%, rgba(0, 86, 204, 0.2) 100%);
+    color: #0a84ff;
+    border-color: rgba(10, 132, 255, 0.3);
+  }
+}

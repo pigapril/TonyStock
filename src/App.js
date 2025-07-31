@@ -42,6 +42,8 @@ import { PriceAnalysis } from './components/PriceAnalysis/PriceAnalysis';
 import { Articles } from './components/Articles/Articles';
 import { ArticleDetail } from './components/ArticleDetail/ArticleDetail';
 import { SponsorUs } from './components/SponsorUs/SponsorUs';
+import { UserAccountPage } from './components/Subscription/UserAccount/UserAccountPage';
+import { SubscriptionPlansPage } from './components/Subscription/SubscriptionPlans/SubscriptionPlansPage';
 import { SponsorSuccess } from './components/SponsorSuccess/SponsorSuccess';
 import { GoogleTrendsSymbolPage } from './components/GoogleTrendsSymbolPage/GoogleTrendsSymbolPage';
 import { GoogleTrendsMarketPage } from './components/GoogleTrendsMarketPage/GoogleTrendsMarketPage';
@@ -49,6 +51,7 @@ import CSRFExample from './components/Example/CSRFExample';
 
 // Context 和 Hooks
 import { AuthProvider } from './components/Auth/AuthContext';
+import { SubscriptionProvider } from './components/Subscription/SubscriptionContext';
 import { DialogProvider } from './components/Common/Dialog/DialogContext';
 import { useAuth } from './components/Auth/useAuth';
 import { useDialog } from './components/Common/Dialog/useDialog';
@@ -279,13 +282,13 @@ function AppContent() {
             {lang === 'zh-TW' && (
               <li className="sidebar-item-7">
                 <NavLink 
-                  to={`/${lang}/sponsor-us`} 
+                  to={`/${lang}/subscription-plans`} 
                   onClick={() => isMobile && setSidebarOpen(false)}
                   className={({ isActive }) => isActive ? "active-nav-link" : ""}
                   aria-current={({ isActive }) => isActive ? "page" : undefined}
                 >
                   <FaPiggyBank />
-                  <span>{t('nav.sponsor')}</span>
+                  <span>{t('nav.subscription')}</span>
                 </NavLink>
               </li>
             )}
@@ -373,12 +376,12 @@ function AppContent() {
               {/* 只有在 zh-TW 語系下顯示贊助連結 */}
               {lang === 'zh-TW' && (
                 <NavLink 
-                  to={`/${lang}/sponsor-us`}
+                  to={`/${lang}/subscription-plans`}
                   className={({ isActive }) => isActive ? "active-nav-link" : ""}
                   aria-current={({ isActive }) => isActive ? "page" : undefined}
                 >
                   <FaPiggyBank />
-                  <span>{t('nav.sponsor')}</span>
+                  <span>{t('nav.subscription')}</span>
                 </NavLink>
               )}
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
@@ -442,6 +445,12 @@ function AppContent() {
               />
               <Route path="articles" element={<Articles />} />
               <Route path="articles/:slug" element={<ArticleDetail />} />
+              <Route path="user-account" element={
+                <ProtectedRoute>
+                  <UserAccountPage />
+                </ProtectedRoute>
+              } />
+              <Route path="subscription-plans" element={<SubscriptionPlansPage />} />
               <Route path="sponsor-us" element={<SponsorUs />} />
               <Route path="sponsor-success" element={<SponsorSuccess />} />
               <Route 
@@ -574,8 +583,9 @@ function InitialRedirect() {
 function App() {
   return (
     <AuthProvider>
-      <DialogProvider>
-        <AdProvider>
+      <SubscriptionProvider>
+        <DialogProvider>
+          <AdProvider>
           <Routes>
             {/* --- 確保這裡使用正確定義的 InitialRedirect --- */}
             <Route path="/" element={<InitialRedirect />} />
@@ -583,8 +593,9 @@ function App() {
             <Route path="/:lang/*" element={<LanguageWrapper />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </AdProvider>
-      </DialogProvider>
+          </AdProvider>
+        </DialogProvider>
+      </SubscriptionProvider>
     </AuthProvider>
   );
 }

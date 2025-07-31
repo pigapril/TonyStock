@@ -8,7 +8,9 @@ jest.mock('../../Auth/useAuth', () => ({
 }));
 
 jest.mock('../Dialog/useDialog', () => ({
-  useDialog: jest.fn()
+  useDialog: jest.fn(() => ({
+    openDialog: jest.fn()
+  }))
 }));
 
 jest.mock('../../../utils/analytics', () => ({
@@ -49,8 +51,12 @@ const { useLocation } = require('react-router-dom');
 
 // Setup default mock implementations
 const mockOpenDialog = jest.fn();
-useDialog.mockReturnValue({
-  openDialog: mockOpenDialog
+
+// Set up the mock before each test
+beforeEach(() => {
+  useDialog.mockReturnValue({
+    openDialog: mockOpenDialog
+  });
 });
 
 // Test wrapper component
@@ -248,20 +254,46 @@ describe('ProtectedRoute Component', () => {
       });
     });
 
-    it('should redirect to unauthorized page when accessing watchlist without permission', () => {
+    it('should redirect to subscription plans page when accessing watchlist without permission', () => {
       // Mock location to simulate watchlist path
-      useLocation.mockReturnValue({ pathname: '/watchlist' });
+      useLocation.mockReturnValue({ pathname: '/zh-TW/watchlist' });
 
       render(
-        <TestWrapper initialEntries={['/watchlist']}>
+        <TestWrapper initialEntries={['/zh-TW/watchlist']}>
           <ProtectedRoute>
             <TestChild />
           </ProtectedRoute>
         </TestWrapper>
       );
 
-      // Should redirect to unauthorized
-      expect(screen.getByTestId('navigate')).toHaveAttribute('data-to', '/unauthorized');
+      // Should redirect to subscription plans page
+      const navigate = screen.getByTestId('navigate');
+      expect(navigate).toHaveAttribute('data-to', '/zh-TW/subscription-plans');
+      
+      // Should pass correct state
+      const state = JSON.parse(navigate.getAttribute('data-state'));
+      expect(state).toEqual({
+        from: '/zh-TW/watchlist',
+        reason: 'watchlist_upgrade_required',
+        message: 'protectedRoute.watchlistUpgradeRequired'
+      });
+    });
+
+    it('should redirect to subscription plans page for English watchlist path', () => {
+      // Mock location to simulate English watchlist path
+      useLocation.mockReturnValue({ pathname: '/en/watchlist' });
+
+      render(
+        <TestWrapper initialEntries={['/en/watchlist']}>
+          <ProtectedRoute>
+            <TestChild />
+          </ProtectedRoute>
+        </TestWrapper>
+      );
+
+      // Should redirect to English subscription plans page
+      const navigate = screen.getByTestId('navigate');
+      expect(navigate).toHaveAttribute('data-to', '/en/subscription-plans');
     });
 
     it('should render children when accessing watchlist with permission', () => {
