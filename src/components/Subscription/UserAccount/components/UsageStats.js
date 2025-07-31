@@ -23,14 +23,31 @@ export const UsageStats = ({ stats, loading }) => {
   }
 
   if (!stats) {
+    console.log('❌ UsageStats: No stats data available', {
+      stats,
+      loading,
+      hasStats: !!stats
+    });
     return (
       <div className="usage-stats usage-stats--error">
         <p>{t('subscription.userAccount.statsLoadError')}</p>
+        <p style={{ fontSize: '12px', color: '#666', marginTop: '8px' }}>
+          Debug: stats={JSON.stringify(stats)}, loading={loading}
+        </p>
       </div>
     );
   }
 
   const currentStats = stats[selectedPeriod] || {};
+  
+  console.log('📊 UsageStats Debug:', {
+    stats,
+    selectedPeriod,
+    currentStats,
+    hasStats: !!stats,
+    statsKeys: stats ? Object.keys(stats) : [],
+    currentStatsKeys: Object.keys(currentStats)
+  });
   
   const formatResetTime = (resetTime) => {
     if (!resetTime) return '';

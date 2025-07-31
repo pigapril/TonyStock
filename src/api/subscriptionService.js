@@ -45,43 +45,25 @@ class SubscriptionService {
    */
   async getUserUsageStats() {
     try {
-      // 暫時使用 mock 資料，避免 API 錯誤
-      // TODO: 當後端 usage stats API 準備好時，取消註解下面的程式碼
-      /*
-      const response = await apiClient.get('/api/auth/status');
-      const user = response.data.data.user;
-      */
+      // 使用真實的 API 獲取用量統計
+      const response = await apiClient.get('/api/auth/usage-stats');
       
-      // Mock 資料 - 開發階段使用
-      const mockUsageStats = {
-        daily: {
-          lohasSpectrum: { used: 2, limit: 5, resetTime: this.getNextDayReset() },
-          marketSentiment: { used: 1, limit: 2, resetTime: this.getNextDayReset() },
-          watchlist: { used: 0, limit: 0, resetTime: this.getNextDayReset() }
-        },
-        monthly: {
-          lohasSpectrum: { used: 15, limit: 5, resetTime: this.getNextMonthReset() },
-          marketSentiment: { used: 8, limit: 2, resetTime: this.getNextMonthReset() },
-          watchlist: { used: 0, limit: 0, resetTime: this.getNextMonthReset() }
-        }
-      };
-
-      return mockUsageStats;
+      console.log('📊 API Response:', response.data);
+      console.log('📊 Response status:', response.data.status);
+      console.log('📊 Response data:', response.data.data);
+      
+      if (response.data.status === 'success') {
+        const stats = response.data.data;
+        console.log('📊 Usage stats from API:', stats);
+        return stats;
+      } else {
+        throw new Error(response.data.message || 'Failed to get usage stats');
+      }
     } catch (error) {
-      console.error('Failed to get usage stats:', error);
-      // 返回預設的使用統計，而不是拋出錯誤
-      return {
-        daily: {
-          lohasSpectrum: { used: 0, limit: 5, resetTime: this.getNextDayReset() },
-          marketSentiment: { used: 0, limit: 2, resetTime: this.getNextDayReset() },
-          watchlist: { used: 0, limit: 0, resetTime: this.getNextDayReset() }
-        },
-        monthly: {
-          lohasSpectrum: { used: 0, limit: 5, resetTime: this.getNextMonthReset() },
-          marketSentiment: { used: 0, limit: 2, resetTime: this.getNextMonthReset() },
-          watchlist: { used: 0, limit: 0, resetTime: this.getNextMonthReset() }
-        }
-      };
+      console.error('❌ Failed to get usage stats:', error);
+      
+      // 拋出錯誤，讓 SubscriptionContext 處理
+      throw error;
     }
   }
 
