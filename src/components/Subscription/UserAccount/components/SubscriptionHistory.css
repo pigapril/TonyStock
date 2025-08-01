@@ -155,8 +155,9 @@ cription-history__item-meta {
 .subscription-history__pagination-current {
   color: var(--accent-color-blue, #007aff);
   font-weight: 600;
-}/
-* Summary */
+}
+
+/* Summary */
 .subscription-history__summary {
   display: flex;
   justify-content: space-between;
@@ -267,8 +268,9 @@ cription-history__item-meta {
   50% {
     opacity: 0.5;
   }
-}/* Responsiv
-e Design */
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .subscription-history__item {
     padding: 16px;
