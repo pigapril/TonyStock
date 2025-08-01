@@ -179,14 +179,28 @@ export const SubscriptionProvider = ({ children }) => {
 
   // Update user plan
   const updatePlan = useCallback(async (newPlanType) => {
-    if (!isAuthenticated || !user) return;
+    if (!isAuthenticated || !user) {
+      console.error('Cannot update plan: user not authenticated', {
+        isAuthenticated,
+        hasUser: !!user
+      });
+      return;
+    }
     
     try {
       setLoading(true);
       setError(null);
       
+      console.log('🔄 Starting plan update:', {
+        newPlanType,
+        currentPlan: userPlan?.type,
+        userId: user.id
+      });
+      
       const updatedPlan = await subscriptionService.updateUserPlan(newPlanType);
       setUserPlan(updatedPlan);
+      
+      console.log('✅ Plan updated successfully:', updatedPlan);
       
       // Refresh usage stats after plan change
       await refreshUsageStats();
@@ -199,7 +213,7 @@ export const SubscriptionProvider = ({ children }) => {
       
       return updatedPlan;
     } catch (err) {
-      console.error('Failed to update plan:', err);
+      console.error('❌ Failed to update plan:', err);
       setError(err.message || 'Failed to update plan');
       
       Analytics.error({
