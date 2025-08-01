@@ -30,6 +30,7 @@ export const SubscriptionProvider = ({ children }) => {
   const [subscriptionHistory, setSubscriptionHistory] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   // Refresh usage statistics
   const refreshUsageStats = useCallback(async () => {
@@ -45,6 +46,9 @@ export const SubscriptionProvider = ({ children }) => {
       setUsageStats(stats);
       console.log('📊 UsageStats state updated');
       
+      // 成功後重置重試計數
+      setRetryCount(0);
+      
       Analytics.track('subscription_usage_stats_loaded', {
         userId: user.id,
         totalUsage: stats?.total || 0
@@ -56,6 +60,20 @@ export const SubscriptionProvider = ({ children }) => {
         response: err.response?.data,
         status: err.response?.status
       });
+      
+      // 特殊處理 403 錯誤（CSRF 相關）
+      if (err.response?.status === 403 && retryCount < 2) {
+        console.warn(`🔧 403 error detected, likely CSRF issue. Retrying (${retryCount + 1}/2) after short delay...`);
+        setRetryCount(prev => prev + 1);
+        // 短暫延遲後重試
+        setTimeout(() => {
+          refreshUsageStats();
+        }, 1000);
+        return;
+      } else if (err.response?.status === 403) {
+        console.error('🚫 403 error persisted after retries, giving up');
+        setRetryCount(0); // 重置重試計數
+      }
       
       // 在開發模式下，提供 fallback 數據而不是顯示錯誤
       if (process.env.NODE_ENV === 'development') {

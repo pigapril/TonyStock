@@ -4,6 +4,7 @@ import { Analytics } from '../../utils/analytics';
 import authService from '../../components/Auth/auth.service';
 import { handleApiError } from '../../utils/errorHandler';
 import csrfClient from '../../utils/csrfClient';
+import { authDiagnostics } from '../../utils/authDiagnostics';
 
 export const AuthContext = createContext({
     user: null,
@@ -192,9 +193,40 @@ export function AuthProvider({ children }) {
         } catch (error) {
             console.log('CheckAuthStatus error:', {
                 error: error.message,
+                status: error.response?.status,
                 cookies: document.cookie,
                 timestamp: new Date().toISOString()
             });
+
+            // 如果是 403 錯誤，可能是暫時性問題，運行診斷
+            if (error.response?.status === 403) {
+                console.warn('🔄 Auth status check got 403, running diagnostics...');
+                
+                // 在開發環境下運行診斷
+                if (process.env.NODE_ENV === 'development') {
+                    authDiagnostics.diagnoseAuthIssue().catch(diagError => {
+                        console.error('Diagnostics failed:', diagError);
+                    });
+                }
+                
+                // 不設置 user 為 null，保持當前狀態
+                return;
+            }
+            
+            // 如果是網路錯誤（通常是 CORS 問題），也不要立即清除用戶狀態
+            if (error.message === 'Network Error' || error.code === 'ERR_NETWORK') {
+                console.warn('🔄 Auth status check got network error (possibly CORS), running diagnostics...');
+                
+                // 在開發環境下運行診斷
+                if (process.env.NODE_ENV === 'development') {
+                    authDiagnostics.diagnoseAuthIssue().catch(diagError => {
+                        console.error('Diagnostics failed:', diagError);
+                    });
+                }
+                
+                // 不設置 user 為 null，保持當前狀態
+                return;
+            }
 
             setUser(null);
             handleError(error);

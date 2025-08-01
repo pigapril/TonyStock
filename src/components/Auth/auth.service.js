@@ -10,7 +10,7 @@ class AuthService {
     // }
 
     // 檢查認證狀態
-    async checkStatus() {
+    async checkStatus(retryCount = 0) {
         try {
             // 請求前記錄
             console.log('Auth check request details:', {
@@ -18,10 +18,16 @@ class AuthService {
                 userAgent: navigator.userAgent,
                 platform: navigator.platform,
                 currentURL: window.location.href,
+                retryCount
             });
 
             // 使用 apiClient 發送請求，因為這是一個 GET 請求
-            const response = await apiClient.get('/api/auth/status');
+            // 添加時間戳參數以避免瀏覽器快取問題
+            const response = await apiClient.get('/api/auth/status', {
+                params: {
+                    _t: Date.now() // 添加時間戳參數避免快取
+                }
+            });
             
             // 響應後記錄
             console.log('Auth status response details:', {
@@ -36,9 +42,19 @@ class AuthService {
         } catch (error) {
             console.error('Auth check error details:', {
                 error: error.message,
+                status: error.response?.status,
                 stack: error.stack,
-                userAgent: navigator.userAgent
+                userAgent: navigator.userAgent,
+                retryCount
             });
+            
+            // 如果是 403 錯誤且是第一次重試，等待一下再重試
+            if (error.response?.status === 403 && retryCount < 2) {
+                console.warn(`🔄 Auth status got 403, retrying (${retryCount + 1}/2) after delay...`);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                return this.checkStatus(retryCount + 1);
+            }
+            
             throw error;
         }
     }
