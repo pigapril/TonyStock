@@ -198,27 +198,36 @@ export function AuthProvider({ children }) {
                 timestamp: new Date().toISOString()
             });
 
-            // 如果是 403 錯誤，可能是暫時性問題，運行診斷
+            // 如果是 403 錯誤，可能是 CSRF 配置問題
             if (error.response?.status === 403) {
-                console.warn('🔄 Auth status check got 403, running diagnostics...');
+                console.warn('🔄 Auth status check got 403, this may indicate CSRF middleware misconfiguration');
                 
-                // 在開發環境下運行診斷
-                if (process.env.NODE_ENV === 'development') {
+                // 只在開發環境且沒有最近運行過診斷時才運行
+                const lastDiagnostic = sessionStorage.getItem('lastAuthDiagnostic');
+                const now = Date.now();
+                if (process.env.NODE_ENV === 'development' && 
+                    (!lastDiagnostic || now - parseInt(lastDiagnostic) > 30000)) { // 30秒內不重複診斷
+                    sessionStorage.setItem('lastAuthDiagnostic', now.toString());
                     authDiagnostics.diagnoseAuthIssue().catch(diagError => {
                         console.error('Diagnostics failed:', diagError);
                     });
                 }
                 
-                // 不設置 user 為 null，保持當前狀態
+                // 清除用戶狀態，因為 403 表示認證問題
+                setUser(null);
                 return;
             }
             
-            // 如果是網路錯誤（通常是 CORS 問題），也不要立即清除用戶狀態
+            // 如果是網路錯誤（通常是 CORS 問題），保持當前狀態
             if (error.message === 'Network Error' || error.code === 'ERR_NETWORK') {
-                console.warn('🔄 Auth status check got network error (possibly CORS), running diagnostics...');
+                console.warn('🔄 Auth status check got network error (possibly CORS or server down)');
                 
-                // 在開發環境下運行診斷
-                if (process.env.NODE_ENV === 'development') {
+                // 只在開發環境且沒有最近運行過診斷時才運行
+                const lastNetworkDiagnostic = sessionStorage.getItem('lastNetworkDiagnostic');
+                const now = Date.now();
+                if (process.env.NODE_ENV === 'development' && 
+                    (!lastNetworkDiagnostic || now - parseInt(lastNetworkDiagnostic) > 60000)) { // 60秒內不重複診斷
+                    sessionStorage.setItem('lastNetworkDiagnostic', now.toString());
                     authDiagnostics.diagnoseAuthIssue().catch(diagError => {
                         console.error('Diagnostics failed:', diagError);
                     });

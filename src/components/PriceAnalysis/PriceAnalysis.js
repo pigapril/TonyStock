@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
 import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
 import AnnouncementBar from '../Common/AnnouncementBar/AnnouncementBar'; // 引入 AnnouncementBar
-import apiClient from '../../api/apiClient';
+import enhancedApiClient from '../../utils/enhancedApiClient';
 import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
 import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDialog
 
@@ -200,7 +200,7 @@ export function PriceAnalysis() {
         params.source = 'manual_price_analysis';
       }
 
-      const response = await apiClient.get('/api/integrated-analysis', {
+      const response = await enhancedApiClient.get('/api/integrated-analysis', {
         params: params,
         headers: { 'CF-Turnstile-Token': bypassTurnstile ? undefined : turnstileToken },
         timeout: 30000
@@ -429,7 +429,12 @@ export function PriceAnalysis() {
       console.log('Fetching hot searches...'); // 添加這行
       setLoadingHotSearches(true);
       try {
-        const response = await apiClient.get('/api/hot-searches', { timeout: 15000 });
+        // 使用增強的 API 客戶端，自動處理認證和重試
+        const response = await enhancedApiClient.get('/api/hot-searches', { 
+          timeout: 15000,
+          maxRetries: 2, // 減少重試次數以避免過多請求
+          retryDelay: 500 // 較短的重試延遲
+        });
         console.log('API response received:', response.data); // 添加這行
         // 假設 API 回應格式為 { data: { top_searches: [...] } }
         if (response.data && response.data.data && Array.isArray(response.data.data.top_searches)) {
@@ -442,8 +447,13 @@ export function PriceAnalysis() {
       } catch (error) {
         console.error("Error fetching hot searches:", error); // 添加這行
         setHotSearches([]);
-        // 可以選擇是否顯示錯誤提示給用戶
-        // handleApiError(error, showToast, t); // 如果需要統一錯誤處理
+        
+        // 只在非 403 錯誤時顯示錯誤提示，避免認證問題時的重複提示
+        if (error.response?.status !== 403) {
+          handleApiError(error, showToast, t);
+        } else {
+          console.log('403 error detected, likely authentication issue - not showing toast');
+        }
       } finally {
         console.log('Finished fetching hot searches.'); // 添加這行
         setLoadingHotSearches(false);

@@ -128,10 +128,21 @@ class CSRFClient {
      * @returns {Promise} API回應
      */
     async fetchWithCSRF(url, options = {}) {
-        // 確保CSRF token已初始化
+        // 確保CSRF token已初始化（僅在已認證時）
         if (!this.isTokenInitialized()) {
-            console.log('CSRF token not initialized, initializing...');
-            await this.initializeCSRFToken();
+            console.log('CSRF token not initialized, attempting to initialize...');
+            
+            try {
+                await this.initializeCSRFToken();
+            } catch (error) {
+                // 如果是401錯誤（未認證），不要拋出錯誤，讓請求繼續
+                // 這樣可以讓未認證的請求正常進行，由後端決定如何處理
+                if (error.message.includes('401')) {
+                    console.warn('CSRF token initialization failed due to authentication - proceeding without token');
+                } else {
+                    throw error;
+                }
+            }
         }
 
         const baseURL = process.env.REACT_APP_API_BASE_URL || '';
@@ -159,32 +170,39 @@ class CSRFClient {
             const response = await fetch(fullUrl, requestOptions);
             
             // 如果收到403錯誤，可能是CSRF token過期，嘗試重新初始化
-            if (response.status === 403) {
+            if (response.status === 403 && this.csrfToken) {
                 console.warn('CSRF token may be expired, attempting to reinitialize...');
-                await this.initializeCSRFToken();
                 
-                // 重新嘗試請求
-                const retryHeaders = this.getHeaders(options.headers);
-                const retryOptions = {
-                    ...options,
-                    headers: retryHeaders,
-                    credentials: 'include'
-                };
-                
-                const retryResponse = await fetch(fullUrl, retryOptions);
-                
-                // 如果重試後仍然是403，記錄詳細錯誤
-                if (retryResponse.status === 403) {
-                    console.error('CSRF token reinitialization failed, request still blocked');
-                    console.error('Request details:', {
-                        url: fullUrl,
-                        method: options.method || 'GET',
-                        hasToken: !!this.csrfToken,
-                        cookies: document.cookie
-                    });
+                try {
+                    await this.initializeCSRFToken();
+                    
+                    // 重新嘗試請求
+                    const retryHeaders = this.getHeaders(options.headers);
+                    const retryOptions = {
+                        ...options,
+                        headers: retryHeaders,
+                        credentials: 'include'
+                    };
+                    
+                    const retryResponse = await fetch(fullUrl, retryOptions);
+                    
+                    // 如果重試後仍然是403，記錄詳細錯誤
+                    if (retryResponse.status === 403) {
+                        console.error('CSRF token reinitialization failed, request still blocked');
+                        console.error('Request details:', {
+                            url: fullUrl,
+                            method: options.method || 'GET',
+                            hasToken: !!this.csrfToken,
+                            cookies: document.cookie
+                        });
+                    }
+                    
+                    return retryResponse;
+                } catch (reinitError) {
+                    console.warn('CSRF token reinitialization failed:', reinitError);
+                    // 返回原始回應，讓上層處理
+                    return response;
                 }
-                
-                return retryResponse;
             }
             
             return response;

@@ -6,7 +6,7 @@ import { Analytics } from '../../utils/analytics';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
-import apiClient from '../../api/apiClient';
+import enhancedApiClient from '../../utils/enhancedApiClient';
 import csrfClient from '../../utils/csrfClient'; // **新增：引入共用的 apiClient**
 
 const ChatWidget = () => {

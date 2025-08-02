@@ -64,6 +64,7 @@ import { Toast } from './components/Watchlist/components/Toast';
 import { Analytics } from './utils/analytics';
 import { handleApiError } from './utils/errorHandler';
 import { initializeApiClient } from './api/setupApiClient';
+import authGuard from './utils/authGuard';
 
 // 設定 ChartJS
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
@@ -120,6 +121,15 @@ function AppContent() {
       t: t
     });
   }, [logout, showToast, openDialog, navigate, t]);
+
+  // 初始化認證守衛
+  useEffect(() => {
+    // 確保認證狀態在應用啟動時初始化
+    authGuard.ensureAuthenticated().catch(error => {
+      console.log('Authentication not available on app start:', error.message);
+      // 不需要顯示錯誤，因為用戶可能未登入
+    });
+  }, []);
 
   // 當側邊欄關閉時，自動收合Google搜尋熱度下拉選單
   React.useEffect(() => {

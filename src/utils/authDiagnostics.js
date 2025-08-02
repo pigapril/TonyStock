@@ -114,6 +114,23 @@ export const authDiagnostics = {
     },
 
     /**
+     * 記錄認證狀態
+     */
+    logAuthState(event, data = {}) {
+        const logData = {
+            event,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent,
+            currentURL: window.location.href,
+            cookies: document.cookie,
+            ...data
+        };
+        
+        console.log(`🔐 Auth State [${event}]:`, logData);
+        return logData;
+    },
+
+    /**
      * 清除認證相關的快取和存儲
      */
     clearAuthCache() {

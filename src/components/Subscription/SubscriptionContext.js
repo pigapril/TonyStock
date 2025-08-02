@@ -24,7 +24,7 @@ export const useSubscription = () => {
 };
 
 export const SubscriptionProvider = ({ children }) => {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, checkAuthStatus } = useAuth();
   const [userPlan, setUserPlan] = useState(null);
   const [usageStats, setUsageStats] = useState(null);
   const [subscriptionHistory, setSubscriptionHistory] = useState(null);
@@ -202,6 +202,12 @@ export const SubscriptionProvider = ({ children }) => {
       
       console.log('✅ Plan updated successfully:', updatedPlan);
       
+      // Refresh user data in AuthContext to update req.user.plan on backend
+      if (checkAuthStatus) {
+        console.log('🔄 Refreshing user authentication data...');
+        await checkAuthStatus();
+      }
+      
       // Refresh usage stats after plan change
       await refreshUsageStats();
       
@@ -227,7 +233,7 @@ export const SubscriptionProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [isAuthenticated, user, userPlan, refreshUsageStats]);
+  }, [isAuthenticated, user, userPlan, refreshUsageStats, checkAuthStatus]);
 
   // Load initial data when user changes
   useEffect(() => {

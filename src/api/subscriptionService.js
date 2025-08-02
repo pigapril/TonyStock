@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import enhancedApiClient from '../utils/enhancedApiClient';
 import csrfClient from '../utils/csrfClient';
 
 // 調試用：檢查 CSRF token 狀態
@@ -17,7 +17,7 @@ class SubscriptionService {
   async getUserPlan() {
     try {
       // 從 auth status API 獲取用戶方案資訊
-      const response = await apiClient.get('/api/auth/status');
+      const response = await enhancedApiClient.get('/api/auth/status');
 
       if (response.data.status === 'success' && response.data.data.isAuthenticated) {
         const user = response.data.data.user;
@@ -57,7 +57,7 @@ class SubscriptionService {
   async getUserUsageStats() {
     try {
       // 使用真實的 API 獲取用量統計
-      const response = await apiClient.get('/api/auth/usage-stats');
+      const response = await enhancedApiClient.get('/api/auth/usage-stats');
 
       console.log('📊 API Response:', response.data);
       console.log('📊 Response status:', response.data.status);

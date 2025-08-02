@@ -1,4 +1,4 @@
-import apiClient from '../../../api/apiClient';
+import enhancedApiClient from '../../../utils/enhancedApiClient';
 import { handleApiError } from '../../../utils/errorHandler';
 import csrfClient from '../../../utils/csrfClient'; // 導入 CSRF 客戶端
 

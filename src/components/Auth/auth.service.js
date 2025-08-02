@@ -1,5 +1,6 @@
 import { Analytics } from '../../utils/analytics';
 import { handleApiError } from '../../utils/errorHandler';
+import enhancedApiClient from '../../utils/enhancedApiClient';
 import apiClient from '../../api/apiClient'; // 導入共用的 apiClient
 import csrfClient from '../../utils/csrfClient'; // 導入 CSRF 客戶端
 
@@ -48,11 +49,10 @@ class AuthService {
                 retryCount
             });
             
-            // 如果是 403 錯誤且是第一次重試，等待一下再重試
-            if (error.response?.status === 403 && retryCount < 2) {
-                console.warn(`🔄 Auth status got 403, retrying (${retryCount + 1}/2) after delay...`);
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                return this.checkStatus(retryCount + 1);
+            // 如果是 403 錯誤，不要重試，直接拋出錯誤讓上層處理
+            if (error.response?.status === 403) {
+                console.warn(`🔄 Auth status got 403, this indicates a CSRF or authentication issue`);
+                // 不重試，讓 AuthContext 處理這個錯誤
             }
             
             throw error;

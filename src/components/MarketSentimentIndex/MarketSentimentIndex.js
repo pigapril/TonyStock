@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { Toast } from '../Watchlist/components/Toast';
 import { formatPrice } from '../../utils/priceUtils';
-import apiClient from '../../api/apiClient';
+import enhancedApiClient from '../../utils/enhancedApiClient';
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -202,7 +202,7 @@ const MarketSentimentIndex = () => {
     async function fetchSentimentData() {
       try {
         setLoading(true);
-        const response = await apiClient.get('/api/market-sentiment');
+        const response = await enhancedApiClient.get('/api/market-sentiment');
         
         if (isMounted) {
           setSentimentData(response.data);
@@ -231,7 +231,7 @@ const MarketSentimentIndex = () => {
   useEffect(() => {
     async function fetchHistoricalData() {
       try {
-        const response = await apiClient.get('/api/composite-historical-data');
+        const response = await enhancedApiClient.get('/api/composite-historical-data');
         const formattedData = response.data
           .filter(item => item.compositeScore != null && item.spyClose != null)
           .map((item) => ({
