@@ -66,6 +66,9 @@ export function PriceAnalysis() {
   const { isAuthenticated } = useAuth(); // 新增：獲取認證狀態
   const { openDialog } = useDialog(); // 新增：獲取對話框功能
 
+  // 檢查 Turnstile 功能是否啟用
+  const isTurnstileEnabled = process.env.REACT_APP_TURNSTILE_ENABLED === 'true';
+
   // 從 URL 參數或預設值初始化狀態
   const initialStockCode = searchParams.get('stockCode') || 'SPY';
   const initialYears = searchParams.get('years') || '3.5';
@@ -81,8 +84,8 @@ export function PriceAnalysis() {
   const [displayedStockCode, setDisplayedStockCode] = useState('');
   const [activeChart, setActiveChart] = useState('sd');
   const [ulbandData, setUlbandData] = useState(null);
-  const [turnstileToken, setTurnstileToken] = useState(null);
-  const [turnstileVisible, setTurnstileVisible] = useState(true);
+  const [turnstileToken, setTurnstileToken] = useState(isTurnstileEnabled ? null : 'disabled');
+  const [turnstileVisible, setTurnstileVisible] = useState(isTurnstileEnabled);
   // 修改分析結果狀態，包含 key 和 value
   const [analysisResult, setAnalysisResult] = useState({
     price: null,
@@ -179,8 +182,8 @@ export function PriceAnalysis() {
 
   // 資料抓取函式
   const fetchStockData = useCallback(async (stock, yrs, testDate, bypassTurnstile = false, isManualSearch = false) => {
-    // 驗證 Turnstile Token
-    if (!bypassTurnstile && !turnstileToken) {
+    // 驗證 Turnstile Token (只有在功能啟用時才檢查)
+    if (isTurnstileEnabled && !bypassTurnstile && !turnstileToken) {
       // 可以直接調用 showToast 或通過 handleApiError
       // 方式一：直接調用
       // showToast(t('errors.TURNSTILE_REQUIRED'), 'error');
@@ -202,7 +205,9 @@ export function PriceAnalysis() {
 
       const response = await enhancedApiClient.get('/api/integrated-analysis', {
         params: params,
-        headers: { 'CF-Turnstile-Token': bypassTurnstile ? undefined : turnstileToken },
+        headers: { 
+          ...(isTurnstileEnabled && !bypassTurnstile && turnstileToken && { 'CF-Turnstile-Token': turnstileToken })
+        },
         timeout: 30000
       });
 
@@ -274,7 +279,7 @@ export function PriceAnalysis() {
       // 注意：如果 transition 非常慢，Loading 可能會比數據出現早消失
       setLoading(false);
     }
-  }, [turnstileToken, showToast, startTransition, t, requestAdDisplay, isAdCooldownActive, analysisClickCount]); // 確保 t 在依賴項中
+  }, [isTurnstileEnabled, turnstileToken, showToast, startTransition, t, requestAdDisplay, isAdCooldownActive, analysisClickCount]); // 確保 t 在依賴項中
 
   // 表單送出
   const handleSubmit = (e) => {
@@ -783,17 +788,17 @@ export function PriceAnalysis() {
                 <button
                   className={`btn-primary analysis-button ${loading ? 'btn-loading' : ''}`}
                   type="submit"
-                  disabled={loading || !turnstileToken}
+                  disabled={loading || (isTurnstileEnabled && !turnstileToken)}
                 >
                   {/* 使用 t() 翻譯按鈕文字 */}
                   {loading
                     ? (isPending ? t('priceAnalysis.form.buttonProcessing') : t('priceAnalysis.form.buttonAnalyzing'))
-                    : turnstileToken
-                      ? t('priceAnalysis.form.buttonStartAnalysis')
-                      : t('priceAnalysis.form.buttonCompleteVerification')
+                    : (isTurnstileEnabled && !turnstileToken)
+                      ? t('priceAnalysis.form.buttonCompleteVerification')
+                      : t('priceAnalysis.form.buttonStartAnalysis')
                   }
                 </button>
-                {turnstileVisible && (
+                {isTurnstileEnabled && turnstileVisible && (
                   <div className="turnstile-container">
                     <Turnstile
                       sitekey={process.env.REACT_APP_TURNSTILE_SITE_KEY}
