@@ -62,18 +62,12 @@ class AuthService {
     // 登出
     async logout() {
         try {
-            // 使用 csrfClient.post 發送受保護的請求
-            const response = await csrfClient.post('/api/auth/logout');
+            // 登出不需要 CSRF token，直接使用 apiClient
+            const response = await apiClient.post('/api/auth/logout');
 
             Analytics.auth.logout({ status: 'success' });
             
-            // csrfClient 返回的是 fetch Response，需要解析 JSON
-            if (response.ok) {
-                const data = await response.json();
-                return data.data;
-            } else {
-                throw new Error(`Logout failed: ${response.status}`);
-            }
+            return response.data.data;
         } catch (error) {
             // 統一錯誤處理
             const handledError = handleApiError(error);

@@ -174,15 +174,18 @@ export function AuthProvider({ children }) {
 
             setUser(userData);
             
-            // 如果用戶已登入，初始化 CSRF token
+            // 如果用戶已登入，嘗試初始化 CSRF token（如果還沒有的話）
             if (userData) {
-                try {
-                    console.log('Initializing CSRF token for existing user...');
-                    await csrfClient.initializeCSRFToken();
-                    console.log('CSRF token initialized successfully for existing user');
-                } catch (csrfError) {
-                    console.warn('Failed to initialize CSRF token for existing user:', csrfError);
-                    // 不拋出錯誤，讓用戶繼續使用（某些功能可能受限）
+                if (!csrfClient.isTokenInitialized()) {
+                    try {
+                        console.log('Initializing CSRF token for existing user...');
+                        await csrfClient.initializeCSRFToken();
+                        console.log('CSRF token initialized successfully for existing user');
+                    } catch (csrfError) {
+                        console.warn('Failed to initialize CSRF token for existing user:', csrfError);
+                        // 不拋出錯誤，讓用戶繼續使用（某些功能可能受限）
+                        // 這可能是因為用戶的 session 已過期，需要重新登入
+                    }
                 }
             } else {
                 // 如果用戶未登入，清除 CSRF token

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
 import { useNavigate, useParams } from 'react-router-dom';
 import { Analytics } from '../../utils/analytics';
@@ -10,61 +10,31 @@ export const UserProfile = () => {
     const { user, loading } = useAuth();
     const navigate = useNavigate();
     const { lang } = useParams();
-    const [isOpen, setIsOpen] = useState(false);
-    const menuRef = useRef(null);
 
-    // 監聽登出事件，確保狀態同步
-    useEffect(() => {
-        const handleLogoutSuccess = () => {
-            setIsOpen(false);
-        };
-
-        window.addEventListener('logoutSuccess', handleLogoutSuccess);
-        return () => window.removeEventListener('logoutSuccess', handleLogoutSuccess);
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setIsOpen(false);
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [isOpen]);
-
-    const handleViewAccount = () => {
+    const handleProfileClick = () => {
         navigate(`/${lang}/user-account`);
-        setIsOpen(false);
         
-        Analytics.track('user_profile_account_clicked', {
+        Analytics.track('user_profile_clicked_direct_navigation', {
             userId: user?.id
         });
     };
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-            setIsOpen(!isOpen);
-        } else if (e.key === 'Escape' && isOpen) {
-            setIsOpen(false);
+            handleProfileClick();
         }
     };
 
     if (!user || loading) return null;
 
     return (
-        <div className="user-profile" ref={menuRef}>
+        <div className="user-profile">
             <button
                 className="user-profile__trigger"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={handleProfileClick}
                 onKeyPress={handleKeyPress}
-                aria-expanded={isOpen}
-                aria-haspopup="true"
-                aria-label={t('userProfile.openMenuAria')}
+                aria-label={t('userProfile.goToAccountAria')}
+                title={t('subscription.userAccount.viewAccount')}
             >
                 <img 
                     src={user.avatarUrl} 
@@ -73,22 +43,6 @@ export const UserProfile = () => {
                 />
                 <span className="user-profile__name">{user.username}</span>
             </button>
-            
-            {isOpen && (
-                <div 
-                    className="user-profile__menu"
-                    role="menu"
-                    aria-label={t('userProfile.menuAria')}
-                >
-                    <button 
-                        className="user-profile__menu-item"
-                        onClick={handleViewAccount}
-                        role="menuitem"
-                    >
-                        {t('subscription.userAccount.viewAccount')}
-                    </button>
-                </div>
-            )}
         </div>
     );
 }; 

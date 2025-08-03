@@ -120,10 +120,11 @@
   color: var(--color-text-tertiary, rgba(0, 0, 0, 0.40));
   font-weight: 500;
   font-variant-numeric: tabular-nums;
-}.plan-c
-ard__features {
+}
+
+.plan-card__features {
   flex: 1;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
 .plan-card__features-list {
@@ -157,11 +158,23 @@ ard__features {
 
 .plan-card__action {
   margin-top: auto;
+  padding-top: 8px;
 }
 
 .plan-card__button {
   width: 100%;
   justify-content: center;
+}
+
+/* Desktop spacing optimization */
+@media (min-width: 769px) {
+  .plan-card__features {
+    margin-bottom: 48px;
+  }
+  
+  .plan-card__action {
+    padding-top: 12px;
+  }
 }
 
 /* Responsive Design */
