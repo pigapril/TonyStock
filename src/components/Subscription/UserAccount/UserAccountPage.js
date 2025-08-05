@@ -5,13 +5,12 @@ import { useSubscription } from '../SubscriptionContext';
 import { PlanInfo } from './components/PlanInfo';
 import { UsageStats } from './components/UsageStats';
 import { SubscriptionHistory } from './components/SubscriptionHistory';
-import { AccountSettings } from './components/AccountSettings';
 import { Analytics } from '../../../utils/analytics';
 import './UserAccountPage.css';
 
 export const UserAccountPage = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { userPlan, usageStats, subscriptionHistory, loading, error } = useSubscription();
 
   useEffect(() => {
@@ -20,6 +19,25 @@ export const UserAccountPage = () => {
       planType: userPlan?.type || 'unknown'
     });
   }, [user, userPlan]);
+
+  const handleLogout = async () => {
+    try {
+      Analytics.track('user_logout_from_account_page', {
+        userId: user?.id
+      });
+      
+      await logout();
+    } catch (error) {
+      console.error('Logout failed:', error);
+      
+      Analytics.error({
+        type: 'AUTH_ERROR',
+        code: error.code || 500,
+        message: error.message || 'Logout failed',
+        context: 'UserAccountPage.handleLogout'
+      });
+    }
+  };
 
   if (!user) {
     return (
@@ -51,9 +69,15 @@ export const UserAccountPage = () => {
               <h1 className="user-account-header__title">
                 {t('subscription.userAccount.title')}
               </h1>
-              <p className="user-account-header__username">
-                {user.username}
-              </p>
+              <div className="user-account-header__details">
+                <p className="username">{user.username}</p>
+                <p className="email">{user.email}</p>
+              </div>
+            </div>
+            <div className="user-account-header__actions">
+              <button className="logout-button" onClick={handleLogout}>
+                {t('subscription.userAccount.logout')}
+              </button>
             </div>
           </div>
         </header>
@@ -97,14 +121,6 @@ export const UserAccountPage = () => {
               {t('subscription.userAccount.subscriptionHistory')}
             </h2>
             <SubscriptionHistory history={subscriptionHistory} loading={loading} />
-          </section>
-
-          {/* Account Settings Section */}
-          <section className="user-account-section">
-            <h2 className="user-account-section__title">
-              {t('subscription.userAccount.accountSettings')}
-            </h2>
-            <AccountSettings user={user} />
           </section>
         </div>
       </div>

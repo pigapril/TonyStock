@@ -140,6 +140,7 @@
     "aboutUs": "About",
     "aboutSite": "About Us",
     "legal": "Privacy Policy & Terms",
+    "sponsor": "Sponsor Us",
     "subscription": "Subscription",
     "copyright": "Copyright © {{year}} Sentiment Inside Out",
     "disclaimer1": "Data, analysis, tools, and descriptions provided on this website are for reference only. Investment decisions must be made independently, assuming all risks. Verify information with official sources. This website assumes no legal responsibility for any profits or losses incurred.",
@@ -865,7 +866,7 @@
       "unavailable": "Feature unavailable"
     },
     "userAccount": {
-      "title": "User Account",
+      "title": "My Account",
       "currentPlan": "Current Plan",
       "usageStats": "Usage Statistics",
       "subscriptionHistory": "Subscription History",

@@ -1,186 +1,63 @@
-/* Apple-inspired Plan Info Component */
+/* Apple-inspired Plan Info Component - Simplified */
 .plan-info {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
 }
 
-.plan-info__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.plan-info__badge-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.plan-info__status {
+.plan-info__main {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.plan-info__status-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.plan-info__status-indicator--success {
-  background: #34c759;
-}
-
-.plan-info__status-indicator--warning {
-  background: #ff9500;
-}
-
-.plan-info__status-indicator--danger {
-  background: #ff3b30;
-}
-
-.plan-info__status-indicator--gray {
-  background: #8e8e93;
-}
-
-.plan-info__status-text {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
-  text-transform: capitalize;
-}
-
-.plan-info__actions {
-  flex-shrink: 0;
-}
-
-.plan-info__upgrade-button {
-  min-width: 120px;
-}
-
-.plan-info__content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  gap: 24px;
 }
 
 .plan-info__details {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.plan-info__name {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
-  margin: 0;
-  line-height: 1.3;
-}
-
-.plan-info__description {
-  font-size: 16px;
-  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
-  margin: 0;
-  line-height: 1.5;
-}
-
-.plan-info__date-info {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 16px;
-  background: var(--color-bg-subtle, #f0f0f0);
-  border-radius: var(--border-radius-medium, 10px);
-  border: 1px solid var(--color-border-soft, #e5e5e5);
 }
 
-.plan-info__date-item {
+.plan-info__date {
   display: flex;
-  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
   align-items: center;
-  gap: 12px;
 }
 
 .plan-info__date-label {
-  font-size: 14px;
-  font-weight: 500;
   color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  font-weight: 500;
+  flex-shrink: 0;
 }
 
 .plan-info__date-value {
-  font-size: 14px;
-  font-weight: 600;
   color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
-}
-
-.plan-info__features {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.plan-info__features-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
-  margin: 0;
-}
-
-.plan-info__features-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.plan-info__feature-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.plan-info__feature-icon {
-  color: #34c759;
-  font-weight: 600;
-  font-size: 14px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.plan-info__feature-text {
-  font-size: 14px;
-  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
-  line-height: 1.4;
 }
 
 .plan-info__auto-renew {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: rgba(0, 122, 255, 0.1);
-  border: 1px solid rgba(0, 122, 255, 0.2);
-  border-radius: var(--border-radius-medium, 10px);
+  gap: 8px;
+  font-size: 14px;
 }
 
 .plan-info__auto-renew-icon {
-  font-size: 16px;
+  font-size: 14px;
   flex-shrink: 0;
 }
 
 .plan-info__auto-renew-text {
-  font-size: 14px;
   font-weight: 500;
   color: var(--accent-color-blue, #007aff);
+}
+
+.plan-info__action {
+  flex-shrink: 0;
+}
+
+.plan-info__upgrade-button {
+  min-width: 120px;
 }
 
 /* Loading State */
@@ -191,8 +68,8 @@
 
 .plan-info__skeleton {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  align-items: center;
+  gap: 24px;
 }
 
 .plan-info__skeleton-badge {
@@ -201,6 +78,7 @@
   background: var(--color-bg-subtle, #f0f0f0);
   border-radius: var(--border-radius-large, 14px);
   animation: plan-info-skeleton-pulse 1.5s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
 .plan-info__skeleton-text {
@@ -208,10 +86,12 @@
   background: var(--color-bg-subtle, #f0f0f0);
   border-radius: 8px;
   animation: plan-info-skeleton-pulse 1.5s ease-in-out infinite;
+  flex: 1;
 }
 
 .plan-info__skeleton-text--short {
   width: 60%;
+  flex: none;
 }
 
 @keyframes plan-info-skeleton-pulse {
@@ -235,77 +115,61 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .plan-info__header {
+  .plan-info__main {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
     gap: 16px;
   }
   
-  .plan-info__badge-container {
-    align-items: flex-start;
+  .plan-info__details {
+    width: 100%;
   }
   
-  .plan-info__content {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .plan-info__action {
+    width: 100%;
   }
   
-  .plan-info__date-info {
-    padding: 12px;
+  .plan-info__upgrade-button {
+    width: 100%;
   }
   
-  .plan-info__date-item {
+  .plan-info__skeleton {
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
+    gap: 16px;
+  }
+  
+  .plan-info__skeleton-text {
+    width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  .plan-info {
-    gap: 20px;
+  .plan-info__main {
+    gap: 12px;
   }
   
-  .plan-info__content {
-    gap: 20px;
+  .plan-info__details {
+    gap: 6px;
   }
   
-  .plan-info__name {
-    font-size: 18px;
-  }
-  
-  .plan-info__description {
-    font-size: 14px;
+  .plan-info__date {
+    font-size: 13px;
   }
   
   .plan-info__auto-renew {
-    padding: 12px;
+    font-size: 13px;
   }
 }
 
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
-  .plan-info__name,
-  .plan-info__features-title,
   .plan-info__date-value {
     color: rgba(235, 235, 245, 0.85);
   }
   
-  .plan-info__description,
-  .plan-info__status-text,
-  .plan-info__date-label,
-  .plan-info__feature-text {
+  .plan-info__date-label {
     color: rgba(235, 235, 245, 0.60);
-  }
-  
-  .plan-info__date-info {
-    background: rgba(142, 142, 147, 0.24);
-    border-color: #38383a;
-  }
-  
-  .plan-info__auto-renew {
-    background: rgba(10, 132, 255, 0.2);
-    border-color: rgba(10, 132, 255, 0.3);
   }
   
   .plan-info__auto-renew-text {

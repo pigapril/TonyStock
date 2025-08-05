@@ -140,6 +140,7 @@
     "aboutUs": "關於我",
     "aboutSite": "關於本站",
     "legal": "隱私權政策與服務條款",
+    "sponsor": "贊助我們",
     "subscription": "訂閱方案",
     "copyright": "Copyright © {{year}} Sentiment Inside Out",
     "disclaimer1": "本網站提供之數據、資料、分析結果、工具和說明內容僅供參考，任何投資行為須自行判斷並承擔風險，實際資訊需以官方公佈資料為準。本網站不負擔盈虧之法律責任。",
@@ -864,7 +865,7 @@
       "unavailable": "功能不可用"
     },
     "userAccount": {
-      "title": "用戶帳戶",
+      "title": "我的帳號",
       "currentPlan": "目前方案",
       "usageStats": "使用統計",
       "subscriptionHistory": "訂閱記錄",
