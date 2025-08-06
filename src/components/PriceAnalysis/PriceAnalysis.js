@@ -83,6 +83,7 @@ export function PriceAnalysis() {
   const [loading, setLoading] = useState(false);
   const [displayedStockCode, setDisplayedStockCode] = useState('');
   const [activeChart, setActiveChart] = useState('sd');
+  const [activeDescriptionTab, setActiveDescriptionTab] = useState('overview'); // 新增：說明標籤狀態
   const [ulbandData, setUlbandData] = useState(null);
   const [turnstileToken, setTurnstileToken] = useState(isTurnstileEnabled ? null : 'disabled');
   const [turnstileVisible, setTurnstileVisible] = useState(isTurnstileEnabled);
@@ -149,6 +150,17 @@ export function PriceAnalysis() {
   const handleChartSwitch = (chartType) => {
     Analytics.stockAnalysis.chartSwitch(chartType);
     setActiveChart(chartType);
+    // 互動式說明：自動切換到對應的說明標籤
+    if (chartType === 'sd') {
+      setActiveDescriptionTab('sd');
+    } else if (chartType === 'ulband') {
+      setActiveDescriptionTab('ulband');
+    }
+  };
+
+  // 處理說明標籤切換
+  const handleDescriptionTabSwitch = (tabType) => {
+    setActiveDescriptionTab(tabType);
   };
 
   // 處理 Turnstile 回調
@@ -693,14 +705,16 @@ export function PriceAnalysis() {
         onClose={() => setShowAnnouncement(false)}
       />
       <div className="price-analysis-view">
-        <h1>{t('priceAnalysis.pageTitle')}</h1>
         <div className="content-layout-container"> {/* 新增：佈局容器 */}
           <div className="dashboard">
             
             {/* 將 stock-analysis-card 和 hot-searches-section 包裹在 analysis-controls-wrapper 中 */}
             <div className="analysis-controls-wrapper stock-analysis-card">
               <div className="stock-analysis-card">
-              <h4>{t('priceAnalysis.form.title')}</h4>
+              <div className="title-group">
+                <h1 className="analysis-main-title">{t('priceAnalysis.pageTitle')}</h1>
+                <h4 className="analysis-subtitle">{t('priceAnalysis.form.title')}</h4>
+              </div>
               <form onSubmit={handleSubmit}>
                 <div className="input-group">
                   {/* 使用 t() 翻譯 label */}
@@ -880,7 +894,6 @@ export function PriceAnalysis() {
                           onClick={() => handleChartSwitch('sd')}
                           disabled={loading}
                         >
-                          {/* 使用 t() 翻譯 Tab 文字 */}
                           {t('priceAnalysis.chart.tabs.sd')}
                         </button>
                         <button
@@ -888,7 +901,6 @@ export function PriceAnalysis() {
                           onClick={() => handleChartSwitch('ulband')}
                           disabled={loading}
                         >
-                          {/* 使用 t() 翻譯 Tab 文字 */}
                           {t('priceAnalysis.chart.tabs.ulband')}
                         </button>
                       </div>
@@ -928,34 +940,90 @@ export function PriceAnalysis() {
             </div>
           </div>
 
-          {/* 將 ExpandableDescription 移到此處並包裹 */}
-          <div className="description-container-wrapper">
-            <div className="description-scroll-content">
-              {/* 新增：上半部內容容器 */}
-              <div className="description-content-top">
-                <MemoizedExpandableDescription
-                  mainTitle={t('priceAnalysis.explanation.mainTitle')}
-                  // 使用 t() 翻譯 shortDescription (注意保留連結)
-                  shortDescription={
-                    <>
-                      {t('priceAnalysis.explanation.shortDescription')}
-                      <br />
-                      {t('priceAnalysis.explanation.readMorePrefix')}
-                      <a href="https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92" target="_blank" rel="noopener noreferrer">
-                        {t('priceAnalysis.explanation.readMoreLinkText')}
-                      </a>
-                    </>
-                  }
-                  // 使用 useMemo 創建的 sections
-                  sections={expandableSections}
-                  // 使用 t() 翻譯按鈕文字
-                  expandButtonText={t('common.learnMore')} // 假設有通用 key
-                  collapseButtonText={t('common.collapse')} // 假設有通用 key
-                />
-              </div>
+
+        </div> {/* 結束 content-layout-container */}
+
+        {/* 底部說明區域 */}
+        <div className="bottom-description-section">
+          <div className="description-tabs-container">
+            {/* 標籤導航 */}
+            <div className="description-tabs">
+              <button 
+                className={`description-tab ${activeDescriptionTab === 'overview' ? 'active' : ''}`}
+                onClick={() => handleDescriptionTabSwitch('overview')}
+              >
+                {t('priceAnalysis.description.tabs.overview')}
+              </button>
+              <button 
+                className={`description-tab ${activeDescriptionTab === 'sd' ? 'active' : ''}`}
+                onClick={() => handleDescriptionTabSwitch('sd')}
+              >
+                {t('priceAnalysis.description.tabs.sd')}
+              </button>
+              <button 
+                className={`description-tab ${activeDescriptionTab === 'ulband' ? 'active' : ''}`}
+                onClick={() => handleDescriptionTabSwitch('ulband')}
+              >
+                {t('priceAnalysis.description.tabs.ulband')}
+              </button>
+              <button 
+                className={`description-tab ${activeDescriptionTab === 'tips' ? 'active' : ''}`}
+                onClick={() => handleDescriptionTabSwitch('tips')}
+              >
+                {t('priceAnalysis.description.tabs.tips')}
+              </button>
+            </div>
+            
+            {/* 標籤內容 */}
+            <div className="description-tab-content">
+              {activeDescriptionTab === 'overview' && (
+                <div className="tab-content-overview">
+                  <h3>{t('priceAnalysis.description.overview.title')}</h3>
+                  <p>{t('priceAnalysis.description.overview.content')}</p>
+                  <div className="overview-links">
+                    <a href="https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92" target="_blank" rel="noopener noreferrer">
+                      {t('priceAnalysis.description.overview.readMore')}
+                    </a>
+                  </div>
+                </div>
+              )}
+              
+              {activeDescriptionTab === 'sd' && (
+                <div className="tab-content-sd">
+                  <h3>{t('priceAnalysis.description.sd.title')}</h3>
+                  <ul className="description-list">
+                    <li>{t('priceAnalysis.description.sd.point1')}</li>
+                    <li>{t('priceAnalysis.description.sd.point2')}</li>
+                    <li>{t('priceAnalysis.description.sd.point3')}</li>
+                    <li>{t('priceAnalysis.description.sd.point4')}</li>
+                  </ul>
+                </div>
+              )}
+              
+              {activeDescriptionTab === 'ulband' && (
+                <div className="tab-content-ulband">
+                  <h3>{t('priceAnalysis.description.ulband.title')}</h3>
+                  <ul className="description-list">
+                    <li>{t('priceAnalysis.description.ulband.point1')}</li>
+                    <li>{t('priceAnalysis.description.ulband.point2')}</li>
+                    <li>{t('priceAnalysis.description.ulband.point3')}</li>
+                  </ul>
+                </div>
+              )}
+              
+              {activeDescriptionTab === 'tips' && (
+                <div className="tab-content-tips">
+                  <h3>{t('priceAnalysis.description.tips.title')}</h3>
+                  <ul className="description-list">
+                    <li>{t('priceAnalysis.description.tips.point1')}</li>
+                    <li>{t('priceAnalysis.description.tips.point2')}</li>
+                    <li>{t('priceAnalysis.description.tips.point3')}</li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
-        </div> {/* 結束 content-layout-container */}
+        </div>
       </div>
 
       {/* 條件式渲染 Toast 元件 */}

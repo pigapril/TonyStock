@@ -603,6 +603,38 @@
     "prompt": {
       "enterSymbol": "Please enter conditions and click 'Start Analysis'."
     },
+    "description": {
+      "tabs": {
+        "overview": "Overview",
+        "sd": "Five-Line",
+        "ulband": "Channel",
+        "tips": "Tips"
+      },
+      "overview": {
+        "title": "What is the LOHAS Five-Line Analysis?",
+        "content": "Analyze whether the current stock price is overly optimistic or pessimistic. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
+        "readMore": "For detailed instructions, please see the article"
+      },
+      "sd": {
+        "title": "LOHAS Five-Line Analysis",
+        "point1": "The middle trend line is a long-term moving average, serving as the baseline for assessing the long-term price trend. Two standard deviations are added above and below this baseline.",
+        "point2": "The further the price moves from the middle trend line, the further it deviates from the long-term average, increasing the probability of reverting to the trend line.",
+        "point3": "When the price touches the uppermost band, it indicates a strong short-term overbought condition and extreme market optimism, posing a risk of pullback.",
+        "point4": "When the price touches the lowermost band, it indicates a strong short-term oversold condition and extreme market pessimism, presenting an opportunity for a rebound."
+      },
+      "ulband": {
+        "title": "LOHAS Channel",
+        "point1": "The LOHAS Channel is a more sensitive indicator used to help determine short-term overbought and oversold conditions.",
+        "point2": "When the price breaks above the upper LOHAS Channel, it may indicate short-term overheating.",
+        "point3": "When the price breaks below the lower LOHAS Channel, it may indicate short-term cooling."
+      },
+      "tips": {
+        "title": "Usage Tips",
+        "point1": "When the price touches the uppermost or lowermost band of the LOHAS Five-Line Analysis and simultaneously breaks the LOHAS Channel, it might signify a continuation of the trend. Consider waiting for the price to return within the LOHAS Channel before taking action.",
+        "point2": "It is recommended for use with index ETFs or large-cap stocks with clear trends, in conjunction with fundamental analysis.",
+        "point3": "It should not be used as the sole basis for buy/sell decisions. Please combine with other technical indicators and fundamental analysis."
+      }
+    },
     "explanation": {
       "mainTitle": "What is the LOHAS Five-Line Analysis?",
       "shortDescription": "Analyze whether the current stock price is overly optimistic or pessimistic. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
