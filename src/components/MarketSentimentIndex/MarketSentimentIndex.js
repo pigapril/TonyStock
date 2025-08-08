@@ -5,7 +5,8 @@ import './MarketSentimentIndex.css';
 import 'chartjs-adapter-date-fns';
 import GaugeChart from 'react-gauge-chart';
 import styled from 'styled-components';
-import { ExpandableDescription } from '../Common/ExpandableDescription/ExpandableDescription';
+
+import MarketSentimentDescriptionSection from './MarketSentimentDescriptionSection';
 import PageContainer from '../PageContainer/PageContainer';
 import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
@@ -596,39 +597,11 @@ const MarketSentimentIndex = () => {
     }
   }, [isDataLoaded]);
 
-  // 根據 activeTab 獲取描述內容的翻譯鍵
-  const descriptionKey = useMemo(() => {
-    if (activeTab === 'composite') {
-      return 'composite';
-    }
-    return INDICATOR_DESCRIPTION_KEY_MAP[activeTab] || 'composite'; // Fallback to composite if key not found
-  }, [activeTab]);
 
-  const descriptionBasePath = useMemo(() => `marketSentiment.descriptions.${descriptionKey}`, [descriptionKey]);
 
-  // 使用 t 函數獲取翻譯後的描述內容
-  // 注意：這需要 i18next 配置支持 returnObjects: true
-  const translatedShortDescription = useMemo(() => t(`${descriptionBasePath}.shortDescription`, { defaultValue: '' }), [t, descriptionBasePath]);
-  const translatedSections = useMemo(() => {
-    const sections = t(`${descriptionBasePath}.sections`, { returnObjects: true, defaultValue: [] });
-    // 確保返回的是陣列，且每個元素都有 title 和 content
-    if (Array.isArray(sections)) {
-      return sections.map(section => ({
-        title: section.title || '',
-        content: section.content || ''
-      }));
-    }
-    return [];
-  }, [t, descriptionBasePath]);
 
-  // 新增：決定 ExpandableDescription 的主標題
-  const expandableMainTitle = useMemo(() => {
-    if (activeTab === 'composite') {
-      return t('marketSentiment.tabs.compositeIndex');
-    }
-    // Fallback to the key itself if translation is missing, though ideally all keys should be translated.
-    return t(INDICATOR_TRANSLATION_KEY_MAP[activeTab] || activeTab, activeTab);
-  }, [activeTab, t]);
+
+
 
   // 定義用於結構化數據的 JSON-LD
   const marketSentimentJsonLd = useMemo(() => ({
@@ -734,7 +707,14 @@ const MarketSentimentIndex = () => {
       jsonLd={marketSentimentJsonLd}
     >
       <div className="market-sentiment-view">
-        <h1>{t('marketSentiment.heading')}</h1>
+        <div className="page-header">
+          <h1 className="page-title">
+            {currentLang === 'zh-TW' ? 'SIO恐懼貪婪指數' : 'SIO Fear & Greed Index'}
+          </h1>
+          <p className="page-subtitle">
+            {currentLang === 'zh-TW' ? '獨家市場情緒分析' : 'Exclusive market sentiment analysis'}
+          </p>
+        </div>
         <div className="tabs-grid">
           <button
             className={`tab-button ${activeTab === 'composite' ? 'active' : ''}`}
@@ -759,7 +739,6 @@ const MarketSentimentIndex = () => {
             {
               activeTab === 'composite' && (
                 <div className="indicator-item">
-                  <h3>{t('marketSentiment.tabs.compositeIndex')}</h3>
                   <div className="analysis-result">
                     <div className="analysis-item">
                       <span className="analysis-label">{t('marketSentiment.composite.scoreLabel')}</span>
@@ -903,16 +882,15 @@ const MarketSentimentIndex = () => {
               )
             }
           </div>
-          <div className="description-container-wrapper">
-            <div className="description-scroll-content">
-              <ExpandableDescription
-                mainTitle={expandableMainTitle}
-                shortDescription={translatedShortDescription}
-                sections={translatedSections}
-              />
-            </div>
-          </div>
         </div>
+        
+        {/* 新的底部說明區域 */}
+        <MarketSentimentDescriptionSection
+          activeIndicator={activeTab}
+          currentView={compositeStep}
+          indicatorsData={indicatorsData}
+          className="bottom-layout"
+        />
       </div>
       {toast && (
         <Toast
@@ -971,10 +949,11 @@ const MarketSentimentIndex = () => {
                   isInsideModal={true}
                 />
                 <div className="modal-description">
-                  <ExpandableDescription
-                    mainTitle={t(INDICATOR_TRANSLATION_KEY_MAP[selectedIndicatorKey] || selectedIndicatorKey, selectedIndicatorKey)}
-                    shortDescription={t(`marketSentiment.descriptions.${INDICATOR_DESCRIPTION_KEY_MAP[selectedIndicatorKey]}.shortDescription`)}
-                    sections={t(`marketSentiment.descriptions.${INDICATOR_DESCRIPTION_KEY_MAP[selectedIndicatorKey]}.sections`, { returnObjects: true })}
+                  <MarketSentimentDescriptionSection
+                    activeIndicator={selectedIndicatorKey}
+                    currentView="latest"
+                    indicatorsData={indicatorsData}
+                    className="side-layout"
                   />
                 </div>
               </div>
