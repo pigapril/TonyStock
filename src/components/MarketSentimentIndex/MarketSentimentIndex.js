@@ -66,7 +66,7 @@ function getTimeUnit(dates) {
   const start = new Date(dates[0]);
   const end = new Date(dates[dates.length - 1]);
   const yearDiff = end.getFullYear() - start.getFullYear();
-  
+
   if (yearDiff > 1) {
     return 'year';
   } else if (yearDiff === 1 || end.getMonth() - start.getMonth() > 3) {
@@ -166,7 +166,7 @@ const MarketSentimentIndex = () => {
   const [currentSliderRange, setCurrentSliderRange] = useState([0, 0]); // [startTimestamp, endTimestamp]
 
   // 新增：漸進式導覽步驟狀態
-  const [compositeStep, setCompositeStep] = useState('latest');
+  const [compositeStep, setCompositeStep] = useState('history');
   // 新增：組成項目點擊後的 Modal 狀態
   const [selectedIndicatorKey, setSelectedIndicatorKeyInternal] = useState(null);
 
@@ -204,7 +204,7 @@ const MarketSentimentIndex = () => {
       try {
         setLoading(true);
         const response = await enhancedApiClient.get('/api/market-sentiment');
-        
+
         if (isMounted) {
           setSentimentData(response.data);
           setIndicatorsData(response.data.indicators);
@@ -228,7 +228,7 @@ const MarketSentimentIndex = () => {
       isMounted = false;
     };
   }, [showToast, t]);
-  
+
   useEffect(() => {
     async function fetchHistoricalData() {
       try {
@@ -327,11 +327,11 @@ const MarketSentimentIndex = () => {
           return;
         }
         // 新增：如果事件目標在圖表或 tooltip 相關元素內部，則不觸發 modal 切換
-        if (target.classList && 
-            (target.classList.contains('indicator-chart') || 
-             target.classList.contains('tooltip') || 
-             target.closest('.indicator-chart') || 
-             target.closest('.tooltip'))
+        if (target.classList &&
+          (target.classList.contains('indicator-chart') ||
+            target.classList.contains('tooltip') ||
+            target.closest('.indicator-chart') ||
+            target.closest('.tooltip'))
         ) {
           touchStartXRef.current = null;
           return;
@@ -401,7 +401,7 @@ const MarketSentimentIndex = () => {
       return itemTime >= currentSliderRange[0] && itemTime <= currentSliderRange[1];
     });
   }, [historicalData, currentSliderRange]);
-  
+
   // 獲取時間單位
   const timeUnit = useMemo(() => getTimeUnit(filteredData.map(item => item.date)), [filteredData]);
 
@@ -413,14 +413,14 @@ const MarketSentimentIndex = () => {
         label: t('marketSentiment.chart.compositeIndexLabel'),
         yAxisID: 'left-axis',
         data: filteredData.map((item) => item.compositeScore),
-        borderColor: '#9D00FF', 
+        borderColor: '#9D00FF',
         backgroundColor: (context) => {
           const chart = context.chart;
           const { ctx, chartArea } = chart;
           if (!chartArea) return null;
-          
-          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom); 
-          
+
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+
           // 0% (頂部 - 極度樂觀): #D24A93 (rgb(210, 74, 147))
           gradient.addColorStop(0, 'rgba(210, 74, 147, 0.6)');
           // 25% (樂觀): #F0B8CE (rgb(240, 184, 206)), alpha 0.4
@@ -446,13 +446,13 @@ const MarketSentimentIndex = () => {
           const chart = context.chart;
           const { ctx, chartArea } = chart;
           if (!chartArea) return null;
-          
+
           // 創建垂直漸層
           const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
           gradient.addColorStop(0, 'rgba(54, 162, 235, 0)');     // 完全透明
           gradient.addColorStop(0.5, 'rgba(42, 42, 42, 0)'); // 半透明
           gradient.addColorStop(1, 'rgba(128, 128, 129, 0)');   // 較不透明
-          
+
           return gradient;
         },
         fill: true,
@@ -489,8 +489,8 @@ const MarketSentimentIndex = () => {
           display: true,
           text: t('marketSentiment.chart.compositeIndexAxisLabel'),
         },
-        ticks: { 
-          callback: function(value, index, values) {
+        ticks: {
+          callback: function (value, index, values) {
             return formatPrice(value);
           }
         }
@@ -504,8 +504,8 @@ const MarketSentimentIndex = () => {
         grid: {
           drawOnChartArea: false,
         },
-        ticks: { 
-          callback: function(value, index, values) {
+        ticks: {
+          callback: function (value, index, values) {
             return formatPrice(value);
           }
         }
@@ -516,7 +516,7 @@ const MarketSentimentIndex = () => {
         mode: 'index',
         intersect: false,
         callbacks: {
-          label: function(tooltipItem) {
+          label: function (tooltipItem) {
             let label = tooltipItem.dataset.label || '';
             if (label) {
               label += ': ';
@@ -735,63 +735,112 @@ const MarketSentimentIndex = () => {
           ))}
         </div>
         <div className="content-layout-container">
-          <div className="tab-content">
-            {
-              activeTab === 'composite' && (
-                <div className="indicator-item">
-                  <div className="analysis-result">
-                    <div className="analysis-item">
-                      <span className="analysis-label">{t('marketSentiment.composite.scoreLabel')}</span>
-                      <span className="analysis-value">
-                        {sentimentData.totalScore ? Math.round(sentimentData.totalScore) : t('common.notAvailable')}
-                      </span>
+          {activeTab === 'composite' ? (
+            <>
+              {/* 左側面板 - Gauge 圖表 */}
+              <div className="left-panel">
+                <div className="analysis-result">
+                  <div className="analysis-item">
+                    <span className="analysis-label">{t('marketSentiment.composite.scoreLabel')}</span>
+                    <span className="analysis-value">
+                      {sentimentData.totalScore ? Math.round(sentimentData.totalScore) : t('common.notAvailable')}
+                    </span>
+                  </div>
+                  <div className="analysis-item">
+                    <span className="analysis-label">{t('marketSentiment.composite.sentimentLabel')}</span>
+                    <span className={`analysis-value sentiment-${compositeRawSentiment}`}>{compositeSentiment}</span>
+                  </div>
+                </div>
+
+                <div className="gauge-chart-container">
+                  <div className="gauge-chart">
+                    {renderGaugeChart()}
+                    <svg width="0" height="0">
+                      <defs>
+                        <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
+                          <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
+                          <feOffset in="blur" dx="2" dy="2" result="offsetBlur" />
+                          <feComposite in="SourceGraphic" in2="offsetBlur" operator="over" />
+                        </filter>
+                        {gradients.map((gradient, index) => (
+                          <linearGradient key={index} id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor={gradient[0]} />
+                            <stop offset="100%" stopColor={gradient[1]} />
+                          </linearGradient>
+                        ))}
+                      </defs>
+                    </svg>
+                    <div className="gauge-center-value">
+                      {Math.round(sentimentData.totalScore)}
                     </div>
-                    <div className="analysis-item">
-                      <span className="analysis-label">{t('marketSentiment.composite.sentimentLabel')}</span>
-                      <span className={`analysis-value sentiment-${compositeRawSentiment}`}>{compositeSentiment}</span>
+                    <div className="gauge-labels">
+                      <span className="gauge-label gauge-label-left">{t('sentiment.extremeFear')}</span>
+                      <span className="gauge-label gauge-label-right">{t('sentiment.extremeGreed')}</span>
+                    </div>
+                    <div className="last-update-time">
+                      {t('marketSentiment.lastUpdateLabel')}: {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString('zh-TW')}
                     </div>
                   </div>
+                </div>
+              </div>
+
+              {/* 右側面板 - 可切換內容 */}
+              <div className="right-panel">
+                <div className="view-mode-selector-container">
+                  <button
+                    className={`view-mode-button ${compositeStep === 'history' ? 'active' : ''}`}
+                    onClick={() => {
+                      setCompositeStep('history');
+                      requestAdDisplay('marketSentimentCompositeHistory', 1);
+                    }}
+                  >
+                    {t('marketSentiment.cta.history')}
+                  </button>
+                  <button
+                    className={`view-mode-button ${compositeStep === 'composition' ? 'active' : ''}`}
+                    onClick={() => {
+                      setCompositeStep('composition');
+                      requestAdDisplay('marketSentimentCompositeComposition', 1);
+                    }}
+                  >
+                    {t('marketSentiment.cta.composition')}
+                  </button>
+                </div>
+
+                <div className="content-area">
                   {compositeStep === 'history' && (
-                    <TimeRangeSelector
-                      selectedTimeRange={selectedTimeRange}
-                      handleTimeRangeChange={handleTimeRangeChange}
-                    />
-                  )}
-                  <div className="indicator-chart-container">
-                    {compositeStep === 'latest' ? (
-                      <div className="gauge-chart">
-                        {renderGaugeChart()}
-                        <svg width="0" height="0">
-                          <defs>
-                            <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
-                              <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
-                              <feOffset in="blur" dx="2" dy="2" result="offsetBlur" />
-                              <feComposite in="SourceGraphic" in2="offsetBlur" operator="over" />
-                            </filter>
-                            {gradients.map((gradient, index) => (
-                              <linearGradient key={index} id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stopColor={gradient[0]} />
-                                <stop offset="100%" stopColor={gradient[1]} />
-                              </linearGradient>
-                            ))}
-                          </defs>
-                        </svg>
-                        <div className="gauge-center-value">
-                          {Math.round(sentimentData.totalScore)}
-                        </div>
-                        <div className="gauge-labels">
-                          <span className="gauge-label gauge-label-left">{t('sentiment.extremeFear')}</span>
-                          <span className="gauge-label gauge-label-right">{t('sentiment.extremeGreed')}</span>
-                        </div>
-                        <div className="last-update-time">
-                          {t('marketSentiment.lastUpdateLabel')}: {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString('zh-TW')}
-                        </div>
-                      </div>
-                    ) : compositeStep === 'history' ? (
+                    <div className="history-view">
+                      <TimeRangeSelector
+                        selectedTimeRange={selectedTimeRange}
+                        handleTimeRangeChange={handleTimeRangeChange}
+                      />
                       <div className="indicator-chart">
                         <Line data={chartData} options={chartOptions} />
                       </div>
-                    ) : compositeStep === 'composition' ? (
+                      {historicalData.length > 0 && sliderMinMax[1] > sliderMinMax[0] && (
+                        <div className="slider-container">
+                          <Slider
+                            range
+                            min={sliderMinMax[0]}
+                            max={sliderMinMax[1]}
+                            value={currentSliderRange[0] === 0 ? sliderMinMax : currentSliderRange}
+                            onChange={handleSliderChange}
+                            allowCross={false}
+                            trackStyle={[{ backgroundColor: '#C78F57' }]}
+                            handleStyle={[{ borderColor: '#C78F57', backgroundColor: 'white' }, { borderColor: '#C78F57', backgroundColor: 'white' }]}
+                            railStyle={{ backgroundColor: '#e9e9e9' }}
+                          />
+                          <div className="slider-labels">
+                            <span>{currentSliderRange[0] !== 0 ? new Date(currentSliderRange[0]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
+                            <span>{currentSliderRange[1] !== 0 ? new Date(currentSliderRange[1]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {compositeStep === 'composition' && (
+                    <div className="composition-view">
                       <div className="composition-list">
                         {Object.entries(indicatorsData).map(([key, ind]) => {
                           const sentimentKey = getSentiment(ind.percentileRank ? Math.round(ind.percentileRank) : null);
@@ -819,58 +868,14 @@ const MarketSentimentIndex = () => {
                           );
                         })}
                       </div>
-                    ) : null}
-                  </div>
-                  {compositeStep === 'history' && historicalData.length > 0 && sliderMinMax[1] > sliderMinMax[0] && (
-                    <div className="slider-container">
-                      <Slider
-                        range
-                        min={sliderMinMax[0]}
-                        max={sliderMinMax[1]}
-                        value={currentSliderRange[0] === 0 ? sliderMinMax : currentSliderRange}
-                        onChange={handleSliderChange}
-                        allowCross={false}
-                        trackStyle={[{ backgroundColor: '#C78F57' }]}
-                        handleStyle={[{ borderColor: '#C78F57', backgroundColor: 'white' }, { borderColor: '#C78F57', backgroundColor: 'white' }]}
-                        railStyle={{ backgroundColor: '#e9e9e9' }}
-                      />
-                       <div className="slider-labels">
-                        <span>{currentSliderRange[0] !== 0 ? new Date(currentSliderRange[0]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
-                        <span>{currentSliderRange[1] !== 0 ? new Date(currentSliderRange[1]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
-                      </div>
                     </div>
                   )}
-                  <div className="view-mode-selector-container">
-                    <button
-                      className={`view-mode-button ${compositeStep === 'latest' ? 'active' : ''}`}
-                      onClick={() => setCompositeStep('latest')}
-                    >
-                      {t('marketSentiment.cta.latestData')}
-                    </button>
-                    <button
-                      className={`view-mode-button ${compositeStep === 'history' ? 'active' : ''}`}
-                      onClick={() => {
-                        setCompositeStep('history');
-                        requestAdDisplay('marketSentimentCompositeHistory', 1);
-                      }}
-                    >
-                      {t('marketSentiment.cta.history')}
-                    </button>
-                    <button
-                      className={`view-mode-button ${compositeStep === 'composition' ? 'active' : ''}`}
-                      onClick={() => {
-                        setCompositeStep('composition');
-                        requestAdDisplay('marketSentimentCompositeComposition', 1);
-                      }}
-                    >
-                      {t('marketSentiment.cta.composition')}
-                    </button>
-                  </div>
                 </div>
-              )
-            }
-            {
-              activeTab !== 'composite' && indicatorsData[activeTab] && (
+              </div>
+            </>
+          ) : (
+            <div className="tab-content">
+              {activeTab !== 'composite' && indicatorsData[activeTab] && (
                 <IndicatorItem
                   key={activeTab}
                   indicatorKey={activeTab}
@@ -879,11 +884,11 @@ const MarketSentimentIndex = () => {
                   handleTimeRangeChange={handleTimeRangeChange}
                   historicalSPYData={historicalData}
                 />
-              )
-            }
-          </div>
+              )}
+            </div>
+          )}
         </div>
-        
+
         {/* 新的底部說明區域 */}
         <MarketSentimentDescriptionSection
           activeIndicator={activeTab}
@@ -907,7 +912,7 @@ const MarketSentimentIndex = () => {
 
         const prevKeyForArrows = keys[(idx - 1 + keys.length) % keys.length];
         const nextKeyForArrows = keys[(idx + 1) % keys.length];
-        
+
         return (
           <div
             className="composition-modal-overlay"
@@ -927,7 +932,7 @@ const MarketSentimentIndex = () => {
                   isInsideModal={true}
                 />
               </div>
-              <div 
+              <div
                 className="carousel-arrow carousel-arrow--left"
                 onClick={e => { e.stopPropagation(); setSelectedIndicatorKey(prevKeyForArrows); }}
               >◀</div>
@@ -957,7 +962,7 @@ const MarketSentimentIndex = () => {
                   />
                 </div>
               </div>
-              <div 
+              <div
                 className="carousel-arrow carousel-arrow--right"
                 onClick={e => { e.stopPropagation(); setSelectedIndicatorKey(nextKeyForArrows); }}
               >▶</div>

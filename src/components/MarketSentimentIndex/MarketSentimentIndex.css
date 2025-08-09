@@ -315,6 +315,122 @@
   /* 全局最大高度限制也改為 70vh */
 }
 
+/* 桌面版左右並列佈局 */
+@media (min-width: 1024px) {
+  .market-sentiment-view .content-layout-container {
+    flex-direction: row;
+    align-items: stretch;
+    height: 70vh;
+    max-height: 70vh;
+  }
+}
+
+/* 左側面板樣式 */
+.market-sentiment-view .left-panel {
+  flex: 0 0 35%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* 右側面板樣式 */
+.market-sentiment-view .right-panel {
+  flex: 1;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* 右側面板的視圖模式選擇器 */
+.market-sentiment-view .right-panel .view-mode-selector-container {
+  position: static;
+  transform: none;
+  margin-bottom: 15px;
+  bottom: auto;
+  left: auto;
+}
+
+/* 右側面板的內容區域 */
+.market-sentiment-view .content-area {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 左側面板的 gauge 圖表容器 */
+.market-sentiment-view .left-panel .gauge-chart-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
+/* 左側面板的 analysis-result 樣式 */
+.market-sentiment-view .left-panel .analysis-result {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 30px;
+  padding: 15px 20px;
+  margin: 0 0 20px 0;
+  overflow: visible;
+  text-align: center;
+}
+
+.market-sentiment-view .left-panel .analysis-result .analysis-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 100px;
+  max-width: 150px;
+  flex-shrink: 1;
+  align-items: center;
+}
+
+.market-sentiment-view .left-panel .analysis-result .analysis-label {
+  font-size: 1em;
+  color: #6c757d;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.market-sentiment-view .left-panel .analysis-result .analysis-value {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: #2c3e50;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* 響應式調整 for left panel analysis-result */
+@media (max-width: 768px) {
+  .market-sentiment-view .left-panel .analysis-result {
+    align-items: flex-start;
+    gap: 15px;
+    padding: 10px;
+  }
+  
+  .market-sentiment-view .left-panel .analysis-result .analysis-item {
+    max-width: none;
+  }
+  
+  .market-sentiment-view .left-panel .analysis-result .analysis-value {
+    font-size: 1.2em;
+  }
+}
+
 @media (min-width: 1920px) {
   .market-sentiment-view .content-layout-container {
     height: 70vh;
@@ -380,26 +496,103 @@
   }
 }
 
-@media (min-width: 1024px) {
-  .market-sentiment-view .content-layout-container {
-    flex-direction: column;
-    /* 改為垂直排列，為底部說明區域讓出空間 */
-  }
+/* 移除舊的 1024px 規則，因為已經在上面重新定義了 */
 
-  .market-sentiment-view .tab-content {
-    flex: 1;
-    /* tab-content 佔據主要空間 */
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
+/* 新增情緒文字顏色 - 適用於所有 analysis-value */
+.market-sentiment-view .analysis-value.sentiment-extremeFear {
+  color: #0000FF !important;
+  /* 極度恐懼 - 深藍色 */
+}
 
-  /* 新增：讓 indicator-item 在 tab-content 內部伸展 */
-  .market-sentiment-view .tab-content>.indicator-item {
-    flex-grow: 1;
-    margin-bottom: 0;
-    min-height: 0;
-  }
+.market-sentiment-view .analysis-value.sentiment-fear {
+  color: #5B9BD5 !important;
+  /* 恐懼 - 藍色 */
+}
+
+.market-sentiment-view .analysis-value.sentiment-neutral {
+  color: #708090 !important;
+  /* 中性 - 灰色 */
+}
+
+.market-sentiment-view .analysis-value.sentiment-greed {
+  color: #F0B8CE !important;
+  /* 貪婪 - 粉色 */
+}
+
+.market-sentiment-view .analysis-value.sentiment-extremeGreed {
+  color: #D24A93 !important;
+  /* 極度貪婪 - 深粉色 */
+}
+
+/* 確保左側面板的 analysis-value 也有顏色效果 */
+.market-sentiment-view .left-panel .analysis-result .analysis-value.sentiment-extremeFear {
+  color: #0000FF !important;
+}
+
+.market-sentiment-view .left-panel .analysis-result .analysis-value.sentiment-fear {
+  color: #5B9BD5 !important;
+}
+
+.market-sentiment-view .left-panel .analysis-result .analysis-value.sentiment-neutral {
+  color: #708090 !important;
+}
+
+.market-sentiment-view .left-panel .analysis-result .analysis-value.sentiment-greed {
+  color: #F0B8CE !important;
+}
+
+.market-sentiment-view .left-panel .analysis-result .analysis-value.sentiment-extremeGreed {
+  color: #D24A93 !important;
+}
+
+/* 組成指標的情緒顏色 */
+.market-sentiment-view .composition-sentiment.sentiment-extremeFear {
+  color: #0000FF !important;
+}
+
+.market-sentiment-view .composition-sentiment.sentiment-fear {
+  color: #5B9BD5 !important;
+}
+
+.market-sentiment-view .composition-sentiment.sentiment-neutral {
+  color: #708090 !important;
+}
+
+.market-sentiment-view .composition-sentiment.sentiment-greed {
+  color: #F0B8CE !important;
+}
+
+.market-sentiment-view .composition-sentiment.sentiment-extremeGreed {
+  color: #D24A93 !important;
+}
+
+.market-sentiment-view .composition-sentiment.sentiment-notAvailable {
+  color: #6c757d !important;
+}
+
+/* 組成指標的長條圖顏色 */
+.market-sentiment-view .composition-bar.sentiment-extremeFear {
+  background-color: #0000FF !important;
+}
+
+.market-sentiment-view .composition-bar.sentiment-fear {
+  background-color: #5B9BD5 !important;
+}
+
+.market-sentiment-view .composition-bar.sentiment-neutral {
+  background-color: #708090 !important;
+}
+
+.market-sentiment-view .composition-bar.sentiment-greed {
+  background-color: #F0B8CE !important;
+}
+
+.market-sentiment-view .composition-bar.sentiment-extremeGreed {
+  background-color: #D24A93 !important;
+}
+
+.market-sentiment-view .composition-bar.sentiment-notAvailable {
+  background-color: #ced4da !important;
 }
 
 /* 確保在觸摸設備上的滾動行為正常 */
@@ -1236,4 +1429,63 @@
   .carousel-arrow {
     display: none;
   }
+}
+
+/* 移除最新數據視圖樣式，因為已經不需要了 */
+
+/* 新增：歷史視圖樣式 */
+.market-sentiment-view .history-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.market-sentiment-view .history-view .indicator-chart {
+  flex: 1;
+  min-height: 0;
+  margin-bottom: 10px;
+}
+
+/* 新增：組成視圖樣式 */
+.market-sentiment-view .composition-view {
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* 響應式設計：手機版回到垂直佈局 */
+@media (max-width: 1023px) {
+  .market-sentiment-view .content-layout-container {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .market-sentiment-view .left-panel {
+    flex: none;
+    height: 400px;
+  }
+  
+  .market-sentiment-view .right-panel {
+    flex: none;
+    min-height: 400px;
+  }
+  
+
+}
+
+@media (max-width: 767px) {
+  .market-sentiment-view .content-layout-container {
+    flex-direction: column;
+    gap: 15px;
+    height: auto;
+  }
+  
+  .market-sentiment-view .left-panel,
+  .market-sentiment-view .right-panel {
+    flex: none;
+    height: auto;
+    min-height: 300px;
+  }
+  
+
 }
