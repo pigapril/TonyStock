@@ -401,48 +401,7 @@
   margin-top: 0
 }
 
-/* 左側面板的 gauge 圖表容器 */
-.market-sentiment-view .left-panel .gauge-chart-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 0;
-}
-
-/* 左側面板的 analysis-result 樣式 */
-.market-sentiment-view .left-panel .analysis-result {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 15px 20px;
-  overflow: visible;
-  text-align: center;
-}
-
-.market-sentiment-view .left-panel .analysis-result .analysis-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-  width: 100%;
-}
-
-.market-sentiment-view .left-panel .analysis-result .analysis-label {
-  font-size: 1em;
-  color: #6c757d;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.market-sentiment-view .left-panel .analysis-result .analysis-value {
-  font-size: 1.3em;
-  font-weight: 600;
-  color: #2c3e50;
-  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-}
+/* 左側面板現在使用 MarketSentimentGauge 組件 */
 
 /* 響應式調整 for left panel analysis-result */
 @media (max-width: 768px) {
@@ -515,21 +474,7 @@
     padding-top: 5px;
   }
 
-  .market-sentiment-view .gauge-center-value {
-    /* bottom: 80px; REMOVED */
-    bottom: 45px;
-    /* ADJUSTED for more natural scaling */
-  }
-
-  .market-sentiment-view .gauge-labels {
-    white-space: normal;
-    /* 確保允許文字在單字間換行 */
-    /* bottom: 70px; REMOVED */
-    bottom: 35px;
-    /* ADJUSTED for more natural scaling */
-    text-align: center;
-    /* text-align: center; 保留 gauge-label 原本的 text-align (如果有的話，或者預設) */
-  }
+  /* Gauge 相關樣式已移至 MarketSentimentGauge 組件 */
 }
 
 /* 移除舊的 1024px 規則，因為已經在上面重新定義了 */
@@ -661,129 +606,16 @@
   color: white;
 }
 
-.market-sentiment-view .gauge-chart {
-  position: relative;
-  width: 60%;
-  max-width: 60vw;
-  height: 100%;
-  flex-grow: 1;
-  margin: 0 auto 10% auto;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 隱藏原來的中心值 */
-.market-sentiment-view .gauge-center-value {
-  display: none;
-}
-
-/* 針頭和數值的組合組件 */
-.market-sentiment-view .gauge-value-rotator {
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  width: 0;
-  /* 設為 0，因為它只是個隱形的旋轉軸 */
-  height: 120px;
-  /* 控制數值與中心的距離（半徑） */
-  transform-origin: center bottom;
-  /* 從底部中心旋轉 */
-  z-index: 15;
-  margin-left: 0;
-  margin-top: -120px;
-  /* 必須與 height 相同，以確保旋轉中心正確 */
-}
-
-/* 動態數值樣式 - 定位在針頭延伸線上 */
-.market-sentiment-view .gauge-dynamic-value {
-  position: absolute;
-  /* 將數值定位在針頭頂端外側 */
-  top: -40px;
-  /* 在針頭頂端外側 */
-  left: -25px;
-  /* 負值的一半寬度來居中 */
-  width: 50px;
-  height: 50px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #4a4a4a;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.9) 100%);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.8);
-}
-
-.market-sentiment-view .gauge-labels {
-  position: absolute;
-  bottom: 5%;
-  /* 40px * 0.8 */
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  font-size: 22px;
-  /* 28px * 0.8, rounded */
-  color: #333;
-  font-weight: bold;
-}
-
-.market-sentiment-view .gauge-label {
-  position: absolute;
-  bottom: 0;
-}
-
-.market-sentiment-view .gauge-label-left {
-  left: 10%;
-  transform: translateX(-50%);
-}
-
-.market-sentiment-view .gauge-label-right {
-  right: 10%;
-  transform: translateX(50%);
-}
+/* Gauge 相關樣式已移至 MarketSentimentGauge 組件 */
 
 
 /* 移除舊的 1280px 斷點樣式 */
 
-/* 這是有關 gauge-chart 的 @media (max-width: 768px) 規則，現在移到 1280px 之後 */
 @media (max-width: 768px) {
-  .market-sentiment-view .gauge-dynamic-value {
-    font-size: 18px;
-    width: 40px;
-    height: 40px;
-  }
-
-  .market-sentiment-view .gauge-labels {
-    /* Revert to original small screen size */
-    font-size: 14px;
-    /* Explicitly set to original small screen font size */
-  }
-
   .market-sentiment-view .indicator-chart-container {
     margin-bottom: 0px;
     /* 在小螢幕上使用較小的間距 */
     padding-bottom: 0px;
-  }
-
-  .market-sentiment-view .indicator-chart-container .gauge-chart {
-    /* Revert to original small screen size */
-    max-width: 250px;
-    /* Keep max-width */
-    width: 100%;
-    padding-top: 0px;
-    padding-bottom: 0px;
-  }
-
-  .market-sentiment-view .last-update-time {
-    /* margin-top: 5px; REMOVED */
-    /* margin-bottom: 50px; REMOVED */
-    /* Adjust bottom positioning if needed for smaller screens, or let base style apply */
-    /* font-size can be adjusted here if needed */
   }
 
   .market-sentiment-view .analysis-description {
@@ -792,24 +624,7 @@
   }
 }
 
-/* 確保 GaugeChart 組件在容器中正確定位 */
-.market-sentiment-view .gauge-chart>div:nth-child(2) {
-  position: absolute;
-  bottom: 30px;
-  left: 0;
-  right: 0;
-}
-
-@media (min-width: 1920px) {
-  .market-sentiment-view .gauge-center-value {
-    bottom: 15%;
-  }
-
-  .market-sentiment-view .gauge-labels {
-    bottom: 15%;
-  }
-
-}
+/* Gauge 相關樣式已移至 MarketSentimentGauge 組件 */
 
 @media (min-width: 1024px) {
   .market-sentiment-view .last-update-time {
@@ -878,12 +693,7 @@
     margin: 5px auto;
   }
 
-  .market-sentiment-view .indicator-chart-container .gauge-chart {
-    max-width: 480px;
-    width: 100%;
-    padding-top: 0px;
-    padding-bottom: 0px;
-  }
+  /* Gauge 相關樣式已移至 MarketSentimentGauge 組件 */
 
   .market-sentiment-view .last-update-time {
     /* margin-top: 20px; REMOVED */
@@ -966,20 +776,7 @@
     padding: 0px;
   }
 
-  .market-sentiment-view .gauge-dynamic-value {
-    font-size: 16px;
-    width: 35px;
-    height: 35px;
-  }
-
-  .market-sentiment-view .gauge-labels {
-    white-space: normal;
-    /* 確保允許文字在單字間換行 */
-    bottom: 70px;
-    text-align: center;
-    /* text-align: center; 保留 gauge-label 原本的 text-align (如果有的話，或者預設) */
-    /* 不設定 word-break，讓單字保持完整 */
-  }
+  /* Gauge 相關樣式已移至 MarketSentimentGauge 組件 */
 
   /* 如果 analysis-label 在此斷點下也需要強制換行，可以類似處理 */
   .market-sentiment-view .indicator-item .analysis-result .analysis-label,

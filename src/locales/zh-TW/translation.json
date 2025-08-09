@@ -328,7 +328,8 @@
       "composition": "成分指標"
     },
     "error": {
-      "fetchFailed": "未能獲取市場情緒數據。"
+      "fetchFailed": "未能獲取市場情緒數據。",
+      "invalidData": "無效的數據格式"
     },
     "lastUpdateLabel": "最後更新時間",
     "descriptions": {

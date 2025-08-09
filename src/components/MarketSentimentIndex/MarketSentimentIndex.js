@@ -3,10 +3,10 @@ import { handleApiError } from '../../utils/errorHandler';
 import { Analytics } from '../../utils/analytics';
 import './MarketSentimentIndex.css';
 import 'chartjs-adapter-date-fns';
-import GaugeChart from 'react-gauge-chart';
-import styled from 'styled-components';
+
 
 import MarketSentimentDescriptionSection from './MarketSentimentDescriptionSection';
+import MarketSentimentGauge from './MarketSentimentGauge';
 import PageContainer from '../PageContainer/PageContainer';
 import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
@@ -76,51 +76,7 @@ function getTimeUnit(dates) {
   }
 }
 
-// 使用 styled-components 創建自定義的 GaugeChart
-const StyledGaugeChart = styled(GaugeChart)`
-  .gauge-chart {
-    .circle-outer {
-      fill: none;
-      stroke: #e6e6e6;
-      stroke-width: 30;
-    }
-    .circle-inner {
-      fill: none;
-      stroke-width: 30;
-      filter: url(#innerShadow);
-    }
-    .circle-inner-0 {
-      stroke: url(#gradient-0);
-    }
-    .circle-inner-1 {
-      stroke: url(#gradient-1);
-    }
-    .circle-inner-2 {
-      stroke: url(#gradient-2);
-    }
-    .circle-inner-3 {
-      stroke: url(#gradient-3);
-    }
-    .circle-inner-4 {
-      stroke: url(#gradient-4);
-    }
-    .needle {
-      fill: #464A4F;
-    }
-    .needle-base {
-      fill: #464A4F;
-    }
-  }
-`;
 
-// 修改漸變色定義，從極度恐懼到極度貪婪
-const gradients = [
-  ['#143829', '#1A432F'],  // 極度恐懼 - 深墨綠色
-  ['#2B5B3F', '#326B4A'],  // 恐懼 - 深綠色
-  ['#E9972D', '#EBA542'],  // 中性 - 橙黃色
-  ['#C4501B', '#D05E2A'],  // 貪婪 - 橙紅色
-  ['#A0361B', '#B13D1F']   // 極度貪婪 - 深紅褐色
-];
 
 // 創建一個映射，將原始 key 映射到翻譯鍵中使用的簡化 key
 const INDICATOR_TRANSLATION_KEY_MAP = {
@@ -568,51 +524,7 @@ const MarketSentimentIndex = () => {
     setViewMode(mode);
   };
 
-  // 計算針頭旋轉角度的函數
-  const calculateNeedleRotation = (percent) => {
-    // react-gauge-chart 的角度計算
-    const startAngle = -90; // 左邊
-    const endAngle = 90;    // 右邊
-    const currentAngle = startAngle + (percent * (endAngle - startAngle));
-    
-    // 添加偏移量來對齊實際的 needle
-    // 如果紅線與 needle 不對齊，調整這個值
-    const angleOffset = 0; // 可以調整這個值，比如 +10 或 -10
-    const finalAngle = currentAngle + angleOffset;
-    
-    // 添加調試信息
-    console.log('Needle rotation:', {
-      percent: percent,
-      currentAngle: currentAngle,
-      finalAngle: finalAngle,
-      totalScore: sentimentData.totalScore,
-      needlePercent: sentimentData.totalScore / 100
-    });
-    
-    return finalAngle;
-  };
 
-  // 修改 GaugeChart
-  const renderGaugeChart = () => (
-    <StyledGaugeChart
-      id="gauge-chart"
-      nrOfLevels={5}
-      colors={[
-        '#0000FF',  // 極度恐懼
-        '#5B9BD5',  // 恐懼
-        '#708090',  // 中性
-        '#F0B8CE',  // 貪婪
-        '#D24A93'   // 極度貪婪
-      ]}
-      percent={sentimentData.totalScore / 100}
-      arcWidth={0.3}
-      cornerRadius={5}
-      animDelay={0}
-      hideText={true}
-      needleTransitionDuration={!isDataLoaded || initialRenderRef.current ? 0 : 3000}
-      needleTransition="easeElastic"
-    />
-  );
 
   // 在組件渲染完成後將 initialRenderRef 設為 false
   useEffect(() => {
@@ -763,69 +675,11 @@ const MarketSentimentIndex = () => {
             <>
               {/* 左側面板 - Gauge 圖表 */}
               <div className="left-panel">
-                <div className="analysis-result">
-                  <div className="analysis-item">
-                    <span className="analysis-label">當前市場情緒</span>
-                    <span className={`analysis-value sentiment-${compositeRawSentiment}`}>{compositeSentiment}</span>
-                  </div>
-                </div>
-
-                <div className="gauge-chart-container">
-                  <div className="gauge-chart">
-                    {renderGaugeChart()}
-                    <svg width="0" height="0">
-                      <defs>
-                        <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
-                          <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
-                          <feOffset in="blur" dx="2" dy="2" result="offsetBlur" />
-                          <feComposite in="SourceGraphic" in2="offsetBlur" operator="over" />
-                        </filter>
-                        {gradients.map((gradient, index) => (
-                          <linearGradient key={index} id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor={gradient[0]} />
-                            <stop offset="100%" stopColor={gradient[1]} />
-                          </linearGradient>
-                        ))}
-                      </defs>
-                    </svg>
-                    {(() => {
-  const rotation = calculateNeedleRotation(sentimentData.totalScore / 100);
-
-  // 建立一個 style 物件來做反向旋轉
-  const uprightValueStyle = {
-    transform: `rotate(${-rotation}deg)`
-  };
-  
-  return (
-    <div 
-      className="gauge-value-rotator"
-      style={{
-        transform: `rotate(${rotation}deg)`,
-        transition: !isDataLoaded || initialRenderRef.current ? 'none' : 'transform 3s ease-out'
-      }}
-    >
-      {/* 自訂指針 (不變) */}
-      <div className="custom-gauge-needle"></div>
-
-      {/* 為顯示數值的圓圈加上 style */}
-      <div 
-        className="gauge-dynamic-value"
-        style={uprightValueStyle}
-      >
-        {Math.round(sentimentData.totalScore)}
-      </div>
-    </div>
-  );
-})()}
-                    <div className="gauge-labels">
-                      <span className="gauge-label gauge-label-left">{t('sentiment.extremeFear')}</span>
-                      <span className="gauge-label gauge-label-right">{t('sentiment.extremeGreed')}</span>
-                    </div>
-                    <div className="last-update-time">
-                      {t('marketSentiment.lastUpdateLabel')}: {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString('zh-TW')}
-                    </div>
-                  </div>
-                </div>
+                <MarketSentimentGauge
+                  sentimentData={sentimentData}
+                  isDataLoaded={isDataLoaded}
+                  initialRenderRef={initialRenderRef}
+                />
               </div>
 
               {/* 右側面板 - 可切換內容 */}

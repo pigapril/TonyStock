@@ -328,7 +328,8 @@
       "composition": "Components"
     },
     "error": {
-      "fetchFailed": "Failed to fetch market sentiment data."
+      "fetchFailed": "Failed to fetch market sentiment data.",
+      "invalidData": "Invalid data format"
     },
     "lastUpdateLabel": "Last Updated",
     "descriptions": {
