@@ -359,7 +359,9 @@
   border-radius: 8px;
   margin-bottom: 8px;
   width: fit-content;
-  justify-content: flex-start;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .market-sentiment-view .right-panel .view-mode-button {
@@ -447,16 +449,16 @@
   .market-sentiment-view .left-panel .analysis-result {
     padding: 10px;
   }
-  
+
   .market-sentiment-view .left-panel .analysis-result .analysis-value {
     font-size: 1.2em;
   }
-  
+
   .market-sentiment-view .right-panel .view-mode-selector-container {
     width: 100%;
     justify-content: stretch;
   }
-  
+
   .market-sentiment-view .right-panel .view-mode-button {
     flex: 1;
     text-align: center;
@@ -672,27 +674,48 @@
   justify-content: center;
 }
 
+/* 隱藏原來的中心值 */
 .market-sentiment-view .gauge-center-value {
+  display: none;
+}
+
+/* 針頭和數值的組合組件 */
+.market-sentiment-view .gauge-value-rotator {
   position: absolute;
-  bottom: 5%;
-  /* 60px * 0.8 */
+  top: 60%;
   left: 50%;
-  transform: translateX(-50%);
-  font-size: 38px;
-  /* 48px * 0.8, rounded */
+  width: 0;
+  /* 設為 0，因為它只是個隱形的旋轉軸 */
+  height: 120px;
+  /* 控制數值與中心的距離（半徑） */
+  transform-origin: center bottom;
+  /* 從底部中心旋轉 */
+  z-index: 15;
+  margin-left: 0;
+  margin-top: -120px;
+  /* 必須與 height 相同，以確保旋轉中心正確 */
+}
+
+/* 動態數值樣式 - 定位在針頭延伸線上 */
+.market-sentiment-view .gauge-dynamic-value {
+  position: absolute;
+  /* 將數值定位在針頭頂端外側 */
+  top: -40px;
+  /* 在針頭頂端外側 */
+  left: -25px;
+  /* 負值的一半寬度來居中 */
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
   font-weight: bold;
   color: #4a4a4a;
-  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(240, 240, 240, 1) 100%);
-  width: 72px;
-  /* 90px * 0.8 */
-  height: 72px;
-  /* 90px * 0.8 */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.9) 100%);
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
 .market-sentiment-view .gauge-labels {
@@ -729,9 +752,8 @@
 
 /* 這是有關 gauge-chart 的 @media (max-width: 768px) 規則，現在移到 1280px 之後 */
 @media (max-width: 768px) {
-  .market-sentiment-view .gauge-center-value {
-    /* Revert to original small screen size */
-    font-size: 20px;
+  .market-sentiment-view .gauge-dynamic-value {
+    font-size: 18px;
     width: 40px;
     height: 40px;
   }
@@ -944,8 +966,8 @@
     padding: 0px;
   }
 
-  .market-sentiment-view .gauge-center-value {
-    bottom: 70px;
+  .market-sentiment-view .gauge-dynamic-value {
+    font-size: 16px;
     width: 35px;
     height: 35px;
   }
@@ -1440,17 +1462,17 @@
     flex-direction: column;
     height: auto;
   }
-  
+
   .market-sentiment-view .left-panel {
     flex: none;
     height: 400px;
   }
-  
+
   .market-sentiment-view .right-panel {
     flex: none;
     min-height: 400px;
   }
-  
+
 
 }
 
@@ -1460,13 +1482,13 @@
     gap: 15px;
     height: auto;
   }
-  
+
   .market-sentiment-view .left-panel,
   .market-sentiment-view .right-panel {
     flex: none;
     height: auto;
     min-height: 300px;
   }
-  
+
 
 }

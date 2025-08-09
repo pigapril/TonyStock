@@ -568,6 +568,30 @@ const MarketSentimentIndex = () => {
     setViewMode(mode);
   };
 
+  // 計算針頭旋轉角度的函數
+  const calculateNeedleRotation = (percent) => {
+    // react-gauge-chart 的角度計算
+    const startAngle = -90; // 左邊
+    const endAngle = 90;    // 右邊
+    const currentAngle = startAngle + (percent * (endAngle - startAngle));
+    
+    // 添加偏移量來對齊實際的 needle
+    // 如果紅線與 needle 不對齊，調整這個值
+    const angleOffset = 0; // 可以調整這個值，比如 +10 或 -10
+    const finalAngle = currentAngle + angleOffset;
+    
+    // 添加調試信息
+    console.log('Needle rotation:', {
+      percent: percent,
+      currentAngle: currentAngle,
+      finalAngle: finalAngle,
+      totalScore: sentimentData.totalScore,
+      needlePercent: sentimentData.totalScore / 100
+    });
+    
+    return finalAngle;
+  };
+
   // 修改 GaugeChart
   const renderGaugeChart = () => (
     <StyledGaugeChart
@@ -764,9 +788,35 @@ const MarketSentimentIndex = () => {
                         ))}
                       </defs>
                     </svg>
-                    <div className="gauge-center-value">
-                      {Math.round(sentimentData.totalScore)}
-                    </div>
+                    {(() => {
+  const rotation = calculateNeedleRotation(sentimentData.totalScore / 100);
+
+  // 建立一個 style 物件來做反向旋轉
+  const uprightValueStyle = {
+    transform: `rotate(${-rotation}deg)`
+  };
+  
+  return (
+    <div 
+      className="gauge-value-rotator"
+      style={{
+        transform: `rotate(${rotation}deg)`,
+        transition: !isDataLoaded || initialRenderRef.current ? 'none' : 'transform 3s ease-out'
+      }}
+    >
+      {/* 自訂指針 (不變) */}
+      <div className="custom-gauge-needle"></div>
+
+      {/* 為顯示數值的圓圈加上 style */}
+      <div 
+        className="gauge-dynamic-value"
+        style={uprightValueStyle}
+      >
+        {Math.round(sentimentData.totalScore)}
+      </div>
+    </div>
+  );
+})()}
                     <div className="gauge-labels">
                       <span className="gauge-label gauge-label-left">{t('sentiment.extremeFear')}</span>
                       <span className="gauge-label gauge-label-right">{t('sentiment.extremeGreed')}</span>
