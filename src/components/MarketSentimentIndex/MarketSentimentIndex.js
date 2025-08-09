@@ -679,12 +679,21 @@ const MarketSentimentIndex = () => {
                       {sentimentData && sentimentData.totalScore != null ? t(getSentiment(Math.round(sentimentData.totalScore))) : t('sentiment.neutral')}
                     </span>
                   </div>
+                  {sentimentData && sentimentData.compositeScoreLastUpdate && (
+                    <div className="panel-last-update-time">
+                      {t('marketSentiment.lastUpdateLabel')}: {' '}
+                      {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString(
+                        currentLang === 'zh-TW' ? 'zh-TW' : 'en-US'
+                      )}
+                    </div>
+                  )}
                 </div>
                 <MarketSentimentGauge
                   sentimentData={sentimentData}
                   isDataLoaded={isDataLoaded}
                   initialRenderRef={initialRenderRef}
                   showAnalysisResult={false}
+                  showLastUpdate={false}
                 />
               </div>
 

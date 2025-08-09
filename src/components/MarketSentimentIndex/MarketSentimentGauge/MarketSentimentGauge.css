@@ -62,7 +62,7 @@
   flex-direction: column;
   justify-content: center;
   min-height: 0;
-  margin-top: 7%;
+  margin-top: 5%;
 }
 
 /* 鎖定長寬比，這是解決軸心偏移的關鍵 */
@@ -138,9 +138,22 @@
   color: #333;
   font-weight: bold;
 }
-.market-sentiment-gauge .gauge-label { position: absolute; bottom: 0; }
-.market-sentiment-gauge .gauge-label-left { left: 10%; transform: translateX(-50%); }
-.market-sentiment-gauge .gauge-label-right { right: 10%; transform: translateX(50%); }
+.market-sentiment-gauge .gauge-label { 
+  position: absolute; 
+  bottom: 0; 
+  font-size: var(--font-size-label);
+  font-weight: 500;
+}
+.market-sentiment-gauge .gauge-label-left { 
+  left: 10%; 
+  transform: translateX(-50%); 
+  color: #0000FF; /* 極度恐懼顏色 */
+}
+.market-sentiment-gauge .gauge-label-right { 
+  right: 10%; 
+  transform: translateX(50%); 
+  color: #D24A93; /* 極度貪婪顏色 */
+}
 .market-sentiment-gauge .last-update-time {
   position: absolute;
   bottom: -8%;
