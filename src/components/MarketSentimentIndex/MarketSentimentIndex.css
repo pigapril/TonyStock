@@ -352,11 +352,41 @@
 
 /* 右側面板的視圖模式選擇器 */
 .market-sentiment-view .right-panel .view-mode-selector-container {
-  position: static;
-  transform: none;
-  margin-bottom: 15px;
-  bottom: auto;
-  left: auto;
+  display: flex;
+  gap: 8px;
+  background-color: #f5f5f7;
+  padding: 4px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  width: fit-content;
+  justify-content: flex-start;
+}
+
+.market-sentiment-view .right-panel .view-mode-button {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1d1d1f;
+  transition: all 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  min-width: auto;
+  flex: none;
+}
+
+.market-sentiment-view .right-panel .view-mode-button:hover {
+  color: #86868b;
+}
+
+.market-sentiment-view .right-panel .view-mode-button.active {
+  background-color: #ffffff;
+  color: #1d1d1f;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* 右側面板的內容區域 */
@@ -366,6 +396,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  margin-top: 0
 }
 
 /* 左側面板的 gauge 圖表容器 */
@@ -380,11 +411,10 @@
 /* 左側面板的 analysis-result 樣式 */
 .market-sentiment-view .left-panel .analysis-result {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  gap: 30px;
+  align-items: center;
   padding: 15px 20px;
-  margin: 0 0 20px 0;
   overflow: visible;
   text-align: center;
 }
@@ -392,11 +422,9 @@
 .market-sentiment-view .left-panel .analysis-result .analysis-item {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  min-width: 100px;
-  max-width: 150px;
-  flex-shrink: 1;
+  gap: 8px;
   align-items: center;
+  width: 100%;
 }
 
 .market-sentiment-view .left-panel .analysis-result .analysis-label {
@@ -417,17 +445,23 @@
 /* 響應式調整 for left panel analysis-result */
 @media (max-width: 768px) {
   .market-sentiment-view .left-panel .analysis-result {
-    align-items: flex-start;
-    gap: 15px;
     padding: 10px;
-  }
-  
-  .market-sentiment-view .left-panel .analysis-result .analysis-item {
-    max-width: none;
   }
   
   .market-sentiment-view .left-panel .analysis-result .analysis-value {
     font-size: 1.2em;
+  }
+  
+  .market-sentiment-view .right-panel .view-mode-selector-container {
+    width: 100%;
+    justify-content: stretch;
+  }
+  
+  .market-sentiment-view .right-panel .view-mode-button {
+    flex: 1;
+    text-align: center;
+    padding: 8px 8px;
+    font-size: 13px;
   }
 }
 
@@ -691,11 +725,7 @@
 }
 
 
-@media (max-width: 1280px) {
-  .market-sentiment-view .view-mode-selector-container {
-    margin-bottom: -1%;
-  }
-}
+/* 移除舊的 1280px 斷點樣式 */
 
 /* 這是有關 gauge-chart 的 @media (max-width: 768px) 規則，現在移到 1280px 之後 */
 @media (max-width: 768px) {
@@ -867,60 +897,11 @@
   }
 }
 
-.market-sentiment-view .view-mode-selector-container {
-  display: flex;
-  gap: 8px;
-  background-color: #f5f5f7;
-  padding: 4px;
-  border-radius: 8px;
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-}
+/* 移除舊的 view-mode-selector-container 樣式，因為已經在右側面板中重新定義了 */
 
-.market-sentiment-view .view-mode-button {
-  padding: 8px 16px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #86868b;
-  transition: all 0.2s ease;
-  position: relative;
-  white-space: nowrap;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-}
+/* 移除舊的 view-mode-button 樣式，因為已經在右側面板中重新定義了 */
 
-.market-sentiment-view .view-mode-button:hover {
-  color: #1d1d1f;
-}
-
-.market-sentiment-view .view-mode-button.active {
-  background-color: #ffffff;
-  color: #1d1d1f;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* 適配移動設備 */
-@media (max-width: 768px) {
-  .market-sentiment-view .view-mode-selector-container {
-    width: 90%;
-    justify-content: stretch;
-    background-color: #f5f5f7;
-    padding: 3px;
-    margin-bottom: 0.5%;
-  }
-
-  .market-sentiment-view .view-mode-button {
-    flex: 1;
-    text-align: center;
-    padding: 8px 8px;
-    font-size: 13px;
-  }
-}
+/* 移除舊的 768px 斷點樣式，因為已經在右側面板樣式中處理了 */
 
 /* 新增情緒文字顏色 */
 /* 更新：使用英文鍵名 */

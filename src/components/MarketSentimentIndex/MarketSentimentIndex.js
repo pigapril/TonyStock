@@ -166,7 +166,7 @@ const MarketSentimentIndex = () => {
   const [currentSliderRange, setCurrentSliderRange] = useState([0, 0]); // [startTimestamp, endTimestamp]
 
   // 新增：漸進式導覽步驟狀態
-  const [compositeStep, setCompositeStep] = useState('history');
+  const [compositeStep, setCompositeStep] = useState('composition');
   // 新增：組成項目點擊後的 Modal 狀態
   const [selectedIndicatorKey, setSelectedIndicatorKeyInternal] = useState(null);
 
@@ -741,13 +741,7 @@ const MarketSentimentIndex = () => {
               <div className="left-panel">
                 <div className="analysis-result">
                   <div className="analysis-item">
-                    <span className="analysis-label">{t('marketSentiment.composite.scoreLabel')}</span>
-                    <span className="analysis-value">
-                      {sentimentData.totalScore ? Math.round(sentimentData.totalScore) : t('common.notAvailable')}
-                    </span>
-                  </div>
-                  <div className="analysis-item">
-                    <span className="analysis-label">{t('marketSentiment.composite.sentimentLabel')}</span>
+                    <span className="analysis-label">當前市場情緒</span>
                     <span className={`analysis-value sentiment-${compositeRawSentiment}`}>{compositeSentiment}</span>
                   </div>
                 </div>
@@ -788,15 +782,6 @@ const MarketSentimentIndex = () => {
               <div className="right-panel">
                 <div className="view-mode-selector-container">
                   <button
-                    className={`view-mode-button ${compositeStep === 'history' ? 'active' : ''}`}
-                    onClick={() => {
-                      setCompositeStep('history');
-                      requestAdDisplay('marketSentimentCompositeHistory', 1);
-                    }}
-                  >
-                    {t('marketSentiment.cta.history')}
-                  </button>
-                  <button
                     className={`view-mode-button ${compositeStep === 'composition' ? 'active' : ''}`}
                     onClick={() => {
                       setCompositeStep('composition');
@@ -804,6 +789,15 @@ const MarketSentimentIndex = () => {
                     }}
                   >
                     {t('marketSentiment.cta.composition')}
+                  </button>
+                  <button
+                    className={`view-mode-button ${compositeStep === 'history' ? 'active' : ''}`}
+                    onClick={() => {
+                      setCompositeStep('history');
+                      requestAdDisplay('marketSentimentCompositeHistory', 1);
+                    }}
+                  >
+                    {t('marketSentiment.cta.history')}
                   </button>
                 </div>
 
