@@ -62,6 +62,7 @@
   flex-direction: column;
   justify-content: center;
   min-height: 0;
+  margin-top: 7%;
 }
 
 /* 鎖定長寬比，這是解決軸心偏移的關鍵 */
@@ -84,8 +85,8 @@
   width: 0;
   
   /* 旋轉臂的長度，設為容器寬度的 30%。可微調此數值來改變整體距離。*/
-  height: 30cqw;
-  margin-top: -30cqw; /* 必須與 height 保持一致 */
+  height: 33cqw;
+  margin-top: -33cqw; /* 必須與 height 保持一致 */
 
   transform-origin: center bottom;
   z-index: 15;
