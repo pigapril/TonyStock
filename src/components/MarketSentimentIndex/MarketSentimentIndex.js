@@ -643,14 +643,6 @@ const MarketSentimentIndex = () => {
       jsonLd={marketSentimentJsonLd}
     >
       <div className="market-sentiment-view">
-        <div className="page-header">
-          <h1 className="page-title">
-            {currentLang === 'zh-TW' ? 'SIO恐懼貪婪指數' : 'SIO Fear & Greed Index'}
-          </h1>
-          <p className="page-subtitle">
-            {currentLang === 'zh-TW' ? '獨家市場情緒分析' : 'Exclusive market sentiment analysis'}
-          </p>
-        </div>
         <div className="tabs-grid">
           <button
             className={`tab-button ${activeTab === 'composite' ? 'active' : ''}`}
@@ -673,12 +665,26 @@ const MarketSentimentIndex = () => {
         <div className="content-layout-container">
           {activeTab === 'composite' ? (
             <>
-              {/* 左側面板 - Gauge 圖表 */}
+              {/* 左側面板 - 標題與 Gauge 圖表 */}
               <div className="left-panel">
+                <div className="panel-header">
+                  <h1 className="panel-title">
+                    {currentLang === 'zh-TW' ? 'SIO恐懼貪婪指數' : 'SIO Fear & Greed Index'}
+                  </h1>
+                  <div className="panel-subtitle-container">
+                    <span className="panel-subtitle">
+                      {currentLang === 'zh-TW' ? '目前的股市情緒是：' : 'Current Market Sentiment:'}
+                    </span>
+                    <span className={`panel-sentiment-value sentiment-${sentimentData && sentimentData.totalScore != null ? getSentiment(Math.round(sentimentData.totalScore)).split('.').pop() : 'neutral'}`}>
+                      {sentimentData && sentimentData.totalScore != null ? t(getSentiment(Math.round(sentimentData.totalScore))) : t('sentiment.neutral')}
+                    </span>
+                  </div>
+                </div>
                 <MarketSentimentGauge
                   sentimentData={sentimentData}
                   isDataLoaded={isDataLoaded}
                   initialRenderRef={initialRenderRef}
+                  showAnalysisResult={false}
                 />
               </div>
 
