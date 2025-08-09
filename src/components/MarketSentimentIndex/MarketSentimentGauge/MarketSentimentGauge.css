@@ -6,50 +6,27 @@
   width: 100%;
   height: 100%;
   min-height: 0;
+  container-type: inline-size;
+  container-name: market-gauge;
 
   /* CSS 變數用於響應式尺寸控制 */
   --gauge-size: 350px;
-  /* 增加預設尺寸 */
   --font-size-value: 24px;
   --font-size-label: 18px;
   --font-size-analysis: 1.3em;
   --font-size-update: 12px;
   --gauge-label-bottom: -25px;
-  /* 新增標籤底部距離變數 */
 }
 
-/* 尺寸變體 */
-.market-sentiment-gauge.size-small {
-  --gauge-size: 280px;
-  /* 增加小尺寸 */
-  --font-size-value: 20px;
-  --font-size-label: 14px;
-  --font-size-analysis: 1.1em;
-  --font-size-update: 10px;
-  --gauge-label-bottom: -20px;
-}
-
-.market-sentiment-gauge.size-large {
-  --gauge-size: 450px;
-  /* 增加大尺寸 */
-  --font-size-value: 32px;
-  --font-size-label: 24px;
-  --font-size-analysis: 1.6em;
-  --font-size-update: 16px;
-  --gauge-label-bottom: -35px;
-}
-
-/* 分析結果樣式 */
+/* 分析結果樣式 (無須變動) */
 .market-sentiment-gauge .analysis-result {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 15px 20px;
-  overflow: visible;
   text-align: center;
 }
-
 .market-sentiment-gauge .analysis-result .analysis-item {
   display: flex;
   flex-direction: column;
@@ -57,7 +34,6 @@
   align-items: center;
   width: 100%;
 }
-
 .market-sentiment-gauge .analysis-result .analysis-label {
   font-size: 1em;
   color: #6c757d;
@@ -65,7 +41,6 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-
 .market-sentiment-gauge .analysis-result .analysis-value {
   font-size: var(--font-size-analysis);
   font-weight: 600;
@@ -73,28 +48,14 @@
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* 情緒顏色 */
-.market-sentiment-gauge .analysis-value.sentiment-extremeFear {
-  color: #0000FF !important;
-}
+/* 情緒顏色 (無須變動) */
+.market-sentiment-gauge .analysis-value.sentiment-extremeFear { color: #0000FF !important; }
+.market-sentiment-gauge .analysis-value.sentiment-fear { color: #5B9BD5 !important; }
+.market-sentiment-gauge .analysis-value.sentiment-neutral { color: #708090 !important; }
+.market-sentiment-gauge .analysis-value.sentiment-greed { color: #F0B8CE !important; }
+.market-sentiment-gauge .analysis-value.sentiment-extremeGreed { color: #D24A93 !important; }
 
-.market-sentiment-gauge .analysis-value.sentiment-fear {
-  color: #5B9BD5 !important;
-}
-
-.market-sentiment-gauge .analysis-value.sentiment-neutral {
-  color: #708090 !important;
-}
-
-.market-sentiment-gauge .analysis-value.sentiment-greed {
-  color: #F0B8CE !important;
-}
-
-.market-sentiment-gauge .analysis-value.sentiment-extremeGreed {
-  color: #D24A93 !important;
-}
-
-/* Gauge 圖表容器 */
+/* Gauge 圖表容器 (無須變動) */
 .market-sentiment-gauge .gauge-chart-container {
   flex: 1;
   display: flex;
@@ -103,47 +64,44 @@
   min-height: 0;
 }
 
+/* 鎖定長寬比，這是解決軸心偏移的關鍵 */
 .market-sentiment-gauge .gauge-chart {
   position: relative;
   width: 80%;
-  /* 增加 gauge 的寬度 */
   max-width: var(--gauge-size);
-  height: 100%;
-  flex-grow: 1;
   margin: 0 auto 10% auto;
-  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  aspect-ratio: 2 / 1;
 }
 
-/* 針頭和數值的組合組件 */
+/* --- 優化核心：將距離單位改為 cqw --- */
 .market-sentiment-gauge .gauge-value-rotator {
   position: absolute;
-  top: 60%;
+  top: 75%; /* 這個值在鎖定長寬比後應該是固定的 */
   left: 50%;
   width: 0;
-  /* 設為 0，因為它只是個隱形的旋轉軸 */
-  height: 120px;
-  /* 控制數值與中心的距離（半徑） */
+  
+  /* 旋轉臂的長度，設為容器寬度的 30%。可微調此數值來改變整體距離。*/
+  height: 30cqw;
+  margin-top: -30cqw; /* 必須與 height 保持一致 */
+
   transform-origin: center bottom;
-  /* 從底部中心旋轉 */
   z-index: 15;
   margin-left: 0;
-  margin-top: -120px;
-  /* 必須與 height 相同，以確保旋轉中心正確 */
 }
 
-/* 動態數值樣式 - 定位在針頭延伸線上 */
+/* 動態數值與自訂指針樣式 */
 .market-sentiment-gauge .gauge-dynamic-value {
   position: absolute;
-  /* 將數值定位在針頭頂端外側 */
-  top: -40px;
-  /* 在針頭頂端外側 */
-  left: -25px;
-  /* 負值的一半寬度來居中 */
-  width: 50px;
-  height: 50px;
+  
+  /* 數值圓圈在旋轉臂上的位置，也使用 cqw */
+  top: -10cqw;
+  left: -6.25cqw; /* -(width / 2) */
+  width: 12.5cqw;
+  height: 12.5cqw;
+  
   font-size: var(--font-size-value);
   font-weight: bold;
   color: #4a4a4a;
@@ -155,22 +113,22 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border: 2px solid rgba(255, 255, 255, 0.8);
 }
-
-/* 自定義針頭樣式 */
 .market-sentiment-gauge .custom-gauge-needle {
   position: absolute;
-  top: -10px;
-  left: -1px;
-  width: 2px;
-  height: 120px;
-  background-color: #464A4F;
+  top: -2.5cqw;
+  left: -0.5cqw;
+  width: 1cqw;
+  
+  /* 指針長度，也使用 cqw */
+  height: 30cqw;
+  
   transform-origin: center bottom;
 }
 
+/* 標籤與更新時間樣式 (無須變動) */
 .market-sentiment-gauge .gauge-labels {
   position: absolute;
   bottom: var(--gauge-label-bottom);
-  /* 使用變數控制距離 */
   left: 0;
   right: 0;
   display: flex;
@@ -179,23 +137,9 @@
   color: #333;
   font-weight: bold;
 }
-
-.market-sentiment-gauge .gauge-label {
-  position: absolute;
-  bottom: 0;
-}
-
-.market-sentiment-gauge .gauge-label-left {
-  left: 10%;
-  transform: translateX(-50%);
-}
-
-.market-sentiment-gauge .gauge-label-right {
-  right: 10%;
-  transform: translateX(50%);
-}
-
-/* 最後更新時間 */
+.market-sentiment-gauge .gauge-label { position: absolute; bottom: 0; }
+.market-sentiment-gauge .gauge-label-left { left: 10%; transform: translateX(-50%); }
+.market-sentiment-gauge .gauge-label-right { right: 10%; transform: translateX(50%); }
 .market-sentiment-gauge .last-update-time {
   position: absolute;
   bottom: -8%;
@@ -208,191 +152,39 @@
   z-index: 1;
 }
 
-/* 載入狀態 */
-.market-sentiment-gauge.loading {
-  justify-content: center;
-  align-items: center;
-}
+/* 載入與錯誤狀態 (無須變動) */
+.market-sentiment-gauge.loading, .market-sentiment-gauge.error { justify-content: center; align-items: center; }
+.market-sentiment-gauge .gauge-loading-skeleton, .market-sentiment-gauge .gauge-error-state { display: flex; justify-content: center; align-items: center; height: 200px; }
+.market-sentiment-gauge .loading-spinner { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.market-sentiment-gauge .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.market-sentiment-gauge .gauge-error-state { color: #dc3545; font-size: 16px; text-align: center; }
 
-.market-sentiment-gauge .gauge-loading-skeleton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-}
-
-.market-sentiment-gauge .loading-spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.market-sentiment-gauge .spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* 錯誤狀態 */
-.market-sentiment-gauge.error {
-  justify-content: center;
-  align-items: center;
-}
-
-.market-sentiment-gauge .gauge-error-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-  color: #dc3545;
-  font-size: 16px;
-  text-align: center;
-}
-
-/* 響應式設計 */
-@media (max-width: 375px) {
+/* 使用 @container 專注於調整字體等細節 */
+@container market-gauge (width < 376px) {
   .market-sentiment-gauge {
-    --gauge-size: 240px;
-    /* 增加手機版尺寸 */
     --font-size-value: 16px;
     --font-size-label: 12px;
     --font-size-analysis: 1.1em;
     --font-size-update: 10px;
     --gauge-label-bottom: -15px;
-    /* 手機版標籤更貼近 */
-  }
-
-  .market-sentiment-gauge .analysis-result {
-    padding: 10px;
-  }
-
-  .market-sentiment-gauge .gauge-value-rotator {
-    top: 76%;
-    /* 手機版需要更高的位置 */
-  }
-
-  .market-sentiment-gauge .gauge-dynamic-value {
-    width: 35px;
-    height: 35px;
-    font-size: 16px;
-    left: -17.5px;
-    top: -35px;
   }
 }
-
-@media (min-width: 376px) and (max-width: 768px) {
+@container market-gauge (376px <= width < 769px) {
   .market-sentiment-gauge {
-    --gauge-size: 300px;
-    /* 增加中型手機版尺寸 */
     --font-size-value: 18px;
     --font-size-label: 14px;
     --font-size-analysis: 1.2em;
     --font-size-update: 11px;
     --gauge-label-bottom: -20px;
-    /* 調整標籤位置 */
-  }
-
-  .market-sentiment-gauge .gauge-value-rotator {
-    top: 80%;
-    /* 中型手機版需要稍高的位置 */
-  }
-
-  .market-sentiment-gauge .gauge-dynamic-value {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-    left: -20px;
-    top: -40px;
   }
 }
-
-@media (min-width: 769px) and (max-width: 1024px) {
+@container market-gauge (width >= 769px) {
   .market-sentiment-gauge {
-    --gauge-size: 380px;
-    /* 增加平板版尺寸 */
-    --font-size-value: 22px;
-    --font-size-label: 16px;
-    --font-size-analysis: 1.3em;
-    --font-size-update: 12px;
-    --gauge-label-bottom: -25px;
-    /* 調整標籤位置 */
-  }
-
-  .market-sentiment-gauge .gauge-value-rotator {
-    top: 63%;
-    /* 平板版稍微調整 */
-  }
-}
-
-@media (min-width: 1025px) and (max-width: 1279px) {
-  .market-sentiment-gauge {
-    --gauge-size: 400px;
-    /* 小桌面版尺寸 */
-    --font-size-value: 24px;
-    --font-size-label: 18px;
-    --font-size-analysis: 1.3em;
-    --font-size-update: 14px;
-    --gauge-label-bottom: -28px;
-    /* 調整標籤位置 */
-  }
-
-  .market-sentiment-gauge .gauge-value-rotator {
-    top: 62%;
-    /* 小桌面版針頭位置 */
-  }
-}
-
-@media (min-width: 1280px) and (max-width: 1919px) {
-  .market-sentiment-gauge {
-    --gauge-size: 450px;
-    /* 標準電腦版尺寸 */
     --font-size-value: 28px;
     --font-size-label: 20px;
     --font-size-analysis: 1.5em;
     --font-size-update: 16px;
     --gauge-label-bottom: -32px;
-    /* 調整標籤位置 */
-  }
-
-  .market-sentiment-gauge .gauge-value-rotator {
-    top: 62%;
-    /* 標準電腦版針頭位置 */
-    height: 155px;
-  /* 控制數值與中心的距離（半徑） */
-    margin-top: -155px;
-  }
-}
-
-@media (min-width: 1920px) {
-  .market-sentiment-gauge {
-    --gauge-size: 500px;
-    /* 大幅增加大螢幕尺寸 */
-    --font-size-value: 32px;
-    --font-size-label: 24px;
-    --font-size-analysis: 1.6em;
-    --font-size-update: 18px;
-    --gauge-label-bottom: -35px;
-    /* 大螢幕標籤位置 */
-  }
-  .market-sentiment-gauge .gauge-value-rotator {
-    top: 63%;
-    /* 標準電腦版針頭位置 */
-    height: 220px;
-  /* 控制數值與中心的距離（半徑） */
-    margin-top: -220px;
   }
 }
