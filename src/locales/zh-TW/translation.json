@@ -325,7 +325,7 @@
     "cta": {
       "latestData": "最新情緒指數",
       "history": "歷史走勢",
-      "composition": "成分指標"
+      "composition": "指數組成"
     },
     "error": {
       "fetchFailed": "未能獲取市場情緒數據。",
