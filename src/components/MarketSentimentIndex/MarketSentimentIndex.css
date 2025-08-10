@@ -71,6 +71,13 @@
   .market-sentiment-view .left-panel .panel-subtitle {
     font-size: 0.85rem;
   }
+
+  /* 平板端情緒值調整 */
+  .market-sentiment-view .left-panel .panel-sentiment-value {
+    padding: 7px 14px;
+    font-size: 0.9rem;
+    letter-spacing: 0.8px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -85,6 +92,13 @@
 
   .market-sentiment-view .left-panel .panel-subtitle {
     font-size: 0.8rem;
+  }
+
+  /* 移動端情緒值調整 */
+  .market-sentiment-view .left-panel .panel-sentiment-value {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
   }
 }
 
@@ -581,25 +595,122 @@
   color: #D24A93 !important;
 }
 
-/* 新增：左側面板標題中的情緒值顏色 */
+/* 新增：左側面板標題中的情緒值特殊設計 */
+.market-sentiment-view .left-panel .panel-sentiment-value {
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  animation: sentimentPulse 2s ease-in-out infinite;
+}
+
+.market-sentiment-view .left-panel .panel-sentiment-value::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 22px;
+  z-index: -1;
+  transition: all 0.3s ease;
+}
+
 .market-sentiment-view .left-panel .panel-sentiment-value.sentiment-extremeFear {
-  color: #0000FF !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #0000FF 0%, #4169E1 100%);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.market-sentiment-view .left-panel .panel-sentiment-value.sentiment-extremeFear::before {
+  background: linear-gradient(135deg, #0000FF 0%, #1E90FF 100%);
 }
 
 .market-sentiment-view .left-panel .panel-sentiment-value.sentiment-fear {
-  color: #5B9BD5 !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #5B9BD5 0%, #87CEEB 100%);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.market-sentiment-view .left-panel .panel-sentiment-value.sentiment-fear::before {
+  background: linear-gradient(135deg, #4682B4 0%, #5B9BD5 100%);
 }
 
 .market-sentiment-view .left-panel .panel-sentiment-value.sentiment-neutral {
-  color: #708090 !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #708090 0%, #9CA0B0 100%);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.market-sentiment-view .left-panel .panel-sentiment-value.sentiment-neutral::before {
+  background: linear-gradient(135deg, #696969 0%, #708090 100%);
 }
 
 .market-sentiment-view .left-panel .panel-sentiment-value.sentiment-greed {
-  color: #F0B8CE !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #F0B8CE 0%, #FFB6C1 100%);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.market-sentiment-view .left-panel .panel-sentiment-value.sentiment-greed::before {
+  background: linear-gradient(135deg, #FF69B4 0%, #F0B8CE 100%);
 }
 
 .market-sentiment-view .left-panel .panel-sentiment-value.sentiment-extremeGreed {
-  color: #D24A93 !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #D24A93 0%, #FF1493 100%);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.market-sentiment-view .left-panel .panel-sentiment-value.sentiment-extremeGreed::before {
+  background: linear-gradient(135deg, #C71585 0%, #D24A93 100%);
+}
+
+/* 脈動動畫效果 */
+@keyframes sentimentPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Hover 效果 */
+.market-sentiment-view .left-panel .panel-sentiment-value:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  animation-play-state: paused;
+}
+
+/* 極小螢幕調整 */
+@media (max-width: 480px) {
+  .market-sentiment-view .left-panel .panel-sentiment-value {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    letter-spacing: 0.3px;
+    border-radius: 16px;
+  }
+
+  .market-sentiment-view .left-panel .panel-sentiment-value::before {
+    border-radius: 18px;
+  }
+
+  /* 在小螢幕上減少動畫效果以提升性能 */
+  @media (prefers-reduced-motion: reduce) {
+    .market-sentiment-view .left-panel .panel-sentiment-value {
+      animation: none;
+    }
+  }
 }
 
 /* 組成指標的情緒顏色 */
