@@ -164,21 +164,63 @@
   position: absolute;
   bottom: 0;
   font-size: var(--font-size-label);
-  font-weight: 500;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.market-sentiment-gauge .gauge-label::before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 0.3s ease;
 }
 
 .market-sentiment-gauge .gauge-label-left {
   left: 10%;
   transform: translateX(-50%);
-  color: #0000FF;
-  /* 極度恐懼顏色 */
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(0, 0, 255, 0.9) 0%, rgba(65, 105, 225, 0.8) 100%);
+}
+
+.market-sentiment-gauge .gauge-label-left::before {
+  background: linear-gradient(to bottom, #0000FF 0%, rgba(0, 0, 255, 0.3) 100%);
 }
 
 .market-sentiment-gauge .gauge-label-right {
   right: 10%;
   transform: translateX(50%);
-  color: #D24A93;
-  /* 極度貪婪顏色 */
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(210, 74, 147, 0.9) 0%, rgba(255, 20, 147, 0.8) 100%);
+}
+
+.market-sentiment-gauge .gauge-label-right::before {
+  background: linear-gradient(to bottom, #D24A93 0%, rgba(210, 74, 147, 0.3) 100%);
+}
+
+/* Hover 效果 */
+.market-sentiment-gauge .gauge-label:hover {
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.market-sentiment-gauge .gauge-label-right:hover {
+  transform: translateX(50%) translateY(-2px);
+}
+
+.market-sentiment-gauge .gauge-label:hover::before {
+  height: 25px;
+  top: -30px;
 }
 
 .market-sentiment-gauge .last-update-time {
@@ -249,6 +291,23 @@
     --font-size-update: 10px;
     --gauge-label-bottom: -15px;
   }
+
+  .market-sentiment-gauge .gauge-label {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 10px;
+  }
+
+  .market-sentiment-gauge .gauge-label::before {
+    height: 15px;
+    top: -20px;
+    width: 1.5px;
+  }
+
+  .market-sentiment-gauge .gauge-label:hover::before {
+    height: 18px;
+    top: -23px;
+  }
 }
 
 @container market-gauge (376px <=width < 769px) {
@@ -259,6 +318,21 @@
     --font-size-update: 11px;
     --gauge-label-bottom: -20px;
   }
+
+  .market-sentiment-gauge .gauge-label {
+    padding: 5px 10px;
+    border-radius: 10px;
+  }
+
+  .market-sentiment-gauge .gauge-label::before {
+    height: 18px;
+    top: -23px;
+  }
+
+  .market-sentiment-gauge .gauge-label:hover::before {
+    height: 22px;
+    top: -27px;
+  }
 }
 
 @container market-gauge (width >=769px) {
@@ -268,6 +342,47 @@
     --font-size-analysis: 1.5em;
     --font-size-update: 16px;
     --gauge-label-bottom: -32px;
+  }
+
+  .market-sentiment-gauge .gauge-label {
+    padding: 8px 16px;
+    border-radius: 16px;
+  }
+
+  .market-sentiment-gauge .gauge-label::before {
+    height: 25px;
+    top: -30px;
+    width: 2.5px;
+  }
+
+  .market-sentiment-gauge .gauge-label:hover::before {
+    height: 30px;
+    top: -35px;
+  }
+}
+
+/* 觸控設備優化 */
+@media (hover: none) and (pointer: coarse) {
+  .market-sentiment-gauge .gauge-label:hover {
+    transform: translateX(-50%);
+  }
+
+  .market-sentiment-gauge .gauge-label-right:hover {
+    transform: translateX(50%);
+  }
+
+  .market-sentiment-gauge .gauge-label:hover::before {
+    height: 20px;
+    top: -25px;
+  }
+}
+
+/* 減少動畫偏好設定 */
+@media (prefers-reduced-motion: reduce) {
+
+  .market-sentiment-gauge .gauge-label,
+  .market-sentiment-gauge .gauge-label::before {
+    transition: none;
   }
 }
 
