@@ -1110,7 +1110,7 @@
   flex-direction: column;
   gap: 8px;
   /* Reduced gap to fit more items */
-  margin-top: 15px;
+  margin-top: 5px;
   /* Reduced margin-top */
   padding: 0 5px;
   /* Add some horizontal padding to the list */
