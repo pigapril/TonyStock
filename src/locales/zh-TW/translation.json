@@ -315,7 +315,18 @@
     "indicatorDetail": {
       "valueLabel":"指標數值",
       "sentimentScoreLabel":"恐懼貪婪分數"
-    }, 
+    },
+    "gauge": {
+      "interactiveZones": "互動情緒區域",
+      "zone": "區域",
+      "zoneDescription": {
+        "extremefear": "極度恐懼區域 - 市場恐慌與超賣",
+        "fear": "恐懼區域 - 市場不確定性與謹慎",
+        "neutral": "中性區域 - 市場情緒平衡",
+        "greed": "貪婪區域 - 市場樂觀與冒險",
+        "extremegreed": "極度貪婪區域 - 市場狂熱與超買"
+      }
+    },
     "viewMode": {
       "overview": "最新情緒指數",
       "timeline": "歷史走勢",

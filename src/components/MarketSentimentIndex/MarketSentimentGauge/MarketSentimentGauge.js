@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import GaugeChart from 'react-gauge-chart';
@@ -78,6 +78,40 @@ const MarketSentimentGauge = ({
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
 
+  // 互動功能狀態
+  const [activeZone, setActiveZone] = useState(null);
+  const [showInteractiveLabel, setShowInteractiveLabel] = useState(false);
+  
+  // 防抖和性能優化
+  const debounceTimeoutRef = useRef(null);
+  const isInteractionEnabledRef = useRef(true);
+
+  // 情緒區域配置
+  const GAUGE_ZONES = {
+    'extreme-fear': {
+      range: [0, 20],
+      color: '#0000FF',
+      useExistingLabel: true
+    },
+    'fear': {
+      range: [20, 40], 
+      color: '#5B9BD5'
+    },
+    'neutral': {
+      range: [40, 60],
+      color: '#708090'
+    },
+    'greed': {
+      range: [60, 80],
+      color: '#F0B8CE'
+    },
+    'extreme-greed': {
+      range: [80, 100],
+      color: '#D24A93',
+      useExistingLabel: true
+    }
+  };
+
   // 計算針頭旋轉角度的函數
   const calculateNeedleRotation = (percent) => {
     // react-gauge-chart 的角度計算
@@ -91,6 +125,93 @@ const MarketSentimentGauge = ({
     
     return finalAngle;
   };
+
+  // 互動事件處理函數 - 添加防抖和錯誤處理
+  const handleZoneHover = useCallback((zone) => {
+    try {
+      // 檢查互動是否啟用
+      if (!isInteractionEnabledRef.current) return;
+      
+      // 清除之前的防抖計時器
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+      
+      // 防抖處理
+      debounceTimeoutRef.current = setTimeout(() => {
+        if (!GAUGE_ZONES[zone]) {
+          console.warn(`Invalid zone: ${zone}`);
+          return;
+        }
+        
+        setActiveZone(zone);
+        
+        // 如果是極度情緒，高亮現有標籤；否則顯示互動標籤
+        if (GAUGE_ZONES[zone].useExistingLabel) {
+          setShowInteractiveLabel(false);
+        } else {
+          setShowInteractiveLabel(true);
+        }
+      }, 50); // 50ms 防抖延遲
+    } catch (error) {
+      console.error('Error in handleZoneHover:', error);
+    }
+  }, [GAUGE_ZONES]);
+
+  const handleZoneLeave = useCallback(() => {
+    try {
+      // 清除防抖計時器
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+      
+      setActiveZone(null);
+      setShowInteractiveLabel(false);
+    } catch (error) {
+      console.error('Error in handleZoneLeave:', error);
+    }
+  }, []);
+
+  const handleZoneClick = useCallback((zone) => {
+    try {
+      // 檢查互動是否啟用
+      if (!isInteractionEnabledRef.current) return;
+      
+      // 觸控設備的點擊處理
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      
+      if (isTouchDevice) {
+        handleZoneHover(zone);
+        // 2秒後自動隱藏
+        setTimeout(() => handleZoneLeave(), 2000);
+      }
+    } catch (error) {
+      console.error('Error in handleZoneClick:', error);
+    }
+  }, [handleZoneHover, handleZoneLeave]);
+
+  // 清理副作用
+  useEffect(() => {
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // 在數據載入完成後啟用互動功能
+  useEffect(() => {
+    if (isDataLoaded && sentimentData) {
+      // 延遲啟用互動功能，確保 gauge 動畫完成
+      const timer = setTimeout(() => {
+        isInteractionEnabledRef.current = true;
+      }, 3500); // 比 gauge 動畫稍長一點
+      
+      return () => clearTimeout(timer);
+    } else {
+      isInteractionEnabledRef.current = false;
+    }
+  }, [isDataLoaded, sentimentData]);
 
   // 渲染 GaugeChart
   const renderGaugeChart = () => (
@@ -181,6 +302,49 @@ const MarketSentimentGauge = ({
       <div className="gauge-chart-container">
         <div className="gauge-chart">
           {renderGaugeChart()}
+          
+          {/* 互動覆蓋層 */}
+          <div className="gauge-interactive-overlay" role="group" aria-label={t('marketSentiment.gauge.interactiveZones')}>
+            {Object.keys(GAUGE_ZONES).map((zone, index) => (
+              <div
+                key={zone}
+                className={`interactive-zone interactive-zone-${zone} ${activeZone === zone ? 'active' : ''}`}
+                onMouseEnter={() => handleZoneHover(zone)}
+                onMouseLeave={handleZoneLeave}
+                onClick={() => handleZoneClick(zone)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleZoneClick(zone);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`${t(`sentiment.${zone.replace('-', '')}`)} ${t('marketSentiment.gauge.zone')}`}
+                aria-describedby={`zone-description-${zone}`}
+                data-zone={zone}
+              />
+            ))}
+            
+            {/* 隱藏的描述文字，供螢幕閱讀器使用 */}
+            {Object.keys(GAUGE_ZONES).map((zone) => (
+              <div
+                key={`desc-${zone}`}
+                id={`zone-description-${zone}`}
+                className="sr-only"
+              >
+                {t(`marketSentiment.gauge.zoneDescription.${zone.replace('-', '')}`)}
+              </div>
+            ))}
+          </div>
+
+          {/* 互動標籤 */}
+          {showInteractiveLabel && activeZone && (
+            <div className={`interactive-label sentiment-${activeZone.replace('-', '')}`}>
+              {t(`sentiment.${activeZone.replace('-', '')}`)}
+            </div>
+          )}
+          
           <svg width="0" height="0">
             <defs>
               <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -226,10 +390,10 @@ const MarketSentimentGauge = ({
             );
           })()}
           <div className="gauge-labels">
-            <span className="gauge-label gauge-label-left">
+            <span className={`gauge-label gauge-label-left ${activeZone === 'extreme-fear' ? 'highlighted' : ''}`}>
               {t('sentiment.extremeFear')}
             </span>
-            <span className="gauge-label gauge-label-right">
+            <span className={`gauge-label gauge-label-right ${activeZone === 'extreme-greed' ? 'highlighted' : ''}`}>
               {t('sentiment.extremeGreed')}
             </span>
           </div>

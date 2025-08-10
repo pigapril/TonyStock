@@ -315,7 +315,18 @@
     "indicatorDetail": {
       "valueLabel":"Indicator Value",
       "sentimentScoreLabel":"Sentiment Score"
-    },  
+    },
+    "gauge": {
+      "interactiveZones": "Interactive sentiment zones",
+      "zone": "zone",
+      "zoneDescription": {
+        "extremefear": "Extreme fear zone - market panic and overselling",
+        "fear": "Fear zone - market uncertainty and caution",
+        "neutral": "Neutral zone - balanced market sentiment",
+        "greed": "Greed zone - market optimism and risk-taking",
+        "extremegreed": "Extreme greed zone - market euphoria and overbuying"
+      }
+    },
     "viewMode": {
       "overview": "Current Sentiment",
       "timeline": "Historical Trend",
