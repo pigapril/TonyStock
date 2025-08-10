@@ -102,9 +102,11 @@
   0% {
     box-shadow: 0 2px 4px rgba(255, 107, 53, 0.3);
   }
+
   50% {
     box-shadow: 0 2px 8px rgba(255, 107, 53, 0.5), 0 0 0 2px rgba(255, 107, 53, 0.2);
   }
+
   100% {
     box-shadow: 0 2px 4px rgba(255, 107, 53, 0.3);
   }
@@ -115,25 +117,25 @@
   .billing-period-toggle {
     margin-bottom: 24px;
   }
-  
+
   .billing-period-toggle__container {
     min-width: 260px;
     height: 40px;
   }
-  
+
   .billing-period-toggle__slider {
     height: 36px;
   }
-  
+
   .billing-period-toggle__option {
     font-size: 15px;
     padding: 0 12px;
   }
-  
+
   .billing-period-toggle__option-text {
     font-size: 15px;
   }
-  
+
   .billing-period-toggle__discount-badge {
     font-size: 8px;
     padding: 2px 5px;
@@ -145,20 +147,20 @@
     min-width: 220px;
     height: 36px;
   }
-  
+
   .billing-period-toggle__slider {
     height: 32px;
   }
-  
+
   .billing-period-toggle__option {
     font-size: 14px;
     padding: 0 8px;
   }
-  
+
   .billing-period-toggle__option-text {
     font-size: 14px;
   }
-  
+
   .billing-period-toggle__discount-badge {
     font-size: 7px;
     padding: 1px 4px;
@@ -170,34 +172,34 @@
   .billing-period-toggle__container {
     background: #2c2c2e;
   }
-  
+
   .billing-period-toggle__slider {
     background: #3a3a3c;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
-  
+
   .billing-period-toggle__option {
     color: rgba(235, 235, 245, 0.6);
   }
-  
+
   .billing-period-toggle__option--active,
   .billing-period-toggle__option:hover {
     color: rgba(235, 235, 245, 0.85);
   }
-  
+
   .billing-period-toggle__option:focus {
     box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.3);
   }
-  
+
   .billing-period-toggle__option {
     color: rgba(235, 235, 245, 0.6);
   }
-  
+
   .billing-period-toggle__option--active,
   .billing-period-toggle__option:hover {
     color: rgba(235, 235, 245, 0.85);
   }
-  
+
   .billing-period-toggle__discount-badge {
     background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
     color: white;
