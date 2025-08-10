@@ -12,7 +12,7 @@
   border-radius: 22px;
   padding: 2px;
   height: 44px;
-  min-width: 240px;
+  min-width: 300px;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
 }
 
@@ -47,8 +47,12 @@
   cursor: pointer;
   transition: color 0.3s ease;
   z-index: 2;
-  padding: 0 16px;
+  padding: 0 12px;
   border-radius: 20px;
+}
+
+.billing-period-toggle__option--yearly {
+  padding: 0 8px;
 }
 
 .billing-period-toggle__option--active {
@@ -60,9 +64,50 @@
   color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
 }
 
-.billing-period-toggle__option:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.3);
+
+
+.billing-period-toggle__yearly-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+  width: 100%;
+}
+
+.billing-period-toggle__option-text {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.billing-period-toggle__discount-badge {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(255, 107, 53, 0.3);
+  animation: pulse 2s infinite;
+  white-space: nowrap;
+}
+
+.billing-period-toggle__option:not(.billing-period-toggle__option--yearly) .billing-period-toggle__discount-badge {
+  display: none;
+}
+
+/* Pulse animation for discount badge */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 2px 4px rgba(255, 107, 53, 0.3);
+  }
+  50% {
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.5), 0 0 0 2px rgba(255, 107, 53, 0.2);
+  }
+  100% {
+    box-shadow: 0 2px 4px rgba(255, 107, 53, 0.3);
+  }
 }
 
 /* Responsive Design */
@@ -72,7 +117,7 @@
   }
   
   .billing-period-toggle__container {
-    min-width: 200px;
+    min-width: 260px;
     height: 40px;
   }
   
@@ -84,11 +129,20 @@
     font-size: 15px;
     padding: 0 12px;
   }
+  
+  .billing-period-toggle__option-text {
+    font-size: 15px;
+  }
+  
+  .billing-period-toggle__discount-badge {
+    font-size: 8px;
+    padding: 2px 5px;
+  }
 }
 
 @media (max-width: 480px) {
   .billing-period-toggle__container {
-    min-width: 180px;
+    min-width: 220px;
     height: 36px;
   }
   
@@ -99,6 +153,15 @@
   .billing-period-toggle__option {
     font-size: 14px;
     padding: 0 8px;
+  }
+  
+  .billing-period-toggle__option-text {
+    font-size: 14px;
+  }
+  
+  .billing-period-toggle__discount-badge {
+    font-size: 7px;
+    padding: 1px 4px;
   }
 }
 
@@ -124,5 +187,19 @@
   
   .billing-period-toggle__option:focus {
     box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.3);
+  }
+  
+  .billing-period-toggle__option {
+    color: rgba(235, 235, 245, 0.6);
+  }
+  
+  .billing-period-toggle__option--active,
+  .billing-period-toggle__option:hover {
+    color: rgba(235, 235, 245, 0.85);
+  }
+  
+  .billing-period-toggle__discount-badge {
+    background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+    color: white;
   }
 }

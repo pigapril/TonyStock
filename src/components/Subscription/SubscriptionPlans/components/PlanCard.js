@@ -84,26 +84,29 @@ export const PlanCard = ({ plan, currentPlan, isCurrentUser, billingPeriod = 'mo
       </div>
 
       <div className="plan-card__pricing">
-        {!isFree && pricingData.showDiscount && (
-          <div className="plan-card__discount-badge">
-            {t('subscription.billingPeriod.save')} {formatDiscount(pricingData.discountPercentage)}
-          </div>
-        )}
-        
-        {!isFree && billingPeriod === 'yearly' && pricingData.showDiscount && (
-          <div className="plan-card__original-price">
-            {formatPriceDisplay(pricingData.originalPrice)}/年
-          </div>
-        )}
-        
-        <div className="plan-card__price">
-          <span className="plan-card__price-amount">
-            {formatPriceDisplay(pricingData.displayPrice)}
-          </span>
-          {!isFree && (
-            <span className="plan-card__price-period">
-              {pricingData.period}
+        <div className="plan-card__price-row">
+          <div className="plan-card__price">
+            <span className="plan-card__price-amount">
+              {formatPriceDisplay(pricingData.displayPrice)}
             </span>
+            {!isFree && (
+              <span className="plan-card__price-period">
+                {pricingData.period}
+              </span>
+            )}
+          </div>
+          
+          {!isFree && pricingData.showDiscount && (
+            <div className="plan-card__discount-info">
+              <div className="plan-card__discount-badge">
+                {t('subscription.billingPeriod.save')} {formatDiscount(pricingData.discountPercentage)}
+              </div>
+              {billingPeriod === 'yearly' && (
+                <div className="plan-card__original-price">
+                  {formatPriceDisplay(pricingData.originalPrice)}/年
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

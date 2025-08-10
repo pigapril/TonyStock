@@ -120,6 +120,42 @@
   margin: 0 auto;
 }
 
+/* Mobile swipe container for small screens */
+@media (max-width: 768px) {
+  .subscription-plans-cards {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    padding: 0 20px;
+    margin: 0 -20px;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  .subscription-plans-cards::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+  .subscription-plans-cards .plan-card {
+    flex: 0 0 280px;
+    scroll-snap-align: center;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .subscription-plans-cards {
+    padding: 0 16px;
+    margin: 0 -16px;
+    gap: 16px;
+  }
+  
+  .subscription-plans-cards .plan-card {
+    flex: 0 0 260px;
+  }
+}
+
 
 
 /* Responsive Design */
@@ -140,10 +176,7 @@
     font-size: 18px;
   }
   
-  .subscription-plans-cards {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
+  /* Mobile swipe styles are defined above */
   
   .upgrade-notification {
     padding: 20px;
@@ -176,9 +209,7 @@
     font-size: 16px;
   }
   
-  .subscription-plans-cards {
-    gap: 20px;
-  }
+  /* Mobile swipe styles are defined above */
   
   .upgrade-notification {
     padding: 16px;

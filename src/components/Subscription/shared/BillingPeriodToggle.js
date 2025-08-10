@@ -27,11 +27,18 @@ export const BillingPeriodToggle = ({ value, onChange, className = '' }) => {
         </button>
         <button
           type="button"
-          className={`billing-period-toggle__option ${value === 'yearly' ? 'billing-period-toggle__option--active' : ''}`}
+          className={`billing-period-toggle__option billing-period-toggle__option--yearly ${value === 'yearly' ? 'billing-period-toggle__option--active' : ''}`}
           onClick={() => handleToggle('yearly')}
           aria-pressed={value === 'yearly'}
         >
-          {t('subscription.billingPeriod.yearly')}
+          <div className="billing-period-toggle__yearly-content">
+            <span className="billing-period-toggle__option-text">
+              {t('subscription.billingPeriod.yearly')}
+            </span>
+            <span className="billing-period-toggle__discount-badge">
+              {t('subscription.billingPeriod.save')} 17%
+            </span>
+          </div>
         </button>
       </div>
     </div>
