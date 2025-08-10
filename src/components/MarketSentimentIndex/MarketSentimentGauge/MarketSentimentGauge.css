@@ -381,42 +381,41 @@
   width: 100%;
   height: 100%;
   cursor: pointer;
-  transition: background-color 0.2s ease;
   opacity: 0;
+  background: transparent;
+  pointer-events: auto;
+  touch-action: manipulation;
 }
 
 .market-sentiment-gauge .interactive-zone:hover {
-  opacity: 0.1;
+  opacity: 0;
+  background: transparent;
 }
 
 .market-sentiment-gauge .interactive-zone.active {
-  opacity: 0.15;
+  opacity: 0;
+  background: transparent;
 }
 
-/* 五個扇形區域的定位 */
+/* 五個扇形區域的定位 - 無視覺效果，僅用於互動 */
 .market-sentiment-gauge .interactive-zone-extreme-fear {
   clip-path: polygon(50% 100%, 0% 100%, 15% 15%);
-  background-color: #0000FF;
 }
 
 .market-sentiment-gauge .interactive-zone-fear {
   clip-path: polygon(50% 100%, 15% 15%, 35% 5%);
-  background-color: #5B9BD5;
 }
 
 .market-sentiment-gauge .interactive-zone-neutral {
   clip-path: polygon(50% 100%, 35% 5%, 65% 5%);
-  background-color: #708090;
 }
 
 .market-sentiment-gauge .interactive-zone-greed {
   clip-path: polygon(50% 100%, 65% 5%, 85% 15%);
-  background-color: #F0B8CE;
 }
 
 .market-sentiment-gauge .interactive-zone-extreme-greed {
   clip-path: polygon(50% 100%, 85% 15%, 100% 100%);
-  background-color: #D24A93;
 }
 
 /* 互動標籤樣式 */
@@ -457,6 +456,7 @@
     opacity: 0;
     transform: translateX(-50%) translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
@@ -483,14 +483,14 @@
   }
 }
 
-@container market-gauge (376px <= width < 769px) {
+@container market-gauge (376px <=width < 769px) {
   .market-sentiment-gauge .interactive-label {
     padding: 6px 12px;
     border-radius: 16px;
   }
 }
 
-@container market-gauge (width >= 769px) {
+@container market-gauge (width >=769px) {
   .market-sentiment-gauge .interactive-label {
     padding: 8px 16px;
     border-radius: 20px;
@@ -502,9 +502,9 @@
   .market-sentiment-gauge .interactive-zone:hover {
     opacity: 0;
   }
-  
+
   .market-sentiment-gauge .interactive-zone.active {
-    opacity: 0.2;
+    opacity: 0;
   }
 }
 
@@ -513,11 +513,13 @@
   .market-sentiment-gauge .interactive-label {
     animation: none;
   }
-  
+
   .market-sentiment-gauge .gauge-label.highlighted {
     transition: none;
   }
-}/*
+}
+
+/*
  可訪問性支援 */
 .market-sentiment-gauge .sr-only {
   position: absolute;
@@ -544,18 +546,28 @@
 
 /* 高對比度模式支援 */
 @media (prefers-contrast: high) {
+
   .market-sentiment-gauge .interactive-zone:hover,
   .market-sentiment-gauge .interactive-zone.active {
-    opacity: 0.3;
+    opacity: 0;
   }
-  
+
   .market-sentiment-gauge .interactive-label {
     border: 3px solid #000000;
     background: #ffffff;
     color: #000000;
   }
-}/* 性能優化 *
-/
+}
+
+/* 性能優化 */
+.market-sentiment-gauge .gauge-chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  isolation: isolate;
+  contain: layout style paint;
+}
+
 .market-sentiment-gauge .gauge-interactive-overlay {
   will-change: auto;
 }
@@ -583,7 +595,7 @@
   .market-sentiment-gauge .interactive-zone {
     transition: opacity 0.1s ease;
   }
-  
+
   .market-sentiment-gauge .interactive-label {
     animation-duration: 0.2s;
   }

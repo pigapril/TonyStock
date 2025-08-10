@@ -78,13 +78,14 @@ const MarketSentimentGauge = ({
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
 
-  // 互動功能狀態
+  // 互動功能狀態 - 使用 useRef 來避免觸發重新渲染
   const [activeZone, setActiveZone] = useState(null);
   const [showInteractiveLabel, setShowInteractiveLabel] = useState(false);
   
   // 防抖和性能優化
   const debounceTimeoutRef = useRef(null);
   const isInteractionEnabledRef = useRef(true);
+  const gaugeRenderKeyRef = useRef(0);
 
   // 情緒區域配置
   const GAUGE_ZONES = {
@@ -126,24 +127,28 @@ const MarketSentimentGauge = ({
     return finalAngle;
   };
 
-  // 互動事件處理函數 - 添加防抖和錯誤處理
+  // 互動事件處理函數 - 完全隔離以避免重新渲染
   const handleZoneHover = useCallback((zone) => {
     try {
       // 檢查互動是否啟用
       if (!isInteractionEnabledRef.current) return;
+      
+      // 避免重複設置相同的 zone
+      if (activeZone === zone) return;
       
       // 清除之前的防抖計時器
       if (debounceTimeoutRef.current) {
         clearTimeout(debounceTimeoutRef.current);
       }
       
-      // 防抖處理
-      debounceTimeoutRef.current = setTimeout(() => {
-        if (!GAUGE_ZONES[zone]) {
-          console.warn(`Invalid zone: ${zone}`);
-          return;
-        }
-        
+      // 立即更新狀態，不使用防抖
+      if (!GAUGE_ZONES[zone]) {
+        console.warn(`Invalid zone: ${zone}`);
+        return;
+      }
+      
+      // 使用 requestAnimationFrame 來避免阻塞渲染
+      requestAnimationFrame(() => {
         setActiveZone(zone);
         
         // 如果是極度情緒，高亮現有標籤；否則顯示互動標籤
@@ -152,25 +157,31 @@ const MarketSentimentGauge = ({
         } else {
           setShowInteractiveLabel(true);
         }
-      }, 50); // 50ms 防抖延遲
+      });
     } catch (error) {
       console.error('Error in handleZoneHover:', error);
     }
-  }, [GAUGE_ZONES]);
+  }, [GAUGE_ZONES, activeZone]);
 
   const handleZoneLeave = useCallback(() => {
     try {
+      // 避免重複設置
+      if (activeZone === null && !showInteractiveLabel) return;
+      
       // 清除防抖計時器
       if (debounceTimeoutRef.current) {
         clearTimeout(debounceTimeoutRef.current);
       }
       
-      setActiveZone(null);
-      setShowInteractiveLabel(false);
+      // 使用 requestAnimationFrame 來避免阻塞渲染
+      requestAnimationFrame(() => {
+        setActiveZone(null);
+        setShowInteractiveLabel(false);
+      });
     } catch (error) {
       console.error('Error in handleZoneLeave:', error);
     }
-  }, []);
+  }, [activeZone, showInteractiveLabel]);
 
   const handleZoneClick = useCallback((zone) => {
     try {
@@ -213,27 +224,33 @@ const MarketSentimentGauge = ({
     }
   }, [isDataLoaded, sentimentData]);
 
-  // 渲染 GaugeChart
-  const renderGaugeChart = () => (
-    <StyledGaugeChart
-      id="gauge-chart"
-      nrOfLevels={5}
-      colors={[
-        '#0000FF',  // 極度恐懼
-        '#5B9BD5',  // 恐懼
-        '#708090',  // 中性
-        '#F0B8CE',  // 貪婪
-        '#D24A93'   // 極度貪婪
-      ]}
-      percent={sentimentData.totalScore / 100}
-      arcWidth={0.3}
-      cornerRadius={5}
-      animDelay={0}
-      hideText={true}
-      needleTransitionDuration={!isDataLoaded || initialRenderRef.current ? 0 : 3000}
-      needleTransition="easeElastic"
-    />
-  );
+  // 使用 useMemo 來避免 GaugeChart 重新渲染，完全隔離互動狀態
+  const gaugeChart = useMemo(() => {
+    // 只在數據真正變化時才重新渲染
+    const gaugeId = `gauge-chart-${gaugeRenderKeyRef.current}`;
+    gaugeRenderKeyRef.current++;
+    
+    return (
+      <StyledGaugeChart
+        id={gaugeId}
+        nrOfLevels={5}
+        colors={[
+          '#0000FF',  // 極度恐懼
+          '#5B9BD5',  // 恐懼
+          '#708090',  // 中性
+          '#F0B8CE',  // 貪婪
+          '#D24A93'   // 極度貪婪
+        ]}
+        percent={sentimentData.totalScore / 100}
+        arcWidth={0.3}
+        cornerRadius={5}
+        animDelay={0}
+        hideText={true}
+        needleTransitionDuration={!isDataLoaded || initialRenderRef.current ? 0 : 3000}
+        needleTransition="easeElastic"
+      />
+    );
+  }, [sentimentData.totalScore, isDataLoaded, initialRenderRef.current]);
 
   // 計算情緒相關數據
   const sentimentInfo = useMemo(() => {
@@ -301,7 +318,9 @@ const MarketSentimentGauge = ({
 
       <div className="gauge-chart-container">
         <div className="gauge-chart">
-          {renderGaugeChart()}
+          <div className="gauge-chart-wrapper" style={{ isolation: 'isolate' }}>
+            {gaugeChart}
+          </div>
           
           {/* 互動覆蓋層 */}
           <div className="gauge-interactive-overlay" role="group" aria-label={t('marketSentiment.gauge.interactiveZones')}>
