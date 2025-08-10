@@ -665,20 +665,14 @@ const MarketSentimentIndex = () => {
         <div className="content-layout-container">
           {activeTab === 'composite' ? (
             <>
-              {/* 左側面板 - 標題與 Gauge 圖表 */}
+              {/* 左側面板 */}
               <div className="left-panel">
+
                 <div className="panel-header">
                   <h1 className="panel-title">
                     {currentLang === 'zh-TW' ? 'SIO恐懼貪婪指數' : 'SIO Fear & Greed Index'}
                   </h1>
-                  <div className="panel-subtitle-container">
-                    <span className="panel-subtitle">
-                      {currentLang === 'zh-TW' ? '目前的股市情緒是：' : 'Current Market Sentiment:'}
-                    </span>
-                    <span className={`panel-sentiment-value sentiment-${sentimentData && sentimentData.totalScore != null ? getSentiment(Math.round(sentimentData.totalScore)).split('.').pop() : 'neutral'}`}>
-                      {sentimentData && sentimentData.totalScore != null ? t(getSentiment(Math.round(sentimentData.totalScore))) : t('sentiment.neutral')}
-                    </span>
-                  </div>
+                  {/* ▼▼▼ panel-subtitle-container 已從此處剪下 ▼▼▼ */}
                   {sentimentData && sentimentData.compositeScoreLastUpdate && (
                     <div className="panel-last-update-time">
                       {t('marketSentiment.lastUpdateLabel')}: {' '}
@@ -688,6 +682,7 @@ const MarketSentimentIndex = () => {
                     </div>
                   )}
                 </div>
+
                 <MarketSentimentGauge
                   sentimentData={sentimentData}
                   isDataLoaded={isDataLoaded}
@@ -695,6 +690,17 @@ const MarketSentimentIndex = () => {
                   showAnalysisResult={false}
                   showLastUpdate={false}
                 />
+
+                {/* ▼▼▼ panel-subtitle-container 已貼到此處 ▼▼▼ */}
+                <div className="panel-subtitle-container">
+                  <span className="panel-subtitle">
+                    {currentLang === 'zh-TW' ? '目前的股市情緒是：' : 'Current Market Sentiment:'}
+                  </span>
+                  <span className={`panel-sentiment-value sentiment-${sentimentData && sentimentData.totalScore != null ? getSentiment(Math.round(sentimentData.totalScore)).split('.').pop() : 'neutral'}`}>
+                    {sentimentData && sentimentData.totalScore != null ? t(getSentiment(Math.round(sentimentData.totalScore))) : t('sentiment.neutral')}
+                  </span>
+                </div>
+
               </div>
 
               {/* 右側面板 - 可切換內容 */}
