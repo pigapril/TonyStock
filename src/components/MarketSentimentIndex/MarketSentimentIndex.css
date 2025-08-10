@@ -464,19 +464,27 @@
   }
 }
 
-/* 中等桌面尺寸 (1281px-1919px) */
-@media (min-width: 1281px) and (max-width: 1919px) {
+/* 中等桌面尺寸 (1281px-1599px) - 適用於 1534x864 等 */
+@media (min-width: 1281px) and (max-width: 1599px) {
   .market-sentiment-view .content-layout-container {
-    height: clamp(500px, 62vh, 780px);
-    max-height: clamp(500px, 62vh, 780px);
+    height: clamp(500px, 60vh, 700px);
+    max-height: clamp(500px, 60vh, 700px);
+  }
+}
+
+/* 大中等桌面尺寸 (1600px-1919px) */
+@media (min-width: 1600px) and (max-width: 1919px) {
+  .market-sentiment-view .content-layout-container {
+    height: clamp(500px, 58vh, 720px);
+    max-height: clamp(500px, 58vh, 720px);
   }
 }
 
 /* 大桌面尺寸 (1920px+) */
 @media (min-width: 1920px) {
   .market-sentiment-view .content-layout-container {
-    height: clamp(500px, 60vh, 750px);
-    max-height: clamp(500px, 60vh, 750px);
+    height: clamp(500px, 55vh, 650px);
+    max-height: clamp(500px, 55vh, 650px);
   }
 }
 

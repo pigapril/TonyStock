@@ -27,6 +27,7 @@
   padding: 15px 20px;
   text-align: center;
 }
+
 .market-sentiment-gauge .analysis-result .analysis-item {
   display: flex;
   flex-direction: column;
@@ -34,6 +35,7 @@
   align-items: center;
   width: 100%;
 }
+
 .market-sentiment-gauge .analysis-result .analysis-label {
   font-size: 1em;
   color: #6c757d;
@@ -41,6 +43,7 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
 .market-sentiment-gauge .analysis-result .analysis-value {
   font-size: var(--font-size-analysis);
   font-weight: 600;
@@ -49,11 +52,25 @@
 }
 
 /* 情緒顏色 (無須變動) */
-.market-sentiment-gauge .analysis-value.sentiment-extremeFear { color: #0000FF !important; }
-.market-sentiment-gauge .analysis-value.sentiment-fear { color: #5B9BD5 !important; }
-.market-sentiment-gauge .analysis-value.sentiment-neutral { color: #708090 !important; }
-.market-sentiment-gauge .analysis-value.sentiment-greed { color: #F0B8CE !important; }
-.market-sentiment-gauge .analysis-value.sentiment-extremeGreed { color: #D24A93 !important; }
+.market-sentiment-gauge .analysis-value.sentiment-extremeFear {
+  color: #0000FF !important;
+}
+
+.market-sentiment-gauge .analysis-value.sentiment-fear {
+  color: #5B9BD5 !important;
+}
+
+.market-sentiment-gauge .analysis-value.sentiment-neutral {
+  color: #708090 !important;
+}
+
+.market-sentiment-gauge .analysis-value.sentiment-greed {
+  color: #F0B8CE !important;
+}
+
+.market-sentiment-gauge .analysis-value.sentiment-extremeGreed {
+  color: #D24A93 !important;
+}
 
 /* Gauge 圖表容器 (無須變動) */
 .market-sentiment-gauge .gauge-chart-container {
@@ -80,13 +97,15 @@
 /* --- 優化核心：將距離單位改為 cqw --- */
 .market-sentiment-gauge .gauge-value-rotator {
   position: absolute;
-  top: 75%; /* 這個值在鎖定長寬比後應該是固定的 */
+  top: 75%;
+  /* 這個值在鎖定長寬比後應該是固定的 */
   left: 50%;
   width: 0;
-  
+
   /* 旋轉臂的長度，設為容器寬度的 30%。可微調此數值來改變整體距離。*/
   height: 33cqw;
-  margin-top: -33cqw; /* 必須與 height 保持一致 */
+  margin-top: -33cqw;
+  /* 必須與 height 保持一致 */
 
   transform-origin: center bottom;
   z-index: 15;
@@ -96,13 +115,14 @@
 /* 動態數值與自訂指針樣式 */
 .market-sentiment-gauge .gauge-dynamic-value {
   position: absolute;
-  
+
   /* 數值圓圈在旋轉臂上的位置，也使用 cqw */
   top: -10cqw;
-  left: -6.25cqw; /* -(width / 2) */
+  left: -6.25cqw;
+  /* -(width / 2) */
   width: 12.5cqw;
   height: 12.5cqw;
-  
+
   font-size: var(--font-size-value);
   font-weight: bold;
   color: #4a4a4a;
@@ -114,15 +134,16 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border: 2px solid rgba(255, 255, 255, 0.8);
 }
+
 .market-sentiment-gauge .custom-gauge-needle {
   position: absolute;
   top: -2.5cqw;
   left: -0.5cqw;
   width: 1cqw;
-  
+
   /* 指針長度，也使用 cqw */
   height: 30cqw;
-  
+
   transform-origin: center bottom;
 }
 
@@ -138,22 +159,28 @@
   color: #333;
   font-weight: bold;
 }
-.market-sentiment-gauge .gauge-label { 
-  position: absolute; 
-  bottom: 0; 
+
+.market-sentiment-gauge .gauge-label {
+  position: absolute;
+  bottom: 0;
   font-size: var(--font-size-label);
   font-weight: 500;
 }
-.market-sentiment-gauge .gauge-label-left { 
-  left: 10%; 
-  transform: translateX(-50%); 
-  color: #0000FF; /* 極度恐懼顏色 */
+
+.market-sentiment-gauge .gauge-label-left {
+  left: 10%;
+  transform: translateX(-50%);
+  color: #0000FF;
+  /* 極度恐懼顏色 */
 }
-.market-sentiment-gauge .gauge-label-right { 
-  right: 10%; 
-  transform: translateX(50%); 
-  color: #D24A93; /* 極度貪婪顏色 */
+
+.market-sentiment-gauge .gauge-label-right {
+  right: 10%;
+  transform: translateX(50%);
+  color: #D24A93;
+  /* 極度貪婪顏色 */
 }
+
 .market-sentiment-gauge .last-update-time {
   position: absolute;
   bottom: -8%;
@@ -167,12 +194,51 @@
 }
 
 /* 載入與錯誤狀態 (無須變動) */
-.market-sentiment-gauge.loading, .market-sentiment-gauge.error { justify-content: center; align-items: center; }
-.market-sentiment-gauge .gauge-loading-skeleton, .market-sentiment-gauge .gauge-error-state { display: flex; justify-content: center; align-items: center; height: 200px; }
-.market-sentiment-gauge .loading-spinner { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.market-sentiment-gauge .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.market-sentiment-gauge .gauge-error-state { color: #dc3545; font-size: 16px; text-align: center; }
+.market-sentiment-gauge.loading,
+.market-sentiment-gauge.error {
+  justify-content: center;
+  align-items: center;
+}
+
+.market-sentiment-gauge .gauge-loading-skeleton,
+.market-sentiment-gauge .gauge-error-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.market-sentiment-gauge .loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.market-sentiment-gauge .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.market-sentiment-gauge .gauge-error-state {
+  color: #dc3545;
+  font-size: 16px;
+  text-align: center;
+}
 
 /* 使用 @container 專注於調整字體等細節 */
 @container market-gauge (width < 376px) {
@@ -184,7 +250,8 @@
     --gauge-label-bottom: -15px;
   }
 }
-@container market-gauge (376px <= width < 769px) {
+
+@container market-gauge (376px <=width < 769px) {
   .market-sentiment-gauge {
     --font-size-value: 18px;
     --font-size-label: 14px;
@@ -193,12 +260,36 @@
     --gauge-label-bottom: -20px;
   }
 }
-@container market-gauge (width >= 769px) {
+
+@container market-gauge (width >=769px) {
   .market-sentiment-gauge {
     --font-size-value: 28px;
     --font-size-label: 20px;
     --font-size-analysis: 1.5em;
     --font-size-update: 16px;
     --gauge-label-bottom: -32px;
+  }
+}
+
+/* 針對大螢幕 (1920px+) 的 Gauge 調整 */
+@media (min-width: 1920px) {
+  .market-sentiment-gauge .gauge-value-rotator {
+    /* 在大螢幕上縮短旋轉臂長度 */
+    height: 28cqw;
+    margin-top: -28cqw;
+  }
+
+  .market-sentiment-gauge .gauge-dynamic-value {
+    /* 調整數值圓圈位置和大小 */
+    top: -9cqw;
+    left: -5.5cqw;
+    width: 11cqw;
+    height: 11cqw;
+  }
+
+  .market-sentiment-gauge .custom-gauge-needle {
+    /* 調整指針長度 */
+    height: 26cqw;
+    top: -2.2cqw;
   }
 }
