@@ -4,9 +4,10 @@ import { PlanBadge } from '../../shared/PlanBadge';
 import { AppleButton } from '../../shared/AppleButton';
 import { useSubscription } from '../../SubscriptionContext';
 import { Analytics } from '../../../../utils/analytics';
+import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../utils/pricingUtils';
 import './PlanCard.css';
 
-export const PlanCard = ({ plan, currentPlan, isCurrentUser }) => {
+export const PlanCard = ({ plan, currentPlan, isCurrentUser, billingPeriod = 'monthly' }) => {
   const { t } = useTranslation();
   const { updatePlan, loading } = useSubscription();
 
@@ -44,13 +45,11 @@ export const PlanCard = ({ plan, currentPlan, isCurrentUser }) => {
     }
   };
 
-  const formatPrice = (price) => {
+  const pricingData = getPricingDisplayData(plan, billingPeriod);
+
+  const formatPriceDisplay = (price) => {
     if (price === 0) return t('subscription.subscriptionPlans.freePlan.price');
-    return new Intl.NumberFormat('zh-TW', {
-      style: 'currency',
-      currency: 'TWD',
-      minimumFractionDigits: 0
-    }).format(price);
+    return formatPrice(price);
   };
 
   const getButtonText = () => {
@@ -76,11 +75,6 @@ export const PlanCard = ({ plan, currentPlan, isCurrentUser }) => {
       <div className="plan-card__header">
         <div className="plan-card__badge-container">
           <PlanBadge plan={plan.id} size="large" />
-          {isCurrentPlan && (
-            <span className="plan-card__current-indicator">
-              {t('subscription.subscriptionPlans.currentPlan')}
-            </span>
-          )}
         </div>
         
         <h3 className="plan-card__name">{plan.name}</h3>
@@ -90,22 +84,28 @@ export const PlanCard = ({ plan, currentPlan, isCurrentUser }) => {
       </div>
 
       <div className="plan-card__pricing">
+        {!isFree && pricingData.showDiscount && (
+          <div className="plan-card__discount-badge">
+            {t('subscription.billingPeriod.save')} {formatDiscount(pricingData.discountPercentage)}
+          </div>
+        )}
+        
+        {!isFree && billingPeriod === 'yearly' && pricingData.showDiscount && (
+          <div className="plan-card__original-price">
+            {formatPriceDisplay(pricingData.originalPrice)}/年
+          </div>
+        )}
+        
         <div className="plan-card__price">
           <span className="plan-card__price-amount">
-            {formatPrice(plan.price.monthly)}
+            {formatPriceDisplay(pricingData.displayPrice)}
           </span>
           {!isFree && (
             <span className="plan-card__price-period">
-              {t('subscription.subscriptionPlans.proPlan.period')}
+              {pricingData.period}
             </span>
           )}
         </div>
-        
-        {!isFree && (
-          <div className="plan-card__price-yearly">
-            {formatPrice(plan.price.yearly)} {t('subscription.subscriptionPlans.proPlan.periodYearly')}
-          </div>
-        )}
       </div>
 
       <div className="plan-card__features">

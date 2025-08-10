@@ -1077,10 +1077,14 @@
       "privacyTitle": "Privacy Protection",
       "privacyDescription": "We value your privacy and all data is encrypted and protected."
     },
+    "billingPeriod": {
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "save": "Save"
+    },
     "subscriptionPlans": {
       "title": "Choose the plan that's right for you",
       "subtitle": "Upgrade to unlock more features and unlimited usage",
-      "currentPlan": "Current Plan",
       "popular": "Most Popular",
       "upgrade": "Upgrade",
       "downgrade": "Downgrade",

@@ -63,13 +63,7 @@
   gap: 8px;
 }
 
-.plan-card__current-indicator {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--accent-color-blue, #007aff);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+/* Removed .plan-card__current-indicator styles as it's no longer used */
 
 .plan-card__name {
   font-size: 28px;
@@ -93,6 +87,32 @@
   margin-bottom: 32px;
   padding-bottom: 24px;
   border-bottom: 1px solid var(--color-border-soft, #e5e5e5);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.plan-card__discount-badge {
+  align-self: flex-start;
+  background: linear-gradient(135deg, #34c759 0%, #30d158 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 6px rgba(52, 199, 89, 0.3);
+  animation: fadeInScale 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.plan-card__original-price {
+  font-size: 14px;
+  color: var(--color-text-tertiary, rgba(0, 0, 0, 0.40));
+  font-weight: 500;
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+  animation: fadeInScale 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .plan-card__price {
@@ -245,6 +265,18 @@
   }
 }
 
+/* Animations */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .plan-card {
@@ -265,9 +297,7 @@
     background: linear-gradient(135deg, rgba(255, 149, 0, 0.05) 0%, rgba(255, 95, 0, 0.05) 100%);
   }
   
-  .plan-card__current-indicator {
-    color: #0a84ff;
-  }
+
   
   .plan-card__name,
   .plan-card__price-amount {
@@ -280,7 +310,8 @@
     color: rgba(235, 235, 245, 0.60);
   }
   
-  .plan-card__price-yearly {
+  .plan-card__price-yearly,
+  .plan-card__original-price {
     color: rgba(235, 235, 245, 0.40);
   }
   

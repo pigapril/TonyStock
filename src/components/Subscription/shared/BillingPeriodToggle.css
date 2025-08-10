@@ -1,0 +1,128 @@
+/* Apple-style Billing Period Toggle Component */
+.billing-period-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.billing-period-toggle__container {
+  position: relative;
+  display: flex;
+  background: var(--color-bg-secondary, #f2f2f7);
+  border-radius: 22px;
+  padding: 2px;
+  height: 44px;
+  min-width: 240px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+}
+
+.billing-period-toggle__slider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(50% - 2px);
+  height: 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 1;
+}
+
+.billing-period-toggle__slider--yearly {
+  transform: translateX(100%);
+}
+
+.billing-period-toggle__option {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.6));
+  cursor: pointer;
+  transition: color 0.3s ease;
+  z-index: 2;
+  padding: 0 16px;
+  border-radius: 20px;
+}
+
+.billing-period-toggle__option--active {
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+  font-weight: 600;
+}
+
+.billing-period-toggle__option:hover {
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+}
+
+.billing-period-toggle__option:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .billing-period-toggle {
+    margin-bottom: 24px;
+  }
+  
+  .billing-period-toggle__container {
+    min-width: 200px;
+    height: 40px;
+  }
+  
+  .billing-period-toggle__slider {
+    height: 36px;
+  }
+  
+  .billing-period-toggle__option {
+    font-size: 15px;
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .billing-period-toggle__container {
+    min-width: 180px;
+    height: 36px;
+  }
+  
+  .billing-period-toggle__slider {
+    height: 32px;
+  }
+  
+  .billing-period-toggle__option {
+    font-size: 14px;
+    padding: 0 8px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .billing-period-toggle__container {
+    background: #2c2c2e;
+  }
+  
+  .billing-period-toggle__slider {
+    background: #3a3a3c;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .billing-period-toggle__option {
+    color: rgba(235, 235, 245, 0.6);
+  }
+  
+  .billing-period-toggle__option--active,
+  .billing-period-toggle__option:hover {
+    color: rgba(235, 235, 245, 0.85);
+  }
+  
+  .billing-period-toggle__option:focus {
+    box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.3);
+  }
+}

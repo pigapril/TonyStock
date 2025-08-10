@@ -1076,10 +1076,14 @@
       "privacyTitle": "隱私保護",
       "privacyDescription": "我們重視您的隱私，所有資料都經過加密保護。"
     },
+    "billingPeriod": {
+      "monthly": "月繳",
+      "yearly": "年繳",
+      "save": "省下"
+    },
     "subscriptionPlans": {
       "title": "選擇適合您的方案",
       "subtitle": "升級以解鎖更多功能和無限制使用",
-      "currentPlan": "目前方案",
       "popular": "最受歡迎",
       "upgrade": "升級",
       "downgrade": "降級",

@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../Auth/useAuth';
 import { useSubscription } from '../SubscriptionContext';
 import { PlanCard } from './components/PlanCard';
+import { BillingPeriodToggle } from '../shared/BillingPeriodToggle';
 import { Analytics } from '../../../utils/analytics';
 import subscriptionService from '../../../api/subscriptionService';
 import './SubscriptionPlansPage.css';
@@ -14,6 +15,7 @@ export const SubscriptionPlansPage = () => {
   const { userPlan } = useSubscription();
   const location = useLocation();
   const [upgradeNotification, setUpgradeNotification] = useState(null);
+  const [billingPeriod, setBillingPeriod] = useState('monthly');
 
   useEffect(() => {
     Analytics.track('subscription_plans_page_viewed', {
@@ -37,6 +39,16 @@ export const SubscriptionPlansPage = () => {
   }, [user, userPlan, location.state, t]);
 
   const availablePlans = subscriptionService.getAvailablePlans();
+
+  const handleBillingPeriodChange = (period) => {
+    setBillingPeriod(period);
+    
+    Analytics.track('billing_period_changed', {
+      userId: user?.id,
+      newPeriod: period,
+      currentPlan: userPlan?.type || 'unknown'
+    });
+  };
 
   return (
     <div className="subscription-plans-page">
@@ -72,6 +84,12 @@ export const SubscriptionPlansPage = () => {
           </p>
         </header>
 
+        {/* Billing Period Toggle */}
+        <BillingPeriodToggle
+          value={billingPeriod}
+          onChange={handleBillingPeriodChange}
+        />
+
         {/* Plan Cards */}
         <section className="subscription-plans-cards">
           {availablePlans.map((plan) => (
@@ -80,6 +98,7 @@ export const SubscriptionPlansPage = () => {
               plan={plan}
               currentPlan={userPlan?.type}
               isCurrentUser={!!user}
+              billingPeriod={billingPeriod}
             />
           ))}
         </section>
