@@ -339,18 +339,18 @@
   margin-top: 20px;
   /* 與上方 tabs 的間距 */
   height: 80vh;
-  /* 改為 70% 的 viewport height */
+  /* 改為 80% 的 viewport height */
   max-height: 80vh;
-  /* 全局最大高度限制也改為 70vh */
+  /* 全局最大高度限制也改為 80vh */
 }
 
-/* 桌面版左右並列佈局 */
+/* 桌面版左右並列佈局 - 使用更靈活的高度設定 */
 @media (min-width: 1024px) {
   .market-sentiment-view .content-layout-container {
     flex-direction: row;
     align-items: stretch;
-    height: 70vh;
-    max-height: 70vh;
+    height: clamp(500px, 65vh, 800px);
+    max-height: clamp(500px, 65vh, 800px);
   }
 }
 
@@ -464,10 +464,19 @@
   }
 }
 
+/* 中等桌面尺寸 (1281px-1919px) */
+@media (min-width: 1281px) and (max-width: 1919px) {
+  .market-sentiment-view .content-layout-container {
+    height: clamp(500px, 62vh, 780px);
+    max-height: clamp(500px, 62vh, 780px);
+  }
+}
+
+/* 大桌面尺寸 (1920px+) */
 @media (min-width: 1920px) {
   .market-sentiment-view .content-layout-container {
-    height: 70vh;
-    max-height: 70vh;
+    height: clamp(500px, 60vh, 750px);
+    max-height: clamp(500px, 60vh, 750px);
   }
 }
 
@@ -738,8 +747,8 @@
 
 @media (min-width: 769px) and (max-width: 1280px) {
   .market-sentiment-view .content-layout-container {
-    height: 70vh;
-    max-height: 70vh;
+    height: clamp(500px, 70vh, 800px);
+    max-height: clamp(500px, 70vh, 800px);
   }
 
 
