@@ -849,6 +849,7 @@
         "message": "Log in to create and manage your personal stock watchlist."
     },
     "pageTitle": "My Watchlist",
+    "pageSubtitle": "Track stocks you are interested in and quickly grasp the price sentiment of multiple targets",
     "pageDescription": "Track stocks you are interested in and quickly grasp the price sentiment of multiple targets.",
     "keywords": "my watchlist, custom stocks, stock monitoring, market sentiment, price analysis",
     "jsonLd": {

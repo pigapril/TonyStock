@@ -551,3 +551,89 @@
 .dialog-overlay {
     z-index: 1000;
 }
+/* 新
+的標題區域設計 */
+.watchlist-header-section {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px 0;
+}
+
+.watchlist-title-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.watchlist-main-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin: 0;
+    text-align: center;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.3;
+}
+
+.watchlist-subtitle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -5px;
+}
+
+.watchlist-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+    font-weight: 400;
+    opacity: 0.8;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* 標題響應式設計 */
+@media (max-width: 1023px) {
+    .watchlist-header-section {
+        margin-bottom: 25px;
+        padding: 15px 0;
+    }
+
+    .watchlist-main-title {
+        font-size: 1.6rem;
+    }
+
+    .watchlist-subtitle {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .watchlist-header-section {
+        margin-bottom: 20px;
+        padding: 10px 0;
+    }
+
+    .watchlist-main-title {
+        font-size: 1.4rem;
+    }
+
+    .watchlist-subtitle {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .watchlist-main-title {
+        font-size: 1.3rem;
+    }
+
+    .watchlist-subtitle {
+        font-size: 0.8rem;
+    }
+}

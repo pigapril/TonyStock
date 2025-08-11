@@ -847,11 +847,12 @@
       "message": "登入以建立並管理您的個人股票追蹤清單。"
     },
     "pageTitle": "我的追蹤清單",
-    "pageDescription": "追蹤您感興趣的股票，快速掌握多個標的價格情緒。",
+    "pageSubtitle": "追蹤你感興趣的股票，快速掌握多個標的價格情緒",
+    "pageDescription": "追蹤你感興趣的股票，快速掌握多個標的價格情緒。",
     "keywords": "我的追蹤清單,自選股,股票監控,市場情緒,價格分析",
     "jsonLd": {
       "name": "我的追蹤清單",
-      "description": "追蹤您感興趣的股票，掌握價格情緒位階。方便同時查看多個股票在長期趨勢之下的價格位階，避免買在高點、賣在低點。",
+      "description": "追蹤你感興趣的股票，掌握價格情緒位階。方便同時查看多個股票在長期趨勢之下的價格位階，避免買在高點、賣在低點。",
       "url": "https://sentimentinsideout.com/watchlist",
       "potentialAction": {
         "@type": "SearchAction",

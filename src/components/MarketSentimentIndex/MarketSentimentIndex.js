@@ -672,7 +672,7 @@ const MarketSentimentIndex = () => {
                   <h1 className="panel-title">
                     <span className="panel-title-brand">Sentiment Inside Out (SIO)</span>
                     <span className="panel-title-index">
-                      {currentLang === 'zh-TW' ? '恐懼貪婪指數' : 'Fear & Greed Index'}
+                      {currentLang === 'zh-TW' ? '恐懼貪婪指標' : 'Fear & Greed Index'}
                     </span>
                   </h1>
                   {/* ▼▼▼ panel-subtitle-container 已從此處剪下 ▼▼▼ */}

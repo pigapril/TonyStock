@@ -304,7 +304,17 @@ export function WatchlistContainer() {
                     這裡不需要重複添加，除非 WatchlistContainer 是獨立渲染的入口 */}
             </Helmet>
             <div className="watchlist-container">
-                <h1>{t('watchlist.pageTitle')}</h1>
+                {/* 新的標題設計 */}
+                <div className="watchlist-header-section">
+                    <div className="watchlist-title-group">
+                        <h1 className="watchlist-main-title">
+                            {t('watchlist.pageTitle')}
+                        </h1>
+                        <div className="watchlist-subtitle-container">
+                            <p className="watchlist-subtitle">{t('watchlist.pageSubtitle')}</p>
+                        </div>
+                    </div>
+                </div>
                 {error && (
                     <div className="error-message">
                         {error}
