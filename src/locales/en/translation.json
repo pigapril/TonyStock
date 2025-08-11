@@ -289,6 +289,7 @@
   },
   "marketSentiment": {
     "pageTitle": "Daily Updated Fear & Greed Index | Market Sentiment Analysis",
+    "pageSubtitle": "Integrating multiple indicators to objectively analyze market fear and greed levels",
     "pageDescription": "Daily track market fear and greed with our exclusive index. We aggregate key indicators like VIX, Put/Call Ratio, AAII survey, etc. to provide a comprehensive view of investor sentiment.",
     "keywords": "market sentiment, investor sentiment, fear greed index, VIX analysis, Put Call Ratio, stock market psychology, investment strategy, market indicators, sentiment tracking, Taiwan stock sentiment, US stock sentiment",
     "heading": "Market Sentiment Indicators Overview",

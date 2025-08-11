@@ -675,6 +675,9 @@ const MarketSentimentIndex = () => {
                       {currentLang === 'zh-TW' ? '恐懼貪婪指標' : 'Fear & Greed Index'}
                     </span>
                   </h1>
+                  <div className="panel-subtitle-container">
+                    <p className="panel-subtitle">{t('marketSentiment.pageSubtitle')}</p>
+                  </div>
                   {/* ▼▼▼ panel-subtitle-container 已從此處剪下 ▼▼▼ */}
                   {sentimentData && sentimentData.compositeScoreLastUpdate && (
                     <div className="panel-last-update-time">

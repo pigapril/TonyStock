@@ -63,9 +63,8 @@
   justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 20px; /* 保留此行，確保在文件流中有基礎間距 */
-  position: relative;  /* 新增：啟用相對定位 */
-  top: -65px;          /* 新增：將元素從其當前位置向上移動 25px */
+  margin-top: 15px;
+  margin-bottom: 20px;
 }
 
 .market-sentiment-view .left-panel .panel-subtitle {

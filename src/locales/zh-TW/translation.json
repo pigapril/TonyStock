@@ -287,6 +287,7 @@
   },
   "marketSentiment": {
     "pageTitle": "每日更新恐懼貪婪指數 | 市場情緒儀表板",
+    "pageSubtitle": "整合多項數據，客觀分析市場恐懼與貪婪程度",
     "pageDescription": "每日追蹤市場恐懼與貪婪程度。我們的獨家指標整合VIX、Put/Call 比例、AAII散戶調查等多種數據，為您提供最全面的投資情緒分析。",
     "keywords": "市場情緒,投資者情緒,恐懼貪婪指數,VIX分析,Put Call Ratio,股市心理學,投資策略,市場指標,情緒追蹤,台股情緒,美股情緒",
     "heading": "市場情緒分析",
