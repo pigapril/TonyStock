@@ -39,6 +39,9 @@ import { Line } from 'react-chartjs-2';
 // 引入 IndicatorItem 組件
 import IndicatorItem from '../IndicatorItem/IndicatorItem';
 
+// 引入 EmotionTag 組件
+import EmotionTag from '../Common/EmotionTag';
+
 // 引入 rc-slider 和其樣式
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -767,7 +770,7 @@ const MarketSentimentIndex = () => {
                   {compositeStep === 'composition' && (
                     <div className="composition-view">
                       <div className="composition-list">
-                        {Object.entries(indicatorsData).map(([key, ind]) => {
+                        {Object.entries(indicatorsData).map(([key, ind], index) => {
                           const sentimentKey = getSentiment(ind.percentileRank ? Math.round(ind.percentileRank) : null);
                           const raw = sentimentKey.split('.').pop();
                           return (
@@ -788,7 +791,16 @@ const MarketSentimentIndex = () => {
                                 </div>
                                 <span className="composition-score-text">{ind.percentileRank ? `${Math.round(ind.percentileRank)}%` : '-'}</span>
                               </div>
-                              <span className={`composition-sentiment sentiment-${raw}`}>{t(sentimentKey)}</span>
+                              <EmotionTag
+                                sentimentType={raw}
+                                sentimentText={t(sentimentKey)}
+                                percentileValue={null}
+                                isLoading={loading}
+                                onTagClick={() => setSelectedIndicatorKey(key)}
+                                showConnectionLine={false}
+                                animationDelay={index * 100}
+                                className="composition-emotion-tag"
+                              />
                             </div>
                           );
                         })}

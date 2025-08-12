@@ -1,0 +1,496 @@
+/* CSS Variables for EmotionTag */
+:root {
+  --emotion-tag-size: 12px;
+  --emotion-tag-pulse-size: 16px;
+  --emotion-tag-border-radius: 6px;
+  --emotion-tag-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --emotion-tag-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --emotion-tag-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --emotion-tag-bg: rgba(255, 255, 255, 0.8);
+  --emotion-tag-text: #1d1d1f;
+}
+
+/* Base EmotionTag Styles */
+.emotion-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: var(--emotion-tag-bg);
+  border-radius: var(--emotion-tag-border-radius);
+  box-shadow: var(--emotion-tag-shadow);
+  transition: var(--emotion-tag-transition);
+  position: relative;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Hardware acceleration */
+  width: 100%; /* Take full width of container */
+  min-width: 80px; /* Minimum width for consistency */
+  max-width: 120px; /* Maximum width to prevent stretching */
+}
+
+/* Clickable state */
+.emotion-tag--clickable {
+  cursor: pointer;
+}
+
+.emotion-tag--clickable:hover {
+  transform: scale(1.05);
+  box-shadow: var(--emotion-tag-shadow-hover);
+}
+
+.emotion-tag--clickable:focus {
+  outline: 2px solid rgba(0, 123, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* Active state */
+.emotion-tag--active {
+  transform: scale(1.02);
+  box-shadow: var(--emotion-tag-shadow-hover);
+}
+
+/* Loading state */
+.emotion-tag--loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Indicator Styles */
+.emotion-tag__indicator {
+  position: relative;
+  width: var(--emotion-tag-pulse-size);
+  height: var(--emotion-tag-pulse-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.emotion-tag__core {
+  width: var(--emotion-tag-size);
+  height: var(--emotion-tag-size);
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+}
+
+.emotion-tag__pulse {
+  position: absolute;
+  width: var(--emotion-tag-pulse-size);
+  height: var(--emotion-tag-pulse-size);
+  border-radius: 50%;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* Content Styles */
+.emotion-tag__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+  text-align: center;
+}
+
+.emotion-tag__text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--emotion-tag-text);
+  white-space: nowrap;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.emotion-tag__value {
+  font-size: 0.7rem;
+  font-weight: 500;
+  opacity: 0.8;
+  color: var(--emotion-tag-text);
+  line-height: 1;
+  display: none; /* Hide percentage value to avoid duplication */
+}
+
+/* Connection Line */
+.emotion-tag__connection-line {
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  width: 16px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.3;
+  transform: translateY(-50%);
+  transition: var(--emotion-tag-transition);
+}
+
+.emotion-tag--active .emotion-tag__connection-line {
+  opacity: 0.6;
+  width: 20px;
+}
+
+/* Loading Overlay */
+.emotion-tag__loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: var(--emotion-tag-border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emotion-tag__loading-spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-left-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  animation: emotionTagSpin 1s linear infinite;
+}
+
+/* Animations */
+@keyframes emotionTagFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes emotionPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.3;
+  }
+}
+
+@keyframes valueUpdate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes emotionTagSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Apply fade-in animation */
+.emotion-tag {
+  animation: emotionTagFadeIn 0.6s ease-out forwards;
+}
+
+/* Apply pulse animation to pulse element */
+.emotion-tag__pulse {
+  animation: emotionPulse 3s ease-in-out infinite;
+}
+
+/* Sentiment-specific styles will be added in the next step */
+/* S
+entiment-specific Styles */
+
+/* Extreme Fear */
+.emotion-tag--extremeFear {
+  --emotion-sentiment-color: #0000FF;
+  --emotion-sentiment-glow: rgba(0, 0, 255, 0.3);
+  --emotion-pulse-speed: 2s;
+}
+
+.emotion-tag--extremeFear .emotion-tag__core {
+  background-color: var(--emotion-sentiment-color);
+  box-shadow: 0 0 8px var(--emotion-sentiment-glow);
+}
+
+.emotion-tag--extremeFear .emotion-tag__pulse {
+  background-color: var(--emotion-sentiment-color);
+  animation-duration: var(--emotion-pulse-speed);
+}
+
+.emotion-tag--extremeFear .emotion-tag__text {
+  color: var(--emotion-sentiment-color);
+}
+
+.emotion-tag--extremeFear .emotion-tag__connection-line {
+  background-color: var(--emotion-sentiment-color);
+}
+
+/* Fear */
+.emotion-tag--fear {
+  --emotion-sentiment-color: #5B9BD5;
+  --emotion-sentiment-glow: rgba(91, 155, 213, 0.3);
+  --emotion-pulse-speed: 2.5s;
+}
+
+.emotion-tag--fear .emotion-tag__core {
+  background-color: var(--emotion-sentiment-color);
+  box-shadow: 0 0 6px var(--emotion-sentiment-glow);
+}
+
+.emotion-tag--fear .emotion-tag__pulse {
+  background-color: var(--emotion-sentiment-color);
+  animation-duration: var(--emotion-pulse-speed);
+}
+
+.emotion-tag--fear .emotion-tag__text {
+  color: var(--emotion-sentiment-color);
+}
+
+.emotion-tag--fear .emotion-tag__connection-line {
+  background-color: var(--emotion-sentiment-color);
+}
+
+/* Neutral */
+.emotion-tag--neutral {
+  --emotion-sentiment-color: #708090;
+  --emotion-sentiment-glow: rgba(112, 128, 144, 0.3);
+  --emotion-pulse-speed: 3s;
+}
+
+.emotion-tag--neutral .emotion-tag__core {
+  background-color: var(--emotion-sentiment-color);
+  box-shadow: 0 0 4px var(--emotion-sentiment-glow);
+}
+
+.emotion-tag--neutral .emotion-tag__pulse {
+  background-color: var(--emotion-sentiment-color);
+  animation-duration: var(--emotion-pulse-speed);
+}
+
+.emotion-tag--neutral .emotion-tag__text {
+  color: var(--emotion-sentiment-color);
+}
+
+.emotion-tag--neutral .emotion-tag__connection-line {
+  background-color: var(--emotion-sentiment-color);
+}
+
+/* Greed */
+.emotion-tag--greed {
+  --emotion-sentiment-color: #F0B8CE;
+  --emotion-sentiment-glow: rgba(240, 184, 206, 0.3);
+  --emotion-pulse-speed: 2.5s;
+}
+
+.emotion-tag--greed .emotion-tag__core {
+  background-color: var(--emotion-sentiment-color);
+  box-shadow: 0 0 6px var(--emotion-sentiment-glow);
+}
+
+.emotion-tag--greed .emotion-tag__pulse {
+  background-color: var(--emotion-sentiment-color);
+  animation-duration: var(--emotion-pulse-speed);
+}
+
+.emotion-tag--greed .emotion-tag__text {
+  color: var(--emotion-sentiment-color);
+}
+
+.emotion-tag--greed .emotion-tag__connection-line {
+  background-color: var(--emotion-sentiment-color);
+}
+
+/* Extreme Greed */
+.emotion-tag--extremeGreed {
+  --emotion-sentiment-color: #D24A93;
+  --emotion-sentiment-glow: rgba(210, 74, 147, 0.3);
+  --emotion-pulse-speed: 2s;
+}
+
+.emotion-tag--extremeGreed .emotion-tag__core {
+  background-color: var(--emotion-sentiment-color);
+  box-shadow: 0 0 8px var(--emotion-sentiment-glow);
+}
+
+.emotion-tag--extremeGreed .emotion-tag__pulse {
+  background-color: var(--emotion-sentiment-color);
+  animation-duration: var(--emotion-pulse-speed);
+}
+
+.emotion-tag--extremeGreed .emotion-tag__text {
+  color: var(--emotion-sentiment-color);
+}
+
+.emotion-tag--extremeGreed .emotion-tag__connection-line {
+  background-color: var(--emotion-sentiment-color);
+}
+
+/* Not Available */
+.emotion-tag--notAvailable {
+  --emotion-sentiment-color: #6c757d;
+  --emotion-sentiment-glow: rgba(108, 117, 125, 0.2);
+  --emotion-pulse-speed: none;
+}
+
+.emotion-tag--notAvailable .emotion-tag__core {
+  background-color: var(--emotion-sentiment-color);
+  box-shadow: 0 0 2px var(--emotion-sentiment-glow);
+}
+
+.emotion-tag--notAvailable .emotion-tag__pulse {
+  background-color: var(--emotion-sentiment-color);
+  animation: none; /* No pulse for not available */
+}
+
+.emotion-tag--notAvailable .emotion-tag__text {
+  color: var(--emotion-sentiment-color);
+}
+
+.emotion-tag--notAvailable .emotion-tag__connection-line {
+  background-color: var(--emotion-sentiment-color);
+}
+
+/* Enhanced animations for extreme states */
+.emotion-tag--extremeFear .emotion-tag__pulse,
+.emotion-tag--extremeGreed .emotion-tag__pulse {
+  animation-name: emotionPulseIntense;
+}
+
+@keyframes emotionPulseIntense {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: scale(1.3);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.2;
+  }
+  75% {
+    transform: scale(1.3);
+    opacity: 0.4;
+  }
+}
+
+/* Hover effects for clickable tags */
+.emotion-tag--clickable:hover .emotion-tag__pulse {
+  animation-duration: calc(var(--emotion-pulse-speed) * 0.7);
+}
+
+.emotion-tag--clickable:hover .emotion-tag__core {
+  transform: scale(1.1);
+}
+
+/* Value update animation trigger */
+.emotion-tag__value--updating {
+  animation: valueUpdate 0.6s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 1023px) {
+  .emotion-tag {
+    gap: 5px;
+    padding: 5px 6px;
+    min-width: 70px;
+    max-width: 100px;
+  }
+  
+  .emotion-tag__text {
+    font-size: 0.7rem;
+  }
+  
+  /* Hide connection line on tablets and mobile */
+  .emotion-tag__connection-line {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .emotion-tag {
+    gap: 4px;
+    padding: 4px 6px;
+    min-width: 60px;
+    max-width: 85px;
+  }
+  
+  :root {
+    --emotion-tag-size: 10px;
+    --emotion-tag-pulse-size: 14px;
+  }
+  
+  .emotion-tag__text {
+    font-size: 0.65rem;
+  }
+  
+  /* Reduce animation intensity on mobile */
+  .emotion-tag__pulse {
+    animation-duration: calc(var(--emotion-pulse-speed) * 1.5);
+  }
+}
+
+@media (max-width: 430px) {
+  .emotion-tag {
+    min-width: 55px;
+    max-width: 75px;
+    padding: 3px 5px;
+  }
+  
+  .emotion-tag__text {
+    font-size: 0.6rem;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .emotion-tag,
+  .emotion-tag * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .emotion-tag__pulse {
+    animation: none !important;
+  }
+  
+  .emotion-tag--clickable:hover {
+    transform: none;
+  }
+}
+
+/* Dark theme support (if needed) */
+[data-theme="dark"] .emotion-tag {
+  --emotion-tag-bg: rgba(0, 0, 0, 0.6);
+  --emotion-tag-text: rgba(255, 255, 255, 0.9);
+  --emotion-tag-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .emotion-tag__loading-overlay {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .emotion-tag__loading-spinner {
+  border-color: rgba(255, 255, 255, 0.1);
+  border-left-color: rgba(255, 255, 255, 0.5);
+}
