@@ -692,22 +692,24 @@ const MarketSentimentIndex = () => {
                   )}
                 </div>
 
-                <MarketSentimentGauge
-                  sentimentData={sentimentData}
-                  isDataLoaded={isDataLoaded}
-                  initialRenderRef={initialRenderRef}
-                  showAnalysisResult={false}
-                  showLastUpdate={false}
-                />
+                <div className="gauge-sentiment-container">
+                  <MarketSentimentGauge
+                    sentimentData={sentimentData}
+                    isDataLoaded={isDataLoaded}
+                    initialRenderRef={initialRenderRef}
+                    showAnalysisResult={false}
+                    showLastUpdate={false}
+                  />
 
-                {/* ▼▼▼ panel-subtitle-container 已貼到此處 ▼▼▼ */}
-                <div className="panel-subtitle-container">
-                  <span className="panel-subtitle">
-                    {currentLang === 'zh-TW' ? '目前的股市情緒是：' : 'Current Market Sentiment:'}
-                  </span>
-                  <span className={`panel-sentiment-value sentiment-${sentimentData && sentimentData.totalScore != null ? getSentiment(Math.round(sentimentData.totalScore)).split('.').pop() : 'neutral'}`}>
-                    {sentimentData && sentimentData.totalScore != null ? t(getSentiment(Math.round(sentimentData.totalScore))) : t('sentiment.neutral')}
-                  </span>
+                  {/* ▼▼▼ panel-subtitle-container 已貼到此處，現在在 gauge 容器內 ▼▼▼ */}
+                  <div className="panel-subtitle-container">
+                    <span className="panel-subtitle">
+                      {currentLang === 'zh-TW' ? '目前的股市情緒是：' : 'Current Market Sentiment:'}
+                    </span>
+                    <span className={`panel-sentiment-value sentiment-${sentimentData && sentimentData.totalScore != null ? getSentiment(Math.round(sentimentData.totalScore)).split('.').pop() : 'neutral'}`}>
+                      {sentimentData && sentimentData.totalScore != null ? t(getSentiment(Math.round(sentimentData.totalScore))) : t('sentiment.neutral')}
+                    </span>
+                  </div>
                 </div>
 
               </div>

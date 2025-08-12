@@ -67,6 +67,38 @@
   margin-bottom: 20px;
 }
 
+/* 新增：針對 gauge 後面的 sentiment 容器特殊定位 */
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  width: 90%;
+  z-index: 10;
+}
+
+/* 響應式調整：不同螢幕尺寸下的定位 */
+@media (max-width: 1023px) {
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
+    bottom: 12%;
+  }
+}
+
+@media (max-width: 768px) {
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
+    bottom: 10%;
+    width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
+    bottom: 8%;
+    width: 98%;
+  }
+}
+
 .market-sentiment-view .left-panel .panel-subtitle {
   font-size: 0.9rem;
   color: #666;
@@ -472,6 +504,15 @@
   gap: 0;
 }
 
+/* 新增：創建一個包含 gauge 和 sentiment 的容器 */
+.market-sentiment-view .left-panel .gauge-sentiment-container {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+  width: 100%;
+  /* 簡化佈局，讓 gauge 直接佔據空間，不使用 flex 以避免佈局衝突 */
+}
+
 /* 右側面板樣式 */
 .market-sentiment-view .right-panel {
   flex: 1;
@@ -544,6 +585,13 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+/* 新增：確保 gauge 在新容器中正確定位 */
+.market-sentiment-view .left-panel .gauge-sentiment-container .market-sentiment-gauge {
+  width: 100%;
+  height: 100%;
+  /* 讓 gauge 完全填滿容器，與原本的行為一致 */
 }
 
 /* 響應式調整 for left panel analysis-result */
