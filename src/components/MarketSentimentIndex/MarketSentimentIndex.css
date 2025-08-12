@@ -454,8 +454,8 @@
   .market-sentiment-view .content-layout-container {
     flex-direction: row;
     align-items: stretch;
-    height: clamp(600px, 75vh, 900px); /* Increased height to fit all items */
-    max-height: clamp(600px, 75vh, 900px);
+    min-height: 500px; /* Minimum height to ensure usability */
+    height: auto; /* Auto height based on content */
   }
 }
 
@@ -572,8 +572,8 @@
 /* 中等桌面尺寸 (1281px-1599px) - 適用於 1534x864 等 */
 @media (min-width: 1281px) and (max-width: 1599px) {
   .market-sentiment-view .content-layout-container {
-    height: clamp(600px, 75vh, 800px); /* Increased height for 1534x864 */
-    max-height: clamp(600px, 75vh, 800px);
+    min-height: 500px; /* Minimum height for medium desktop screens */
+    height: auto; /* Auto height based on content */
   }
   
   /* Optimize composition list for medium desktop screens */
@@ -590,16 +590,16 @@
 /* 大中等桌面尺寸 (1600px-1919px) */
 @media (min-width: 1600px) and (max-width: 1919px) {
   .market-sentiment-view .content-layout-container {
-    height: clamp(650px, 70vh, 850px); /* Increased height */
-    max-height: clamp(650px, 70vh, 850px);
+    min-height: 500px; /* Minimum height for large desktop screens */
+    height: auto; /* Auto height based on content */
   }
 }
 
 /* 大桌面尺寸 (1920px+) */
 @media (min-width: 1920px) {
   .market-sentiment-view .content-layout-container {
-    height: clamp(700px, 65vh, 900px); /* Increased height for large screens */
-    max-height: clamp(700px, 65vh, 900px);
+    min-height: 500px; /* Minimum height for very large screens */
+    height: auto; /* Auto height based on content */
   }
 }
 
@@ -1005,8 +1005,8 @@
 
 @media (min-width: 769px) and (max-width: 1280px) {
   .market-sentiment-view .content-layout-container {
-    height: clamp(550px, 80vh, 850px); /* Increased height for 1280x720 */
-    max-height: clamp(550px, 80vh, 850px);
+    min-height: 500px; /* Minimum height for smaller desktop screens */
+    height: auto; /* Auto height based on content */
   }
 
   .market-sentiment-view .indicator-item .analysis-result,
@@ -1037,7 +1037,7 @@
   }
   
   .composition-emotion-tag {
-    flex: 0 0 85px; /* Slightly smaller for better fit */
+    flex: 0 0 105px; /* Increased from 85px to 105px for better text display */
   }
 }
 
@@ -1579,7 +1579,7 @@
 
 /* EmotionTag integration styles - Redesigned layout */
 .composition-emotion-tag {
-  flex: 0 0 100px; /* Fixed width for consistent alignment */
+  flex: 0 0 120px; /* Increased from 100px to 120px for longer text like "Extreme Greed" */
   display: flex;
   justify-content: center;
 }
@@ -1588,7 +1588,7 @@
 .composition-item {
   display: flex;
   align-items: center;
-  gap: 10px; /* Optimized gap for better spacing */
+  gap: 8px; /* Reduced gap to accommodate wider EmotionTag */
   padding: 8px 12px; /* Reduced padding to fit more items */
   border-bottom: 1px solid #e8e8e8;
   cursor: pointer;
@@ -1659,7 +1659,7 @@
 /* Responsive adjustments for the new layout */
 @media (max-width: 1023px) {
   .composition-emotion-tag {
-    flex: 0 0 90px; /* Slightly smaller on tablets */
+    flex: 0 0 110px; /* Increased from 90px to 110px for tablets */
   }
   
   .composition-item .composition-name {
@@ -1675,7 +1675,7 @@
 
 @media (max-width: 767px) {
   .composition-emotion-tag {
-    flex: 0 0 80px; /* Smaller on mobile */
+    flex: 0 0 100px; /* Increased from 80px to 100px for mobile */
   }
   
   .composition-item {

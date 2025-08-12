@@ -28,7 +28,7 @@
   transform: translateZ(0); /* Hardware acceleration */
   width: 100%; /* Take full width of container */
   min-width: 80px; /* Minimum width for consistency */
-  max-width: 120px; /* Maximum width to prevent stretching */
+  max-width: 140px; /* Increased from 120px to 140px for longer text */
 }
 
 /* Clickable state */
@@ -104,8 +104,8 @@
   color: var(--emotion-tag-text);
   white-space: nowrap;
   line-height: 1.2;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible; /* Changed from hidden to visible */
+  text-overflow: clip; /* Changed from ellipsis to clip */
   max-width: 100%;
 }
 
@@ -412,7 +412,7 @@ entiment-specific Styles */
     gap: 5px;
     padding: 5px 6px;
     min-width: 70px;
-    max-width: 100px;
+    max-width: 120px; /* Increased for tablets */
   }
   
   .emotion-tag__text {
@@ -430,7 +430,7 @@ entiment-specific Styles */
     gap: 4px;
     padding: 4px 6px;
     min-width: 60px;
-    max-width: 85px;
+    max-width: 105px; /* Increased for mobile */
   }
   
   :root {
@@ -451,7 +451,7 @@ entiment-specific Styles */
 @media (max-width: 430px) {
   .emotion-tag {
     min-width: 55px;
-    max-width: 75px;
+    max-width: 95px; /* Increased for small mobile */
     padding: 3px 5px;
   }
   
