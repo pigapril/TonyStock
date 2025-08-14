@@ -1,0 +1,502 @@
+/**
+ * 付款流程組件
+ * 
+ * 處理完整的付款流程：
+ * 1. 方案選擇確認
+ * 2. 付款方式選擇
+ * 3. 條款同意
+ * 4. 訂單創建
+ * 5. 跳轉到綠界支付
+ */
+
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import paymentService from '../../services/paymentService';
+import { systemLogger } from '../../utils/logger';
+import LoadingSpinner from '../Common/LoadingSpinner';
+
+const PaymentFlow = ({ 
+    planType = 'pro', 
+    billingPeriod = 'monthly',
+    onSuccess,
+    onError,
+    onCancel 
+}) => {
+    const navigate = useNavigate();
+    const [currentStep, setCurrentStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState('ALL');
+    const [agreedToTerms, setAgreedToTerms] = useState(false);
+    const [orderData, setOrderData] = useState(null);
+
+    // 獲取方案資訊
+    const planPricing = paymentService.getPlanPricing();
+    const currentPlan = planPricing[planType]?.[billingPeriod];
+    const paymentMethods = paymentService.getPaymentMethods();
+
+    useEffect(() => {
+        systemLogger.info('PaymentFlow initialized:', {
+            planType,
+            billingPeriod,
+            currentPlan
+        });
+    }, [planType, billingPeriod, currentPlan]);
+
+    /**
+     * 處理下一步
+     */
+    const handleNextStep = () => {
+        if (currentStep < 4) {
+            setCurrentStep(currentStep + 1);
+        }
+    };
+
+    /**
+     * 處理上一步
+     */
+    const handlePrevStep = () => {
+        if (currentStep > 1) {
+            setCurrentStep(currentStep - 1);
+        }
+    };
+
+    /**
+     * 處理付款方式變更
+     */
+    const handlePaymentMethodChange = (method) => {
+        setPaymentMethod(method);
+        systemLogger.info('Payment method selected:', { method });
+    };
+
+    /**
+     * 處理條款同意變更
+     */
+    const handleTermsChange = (agreed) => {
+        setAgreedToTerms(agreed);
+    };
+
+    /**
+     * 創建訂單並跳轉到付款頁面
+     */
+    const handleCreateOrder = async () => {
+        if (!agreedToTerms) {
+            setError('請先同意服務條款和隱私政策');
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            systemLogger.info('Creating payment order:', {
+                planType,
+                billingPeriod,
+                paymentMethod
+            });
+
+            const result = await paymentService.createOrder({
+                planType,
+                billingPeriod,
+                paymentMethod
+            });
+
+            setOrderData(result);
+            setCurrentStep(4); // 跳轉到確認頁面
+
+            systemLogger.info('Order created successfully:', {
+                orderId: result.orderId,
+                amount: result.amount
+            });
+
+        } catch (error) {
+            systemLogger.error('Failed to create order:', error);
+            setError('創建訂單時發生錯誤，請稍後再試');
+            
+            if (onError) {
+                onError(error);
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    /**
+     * 提交付款表單到綠界
+     */
+    const handleSubmitPayment = () => {
+        if (!orderData) {
+            setError('訂單資料不完整');
+            return;
+        }
+
+        try {
+            systemLogger.info('Submitting payment to ECPay:', {
+                orderId: orderData.orderId
+            });
+
+            // 提交表單到綠界
+            paymentService.submitPaymentForm(orderData);
+
+        } catch (error) {
+            systemLogger.error('Failed to submit payment:', error);
+            setError('跳轉到付款頁面時發生錯誤');
+            
+            if (onError) {
+                onError(error);
+            }
+        }
+    };
+
+    /**
+     * 處理取消
+     */
+    const handleCancel = () => {
+        systemLogger.info('Payment flow cancelled by user');
+        
+        if (onCancel) {
+            onCancel();
+        } else {
+            navigate('/subscription');
+        }
+    };
+
+    /**
+     * 渲染步驟指示器
+     */
+    const renderStepIndicator = () => {
+        const steps = [
+            { number: 1, title: '確認方案' },
+            { number: 2, title: '選擇付款方式' },
+            { number: 3, title: '確認條款' },
+            { number: 4, title: '確認付款' }
+        ];
+
+        return (
+            <div className="flex justify-center mb-8">
+                <div className="flex items-center space-x-4">
+                    {steps.map((step, index) => (
+                        <React.Fragment key={step.number}>
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium ${
+                                currentStep >= step.number
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-200 text-gray-600'
+                            }`}>
+                                {step.number}
+                            </div>
+                            <span className={`text-sm ${
+                                currentStep >= step.number
+                                    ? 'text-blue-600 font-medium'
+                                    : 'text-gray-500'
+                            }`}>
+                                {step.title}
+                            </span>
+                            {index < steps.length - 1 && (
+                                <div className={`w-8 h-0.5 ${
+                                    currentStep > step.number
+                                        ? 'bg-blue-600'
+                                        : 'bg-gray-200'
+                                }`} />
+                            )}
+                        </React.Fragment>
+                    ))}
+                </div>
+            </div>
+        );
+    };
+
+    /**
+     * 渲染方案確認步驟
+     */
+    const renderPlanConfirmation = () => (
+        <div className="max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-center mb-6">確認訂閱方案</h2>
+            
+            <div className="bg-white rounded-lg shadow-md p-6 border-2 border-blue-200">
+                <div className="text-center">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                        Pro 方案
+                    </h3>
+                    <div className="text-3xl font-bold text-blue-600 mb-2">
+                        NT$ {currentPlan?.price?.toLocaleString()}
+                    </div>
+                    <div className="text-gray-600 mb-4">
+                        每{currentPlan?.period}
+                        {currentPlan?.discount && (
+                            <span className="ml-2 text-green-600 text-sm">
+                                ({currentPlan.discount})
+                            </span>
+                        )}
+                    </div>
+                </div>
+
+                <div className="border-t pt-4">
+                    <h4 className="font-medium text-gray-900 mb-3">包含功能：</h4>
+                    <ul className="space-y-2 text-sm text-gray-600">
+                        <li className="flex items-center">
+                            <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            市場情緒分析
+                        </li>
+                        <li className="flex items-center">
+                            <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            進階股票分析工具
+                        </li>
+                        <li className="flex items-center">
+                            <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            無限制觀察清單
+                        </li>
+                        <li className="flex items-center">
+                            <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            優先客戶支援
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div className="flex justify-between mt-6">
+                <button
+                    onClick={handleCancel}
+                    className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                    取消
+                </button>
+                <button
+                    onClick={handleNextStep}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                    確認方案
+                </button>
+            </div>
+        </div>
+    );
+
+    /**
+     * 渲染付款方式選擇步驟
+     */
+    const renderPaymentMethodSelection = () => (
+        <div className="max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-center mb-6">選擇付款方式</h2>
+            
+            <div className="space-y-3">
+                {paymentMethods.map((method) => (
+                    <label
+                        key={method.value}
+                        className={`block p-4 border rounded-lg cursor-pointer transition-colors ${
+                            paymentMethod === method.value
+                                ? 'border-blue-500 bg-blue-50'
+                                : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                    >
+                        <div className="flex items-center">
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value={method.value}
+                                checked={paymentMethod === method.value}
+                                onChange={(e) => handlePaymentMethodChange(e.target.value)}
+                                className="mr-3"
+                            />
+                            <div>
+                                <div className="font-medium text-gray-900">
+                                    {method.label}
+                                </div>
+                                <div className="text-sm text-gray-600">
+                                    {method.description}
+                                </div>
+                            </div>
+                        </div>
+                    </label>
+                ))}
+            </div>
+
+            <div className="flex justify-between mt-6">
+                <button
+                    onClick={handlePrevStep}
+                    className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                    上一步
+                </button>
+                <button
+                    onClick={handleNextStep}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                    下一步
+                </button>
+            </div>
+        </div>
+    );
+
+    /**
+     * 渲染條款同意步驟
+     */
+    const renderTermsAgreement = () => (
+        <div className="max-w-2xl mx-auto">
+            <h2 className="text-2xl font-bold text-center mb-6">服務條款與隱私政策</h2>
+            
+            <div className="bg-gray-50 rounded-lg p-6 mb-6 max-h-64 overflow-y-auto">
+                <h3 className="font-semibold mb-3">服務條款重點</h3>
+                <ul className="space-y-2 text-sm text-gray-700">
+                    <li>• 訂閱服務將於付款完成後立即生效</li>
+                    <li>• 月付方案每月自動續費，年付方案每年自動續費</li>
+                    <li>• 您可以隨時取消訂閱，取消後將在當前週期結束時停止服務</li>
+                    <li>• 退款政策：付款後 7 天內可申請全額退款</li>
+                    <li>• 我們承諾保護您的個人資料和付款資訊安全</li>
+                </ul>
+
+                <h3 className="font-semibold mt-4 mb-3">隱私政策重點</h3>
+                <ul className="space-y-2 text-sm text-gray-700">
+                    <li>• 我們僅收集提供服務所必需的個人資料</li>
+                    <li>• 您的付款資訊由綠界支付安全處理，我們不會儲存信用卡資訊</li>
+                    <li>• 我們不會將您的個人資料出售給第三方</li>
+                    <li>• 您有權隨時查看、修改或刪除您的個人資料</li>
+                </ul>
+            </div>
+
+            <label className="flex items-start space-x-3 mb-6">
+                <input
+                    type="checkbox"
+                    checked={agreedToTerms}
+                    onChange={(e) => handleTermsChange(e.target.checked)}
+                    className="mt-1"
+                />
+                <span className="text-sm text-gray-700">
+                    我已閱讀並同意
+                    <a href="/terms" target="_blank" className="text-blue-600 hover:underline mx-1">
+                        服務條款
+                    </a>
+                    和
+                    <a href="/privacy" target="_blank" className="text-blue-600 hover:underline mx-1">
+                        隱私政策
+                    </a>
+                </span>
+            </label>
+
+            <div className="flex justify-between">
+                <button
+                    onClick={handlePrevStep}
+                    className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                    上一步
+                </button>
+                <button
+                    onClick={handleCreateOrder}
+                    disabled={!agreedToTerms || loading}
+                    className={`px-6 py-2 rounded-lg transition-colors ${
+                        agreedToTerms && !loading
+                            ? 'bg-blue-600 text-white hover:bg-blue-700'
+                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
+                >
+                    {loading ? '創建訂單中...' : '創建訂單'}
+                </button>
+            </div>
+        </div>
+    );
+
+    /**
+     * 渲染付款確認步驟
+     */
+    const renderPaymentConfirmation = () => (
+        <div className="max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-center mb-6">確認付款資訊</h2>
+            
+            {orderData && (
+                <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div className="space-y-3">
+                        <div className="flex justify-between">
+                            <span className="text-gray-600">訂單編號：</span>
+                            <span className="font-mono text-sm">{orderData.orderId}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-gray-600">方案：</span>
+                            <span>Pro 方案 ({currentPlan?.period}付)</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-gray-600">付款方式：</span>
+                            <span>{paymentMethods.find(m => m.value === paymentMethod)?.label}</span>
+                        </div>
+                        <div className="flex justify-between text-lg font-semibold border-t pt-3">
+                            <span>總金額：</span>
+                            <span className="text-blue-600">
+                                NT$ {orderData.amount?.toLocaleString()}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                <div className="flex items-start">
+                    <svg className="w-5 h-5 text-yellow-600 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    <div className="text-sm text-yellow-800">
+                        <p className="font-medium mb-1">付款注意事項：</p>
+                        <ul className="space-y-1">
+                            <li>• 點擊「前往付款」將跳轉到綠界支付頁面</li>
+                            <li>• 請在 30 分鐘內完成付款，逾時訂單將自動取消</li>
+                            <li>• 付款完成後將自動返回本網站</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex justify-between">
+                <button
+                    onClick={handleCancel}
+                    className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                    取消訂單
+                </button>
+                <button
+                    onClick={handleSubmitPayment}
+                    className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                >
+                    前往付款
+                </button>
+            </div>
+        </div>
+    );
+
+    return (
+        <div className="min-h-screen bg-gray-50 py-8">
+            <div className="container mx-auto px-4">
+                {renderStepIndicator()}
+
+                {error && (
+                    <div className="max-w-md mx-auto mb-6">
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <div className="flex items-center">
+                                <svg className="w-5 h-5 text-red-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                </svg>
+                                <span className="text-red-800 text-sm">{error}</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {loading && (
+                    <div className="flex justify-center mb-6">
+                        <LoadingSpinner size="large" />
+                    </div>
+                )}
+
+                {currentStep === 1 && renderPlanConfirmation()}
+                {currentStep === 2 && renderPaymentMethodSelection()}
+                {currentStep === 3 && renderTermsAgreement()}
+                {currentStep === 4 && renderPaymentConfirmation()}
+            </div>
+        </div>
+    );
+};
+
+export default PaymentFlow;

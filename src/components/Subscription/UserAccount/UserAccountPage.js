@@ -5,6 +5,7 @@ import { useSubscription } from '../SubscriptionContext';
 import { PlanInfo } from './components/PlanInfo';
 import { UsageStats } from './components/UsageStats';
 import { SubscriptionHistory } from './components/SubscriptionHistory';
+import PaymentHistory from '../../Payment/PaymentHistory';
 import { Analytics } from '../../../utils/analytics';
 import './UserAccountPage.css';
 
@@ -121,6 +122,14 @@ export const UserAccountPage = () => {
               {t('subscription.userAccount.subscriptionHistory')}
             </h2>
             <SubscriptionHistory history={subscriptionHistory} loading={loading} />
+          </section>
+
+          {/* Payment History Section */}
+          <section className="user-account-section">
+            <h2 className="user-account-section__title">
+              {t('subscription.userAccount.paymentHistory')}
+            </h2>
+            <PaymentHistory />
           </section>
         </div>
       </div>

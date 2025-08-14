@@ -1,5 +1,5 @@
 {
     "IDX.aI.enableInlineCompletion": true,
     "IDX.aI.enableCodebaseIndexing": true,
-    "aws.q.mcp.initTimeout": 250000
+    "aws.q.mcp.initTimeout": 950000
 }

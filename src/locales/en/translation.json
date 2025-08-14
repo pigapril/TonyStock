@@ -1074,6 +1074,7 @@
       "currentPlan": "Current Plan",
       "usageStats": "Usage Statistics",
       "subscriptionHistory": "Subscription History",
+      "paymentHistory": "Payment History",
       "accountSettings": "Account Settings",
       "email": "Email",
       "logout": "Logout",
@@ -1184,5 +1185,230 @@
       "cancelled": "Cancelled"
     },
     "autoRenewEnabled": "Auto-renewal enabled"
+  },
+  "payment": {
+    "pageTitle": "Payment",
+    "pageDescription": "Secure and convenient payment process",
+    "keywords": "payment, ECPay, credit card, ATM, convenience store payment",
+    "heading": "Payment Information",
+    "flow": {
+      "title": "Payment Process",
+      "step1": "Select Plan",
+      "step2": "Payment Method",
+      "step3": "Confirm Payment",
+      "step4": "Complete Subscription",
+      "selectPlan": "Select Plan",
+      "selectPayment": "Select Payment Method",
+      "confirmPayment": "Confirm Payment",
+      "complete": "Complete"
+    },
+    "methods": {
+      "title": "Payment Methods",
+      "creditCard": "Credit Card",
+      "creditCardDesc": "Supports Visa, MasterCard, JCB",
+      "atm": "ATM Transfer",
+      "atmDesc": "Virtual account transfer, complete within 3 days",
+      "cvs": "Convenience Store",
+      "cvsDesc": "7-Eleven, FamilyMart, Hi-Life, OK Mart",
+      "webatm": "Web ATM",
+      "webatmDesc": "Requires card reader and chip card"
+    },
+    "form": {
+      "planType": "Plan Type",
+      "billingCycle": "Billing Cycle",
+      "amount": "Payment Amount",
+      "paymentMethod": "Payment Method",
+      "agreeTerms": "I agree to the",
+      "termsAndConditions": "Terms of Service and Privacy Policy",
+      "proceedPayment": "Proceed to Payment",
+      "processing": "Processing...",
+      "creating": "Creating order...",
+      "redirecting": "Redirecting to payment page..."
+    },
+    "status": {
+      "title": "Payment Status",
+      "processing": "Payment Processing",
+      "processingDesc": "Your payment is being processed, please wait...",
+      "success": "Payment Successful",
+      "successDesc": "Congratulations! Your payment has been completed successfully",
+      "failed": "Payment Failed",
+      "failedDesc": "Sorry, your payment could not be completed",
+      "cancelled": "Payment Cancelled",
+      "cancelledDesc": "You have cancelled this payment",
+      "pending": "Payment Pending",
+      "pendingDesc": "Please complete payment to activate your subscription",
+      "expired": "Payment Expired",
+      "expiredDesc": "This payment link has expired, please initiate payment again"
+    },
+    "actions": {
+      "retry": "Retry Payment",
+      "cancel": "Cancel Payment",
+      "backToPlans": "Back to Plans",
+      "viewSubscription": "View Subscription",
+      "contactSupport": "Contact Support",
+      "downloadInvoice": "Download Invoice"
+    },
+    "history": {
+      "title": "Payment History",
+      "noPayments": "No payment records",
+      "orderId": "Order ID",
+      "date": "Payment Date",
+      "amount": "Amount",
+      "status": "Status",
+      "method": "Payment Method",
+      "plan": "Plan",
+      "cycle": "Cycle",
+      "actions": "Actions",
+      "viewDetails": "View Details",
+      "downloadReceipt": "Download Receipt"
+    },
+    "errors": {
+      "invalidPlan": "Invalid plan selection",
+      "invalidAmount": "Invalid payment amount",
+      "paymentMethodRequired": "Please select a payment method",
+      "termsRequired": "Please agree to the terms of service",
+      "createOrderFailed": "Failed to create order",
+      "paymentFailed": "Payment processing failed",
+      "networkError": "Network connection error, please try again later",
+      "serverError": "Server error, please contact support",
+      "sessionExpired": "Session expired, please log in again",
+      "insufficientFunds": "Insufficient funds",
+      "cardDeclined": "Credit card declined",
+      "invalidCard": "Invalid credit card information",
+      "expiredCard": "Credit card expired",
+      "securityCodeError": "Security code error",
+      "duplicatePayment": "Duplicate payment, please do not submit repeatedly"
+    },
+    "security": {
+      "title": "Payment Security",
+      "ssl": "SSL Encryption Protection",
+      "pci": "PCI DSS Compliant",
+      "secure": "Secure Payment Environment",
+      "privacy": "Privacy Data Protection"
+    }
+  },
+  "invoice": {
+    "title": "Invoice Management",
+    "pageTitle": "Invoice Management",
+    "pageDescription": "Manage your payment invoices",
+    "list": {
+      "title": "Invoice List",
+      "noInvoices": "No invoice records",
+      "invoiceNumber": "Invoice Number",
+      "date": "Issue Date",
+      "amount": "Amount",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "pending": "Pending",
+      "issued": "Issued",
+      "sent": "Sent",
+      "failed": "Failed",
+      "cancelled": "Cancelled"
+    },
+    "actions": {
+      "download": "Download PDF",
+      "resend": "Resend",
+      "view": "View Details"
+    },
+    "details": {
+      "title": "Invoice Details",
+      "invoiceNumber": "Invoice Number",
+      "issueDate": "Issue Date",
+      "dueDate": "Due Date",
+      "amount": "Invoice Amount",
+      "taxAmount": "Tax Amount",
+      "totalAmount": "Total Amount",
+      "buyerInfo": "Buyer Information",
+      "sellerInfo": "Seller Information",
+      "items": "Item Details"
+    },
+    "messages": {
+      "downloadSuccess": "Invoice downloaded successfully",
+      "downloadFailed": "Invoice download failed",
+      "resendSuccess": "Invoice resent successfully",
+      "resendFailed": "Invoice resend failed"
+    }
+  },
+  "refund": {
+    "title": "Refund Management",
+    "pageTitle": "Refund Management",
+    "pageDescription": "Request and manage refunds",
+    "request": {
+      "title": "Request Refund",
+      "selectPayment": "Select payment to refund",
+      "reason": "Refund Reason",
+      "reasonRequired": "Please select a refund reason",
+      "reasonOptions": {
+        "notSatisfied": "Service not satisfactory",
+        "technicalIssue": "Technical issue",
+        "billing": "Billing error",
+        "duplicate": "Duplicate payment",
+        "other": "Other reason"
+      },
+      "description": "Detailed Description",
+      "descriptionPlaceholder": "Please provide detailed reason for refund...",
+      "amount": "Refund Amount",
+      "fullRefund": "Full Refund",
+      "partialRefund": "Partial Refund",
+      "submit": "Submit Request",
+      "submitting": "Submitting..."
+    },
+    "list": {
+      "title": "Refund History",
+      "noRefunds": "No refund records",
+      "refundId": "Refund ID",
+      "paymentId": "Original Payment ID",
+      "date": "Request Date",
+      "amount": "Refund Amount",
+      "status": "Status",
+      "reason": "Refund Reason",
+      "actions": "Actions"
+    },
+    "status": {
+      "pending": "Under Review",
+      "approved": "Approved",
+      "processing": "Processing",
+      "completed": "Completed",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled"
+    },
+    "actions": {
+      "viewDetails": "View Details",
+      "cancel": "Cancel Request",
+      "contact": "Contact Support"
+    },
+    "details": {
+      "title": "Refund Details",
+      "refundId": "Refund ID",
+      "originalPayment": "Original Payment Information",
+      "requestDate": "Request Date",
+      "processDate": "Process Date",
+      "completionDate": "Completion Date",
+      "amount": "Refund Amount",
+      "method": "Refund Method",
+      "reason": "Refund Reason",
+      "description": "Detailed Description",
+      "status": "Current Status",
+      "timeline": "Processing Timeline"
+    },
+    "messages": {
+      "submitSuccess": "Refund request submitted successfully",
+      "submitFailed": "Refund request submission failed",
+      "cancelSuccess": "Refund request cancelled successfully",
+      "cancelFailed": "Refund request cancellation failed",
+      "processingTime": "Refund processing time is 3-7 business days",
+      "creditCardRefund": "Credit card refunds will be returned to the original card",
+      "manualRefund": "Other payment methods will be processed manually by customer service"
+    },
+    "errors": {
+      "paymentNotFound": "Corresponding payment record not found",
+      "alreadyRefunded": "This payment has already been refunded",
+      "refundNotAllowed": "This payment is not eligible for refund",
+      "amountExceeded": "Refund amount exceeds original payment amount",
+      "reasonRequired": "Please select a refund reason",
+      "descriptionRequired": "Please provide detailed description"
+    }
   }
 }
