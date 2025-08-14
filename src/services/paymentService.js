@@ -33,25 +33,13 @@ class PaymentService {
             const response = await this.makeRequest('POST', '/api/payment/create-order', orderData);
 
             if (response.data.status === 'success') {
-                // Handle both test response and actual response formats
-                const responseData = response.data.data || response.data;
+                const responseData = response.data.data;
                 
                 systemLogger.info('Payment order created successfully:', {
-                    orderId: responseData.orderId || 'test-order',
-                    amount: responseData.amount || 'test-amount',
-                    message: response.data.message
+                    orderId: responseData.orderId,
+                    merchantTradeNo: responseData.merchantTradeNo,
+                    amount: responseData.amount
                 });
-
-                // For test environment, return a mock response structure
-                if (!responseData.orderId && response.data.message?.includes('working')) {
-                    return {
-                        orderId: `test-order-${Date.now()}`,
-                        amount: 299,
-                        currency: 'TWD',
-                        paymentUrl: '#test-payment-url',
-                        message: response.data.message
-                    };
-                }
 
                 return responseData;
             } else {
@@ -408,8 +396,16 @@ class PaymentService {
         try {
             systemLogger.info('Submitting payment form to ECPay:', {
                 orderId: paymentData.orderId,
-                amount: paymentData.amount
+                amount: paymentData.amount,
+                paymentUrl: paymentData.paymentUrl
             });
+
+            // 驗證 paymentUrl 是否為有效的 URL
+            if (!paymentData.paymentUrl || 
+                (!paymentData.paymentUrl.startsWith('http://') && 
+                 !paymentData.paymentUrl.startsWith('https://'))) {
+                throw new Error('Invalid payment URL: ' + paymentData.paymentUrl);
+            }
 
             // 創建隱藏表單
             const form = document.createElement('form');
