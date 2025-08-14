@@ -7,6 +7,18 @@ const apiClient = axios.create({
   withCredentials: true, // 如果您的 API 需要處理 cookie 或 session，請保留此行
 });
 
+// Import CSRF client for token management
+let csrfClient = null;
+
+// Lazy load CSRF client to avoid circular dependencies
+const getCSRFClient = async () => {
+  if (!csrfClient) {
+    const { default: CSRFClient } = await import('../utils/csrfClient');
+    csrfClient = CSRFClient;
+  }
+  return csrfClient;
+};
+
 // Global error handling state
 let isHandling401 = false;
 let isHandling429 = false;
@@ -38,6 +50,55 @@ export const setupApiClientInterceptors = (dependencies) => {
   t = translateFn;
 };
 
+// Request interceptor to add CSRF token
+apiClient.interceptors.request.use(
+  async (config) => {
+    // Add CSRF token for state-changing requests
+    const stateChangingMethods = ['POST', 'PUT', 'DELETE', 'PATCH'];
+    
+    if (stateChangingMethods.includes(config.method?.toUpperCase())) {
+      try {
+        const csrf = await getCSRFClient();
+        
+        // Ensure CSRF token is initialized
+        if (!csrf.isTokenInitialized()) {
+          console.log('🛡️ ApiClient: Initializing CSRF token for request:', config.url);
+          await csrf.initializeCSRFToken();
+        }
+        
+        // Add CSRF token to headers
+        const token = csrf.getCSRFToken();
+        if (token) {
+          config.headers['X-CSRF-Token'] = token;
+          console.log('🛡️ ApiClient: Added CSRF token to request:', {
+            url: config.url,
+            method: config.method,
+            tokenLength: token.length
+          });
+        } else {
+          console.warn('⚠️ ApiClient: No CSRF token available for request:', {
+            url: config.url,
+            method: config.method
+          });
+        }
+      } catch (error) {
+        console.warn('⚠️ ApiClient: Failed to add CSRF token:', {
+          url: config.url,
+          method: config.method,
+          error: error.message
+        });
+        // Don't fail the request if CSRF token is not available
+        // Let the backend handle the authentication/authorization
+      }
+    }
+    
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Response interceptor for global error handling
 apiClient.interceptors.response.use(
   (response) => {
@@ -55,6 +116,32 @@ apiClient.interceptors.response.use(
     }
 
     const { status, data } = response;
+
+    // Handle 403 CSRF token errors with retry
+    if (status === 403 && data?.message?.includes('CSRF')) {
+      console.warn('API Client: 403 CSRF error - attempting to refresh token and retry');
+      
+      try {
+        const csrf = await getCSRFClient();
+        
+        // Clear current token and reinitialize
+        csrf.clearCSRFToken();
+        await csrf.initializeCSRFToken();
+        
+        // Retry the original request with new token
+        const newToken = csrf.getCSRFToken();
+        if (newToken) {
+          const originalRequest = error.config;
+          originalRequest.headers['X-CSRF-Token'] = newToken;
+          
+          console.log('🔄 API Client: Retrying request with new CSRF token');
+          return apiClient(originalRequest);
+        }
+      } catch (csrfError) {
+        console.error('❌ API Client: Failed to refresh CSRF token:', csrfError);
+        // Fall through to normal error handling
+      }
+    }
 
     // Handle 401 Unauthorized
     if (status === 401 && !isHandling401) {

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSRF Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛡️ CSRF Token Test</h1>
+    
+    <div class="test-section info">
+        <h3>Test Status</h3>
+        <p id="status">Ready to test...</p>
+    </div>
+
+    <div class="test-section">
+        <h3>Step 1: Get CSRF Token</h3>
+        <button onclick="getCSRFToken()">Get CSRF Token</button>
+        <div id="csrf-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>Step 2: Test Payment Request</h3>
+        <button onclick="testPaymentRequest()" id="payment-btn" disabled>Test Payment Request</button>
+        <div id="payment-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>Test Results</h3>
+        <pre id="results"></pre>
+    </div>
+
+    <script>
+        let csrfToken = null;
+        const API_BASE_URL = 'http://localhost:3001';
+        
+        function updateStatus(message, type = 'info') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = type;
+        }
+
+        function logResult(message) {
+            const resultsEl = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            resultsEl.textContent += `[${timestamp}] ${message}\n`;
+        }
+
+        async function getCSRFToken() {
+            updateStatus('Getting CSRF token...', 'info');
+            logResult('🛡️ Requesting CSRF token...');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/csrf-token`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.status === 'success') {
+                    csrfToken = data.data.csrfToken;
+                    document.getElementById('csrf-result').innerHTML = `
+                        <div class="success">
+                            <strong>✅ CSRF Token obtained successfully!</strong><br>
+                            Token length: ${csrfToken.length} characters<br>
+                            Token preview: ${csrfToken.substring(0, 16)}...
+                        </div>
+                    `;
+                    document.getElementById('payment-btn').disabled = false;
+                    updateStatus('CSRF token obtained successfully', 'success');
+                    logResult(`✅ CSRF token obtained: ${csrfToken.substring(0, 16)}...`);
+                } else {
+                    throw new Error(`Failed to get CSRF token: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                document.getElementById('csrf-result').innerHTML = `
+                    <div class="error">
+                        <strong>❌ Failed to get CSRF token</strong><br>
+                        Error: ${error.message}
+                    </div>
+                `;
+                updateStatus('Failed to get CSRF token', 'error');
+                logResult(`❌ CSRF token error: ${error.message}`);
+            }
+        }
+
+        async function testPaymentRequest() {
+            if (!csrfToken) {
+                alert('Please get CSRF token first!');
+                return;
+            }
+
+            updateStatus('Testing payment request...', 'info');
+            logResult('💳 Testing payment request...');
+
+            const orderData = {
+                planType: 'pro',
+                billingPeriod: 'monthly',
+                paymentMethod: 'Credit'
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/payment/create-order`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': csrfToken
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                const data = await response.json();
+                
+                logResult(`📥 Response status: ${response.status}`);
+                logResult(`📥 Response data: ${JSON.stringify(data, null, 2)}`);
+
+                if (response.ok) {
+                    document.getElementById('payment-result').innerHTML = `
+                        <div class="success">
+                            <strong>✅ Payment request successful!</strong><br>
+                            Status: ${response.status}<br>
+                            Message: ${data.message || 'Success'}<br>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                    updateStatus('Payment request successful! CSRF fix is working.', 'success');
+                    logResult('✅ Payment request successful - CSRF fix is working!');
+                } else if (response.status === 403) {
+                    document.getElementById('payment-result').innerHTML = `
+                        <div class="error">
+                            <strong>❌ Payment request blocked (403 Forbidden)</strong><br>
+                            This indicates CSRF protection is still blocking the request.<br>
+                            Error: ${data.message || 'Forbidden'}
+                        </div>
+                    `;
+                    updateStatus('Payment request blocked - CSRF fix needs work', 'error');
+                    logResult('❌ Payment request blocked (403) - CSRF fix needs work');
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                document.getElementById('payment-result').innerHTML = `
+                    <div class="error">
+                        <strong>❌ Payment request failed</strong><br>
+                        Error: ${error.message}
+                    </div>
+                `;
+                updateStatus('Payment request failed', 'error');
+                logResult(`❌ Payment request error: ${error.message}`);
+            }
+        }
+
+        // Auto-start test
+        window.addEventListener('load', () => {
+            logResult('🚀 CSRF Test Page Loaded');
+            logResult('📍 API Base URL: ' + API_BASE_URL);
+        });
+    </script>
+</body>
+</html>
