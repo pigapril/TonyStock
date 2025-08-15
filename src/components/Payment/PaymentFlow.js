@@ -26,14 +26,15 @@ const PaymentFlow = ({
     const [currentStep, setCurrentStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [paymentMethod, setPaymentMethod] = useState('ALL');
+    const [paymentMethod, setPaymentMethod] = useState('Credit'); // 固定為信用卡
     const [agreedToTerms, setAgreedToTerms] = useState(false);
     const [orderData, setOrderData] = useState(null);
 
     // 獲取方案資訊
     const planPricing = paymentService.getPlanPricing();
     const currentPlan = planPricing[planType]?.[billingPeriod];
-    const paymentMethods = paymentService.getPaymentMethods();
+    // 固定使用信用卡定期定額，不需要選擇付款方式
+    const paymentMethods = [{ value: 'Credit', label: '信用卡定期定額' }];
 
     useEffect(() => {
         systemLogger.info('PaymentFlow initialized:', {

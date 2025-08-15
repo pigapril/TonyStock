@@ -42,7 +42,7 @@ describe('PaymentHistory', () => {
       merchantTradeNo: 'TN987654321',
       amount: 2990,
       status: 'paid',
-      paymentMethod: 'atm',
+      paymentMethod: 'credit_card',
       createdAt: '2024-01-01T10:00:00Z',
       planType: 'pro',
       billingPeriod: 'yearly'

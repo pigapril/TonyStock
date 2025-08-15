@@ -205,7 +205,7 @@ class SubscriptionService {
                     amount: 2990,
                     currency: 'TWD',
                     status: 'success',
-                    paymentMethod: 'ATM',
+                    paymentMethod: 'Credit Card',
                     planType: 'pro',
                     billingPeriod: 'yearly',
                     paymentDate: new Date('2024-12-01'),

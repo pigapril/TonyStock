@@ -95,7 +95,7 @@ describe('PaymentFlow Integration Tests', () => {
     });
   });
 
-  it('handles payment flow with ATM method', async () => {
+  it('handles payment flow with Credit Card method', async () => {
     const mockOrder = {
       id: 'order-456',
       merchantTradeNo: 'TN987654321',
@@ -129,7 +129,7 @@ describe('PaymentFlow Integration Tests', () => {
       expect(mockPaymentService.createOrder).toHaveBeenCalledWith({
         planType: 'pro',
         billingPeriod: 'monthly',
-        paymentMethod: 'atm'
+        paymentMethod: 'credit_card'
       });
     });
 
