@@ -1,0 +1,247 @@
+/* Apple-inspired Payment Page */
+.payment-page {
+  min-height: 100vh;
+  background: var(--color-bg-page, #f5f5f7);
+  padding: 0;
+}
+
+.payment-page__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Section */
+.payment-page__header {
+  background: var(--color-bg-card, #ffffff);
+  border-bottom: 1px solid var(--color-border-soft, #e5e5e5);
+  padding: 20px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.payment-page__back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--color-text-link, #007aff);
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 8px 0;
+  margin-bottom: 24px;
+  transition: all 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+}
+
+.payment-page__back-button:hover {
+  opacity: 0.7;
+  transform: translateX(-2px);
+}
+
+.payment-page__back-button:active {
+  transform: translateX(-1px);
+}
+
+.payment-page__back-button svg {
+  transition: transform 0.2s ease;
+}
+
+.payment-page__back-button:hover svg {
+  transform: translateX(-2px);
+}
+
+.payment-page__title-section {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.payment-page__title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+  margin: 0 0 12px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  line-height: 1.2;
+}
+
+.payment-page__subtitle {
+  font-size: 18px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  margin: 0;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+/* Content Section */
+.payment-page__content {
+  flex: 1;
+  padding: 40px 32px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Error State */
+.payment-page__error {
+  text-align: center;
+  padding: 80px 32px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.payment-page__error h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+  margin: 0 0 16px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+}
+
+.payment-page__error p {
+  font-size: 16px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  margin: 0 0 32px 0;
+  line-height: 1.5;
+}
+
+.payment-page__error .payment-page__back-button {
+  background: var(--color-text-link, #007aff);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--border-radius-medium, 10px);
+  font-weight: 500;
+  margin: 0;
+  transition: all 0.2s ease;
+}
+
+.payment-page__error .payment-page__back-button:hover {
+  background: #0056cc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.payment-page__error .payment-page__back-button:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .payment-page__header {
+    padding: 16px 20px;
+  }
+  
+  .payment-page__back-button {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .payment-page__title {
+    font-size: 24px;
+  }
+  
+  .payment-page__subtitle {
+    font-size: 16px;
+  }
+  
+  .payment-page__content {
+    padding: 24px 20px;
+  }
+  
+  .payment-page__error {
+    padding: 60px 20px;
+  }
+  
+  .payment-page__error h1 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-page__header {
+    padding: 12px 16px;
+  }
+  
+  .payment-page__back-button {
+    font-size: 14px;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  
+  .payment-page__back-button svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .payment-page__title {
+    font-size: 20px;
+  }
+  
+  .payment-page__subtitle {
+    font-size: 15px;
+  }
+  
+  .payment-page__content {
+    padding: 20px 16px;
+  }
+  
+  .payment-page__error {
+    padding: 40px 16px;
+  }
+  
+  .payment-page__error h1 {
+    font-size: 20px;
+  }
+  
+  .payment-page__error p {
+    font-size: 15px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .payment-page {
+    background: #000000;
+  }
+  
+  .payment-page__header {
+    background: rgba(28, 28, 30, 0.95);
+    border-bottom-color: rgba(84, 84, 88, 0.6);
+  }
+  
+  .payment-page__title {
+    color: rgba(235, 235, 245, 0.85);
+  }
+  
+  .payment-page__subtitle {
+    color: rgba(235, 235, 245, 0.60);
+  }
+  
+  .payment-page__back-button {
+    color: #0A84FF;
+  }
+  
+  .payment-page__error h1 {
+    color: rgba(235, 235, 245, 0.85);
+  }
+  
+  .payment-page__error p {
+    color: rgba(235, 235, 245, 0.60);
+  }
+  
+  .payment-page__error .payment-page__back-button {
+    background: #0A84FF;
+  }
+  
+  .payment-page__error .payment-page__back-button:hover {
+    background: #409CFF;
+  }
+}

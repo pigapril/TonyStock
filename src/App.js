@@ -48,6 +48,7 @@ import { SponsorSuccess } from './components/SponsorSuccess/SponsorSuccess';
 import { GoogleTrendsSymbolPage } from './components/GoogleTrendsSymbolPage/GoogleTrendsSymbolPage';
 import { GoogleTrendsMarketPage } from './components/GoogleTrendsMarketPage/GoogleTrendsMarketPage';
 import CSRFExample from './components/Example/CSRFExample';
+import PaymentPage from './pages/PaymentPage';
 import PaymentFlowPage from './pages/PaymentFlowPage';
 import PaymentStatusPage from './pages/PaymentStatusPage';
 
@@ -465,6 +466,11 @@ function AppContent() {
               <Route path="subscription-plans" element={<SubscriptionPlansPage />} />
               <Route path="sponsor-us" element={<SponsorUs />} />
               <Route path="sponsor-success" element={<SponsorSuccess />} />
+              <Route path="payment" element={
+                <ProtectedRoute>
+                  <PaymentPage />
+                </ProtectedRoute>
+              } />
               <Route path="payment/flow" element={
                 <ProtectedRoute>
                   <PaymentFlowPage />

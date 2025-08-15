@@ -179,6 +179,7 @@
     "notAvailable": "N/A",
     "invalidParams": "無效的操作參數",
     "close": "關閉",
+    "back": "返回",
     "done": "完成",
     "copied": "已複製",
     "copyToClipboard": "複製到剪貼簿",
@@ -1188,6 +1189,14 @@
     "pageDescription": "安全便捷的付款流程",
     "keywords": "付款,綠界支付,信用卡,ATM,超商付款",
     "heading": "付款資訊",
+    "upgradeTitle": "升級到 {{planName}} 方案",
+    "upgradeSubtitle": "選擇最適合您的付款方式，立即享受完整功能",
+    "backToPlans": "返回方案選擇",
+    "loginRequired": "請先登入以繼續付款流程",
+    "invalidPlan": {
+      "title": "無效的方案",
+      "message": "您選擇的方案不存在，請重新選擇。"
+    },
     "flow": {
       "title": "付款流程",
       "step1": "選擇方案",

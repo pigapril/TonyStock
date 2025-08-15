@@ -181,6 +181,7 @@
     "notAvailable": "N/A",
     "invalidParams": "Invalid operation parameters",
     "close": "Close",
+    "back": "Back",
     "done": "Done",
     "copied": "Copied",
     "copyToClipboard": "Copy to clipboard",
@@ -1191,6 +1192,14 @@
     "pageDescription": "Secure and convenient payment process",
     "keywords": "payment, ECPay, credit card, ATM, convenience store payment",
     "heading": "Payment Information",
+    "upgradeTitle": "Upgrade to {{planName}} Plan",
+    "upgradeSubtitle": "Choose the payment method that works best for you and enjoy full features immediately",
+    "backToPlans": "Back to Plans",
+    "loginRequired": "Please log in to continue with the payment process",
+    "invalidPlan": {
+      "title": "Invalid Plan",
+      "message": "The selected plan does not exist. Please choose again."
+    },
     "flow": {
       "title": "Payment Process",
       "step1": "Select Plan",

@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { PlanBadge } from '../../shared/PlanBadge';
 import { AppleButton } from '../../shared/AppleButton';
 import { useSubscription } from '../../SubscriptionContext';
 import { Analytics } from '../../../../utils/analytics';
 import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../utils/pricingUtils';
-import PaymentFlow from '../../../Payment/PaymentFlow';
 import './PlanCard.css';
 
 export const PlanCard = ({ plan, currentPlan, isCurrentUser, billingPeriod = 'monthly' }) => {
   const { t } = useTranslation();
+  const { lang } = useParams();
   const { updatePlan, loading } = useSubscription();
   const navigate = useNavigate();
-  const [showPaymentFlow, setShowPaymentFlow] = useState(false);
   const [paymentLoading, setPaymentLoading] = useState(false);
 
   const isCurrentPlan = currentPlan === plan.id;
@@ -46,9 +45,9 @@ export const PlanCard = ({ plan, currentPlan, isCurrentUser, billingPeriod = 'mo
         return;
       }
 
-      // 如果是 Pro 方案，啟動付款流程
+      // 如果是 Pro 方案，導航到付款頁面
       if (isPro) {
-        setShowPaymentFlow(true);
+        navigate(`/${lang}/payment?plan=${plan.id}&period=${billingPeriod}`);
         return;
       }
 
@@ -63,53 +62,7 @@ export const PlanCard = ({ plan, currentPlan, isCurrentUser, billingPeriod = 'mo
     }
   };
 
-  const handlePaymentSuccess = (subscription) => {
-    setShowPaymentFlow(false);
-    setPaymentLoading(false);
-    
-    Analytics.track('subscription_payment_success', {
-      planId: plan.id,
-      billingPeriod,
-      subscriptionId: subscription.id
-    });
 
-    // 刷新訂閱狀態
-    if (updatePlan) {
-      updatePlan(plan.id);
-    }
-
-    // 導航到成功頁面或帳戶頁面
-    navigate('/account', { 
-      state: { 
-        paymentSuccess: true,
-        newPlan: plan.id 
-      }
-    });
-  };
-
-  const handlePaymentError = (error) => {
-    setShowPaymentFlow(false);
-    setPaymentLoading(false);
-    
-    Analytics.error({
-      type: 'PAYMENT_ERROR',
-      code: error.code || 500,
-      message: error.message || 'Payment failed',
-      context: 'PlanCard.handlePaymentError'
-    });
-
-    console.error('Payment failed:', error);
-  };
-
-  const handlePaymentCancel = () => {
-    setShowPaymentFlow(false);
-    setPaymentLoading(false);
-    
-    Analytics.track('subscription_payment_cancelled', {
-      planId: plan.id,
-      billingPeriod
-    });
-  };
 
   const pricingData = getPricingDisplayData(plan, billingPeriod);
 
@@ -203,31 +156,7 @@ export const PlanCard = ({ plan, currentPlan, isCurrentUser, billingPeriod = 'mo
         </AppleButton>
       </div>
 
-      {/* 付款流程彈窗 */}
-      {showPaymentFlow && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-screen overflow-y-auto">
-            <div className="p-4 border-b flex justify-between items-center">
-              <h2 className="text-xl font-semibold">升級到 Pro 方案</h2>
-              <button
-                onClick={handlePaymentCancel}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <PaymentFlow
-              planType={plan.id}
-              billingPeriod={billingPeriod}
-              onSuccess={handlePaymentSuccess}
-              onError={handlePaymentError}
-              onCancel={handlePaymentCancel}
-            />
-          </div>
-        </div>
-      )}
+
     </div>
   );
 };
