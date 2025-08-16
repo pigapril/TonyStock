@@ -14,7 +14,6 @@ const SubscriptionContext = createContext({
   refreshUserPlan: () => {},
   refreshSubscriptionHistory: () => {},
   updatePlan: () => {},
-  
   // Redemption integration
   hasActivePromotions: false,
   promotionalBenefits: null,
@@ -40,59 +39,70 @@ export const SubscriptionProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
-  
+
   // Redemption integration state
   const [hasActivePromotions, setHasActivePromotions] = useState(false);
   const [promotionalBenefits, setPromotionalBenefits] = useState(null);
   const [isPromotionalSubscription, setIsPromotionalSubscription] = useState(false);
   const [promotionExpiresAt, setPromotionExpiresAt] = useState(null);
 
+  /**
+   * Update redemption-related state based on plan data
+   */
+  const updateRedemptionState = useCallback((planData) => {
+    if (!planData) {
+      setHasActivePromotions(false);
+      setPromotionalBenefits(null);
+      setIsPromotionalSubscription(false);
+      setPromotionExpiresAt(null);
+      return;
+    }
+    // Check if subscription has promotional aspects
+    const hasPromo = planData.redemptionSource === 'redemption' ||
+      planData.redemptionSource === 'mixed' ||
+      (planData.activePromotions && planData.activePromotions.length > 0);
+
+    setHasActivePromotions(hasPromo);
+    setIsPromotionalSubscription(planData.redemptionSource === 'redemption');
+    setPromotionalBenefits(planData.activePromotions || null);
+    setPromotionExpiresAt(planData.promotionalExpirationDate || null);
+
+    console.log('🎁 Updated redemption state:', {
+      hasActivePromotions: hasPromo,
+      isPromotionalSubscription: planData.redemptionSource === 'redemption',
+      promotionCount: planData.activePromotions?.length || 0,
+      expiresAt: planData.promotionalExpirationDate
+    });
+  }, []);
+
   // Refresh usage statistics
   const refreshUsageStats = useCallback(async () => {
     if (!isAuthenticated || !user) return;
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const stats = await subscriptionService.getUserUsageStats();
-      console.log('📊 Usage stats received:', stats);
-      console.log('📊 Setting usageStats state with:', stats);
       setUsageStats(stats);
-      console.log('📊 UsageStats state updated');
-      
-      // 成功後重置重試計數
       setRetryCount(0);
-      
+
       Analytics.track('subscription_usage_stats_loaded', {
         userId: user.id,
         totalUsage: stats?.total || 0
       });
     } catch (err) {
-      console.error('❌ Failed to refresh usage stats:', err);
-      console.error('❌ Error details:', {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status
-      });
-      
-      // 特殊處理 403 錯誤（CSRF 相關）
       if (err.response?.status === 403 && retryCount < 2) {
-        console.warn(`🔧 403 error detected, likely CSRF issue. Retrying (${retryCount + 1}/2) after short delay...`);
         setRetryCount(prev => prev + 1);
-        // 短暫延遲後重試
         setTimeout(() => {
           refreshUsageStats();
         }, 1000);
         return;
       } else if (err.response?.status === 403) {
-        console.error('🚫 403 error persisted after retries, giving up');
-        setRetryCount(0); // 重置重試計數
+        setRetryCount(0);
       }
-      
-      // 在開發模式下，提供 fallback 數據而不是顯示錯誤
+
       if (process.env.NODE_ENV === 'development') {
-        console.warn('🔧 Using fallback data for usage stats in development mode');
         const fallbackStats = {
           daily: {
             lohasSpectrum: { used: 0, limit: 5, resetTime: new Date(Date.now() + 24 * 60 * 60 * 1000) },
@@ -107,10 +117,9 @@ export const SubscriptionProvider = ({ children }) => {
         };
         setUsageStats(fallbackStats);
       } else {
-        // 設置錯誤狀態
         setError(err.message || 'Failed to load usage statistics');
       }
-      
+
       Analytics.error({
         type: 'SUBSCRIPTION_ERROR',
         code: err.code || 500,
@@ -120,22 +129,21 @@ export const SubscriptionProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user, retryCount]);
 
   // Refresh user plan information
   const refreshUserPlan = useCallback(async () => {
     if (!isAuthenticated || !user) return;
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const plan = await subscriptionService.getUserPlan();
       setUserPlan(plan);
-      
       // Update redemption-related state
       updateRedemptionState(plan);
-      
+
       Analytics.track('subscription_plan_loaded', {
         userId: user.id,
         planType: plan?.type || 'unknown',
@@ -143,13 +151,10 @@ export const SubscriptionProvider = ({ children }) => {
         redemptionSource: plan?.redemptionSource
       });
     } catch (err) {
-      console.error('Failed to refresh user plan:', err);
-      // 在開發階段，不要顯示錯誤給用戶，因為我們使用 mock 資料
       if (process.env.NODE_ENV === 'development') {
-        console.warn('Using mock data for user plan in development mode');
+        // mock data etc.
       } else {
         setError(err.message || 'Failed to load plan information');
-        
         Analytics.error({
           type: 'SUBSCRIPTION_ERROR',
           code: err.code || 500,
@@ -165,26 +170,23 @@ export const SubscriptionProvider = ({ children }) => {
   // Refresh subscription history
   const refreshSubscriptionHistory = useCallback(async () => {
     if (!isAuthenticated || !user) return;
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const history = await subscriptionService.getSubscriptionHistory();
       setSubscriptionHistory(history);
-      
+
       Analytics.track('subscription_history_loaded', {
         userId: user.id,
         historyCount: history?.length || 0
       });
     } catch (err) {
-      console.error('Failed to refresh subscription history:', err);
-      // 在開發階段，不要顯示錯誤給用戶，因為我們使用 mock 資料
       if (process.env.NODE_ENV === 'development') {
-        console.warn('Using mock data for subscription history in development mode');
+        // mock data etc.
       } else {
         setError(err.message || 'Failed to load subscription history');
-        
         Analytics.error({
           type: 'SUBSCRIPTION_ERROR',
           code: err.code || 500,
@@ -200,125 +202,63 @@ export const SubscriptionProvider = ({ children }) => {
   // Update user plan
   const updatePlan = useCallback(async (newPlanType) => {
     if (!isAuthenticated || !user) {
-      console.error('Cannot update plan: user not authenticated', {
-        isAuthenticated,
-        hasUser: !!user
-      });
       return;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
-      
-      console.log('🔄 Starting plan update:', {
-        newPlanType,
-        currentPlan: userPlan?.type,
-        userId: user.id
-      });
-      
+
       const updatedPlan = await subscriptionService.updateUserPlan(newPlanType);
       setUserPlan(updatedPlan);
-      
       // Update redemption-related state
       updateRedemptionState(updatedPlan);
-      
-      console.log('✅ Plan updated successfully:', updatedPlan);
-      
-      // Refresh user data in AuthContext to update req.user.plan on backend
+
       if (checkAuthStatus) {
-        console.log('🔄 Refreshing user authentication data...');
         await checkAuthStatus();
       }
-      
-      // Refresh usage stats after plan change
       await refreshUsageStats();
-      
+
       Analytics.track('subscription_plan_updated', {
         userId: user.id,
         oldPlan: userPlan?.type || 'unknown',
         newPlan: newPlanType
       });
-      
+
       return updatedPlan;
     } catch (err) {
-      console.error('❌ Failed to update plan:', err);
       setError(err.message || 'Failed to update plan');
-      
       Analytics.error({
         type: 'SUBSCRIPTION_ERROR',
         code: err.code || 500,
         message: err.message || 'Failed to update plan',
         context: 'updatePlan'
       });
-      
       throw err;
     } finally {
       setLoading(false);
     }
-  }, [isAuthenticated, user, userPlan, refreshUsageStats, checkAuthStatus]);
+  }, [isAuthenticated, user, userPlan, refreshUsageStats, checkAuthStatus, updateRedemptionState]);
 
-  /**
-   * Update redemption-related state based on plan data
-   */
-  const updateRedemptionState = useCallback((planData) => {
-    if (!planData) {
-      setHasActivePromotions(false);
-      setPromotionalBenefits(null);
-      setIsPromotionalSubscription(false);
-      setPromotionExpiresAt(null);
-      return;
-    }
-
-    // Check if subscription has promotional aspects
-    const hasPromo = planData.redemptionSource === 'redemption' || 
-                     planData.redemptionSource === 'mixed' ||
-                     (planData.activePromotions && planData.activePromotions.length > 0);
-    
-    setHasActivePromotions(hasPromo);
-    setIsPromotionalSubscription(planData.redemptionSource === 'redemption');
-    setPromotionalBenefits(planData.activePromotions || null);
-    setPromotionExpiresAt(planData.promotionalExpirationDate || null);
-    
-    console.log('🎁 Updated redemption state:', {
-      hasActivePromotions: hasPromo,
-      isPromotionalSubscription: planData.redemptionSource === 'redemption',
-      promotionCount: planData.activePromotions?.length || 0,
-      expiresAt: planData.promotionalExpirationDate
-    });
-  }, []);
-
-  /**
-   * Handle successful redemption
-   */
+  /** 處理 redemption 成功/失敗 */
   const onRedemptionSuccess = useCallback(async (redemptionData) => {
-    console.log('🎉 Redemption successful, refreshing subscription data:', redemptionData);
-    
     try {
-      // Refresh all subscription data
       await Promise.all([
         refreshUserPlan(),
         refreshUsageStats(),
         refreshSubscriptionHistory()
       ]);
-      
       Analytics.track('subscription_updated_by_redemption', {
         userId: user?.id,
         redemptionType: redemptionData?.codeType,
         benefitType: redemptionData?.benefits?.type
       });
-      
     } catch (error) {
-      console.error('Failed to refresh subscription data after redemption:', error);
+      // error handling
     }
   }, [refreshUserPlan, refreshUsageStats, refreshSubscriptionHistory, user]);
 
-  /**
-   * Handle redemption error
-   */
-  const onRedemptionError = useCallback((error) => {
-    console.error('🚫 Redemption failed:', error);
-    
+  const onRedemptionError = useCallback(error => {
     Analytics.track('redemption_error_in_subscription_context', {
       userId: user?.id,
       error: error.message || 'Unknown error',
@@ -328,20 +268,11 @@ export const SubscriptionProvider = ({ children }) => {
 
   // Load initial data when user changes
   useEffect(() => {
-    console.log('🔄 SubscriptionContext useEffect triggered:', {
-      isAuthenticated,
-      hasUser: !!user,
-      userId: user?.id
-    });
-    
     if (isAuthenticated && user) {
-      console.log('✅ User authenticated, loading subscription data...');
       refreshUserPlan();
       refreshUsageStats();
       refreshSubscriptionHistory();
     } else {
-      console.log('❌ User not authenticated, clearing subscription data...');
-      // Clear data when user logs out
       setUserPlan(null);
       setUsageStats(null);
       setSubscriptionHistory(null);
@@ -352,11 +283,9 @@ export const SubscriptionProvider = ({ children }) => {
   // Auto-refresh usage stats every 5 minutes
   useEffect(() => {
     if (!isAuthenticated || !user) return;
-
     const interval = setInterval(() => {
       refreshUsageStats();
-    }, 5 * 60 * 1000); // 5 minutes
-
+    }, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, [isAuthenticated, user, refreshUsageStats]);
 
@@ -370,8 +299,6 @@ export const SubscriptionProvider = ({ children }) => {
     refreshUserPlan,
     refreshSubscriptionHistory,
     updatePlan,
-    
-    // Redemption integration
     hasActivePromotions,
     promotionalBenefits,
     isPromotionalSubscription,
@@ -380,7 +307,6 @@ export const SubscriptionProvider = ({ children }) => {
     onRedemptionError,
     updateRedemptionState
   };
-
   return (
     <SubscriptionContext.Provider value={value}>
       {children}
