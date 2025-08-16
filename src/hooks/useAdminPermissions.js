@@ -33,7 +33,7 @@ import adminPermissions from '../utils/adminPermissions';
  * @returns {function} returns.shouldShowAdminFeatures - Whether admin features should be shown
  */
 export function useAdminPermissions() {
-    const { user, isAuthenticated, loading: authLoading } = useAuth();
+    const { user, isAuthenticated, loading: authLoading, isAdmin: authIsAdmin, adminLoading } = useAuth();
     const [isAdmin, setIsAdmin] = useState(() => {
         // Initialize with current utility state if available
         try {
@@ -176,17 +176,20 @@ export function useAdminPermissions() {
     }, [isCurrentUserAdmin, isAuthenticated]);
     
     return {
-        // State
-        isAdmin,
-        loading: loading || authLoading,
+        // State - Use AuthContext admin status as primary source
+        isAdmin: authIsAdmin,
+        loading: loading || authLoading || adminLoading,
         error,
+        isAuthenticated,
+        user,
+        lastKnownStatus: authIsAdmin, // Use current admin status as last known
         
         // Methods
         checkAdminStatus,
         refreshAdminStatus,
         clearAdminStatus,
-        isCurrentUserAdmin,
-        shouldShowAdminFeatures
+        isCurrentUserAdmin: () => authIsAdmin,
+        shouldShowAdminFeatures: () => authIsAdmin && isAuthenticated
     };
 }
 

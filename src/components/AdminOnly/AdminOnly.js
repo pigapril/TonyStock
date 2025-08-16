@@ -53,6 +53,7 @@ const AdminOnly = ({
         isAdmin,
         loading,
         error,
+        isAuthenticated,
         lastKnownStatus,
         shouldShowAdminFeatures,
         getDebugInfo
@@ -63,14 +64,35 @@ const AdminOnly = ({
         console.log('AdminOnly component render:', {
             isAdmin,
             loading,
+            isAuthenticated,
             error: error?.message,
             lastKnownStatus,
             shouldShowAdminFeatures,
             showGracefulDegradation,
             hasChildren: !!children,
             hasFallback: !!fallback,
-            debugInfo: getDebugInfo()
+            debugInfo: getDebugInfo && getDebugInfo()
         });
+    }
+    
+    // If user is not authenticated, don't show loading state - just return fallback or null
+    if (!isAuthenticated && !loading) {
+        if (fallback !== null) {
+            // Wrap in container if className or style is provided
+            if (className || style) {
+                return (
+                    <div 
+                        className={`admin-only-fallback ${className || ''}`}
+                        style={style}
+                        {...otherProps}
+                    >
+                        {fallback}
+                    </div>
+                );
+            }
+            return fallback;
+        }
+        return null;
     }
     
     // Graceful degradation: Show admin content during loading if last known status was admin

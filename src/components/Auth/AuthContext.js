@@ -250,8 +250,9 @@ export function AuthProvider({ children }) {
                     });
                 }
                 
-                // 清除用戶狀態，因為 403 表示認證問題
+                // 清除用戶狀態，因為 403 表示認證問題，並設置 loading 為 false
                 setUser(null);
+                setLoading(false);
                 return;
             }
             
@@ -270,7 +271,8 @@ export function AuthProvider({ children }) {
                     });
                 }
                 
-                // 不設置 user 為 null，保持當前狀態
+                // 不設置 user 為 null，保持當前狀態，但要設置 loading 為 false
+                setLoading(false);
                 return;
             }
 
