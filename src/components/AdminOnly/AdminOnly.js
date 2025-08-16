@@ -7,13 +7,15 @@
  * 
  * Features:
  * - Conditional rendering based on admin status
+ * - Graceful degradation during loading states
+ * - Visual indicators for permission verification in progress
  * - Fallback content support
  * - Loading state handling
  * - Error boundary integration
  * - Debug mode for development
  * 
  * @author SentimentInsideOut Team
- * @version 1.0.0
+ * @version 1.1.0 - Enhanced with graceful degradation support
  */
 
 import React from 'react';
@@ -30,6 +32,7 @@ import './AdminOnly.css';
  * @param {React.ReactNode} [props.fallback] - Content to show for non-admin users
  * @param {boolean} [props.showLoading] - Whether to show loading state
  * @param {React.ReactNode} [props.loadingComponent] - Custom loading component
+ * @param {boolean} [props.showGracefulDegradation] - Enable graceful degradation during loading states
  * @param {boolean} [props.debug] - Enable debug mode (development only)
  * @param {string} [props.className] - CSS class name
  * @param {object} [props.style] - Inline styles
@@ -40,6 +43,7 @@ const AdminOnly = ({
     fallback = null,
     showLoading = false,
     loadingComponent = null,
+    showGracefulDegradation = true,
     debug = false,
     className = undefined,
     style = undefined,
@@ -49,6 +53,7 @@ const AdminOnly = ({
         isAdmin,
         loading,
         error,
+        lastKnownStatus,
         shouldShowAdminFeatures,
         getDebugInfo
     } = useAdminPermissions();
@@ -59,11 +64,48 @@ const AdminOnly = ({
             isAdmin,
             loading,
             error: error?.message,
+            lastKnownStatus,
             shouldShowAdminFeatures,
+            showGracefulDegradation,
             hasChildren: !!children,
             hasFallback: !!fallback,
             debugInfo: getDebugInfo()
         });
+    }
+    
+    // Graceful degradation: Show admin content during loading if last known status was admin
+    if (loading && showGracefulDegradation && lastKnownStatus === true) {
+        const containerClass = `admin-only-graceful ${className || ''}`;
+        const content = (
+            <>
+                {children}
+                <div className="admin-permission-indicator">
+                    <div className="permission-status-bar">
+                        <div className="permission-spinner"></div>
+                        <span className="permission-text">Verifying permissions...</span>
+                    </div>
+                </div>
+            </>
+        );
+        
+        // Wrap in container if className or style is provided
+        if (className || style) {
+            return (
+                <div 
+                    className={containerClass}
+                    style={style}
+                    {...otherProps}
+                >
+                    {content}
+                </div>
+            );
+        }
+        
+        return (
+            <div className="admin-only-graceful">
+                {content}
+            </div>
+        );
     }
     
     // Show loading state if requested and currently loading
@@ -131,6 +173,7 @@ AdminOnly.propTypes = {
     fallback: PropTypes.node,
     showLoading: PropTypes.bool,
     loadingComponent: PropTypes.node,
+    showGracefulDegradation: PropTypes.bool,
     debug: PropTypes.bool,
     className: PropTypes.string,
     style: PropTypes.object

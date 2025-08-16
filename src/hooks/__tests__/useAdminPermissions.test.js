@@ -15,7 +15,17 @@ const mockAdminPermissions = {
     clearCache: jest.fn(),
     addListener: jest.fn(),
     removeListener: jest.fn(),
-    getDebugInfo: jest.fn()
+    getDebugInfo: jest.fn(() => ({
+        cacheState: {
+            adminStatus: null,
+            lastKnownStatus: null,
+            loading: false,
+            lastCheck: null
+        },
+        promiseManagement: {
+            hasPendingOperations: false
+        }
+    }))
 };
 
 jest.mock('../../components/Auth/useAuth', () => ({
@@ -57,6 +67,7 @@ describe('useAdminPermissions', () => {
             expect(result.current.loading).toBe(false);
             expect(result.current.error).toBe(null);
             expect(result.current.lastChecked).toBe(null);
+            expect(result.current.lastKnownStatus).toBe(null); // New: Test lastKnownStatus
             expect(result.current.shouldShowAdminFeatures).toBe(false);
         });
     });
@@ -135,6 +146,7 @@ describe('useAdminPermissions', () => {
             
             const mockError = new Error('API Error');
             mockAdminPermissions.checkIsAdmin.mockRejectedValue(mockError);
+            mockAdminPermissions.isCurrentUserAdmin.mockReturnValue(false);
             
             // Act
             const { result } = renderHook(() => useAdminPermissions());
@@ -223,6 +235,44 @@ describe('useAdminPermissions', () => {
             
             // Assert listener was removed
             expect(mockAdminPermissions.removeListener).toHaveBeenCalled();
+        });
+    });
+    
+    describe('lastKnownStatus tracking', () => {
+        it('should track lastKnownStatus when admin status is updated', async () => {
+            // Arrange
+            const mockUser = { id: '123', email: 'admin@example.com' };
+            mockUseAuth.mockReturnValue({
+                ...mockAuthState,
+                user: mockUser,
+                isAuthenticated: true,
+                loading: false
+            });
+            
+            mockAdminPermissions.checkIsAdmin.mockResolvedValue(true);
+            
+            // Act
+            const { result } = renderHook(() => useAdminPermissions());
+            
+            // Assert
+            await waitFor(() => {
+                expect(result.current.isAdmin).toBe(true);
+                expect(result.current.lastKnownStatus).toBe(true);
+            });
+        });
+        
+        it('should clear lastKnownStatus when admin status is cleared', () => {
+            // Arrange
+            const { result } = renderHook(() => useAdminPermissions());
+            
+            // Act
+            act(() => {
+                result.current.clearAdminStatus();
+            });
+            
+            // Assert
+            expect(result.current.lastKnownStatus).toBe(null);
+            expect(mockAdminPermissions.clearCache).toHaveBeenCalled();
         });
     });
 });

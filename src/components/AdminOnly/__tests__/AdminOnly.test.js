@@ -23,6 +23,7 @@ describe('AdminOnly', () => {
         isAdmin: false,
         loading: false,
         error: null,
+        lastKnownStatus: null,
         shouldShowAdminFeatures: false,
         getDebugInfo: jest.fn()
     };
@@ -260,6 +261,161 @@ describe('AdminOnly', () => {
             
             // Assert
             expect(console.log).not.toHaveBeenCalled();
+            
+            // Cleanup
+            process.env.NODE_ENV = originalEnv;
+        });
+    });
+    
+    describe('graceful degradation', () => {
+        it('should render admin content with permission indicator when loading and lastKnownStatus is true', () => {
+            // Arrange
+            mockUseAdminPermissions.mockReturnValue({
+                ...defaultHookReturn,
+                loading: true,
+                lastKnownStatus: true,
+                shouldShowAdminFeatures: false
+            });
+            
+            // Act
+            render(
+                <AdminOnly showGracefulDegradation={true}>
+                    <div data-testid="admin-content">Admin Only Content</div>
+                </AdminOnly>
+            );
+            
+            // Assert
+            expect(screen.getByTestId('admin-content')).toBeInTheDocument();
+            expect(screen.getByText('Verifying permissions...')).toBeInTheDocument();
+            expect(screen.getByText('Admin Only Content')).toBeInTheDocument();
+        });
+        
+        it('should not render admin content during loading when lastKnownStatus is false', () => {
+            // Arrange
+            mockUseAdminPermissions.mockReturnValue({
+                ...defaultHookReturn,
+                loading: true,
+                lastKnownStatus: false,
+                shouldShowAdminFeatures: false
+            });
+            
+            // Act
+            render(
+                <AdminOnly showGracefulDegradation={true}>
+                    <div data-testid="admin-content">Admin Only Content</div>
+                </AdminOnly>
+            );
+            
+            // Assert
+            expect(screen.queryByTestId('admin-content')).not.toBeInTheDocument();
+            expect(screen.queryByText('Verifying permissions...')).not.toBeInTheDocument();
+        });
+        
+        it('should not render admin content during loading when lastKnownStatus is null', () => {
+            // Arrange
+            mockUseAdminPermissions.mockReturnValue({
+                ...defaultHookReturn,
+                loading: true,
+                lastKnownStatus: null,
+                shouldShowAdminFeatures: false
+            });
+            
+            // Act
+            render(
+                <AdminOnly showGracefulDegradation={true}>
+                    <div data-testid="admin-content">Admin Only Content</div>
+                </AdminOnly>
+            );
+            
+            // Assert
+            expect(screen.queryByTestId('admin-content')).not.toBeInTheDocument();
+            expect(screen.queryByText('Verifying permissions...')).not.toBeInTheDocument();
+        });
+        
+        it('should not show graceful degradation when showGracefulDegradation is false', () => {
+            // Arrange
+            mockUseAdminPermissions.mockReturnValue({
+                ...defaultHookReturn,
+                loading: true,
+                lastKnownStatus: true,
+                shouldShowAdminFeatures: false
+            });
+            
+            // Act
+            render(
+                <AdminOnly showGracefulDegradation={false}>
+                    <div data-testid="admin-content">Admin Only Content</div>
+                </AdminOnly>
+            );
+            
+            // Assert
+            expect(screen.queryByTestId('admin-content')).not.toBeInTheDocument();
+            expect(screen.queryByText('Verifying permissions...')).not.toBeInTheDocument();
+        });
+        
+        it('should render graceful degradation with custom className and style', () => {
+            // Arrange
+            mockUseAdminPermissions.mockReturnValue({
+                ...defaultHookReturn,
+                loading: true,
+                lastKnownStatus: true,
+                shouldShowAdminFeatures: false
+            });
+            
+            // Act
+            render(
+                <AdminOnly 
+                    showGracefulDegradation={true}
+                    className="custom-graceful-class"
+                    style={{ backgroundColor: 'red' }}
+                >
+                    <div data-testid="admin-content">Admin Only Content</div>
+                </AdminOnly>
+            );
+            
+            // Assert
+            const container = screen.getByTestId('admin-content').parentElement;
+            expect(container).toHaveClass('admin-only-graceful');
+            expect(container).toHaveClass('custom-graceful-class');
+            expect(container).toHaveStyle({ backgroundColor: 'red' });
+            expect(screen.getByText('Verifying permissions...')).toBeInTheDocument();
+        });
+        
+        it('should include graceful degradation info in debug logs', () => {
+            // Arrange
+            const originalEnv = process.env.NODE_ENV;
+            process.env.NODE_ENV = 'development';
+            
+            const mockGetDebugInfo = jest.fn().mockReturnValue({
+                adminStatus: false,
+                loading: true,
+                lastKnownStatus: true
+            });
+            
+            mockUseAdminPermissions.mockReturnValue({
+                ...defaultHookReturn,
+                loading: true,
+                lastKnownStatus: true,
+                shouldShowAdminFeatures: false,
+                getDebugInfo: mockGetDebugInfo
+            });
+            
+            // Act
+            render(
+                <AdminOnly debug={true} showGracefulDegradation={true}>
+                    <div data-testid="admin-content">Admin Only Content</div>
+                </AdminOnly>
+            );
+            
+            // Assert
+            expect(console.log).toHaveBeenCalledWith(
+                'AdminOnly component render:',
+                expect.objectContaining({
+                    loading: true,
+                    lastKnownStatus: true,
+                    showGracefulDegradation: true
+                })
+            );
             
             // Cleanup
             process.env.NODE_ENV = originalEnv;
