@@ -16,7 +16,9 @@
     "articles": "Insights & Analysis",
     "subscription": "Subscription",
     "facebook": "Facebook",
-    "facebookLong": "Facebook Page"
+    "facebookLong": "Facebook Page",
+    "admin": "Admin Panel",
+    "adminBadge": "Admin"
   },
   
   "userActions": {
@@ -2318,6 +2320,136 @@
       "unknown": "An unknown error occurred",
       "client_error": "Client error occurred",
       "retry_exhausted": "Maximum retry attempts reached"
+    }
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "description": "Manage promotion codes and analytics",
+    "accessDenied": {
+      "title": "Access Denied",
+      "message": "You don't have permission to access admin features. Please contact your system administrator.",
+      "goBack": "Go Back"
+    },
+    "permissions": {
+      "checking": "Checking admin permissions...",
+      "retry": "Retry Check"
+    },
+    "status": {
+      "authenticated": "Admin Authenticated"
+    },
+    "tabs": {
+      "codeManagement": "Code Management",
+      "analytics": "Analytics"
+    },
+    "codes": {
+      "title": "Promotion Code Management",
+      "description": "Manage and monitor promotion codes",
+      "loading": "Loading codes...",
+      "generateNew": "Generate New",
+      "autoRefresh": "Auto Refresh",
+      "refresh": "Refresh",
+      "filters": "Filters",
+      "clearFilters": "Clear Filters",
+      "applyFilters": "Apply Filters",
+      "codeType": "Code Type",
+      "allTypes": "All Types",
+      "status": "Status",
+      "allStatuses": "All Statuses",
+      "campaignName": "Campaign Name",
+      "searchCampaign": "Search campaign...",
+      "prefix": "Prefix",
+      "searchPrefix": "Search prefix...",
+      "createdAfter": "Created After",
+      "createdBefore": "Created Before",
+      "selectedCount": "{{count}} selected",
+      "bulkOperations": "Bulk Operations",
+      "deactivateSelected": "Deactivate Selected",
+      "selectAll": "Select All",
+      "exportJson": "Export JSON",
+      "exportCsv": "Export CSV",
+      "types": {
+        "percentageDiscount": "Percentage Discount",
+        "fixedAmountDiscount": "Fixed Amount Discount",
+        "timeExtension": "Time Extension"
+      },
+      "statuses": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "expired": "Expired",
+        "exhausted": "Exhausted",
+        "scheduled": "Scheduled"
+      },
+      "table": {
+        "code": "Code",
+        "type": "Type",
+        "campaign": "Campaign",
+        "status": "Status",
+        "usage": "Usage",
+        "expires": "Expires",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "pagination": {
+        "showing": "Showing {{start}}-{{end}} of {{total}}",
+        "previous": "Previous",
+        "next": "Next"
+      }
+    },
+    "analytics": {
+      "title": "Analytics",
+      "description": "View promotion code usage analytics",
+      "loading": "Loading analytics...",
+      "timeRange": "Time Range",
+      "autoRefresh": "Auto Refresh",
+      "refresh": "Refresh",
+      "exportJson": "Export JSON",
+      "exportCsv": "Export CSV",
+      "timeRanges": {
+        "7days": "Last 7 days",
+        "30days": "Last 30 days",
+        "90days": "Last 90 days",
+        "1year": "Last year"
+      },
+      "metrics": {
+        "overview": "Overview",
+        "conversion": "Conversion",
+        "fraud": "Fraud Detection",
+        "campaigns": "Campaign Performance",
+        "totalCodes": "Total Codes",
+        "totalRedemptions": "Total Redemptions",
+        "conversionRate": "Conversion Rate",
+        "successRate": "Success Rate"
+      },
+      "fraudAlerts": {
+        "title": "Fraud Alerts",
+        "highVelocity": "High velocity redemption activity detected",
+        "highFailureRate": "High redemption failure rate detected",
+        "severity": {
+          "high": "High",
+          "medium": "Medium",
+          "low": "Low"
+        },
+        "types": {
+          "velocity": "Velocity",
+          "failure_rate": "Failure Rate"
+        }
+      },
+      "charts": {
+        "redemptionTrends": "Redemption Trends",
+        "codeTypeDistribution": "Code Type Distribution",
+        "campaignPerformance": "Campaign Performance",
+        "fraudPatterns": "Fraud Patterns"
+      }
+    },
+    "errors": {
+      "unknown": "Unknown error",
+      "validationFailed": "Validation failed",
+      "redemptionFailed": "Redemption failed",
+      "loadFailed": "Load failed"
+    },
+    "actions": {
+      "manageCodes": "Manage Codes",
+      "viewAnalytics": "View Analytics"
     }
   }
 }

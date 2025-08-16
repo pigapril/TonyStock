@@ -51,6 +51,7 @@ import CSRFExample from './components/Example/CSRFExample';
 import PaymentPage from './pages/PaymentPage';
 import PaymentFlowPage from './pages/PaymentFlowPage';
 import PaymentStatusPage from './pages/PaymentStatusPage';
+import AdminPage from './pages/AdminPage';
 
 // Context 和 Hooks
 import { AuthProvider } from './components/Auth/AuthContext';
@@ -62,6 +63,7 @@ import { useNewFeatureNotification, FEATURES } from './components/NewFeatureBadg
 import { AdProvider } from './components/Common/InterstitialAdModal/AdContext';
 import { useToastManager } from './components/Watchlist/hooks/useToastManager';
 import { Toast } from './components/Watchlist/components/Toast';
+import AdminNavigation from './components/Common/AdminNavigation';
 
 // 工具函數
 import { Analytics } from './utils/analytics';
@@ -305,6 +307,7 @@ function AppContent() {
                 </NavLink>
               </li>
             )}
+            <AdminNavigation isMobile={true} onNavigate={() => isMobile && setSidebarOpen(false)} />
             <li className="sidebar-item-8">
               <a
                 href="https://www.facebook.com/profile.php?id=61565751412240"
@@ -397,6 +400,7 @@ function AppContent() {
                   <span>{t('nav.subscription')}</span>
                 </NavLink>
               )}
+              <AdminNavigation isMobile={false} />
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
                 <span>{t('nav.facebookLong')}</span>
@@ -497,6 +501,11 @@ function AppContent() {
                   </ProtectedRoute>
                 } 
               />
+              <Route path="admin" element={
+                <ProtectedRoute>
+                  <AdminPage />
+                </ProtectedRoute>
+              } />
               {process.env.NODE_ENV === 'development' && (
                 <Route path="/test-csrf" element={<CSRFExample />} />
               )}

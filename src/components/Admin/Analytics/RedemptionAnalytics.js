@@ -17,10 +17,12 @@ import LoadingSpinner from '../../Common/LoadingSpinner';
 import ErrorDisplay from '../../Common/ErrorDisplay';
 import AdminRedemptionService from '../../../services/adminRedemptionService';
 import AdminOnly from '../../AdminOnly';
+import { useAdminPermissions } from '../../../hooks/useAdminPermissions';
 import { systemLogger } from '../../../utils/logger';
 
 const RedemptionAnalytics = () => {
     const { t } = useTranslation();
+    const { isAdmin, loading: adminLoading, checkAdminStatus } = useAdminPermissions();
     
     // State management
     const [loading, setLoading] = useState(true);
@@ -307,38 +309,47 @@ const RedemptionAnalytics = () => {
             .slice(0, 5);
     }, [chartData.campaignPerformance]);
 
+    // Handle admin permission loading
+    if (adminLoading) {
+        return (
+            <div className="redemption-analytics">
+                <div className="loading-container">
+                    <LoadingSpinner />
+                    <p>{t('admin.permissions.checking')}</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Handle permission denied
+    if (!isAdmin) {
+        return (
+            <div className="admin-access-denied">
+                <h2>{t('admin.accessDenied.title')}</h2>
+                <p>{t('admin.accessDenied.message')}</p>
+                <button 
+                    onClick={checkAdminStatus}
+                    className="btn btn-secondary"
+                >
+                    {t('admin.permissions.retry')}
+                </button>
+            </div>
+        );
+    }
+
     if (loading && !analytics) {
         return (
-            <AdminOnly 
-                showLoading={true}
-                fallback={
-                    <div className="admin-access-denied">
-                        <h2>{t('admin.accessDenied.title')}</h2>
-                        <p>{t('admin.accessDenied.message')}</p>
-                    </div>
-                }
-            >
-                <div className="redemption-analytics">
-                    <div className="loading-container">
-                        <LoadingSpinner />
-                        <p>{t('admin.analytics.loading')}</p>
-                    </div>
+            <div className="redemption-analytics">
+                <div className="loading-container">
+                    <LoadingSpinner />
+                    <p>{t('admin.analytics.loading')}</p>
                 </div>
-            </AdminOnly>
+            </div>
         );
     }
 
     return (
-        <AdminOnly 
-            showLoading={true}
-            fallback={
-                <div className="admin-access-denied">
-                    <h2>{t('admin.accessDenied.title')}</h2>
-                    <p>{t('admin.accessDenied.message')}</p>
-                </div>
-            }
-        >
-            <div className="redemption-analytics">
+        <div className="redemption-analytics">
             {/* Header */}
             <div className="analytics-header">
                 <div className="header-content">
@@ -549,7 +560,6 @@ const RedemptionAnalytics = () => {
             )}
         </div>
     );
-};
 
 /**
  * Metric Card Component
@@ -741,8 +751,7 @@ const CampaignsTab = ({ analytics, chartData, t }) => (
                 </div>
             ))}
         </div>
-            </div>
-        </AdminOnly>
+        </div>
     );
 };
 

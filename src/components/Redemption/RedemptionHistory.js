@@ -14,6 +14,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../Auth/useAuth';
 import LoadingSpinner from '../Common/LoadingSpinner';
+import AdminOnly from '../AdminOnly';
 import redemptionService from '../../services/redemptionService';
 import { Analytics } from '../../utils/analytics';
 import { useRedemptionFormatting } from '../../hooks/useRedemptionFormatting';
@@ -327,17 +328,19 @@ export const RedemptionHistory = ({
                     {t('redemption.history.title')}
                 </h3>
                 
-                {showExport && history.length > 0 && (
-                    <button
-                        onClick={exportHistory}
-                        className="redemption-history-export-btn"
-                    >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        {t('redemption.history.export')}
-                    </button>
-                )}
+                <AdminOnly fallback={null}>
+                    {showExport && history.length > 0 && (
+                        <button
+                            onClick={exportHistory}
+                            className="redemption-history-export-btn"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            {t('redemption.history.export')}
+                        </button>
+                    )}
+                </AdminOnly>
             </div>
 
             {/* Filters */}

@@ -16,7 +16,9 @@
     "articles": "分析專欄",
     "subscription": "訂閱方案",
     "facebook": "Facebook",
-    "facebookLong": "Facebook 粉絲專頁"
+    "facebookLong": "Facebook 粉絲專頁",
+    "admin": "管理後台",
+    "adminBadge": "管理"
   },
   "userActions": {
     "login": "登入"
@@ -2315,6 +2317,136 @@
       "unknown": "發生未知錯誤",
       "client_error": "發生客戶端錯誤",
       "retry_exhausted": "已達到最大重試次數"
+    }
+  },
+  "admin": {
+    "title": "管理後台",
+    "description": "管理促銷代碼和分析數據",
+    "accessDenied": {
+      "title": "存取被拒絕",
+      "message": "您沒有權限存取管理功能。請聯繫系統管理員。",
+      "goBack": "返回"
+    },
+    "permissions": {
+      "checking": "檢查管理員權限中...",
+      "retry": "重新檢查"
+    },
+    "status": {
+      "authenticated": "管理員已認證"
+    },
+    "tabs": {
+      "codeManagement": "代碼管理",
+      "analytics": "分析報告"
+    },
+    "codes": {
+      "title": "促銷代碼管理",
+      "description": "管理和監控促銷代碼",
+      "loading": "載入代碼中...",
+      "generateNew": "產生新代碼",
+      "autoRefresh": "自動重新整理",
+      "refresh": "重新整理",
+      "filters": "篩選器",
+      "clearFilters": "清除篩選",
+      "applyFilters": "套用篩選",
+      "codeType": "代碼類型",
+      "allTypes": "所有類型",
+      "status": "狀態",
+      "allStatuses": "所有狀態",
+      "campaignName": "活動名稱",
+      "searchCampaign": "搜尋活動...",
+      "prefix": "前綴",
+      "searchPrefix": "搜尋前綴...",
+      "createdAfter": "建立日期之後",
+      "createdBefore": "建立日期之前",
+      "selectedCount": "已選擇 {{count}} 個",
+      "bulkOperations": "批次操作",
+      "deactivateSelected": "停用選中項目",
+      "selectAll": "全選",
+      "exportJson": "匯出 JSON",
+      "exportCsv": "匯出 CSV",
+      "types": {
+        "percentageDiscount": "百分比折扣",
+        "fixedAmountDiscount": "固定金額折扣",
+        "timeExtension": "時間延長"
+      },
+      "statuses": {
+        "active": "啟用",
+        "inactive": "停用",
+        "expired": "已過期",
+        "exhausted": "已用完",
+        "scheduled": "已排程"
+      },
+      "table": {
+        "code": "代碼",
+        "type": "類型",
+        "campaign": "活動",
+        "status": "狀態",
+        "usage": "使用情況",
+        "expires": "到期日",
+        "created": "建立日期",
+        "actions": "操作"
+      },
+      "pagination": {
+        "showing": "顯示 {{start}}-{{end}} 共 {{total}} 項",
+        "previous": "上一頁",
+        "next": "下一頁"
+      }
+    },
+    "analytics": {
+      "title": "分析報告",
+      "description": "查看促銷代碼使用分析",
+      "loading": "載入分析數據中...",
+      "timeRange": "時間範圍",
+      "autoRefresh": "自動重新整理",
+      "refresh": "重新整理",
+      "exportJson": "匯出 JSON",
+      "exportCsv": "匯出 CSV",
+      "timeRanges": {
+        "7days": "過去 7 天",
+        "30days": "過去 30 天",
+        "90days": "過去 90 天",
+        "1year": "過去 1 年"
+      },
+      "metrics": {
+        "overview": "總覽",
+        "conversion": "轉換率",
+        "fraud": "異常檢測",
+        "campaigns": "活動表現",
+        "totalCodes": "總代碼數",
+        "totalRedemptions": "總兌換數",
+        "conversionRate": "轉換率",
+        "successRate": "成功率"
+      },
+      "fraudAlerts": {
+        "title": "異常警報",
+        "highVelocity": "檢測到高頻率兌換活動",
+        "highFailureRate": "兌換失敗率過高",
+        "severity": {
+          "high": "高",
+          "medium": "中",
+          "low": "低"
+        },
+        "types": {
+          "velocity": "兌換頻率",
+          "failure_rate": "失敗率"
+        }
+      },
+      "charts": {
+        "redemptionTrends": "兌換趨勢",
+        "codeTypeDistribution": "代碼類型分布",
+        "campaignPerformance": "活動表現",
+        "fraudPatterns": "異常模式"
+      }
+    },
+    "errors": {
+      "unknown": "未知錯誤",
+      "validationFailed": "驗證失敗",
+      "redemptionFailed": "兌換失敗",
+      "loadFailed": "載入失敗"
+    },
+    "actions": {
+      "manageCodes": "管理代碼",
+      "viewAnalytics": "查看分析"
     }
   }
 }

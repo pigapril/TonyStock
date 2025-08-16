@@ -20,10 +20,12 @@ import CodeGenerationWizard from './CodeGenerationWizard';
 import CodeDetailsModal from './CodeDetailsModal';
 import BulkOperationsModal from './BulkOperationsModal';
 import AdminOnly from '../../AdminOnly';
+import { useAdminPermissions } from '../../../hooks/useAdminPermissions';
 import { systemLogger } from '../../../utils/logger';
 
 const CodeManagementPanel = () => {
     const { t } = useTranslation();
+    const { isAdmin, loading: adminLoading, checkAdminStatus } = useAdminPermissions();
     
     // State management
     const [codes, setCodes] = useState([]);
@@ -332,6 +334,34 @@ const CodeManagementPanel = () => {
         }, {});
     }, [codes]);
 
+    // Handle admin permission loading
+    if (adminLoading) {
+        return (
+            <div className="code-management-panel">
+                <div className="loading-container">
+                    <LoadingSpinner />
+                    <p>{t('admin.permissions.checking')}</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Handle permission denied
+    if (!isAdmin) {
+        return (
+            <div className="admin-access-denied">
+                <h2>{t('admin.accessDenied.title')}</h2>
+                <p>{t('admin.accessDenied.message')}</p>
+                <button 
+                    onClick={checkAdminStatus}
+                    className="btn btn-secondary"
+                >
+                    {t('admin.permissions.retry')}
+                </button>
+            </div>
+        );
+    }
+
     if (loading && codes.length === 0) {
         return (
             <div className="code-management-panel">
@@ -344,16 +374,7 @@ const CodeManagementPanel = () => {
     }
 
     return (
-        <AdminOnly 
-            showLoading={true}
-            fallback={
-                <div className="admin-access-denied">
-                    <h2>{t('admin.accessDenied.title')}</h2>
-                    <p>{t('admin.accessDenied.message')}</p>
-                </div>
-            }
-        >
-            <div className="code-management-panel">
+        <div className="code-management-panel">
             {/* Header */}
             <div className="panel-header">
                 <div className="header-content">
@@ -696,8 +717,7 @@ const CodeManagementPanel = () => {
                     }}
                 />
             )}
-            </div>
-        </AdminOnly>
+        </div>
     );
 };
 
