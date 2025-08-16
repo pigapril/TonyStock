@@ -12,7 +12,9 @@ export const AuthContext = createContext({
     watchlistAccess: false,
     loading: true,
     error: null,
-    isGoogleInitialized: false
+    isGoogleInitialized: false,
+    isAdmin: false,
+    adminLoading: false
 });
 
 export function AuthProvider({ children }) {
@@ -21,12 +23,44 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isGoogleInitialized, setIsGoogleInitialized] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [adminLoading, setAdminLoading] = useState(false);
 
     const handleError = (error) => {
         const errorData = handleApiError(error);
         setError(errorData.data);
         setLoading(false);
     };
+
+    // Admin status checking function
+    const checkAdminStatus = useCallback(async () => {
+        if (!user) {
+            setIsAdmin(false);
+            return;
+        }
+
+        try {
+            setAdminLoading(true);
+            console.log('AuthContext: Checking admin status for user:', user.email);
+            
+            const response = await authService.checkAdminStatus();
+            const adminStatus = response?.isAdmin || false;
+            
+            console.log('AuthContext: Admin status result:', {
+                isAdmin: adminStatus,
+                userId: user.id || user.userId,
+                timestamp: new Date().toISOString()
+            });
+            
+            setIsAdmin(adminStatus);
+            
+        } catch (error) {
+            console.error('AuthContext: Failed to check admin status:', error);
+            setIsAdmin(false); // Default to false for security
+        } finally {
+            setAdminLoading(false);
+        }
+    }, [user]);
 
     // 將 handleGoogleCredential 移到這裡，在 useEffect 之前
     const handleGoogleCredential = useCallback(async (response) => {
@@ -252,6 +286,16 @@ export function AuthProvider({ children }) {
         checkAuthStatus();
     }, [checkAuthStatus]);
 
+    // 當用戶狀態改變時檢查管理員狀態
+    useEffect(() => {
+        if (user) {
+            checkAdminStatus();
+        } else {
+            setIsAdmin(false);
+            setAdminLoading(false);
+        }
+    }, [user, checkAdminStatus]);
+
         // 登出處理
     const logout = async () => {
         try {
@@ -261,6 +305,8 @@ export function AuthProvider({ children }) {
             setUser(null);
             setError(null);
             setLoading(false);
+            setIsAdmin(false);
+            setAdminLoading(false);
             
             let identityServiceRevoked = false;
             if (window.google?.accounts?.id) {
@@ -353,7 +399,10 @@ export function AuthProvider({ children }) {
         logout,
         checkAuthStatus,
         renderGoogleButton,
-        isGoogleInitialized
+        isGoogleInitialized,
+        isAdmin,
+        adminLoading,
+        checkAdminStatus
     };
 
     return (

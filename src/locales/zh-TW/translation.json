@@ -312,6 +312,10 @@
     }
   },
   "admin": {
+    "accessDenied": {
+      "title": "存取被拒絕",
+      "message": "您需要管理員權限才能存取此頁面。"
+    },
     "codes": {
       "title": "兌換代碼管理",
       "description": "管理和監控所有兌換代碼",

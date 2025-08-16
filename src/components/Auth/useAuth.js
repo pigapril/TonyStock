@@ -15,7 +15,10 @@ export function useAuth() {
         error, 
         logout, 
         checkAuthStatus,
-        renderGoogleButton 
+        renderGoogleButton,
+        isAdmin,
+        adminLoading,
+        checkAdminStatus
     } = context;
 
     // 計算 watchlist 存取權限
@@ -37,6 +40,9 @@ export function useAuth() {
         watchlistAccess,
         logout,
         checkAuthStatus,
-        renderGoogleButton
+        renderGoogleButton,
+        isAdmin,
+        adminLoading,
+        checkAdminStatus
     };
 } 

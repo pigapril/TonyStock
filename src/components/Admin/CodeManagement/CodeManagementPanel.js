@@ -19,6 +19,7 @@ import AdminRedemptionService from '../../../services/adminRedemptionService';
 import CodeGenerationWizard from './CodeGenerationWizard';
 import CodeDetailsModal from './CodeDetailsModal';
 import BulkOperationsModal from './BulkOperationsModal';
+import AdminOnly from '../../AdminOnly';
 import { systemLogger } from '../../../utils/logger';
 
 const CodeManagementPanel = () => {
@@ -343,7 +344,16 @@ const CodeManagementPanel = () => {
     }
 
     return (
-        <div className="code-management-panel">
+        <AdminOnly 
+            showLoading={true}
+            fallback={
+                <div className="admin-access-denied">
+                    <h2>{t('admin.accessDenied.title')}</h2>
+                    <p>{t('admin.accessDenied.message')}</p>
+                </div>
+            }
+        >
+            <div className="code-management-panel">
             {/* Header */}
             <div className="panel-header">
                 <div className="header-content">
@@ -686,7 +696,8 @@ const CodeManagementPanel = () => {
                     }}
                 />
             )}
-        </div>
+            </div>
+        </AdminOnly>
     );
 };
 

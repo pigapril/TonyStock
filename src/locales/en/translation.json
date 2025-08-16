@@ -314,6 +314,10 @@
     }
   },
   "admin": {
+    "accessDenied": {
+      "title": "Access Denied",
+      "message": "You need administrator privileges to access this page."
+    },
     "codes": {
       "title": "Redemption Code Management",
       "description": "Manage and monitor all redemption codes",

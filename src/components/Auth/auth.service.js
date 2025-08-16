@@ -127,6 +127,31 @@ class AuthService {
             throw handledError;
         }
     }
+
+    // 檢查管理員狀態
+    async checkAdminStatus() {
+        try {
+            console.log('Auth service: Checking admin status');
+            
+            const response = await apiClient.get('/api/auth/admin-status');
+            
+            console.log('Admin status response:', {
+                status: response.status,
+                data: response.data
+            });
+            
+            return response.data.data; // API 回應的資料結構是 { status: 'success', data: { isAuthenticated, isAdmin } }
+        } catch (error) {
+            console.error('Admin status check error:', {
+                error: error.message,
+                status: error.response?.status
+            });
+            
+            // 統一錯誤處理
+            const handledError = handleApiError(error);
+            throw handledError;
+        }
+    }
 }
 
 const authService = new AuthService();

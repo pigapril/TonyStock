@@ -16,6 +16,7 @@ import './RedemptionAnalytics.css';
 import LoadingSpinner from '../../Common/LoadingSpinner';
 import ErrorDisplay from '../../Common/ErrorDisplay';
 import AdminRedemptionService from '../../../services/adminRedemptionService';
+import AdminOnly from '../../AdminOnly';
 import { systemLogger } from '../../../utils/logger';
 
 const RedemptionAnalytics = () => {
@@ -308,17 +309,36 @@ const RedemptionAnalytics = () => {
 
     if (loading && !analytics) {
         return (
-            <div className="redemption-analytics">
-                <div className="loading-container">
-                    <LoadingSpinner />
-                    <p>{t('admin.analytics.loading')}</p>
+            <AdminOnly 
+                showLoading={true}
+                fallback={
+                    <div className="admin-access-denied">
+                        <h2>{t('admin.accessDenied.title')}</h2>
+                        <p>{t('admin.accessDenied.message')}</p>
+                    </div>
+                }
+            >
+                <div className="redemption-analytics">
+                    <div className="loading-container">
+                        <LoadingSpinner />
+                        <p>{t('admin.analytics.loading')}</p>
+                    </div>
                 </div>
-            </div>
+            </AdminOnly>
         );
     }
 
     return (
-        <div className="redemption-analytics">
+        <AdminOnly 
+            showLoading={true}
+            fallback={
+                <div className="admin-access-denied">
+                    <h2>{t('admin.accessDenied.title')}</h2>
+                    <p>{t('admin.accessDenied.message')}</p>
+                </div>
+            }
+        >
+            <div className="redemption-analytics">
             {/* Header */}
             <div className="analytics-header">
                 <div className="header-content">
@@ -721,7 +741,9 @@ const CampaignsTab = ({ analytics, chartData, t }) => (
                 </div>
             ))}
         </div>
-    </div>
-);
+            </div>
+        </AdminOnly>
+    );
+};
 
 export default RedemptionAnalytics;
