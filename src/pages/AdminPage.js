@@ -8,18 +8,35 @@
  * - Error handling for permission-denied scenarios
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAdminPermissions } from '../hooks/useAdminPermissions';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
 import CodeManagementPanel from '../components/Admin/CodeManagement/CodeManagementPanel';
 import RedemptionAnalytics from '../components/Admin/Analytics/RedemptionAnalytics';
+import AdminPermissionsDebug from '../components/AdminPermissionsDebug';
 import './AdminPage.css';
 
 const AdminPage = () => {
     const { t } = useTranslation();
-    const { isAdmin, loading: adminLoading, checkAdminStatus } = useAdminPermissions();
+    const { 
+        isAdmin, 
+        loading: adminLoading, 
+        checkAdminStatus, 
+        getDebugInfo, 
+        shouldShowAdminFeatures 
+    } = useAdminPermissions();
     const [activeTab, setActiveTab] = useState('codes');
+
+    // Debug logging for important state changes only
+    useEffect(() => {
+        if (!adminLoading) {
+            console.log('AdminPage: Admin status resolved:', {
+                isAdmin,
+                shouldShowAdminFeatures: shouldShowAdminFeatures
+            });
+        }
+    }, [isAdmin, adminLoading, shouldShowAdminFeatures]);
 
     // Handle admin permission loading
     if (adminLoading) {
@@ -34,7 +51,7 @@ const AdminPage = () => {
     }
 
     // Handle permission denied
-    if (!isAdmin) {
+    if (!shouldShowAdminFeatures) {
         return (
             <div className="admin-page">
                 <div className="admin-access-denied">
@@ -85,6 +102,9 @@ const AdminPage = () => {
 
     return (
         <div className="admin-page">
+            {/* Debug component - remove in production */}
+            {process.env.NODE_ENV === 'development' && <AdminPermissionsDebug />}
+            
             {/* Header */}
             <div className="admin-header">
                 <div className="admin-header-content">

@@ -20,7 +20,7 @@ import './components/Common/global-styles.css';
 import './components/Common/Dialog/QuotaExceededDialog.css';
 
 // 自定義組件
-import { Home } from './components/Home/Home'; 
+import { Home } from './components/Home/Home';
 import MarketSentimentIndex from './components/MarketSentimentIndex/MarketSentimentIndex';
 import PageContainer from './components/PageContainer/PageContainer';
 import { AuthDialog } from './components/Auth/AuthDialog';
@@ -63,7 +63,7 @@ import { useNewFeatureNotification, FEATURES } from './components/NewFeatureBadg
 import { AdProvider } from './components/Common/InterstitialAdModal/AdContext';
 import { useToastManager } from './components/Watchlist/hooks/useToastManager';
 import { Toast } from './components/Watchlist/components/Toast';
-import AdminNavigation from './components/Common/AdminNavigation';
+
 
 // 工具函數
 import { Analytics } from './utils/analytics';
@@ -76,7 +76,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 // 在 AppContent 之前加入 Overlay 元件定義
 const Overlay = ({ isVisible, onClick }) => (
-  <div 
+  <div
     className={`overlay ${isVisible ? 'visible' : ''}`}
     onClick={onClick}
   />
@@ -90,13 +90,13 @@ function AppContent() {
   const { isAuthenticated, user, logout } = useAuth();
   const { openDialog } = useDialog();
   const { showToast, toast, hideToast } = useToastManager();
-  const { 
-    hasNewFeature: hasNewWatchlist, 
-    markFeatureAsSeen: markWatchlistSeen 
+  const {
+    hasNewFeature: hasNewWatchlist,
+    markFeatureAsSeen: markWatchlistSeen
   } = useNewFeatureNotification(FEATURES.WATCHLIST);
-  const { 
-    hasNewFeature: hasNewArticles, 
-    markFeatureAsSeen: markArticlesSeen 
+  const {
+    hasNewFeature: hasNewArticles,
+    markFeatureAsSeen: markArticlesSeen
   } = useNewFeatureNotification(FEATURES.ARTICLES);
   const isMobile = useMediaQuery({ query: '(max-width: 1300px)' });
   const location = useLocation();
@@ -198,8 +198,8 @@ function AppContent() {
         <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
           <ul>
             <li className="sidebar-item-1">
-              <NavLink 
-                to={`/${lang}/`} 
+              <NavLink
+                to={`/${lang}/`}
                 onClick={() => isMobile && setSidebarOpen(false)}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -209,8 +209,8 @@ function AppContent() {
               </NavLink>
             </li>
             <li className="sidebar-item-2">
-              <NavLink 
-                to={`/${lang}/priceanalysis`} 
+              <NavLink
+                to={`/${lang}/priceanalysis`}
                 onClick={() => isMobile && setSidebarOpen(false)}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -220,8 +220,8 @@ function AppContent() {
               </NavLink>
             </li>
             <li className="sidebar-item-3">
-              <NavLink 
-                to={`/${lang}/market-sentiment`} 
+              <NavLink
+                to={`/${lang}/market-sentiment`}
                 onClick={() => isMobile && setSidebarOpen(false)}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -268,8 +268,8 @@ function AppContent() {
             </li>
             */}
             <li className="sidebar-item-5">
-              <NavLink 
-                to={`/${lang}/watchlist`} 
+              <NavLink
+                to={`/${lang}/watchlist`}
                 onClick={handleWatchlistClick}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -281,8 +281,8 @@ function AppContent() {
               </NavLink>
             </li>
             <li className="sidebar-item-6">
-              <NavLink 
-                to={`/${lang}/articles`} 
+              <NavLink
+                to={`/${lang}/articles`}
                 onClick={handleArticlesClick}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -296,8 +296,8 @@ function AppContent() {
             {/* 只有在 zh-TW 語系下顯示贊助連結 */}
             {lang === 'zh-TW' && (
               <li className="sidebar-item-7">
-                <NavLink 
-                  to={`/${lang}/subscription-plans`} 
+                <NavLink
+                  to={`/${lang}/subscription-plans`}
                   onClick={() => isMobile && setSidebarOpen(false)}
                   className={({ isActive }) => isActive ? "active-nav-link" : ""}
                   aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -307,7 +307,7 @@ function AppContent() {
                 </NavLink>
               </li>
             )}
-            <AdminNavigation isMobile={true} onNavigate={() => isMobile && setSidebarOpen(false)} />
+
             <li className="sidebar-item-8">
               <a
                 href="https://www.facebook.com/profile.php?id=61565751412240"
@@ -331,10 +331,10 @@ function AppContent() {
                 <img src="/logo.png" alt={t('appName')} className="logo" />
               </NavLink>
             </div>
-            
+
             {/* 桌面版導航項目 */}
             <div className="desktop-nav-items">
-              <NavLink 
+              <NavLink
                 to={`/${lang}/priceanalysis`}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -342,7 +342,7 @@ function AppContent() {
                 <FaChartLine />
                 <span>{t('nav.priceAnalysis')}</span>
               </NavLink>
-              <NavLink 
+              <NavLink
                 to={`/${lang}/market-sentiment`}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -371,8 +371,8 @@ function AppContent() {
                 )}
               </div>
               */}
-              <NavLink 
-                to={`/${lang}/watchlist`} 
+              <NavLink
+                to={`/${lang}/watchlist`}
                 onClick={handleWatchlistClick}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -380,8 +380,8 @@ function AppContent() {
                 <FaList />
                 <span>{t('nav.watchlist')}</span>
               </NavLink>
-              <NavLink 
-                to={`/${lang}/articles`} 
+              <NavLink
+                to={`/${lang}/articles`}
                 onClick={handleArticlesClick}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -391,7 +391,7 @@ function AppContent() {
               </NavLink>
               {/* 只有在 zh-TW 語系下顯示贊助連結 */}
               {lang === 'zh-TW' && (
-                <NavLink 
+                <NavLink
                   to={`/${lang}/subscription-plans`}
                   className={({ isActive }) => isActive ? "active-nav-link" : ""}
                   aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -400,7 +400,7 @@ function AppContent() {
                   <span>{t('nav.subscription')}</span>
                 </NavLink>
               )}
-              <AdminNavigation isMobile={false} />
+
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
                 <span>{t('nav.facebookLong')}</span>
@@ -427,13 +427,13 @@ function AppContent() {
               <Route path="/" element={<Home />} />
 
               {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
-              <Route 
-                path="priceanalysis" 
+              <Route
+                path="priceanalysis"
                 element={
                   <ProtectedRoute>
                     <PriceAnalysis />
                   </ProtectedRoute>
-                } 
+                }
               />
 
               <Route
@@ -485,23 +485,23 @@ function AppContent() {
                   <PaymentStatusPage />
                 </ProtectedRoute>
               } />
-              <Route 
-                path="google-trends/symbol/:symbol" 
+              <Route
+                path="google-trends/symbol/:symbol"
                 element={
                   <ProtectedRoute>
                     <GoogleTrendsSymbolPage />
                   </ProtectedRoute>
-                } 
+                }
               />
-              <Route 
-                path="google-trends/market" 
+              <Route
+                path="google-trends/market"
                 element={
                   <ProtectedRoute>
                     <GoogleTrendsMarketPage />
                   </ProtectedRoute>
-                } 
+                }
               />
-              <Route path="admin" element={
+              <Route path="nk-admin" element={
                 <ProtectedRoute>
                   <AdminPage />
                 </ProtectedRoute>
@@ -523,7 +523,7 @@ function AppContent() {
 
         {/* 添加遮罩層 (mobile 狀態下點擊收合側邊欄) */}
         <Overlay isVisible={sidebarOpen && isMobile} onClick={closeSidebar} />
-        
+
         {/* 將 Footer 移到這裡 */}
         <Footer />
       </div>
@@ -531,7 +531,7 @@ function AppContent() {
       <QuotaExceededDialog />
       {/* 根據是否為首頁決定是否渲染 AdBanner */}
       {!isHomePage && <AdBanner />}
-      
+
       {/* Global Toast for API Client error handling */}
       {toast && (
         <Toast
@@ -586,9 +586,9 @@ function LanguageWrapper() {
   const isValidLang = lang && i18n.options.supportedLngs.includes(lang);
 
   if (!isValidLang) {
-     // 如果語言無效或正在重定向，返回 null 或 Loading
-     // AppContent 的 useEffect 也會處理重定向，但這裡提前處理更好
-     return null;
+    // 如果語言無效或正在重定向，返回 null 或 Loading
+    // AppContent 的 useEffect 也會處理重定向，但這裡提前處理更好
+    return null;
   }
 
   return <AppContent />;
@@ -607,7 +607,7 @@ function InitialRedirect() {
       targetLang = 'en';
     }
     else if (userLang.toLowerCase().startsWith('zh') && i18n.options.supportedLngs.includes('zh-TW')) {
-       targetLang = 'zh-TW';
+      targetLang = 'zh-TW';
     }
 
     navigate(`/${targetLang}`, { replace: true });
@@ -623,13 +623,13 @@ function App() {
       <SubscriptionProvider>
         <DialogProvider>
           <AdProvider>
-          <Routes>
-            {/* --- 確保這裡使用正確定義的 InitialRedirect --- */}
-            <Route path="/" element={<InitialRedirect />} />
-            {/* --- 確保這裡使用正確定義的 LanguageWrapper --- */}
-            <Route path="/:lang/*" element={<LanguageWrapper />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+            <Routes>
+              {/* --- 確保這裡使用正確定義的 InitialRedirect --- */}
+              <Route path="/" element={<InitialRedirect />} />
+              {/* --- 確保這裡使用正確定義的 LanguageWrapper --- */}
+              <Route path="/:lang/*" element={<LanguageWrapper />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
           </AdProvider>
         </DialogProvider>
       </SubscriptionProvider>

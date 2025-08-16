@@ -47,6 +47,15 @@ export function useAdminPermissions() {
     const [lastChecked, setLastChecked] = useState(null);
     const [lastKnownStatus, setLastKnownStatus] = useState(null); // New: Track last known status
     
+    // Debug logging for authentication state (only on actual changes)
+    useEffect(() => {
+        if (user && isAuthenticated && !authLoading) {
+            console.log('useAdminPermissions: User authenticated:', user.email);
+        } else if (!user && !isAuthenticated) {
+            console.log('useAdminPermissions: User not authenticated');
+        }
+    }, [user, isAuthenticated, authLoading]);
+    
     // Use ref to track if component is mounted
     const isMountedRef = useRef(true);
     
@@ -156,12 +165,24 @@ export function useAdminPermissions() {
         let timeoutId;
         
         if (isAuthenticated && user && !authLoading) {
+            console.log('useAdminPermissions: Triggering admin check due to auth state change');
             // Small delay to ensure auth context is fully settled
             timeoutId = setTimeout(() => {
-                checkAdminStatus();
+                checkAdminStatus().then(result => {
+                    console.log('useAdminPermissions: Admin check completed with result:', result);
+                    // Force a state sync with the utility class
+                    const utilityStatus = adminPermissions.isCurrentUserAdmin();
+                    if (utilityStatus !== isAdmin) {
+                        console.log('useAdminPermissions: Syncing state - utility says:', utilityStatus, 'React state says:', isAdmin);
+                        setIsAdmin(utilityStatus);
+                    }
+                }).catch(error => {
+                    console.error('useAdminPermissions: Admin check failed:', error);
+                });
             }, 100);
         } else {
             // Clear admin status when user is not authenticated
+            console.log('useAdminPermissions: Clearing admin status due to auth state change');
             clearAdminStatus();
         }
         
@@ -170,7 +191,7 @@ export function useAdminPermissions() {
                 clearTimeout(timeoutId);
             }
         };
-    }, [isAuthenticated, user, authLoading, checkAdminStatus, clearAdminStatus]);
+    }, [isAuthenticated, user, authLoading, checkAdminStatus, clearAdminStatus, isAdmin]);
     
     // Enhanced effect to listen for admin status changes from the utility
     // Properly synchronizes React state with utility class state including lastKnownStatus
@@ -178,6 +199,7 @@ export function useAdminPermissions() {
         const handleAdminStatusChange = (status) => {
             if (isMountedRef.current) {
                 console.log('useAdminPermissions: Admin status changed via listener:', status);
+                console.log('useAdminPermissions: Current React state before update:', { isAdmin, loading, lastKnownStatus });
                 
                 try {
                     // Get full state from utility class for proper synchronization
@@ -389,10 +411,13 @@ export function useAdminPermissions() {
                 utilityState: utilityStatus
             });
             setIsAdmin(utilityStatus);
+            setLastKnownStatus(utilityStatus);
         }
         
         return utilityStatus;
     }, [isAdmin]);
+
+    // State synchronization through listeners (removed periodic sync to reduce log noise)
     
     /**
      * Check if admin features should be shown
