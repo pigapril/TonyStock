@@ -111,6 +111,80 @@
   font-weight: 400;
 }
 
+/* Redemption Code Section */
+.subscription-plans-redemption {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.subscription-plans-redemption__container {
+  text-align: center;
+}
+
+.subscription-plans-redemption__title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+  margin: 0 0 8px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+}
+
+.subscription-plans-redemption__subtitle {
+  font-size: 16px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  margin: 0 0 24px 0;
+  line-height: 1.4;
+}
+
+.subscription-plans-redemption__input {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Applied Redemption Banner */
+.subscription-plans-applied-redemption {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.applied-redemption-banner {
+  background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(52, 199, 89, 0.2);
+  animation: slideInFromTop 0.5s ease-out;
+}
+
+.applied-redemption-banner__icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
+.applied-redemption-banner__content h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 4px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+}
+
+.applied-redemption-banner__content p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  line-height: 1.4;
+}
+
 /* Plan Cards Section */
 .subscription-plans-cards {
   display: grid;
@@ -190,6 +264,33 @@
   .upgrade-notification__message {
     font-size: 15px;
   }
+  
+  /* Redemption section mobile styles */
+  .subscription-plans-redemption {
+    padding: 24px 20px;
+    margin: 0 -4px;
+  }
+  
+  .subscription-plans-redemption__title {
+    font-size: 20px;
+  }
+  
+  .subscription-plans-redemption__subtitle {
+    font-size: 14px;
+  }
+  
+  .applied-redemption-banner {
+    padding: 16px 20px;
+    gap: 12px;
+  }
+  
+  .applied-redemption-banner__content h4 {
+    font-size: 14px;
+  }
+  
+  .applied-redemption-banner__content p {
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -230,6 +331,31 @@
     height: 28px;
     font-size: 16px;
   }
+  
+  /* Redemption section small mobile styles */
+  .subscription-plans-redemption {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+  
+  .subscription-plans-redemption__title {
+    font-size: 18px;
+  }
+  
+  .subscription-plans-redemption__subtitle {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  
+  .applied-redemption-banner {
+    padding: 14px 16px;
+    border-radius: 12px;
+  }
+  
+  .applied-redemption-banner__icon {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 /* Dark mode support */
@@ -249,5 +375,23 @@
   .upgrade-notification {
     background: linear-gradient(135deg, #0A84FF 0%, #5E5CE6 100%);
     box-shadow: 0 8px 32px rgba(10, 132, 255, 0.3);
+  }
+  
+  /* Redemption section dark mode */
+  .subscription-plans-redemption {
+    background: #1c1c1e;
+    border-color: #38383a;
+  }
+  
+  .subscription-plans-redemption__title {
+    color: rgba(235, 235, 245, 0.85);
+  }
+  
+  .subscription-plans-redemption__subtitle {
+    color: rgba(235, 235, 245, 0.60);
+  }
+  
+  .applied-redemption-banner {
+    background: linear-gradient(135deg, #32D74B 0%, #30D158 100%);
   }
 }

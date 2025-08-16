@@ -8,7 +8,14 @@ import { Analytics } from '../../../../utils/analytics';
 import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../utils/pricingUtils';
 import './PlanCard.css';
 
-export const PlanCard = ({ plan, currentPlan, isCurrentUser, billingPeriod = 'monthly' }) => {
+export const PlanCard = ({ 
+  plan, 
+  currentPlan, 
+  isCurrentUser, 
+  billingPeriod = 'monthly',
+  planAdjustment = null,
+  appliedRedemption = null
+}) => {
   const { t } = useTranslation();
   const { lang } = useParams();
   const { updatePlan, loading } = useSubscription();
@@ -71,6 +78,21 @@ export const PlanCard = ({ plan, currentPlan, isCurrentUser, billingPeriod = 'mo
     return formatPrice(price);
   };
 
+  // Get adjusted pricing if redemption code is applied
+  const getAdjustedPricing = () => {
+    if (!planAdjustment) return pricingData;
+    
+    return {
+      ...pricingData,
+      displayPrice: planAdjustment.adjustedPrice,
+      originalPrice: planAdjustment.originalPrice,
+      hasRedemptionDiscount: true,
+      redemptionDiscount: planAdjustment.discount
+    };
+  };
+
+  const adjustedPricing = getAdjustedPricing();
+
   const getButtonText = () => {
     if (paymentLoading) return '處理中...';
     if (isCurrentPlan) return t('subscription.subscriptionPlans.current');
@@ -108,16 +130,36 @@ export const PlanCard = ({ plan, currentPlan, isCurrentUser, billingPeriod = 'mo
         <div className="plan-card__price-row">
           <div className="plan-card__price">
             <span className="plan-card__price-amount">
-              {formatPriceDisplay(pricingData.displayPrice)}
+              {formatPriceDisplay(adjustedPricing.displayPrice)}
             </span>
             {!isFree && (
               <span className="plan-card__price-period">
-                {pricingData.period}
+                {adjustedPricing.period}
               </span>
             )}
           </div>
           
-          {!isFree && pricingData.showDiscount && (
+          {/* Redemption Discount Display */}
+          {adjustedPricing.hasRedemptionDiscount && adjustedPricing.redemptionDiscount && (
+            <div className="plan-card__redemption-discount">
+              <div className="plan-card__original-price-redemption">
+                {formatPriceDisplay(adjustedPricing.originalPrice)}
+              </div>
+              <div className="plan-card__redemption-badge">
+                {adjustedPricing.redemptionDiscount.type === 'percentage' 
+                  ? t('redemption.pricing.discountBadge.percentage', { 
+                      percentage: adjustedPricing.redemptionDiscount.value 
+                    })
+                  : t('redemption.pricing.discountBadge.fixed', { 
+                      amount: formatPrice(adjustedPricing.redemptionDiscount.amount) 
+                    })
+                }
+              </div>
+            </div>
+          )}
+          
+          {/* Regular Billing Discount Display */}
+          {!adjustedPricing.hasRedemptionDiscount && !isFree && pricingData.showDiscount && (
             <div className="plan-card__discount-info">
               <div className="plan-card__discount-badge">
                 {t('subscription.billingPeriod.save')} {formatDiscount(pricingData.discountPercentage)}
@@ -130,6 +172,18 @@ export const PlanCard = ({ plan, currentPlan, isCurrentUser, billingPeriod = 'mo
             </div>
           )}
         </div>
+
+        {/* Applied Redemption Indicator */}
+        {appliedRedemption && (
+          <div className="plan-card__applied-redemption">
+            <div className="plan-card__applied-redemption-icon">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <span>{t('redemption.pricing.appliedIndicator')}</span>
+          </div>
+        )}
       </div>
 
       <div className="plan-card__features">

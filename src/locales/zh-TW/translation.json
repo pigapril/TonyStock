@@ -92,6 +92,526 @@
     "title": "🚀 登入就能使用完整功能！",
     "loading": "載入中..."
   },
+  "redemption": {
+    "inputPlaceholder": "輸入兌換代碼",
+    "validate": "驗證",
+    "validating": "驗證中...",
+    "redeem": "兌換",
+    "redeeming": "兌換中...",
+    "preview": {
+      "title": "代碼優惠",
+      "percentageDiscount": "{{percentage}}% 折扣",
+      "fixedDiscount": "{{amount}} {{currency}} 折扣",
+      "timeExtension": "延長 {{duration}} {{unit}}",
+      "planUpgrade": "升級至 {{plan}}",
+      "benefits": "特殊優惠",
+      "paymentMethodRequired": "需要綁定付款方式"
+    },
+    "confirmation": {
+      "title": "確認兌換",
+      "codeLabel": "兌換代碼",
+      "benefitsTitle": "您將獲得：",
+      "valueLabel": "預估價值：",
+      "estimatedValue": "{{amount}} {{currency}}",
+      "paymentMethod": {
+        "title": "需要付款方式",
+        "description": "此優惠需要您綁定有效的付款方式。",
+        "acknowledge": "我了解需要綁定付款方式"
+      },
+      "terms": {
+        "accept": "我同意",
+        "link": "條款與條件"
+      },
+      "cancel": "取消",
+      "confirm": "確認兌換",
+      "processing": "處理中...",
+      "info": "確認後此操作無法撤銷。",
+      "benefits": {
+        "discount": {
+          "title": "折扣優惠",
+          "percentage": "訂閱享 {{percentage}}% 折扣",
+          "fixed": "訂閱減免 {{amount}} {{currency}}"
+        },
+        "extension": {
+          "title": "訂閱延長",
+          "description": "您的訂閱將延長 {{duration}} {{unit}}"
+        },
+        "upgrade": {
+          "title": "方案升級",
+          "description": "升級至 {{plan}} 方案 {{duration}} {{unit}}"
+        },
+        "general": {
+          "title": "特殊優惠",
+          "description": "您將獲得特殊促銷優惠",
+          "highlight": "高級權限"
+        }
+      }
+    },
+    "history": {
+      "title": "兌換記錄",
+      "loading": "載入記錄中...",
+      "export": "匯出",
+      "retry": "重試",
+      "empty": {
+        "title": "無兌換記錄",
+        "description": "您尚未兌換任何代碼。在上方輸入代碼開始使用！"
+      },
+      "summary": "顯示 {{showing}} / {{total}} 筆兌換記錄",
+      "table": {
+        "date": "日期",
+        "code": "代碼",
+        "type": "類型",
+        "benefit": "優惠",
+        "status": "狀態"
+      },
+      "types": {
+        "discount": "折扣",
+        "extension": "延長",
+        "upgrade": "升級"
+      },
+      "status": {
+        "applied": "已套用",
+        "pending": "處理中",
+        "failed": "失敗",
+        "reversed": "已撤銷"
+      },
+      "benefits": {
+        "discount": "{{amount}} {{currency}} 折扣",
+        "discountGeneral": "訂閱折扣",
+        "extension": "延長 {{duration}} {{unit}}",
+        "upgrade": "升級至 {{plan}}",
+        "general": "特殊優惠"
+      },
+      "filters": {
+        "allStatuses": "所有狀態",
+        "allTypes": "所有類型",
+        "startDate": "開始日期",
+        "endDate": "結束日期",
+        "apply": "套用篩選",
+        "clear": "清除篩選"
+      },
+      "pagination": {
+        "previous": "上一頁",
+        "next": "下一頁"
+      },
+      "errors": {
+        "loadFailed": "載入兌換記錄失敗"
+      }
+    },
+    "activePromotions": {
+      "title": "目前優惠",
+      "count": "{{count}} 個有效",
+      "loading": "載入優惠中...",
+      "retry": "重試",
+      "empty": {
+        "title": "無有效優惠",
+        "description": "您目前沒有任何有效的促銷優惠。"
+      },
+      "codeLabel": "代碼：",
+      "timeRemaining": {
+        "days": "剩餘 {{days}} 天 {{hours}} 小時",
+        "hours": "剩餘 {{hours}} 小時 {{minutes}} 分鐘",
+        "minutes": "剩餘 {{minutes}} 分鐘"
+      },
+      "expired": "已過期",
+      "expiringWarning": "此優惠即將到期！",
+      "renewNow": "立即續費",
+      "expiredMessage": "此優惠已過期",
+      "renewSubscription": "續費訂閱",
+      "benefits": {
+        "discount": {
+          "title": "折扣優惠",
+          "percentage": "訂閱享 {{percentage}}% 折扣",
+          "fixed": "訂閱減免 {{amount}} {{currency}}"
+        },
+        "extension": {
+          "title": "訂閱延長",
+          "description": "您的訂閱已延長 {{duration}} {{unit}}"
+        },
+        "upgrade": {
+          "title": "方案升級",
+          "description": "您可使用 {{plan}} 方案功能"
+        },
+        "general": {
+          "title": "特殊優惠",
+          "description": "您擁有有效的促銷優惠"
+        }
+      },
+      "errors": {
+        "loadFailed": "載入有效優惠失敗"
+      }
+    },
+    "success": {
+      "redeemed": "代碼兌換成功！"
+    },
+    "errors": {
+      "unknown": "發生未知錯誤",
+      "validationFailed": "代碼驗證失敗",
+      "previewFailed": "無法預覽優惠",
+      "redemptionFailed": "兌換失敗",
+      "invalid_code": "無效的兌換代碼",
+      "code_expired": "此代碼已於 {{expiryDate}} 過期",
+      "code_not_active": "此代碼將於 {{activationDate}} 啟用",
+      "code_exhausted": "此代碼已達使用上限（{{maxUses}} 次）",
+      "already_redeemed": "您已於 {{redemptionDate}} 兌換過此代碼",
+      "user_limit_exceeded": "您已達此代碼的使用上限（{{maxUsesPerUser}} 次）",
+      "eligibility_failed": "您不符合此代碼的使用條件",
+      "eligibility_new_customers_only": "此代碼僅限新客戶使用",
+      "eligibility_plan_restriction": "此代碼僅限 {{eligiblePlans}} 方案用戶使用",
+      "eligibility_first_time_only": "此代碼僅限首次兌換用戶使用",
+      "payment_method_required": "兌換此代碼需要綁定付款方式",
+      "stacking_violation": "此代碼無法與您目前的優惠疊加使用",
+      "stacking_conflict_with": "此代碼與您的 {{conflictingPromotions}} 優惠衝突",
+      "confirmation_required": "需要確認",
+      "rate_limited": "嘗試次數過多，請於 {{retryAfter}} 秒後再試",
+      "rate_limited_ip": "此IP位址嘗試次數過多，請稍後再試",
+      "rate_limited_user": "您的嘗試次數過多，請稍後再試",
+      "transaction_failed": "交易失敗，請重試",
+      "network_error": "網路連線錯誤，請檢查網路連線",
+      "server_error": "伺服器錯誤，請稍後再試",
+      "timeout": "請求逾時，請重試",
+      "maintenance": "系統維護中，請稍後再試",
+      "code_format_invalid": "代碼格式不正確",
+      "code_too_short": "代碼長度不足",
+      "code_too_long": "代碼長度過長",
+      "suspicious_activity": "檢測到可疑活動，請聯繫客服",
+      "account_suspended": "您的帳戶已被暫停，無法兌換代碼",
+      "region_restricted": "此代碼在您的地區不可用",
+      "device_limit_exceeded": "此設備的兌換次數已達上限"
+    },
+    "units": {
+      "day": "天",
+      "days": "天",
+      "month": "個月",
+      "months": "個月",
+      "year": "年",
+      "years": "年"
+    },
+    "pricing": {
+      "title": "有兌換代碼嗎？",
+      "subtitle": "輸入您的促銷代碼，立即查看方案折扣",
+      "placeholder": "在此輸入代碼",
+      "appliedTitle": "兌換代碼已套用！",
+      "appliedMessage": "您的促銷優惠已套用至訂閱",
+      "appliedIndicator": "優惠已套用",
+      "discountBadge": {
+        "percentage": "{{percentage}}% 折扣",
+        "fixed": "折扣 {{amount}}"
+      }
+    },
+    "checkout": {
+      "title": "兌換代碼",
+      "subtitle": "有促銷代碼嗎？輸入代碼以獲得折扣優惠",
+      "placeholder": "輸入兌換代碼",
+      "appliedTitle": "兌換代碼已套用",
+      "appliedMessage": "節省 {{amount}}",
+      "originalPrice": "原價：",
+      "discount": "折扣：",
+      "finalPrice": "總金額：",
+      "paymentMethodRequired": "此兌換代碼需要在結帳時綁定付款方式才能套用。"
+    }
+  },
+  "admin": {
+    "codes": {
+      "title": "兌換代碼管理",
+      "description": "管理和監控所有兌換代碼",
+      "generate": "產生代碼",
+      "bulkGenerate": "批量產生",
+      "search": "搜尋代碼",
+      "filter": "篩選",
+      "export": "匯出",
+      "refresh": "重新整理",
+      "loading": "載入中...",
+      "noResults": "找不到符合條件的代碼",
+      "totalCodes": "總代碼數",
+      "activeCodes": "有效代碼",
+      "usedCodes": "已使用代碼",
+      "expiredCodes": "已過期代碼",
+      "types": {
+        "percentage_discount": "百分比折扣",
+        "fixed_amount_discount": "固定金額折扣",
+        "time_extension": "時間延長"
+      },
+      "status": {
+        "active": "有效",
+        "inactive": "無效",
+        "expired": "已過期",
+        "exhausted": "已用完"
+      },
+      "eligibility": {
+        "all_users": "所有用戶",
+        "new_customers_only": "僅限新客戶",
+        "specific_plans": "特定方案用戶",
+        "first_time_users": "首次使用者"
+      },
+      "table": {
+        "code": "代碼",
+        "type": "類型",
+        "campaign": "活動名稱",
+        "usage": "使用情況",
+        "status": "狀態",
+        "expires": "到期時間",
+        "actions": "操作"
+      },
+      "actions": {
+        "view": "檢視",
+        "edit": "編輯",
+        "deactivate": "停用",
+        "activate": "啟用",
+        "delete": "刪除",
+        "duplicate": "複製",
+        "apply": "手動套用"
+      },
+      "filters": {
+        "allTypes": "所有類型",
+        "allStatuses": "所有狀態",
+        "allCampaigns": "所有活動",
+        "dateRange": "日期範圍",
+        "usageRange": "使用範圍",
+        "apply": "套用篩選",
+        "clear": "清除篩選"
+      },
+      "generation": {
+        "title": "產生兌換代碼",
+        "singleCode": "單一代碼",
+        "bulkCodes": "批量代碼",
+        "steps": {
+          "basic": "基本設定",
+          "limits": "使用限制",
+          "advanced": "進階選項",
+          "review": "檢視確認"
+        },
+        "basic": {
+          "codeType": "代碼類型",
+          "codeTypeRequired": "請選擇代碼類型",
+          "customCode": "自訂代碼",
+          "customCodePlaceholder": "留空自動產生",
+          "prefix": "代碼前綴",
+          "prefixPlaceholder": "例如：SUMMER2024",
+          "campaignName": "活動名稱",
+          "campaignNameRequired": "請輸入活動名稱",
+          "campaignNamePlaceholder": "例如：夏季促銷",
+          "internalNotes": "內部備註",
+          "internalNotesPlaceholder": "供管理員參考的備註"
+        },
+        "discount": {
+          "percentage": "折扣百分比",
+          "percentageRequired": "請輸入折扣百分比",
+          "percentagePlaceholder": "1-100",
+          "amount": "折扣金額",
+          "amountRequired": "請輸入折扣金額",
+          "amountPlaceholder": "例如：100",
+          "currency": "貨幣",
+          "targetPlan": "目標方案"
+        },
+        "extension": {
+          "duration": "延長時間",
+          "durationRequired": "請輸入延長時間",
+          "durationPlaceholder": "例如：30",
+          "unit": "時間單位",
+          "unitRequired": "請選擇時間單位",
+          "targetPlan": "升級方案"
+        },
+        "limits": {
+          "maxTotalUses": "總使用次數限制",
+          "maxTotalUsesPlaceholder": "留空表示無限制",
+          "maxUsesPerUser": "每用戶使用次數限制",
+          "maxUsesPerUserPlaceholder": "留空表示無限制",
+          "expiresAt": "到期時間",
+          "activatesAt": "啟用時間",
+          "eligibilityType": "使用資格",
+          "eligibilityTypeRequired": "請選擇使用資格",
+          "eligiblePlans": "符合資格的方案",
+          "requiresPaymentMethod": "需要付款方式"
+        },
+        "advanced": {
+          "allowStacking": "允許疊加使用",
+          "stackingGroup": "疊加群組",
+          "stackingGroupPlaceholder": "相同群組的代碼不能疊加"
+        },
+        "bulk": {
+          "count": "產生數量",
+          "countRequired": "請輸入產生數量",
+          "countPlaceholder": "1-10000",
+          "prefixRequired": "批量產生需要前綴"
+        },
+        "review": {
+          "title": "確認產生代碼",
+          "summary": "代碼摘要",
+          "configuration": "設定詳情",
+          "generate": "確認產生",
+          "generating": "產生中...",
+          "success": "代碼產生成功",
+          "error": "產生失敗"
+        }
+      },
+      "details": {
+        "title": "代碼詳情",
+        "basicInfo": "基本資訊",
+        "configuration": "設定資訊",
+        "usage": "使用統計",
+        "history": "使用記錄",
+        "security": "安全資訊",
+        "edit": "編輯代碼",
+        "save": "儲存變更",
+        "cancel": "取消",
+        "saving": "儲存中...",
+        "saved": "已儲存",
+        "error": "儲存失敗"
+      },
+      "bulkOps": {
+        "title": "批量操作",
+        "selectedCount": "已選擇 {{count}} 個代碼",
+        "selectAll": "全選",
+        "deselectAll": "取消全選",
+        "operations": {
+          "activate": "批量啟用",
+          "deactivate": "批量停用",
+          "delete": "批量刪除",
+          "export": "批量匯出",
+          "updateExpiry": "批量更新到期時間"
+        },
+        "confirm": {
+          "activate": "確定要啟用選中的 {{count}} 個代碼嗎？",
+          "deactivate": "確定要停用選中的 {{count}} 個代碼嗎？",
+          "delete": "確定要刪除選中的 {{count}} 個代碼嗎？此操作無法復原。",
+          "updateExpiry": "確定要更新選中的 {{count}} 個代碼的到期時間嗎？"
+        },
+        "options": {
+          "reason": "操作原因",
+          "reasonPlaceholder": "請輸入操作原因",
+          "activationDate": "啟用時間",
+          "expirationDate": "到期時間"
+        },
+        "validation": {
+          "reasonRequired": "操作原因至少需要5個字符",
+          "activationInPast": "啟用時間不能是過去時間",
+          "expirationInPast": "到期時間不能是過去時間",
+          "noCodesSelected": "請選擇要操作的代碼"
+        },
+        "processing": "處理中...",
+        "success": "批量操作完成",
+        "error": "批量操作失敗"
+      },
+      "manualApplication": {
+        "title": "手動套用代碼",
+        "description": "為特定用戶手動套用兌換代碼",
+        "userSearch": "搜尋用戶",
+        "userSearchPlaceholder": "輸入用戶名稱或電子郵件",
+        "selectUser": "選擇用戶",
+        "selectCode": "選擇代碼",
+        "reason": "套用原因",
+        "reasonRequired": "請輸入套用原因",
+        "reasonPlaceholder": "例如：客服補償",
+        "apply": "套用代碼",
+        "applying": "套用中...",
+        "success": "代碼套用成功",
+        "error": "代碼套用失敗"
+      }
+    },
+    "analytics": {
+      "title": "兌換分析",
+      "description": "監控兌換代碼的使用情況和效果",
+      "loading": "載入分析數據中...",
+      "timeRange": "時間範圍",
+      "timeRanges": {
+        "7days": "最近7天",
+        "30days": "最近30天",
+        "90days": "最近90天",
+        "1year": "最近1年"
+      },
+      "autoRefresh": "自動重新整理",
+      "refresh": "重新整理",
+      "exportJson": "匯出JSON",
+      "exportCsv": "匯出CSV",
+      "metrics": {
+        "overview": "總覽",
+        "conversion": "轉換率",
+        "fraud": "異常監控",
+        "campaigns": "活動效果",
+        "totalCodes": "總代碼數",
+        "totalRedemptions": "總兌換次數",
+        "conversionRate": "轉換率",
+        "successRate": "成功率"
+      },
+      "charts": {
+        "redemptionTrends": "兌換趨勢",
+        "codeTypeDistribution": "代碼類型分佈",
+        "campaignPerformance": "活動效果",
+        "fraudPatterns": "異常模式"
+      },
+      "overview": {
+        "codeBreakdown": "代碼分類統計",
+        "topCampaigns": "熱門活動"
+      },
+      "conversion": {
+        "overallRate": "整體轉換率",
+        "successRate": "成功率"
+      },
+      "fraud": {
+        "recentAlerts": "最近異常警報",
+        "noAlerts": "暫無異常警報"
+      },
+      "campaigns": {
+        "name": "活動名稱",
+        "codes": "代碼數量",
+        "usage": "使用次數",
+        "rate": "轉換率"
+      },
+      "fraudAlerts": {
+        "title": "異常警報",
+        "severity": {
+          "low": "低",
+          "medium": "中",
+          "high": "高",
+          "critical": "嚴重"
+        },
+        "types": {
+          "velocity": "高頻使用",
+          "failure_rate": "高失敗率",
+          "suspicious_pattern": "可疑模式",
+          "bulk_attempt": "批量嘗試"
+        },
+        "highVelocity": "檢測到異常高頻的兌換嘗試",
+        "highFailureRate": "兌換失敗率異常偏高",
+        "suspiciousPattern": "檢測到可疑的使用模式",
+        "bulkAttempt": "檢測到批量兌換嘗試"
+      }
+    },
+    "users": {
+      "redemptionHistory": "兌換記錄",
+      "activePromotions": "有效優惠",
+      "manualApply": "手動套用代碼",
+      "viewHistory": "檢視記錄"
+    },
+    "navigation": {
+      "dashboard": "儀表板",
+      "codeManagement": "代碼管理",
+      "analytics": "數據分析",
+      "userManagement": "用戶管理",
+      "settings": "設定"
+    },
+    "permissions": {
+      "accessDenied": "存取被拒絕",
+      "insufficientPermissions": "權限不足",
+      "adminRequired": "需要管理員權限"
+    },
+    "errors": {
+      "loadFailed": "載入失敗",
+      "saveFailed": "儲存失敗",
+      "deleteFailed": "刪除失敗",
+      "networkError": "網路錯誤",
+      "serverError": "伺服器錯誤",
+      "validationError": "驗證錯誤",
+      "unknownError": "未知錯誤"
+    },
+    "success": {
+      "saved": "儲存成功",
+      "deleted": "刪除成功",
+      "updated": "更新成功",
+      "created": "建立成功"
+    }
+  },
   "userProfile": {
     "title": "個人資料",
     "openMenuAria": "開啟使用者選單",
@@ -1087,7 +1607,9 @@
       "username": "用戶名稱",
       "joinDate": "加入日期",
       "privacyTitle": "隱私保護",
-      "privacyDescription": "我們重視您的隱私，所有資料都經過加密保護。"
+      "privacyDescription": "我們重視您的隱私，所有資料都經過加密保護。",
+      "redemptionCode": "兌換代碼",
+      "redemptionDescription": "輸入促銷代碼以解鎖特殊優惠和訂閱折扣。"
     },
     "billingPeriod": {
       "monthly": "月繳",
@@ -1415,6 +1937,380 @@
       "amountExceeded": "退款金額超過原付款金額",
       "reasonRequired": "請選擇退款原因",
       "descriptionRequired": "請填寫詳細說明"
+    }
+  },
+  "admin": {
+    "codes": {
+      "title": "兌換代碼管理",
+      "description": "管理和監控兌換代碼、活動和使用分析",
+      "loading": "載入代碼中...",
+      "generateNew": "生成新代碼",
+      "autoRefresh": "自動刷新",
+      "refresh": "刷新",
+      "filters": "篩選器",
+      "clearFilters": "清除篩選",
+      "applyFilters": "套用篩選",
+      "codeType": "代碼類型",
+      "allTypes": "所有類型",
+      "status": "狀態",
+      "allStatuses": "所有狀態",
+      "campaignName": "活動名稱",
+      "searchCampaign": "搜尋活動...",
+      "prefix": "前綴",
+      "searchPrefix": "搜尋前綴...",
+      "createdAfter": "建立時間晚於",
+      "createdBefore": "建立時間早於",
+      "selectedCount": "已選擇 {{count}} 個代碼",
+      "bulkOperations": "批量操作",
+      "deactivateSelected": "停用選中項目",
+      "selectAll": "全選",
+      "exportJson": "匯出 JSON",
+      "exportCsv": "匯出 CSV",
+      "types": {
+        "percentageDiscount": "百分比折扣",
+        "fixedAmountDiscount": "固定金額折扣",
+        "timeExtension": "時間延長"
+      },
+      "statuses": {
+        "active": "啟用",
+        "inactive": "停用",
+        "expired": "已過期",
+        "exhausted": "已用完",
+        "scheduled": "已排程"
+      },
+      "table": {
+        "code": "代碼",
+        "type": "類型",
+        "campaign": "活動",
+        "status": "狀態",
+        "usage": "使用情況",
+        "expires": "過期時間",
+        "created": "建立時間",
+        "actions": "操作"
+      },
+      "view": "檢視",
+      "activate": "啟用",
+      "deactivate": "停用",
+      "viewDetails": "檢視詳情",
+      "pagination": {
+        "showing": "顯示 {{start}}-{{end}} 共 {{total}} 項",
+        "previous": "上一頁",
+        "next": "下一頁"
+      }
+    },
+    "analytics": {
+      "title": "兌換分析",
+      "description": "監控兌換效能、詐騙檢測和活動分析",
+      "loading": "載入分析中...",
+      "timeRange": "時間範圍",
+      "autoRefresh": "自動刷新",
+      "refresh": "刷新",
+      "exportJson": "匯出 JSON",
+      "exportCsv": "匯出 CSV",
+      "totalCodes": "總代碼數",
+      "activeCodes": "啟用代碼數",
+      "totalRedemptions": "總兌換次數",
+      "conversionRate": "轉換率",
+      "timeRanges": {
+        "7days": "過去 7 天",
+        "30days": "過去 30 天",
+        "90days": "過去 90 天",
+        "1year": "過去一年"
+      },
+      "metrics": {
+        "overview": "概覽",
+        "conversion": "轉換",
+        "fraud": "詐騙檢測",
+        "campaigns": "活動",
+        "totalCodes": "總代碼數",
+        "totalRedemptions": "總兌換次數",
+        "conversionRate": "轉換率",
+        "successRate": "成功率"
+      },
+      "charts": {
+        "redemptionTrends": "兌換趨勢",
+        "codeTypeDistribution": "代碼類型分佈",
+        "campaignPerformance": "活動效能",
+        "fraudPatterns": "詐騙模式"
+      },
+      "fraudAlerts": {
+        "title": "詐騙警報",
+        "highVelocity": "檢測到高頻兌換",
+        "highFailureRate": "檢測到高失敗率",
+        "severity": {
+          "high": "高",
+          "medium": "中",
+          "low": "低"
+        },
+        "types": {
+          "velocity": "高頻率",
+          "failure_rate": "高失敗率",
+          "ip_clustering": "IP 聚集",
+          "pattern_detection": "模式檢測"
+        }
+      },
+      "overview": {
+        "codeBreakdown": "代碼分解",
+        "topCampaigns": "熱門活動"
+      },
+      "conversion": {
+        "overallRate": "整體轉換率",
+        "successRate": "成功率"
+      },
+      "fraud": {
+        "recentAlerts": "最近詐騙警報",
+        "noAlerts": "未檢測到詐騙警報"
+      },
+      "campaigns": {
+        "name": "活動名稱",
+        "codes": "代碼數",
+        "usage": "使用量",
+        "rate": "使用率"
+      }
+    },
+    "wizard": {
+      "title": "代碼生成精靈",
+      "previous": "上一步",
+      "next": "下一步",
+      "generate": "生成代碼",
+      "steps": {
+        "basicConfig": "基本配置",
+        "basicConfigDesc": "配置代碼類型和折扣/延長設定",
+        "usageLimits": "使用限制和資格",
+        "usageLimitsDesc": "設定使用限制和資格要求",
+        "advanced": "進階選項",
+        "advancedDesc": "配置堆疊、過期和啟用設定",
+        "review": "檢視和生成",
+        "reviewDesc": "檢視配置並生成代碼"
+      },
+      "templates": {
+        "title": "快速範本",
+        "newCustomer": "新客戶折扣",
+        "timeExtension": "時間延長",
+        "bulkDiscount": "批量折扣"
+      },
+      "codeType": "代碼類型",
+      "discountPercentage": "折扣百分比 (%)",
+      "discountAmount": "折扣金額",
+      "currency": "貨幣",
+      "extensionDuration": "延長期間",
+      "extensionUnit": "延長單位",
+      "targetPlan": "目標方案",
+      "maxTotalUses": "最大總使用次數",
+      "maxUsesPerUser": "每用戶最大使用次數",
+      "eligibilityType": "資格類型",
+      "eligiblePlans": "符合資格的方案",
+      "requiresPaymentMethod": "需要付款方式",
+      "allowStacking": "允許堆疊",
+      "stackingGroup": "堆疊群組",
+      "stackingGroupPlaceholder": "輸入堆疊群組名稱",
+      "expiresAt": "過期時間",
+      "activatesAt": "啟用時間（可選）",
+      "campaignName": "活動名稱",
+      "campaignNamePlaceholder": "輸入活動名稱",
+      "count": "代碼數量",
+      "prefix": "前綴（批量生成用）",
+      "prefixPlaceholder": "例如：SUMMER2024",
+      "codeLength": "代碼長度",
+      "internalNotes": "內部備註",
+      "internalNotesPlaceholder": "管理員參考的內部備註",
+      "units": {
+        "day": "天",
+        "month": "月",
+        "year": "年"
+      },
+      "plans": {
+        "free": "免費方案",
+        "pro": "專業方案"
+      },
+      "eligibility": {
+        "allUsers": "所有用戶",
+        "newCustomers": "僅新客戶",
+        "specificPlans": "特定方案",
+        "firstTime": "首次使用者"
+      },
+      "validation": {
+        "codeTypeRequired": "代碼類型為必填項",
+        "invalidPercentage": "百分比必須在 1-100 之間",
+        "invalidAmount": "金額必須大於 0",
+        "invalidDuration": "期間必須大於 0",
+        "unitRequired": "單位為必填項",
+        "invalidTotalUses": "總使用次數必須大於 0",
+        "invalidUserUses": "用戶使用次數必須大於 0",
+        "userUsesExceedsTotal": "用戶使用次數不能超過總使用次數",
+        "plansRequired": "至少必須選擇一個方案",
+        "expirationRequired": "過期日期為必填項",
+        "expirationInPast": "過期日期不能是過去的時間",
+        "activationAfterExpiration": "啟用日期不能晚於過期日期",
+        "stackingGroupTooShort": "堆疊群組名稱至少需要 3 個字符",
+        "campaignNameRequired": "活動名稱至少需要 3 個字符",
+        "prefixRequiredForBulk": "批量生成需要前綴",
+        "invalidCount": "數量必須在 1-10000 之間",
+        "invalidCodeLength": "代碼長度必須在 8-32 之間"
+      },
+      "preview": {
+        "title": "配置預覽",
+        "configuration": "配置",
+        "generation": "生成",
+        "type": "類型",
+        "value": "值",
+        "usage": "使用限制",
+        "eligibility": "資格",
+        "expiration": "過期",
+        "method": "方法",
+        "count": "數量",
+        "prefix": "前綴",
+        "campaign": "活動",
+        "sampleCodes": "範例代碼"
+      },
+      "success": {
+        "title": "生成成功",
+        "message": "成功生成 {{count}} 個兌換代碼",
+        "summary": "生成摘要",
+        "campaign": "活動",
+        "type": "類型",
+        "generated": "已生成",
+        "expires": "過期",
+        "codes": "生成的代碼",
+        "copy": "複製",
+        "done": "完成"
+      }
+    },
+    "codeDetails": {
+      "title": "代碼詳情",
+      "basicInfo": "基本資訊",
+      "configuration": "配置",
+      "usageStats": "使用統計",
+      "metadata": "元數據",
+      "edit": "編輯",
+      "save": "儲存",
+      "cancel": "取消",
+      "close": "關閉",
+      "code": "代碼",
+      "type": "類型",
+      "value": "值",
+      "status": "狀態",
+      "prefix": "前綴",
+      "created": "建立時間",
+      "campaignName": "活動名稱",
+      "isActive": "是否啟用",
+      "expiresAt": "過期時間",
+      "activatesAt": "啟用時間",
+      "maxTotalUses": "最大總使用次數",
+      "maxUsesPerUser": "每用戶最大使用次數",
+      "eligibilityType": "資格類型",
+      "eligiblePlans": "符合資格的方案",
+      "requiresPaymentMethod": "需要付款方式",
+      "allowStacking": "允許堆疊",
+      "stackingGroup": "堆疊群組",
+      "stackingGroupPlaceholder": "輸入堆疊群組",
+      "internalNotes": "內部備註",
+      "internalNotesPlaceholder": "輸入內部備註",
+      "timesUsed": "使用次數",
+      "remaining": "剩餘",
+      "usageRate": "使用率",
+      "uniqueUsers": "獨特用戶",
+      "discount": "折扣",
+      "extension": "延長",
+      "unknown": "未知",
+      "eligibility": {
+        "allUsers": "所有用戶",
+        "newCustomers": "僅新客戶",
+        "specificPlans": "用戶方案：{{plans}}",
+        "specificPlansOption": "特定方案",
+        "firstTime": "首次使用者"
+      },
+      "plans": {
+        "free": "免費",
+        "pro": "專業"
+      },
+      "yes": "是",
+      "no": "否",
+      "allowed": "允許",
+      "notAllowed": "不允許",
+      "group": "群組",
+      "validation": {
+        "expirationRequired": "過期日期為必填項",
+        "expirationInPast": "過期日期不能是過去的時間",
+        "activationAfterExpiration": "啟用日期不能晚於過期日期",
+        "invalidTotalUses": "總使用次數必須大於 0",
+        "invalidUserUses": "用戶使用次數必須大於 0",
+        "userUsesExceedsTotal": "用戶使用次數不能超過總使用次數",
+        "plansRequired": "至少必須選擇一個方案",
+        "campaignNameRequired": "活動名稱至少需要 3 個字符"
+      }
+    },
+    "bulkOps": {
+      "title": "批量操作",
+      "selectOperation": "選擇操作",
+      "options": "選項",
+      "affectedCodes": "受影響的代碼",
+      "totalCodes": "總代碼數",
+      "byStatus": "按狀態",
+      "byType": "按類型",
+      "cancel": "取消",
+      "continue": "繼續",
+      "back": "返回",
+      "operations": {
+        "activate": "啟用代碼",
+        "deactivate": "停用代碼",
+        "update": "更新代碼"
+      },
+      "descriptions": {
+        "activate": "立即啟用選中的代碼或排程啟用",
+        "deactivate": "停用選中的代碼並說明原因",
+        "update": "更新選中代碼的配置",
+        "updateGeneric": "更新選中代碼的配置欄位",
+        "scheduleActivate": "排程於 {{date}} 啟用"
+      },
+      "activationDate": "啟用日期（可選）",
+      "activationDateHelp": "留空表示立即啟用",
+      "reason": "原因",
+      "reasonPlaceholder": "輸入停用原因",
+      "fields": {
+        "expiresAt": "過期日期",
+        "maxTotalUses": "最大總使用次數",
+        "maxUsesPerUser": "每用戶最大使用次數",
+        "campaignName": "活動名稱",
+        "internalNotes": "內部備註"
+      },
+      "validation": {
+        "reasonRequired": "原因至少需要 5 個字符",
+        "activationInPast": "啟用日期不能是過去的時間",
+        "expirationInPast": "過期日期不能是過去的時間",
+        "invalidTotalUses": "總使用次數必須大於 0",
+        "invalidUserUses": "用戶使用次數必須大於 0",
+        "userUsesExceedsTotal": "用戶使用次數不能超過總使用次數",
+        "noUpdatesProvided": "至少必須更新一個欄位"
+      },
+      "confirm": {
+        "title": "確認批量操作",
+        "description": "請在繼續之前檢視操作詳情",
+        "operation": "操作",
+        "affectedCodes": "受影響的代碼",
+        "codes": "個代碼",
+        "warning": "警告",
+        "warningText": "此操作無法撤銷。請確認您要繼續。",
+        "execute": "執行操作"
+      },
+      "processing": {
+        "title": "處理操作中",
+        "description": "請等待操作處理完成...",
+        "progress": "正在處理第 {{current}} 個，共 {{total}} 個代碼"
+      },
+      "results": {
+        "title": "操作結果",
+        "successful": "成功",
+        "failed": "失敗",
+        "total": "總計",
+        "failedOperations": "失敗的操作",
+        "done": "完成"
+      }
+    },
+    "errors": {
+      "unknown": "發生未知錯誤",
+      "client_error": "發生客戶端錯誤",
+      "retry_exhausted": "已達到最大重試次數"
     }
   }
 }

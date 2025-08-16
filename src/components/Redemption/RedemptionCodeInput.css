@@ -1,0 +1,339 @@
+/**
+ * RedemptionCodeInput Component Styles
+ * 
+ * Responsive design following existing component patterns
+ * Supports multiple states: default, validating, success, error
+ */
+
+.redemption-code-input {
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Form Layout */
+.redemption-form {
+    width: 100%;
+}
+
+.redemption-input-container {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+/* Input Wrapper */
+.redemption-input-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+/* Input Field */
+.redemption-input {
+    width: 100%;
+    padding: 12px 16px;
+    padding-right: 40px; /* Space for spinner/check icon */
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background-color: #ffffff;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+}
+
+.redemption-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.redemption-input:disabled {
+    background-color: #f9fafb;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
+.redemption-input::placeholder {
+    color: #9ca3af;
+    font-family: inherit;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+/* Input States */
+.redemption-input-wrapper--validating .redemption-input {
+    border-color: #f59e0b;
+    background-color: #fffbeb;
+}
+
+.redemption-input-wrapper--success .redemption-input {
+    border-color: #10b981;
+    background-color: #f0fdf4;
+}
+
+.redemption-input-wrapper--error .redemption-input {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+}
+
+/* Input Icons */
+.redemption-input-spinner,
+.redemption-input-check {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.redemption-input-check {
+    color: #10b981;
+}
+
+/* Submit Button */
+.redemption-submit-btn {
+    padding: 12px 24px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    height: 48px;
+}
+
+.redemption-submit-btn:hover:not(:disabled) {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.redemption-submit-btn:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.redemption-submit-btn:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Preview Section */
+.redemption-preview {
+    margin-top: 16px;
+    padding: 16px;
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    animation: slideDown 0.3s ease-out;
+}
+
+.redemption-preview-header h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #065f46;
+}
+
+.redemption-preview-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.redemption-preview-benefit {
+    font-size: 16px;
+    font-weight: 500;
+    color: #047857;
+}
+
+.redemption-preview-warning {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background-color: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #92400e;
+}
+
+/* Error Display */
+.redemption-error {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    animation: slideDown 0.3s ease-out;
+}
+
+.redemption-error-icon {
+    color: #dc2626;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.redemption-error-message {
+    font-size: 14px;
+    color: #991b1b;
+    line-height: 1.4;
+}
+
+/* Success Display */
+.redemption-success {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: slideDown 0.3s ease-out, fadeOut 0.5s ease-out 2.5s forwards;
+}
+
+.redemption-success-icon {
+    color: #059669;
+    flex-shrink: 0;
+}
+
+.redemption-success-message {
+    font-size: 14px;
+    color: #047857;
+    font-weight: 500;
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .redemption-input-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .redemption-submit-btn {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .redemption-input {
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    .redemption-preview,
+    .redemption-error,
+    .redemption-success {
+        margin-top: 12px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .redemption-input {
+        padding: 10px 14px;
+        padding-right: 36px;
+        font-size: 14px;
+    }
+    
+    .redemption-submit-btn {
+        padding: 10px 20px;
+        font-size: 13px;
+        height: 42px;
+    }
+    
+    .redemption-input-spinner,
+    .redemption-input-check {
+        right: 10px;
+    }
+}
+
+/* Dark mode support (if implemented) */
+@media (prefers-color-scheme: dark) {
+    .redemption-input {
+        background-color: #1f2937;
+        border-color: #374151;
+        color: #f9fafb;
+    }
+    
+    .redemption-input:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+    }
+    
+    .redemption-input::placeholder {
+        color: #6b7280;
+    }
+    
+    .redemption-input:disabled {
+        background-color: #111827;
+        color: #4b5563;
+    }
+    
+    .redemption-input-wrapper--validating .redemption-input {
+        background-color: #451a03;
+        border-color: #f59e0b;
+    }
+    
+    .redemption-input-wrapper--success .redemption-input {
+        background-color: #064e3b;
+        border-color: #10b981;
+    }
+    
+    .redemption-input-wrapper--error .redemption-input {
+        background-color: #7f1d1d;
+        border-color: #ef4444;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .redemption-input {
+        border-width: 3px;
+    }
+    
+    .redemption-submit-btn {
+        border: 2px solid transparent;
+    }
+    
+    .redemption-submit-btn:focus {
+        border-color: #ffffff;
+    }
+}

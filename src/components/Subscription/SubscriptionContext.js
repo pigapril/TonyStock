@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { useAuth } from '../Auth/useAuth';
 import { subscriptionService } from '../../api/subscriptionService';
 import { Analytics } from '../../utils/analytics';
+import { useRedemption } from '../Redemption/RedemptionContext';
 
 const SubscriptionContext = createContext({
   userPlan: null,
@@ -12,7 +13,15 @@ const SubscriptionContext = createContext({
   refreshUsageStats: () => {},
   refreshUserPlan: () => {},
   refreshSubscriptionHistory: () => {},
-  updatePlan: () => {}
+  updatePlan: () => {},
+  
+  // Redemption integration
+  hasActivePromotions: false,
+  promotionalBenefits: null,
+  isPromotionalSubscription: false,
+  promotionExpiresAt: null,
+  onRedemptionSuccess: () => {},
+  onRedemptionError: () => {}
 });
 
 export const useSubscription = () => {
@@ -31,6 +40,12 @@ export const SubscriptionProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
+  
+  // Redemption integration state
+  const [hasActivePromotions, setHasActivePromotions] = useState(false);
+  const [promotionalBenefits, setPromotionalBenefits] = useState(null);
+  const [isPromotionalSubscription, setIsPromotionalSubscription] = useState(false);
+  const [promotionExpiresAt, setPromotionExpiresAt] = useState(null);
 
   // Refresh usage statistics
   const refreshUsageStats = useCallback(async () => {
@@ -118,9 +133,14 @@ export const SubscriptionProvider = ({ children }) => {
       const plan = await subscriptionService.getUserPlan();
       setUserPlan(plan);
       
+      // Update redemption-related state
+      updateRedemptionState(plan);
+      
       Analytics.track('subscription_plan_loaded', {
         userId: user.id,
-        planType: plan?.type || 'unknown'
+        planType: plan?.type || 'unknown',
+        hasPromotions: plan?.activePromotions?.length > 0,
+        redemptionSource: plan?.redemptionSource
       });
     } catch (err) {
       console.error('Failed to refresh user plan:', err);
@@ -140,7 +160,7 @@ export const SubscriptionProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user, updateRedemptionState]);
 
   // Refresh subscription history
   const refreshSubscriptionHistory = useCallback(async () => {
@@ -200,6 +220,9 @@ export const SubscriptionProvider = ({ children }) => {
       const updatedPlan = await subscriptionService.updateUserPlan(newPlanType);
       setUserPlan(updatedPlan);
       
+      // Update redemption-related state
+      updateRedemptionState(updatedPlan);
+      
       console.log('✅ Plan updated successfully:', updatedPlan);
       
       // Refresh user data in AuthContext to update req.user.plan on backend
@@ -234,6 +257,74 @@ export const SubscriptionProvider = ({ children }) => {
       setLoading(false);
     }
   }, [isAuthenticated, user, userPlan, refreshUsageStats, checkAuthStatus]);
+
+  /**
+   * Update redemption-related state based on plan data
+   */
+  const updateRedemptionState = useCallback((planData) => {
+    if (!planData) {
+      setHasActivePromotions(false);
+      setPromotionalBenefits(null);
+      setIsPromotionalSubscription(false);
+      setPromotionExpiresAt(null);
+      return;
+    }
+
+    // Check if subscription has promotional aspects
+    const hasPromo = planData.redemptionSource === 'redemption' || 
+                     planData.redemptionSource === 'mixed' ||
+                     (planData.activePromotions && planData.activePromotions.length > 0);
+    
+    setHasActivePromotions(hasPromo);
+    setIsPromotionalSubscription(planData.redemptionSource === 'redemption');
+    setPromotionalBenefits(planData.activePromotions || null);
+    setPromotionExpiresAt(planData.promotionalExpirationDate || null);
+    
+    console.log('🎁 Updated redemption state:', {
+      hasActivePromotions: hasPromo,
+      isPromotionalSubscription: planData.redemptionSource === 'redemption',
+      promotionCount: planData.activePromotions?.length || 0,
+      expiresAt: planData.promotionalExpirationDate
+    });
+  }, []);
+
+  /**
+   * Handle successful redemption
+   */
+  const onRedemptionSuccess = useCallback(async (redemptionData) => {
+    console.log('🎉 Redemption successful, refreshing subscription data:', redemptionData);
+    
+    try {
+      // Refresh all subscription data
+      await Promise.all([
+        refreshUserPlan(),
+        refreshUsageStats(),
+        refreshSubscriptionHistory()
+      ]);
+      
+      Analytics.track('subscription_updated_by_redemption', {
+        userId: user?.id,
+        redemptionType: redemptionData?.codeType,
+        benefitType: redemptionData?.benefits?.type
+      });
+      
+    } catch (error) {
+      console.error('Failed to refresh subscription data after redemption:', error);
+    }
+  }, [refreshUserPlan, refreshUsageStats, refreshSubscriptionHistory, user]);
+
+  /**
+   * Handle redemption error
+   */
+  const onRedemptionError = useCallback((error) => {
+    console.error('🚫 Redemption failed:', error);
+    
+    Analytics.track('redemption_error_in_subscription_context', {
+      userId: user?.id,
+      error: error.message || 'Unknown error',
+      errorCode: error.errorCode
+    });
+  }, [user]);
 
   // Load initial data when user changes
   useEffect(() => {
@@ -278,7 +369,16 @@ export const SubscriptionProvider = ({ children }) => {
     refreshUsageStats,
     refreshUserPlan,
     refreshSubscriptionHistory,
-    updatePlan
+    updatePlan,
+    
+    // Redemption integration
+    hasActivePromotions,
+    promotionalBenefits,
+    isPromotionalSubscription,
+    promotionExpiresAt,
+    onRedemptionSuccess,
+    onRedemptionError,
+    updateRedemptionState
   };
 
   return (

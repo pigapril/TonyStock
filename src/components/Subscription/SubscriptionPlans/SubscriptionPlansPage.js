@@ -5,6 +5,7 @@ import { useAuth } from '../../Auth/useAuth';
 import { useSubscription } from '../SubscriptionContext';
 import { PlanCard } from './components/PlanCard';
 import { BillingPeriodToggle } from '../shared/BillingPeriodToggle';
+import { RedemptionCodeInput } from '../../Redemption/RedemptionCodeInput';
 import { Analytics } from '../../../utils/analytics';
 import subscriptionService from '../../../api/subscriptionService';
 import './SubscriptionPlansPage.css';
@@ -16,6 +17,8 @@ export const SubscriptionPlansPage = () => {
   const location = useLocation();
   const [upgradeNotification, setUpgradeNotification] = useState(null);
   const [billingPeriod, setBillingPeriod] = useState('monthly');
+  const [appliedRedemption, setAppliedRedemption] = useState(null);
+  const [planAdjustments, setPlanAdjustments] = useState({});
 
   useEffect(() => {
     Analytics.track('subscription_plans_page_viewed', {
@@ -47,6 +50,86 @@ export const SubscriptionPlansPage = () => {
       userId: user?.id,
       newPeriod: period,
       currentPlan: userPlan?.type || 'unknown'
+    });
+  };
+
+  /**
+   * Handle successful redemption code preview
+   */
+  const handleRedemptionPreview = (previewData) => {
+    if (previewData?.benefits) {
+      const adjustments = {};
+      
+      // Calculate plan adjustments based on redemption benefits
+      availablePlans.forEach(plan => {
+        const originalPrice = plan.pricing[billingPeriod];
+        let adjustedPrice = originalPrice;
+        let discount = null;
+        
+        if (previewData.benefits.type === 'discount') {
+          if (previewData.benefits.discountType === 'percentage') {
+            const discountAmount = (originalPrice * previewData.benefits.discountPercentage) / 100;
+            adjustedPrice = Math.max(0, originalPrice - discountAmount);
+            discount = {
+              type: 'percentage',
+              value: previewData.benefits.discountPercentage,
+              amount: discountAmount
+            };
+          } else if (previewData.benefits.discountType === 'fixed') {
+            adjustedPrice = Math.max(0, originalPrice - previewData.benefits.discountAmount);
+            discount = {
+              type: 'fixed',
+              value: previewData.benefits.discountAmount,
+              amount: previewData.benefits.discountAmount
+            };
+          }
+        }
+        
+        adjustments[plan.id] = {
+          originalPrice,
+          adjustedPrice,
+          discount,
+          benefits: previewData.benefits
+        };
+      });
+      
+      setPlanAdjustments(adjustments);
+      
+      Analytics.track('redemption_preview_applied_to_pricing', {
+        userId: user?.id,
+        benefitType: previewData.benefits.type,
+        discountAmount: previewData.benefits.discountAmount,
+        billingPeriod
+      });
+    }
+  };
+
+  /**
+   * Handle successful redemption
+   */
+  const handleRedemptionSuccess = (redemptionData) => {
+    setAppliedRedemption(redemptionData);
+    
+    // Clear plan adjustments since redemption is now applied
+    setPlanAdjustments({});
+    
+    Analytics.track('redemption_success_on_pricing_page', {
+      userId: user?.id,
+      benefitType: redemptionData.benefits?.type,
+      discountAmount: redemptionData.benefits?.discountAmount
+    });
+  };
+
+  /**
+   * Handle redemption error
+   */
+  const handleRedemptionError = (error) => {
+    // Clear any preview adjustments on error
+    setPlanAdjustments({});
+    
+    Analytics.track('redemption_error_on_pricing_page', {
+      userId: user?.id,
+      errorCode: error.errorCode
     });
   };
 
@@ -90,6 +173,46 @@ export const SubscriptionPlansPage = () => {
           onChange={handleBillingPeriodChange}
         />
 
+        {/* Redemption Code Section */}
+        <section className="subscription-plans-redemption">
+          <div className="subscription-plans-redemption__container">
+            <h3 className="subscription-plans-redemption__title">
+              {t('redemption.pricing.title')}
+            </h3>
+            <p className="subscription-plans-redemption__subtitle">
+              {t('redemption.pricing.subtitle')}
+            </p>
+            <div className="subscription-plans-redemption__input">
+              <RedemptionCodeInput
+                location="pricing"
+                onPreviewSuccess={handleRedemptionPreview}
+                onRedemptionSuccess={handleRedemptionSuccess}
+                onRedemptionError={handleRedemptionError}
+                placeholder={t('redemption.pricing.placeholder')}
+                showPreview={true}
+                autoFocus={false}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Applied Redemption Display */}
+        {appliedRedemption && (
+          <section className="subscription-plans-applied-redemption">
+            <div className="applied-redemption-banner">
+              <div className="applied-redemption-banner__icon">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="applied-redemption-banner__content">
+                <h4>{t('redemption.pricing.appliedTitle')}</h4>
+                <p>{t('redemption.pricing.appliedMessage')}</p>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Plan Cards */}
         <section className="subscription-plans-cards">
           {availablePlans.map((plan) => (
@@ -99,6 +222,8 @@ export const SubscriptionPlansPage = () => {
               currentPlan={userPlan?.type}
               isCurrentUser={!!user}
               billingPeriod={billingPeriod}
+              planAdjustment={planAdjustments[plan.id]}
+              appliedRedemption={appliedRedemption}
             />
           ))}
         </section>

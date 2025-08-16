@@ -1,0 +1,518 @@
+/**
+ * RedemptionHistory Component Styles
+ * 
+ * Comprehensive styling for redemption history display
+ * Includes filters, pagination, and responsive design
+ */
+
+.redemption-history {
+    width: 100%;
+    max-width: 800px;
+}
+
+/* Header */
+.redemption-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.redemption-history-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.redemption-history-export-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background-color: #f8fafc;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.redemption-history-export-btn:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+/* Filters */
+.redemption-history-filters {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.redemption-history-filters-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.redemption-history-filter-select,
+.redemption-history-filter-date {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+    color: #374151;
+}
+
+.redemption-history-filter-select:focus,
+.redemption-history-filter-date:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.redemption-history-filters-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.redemption-history-filter-apply-btn,
+.redemption-history-filter-clear-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.redemption-history-filter-apply-btn {
+    background-color: #3b82f6;
+    color: white;
+    border: 1px solid #3b82f6;
+}
+
+.redemption-history-filter-apply-btn:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.redemption-history-filter-clear-btn {
+    background-color: white;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+}
+
+.redemption-history-filter-clear-btn:hover {
+    background-color: #f9fafb;
+    border-color: #9ca3af;
+}
+
+/* Content */
+.redemption-history-content {
+    min-height: 200px;
+}
+
+/* Loading State */
+.redemption-history-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #6b7280;
+}
+
+.redemption-history-loading p {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+/* Error State */
+.redemption-history-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.redemption-history-error-icon {
+    color: #dc2626;
+    margin-bottom: 12px;
+}
+
+.redemption-history-error p {
+    color: #6b7280;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.redemption-history-retry-btn {
+    padding: 8px 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.redemption-history-retry-btn:hover {
+    background-color: #2563eb;
+}
+
+/* Empty State */
+.redemption-history-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.redemption-history-empty-icon {
+    color: #9ca3af;
+    margin-bottom: 16px;
+}
+
+.redemption-history-empty h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 8px 0;
+}
+
+.redemption-history-empty p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* History List */
+.redemption-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.redemption-history-item {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.2s ease-in-out;
+}
+
+.redemption-history-item:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.redemption-history-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.redemption-history-item-code {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    background-color: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+.redemption-history-item-status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.redemption-history-status--applied {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.redemption-history-status--pending {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.redemption-history-status--failed {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.redemption-history-status--reversed {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.redemption-history-status--unknown {
+    background-color: #e5e7eb;
+    color: #6b7280;
+}
+
+.redemption-history-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.redemption-history-item-benefit {
+    flex: 1;
+    min-width: 0;
+}
+
+.redemption-history-item-benefit-type {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.redemption-history-item-benefit-description {
+    display: block;
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.4;
+}
+
+.redemption-history-item-date {
+    font-size: 13px;
+    color: #6b7280;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Pagination */
+.redemption-history-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.redemption-history-pagination-btn {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    color: #374151;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    min-width: 40px;
+    text-align: center;
+}
+
+.redemption-history-pagination-btn:hover:not(:disabled) {
+    background-color: #f9fafb;
+    border-color: #9ca3af;
+}
+
+.redemption-history-pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.redemption-history-pagination-btn--active {
+    background-color: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.redemption-history-pagination-btn--active:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+/* Summary */
+.redemption-history-summary {
+    text-align: center;
+    font-size: 13px;
+    color: #6b7280;
+    padding: 12px;
+    background-color: #f9fafb;
+    border-radius: 6px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .redemption-history-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .redemption-history-export-btn {
+        align-self: flex-end;
+    }
+    
+    .redemption-history-filters-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .redemption-history-filters-actions {
+        justify-content: stretch;
+    }
+    
+    .redemption-history-filter-apply-btn,
+    .redemption-history-filter-clear-btn {
+        flex: 1;
+    }
+    
+    .redemption-history-item {
+        padding: 12px;
+    }
+    
+    .redemption-history-item-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .redemption-history-item-content {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .redemption-history-item-date {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .redemption-history-title {
+        font-size: 18px;
+    }
+    
+    .redemption-history-filters {
+        padding: 12px;
+    }
+    
+    .redemption-history-item {
+        padding: 10px;
+    }
+    
+    .redemption-history-pagination {
+        gap: 2px;
+    }
+    
+    .redemption-history-pagination-btn {
+        padding: 6px 8px;
+        font-size: 12px;
+        min-width: 32px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .redemption-history-title {
+        color: #f9fafb;
+    }
+    
+    .redemption-history-export-btn {
+        background-color: #374151;
+        color: #d1d5db;
+        border-color: #4b5563;
+    }
+    
+    .redemption-history-export-btn:hover {
+        background-color: #4b5563;
+        border-color: #6b7280;
+    }
+    
+    .redemption-history-filters {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .redemption-history-filter-select,
+    .redemption-history-filter-date {
+        background-color: #374151;
+        border-color: #4b5563;
+        color: #f9fafb;
+    }
+    
+    .redemption-history-filter-clear-btn {
+        background-color: #374151;
+        color: #d1d5db;
+        border-color: #4b5563;
+    }
+    
+    .redemption-history-filter-clear-btn:hover {
+        background-color: #4b5563;
+        border-color: #6b7280;
+    }
+    
+    .redemption-history-item {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .redemption-history-item:hover {
+        border-color: #4b5563;
+    }
+    
+    .redemption-history-item-code {
+        background-color: #374151;
+        color: #f3f4f6;
+    }
+    
+    .redemption-history-item-benefit-description {
+        color: #d1d5db;
+    }
+    
+    .redemption-history-item-date {
+        color: #9ca3af;
+    }
+    
+    .redemption-history-pagination-btn {
+        background-color: #374151;
+        color: #d1d5db;
+        border-color: #4b5563;
+    }
+    
+    .redemption-history-pagination-btn:hover:not(:disabled) {
+        background-color: #4b5563;
+        border-color: #6b7280;
+    }
+    
+    .redemption-history-summary {
+        background-color: #1f2937;
+        color: #9ca3af;
+    }
+}

@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import paymentService from '../../services/paymentService';
 import { systemLogger } from '../../utils/logger';
 import LoadingSpinner from '../Common/LoadingSpinner';
+import { RedemptionCodeInput } from '../Redemption/RedemptionCodeInput';
 
 const PaymentFlow = ({ 
     planType = 'pro', 
@@ -29,12 +30,23 @@ const PaymentFlow = ({
     const [paymentMethod, setPaymentMethod] = useState('Credit'); // 固定為信用卡
     const [agreedToTerms, setAgreedToTerms] = useState(false);
     const [orderData, setOrderData] = useState(null);
+    const [appliedRedemption, setAppliedRedemption] = useState(null);
+    const [originalAmount, setOriginalAmount] = useState(null);
+    const [finalAmount, setFinalAmount] = useState(null);
 
     // 獲取方案資訊
     const planPricing = paymentService.getPlanPricing();
     const currentPlan = planPricing[planType]?.[billingPeriod];
     // 固定使用信用卡定期定額，不需要選擇付款方式
     const paymentMethods = [{ value: 'Credit', label: '信用卡定期定額' }];
+
+    // Initialize amounts
+    useEffect(() => {
+        if (currentPlan?.price) {
+            setOriginalAmount(currentPlan.price);
+            setFinalAmount(appliedRedemption ? calculateDiscountedAmount(currentPlan.price, appliedRedemption) : currentPlan.price);
+        }
+    }, [currentPlan, appliedRedemption]);
 
     useEffect(() => {
         systemLogger.info('PaymentFlow initialized:', {
@@ -43,6 +55,63 @@ const PaymentFlow = ({
             currentPlan
         });
     }, [planType, billingPeriod, currentPlan]);
+
+    /**
+     * Calculate discounted amount based on redemption
+     */
+    const calculateDiscountedAmount = (originalPrice, redemption) => {
+        if (!redemption?.benefits) return originalPrice;
+
+        const { benefits } = redemption;
+        
+        if (benefits.type === 'discount') {
+            if (benefits.discountType === 'percentage') {
+                const discountAmount = (originalPrice * benefits.discountPercentage) / 100;
+                return Math.max(0, originalPrice - discountAmount);
+            } else if (benefits.discountType === 'fixed') {
+                return Math.max(0, originalPrice - benefits.discountAmount);
+            }
+        }
+        
+        return originalPrice;
+    };
+
+    /**
+     * Handle successful redemption
+     */
+    const handleRedemptionSuccess = (redemptionData) => {
+        setAppliedRedemption(redemptionData);
+        
+        systemLogger.info('Redemption applied to checkout:', {
+            benefitType: redemptionData.benefits?.type,
+            discountAmount: redemptionData.benefits?.discountAmount,
+            originalAmount: currentPlan?.price
+        });
+    };
+
+    /**
+     * Handle redemption error
+     */
+    const handleRedemptionError = (error) => {
+        systemLogger.error('Redemption error in checkout:', error);
+        
+        // Handle payment method requirement
+        if (error.errorCode === 'PAYMENT_METHOD_REQUIRED') {
+            setError('此兌換代碼需要綁定付款方式。請繼續完成付款流程以套用優惠。');
+        } else {
+            setError(`兌換失敗：${error.error || '請稍後再試'}`);
+        }
+    };
+
+    /**
+     * Handle redemption preview
+     */
+    const handleRedemptionPreview = (previewData) => {
+        if (previewData?.benefits && currentPlan?.price) {
+            const discountedAmount = calculateDiscountedAmount(currentPlan.price, previewData);
+            setFinalAmount(discountedAmount);
+        }
+    };
 
     /**
      * 處理下一步
@@ -99,7 +168,10 @@ const PaymentFlow = ({
             const result = await paymentService.createOrder({
                 planType,
                 billingPeriod,
-                paymentMethod
+                paymentMethod,
+                redemptionCode: appliedRedemption?.code,
+                originalAmount: originalAmount,
+                finalAmount: finalAmount || currentPlan?.price
             });
 
             setOrderData(result);
@@ -210,17 +282,36 @@ const PaymentFlow = ({
      * 渲染方案確認步驟
      */
     const renderPlanConfirmation = () => (
-        <div className="max-w-md mx-auto">
+        <div className="max-w-lg mx-auto">
             <h2 className="text-2xl font-bold text-center mb-6">確認訂閱方案</h2>
             
-            <div className="bg-white rounded-lg shadow-md p-6 border-2 border-blue-200">
+            <div className="bg-white rounded-lg shadow-md p-6 border-2 border-blue-200 mb-6">
                 <div className="text-center">
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
                         Pro 方案
                     </h3>
-                    <div className="text-3xl font-bold text-blue-600 mb-2">
-                        NT$ {currentPlan?.price?.toLocaleString()}
+                    
+                    {/* Price Display with Redemption */}
+                    <div className="mb-2">
+                        {appliedRedemption ? (
+                            <div>
+                                <div className="text-lg text-gray-500 line-through">
+                                    NT$ {originalAmount?.toLocaleString()}
+                                </div>
+                                <div className="text-3xl font-bold text-green-600">
+                                    NT$ {finalAmount?.toLocaleString()}
+                                </div>
+                                <div className="text-sm text-green-600 font-medium">
+                                    已套用兌換代碼優惠
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="text-3xl font-bold text-blue-600">
+                                NT$ {currentPlan?.price?.toLocaleString()}
+                            </div>
+                        )}
                     </div>
+                    
                     <div className="text-gray-600 mb-4">
                         每{currentPlan?.period}
                         {currentPlan?.discount && (
@@ -260,6 +351,42 @@ const PaymentFlow = ({
                         </li>
                     </ul>
                 </div>
+            </div>
+
+            {/* Redemption Code Section */}
+            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h4 className="text-lg font-semibold text-gray-900 mb-3">兌換代碼</h4>
+                <p className="text-sm text-gray-600 mb-4">
+                    有促銷代碼嗎？輸入代碼以獲得折扣優惠
+                </p>
+                
+                <RedemptionCodeInput
+                    location="checkout"
+                    onPreviewSuccess={handleRedemptionPreview}
+                    onRedemptionSuccess={handleRedemptionSuccess}
+                    onRedemptionError={handleRedemptionError}
+                    placeholder="輸入兌換代碼"
+                    showPreview={true}
+                />
+
+                {/* Applied Redemption Display */}
+                {appliedRedemption && (
+                    <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div className="flex items-center">
+                            <svg className="w-5 h-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            <div>
+                                <div className="text-sm font-medium text-green-800">
+                                    兌換代碼已套用
+                                </div>
+                                <div className="text-xs text-green-600">
+                                    節省 NT$ {(originalAmount - finalAmount)?.toLocaleString()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className="flex justify-between mt-6">
@@ -424,9 +551,30 @@ const PaymentFlow = ({
                             <span className="text-gray-600">付款方式：</span>
                             <span>{paymentMethods.find(m => m.value === paymentMethod)?.label}</span>
                         </div>
+                        
+                        {/* Redemption Details */}
+                        {appliedRedemption && (
+                            <>
+                                <div className="flex justify-between">
+                                    <span className="text-gray-600">兌換代碼：</span>
+                                    <span className="font-mono text-sm">{appliedRedemption.code}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-gray-600">原價：</span>
+                                    <span className="line-through text-gray-500">
+                                        NT$ {originalAmount?.toLocaleString()}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between text-green-600">
+                                    <span>折扣：</span>
+                                    <span>-NT$ {(originalAmount - finalAmount)?.toLocaleString()}</span>
+                                </div>
+                            </>
+                        )}
+                        
                         <div className="flex justify-between text-lg font-semibold border-t pt-3">
                             <span>總金額：</span>
-                            <span className="text-blue-600">
+                            <span className={appliedRedemption ? "text-green-600" : "text-blue-600"}>
                                 NT$ {orderData.amount?.toLocaleString()}
                             </span>
                         </div>

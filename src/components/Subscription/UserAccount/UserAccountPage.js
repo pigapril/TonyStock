@@ -6,13 +6,16 @@ import { PlanInfo } from './components/PlanInfo';
 import { UsageStats } from './components/UsageStats';
 import { SubscriptionHistory } from './components/SubscriptionHistory';
 import PaymentHistory from '../../Payment/PaymentHistory';
+import { RedemptionCodeInput } from '../../Redemption/RedemptionCodeInput';
+import { RedemptionHistory } from '../../Redemption/RedemptionHistory';
+import { ActivePromotions } from '../../Redemption/ActivePromotions';
 import { Analytics } from '../../../utils/analytics';
 import './UserAccountPage.css';
 
 export const UserAccountPage = () => {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
-  const { userPlan, usageStats, subscriptionHistory, loading, error } = useSubscription();
+  const { userPlan, usageStats, subscriptionHistory, loading, error, refreshUserPlan } = useSubscription();
 
   useEffect(() => {
     Analytics.track('user_account_page_viewed', {
@@ -38,6 +41,30 @@ export const UserAccountPage = () => {
         context: 'UserAccountPage.handleLogout'
       });
     }
+  };
+
+  /**
+   * Handle successful redemption
+   */
+  const handleRedemptionSuccess = async (redemptionData) => {
+    // Refresh user plan data to reflect changes
+    await refreshUserPlan();
+    
+    Analytics.track('redemption_success_on_account_page', {
+      userId: user?.id,
+      benefitType: redemptionData.benefits?.type,
+      discountAmount: redemptionData.benefits?.discountAmount
+    });
+  };
+
+  /**
+   * Handle redemption error
+   */
+  const handleRedemptionError = (error) => {
+    Analytics.track('redemption_error_on_account_page', {
+      userId: user?.id,
+      errorCode: error.errorCode
+    });
   };
 
   if (!user) {
@@ -106,6 +133,49 @@ export const UserAccountPage = () => {
               {t('subscription.userAccount.currentPlan')}
             </h2>
             <PlanInfo plan={userPlan} loading={loading} />
+          </section>
+
+          {/* Active Promotions Section */}
+          <section className="user-account-section">
+            <h2 className="user-account-section__title">
+              {t('redemption.activePromotions.title')}
+            </h2>
+            <div className="user-account-section__content">
+              <ActivePromotions />
+            </div>
+          </section>
+
+          {/* Redemption Code Section */}
+          <section className="user-account-section">
+            <h2 className="user-account-section__title">
+              {t('subscription.userAccount.redemptionCode')}
+            </h2>
+            <div className="user-account-section__content">
+              <div className="user-account-redemption">
+                <p className="user-account-redemption__description">
+                  {t('subscription.userAccount.redemptionDescription')}
+                </p>
+                <div className="user-account-redemption__input">
+                  <RedemptionCodeInput
+                    location="account"
+                    onRedemptionSuccess={handleRedemptionSuccess}
+                    onRedemptionError={handleRedemptionError}
+                    placeholder={t('redemption.inputPlaceholder')}
+                    showPreview={true}
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Redemption History Section */}
+          <section className="user-account-section">
+            <h2 className="user-account-section__title">
+              {t('redemption.history.title')}
+            </h2>
+            <div className="user-account-section__content">
+              <RedemptionHistory />
+            </div>
           </section>
 
           {/* Usage Statistics Section */}

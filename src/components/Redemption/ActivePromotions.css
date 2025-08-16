@@ -1,0 +1,484 @@
+/**
+ * ActivePromotions Component Styles
+ * 
+ * Styling for active promotions display with countdown timers
+ * Includes urgency states and responsive design
+ */
+
+.active-promotions {
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Header */
+.active-promotions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.active-promotions-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.active-promotions-count {
+    background-color: #3b82f6;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Content */
+.active-promotions-content {
+    min-height: 120px;
+}
+
+/* Loading State */
+.active-promotions-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #6b7280;
+}
+
+.active-promotions-loading p {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+/* Error State */
+.active-promotions-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.active-promotions-error-icon {
+    color: #dc2626;
+    margin-bottom: 12px;
+}
+
+.active-promotions-error p {
+    color: #6b7280;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.active-promotions-retry-btn {
+    padding: 8px 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.active-promotions-retry-btn:hover {
+    background-color: #2563eb;
+}
+
+/* Empty State */
+.active-promotions-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.active-promotions-empty-icon {
+    color: #9ca3af;
+    margin-bottom: 16px;
+}
+
+.active-promotions-empty h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 8px 0;
+}
+
+.active-promotions-empty p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Promotions List */
+.active-promotions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Promotion Card */
+.active-promotion-card {
+    background-color: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.active-promotion-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.active-promotion-card:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Urgent State */
+.active-promotion-card--urgent {
+    border-color: #f59e0b;
+    background-color: #fffbeb;
+}
+
+.active-promotion-card--urgent::before {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.active-promotion-card--urgent:hover {
+    border-color: #d97706;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+/* Expired State */
+.active-promotion-card--expired {
+    border-color: #dc2626;
+    background-color: #fef2f2;
+    opacity: 0.8;
+}
+
+.active-promotion-card--expired::before {
+    background: linear-gradient(90deg, #dc2626, #991b1b);
+}
+
+.active-promotion-card--expired:hover {
+    border-color: #991b1b;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+/* Card Header */
+.active-promotion-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.active-promotion-card-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.active-promotion-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    flex: 1;
+    min-width: 0;
+}
+
+.active-promotion-card-timer {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.active-promotion-card-timer {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.active-promotion-card-timer--urgent {
+    background-color: #fef3c7;
+    color: #92400e;
+    animation: pulse 2s infinite;
+}
+
+.active-promotion-card-timer--expired {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Card Content */
+.active-promotion-card-content {
+    margin-bottom: 16px;
+}
+
+.active-promotion-card-description {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.active-promotion-card-code {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.active-promotion-card-code-label {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.active-promotion-card-code-value {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-weight: 600;
+    color: #1e293b;
+    letter-spacing: 0.5px;
+}
+
+/* Card Actions */
+.active-promotion-card-actions {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 16px;
+    margin-top: 16px;
+}
+
+.active-promotion-card-warning {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background-color: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #92400e;
+    margin-bottom: 12px;
+}
+
+.active-promotion-card-renew-btn {
+    width: 100%;
+    padding: 10px 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.active-promotion-card-renew-btn:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Expired Section */
+.active-promotion-card-expired {
+    border-top: 1px solid #fecaca;
+    padding-top: 16px;
+    margin-top: 16px;
+}
+
+.active-promotion-card-expired-message {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #991b1b;
+    margin-bottom: 12px;
+}
+
+.active-promotion-card-expired .active-promotion-card-renew-btn {
+    background-color: #dc2626;
+}
+
+.active-promotion-card-expired .active-promotion-card-renew-btn:hover {
+    background-color: #b91c1c;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .active-promotions-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .active-promotions-count {
+        align-self: flex-start;
+    }
+    
+    .active-promotion-card {
+        padding: 16px;
+    }
+    
+    .active-promotion-card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .active-promotion-card-timer {
+        align-self: flex-end;
+    }
+    
+    .active-promotion-card-code {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .active-promotions-title {
+        font-size: 16px;
+    }
+    
+    .active-promotion-card {
+        padding: 12px;
+    }
+    
+    .active-promotion-card-icon {
+        font-size: 20px;
+    }
+    
+    .active-promotion-card-title {
+        font-size: 14px;
+    }
+    
+    .active-promotion-card-timer {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    
+    .active-promotion-card-description {
+        font-size: 13px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .active-promotions-title {
+        color: #f9fafb;
+    }
+    
+    .active-promotion-card {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .active-promotion-card:hover {
+        border-color: #4b5563;
+    }
+    
+    .active-promotion-card--urgent {
+        background-color: #451a03;
+        border-color: #f59e0b;
+    }
+    
+    .active-promotion-card--expired {
+        background-color: #7f1d1d;
+        border-color: #dc2626;
+    }
+    
+    .active-promotion-card-title {
+        color: #f9fafb;
+    }
+    
+    .active-promotion-card-description {
+        color: #d1d5db;
+    }
+    
+    .active-promotion-card-code {
+        background-color: #374151;
+        border-color: #4b5563;
+    }
+    
+    .active-promotion-card-code-label {
+        color: #9ca3af;
+    }
+    
+    .active-promotion-card-code-value {
+        color: #f3f4f6;
+    }
+    
+    .active-promotion-card-actions {
+        border-color: #374151;
+    }
+    
+    .active-promotion-card-expired {
+        border-color: #7f1d1d;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .active-promotion-card {
+        border-width: 3px;
+    }
+    
+    .active-promotion-card::before {
+        height: 6px;
+    }
+    
+    .active-promotion-card-timer {
+        border: 2px solid currentColor;
+    }
+    
+    .active-promotion-card-renew-btn {
+        border: 2px solid transparent;
+    }
+    
+    .active-promotion-card-renew-btn:focus {
+        border-color: #ffffff;
+    }
+}

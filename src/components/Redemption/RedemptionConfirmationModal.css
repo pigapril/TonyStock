@@ -1,0 +1,402 @@
+/**
+ * RedemptionConfirmationModal Component Styles
+ * 
+ * Modal styling for redemption confirmation workflow
+ * Responsive design with clear visual hierarchy
+ */
+
+.redemption-confirmation-modal {
+    padding: 0;
+    max-width: 500px;
+    width: 100%;
+}
+
+.redemption-confirmation-title {
+    color: #1f2937;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+/* Code Display */
+.redemption-confirmation-code {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.redemption-confirmation-code-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.redemption-confirmation-code-value {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    color: #1e293b;
+    letter-spacing: 1px;
+}
+
+/* Benefits Section */
+.redemption-confirmation-benefits {
+    margin-bottom: 24px;
+}
+
+.redemption-confirmation-benefits-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 12px;
+}
+
+.redemption-confirmation-benefit-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.redemption-confirmation-benefit-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.redemption-confirmation-benefit-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.redemption-confirmation-benefit-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #065f46;
+    margin-bottom: 4px;
+}
+
+.redemption-confirmation-benefit-description {
+    font-size: 13px;
+    color: #047857;
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.redemption-confirmation-benefit-highlight {
+    font-size: 16px;
+    font-weight: 700;
+    color: #059669;
+    padding: 4px 8px;
+    background-color: #d1fae5;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Estimated Value */
+.redemption-confirmation-value {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.redemption-confirmation-value-label {
+    color: #1e40af;
+    font-weight: 500;
+}
+
+.redemption-confirmation-value-amount {
+    color: #1d4ed8;
+    font-weight: 600;
+}
+
+/* Warning Section */
+.redemption-confirmation-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background-color: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.redemption-confirmation-warning-icon {
+    color: #d97706;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.redemption-confirmation-warning-content {
+    flex: 1;
+}
+
+.redemption-confirmation-warning-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: 4px;
+}
+
+.redemption-confirmation-warning-description {
+    font-size: 13px;
+    color: #a16207;
+    line-height: 1.4;
+}
+
+/* Checkboxes */
+.redemption-confirmation-checkboxes {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.redemption-confirmation-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.redemption-confirmation-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: #3b82f6;
+    flex-shrink: 0;
+}
+
+.redemption-confirmation-checkbox input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.redemption-confirmation-checkbox-text {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+.redemption-confirmation-terms-link {
+    color: #3b82f6;
+    text-decoration: underline;
+    margin-left: 4px;
+}
+
+.redemption-confirmation-terms-link:hover {
+    color: #2563eb;
+}
+
+/* Action Buttons */
+.redemption-confirmation-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.redemption-confirmation-cancel-btn,
+.redemption-confirmation-confirm-btn {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+}
+
+.redemption-confirmation-cancel-btn {
+    background-color: #f8fafc;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.redemption-confirmation-cancel-btn:hover:not(:disabled) {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.redemption-confirmation-confirm-btn {
+    background-color: #3b82f6;
+    color: white;
+    border: 1px solid #3b82f6;
+}
+
+.redemption-confirmation-confirm-btn:hover:not(:disabled) {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.redemption-confirmation-cancel-btn:disabled,
+.redemption-confirmation-confirm-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Additional Info */
+.redemption-confirmation-info {
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.redemption-confirmation-info-text {
+    font-size: 12px;
+    color: #6b7280;
+    text-align: center;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .redemption-confirmation-modal {
+        padding: 0;
+        margin: 16px;
+    }
+    
+    .redemption-confirmation-title {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    
+    .redemption-confirmation-code {
+        padding: 12px;
+        margin-bottom: 20px;
+    }
+    
+    .redemption-confirmation-code-value {
+        font-size: 16px;
+    }
+    
+    .redemption-confirmation-benefit-card {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .redemption-confirmation-benefit-icon {
+        font-size: 20px;
+    }
+    
+    .redemption-confirmation-warning {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .redemption-confirmation-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .redemption-confirmation-cancel-btn,
+    .redemption-confirmation-confirm-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .redemption-confirmation-benefit-highlight {
+        font-size: 14px;
+        padding: 3px 6px;
+    }
+    
+    .redemption-confirmation-checkbox-text {
+        font-size: 13px;
+    }
+    
+    .redemption-confirmation-cancel-btn,
+    .redemption-confirmation-confirm-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+        min-height: 40px;
+    }
+}
+
+/* Animation for modal content */
+.redemption-confirmation-modal {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .redemption-confirmation-title {
+        color: #f9fafb;
+    }
+    
+    .redemption-confirmation-code {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .redemption-confirmation-code-label {
+        color: #9ca3af;
+    }
+    
+    .redemption-confirmation-code-value {
+        color: #f3f4f6;
+    }
+    
+    .redemption-confirmation-benefits-title {
+        color: #f9fafb;
+    }
+    
+    .redemption-confirmation-checkbox-text {
+        color: #d1d5db;
+    }
+    
+    .redemption-confirmation-cancel-btn {
+        background-color: #374151;
+        color: #d1d5db;
+        border-color: #4b5563;
+    }
+    
+    .redemption-confirmation-cancel-btn:hover:not(:disabled) {
+        background-color: #4b5563;
+        border-color: #6b7280;
+    }
+    
+    .redemption-confirmation-info-text {
+        color: #9ca3af;
+    }
+}

@@ -18,7 +18,7 @@
   background: var(--color-bg-card, #ffffff);
   border-radius: var(--border-radius-large, 14px);
   padding: 32px;
-  box-shadow: var(--shadow-s, 0 2px 6px rgba(0,0,0,0.05));
+  box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
   border: 1px solid var(--color-border-soft, #e5e5e5);
 }
 
@@ -40,7 +40,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--color-border-soft, #e5e5e5);
-  box-shadow: var(--shadow-s, 0 2px 6px rgba(0,0,0,0.05));
+  box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
 }
 
 .user-account-header__info {
@@ -113,7 +113,7 @@
   background: var(--color-bg-card, #ffffff);
   border-radius: var(--border-radius-large, 14px);
   padding: 32px;
-  box-shadow: var(--shadow-s, 0 2px 6px rgba(0,0,0,0.05));
+  box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
   border: 1px solid var(--color-border-soft, #e5e5e5);
 }
 
@@ -126,13 +126,33 @@
   line-height: 1.3;
 }
 
+/* Container for section content - styles applied by child components */
+
+/* Redemption Code Section */
+.user-account-redemption {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-account-redemption__description {
+  font-size: 16px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  margin: 0;
+  line-height: 1.5;
+}
+
+.user-account-redemption__input {
+  max-width: 500px;
+}
+
 /* Error State */
 .user-account-error {
   background: var(--color-bg-card, #ffffff);
   border-radius: var(--border-radius-large, 14px);
   padding: 48px 32px;
   text-align: center;
-  box-shadow: var(--shadow-s, 0 2px 6px rgba(0,0,0,0.05));
+  box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
   border: 1px solid var(--color-border-soft, #e5e5e5);
 }
 
@@ -157,7 +177,7 @@
   border-radius: var(--border-radius-large, 14px);
   padding: 48px 32px;
   text-align: center;
-  box-shadow: var(--shadow-s, 0 2px 6px rgba(0,0,0,0.05));
+  box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
   border: 1px solid var(--color-border-soft, #e5e5e5);
   display: flex;
   flex-direction: column;
@@ -181,8 +201,13 @@
 }
 
 @keyframes user-account-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive Design */
@@ -190,59 +215,68 @@
   .user-account-page {
     padding: 16px;
   }
-  
+
   .user-account-container {
     gap: 24px;
   }
-  
+
   .user-account-header {
     padding: 24px;
   }
-  
+
   .user-account-header__content {
     flex-direction: column;
     text-align: center;
     gap: 16px;
   }
-  
+
   .user-account-header__avatar-image {
     width: 64px;
     height: 64px;
   }
-  
+
   .user-account-header__title {
     font-size: 28px;
   }
-  
+
   .user-account-header__details .username {
     font-size: 16px;
   }
-  
+
   .user-account-header__details .email {
     font-size: 14px;
   }
-  
+
   .user-account-header__actions {
     margin-left: 0;
     margin-top: 8px;
   }
-  
+
   .logout-button {
     padding: 8px 16px;
     font-size: 13px;
   }
-  
+
   .user-account-section {
     padding: 24px;
   }
-  
+
   .user-account-section__title {
     font-size: 20px;
     margin-bottom: 20px;
   }
-  
+
   .user-account-content {
     gap: 24px;
+  }
+
+  /* Redemption section mobile styles */
+  .user-account-redemption {
+    gap: 16px;
+  }
+
+  .user-account-redemption__description {
+    font-size: 14px;
   }
 }
 
@@ -250,19 +284,19 @@
   .user-account-page {
     padding: 12px;
   }
-  
+
   .user-account-header {
     padding: 20px;
   }
-  
+
   .user-account-header__title {
     font-size: 24px;
   }
-  
+
   .user-account-section {
     padding: 20px;
   }
-  
+
   .user-account-section__title {
     font-size: 18px;
     margin-bottom: 16px;
@@ -274,7 +308,7 @@
   .user-account-page {
     background: #000000;
   }
-  
+
   .user-account-header,
   .user-account-section,
   .user-account-error,
@@ -282,40 +316,45 @@
     background: #1c1c1e;
     border-color: #38383a;
   }
-  
+
   .user-account-header__title,
   .user-account-section__title,
   .user-account-error h2 {
     color: rgba(235, 235, 245, 0.85);
   }
-  
+
   .user-account-header__details .username {
     color: rgba(235, 235, 245, 0.85);
   }
-  
+
   .user-account-header__details .email,
   .user-account-error p,
   .user-account-loading p {
     color: rgba(235, 235, 245, 0.60);
   }
-  
+
   .logout-button {
     border-color: #38383a;
     color: rgba(235, 235, 245, 0.60);
   }
-  
+
   .logout-button:hover {
     background: rgba(142, 142, 147, 0.24);
     border-color: #48484a;
     color: rgba(235, 235, 245, 0.85);
   }
-  
+
   .user-account-header__avatar-image {
     border-color: #38383a;
   }
-  
+
   .user-account-loading__spinner {
     border-color: #38383a;
     border-top-color: #0a84ff;
+  }
+
+  /* Redemption section dark mode */
+  .user-account-redemption__description {
+    color: rgba(235, 235, 245, 0.60);
   }
 }
