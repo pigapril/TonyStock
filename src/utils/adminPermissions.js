@@ -37,6 +37,11 @@ class AdminPermissions {
         this.gracePeriod = 30000;         // Grace period for cache expiration (30 seconds)
         this.gracePeriodEnd = null;       // When grace period ends
         
+        // Optimistic mode properties for admin page access
+        this.optimisticMode = false;      // Flag to indicate optimistic mode is active
+        this.optimisticModeTimeout = 10000; // 10 seconds timeout for optimistic mode
+        this.optimisticModeEnd = null;    // When optimistic mode ends
+        
         // Debug and monitoring properties
         this.apiCallStats = {
             totalCalls: 0,
@@ -271,13 +276,14 @@ class AdminPermissions {
     
     /**
      * Synchronous check for current user admin status
-     * Enhanced to handle pending API calls gracefully and provide better UX
+     * Enhanced with optimistic strategy for admin pages and better fallback logic
      * 
-     * @returns {boolean} True if user is admin based on cached data or last known status
+     * @returns {boolean} True if user is admin based on cached data or optimistic strategy
      */
     isCurrentUserAdmin() {
         // 1. If we have a valid cache, return it immediately
         if (this.isCacheValid()) {
+            console.log('AdminPermissions: Using valid cache:', this.adminStatus);
             return this.adminStatus;
         }
         
@@ -288,18 +294,39 @@ class AdminPermissions {
         }
         
         // 3. If we're in the grace period, return last known status
-        if (this.isInGracePeriod()) {
+        if (this.isInGracePeriod() && this.lastKnownStatus !== null) {
             console.log('AdminPermissions: In grace period, returning last known status:', this.lastKnownStatus);
-            return this.lastKnownStatus || false;
+            return this.lastKnownStatus;
         }
         
-        // 4. If no API call is in progress, trigger background refresh
+        // 4. ENHANCED OPTIMISTIC STRATEGY: For admin pages with valid session
+        if (this.isOnAdminPage() && this.hasValidSession()) {
+            console.log('AdminPermissions: On admin page with valid session, activating optimistic mode');
+            this._activateOptimisticMode();
+            
+            // If we have a last known admin status, use it; otherwise be optimistic
+            if (this.lastKnownStatus !== null) {
+                return this.lastKnownStatus;
+            } else {
+                console.log('AdminPermissions: No previous status, using optimistic approach for admin page');
+                return true; // Optimistic for admin pages - let backend make final decision
+            }
+        }
+        
+        // 5. If we're in optimistic mode (recently activated), maintain optimistic approach
+        if (this.isInOptimisticMode()) {
+            console.log('AdminPermissions: In optimistic mode, returning optimistic result');
+            return this.lastKnownStatus !== null ? this.lastKnownStatus : true;
+        }
+        
+        // 6. If no API call is in progress, trigger background refresh
         if (!this.loading && !this.pendingPromise) {
+            console.log('AdminPermissions: Triggering background refresh');
             this.backgroundRefresh();
         }
         
-        // 5. Return last known status or false as fallback
-        return this.lastKnownStatus || false;
+        // 7. Enhanced fallback logic with graceful degradation
+        return this._getGracefulFallback();
     }
     
     /**
@@ -330,6 +357,9 @@ class AdminPermissions {
         this.gracePeriodEnd = null;
         this._cleanupPromiseQueue();
         this._cancelScheduledRefresh();
+        
+        // Clear optimistic mode
+        this._deactivateOptimisticMode();
         
         // Clear error handling properties
         this.currentRetryCount = 0;
@@ -536,6 +566,12 @@ class AdminPermissions {
         this._stopStateValidation();
         this._cancelScheduledRefresh();
         
+        // Clear optimistic mode timer
+        if (this._optimisticModeTimer) {
+            clearTimeout(this._optimisticModeTimer);
+            this._optimisticModeTimer = null;
+        }
+        
         // Clear all state
         this.clearCache();
         this.clearErrorHistory();
@@ -679,6 +715,7 @@ class AdminPermissions {
     
     /**
      * Handle final error after all retries are exhausted
+     * Enhanced with optimistic mode considerations
      * 
      * @param {Error} error - The original error
      * @param {object} errorClassification - Error classification
@@ -689,7 +726,9 @@ class AdminPermissions {
         console.error('AdminPermissions: All retries exhausted, handling final error:', {
             type: errorClassification.type,
             description: errorClassification.description,
-            consecutiveFailures: this.consecutiveFailures
+            consecutiveFailures: this.consecutiveFailures,
+            onAdminPage: this.isOnAdminPage(),
+            hasValidSession: this.hasValidSession()
         });
         
         // Handle different error types appropriately
@@ -713,15 +752,24 @@ class AdminPermissions {
                     }
                     return this.lastKnownStatus;
                 }
+                
+                // For admin pages with valid session, use optimistic approach even without last known status
+                if (this.isOnAdminPage() && this.hasValidSession()) {
+                    console.warn('AdminPermissions: Infrastructure error on admin page, using optimistic approach');
+                    this._activateOptimisticMode();
+                    this.gracePeriodEnd = Date.now() + this.gracePeriod;
+                    return true; // Let backend make the final decision
+                }
                 break;
                 
             case 'auth':
-                // For authentication errors, clear all status
+                // For authentication errors, clear all status but be less aggressive on admin pages
                 console.warn('AdminPermissions: Authentication error, clearing all status');
                 this.adminStatus = false;
                 this.lastKnownStatus = false;
                 this.lastCheck = Date.now();
                 this.gracePeriodEnd = null;
+                this._deactivateOptimisticMode();
                 this.notifyListeners(false);
                 return false;
                 
@@ -732,6 +780,14 @@ class AdminPermissions {
                     this.gracePeriodEnd = Date.now() + (this.gracePeriod * 2); // Double grace period for rate limiting
                     return this.lastKnownStatus;
                 }
+                
+                // For admin pages, be optimistic even when rate limited
+                if (this.isOnAdminPage() && this.hasValidSession()) {
+                    console.warn('AdminPermissions: Rate limited on admin page, using optimistic approach');
+                    this._activateOptimisticMode();
+                    this.gracePeriodEnd = Date.now() + (this.gracePeriod * 2);
+                    return true;
+                }
                 break;
                 
             case 'client':
@@ -741,7 +797,7 @@ class AdminPermissions {
                 break;
         }
         
-        // Default conservative approach
+        // Enhanced default approach with optimistic considerations
         const conservativeStatus = this.lastKnownStatus || false;
         this.adminStatus = conservativeStatus;
         this.lastCheck = Date.now();
@@ -943,6 +999,291 @@ class AdminPermissions {
     }
     
     /**
+     * Get current optimistic mode status
+     * @returns {object} Optimistic mode information
+     */
+    getOptimisticModeStatus() {
+        return {
+            active: this.optimisticMode,
+            inMode: this.isInOptimisticMode(),
+            endTime: this.optimisticModeEnd,
+            remainingTime: this.optimisticModeEnd ? Math.max(0, this.optimisticModeEnd - Date.now()) : 0
+        };
+    }
+    
+    /**
+     * Manually activate optimistic mode (for testing or special cases)
+     * @param {number} duration - Duration in milliseconds (optional)
+     */
+    activateOptimisticMode(duration = null) {
+        const timeout = duration || this.optimisticModeTimeout;
+        console.log(`AdminPermissions: Manually activating optimistic mode for ${timeout}ms`);
+        
+        this.optimisticMode = true;
+        this.optimisticModeEnd = Date.now() + timeout;
+        
+        // Clear any existing timeout and set new one
+        clearTimeout(this._optimisticModeTimer);
+        this._optimisticModeTimer = setTimeout(() => {
+            this._deactivateOptimisticMode();
+        }, timeout);
+    }
+    
+    /**
+     * Manually deactivate optimistic mode
+     */
+    deactivateOptimisticMode() {
+        console.log('AdminPermissions: Manually deactivating optimistic mode');
+        this._deactivateOptimisticMode();
+        if (this._optimisticModeTimer) {
+            clearTimeout(this._optimisticModeTimer);
+            this._optimisticModeTimer = null;
+        }
+    }
+    
+    /**
+     * Check if user is currently on an admin page
+     * Enhanced with more comprehensive admin path detection
+     * 
+     * @returns {boolean} True if on admin page
+     */
+    isOnAdminPage() {
+        const currentPath = window.location.pathname.toLowerCase();
+        const currentHash = window.location.hash.toLowerCase();
+        
+        // Enhanced admin path patterns
+        const adminPaths = [
+            '/nk-admin',
+            '/admin',
+            '/dashboard/admin',
+            '/management',
+            '/admin-panel'
+        ];
+        
+        // Check for admin paths in URL path
+        const isAdminPath = adminPaths.some(path => currentPath.includes(path));
+        
+        // Check for admin routes in hash (for SPA routing)
+        const isAdminHash = currentHash.includes('admin') || currentHash.includes('management');
+        
+        // Check for admin query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const isAdminParam = urlParams.has('admin') || urlParams.get('mode') === 'admin';
+        
+        const result = isAdminPath || isAdminHash || isAdminParam;
+        
+        if (result) {
+            console.log('AdminPermissions: Detected admin page access:', {
+                path: currentPath,
+                hash: currentHash,
+                isAdminPath,
+                isAdminHash,
+                isAdminParam
+            });
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Check if user has a valid session
+     * Enhanced with comprehensive session validation
+     * 
+     * @returns {boolean} True if session appears valid
+     */
+    hasValidSession() {
+        try {
+            // Check for access token in various storage locations
+            const hasAccessToken = this._hasValidAccessToken();
+            
+            // Check for refresh token indicating persistent session
+            const hasRefreshToken = this._hasValidRefreshToken();
+            
+            // Check for user data in session/local storage
+            const hasUserData = this._hasValidUserData();
+            
+            // Check if session is not expired based on stored timestamps
+            const sessionNotExpired = this._isSessionNotExpired();
+            
+            const isValid = hasAccessToken && hasRefreshToken && hasUserData && sessionNotExpired;
+            
+            console.log('AdminPermissions: Session validation result:', {
+                hasAccessToken,
+                hasRefreshToken,
+                hasUserData,
+                sessionNotExpired,
+                isValid
+            });
+            
+            return isValid;
+            
+        } catch (error) {
+            console.error('AdminPermissions: Error validating session:', error);
+            return false; // Conservative approach on validation errors
+        }
+    }
+    
+    /**
+     * Check for valid access token in various storage locations
+     * @returns {boolean} True if access token found
+     * @private
+     */
+    _hasValidAccessToken() {
+        // Check cookies
+        const cookieToken = document.cookie.includes('accessToken');
+        
+        // Check localStorage
+        const localToken = localStorage.getItem('accessToken');
+        
+        // Check sessionStorage
+        const sessionToken = sessionStorage.getItem('accessToken');
+        
+        // Check for token in common auth header formats
+        const authHeader = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        
+        return cookieToken || !!localToken || !!sessionToken || !!authHeader;
+    }
+    
+    /**
+     * Check for valid refresh token
+     * @returns {boolean} True if refresh token found
+     * @private
+     */
+    _hasValidRefreshToken() {
+        return document.cookie.includes('refreshToken') || 
+               !!localStorage.getItem('refreshToken') ||
+               !!sessionStorage.getItem('refreshToken');
+    }
+    
+    /**
+     * Check for valid user data indicating authentication
+     * @returns {boolean} True if user data found
+     * @private
+     */
+    _hasValidUserData() {
+        // Check for user data in various formats
+        const userData = localStorage.getItem('user') || 
+                        sessionStorage.getItem('user') ||
+                        localStorage.getItem('currentUser') ||
+                        sessionStorage.getItem('currentUser');
+        
+        // Check for user ID or email in cookies
+        const userCookie = document.cookie.includes('userId') || 
+                          document.cookie.includes('userEmail');
+        
+        return !!userData || userCookie;
+    }
+    
+    /**
+     * Check if session has not expired based on stored timestamps
+     * @returns {boolean} True if session is not expired
+     * @private
+     */
+    _isSessionNotExpired() {
+        try {
+            // Check for session expiry timestamp
+            const expiryTime = localStorage.getItem('sessionExpiry') || 
+                              sessionStorage.getItem('sessionExpiry');
+            
+            if (expiryTime) {
+                const expiry = parseInt(expiryTime, 10);
+                const now = Date.now();
+                return now < expiry;
+            }
+            
+            // If no expiry time found, assume session is valid (optimistic)
+            return true;
+            
+        } catch (error) {
+            console.error('AdminPermissions: Error checking session expiry:', error);
+            return true; // Optimistic approach on error
+        }
+    }
+    
+    /**
+     * Activate optimistic mode for admin page access
+     * @private
+     */
+    _activateOptimisticMode() {
+        if (!this.optimisticMode) {
+            console.log('AdminPermissions: Activating optimistic mode');
+            this.optimisticMode = true;
+            this.optimisticModeEnd = Date.now() + this.optimisticModeTimeout;
+            
+            // Clear any existing timer
+            if (this._optimisticModeTimer) {
+                clearTimeout(this._optimisticModeTimer);
+            }
+            
+            // Schedule automatic deactivation
+            this._optimisticModeTimer = setTimeout(() => {
+                this._deactivateOptimisticMode();
+            }, this.optimisticModeTimeout);
+        }
+    }
+    
+    /**
+     * Deactivate optimistic mode
+     * @private
+     */
+    _deactivateOptimisticMode() {
+        if (this.optimisticMode) {
+            console.log('AdminPermissions: Deactivating optimistic mode');
+            this.optimisticMode = false;
+            this.optimisticModeEnd = null;
+            
+            // Clear the timer
+            if (this._optimisticModeTimer) {
+                clearTimeout(this._optimisticModeTimer);
+                this._optimisticModeTimer = null;
+            }
+        }
+    }
+    
+    /**
+     * Check if currently in optimistic mode
+     * @returns {boolean} True if in optimistic mode
+     */
+    isInOptimisticMode() {
+        if (!this.optimisticMode || !this.optimisticModeEnd) {
+            return false;
+        }
+        
+        // Check if optimistic mode has expired
+        if (Date.now() > this.optimisticModeEnd) {
+            this._deactivateOptimisticMode();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Get graceful fallback result with enhanced logic
+     * @returns {boolean} Fallback admin status
+     * @private
+     */
+    _getGracefulFallback() {
+        // If we have any last known status, use it
+        if (this.lastKnownStatus !== null) {
+            console.log('AdminPermissions: Using last known status as fallback:', this.lastKnownStatus);
+            return this.lastKnownStatus;
+        }
+        
+        // If user appears to be authenticated but we have no admin status,
+        // be slightly optimistic for better UX
+        if (this.hasValidSession()) {
+            console.log('AdminPermissions: Valid session but no admin status, using conservative optimistic approach');
+            // Don't be fully optimistic here - let the user try and get proper feedback
+            return false;
+        }
+        
+        // Conservative fallback
+        console.log('AdminPermissions: Using conservative fallback: false');
+        return false;
+    }
+    
+    /**
      * Get debug information about the current state
      * Enhanced with new caching properties, timing information, and promise queue details
      * 
@@ -959,7 +1300,10 @@ class AdminPermissions {
                 cacheValid: this.isCacheValid(),
                 inGracePeriod: this.isInGracePeriod(),
                 hasPendingPromise: this.pendingPromise !== null,
-                gracePeriodEnd: this.gracePeriodEnd
+                gracePeriodEnd: this.gracePeriodEnd,
+                optimisticMode: this.optimisticMode,
+                inOptimisticMode: this.isInOptimisticMode(),
+                optimisticModeEnd: this.optimisticModeEnd
             },
             promiseManagement: {
                 hasPendingPromise: this.pendingPromise !== null,
@@ -971,6 +1315,7 @@ class AdminPermissions {
             timings: {
                 cacheAge: this.lastCheck ? now - this.lastCheck : null,
                 gracePeriodRemaining: this.gracePeriodEnd ? Math.max(0, this.gracePeriodEnd - now) : null,
+                optimisticModeRemaining: this.optimisticModeEnd ? Math.max(0, this.optimisticModeEnd - now) : null,
                 nextRefreshIn: this.lastCheck ? Math.max(0, (this.lastCheck + this.cacheTimeout) - now) : null
             },
             apiCalls: {
