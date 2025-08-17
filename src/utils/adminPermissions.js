@@ -17,6 +17,7 @@
 
 import apiClient from '../api/apiClient';
 import { handleApiError } from './errorHandler';
+import TokenDetectionService from './tokenDetection.service';
 
 /**
  * Admin Permissions Utility Class
@@ -29,6 +30,9 @@ class AdminPermissions {
         this.lastCheck = null;
         this.cacheTimeout = 5 * 60 * 1000; // 5 minutes cache
         this.listeners = new Set();
+        
+        // Initialize TokenDetectionService for HttpOnly cookie detection
+        this.tokenDetectionService = new TokenDetectionService();
         
         // New properties for enhanced caching logic
         this.pendingPromise = null;        // Current ongoing API call
@@ -69,6 +73,10 @@ class AdminPermissions {
         // Error classification tracking
         this.errorHistory = [];
         this.maxErrorHistorySize = 50;
+        
+        // Session validation retry tracking
+        this._sessionValidationRetryCount = 0;
+        this._lastSessionValidation = null;
         
         // Bind methods to preserve context
         this.checkIsAdmin = this.checkIsAdmin.bind(this);
@@ -300,7 +308,7 @@ class AdminPermissions {
         }
         
         // 4. ENHANCED OPTIMISTIC STRATEGY: For admin pages with valid session
-        if (this.isOnAdminPage() && this.hasValidSession()) {
+        if (this.isOnAdminPage() && this.hasValidSessionSync()) {
             console.log('AdminPermissions: On admin page with valid session, activating optimistic mode');
             this._activateOptimisticMode();
             
@@ -365,6 +373,12 @@ class AdminPermissions {
         this.currentRetryCount = 0;
         this.consecutiveFailures = 0;
         this.lastErrorType = null;
+        
+        // Clear token detection cache and session validation
+        if (this.tokenDetectionService) {
+            this.tokenDetectionService.invalidateCache('admin-cache-clear');
+        }
+        this._lastSessionValidation = null;
         
         if (hadPendingOperations) {
             console.log('AdminPermissions: Cleared pending operations during cache clear');
@@ -556,6 +570,168 @@ class AdminPermissions {
     }
     
     /**
+     * Enhanced session validation with retry logic and error recovery
+     * Implements exponential backoff for failed token detection attempts
+     * 
+     * @param {number} retryCount - Current retry attempt (0-based)
+     * @returns {Promise<boolean>} True if session is valid
+     */
+    async hasValidSessionWithRetry(retryCount = 0) {
+        const maxRetries = 3;
+        const baseDelay = 1000; // 1 second
+        const maxDelay = 10000; // 10 seconds
+        
+        try {
+            console.log(`AdminPermissions: Session validation attempt ${retryCount + 1}/${maxRetries + 1}`);
+            
+            const result = await this.hasValidSession();
+            
+            // Reset retry count on success
+            this._sessionValidationRetryCount = 0;
+            
+            return result;
+            
+        } catch (error) {
+            console.error(`AdminPermissions: Session validation failed (attempt ${retryCount + 1}):`, error);
+            
+            // Classify error for retry decision
+            const errorClassification = this._classifySessionValidationError(error);
+            
+            // Check if we should retry
+            if (retryCount < maxRetries && errorClassification.retryable) {
+                const delay = Math.min(baseDelay * Math.pow(2, retryCount), maxDelay);
+                console.log(`AdminPermissions: Retrying session validation in ${delay}ms`);
+                
+                // Add jitter to prevent thundering herd
+                const jitteredDelay = delay + (Math.random() * 1000);
+                
+                await new Promise(resolve => setTimeout(resolve, jitteredDelay));
+                
+                return this.hasValidSessionWithRetry(retryCount + 1);
+            }
+            
+            // All retries exhausted or non-retryable error
+            console.error('AdminPermissions: Session validation failed after all retries, falling back to legacy method');
+            
+            // Store retry count for debugging
+            this._sessionValidationRetryCount = retryCount + 1;
+            
+            // Fallback to legacy method
+            return this._hasValidSessionLegacy();
+        }
+    }
+    
+    /**
+     * Classify session validation errors for retry strategy
+     * 
+     * @param {Error} error - The error to classify
+     * @returns {object} Error classification with retry strategy
+     * @private
+     */
+    _classifySessionValidationError(error) {
+        const classification = {
+            type: 'unknown',
+            retryable: false,
+            severity: 'medium',
+            userMessage: 'Session validation failed'
+        };
+        
+        // Network errors - retryable
+        if (error.message?.includes('Network Error') || error.code === 'ERR_NETWORK') {
+            classification.type = 'network';
+            classification.retryable = true;
+            classification.severity = 'high';
+            classification.userMessage = 'Network connection issue. Retrying...';
+        }
+        // Timeout errors - retryable
+        else if (error.message?.includes('timeout') || error.code === 'ETIMEDOUT') {
+            classification.type = 'timeout';
+            classification.retryable = true;
+            classification.severity = 'medium';
+            classification.userMessage = 'Request timed out. Retrying...';
+        }
+        // Server errors - retryable
+        else if (error.response?.status >= 500) {
+            classification.type = 'server';
+            classification.retryable = true;
+            classification.severity = 'high';
+            classification.userMessage = 'Server temporarily unavailable. Retrying...';
+        }
+        // Rate limiting - retryable with longer delay
+        else if (error.response?.status === 429) {
+            classification.type = 'rate_limit';
+            classification.retryable = true;
+            classification.severity = 'medium';
+            classification.userMessage = 'Too many requests. Please wait...';
+        }
+        // Client errors - not retryable
+        else if (error.response?.status >= 400 && error.response?.status < 500) {
+            classification.type = 'client';
+            classification.retryable = false;
+            classification.severity = 'low';
+            classification.userMessage = 'Authentication error';
+        }
+        // TokenDetectionService specific errors
+        else if (error.message?.includes('TokenDetectionService')) {
+            classification.type = 'token_detection';
+            classification.retryable = true;
+            classification.severity = 'medium';
+            classification.userMessage = 'Token detection failed. Retrying...';
+        }
+        
+        return classification;
+    }
+    
+    /**
+     * Get user-friendly error message for persistent session validation failures
+     * 
+     * @param {string} errorType - Type of error from classification
+     * @returns {string} User-friendly error message
+     */
+    getSessionValidationErrorMessage(errorType = 'unknown') {
+        const messages = {
+            network: 'Unable to verify your session due to network issues. Please check your connection and try again.',
+            timeout: 'Session verification is taking longer than expected. Please try again.',
+            server: 'Our servers are temporarily unavailable. Please try again in a few moments.',
+            rate_limit: 'Too many requests. Please wait a moment before trying again.',
+            client: 'There was an issue with your session. Please log in again.',
+            token_detection: 'Unable to detect your authentication status. Please refresh the page or log in again.',
+            unknown: 'Unable to verify your session. Please try refreshing the page or logging in again.'
+        };
+        
+        return messages[errorType] || messages.unknown;
+    }
+    
+    /**
+     * Recover from session validation failures with graceful degradation
+     * 
+     * @param {string} errorType - Type of error that occurred
+     * @returns {boolean} Fallback session status
+     */
+    recoverFromSessionValidationFailure(errorType) {
+        console.log(`AdminPermissions: Recovering from session validation failure: ${errorType}`);
+        
+        // For network/server errors, try to maintain last known state
+        if (['network', 'timeout', 'server'].includes(errorType)) {
+            if (this._lastSessionValidation?.result !== undefined) {
+                console.log('AdminPermissions: Using last known session state for recovery');
+                return this._lastSessionValidation.result;
+            }
+        }
+        
+        // For admin pages, be optimistic during recovery
+        if (this.isOnAdminPage()) {
+            console.log('AdminPermissions: Using optimistic recovery for admin page');
+            this._activateOptimisticMode();
+            return true;
+        }
+        
+        // Conservative fallback
+        console.log('AdminPermissions: Using conservative recovery fallback');
+        return false;
+    }
+    
+    /**
      * Cleanup method to properly dispose of the instance
      * Should be called when the instance is no longer needed
      */
@@ -570,6 +746,11 @@ class AdminPermissions {
         if (this._optimisticModeTimer) {
             clearTimeout(this._optimisticModeTimer);
             this._optimisticModeTimer = null;
+        }
+        
+        // Cleanup TokenDetectionService
+        if (this.tokenDetectionService && typeof this.tokenDetectionService.cleanup === 'function') {
+            this.tokenDetectionService.cleanup();
         }
         
         // Clear all state
@@ -728,7 +909,7 @@ class AdminPermissions {
             description: errorClassification.description,
             consecutiveFailures: this.consecutiveFailures,
             onAdminPage: this.isOnAdminPage(),
-            hasValidSession: this.hasValidSession()
+            hasValidSession: this.hasValidSessionSync()
         });
         
         // Handle different error types appropriately
@@ -754,7 +935,7 @@ class AdminPermissions {
                 }
                 
                 // For admin pages with valid session, use optimistic approach even without last known status
-                if (this.isOnAdminPage() && this.hasValidSession()) {
+                if (this.isOnAdminPage() && this.hasValidSessionSync()) {
                     console.warn('AdminPermissions: Infrastructure error on admin page, using optimistic approach');
                     this._activateOptimisticMode();
                     this.gracePeriodEnd = Date.now() + this.gracePeriod;
@@ -782,7 +963,7 @@ class AdminPermissions {
                 }
                 
                 // For admin pages, be optimistic even when rate limited
-                if (this.isOnAdminPage() && this.hasValidSession()) {
+                if (this.isOnAdminPage() && this.hasValidSessionSync()) {
                     console.warn('AdminPermissions: Rate limited on admin page, using optimistic approach');
                     this._activateOptimisticMode();
                     this.gracePeriodEnd = Date.now() + (this.gracePeriod * 2);
@@ -1087,11 +1268,110 @@ class AdminPermissions {
     
     /**
      * Check if user has a valid session
-     * Enhanced with comprehensive session validation
+     * Enhanced with API-based HttpOnly cookie detection via TokenDetectionService
      * 
-     * @returns {boolean} True if session appears valid
+     * @returns {Promise<boolean>} True if session appears valid
      */
-    hasValidSession() {
+    async hasValidSession() {
+        const startTime = Date.now();
+        
+        try {
+            console.log('AdminPermissions: Starting session validation with TokenDetectionService');
+            
+            // Use TokenDetectionService for comprehensive token detection
+            const tokenDetection = await this.tokenDetectionService.detectTokens();
+            
+            // Check if session is not expired based on stored timestamps
+            const sessionNotExpired = this._isSessionNotExpired();
+            
+            const isValid = tokenDetection.hasAccessToken && 
+                           tokenDetection.hasRefreshToken && 
+                           tokenDetection.hasUserData && 
+                           sessionNotExpired;
+            
+            const detectionDuration = Date.now() - startTime;
+            
+            console.log('AdminPermissions: Session validation result:', {
+                hasAccessToken: tokenDetection.hasAccessToken,
+                hasRefreshToken: tokenDetection.hasRefreshToken,
+                hasUserData: tokenDetection.hasUserData,
+                sessionNotExpired,
+                isValid,
+                detectionMethod: tokenDetection.fromCache ? 'cached' : 'fresh',
+                cacheHit: tokenDetection.cacheHit,
+                tokenSources: tokenDetection.tokenSources,
+                detectionDuration: detectionDuration + 'ms',
+                apiDetection: tokenDetection.debugInfo?.api?.available || false
+            });
+            
+            // Store detection info for debugging
+            this._lastSessionValidation = {
+                timestamp: Date.now(),
+                result: isValid,
+                tokenDetection,
+                detectionDuration,
+                method: tokenDetection.fromCache ? 'cached' : 'fresh'
+            };
+            
+            return isValid;
+            
+        } catch (error) {
+            console.error('AdminPermissions: Error validating session with TokenDetectionService:', error);
+            
+            // Fallback to legacy detection method for error recovery
+            console.warn('AdminPermissions: Falling back to legacy session validation');
+            return this._hasValidSessionLegacy();
+        }
+    }
+    
+    /**
+     * Synchronous version of hasValidSession for backward compatibility
+     * Uses cached token detection result when available
+     * 
+     * @returns {boolean} True if session appears valid based on cached data
+     */
+    hasValidSessionSync() {
+        try {
+            // Try to get cached token detection result
+            const cachedResult = this.tokenDetectionService.sessionCache.get('token-detection-result');
+            
+            if (cachedResult) {
+                const sessionNotExpired = this._isSessionNotExpired();
+                const isValid = cachedResult.hasAccessToken && 
+                               cachedResult.hasRefreshToken && 
+                               cachedResult.hasUserData && 
+                               sessionNotExpired;
+                
+                console.log('AdminPermissions: Synchronous session validation (cached):', {
+                    hasAccessToken: cachedResult.hasAccessToken,
+                    hasRefreshToken: cachedResult.hasRefreshToken,
+                    hasUserData: cachedResult.hasUserData,
+                    sessionNotExpired,
+                    isValid,
+                    fromCache: true
+                });
+                
+                return isValid;
+            }
+            
+            // No cached result available, fall back to legacy method
+            console.log('AdminPermissions: No cached token detection, using legacy sync validation');
+            return this._hasValidSessionLegacy();
+            
+        } catch (error) {
+            console.error('AdminPermissions: Error in synchronous session validation:', error);
+            return this._hasValidSessionLegacy();
+        }
+    }
+    
+    /**
+     * Legacy session validation method as fallback
+     * Uses the original cookie/storage-based detection
+     * 
+     * @returns {boolean} True if session appears valid using legacy methods
+     * @private
+     */
+    _hasValidSessionLegacy() {
         try {
             // Check for access token in various storage locations
             const hasAccessToken = this._hasValidAccessToken();
@@ -1107,18 +1387,19 @@ class AdminPermissions {
             
             const isValid = hasAccessToken && hasRefreshToken && hasUserData && sessionNotExpired;
             
-            console.log('AdminPermissions: Session validation result:', {
+            console.log('AdminPermissions: Legacy session validation result:', {
                 hasAccessToken,
                 hasRefreshToken,
                 hasUserData,
                 sessionNotExpired,
-                isValid
+                isValid,
+                method: 'legacy'
             });
             
             return isValid;
             
         } catch (error) {
-            console.error('AdminPermissions: Error validating session:', error);
+            console.error('AdminPermissions: Error in legacy session validation:', error);
             return false; // Conservative approach on validation errors
         }
     }
@@ -1272,7 +1553,7 @@ class AdminPermissions {
         
         // If user appears to be authenticated but we have no admin status,
         // be slightly optimistic for better UX
-        if (this.hasValidSession()) {
+        if (this.hasValidSessionSync()) {
             console.log('AdminPermissions: Valid session but no admin status, using conservative optimistic approach');
             // Don't be fully optimistic here - let the user try and get proper feedback
             return false;
@@ -1281,6 +1562,81 @@ class AdminPermissions {
         // Conservative fallback
         console.log('AdminPermissions: Using conservative fallback: false');
         return false;
+    }
+    
+    /**
+     * Get comprehensive debugging information about token detection
+     * Includes detection method used, timing information, and cache status
+     * 
+     * @returns {object} Token detection debug information
+     */
+    getTokenDetectionDebugInfo() {
+        const tokenDetectionDebug = this.tokenDetectionService ? 
+            this.tokenDetectionService.getDebugInfo() : null;
+        
+        return {
+            tokenDetectionService: {
+                available: !!this.tokenDetectionService,
+                debugInfo: tokenDetectionDebug,
+                lastValidation: this._lastSessionValidation || null
+            },
+            httpOnlyCookieDetection: {
+                apiSourceAvailable: tokenDetectionDebug?.sources?.find(s => s.name === 'api')?.available || false,
+                apiDetectionAttempts: tokenDetectionDebug?.history?.length || 0,
+                lastApiDetection: tokenDetectionDebug?.history?.[0] || null,
+                cacheStats: this.tokenDetectionService?.getCacheStats() || null
+            },
+            detectionMethods: {
+                primary: 'TokenDetectionService (API-based for HttpOnly cookies)',
+                fallback: 'Legacy storage-based detection',
+                currentMethod: this._lastSessionValidation?.method || 'unknown'
+            },
+            timing: {
+                lastDetectionDuration: this._lastSessionValidation?.detectionDuration || null,
+                cacheHitRate: this._calculateCacheHitRate(),
+                averageDetectionTime: this._calculateAverageDetectionTime()
+            },
+            errorRecovery: {
+                sessionValidationRetryCount: this._sessionValidationRetryCount,
+                lastValidationResult: this._lastSessionValidation?.result || null,
+                lastValidationTimestamp: this._lastSessionValidation?.timestamp || null,
+                hasRecoveryMechanisms: true
+            }
+        };
+    }
+    
+    /**
+     * Calculate cache hit rate from token detection history
+     * @returns {string} Cache hit rate percentage
+     * @private
+     */
+    _calculateCacheHitRate() {
+        if (!this.tokenDetectionService?.detectionHistory?.length) {
+            return 'N/A';
+        }
+        
+        const history = this.tokenDetectionService.detectionHistory;
+        const cacheHits = history.filter(entry => entry.fromCache).length;
+        const hitRate = (cacheHits / history.length * 100).toFixed(1);
+        
+        return `${hitRate}% (${cacheHits}/${history.length})`;
+    }
+    
+    /**
+     * Calculate average detection time from history
+     * @returns {string} Average detection time
+     * @private
+     */
+    _calculateAverageDetectionTime() {
+        if (!this.tokenDetectionService?.detectionHistory?.length) {
+            return 'N/A';
+        }
+        
+        const history = this.tokenDetectionService.detectionHistory;
+        const totalTime = history.reduce((sum, entry) => sum + (entry.duration || 0), 0);
+        const avgTime = (totalTime / history.length).toFixed(1);
+        
+        return `${avgTime}ms`;
     }
     
     /**
@@ -1344,7 +1700,8 @@ class AdminPermissions {
                 validationInterval: this.stateValidationInterval,
                 lastValidation: 'N/A' // Could be enhanced to track last validation time
             },
-            listenersCount: this.listeners.size
+            listenersCount: this.listeners.size,
+            tokenDetection: this.getTokenDetectionDebugInfo()
         };
     }
 }

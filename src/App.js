@@ -501,7 +501,7 @@ function AppContent() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="nk-admin" element={
+              <Route path="admin" element={
                 <ProtectedRoute>
                   <AdminPage />
                 </ProtectedRoute>
