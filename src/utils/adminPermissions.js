@@ -6,17 +6,134 @@
  * 
  * Features:
  * - Backend API integration for admin status checking
- * - Synchronous admin status checks with caching
+ * - Direct API calls without caching for real-time permission checks
  * - UI conditional rendering helpers
- * - Proper error handling for network failures
+ * - Simple error handling that defaults to false for security
  * - Session management integration
+ * - Comprehensive logging for debugging state synchronization
  * 
  * @author SentimentInsideOut Team
- * @version 1.0.0
+ * @version 1.2.0
  */
 
 import apiClient from '../api/apiClient';
-import { handleApiError } from './errorHandler';
+
+/**
+ * Comprehensive logging utility for admin permissions debugging
+ */
+class AdminPermissionsLogger {
+    constructor() {
+        this.logs = [];
+        this.maxLogs = 100; // Keep last 100 log entries
+        this.startTime = Date.now();
+    }
+    
+    /**
+     * Log an event with detailed context and timing information
+     */
+    log(level, event, details = {}) {
+        const timestamp = new Date().toISOString();
+        const relativeTime = Date.now() - this.startTime;
+        
+        const logEntry = {
+            timestamp,
+            relativeTime,
+            level,
+            event,
+            details,
+            stackTrace: level === 'error' ? new Error().stack : undefined
+        };
+        
+        // Add to internal log storage
+        this.logs.push(logEntry);
+        
+        // Keep only the most recent logs to prevent memory leaks
+        if (this.logs.length > this.maxLogs) {
+            this.logs = this.logs.slice(-this.maxLogs);
+        }
+        
+        // Console output with appropriate level
+        const consoleMessage = `AdminPermissions[${relativeTime}ms]: ${event}`;
+        switch (level) {
+            case 'error':
+                console.error(consoleMessage, logEntry);
+                break;
+            case 'warn':
+                console.warn(consoleMessage, logEntry);
+                break;
+            case 'info':
+                console.info(consoleMessage, logEntry);
+                break;
+            case 'debug':
+            default:
+                console.log(consoleMessage, logEntry);
+                break;
+        }
+    }
+    
+    /**
+     * Get recent logs for debugging
+     */
+    getRecentLogs(count = 20) {
+        return this.logs.slice(-count);
+    }
+    
+    /**
+     * Clear all logs
+     */
+    clearLogs() {
+        this.logs = [];
+    }
+    
+    /**
+     * Get performance metrics
+     */
+    getMetrics() {
+        const apiCalls = this.logs.filter(log => log.event.includes('API_CALL'));
+        const errors = this.logs.filter(log => log.level === 'error');
+        const authEvents = this.logs.filter(log => log.event.includes('AUTH'));
+        
+        return {
+            totalLogs: this.logs.length,
+            apiCalls: apiCalls.length,
+            errors: errors.length,
+            authEvents: authEvents.length,
+            uptime: Date.now() - this.startTime,
+            averageApiResponseTime: this.calculateAverageApiResponseTime()
+        };
+    }
+    
+    /**
+     * Calculate average API response time from logs
+     */
+    calculateAverageApiResponseTime() {
+        const apiStartLogs = this.logs.filter(log => log.event === 'API_CALL_STARTED');
+        const apiEndLogs = this.logs.filter(log => 
+            log.event === 'API_CALL_SUCCESS' || log.event === 'API_CALL_ERROR'
+        );
+        
+        if (apiStartLogs.length === 0 || apiEndLogs.length === 0) {
+            return null;
+        }
+        
+        let totalTime = 0;
+        let completedCalls = 0;
+        
+        apiStartLogs.forEach(startLog => {
+            const endLog = apiEndLogs.find(endLog => 
+                endLog.details.callId === startLog.details.callId &&
+                endLog.relativeTime > startLog.relativeTime
+            );
+            
+            if (endLog) {
+                totalTime += (endLog.relativeTime - startLog.relativeTime);
+                completedCalls++;
+            }
+        });
+        
+        return completedCalls > 0 ? Math.round(totalTime / completedCalls) : null;
+    }
+}
 
 /**
  * Admin Permissions Utility Class
@@ -24,19 +141,15 @@ import { handleApiError } from './errorHandler';
  */
 class AdminPermissions {
     constructor() {
-        this.adminStatus = null;
-        this.loading = false;
-        this.lastCheck = null;
-        this.cacheTimeout = 5 * 60 * 1000; // 5 minutes cache
-        this.listeners = new Set();
+        // Initialize comprehensive logging
+        this.logger = new AdminPermissionsLogger();
+        this.callCounter = 0;
+        this.activeApiCalls = new Map(); // Track concurrent API calls
         
-        // Bind methods to preserve context
-        this.checkIsAdmin = this.checkIsAdmin.bind(this);
-        this.isCurrentUserAdmin = this.isCurrentUserAdmin.bind(this);
-        this.shouldShowAdminFeatures = this.shouldShowAdminFeatures.bind(this);
-        this.clearCache = this.clearCache.bind(this);
-        this.addListener = this.addListener.bind(this);
-        this.removeListener = this.removeListener.bind(this);
+        this.logger.log('info', 'UTILITY_INITIALIZED', {
+            timestamp: new Date().toISOString(),
+            version: '1.2.0'
+        });
         
         // Listen for authentication changes
         this.setupAuthListeners();
@@ -44,250 +157,325 @@ class AdminPermissions {
     
     /**
      * Setup listeners for authentication state changes
-     * Automatically clears admin status when user logs out
+     * Logs authentication events for debugging with comprehensive details
      */
     setupAuthListeners() {
         // Listen for login success events
-        window.addEventListener('loginSuccess', () => {
-            console.log('AdminPermissions: Login detected, clearing cache');
-            this.clearCache();
+        window.addEventListener('loginSuccess', (event) => {
+            this.logger.log('info', 'AUTH_LOGIN_SUCCESS_EVENT', {
+                eventType: 'loginSuccess',
+                eventDetail: event.detail,
+                timestamp: new Date().toISOString(),
+                activeApiCalls: this.activeApiCalls.size,
+                source: 'window_event'
+            });
         });
         
         // Listen for logout events
-        window.addEventListener('logoutSuccess', () => {
-            console.log('AdminPermissions: Logout detected, clearing cache');
-            this.clearCache();
+        window.addEventListener('logoutSuccess', (event) => {
+            this.logger.log('info', 'AUTH_LOGOUT_SUCCESS_EVENT', {
+                eventType: 'logoutSuccess',
+                eventDetail: event.detail,
+                timestamp: new Date().toISOString(),
+                activeApiCalls: this.activeApiCalls.size,
+                source: 'window_event'
+            });
+            
+            // Cancel any active API calls on logout
+            if (this.activeApiCalls.size > 0) {
+                this.logger.log('warn', 'CANCELLING_API_CALLS_ON_LOGOUT', {
+                    activeCallsCount: this.activeApiCalls.size,
+                    activeCalls: Array.from(this.activeApiCalls.keys())
+                });
+                this.activeApiCalls.clear();
+            }
+        });
+        
+        // Listen for authentication state changes (if available)
+        window.addEventListener('authStateChange', (event) => {
+            this.logger.log('info', 'AUTH_STATE_CHANGE_EVENT', {
+                eventType: 'authStateChange',
+                eventDetail: event.detail,
+                timestamp: new Date().toISOString(),
+                activeApiCalls: this.activeApiCalls.size,
+                source: 'window_event'
+            });
+        });
+        
+        this.logger.log('debug', 'AUTH_LISTENERS_SETUP', {
+            listeners: ['loginSuccess', 'logoutSuccess', 'authStateChange']
         });
     }
     
     /**
      * Check if the current user is an admin by calling the backend API
-     * This method is asynchronous and should be used for initial checks
+     * This method always makes a direct API call without caching
      * 
      * @returns {Promise<boolean>} True if user is admin, false otherwise
      */
     async checkIsAdmin() {
+        const callId = ++this.callCounter;
+        const startTime = Date.now();
+        
+        // Log API call initiation with race condition detection
+        this.logger.log('info', 'API_CALL_STARTED', {
+            callId,
+            endpoint: '/api/auth/admin-status',
+            method: 'GET',
+            startTime,
+            concurrentCalls: this.activeApiCalls.size,
+            activeCalls: Array.from(this.activeApiCalls.keys()),
+            raceConditionRisk: this.activeApiCalls.size > 0
+        });
+        
+        // Track this API call
+        this.activeApiCalls.set(callId, {
+            startTime,
+            endpoint: '/api/auth/admin-status'
+        });
+        
         try {
-            // Check if we have a valid cached result
-            if (this.adminStatus !== null && this.lastCheck && 
-                (Date.now() - this.lastCheck) < this.cacheTimeout) {
-                console.log('AdminPermissions: Using cached admin status:', this.adminStatus);
-                return this.adminStatus;
-            }
-            
-            // Prevent multiple simultaneous requests
-            if (this.loading) {
-                console.log('AdminPermissions: Admin status check already in progress');
-                // Wait for the current request to complete
-                return new Promise((resolve) => {
-                    const checkStatus = () => {
-                        if (!this.loading) {
-                            resolve(this.adminStatus || false);
-                        } else {
-                            setTimeout(checkStatus, 100);
-                        }
-                    };
-                    checkStatus();
-                });
-            }
-            
-            this.loading = true;
-            
-            console.log('AdminPermissions: Checking admin status via API');
-            
             // Call the backend admin status endpoint
             const response = await apiClient.get('/api/auth/admin-status');
+            const responseTime = Date.now() - startTime;
             
             const data = response.data;
             const isAdmin = data?.data?.isAdmin || false;
             const isAuthenticated = data?.data?.isAuthenticated || false;
             
-            console.log('AdminPermissions: API response:', {
+            // Log successful API response with detailed analysis
+            this.logger.log('info', 'API_CALL_SUCCESS', {
+                callId,
+                responseTime,
                 isAuthenticated,
                 isAdmin,
+                responseStatus: response.status,
+                responseHeaders: {
+                    'content-type': response.headers['content-type'],
+                    'x-request-id': response.headers['x-request-id']
+                },
+                responseData: data,
+                concurrentCallsAtStart: this.activeApiCalls.size - 1,
+                wasRaceCondition: this.activeApiCalls.size > 1,
                 timestamp: new Date().toISOString()
             });
             
-            // Update cache
-            this.adminStatus = isAdmin;
-            this.lastCheck = Date.now();
-            
-            // Notify listeners of status change
-            this.notifyListeners(isAdmin);
+            // Check for potential state conflicts
+            if (data?.data?.isAuthenticated === false && isAdmin === true) {
+                this.logger.log('warn', 'STATE_CONFLICT_DETECTED', {
+                    callId,
+                    conflict: 'User marked as admin but not authenticated',
+                    isAuthenticated,
+                    isAdmin,
+                    responseData: data
+                });
+            }
             
             return isAdmin;
             
         } catch (error) {
-            console.error('AdminPermissions: Failed to check admin status:', error);
+            const responseTime = Date.now() - startTime;
             
-            // Handle different types of errors
-            const handledError = handleApiError(error);
+            // Log detailed error information
+            this.logger.log('error', 'API_CALL_ERROR', {
+                callId,
+                responseTime,
+                errorMessage: error.message,
+                errorCode: error.code,
+                errorStatus: error.response?.status,
+                errorData: error.response?.data,
+                errorHeaders: error.response?.headers,
+                networkError: !error.response,
+                timeoutError: error.code === 'ECONNABORTED',
+                authError: error.response?.status === 401 || error.response?.status === 403,
+                serverError: error.response?.status >= 500,
+                concurrentCallsAtStart: this.activeApiCalls.size - 1,
+                wasRaceCondition: this.activeApiCalls.size > 1,
+                stack: error.stack
+            });
             
-            // For network errors or server issues, maintain current status if available
-            if (error.code === 'ERR_NETWORK' || error.response?.status >= 500) {
-                console.warn('AdminPermissions: Network/server error, maintaining current status');
-                if (this.adminStatus !== null) {
-                    return this.adminStatus;
-                }
+            // Analyze error type for debugging
+            if (error.response?.status === 401) {
+                this.logger.log('warn', 'AUTHENTICATION_ERROR', {
+                    callId,
+                    message: 'User not authenticated - admin check failed',
+                    shouldRedirectToLogin: true
+                });
+            } else if (error.response?.status === 403) {
+                this.logger.log('warn', 'AUTHORIZATION_ERROR', {
+                    callId,
+                    message: 'User authenticated but not authorized for admin status check',
+                    possibleCause: 'CSRF token issue or insufficient permissions'
+                });
+            } else if (error.response?.status >= 500) {
+                this.logger.log('error', 'SERVER_ERROR', {
+                    callId,
+                    message: 'Server error during admin status check',
+                    shouldRetry: true,
+                    retryAfter: error.response?.headers['retry-after']
+                });
+            } else if (!error.response) {
+                this.logger.log('error', 'NETWORK_ERROR', {
+                    callId,
+                    message: 'Network error during admin status check',
+                    possibleCause: 'Connection timeout, DNS failure, or network unavailable'
+                });
             }
             
-            // For authentication errors (401, 403), clear admin status
-            if (error.response?.status === 401 || error.response?.status === 403) {
-                console.warn('AdminPermissions: Authentication error, clearing admin status');
-                this.adminStatus = false;
-                this.lastCheck = Date.now();
-                this.notifyListeners(false);
-                return false;
-            }
-            
-            // For other errors, default to false for security
-            console.warn('AdminPermissions: Unknown error, defaulting to non-admin');
-            this.adminStatus = false;
-            this.lastCheck = Date.now();
-            this.notifyListeners(false);
+            // Simple error handling: always return false for security
+            // No cache fallback logic or complex error handling
             return false;
             
         } finally {
-            this.loading = false;
+            // Remove from active calls tracking
+            this.activeApiCalls.delete(callId);
+            
+            const finalTime = Date.now() - startTime;
+            this.logger.log('debug', 'API_CALL_COMPLETED', {
+                callId,
+                totalTime: finalTime,
+                remainingConcurrentCalls: this.activeApiCalls.size
+            });
         }
     }
     
     /**
-     * Synchronous check for current user admin status
-     * Uses cached value if available, otherwise returns false
+     * Async check for current user admin status
+     * Always makes a direct API call without using cache
      * 
-     * @returns {boolean} True if user is admin based on cached data
+     * @returns {Promise<boolean>} True if user is admin, false otherwise
      */
-    isCurrentUserAdmin() {
-        // Return cached status if available and not expired
-        if (this.adminStatus !== null && this.lastCheck && 
-            (Date.now() - this.lastCheck) < this.cacheTimeout) {
-            return this.adminStatus;
-        }
-        
-        // If no cached data or expired, trigger async check but return false for safety
-        if (!this.loading) {
-            this.checkIsAdmin().catch(error => {
-                console.error('AdminPermissions: Background admin check failed:', error);
-            });
-        }
-        
-        return false; // Default to false for security
+    async isCurrentUserAdmin() {
+        this.logger.log('debug', 'IS_CURRENT_USER_ADMIN_CALLED', {
+            caller: 'isCurrentUserAdmin',
+            delegatingTo: 'checkIsAdmin'
+        });
+        return await this.checkIsAdmin();
     }
     
     /**
      * Determine if admin features should be shown in the UI
      * This is the primary method for conditional rendering
+     * Always makes a direct API call to get current admin status
      * 
-     * @returns {boolean} True if admin features should be displayed
+     * @returns {Promise<boolean>} True if admin features should be displayed
      */
-    shouldShowAdminFeatures() {
-        return this.isCurrentUserAdmin();
-    }
-    
-    /**
-     * Clear the admin status cache
-     * Useful when user authentication state changes
-     */
-    clearCache() {
-        console.log('AdminPermissions: Clearing admin status cache');
-        this.adminStatus = null;
-        this.lastCheck = null;
-        this.loading = false;
-        
-        // Notify listeners of cache clear
-        this.notifyListeners(null);
-    }
-    
-    /**
-     * Get the current loading state
-     * 
-     * @returns {boolean} True if currently checking admin status
-     */
-    isLoading() {
-        return this.loading;
-    }
-    
-    /**
-     * Get the last check timestamp
-     * 
-     * @returns {number|null} Timestamp of last admin status check
-     */
-    getLastCheckTime() {
-        return this.lastCheck;
-    }
-    
-    /**
-     * Check if the cached status is still valid
-     * 
-     * @returns {boolean} True if cached status is valid
-     */
-    isCacheValid() {
-        return this.adminStatus !== null && this.lastCheck && 
-               (Date.now() - this.lastCheck) < this.cacheTimeout;
-    }
-    
-    /**
-     * Add a listener for admin status changes
-     * 
-     * @param {function} listener - Function to call when admin status changes
-     */
-    addListener(listener) {
-        if (typeof listener === 'function') {
-            this.listeners.add(listener);
-        }
-    }
-    
-    /**
-     * Remove a listener for admin status changes
-     * 
-     * @param {function} listener - Function to remove from listeners
-     */
-    removeListener(listener) {
-        this.listeners.delete(listener);
-    }
-    
-    /**
-     * Notify all listeners of admin status changes
-     * 
-     * @param {boolean|null} status - New admin status
-     */
-    notifyListeners(status) {
-        this.listeners.forEach(listener => {
-            try {
-                listener(status);
-            } catch (error) {
-                console.error('AdminPermissions: Listener error:', error);
-            }
+    async shouldShowAdminFeatures() {
+        this.logger.log('debug', 'SHOULD_SHOW_ADMIN_FEATURES_CALLED', {
+            caller: 'shouldShowAdminFeatures',
+            delegatingTo: 'checkIsAdmin',
+            purpose: 'UI conditional rendering'
         });
-    }
-    
-    /**
-     * Force refresh admin status from server
-     * Bypasses cache and makes a fresh API call
-     * 
-     * @returns {Promise<boolean>} Fresh admin status from server
-     */
-    async refreshAdminStatus() {
-        console.log('AdminPermissions: Force refreshing admin status');
-        this.clearCache();
         return await this.checkIsAdmin();
     }
     
     /**
-     * Get debug information about the current state
+     * Force refresh admin status from server
+     * Makes a direct API call to get current admin status
      * 
-     * @returns {object} Debug information
+     * @returns {Promise<boolean>} Fresh admin status from server
+     */
+    async refreshAdminStatus() {
+        this.logger.log('info', 'REFRESH_ADMIN_STATUS_CALLED', {
+            caller: 'refreshAdminStatus',
+            delegatingTo: 'checkIsAdmin',
+            purpose: 'Force refresh from server',
+            activeApiCalls: this.activeApiCalls.size
+        });
+        return await this.checkIsAdmin();
+    }
+    
+    /**
+     * Get comprehensive debug information about the current state
+     * 
+     * @returns {object} Detailed debug information
      */
     getDebugInfo() {
+        const metrics = this.logger.getMetrics();
+        const recentLogs = this.logger.getRecentLogs(10);
+        
         return {
-            adminStatus: this.adminStatus,
-            loading: this.loading,
-            lastCheck: this.lastCheck,
-            cacheValid: this.isCacheValid(),
-            cacheAge: this.lastCheck ? Date.now() - this.lastCheck : null,
-            listenersCount: this.listeners.size
+            utility: {
+                message: 'AdminPermissions utility - cache removed, using direct API calls',
+                version: '1.2.0',
+                timestamp: new Date().toISOString(),
+                uptime: metrics.uptime
+            },
+            apiCalls: {
+                totalCalls: this.callCounter,
+                activeCalls: this.activeApiCalls.size,
+                activeCallDetails: Array.from(this.activeApiCalls.entries()).map(([id, call]) => ({
+                    callId: id,
+                    startTime: call.startTime,
+                    duration: Date.now() - call.startTime,
+                    endpoint: call.endpoint
+                })),
+                averageResponseTime: metrics.averageApiResponseTime
+            },
+            logging: {
+                totalLogs: metrics.totalLogs,
+                errorCount: metrics.errors,
+                authEventCount: metrics.authEvents,
+                recentLogs: recentLogs.map(log => ({
+                    timestamp: log.timestamp,
+                    relativeTime: log.relativeTime,
+                    level: log.level,
+                    event: log.event,
+                    details: log.details
+                }))
+            },
+            raceConditions: {
+                potentialRaceConditions: recentLogs.filter(log => 
+                    log.details?.raceConditionRisk === true
+                ).length,
+                concurrentCallsDetected: recentLogs.filter(log => 
+                    log.details?.wasRaceCondition === true
+                ).length
+            },
+            stateConflicts: {
+                conflictsDetected: recentLogs.filter(log => 
+                    log.event === 'STATE_CONFLICT_DETECTED'
+                ).length
+            },
+            errors: {
+                networkErrors: recentLogs.filter(log => 
+                    log.details?.networkError === true
+                ).length,
+                authErrors: recentLogs.filter(log => 
+                    log.details?.authError === true
+                ).length,
+                serverErrors: recentLogs.filter(log => 
+                    log.details?.serverError === true
+                ).length
+            }
         };
+    }
+    
+    /**
+     * Get recent logs for debugging
+     * 
+     * @param {number} count - Number of recent logs to return
+     * @returns {Array} Recent log entries
+     */
+    getRecentLogs(count = 20) {
+        return this.logger.getRecentLogs(count);
+    }
+    
+    /**
+     * Clear all logs (useful for testing)
+     */
+    clearLogs() {
+        this.logger.clearLogs();
+        this.logger.log('info', 'LOGS_CLEARED', {
+            clearedAt: new Date().toISOString()
+        });
+    }
+    
+    /**
+     * Get performance metrics
+     */
+    getMetrics() {
+        return this.logger.getMetrics();
     }
 }
 
