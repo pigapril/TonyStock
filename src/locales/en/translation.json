@@ -315,311 +315,7 @@
       "paymentMethodRequired": "This redemption code requires a payment method to be applied during checkout."
     }
   },
-  "admin": {
-    "accessDenied": {
-      "title": "Access Denied",
-      "message": "You need administrator privileges to access this page."
-    },
-    "codes": {
-      "title": "Redemption Code Management",
-      "description": "Manage and monitor all redemption codes",
-      "generate": "Generate Code",
-      "bulkGenerate": "Bulk Generate",
-      "search": "Search Codes",
-      "filter": "Filter",
-      "export": "Export",
-      "refresh": "Refresh",
-      "loading": "Loading...",
-      "noResults": "No codes found matching criteria",
-      "totalCodes": "Total Codes",
-      "activeCodes": "Active Codes",
-      "usedCodes": "Used Codes",
-      "expiredCodes": "Expired Codes",
-      "types": {
-        "percentage_discount": "Percentage Discount",
-        "fixed_amount_discount": "Fixed Amount Discount",
-        "time_extension": "Time Extension"
-      },
-      "status": {
-        "active": "Active",
-        "inactive": "Inactive",
-        "expired": "Expired",
-        "exhausted": "Exhausted"
-      },
-      "eligibility": {
-        "all_users": "All Users",
-        "new_customers_only": "New Customers Only",
-        "specific_plans": "Specific Plan Users",
-        "first_time_users": "First Time Users"
-      },
-      "table": {
-        "code": "Code",
-        "type": "Type",
-        "campaign": "Campaign",
-        "usage": "Usage",
-        "status": "Status",
-        "expires": "Expires",
-        "actions": "Actions"
-      },
-      "actions": {
-        "view": "View",
-        "edit": "Edit",
-        "deactivate": "Deactivate",
-        "activate": "Activate",
-        "delete": "Delete",
-        "duplicate": "Duplicate",
-        "apply": "Manual Apply"
-      },
-      "filters": {
-        "allTypes": "All Types",
-        "allStatuses": "All Statuses",
-        "allCampaigns": "All Campaigns",
-        "dateRange": "Date Range",
-        "usageRange": "Usage Range",
-        "apply": "Apply Filters",
-        "clear": "Clear Filters"
-      },
-      "generation": {
-        "title": "Generate Redemption Code",
-        "singleCode": "Single Code",
-        "bulkCodes": "Bulk Codes",
-        "steps": {
-          "basic": "Basic Settings",
-          "limits": "Usage Limits",
-          "advanced": "Advanced Options",
-          "review": "Review & Generate"
-        },
-        "basic": {
-          "codeType": "Code Type",
-          "codeTypeRequired": "Please select a code type",
-          "customCode": "Custom Code",
-          "customCodePlaceholder": "Leave empty to auto-generate",
-          "prefix": "Code Prefix",
-          "prefixPlaceholder": "e.g., SUMMER2024",
-          "campaignName": "Campaign Name",
-          "campaignNameRequired": "Please enter campaign name",
-          "campaignNamePlaceholder": "e.g., Summer Sale",
-          "internalNotes": "Internal Notes",
-          "internalNotesPlaceholder": "Notes for admin reference"
-        },
-        "discount": {
-          "percentage": "Discount Percentage",
-          "percentageRequired": "Please enter discount percentage",
-          "percentagePlaceholder": "1-100",
-          "amount": "Discount Amount",
-          "amountRequired": "Please enter discount amount",
-          "amountPlaceholder": "e.g., 100",
-          "currency": "Currency",
-          "targetPlan": "Target Plan"
-        },
-        "extension": {
-          "duration": "Extension Duration",
-          "durationRequired": "Please enter extension duration",
-          "durationPlaceholder": "e.g., 30",
-          "unit": "Time Unit",
-          "unitRequired": "Please select time unit",
-          "targetPlan": "Upgrade Plan"
-        },
-        "limits": {
-          "maxTotalUses": "Max Total Uses",
-          "maxTotalUsesPlaceholder": "Leave empty for unlimited",
-          "maxUsesPerUser": "Max Uses Per User",
-          "maxUsesPerUserPlaceholder": "Leave empty for unlimited",
-          "expiresAt": "Expiration Date",
-          "activatesAt": "Activation Date",
-          "eligibilityType": "Eligibility",
-          "eligibilityTypeRequired": "Please select eligibility type",
-          "eligiblePlans": "Eligible Plans",
-          "requiresPaymentMethod": "Requires Payment Method"
-        },
-        "advanced": {
-          "allowStacking": "Allow Stacking",
-          "stackingGroup": "Stacking Group",
-          "stackingGroupPlaceholder": "Codes in same group cannot stack"
-        },
-        "bulk": {
-          "count": "Generation Count",
-          "countRequired": "Please enter generation count",
-          "countPlaceholder": "1-10000",
-          "prefixRequired": "Prefix is required for bulk generation"
-        },
-        "review": {
-          "title": "Confirm Code Generation",
-          "summary": "Code Summary",
-          "configuration": "Configuration Details",
-          "generate": "Generate Codes",
-          "generating": "Generating...",
-          "success": "Codes generated successfully",
-          "error": "Generation failed"
-        }
-      },
-      "details": {
-        "title": "Code Details",
-        "basicInfo": "Basic Information",
-        "configuration": "Configuration",
-        "usage": "Usage Statistics",
-        "history": "Usage History",
-        "security": "Security Information",
-        "edit": "Edit Code",
-        "save": "Save Changes",
-        "cancel": "Cancel",
-        "saving": "Saving...",
-        "saved": "Saved",
-        "error": "Save failed"
-      },
-      "bulkOps": {
-        "title": "Bulk Operations",
-        "selectedCount": "{{count}} codes selected",
-        "selectAll": "Select All",
-        "deselectAll": "Deselect All",
-        "operations": {
-          "activate": "Bulk Activate",
-          "deactivate": "Bulk Deactivate",
-          "delete": "Bulk Delete",
-          "export": "Bulk Export",
-          "updateExpiry": "Bulk Update Expiry"
-        },
-        "confirm": {
-          "activate": "Are you sure you want to activate {{count}} selected codes?",
-          "deactivate": "Are you sure you want to deactivate {{count}} selected codes?",
-          "delete": "Are you sure you want to delete {{count}} selected codes? This action cannot be undone.",
-          "updateExpiry": "Are you sure you want to update expiry for {{count}} selected codes?"
-        },
-        "options": {
-          "reason": "Operation Reason",
-          "reasonPlaceholder": "Please enter operation reason",
-          "activationDate": "Activation Date",
-          "expirationDate": "Expiration Date"
-        },
-        "validation": {
-          "reasonRequired": "Operation reason must be at least 5 characters",
-          "activationInPast": "Activation date cannot be in the past",
-          "expirationInPast": "Expiration date cannot be in the past",
-          "noCodesSelected": "Please select codes to operate on"
-        },
-        "processing": "Processing...",
-        "success": "Bulk operation completed",
-        "error": "Bulk operation failed"
-      },
-      "manualApplication": {
-        "title": "Manual Code Application",
-        "description": "Manually apply redemption code for specific user",
-        "userSearch": "Search User",
-        "userSearchPlaceholder": "Enter username or email",
-        "selectUser": "Select User",
-        "selectCode": "Select Code",
-        "reason": "Application Reason",
-        "reasonRequired": "Please enter application reason",
-        "reasonPlaceholder": "e.g., Customer service compensation",
-        "apply": "Apply Code",
-        "applying": "Applying...",
-        "success": "Code applied successfully",
-        "error": "Code application failed"
-      }
-    },
-    "analytics": {
-      "title": "Redemption Analytics",
-      "description": "Monitor redemption code usage and effectiveness",
-      "loading": "Loading analytics data...",
-      "timeRange": "Time Range",
-      "timeRanges": {
-        "7days": "Last 7 Days",
-        "30days": "Last 30 Days",
-        "90days": "Last 90 Days",
-        "1year": "Last Year"
-      },
-      "autoRefresh": "Auto Refresh",
-      "refresh": "Refresh",
-      "exportJson": "Export JSON",
-      "exportCsv": "Export CSV",
-      "metrics": {
-        "overview": "Overview",
-        "conversion": "Conversion",
-        "fraud": "Fraud Detection",
-        "campaigns": "Campaigns",
-        "totalCodes": "Total Codes",
-        "totalRedemptions": "Total Redemptions",
-        "conversionRate": "Conversion Rate",
-        "successRate": "Success Rate"
-      },
-      "charts": {
-        "redemptionTrends": "Redemption Trends",
-        "codeTypeDistribution": "Code Type Distribution",
-        "campaignPerformance": "Campaign Performance",
-        "fraudPatterns": "Fraud Patterns"
-      },
-      "overview": {
-        "codeBreakdown": "Code Breakdown",
-        "topCampaigns": "Top Campaigns"
-      },
-      "conversion": {
-        "overallRate": "Overall Conversion Rate",
-        "successRate": "Success Rate"
-      },
-      "fraud": {
-        "recentAlerts": "Recent Fraud Alerts",
-        "noAlerts": "No fraud alerts"
-      },
-      "campaigns": {
-        "name": "Campaign Name",
-        "codes": "Code Count",
-        "usage": "Usage Count",
-        "rate": "Conversion Rate"
-      },
-      "fraudAlerts": {
-        "title": "Fraud Alerts",
-        "severity": {
-          "low": "Low",
-          "medium": "Medium",
-          "high": "High",
-          "critical": "Critical"
-        },
-        "types": {
-          "velocity": "High Velocity",
-          "failure_rate": "High Failure Rate",
-          "suspicious_pattern": "Suspicious Pattern",
-          "bulk_attempt": "Bulk Attempt"
-        },
-        "highVelocity": "Detected abnormally high frequency redemption attempts",
-        "highFailureRate": "Redemption failure rate is abnormally high",
-        "suspiciousPattern": "Detected suspicious usage patterns",
-        "bulkAttempt": "Detected bulk redemption attempts"
-      }
-    },
-    "users": {
-      "redemptionHistory": "Redemption History",
-      "activePromotions": "Active Promotions",
-      "manualApply": "Manual Apply Code",
-      "viewHistory": "View History"
-    },
-    "navigation": {
-      "dashboard": "Dashboard",
-      "codeManagement": "Code Management",
-      "analytics": "Analytics",
-      "userManagement": "User Management",
-      "settings": "Settings"
-    },
-    "permissions": {
-      "accessDenied": "Access Denied",
-      "insufficientPermissions": "Insufficient Permissions",
-      "adminRequired": "Admin privileges required"
-    },
-    "errors": {
-      "loadFailed": "Load failed",
-      "saveFailed": "Save failed",
-      "deleteFailed": "Delete failed",
-      "networkError": "Network error",
-      "serverError": "Server error",
-      "validationError": "Validation error",
-      "unknownError": "Unknown error"
-    },
-    "success": {
-      "saved": "Saved successfully",
-      "deleted": "Deleted successfully",
-      "updated": "Updated successfully",
-      "created": "Created successfully"
-    }
-  },
+ 
   "userProfile": {
     "title":"Profile",
     "openMenuAria": "Open user menu",
@@ -1949,6 +1645,28 @@
     }
   },
   "admin": {
+    "title": "Admin Panel",
+    "description": "Manage redemption codes, analytics, and system settings",
+    "accessDenied": {
+      "title": "Access Denied",
+      "message": "You don't have permission to access the admin panel. Please contact an administrator if you believe this is an error.",
+      "goBack": "Go Back"
+    },
+    "permissions": {
+      "checking": "Checking permissions...",
+      "retry": "Retry"
+    },
+    "status": {
+      "authenticated": "Authenticated"
+    },
+    "tabs": {
+      "codeManagement": "Code Management",
+      "analytics": "Analytics"
+    },
+    "actions": {
+      "manageCodes": "Manage Codes",
+      "viewAnalytics": "View Analytics"
+    },
     "codes": {
       "title": "Redemption Code Management",
       "description": "Manage and monitor redemption codes, campaigns, and usage analytics",
@@ -2191,6 +1909,9 @@
       "configuration": "Configuration",
       "usageStats": "Usage Statistics",
       "metadata": "Metadata",
+      "usageLimits": "Usage Limits",
+      "stacking": "Stacking Settings",
+      "paymentRequired": "Payment Method Required",
       "edit": "Edit",
       "save": "Save",
       "cancel": "Cancel",
@@ -2320,136 +2041,6 @@
       "unknown": "An unknown error occurred",
       "client_error": "Client error occurred",
       "retry_exhausted": "Maximum retry attempts reached"
-    }
-  },
-  "admin": {
-    "title": "Admin Panel",
-    "description": "Manage promotion codes and analytics",
-    "accessDenied": {
-      "title": "Access Denied",
-      "message": "You don't have permission to access admin features. Please contact your system administrator.",
-      "goBack": "Go Back"
-    },
-    "permissions": {
-      "checking": "Checking admin permissions...",
-      "retry": "Retry Check"
-    },
-    "status": {
-      "authenticated": "Admin Authenticated"
-    },
-    "tabs": {
-      "codeManagement": "Code Management",
-      "analytics": "Analytics"
-    },
-    "codes": {
-      "title": "Promotion Code Management",
-      "description": "Manage and monitor promotion codes",
-      "loading": "Loading codes...",
-      "generateNew": "Generate New",
-      "autoRefresh": "Auto Refresh",
-      "refresh": "Refresh",
-      "filters": "Filters",
-      "clearFilters": "Clear Filters",
-      "applyFilters": "Apply Filters",
-      "codeType": "Code Type",
-      "allTypes": "All Types",
-      "status": "Status",
-      "allStatuses": "All Statuses",
-      "campaignName": "Campaign Name",
-      "searchCampaign": "Search campaign...",
-      "prefix": "Prefix",
-      "searchPrefix": "Search prefix...",
-      "createdAfter": "Created After",
-      "createdBefore": "Created Before",
-      "selectedCount": "{{count}} selected",
-      "bulkOperations": "Bulk Operations",
-      "deactivateSelected": "Deactivate Selected",
-      "selectAll": "Select All",
-      "exportJson": "Export JSON",
-      "exportCsv": "Export CSV",
-      "types": {
-        "percentageDiscount": "Percentage Discount",
-        "fixedAmountDiscount": "Fixed Amount Discount",
-        "timeExtension": "Time Extension"
-      },
-      "statuses": {
-        "active": "Active",
-        "inactive": "Inactive",
-        "expired": "Expired",
-        "exhausted": "Exhausted",
-        "scheduled": "Scheduled"
-      },
-      "table": {
-        "code": "Code",
-        "type": "Type",
-        "campaign": "Campaign",
-        "status": "Status",
-        "usage": "Usage",
-        "expires": "Expires",
-        "created": "Created",
-        "actions": "Actions"
-      },
-      "pagination": {
-        "showing": "Showing {{start}}-{{end}} of {{total}}",
-        "previous": "Previous",
-        "next": "Next"
-      }
-    },
-    "analytics": {
-      "title": "Analytics",
-      "description": "View promotion code usage analytics",
-      "loading": "Loading analytics...",
-      "timeRange": "Time Range",
-      "autoRefresh": "Auto Refresh",
-      "refresh": "Refresh",
-      "exportJson": "Export JSON",
-      "exportCsv": "Export CSV",
-      "timeRanges": {
-        "7days": "Last 7 days",
-        "30days": "Last 30 days",
-        "90days": "Last 90 days",
-        "1year": "Last year"
-      },
-      "metrics": {
-        "overview": "Overview",
-        "conversion": "Conversion",
-        "fraud": "Fraud Detection",
-        "campaigns": "Campaign Performance",
-        "totalCodes": "Total Codes",
-        "totalRedemptions": "Total Redemptions",
-        "conversionRate": "Conversion Rate",
-        "successRate": "Success Rate"
-      },
-      "fraudAlerts": {
-        "title": "Fraud Alerts",
-        "highVelocity": "High velocity redemption activity detected",
-        "highFailureRate": "High redemption failure rate detected",
-        "severity": {
-          "high": "High",
-          "medium": "Medium",
-          "low": "Low"
-        },
-        "types": {
-          "velocity": "Velocity",
-          "failure_rate": "Failure Rate"
-        }
-      },
-      "charts": {
-        "redemptionTrends": "Redemption Trends",
-        "codeTypeDistribution": "Code Type Distribution",
-        "campaignPerformance": "Campaign Performance",
-        "fraudPatterns": "Fraud Patterns"
-      }
-    },
-    "errors": {
-      "unknown": "Unknown error",
-      "validationFailed": "Validation failed",
-      "redemptionFailed": "Redemption failed",
-      "loadFailed": "Load failed"
-    },
-    "actions": {
-      "manageCodes": "Manage Codes",
-      "viewAnalytics": "View Analytics"
     }
   }
 }
