@@ -1,11 +1,11 @@
 {
-  "launch": {
-    "loading": {
-      "authenticating": "Verifying your information...",
-      "preparing": "Preparing your dashboard..."
+  "launch":{
+    "loading":{
+      "authenticating" : "Verifying your information...",
+      "preparing" : "Preparing your dashboard..."
     },
-    "login": {
-      "prompt": "Sign in to continue"
+    "login":{
+      "prompt":"Sign in to continue"
     }
   },
   "nav": {
@@ -20,6 +20,7 @@
     "admin": "Admin Panel",
     "adminBadge": "Admin"
   },
+  
   "userActions": {
     "login": "Login"
   },
@@ -30,6 +31,7 @@
     "marketSentimentCard": {
       "title": "Market Sentiment",
       "currentSentiment": "The mood is now"
+
     },
     "watchlistCard": {
       "title": "Noteworthy stocks from the watchlist",
@@ -314,253 +316,317 @@
     }
   },
   "admin": {
-    "title": "Admin Panel",
-    "description": "Manage promotion codes and analytics",
     "accessDenied": {
       "title": "Access Denied",
-      "message": "You don't have permission to access admin features. Please contact your system administrator.",
-      "goBack": "Go Back"
-    },
-    "permissions": {
-      "checking": "Checking admin permissions...",
-      "retry": "Retry Check"
-    },
-    "status": {
-      "authenticated": "Admin Authenticated"
-    },
-    "tabs": {
-      "codeManagement": "Code Management",
-      "analytics": "Analytics"
+      "message": "You need administrator privileges to access this page."
     },
     "codes": {
-      "title": "Promotion Code Management",
-      "description": "Manage and monitor promotion codes",
-      "loading": "Loading codes...",
-      "generateNew": "Generate New",
-      "autoRefresh": "Auto Refresh",
+      "title": "Redemption Code Management",
+      "description": "Manage and monitor all redemption codes",
+      "generate": "Generate Code",
+      "bulkGenerate": "Bulk Generate",
+      "search": "Search Codes",
+      "filter": "Filter",
+      "export": "Export",
       "refresh": "Refresh",
-      "filters": "Filters",
-      "clearFilters": "Clear Filters",
-      "applyFilters": "Apply Filters",
-      "codeType": "Code Type",
-      "allTypes": "All Types",
-      "status": "Status",
-      "allStatuses": "All Statuses",
-      "campaignName": "Campaign Name",
-      "searchCampaign": "Search campaign...",
-      "prefix": "Prefix",
-      "searchPrefix": "Search prefix...",
-      "createdAfter": "Created After",
-      "createdBefore": "Created Before",
-      "selectedCount": "{{count}} selected",
-      "bulkOperations": "Bulk Operations",
-      "deactivateSelected": "Deactivate Selected",
-      "selectAll": "Select All",
-      "exportJson": "Export JSON",
-      "exportCsv": "Export CSV",
+      "loading": "Loading...",
+      "noResults": "No codes found matching criteria",
+      "totalCodes": "Total Codes",
+      "activeCodes": "Active Codes",
+      "usedCodes": "Used Codes",
+      "expiredCodes": "Expired Codes",
       "types": {
-        "percentageDiscount": "Percentage Discount",
-        "fixedAmountDiscount": "Fixed Amount Discount",
-        "timeExtension": "Time Extension",
         "percentage_discount": "Percentage Discount",
         "fixed_amount_discount": "Fixed Amount Discount",
         "time_extension": "Time Extension"
       },
-      "statuses": {
+      "status": {
         "active": "Active",
         "inactive": "Inactive",
         "expired": "Expired",
-        "exhausted": "Exhausted",
-        "scheduled": "Scheduled"
+        "exhausted": "Exhausted"
+      },
+      "eligibility": {
+        "all_users": "All Users",
+        "new_customers_only": "New Customers Only",
+        "specific_plans": "Specific Plan Users",
+        "first_time_users": "First Time Users"
       },
       "table": {
         "code": "Code",
         "type": "Type",
         "campaign": "Campaign",
-        "status": "Status",
         "usage": "Usage",
+        "status": "Status",
         "expires": "Expires",
-        "created": "Created",
         "actions": "Actions"
       },
-      "pagination": {
-        "showing": "Showing {{start}}-{{end}} of {{total}}",
-        "previous": "Previous",
-        "next": "Next"
+      "actions": {
+        "view": "View",
+        "edit": "Edit",
+        "deactivate": "Deactivate",
+        "activate": "Activate",
+        "delete": "Delete",
+        "duplicate": "Duplicate",
+        "apply": "Manual Apply"
+      },
+      "filters": {
+        "allTypes": "All Types",
+        "allStatuses": "All Statuses",
+        "allCampaigns": "All Campaigns",
+        "dateRange": "Date Range",
+        "usageRange": "Usage Range",
+        "apply": "Apply Filters",
+        "clear": "Clear Filters"
+      },
+      "generation": {
+        "title": "Generate Redemption Code",
+        "singleCode": "Single Code",
+        "bulkCodes": "Bulk Codes",
+        "steps": {
+          "basic": "Basic Settings",
+          "limits": "Usage Limits",
+          "advanced": "Advanced Options",
+          "review": "Review & Generate"
+        },
+        "basic": {
+          "codeType": "Code Type",
+          "codeTypeRequired": "Please select a code type",
+          "customCode": "Custom Code",
+          "customCodePlaceholder": "Leave empty to auto-generate",
+          "prefix": "Code Prefix",
+          "prefixPlaceholder": "e.g., SUMMER2024",
+          "campaignName": "Campaign Name",
+          "campaignNameRequired": "Please enter campaign name",
+          "campaignNamePlaceholder": "e.g., Summer Sale",
+          "internalNotes": "Internal Notes",
+          "internalNotesPlaceholder": "Notes for admin reference"
+        },
+        "discount": {
+          "percentage": "Discount Percentage",
+          "percentageRequired": "Please enter discount percentage",
+          "percentagePlaceholder": "1-100",
+          "amount": "Discount Amount",
+          "amountRequired": "Please enter discount amount",
+          "amountPlaceholder": "e.g., 100",
+          "currency": "Currency",
+          "targetPlan": "Target Plan"
+        },
+        "extension": {
+          "duration": "Extension Duration",
+          "durationRequired": "Please enter extension duration",
+          "durationPlaceholder": "e.g., 30",
+          "unit": "Time Unit",
+          "unitRequired": "Please select time unit",
+          "targetPlan": "Upgrade Plan"
+        },
+        "limits": {
+          "maxTotalUses": "Max Total Uses",
+          "maxTotalUsesPlaceholder": "Leave empty for unlimited",
+          "maxUsesPerUser": "Max Uses Per User",
+          "maxUsesPerUserPlaceholder": "Leave empty for unlimited",
+          "expiresAt": "Expiration Date",
+          "activatesAt": "Activation Date",
+          "eligibilityType": "Eligibility",
+          "eligibilityTypeRequired": "Please select eligibility type",
+          "eligiblePlans": "Eligible Plans",
+          "requiresPaymentMethod": "Requires Payment Method"
+        },
+        "advanced": {
+          "allowStacking": "Allow Stacking",
+          "stackingGroup": "Stacking Group",
+          "stackingGroupPlaceholder": "Codes in same group cannot stack"
+        },
+        "bulk": {
+          "count": "Generation Count",
+          "countRequired": "Please enter generation count",
+          "countPlaceholder": "1-10000",
+          "prefixRequired": "Prefix is required for bulk generation"
+        },
+        "review": {
+          "title": "Confirm Code Generation",
+          "summary": "Code Summary",
+          "configuration": "Configuration Details",
+          "generate": "Generate Codes",
+          "generating": "Generating...",
+          "success": "Codes generated successfully",
+          "error": "Generation failed"
+        }
+      },
+      "details": {
+        "title": "Code Details",
+        "basicInfo": "Basic Information",
+        "configuration": "Configuration",
+        "usage": "Usage Statistics",
+        "history": "Usage History",
+        "security": "Security Information",
+        "edit": "Edit Code",
+        "save": "Save Changes",
+        "cancel": "Cancel",
+        "saving": "Saving...",
+        "saved": "Saved",
+        "error": "Save failed"
+      },
+      "bulkOps": {
+        "title": "Bulk Operations",
+        "selectedCount": "{{count}} codes selected",
+        "selectAll": "Select All",
+        "deselectAll": "Deselect All",
+        "operations": {
+          "activate": "Bulk Activate",
+          "deactivate": "Bulk Deactivate",
+          "delete": "Bulk Delete",
+          "export": "Bulk Export",
+          "updateExpiry": "Bulk Update Expiry"
+        },
+        "confirm": {
+          "activate": "Are you sure you want to activate {{count}} selected codes?",
+          "deactivate": "Are you sure you want to deactivate {{count}} selected codes?",
+          "delete": "Are you sure you want to delete {{count}} selected codes? This action cannot be undone.",
+          "updateExpiry": "Are you sure you want to update expiry for {{count}} selected codes?"
+        },
+        "options": {
+          "reason": "Operation Reason",
+          "reasonPlaceholder": "Please enter operation reason",
+          "activationDate": "Activation Date",
+          "expirationDate": "Expiration Date"
+        },
+        "validation": {
+          "reasonRequired": "Operation reason must be at least 5 characters",
+          "activationInPast": "Activation date cannot be in the past",
+          "expirationInPast": "Expiration date cannot be in the past",
+          "noCodesSelected": "Please select codes to operate on"
+        },
+        "processing": "Processing...",
+        "success": "Bulk operation completed",
+        "error": "Bulk operation failed"
+      },
+      "manualApplication": {
+        "title": "Manual Code Application",
+        "description": "Manually apply redemption code for specific user",
+        "userSearch": "Search User",
+        "userSearchPlaceholder": "Enter username or email",
+        "selectUser": "Select User",
+        "selectCode": "Select Code",
+        "reason": "Application Reason",
+        "reasonRequired": "Please enter application reason",
+        "reasonPlaceholder": "e.g., Customer service compensation",
+        "apply": "Apply Code",
+        "applying": "Applying...",
+        "success": "Code applied successfully",
+        "error": "Code application failed"
       }
     },
     "analytics": {
-      "title": "Analytics",
-      "description": "View promotion code usage analytics",
-      "loading": "Loading analytics...",
+      "title": "Redemption Analytics",
+      "description": "Monitor redemption code usage and effectiveness",
+      "loading": "Loading analytics data...",
       "timeRange": "Time Range",
+      "timeRanges": {
+        "7days": "Last 7 Days",
+        "30days": "Last 30 Days",
+        "90days": "Last 90 Days",
+        "1year": "Last Year"
+      },
       "autoRefresh": "Auto Refresh",
       "refresh": "Refresh",
       "exportJson": "Export JSON",
       "exportCsv": "Export CSV",
-      "timeRanges": {
-        "7days": "Last 7 days",
-        "30days": "Last 30 days",
-        "90days": "Last 90 days",
-        "1year": "Last year"
-      },
       "metrics": {
         "overview": "Overview",
         "conversion": "Conversion",
         "fraud": "Fraud Detection",
-        "campaigns": "Campaign Performance",
+        "campaigns": "Campaigns",
         "totalCodes": "Total Codes",
         "totalRedemptions": "Total Redemptions",
         "conversionRate": "Conversion Rate",
         "successRate": "Success Rate"
-      },
-      "fraudAlerts": {
-        "title": "Fraud Alerts",
-        "highVelocity": "High velocity redemption activity detected",
-        "highFailureRate": "High redemption failure rate detected",
-        "severity": {
-          "high": "High",
-          "medium": "Medium",
-          "low": "Low"
-        },
-        "types": {
-          "velocity": "Velocity",
-          "failure_rate": "Failure Rate"
-        }
       },
       "charts": {
         "redemptionTrends": "Redemption Trends",
         "codeTypeDistribution": "Code Type Distribution",
         "campaignPerformance": "Campaign Performance",
         "fraudPatterns": "Fraud Patterns"
+      },
+      "overview": {
+        "codeBreakdown": "Code Breakdown",
+        "topCampaigns": "Top Campaigns"
+      },
+      "conversion": {
+        "overallRate": "Overall Conversion Rate",
+        "successRate": "Success Rate"
+      },
+      "fraud": {
+        "recentAlerts": "Recent Fraud Alerts",
+        "noAlerts": "No fraud alerts"
+      },
+      "campaigns": {
+        "name": "Campaign Name",
+        "codes": "Code Count",
+        "usage": "Usage Count",
+        "rate": "Conversion Rate"
+      },
+      "fraudAlerts": {
+        "title": "Fraud Alerts",
+        "severity": {
+          "low": "Low",
+          "medium": "Medium",
+          "high": "High",
+          "critical": "Critical"
+        },
+        "types": {
+          "velocity": "High Velocity",
+          "failure_rate": "High Failure Rate",
+          "suspicious_pattern": "Suspicious Pattern",
+          "bulk_attempt": "Bulk Attempt"
+        },
+        "highVelocity": "Detected abnormally high frequency redemption attempts",
+        "highFailureRate": "Redemption failure rate is abnormally high",
+        "suspiciousPattern": "Detected suspicious usage patterns",
+        "bulkAttempt": "Detected bulk redemption attempts"
       }
+    },
+    "users": {
+      "redemptionHistory": "Redemption History",
+      "activePromotions": "Active Promotions",
+      "manualApply": "Manual Apply Code",
+      "viewHistory": "View History"
+    },
+    "navigation": {
+      "dashboard": "Dashboard",
+      "codeManagement": "Code Management",
+      "analytics": "Analytics",
+      "userManagement": "User Management",
+      "settings": "Settings"
+    },
+    "permissions": {
+      "accessDenied": "Access Denied",
+      "insufficientPermissions": "Insufficient Permissions",
+      "adminRequired": "Admin privileges required"
     },
     "errors": {
-      "unknown": "Unknown error",
-      "validationFailed": "Validation failed",
-      "redemptionFailed": "Redemption failed",
-      "loadFailed": "Load failed"
+      "loadFailed": "Load failed",
+      "saveFailed": "Save failed",
+      "deleteFailed": "Delete failed",
+      "networkError": "Network error",
+      "serverError": "Server error",
+      "validationError": "Validation error",
+      "unknownError": "Unknown error"
     },
-    "actions": {
-      "manageCodes": "Manage Codes",
-      "viewAnalytics": "View Analytics"
-    },
-    "wizard": {
-      "title": "Code Generation Wizard",
-      "previous": "Previous",
-      "next": "Next",
-      "generate": "Generate Codes",
-      "steps": {
-        "basicConfig": "Basic Configuration",
-        "basicConfigDesc": "Configure code type and discount/extension settings",
-        "usageLimits": "Usage Limits & Eligibility",
-        "usageLimitsDesc": "Set usage limits and eligibility requirements",
-        "advanced": "Advanced Options",
-        "advancedDesc": "Configure stacking, expiration, and activation settings",
-        "review": "Review & Generate",
-        "reviewDesc": "Review configuration and generate codes"
-      },
-      "templates": {
-        "title": "Quick Templates",
-        "newCustomer": "New Customer Discount",
-        "timeExtension": "Time Extension",
-        "bulkDiscount": "Bulk Discount"
-      },
-      "codeType": "Code Type",
-      "discountPercentage": "Discount Percentage (%)",
-      "discountAmount": "Discount Amount",
-      "currency": "Currency",
-      "extensionDuration": "Extension Duration",
-      "extensionUnit": "Extension Unit",
-      "targetPlan": "Target Plan",
-      "maxTotalUses": "Maximum Total Uses",
-      "maxUsesPerUser": "Maximum Uses Per User",
-      "eligibilityType": "Eligibility Type",
-      "eligiblePlans": "Eligible Plans",
-      "requiresPaymentMethod": "Requires Payment Method",
-      "allowStacking": "Allow Stacking",
-      "stackingGroup": "Stacking Group",
-      "stackingGroupPlaceholder": "Enter stacking group name",
-      "expiresAt": "Expires At",
-      "activatesAt": "Activates At (Optional)",
-      "campaignName": "Campaign Name",
-      "campaignNamePlaceholder": "Enter campaign name",
-      "count": "Number of Codes",
-      "prefix": "Prefix (for bulk generation)",
-      "prefixPlaceholder": "e.g., SUMMER2024",
-      "codeLength": "Code Length",
-      "internalNotes": "Internal Notes",
-      "internalNotesPlaceholder": "Internal notes for admin reference",
-      "units": {
-        "day": "Days",
-        "month": "Months",
-        "year": "Years"
-      },
-      "plans": {
-        "free": "Free Plan",
-        "pro": "Pro Plan"
-      },
-      "eligibility": {
-        "allUsers": "All Users",
-        "newCustomers": "New Customers Only",
-        "specificPlans": "Specific Plans",
-        "firstTime": "First-Time Users"
-      },
-      "validation": {
-        "codeTypeRequired": "Code type is required",
-        "invalidPercentage": "Percentage must be between 1-100",
-        "invalidAmount": "Amount must be greater than 0",
-        "invalidDuration": "Duration must be greater than 0",
-        "unitRequired": "Unit is required",
-        "invalidTotalUses": "Total uses must be greater than 0",
-        "invalidUserUses": "User uses must be greater than 0",
-        "userUsesExceedsTotal": "User uses cannot exceed total uses",
-        "plansRequired": "At least one plan must be selected",
-        "expirationRequired": "Expiration date is required",
-        "expirationInPast": "Expiration date cannot be in the past",
-        "activationAfterExpiration": "Activation date cannot be after expiration",
-        "stackingGroupTooShort": "Stacking group name must be at least 3 characters",
-        "campaignNameRequired": "Campaign name must be at least 3 characters",
-        "prefixRequiredForBulk": "Prefix is required for bulk generation",
-        "invalidCount": "Count must be between 1-10000",
-        "invalidCodeLength": "Code length must be between 8-32"
-      },
-      "preview": {
-        "title": "Configuration Preview",
-        "configuration": "Configuration",
-        "generation": "Generation",
-        "type": "Type",
-        "value": "Value",
-        "usage": "Usage Limits",
-        "eligibility": "Eligibility",
-        "expiration": "Expiration",
-        "method": "Method",
-        "count": "Count",
-        "prefix": "Prefix",
-        "campaign": "Campaign",
-        "sampleCodes": "Sample Codes"
-      },
-      "success": {
-        "title": "Generation Successful",
-        "message": "Successfully generated {{count}} redemption codes",
-        "summary": "Generation Summary",
-        "campaign": "Campaign",
-        "type": "Type",
-        "generated": "Generated",
-        "expires": "Expires",
-        "codes": "Generated Codes",
-        "copy": "Copy",
-        "done": "Done"
-      }
+    "success": {
+      "saved": "Saved successfully",
+      "deleted": "Deleted successfully",
+      "updated": "Updated successfully",
+      "created": "Created successfully"
     }
   },
   "userProfile": {
-    "title": "Profile",
+    "title":"Profile",
     "openMenuAria": "Open user menu",
     "avatarAlt": "{{username}}'s avatar",
     "menuAria": "User menu",
     "logout": "Logout",
-    "notLoggedIn": "Not Logged In",
+    "notLoggedIn":"Not Logged In",
     "loginRequired": "Login Required",
     "loginRequiredMessage": "Please log in to view your account information"
   },
@@ -628,7 +694,7 @@
     "year5": "Last 5 Years",
     "year10": "Last 10 Years",
     "year20": "Last 20 Years",
-    "all": "All"
+    "all":"All"
   },
   "common": {
     "learnMore": "Learn More",
@@ -771,12 +837,12 @@
       "spyPriceLabel": "SPY Price",
       "compositeIndexAxisLabel": "SIO Fear & Greed Index",
       "spyPriceAxisLabel": "SPY Price",
-      "tooltipScore": "Sentiment Score",
-      "tooltipSPY": "SPY Price"
+      "tooltipScore":"Sentiment Score",
+      "tooltipSPY":"SPY Price"
     },
     "indicatorDetail": {
-      "valueLabel": "Indicator Value",
-      "sentimentScoreLabel": "Sentiment Score"
+      "valueLabel":"Indicator Value",
+      "sentimentScoreLabel":"Sentiment Score"
     },
     "gauge": {
       "interactiveZones": "Interactive sentiment zones",
@@ -928,7 +994,7 @@
       "tabs": {
         "overview": "Overview",
         "indicators": "Components",
-        "tips": "Usage Tips",
+        "tips": "Usage Tips", 
         "history": "Historical Analysis",
         "introduction": "Introduction",
         "details": "Details"
@@ -1301,14 +1367,14 @@
     "announcement": {
       "message": "📣 0050 (Yuanta Taiwan 50) has been corrected. Analysis results are now back to normal! 🥳 ｜ To prevent cyberattacks⚠️, most features now require login to use. Please rest assured, everything is still free! Thanks for your understanding😥"
     },
-    "hotSearches": {
+    "hotSearches": { 
       "title": "Trending 🔥",
-      "noData": "No data available"
+      "noData": "No data available" 
     }
   },
   "watchlist": {
     "loginPrompt": {
-      "message": "Log in to create and manage your personal stock watchlist."
+        "message": "Log in to create and manage your personal stock watchlist."
     },
     "pageTitle": "My Watchlist",
     "pageSubtitle": "Track stocks you are interested in and quickly grasp the price sentiment of multiple targets",
@@ -1363,10 +1429,10 @@
       "noCategory": "No categories yet",
       "noCategoryMessage": "Add a category and start tracking your stocks!",
       "emptyTitle": "Time to Add Stocks",
-      "emptyMessage": "Click the 'Add Stocks' button to start tracking!"
+      "emptyMessage": "Click the 'Add Stocks' button to start tracking!" 
     },
     "stock": {
-      "addTitle": "Add Stocks",
+      "addTitle":"Add Stocks",
       "addSuccess": "{{symbol}} added to watchlist"
     },
     "stockCard": {
@@ -1880,6 +1946,510 @@
       "amountExceeded": "Refund amount exceeds original payment amount",
       "reasonRequired": "Please select a refund reason",
       "descriptionRequired": "Please provide detailed description"
+    }
+  },
+  "admin": {
+    "codes": {
+      "title": "Redemption Code Management",
+      "description": "Manage and monitor redemption codes, campaigns, and usage analytics",
+      "loading": "Loading codes...",
+      "generateNew": "Generate New Codes",
+      "autoRefresh": "Auto Refresh",
+      "refresh": "Refresh",
+      "filters": "Filters",
+      "clearFilters": "Clear Filters",
+      "applyFilters": "Apply Filters",
+      "codeType": "Code Type",
+      "allTypes": "All Types",
+      "status": "Status",
+      "allStatuses": "All Statuses",
+      "campaignName": "Campaign Name",
+      "searchCampaign": "Search campaign...",
+      "prefix": "Prefix",
+      "searchPrefix": "Search prefix...",
+      "createdAfter": "Created After",
+      "createdBefore": "Created Before",
+      "selectedCount": "{{count}} codes selected",
+      "bulkOperations": "Bulk Operations",
+      "deactivateSelected": "Deactivate Selected",
+      "selectAll": "Select All",
+      "exportJson": "Export JSON",
+      "exportCsv": "Export CSV",
+      "types": {
+        "percentageDiscount": "Percentage Discount",
+        "fixedAmountDiscount": "Fixed Amount Discount",
+        "timeExtension": "Time Extension"
+      },
+      "statuses": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "expired": "Expired",
+        "exhausted": "Exhausted",
+        "scheduled": "Scheduled"
+      },
+      "table": {
+        "code": "Code",
+        "type": "Type",
+        "campaign": "Campaign",
+        "status": "Status",
+        "usage": "Usage",
+        "expires": "Expires",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "view": "View",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "viewDetails": "View Details",
+      "pagination": {
+        "showing": "Showing {{start}}-{{end}} of {{total}}",
+        "previous": "Previous",
+        "next": "Next"
+      }
+    },
+    "analytics": {
+      "title": "Redemption Analytics",
+      "description": "Monitor redemption performance, fraud detection, and campaign analytics",
+      "loading": "Loading analytics...",
+      "timeRange": "Time Range",
+      "autoRefresh": "Auto Refresh",
+      "refresh": "Refresh",
+      "exportJson": "Export JSON",
+      "exportCsv": "Export CSV",
+      "totalCodes": "Total Codes",
+      "activeCodes": "Active Codes",
+      "totalRedemptions": "Total Redemptions",
+      "conversionRate": "Conversion Rate",
+      "timeRanges": {
+        "7days": "Last 7 Days",
+        "30days": "Last 30 Days",
+        "90days": "Last 90 Days",
+        "1year": "Last Year"
+      },
+      "metrics": {
+        "overview": "Overview",
+        "conversion": "Conversion",
+        "fraud": "Fraud Detection",
+        "campaigns": "Campaigns",
+        "totalCodes": "Total Codes",
+        "totalRedemptions": "Total Redemptions",
+        "conversionRate": "Conversion Rate",
+        "successRate": "Success Rate"
+      },
+      "charts": {
+        "redemptionTrends": "Redemption Trends",
+        "codeTypeDistribution": "Code Type Distribution",
+        "campaignPerformance": "Campaign Performance",
+        "fraudPatterns": "Fraud Patterns"
+      },
+      "fraudAlerts": {
+        "title": "Fraud Alerts",
+        "highVelocity": "High redemption velocity detected",
+        "highFailureRate": "High failure rate detected",
+        "severity": {
+          "high": "High",
+          "medium": "Medium",
+          "low": "Low"
+        },
+        "types": {
+          "velocity": "High Velocity",
+          "failure_rate": "High Failure Rate",
+          "ip_clustering": "IP Clustering",
+          "pattern_detection": "Pattern Detection"
+        }
+      },
+      "overview": {
+        "codeBreakdown": "Code Breakdown",
+        "topCampaigns": "Top Campaigns"
+      },
+      "conversion": {
+        "overallRate": "Overall Conversion Rate",
+        "successRate": "Success Rate"
+      },
+      "fraud": {
+        "recentAlerts": "Recent Fraud Alerts",
+        "noAlerts": "No fraud alerts detected"
+      },
+      "campaigns": {
+        "name": "Campaign Name",
+        "codes": "Codes",
+        "usage": "Usage",
+        "rate": "Usage Rate"
+      }
+    },
+    "wizard": {
+      "title": "Code Generation Wizard",
+      "previous": "Previous",
+      "next": "Next",
+      "generate": "Generate Codes",
+      "steps": {
+        "basicConfig": "Basic Configuration",
+        "basicConfigDesc": "Configure code type and discount/extension settings",
+        "usageLimits": "Usage Limits & Eligibility",
+        "usageLimitsDesc": "Set usage limits and eligibility requirements",
+        "advanced": "Advanced Options",
+        "advancedDesc": "Configure stacking, expiration, and activation settings",
+        "review": "Review & Generate",
+        "reviewDesc": "Review configuration and generate codes"
+      },
+      "templates": {
+        "title": "Quick Templates",
+        "newCustomer": "New Customer Discount",
+        "timeExtension": "Time Extension",
+        "bulkDiscount": "Bulk Discount"
+      },
+      "codeType": "Code Type",
+      "discountPercentage": "Discount Percentage (%)",
+      "discountAmount": "Discount Amount",
+      "currency": "Currency",
+      "extensionDuration": "Extension Duration",
+      "extensionUnit": "Extension Unit",
+      "targetPlan": "Target Plan",
+      "maxTotalUses": "Maximum Total Uses",
+      "maxUsesPerUser": "Maximum Uses Per User",
+      "eligibilityType": "Eligibility Type",
+      "eligiblePlans": "Eligible Plans",
+      "requiresPaymentMethod": "Requires Payment Method",
+      "allowStacking": "Allow Stacking",
+      "stackingGroup": "Stacking Group",
+      "stackingGroupPlaceholder": "Enter stacking group name",
+      "expiresAt": "Expires At",
+      "activatesAt": "Activates At (Optional)",
+      "campaignName": "Campaign Name",
+      "campaignNamePlaceholder": "Enter campaign name",
+      "count": "Number of Codes",
+      "prefix": "Prefix (for bulk generation)",
+      "prefixPlaceholder": "e.g., SUMMER2024",
+      "codeLength": "Code Length",
+      "internalNotes": "Internal Notes",
+      "internalNotesPlaceholder": "Internal notes for admin reference",
+      "units": {
+        "day": "Days",
+        "month": "Months",
+        "year": "Years"
+      },
+      "plans": {
+        "free": "Free Plan",
+        "pro": "Pro Plan"
+      },
+      "eligibility": {
+        "allUsers": "All Users",
+        "newCustomers": "New Customers Only",
+        "specificPlans": "Specific Plans",
+        "firstTime": "First-Time Users"
+      },
+      "validation": {
+        "codeTypeRequired": "Code type is required",
+        "invalidPercentage": "Percentage must be between 1-100",
+        "invalidAmount": "Amount must be greater than 0",
+        "invalidDuration": "Duration must be greater than 0",
+        "unitRequired": "Unit is required",
+        "invalidTotalUses": "Total uses must be greater than 0",
+        "invalidUserUses": "User uses must be greater than 0",
+        "userUsesExceedsTotal": "User uses cannot exceed total uses",
+        "plansRequired": "At least one plan must be selected",
+        "expirationRequired": "Expiration date is required",
+        "expirationInPast": "Expiration date cannot be in the past",
+        "activationAfterExpiration": "Activation date cannot be after expiration",
+        "stackingGroupTooShort": "Stacking group name must be at least 3 characters",
+        "campaignNameRequired": "Campaign name must be at least 3 characters",
+        "prefixRequiredForBulk": "Prefix is required for bulk generation",
+        "invalidCount": "Count must be between 1-10000",
+        "invalidCodeLength": "Code length must be between 8-32"
+      },
+      "preview": {
+        "title": "Configuration Preview",
+        "configuration": "Configuration",
+        "generation": "Generation",
+        "type": "Type",
+        "value": "Value",
+        "usage": "Usage Limits",
+        "eligibility": "Eligibility",
+        "expiration": "Expiration",
+        "method": "Method",
+        "count": "Count",
+        "prefix": "Prefix",
+        "campaign": "Campaign",
+        "sampleCodes": "Sample Codes"
+      },
+      "success": {
+        "title": "Generation Successful",
+        "message": "Successfully generated {{count}} redemption codes",
+        "summary": "Generation Summary",
+        "campaign": "Campaign",
+        "type": "Type",
+        "generated": "Generated",
+        "expires": "Expires",
+        "codes": "Generated Codes",
+        "copy": "Copy",
+        "done": "Done"
+      }
+    },
+    "codeDetails": {
+      "title": "Code Details",
+      "basicInfo": "Basic Information",
+      "configuration": "Configuration",
+      "usageStats": "Usage Statistics",
+      "metadata": "Metadata",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "close": "Close",
+      "code": "Code",
+      "type": "Type",
+      "value": "Value",
+      "status": "Status",
+      "prefix": "Prefix",
+      "created": "Created",
+      "campaignName": "Campaign Name",
+      "isActive": "Is Active",
+      "expiresAt": "Expires At",
+      "activatesAt": "Activates At",
+      "maxTotalUses": "Max Total Uses",
+      "maxUsesPerUser": "Max Uses Per User",
+      "eligibilityType": "Eligibility Type",
+      "eligiblePlans": "Eligible Plans",
+      "requiresPaymentMethod": "Requires Payment Method",
+      "allowStacking": "Allow Stacking",
+      "stackingGroup": "Stacking Group",
+      "stackingGroupPlaceholder": "Enter stacking group",
+      "internalNotes": "Internal Notes",
+      "internalNotesPlaceholder": "Enter internal notes",
+      "timesUsed": "Times Used",
+      "remaining": "Remaining",
+      "usageRate": "Usage Rate",
+      "uniqueUsers": "Unique Users",
+      "discount": "discount",
+      "extension": "extension",
+      "unknown": "Unknown",
+      "eligibility": {
+        "allUsers": "All Users",
+        "newCustomers": "New Customers Only",
+        "specificPlans": "Users on: {{plans}}",
+        "specificPlansOption": "Specific Plans",
+        "firstTime": "First-Time Users"
+      },
+      "plans": {
+        "free": "Free",
+        "pro": "Pro"
+      },
+      "yes": "Yes",
+      "no": "No",
+      "allowed": "Allowed",
+      "notAllowed": "Not Allowed",
+      "group": "Group",
+      "validation": {
+        "expirationRequired": "Expiration date is required",
+        "expirationInPast": "Expiration date cannot be in the past",
+        "activationAfterExpiration": "Activation date cannot be after expiration",
+        "invalidTotalUses": "Total uses must be greater than 0",
+        "invalidUserUses": "User uses must be greater than 0",
+        "userUsesExceedsTotal": "User uses cannot exceed total uses",
+        "plansRequired": "At least one plan must be selected",
+        "campaignNameRequired": "Campaign name must be at least 3 characters"
+      }
+    },
+    "bulkOps": {
+      "title": "Bulk Operations",
+      "selectOperation": "Select Operation",
+      "options": "Options",
+      "affectedCodes": "Affected Codes",
+      "totalCodes": "Total Codes",
+      "byStatus": "By Status",
+      "byType": "By Type",
+      "cancel": "Cancel",
+      "continue": "Continue",
+      "back": "Back",
+      "operations": {
+        "activate": "Activate Codes",
+        "deactivate": "Deactivate Codes",
+        "update": "Update Codes"
+      },
+      "descriptions": {
+        "activate": "Activate selected codes immediately or schedule activation",
+        "deactivate": "Deactivate selected codes with reason",
+        "update": "Update configuration for selected codes",
+        "updateGeneric": "Update configuration fields for selected codes",
+        "scheduleActivate": "Schedule activation for {{date}}"
+      },
+      "activationDate": "Activation Date (Optional)",
+      "activationDateHelp": "Leave empty to activate immediately",
+      "reason": "Reason",
+      "reasonPlaceholder": "Enter reason for deactivation",
+      "fields": {
+        "expiresAt": "Expiration Date",
+        "maxTotalUses": "Max Total Uses",
+        "maxUsesPerUser": "Max Uses Per User",
+        "campaignName": "Campaign Name",
+        "internalNotes": "Internal Notes"
+      },
+      "validation": {
+        "reasonRequired": "Reason must be at least 5 characters",
+        "activationInPast": "Activation date cannot be in the past",
+        "expirationInPast": "Expiration date cannot be in the past",
+        "invalidTotalUses": "Total uses must be greater than 0",
+        "invalidUserUses": "User uses must be greater than 0",
+        "userUsesExceedsTotal": "User uses cannot exceed total uses",
+        "noUpdatesProvided": "At least one field must be updated"
+      },
+      "confirm": {
+        "title": "Confirm Bulk Operation",
+        "description": "Please review the operation details before proceeding",
+        "operation": "Operation",
+        "affectedCodes": "Affected Codes",
+        "codes": "codes",
+        "warning": "Warning",
+        "warningText": "This operation cannot be undone. Please make sure you want to proceed.",
+        "execute": "Execute Operation"
+      },
+      "processing": {
+        "title": "Processing Operation",
+        "description": "Please wait while the operation is being processed...",
+        "progress": "Processing {{current}} of {{total}} codes"
+      },
+      "results": {
+        "title": "Operation Results",
+        "successful": "Successful",
+        "failed": "Failed",
+        "total": "Total",
+        "failedOperations": "Failed Operations",
+        "done": "Done"
+      }
+    },
+    "errors": {
+      "unknown": "An unknown error occurred",
+      "client_error": "Client error occurred",
+      "retry_exhausted": "Maximum retry attempts reached"
+    }
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "description": "Manage promotion codes and analytics",
+    "accessDenied": {
+      "title": "Access Denied",
+      "message": "You don't have permission to access admin features. Please contact your system administrator.",
+      "goBack": "Go Back"
+    },
+    "permissions": {
+      "checking": "Checking admin permissions...",
+      "retry": "Retry Check"
+    },
+    "status": {
+      "authenticated": "Admin Authenticated"
+    },
+    "tabs": {
+      "codeManagement": "Code Management",
+      "analytics": "Analytics"
+    },
+    "codes": {
+      "title": "Promotion Code Management",
+      "description": "Manage and monitor promotion codes",
+      "loading": "Loading codes...",
+      "generateNew": "Generate New",
+      "autoRefresh": "Auto Refresh",
+      "refresh": "Refresh",
+      "filters": "Filters",
+      "clearFilters": "Clear Filters",
+      "applyFilters": "Apply Filters",
+      "codeType": "Code Type",
+      "allTypes": "All Types",
+      "status": "Status",
+      "allStatuses": "All Statuses",
+      "campaignName": "Campaign Name",
+      "searchCampaign": "Search campaign...",
+      "prefix": "Prefix",
+      "searchPrefix": "Search prefix...",
+      "createdAfter": "Created After",
+      "createdBefore": "Created Before",
+      "selectedCount": "{{count}} selected",
+      "bulkOperations": "Bulk Operations",
+      "deactivateSelected": "Deactivate Selected",
+      "selectAll": "Select All",
+      "exportJson": "Export JSON",
+      "exportCsv": "Export CSV",
+      "types": {
+        "percentageDiscount": "Percentage Discount",
+        "fixedAmountDiscount": "Fixed Amount Discount",
+        "timeExtension": "Time Extension"
+      },
+      "statuses": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "expired": "Expired",
+        "exhausted": "Exhausted",
+        "scheduled": "Scheduled"
+      },
+      "table": {
+        "code": "Code",
+        "type": "Type",
+        "campaign": "Campaign",
+        "status": "Status",
+        "usage": "Usage",
+        "expires": "Expires",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "pagination": {
+        "showing": "Showing {{start}}-{{end}} of {{total}}",
+        "previous": "Previous",
+        "next": "Next"
+      }
+    },
+    "analytics": {
+      "title": "Analytics",
+      "description": "View promotion code usage analytics",
+      "loading": "Loading analytics...",
+      "timeRange": "Time Range",
+      "autoRefresh": "Auto Refresh",
+      "refresh": "Refresh",
+      "exportJson": "Export JSON",
+      "exportCsv": "Export CSV",
+      "timeRanges": {
+        "7days": "Last 7 days",
+        "30days": "Last 30 days",
+        "90days": "Last 90 days",
+        "1year": "Last year"
+      },
+      "metrics": {
+        "overview": "Overview",
+        "conversion": "Conversion",
+        "fraud": "Fraud Detection",
+        "campaigns": "Campaign Performance",
+        "totalCodes": "Total Codes",
+        "totalRedemptions": "Total Redemptions",
+        "conversionRate": "Conversion Rate",
+        "successRate": "Success Rate"
+      },
+      "fraudAlerts": {
+        "title": "Fraud Alerts",
+        "highVelocity": "High velocity redemption activity detected",
+        "highFailureRate": "High redemption failure rate detected",
+        "severity": {
+          "high": "High",
+          "medium": "Medium",
+          "low": "Low"
+        },
+        "types": {
+          "velocity": "Velocity",
+          "failure_rate": "Failure Rate"
+        }
+      },
+      "charts": {
+        "redemptionTrends": "Redemption Trends",
+        "codeTypeDistribution": "Code Type Distribution",
+        "campaignPerformance": "Campaign Performance",
+        "fraudPatterns": "Fraud Patterns"
+      }
+    },
+    "errors": {
+      "unknown": "Unknown error",
+      "validationFailed": "Validation failed",
+      "redemptionFailed": "Redemption failed",
+      "loadFailed": "Load failed"
+    },
+    "actions": {
+      "manageCodes": "Manage Codes",
+      "viewAnalytics": "View Analytics"
     }
   }
 }

@@ -49,12 +49,22 @@ export function useAdminPermissions() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     
+    // Clear pending status when isAdmin state actually updates
+    useEffect(() => {
+        if (pendingAdminStatusRef.current === isAdmin) {
+            pendingAdminStatusRef.current = null;
+        }
+    }, [isAdmin]);
+    
     // Use ref to track if component is mounted and prevent race conditions
     const isMountedRef = useRef(true);
     const lastApiCallRef = useRef(null);
     const authStateStableRef = useRef(false);
     const lastSuccessfulAdminStatusRef = useRef(null);
     const stateTransitionLogRef = useRef([]);
+    const pendingAdminStatusRef = useRef(null); // Track pending state updates to prevent loops
+    const lastStateUpdateRef = useRef(0); // Track last state update time for cooldown
+    const isUpdatingRef = useRef(false); // Track if we're currently updating state
     
     // Debounce authentication state changes to prevent rapid API calls
     const debouncedAuthState = useDebounce({
@@ -75,8 +85,17 @@ export function useAdminPermissions() {
      * Enhanced logging for comprehensive state synchronization debugging
      */
     const logStateTransition = useCallback((event, details) => {
-        // Only log in development mode to reduce production noise
+        // Only log critical events to reduce console noise
         if (process.env.NODE_ENV !== 'development') {
+            return;
+        }
+        
+        // Only log errors and successful completions
+        const shouldLog = event.includes('ERROR') || 
+                         event.includes('SUCCESS') ||
+                         event.includes('CLEARED');
+        
+        if (!shouldLog) {
             return;
         }
         
@@ -173,14 +192,6 @@ export function useAdminPermissions() {
             ...stateTransitionLogRef.current.slice(-49),
             logEntry
         ];
-        
-        // Reduce console noise - only log important events
-        const shouldLog = event.includes('ERROR') || 
-                         event.includes('CONFLICT') || 
-                         event.includes('SUCCESS') ||
-                         event.includes('CLEARED') ||
-                         hasStateConflict ||
-                         logEntry.details.raceConditionAnalysis?.potentialRaceCondition;
         
         if (shouldLog) {
             const consoleMessage = `useAdminPermissions[${relativeTime}ms]: ${event}`;
@@ -434,6 +445,11 @@ export function useAdminPermissions() {
     
     // Effect to handle authentication state changes with proper synchronization and debouncing
     useEffect(() => {
+        // Prevent infinite loops by checking if we're already updating
+        if (isUpdatingRef.current) {
+            return;
+        }
+        
         // Track authentication state stability
         authStateStableRef.current = isAuthStateStable();
         
@@ -530,15 +546,26 @@ export function useAdminPermissions() {
             // Implement proper timing for permission checks after authentication state stabilizes
             // Use auth context admin status if available, otherwise make API call
             if (authContextIsAdmin !== undefined && authContextIsAdmin !== null) {
-                // Only update if the status is different to prevent infinite loops
-                if (authContextIsAdmin !== isAdmin) {
+                // Only update if the status is different, we're not already pending this update,
+                // and enough time has passed since the last update (cooldown)
+                const now = Date.now();
+                const timeSinceLastUpdate = now - lastStateUpdateRef.current;
+                const shouldUpdate = authContextIsAdmin !== isAdmin && 
+                                   pendingAdminStatusRef.current !== authContextIsAdmin &&
+                                   timeSinceLastUpdate > 100; // 100ms cooldown
+                
+                if (shouldUpdate) {
                     logStateTransition('USING_AUTH_CONTEXT_STATUS', {
                         authContextIsAdmin,
                         currentIsAdmin: isAdmin,
+                        pendingStatus: pendingAdminStatusRef.current,
                         reason: 'Auth context provides admin status after stabilization'
                     });
                     
                     if (isMountedRef.current) {
+                        isUpdatingRef.current = true; // Mark as updating
+                        pendingAdminStatusRef.current = authContextIsAdmin; // Track pending update
+                        lastStateUpdateRef.current = now; // Track update time
                         setIsAdmin(authContextIsAdmin);
                         setError(null);
                         lastSuccessfulAdminStatusRef.current = {
@@ -547,6 +574,11 @@ export function useAdminPermissions() {
                             userId: user?.id || user?.userId,
                             source: 'authContext'
                         };
+                        
+                        // Clear updating flag after a short delay
+                        setTimeout(() => {
+                            isUpdatingRef.current = false;
+                        }, 50);
                     }
                 }
             } else {
