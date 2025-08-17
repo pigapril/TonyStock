@@ -520,7 +520,7 @@ const CodeDetailsModal = ({ code, onClose, onUpdate }) => {
                                 </div>
 
                                 <div className="info-item">
-                                    <label>{t('admin.codeDetails.eligibility')}</label>
+                                    <label>{t('admin.codeDetails.eligibilityLabel')}</label>
                                     <span>{getEligibilityDescription()}</span>
                                 </div>
 

@@ -1694,6 +1694,9 @@
       "exportJson": "Export JSON",
       "exportCsv": "Export CSV",
       "types": {
+        "percentage_discount": "Percentage Discount",
+        "fixed_amount_discount": "Fixed Amount Discount", 
+        "time_extension": "Time Extension",
         "percentageDiscount": "Percentage Discount",
         "fixedAmountDiscount": "Fixed Amount Discount",
         "timeExtension": "Time Extension"
@@ -1943,6 +1946,7 @@
       "discount": "discount",
       "extension": "extension",
       "unknown": "Unknown",
+      "eligibilityLabel": "Eligibility",
       "eligibility": {
         "allUsers": "All Users",
         "newCustomers": "New Customers Only",

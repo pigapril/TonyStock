@@ -1690,6 +1690,9 @@
       "exportJson": "匯出 JSON",
       "exportCsv": "匯出 CSV",
       "types": {
+        "percentage_discount": "百分比折扣",
+        "fixed_amount_discount": "固定金額折扣",
+        "time_extension": "時間延長",
         "percentageDiscount": "百分比折扣",
         "fixedAmountDiscount": "固定金額折扣",
         "timeExtension": "時間延長"
@@ -1939,6 +1942,7 @@
       "discount": "折扣",
       "extension": "延長",
       "unknown": "未知",
+      "eligibilityLabel": "資格",
       "eligibility": {
         "allUsers": "所有用戶",
         "newCustomers": "僅新客戶",
