@@ -52,6 +52,7 @@ import PaymentPage from './pages/PaymentPage';
 import PaymentFlowPage from './pages/PaymentFlowPage';
 import PaymentStatusPage from './pages/PaymentStatusPage';
 import AdminPage from './pages/AdminPage';
+import AdminDiagnostic from './pages/AdminDiagnostic';
 
 // Context 和 Hooks
 import { AuthProvider } from './components/Auth/AuthContext';
@@ -507,7 +508,14 @@ function AppContent() {
                 </ProtectedRoute>
               } />
               {process.env.NODE_ENV === 'development' && (
-                <Route path="/test-csrf" element={<CSRFExample />} />
+                <>
+                  <Route path="/test-csrf" element={<CSRFExample />} />
+                  <Route path="admin-diagnostic" element={
+                    <ProtectedRoute>
+                      <AdminDiagnostic />
+                    </ProtectedRoute>
+                  } />
+                </>
               )}
 
               {/* 可以添加一個捕獲無效相對路徑的路由 */}
