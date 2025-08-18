@@ -28,7 +28,7 @@ const AdminNavigation = ({ isMobile = false, onNavigate }) => {
         <AdminOnly fallback={null}>
             <li className={`sidebar-item-admin ${isMobile ? 'mobile' : 'desktop'}`}>
                 <NavLink 
-                    to={`/${lang}/admin`}
+                    to={`/${lang}/NK-Admin`}
                     onClick={handleNavClick}
                     className={({ isActive }) => isActive ? "active-nav-link admin-nav-link" : "admin-nav-link"}
                     aria-current={({ isActive }) => isActive ? "page" : undefined}

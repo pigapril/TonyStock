@@ -28,14 +28,14 @@ const AdminActions = ({
             id: 'manage-codes',
             label: t('admin.actions.manageCodes'),
             icon: '🎫',
-            onClick: () => navigate(`/${lang}/admin`),
+            onClick: () => navigate(`/${lang}/NK-Admin`),
             variant: 'primary'
         },
         {
             id: 'view-analytics',
             label: t('admin.actions.viewAnalytics'),
             icon: '📊',
-            onClick: () => navigate(`/${lang}/admin`),
+            onClick: () => navigate(`/${lang}/NK-Admin`),
             variant: 'secondary'
         }
     ];

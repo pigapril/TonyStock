@@ -64,7 +64,7 @@ import { useNewFeatureNotification, FEATURES } from './components/NewFeatureBadg
 import { AdProvider } from './components/Common/InterstitialAdModal/AdContext';
 import { useToastManager } from './components/Watchlist/hooks/useToastManager';
 import { Toast } from './components/Watchlist/components/Toast';
-import AdminNavigation from './components/Common/AdminNavigation';
+// import AdminNavigation from './components/Common/AdminNavigation'; // 移除以提高安全性
 
 // 工具函數
 import { Analytics } from './utils/analytics';
@@ -308,7 +308,7 @@ function AppContent() {
                 </NavLink>
               </li>
             )}
-            <AdminNavigation isMobile={true} onNavigate={() => isMobile && setSidebarOpen(false)} />
+            {/* AdminNavigation 已移除以提高安全性 */}
             <li className="sidebar-item-8">
               <a
                 href="https://www.facebook.com/profile.php?id=61565751412240"
@@ -401,7 +401,7 @@ function AppContent() {
                   <span>{t('nav.subscription')}</span>
                 </NavLink>
               )}
-              <AdminNavigation isMobile={false} />
+              {/* AdminNavigation 已移除以提高安全性 */}
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
                 <span>{t('nav.facebookLong')}</span>
@@ -502,7 +502,7 @@ function AppContent() {
                   </ProtectedRoute>
                 } 
               />
-              <Route path="admin" element={
+              <Route path="NK-Admin" element={
                 <ProtectedRoute>
                   <AdminPage />
                 </ProtectedRoute>
@@ -510,7 +510,7 @@ function AppContent() {
               {process.env.NODE_ENV === 'development' && (
                 <>
                   <Route path="/test-csrf" element={<CSRFExample />} />
-                  <Route path="admin-diagnostic" element={
+                  <Route path="NK-Admin-diagnostic" element={
                     <ProtectedRoute>
                       <AdminDiagnostic />
                     </ProtectedRoute>
