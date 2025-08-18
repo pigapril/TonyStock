@@ -100,6 +100,8 @@
     "validating": "驗證中...",
     "redeem": "兌換",
     "redeeming": "兌換中...",
+    "processing": "處理中...",
+    "loadingPreview": "載入預覽中...",
     "preview": {
       "title": "代碼優惠",
       "percentageDiscount": "{{percentage}}% 折扣",

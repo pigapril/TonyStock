@@ -145,8 +145,16 @@ class AuthStateManager {
         });
 
         try {
-            // 使用增強的認證狀態檢查
-            const authState = await authStatusFix.checkAuthStatus();
+            // 添加小延遲避免並發問題
+            await new Promise(resolve => setTimeout(resolve, Math.random() * 50));
+            
+            // 使用增強的認證狀態檢查，但添加超時保護
+            const timeoutPromise = new Promise((_, reject) => {
+                setTimeout(() => reject(new Error('Auth check timeout')), 10000);
+            });
+            
+            const authCheckPromise = authStatusFix.checkAuthStatus();
+            const authState = await Promise.race([authCheckPromise, timeoutPromise]);
             
             // 如果有錯誤，記錄但不拋出異常
             if (authState.error) {

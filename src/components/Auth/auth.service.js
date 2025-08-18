@@ -27,7 +27,10 @@ class AuthService {
             const response = await apiClient.get('/api/auth/status', {
                 params: {
                     _t: Date.now() // 添加時間戳參數避免快取
-                }
+                },
+                timeout: 8000, // 8秒超時
+                // 添加特殊標記避免攔截器干擾
+                metadata: { skipCSRFCheck: true, isAuthCheck: true }
             });
             
             // 響應後記錄
@@ -49,10 +52,29 @@ class AuthService {
                 retryCount
             });
             
-            // 如果是 403 錯誤，不要重試，直接拋出錯誤讓上層處理
-            if (error.response?.status === 403) {
-                console.warn(`🔄 Auth status got 403, this indicates a CSRF or authentication issue`);
-                // 不重試，讓 AuthContext 處理這個錯誤
+            // 如果是 403 錯誤且重試次數少於 1 次，嘗試用 fetch 重試
+            if (error.response?.status === 403 && retryCount < 1) {
+                console.warn(`🔄 Auth status got 403, trying fallback method`);
+                
+                try {
+                    const baseURL = process.env.REACT_APP_API_BASE_URL || '';
+                    const fallbackResponse = await fetch(`${baseURL}/api/auth/status?_t=${Date.now()}`, {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (fallbackResponse.ok) {
+                        const fallbackData = await fallbackResponse.json();
+                        console.log('✅ Fallback auth check succeeded');
+                        return fallbackData.data;
+                    }
+                } catch (fallbackError) {
+                    console.error('❌ Fallback auth check also failed:', fallbackError);
+                }
             }
             
             throw error;

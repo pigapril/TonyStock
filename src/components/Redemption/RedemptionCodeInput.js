@@ -9,7 +9,7 @@
  * - Multi-location support (pricing, checkout, account)
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../Auth/useAuth';
 import { useSubscription } from '../Subscription/SubscriptionContext';
@@ -43,6 +43,36 @@ export const RedemptionCodeInput = ({
     const [error, setError] = useState(null);
     const [preview, setPreview] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
+    
+    // Request state management for duplicate prevention
+    const [requestState, setRequestState] = useState({
+        isProcessing: false,
+        lastRequestKey: null,
+        requestStartTime: null,
+        operationType: null // 'validate', 'preview', 'redeem'
+    });
+    
+    // Refs for cleanup and request tracking
+    const abortControllerRef = useRef(null);
+    const requestTimeoutRef = useRef(null);
+    const componentMountedRef = useRef(true);
+
+    // Cleanup effect
+    useEffect(() => {
+        componentMountedRef.current = true;
+        
+        return () => {
+            componentMountedRef.current = false;
+            // Cancel any ongoing requests
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+            // Clear timeout
+            if (requestTimeoutRef.current) {
+                clearTimeout(requestTimeoutRef.current);
+            }
+        };
+    }, []);
 
     // Clear states when code changes
     useEffect(() => {
@@ -50,6 +80,13 @@ export const RedemptionCodeInput = ({
             setValidationResult(null);
             setError(null);
             setPreview(null);
+            // Reset request state when code is cleared
+            setRequestState({
+                isProcessing: false,
+                lastRequestKey: null,
+                requestStartTime: null,
+                operationType: null
+            });
         } else {
             // Clear previous validation results when code changes
             setValidationResult(null);
@@ -59,17 +96,117 @@ export const RedemptionCodeInput = ({
     }, [code]);
 
     /**
-     * Validate redemption code
+     * Generate unique request key for deduplication
+     */
+    const generateRequestKey = useCallback((operationType, codeValue) => {
+        const userId = user?.id || 'anonymous';
+        const normalizedCode = codeValue.trim().toUpperCase();
+        return `${userId}-${normalizedCode}-${operationType}`;
+    }, [user?.id]);
+
+    /**
+     * Check if request should be blocked due to duplicate or rate limiting
+     */
+    const shouldBlockRequest = useCallback((operationType, codeValue) => {
+        const requestKey = generateRequestKey(operationType, codeValue);
+        
+        // Block if currently processing
+        if (requestState.isProcessing) {
+            return {
+                blocked: true,
+                reason: 'processing',
+                message: 'Request already in progress'
+            };
+        }
+        
+        // Block if same request was made recently (within 1 second)
+        if (requestState.lastRequestKey === requestKey && 
+            requestState.requestStartTime && 
+            Date.now() - requestState.requestStartTime < 1000) {
+            return {
+                blocked: true,
+                reason: 'duplicate',
+                message: 'Duplicate request blocked'
+            };
+        }
+        
+        return { blocked: false };
+    }, [requestState, generateRequestKey]);
+
+    /**
+     * Start request tracking
+     */
+    const startRequestTracking = useCallback((operationType, codeValue) => {
+        const requestKey = generateRequestKey(operationType, codeValue);
+        
+        setRequestState({
+            isProcessing: true,
+            lastRequestKey: requestKey,
+            requestStartTime: Date.now(),
+            operationType
+        });
+        
+        // Set timeout to reset request state if request takes too long
+        requestTimeoutRef.current = setTimeout(() => {
+            if (componentMountedRef.current) {
+                setRequestState(prev => ({
+                    ...prev,
+                    isProcessing: false
+                }));
+            }
+        }, 30000); // 30 second timeout
+        
+        return requestKey;
+    }, [generateRequestKey]);
+
+    /**
+     * End request tracking
+     */
+    const endRequestTracking = useCallback(() => {
+        if (requestTimeoutRef.current) {
+            clearTimeout(requestTimeoutRef.current);
+            requestTimeoutRef.current = null;
+        }
+        
+        if (componentMountedRef.current) {
+            setRequestState(prev => ({
+                ...prev,
+                isProcessing: false,
+                requestStartTime: Date.now() // Keep timestamp for duplicate detection
+            }));
+        }
+    }, []);
+
+    /**
+     * Validate redemption code with duplicate request prevention
      */
     const validateCode = useCallback(async (codeToValidate) => {
         if (!codeToValidate || codeToValidate.length < 3) return;
 
+        // Check for duplicate requests
+        const blockCheck = shouldBlockRequest('validate', codeToValidate);
+        if (blockCheck.blocked) {
+            console.log('Validation request blocked:', blockCheck.reason);
+            return;
+        }
+
+        // Start request tracking
+        const requestKey = startRequestTracking('validate', codeToValidate);
+        
         setIsValidating(true);
         setError(null);
         setValidationResult(null);
 
+        // Create abort controller for this request
+        abortControllerRef.current = new AbortController();
+
         try {
             const result = await redemptionService.validateCode(codeToValidate);
+            
+            // Check if component is still mounted and this is the current request
+            if (!componentMountedRef.current || requestState.lastRequestKey !== requestKey) {
+                return;
+            }
             
             if (result.success) {
                 setValidationResult(result.data);
@@ -83,7 +220,8 @@ export const RedemptionCodeInput = ({
                     location,
                     userId: user?.id,
                     codeLength: codeToValidate.length,
-                    isValid: true
+                    isValid: true,
+                    fromCache: result.fromCache
                 });
             } else {
                 setError(result);
@@ -95,6 +233,12 @@ export const RedemptionCodeInput = ({
                 });
             }
         } catch (err) {
+            // Check if component is still mounted
+            if (!componentMountedRef.current) return;
+            
+            // Don't handle aborted requests
+            if (err.name === 'AbortError') return;
+            
             const errorCode = err.response?.data?.code || 'validationFailed';
             const errorParams = err.response?.data?.params || {};
             setError({
@@ -102,16 +246,30 @@ export const RedemptionCodeInput = ({
                 errorCode: errorCode.toUpperCase()
             });
         } finally {
-            setIsValidating(false);
+            if (componentMountedRef.current) {
+                setIsValidating(false);
+                endRequestTracking();
+            }
+            abortControllerRef.current = null;
         }
-    }, [showPreview, location, user?.id, t]);
+    }, [showPreview, location, user?.id, formatError, shouldBlockRequest, startRequestTracking, endRequestTracking, requestState.lastRequestKey]);
 
     /**
-     * Get redemption preview
+     * Get redemption preview with duplicate request prevention
      */
     const getPreview = useCallback(async (codeToPreview) => {
+        // Check for duplicate requests
+        const blockCheck = shouldBlockRequest('preview', codeToPreview);
+        if (blockCheck.blocked) {
+            console.log('Preview request blocked:', blockCheck.reason);
+            return;
+        }
+
         try {
             const result = await redemptionService.previewRedemption(codeToPreview);
+            
+            // Check if component is still mounted
+            if (!componentMountedRef.current) return;
             
             if (result.success) {
                 setPreview(result.data);
@@ -127,6 +285,12 @@ export const RedemptionCodeInput = ({
                 setError(result);
             }
         } catch (err) {
+            // Check if component is still mounted
+            if (!componentMountedRef.current) return;
+            
+            // Don't handle aborted requests
+            if (err.name === 'AbortError') return;
+            
             const errorCode = err.response?.data?.code || 'previewFailed';
             const errorParams = err.response?.data?.params || {};
             setError({
@@ -134,7 +298,7 @@ export const RedemptionCodeInput = ({
                 errorCode: errorCode.toUpperCase()
             });
         }
-    }, [location, user?.id, onPreviewSuccess, t]);
+    }, [location, user?.id, onPreviewSuccess, formatError, shouldBlockRequest]);
 
     /**
      * Handle code input change
@@ -151,7 +315,10 @@ export const RedemptionCodeInput = ({
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if (!code.trim() || isValidating || isRedeeming) return;
+        // Enhanced blocking conditions
+        if (!code.trim() || isValidating || isRedeeming || requestState.isProcessing) {
+            return;
+        }
 
         // If no validation result available, validate first
         if (!validationResult) {
@@ -164,16 +331,34 @@ export const RedemptionCodeInput = ({
     };
 
     /**
-     * Redeem the code
+     * Redeem the code with duplicate request prevention
      */
     const redeemCode = async () => {
         if (!code.trim()) return;
 
+        // Check for duplicate requests
+        const blockCheck = shouldBlockRequest('redeem', code.trim());
+        if (blockCheck.blocked) {
+            console.log('Redemption request blocked:', blockCheck.reason);
+            return;
+        }
+
+        // Start request tracking
+        const requestKey = startRequestTracking('redeem', code.trim());
+        
         setIsRedeeming(true);
         setError(null);
 
+        // Create abort controller for this request
+        abortControllerRef.current = new AbortController();
+
         try {
             const result = await redemptionService.redeemCode(code.trim(), true);
+            
+            // Check if component is still mounted and this is the current request
+            if (!componentMountedRef.current || requestState.lastRequestKey !== requestKey) {
+                return;
+            }
             
             if (result.success) {
                 setShowSuccess(true);
@@ -194,7 +379,11 @@ export const RedemptionCodeInput = ({
                 });
 
                 // Auto-hide success message after 3 seconds
-                setTimeout(() => setShowSuccess(false), 3000);
+                setTimeout(() => {
+                    if (componentMountedRef.current) {
+                        setShowSuccess(false);
+                    }
+                }, 3000);
             } else {
                 setError(result);
                 onRedemptionError?.(result);
@@ -206,6 +395,12 @@ export const RedemptionCodeInput = ({
                 });
             }
         } catch (err) {
+            // Check if component is still mounted
+            if (!componentMountedRef.current) return;
+            
+            // Don't handle aborted requests
+            if (err.name === 'AbortError') return;
+            
             const errorResult = {
                 error: t('redemption.errors.redemptionFailed'),
                 errorCode: 'REDEMPTION_ERROR'
@@ -213,7 +408,11 @@ export const RedemptionCodeInput = ({
             setError(errorResult);
             onRedemptionError?.(errorResult);
         } finally {
-            setIsRedeeming(false);
+            if (componentMountedRef.current) {
+                setIsRedeeming(false);
+                endRequestTracking();
+            }
+            abortControllerRef.current = null;
         }
     };
 
@@ -223,18 +422,47 @@ export const RedemptionCodeInput = ({
     const getInputStatusClass = () => {
         if (error) return 'redemption-input--error';
         if (validationResult || preview) return 'redemption-input--success';
-        if (isValidating) return 'redemption-input--validating';
+        if (isValidating || requestState.isProcessing) return 'redemption-input--processing';
         return '';
     };
 
     /**
-     * Get button text based on state
+     * Get button status class
+     */
+    const getButtonStatusClass = () => {
+        if (requestState.isProcessing || isValidating || isRedeeming) {
+            return 'redemption-submit-btn--processing';
+        }
+        return '';
+    };
+
+    /**
+     * Get button text based on state with enhanced processing indicators
      */
     const getButtonText = () => {
         if (isRedeeming) return t('redemption.redeeming');
         if (isValidating) return t('redemption.validating');
+        if (requestState.isProcessing) {
+            switch (requestState.operationType) {
+                case 'validate': return t('redemption.validating');
+                case 'preview': return t('redemption.loadingPreview');
+                case 'redeem': return t('redemption.redeeming');
+                default: return t('redemption.processing');
+            }
+        }
         if (validationResult && preview) return t('redemption.redeem');
         return t('redemption.validate');
+    };
+
+    /**
+     * Check if button should be disabled
+     */
+    const isButtonDisabled = () => {
+        return !code.trim() || 
+               isValidating || 
+               isRedeeming || 
+               requestState.isProcessing || 
+               disabled;
     };
 
     /**
@@ -258,14 +486,14 @@ export const RedemptionCodeInput = ({
                             onChange={handleCodeChange}
                             placeholder={placeholder || t('redemption.inputPlaceholder')}
                             className="redemption-input"
-                            disabled={disabled || isRedeeming}
+                            disabled={disabled || isRedeeming || requestState.isProcessing}
                             autoFocus={autoFocus}
                             maxLength={20}
                             autoComplete="off"
                             spellCheck="false"
                         />
                         
-                        {isValidating && (
+                        {(isValidating || requestState.isProcessing) && (
                             <div className="redemption-input-spinner">
                                 <LoadingSpinner size="small" />
                             </div>
@@ -282,10 +510,10 @@ export const RedemptionCodeInput = ({
                     
                     <button
                         type="submit"
-                        className="redemption-submit-btn"
-                        disabled={!code.trim() || isValidating || isRedeeming || disabled}
+                        className={`redemption-submit-btn ${getButtonStatusClass()}`}
+                        disabled={isButtonDisabled()}
                     >
-                        {isRedeeming ? (
+                        {(isRedeeming || requestState.isProcessing) ? (
                             <LoadingSpinner size="small" />
                         ) : (
                             getButtonText()

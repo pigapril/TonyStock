@@ -102,6 +102,8 @@
     "validating": "Validating...",
     "redeem": "Redeem",
     "redeeming": "Redeeming...",
+    "processing": "Processing...",
+    "loadingPreview": "Loading preview...",
     "preview": {
       "title": "Code Benefits",
       "percentageDiscount": "{{percentage}}% discount",

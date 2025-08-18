@@ -211,6 +211,9 @@ export function AuthProvider({ children }) {
         });
 
         try {
+            // 添加隨機延遲避免並發問題
+            await new Promise(resolve => setTimeout(resolve, Math.random() * 100));
+            
             const { user: userData } = await authService.checkStatus();
             console.log('CheckAuthStatus response:', {
                 hasUser: !!userData,

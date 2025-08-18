@@ -63,7 +63,8 @@
 }
 
 /* Input States */
-.redemption-input-wrapper--validating .redemption-input {
+.redemption-input-wrapper--validating .redemption-input,
+.redemption-input-wrapper--processing .redemption-input {
     border-color: #f59e0b;
     background-color: #fffbeb;
 }
@@ -76,6 +77,30 @@
 .redemption-input-wrapper--error .redemption-input {
     border-color: #ef4444;
     background-color: #fef2f2;
+}
+
+/* Processing state indicator */
+.redemption-input-wrapper--processing {
+    position: relative;
+}
+
+.redemption-input-wrapper--processing::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid transparent;
+    border-top-color: #f59e0b;
+    border-radius: 10px;
+    animation: spin 1s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Input Icons */
@@ -109,8 +134,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 100px;
+    min-width: 120px;
     height: 48px;
+    position: relative;
 }
 
 .redemption-submit-btn:hover:not(:disabled) {
@@ -127,6 +153,19 @@
 .redemption-submit-btn:disabled {
     background-color: #9ca3af;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+/* Processing state for button */
+.redemption-submit-btn--processing {
+    background-color: #f59e0b;
+    cursor: wait;
+}
+
+.redemption-submit-btn--processing:hover {
+    background-color: #f59e0b;
     transform: none;
     box-shadow: none;
 }
