@@ -44,36 +44,18 @@ export const RedemptionCodeInput = ({
     const [preview, setPreview] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
 
-    // Debounced validation
-    const [validationTimeout, setValidationTimeout] = useState(null);
-
     // Clear states when code changes
     useEffect(() => {
         if (!code.trim()) {
             setValidationResult(null);
             setError(null);
             setPreview(null);
+        } else {
+            // Clear previous validation results when code changes
+            setValidationResult(null);
+            setError(null);
+            setPreview(null);
         }
-    }, [code]);
-
-    // Debounced validation effect
-    useEffect(() => {
-        if (validationTimeout) {
-            clearTimeout(validationTimeout);
-        }
-
-        if (code.trim().length >= 3) {
-            const timeout = setTimeout(() => {
-                validateCode(code.trim());
-            }, 500);
-            setValidationTimeout(timeout);
-        }
-
-        return () => {
-            if (validationTimeout) {
-                clearTimeout(validationTimeout);
-            }
-        };
     }, [code]);
 
     /**
@@ -164,19 +146,20 @@ export const RedemptionCodeInput = ({
     };
 
     /**
-     * Handle form submission (quick redeem)
+     * Handle form submission (manual validation and redemption)
      */
     const handleSubmit = async (e) => {
         e.preventDefault();
         
         if (!code.trim() || isValidating || isRedeeming) return;
 
-        // If no preview available, validate first
-        if (!preview && !validationResult) {
+        // If no validation result available, validate first
+        if (!validationResult) {
             await validateCode(code.trim());
             return;
         }
 
+        // If already validated, proceed to redeem
         await redeemCode();
     };
 
@@ -250,7 +233,7 @@ export const RedemptionCodeInput = ({
     const getButtonText = () => {
         if (isRedeeming) return t('redemption.redeeming');
         if (isValidating) return t('redemption.validating');
-        if (preview) return t('redemption.redeem');
+        if (validationResult && preview) return t('redemption.redeem');
         return t('redemption.validate');
     };
 
