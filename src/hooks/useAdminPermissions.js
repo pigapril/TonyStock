@@ -174,13 +174,34 @@ export function useAdminPermissions() {
             logEntry
         ];
         
-        // Reduce console noise - only log important events
+        // 大幅減少控制台輸出 - 只記錄真正重要的事件
         const shouldLog = event.includes('ERROR') || 
                          event.includes('CONFLICT') || 
-                         event.includes('SUCCESS') ||
+                         (event.includes('SUCCESS') && !event.includes('API_CALL_SUCCESS')) || // 排除 API 成功日誌
                          event.includes('CLEARED') ||
-                         hasStateConflict ||
-                         logEntry.details.raceConditionAnalysis?.potentialRaceCondition;
+                         hasStateConflict;
+        
+        // 完全禁用某些重複性高的日誌
+        const suppressedEvents = [
+            'AUTH_STATE_CHANGE',
+            'USING_AUTH_CONTEXT_STATUS', 
+            'API_CALL_STARTED',
+            'API_CALL_SUCCESS',
+            'WAITING_FOR_AUTH_STABILIZATION',
+            'AUTH_STATE_NOT_STABLE',
+            'PRESERVING_RECENT_ADMIN_STATUS'
+        ];
+        
+        if (suppressedEvents.includes(event)) {
+            // 只在開發模式且有實際問題時才記錄
+            if (process.env.NODE_ENV === 'development' && (hasStateConflict || logEntry.details.raceConditionAnalysis?.potentialRaceCondition)) {
+                console.warn(`useAdminPermissions[${relativeTime}ms]: ${event} (suppressed, but has issues)`, {
+                    hasStateConflict,
+                    potentialRaceCondition: logEntry.details.raceConditionAnalysis?.potentialRaceCondition
+                });
+            }
+            return;
+        }
         
         if (shouldLog) {
             const consoleMessage = `useAdminPermissions[${relativeTime}ms]: ${event}`;
@@ -190,19 +211,8 @@ export function useAdminPermissions() {
                 console.error(consoleMessage, logEntry);
             } else if (hasStateConflict || event.includes('CONFLICT')) {
                 console.warn(consoleMessage, logEntry);
-            } else if (logEntry.details.raceConditionAnalysis?.potentialRaceCondition) {
-                console.warn(consoleMessage, logEntry);
             } else {
                 console.info(consoleMessage, logEntry);
-            }
-            
-            // Special handling for critical events
-            if (hasStateConflict) {
-                console.warn(`useAdminPermissions: STATE CONFLICT DETECTED - Auth context says ${currentAuthContextIsAdmin}, hook state says ${currentIsAdmin}`);
-            }
-            
-            if (logEntry.details.raceConditionAnalysis?.potentialRaceCondition) {
-                console.warn(`useAdminPermissions: POTENTIAL RACE CONDITION - ${recentApiCalls} recent API calls, ${recentAuthChanges} recent auth changes`);
             }
         }
         
@@ -433,111 +443,39 @@ export function useAdminPermissions() {
     }, [isAdmin, logStateTransition]);
     
     // Effect to handle authentication state changes with proper synchronization and debouncing
+    // 修復無限循環：減少不必要的狀態檢查和日誌輸出
     useEffect(() => {
         // Track authentication state stability
         authStateStableRef.current = isAuthStateStable();
         
-        const authStateChangeDetails = {
-            // Current auth state
-            currentAuthState: {
+        // 減少日誌輸出 - 只在重要狀態變化時記錄
+        const shouldLogStateChange = 
+            !authStateStableRef.current || 
+            isAuthenticated !== debouncedAuthState.isAuthenticated ||
+            (user?.id || user?.userId) !== debouncedAuthState.user;
+        
+        if (shouldLogStateChange) {
+            logStateTransition('AUTH_STATE_CHANGE', {
                 isAuthenticated,
-                hasUser: !!user,
+                userId: user?.id || user?.userId,
                 authLoading,
                 authContextAdminLoading,
                 authContextIsAdmin,
-                userId: user?.id || user?.userId,
-                userEmail: user?.email
-            },
-            // Debounced auth state for comparison
-            debouncedState: debouncedAuthState,
-            // State stability analysis
-            stabilityAnalysis: {
-                isStable: authStateStableRef.current,
-                authLoadingChanged: authLoading !== debouncedAuthState.authLoading,
-                authContextAdminLoadingChanged: authContextAdminLoading !== debouncedAuthState.authContextAdminLoading,
-                isAuthenticatedChanged: isAuthenticated !== debouncedAuthState.isAuthenticated,
-                userChanged: (user?.id || user?.userId) !== debouncedAuthState.user,
-                stabilizationTime: Date.now() - (stateTransitionLogRef.current[0]?.relativeStartTime || Date.now())
-            },
-            // Previous state tracking
-            previousState: {
-                hasLastSuccessfulStatus: !!lastSuccessfulAdminStatusRef.current,
-                lastSuccessfulStatus: lastSuccessfulAdminStatusRef.current,
-                currentHookAdminStatus: isAdmin,
-                currentHookLoading: loading,
-                currentHookError: error?.message
-            },
-            // Conflict detection
-            conflictAnalysis: {
-                authContextVsHookConflict: authContextIsAdmin !== undefined && 
-                                          authContextIsAdmin !== isAdmin && 
-                                          isAuthenticated,
-                authContextVsApiConflict: lastSuccessfulAdminStatusRef.current && 
-                                         authContextIsAdmin !== undefined &&
-                                         authContextIsAdmin !== lastSuccessfulAdminStatusRef.current.status,
-                shouldPreserveHookState: !!lastSuccessfulAdminStatusRef.current &&
-                                        (Date.now() - lastSuccessfulAdminStatusRef.current.timestamp) < 5000,
-                conflictResolutionStrategy: 'prioritize_recent_api_response'
-            },
-            // Timing and race condition analysis
-            timingAnalysis: {
-                hasActiveApiCall: !!lastApiCallRef.current,
-                activeApiCallId: lastApiCallRef.current,
-                recentAuthChanges: stateTransitionLogRef.current
-                    .filter(log => log.event === 'AUTH_STATE_CHANGE' && 
-                           (Date.now() - log.relativeStartTime) < 1000).length,
-                potentialRaceCondition: !!lastApiCallRef.current && 
-                                       (authLoading || authContextAdminLoading)
-            }
-        };
-        
-        logStateTransition('AUTH_STATE_CHANGE', authStateChangeDetails);
+                isStable: authStateStableRef.current
+            });
+        }
         
         // Wait for authentication context to be ready before making any decisions
-        // This prevents premature clearing of admin status during auth initialization
         if (!authStateStableRef.current) {
-            logStateTransition('WAITING_FOR_AUTH_STABILIZATION', {
-                reason: 'Auth state not stable, waiting for stabilization',
-                authLoading,
-                authContextAdminLoading,
-                debouncedAuthLoading: debouncedAuthState.authLoading,
-                debouncedAuthContextAdminLoading: debouncedAuthState.authContextAdminLoading
-            });
             return;
         }
         
         // Handle authenticated user state
         if (debouncedAuthState.isAuthenticated && debouncedAuthState.user) {
-            // Check if we have a recent successful admin status that shouldn't be overridden
-            const hasRecentSuccessfulStatus = lastSuccessfulAdminStatusRef.current && 
-                (Date.now() - lastSuccessfulAdminStatusRef.current.timestamp) < 5000 && // Within 5 seconds
-                lastSuccessfulAdminStatusRef.current.userId === (user?.id || user?.userId);
-            
-            // Prevent clearing admin status when user is authenticated and we have recent successful status
-            if (hasRecentSuccessfulStatus && isAdmin) {
-                // Only log if there's actually a conflict to resolve
-                if (authContextIsAdmin !== undefined && authContextIsAdmin !== isAdmin) {
-                    logStateTransition('PRESERVING_RECENT_ADMIN_STATUS', {
-                        reason: 'Recent successful API response should not be overridden by auth state changes',
-                        lastSuccessfulStatus: lastSuccessfulAdminStatusRef.current,
-                        authContextIsAdmin,
-                        currentAdminStatus: isAdmin
-                    });
-                }
-                return;
-            }
-            
-            // Implement proper timing for permission checks after authentication state stabilizes
-            // Use auth context admin status if available, otherwise make API call
+            // 優先使用 AuthContext 提供的管理員狀態，避免重複 API 調用
             if (authContextIsAdmin !== undefined && authContextIsAdmin !== null) {
-                // Only update if the status is different to prevent infinite loops
+                // 只在狀態實際不同時才更新，防止無限循環
                 if (authContextIsAdmin !== isAdmin) {
-                    logStateTransition('USING_AUTH_CONTEXT_STATUS', {
-                        authContextIsAdmin,
-                        currentIsAdmin: isAdmin,
-                        reason: 'Auth context provides admin status after stabilization'
-                    });
-                    
                     if (isMountedRef.current) {
                         setIsAdmin(authContextIsAdmin);
                         setError(null);
@@ -549,64 +487,35 @@ export function useAdminPermissions() {
                         };
                     }
                 }
-            } else {
-                // Only make API call if we don't have recent successful status or if user changed
-                const shouldMakeApiCall = !hasRecentSuccessfulStatus || 
-                    (lastSuccessfulAdminStatusRef.current?.userId !== (user?.id || user?.userId));
-                
-                if (shouldMakeApiCall) {
-                    logStateTransition('CHECKING_ADMIN_STATUS_DIRECTLY', {
-                        reason: 'Auth context admin status not available, making API call',
-                        shouldMakeApiCall,
-                        hasRecentSuccessfulStatus,
-                        userChanged: lastSuccessfulAdminStatusRef.current?.userId !== (user?.id || user?.userId)
-                    });
-                    checkAdminStatus();
-                } else {
-                    logStateTransition('SKIPPING_API_CALL', {
-                        reason: 'Recent successful status available for same user',
-                        lastSuccessfulStatus: lastSuccessfulAdminStatusRef.current
-                    });
-                }
+                return; // 使用 AuthContext 狀態，不進行額外檢查
+            }
+            
+            // 只有在 AuthContext 沒有提供管理員狀態時才進行 API 調用
+            const hasRecentSuccessfulStatus = lastSuccessfulAdminStatusRef.current && 
+                (Date.now() - lastSuccessfulAdminStatusRef.current.timestamp) < 10000 && // 延長到 10 秒
+                lastSuccessfulAdminStatusRef.current.userId === (user?.id || user?.userId);
+            
+            if (!hasRecentSuccessfulStatus) {
+                checkAdminStatus();
             }
         } 
-        // Handle unauthenticated user state - only clear when definitely not authenticated
+        // Handle unauthenticated user state
         else if (!debouncedAuthState.isAuthenticated && !debouncedAuthState.authLoading && !debouncedAuthState.authContextAdminLoading) {
-            // Additional condition: don't clear admin status if we're in the middle of an API call for an authenticated user
-            // But if the user is definitely not authenticated, we should clear regardless of API call status
-            const shouldPreserveForApiCall = loading && isAuthenticated; // Only preserve if user is still authenticated
-            
-            if (shouldPreserveForApiCall) {
-                logStateTransition('PRESERVING_ADMIN_STATUS_DURING_API_CALL', {
-                    reason: 'API call in progress for authenticated user, not clearing admin status yet',
-                    loading,
-                    currentAdminStatus: isAdmin,
-                    isAuthenticated
-                });
-                return;
+            if (isAdmin || loading) { // 只在需要清除時才執行
+                clearAdminStatus();
             }
-            
-            logStateTransition('CLEARING_FOR_UNAUTHENTICATED_USER', {
-                reason: 'User definitely not authenticated after debounce and stabilization',
-                debouncedIsAuthenticated: debouncedAuthState.isAuthenticated,
-                debouncedAuthLoading: debouncedAuthState.authLoading,
-                debouncedAuthContextAdminLoading: debouncedAuthState.authContextAdminLoading,
-                loading,
-                shouldPreserveForApiCall
-            });
-            clearAdminStatus();
         }
-        // Handle intermediate states - don't take action while auth is loading
-        else {
-            logStateTransition('AUTH_STATE_INTERMEDIATE', {
-                reason: 'Authentication state is in intermediate state, no action taken',
-                debouncedIsAuthenticated: debouncedAuthState.isAuthenticated,
-                debouncedAuthLoading: debouncedAuthState.authLoading,
-                debouncedAuthContextAdminLoading: debouncedAuthState.authContextAdminLoading,
-                hasUser: !!debouncedAuthState.user
-            });
-        }
-    }, [isAuthenticated, user?.id, authLoading, authContextAdminLoading, authContextIsAdmin, checkAdminStatus, clearAdminStatus, isAuthStateStable, debouncedAuthState.isAuthenticated, debouncedAuthState.user, debouncedAuthState.authLoading, debouncedAuthState.authContextAdminLoading]);
+    }, [
+        // 只監聽關鍵狀態變化，減少不必要的重新執行
+        isAuthenticated, 
+        user?.id, 
+        user?.userId,
+        authContextIsAdmin, // 監聽 AuthContext 的管理員狀態
+        debouncedAuthState.isAuthenticated, 
+        debouncedAuthState.user,
+        debouncedAuthState.authLoading, 
+        debouncedAuthState.authContextAdminLoading
+    ]);
     
 
     

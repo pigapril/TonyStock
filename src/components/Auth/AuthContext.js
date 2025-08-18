@@ -32,15 +32,26 @@ export function AuthProvider({ children }) {
         setLoading(false);
     };
 
-    // Admin status checking function
+    // Admin status checking function - 修復重複調用問題
     const checkAdminStatus = useCallback(async () => {
         if (!user) {
             setIsAdmin(false);
             return;
         }
 
+        // 防止重複調用 - 檢查是否已經在檢查中
+        const userId = user.id || user.userId;
+        const checkingKey = `checking_admin_${userId}`;
+        
+        if (sessionStorage.getItem(checkingKey)) {
+            console.log('AuthContext: Admin status check already in progress for user:', userId);
+            return;
+        }
+
         try {
             setAdminLoading(true);
+            sessionStorage.setItem(checkingKey, 'true');
+            
             console.log('AuthContext: Checking admin status for user:', user.email);
             
             const response = await authService.checkAdminStatus();
@@ -48,7 +59,7 @@ export function AuthProvider({ children }) {
             
             console.log('AuthContext: Admin status result:', {
                 isAdmin: adminStatus,
-                userId: user.id || user.userId,
+                userId,
                 timestamp: new Date().toISOString()
             });
             
@@ -59,6 +70,7 @@ export function AuthProvider({ children }) {
             setIsAdmin(false); // Default to false for security
         } finally {
             setAdminLoading(false);
+            sessionStorage.removeItem(checkingKey);
         }
     }, [user]);
 
@@ -286,15 +298,24 @@ export function AuthProvider({ children }) {
         checkAuthStatus();
     }, [checkAuthStatus]);
 
-    // 當用戶狀態改變時檢查管理員狀態
+    // 當用戶狀態改變時檢查管理員狀態 - 修復無限循環
     useEffect(() => {
         if (user) {
-            checkAdminStatus();
+            // 只在用戶 ID 實際改變時才檢查管理員狀態
+            const userId = user.id || user.userId;
+            const lastCheckedUserId = sessionStorage.getItem('lastCheckedAdminUserId');
+            
+            if (lastCheckedUserId !== String(userId)) {
+                console.log('AuthContext: User changed, checking admin status for:', userId);
+                sessionStorage.setItem('lastCheckedAdminUserId', String(userId));
+                checkAdminStatus();
+            }
         } else {
             setIsAdmin(false);
             setAdminLoading(false);
+            sessionStorage.removeItem('lastCheckedAdminUserId');
         }
-    }, [user, checkAdminStatus]);
+    }, [user?.id, user?.userId, checkAdminStatus]); // 只監聽用戶 ID 變化
 
         // 登出處理
     const logout = async () => {
