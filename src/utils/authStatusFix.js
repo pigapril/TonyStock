@@ -8,7 +8,7 @@ class AuthStatusFix {
         this.baseURL = process.env.REACT_APP_API_BASE_URL || '';
     }
 
-    /**
+            /**
      * 安全的認證狀態檢查
      */
     async checkAuthStatus() {
@@ -22,7 +22,9 @@ class AuthStatusFix {
                 credentials: 'include',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache'
                 }
             });
 
@@ -40,7 +42,19 @@ class AuthStatusFix {
                 throw new Error(`Request redirected to: ${response.url}`);
             }
 
-            // 檢查狀態碼
+            // 對於 403 錯誤，提供更詳細的信息
+            if (response.status === 403) {
+                const responseText = await response.text();
+                console.warn('🚫 AuthStatusFix: 403 Forbidden received:', {
+                    responseLength: responseText.length,
+                    responsePreview: responseText.substring(0, 200),
+                    cookies: document.cookie.split(';').map(c => c.trim().split('=')[0])
+                });
+                
+                throw new Error(`HTTP 403: Forbidden - ${responseText.substring(0, 100)}`);
+            }
+
+            // 檢查其他錯誤狀態碼
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }

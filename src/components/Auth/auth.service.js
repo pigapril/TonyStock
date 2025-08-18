@@ -32,14 +32,14 @@ class AuthService {
                 // 添加特殊標記避免攔截器干擾
                 metadata: { skipCSRFCheck: true, isAuthCheck: true }
             });
-            
+
             // 響應後記錄
             console.log('Auth status response details:', {
                 status: response.status,
                 headers: response.headers,
                 ok: response.ok,
             });
-            
+
             const data = response.data;
             console.log('Auth status data:', data);
             return data.data; // API 回應的資料結構是 { data: ... }
@@ -51,11 +51,11 @@ class AuthService {
                 userAgent: navigator.userAgent,
                 retryCount
             });
-            
+
             // 如果是 403 錯誤且重試次數少於 1 次，嘗試用 fetch 重試
             if (error.response?.status === 403 && retryCount < 1) {
                 console.warn(`🔄 Auth status got 403, trying fallback method`);
-                
+
                 try {
                     const baseURL = process.env.REACT_APP_API_BASE_URL || '';
                     const fallbackResponse = await fetch(`${baseURL}/api/auth/status?_t=${Date.now()}`, {
@@ -66,7 +66,7 @@ class AuthService {
                             'Content-Type': 'application/json'
                         }
                     });
-                    
+
                     if (fallbackResponse.ok) {
                         const fallbackData = await fallbackResponse.json();
                         console.log('✅ Fallback auth check succeeded');
@@ -76,7 +76,7 @@ class AuthService {
                     console.error('❌ Fallback auth check also failed:', fallbackError);
                 }
             }
-            
+
             throw error;
         }
     }
@@ -88,7 +88,7 @@ class AuthService {
             const response = await apiClient.post('/api/auth/logout');
 
             Analytics.auth.logout({ status: 'success' });
-            
+
             return response.data.data;
         } catch (error) {
             // 統一錯誤處理
@@ -115,7 +115,7 @@ class AuthService {
                 ok: response.ok,
                 timestamp: new Date().toISOString()
             });
-            
+
             const data = response.data;
 
             console.log('Token verification complete:', {
@@ -126,9 +126,9 @@ class AuthService {
                 timestamp: new Date().toISOString()
             });
 
-            Analytics.auth.login({ 
-                method: 'google', 
-                status: 'success' 
+            Analytics.auth.login({
+                method: 'google',
+                status: 'success'
             });
 
             return data.data;
@@ -140,10 +140,10 @@ class AuthService {
                 timestamp: new Date().toISOString()
             });
 
-            Analytics.auth.login({ 
-                method: 'google', 
+            Analytics.auth.login({
+                method: 'google',
                 status: 'error',
-                error: error.message 
+                error: error.message
             });
             const handledError = handleApiError(error);
             throw handledError;
@@ -154,21 +154,21 @@ class AuthService {
     async checkAdminStatus() {
         try {
             console.log('Auth service: Checking admin status');
-            
+
             const response = await apiClient.get('/api/auth/admin-status');
-            
+
             console.log('Admin status response:', {
                 status: response.status,
                 data: response.data
             });
-            
+
             return response.data.data; // API 回應的資料結構是 { status: 'success', data: { isAuthenticated, isAdmin } }
         } catch (error) {
             console.error('Admin status check error:', {
                 error: error.message,
                 status: error.response?.status
             });
-            
+
             // 統一錯誤處理
             const handledError = handleApiError(error);
             throw handledError;

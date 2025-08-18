@@ -5,6 +5,8 @@ import authService from '../../components/Auth/auth.service';
 import { handleApiError } from '../../utils/errorHandler';
 import csrfClient from '../../utils/csrfClient';
 import { authDiagnostics } from '../../utils/authDiagnostics';
+import authInitFix from '../../utils/authInitFix';
+import authStateManager from '../../utils/authStateManager';
 
 export const AuthContext = createContext({
     user: null,
@@ -203,7 +205,7 @@ export function AuthProvider({ children }) {
         }
     }, [checkBrowserCompatibility, handleGoogleCredential]);
 
-    // 檢查認證狀態
+        // 檢查認證狀態（減少請求頻率避免 IP 封鎖）
     const checkAuthStatus = useCallback(async () => {
         console.log('CheckAuthStatus initiated:', {
             currentCookies: document.cookie,
@@ -211,8 +213,19 @@ export function AuthProvider({ children }) {
         });
 
         try {
-            // 添加隨機延遲避免並發問題
-            await new Promise(resolve => setTimeout(resolve, Math.random() * 100));
+            // 確保認證初始化已完成（但不強制等待太久）
+            try {
+                await Promise.race([
+                    authInitFix.initialize(),
+                    new Promise(resolve => setTimeout(resolve, 2000)) // 增加到 2 秒
+                ]);
+            } catch (initError) {
+                console.warn('AuthInitFix initialization timeout or failed, proceeding anyway:', initError);
+            }
+            
+            // 增加延遲避免觸發 IP 封鎖
+            const delay = Math.random() * 1000 + 500; // 500-1500ms 隨機延遲
+            await new Promise(resolve => setTimeout(resolve, delay));
             
             const { user: userData } = await authService.checkStatus();
             console.log('CheckAuthStatus response:', {
@@ -250,6 +263,14 @@ export function AuthProvider({ children }) {
                 timestamp: new Date().toISOString()
             });
 
+            // 如果是 403 錯誤且包含 IP 封鎖信息，特殊處理
+            if (error.response?.status === 403 && error.response?.data?.message?.includes('IP 已被封鎖')) {
+                console.error('🚫 IP has been blocked due to too many requests. Please wait and try again later.');
+                setError('系統檢測到異常請求，請稍後再試。如果問題持續，請聯繫技術支援。');
+                setUser(null);
+                return;
+            }
+
             // 如果是 403 錯誤，可能是 CSRF 配置問題
             if (error.response?.status === 403) {
                 console.warn('🔄 Auth status check got 403, this may indicate CSRF middleware misconfiguration');
@@ -258,7 +279,7 @@ export function AuthProvider({ children }) {
                 const lastDiagnostic = sessionStorage.getItem('lastAuthDiagnostic');
                 const now = Date.now();
                 if (process.env.NODE_ENV === 'development' && 
-                    (!lastDiagnostic || now - parseInt(lastDiagnostic) > 30000)) { // 30秒內不重複診斷
+                    (!lastDiagnostic || now - parseInt(lastDiagnostic) > 60000)) { // 增加到 60 秒內不重複診斷
                     sessionStorage.setItem('lastAuthDiagnostic', now.toString());
                     authDiagnostics.diagnoseAuthIssue().catch(diagError => {
                         console.error('Diagnostics failed:', diagError);
@@ -278,7 +299,7 @@ export function AuthProvider({ children }) {
                 const lastNetworkDiagnostic = sessionStorage.getItem('lastNetworkDiagnostic');
                 const now = Date.now();
                 if (process.env.NODE_ENV === 'development' && 
-                    (!lastNetworkDiagnostic || now - parseInt(lastNetworkDiagnostic) > 60000)) { // 60秒內不重複診斷
+                    (!lastNetworkDiagnostic || now - parseInt(lastNetworkDiagnostic) > 120000)) { // 增加到 120 秒內不重複診斷
                     sessionStorage.setItem('lastNetworkDiagnostic', now.toString());
                     authDiagnostics.diagnoseAuthIssue().catch(diagError => {
                         console.error('Diagnostics failed:', diagError);

@@ -7,7 +7,7 @@ import requestTracker from './requestTracker';
 import authStatusFix from './authStatusFix';
 
 class AuthStateManager {
-    constructor() {
+        constructor() {
         this.authState = null;
         this.lastCheck = null;
         this.checkInProgress = false;
@@ -15,6 +15,18 @@ class AuthStateManager {
         this.retryDelays = [1000, 2000, 4000]; // 指數退避
         this.maxRetries = 3;
         this.pendingPromise = null;
+        
+        // 新增：頁面載入狀態檢測
+        this.isPageLoading = document.readyState !== 'complete';
+        this.cookieReadyPromise = this._waitForCookiesReady();
+        
+        // 監聽頁面載入完成
+        if (this.isPageLoading) {
+            window.addEventListener('load', () => {
+                this.isPageLoading = false;
+                console.log('📄 AuthStateManager: Page load completed');
+            });
+        }
         
         // 新增：狀態同步機制
         this.subscribers = new Set();
@@ -28,6 +40,10 @@ class AuthStateManager {
         // 新增：並發控制改進
         this.requestQueue = [];
         this.isProcessingQueue = false;
+        
+        // 新增：Cookie 同步檢測
+        this.lastCookieCheck = null;
+        this.cookieCheckInterval = 1000; // 1秒檢查一次
     }
 
     /**
@@ -135,22 +151,33 @@ class AuthStateManager {
         }
     }
 
-    /**
-     * 執行單次認證狀態檢查
+            /**
+     * 執行單次認證狀態檢查（增加延遲避免 IP 封鎖）
      */
     async _checkAuthStatusOnce() {
+        // 等待 Cookie 就緒
+        await this.cookieReadyPromise;
+        
+        // 檢查 Cookie 是否發生變化，如果是則稍微延遲
+        if (this._hasCookiesChanged()) {
+            console.log('🍪 AuthStateManager: Cookies changed, adding delay');
+            await this._delay(500); // 增加到 500ms
+        }
+
         const requestId = requestTracker.startTracking('/api/auth/status', {
             method: 'GET',
             credentials: 'include'
         });
 
         try {
-            // 添加小延遲避免並發問題
-            await new Promise(resolve => setTimeout(resolve, Math.random() * 50));
+            // 大幅增加延遲避免觸發 IP 封鎖
+            const baseDelay = this.isPageLoading ? 800 : 300; // 增加延遲
+            const randomDelay = Math.random() * baseDelay + baseDelay; // 確保最少延遲
+            await new Promise(resolve => setTimeout(resolve, randomDelay));
             
             // 使用增強的認證狀態檢查，但添加超時保護
             const timeoutPromise = new Promise((_, reject) => {
-                setTimeout(() => reject(new Error('Auth check timeout')), 10000);
+                setTimeout(() => reject(new Error('Auth check timeout')), 20000); // 增加到 20 秒
             });
             
             const authCheckPromise = authStatusFix.checkAuthStatus();
@@ -213,19 +240,34 @@ class AuthStateManager {
         return isValid;
     }
 
-    /**
-     * 計算重試延遲（改進版）
+            /**
+     * 計算重試延遲（改進版 - 增加延遲避免觸發 IP 封鎖）
      */
     _calculateRetryDelay(attempt) {
-        const baseDelay = this.retryDelays[attempt - 1] || 4000;
+        // 大幅增加基礎延遲，避免觸發 IP 封鎖
+        const baseDelays = [3000, 6000, 12000]; // 3秒, 6秒, 12秒
+        const baseDelay = baseDelays[attempt - 1] || 12000;
         
         // 根據連續失敗次數增加延遲
         const failureMultiplier = Math.min(this.consecutiveFailures * 0.5 + 1, 3);
         
+        // 如果是頁面載入時的第一次嘗試，使用較短的延遲
+        const pageLoadMultiplier = (this.isPageLoading && attempt === 1) ? 0.7 : 1;
+        
         // 添加隨機抖動避免雷群效應
         const jitter = Math.random() * 0.3 + 0.85; // 85% - 115%
         
-        return Math.floor(baseDelay * failureMultiplier * jitter);
+        const finalDelay = Math.floor(baseDelay * failureMultiplier * pageLoadMultiplier * jitter);
+        
+        console.log(`🔄 AuthStateManager: Calculated retry delay: ${finalDelay}ms`, {
+            attempt,
+            baseDelay,
+            failureMultiplier,
+            pageLoadMultiplier,
+            isPageLoading: this.isPageLoading
+        });
+        
+        return finalDelay;
     }
 
     /**
@@ -342,6 +384,56 @@ class AuthStateManager {
         return [...this.stateHistory];
     }
 
+        /**
+     * 等待 Cookie 就緒（解決頁面重新整理時的時序問題）
+     */
+    async _waitForCookiesReady() {
+        // 如果頁面已經載入完成，直接返回
+        if (!this.isPageLoading) {
+            return true;
+        }
+
+        console.log('⏳ AuthStateManager: Waiting for cookies to be ready...');
+        
+        return new Promise((resolve) => {
+            const checkCookies = () => {
+                // 更寬容的檢查：只要有任何 Cookie 或頁面載入完成就認為就緒
+                const hasCookies = document.cookie.length > 0;
+                
+                // 如果有 Cookie 或頁面載入完成，認為 cookie 已就緒
+                if (hasCookies || !this.isPageLoading) {
+                    console.log('✅ AuthStateManager: Cookies are ready', {
+                        hasCookies,
+                        cookieLength: document.cookie.length,
+                        pageLoading: this.isPageLoading
+                    });
+                    resolve(true);
+                    return;
+                }
+                
+                // 繼續等待
+                setTimeout(checkCookies, 100);
+            };
+            
+            checkCookies();
+            
+            // 最多等待 2 秒（減少等待時間）
+            setTimeout(() => {
+                console.log('⏰ AuthStateManager: Cookie wait timeout, proceeding anyway');
+                resolve(true);
+            }, 2000);
+        });
+    }
+
+    /**
+     * 檢查 Cookie 是否發生變化
+     */
+    _hasCookiesChanged() {
+        const currentCookies = document.cookie;
+        const changed = this.lastCookieCheck !== null && this.lastCookieCheck !== currentCookies;
+        this.lastCookieCheck = currentCookies;
+        return changed;
+    }
     /**
      * 延遲函數
      */
