@@ -136,23 +136,25 @@ export const useRedemptionFormatting = () => {
         // Get translated titles and descriptions
         switch (benefit.type) {
             case 'discount':
-                if (benefit.discountType === 'percentage') {
+                if (benefit.discountType === 'PERCENTAGE_DISCOUNT' || benefit.discountType === 'percentage') {
                     return {
                         ...formatted,
-                        title: t('redemption.preview.percentageDiscount', { percentage: benefit.percentage }),
+                        title: t('redemption.preview.percentageDiscount', { 
+                            percentage: benefit.savingsPercentage || benefit.percentage 
+                        }),
                         description: t('redemption.confirmation.benefits.discount.percentage', { 
-                            percentage: benefit.percentage 
+                            percentage: benefit.savingsPercentage || benefit.percentage 
                         })
                     };
                 } else {
                     return {
                         ...formatted,
                         title: t('redemption.preview.fixedDiscount', { 
-                            amount: formatters.currency(benefit.amount, benefit.currency),
+                            amount: formatters.currency(benefit.discountAmount || benefit.amount, benefit.currency),
                             currency: benefit.currency 
                         }),
                         description: t('redemption.confirmation.benefits.discount.fixed', { 
-                            amount: formatters.currency(benefit.amount, benefit.currency),
+                            amount: formatters.currency(benefit.discountAmount || benefit.amount, benefit.currency),
                             currency: benefit.currency 
                         })
                     };

@@ -236,12 +236,24 @@ class RedemptionService {
                 code: normalizedCode
             });
 
+            // 🔍 調試：記錄完整的響應數據
+            console.log('🔍 Preview response received:', {
+                status: response.status,
+                statusText: response.statusText,
+                dataStatus: response.data?.status,
+                dataKeys: response.data ? Object.keys(response.data) : 'no data',
+                fullData: response.data
+            });
+
             if (response.data.status === 'success') {
+                console.log('✅ Response status is success, returning data:', response.data.data);
                 return {
                     success: true,
                     data: response.data.data
                 };
             } else {
+                console.log('❌ Response status is not success:', response.data.status);
+                console.log('🔍 Full response data:', response.data);
                 throw new Error(response.data.message || 'Preview failed');
             }
         }, { operation: 'previewRedemption', code: maskedCode });
