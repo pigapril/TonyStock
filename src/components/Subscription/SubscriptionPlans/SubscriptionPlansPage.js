@@ -62,25 +62,30 @@ export const SubscriptionPlansPage = () => {
       
       // Calculate plan adjustments based on redemption benefits
       availablePlans.forEach(plan => {
-        const originalPrice = plan.pricing[billingPeriod];
+        // 修復：使用正確的屬性名 plan.price 而不是 plan.pricing
+        const originalPrice = plan.price?.[billingPeriod] || 0;
         let adjustedPrice = originalPrice;
         let discount = null;
         
         if (previewData.benefits.type === 'discount') {
-          if (previewData.benefits.discountType === 'percentage') {
-            const discountAmount = (originalPrice * previewData.benefits.discountPercentage) / 100;
+          // 修復：支持新的 discountType 格式
+          if (previewData.benefits.discountType === 'PERCENTAGE_DISCOUNT' || previewData.benefits.discountType === 'percentage') {
+            // 修復：使用正確的字段名
+            const discountPercentage = previewData.benefits.savingsPercentage || previewData.benefits.discountPercentage || 0;
+            const discountAmount = (originalPrice * discountPercentage) / 100;
             adjustedPrice = Math.max(0, originalPrice - discountAmount);
             discount = {
               type: 'percentage',
-              value: previewData.benefits.discountPercentage,
+              value: discountPercentage,
               amount: discountAmount
             };
-          } else if (previewData.benefits.discountType === 'fixed') {
-            adjustedPrice = Math.max(0, originalPrice - previewData.benefits.discountAmount);
+          } else if (previewData.benefits.discountType === 'FIXED_AMOUNT_DISCOUNT' || previewData.benefits.discountType === 'fixed') {
+            const discountAmount = previewData.benefits.discountAmount || 0;
+            adjustedPrice = Math.max(0, originalPrice - discountAmount);
             discount = {
               type: 'fixed',
-              value: previewData.benefits.discountAmount,
-              amount: previewData.benefits.discountAmount
+              value: discountAmount,
+              amount: discountAmount
             };
           }
         }
