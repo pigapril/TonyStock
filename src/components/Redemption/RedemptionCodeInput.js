@@ -110,8 +110,8 @@ export const RedemptionCodeInput = ({
     const shouldBlockRequest = useCallback((operationType, codeValue) => {
         const requestKey = generateRequestKey(operationType, codeValue);
         
-        // Block if currently processing
-        if (requestState.isProcessing) {
+        // Block if currently processing the SAME operation type
+        if (requestState.isProcessing && requestState.operationType === operationType) {
             return {
                 blocked: true,
                 reason: 'processing',
@@ -202,18 +202,37 @@ export const RedemptionCodeInput = ({
 
         try {
             const result = await redemptionService.validateCode(codeToValidate);
+            console.log('🔍 validateCode result:', result);
             
-            // Check if component is still mounted and this is the current request
-            if (!componentMountedRef.current || requestState.lastRequestKey !== requestKey) {
+            // Check if component is still mounted
+            if (!componentMountedRef.current) {
+                console.log('❌ Component unmounted, skipping result processing');
                 return;
             }
             
+            console.log('✅ Component still mounted, processing result...');
+            
+            // End request tracking immediately after getting result
+            if (componentMountedRef.current) {
+                setIsValidating(false);
+                endRequestTracking();
+            }
+            
             if (result.success) {
+                console.log('🎉 Validation successful!');
                 setValidationResult(result.data);
                 
                 // If validation successful and preview enabled, get preview
                 if (showPreview) {
-                    await getPreview(codeToValidate);
+                    console.log('🎯 About to call getPreview, showPreview:', showPreview);
+                    try {
+                        await getPreview(codeToValidate);
+                        console.log('✅ getPreview completed successfully');
+                    } catch (previewError) {
+                        console.error('❌ getPreview failed:', previewError);
+                    }
+                } else {
+                    console.log('❌ showPreview is false, skipping preview');
                 }
 
                 Analytics.track('redemption_code_validated', {
@@ -246,7 +265,8 @@ export const RedemptionCodeInput = ({
                 errorCode: errorCode.toUpperCase()
             });
         } finally {
-            if (componentMountedRef.current) {
+            // Only cleanup if not already done (for error cases)
+            if (componentMountedRef.current && requestState.isProcessing) {
                 setIsValidating(false);
                 endRequestTracking();
             }
@@ -258,8 +278,12 @@ export const RedemptionCodeInput = ({
      * Get redemption preview with duplicate request prevention
      */
     const getPreview = useCallback(async (codeToPreview) => {
+        console.log('🎬 getPreview called with:', codeToPreview);
+        console.log('🔍 componentMountedRef.current:', componentMountedRef.current);
+        
         // Check for duplicate requests
         const blockCheck = shouldBlockRequest('preview', codeToPreview);
+        console.log('🚦 Block check result:', blockCheck);
         if (blockCheck.blocked) {
             console.log('Preview request blocked:', blockCheck.reason);
             return;
@@ -450,7 +474,7 @@ export const RedemptionCodeInput = ({
                 default: return t('redemption.processing');
             }
         }
-        if (validationResult && preview) return t('redemption.redeem');
+        if (validationResult && (!showPreview || preview)) return t('redemption.redeem');
         return t('redemption.validate');
     };
 

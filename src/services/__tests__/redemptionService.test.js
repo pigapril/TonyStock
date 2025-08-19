@@ -33,6 +33,63 @@ describe('RedemptionService', () => {
     redemptionService.clearCache();
   });
 
+  describe('Code Validation', () => {
+    test('should return error for invalid codes', async () => {
+      const mockResponse = {
+        data: {
+          status: 'success',
+          data: {
+            code: 'INVALID123',
+            isValid: false,
+            canRedeem: false,
+            summary: '找不到此兌換代碼',
+            errors: [{ type: 'CODE_NOT_FOUND', message: '找不到此兌換代碼' }],
+            warnings: [],
+            eligibility: null,
+            benefits: null
+          },
+          message: '找不到此兌換代碼'
+        }
+      };
+
+      mockEnhancedApiClient.get.mockResolvedValueOnce(mockResponse);
+
+      const result = await redemptionService.validateCode('INVALID123');
+      
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('找不到此兌換代碼');
+      expect(result.errorCode).toBe('INVALID_CODE');
+      expect(result.data.isValid).toBe(false);
+    });
+
+    test('should return success for valid codes', async () => {
+      const mockResponse = {
+        data: {
+          status: 'success',
+          data: {
+            code: 'VALID123',
+            isValid: true,
+            canRedeem: true,
+            summary: '代碼有效，可以兌換',
+            errors: [],
+            warnings: [],
+            eligibility: { eligible: true },
+            benefits: { type: 'discount', amount: 10 }
+          },
+          message: '代碼有效，可以兌換'
+        }
+      };
+
+      mockEnhancedApiClient.get.mockResolvedValueOnce(mockResponse);
+
+      const result = await redemptionService.validateCode('VALID123');
+      
+      expect(result.success).toBe(true);
+      expect(result.data.isValid).toBe(true);
+      expect(result.data.canRedeem).toBe(true);
+    });
+  });
+
   describe('Cache Management', () => {
     test('should cache successful responses', async () => {
       const mockResponse = {
@@ -172,7 +229,17 @@ describe('RedemptionService', () => {
       const mockResponse = {
         data: {
           status: 'success',
-          data: { valid: true, codeType: 'PERCENTAGE_DISCOUNT' }
+          data: { 
+            code: 'TEST123',
+            isValid: true, 
+            canRedeem: true,
+            codeType: 'PERCENTAGE_DISCOUNT',
+            summary: '代碼有效，可以兌換',
+            errors: [],
+            warnings: [],
+            eligibility: { eligible: true },
+            benefits: { type: 'discount', amount: 10 }
+          }
         }
       };
 
@@ -191,7 +258,19 @@ describe('RedemptionService', () => {
 
     test('should normalize code format', async () => {
       const mockResponse = {
-        data: { status: 'success', data: { valid: true } }
+        data: { 
+          status: 'success', 
+          data: { 
+            code: 'TEST123',
+            isValid: true,
+            canRedeem: true,
+            summary: '代碼有效，可以兌換',
+            errors: [],
+            warnings: [],
+            eligibility: { eligible: true },
+            benefits: { type: 'discount', amount: 10 }
+          } 
+        }
       };
 
       mockEnhancedApiClient.get.mockResolvedValueOnce(mockResponse);

@@ -224,10 +224,12 @@ class RedemptionService {
      * @returns {Promise<Object>} Preview response with benefits
      */
     async previewRedemption(code) {
+        console.log('🏪 redemptionService.previewRedemption called with:', code);
         const normalizedCode = code.trim().toUpperCase();
         const maskedCode = normalizedCode.substring(0, 4) + '***';
         
         return await this._executeWithRetry(async () => {
+            console.log('📡 About to make POST request to /api/redemption/preview');
             systemLogger.info('Previewing redemption code', { code: maskedCode });
 
             const response = await enhancedApiClient.post('/api/redemption/preview', {
@@ -297,6 +299,18 @@ class RedemptionService {
             const cachedData = this._getCachedData(cacheKey);
             if (cachedData) {
                 systemLogger.info('Returning cached code validation', { code: normalizedCode.substring(0, 4) + '***' });
+                
+                // Check if cached data indicates invalid code
+                if (!cachedData.isValid) {
+                    return {
+                        success: false,
+                        error: cachedData.summary || 'Code is invalid',
+                        errorCode: 'INVALID_CODE',
+                        data: cachedData,
+                        fromCache: true
+                    };
+                }
+                
                 return {
                     success: true,
                     data: cachedData,
@@ -309,16 +323,33 @@ class RedemptionService {
         return await this._deduplicateRequest(cacheKey, async () => {
             return await this._executeWithRetry(async () => {
                 const response = await enhancedApiClient.get(`/api/redemption/validate/${encodeURIComponent(normalizedCode)}`);
+                console.log('🔍 API response:', response.data);
 
                 if (response.data.status === 'success') {
-                    // Cache the successful response
-                    this._setCachedData(cacheKey, response.data.data, this.cacheConfig.codeValidation.ttl);
+                    const validationData = response.data.data;
+                    console.log('📊 Validation data:', validationData);
                     
+                    // Cache the response regardless of validity
+                    this._setCachedData(cacheKey, validationData, this.cacheConfig.codeValidation.ttl);
+                    
+                    // Check if the code is actually valid
+                    if (!validationData.isValid) {
+                        console.log('❌ Code is invalid, returning error');
+                        return {
+                            success: false,
+                            error: validationData.summary || response.data.message || 'Code is invalid',
+                            errorCode: 'INVALID_CODE',
+                            data: validationData
+                        };
+                    }
+                    
+                    console.log('✅ Code is valid, returning success');
                     return {
                         success: true,
-                        data: response.data.data
+                        data: validationData
                     };
                 } else {
+                    console.log('❌ API response status not success:', response.data.status);
                     throw new Error(response.data.message || 'Validation failed');
                 }
             }, { operation: 'validateCode', code: normalizedCode.substring(0, 4) + '***' });

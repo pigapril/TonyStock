@@ -123,7 +123,16 @@ describe('RedemptionCodeInput Manual Validation', () => {
     test('should clear validation result when code changes', async () => {
         redemptionService.validateCode = jest.fn().mockResolvedValue({
             success: true,
-            data: { isValid: true }
+            data: { 
+                code: 'TEST123',
+                isValid: true,
+                canRedeem: true,
+                summary: '代碼有效，可以兌換',
+                errors: [],
+                warnings: [],
+                eligibility: { eligible: true },
+                benefits: { type: 'discount', amount: 10 }
+            }
         });
         
         render(<RedemptionCodeInput showPreview={false} />);
@@ -169,7 +178,16 @@ describe('RedemptionCodeInput Manual Validation', () => {
     test('should proceed to redemption after successful validation', async () => {
         redemptionService.validateCode = jest.fn().mockResolvedValue({
             success: true,
-            data: { isValid: true }
+            data: { 
+                code: 'TEST123',
+                isValid: true,
+                canRedeem: true,
+                summary: '代碼有效，可以兌換',
+                errors: [],
+                warnings: [],
+                eligibility: { eligible: true },
+                benefits: { type: 'discount', amount: 10 }
+            }
         });
         
         redemptionService.redeemCode = jest.fn().mockResolvedValue({
