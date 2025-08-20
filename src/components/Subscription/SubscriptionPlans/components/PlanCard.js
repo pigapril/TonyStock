@@ -54,7 +54,17 @@ export const PlanCard = ({
 
       // 如果是 Pro 方案，導航到付款頁面
       if (isPro) {
-        navigate(`/${lang}/payment?plan=${plan.id}&period=${billingPeriod}`);
+        let paymentUrl = `/${lang}/payment?plan=${plan.id}&period=${billingPeriod}`;
+        
+        // 如果有折扣，將折扣信息添加到URL參數
+        if (adjustedPricing.hasRedemptionDiscount && adjustedPricing.redemptionDiscount) {
+          const discount = adjustedPricing.redemptionDiscount;
+          paymentUrl += `&discountType=${discount.type}`;
+          paymentUrl += `&discountAmount=${discount.amount}`;
+          paymentUrl += `&originalPrice=${adjustedPricing.originalPrice}`;
+        }
+        
+        navigate(paymentUrl);
         return;
       }
 

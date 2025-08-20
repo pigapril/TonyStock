@@ -927,4 +927,48 @@
   .payment-page__error .payment-page__back-button:hover {
     background: #409CFF;
   }
+}/* Discount
+ Display Styles */
+.payment-page__plan-discount {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--color-bg-success-soft, #f0f9f0);
+  border: 1px solid var(--color-border-success, #d4edda);
+  border-radius: 8px;
+}
+
+.payment-page__original-price {
+  font-size: 14px;
+  color: var(--color-text-secondary, #666);
+  text-decoration: line-through;
+  margin-bottom: 4px;
+}
+
+.payment-page__discount-badge {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-success, #28a745);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.payment-page__discount-badge::before {
+  content: "🎉";
+  font-size: 16px;
+}/* Ord
+er Summary Discount Styles */
+.payment-page__order-discount {
+  color: var(--color-text-success, #28a745);
+}
+
+.payment-page__discount-amount {
+  font-weight: 600;
+}
+
+.payment-page__order-total {
+  border-top: 1px solid var(--color-border-soft, #e5e5e5);
+  padding-top: 12px;
+  margin-top: 8px;
+  font-weight: 600;
 }

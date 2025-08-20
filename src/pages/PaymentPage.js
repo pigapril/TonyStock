@@ -31,8 +31,9 @@ const PaymentPage = () => {
     const [agreedToTerms, setAgreedToTerms] = useState(false);
     const [orderData, setOrderData] = useState(null);
     const [error, setError] = useState(null);
+    const [appliedDiscount, setAppliedDiscount] = useState(null);
 
-    // 確保用戶已登入
+    // 確保用戶已登入並檢查折扣信息
     useEffect(() => {
         if (!user) {
             navigate(`/${lang}/subscription-plans`, { 
@@ -44,14 +45,28 @@ const PaymentPage = () => {
             return;
         }
 
+        // 檢查URL參數中的折扣信息
+        const discountAmount = searchParams.get('discountAmount');
+        const discountType = searchParams.get('discountType');
+        const originalPrice = searchParams.get('originalPrice');
+        
+        if (discountAmount && discountType) {
+            setAppliedDiscount({
+                type: discountType,
+                amount: parseFloat(discountAmount),
+                originalPrice: originalPrice ? parseFloat(originalPrice) : null
+            });
+        }
+
         // 追蹤頁面訪問
         Analytics.track('payment_page_viewed', {
             userId: user.id,
             planType,
             billingPeriod,
-            currentPlan: userPlan?.type || 'unknown'
+            currentPlan: userPlan?.type || 'unknown',
+            hasDiscount: !!appliedDiscount
         });
-    }, [user, navigate, lang, planType, billingPeriod, userPlan, t]);
+    }, [user, navigate, lang, planType, billingPeriod, userPlan, t, searchParams]);
 
     const handleSuccess = (subscription) => {
         setLoading(false);
@@ -107,7 +122,29 @@ const PaymentPage = () => {
     const availablePlans = subscriptionService.getAvailablePlans();
     const selectedPlan = availablePlans.find(plan => plan.id === planType);
     const planPricing = paymentService.getPlanPricing();
-    const currentPlan = planPricing[planType]?.[billingPeriod];
+    const basePlan = planPricing[planType]?.[billingPeriod];
+    
+    // 計算實際價格（考慮折扣）
+    const calculateFinalPrice = () => {
+        const basePrice = basePlan?.price || 0;
+        if (!appliedDiscount) return basePrice;
+        
+        if (appliedDiscount.type === 'percentage') {
+            const discountAmount = (basePrice * appliedDiscount.amount) / 100;
+            return Math.max(0, basePrice - discountAmount);
+        } else if (appliedDiscount.type === 'fixed') {
+            return Math.max(0, basePrice - appliedDiscount.amount);
+        }
+        return basePrice;
+    };
+    
+    const finalPrice = calculateFinalPrice();
+    const currentPlan = {
+        ...basePlan,
+        price: finalPrice,
+        originalPrice: appliedDiscount ? basePlan?.price : null,
+        discount: appliedDiscount
+    };
 
     // 處理步驟導航
     const handleNextStep = () => {
@@ -141,7 +178,8 @@ const PaymentPage = () => {
             const result = await paymentService.createOrder({
                 planType,
                 billingPeriod,
-                paymentMethod
+                paymentMethod,
+                appliedDiscount: appliedDiscount
             });
 
             setOrderData(result);
@@ -259,9 +297,17 @@ const PaymentPage = () => {
                             / {billingPeriod === 'monthly' ? '月' : '年'}
                         </span>
                     </div>
-                    {currentPlan?.discount && (
+                    {appliedDiscount && currentPlan?.originalPrice && (
                         <div className="payment-page__plan-discount">
-                            {currentPlan.discount}
+                            <div className="payment-page__original-price">
+                                原價：NT$ {currentPlan.originalPrice.toLocaleString()}
+                            </div>
+                            <div className="payment-page__discount-badge">
+                                {appliedDiscount.type === 'percentage' 
+                                    ? `${appliedDiscount.amount}% 折扣` 
+                                    : `折扣 NT$ ${appliedDiscount.amount.toLocaleString()}`
+                                }
+                            </div>
                         </div>
                     )}
                 </div>
@@ -401,6 +447,23 @@ const PaymentPage = () => {
                             <span>付款方式</span>
                             <span>信用卡定期定額</span>
                         </div>
+                        {appliedDiscount && currentPlan?.originalPrice && (
+                            <>
+                                <div className="payment-page__order-row">
+                                    <span>原價</span>
+                                    <span>NT$ {currentPlan.originalPrice.toLocaleString()}</span>
+                                </div>
+                                <div className="payment-page__order-row payment-page__order-discount">
+                                    <span>折扣</span>
+                                    <span className="payment-page__discount-amount">
+                                        -{appliedDiscount.type === 'percentage' 
+                                            ? `${appliedDiscount.amount}%` 
+                                            : `NT$ ${appliedDiscount.amount.toLocaleString()}`
+                                        }
+                                    </span>
+                                </div>
+                            </>
+                        )}
                         <div className="payment-page__order-row payment-page__order-total">
                             <span>總金額</span>
                             <span>NT$ {orderData.amount?.toLocaleString()}</span>
