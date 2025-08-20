@@ -60,8 +60,17 @@ export const PlanCard = ({
         if (adjustedPricing.hasRedemptionDiscount && adjustedPricing.redemptionDiscount) {
           const discount = adjustedPricing.redemptionDiscount;
           paymentUrl += `&discountType=${discount.type}`;
-          paymentUrl += `&discountAmount=${discount.amount}`;
+          
+          if (discount.type === 'percentage') {
+            // 對於百分比折扣，傳遞百分比值
+            paymentUrl += `&discountValue=${discount.value}`;
+          } else {
+            // 對於固定金額折扣，傳遞金額值
+            paymentUrl += `&discountValue=${discount.value}`;
+          }
+          
           paymentUrl += `&originalPrice=${adjustedPricing.originalPrice}`;
+          paymentUrl += `&finalPrice=${adjustedPricing.displayPrice}`;
         }
         
         navigate(paymentUrl);

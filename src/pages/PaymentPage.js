@@ -46,15 +46,17 @@ const PaymentPage = () => {
         }
 
         // 檢查URL參數中的折扣信息
-        const discountAmount = searchParams.get('discountAmount');
+        const discountValue = searchParams.get('discountValue');
         const discountType = searchParams.get('discountType');
         const originalPrice = searchParams.get('originalPrice');
+        const finalPrice = searchParams.get('finalPrice');
         
-        if (discountAmount && discountType) {
+        if (discountValue && discountType) {
             setAppliedDiscount({
                 type: discountType,
-                amount: parseFloat(discountAmount),
-                originalPrice: originalPrice ? parseFloat(originalPrice) : null
+                value: parseFloat(discountValue),
+                originalPrice: originalPrice ? parseFloat(originalPrice) : null,
+                finalPrice: finalPrice ? parseFloat(finalPrice) : null
             });
         }
 
@@ -129,11 +131,17 @@ const PaymentPage = () => {
         const basePrice = basePlan?.price || 0;
         if (!appliedDiscount) return basePrice;
         
+        // 如果URL中已經有計算好的最終價格，直接使用
+        if (appliedDiscount.finalPrice !== null && appliedDiscount.finalPrice !== undefined) {
+            return appliedDiscount.finalPrice;
+        }
+        
+        // 否則根據折扣類型重新計算
         if (appliedDiscount.type === 'percentage') {
-            const discountAmount = (basePrice * appliedDiscount.amount) / 100;
+            const discountAmount = (basePrice * appliedDiscount.value) / 100;
             return Math.max(0, basePrice - discountAmount);
         } else if (appliedDiscount.type === 'fixed') {
-            return Math.max(0, basePrice - appliedDiscount.amount);
+            return Math.max(0, basePrice - appliedDiscount.value);
         }
         return basePrice;
     };
@@ -179,7 +187,10 @@ const PaymentPage = () => {
                 planType,
                 billingPeriod,
                 paymentMethod,
-                appliedDiscount: appliedDiscount
+                appliedDiscount: appliedDiscount ? {
+                    type: appliedDiscount.type,
+                    amount: appliedDiscount.value
+                } : null
             });
 
             setOrderData(result);
@@ -304,8 +315,8 @@ const PaymentPage = () => {
                             </div>
                             <div className="payment-page__discount-badge">
                                 {appliedDiscount.type === 'percentage' 
-                                    ? `${appliedDiscount.amount}% 折扣` 
-                                    : `折扣 NT$ ${appliedDiscount.amount.toLocaleString()}`
+                                    ? `${appliedDiscount.value}% 折扣` 
+                                    : `折扣 NT$ ${appliedDiscount.value.toLocaleString()}`
                                 }
                             </div>
                         </div>
@@ -457,8 +468,8 @@ const PaymentPage = () => {
                                     <span>折扣</span>
                                     <span className="payment-page__discount-amount">
                                         -{appliedDiscount.type === 'percentage' 
-                                            ? `${appliedDiscount.amount}%` 
-                                            : `NT$ ${appliedDiscount.amount.toLocaleString()}`
+                                            ? `${appliedDiscount.value}%` 
+                                            : `NT$ ${appliedDiscount.value.toLocaleString()}`
                                         }
                                     </span>
                                 </div>
