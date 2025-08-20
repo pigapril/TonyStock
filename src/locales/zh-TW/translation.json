@@ -146,7 +146,7 @@
         },
         "general": {
           "title": "特殊優惠",
-          "description": "您將獲得特殊促銷優惠",
+          "description": "您將獲得特殊優惠優惠",
           "highlight": "高級權限"
         }
       }
@@ -209,7 +209,7 @@
       "retry": "重試",
       "empty": {
         "title": "無有效優惠",
-        "description": "您目前沒有任何有效的促銷優惠。"
+        "description": "您目前沒有任何有效的優惠。"
       },
       "codeLabel": "代碼：",
       "timeRemaining": {
@@ -238,7 +238,7 @@
         },
         "general": {
           "title": "特殊優惠",
-          "description": "您擁有有效的促銷優惠"
+          "description": "您擁有有效的優惠"
         }
       },
       "errors": {
@@ -308,11 +308,11 @@
       "years": "年"
     },
     "pricing": {
-      "title": "有兌換代碼嗎？",
-      "subtitle": "輸入您的促銷代碼，立即查看方案折扣",
+      "title": "有優惠代碼嗎？",
+      "subtitle": "輸入您的優惠代碼，立即查看方案折扣",
       "placeholder": "在此輸入代碼",
-      "appliedTitle": "兌換代碼已套用！",
-      "appliedMessage": "您的促銷優惠已套用至訂閱",
+      "appliedTitle": "優惠代碼已套用！",
+      "appliedMessage": "您的優惠已套用至訂閱",
       "appliedIndicator": "優惠已套用",
       "discountBadge": {
         "percentage": "{{percentage}}% 折扣",
@@ -321,14 +321,14 @@
     },
     "checkout": {
       "title": "兌換代碼",
-      "subtitle": "有促銷代碼嗎？輸入代碼以獲得折扣優惠",
-      "placeholder": "輸入兌換代碼",
-      "appliedTitle": "兌換代碼已套用",
+      "subtitle": "有優惠代碼嗎？輸入代碼以獲得折扣優惠",
+      "placeholder": "輸入優惠代碼",
+      "appliedTitle": "優惠已套用",
       "appliedMessage": "節省 {{amount}}",
       "originalPrice": "原價：",
       "discount": "折扣：",
       "finalPrice": "總金額：",
-      "paymentMethodRequired": "此兌換代碼需要在結帳時綁定付款方式才能套用。"
+      "paymentMethodRequired": "此優惠代碼需要在結帳時綁定付款方式才能套用。"
     }
   },
   "userProfile": {
@@ -1328,7 +1328,7 @@
       "privacyTitle": "隱私保護",
       "privacyDescription": "我們重視您的隱私，所有資料都經過加密保護。",
       "redemptionCode": "兌換代碼",
-      "redemptionDescription": "輸入促銷代碼以解鎖特殊優惠和訂閱折扣。"
+      "redemptionDescription": "輸入優惠代碼以解鎖特殊優惠和訂閱折扣。"
     },
     "billingPeriod": {
       "monthly": "月繳",
