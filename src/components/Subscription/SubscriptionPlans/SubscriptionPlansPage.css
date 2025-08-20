@@ -111,76 +111,214 @@
   font-weight: 400;
 }
 
-/* Redemption Code Section */
-.subscription-plans-redemption {
-  background: white;
-  border-radius: 20px;
+/* Apple-style Redemption Section */
+.apple-redemption-section {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.apple-redemption-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
   padding: 32px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  max-width: 600px;
-  margin: 0 auto;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.subscription-plans-redemption__container {
-  text-align: center;
+.apple-redemption-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.6) 20%, 
+    rgba(255, 255, 255, 0.6) 80%, 
+    transparent 100%);
 }
 
-.subscription-plans-redemption__title {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
-  margin: 0 0 8px 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+.apple-redemption-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-.subscription-plans-redemption__subtitle {
-  font-size: 16px;
-  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
-  margin: 0 0 24px 0;
-  line-height: 1.4;
+.apple-redemption-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
-.subscription-plans-redemption__input {
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-/* Applied Redemption Banner */
-.subscription-plans-applied-redemption {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.applied-redemption-banner {
-  background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
-  border-radius: 16px;
-  padding: 20px 24px;
+.apple-redemption-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  box-shadow: 0 4px 20px rgba(52, 199, 89, 0.2);
-  animation: slideInFromTop 0.5s ease-out;
-}
-
-.applied-redemption-banner__icon {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  justify-content: center;
   color: white;
+  box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
 }
 
-.applied-redemption-banner__content h4 {
+.apple-redemption-title-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.apple-redemption-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.9));
+  margin: 0 0 6px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  line-height: 1.3;
+}
+
+.apple-redemption-subtitle {
+  font-size: 15px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.65));
+  margin: 0;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.apple-redemption-content {
+  position: relative;
+}
+
+/* Override RedemptionCodeInput styles for Apple design */
+.apple-redemption-content .redemption-code-input {
+  max-width: none;
+}
+
+.apple-redemption-content .redemption-input-container {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 4px;
+  gap: 4px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  max-width: 100%;
+  width: 100%;
+}
+
+.apple-redemption-content .redemption-input-wrapper {
+  flex: 1;
+  min-width: 0;
+  max-width: calc(100% - 140px); /* Reserve more space for button + gap */
+}
+
+.apple-redemption-content .redemption-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 16px 20px;
   font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.9));
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.apple-redemption-content .redemption-input:focus {
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: none;
+}
+
+.apple-redemption-content .redemption-input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+  font-weight: 400;
+}
+
+.apple-redemption-content .redemption-submit-btn {
+  background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-size: 15px;
   font-weight: 600;
   color: white;
-  margin: 0 0 4px 0;
+  width: 120px;
+  height: auto;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.apple-redemption-content .redemption-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 122, 255, 0.4);
+  background: linear-gradient(135deg, #0056CC 0%, #4A4AE6 100%);
+}
+
+.apple-redemption-content .redemption-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+}
+
+.apple-redemption-content .redemption-submit-btn:disabled {
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.3);
+  box-shadow: none;
+  transform: none;
+}
+
+/* Success state */
+.apple-redemption-success {
+  margin-top: 20px;
+  background: rgba(52, 199, 89, 0.1);
+  border: 1px solid rgba(52, 199, 89, 0.2);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideInFromTop 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.apple-redemption-success-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: #34C759;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.apple-redemption-success-content h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1D4E20;
+  margin: 0 0 2px 0;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
 }
 
-.applied-redemption-banner__content p {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.9);
+.apple-redemption-success-content p {
+  font-size: 13px;
+  color: #2D5A31;
   margin: 0;
   line-height: 1.4;
 }
@@ -232,6 +370,48 @@
 
 
 
+/* Medium screen adjustments for better button spacing */
+@media (max-width: 1600px) {
+  .apple-redemption-content .redemption-input-wrapper {
+    max-width: calc(100% - 150px); /* More space for medium screens */
+  }
+  
+  .apple-redemption-content .redemption-submit-btn {
+    width: 130px;
+    padding: 16px 16px;
+  }
+}
+
+@media (max-width: 1400px) {
+  .apple-redemption-content .redemption-input-wrapper {
+    max-width: calc(100% - 160px); /* Even more space for smaller desktop */
+  }
+  
+  .apple-redemption-content .redemption-submit-btn {
+    width: 140px;
+    padding: 16px 14px;
+  }
+}
+
+/* Tablet and mobile breakpoint */
+@media (max-width: 900px) {
+  .apple-redemption-content .redemption-input-container {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
+  
+  .apple-redemption-content .redemption-input-wrapper {
+    max-width: 100%;
+  }
+  
+  .apple-redemption-content .redemption-submit-btn {
+    width: 100%;
+    max-width: none;
+    padding: 14px 20px;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .subscription-plans-page {
@@ -279,17 +459,63 @@
     font-size: 14px;
   }
   
-  .applied-redemption-banner {
-    padding: 16px 20px;
-    gap: 12px;
+  /* Apple Redemption Mobile Styles */
+  .apple-redemption-card {
+    padding: 24px 20px;
+    border-radius: 20px;
+    margin: 0 auto;
   }
   
-  .applied-redemption-banner__content h4 {
+  .apple-redemption-header {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  
+  .apple-redemption-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+  
+  .apple-redemption-title {
+    font-size: 20px;
+  }
+  
+  .apple-redemption-subtitle {
     font-size: 14px;
   }
   
-  .applied-redemption-banner__content p {
-    font-size: 13px;
+  .apple-redemption-content .redemption-input-container {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
+  
+  .apple-redemption-content .redemption-input-wrapper {
+    max-width: 100%;
+  }
+  
+  .apple-redemption-content .redemption-input {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+  
+  .apple-redemption-content .redemption-submit-btn {
+    width: 100%;
+    max-width: none;
+    padding: 14px 20px;
+    min-width: auto;
+  }
+  
+  .apple-redemption-success {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+  
+  .apple-redemption-success-icon {
+    width: 28px;
+    height: 28px;
   }
 }
 
@@ -347,6 +573,47 @@
     margin-bottom: 20px;
   }
   
+  /* Apple Redemption Small Mobile Styles */
+  .apple-redemption-card {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+  
+  .apple-redemption-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  
+  .apple-redemption-icon {
+    align-self: center;
+    width: 44px;
+    height: 44px;
+  }
+  
+  .apple-redemption-title {
+    font-size: 18px;
+  }
+  
+  .apple-redemption-subtitle {
+    font-size: 13px;
+  }
+  
+  .apple-redemption-content .redemption-input-container {
+    gap: 6px;
+    padding: 6px;
+  }
+  
+  .apple-redemption-content .redemption-input {
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+  
+  .apple-redemption-content .redemption-submit-btn {
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+  
   .applied-redemption-banner {
     padding: 14px 16px;
     border-radius: 12px;
@@ -377,21 +644,60 @@
     box-shadow: 0 8px 32px rgba(10, 132, 255, 0.3);
   }
   
-  /* Redemption section dark mode */
-  .subscription-plans-redemption {
-    background: #1c1c1e;
-    border-color: #38383a;
+  /* Apple Redemption Dark Mode */
+  .apple-redemption-card {
+    background: rgba(28, 28, 30, 0.8);
+    border-color: rgba(84, 84, 88, 0.3);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 1px 2px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   
-  .subscription-plans-redemption__title {
-    color: rgba(235, 235, 245, 0.85);
+  .apple-redemption-card::before {
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.1) 20%, 
+      rgba(255, 255, 255, 0.1) 80%, 
+      transparent 100%);
   }
   
-  .subscription-plans-redemption__subtitle {
-    color: rgba(235, 235, 245, 0.60);
+  .apple-redemption-title {
+    color: rgba(235, 235, 245, 0.9);
   }
   
-  .applied-redemption-banner {
-    background: linear-gradient(135deg, #32D74B 0%, #30D158 100%);
+  .apple-redemption-subtitle {
+    color: rgba(235, 235, 245, 0.65);
+  }
+  
+  .apple-redemption-content .redemption-input-container {
+    background: rgba(58, 58, 60, 0.6);
+    border-color: rgba(84, 84, 88, 0.3);
+  }
+  
+  .apple-redemption-content .redemption-input {
+    color: rgba(235, 235, 245, 0.9);
+  }
+  
+  .apple-redemption-content .redemption-input:focus {
+    background: rgba(58, 58, 60, 0.8);
+    box-shadow: none;
+  }
+  
+  .apple-redemption-content .redemption-input::placeholder {
+    color: rgba(235, 235, 245, 0.4);
+  }
+  
+  .apple-redemption-success {
+    background: rgba(48, 209, 88, 0.15);
+    border-color: rgba(48, 209, 88, 0.3);
+  }
+  
+  .apple-redemption-success-content h4 {
+    color: #32D74B;
+  }
+  
+  .apple-redemption-success-content p {
+    color: rgba(50, 215, 75, 0.8);
   }
 }

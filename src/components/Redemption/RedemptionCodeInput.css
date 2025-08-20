@@ -32,7 +32,8 @@
 .redemption-input {
     width: 100%;
     padding: 12px 16px;
-    padding-right: 40px; /* Space for spinner/check icon */
+    padding-right: 40px;
+    /* Space for spinner/check icon */
     border: 2px solid #e5e7eb;
     border-radius: 8px;
     font-size: 16px;
@@ -46,7 +47,7 @@
 
 .redemption-input:focus {
     border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: none;
 }
 
 .redemption-input:disabled {
@@ -99,8 +100,13 @@
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Input Icons */
@@ -230,10 +236,86 @@
     margin-top: 1px;
 }
 
+.redemption-error-content {
+    flex: 1;
+}
+
 .redemption-error-message {
     font-size: 14px;
     color: #991b1b;
     line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.redemption-error-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.redemption-error-actions button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.redemption-upgrade-btn {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.redemption-upgrade-btn:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+}
+
+.redemption-payment-btn {
+    background-color: #10b981;
+    color: white;
+}
+
+.redemption-payment-btn:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+}
+
+.redemption-history-btn {
+    background-color: #6b7280;
+    color: white;
+}
+
+.redemption-history-btn:hover {
+    background-color: #4b5563;
+    transform: translateY(-1px);
+}
+
+.redemption-retry-btn {
+    background-color: #f59e0b;
+    color: white;
+}
+
+.redemption-retry-btn:hover {
+    background-color: #d97706;
+    transform: translateY(-1px);
+}
+
+.redemption-alternatives-btn {
+    background-color: #8b5cf6;
+    color: white;
+}
+
+.redemption-alternatives-btn:hover {
+    background-color: #7c3aed;
+    transform: translateY(-1px);
 }
 
 /* Success Display */
@@ -266,6 +348,7 @@
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -276,6 +359,7 @@
     from {
         opacity: 1;
     }
+
     to {
         opacity: 0;
     }
@@ -287,16 +371,17 @@
         flex-direction: column;
         gap: 8px;
     }
-    
+
     .redemption-submit-btn {
         width: 100%;
         min-width: auto;
     }
-    
+
     .redemption-input {
-        font-size: 16px; /* Prevent zoom on iOS */
+        font-size: 16px;
+        /* Prevent zoom on iOS */
     }
-    
+
     .redemption-preview,
     .redemption-error,
     .redemption-success {
@@ -311,13 +396,13 @@
         padding-right: 36px;
         font-size: 14px;
     }
-    
+
     .redemption-submit-btn {
         padding: 10px 20px;
         font-size: 13px;
         height: 42px;
     }
-    
+
     .redemption-input-spinner,
     .redemption-input-check {
         right: 10px;
@@ -331,31 +416,31 @@
         border-color: #374151;
         color: #f9fafb;
     }
-    
+
     .redemption-input:focus {
         border-color: #60a5fa;
-        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        box-shadow: none;
     }
-    
+
     .redemption-input::placeholder {
         color: #6b7280;
     }
-    
+
     .redemption-input:disabled {
         background-color: #111827;
         color: #4b5563;
     }
-    
+
     .redemption-input-wrapper--validating .redemption-input {
         background-color: #451a03;
         border-color: #f59e0b;
     }
-    
+
     .redemption-input-wrapper--success .redemption-input {
         background-color: #064e3b;
         border-color: #10b981;
     }
-    
+
     .redemption-input-wrapper--error .redemption-input {
         background-color: #7f1d1d;
         border-color: #ef4444;
@@ -367,11 +452,11 @@
     .redemption-input {
         border-width: 3px;
     }
-    
+
     .redemption-submit-btn {
         border: 2px solid transparent;
     }
-    
+
     .redemption-submit-btn:focus {
         border-color: #ffffff;
     }

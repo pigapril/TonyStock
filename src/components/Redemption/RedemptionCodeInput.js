@@ -618,8 +618,86 @@ export const RedemptionCodeInput = ({
                             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                         </svg>
                     </div>
-                    <div className="redemption-error-message">
-                        {redemptionService.formatErrorMessage(error, t)}
+                    <div className="redemption-error-content">
+                        <div className="redemption-error-message">
+                            {redemptionService.formatErrorMessage(error, t)}
+                        </div>
+                        
+                        {/* 根據錯誤類型顯示相應的行動按鈕 */}
+                        {error.data?.details?.upgradeRequired && (
+                            <div className="redemption-error-actions">
+                                <button 
+                                    className="redemption-upgrade-btn"
+                                    onClick={() => {
+                                        // 導航到升級頁面
+                                        window.location.href = '/subscription';
+                                    }}
+                                >
+                                    {error.data.details.eligiblePlanNames ? 
+                                        t('redemption.actions.upgrade_to_plan', { planName: error.data.details.eligiblePlanNames }) :
+                                        t('redemption.actions.upgrade_plan')
+                                    }
+                                </button>
+                            </div>
+                        )}
+                        
+                        {error.errorCode === 'PAYMENT_METHOD_REQUIRED' && (
+                            <div className="redemption-error-actions">
+                                <button 
+                                    className="redemption-payment-btn"
+                                    onClick={() => {
+                                        // 導航到付款設定頁面
+                                        window.location.href = '/account/payment';
+                                    }}
+                                >
+                                    {t('redemption.actions.bind_payment')}
+                                </button>
+                            </div>
+                        )}
+                        
+                        {(error.errorCode === 'USER_LIMIT_EXCEEDED' || error.errorCode === 'ALREADY_REDEEMED') && (
+                            <div className="redemption-error-actions">
+                                <button 
+                                    className="redemption-history-btn"
+                                    onClick={() => {
+                                        // 導航到兌換記錄頁面
+                                        window.location.href = '/account/redemption-history';
+                                    }}
+                                >
+                                    {t('redemption.actions.view_history')}
+                                </button>
+                            </div>
+                        )}
+                        
+                        {error.errorCode === 'CODE_NOT_FOUND' && (
+                            <div className="redemption-error-actions">
+                                <button 
+                                    className="redemption-retry-btn"
+                                    onClick={() => {
+                                        setCode('');
+                                        setError(null);
+                                        // 聚焦到輸入框
+                                        document.querySelector('.redemption-input')?.focus();
+                                    }}
+                                >
+                                    {t('redemption.actions.retry_input')}
+                                </button>
+                            </div>
+                        )}
+                        
+                        {(error.errorCode === 'CODE_EXPIRED' || error.errorCode === 'CODE_EXHAUSTED') && (
+                            <div className="redemption-error-actions">
+                                <button 
+                                    className="redemption-alternatives-btn"
+                                    onClick={() => {
+                                        // 導航到優惠頁面
+                                        window.location.href = '/promotions';
+                                    }}
+                                >
+                                    {t('redemption.actions.view_alternatives')}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

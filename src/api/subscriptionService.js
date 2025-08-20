@@ -132,9 +132,9 @@ class SubscriptionService {
         planType: newPlanType,
         paymentResult: paymentResult // 保留未來付款結果的參數
       };
-      
+
       console.log('📤 Sending request data:', requestData);
-      
+
       const response = await csrfClient.put('/api/auth/plan', requestData);
 
       console.log('Plan update response:', {

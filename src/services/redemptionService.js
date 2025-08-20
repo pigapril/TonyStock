@@ -347,10 +347,18 @@ class RedemptionService {
                     // Check if the code is actually valid
                     if (!validationData.isValid) {
                         console.log('❌ Code is invalid, returning error');
+                        
+                        // 提取具體的錯誤類型
+                        const primaryError = validationData.errors && validationData.errors[0];
+                        const errorCode = primaryError?.type || 'INVALID_CODE';
+                        
+                        console.log('🔍 Primary error:', primaryError);
+                        console.log('🔍 Error code:', errorCode);
+                        
                         return {
                             success: false,
                             error: validationData.summary || response.data.message || 'Code is invalid',
-                            errorCode: 'INVALID_CODE',
+                            errorCode: errorCode,
                             data: validationData
                         };
                     }
@@ -496,16 +504,80 @@ class RedemptionService {
         if (!error) return t('redemption.errors.unknown');
 
         const errorCode = error.errorCode || 'UNKNOWN';
-        const translationKey = `redemption.errors.${errorCode.toLowerCase()}`;
         
-        // Try to get translated message, fallback to error message
+        // 處理特殊的錯誤類型，需要參數替換
+        if (error.data) {
+            // 檢查錯誤詳細信息的多個可能位置
+            const details = error.data.details || error.data;
+            const errors = error.data.errors || [];
+            const primaryError = errors[0];
+            
+            switch (errorCode) {
+                case 'PLAN_NOT_ELIGIBLE':
+                    // 嘗試從多個位置獲取方案名稱
+                    let eligiblePlanNames = null;
+                    
+                    if (primaryError?.details?.eligiblePlanNames) {
+                        eligiblePlanNames = primaryError.details.eligiblePlanNames;
+                    } else if (details.eligiblePlanNames) {
+                        eligiblePlanNames = details.eligiblePlanNames;
+                    } else if (primaryError?.details?.eligiblePlans) {
+                        // 如果沒有友好名稱，使用原始方案名稱
+                        const planNames = { 'free': '免費', 'pro': 'Pro', 'ultra': 'Ultra' };
+                        eligiblePlanNames = primaryError.details.eligiblePlans
+                            .map(plan => planNames[plan] || plan)
+                            .join(' 或 ');
+                    }
+                    
+                    if (eligiblePlanNames) {
+                        return t('redemption.errors.plan_not_eligible', { 
+                            eligiblePlans: eligiblePlanNames 
+                        });
+                    }
+                    break;
+                    
+                case 'CODE_EXPIRED':
+                    if (details.expiryDate) {
+                        return t('redemption.errors.code_expired', { 
+                            expiryDate: details.expiryDate 
+                        });
+                    }
+                    break;
+                    
+                case 'CODE_NOT_YET_ACTIVE':
+                    if (details.activationDate) {
+                        return t('redemption.errors.code_not_active', { 
+                            activationDate: details.activationDate 
+                        });
+                    }
+                    break;
+                    
+                case 'RATE_LIMITED':
+                    if (details.retryAfter) {
+                        return t('redemption.errors.rate_limited', { 
+                            retryAfter: details.retryAfter 
+                        });
+                    }
+                    break;
+            }
+        }
+        
+        // 嘗試獲取翻譯信息
+        const translationKey = `redemption.errors.${errorCode.toLowerCase()}`;
         const translatedMessage = t(translationKey);
+        
+        // 如果找到翻譯，使用翻譯
         if (translationKey !== translatedMessage) {
             return translatedMessage;
         }
-
-        // Fallback to error message or generic message
-        return error.error || t('redemption.errors.unknown');
+        
+        // 嘗試使用後端返回的錯誤信息
+        if (error.error && error.error !== '無效的兌換代碼') {
+            return error.error;
+        }
+        
+        // 最後的備用信息
+        return t('redemption.errors.unknown');
     }
 
     /**
