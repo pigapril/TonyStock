@@ -24,13 +24,14 @@
 /* Input Wrapper */
 .redemption-input-wrapper {
     position: relative;
-    flex: 1;
+    flex: 0 0 280px;
     min-width: 0;
+    box-sizing: border-box;
 }
 
 /* Input Field */
 .redemption-input {
-    width: 100%;
+    width: 280px;
     padding: 12px 16px;
     padding-right: 40px;
     /* Space for spinner/check icon */
@@ -43,6 +44,7 @@
     background-color: #ffffff;
     transition: all 0.2s ease-in-out;
     outline: none;
+    box-sizing: border-box;
 }
 
 .redemption-input:focus {
@@ -372,14 +374,19 @@
         gap: 8px;
     }
 
-    .redemption-submit-btn {
-        width: 100%;
-        min-width: auto;
+    .redemption-input-wrapper {
+        flex: 1 1 auto;
     }
 
     .redemption-input {
+        width: 100%;
         font-size: 16px;
         /* Prevent zoom on iOS */
+    }
+
+    .redemption-submit-btn {
+        width: 100%;
+        min-width: auto;
     }
 
     .redemption-preview,
@@ -392,6 +399,7 @@
 
 @media (max-width: 480px) {
     .redemption-input {
+        width: 100%;
         padding: 10px 14px;
         padding-right: 36px;
         font-size: 14px;
