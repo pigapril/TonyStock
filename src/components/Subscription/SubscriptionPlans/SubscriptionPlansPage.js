@@ -60,8 +60,24 @@ export const SubscriptionPlansPage = () => {
     if (previewData?.benefits) {
       const adjustments = {};
       
+      // 檢查是否有目標方案限制
+      const targetPlan = previewData.targetPlan;
+      const hasTargetPlanRestriction = targetPlan && targetPlan !== 'all';
+      
       // Calculate plan adjustments based on redemption benefits
       availablePlans.forEach(plan => {
+        // 如果有目標方案限制，只對目標方案應用折扣
+        if (hasTargetPlanRestriction && plan.id !== targetPlan) {
+          // 對於非目標方案，不應用折扣
+          adjustments[plan.id] = {
+            originalPrice: plan.price?.[billingPeriod] || 0,
+            adjustedPrice: plan.price?.[billingPeriod] || 0,
+            discount: null,
+            benefits: null
+          };
+          return;
+        }
+        
         // 修復：使用正確的屬性名 plan.price 而不是 plan.pricing
         const originalPrice = plan.price?.[billingPeriod] || 0;
         let adjustedPrice = originalPrice;
@@ -104,7 +120,9 @@ export const SubscriptionPlansPage = () => {
         userId: user?.id,
         benefitType: previewData.benefits.type,
         discountAmount: previewData.benefits.discountAmount,
-        billingPeriod
+        billingPeriod,
+        targetPlan: targetPlan,
+        hasTargetPlanRestriction: hasTargetPlanRestriction
       });
     }
   };
