@@ -51,6 +51,7 @@ import CSRFExample from './components/Example/CSRFExample';
 import PaymentPage from './pages/PaymentPage';
 import PaymentFlowPage from './pages/PaymentFlowPage';
 import PaymentStatusPage from './pages/PaymentStatusPage';
+import { PaymentResult } from './components/Payment/PaymentResult/PaymentResult';
 import AdminPage from './pages/AdminPage';
 import AdminDiagnostic from './pages/AdminDiagnostic';
 
@@ -486,6 +487,7 @@ function AppContent() {
                   <PaymentStatusPage />
                 </ProtectedRoute>
               } />
+              <Route path="payment/result" element={<PaymentResult />} />
               <Route
                 path="google-trends/symbol/:symbol"
                 element={

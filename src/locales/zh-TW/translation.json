@@ -1532,6 +1532,40 @@
       "pci": "PCI DSS 合規",
       "secure": "安全付款環境",
       "privacy": "隱私資料保護"
+    },
+    "result": {
+      "loading": "處理中...",
+      "success": {
+        "title": "付款成功！",
+        "message": "恭喜！您的訂閱已成功啟用。"
+      },
+      "failure": {
+        "title": "付款失敗",
+        "message": "很抱歉，付款過程中發生錯誤。"
+      },
+      "details": "付款詳情",
+      "orderNumber": "訂單編號",
+      "amount": "付款金額",
+      "date": "付款時間",
+      "method": "付款方式",
+      "errorCode": "錯誤代碼",
+      "nextSteps": "接下來您可以",
+      "step1": "立即開始使用 Pro 功能",
+      "step2": "查看您的訂閱狀態",
+      "step3": "管理您的帳戶設定",
+      "suggestions": "建議您",
+      "suggestion1": "檢查信用卡資訊是否正確",
+      "suggestion2": "確認信用卡額度是否足夠",
+      "suggestion3": "稍後再試或聯繫客服",
+      "goToAccount": "查看我的帳戶",
+      "backToHome": "返回首頁",
+      "tryAgain": "重新選擇方案",
+      "autoRedirect": "5 秒後將自動跳轉到您的帳戶頁面...",
+      "clientReturn": {
+        "message": "您已從付款頁面返回。正在確認付款狀態..."
+      },
+      "queryError": "無法確認付款狀態，請聯繫客服。",
+      "noParams": "缺少付款資訊參數。"
     }
   },
   "invoice": {

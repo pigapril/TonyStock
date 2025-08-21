@@ -1,0 +1,322 @@
+.payment-result-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+}
+
+.payment-result-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 載入狀態 */
+.loading-spinner {
+    padding: 40px 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 圖示樣式 */
+.success-icon,
+.failure-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 30px;
+    animation: scaleIn 0.5s ease-out 0.3s both;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.success-icon svg,
+.failure-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* 標題樣式 */
+.result-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+.result-title.success {
+    color: #4CAF50;
+}
+
+.result-title.failure {
+    color: #f44336;
+}
+
+/* 訊息樣式 */
+.result-message {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    animation: fadeInUp 0.6s ease-out 0.5s both;
+}
+
+/* 付款詳情 */
+.payment-details {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 25px;
+    margin: 30px 0;
+    text-align: left;
+    animation: fadeInUp 0.6s ease-out 0.6s both;
+}
+
+.payment-details h3 {
+    color: #333;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-row .label {
+    font-weight: 500;
+    color: #666;
+}
+
+.detail-row .value {
+    font-weight: 600;
+    color: #333;
+    font-family: 'Courier New', monospace;
+}
+
+/* 下一步驟 / 建議 */
+.next-steps,
+.failure-suggestions {
+    background: #f0f7ff;
+    border-radius: 12px;
+    padding: 25px;
+    margin: 30px 0;
+    text-align: left;
+    animation: fadeInUp 0.6s ease-out 0.7s both;
+}
+
+.failure-suggestions {
+    background: #fff5f5;
+}
+
+.next-steps h3,
+.failure-suggestions h3 {
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.next-steps ul,
+.failure-suggestions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.next-steps li,
+.failure-suggestions li {
+    padding: 8px 0;
+    position: relative;
+    padding-left: 25px;
+}
+
+.next-steps li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.failure-suggestions li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #f44336;
+    font-weight: bold;
+}
+
+/* 按鈕樣式 */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 30px 0;
+    animation: fadeInUp 0.6s ease-out 0.8s both;
+}
+
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5a6fd8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+}
+
+/* 自動跳轉提示 */
+.auto-redirect-notice {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e8f4fd;
+    border-radius: 8px;
+    animation: fadeInUp 0.6s ease-out 0.9s both;
+}
+
+.auto-redirect-notice p {
+    margin: 0;
+    color: #0066cc;
+    font-size: 0.9rem;
+}
+
+/* 動畫延遲類 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .payment-result-card {
+        padding: 30px 20px;
+        margin: 10px;
+    }
+    
+    .result-title {
+        font-size: 2rem;
+    }
+    
+    .result-message {
+        font-size: 1.1rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 250px;
+    }
+    
+    .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .detail-row .value {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .payment-result-container {
+        padding: 10px;
+    }
+    
+    .payment-result-card {
+        padding: 25px 15px;
+    }
+    
+    .result-title {
+        font-size: 1.8rem;
+    }
+    
+    .success-icon,
+    .failure-icon {
+        width: 60px;
+        height: 60px;
+    }
+}
