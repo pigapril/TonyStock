@@ -7,6 +7,8 @@ import csrfClient from '../../utils/csrfClient';
 import { authDiagnostics } from '../../utils/authDiagnostics';
 import authInitFix from '../../utils/authInitFix';
 import authStateManager from '../../utils/authStateManager';
+import authPreloader from '../../utils/authPreloader';
+import authStateCache from '../../utils/authStateCache';
 
 export const AuthContext = createContext({
     user: null,
@@ -27,6 +29,7 @@ export function AuthProvider({ children }) {
     const [isGoogleInitialized, setIsGoogleInitialized] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [adminLoading, setAdminLoading] = useState(false);
+    const [preloadApplied, setPreloadApplied] = useState(false);
 
     const handleError = (error) => {
         const errorData = handleApiError(error);
@@ -100,6 +103,14 @@ export function AuthProvider({ children }) {
             if (csrfToken) {
                 csrfClient.setCSRFToken(csrfToken);
             }
+
+            // 保存認證狀態到快取
+            const authState = {
+                isAuthenticated: true,
+                user: userData,
+                timestamp: Date.now()
+            };
+            authStateCache.saveAuthState(authState);
 
             setTimeout(() => {
                 window.dispatchEvent(new CustomEvent('loginSuccess'));
@@ -209,23 +220,45 @@ export function AuthProvider({ children }) {
     const checkAuthStatus = useCallback(async () => {
         console.log('CheckAuthStatus initiated:', {
             currentCookies: document.cookie,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            preloadApplied
         });
 
         try {
-            // 確保認證初始化已完成（但不強制等待太久）
-            try {
-                await Promise.race([
-                    authInitFix.initialize(),
-                    new Promise(resolve => setTimeout(resolve, 2000)) // 增加到 2 秒
-                ]);
-            } catch (initError) {
-                console.warn('AuthInitFix initialization timeout or failed, proceeding anyway:', initError);
+            // 如果已經應用了預載入狀態，減少延遲
+            if (preloadApplied) {
+                console.log('🚀 AuthContext: Using fast check (preload applied)');
+                
+                // 快速檢查模式：減少延遲和初始化時間
+                try {
+                    await Promise.race([
+                        authInitFix.initialize(),
+                        new Promise(resolve => setTimeout(resolve, 500)) // 減少到 500ms
+                    ]);
+                } catch (initError) {
+                    console.warn('AuthInitFix initialization timeout (fast mode):', initError);
+                }
+                
+                // 減少延遲（因為已經有預載入狀態作為基礎）
+                const delay = Math.random() * 300 + 100; // 100-400ms 隨機延遲
+                await new Promise(resolve => setTimeout(resolve, delay));
+            } else {
+                // 正常模式：完整的初始化和延遲
+                console.log('🔄 AuthContext: Using normal check (no preload)');
+                
+                try {
+                    await Promise.race([
+                        authInitFix.initialize(),
+                        new Promise(resolve => setTimeout(resolve, 2000)) // 2 秒
+                    ]);
+                } catch (initError) {
+                    console.warn('AuthInitFix initialization timeout or failed, proceeding anyway:', initError);
+                }
+                
+                // 增加延遲避免觸發 IP 封鎖
+                const delay = Math.random() * 1000 + 500; // 500-1500ms 隨機延遲
+                await new Promise(resolve => setTimeout(resolve, delay));
             }
-            
-            // 增加延遲避免觸發 IP 封鎖
-            const delay = Math.random() * 1000 + 500; // 500-1500ms 隨機延遲
-            await new Promise(resolve => setTimeout(resolve, delay));
             
             const { user: userData } = await authService.checkStatus();
             console.log('CheckAuthStatus response:', {
@@ -235,6 +268,14 @@ export function AuthProvider({ children }) {
             });
 
             setUser(userData);
+
+            // 保存認證狀態到快取
+            const authState = {
+                isAuthenticated: !!userData,
+                user: userData,
+                timestamp: Date.now()
+            };
+            authStateCache.saveAuthState(authState);
             
             // 如果用戶已登入，嘗試初始化 CSRF token（如果還沒有的話）
             if (userData) {
@@ -317,10 +358,85 @@ export function AuthProvider({ children }) {
         }
     }, []);
 
-    // 初始化時檢查登入狀態
+    // 應用快取和預載入的認證狀態（如果可用）
     useEffect(() => {
-        checkAuthStatus();
-    }, [checkAuthStatus]);
+        const applyInitialState = async () => {
+            if (preloadApplied) return;
+
+            // 首先嘗試從快取載入狀態
+            const cachedState = authStateCache.loadAuthState();
+            if (cachedState) {
+                console.log('💾 AuthContext: Applying cached auth state:', {
+                    isAuthenticated: cachedState.isAuthenticated,
+                    hasUser: !!cachedState.user,
+                    source: cachedState.source,
+                    confidence: cachedState.confidence,
+                    cacheAge: cachedState.cacheAge
+                });
+
+                setUser(cachedState.user);
+                setLoading(false);
+                setPreloadApplied(true);
+
+                // 如果快取狀態需要刷新或信心度較低，在背景中進行檢查
+                if (cachedState.needsRefresh || cachedState.confidence === 'low' || cachedState.cacheAge > 60000) {
+                    console.log('🔄 AuthContext: Cache needs refresh, performing background check');
+                    setTimeout(() => {
+                        checkAuthStatus();
+                    }, 100);
+                }
+
+                return;
+            }
+
+            try {
+                // 如果沒有快取，嘗試獲取預載入狀態
+                const preloadedState = await authPreloader.waitForPreload(1000);
+                
+                if (preloadedState && preloadedState.confidence !== 'none') {
+                    console.log('🚀 AuthContext: Applying preloaded auth state:', {
+                        isAuthenticated: preloadedState.isAuthenticated,
+                        hasUser: !!preloadedState.user,
+                        source: preloadedState.source,
+                        confidence: preloadedState.confidence,
+                        preloadTime: preloadedState.preloadTime
+                    });
+
+                    setUser(preloadedState.user);
+                    setLoading(false);
+                    setPreloadApplied(true);
+
+                    // 保存到快取
+                    authStateCache.saveAuthState(preloadedState);
+
+                    // 如果預載入狀態信心度較低，在背景中進行完整檢查
+                    if (preloadedState.confidence === 'low' || preloadedState.source === 'preload_failed') {
+                        console.log('🔄 AuthContext: Preload confidence low, performing background check');
+                        setTimeout(() => {
+                            checkAuthStatus();
+                        }, 100);
+                    }
+
+                    return;
+                }
+            } catch (error) {
+                console.warn('⚠️ AuthContext: Failed to apply preloaded state:', error);
+            }
+
+            // 如果沒有快取或預載入狀態，進行正常檢查
+            console.log('🔄 AuthContext: No cached or preloaded state available, performing normal check');
+            checkAuthStatus();
+        };
+
+        applyInitialState();
+    }, [checkAuthStatus, preloadApplied]);
+
+    // 初始化時檢查登入狀態（僅在沒有應用預載入狀態時）
+    useEffect(() => {
+        if (!preloadApplied) {
+            checkAuthStatus();
+        }
+    }, [checkAuthStatus, preloadApplied]);
 
     // 當用戶狀態改變時檢查管理員狀態 - 修復無限循環
     useEffect(() => {
@@ -352,6 +468,9 @@ export function AuthProvider({ children }) {
             setLoading(false);
             setIsAdmin(false);
             setAdminLoading(false);
+
+            // 清除快取的認證狀態
+            authStateCache.clearAuthState();
             
             let identityServiceRevoked = false;
             if (window.google?.accounts?.id) {

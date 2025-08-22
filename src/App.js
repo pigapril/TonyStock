@@ -26,6 +26,7 @@ import PageContainer from './components/PageContainer/PageContainer';
 import { AuthDialog } from './components/Auth/AuthDialog';
 import { QuotaExceededDialog } from './components/Common/Dialog/QuotaExceededDialog';
 import { UserProfile } from './components/Auth/UserProfile';
+import { AuthStatusIndicator } from './components/Auth/AuthStatusIndicator';
 import { PageViewTracker } from './components/Common/PageViewTracker';
 import { About } from './components/About/About';
 import { Legal } from './components/Legal/Legal';
@@ -75,6 +76,7 @@ import { Analytics } from './utils/analytics';
 import { handleApiError } from './utils/errorHandler';
 import { initializeApiClient } from './api/setupApiClient';
 import authGuard from './utils/authGuard';
+import authPreloader from './utils/authPreloader';
 
 // 設定 ChartJS
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
@@ -144,8 +146,15 @@ function AppContent() {
     });
   }, [logout, showToast, openDialog, navigate, t]);
 
-  // 初始化認證守衛
+  // 初始化認證守衛和預載入器
   useEffect(() => {
+    // 確保認證預載入器已啟動
+    authPreloader.startPreload().then(() => {
+      console.log('🚀 App: Auth preloader completed');
+    }).catch(error => {
+      console.warn('⚠️ App: Auth preloader failed:', error);
+    });
+
     // 確保認證狀態在應用啟動時初始化
     authGuard.ensureAuthenticated().catch(error => {
       console.log('Authentication not available on app start:', error.message);
@@ -421,7 +430,7 @@ function AppContent() {
             {/* 使用者操作和選單按鈕 */}
             <div className="user-actions">
               <LanguageSwitcher />
-              {user ? <UserProfile /> : <button className="btn-primary" onClick={() => openDialog('auth')}>{t('userActions.login')}</button>}
+              <AuthStatusIndicator />
               {/* 只在手機版顯示漢堡選單 */}
               {isMobile && (
                 <div className="menu-toggle-wrapper">

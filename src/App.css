@@ -12,6 +12,59 @@ body {
   -webkit-text-size-adjust: none;  /* 防止 iOS 自動調整字體大小 */
 }
 
+/* 認證狀態骨架屏動畫 */
+@keyframes auth-skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.auth-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.skeleton-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: auth-skeleton-loading 1.5s infinite;
+}
+
+.skeleton-text {
+  width: 80px;
+  height: 16px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: auth-skeleton-loading 1.5s infinite;
+}
+
+@media (max-width: 768px) {
+  .auth-skeleton {
+    padding: 6px 12px;
+  }
+  
+  .skeleton-avatar {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .skeleton-text {
+    width: 60px;
+    height: 14px;
+  }
+}
+
 .App {
   display: flex;
   min-height: 100vh;
