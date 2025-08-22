@@ -1,19 +1,30 @@
 import React, { createContext, useState, useContext, useRef, useCallback, useEffect } from 'react';
 import { InterstitialAdModal } from './InterstitialAdModal'; // 引入 Modal
+import { useSubscription } from '../../Subscription/SubscriptionContext';
 
 // 1. 建立 Context
 const AdContext = createContext();
 
 // 2. 建立 Provider 元件
 export const AdProvider = ({ children }) => {
+  const { userPlan } = useSubscription();
   const [showInterstitialAd, setShowInterstitialAd] = useState(false);
   const [isAdCooldownActive, setIsAdCooldownActive] = useState(false);
   const [clickCounts, setClickCounts] = useState({}); // 儲存不同來源的點擊次數 { source1: count, source2: count }
   const cooldownTimeoutRef = useRef(null);
   const COOLDOWN_DURATION = 120000; // 2 分鐘冷卻時間 (毫秒)
 
+  // 檢查是否為 Pro 用戶
+  const isProUser = userPlan?.type === 'pro' || userPlan?.type === 'premium';
+
   // 請求顯示廣告的函數
   const requestAdDisplay = useCallback((triggerSource, threshold, ignoreCooldown = false) => {
+    // Pro 用戶不顯示插頁廣告
+    if (isProUser) {
+      console.log(`🚫 Interstitial ad blocked for Pro user. Source: ${triggerSource}`);
+      return;
+    }
+
     // 更新特定來源的點擊次數
     const newCount = (clickCounts[triggerSource] || 0) + 1;
     setClickCounts(prevCounts => ({
@@ -58,7 +69,7 @@ export const AdProvider = ({ children }) => {
     } else if (!thresholdMet) {
       console.log(`Threshold not met for ${triggerSource}. Current count: ${newCount}`);
     }
-  }, [clickCounts, isAdCooldownActive, COOLDOWN_DURATION]); // 依賴項
+  }, [clickCounts, isAdCooldownActive, COOLDOWN_DURATION, isProUser]); // 依賴項
 
   // 關閉廣告的函數
   const closeAd = useCallback(() => {
@@ -80,6 +91,7 @@ export const AdProvider = ({ children }) => {
   const value = {
     requestAdDisplay,
     closeAd,
+    isProUser, // 暴露 Pro 用戶狀態供其他組件使用
     // 注意：我們不在這裡直接暴露 showInterstitialAd，
     // 因為 Modal 的渲染會在 Provider 內部處理，或者在 App 層處理
   };
@@ -87,8 +99,8 @@ export const AdProvider = ({ children }) => {
   return (
     <AdContext.Provider value={value}>
       {children}
-      {/* 在 Provider 內部直接渲染 Modal */}
-      {showInterstitialAd && <InterstitialAdModal onClose={closeAd} />}
+      {/* 只有非 Pro 用戶才渲染 Modal */}
+      {!isProUser && showInterstitialAd && <InterstitialAdModal onClose={closeAd} />}
     </AdContext.Provider>
   );
 };

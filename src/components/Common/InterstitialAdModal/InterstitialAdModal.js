@@ -1,16 +1,27 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
+import { useSubscription } from '../../Subscription/SubscriptionContext';
 import './InterstitialAdModal.css'; // 我們需要創建這個 CSS 檔案
 
 export function InterstitialAdModal({ onClose }) {
   const { t } = useTranslation(); // 2. Initialize t function
+  const { userPlan } = useSubscription();
   const [isCloseButtonVisible, setIsCloseButtonVisible] = useState(false); // 狀態：控制按鈕可見性
   const adInsRef = useRef(null); // Ref：獲取 <ins> 元素的引用
   const observerRef = useRef(null); // Ref：保存 MutationObserver 實例以便清理
   const timeoutRef = useRef(null); // Ref：保存 fallback 計時器 ID 以便清理
 
+  // 檢查是否為 Pro 用戶
+  const isProUser = userPlan?.type === 'pro' || userPlan?.type === 'premium';
+
   // 使用 useEffect 來確保 AdSense 代碼在元件掛載後執行
   useEffect(() => {
+    // 如果是 Pro 用戶，不執行廣告相關邏輯
+    if (isProUser) {
+      console.log('🚫 InterstitialAdModal blocked for Pro user');
+      return;
+    }
+
     try {
       // 檢查 adsbygoogle 是否已存在，如果不存在則初始化
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -18,10 +29,14 @@ export function InterstitialAdModal({ onClose }) {
     } catch (e) {
       console.error('Error pushing AdSense ad:', e);
     }
-  }, []); // 空依賴數組確保只執行一次
+  }, [isProUser]); // 依賴 isProUser
 
   // Effect 2: 監測廣告載入並顯示關閉按鈕
   useEffect(() => {
+    // 如果是 Pro 用戶，不執行廣告監測邏輯
+    if (isProUser) {
+      return;
+    }
     const adInsElement = adInsRef.current;
     if (!adInsElement) return; // 如果 ref 不存在則退出
 
@@ -87,7 +102,12 @@ export function InterstitialAdModal({ onClose }) {
       }
       console.log('Ad observer and timeout cleaned up.');
     };
-  }, []); // 空依賴數組，僅在掛載時執行一次
+  }, [isProUser]); // 依賴 isProUser
+
+  // Pro 用戶不應該看到這個組件
+  if (isProUser) {
+    return null;
+  }
 
   // 刪除 handleOverlayClick 函數
 

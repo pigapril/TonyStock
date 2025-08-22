@@ -63,6 +63,9 @@ import { useAuth } from './components/Auth/useAuth';
 import { useDialog } from './components/Common/Dialog/useDialog';
 import { useNewFeatureNotification, FEATURES } from './components/NewFeatureBadge/useNewFeatureNotification';
 import { AdProvider } from './components/Common/InterstitialAdModal/AdContext';
+import { useSubscription } from './components/Subscription/SubscriptionContext';
+import adBlockingService from './services/adBlockingService';
+import ConditionalAdSense from './components/Common/ConditionalAdSense/ConditionalAdSense';
 import { useToastManager } from './components/Watchlist/hooks/useToastManager';
 import { Toast } from './components/Watchlist/components/Toast';
 // import AdminNavigation from './components/Common/AdminNavigation'; // 移除以提高安全性
@@ -90,6 +93,7 @@ function AppContent() {
   const { lang } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useAuth();
+  const { userPlan } = useSubscription();
   const { openDialog } = useDialog();
   const { showToast, toast, hideToast } = useToastManager();
   const {
@@ -117,6 +121,17 @@ function AppContent() {
       navigate(`/${i18n.options.fallbackLng}${currentPathWithoutLang || '/'}`, { replace: true });
     }
   }, [lang, i18n, navigate, location.pathname]);
+
+  // 廣告阻擋邏輯 - 根據用戶訂閱狀態
+  useEffect(() => {
+    const isProUser = userPlan?.type === 'pro' || userPlan?.type === 'premium';
+    adBlockingService.initialize(isProUser);
+    
+    return () => {
+      // 清理資源
+      adBlockingService.cleanup();
+    };
+  }, [userPlan]);
 
   // 初始化 API Client 攔截器
   useEffect(() => {
@@ -539,9 +554,10 @@ function AppContent() {
       </div>
       <AuthDialog />
       <QuotaExceededDialog />
+      {/* 條件式 AdSense 載入 */}
+      <ConditionalAdSense />
       {/* 根據是否為首頁決定是否渲染 AdBanner */}
-      {/* AdBanner 已隱藏 */}
-      {/* {!isHomePage && <AdBanner />} */}
+      {!isHomePage && <AdBanner />}
 
       {/* Global Toast for API Client error handling */}
       {toast && (

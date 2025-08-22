@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import './AdBanner.css';
 import { useMediaQuery } from 'react-responsive';
+import { useSubscription } from '../../Subscription/SubscriptionContext';
 
 export const AdBanner = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -11,6 +12,41 @@ export const AdBanner = () => {
   const collapseTimer = useRef(null);
   const location = useLocation();
   const bannerRef = useRef(null);
+  const { userPlan } = useSubscription();
+
+  // 檢查是否為 Pro 用戶
+  const isProUser = userPlan?.type === 'pro' || userPlan?.type === 'premium';
+
+  const adKey = `${location.pathname}-${isMobile}-${isTablet}-${isCollapsed}`;
+
+  // 所有 hooks 必須在條件判斷之前調用
+  useEffect(() => {
+    // 如果是 Pro 用戶，不執行廣告相關邏輯
+    if (isProUser) {
+      return;
+    }
+
+    // Only attempt to push ads if the banner is not collapsed
+    if (!isCollapsed) {
+      // Use a short timeout to let React finish DOM updates after key change
+      const timer = setTimeout(() => {
+        try {
+          console.log(`AdBanner: Attempting to push ad for key: ${adKey}`);
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (error) {
+          // Log errors, the "already have ads" error should be less frequent now
+          console.error("AdSense push error:", error);
+        }
+      }, 50); // 50ms delay might be sufficient
+      return () => clearTimeout(timer);
+    }
+    // This effect runs when the adKey changes
+  }, [adKey, isProUser, isCollapsed]);
+
+  // 如果是 Pro 用戶，不顯示廣告
+  if (isProUser) {
+    return null;
+  }
 
   const handleCollapse = () => {
     setIsCollapsed(true);
@@ -36,25 +72,7 @@ export const AdBanner = () => {
     }
   };
 
-  const adKey = `${location.pathname}-${isMobile}-${isTablet}-${isCollapsed}`;
 
-  useEffect(() => {
-    // Only attempt to push ads if the banner is not collapsed
-    if (!isCollapsed) {
-      // Use a short timeout to let React finish DOM updates after key change
-      const timer = setTimeout(() => {
-        try {
-          console.log(`AdBanner: Attempting to push ad for key: ${adKey}`);
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (error) {
-          // Log errors, the "already have ads" error should be less frequent now
-          console.error("AdSense push error:", error);
-        }
-      }, 50); // 50ms delay might be sufficient
-      return () => clearTimeout(timer);
-    }
-    // This effect runs when the adKey changes
-  }, [adKey]);
 
   return (
     <div className="ad-banner-container">

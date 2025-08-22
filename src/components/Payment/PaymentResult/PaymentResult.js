@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './PaymentResult.css';
 
@@ -7,8 +7,10 @@ export const PaymentResult = () => {
     const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
+    const { lang } = useParams();
     const [paymentInfo, setPaymentInfo] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [countdown, setCountdown] = useState(5);
 
     useEffect(() => {
         const initializePaymentResult = async () => {
@@ -75,16 +77,28 @@ export const PaymentResult = () => {
         initializePaymentResult();
     }, [location.search, navigate, t]);
 
+    // 付款成功後自動導向到用戶帳戶頁面
+    useEffect(() => {
+        if (paymentInfo?.isSuccess && countdown > 0) {
+            const timer = setTimeout(() => {
+                setCountdown(countdown - 1);
+            }, 1000);
+            return () => clearTimeout(timer);
+        } else if (paymentInfo?.isSuccess && countdown === 0) {
+            handleGoToAccount();
+        }
+    }, [paymentInfo, countdown]);
+
     const handleBackToHome = () => {
-        navigate('/');
+        navigate(`/${lang}`);
     };
 
     const handleGoToAccount = () => {
-        navigate('/user-account');
+        navigate(`/${lang}/user-account`);
     };
 
     const handleGoToPlans = () => {
-        navigate('/subscription-plans');
+        navigate(`/${lang}/subscription-plans`);
     };
 
     if (loading) {
@@ -171,6 +185,13 @@ export const PaymentResult = () => {
                             >
                                 {t('payment.result.backToHome', '返回首頁')}
                             </button>
+                        </div>
+
+                        {/* 自動導向提示 */}
+                        <div className="auto-redirect-notice">
+                            <p className="redirect-text">
+                                {t('payment.result.autoRedirect', `${countdown}秒後將自動跳轉到您的帳戶頁面...`)}
+                            </p>
                         </div>
 
 
