@@ -540,7 +540,8 @@ function AppContent() {
       <AuthDialog />
       <QuotaExceededDialog />
       {/* 根據是否為首頁決定是否渲染 AdBanner */}
-      {!isHomePage && <AdBanner />}
+      {/* AdBanner 已隱藏 */}
+      {/* {!isHomePage && <AdBanner />} */}
 
       {/* Global Toast for API Client error handling */}
       {toast && (
