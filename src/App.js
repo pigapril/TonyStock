@@ -310,20 +310,17 @@ function AppContent() {
                 </div>
               </NavLink>
             </li>
-            {/* 只有在 zh-TW 語系下顯示贊助連結 */}
-            {lang === 'zh-TW' && (
-              <li className="sidebar-item-7">
-                <NavLink
-                  to={`/${lang}/subscription-plans`}
-                  onClick={() => isMobile && setSidebarOpen(false)}
-                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                  aria-current={({ isActive }) => isActive ? "page" : undefined}
-                >
-                  <FaPiggyBank />
-                  <span>{t('nav.subscription')}</span>
-                </NavLink>
-              </li>
-            )}
+            <li className="sidebar-item-7">
+              <NavLink
+                to={`/${lang}/subscription-plans`}
+                onClick={() => isMobile && setSidebarOpen(false)}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
+                <FaPiggyBank />
+                <span>{t('nav.subscription')}</span>
+              </NavLink>
+            </li>
             {/* AdminNavigation 已移除以提高安全性 */}
             <li className="sidebar-item-8">
               <a
@@ -406,17 +403,14 @@ function AppContent() {
                 <FaChartBar />
                 <span>{t('nav.articles')}</span>
               </NavLink>
-              {/* 只有在 zh-TW 語系下顯示贊助連結 */}
-              {lang === 'zh-TW' && (
-                <NavLink
-                  to={`/${lang}/subscription-plans`}
-                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                  aria-current={({ isActive }) => isActive ? "page" : undefined}
-                >
-                  <FaPiggyBank />
-                  <span>{t('nav.subscription')}</span>
-                </NavLink>
-              )}
+              <NavLink
+                to={`/${lang}/subscription-plans`}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
+                <FaPiggyBank />
+                <span>{t('nav.subscription')}</span>
+              </NavLink>
               {/* AdminNavigation 已移除以提高安全性 */}
               <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
