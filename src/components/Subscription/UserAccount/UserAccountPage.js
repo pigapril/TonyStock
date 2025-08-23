@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../Auth/useAuth';
 import { useSubscription } from '../SubscriptionContext';
 import { PlanInfo } from './components/PlanInfo';
-import { UsageStats } from './components/UsageStats';
+// import { UsageStats } from './components/UsageStats'; // Hidden per user request
 import { SubscriptionHistory } from './components/SubscriptionHistory';
 import PaymentHistory from '../../Payment/PaymentHistory';
 import { RedemptionCodeInput } from '../../Redemption/RedemptionCodeInput';
@@ -178,13 +178,15 @@ export const UserAccountPage = () => {
             </div>
           </section>
 
-          {/* Usage Statistics Section */}
+          {/* Usage Statistics Section - Hidden per user request */}
+          {/* 
           <section className="user-account-section">
             <h2 className="user-account-section__title">
               {t('subscription.userAccount.usageStats')}
             </h2>
             <UsageStats stats={usageStats} loading={loading} />
           </section>
+          */}
 
           {/* Subscription History Section */}
           <section className="user-account-section">
