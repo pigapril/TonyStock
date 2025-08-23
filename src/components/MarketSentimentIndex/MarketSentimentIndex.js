@@ -681,15 +681,6 @@ const MarketSentimentIndex = () => {
                   <div className="panel-subtitle-container">
                     <p className="panel-subtitle">{t('marketSentiment.pageSubtitle')}</p>
                   </div>
-                  {/* ▼▼▼ panel-subtitle-container 已從此處剪下 ▼▼▼ */}
-                  {sentimentData && sentimentData.compositeScoreLastUpdate && (
-                    <div className="panel-last-update-time">
-                      {t('marketSentiment.lastUpdateLabel')}: {' '}
-                      {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString(
-                        currentLang === 'zh-TW' ? 'zh-TW' : 'en-US'
-                      )}
-                    </div>
-                  )}
                 </div>
 
                 <div className="gauge-sentiment-container">
@@ -701,7 +692,7 @@ const MarketSentimentIndex = () => {
                     showLastUpdate={false}
                   />
 
-                  {/* ▼▼▼ panel-subtitle-container 已貼到此處，現在在 gauge 容器內 ▼▼▼ */}
+                  {/* Current Market Sentiment 和 Last Update Time */}
                   <div className="panel-subtitle-container">
                     <span className="panel-subtitle">
                       {currentLang === 'zh-TW' ? '目前的股市情緒是：' : 'Current Market Sentiment:'}
@@ -709,6 +700,15 @@ const MarketSentimentIndex = () => {
                     <span className={`panel-sentiment-value sentiment-${sentimentData && sentimentData.totalScore != null ? getSentiment(Math.round(sentimentData.totalScore)).split('.').pop() : 'neutral'}`}>
                       {sentimentData && sentimentData.totalScore != null ? t(getSentiment(Math.round(sentimentData.totalScore))) : t('sentiment.neutral')}
                     </span>
+                    {/* Last Update Time - 在 Current Market Sentiment 下方 */}
+                    {sentimentData && sentimentData.compositeScoreLastUpdate && (
+                      <div className="panel-last-update-time">
+                        {t('marketSentiment.lastUpdateLabel')}: {' '}
+                        {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString(
+                          currentLang === 'zh-TW' ? 'zh-TW' : 'en-US'
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
 

@@ -5,147 +5,235 @@
   padding: 20px;
 }
 
-/* 左側面板標題設計 */
+/* 左側面板標題設計 - 蘋果風格優化 */
 .market-sentiment-view .left-panel .panel-header {
   text-align: center;
-  margin-bottom: 20px;
-  padding-bottom: 0;
+  margin-bottom: 24px;
+  padding: 0 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .market-sentiment-view .left-panel .panel-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 600;
   color: #1d1d1f;
-  margin: 0 0 18px 0;
+  margin: 0 0 12px 0;
   text-align: center;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.3;
+  letter-spacing: -0.022em;
+  line-height: 1.2;
   display: flex;
-  flex-direction: row;
-  gap: 8px;
+  flex-direction: column;
+  gap: 4px;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  transition: font-size 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
 }
 
 .market-sentiment-view .left-panel .panel-title-brand {
-  display: inline-block !important;
+  display: block !important;
   font-size: 1em;
-  font-weight: 700;
+  font-weight: 600;
+  color: #1d1d1f;
   visibility: visible !important;
   white-space: nowrap;
+  margin-bottom: 2px;
 }
 
 .market-sentiment-view .left-panel .panel-title-index {
-  display: inline-block !important;
-  font-size: 0.9em;
-  font-weight: 600;
-  opacity: 1;
+  display: block !important;
+  font-size: 0.85em;
+  font-weight: 500;
+  opacity: 0.8;
   visibility: visible !important;
-  color: #1d1d1f !important;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
+  color: #86868b !important;
   min-height: 1.2em;
-  line-height: 1.2;
+  line-height: 1.3;
   white-space: nowrap;
+  letter-spacing: -0.01em;
 }
 
-.market-sentiment-view .left-panel .panel-subtitle-container {
+/* Header 內的 subtitle container */
+.market-sentiment-view .left-panel .panel-header .panel-subtitle-container {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 15px;
-  margin-bottom: 20px;
+  margin: 0 0 8px 0;
+  padding: 0 8px;
+  width: 100%;
 }
 
-/* 新增：針對 gauge 後面的 sentiment 容器特殊定位 */
+/* Gauge 內的 subtitle container - 包含 Current Market Sentiment 和 Last Update Time */
 .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
   position: absolute;
-  bottom: 15%;
+  bottom: 3%;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
   width: 90%;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  /* 移除卡片效果 */
+  background: none;
+  backdrop-filter: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  border: none;
 }
 
 /* 響應式調整：不同螢幕尺寸下的定位 */
 @media (max-width: 1023px) {
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
-    bottom: 12%;
+    bottom: -1% !important;
+    width: 92%;
+  }
+  
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
+    font-size: 0.65rem;
+    margin-top: 4px;
   }
 }
 
 @media (max-width: 768px) {
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
-    bottom: 10%;
-    width: 95%;
+    bottom: -3% !important;
+    width: 94%;
+  }
+  
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
+    font-size: 0.6rem;
+    margin-top: 3px;
+  }
+  
+  /* 為 768px 以下增加高度 */
+  .market-sentiment-view .left-panel {
+    min-height: 360px !important;
   }
 }
 
 @media (max-width: 480px) {
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
-    bottom: 8%;
+    bottom: -2% !important;
+    width: 96%;
+  }
+  
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
+    font-size: 0.55rem;
+    margin-top: 2px;
+  }
+  
+  /* 增加 left-panel 高度以容納下移的元素 */
+  .market-sentiment-view .left-panel {
+    min-height: 360px !important;
+  }
+}
+
+/* 額外的小螢幕調整 */
+@media (max-width: 390px) {
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
+    bottom: -1% !important;
     width: 98%;
+  }
+  
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
+    font-size: 0.5rem;
+    margin-top: 1px;
+  }
+  
+  /* 超小螢幕需要更多高度 */
+  .market-sentiment-view .left-panel {
+    min-height: 330px !important;
   }
 }
 
 .market-sentiment-view .left-panel .panel-subtitle {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 0.875rem;
+  color: #86868b;
   margin: 0;
   font-weight: 400;
-  opacity: 0.8;
-  line-height: 1.3;
+  line-height: 1.4;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 }
 
 .market-sentiment-view .left-panel .panel-sentiment-value {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.4;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 }
 
-.market-sentiment-view .left-panel .panel-last-update-time {
-  font-size: 0.75rem;
-  color: #666;
-  margin-top: 8px;
+/* Last Update Time - 在 gauge 容器內，Current Market Sentiment 下方 */
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
+  font-size: 0.7rem;
+  color: #86868b;
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  margin-top: 6px;
   text-align: center;
-  opacity: 0.8;
+  width: 100%;
+  /* 移除外框和背景 */
+  padding: 0;
+  border-radius: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+  white-space: nowrap;
+  z-index: 20;
 }
 
-/* 桌面版本確保水平佈局 */
+/* 桌面版本優化 - 蘋果風格 */
 @media (min-width: 1024px) {
-  .market-sentiment-view .left-panel .panel-title {
-    flex-direction: row;
-    gap: 8px;
+  .market-sentiment-view .left-panel .panel-header {
+    padding: 0 24px;
+    margin-bottom: 32px;
   }
 
-  .market-sentiment-view .left-panel .panel-title-brand,
-  .market-sentiment-view .left-panel .panel-title-index {
-    display: inline-block !important;
+  .market-sentiment-view .left-panel .panel-title {
+    font-size: 2rem;
+    margin-bottom: 16px;
   }
+
+  .market-sentiment-view .left-panel .panel-title-brand {
+    font-size: 1em;
+    margin-bottom: 4px;
+  }
+
+  .market-sentiment-view .left-panel .panel-title-index {
+    font-size: 0.8em;
+  }
+
+  /* Header 內的 subtitle container */
+
+
+  .market-sentiment-view .left-panel .panel-subtitle,
+  .market-sentiment-view .left-panel .panel-sentiment-value {
+    font-size: 0.9rem;
+  }
+
+
 }
 
 @media (max-width: 1023px) {
   .market-sentiment-view .left-panel .panel-header {
-    margin-bottom: 15px;
-    padding-bottom: 0;
+    margin-bottom: 20px;
+    padding: 0 20px;
   }
 
   .market-sentiment-view .left-panel .panel-title {
-    font-size: 1.4rem;
-    flex-direction: column;
-    gap: 4px;
+    font-size: 1.625rem;
+    margin-bottom: 10px;
   }
 
   .market-sentiment-view .left-panel .panel-title-brand {
@@ -154,33 +242,31 @@
   }
 
   .market-sentiment-view .left-panel .panel-title-index {
-    font-size: 0.85em !important;
+    font-size: 0.82em !important;
     display: block !important;
     visibility: visible !important;
   }
 
-  .market-sentiment-view .left-panel .panel-subtitle {
-    font-size: 0.85rem;
+  /* Header 內的 subtitle container */
+
+
+  .market-sentiment-view .left-panel .panel-subtitle,
+  .market-sentiment-view .left-panel .panel-sentiment-value {
+    font-size: 0.8rem;
   }
 
-  /* 平板端情緒值調整 */
-  .market-sentiment-view .left-panel .panel-sentiment-value {
-    padding: 7px 14px;
-    font-size: 0.9rem;
-    letter-spacing: 0.8px;
-  }
+
 }
 
 @media (max-width: 768px) {
   .market-sentiment-view .left-panel .panel-header {
-    margin-bottom: 12px;
-    padding-bottom: 0;
+    margin-bottom: 16px;
+    padding: 0 16px;
   }
 
   .market-sentiment-view .left-panel .panel-title {
-    font-size: 1.3rem;
-    flex-direction: column;
-    gap: 3px;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
   }
 
   .market-sentiment-view .left-panel .panel-title-brand {
@@ -194,23 +280,26 @@
     visibility: visible !important;
   }
 
-  .market-sentiment-view .left-panel .panel-subtitle {
-    font-size: 0.8rem;
+  /* Header 內的 subtitle container */
+
+
+  .market-sentiment-view .left-panel .panel-subtitle,
+  .market-sentiment-view .left-panel .panel-sentiment-value {
+    font-size: 0.75rem;
   }
 
-  /* 移動端情緒值調整 */
-  .market-sentiment-view .left-panel .panel-sentiment-value {
-    padding: 6px 12px;
-    font-size: 0.85rem;
-    letter-spacing: 0.5px;
-  }
+
 }
 
 @media (max-width: 480px) {
+  .market-sentiment-view .left-panel .panel-header {
+    margin-bottom: 12px;
+    padding: 0 12px;
+  }
+
   .market-sentiment-view .left-panel .panel-title {
-    font-size: 1.2rem;
-    flex-direction: column;
-    gap: 2px;
+    font-size: 1.375rem;
+    margin-bottom: 6px;
   }
 
   .market-sentiment-view .left-panel .panel-title-brand {
@@ -223,6 +312,16 @@
     display: block !important;
     visibility: visible !important;
   }
+
+  /* Header 內的 subtitle container */
+ 
+
+  .market-sentiment-view .left-panel .panel-subtitle,
+  .market-sentiment-view .left-panel .panel-sentiment-value {
+    font-size: 0.7rem;
+  }
+
+
 }
 
 .composite-score {
@@ -502,6 +601,7 @@
   flex-direction: column;
   min-height: 0;
   gap: 0;
+  position: relative; /* 為絕對定位的 last-update-time 提供定位上下文 */
 }
 
 /* 新增：創建一個包含 gauge 和 sentiment 的容器 */
@@ -1616,7 +1716,7 @@
   .market-sentiment-view .right-panel {
     flex: none;
     height: auto;
-    min-height: 300px;
+    min-height: 350px; /* 增加高度以容納下移的元素 */
   }
 
   .market-sentiment-view .left-panel .panel-header {
