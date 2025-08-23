@@ -453,18 +453,14 @@
     },
     "hero": {
       "title": "Master Market Sentiment",
-      "subtitle": "Use objective data,\njudge if the market is fearful or greedy,\novercome human weaknesses"
+      "subtitle": "Trade Smarter.\nOvercome Fear & Greed with Objective Data."
     },
     "feature1": {
       "title": "Price Trend Analysis",
       "text": "Utilize LOHAS Five-Line Analysis to capture ETF or individual stock price trends, improving entry and exit win rates.",
       "alt": "Price Trend Analysis"
     },
-    "feature2": {
-      "title": "My Watchlist",
-      "text": "Create your personal list to easily view the LOHAS Five-Line Analysis levels of multiple targets.",
-      "alt": "My Watchlist"
-    },
+
     "feature3": {
       "title": "Market Sentiment Indicators",
       "text": "Interpret market sentiment, overcome human weaknesses, and seize entry opportunities during market fear.",
@@ -472,6 +468,12 @@
     },
     "feature": {
       "link": "Free Trial"
+    },
+    "feature2": {
+      "title": "My Watchlist",
+      "text": "Create your personal list to easily view the LOHAS Five-Line Analysis levels of multiple targets.",
+      "alt": "My Watchlist",
+      "link": "Upgrade to Pro"
     },
     "cta": {
       "button": "Log in now to experience full features"

@@ -79,7 +79,7 @@ export const Home = () => {
               <div className="feature-content">
                 <h2>{t('home.feature1.title')}</h2>
                 <p>{t('home.feature1.text')}</p>
-                <Link to="/priceanalysis" className="feature-link">
+                <Link to={`/${currentLang}/priceanalysis`} className="feature-link">
                   {t('home.feature.link')} <span className="arrow">→</span>
                 </Link>
               </div>
@@ -99,16 +99,10 @@ export const Home = () => {
                 <h2>{t('home.feature2.title')}</h2>
                 <p>{t('home.feature2.text')}</p>
                 <Link
-                  to="/watchlist"
+                  to={`/${currentLang}/subscription-plans`}
                   className="feature-link"
-                  onClick={(e) => {
-                    if (!isAuthenticated) {
-                      e.preventDefault();
-                      openDialog('auth', { returnPath: '/watchlist' });
-                    }
-                  }}
                 >
-                  {t('home.feature.link')} <span className="arrow">→</span>
+                  {t('home.feature2.link')} <span className="arrow">→</span>
                 </Link>
               </div>
             </div>
@@ -126,7 +120,7 @@ export const Home = () => {
               <div className="feature-content">
                 <h2>{t('home.feature3.title')}</h2>
                 <p>{t('home.feature3.text')}</p>
-                <Link to="/market-sentiment" className="feature-link">
+                <Link to={`/${currentLang}/market-sentiment`} className="feature-link">
                   {t('home.feature.link')} <span className="arrow">→</span>
                 </Link>
               </div>

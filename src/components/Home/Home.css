@@ -108,7 +108,10 @@
   font-size: 2.2rem;
   font-weight: 600;
   margin-bottom: var(--space-m, 1rem);
-  color: var(--color-text-primary, #2c3e50);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .feature-content p {
