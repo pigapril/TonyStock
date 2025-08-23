@@ -589,8 +589,8 @@
   .price-analysis-view .content-layout-container {
     flex-direction: row;
     align-items: stretch; /* 讓子元素等高 */
-    height: 70vh; /* 設定固定高度，讓內部可以滾動 */
-    max-height: 70vh; /* 確保不超過此高度 */
+    height: 78vh; /* 設定固定高度，讓內部可以滾動 */
+    max-height: 78vh; /* 確保不超過此高度 */
   }
 
   /* 主要容器：現在只有 .dashboard */
@@ -654,7 +654,7 @@
 
 /* 底部說明區域 */
 .price-analysis-view .bottom-description-section {
-  margin-top: 40px;
+  margin-top: 20px;
   background-color: var(--color-bg-card, white);
   border-radius: var(--border-radius-large, 8px);
   box-shadow: var(--shadow-m, 0 2px 4px rgba(0,0,0,0.1));

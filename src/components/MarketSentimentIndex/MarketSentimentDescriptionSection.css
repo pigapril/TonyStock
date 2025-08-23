@@ -309,7 +309,7 @@
 /* 底部佈局：在所有螢幕尺寸下都顯示 */
 .market-sentiment-description-section.bottom-layout {
   display: block;
-  margin-top: 40px;
+  margin-top: 20px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
