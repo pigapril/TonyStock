@@ -203,7 +203,7 @@
 @media (min-width: 1024px) {
   .market-sentiment-view .left-panel .panel-header {
     padding: 0 24px;
-    margin-bottom: 32px;
+    margin-bottom: 15px;
   }
 
   .market-sentiment-view .left-panel .panel-title {
@@ -469,6 +469,8 @@
   height: 100%;
   width: 100%;
   flex-grow: 1;
+  min-height: 300px;
+  /* 設定圖表最小高度 */
 }
 
 .market-sentiment-view .indicator-chart-container {
@@ -596,6 +598,28 @@
     height: auto;
     /* Auto height based on content */
   }
+
+  /* 桌面版本增加內容區域高度 */
+  .market-sentiment-view .content-area {
+    min-height: 450px;
+    /* 桌面版本更大的最小高度 */
+  }
+
+  .market-sentiment-view .indicator-chart {
+    min-height: 380px;
+    /* 桌面版本圖表更大的最小高度，增加視覺效果 */
+  }
+  
+  /* 桌面版本組成視圖和列表的最小高度 */
+  .market-sentiment-view .composition-view {
+    min-height: 450px;
+    /* 與 content-area 一致 */
+  }
+  
+  .market-sentiment-view .composition-list {
+    min-height: 380px;
+    /* 與圖表高度一致 */
+  }
 }
 
 /* 左側面板樣式 */
@@ -679,7 +703,6 @@
 /* 右側面板的內容區域 */
 .market-sentiment-view .content-area {
   flex: 1;
-  min-height: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -1406,6 +1429,7 @@
   /* No scrolling - show all items */
   flex: 1;
   /* Take available space */
+  min-height: 300px; /* 設定最小高度 */
   box-sizing: border-box;
   /* Ensure padding doesn't add to max-height calculation issues */
 }
@@ -1709,6 +1733,7 @@
 /* 新增：組成視圖樣式 */
 .market-sentiment-view .composition-view {
   height: 100%;
+  min-height: 400px; /* 設定最小高度與 content-area 一致 */
   overflow-y: visible;
   /* No scrolling - show all items */
   display: flex;

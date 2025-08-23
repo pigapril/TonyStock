@@ -513,7 +513,7 @@
   },
   "marketSentiment": {
     "pageTitle": "Daily Updated Fear & Greed Index | Market Sentiment Analysis",
-    "pageSubtitle": "Integrating multiple indicators to objectively analyze market fear and greed levels",
+    "pageSubtitle": "A single, unified market indicator composed of multiple factors.",
     "pageDescription": "Daily track market fear and greed with our exclusive index. We aggregate key indicators like VIX, Put/Call Ratio, AAII survey, etc. to provide a comprehensive view of investor sentiment.",
     "keywords": "market sentiment, investor sentiment, fear greed index, VIX analysis, Put Call Ratio, stock market psychology, investment strategy, market indicators, sentiment tracking, Taiwan stock sentiment, US stock sentiment",
     "heading": "Market Sentiment Indicators Overview",
@@ -1077,12 +1077,12 @@
       "message": "Log in to create and manage your personal stock watchlist."
     },
     "pageTitle": "My Watchlist",
-    "pageSubtitle": "Track stocks you are interested in and quickly grasp the price sentiment of multiple targets",
-    "pageDescription": "Track stocks you are interested in and quickly grasp the price sentiment of multiple targets.",
+    "pageSubtitle": "Track your stocks and get a quick read on the market.",
+    "pageDescription": "Track your stocks and get a quick read on the market.",
     "keywords": "my watchlist, custom stocks, stock monitoring, market sentiment, price analysis",
     "jsonLd": {
       "name": "My Watchlist",
-      "description": "Track stocks you are interested in and grasp their price sentiment levels. Conveniently view the price levels of multiple stocks within their long-term trends to avoid buying high and selling low.",
+      "description": "Quickly grasp stock sentiment and see long-term trends to avoid buying high and selling low.",
       "url": "https://sentimentinsideout.com/watchlist",
       "potentialAction": {
         "@type": "SearchAction",
