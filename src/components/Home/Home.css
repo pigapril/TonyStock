@@ -16,11 +16,9 @@
   /* 2. 現代瀏覽器使用 image-set()，優先選擇 WebP，若無則用 PNG。
      漸層背景需要與 image-set() 一起定義在同一個 background 宣告中，
      因為它們共同構成背景圖層。 */
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-              image-set(
-                url('../../assets/images/home-top.webp') type('image/webp'), 
-                url('../../assets/images/home-top.png') type('image/png')
-              );
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    image-set(url('../../assets/images/home-top.webp') type('image/webp'),
+      url('../../assets/images/home-top.png') type('image/png'));
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -54,97 +52,174 @@
   padding: 0 20px;
   position: relative;
   z-index: 1;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-/* 特點區段（Feature Sections） */
-.feature-section {
+/* 特點區段（Feature Sections） - Apple Design Inspired */
+.home-page .features-wrapper {
+  background: linear-gradient(180deg,
+      var(--color-bg-page) 0%,
+      rgba(248, 249, 250, 0.6) 50%,
+      var(--color-bg-page) 100%);
+  padding: 120px 0;
+}
+
+.home-page .feature-section {
   position: relative;
-  min-height: 70vh;
+  padding: 80px 0;
+  margin: 0 auto;
+  max-width: 1200px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-xl, 60px) 0;
-  border-bottom: 1px solid var(--color-border-soft, #e0e0e0);
+  min-height: auto;
 }
 
-.feature-section:last-child {
-  border-bottom: none;
+.home-page .feature-section:not(:last-child) {
+  margin-bottom: 60px;
 }
 
-.feature-container {
-  display: flex;
+.home-page .feature-container {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 80px;
   align-items: center;
-  justify-content: center;
-  max-width: 1600px;
   width: 100%;
-  gap: var(--space-xl, 40px);
+  padding: 0 40px;
 }
 
-.feature-container.reverse {
-  flex-direction: row-reverse;
+/* 桌面版 - feature2 左右相反佈局，但保持圖片大小一致 */
+.home-page .feature-container.reverse {
+  grid-template-columns: 0.8fr 1.2fr;
 }
 
-.feature-media {
-  flex: 1;
-  max-width: 100%;
-  max-height: 100%;
+.home-page .feature-container.reverse .feature-media {
+  order: 2;
 }
 
-.feature-media img {
+.home-page .feature-container.reverse .feature-content {
+  order: 1;
+}
+
+
+
+.home-page .feature-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08),
+    0 8px 16px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.home-page .feature-media:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow:
+    0 32px 64px rgba(0, 0, 0, 0.12),
+    0 16px 32px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.home-page .feature-media img {
   width: 100%;
   height: auto;
-  border-radius: 10px;
-  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.feature-content {
-  flex: 1;
-  max-width: 30%;
-  padding: 20px;
+.home-page .feature-media:hover img {
+  transform: scale(1.05);
 }
 
-.feature-content h2 {
-  font-size: 2.2rem;
-  font-weight: 600;
-  margin-bottom: var(--space-m, 1rem);
+.home-page .feature-content {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.home-page .feature-content h2 {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 24px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  letter-spacing: -0.02em;
 }
 
-.feature-content p {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  margin-bottom: var(--space-l, 1.5rem);
-  color: var(--color-text-secondary, #555);
+.home-page .feature-content p {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 32px;
+  color: var(--color-text-secondary, #6b7280);
+  font-weight: 400;
+  max-width: 480px;
 }
 
-.feature-link {
-  display: inline-block;
-  background-color: var(--accent-color-blue, #3498db);
-  color: var(--color-bg-card, white);
-  padding: var(--space-s, 10px) var(--space-m, 20px);
-  border-radius: var(--border-radius-small, 5px);
+.home-page .feature-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #007aff 0%, #0056cc 100%);
+  color: white;
+  padding: 16px 32px;
+  border-radius: 50px;
   text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0,0,0,0.05));
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow:
+    0 8px 24px rgba(0, 122, 255, 0.3),
+    0 4px 12px rgba(0, 122, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  width: fit-content;
 }
 
-.feature-link .arrow {
-  transition: transform 0.3s ease;
+.home-page .feature-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
+  transition: left 0.6s;
 }
 
-.feature-link:hover .arrow {
-  transform: translateX(5px);
+.home-page .feature-link:hover::before {
+  left: 100%;
 }
 
-.feature-link:hover {
-  background-color: color-mix(in srgb, var(--accent-color-blue, #2980b9) 85%, black);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-s, 0 4px 8px rgba(0,0,0,0.1));
+.home-page .feature-link .arrow {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-size: 0.9rem;
+}
+
+.home-page .feature-link:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 16px 32px rgba(0, 122, 255, 0.4),
+    0 8px 16px rgba(0, 122, 255, 0.3);
+}
+
+.home-page .feature-link:hover .arrow {
+  transform: translateX(4px);
+}
+
+.home-page .feature-link:active {
+  transform: translateY(0) scale(0.98);
 }
 
 /* 行動呼籲區（CTA Section） */
@@ -164,24 +239,150 @@
   border-radius: var(--border-radius-medium, 8px);
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: var(--shadow-s, 0 3px 6px rgba(0,0,0,0.1));
+  box-shadow: var(--shadow-s, 0 3px 6px rgba(0, 0, 0, 0.1));
 }
 
 .cta-button:hover {
   background-color: color-mix(in srgb, var(--accent-color-blue, #2980b9) 85%, black);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-m, 0 5px 10px rgba(0,0,0,0.15));
+  box-shadow: var(--shadow-m, 0 5px 10px rgba(0, 0, 0, 0.15));
 }
 
-/* 響應式設計 */
-@media (max-width: 768px) {
+/* 響應式設計 - Apple Design System Approach */
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+  .home-page .feature-container {
+    gap: 120px;
+    padding: 0 60px;
+  }
+
+  .home-page .feature-container.reverse {
+    grid-template-columns: 0.8fr 1.2fr;
+  }
+
+  .home-page .feature-container.reverse .feature-media {
+    order: 2;
+  }
+
+  .home-page .feature-container.reverse .feature-content {
+    order: 1;
+  }
+
+  .home-page .feature-content h2 {
+    font-size: 4rem;
+  }
+
+  .home-page .feature-content p {
+    font-size: 1.375rem;
+  }
+}
+
+/* Desktop (1024px - 1439px) */
+@media (max-width: 1439px) and (min-width: 1024px) {
+  .home-page .feature-container {
+    gap: 60px;
+    padding: 0 40px;
+  }
+
+  .home-page .feature-container.reverse {
+    grid-template-columns: 0.8fr 1.2fr;
+  }
+
+  .home-page .feature-container.reverse .feature-media {
+    order: 2;
+  }
+
+  .home-page .feature-container.reverse .feature-content {
+    order: 1;
+  }
+}
+
+/* Tablet Landscape (834px - 1023px) */
+@media (max-width: 1023px) and (min-width: 834px) {
+  .home-page .features-wrapper {
+    padding: 80px 0;
+  }
+
+  .home-page .feature-section {
+    padding: 60px 0;
+  }
+
+  .home-page .feature-container {
+    gap: 48px;
+    padding: 0 32px;
+  }
+
+  .home-page .feature-container.reverse {
+    grid-template-columns: 0.8fr 1.2fr;
+  }
+
+  .home-page .feature-container.reverse .feature-media {
+    order: 2;
+  }
+
+  .home-page .feature-container.reverse .feature-content {
+    order: 1;
+  }
+
+  .home-page .feature-content h2 {
+    font-size: 2.75rem;
+  }
+
+  .home-page .feature-content p {
+    font-size: 1.125rem;
+  }
+}
+
+/* Tablet Portrait (768px - 833px) */
+@media (max-width: 833px) and (min-width: 768px) {
+  .home-page .features-wrapper {
+    padding: 60px 0;
+  }
+
+  .home-page .feature-section {
+    padding: 40px 0;
+  }
+
+  .home-page .feature-container,
+  .home-page .feature-container.reverse {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  /* 重置 reverse 的 order，讓所有 feature 都相同 */
+  .home-page .feature-container.reverse .feature-media,
+  .home-page .feature-container.reverse .feature-content {
+    order: unset;
+  }
+
+  .home-page .feature-content {
+    align-items: center;
+  }
+
+  .home-page .feature-content h2 {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  .home-page .feature-content p {
+    font-size: 1.125rem;
+    text-align: center;
+    max-width: 600px;
+  }
+}
+
+/* Mobile Large (430px - 767px) */
+@media (max-width: 767px) and (min-width: 430px) {
   .home-container {
     margin-top: -50px;
   }
 
   .hero-section {
     height: 60vh;
-    padding: 60px 15px;
+    padding: 60px 20px;
   }
 
   .hero-section h1 {
@@ -192,31 +393,58 @@
     font-size: 1.2rem;
   }
 
-  .feature-section {
-    min-height: auto;
-    padding: 40px 20px;
+  .home-page .features-wrapper {
+    padding: 40px 0;
   }
 
-  .feature-container {
-    flex-direction: column;
-    gap: 20px;
+  .home-page .feature-section {
+    padding: 32px 0;
   }
 
-  .feature-container.reverse {
-    flex-direction: column;
+  .home-page .feature-section:not(:last-child) {
+    margin-bottom: 32px;
   }
 
-  .feature-media,
-  .feature-content {
+  .home-page .feature-container,
+  .home-page .feature-container.reverse {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  /* 重置 reverse 的 order，讓所有 feature 都相同 */
+  .home-page .feature-container.reverse .feature-media,
+  .home-page .feature-container.reverse .feature-content {
+    order: unset;
+  }
+
+  .home-page .feature-media {
+    border-radius: 16px;
+    margin: 0 auto;
+    max-width: 400px;
+  }
+
+  .home-page .feature-content {
+    align-items: center;
+  }
+
+  .home-page .feature-content h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .home-page .feature-content p {
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 24px;
     max-width: 100%;
   }
 
-  .feature-content h2 {
-    font-size: 1.5rem;
-  }
-
-  .feature-content p {
-    font-size: 1rem;
+  .home-page .feature-link {
+    padding: 14px 28px;
+    font-size: 0.9rem;
   }
 
   .cta-section {
@@ -224,9 +452,97 @@
   }
 }
 
+/* Mobile Small (320px - 429px) */
+@media (max-width: 429px) {
+  .home-container {
+    margin-top: -50px;
+  }
+
+  .hero-section {
+    height: 50vh;
+    padding: 40px 16px;
+  }
+
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    padding: 0 16px;
+  }
+
+  .home-page .features-wrapper {
+    padding: 32px 0;
+  }
+
+  .home-page .feature-section {
+    padding: 24px 0;
+  }
+
+  .home-page .feature-section:not(:last-child) {
+    margin-bottom: 24px;
+  }
+
+  .home-page .feature-container,
+  .home-page .feature-container.reverse {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 0 16px;
+    text-align: center;
+  }
+
+  /* 重置 reverse 的 order，讓所有 feature 都相同 */
+  .home-page .feature-container.reverse .feature-media,
+  .home-page .feature-container.reverse .feature-content {
+    order: unset;
+  }
+
+  .home-page .feature-media {
+    border-radius: 12px;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
+  .home-page .feature-content {
+    align-items: center;
+  }
+
+  .home-page .feature-content h2 {
+    font-size: 1.75rem;
+    text-align: center;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .home-page .feature-content p {
+    font-size: 0.95rem;
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    max-width: 100%;
+  }
+
+  .home-page .feature-link {
+    padding: 12px 24px;
+    font-size: 0.85rem;
+    border-radius: 40px;
+  }
+
+  .cta-section {
+    padding: 32px 16px;
+  }
+
+  .scroll-arrow {
+    bottom: 40px;
+    font-size: 1.25rem;
+  }
+}
+
 /* 新增樣式來處理首頁特定的 main-content */
 .home-page .main-content {
-  margin-top: 0; /* 覆蓋原本的 margin-top */
+  margin-top: 0;
+  /* 覆蓋原本的 margin-top */
 }
 
 /* 覆蓋父元素的內邊距 */
@@ -234,6 +550,64 @@
   padding: 0;
   margin: 0;
   max-width: none;
+}
+
+/* 性能優化 - 硬體加速 */
+.home-page .feature-media,
+.home-page .feature-link {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 視差效果 - 微妙的深度感 */
+.home-page .feature-section:nth-child(even) {
+  background: linear-gradient(135deg,
+      rgba(248, 249, 250, 0.3) 0%,
+      rgba(255, 255, 255, 0.1) 100%);
+}
+
+/* 載入動畫 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home-page .feature-section {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.home-page .feature-section:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.home-page .feature-section:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* 減少動畫對於偏好減少動作的用戶 */
+@media (prefers-reduced-motion: reduce) {
+
+  .home-page .feature-media,
+  .home-page .feature-link,
+  .home-page .feature-section {
+    animation: none;
+    transition: none;
+  }
+
+  .home-page .feature-media:hover {
+    transform: none;
+  }
+
+  .home-page .feature-link:hover {
+    transform: none;
+  }
 }
 
 /* 添加動態箭頭樣式 */
@@ -257,6 +631,7 @@
 
 /* 箭頭動畫 */
 @keyframes bounce {
+
   0%,
   20%,
   50%,
@@ -264,9 +639,11 @@
   100% {
     transform: translateY(0) translateX(-50%);
   }
+
   40% {
     transform: translateY(-20px) translateX(-50%);
   }
+
   60% {
     transform: translateY(-10px) translateX(-50%);
   }

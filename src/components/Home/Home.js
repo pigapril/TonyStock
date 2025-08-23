@@ -67,65 +67,64 @@ export const Home = () => {
           </section>
 
           {/* 特點區段（Feature Sections） */}
-          <section className="feature-section feature1" id="features">
-            <div className="feature-container">
-              <div className="feature-media">
-                {/* **修改：使用 getImagePath 函數** */}
-                <picture>
-                  <source srcSet={getImagePath('home-feature1', 'webp')} type="image/webp" />
-                  <img src={getImagePath('home-feature1', 'png')} alt={t('home.feature1.alt')} />
-                </picture>
+          <div className="features-wrapper" id="features">
+            <section className="feature-section feature1">
+              <div className="feature-container">
+                <div className="feature-media">
+                  <picture>
+                    <source srcSet={getImagePath('home-feature1', 'webp')} type="image/webp" />
+                    <img src={getImagePath('home-feature1', 'png')} alt={t('home.feature1.alt')} />
+                  </picture>
+                </div>
+                <div className="feature-content">
+                  <h2>{t('home.feature1.title')}</h2>
+                  <p>{t('home.feature1.text')}</p>
+                  <Link to={`/${currentLang}/priceanalysis`} className="feature-link">
+                    {t('home.feature.link')} <span className="arrow">→</span>
+                  </Link>
+                </div>
               </div>
-              <div className="feature-content">
-                <h2>{t('home.feature1.title')}</h2>
-                <p>{t('home.feature1.text')}</p>
-                <Link to={`/${currentLang}/priceanalysis`} className="feature-link">
-                  {t('home.feature.link')} <span className="arrow">→</span>
-                </Link>
-              </div>
-            </div>
-          </section>
+            </section>
 
-          <section className="feature-section feature2">
-            <div className="feature-container reverse">
-              <div className="feature-media">
-                {/* **修改：使用 getImagePath 函數** */}
-                <picture>
-                  <source srcSet={getImagePath('home-feature2', 'webp')} type="image/webp" />
-                  <img src={getImagePath('home-feature2', 'png')} alt={t('home.feature2.alt')} />
-                </picture>
+            <section className="feature-section feature2">
+              <div className="feature-container reverse">
+                <div className="feature-media">
+                  <picture>
+                    <source srcSet={getImagePath('home-feature2', 'webp')} type="image/webp" />
+                    <img src={getImagePath('home-feature2', 'png')} alt={t('home.feature2.alt')} />
+                  </picture>
+                </div>
+                <div className="feature-content">
+                  <h2>{t('home.feature2.title')}</h2>
+                  <p>{t('home.feature2.text')}</p>
+                  <Link
+                    to={`/${currentLang}/subscription-plans`}
+                    className="feature-link"
+                  >
+                    {t('home.feature2.link')} <span className="arrow">→</span>
+                  </Link>
+                </div>
               </div>
-              <div className="feature-content">
-                <h2>{t('home.feature2.title')}</h2>
-                <p>{t('home.feature2.text')}</p>
-                <Link
-                  to={`/${currentLang}/subscription-plans`}
-                  className="feature-link"
-                >
-                  {t('home.feature2.link')} <span className="arrow">→</span>
-                </Link>
-              </div>
-            </div>
-          </section>
+            </section>
 
-          <section className="feature-section feature3">
-            <div className="feature-container">
-              <div className="feature-media">
-                {/* **修改：使用 getImagePath 函數** */}
-                <picture>
-                  <source srcSet={getImagePath('home-feature3', 'webp')} type="image/webp" />
-                  <img src={getImagePath('home-feature3', 'png')} alt={t('home.feature3.alt')} />
-                </picture>
+            <section className="feature-section feature3">
+              <div className="feature-container">
+                <div className="feature-media">
+                  <picture>
+                    <source srcSet={getImagePath('home-feature3', 'webp')} type="image/webp" />
+                    <img src={getImagePath('home-feature3', 'png')} alt={t('home.feature3.alt')} />
+                  </picture>
+                </div>
+                <div className="feature-content">
+                  <h2>{t('home.feature3.title')}</h2>
+                  <p>{t('home.feature3.text')}</p>
+                  <Link to={`/${currentLang}/market-sentiment`} className="feature-link">
+                    {t('home.feature.link')} <span className="arrow">→</span>
+                  </Link>
+                </div>
               </div>
-              <div className="feature-content">
-                <h2>{t('home.feature3.title')}</h2>
-                <p>{t('home.feature3.text')}</p>
-                <Link to={`/${currentLang}/market-sentiment`} className="feature-link">
-                  {t('home.feature.link')} <span className="arrow">→</span>
-                </Link>
-              </div>
-            </div>
-          </section>
+            </section>
+          </div>
 
           {/* 行動呼籲區（CTA Section） - 只在未登入時顯示 */}
           {!isAuthenticated && (
