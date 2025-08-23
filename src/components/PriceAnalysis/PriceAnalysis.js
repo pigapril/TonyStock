@@ -63,7 +63,7 @@ export function PriceAnalysis() {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const { showToast, toast, hideToast } = useToastManager();
   const { requestAdDisplay } = useAdContext(); // 從 Context 獲取函數
-  const { isAuthenticated } = useAuth(); // 新增：獲取認證狀態
+  const { isAuthenticated, user } = useAuth(); // 新增：獲取認證狀態和用戶資訊
   const { openDialog } = useDialog(); // 新增：獲取對話框功能
 
   // 檢查 Turnstile 功能是否啟用
@@ -133,6 +133,14 @@ export function PriceAnalysis() {
     );
     // 調用 debounced 函數來更新實際的 stockCode 狀態
     debouncedSetStockCode(convertedValue.toUpperCase());
+  };
+
+  // 新增：檢查股票代碼是否被允許
+  const isStockAllowed = (stockCode, userPlan = 'free') => {
+    if (userPlan === 'pro') return true; // Pro 用戶無限制
+    
+    const allowedStocks = ['0050', 'SPY', 'VOO'];
+    return allowedStocks.includes(stockCode.toUpperCase());
   };
 
   // 處理查詢期間輸入 (現在調用 debounced setter)
@@ -302,6 +310,20 @@ export function PriceAnalysis() {
       openDialog('auth', {
         returnPath: location.pathname,
         message: t('protectedRoute.loginRequired')
+      });
+      return;
+    }
+
+    // 新增：檢查股票代碼限制
+    const userPlan = user?.plan || 'free'; // 從 auth context 獲取實際用戶計劃
+    if (!isStockAllowed(displayStockCode, userPlan)) {
+      openDialog('quotaExceeded', {
+        feature: 'stockAccess',
+        currentPlan: userPlan,
+        message: t('priceAnalysis.errors.stockNotAllowed', { 
+          stockCode: displayStockCode,
+          allowedStocks: '0050, SPY, VOO'
+        })
       });
       return;
     }
@@ -500,7 +522,21 @@ export function PriceAnalysis() {
       return;
     }
 
+    // 新增：檢查股票代碼限制
+    const userPlan = user?.plan || 'free'; // 從 auth context 獲取實際用戶計劃
     const upperClickedCode = searchItem.keyword.toUpperCase();
+    if (!isStockAllowed(upperClickedCode, userPlan)) {
+      openDialog('quotaExceeded', {
+        feature: 'stockAccess',
+        currentPlan: userPlan,
+        message: t('priceAnalysis.errors.stockNotAllowed', { 
+          stockCode: upperClickedCode,
+          allowedStocks: '0050, SPY, VOO'
+        })
+      });
+      return;
+    }
+
     // 更新狀態以反映新的股票代碼
     setDisplayStockCode(upperClickedCode);
     setStockCode(upperClickedCode);

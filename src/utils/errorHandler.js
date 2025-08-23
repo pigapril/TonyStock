@@ -9,6 +9,10 @@ const determineErrorCode = (error, t) => {
     if (error.response?.data?.data?.errorCode) {
         errorCode = error.response.data.data.errorCode;
     }
+    // a2) API 回傳的錯誤格式 (檢查 error.code)
+    else if (error.response?.data?.error?.code) {
+        errorCode = error.response.data.error.code;
+    }
     // b) 前端直接拋出的錯誤 (檢查自定義 errorCode)
     else if (error.errorCode && typeof error.errorCode === 'string') {
         errorCode = error.errorCode;

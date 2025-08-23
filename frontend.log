@@ -1,0 +1,244 @@
+
+> frontend@0.1.0 start
+> react-scripts start
+
+(node:68220) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[HPM] Proxy created: /  -> http://localhost:5001
+[HPM] Subscribed to http-proxy events: [ 'error', 'close' ]
+(node:68220) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:68220) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://192.168.1.109:3000
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/PriceAnalysis/PriceAnalysis.js
+  Line 21:8:    'AdSense' is defined but never used                                                                              no-unused-vars
+  Line 44:7:    'MemoizedExpandableDescription' is assigned a value but never used                                               no-unused-vars
+  Line 73:9:    'initialStockCode' is assigned a value but never used                                                            no-unused-vars
+  Line 74:9:    'initialYears' is assigned a value but never used                                                                no-unused-vars
+  Line 75:9:    'initialBackTestDate' is assigned a value but never used                                                         no-unused-vars
+  Line 78:10:   'stockCode' is assigned a value but never used                                                                   no-unused-vars
+  Line 100:30:  'setAnalysisClickCount' is assigned a value but never used                                                       no-unused-vars
+  Line 101:10:  'showInterstitialAd' is assigned a value but never used                                                          no-unused-vars
+  Line 101:30:  'setShowInterstitialAd' is assigned a value but never used                                                       no-unused-vars
+  Line 102:9:   'AD_DISPLAY_THRESHOLD' is assigned a value but never used                                                        no-unused-vars
+  Line 103:30:  'setIsAdCooldownActive' is assigned a value but never used                                                       no-unused-vars
+  Line 104:9:   'cooldownTimeoutRef' is assigned a value but never used                                                          no-unused-vars
+  Line 250:19:  'trendLine' is assigned a value but never used                                                                   no-unused-vars
+  Line 294:6:   React Hook useCallback has a missing dependency: 'openDialog'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 661:9:   'expandableSections' is assigned a value but never used                                                          no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/PriceAnalysis/PriceAnalysis.js
+  Line 21:8:    'AdSense' is defined but never used                                                                              no-unused-vars
+  Line 44:7:    'MemoizedExpandableDescription' is assigned a value but never used                                               no-unused-vars
+  Line 73:9:    'initialStockCode' is assigned a value but never used                                                            no-unused-vars
+  Line 74:9:    'initialYears' is assigned a value but never used                                                                no-unused-vars
+  Line 75:9:    'initialBackTestDate' is assigned a value but never used                                                         no-unused-vars
+  Line 78:10:   'stockCode' is assigned a value but never used                                                                   no-unused-vars
+  Line 100:30:  'setAnalysisClickCount' is assigned a value but never used                                                       no-unused-vars
+  Line 101:10:  'showInterstitialAd' is assigned a value but never used                                                          no-unused-vars
+  Line 101:30:  'setShowInterstitialAd' is assigned a value but never used                                                       no-unused-vars
+  Line 102:9:   'AD_DISPLAY_THRESHOLD' is assigned a value but never used                                                        no-unused-vars
+  Line 103:30:  'setIsAdCooldownActive' is assigned a value but never used                                                       no-unused-vars
+  Line 104:9:   'cooldownTimeoutRef' is assigned a value but never used                                                          no-unused-vars
+  Line 250:19:  'trendLine' is assigned a value but never used                                                                   no-unused-vars
+  Line 294:6:   React Hook useCallback has a missing dependency: 'openDialog'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 661:9:   'expandableSections' is assigned a value but never used                                                          no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/PriceAnalysis/PriceAnalysis.js
+  Line 21:8:    'AdSense' is defined but never used                                                                              no-unused-vars
+  Line 44:7:    'MemoizedExpandableDescription' is assigned a value but never used                                               no-unused-vars
+  Line 73:9:    'initialStockCode' is assigned a value but never used                                                            no-unused-vars
+  Line 74:9:    'initialYears' is assigned a value but never used                                                                no-unused-vars
+  Line 75:9:    'initialBackTestDate' is assigned a value but never used                                                         no-unused-vars
+  Line 78:10:   'stockCode' is assigned a value but never used                                                                   no-unused-vars
+  Line 100:30:  'setAnalysisClickCount' is assigned a value but never used                                                       no-unused-vars
+  Line 101:10:  'showInterstitialAd' is assigned a value but never used                                                          no-unused-vars
+  Line 101:30:  'setShowInterstitialAd' is assigned a value but never used                                                       no-unused-vars
+  Line 102:9:   'AD_DISPLAY_THRESHOLD' is assigned a value but never used                                                        no-unused-vars
+  Line 103:30:  'setIsAdCooldownActive' is assigned a value but never used                                                       no-unused-vars
+  Line 104:9:   'cooldownTimeoutRef' is assigned a value but never used                                                          no-unused-vars
+  Line 250:19:  'trendLine' is assigned a value but never used                                                                   no-unused-vars
+  Line 294:6:   React Hook useCallback has a missing dependency: 'openDialog'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 661:9:   'expandableSections' is assigned a value but never used                                                          no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/PriceAnalysis/PriceAnalysis.js
+  Line 21:8:    'AdSense' is defined but never used                                                                              no-unused-vars
+  Line 44:7:    'MemoizedExpandableDescription' is assigned a value but never used                                               no-unused-vars
+  Line 73:9:    'initialStockCode' is assigned a value but never used                                                            no-unused-vars
+  Line 74:9:    'initialYears' is assigned a value but never used                                                                no-unused-vars
+  Line 75:9:    'initialBackTestDate' is assigned a value but never used                                                         no-unused-vars
+  Line 78:10:   'stockCode' is assigned a value but never used                                                                   no-unused-vars
+  Line 100:30:  'setAnalysisClickCount' is assigned a value but never used                                                       no-unused-vars
+  Line 101:10:  'showInterstitialAd' is assigned a value but never used                                                          no-unused-vars
+  Line 101:30:  'setShowInterstitialAd' is assigned a value but never used                                                       no-unused-vars
+  Line 102:9:   'AD_DISPLAY_THRESHOLD' is assigned a value but never used                                                        no-unused-vars
+  Line 103:30:  'setIsAdCooldownActive' is assigned a value but never used                                                       no-unused-vars
+  Line 104:9:   'cooldownTimeoutRef' is assigned a value but never used                                                          no-unused-vars
+  Line 250:19:  'trendLine' is assigned a value but never used                                                                   no-unused-vars
+  Line 294:6:   React Hook useCallback has a missing dependency: 'openDialog'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 661:9:   'expandableSections' is assigned a value but never used                                                          no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/PriceAnalysis/PriceAnalysis.js
+  Line 21:8:    'AdSense' is defined but never used                                                                              no-unused-vars
+  Line 44:7:    'MemoizedExpandableDescription' is assigned a value but never used                                               no-unused-vars
+  Line 73:9:    'initialStockCode' is assigned a value but never used                                                            no-unused-vars
+  Line 74:9:    'initialYears' is assigned a value but never used                                                                no-unused-vars
+  Line 75:9:    'initialBackTestDate' is assigned a value but never used                                                         no-unused-vars
+  Line 78:10:   'stockCode' is assigned a value but never used                                                                   no-unused-vars
+  Line 100:30:  'setAnalysisClickCount' is assigned a value but never used                                                       no-unused-vars
+  Line 101:10:  'showInterstitialAd' is assigned a value but never used                                                          no-unused-vars
+  Line 101:30:  'setShowInterstitialAd' is assigned a value but never used                                                       no-unused-vars
+  Line 102:9:   'AD_DISPLAY_THRESHOLD' is assigned a value but never used                                                        no-unused-vars
+  Line 103:30:  'setIsAdCooldownActive' is assigned a value but never used                                                       no-unused-vars
+  Line 104:9:   'cooldownTimeoutRef' is assigned a value but never used                                                          no-unused-vars
+  Line 250:19:  'trendLine' is assigned a value but never used                                                                   no-unused-vars
+  Line 294:6:   React Hook useCallback has a missing dependency: 'openDialog'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 661:9:   'expandableSections' is assigned a value but never used                                                          no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/PriceAnalysis/PriceAnalysis.js
+  Line 21:8:    'AdSense' is defined but never used                                                                              no-unused-vars
+  Line 44:7:    'MemoizedExpandableDescription' is assigned a value but never used                                               no-unused-vars
+  Line 73:9:    'initialStockCode' is assigned a value but never used                                                            no-unused-vars
+  Line 74:9:    'initialYears' is assigned a value but never used                                                                no-unused-vars
+  Line 75:9:    'initialBackTestDate' is assigned a value but never used                                                         no-unused-vars
+  Line 78:10:   'stockCode' is assigned a value but never used                                                                   no-unused-vars
+  Line 100:30:  'setAnalysisClickCount' is assigned a value but never used                                                       no-unused-vars
+  Line 101:10:  'showInterstitialAd' is assigned a value but never used                                                          no-unused-vars
+  Line 101:30:  'setShowInterstitialAd' is assigned a value but never used                                                       no-unused-vars
+  Line 102:9:   'AD_DISPLAY_THRESHOLD' is assigned a value but never used                                                        no-unused-vars
+  Line 103:30:  'setIsAdCooldownActive' is assigned a value but never used                                                       no-unused-vars
+  Line 104:9:   'cooldownTimeoutRef' is assigned a value but never used                                                          no-unused-vars
+  Line 250:19:  'trendLine' is assigned a value but never used                                                                   no-unused-vars
+  Line 294:6:   React Hook useCallback has a missing dependency: 'openDialog'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 661:9:   'expandableSections' is assigned a value but never used                                                          no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/PriceAnalysis/PriceAnalysis.js
+  Line 21:8:    'AdSense' is defined but never used                                                                              no-unused-vars
+  Line 44:7:    'MemoizedExpandableDescription' is assigned a value but never used                                               no-unused-vars
+  Line 73:9:    'initialStockCode' is assigned a value but never used                                                            no-unused-vars
+  Line 74:9:    'initialYears' is assigned a value but never used                                                                no-unused-vars
+  Line 75:9:    'initialBackTestDate' is assigned a value but never used                                                         no-unused-vars
+  Line 78:10:   'stockCode' is assigned a value but never used                                                                   no-unused-vars
+  Line 100:30:  'setAnalysisClickCount' is assigned a value but never used                                                       no-unused-vars
+  Line 101:10:  'showInterstitialAd' is assigned a value but never used                                                          no-unused-vars
+  Line 101:30:  'setShowInterstitialAd' is assigned a value but never used                                                       no-unused-vars
+  Line 102:9:   'AD_DISPLAY_THRESHOLD' is assigned a value but never used                                                        no-unused-vars
+  Line 103:30:  'setIsAdCooldownActive' is assigned a value but never used                                                       no-unused-vars
+  Line 104:9:   'cooldownTimeoutRef' is assigned a value but never used                                                          no-unused-vars
+  Line 250:19:  'trendLine' is assigned a value but never used                                                                   no-unused-vars
+  Line 294:6:   React Hook useCallback has a missing dependency: 'openDialog'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 661:9:   'expandableSections' is assigned a value but never used                                                          no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/PriceAnalysis/PriceAnalysis.js
+  Line 21:8:    'AdSense' is defined but never used                                                                              no-unused-vars
+  Line 44:7:    'MemoizedExpandableDescription' is assigned a value but never used                                               no-unused-vars
+  Line 73:9:    'initialStockCode' is assigned a value but never used                                                            no-unused-vars
+  Line 74:9:    'initialYears' is assigned a value but never used                                                                no-unused-vars
+  Line 75:9:    'initialBackTestDate' is assigned a value but never used                                                         no-unused-vars
+  Line 78:10:   'stockCode' is assigned a value but never used                                                                   no-unused-vars
+  Line 100:30:  'setAnalysisClickCount' is assigned a value but never used                                                       no-unused-vars
+  Line 101:10:  'showInterstitialAd' is assigned a value but never used                                                          no-unused-vars
+  Line 101:30:  'setShowInterstitialAd' is assigned a value but never used                                                       no-unused-vars
+  Line 102:9:   'AD_DISPLAY_THRESHOLD' is assigned a value but never used                                                        no-unused-vars
+  Line 103:30:  'setIsAdCooldownActive' is assigned a value but never used                                                       no-unused-vars
+  Line 104:9:   'cooldownTimeoutRef' is assigned a value but never used                                                          no-unused-vars
+  Line 250:19:  'trendLine' is assigned a value but never used                                                                   no-unused-vars
+  Line 294:6:   React Hook useCallback has a missing dependency: 'openDialog'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 661:9:   'expandableSections' is assigned a value but never used                                                          no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/components/PriceAnalysis/PriceAnalysis.js
+  Line 21:8:    'AdSense' is defined but never used                                                                                                                                          no-unused-vars
+  Line 44:7:    'MemoizedExpandableDescription' is assigned a value but never used                                                                                                           no-unused-vars
+  Line 73:9:    'initialStockCode' is assigned a value but never used                                                                                                                        no-unused-vars
+  Line 74:9:    'initialYears' is assigned a value but never used                                                                                                                            no-unused-vars
+  Line 75:9:    'initialBackTestDate' is assigned a value but never used                                                                                                                     no-unused-vars
+  Line 78:10:   'stockCode' is assigned a value but never used                                                                                                                               no-unused-vars
+  Line 100:30:  'setAnalysisClickCount' is assigned a value but never used                                                                                                                   no-unused-vars
+  Line 101:10:  'showInterstitialAd' is assigned a value but never used                                                                                                                      no-unused-vars
+  Line 101:30:  'setShowInterstitialAd' is assigned a value but never used                                                                                                                   no-unused-vars
+  Line 102:9:   'AD_DISPLAY_THRESHOLD' is assigned a value but never used                                                                                                                    no-unused-vars
+  Line 103:30:  'setIsAdCooldownActive' is assigned a value but never used                                                                                                                   no-unused-vars
+  Line 104:9:   'cooldownTimeoutRef' is assigned a value but never used                                                                                                                      no-unused-vars
+  Line 250:19:  'trendLine' is assigned a value but never used                                                                                                                               no-unused-vars
+  Line 294:6:   React Hook useCallback has unnecessary dependencies: 'analysisClickCount', 'isAdCooldownActive', and 'requestAdDisplay'. Either exclude them or remove the dependency array  react-hooks/exhaustive-deps
+  Line 661:9:   'expandableSections' is assigned a value but never used                                                                                                                      no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/components/PriceAnalysis/PriceAnalysis.js
+  Line 21:8:    'AdSense' is defined but never used                                                                                                                                          no-unused-vars
+  Line 44:7:    'MemoizedExpandableDescription' is assigned a value but never used                                                                                                           no-unused-vars
+  Line 73:9:    'initialStockCode' is assigned a value but never used                                                                                                                        no-unused-vars
+  Line 74:9:    'initialYears' is assigned a value but never used                                                                                                                            no-unused-vars
+  Line 75:9:    'initialBackTestDate' is assigned a value but never used                                                                                                                     no-unused-vars
+  Line 78:10:   'stockCode' is assigned a value but never used                                                                                                                               no-unused-vars
+  Line 100:30:  'setAnalysisClickCount' is assigned a value but never used                                                                                                                   no-unused-vars
+  Line 101:10:  'showInterstitialAd' is assigned a value but never used                                                                                                                      no-unused-vars
+  Line 101:30:  'setShowInterstitialAd' is assigned a value but never used                                                                                                                   no-unused-vars
+  Line 102:9:   'AD_DISPLAY_THRESHOLD' is assigned a value but never used                                                                                                                    no-unused-vars
+  Line 103:30:  'setIsAdCooldownActive' is assigned a value but never used                                                                                                                   no-unused-vars
+  Line 104:9:   'cooldownTimeoutRef' is assigned a value but never used                                                                                                                      no-unused-vars
+  Line 250:19:  'trendLine' is assigned a value but never used                                                                                                                               no-unused-vars
+  Line 294:6:   React Hook useCallback has unnecessary dependencies: 'analysisClickCount', 'isAdCooldownActive', and 'requestAdDisplay'. Either exclude them or remove the dependency array  react-hooks/exhaustive-deps
+  Line 661:9:   'expandableSections' is assigned a value but never used                                                                                                                      no-unused-vars
+
+webpack compiled with 1 warning

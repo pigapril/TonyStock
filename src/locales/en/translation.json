@@ -1,11 +1,11 @@
 {
-  "launch":{
-    "loading":{
-      "authenticating" : "Verifying your information...",
-      "preparing" : "Preparing your dashboard..."
+  "launch": {
+    "loading": {
+      "authenticating": "Verifying your information...",
+      "preparing": "Preparing your dashboard..."
     },
-    "login":{
-      "prompt":"Sign in to continue"
+    "login": {
+      "prompt": "Sign in to continue"
     }
   },
   "nav": {
@@ -20,7 +20,6 @@
     "admin": "Admin Panel",
     "adminBadge": "Admin"
   },
-  
   "userActions": {
     "login": "Login"
   },
@@ -31,7 +30,6 @@
     "marketSentimentCard": {
       "title": "Market Sentiment",
       "currentSentiment": "The mood is now"
-
     },
     "watchlistCard": {
       "title": "Noteworthy stocks from the watchlist",
@@ -317,14 +315,14 @@
       "paymentMethodRequired": "This redemption code requires a payment method to be applied during checkout."
     }
   },
- 
   "userProfile": {
-    "title":"Profile",
+    "title": "Profile",
     "openMenuAria": "Open user menu",
+    "goToAccountAria": "Go to account page",
     "avatarAlt": "{{username}}'s avatar",
     "menuAria": "User menu",
     "logout": "Logout",
-    "notLoggedIn":"Not Logged In",
+    "notLoggedIn": "Not Logged In",
     "loginRequired": "Login Required",
     "loginRequiredMessage": "Please log in to view your account information"
   },
@@ -339,6 +337,7 @@
     "sendMessageError": "Oops, the message seems lost. Please try again later!"
   },
   "dialog": {
+    "close": "Close",
     "closeAriaLabel": "Back"
   },
   "errorBoundary": {
@@ -392,7 +391,7 @@
     "year5": "Last 5 Years",
     "year10": "Last 10 Years",
     "year20": "Last 20 Years",
-    "all":"All"
+    "all": "All"
   },
   "common": {
     "learnMore": "Learn More",
@@ -535,12 +534,12 @@
       "spyPriceLabel": "SPY Price",
       "compositeIndexAxisLabel": "SIO Fear & Greed Index",
       "spyPriceAxisLabel": "SPY Price",
-      "tooltipScore":"Sentiment Score",
-      "tooltipSPY":"SPY Price"
+      "tooltipScore": "Sentiment Score",
+      "tooltipSPY": "SPY Price"
     },
     "indicatorDetail": {
-      "valueLabel":"Indicator Value",
-      "sentimentScoreLabel":"Sentiment Score"
+      "valueLabel": "Indicator Value",
+      "sentimentScoreLabel": "Sentiment Score"
     },
     "gauge": {
       "interactiveZones": "Interactive sentiment zones",
@@ -692,7 +691,7 @@
       "tabs": {
         "overview": "Overview",
         "indicators": "Components",
-        "tips": "Usage Tips", 
+        "tips": "Usage Tips",
         "history": "Historical Analysis",
         "introduction": "Introduction",
         "details": "Details"
@@ -1065,14 +1064,17 @@
     "announcement": {
       "message": "📣 0050 (Yuanta Taiwan 50) has been corrected. Analysis results are now back to normal! 🥳 ｜ To prevent cyberattacks⚠️, most features now require login to use. Please rest assured, everything is still free! Thanks for your understanding😥"
     },
-    "hotSearches": { 
+    "hotSearches": {
       "title": "Trending 🔥",
-      "noData": "No data available" 
+      "noData": "No data available"
+    },
+    "errors": {
+      "stockNotAllowed": "Free users can only query {{allowedStocks}} stocks. Upgrade to Pro plan to access all stocks."
     }
   },
   "watchlist": {
     "loginPrompt": {
-        "message": "Log in to create and manage your personal stock watchlist."
+      "message": "Log in to create and manage your personal stock watchlist."
     },
     "pageTitle": "My Watchlist",
     "pageSubtitle": "Track stocks you are interested in and quickly grasp the price sentiment of multiple targets",
@@ -1127,10 +1129,10 @@
       "noCategory": "No categories yet",
       "noCategoryMessage": "Add a category and start tracking your stocks!",
       "emptyTitle": "Time to Add Stocks",
-      "emptyMessage": "Click the 'Add Stocks' button to start tracking!" 
+      "emptyMessage": "Click the 'Add Stocks' button to start tracking!"
     },
     "stock": {
-      "addTitle":"Add Stocks",
+      "addTitle": "Add Stocks",
       "addSuccess": "{{symbol}} added to watchlist"
     },
     "stockCard": {
@@ -1165,6 +1167,7 @@
   },
   "errors": {
     "STOCK_NOT_FOUND": "The specified stock symbol was not found.",
+    "STOCK_ACCESS_DENIED": "Free users can only query 0050, SPY, VOO stocks. Upgrade to Pro plan to access all stocks.",
     "GENERAL_ERROR": "An unexpected error occurred. Please try again later.",
     "VALIDATION_ERROR": "Input validation failed. Please check your data.",
     "NOT_FOUND": "The requested resource was not found.",
@@ -1266,7 +1269,7 @@
     }
   },
   "quotaDialog": {
-    "title": "Usage Limit Reached",
+    "title": "Upgrade to Pro",
     "message": "You have exceeded your daily usage limit",
     "usage": "Usage: {{usage}}/{{quota}}",
     "resetTime": "Resets at: {{resetTime}}",
@@ -1744,7 +1747,7 @@
       "exportCsv": "Export CSV",
       "types": {
         "percentage_discount": "Percentage Discount",
-        "fixed_amount_discount": "Fixed Amount Discount", 
+        "fixed_amount_discount": "Fixed Amount Discount",
         "time_extension": "Time Extension",
         "percentageDiscount": "Percentage Discount",
         "fixedAmountDiscount": "Fixed Amount Discount",

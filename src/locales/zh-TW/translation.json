@@ -334,6 +334,7 @@
   "userProfile": {
     "title": "個人資料",
     "openMenuAria": "開啟使用者選單",
+    "goToAccountAria": "前往帳戶頁面",
     "avatarAlt": "{{username}} 的頭像",
     "menuAria": "使用者選單",
     "logout": "登出",
@@ -352,6 +353,7 @@
     "sendMessageError": "糟糕，訊息好像迷路了，請稍後再試一次！"
   },
   "dialog": {
+    "close": "關閉",
     "closeAriaLabel": "返回"
   },
   "errorBoundary": {
@@ -1081,6 +1083,9 @@
     "hotSearches": {
       "title": "熱門分析 🔥",
       "noData": "暫無資料"
+    },
+    "errors": {
+      "stockNotAllowed": "免費用戶僅能查詢 {{allowedStocks}} 股票，升級至 Pro 方案可查詢所有股票。"
     }
   },
   "watchlist": {
@@ -1178,6 +1183,7 @@
   },
   "errors": {
     "STOCK_NOT_FOUND": "找不到指定的股票代碼",
+    "STOCK_ACCESS_DENIED": "免費用戶僅能查詢 0050、SPY、VOO 股票，升級至 Pro 方案可查詢所有股票",
     "GENERAL_ERROR": "發生一般性錯誤",
     "VALIDATION_ERROR": "輸入驗證失敗",
     "NOT_FOUND": "找不到請求的資源",
@@ -1278,7 +1284,7 @@
     }
   },
   "quotaDialog": {
-    "title": "使用限額已達上限",
+    "title": "升級至 Pro 方案",
     "message": "您已超過每日使用限額",
     "usage": "使用量：{{usage}}/{{quota}}",
     "resetTime": "重置時間：{{resetTime}}",

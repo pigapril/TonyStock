@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>測試股票訪問限制對話框</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .test-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>股票訪問限制測試</h1>
+    
+    <div class="test-section">
+        <h2>測試說明</h2>
+        <p>這個頁面用於測試股票訪問限制的前端處理是否正確工作。</p>
+        <p>預期行為：</p>
+        <ul>
+            <li>SPY 和 0050：應該成功返回數據</li>
+            <li>AAPL、TSLA 等其他股票：應該顯示升級對話框而不是 toast 錯誤</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>測試按鈕</h2>
+        <button class="test-btn" onclick="testStock('SPY')">測試 SPY (應該成功)</button>
+        <button class="test-btn" onclick="testStock('0050')">測試 0050 (應該成功)</button>
+        <button class="test-btn" onclick="testStock('AAPL')">測試 AAPL (應該顯示升級對話框)</button>
+        <button class="test-btn" onclick="testStock('TSLA')">測試 TSLA (應該顯示升級對話框)</button>
+        
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        async function testStock(symbol) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `正在測試 ${symbol}...`;
+            resultDiv.className = 'result';
+
+            try {
+                const response = await fetch(`/api/integrated-analysis?stockCode=${symbol}&years=1`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `✅ ${symbol} 測試成功 - 狀態碼: ${response.status}`;
+                    resultDiv.className = 'result success';
+                } else if (response.status === 403) {
+                    const errorData = await response.json();
+                    resultDiv.innerHTML = `🚫 ${symbol} 被限制訪問 - 狀態碼: ${response.status}<br>
+                                         錯誤: ${errorData.error}<br>
+                                         訊息: ${errorData.message}<br>
+                                         <strong>前端應該顯示升級對話框而不是 toast</strong>`;
+                    resultDiv.className = 'result error';
+                } else {
+                    resultDiv.innerHTML = `❌ ${symbol} 測試失敗 - 狀態碼: ${response.status}`;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `❌ ${symbol} 測試出錯: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+    </script>
+</body>
+</html>
