@@ -91,7 +91,7 @@
     "feature1": "🎯 Track stocks you're interested in",
     "feature2": "📊 Analyze multiple stocks at once",
     "feature3": "💬 Get answers from AI chat service",
-    "title": "🚀 Log in to unlock full features!",
+    "title": "🚀 Log in to unlock free features!",
     "loading": "Loading..."
   },
   "redemption": {
@@ -1269,13 +1269,23 @@
     }
   },
   "quotaDialog": {
-    "title": "Upgrade to Pro",
+    "title": "Unlock Unlimited Access",
+    "subtitle": "Upgrade to Pro for complete features",
     "message": "You have exceeded your daily usage limit",
     "usage": "Usage: {{usage}}/{{quota}}",
     "resetTime": "Resets at: {{resetTime}}",
-    "upgrade": "Upgrade Plan",
+    "requestsUsed": "requests used",
+    "upgrade": "Upgrade to Pro Now",
+    "later": "Maybe Later",
     "warningIcon": "Warning",
-    "upgradeAriaLabel": "Upgrade your plan to get more usage"
+    "upgradeAriaLabel": "Upgrade to Pro version",
+    "laterAriaLabel": "Maybe later",
+    "proFeatures": "Pro Exclusive Features",
+    "feature1": "Unlimited stock queries",
+    "feature2": "Personal watchlist",
+    "feature3": "Daily market sentiment index",
+    "secure": "Secure Payment",
+    "instant": "Instant Activation"
   },
   "subscription": {
     "upgradeRequired": {

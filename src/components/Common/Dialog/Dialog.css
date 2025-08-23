@@ -4,51 +4,77 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    animation: fadeIn 0.2s ease;
+    animation: fadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .dialog-overlay--closing {
-    animation: fadeOut 0.2s ease forwards;
+    animation: fadeOut 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .dialog {
-    background: white;
-    border-radius: 16px;
+    background: linear-gradient(135deg, 
+        rgba(0, 122, 255, 0.1) 0%, 
+        rgba(88, 86, 214, 0.08) 50%, 
+        rgba(255, 45, 85, 0.06) 100%),
+        rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
     width: 90%;
-    max-width: 460px;
+    max-width: 420px;
     position: relative;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    animation: slideIn 0.3s ease;
-    padding: 20px;
+    box-shadow: 
+        0 32px 64px rgba(0, 0, 0, 0.12),
+        0 16px 32px rgba(0, 0, 0, 0.08),
+        0 8px 16px rgba(0, 0, 0, 0.04);
+    animation: slideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 32px 24px 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
 }
 
 .dialog--closing {
-    animation: slideOut 0.3s ease forwards;
+    animation: slideOut 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .dialog-close {
     position: absolute;
-    top: 16px;
-    left: 16px;
-    width: 32px;
-    height: 32px;
+    top: 20px;
+    left: 20px;
+    width: 36px;
+    height: 36px;
     border: none;
-    background: none;
+    background: rgba(120, 120, 128, 0.12);
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
-    color: #666;
-    font-size: 20px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    color: rgba(60, 60, 67, 0.6);
+    font-size: 18px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.dialog-close:hover {
+    background: rgba(120, 120, 128, 0.2);
+    color: rgba(60, 60, 67, 0.8);
+    transform: scale(1.05);
+}
+
+.dialog-close:active {
+    transform: scale(0.95);
 }
 
 .dialog-close::before,
@@ -57,17 +83,24 @@
 }
 
 .dialog-title {
-    font-size: 20px;
-    margin: 0 0 24px;
-    color: #1f2937;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 16px 0 12px;
+    color: #1d1d1f;
     text-align: center;
-    padding: 0 32px;
+    padding: 0 20px;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
 }
 
 .dialog-description {
-    color: #666;
-    margin: 0 0 24px;
-    font-size: 14px;
+    color: rgba(60, 60, 67, 0.7);
+    margin: 0 0 32px;
+    font-size: 17px;
+    line-height: 1.47;
+    text-align: center;
+    padding: 0 8px;
+    font-weight: 400;
 }
 
 .dialog-content {
@@ -77,36 +110,330 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 16px;
+}
+
+/* Apple-style gradient background applied to entire dialog */
+
+/* Premium button styles */
+.dialog-premium-button {
+    background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 16px 32px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 
+        0 8px 24px rgba(0, 122, 255, 0.25),
+        0 4px 12px rgba(0, 122, 255, 0.15);
+    min-width: 200px;
+    letter-spacing: -0.2px;
+}
+
+.dialog-premium-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 32px rgba(0, 122, 255, 0.3),
+        0 6px 16px rgba(0, 122, 255, 0.2);
+}
+
+.dialog-premium-button:active {
+    transform: translateY(0);
+}
+
+/* Secondary button */
+.dialog-secondary-button {
+    background: rgba(120, 120, 128, 0.12);
+    border: none;
+    border-radius: 14px;
+    color: #007AFF;
+    font-size: 17px;
+    font-weight: 500;
+    padding: 14px 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.dialog-secondary-button:hover {
+    background: rgba(120, 120, 128, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Feature list styling */
+.dialog-features {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0;
+    width: 100%;
+}
+
+.dialog-features li {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    color: rgba(60, 60, 67, 0.8);
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.feature-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.feature-text {
+    flex: 1;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { 
+        opacity: 0;
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+    }
+    to { 
+        opacity: 1;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
 }
 
 @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    from { 
+        opacity: 1;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+    to { 
+        opacity: 0;
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+    }
 }
 
 @keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-30px) scale(0.95);
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
+        backdrop-filter: blur(40px);
+        -webkit-backdrop-filter: blur(40px);
     }
 }
 
 @keyframes slideOut {
     from {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
+        backdrop-filter: blur(40px);
+        -webkit-backdrop-filter: blur(40px);
     }
     to {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px) scale(0.95);
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .dialog {
+        width: 95%;
+        max-width: none;
+        margin: 20px;
+        padding: 28px 20px 20px;
+    }
+    
+    .dialog-title {
+        font-size: 24px;
+        margin: 12px 0 8px;
+    }
+    
+    .dialog-description {
+        font-size: 16px;
+        margin-bottom: 24px;
+    }
+    
+    .dialog-premium-button {
+        font-size: 16px;
+        padding: 14px 28px;
+        min-width: 180px;
     }
 } 
+/
+* Quota Dialog Specific Styles */
+.quota-dialog-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.quota-dialog-premium-icon {
+    margin: 8px 0 16px;
+}
+
+.premium-crown {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+    border-radius: 50%;
+    animation: crownFloat 3s ease-in-out infinite;
+}
+
+@keyframes crownFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+}
+
+
+
+.premium-features {
+    width: 100%;
+}
+
+.features-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1d1d1f;
+    text-align: center;
+    margin: 0 0 16px;
+}
+
+.quota-dialog-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    align-items: center;
+}
+
+.dialog-premium-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 280px;
+}
+
+.button-text {
+    font-weight: 600;
+}
+
+.button-icon {
+    font-size: 16px;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.1) rotate(5deg); }
+}
+
+.trust-indicators {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 8px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.trust-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+}
+
+.trust-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.trust-text {
+    font-size: 12px;
+    color: rgba(60, 60, 67, 0.6);
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* Responsive adjustments for quota dialog */
+@media (max-width: 480px) {
+    .quota-dialog-content {
+        gap: 20px;
+    }
+    
+
+    
+    .features-title {
+        font-size: 16px;
+    }
+    
+    .trust-indicators {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .trust-item {
+        flex-direction: row;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .trust-text {
+        font-size: 13px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .dialog {
+        background: rgba(28, 28, 30, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dialog-title {
+        color: #f2f2f7;
+    }
+    
+    .dialog-description {
+        color: rgba(235, 235, 245, 0.6);
+    }
+    
+    .features-title {
+        color: #f2f2f7;
+    }
+    
+    .dialog-features li {
+        color: rgba(235, 235, 245, 0.8);
+    }
+    
+    .trust-indicators {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .trust-text {
+        color: rgba(235, 235, 245, 0.6);
+    }
+}
