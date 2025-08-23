@@ -37,7 +37,10 @@
   display: block !important;
   font-size: 1em;
   font-weight: 600;
-  color: #1d1d1f;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   visibility: visible !important;
   white-space: nowrap;
   margin-bottom: 2px;
@@ -49,7 +52,10 @@
   font-weight: 500;
   opacity: 0.8;
   visibility: visible !important;
-  color: #86868b !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   min-height: 1.2em;
   line-height: 1.3;
   white-space: nowrap;
@@ -97,7 +103,7 @@
     bottom: -1% !important;
     width: 92%;
   }
-  
+
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
     font-size: 0.65rem;
     margin-top: 4px;
@@ -109,12 +115,12 @@
     bottom: -3% !important;
     width: 94%;
   }
-  
+
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
     font-size: 0.6rem;
     margin-top: 3px;
   }
-  
+
   /* 為 768px 以下增加高度 */
   .market-sentiment-view .left-panel {
     min-height: 360px !important;
@@ -126,12 +132,12 @@
     bottom: -2% !important;
     width: 96%;
   }
-  
+
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
     font-size: 0.55rem;
     margin-top: 2px;
   }
-  
+
   /* 增加 left-panel 高度以容納下移的元素 */
   .market-sentiment-view .left-panel {
     min-height: 360px !important;
@@ -144,12 +150,12 @@
     bottom: -1% !important;
     width: 98%;
   }
-  
+
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
     font-size: 0.5rem;
     margin-top: 1px;
   }
-  
+
   /* 超小螢幕需要更多高度 */
   .market-sentiment-view .left-panel {
     min-height: 330px !important;
@@ -314,7 +320,7 @@
   }
 
   /* Header 內的 subtitle container */
- 
+
 
   .market-sentiment-view .left-panel .panel-subtitle,
   .market-sentiment-view .left-panel .panel-sentiment-value {
@@ -585,8 +591,10 @@
   .market-sentiment-view .content-layout-container {
     flex-direction: row;
     align-items: stretch;
-    min-height: 500px; /* Minimum height to ensure usability */
-    height: auto; /* Auto height based on content */
+    min-height: 500px;
+    /* Minimum height to ensure usability */
+    height: auto;
+    /* Auto height based on content */
   }
 }
 
@@ -601,7 +609,8 @@
   flex-direction: column;
   min-height: 0;
   gap: 0;
-  position: relative; /* 為絕對定位的 last-update-time 提供定位上下文 */
+  position: relative;
+  /* 為絕對定位的 last-update-time 提供定位上下文 */
 }
 
 /* 新增：創建一個包含 gauge 和 sentiment 的容器 */
@@ -720,16 +729,18 @@
 /* 中等桌面尺寸 (1281px-1599px) - 適用於 1534x864 等 */
 @media (min-width: 1281px) and (max-width: 1599px) {
   .market-sentiment-view .content-layout-container {
-    min-height: 500px; /* Minimum height for medium desktop screens */
-    height: auto; /* Auto height based on content */
+    min-height: 500px;
+    /* Minimum height for medium desktop screens */
+    height: auto;
+    /* Auto height based on content */
   }
-  
+
   /* Optimize composition list for medium desktop screens */
   .composition-item {
     padding: 7px 10px;
     margin-bottom: 1px;
   }
-  
+
   .composition-list {
     gap: 4px;
   }
@@ -738,16 +749,20 @@
 /* 大中等桌面尺寸 (1600px-1919px) */
 @media (min-width: 1600px) and (max-width: 1919px) {
   .market-sentiment-view .content-layout-container {
-    min-height: 500px; /* Minimum height for large desktop screens */
-    height: auto; /* Auto height based on content */
+    min-height: 500px;
+    /* Minimum height for large desktop screens */
+    height: auto;
+    /* Auto height based on content */
   }
 }
 
 /* 大桌面尺寸 (1920px+) */
 @media (min-width: 1920px) {
   .market-sentiment-view .content-layout-container {
-    min-height: 500px; /* Minimum height for very large screens */
-    height: auto; /* Auto height based on content */
+    min-height: 500px;
+    /* Minimum height for very large screens */
+    height: auto;
+    /* Auto height based on content */
   }
 }
 
@@ -930,18 +945,23 @@
 
 /* 脈動動畫效果 - 更明顯的跳動 */
 @keyframes sentimentPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
+
   25% {
     transform: scale(1.05);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   }
+
   50% {
     transform: scale(1.08);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
   }
+
   75% {
     transform: scale(1.05);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
@@ -950,22 +970,28 @@
 
 /* 極端情緒的更強烈脈動 */
 @keyframes sentimentPulseIntense {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
   }
+
   20% {
     transform: scale(1.08);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   }
+
   40% {
     transform: scale(1.12);
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
   }
+
   60% {
     transform: scale(1.08);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   }
+
   80% {
     transform: scale(1.04);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
@@ -1153,8 +1179,10 @@
 
 @media (min-width: 769px) and (max-width: 1280px) {
   .market-sentiment-view .content-layout-container {
-    min-height: 500px; /* Minimum height for smaller desktop screens */
-    height: auto; /* Auto height based on content */
+    min-height: 500px;
+    /* Minimum height for smaller desktop screens */
+    height: auto;
+    /* Auto height based on content */
   }
 
   .market-sentiment-view .indicator-item .analysis-result,
@@ -1173,19 +1201,20 @@
     /* margin-bottom: 50px; REMOVED */
     /* Font size and other properties specific to this breakpoint can remain if needed */
   }
-  
+
   /* Optimize composition list for 1280x720 and similar resolutions */
   .composition-item {
     padding: 6px 10px;
     margin-bottom: 1px;
   }
-  
+
   .composition-list {
     gap: 3px;
   }
-  
+
   .composition-emotion-tag {
-    flex: 0 0 105px; /* Increased from 85px to 105px for better text display */
+    flex: 0 0 105px;
+    /* Increased from 85px to 105px for better text display */
   }
 }
 
@@ -1367,12 +1396,18 @@
 .composition-list {
   display: flex;
   flex-direction: column;
-  gap: 6px; /* Reduced gap to fit more items */
-  margin-top: 5px; /* Reduced margin-top */
-  padding: 0 5px; /* Add some horizontal padding to the list */
-  overflow-y: visible; /* No scrolling - show all items */
-  flex: 1; /* Take available space */
-  box-sizing: border-box; /* Ensure padding doesn't add to max-height calculation issues */
+  gap: 6px;
+  /* Reduced gap to fit more items */
+  margin-top: 5px;
+  /* Reduced margin-top */
+  padding: 0 5px;
+  /* Add some horizontal padding to the list */
+  overflow-y: visible;
+  /* No scrolling - show all items */
+  flex: 1;
+  /* Take available space */
+  box-sizing: border-box;
+  /* Ensure padding doesn't add to max-height calculation issues */
 }
 
 /* Original composition-item styles - will be overridden by EmotionTag integration styles */
@@ -1674,7 +1709,8 @@
 /* 新增：組成視圖樣式 */
 .market-sentiment-view .composition-view {
   height: 100%;
-  overflow-y: visible; /* No scrolling - show all items */
+  overflow-y: visible;
+  /* No scrolling - show all items */
   display: flex;
   flex-direction: column;
 }
@@ -1716,7 +1752,8 @@
   .market-sentiment-view .right-panel {
     flex: none;
     height: auto;
-    min-height: 350px; /* 增加高度以容納下移的元素 */
+    min-height: 350px;
+    /* 增加高度以容納下移的元素 */
   }
 
   .market-sentiment-view .left-panel .panel-header {
@@ -1727,7 +1764,8 @@
 
 /* EmotionTag integration styles - Redesigned layout */
 .composition-emotion-tag {
-  flex: 0 0 120px; /* Increased from 100px to 120px for longer text like "Extreme Greed" */
+  flex: 0 0 120px;
+  /* Increased from 100px to 120px for longer text like "Extreme Greed" */
   display: flex;
   justify-content: center;
 }
@@ -1736,20 +1774,24 @@
 .composition-item {
   display: flex;
   align-items: center;
-  gap: 8px; /* Reduced gap to accommodate wider EmotionTag */
-  padding: 8px 12px; /* Reduced padding to fit more items */
+  gap: 8px;
+  /* Reduced gap to accommodate wider EmotionTag */
+  padding: 8px 12px;
+  /* Reduced padding to fit more items */
   border-bottom: 1px solid #e8e8e8;
   cursor: pointer;
   transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   border-radius: 4px;
-  margin-bottom: 2px; /* Reduced margin to fit more items */
+  margin-bottom: 2px;
+  /* Reduced margin to fit more items */
   background-color: #ffffff;
   flex-shrink: 0;
 }
 
 /* Three-column layout: Name | Bar+Score | EmotionTag */
 .composition-item .composition-name {
-  flex: 0 0 28%; /* Reduced from 35% to 28% for better centering */
+  flex: 0 0 28%;
+  /* Reduced from 35% to 28% for better centering */
   font-weight: 500;
   font-size: 0.85rem;
   color: #333;
@@ -1760,11 +1802,14 @@
 }
 
 .composition-item .composition-analysis-value {
-  flex: 1; /* Take remaining space between name and emotion tag */
+  flex: 1;
+  /* Take remaining space between name and emotion tag */
   display: flex;
   align-items: center;
-  justify-content: center; /* Center the content horizontally */
-  min-width: 0; /* Allow shrinking */
+  justify-content: center;
+  /* Center the content horizontally */
+  min-width: 0;
+  /* Allow shrinking */
   padding-right: 8px;
 }
 
@@ -1776,7 +1821,8 @@
   border-radius: 5px;
   overflow: hidden;
   margin-right: 8px;
-  min-width: 60px; /* Minimum width to maintain visibility */
+  min-width: 60px;
+  /* Minimum width to maintain visibility */
 }
 
 .composition-score-text {
@@ -1807,14 +1853,16 @@
 /* Responsive adjustments for the new layout */
 @media (max-width: 1023px) {
   .composition-emotion-tag {
-    flex: 0 0 110px; /* Increased from 90px to 110px for tablets */
+    flex: 0 0 110px;
+    /* Increased from 90px to 110px for tablets */
   }
-  
+
   .composition-item .composition-name {
-    flex: 0 0 26%; /* Reduced for better centering on tablets */
+    flex: 0 0 26%;
+    /* Reduced for better centering on tablets */
     font-size: 0.8rem;
   }
-  
+
   .composition-score-text {
     font-size: 0.75rem;
     min-width: 30px;
@@ -1823,24 +1871,26 @@
 
 @media (max-width: 767px) {
   .composition-emotion-tag {
-    flex: 0 0 100px; /* Increased from 80px to 100px for mobile */
+    flex: 0 0 100px;
+    /* Increased from 80px to 100px for mobile */
   }
-  
+
   .composition-item {
     gap: 8px;
     padding: 8px 10px;
   }
-  
+
   .composition-item .composition-name {
-    flex: 0 0 25%; /* Reduced for better centering on mobile */
+    flex: 0 0 25%;
+    /* Reduced for better centering on mobile */
     font-size: 0.75rem;
   }
-  
+
   .composition-bar-wrapper {
     min-width: 50px;
     height: 8px;
   }
-  
+
   .composition-score-text {
     font-size: 0.7rem;
     min-width: 28px;
@@ -1848,21 +1898,25 @@
 }
 
 @media (max-width: 430px) {
+
   /* On very small screens, simplify to two-column layout */
   .composition-item .composition-analysis-value {
-    display: none; /* Hide the bar and score */
+    display: none;
+    /* Hide the bar and score */
   }
-  
+
   .composition-item .composition-name {
-    flex: 1; /* Take most space */
+    flex: 1;
+    /* Take most space */
   }
-  
+
   .composition-emotion-tag {
-    flex: 0 0 70px; /* Smaller fixed width */
+    flex: 0 0 70px;
+    /* Smaller fixed width */
   }
-  
+
   .composition-item {
     gap: 8px;
     padding: 8px 10px;
   }
-}    
+}
