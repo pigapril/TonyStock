@@ -111,6 +111,9 @@ export function AuthProvider({ children }) {
                 timestamp: Date.now()
             };
             authStateCache.saveAuthState(authState);
+            
+            // 立即更新認證狀態管理器的快取
+            authStateManager.setAuthState(authState);
 
             setTimeout(() => {
                 window.dispatchEvent(new CustomEvent('loginSuccess'));
@@ -471,6 +474,9 @@ export function AuthProvider({ children }) {
 
             // 清除快取的認證狀態
             authStateCache.clearAuthState();
+            
+            // 清除認證狀態管理器的快取
+            authStateManager.invalidateCache();
             
             let identityServiceRevoked = false;
             if (window.google?.accounts?.id) {

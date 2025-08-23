@@ -1,5 +1,6 @@
 import enhancedApiClient from '../utils/enhancedApiClient';
 import csrfClient from '../utils/csrfClient';
+import { systemLogger } from '../utils/logger';
 
 // 調試用：檢查 CSRF token 狀態
 const debugCSRFStatus = () => {
@@ -83,25 +84,79 @@ class SubscriptionService {
    */
   async getSubscriptionHistory() {
     try {
-      // 暫時使用 mock 資料，避免 API 錯誤
-      // TODO: 當後端 subscription history API 準備好時，實作真正的 API 呼叫
+      systemLogger.info('Getting subscription history from API');
 
-      // Mock 資料 - 開發階段使用
-      const mockHistory = [
-        {
-          id: '1',
-          date: new Date('2025-01-01'),
-          action: 'upgrade',
-          fromPlan: 'free',
-          toPlan: 'pro',
-          amount: 299,
-          status: 'completed'
+      // 呼叫真實的後端 API
+      const response = await enhancedApiClient.get('/api/subscription/history');
+      
+      systemLogger.info('Subscription history API response:', response);
+
+      // 處理 API 響應資料
+      let historyData = [];
+      if (Array.isArray(response)) {
+        historyData = response;
+      } else if (response && Array.isArray(response.subscriptions)) {
+        historyData = response.subscriptions;
+      } else if (response && response.data && Array.isArray(response.data.subscriptions)) {
+        historyData = response.data.subscriptions;
+      }
+
+      // 格式化訂閱歷史資料以符合組件需求
+      const formattedHistory = historyData.map(subscription => {
+        // 判斷動作類型
+        let action = 'renewal';
+        if (subscription.planType === 'pro' && subscription.status === 'active') {
+          action = 'upgrade';
+        } else if (subscription.planType === 'free') {
+          action = 'downgrade';
+        } else if (subscription.status === 'cancelled') {
+          action = 'cancellation';
         }
-      ];
 
-      return mockHistory;
+        return {
+          id: subscription.id,
+          date: subscription.createdAt || subscription.currentPeriodStart,
+          action: action,
+          fromPlan: subscription.previousPlanType || 'free',
+          toPlan: subscription.planType,
+          amount: subscription.amount || (subscription.planType === 'pro' ? 299 : 0),
+          status: subscription.status === 'active' ? 'completed' : subscription.status,
+          planType: subscription.planType,
+          billingPeriod: subscription.billingPeriod || 'monthly',
+          currentPeriodStart: subscription.currentPeriodStart,
+          currentPeriodEnd: subscription.currentPeriodEnd
+        };
+      });
+
+      systemLogger.info('Subscription history loaded:', {
+        historyCount: formattedHistory.length
+      });
+
+      return formattedHistory;
+
     } catch (error) {
-      console.error('Failed to get subscription history:', error);
+      systemLogger.error('Failed to get subscription history:', {
+        error: error.message
+      });
+
+      // 在開發環境下提供 fallback 資料，生產環境返回空陣列
+      if (process.env.NODE_ENV === 'development') {
+        const fallbackHistory = [
+          {
+            id: 'dev-1',
+            date: new Date('2025-01-01'),
+            action: 'upgrade',
+            fromPlan: 'free',
+            toPlan: 'pro',
+            amount: 299,
+            status: 'completed',
+            planType: 'pro',
+            billingPeriod: 'monthly'
+          }
+        ];
+        return fallbackHistory;
+      }
+
       // 返回空的歷史記錄，而不是拋出錯誤
       return [];
     }

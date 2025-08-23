@@ -201,7 +201,7 @@ export const UserAccountPage = () => {
             <h2 className="user-account-section__title">
               {t('subscription.userAccount.paymentHistory')}
             </h2>
-            <PaymentHistory />
+            <PaymentHistory userId={user?.id} />
           </section>
         </div>
       </div>

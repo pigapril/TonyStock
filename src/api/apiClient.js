@@ -57,6 +57,13 @@ apiClient.interceptors.request.use(
     const stateChangingMethods = ['POST', 'PUT', 'DELETE', 'PATCH'];
     
     if (stateChangingMethods.includes(config.method?.toUpperCase())) {
+      // Skip CSRF token for authentication endpoints (they don't need it)
+      const authEndpoints = ['/api/auth/google/verify', '/api/auth/apple/verify'];
+      if (authEndpoints.some(endpoint => config.url.includes(endpoint))) {
+        console.log('🛡️ ApiClient: Skipping CSRF token for auth endpoint:', config.url);
+        return config;
+      }
+      
       try {
         const csrf = await getCSRFClient();
         

@@ -11,6 +11,7 @@
 import React, { useState, useEffect } from 'react';
 import { systemLogger } from '../../utils/logger';
 import LoadingSpinner from '../Common/LoadingSpinner';
+import paymentService from '../../services/paymentService';
 
 const PaymentHistory = ({ userId }) => {
     const [payments, setPayments] = useState([]);
@@ -33,57 +34,42 @@ const PaymentHistory = ({ userId }) => {
             setLoading(true);
             setError(null);
 
-            // 這裡應該呼叫實際的 API
-            // const response = await subscriptionService.getPaymentHistory();
+            // 呼叫真實的付款歷史 API
+            const response = await paymentService.getPaymentHistory();
             
-            // 暫時使用模擬資料
-            const mockPayments = [
-                {
-                    id: 'pay_001',
-                    orderId: 'order_001',
-                    amount: 299,
-                    currency: 'TWD',
-                    status: 'success',
-                    paymentMethod: 'Credit Card',
-                    planType: 'pro',
-                    billingPeriod: 'monthly',
-                    paymentDate: new Date('2025-01-01'),
-                    description: 'Pro 方案 - 月付',
-                    invoiceUrl: '/invoices/inv_001.pdf'
-                },
-                {
-                    id: 'pay_002',
-                    orderId: 'order_002',
-                    amount: 2990,
-                    currency: 'TWD',
-                    status: 'success',
-                    paymentMethod: 'Credit Card',
-                    planType: 'pro',
-                    billingPeriod: 'yearly',
-                    paymentDate: new Date('2024-12-01'),
-                    description: 'Pro 方案 - 年付',
-                    invoiceUrl: '/invoices/inv_002.pdf'
-                },
-                {
-                    id: 'pay_003',
-                    orderId: 'order_003',
-                    amount: 299,
-                    currency: 'TWD',
-                    status: 'failed',
-                    paymentMethod: 'Credit Card',
-                    planType: 'pro',
-                    billingPeriod: 'monthly',
-                    paymentDate: new Date('2024-11-15'),
-                    description: 'Pro 方案 - 月付',
-                    failureReason: '信用卡餘額不足'
-                }
-            ];
+            systemLogger.info('Payment history API response:', response);
 
-            setPayments(mockPayments);
+            // 處理 API 響應資料
+            let paymentData = [];
+            if (Array.isArray(response)) {
+                paymentData = response;
+            } else if (response && Array.isArray(response.payments)) {
+                paymentData = response.payments;
+            } else if (response && Array.isArray(response.data)) {
+                paymentData = response.data;
+            }
+
+            // 格式化付款資料以符合組件需求
+            const formattedPayments = paymentData.map(payment => ({
+                id: payment.id || payment.paymentId,
+                orderId: payment.orderId || payment.merchantTradeNo,
+                amount: payment.amount || 0,
+                currency: payment.currency || 'TWD',
+                status: payment.status || payment.paymentStatus,
+                paymentMethod: payment.paymentMethod || 'Credit Card',
+                planType: payment.planType || 'pro',
+                billingPeriod: payment.billingPeriod || 'monthly',
+                paymentDate: payment.paymentDate || payment.createdAt || payment.paidAt,
+                description: payment.description || `${payment.planType || 'Pro'} 方案 - ${payment.billingPeriod === 'yearly' ? '年付' : '月付'}`,
+                invoiceUrl: payment.invoiceUrl,
+                failureReason: payment.failureReason || payment.errorMessage
+            }));
+
+            setPayments(formattedPayments);
             
             systemLogger.info('Payment history loaded:', {
                 userId,
-                paymentCount: mockPayments.length
+                paymentCount: formattedPayments.length
             });
 
         } catch (error) {
@@ -91,7 +77,7 @@ const PaymentHistory = ({ userId }) => {
                 userId,
                 error: error.message
             });
-            setError('載入付款歷史失敗');
+            setError('載入付款歷史失敗：' + (error.message || '未知錯誤'));
         } finally {
             setLoading(false);
         }
@@ -189,12 +175,7 @@ const PaymentHistory = ({ userId }) => {
 
     if (payments.length === 0) {
         return (
-            <div className="text-center py-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                </div>
+            <div className="text-center py-12">
                 <h3 className="text-lg font-medium text-gray-900 mb-2">尚無付款記錄</h3>
                 <p className="text-gray-600">您還沒有任何付款記錄</p>
             </div>
