@@ -91,6 +91,12 @@ class SubscriptionService {
       
       systemLogger.info('Subscription history API response:', response);
 
+      // 添加詳細的響應日誌
+      console.log('🔍 Full API response:', response);
+      console.log('🔍 Response data:', response.data);
+      console.log('🔍 Response data.data:', response.data?.data);
+      console.log('🔍 Subscriptions array:', response.data?.data?.subscriptions);
+
       // 處理 API 響應資料
       let historyData = [];
       if (Array.isArray(response)) {
@@ -99,7 +105,12 @@ class SubscriptionService {
         historyData = response.subscriptions;
       } else if (response && response.data && Array.isArray(response.data.subscriptions)) {
         historyData = response.data.subscriptions;
+      } else if (response && response.data && response.data.data && Array.isArray(response.data.data.subscriptions)) {
+        // 修復：正確的響應結構是 response.data.data.subscriptions
+        historyData = response.data.data.subscriptions;
       }
+
+      console.log('🔍 Extracted historyData:', historyData);
 
       // 格式化訂閱歷史資料以符合組件需求
       const formattedHistory = historyData.map(subscription => {

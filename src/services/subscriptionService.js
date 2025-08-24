@@ -157,12 +157,21 @@ class SubscriptionService {
 
             const response = await this.makeRequest('GET', `/api/subscription/history?limit=${limit}&offset=${offset}`);
 
+            // 添加詳細的響應日誌
+            console.log('📊 Subscription API full response:', response);
+            console.log('📊 Response data structure:', response.data);
+            console.log('📊 Subscriptions array:', response.data?.data?.subscriptions);
+            console.log('📊 Subscriptions length:', response.data?.data?.subscriptions?.length);
+
             if (response.data.status === 'success') {
-                return {
+                const result = {
                     success: true,
                     data: response.data.data.subscriptions,
                     pagination: response.data.data.pagination
                 };
+                
+                console.log('📊 Final subscription result:', result);
+                return result;
             } else {
                 throw new Error(response.data.message || '獲取訂閱歷史失敗');
             }

@@ -197,12 +197,27 @@ export const SubscriptionProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      const history = await subscriptionService.getSubscriptionHistory();
-      setSubscriptionHistory(history);
+      const historyResult = await subscriptionService.getSubscriptionHistory();
+      
+      // 檢查結果並提取實際的訂閱數據
+      console.log('📊 Subscription history result:', historyResult);
+      
+      // API 服務直接返回數組，不是 {success, data} 結構
+      if (Array.isArray(historyResult) && historyResult.length > 0) {
+        setSubscriptionHistory(historyResult);
+        console.log('📊 Setting subscription history:', historyResult);
+      } else if (historyResult && historyResult.success && historyResult.data) {
+        // 兼容其他可能的結構
+        setSubscriptionHistory(historyResult.data);
+        console.log('📊 Setting subscription history (from data):', historyResult.data);
+      } else {
+        console.warn('📊 No subscription data or failed:', historyResult);
+        setSubscriptionHistory([]);
+      }
 
       Analytics.track('subscription_history_loaded', {
         userId: user.id,
-        historyCount: history?.length || 0
+        historyCount: Array.isArray(historyResult) ? historyResult.length : (historyResult?.data?.length || 0)
       });
     } catch (err) {
       if (process.env.NODE_ENV === 'development') {
