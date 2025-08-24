@@ -6,6 +6,8 @@ import { AppleButton } from '../../shared/AppleButton';
 import { useSubscription } from '../../SubscriptionContext';
 import { Analytics } from '../../../../utils/analytics';
 import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../utils/pricingUtils';
+import subscriptionService from '../../../../services/subscriptionService';
+import { useAuth } from '../../../Auth/useAuth';
 import './PlanCard.css';
 
 export const PlanCard = ({ 
@@ -18,7 +20,8 @@ export const PlanCard = ({
 }) => {
   const { t } = useTranslation();
   const { lang } = useParams();
-  const { updatePlan, loading } = useSubscription();
+  const { updatePlan, loading, refreshSubscriptionHistory } = useSubscription();
+  const { checkAuthStatus } = useAuth();
   const navigate = useNavigate();
   const [paymentLoading, setPaymentLoading] = useState(false);
 
@@ -42,13 +45,10 @@ export const PlanCard = ({
         return;
       }
 
-      // 如果是免費方案，直接降級
-      if (isFree) {
-        await updatePlan(plan.id);
-        Analytics.track('subscription_plan_updated_success', {
-          newPlan: plan.id,
-          oldPlan: currentPlan || 'none'
-        });
+      // 如果是免費方案且用戶已經是付費用戶，提示到用戶帳戶頁面取消
+      if (isFree && currentPlan !== 'free') {
+        // 導航到用戶帳戶頁面，讓用戶在那裡取消訂閱
+        navigate(`/${lang}/user-account`);
         return;
       }
 
@@ -115,7 +115,8 @@ export const PlanCard = ({
   const getButtonText = () => {
     if (paymentLoading) return '處理中...';
     if (isCurrentPlan) return t('subscription.subscriptionPlans.current');
-    if (isFree) return t('subscription.subscriptionPlans.downgrade');
+    if (isFree && currentPlan !== 'free') return t('subscription.subscriptionPlans.manageSubscription');
+    if (isFree) return t('subscription.subscriptionPlans.current');
     if (isPro) return '立即付款升級';
     return t('subscription.subscriptionPlans.upgrade');
   };

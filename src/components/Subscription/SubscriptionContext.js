@@ -14,6 +14,7 @@ const SubscriptionContext = createContext({
   refreshUserPlan: () => {},
   refreshSubscriptionHistory: () => {},
   updatePlan: () => {},
+  cancelSubscription: () => {},
   // Redemption integration
   hasActivePromotions: false,
   promotionalBenefits: null,
@@ -140,7 +141,28 @@ export const SubscriptionProvider = ({ children }) => {
       setError(null);
 
       const plan = await subscriptionService.getUserPlan();
-      setUserPlan(plan);
+      
+      // If no active subscription found, create a default plan based on user's stored plan
+      if (!plan && user?.plan) {
+        const defaultPlan = {
+          type: user.plan,
+          status: user.plan === 'free' ? 'active' : 'inactive',
+          startDate: null,
+          endDate: null,
+          autoRenew: false,
+          cancelAtPeriodEnd: false
+        };
+        setUserPlan(defaultPlan);
+      } else if (plan) {
+        // Map backend subscription fields to frontend plan fields
+        const mappedPlan = {
+          ...plan,
+          type: plan.planType || plan.type, // Map planType to type
+        };
+        setUserPlan(mappedPlan);
+      } else {
+        setUserPlan(null);
+      }
       // Update redemption-related state
       updateRedemptionState(plan);
 
@@ -240,6 +262,47 @@ export const SubscriptionProvider = ({ children }) => {
     }
   }, [isAuthenticated, user, userPlan, refreshUsageStats, checkAuthStatus, updateRedemptionState]);
 
+  // Cancel subscription
+  const cancelSubscription = useCallback(async (options = {}) => {
+    if (!isAuthenticated || !user) {
+      throw new Error('請先登入');
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const result = await subscriptionService.cancelSubscription(options);
+      
+      // 刷新所有相關資料
+      await Promise.all([
+        refreshUserPlan(),
+        refreshSubscriptionHistory(),
+        checkAuthStatus && checkAuthStatus()
+      ]);
+
+      Analytics.track('subscription_cancelled', {
+        userId: user.id,
+        cancelAtPeriodEnd: options.cancelAtPeriodEnd !== false,
+        reason: options.reason || 'user_requested',
+        ecpaySuccess: result.ecpayResult?.success
+      });
+
+      return result;
+    } catch (err) {
+      setError(err.message || 'Failed to cancel subscription');
+      Analytics.error({
+        type: 'SUBSCRIPTION_ERROR',
+        code: err.code || 500,
+        message: err.message || 'Failed to cancel subscription',
+        context: 'cancelSubscription'
+      });
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [isAuthenticated, user, refreshUserPlan, refreshSubscriptionHistory, checkAuthStatus]);
+
   /** 處理 redemption 成功/失敗 */
   const onRedemptionSuccess = useCallback(async (redemptionData) => {
     try {
@@ -299,6 +362,7 @@ export const SubscriptionProvider = ({ children }) => {
     refreshUserPlan,
     refreshSubscriptionHistory,
     updatePlan,
+    cancelSubscription,
     hasActivePromotions,
     promotionalBenefits,
     isPromotionalSubscription,

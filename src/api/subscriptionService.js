@@ -303,6 +303,88 @@ class SubscriptionService {
   }
 
   /**
+   * Cancel user's subscription
+   */
+  async cancelSubscription(options = {}) {
+    try {
+      console.log('Cancelling subscription with options:', options);
+      debugCSRFStatus();
+
+      // 確保 CSRF token 已初始化
+      if (!csrfClient.isTokenInitialized()) {
+        console.log('CSRF token not initialized, attempting to initialize...');
+        try {
+          await csrfClient.initializeCSRFToken();
+          console.log('CSRF token initialized successfully');
+        } catch (csrfError) {
+          console.error('Failed to initialize CSRF token:', csrfError);
+          throw new Error('Authentication required. Please refresh the page and try again.');
+        }
+      }
+
+      const requestData = {
+        cancelAtPeriodEnd: options.cancelAtPeriodEnd !== false, // 預設為 true
+        reason: options.reason || 'user_requested'
+      };
+
+      console.log('📤 Sending cancel request:', requestData);
+
+      const response = await csrfClient.post('/api/subscription/cancel', requestData);
+
+      console.log('Cancel subscription response:', {
+        status: response.status,
+        ok: response.ok,
+        statusText: response.statusText
+      });
+
+      if (!response.ok) {
+        let errorData = {};
+        try {
+          errorData = await response.json();
+        } catch (parseError) {
+          console.warn('Could not parse error response as JSON:', parseError);
+        }
+
+        const errorMessage = errorData.message || `HTTP ${response.status}: ${response.statusText}`;
+        console.error('Cancel subscription failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          errorData
+        });
+
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      console.log('Cancel subscription response data:', data);
+
+      if (data.status === 'success') {
+        systemLogger.info('Subscription cancelled successfully:', {
+          subscriptionId: data.data?.subscription?.id,
+          cancelAtPeriodEnd: data.data?.subscription?.cancelAtPeriodEnd,
+          currentPeriodEnd: data.data?.subscription?.currentPeriodEnd,
+          ecpayResult: data.data?.ecpayResult
+        });
+
+        return {
+          success: true,
+          subscription: data.data.subscription,
+          ecpayResult: data.data.ecpayResult,
+          message: data.message || '訂閱已成功取消'
+        };
+      } else {
+        throw new Error(data.message || 'Failed to cancel subscription');
+      }
+    } catch (error) {
+      console.error('Failed to cancel subscription:', error);
+      systemLogger.error('Cancel subscription error:', {
+        error: error.message
+      });
+      throw new Error(error.message || 'Failed to cancel subscription');
+    }
+  }
+
+  /**
    * Check if a feature is enabled for the current plan
    */
   isFeatureEnabled(planType, featureType) {

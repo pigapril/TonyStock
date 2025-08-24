@@ -9,7 +9,7 @@
  * - 獲取付款歷史
  */
 
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import { systemLogger } from '../utils/logger';
 
 class SubscriptionService {
@@ -17,6 +17,15 @@ class SubscriptionService {
         this.baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
         this.retryAttempts = 3;
         this.retryDelay = 1000;
+    }
+
+    /**
+     * 獲取用戶計劃資訊（別名方法）
+     * @returns {Promise<Object>} 用戶計劃資訊
+     */
+    async getUserPlan() {
+        const result = await this.getCurrentSubscription();
+        return result.success ? result.data : null;
     }
 
     /**
@@ -244,7 +253,7 @@ class SubscriptionService {
         try {
             const config = {
                 method,
-                url: `${this.baseURL}${url}`,
+                url,
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -255,7 +264,7 @@ class SubscriptionService {
                 config.data = data;
             }
 
-            const response = await axios(config);
+            const response = await apiClient(config);
             return response;
 
         } catch (error) {

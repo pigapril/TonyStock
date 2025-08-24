@@ -1346,7 +1346,14 @@
       "privacyTitle": "隱私保護",
       "privacyDescription": "我們重視您的隱私，所有資料都經過加密保護。",
       "redemptionCode": "兌換代碼",
-      "redemptionDescription": "輸入優惠代碼以解鎖特殊優惠和訂閱折扣。"
+      "redemptionDescription": "輸入優惠代碼以解鎖特殊優惠和訂閱折扣。",
+      "cancelSubscription": "取消訂閱",
+      "cancelConfirmTitle": "確認取消訂閱",
+      "cancelConfirmMessage": "您確定要取消訂閱嗎？您的訂閱將在 {{endDate}} 到期後停止續約，在此之前您仍可以使用所有功能。",
+      "confirmCancel": "確認取消",
+      "cancelledNotice": "您的訂閱已設定為取消，將在 {{endDate}} 到期後停止續約。",
+      "cancelError": "取消訂閱失敗：{{error}}",
+      "cancelSuccess": "訂閱取消成功！您可以繼續使用所有功能直到當前週期結束。"
     },
     "billingPeriod": {
       "monthly": "月繳",
@@ -1360,6 +1367,7 @@
       "upgrade": "升級",
       "downgrade": "降級",
       "current": "目前使用",
+      "manageSubscription": "管理訂閱",
       "freePlan": {
         "name": "免費方案",
         "price": "免費",

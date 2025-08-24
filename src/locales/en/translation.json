@@ -1331,7 +1331,14 @@
       "privacyTitle": "Privacy Protection",
       "privacyDescription": "We value your privacy and all data is encrypted and protected.",
       "redemptionCode": "Redemption Codes",
-      "redemptionDescription": "Enter promotional codes to unlock special benefits and discounts for your subscription."
+      "redemptionDescription": "Enter promotional codes to unlock special benefits and discounts for your subscription.",
+      "cancelSubscription": "Cancel Subscription",
+      "cancelConfirmTitle": "Confirm Subscription Cancellation",
+      "cancelConfirmMessage": "Are you sure you want to cancel your subscription? Your subscription will stop renewing after {{endDate}}, but you can continue using all features until then.",
+      "confirmCancel": "Confirm Cancellation",
+      "cancelledNotice": "Your subscription has been set to cancel and will stop renewing after {{endDate}}.",
+      "cancelError": "Failed to cancel subscription: {{error}}",
+      "cancelSuccess": "Subscription cancelled successfully! You can continue using all features until the current period ends."
     },
     "billingPeriod": {
       "monthly": "Monthly",
@@ -1345,6 +1352,7 @@
       "upgrade": "Upgrade",
       "downgrade": "Downgrade",
       "current": "Current",
+      "manageSubscription": "Manage Subscription",
       "freePlan": {
         "name": "Free Plan",
         "price": "Free",
