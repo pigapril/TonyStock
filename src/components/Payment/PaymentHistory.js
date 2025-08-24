@@ -1,24 +1,49 @@
 /**
- * 付款歷史組件
+ * Payment History Component
  * 
- * 顯示用戶的付款記錄：
- * - 付款記錄列表
- * - 付款詳情查看
- * - 發票下載
- * - 付款狀態指示
+ * Displays user payment records:
+ * - Payment record list
+ * - Payment details view
+ * - Invoice download
+ * - Payment status indicators
  */
 
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { systemLogger } from '../../utils/logger';
 import LoadingSpinner from '../Common/LoadingSpinner';
 import paymentService from '../../services/paymentService';
+import './PaymentHistory.css';
 
 const PaymentHistory = ({ userId }) => {
+    const { t } = useTranslation();
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedPayment, setSelectedPayment] = useState(null);
     const [showDetails, setShowDetails] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(10);
+
+    /**
+     * Get plan name text
+     */
+    const getPlanNameText = (planType) => {
+        if (!planType) return '';
+        
+        // Convert plan type to lowercase for consistent lookup
+        const normalizedPlanType = planType.toLowerCase();
+        
+        // Try to get translated plan name
+        if (normalizedPlanType === 'pro') {
+            return t('subscription.plans.pro');
+        } else if (normalizedPlanType === 'free') {
+            return t('subscription.plans.free');
+        }
+        
+        // Fallback to capitalized plan type
+        return planType.charAt(0).toUpperCase() + planType.slice(1).toLowerCase();
+    };
 
     useEffect(() => {
         if (userId) {
@@ -27,19 +52,19 @@ const PaymentHistory = ({ userId }) => {
     }, [userId]);
 
     /**
-     * 載入付款歷史
+     * Load payment history
      */
     const loadPaymentHistory = async () => {
         try {
             setLoading(true);
             setError(null);
 
-            // 呼叫真實的付款歷史 API
+            // Call real payment history API
             const response = await paymentService.getPaymentHistory();
             
             systemLogger.info('Payment history API response:', response);
 
-            // 處理 API 響應資料
+            // Process API response data
             let paymentData = [];
             if (Array.isArray(response)) {
                 paymentData = response;
@@ -49,18 +74,22 @@ const PaymentHistory = ({ userId }) => {
                 paymentData = response.data;
             }
 
-            // 格式化付款資料以符合組件需求
+            // Format payment data to match component requirements
             const formattedPayments = paymentData.map(payment => ({
                 id: payment.id || payment.paymentId,
                 orderId: payment.orderId || payment.merchantTradeNo,
                 amount: payment.amount || 0,
                 currency: payment.currency || 'TWD',
                 status: payment.status || payment.paymentStatus,
-                paymentMethod: payment.paymentMethod || 'Credit Card',
+                paymentMethod: payment.paymentMethod || t('payment.methods.creditCard'),
                 planType: payment.planType || 'pro',
                 billingPeriod: payment.billingPeriod || 'monthly',
                 paymentDate: payment.paymentDate || payment.createdAt || payment.paidAt,
-                description: payment.description || `${payment.planType || 'Pro'} 方案 - ${payment.billingPeriod === 'yearly' ? '年付' : '月付'}`,
+                // Always use frontend translation, ignore backend description to ensure proper i18n
+                description: t('payment.history.planDescription', {
+                    planType: getPlanNameText(payment.planType || 'pro'),
+                    billingPeriod: payment.billingPeriod === 'yearly' ? t('payment.history.yearly') : t('payment.history.monthly')
+                }),
                 invoiceUrl: payment.invoiceUrl,
                 failureReason: payment.failureReason || payment.errorMessage
             }));
@@ -77,14 +106,14 @@ const PaymentHistory = ({ userId }) => {
                 userId,
                 error: error.message
             });
-            setError('載入付款歷史失敗：' + (error.message || '未知錯誤'));
+            setError(t('payment.history.loadError', { message: error.message || t('common.unknownError') }));
         } finally {
             setLoading(false);
         }
     };
 
     /**
-     * 顯示付款詳情
+     * Show payment details
      */
     const handleShowDetails = (payment) => {
         setSelectedPayment(payment);
@@ -92,11 +121,11 @@ const PaymentHistory = ({ userId }) => {
     };
 
     /**
-     * 下載發票
+     * Download invoice
      */
     const handleDownloadInvoice = (payment) => {
         if (payment.invoiceUrl) {
-            // 實際實作中應該呼叫 API 獲取發票下載連結
+            // In actual implementation, should call API to get invoice download link
             window.open(payment.invoiceUrl, '_blank');
             
             systemLogger.info('Invoice download requested:', {
@@ -106,44 +135,29 @@ const PaymentHistory = ({ userId }) => {
         }
     };
 
-    /**
-     * 獲取付款狀態樣式
-     */
-    const getStatusStyle = (status) => {
-        const styles = {
-            success: 'bg-green-100 text-green-800',
-            failed: 'bg-red-100 text-red-800',
-            pending: 'bg-yellow-100 text-yellow-800',
-            refunded: 'bg-gray-100 text-gray-800'
-        };
-        return styles[status] || 'bg-gray-100 text-gray-800';
-    };
+
 
     /**
-     * 獲取付款狀態文字
+     * Get payment status text
      */
     const getStatusText = (status) => {
-        const texts = {
-            success: '成功',
-            failed: '失敗',
-            pending: '處理中',
-            refunded: '已退款'
-        };
-        return texts[status] || '未知';
+        const statusKey = `payment.history.status.${status}`;
+        return t(statusKey, { defaultValue: t('payment.history.status.unknown') });
     };
 
     /**
-     * 格式化金額
+     * Format amount
      */
     const formatAmount = (amount, currency = 'TWD') => {
         return `${currency} ${amount.toLocaleString()}`;
     };
 
     /**
-     * 格式化日期
+     * Format date
      */
     const formatDate = (date) => {
-        return new Date(date).toLocaleDateString('zh-TW', {
+        const locale = t('common.locale', { defaultValue: 'zh-TW' });
+        return new Date(date).toLocaleDateString(locale, {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -152,22 +166,74 @@ const PaymentHistory = ({ userId }) => {
         });
     };
 
+    /**
+     * Get paginated data
+     */
+    const getPaginatedPayments = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return payments.slice(startIndex, endIndex);
+    };
+
+    /**
+     * Handle page change
+     */
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+        // Scroll to component top
+        document.querySelector('.payment-history')?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+    };
+
+    /**
+     * Calculate total pages
+     */
+    const getTotalPages = () => {
+        return Math.ceil(payments.length / itemsPerPage);
+    };
+
+    /**
+     * Get current display data summary
+     */
+    const getDataSummary = () => {
+        const totalItems = payments.length;
+        const totalPages = getTotalPages();
+        const currentItems = getPaginatedPayments().length;
+        
+        return {
+            total: totalItems,
+            currentPage,
+            totalPages,
+            showing: currentItems
+        };
+    };
+
     if (loading) {
         return (
-            <div className="flex justify-center py-8">
+            <div className="payment-history__loading">
                 <LoadingSpinner size="large" />
+                <p className="payment-history__loading-text">{t('common.loading')}</p>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <div className="flex items-center">
-                    <svg className="w-5 h-5 text-red-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-red-800">{error}</span>
+            <div className="payment-history__error">
+                <svg className="payment-history__error-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+                <div className="payment-history__error-content">
+                    <h3 className="payment-history__error-title">{t('common.error')}</h3>
+                    <p className="payment-history__error-message">{error}</p>
+                    <button 
+                        className="payment-history__retry-button"
+                        onClick={loadPaymentHistory}
+                    >
+                        {t('errorBoundary.retryButton')}
+                    </button>
                 </div>
             </div>
         );
@@ -175,189 +241,272 @@ const PaymentHistory = ({ userId }) => {
 
     if (payments.length === 0) {
         return (
-            <div className="text-center py-12">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">尚無付款記錄</h3>
-                <p className="text-gray-600">您還沒有任何付款記錄</p>
+            <div className="payment-history__empty">
+                <div className="payment-history__empty-content">
+                    <h3 className="payment-history__empty-title">{t('payment.history.title')}</h3>
+                    <p className="payment-history__empty-description">{t('payment.history.noPayments')}</p>
+                </div>
             </div>
         );
     }
 
+    const paginatedPayments = getPaginatedPayments();
+    const dataSummary = getDataSummary();
+    const totalPages = getTotalPages();
+
     return (
-        <div className="space-y-4">
-            <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold text-gray-900">付款歷史</h2>
+        <div className="payment-history">
+            {/* Header with title and refresh button */}
+            <div className="payment-history__header">
+                <h2 className="payment-history__title">{t('subscription.userAccount.paymentHistory')}</h2>
                 <button
                     onClick={loadPaymentHistory}
-                    className="text-blue-600 hover:text-blue-800 text-sm"
+                    disabled={loading}
+                    className="payment-history__refresh-button"
                 >
-                    重新整理
+                    <svg 
+                        className={`payment-history__refresh-icon ${loading ? 'payment-history__refresh-icon--spinning' : ''}`}
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span className="payment-history__refresh-text">{t('common.refresh')}</span>
                 </button>
             </div>
 
-            <div className="bg-white rounded-lg shadow overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    付款日期
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    描述
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    付款方式
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    金額
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    狀態
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    操作
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {payments.map((payment) => (
-                                <tr key={payment.id} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {formatDate(payment.paymentDate)}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{payment.description}</div>
-                                        <div className="text-sm text-gray-500">訂單: {payment.orderId}</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {payment.paymentMethod}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+
+
+            {/* Payment Cards */}
+            <div className="payment-history__cards">
+                {paginatedPayments.map((payment) => (
+                    <div key={payment.id} className="payment-card">
+                        <div className="payment-card__header">
+                            <div className="payment-card__main-info">
+                                <div className="payment-card__description">
+                                    <h3 className="payment-card__title">{payment.description}</h3>
+                                    <p className="payment-card__order-id">{t('payment.history.orderId')}: {payment.orderId}</p>
+                                </div>
+                                <div className="payment-card__amount">
+                                    <div className="payment-card__amount-value">
                                         {formatAmount(payment.amount, payment.currency)}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusStyle(payment.status)}`}>
-                                            {getStatusText(payment.status)}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                        <button
-                                            onClick={() => handleShowDetails(payment)}
-                                            className="text-blue-600 hover:text-blue-900"
-                                        >
-                                            詳情
-                                        </button>
-                                        {payment.status === 'success' && payment.invoiceUrl && (
-                                            <button
-                                                onClick={() => handleDownloadInvoice(payment)}
-                                                className="text-green-600 hover:text-green-900"
-                                            >
-                                                發票
-                                            </button>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="payment-card__status-row">
+                                <span className="payment-card__date">
+                                    {formatDate(payment.paymentDate)}
+                                </span>
+                                <div className={`payment-status payment-status--${payment.status}`}>
+                                    {payment.status === 'success' && (
+                                        <svg className="payment-status__icon" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                        </svg>
+                                    )}
+                                    {payment.status === 'failed' && (
+                                        <svg className="payment-status__icon" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                        </svg>
+                                    )}
+                                    {payment.status === 'pending' && (
+                                        <svg className="payment-status__icon payment-status__icon--spinning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    )}
+                                    {payment.status === 'refunded' && (
+                                        <svg className="payment-status__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                                        </svg>
+                                    )}
+                                    <span>{getStatusText(payment.status)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="payment-card__details">
+                            <div className="payment-card__detail-item">
+                                <span className="payment-card__detail-label">{t('payment.history.method')}</span>
+                                <span className="payment-card__detail-value">{payment.paymentMethod}</span>
+                            </div>
+                            <div className="payment-card__detail-item">
+                                <span className="payment-card__detail-label">{t('payment.history.plan')}</span>
+                                <span className="payment-card__detail-value">{getPlanNameText(payment.planType)}</span>
+                            </div>
+                        </div>
+
+                        <div className="payment-card__actions">
+                            <button
+                                onClick={() => handleShowDetails(payment)}
+                                className="payment-card__action-button payment-card__action-button--primary"
+                            >
+                                <svg className="payment-card__action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {t('payment.history.viewDetails')}
+                            </button>
+                            {payment.status === 'success' && payment.invoiceUrl && (
+                                <button
+                                    onClick={() => handleDownloadInvoice(payment)}
+                                    className="payment-card__action-button payment-card__action-button--secondary"
+                                >
+                                    <svg className="payment-card__action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    {t('payment.actions.downloadInvoice')}
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                ))}
             </div>
 
-            {/* 付款詳情彈窗 */}
+            {/* Pagination */}
+            {totalPages > 1 && (
+                <div className="payment-history__pagination">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="payment-history__pagination-button"
+                    >
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                        {t('common.previous')}
+                    </button>
+                    
+                    <div className="payment-history__pagination-info">
+                        <span className="payment-history__pagination-current">{currentPage}</span>
+                        <span className="payment-history__pagination-separator">/</span>
+                        <span className="payment-history__pagination-total">{totalPages}</span>
+                    </div>
+                    
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="payment-history__pagination-button"
+                    >
+                        {t('common.next')}
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            )}
+
+            {/* Payment Details Modal */}
             {showDetails && selectedPayment && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
-                        <div className="p-6">
-                            <div className="flex justify-between items-center mb-6">
-                                <h3 className="text-lg font-semibold text-gray-900">付款詳情</h3>
+                <div className="payment-details-modal">
+                    <div className="payment-details-modal__backdrop" onClick={() => setShowDetails(false)} />
+                    <div className="payment-details-modal__container">
+                        <div className="payment-details-modal__content">
+                            <div className="payment-details-modal__header">
+                                <div className="payment-details-modal__header-content">
+                                    <h3 className="payment-details-modal__title">{t('payment.history.viewDetails')}</h3>
+                                    <div className={`payment-status payment-status--${selectedPayment.status}`}>
+                                        {selectedPayment.status === 'success' && (
+                                            <svg className="payment-status__icon" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                            </svg>
+                                        )}
+                                        {selectedPayment.status === 'failed' && (
+                                            <svg className="payment-status__icon" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                            </svg>
+                                        )}
+                                        {selectedPayment.status === 'pending' && (
+                                            <svg className="payment-status__icon payment-status__icon--spinning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        )}
+                                        {selectedPayment.status === 'refunded' && (
+                                            <svg className="payment-status__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                                            </svg>
+                                        )}
+                                        <span>{getStatusText(selectedPayment.status)}</span>
+                                    </div>
+                                </div>
                                 <button
                                     onClick={() => setShowDetails(false)}
-                                    className="text-gray-500 hover:text-gray-700"
+                                    className="payment-details-modal__close-button"
                                 >
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
 
-                            <div className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">付款 ID</label>
-                                        <p className="mt-1 text-sm text-gray-900 font-mono">{selectedPayment.id}</p>
+                            <div className="payment-details-modal__amount-section">
+                                <div className="payment-details-modal__amount">
+                                    {formatAmount(selectedPayment.amount, selectedPayment.currency)}
+                                </div>
+                                <p className="payment-details-modal__description">{selectedPayment.description}</p>
+                            </div>
+
+                            <div className="payment-details-modal__details">
+                                <div className="payment-details-modal__detail-group">
+                                    <div className="payment-details-modal__detail-item">
+                                        <span className="payment-details-modal__detail-label">{t('payment.history.paymentId')}</span>
+                                        <span className="payment-details-modal__detail-value payment-details-modal__detail-value--mono">{selectedPayment.id}</span>
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">訂單 ID</label>
-                                        <p className="mt-1 text-sm text-gray-900 font-mono">{selectedPayment.orderId}</p>
+                                    <div className="payment-details-modal__detail-item">
+                                        <span className="payment-details-modal__detail-label">{t('payment.history.orderId')}</span>
+                                        <span className="payment-details-modal__detail-value payment-details-modal__detail-value--mono">{selectedPayment.orderId}</span>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">付款日期</label>
-                                        <p className="mt-1 text-sm text-gray-900">{formatDate(selectedPayment.paymentDate)}</p>
+                                <div className="payment-details-modal__detail-group">
+                                    <div className="payment-details-modal__detail-item">
+                                        <span className="payment-details-modal__detail-label">{t('payment.history.date')}</span>
+                                        <span className="payment-details-modal__detail-value">{formatDate(selectedPayment.paymentDate)}</span>
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">付款狀態</label>
-                                        <span className={`mt-1 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusStyle(selectedPayment.status)}`}>
-                                            {getStatusText(selectedPayment.status)}
+                                    <div className="payment-details-modal__detail-item">
+                                        <span className="payment-details-modal__detail-label">{t('payment.history.method')}</span>
+                                        <span className="payment-details-modal__detail-value">{selectedPayment.paymentMethod}</span>
+                                    </div>
+                                </div>
+
+                                <div className="payment-details-modal__detail-group">
+                                    <div className="payment-details-modal__detail-item">
+                                        <span className="payment-details-modal__detail-label">{t('payment.history.plan')}</span>
+                                        <span className="payment-details-modal__detail-value">{getPlanNameText(selectedPayment.planType)}</span>
+                                    </div>
+                                    <div className="payment-details-modal__detail-item">
+                                        <span className="payment-details-modal__detail-label">{t('payment.history.cycle')}</span>
+                                        <span className="payment-details-modal__detail-value">
+                                            {selectedPayment.billingPeriod === 'monthly' ? t('payment.history.monthly') : t('payment.history.yearly')}
                                         </span>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">方案類型</label>
-                                        <p className="mt-1 text-sm text-gray-900">{selectedPayment.planType?.toUpperCase()} 方案</p>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">計費週期</label>
-                                        <p className="mt-1 text-sm text-gray-900">
-                                            {selectedPayment.billingPeriod === 'monthly' ? '月付' : '年付'}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">付款方式</label>
-                                        <p className="mt-1 text-sm text-gray-900">{selectedPayment.paymentMethod}</p>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">付款金額</label>
-                                        <p className="mt-1 text-sm font-semibold text-gray-900">
-                                            {formatAmount(selectedPayment.amount, selectedPayment.currency)}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">描述</label>
-                                    <p className="mt-1 text-sm text-gray-900">{selectedPayment.description}</p>
-                                </div>
-
                                 {selectedPayment.status === 'failed' && selectedPayment.failureReason && (
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">失敗原因</label>
-                                        <p className="mt-1 text-sm text-red-600">{selectedPayment.failureReason}</p>
+                                    <div className="payment-details-modal__detail-item payment-details-modal__detail-item--full">
+                                        <span className="payment-details-modal__detail-label">{t('payment.history.failureReason')}</span>
+                                        <span className="payment-details-modal__detail-value payment-details-modal__detail-value--error">
+                                            {selectedPayment.failureReason}
+                                        </span>
                                     </div>
                                 )}
                             </div>
 
-                            <div className="mt-6 flex justify-end space-x-3">
+                            <div className="payment-details-modal__actions">
                                 {selectedPayment.status === 'success' && selectedPayment.invoiceUrl && (
                                     <button
                                         onClick={() => handleDownloadInvoice(selectedPayment)}
-                                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                                        className="payment-details-modal__action-button payment-details-modal__action-button--primary"
                                     >
-                                        下載發票
+                                        <svg className="payment-details-modal__action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        {t('payment.actions.downloadInvoice')}
                                     </button>
                                 )}
                                 <button
                                     onClick={() => setShowDetails(false)}
-                                    className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                                    className="payment-details-modal__action-button payment-details-modal__action-button--secondary"
                                 >
-                                    關閉
+                                    {t('common.close')}
                                 </button>
                             </div>
                         </div>

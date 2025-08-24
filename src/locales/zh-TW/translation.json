@@ -425,10 +425,13 @@
     "copied": "已複製",
     "copyToClipboard": "複製到剪貼簿",
     "unknown": "未知",
+    "unknownError": "未知錯誤",
+    "refresh": "重新整理",
     "previous": "上一頁",
     "next": "下一頁",
     "cancel": "取消",
-    "dataLoadError": "資料載入發生錯誤"
+    "dataLoadError": "資料載入發生錯誤",
+    "locale": "zh-TW"
   },
   "googleTrendsMarket": {
     "invalidData": "無效的數據格式",
@@ -1533,7 +1536,29 @@
       "cycle": "週期",
       "actions": "操作",
       "viewDetails": "查看詳情",
-      "downloadReceipt": "下載收據"
+      "downloadReceipt": "下載收據",
+      "loading": "載入付款歷史中...",
+      "loadError": "載入付款歷史失敗：{{message}}",
+      "planDescription": "{{planType}} - {{billingPeriod}}",
+      "planName": "{{planType}} 方案",
+      "monthly": "月付",
+      "yearly": "年付",
+      "paymentDetails": "付款詳情",
+      "paymentId": "付款 ID",
+      "paymentDate": "付款日期",
+      "paymentMethod": "付款方式",
+      "planType": "方案類型",
+      "billingCycle": "計費週期",
+      "failureReason": "失敗原因",
+      "close": "關閉",
+      "retry": "重試",
+      "status": {
+        "success": "成功",
+        "failed": "失敗", 
+        "pending": "處理中",
+        "refunded": "已退款",
+        "unknown": "未知"
+      }
     },
     "errors": {
       "invalidPlan": "無效的方案選擇",

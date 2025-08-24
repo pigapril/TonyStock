@@ -412,7 +412,9 @@
     "previous": "Previous",
     "next": "Next",
     "cancel": "Cancel",
-    "dataLoadError": "Data Load Error"
+    "dataLoadError": "Data Load Error",
+    "refresh": "Refresh",
+    "locale": "en"
   },
   "googleTrendsMarket": {
     "invalidData": "Invalid data format",
@@ -1565,7 +1567,29 @@
       "cycle": "Cycle",
       "actions": "Actions",
       "viewDetails": "View Details",
-      "downloadReceipt": "Download Receipt"
+      "downloadReceipt": "Download Receipt",
+      "loading": "Loading payment history...",
+      "loadError": "Failed to load payment history: {{message}}",
+      "planDescription": "{{planType}} - {{billingPeriod}}",
+      "planName": "{{planType}} Plan",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "paymentDetails": "Payment Details",
+      "paymentId": "Payment ID",
+      "paymentDate": "Payment Date",
+      "paymentMethod": "Payment Method",
+      "planType": "Plan Type",
+      "billingCycle": "Billing Cycle",
+      "failureReason": "Failure Reason",
+      "close": "Close",
+      "retry": "Retry",
+      "status": {
+        "success": "Success",
+        "failed": "Failed",
+        "pending": "Processing",
+        "refunded": "Refunded",
+        "unknown": "Unknown"
+      }
     },
     "errors": {
       "invalidPlan": "Invalid plan selection",

@@ -249,19 +249,6 @@ export const ActivePromotions = ({
 
     return (
         <div className={`active-promotions ${className}`}>
-            {/* Header */}
-            <div className="active-promotions-header">
-                <h3 className="active-promotions-title">
-                    {t('redemption.activePromotions.title')}
-                </h3>
-                
-                {promotions.length > 0 && (
-                    <div className="active-promotions-count">
-                        {t('redemption.activePromotions.count', { count: promotions.length })}
-                    </div>
-                )}
-            </div>
-
             {/* Content */}
             <div className="active-promotions-content">
                 {isLoading ? (

@@ -197,10 +197,7 @@ export const UserAccountPage = () => {
           </section>
 
           {/* Payment History Section */}
-          <section className="user-account-section">
-            <h2 className="user-account-section__title">
-              {t('subscription.userAccount.paymentHistory')}
-            </h2>
+          <section className="user-account-section user-account-section--payment-history">
             <PaymentHistory userId={user?.id} />
           </section>
         </div>
