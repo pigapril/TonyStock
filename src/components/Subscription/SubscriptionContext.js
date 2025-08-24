@@ -140,7 +140,9 @@ export const SubscriptionProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
+      console.log('🔄 Calling subscriptionService.getUserPlan()...');
       const plan = await subscriptionService.getUserPlan();
+      console.log('📊 Received plan from service:', plan);
       
       // If no active subscription found, create a default plan based on user's stored plan
       if (!plan && user?.plan) {
@@ -159,6 +161,13 @@ export const SubscriptionProvider = ({ children }) => {
           ...plan,
           type: plan.planType || plan.type, // Map planType to type
         };
+        
+        // Debug log to check the plan data
+        console.log('📊 Mapped plan data:', mappedPlan);
+        console.log('📊 cancelAtPeriodEnd:', mappedPlan.cancelAtPeriodEnd);
+        console.log('📊 status:', mappedPlan.status);
+        console.log('📊 endDate:', mappedPlan.endDate);
+        
         setUserPlan(mappedPlan);
       } else {
         setUserPlan(null);

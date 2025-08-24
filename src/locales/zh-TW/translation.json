@@ -1541,6 +1541,7 @@
       "loadError": "載入付款歷史失敗：{{message}}",
       "planDescription": "{{planType}} - {{billingPeriod}}",
       "planName": "{{planType}} 方案",
+      "cancellationDescription": "取消 {{planType}} 訂閱，將於 {{endDate}} 結束",
       "monthly": "月付",
       "yearly": "年付",
       "paymentDetails": "付款詳情",

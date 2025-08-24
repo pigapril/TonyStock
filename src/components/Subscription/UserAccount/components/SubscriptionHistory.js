@@ -90,15 +90,26 @@ export const SubscriptionHistory = ({ history, loading }) => {
               </div>
               <div className="subscription-history__item-info">
                 <div className="subscription-history__item-title">
-                  {t(`subscription.history.actions.${item.action}`, item.action)}
-                  {item.fromPlan && item.toPlan && (
-                    <span className="subscription-history__item-plans">
-                      {t('subscription.plans.' + item.fromPlan)} → {t('subscription.plans.' + item.toPlan)}
-                    </span>
+                  {item.action === 'cancellation' && item.description ? (
+                    item.description
+                  ) : (
+                    <>
+                      {t(`subscription.history.actions.${item.action}`, item.action)}
+                      {item.fromPlan && item.toPlan && item.action !== 'cancellation' && (
+                        <span className="subscription-history__item-plans">
+                          {t('subscription.plans.' + item.fromPlan)} → {t('subscription.plans.' + item.toPlan)}
+                        </span>
+                      )}
+                      {item.action === 'cancellation' && item.toPlan && (
+                        <span className="subscription-history__item-plans">
+                          {t('subscription.plans.' + item.toPlan)}
+                        </span>
+                      )}
+                    </>
                   )}
                 </div>
                 <div className="subscription-history__item-date">
-                  {formatDate(item.date)}
+                  {formatDate(item.actionDate || item.date)}
                 </div>
               </div>
               <div className="subscription-history__item-meta">

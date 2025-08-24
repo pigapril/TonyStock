@@ -1572,6 +1572,7 @@
       "loadError": "Failed to load payment history: {{message}}",
       "planDescription": "{{planType}} - {{billingPeriod}}",
       "planName": "{{planType}} Plan",
+      "cancellationDescription": "Cancelled {{planType}} subscription, ends on {{endDate}}",
       "monthly": "Monthly",
       "yearly": "Yearly",
       "paymentDetails": "Payment Details",

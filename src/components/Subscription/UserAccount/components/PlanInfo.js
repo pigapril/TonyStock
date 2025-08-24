@@ -39,6 +39,9 @@ export const PlanInfo = ({ plan, loading }) => {
       });
       
       if (cancelResult.success) {
+        console.log('✅ Cancel subscription success:', cancelResult);
+        console.log('✅ Returned subscription data:', cancelResult.data?.subscription);
+        
         Analytics.track('subscription_cancelled_success', {
           reason: 'user_requested',
           cancelAtPeriodEnd: true,
@@ -49,7 +52,9 @@ export const PlanInfo = ({ plan, loading }) => {
         if (checkAuthStatus) {
           await checkAuthStatus();
         }
+        console.log('🔄 Refreshing user plan...');
         await refreshUserPlan();
+        console.log('🔄 Refreshing subscription history...');
         await refreshSubscriptionHistory();
         
         setShowCancelConfirm(false);
@@ -103,6 +108,12 @@ export const PlanInfo = ({ plan, loading }) => {
     }).format(date);
   };
 
+  // Debug log to check plan data
+  console.log('🔍 PlanInfo received plan:', plan);
+  console.log('🔍 cancelAtPeriodEnd:', plan?.cancelAtPeriodEnd);
+  console.log('🔍 status:', plan?.status);
+  console.log('🔍 endDate:', plan?.endDate);
+
   return (
     <div className="plan-info">
       <div className="plan-info__main">
@@ -123,7 +134,7 @@ export const PlanInfo = ({ plan, loading }) => {
           {plan.endDate && (
             <div className="plan-info__date">
               <span className="plan-info__date-label">
-                {plan.status === 'active' 
+                {(plan.status === 'active' && !plan.cancelAtPeriodEnd)
                   ? t('subscription.history.renewalDate')
                   : t('subscription.history.endDate')
                 }:
@@ -134,7 +145,7 @@ export const PlanInfo = ({ plan, loading }) => {
             </div>
           )}
           
-          {plan.autoRenew && plan.type !== 'free' && (
+          {plan.autoRenew && plan.type !== 'free' && !plan.cancelAtPeriodEnd && (
             <div className="plan-info__auto-renew">
               <span className="plan-info__auto-renew-icon">🔄</span>
               <span className="plan-info__auto-renew-text">

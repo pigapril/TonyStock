@@ -17,37 +17,89 @@ class SubscriptionService {
    */
   async getUserPlan() {
     try {
-      // 從 auth status API 獲取用戶方案資訊
+      console.log('🔄 Getting user plan from subscription API...');
+      
+      // 首先嘗試從訂閱 API 獲取詳細的訂閱信息
+      try {
+        const subscriptionResponse = await enhancedApiClient.get('/api/subscription/current');
+        
+        console.log('📊 Subscription API response:', subscriptionResponse.data);
+        
+        if (subscriptionResponse.data.status === 'success' && subscriptionResponse.data.data.subscription) {
+          const subscription = subscriptionResponse.data.data.subscription;
+          
+          console.log('📊 Found active subscription:', {
+            id: subscription.id,
+            planType: subscription.planType,
+            status: subscription.status,
+            cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+            currentPeriodEnd: subscription.currentPeriodEnd
+          });
+          
+          // 將後端的訂閱數據映射到前端期望的格式
+          return {
+            type: subscription.planType,
+            startDate: subscription.startDate ? new Date(subscription.startDate) : null,
+            endDate: subscription.currentPeriodEnd ? new Date(subscription.currentPeriodEnd) : null,
+            status: subscription.status,
+            autoRenew: subscription.autoRenew,
+            cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+            cancelledAt: subscription.cancelledAt ? new Date(subscription.cancelledAt) : null,
+            // 添加額外的訂閱信息
+            subscriptionId: subscription.id,
+            currentPeriodStart: subscription.currentPeriodStart ? new Date(subscription.currentPeriodStart) : null,
+            isActive: subscription.isActive,
+            isExpired: subscription.isExpired,
+            isCancelled: subscription.isCancelled,
+            willCancelAtPeriodEnd: subscription.willCancelAtPeriodEnd,
+            daysUntilExpiry: subscription.daysUntilExpiry
+          };
+        }
+      } catch (subscriptionError) {
+        console.warn('⚠️ Failed to get subscription details, falling back to auth status:', subscriptionError.message);
+      }
+      
+      // 如果沒有找到訂閱記錄，從 auth status API 獲取基本用戶方案資訊
       const response = await enhancedApiClient.get('/api/auth/status');
 
       if (response.data.status === 'success' && response.data.data.isAuthenticated) {
         const user = response.data.data.user;
+        
+        console.log('📊 Fallback to user plan from auth status:', user.plan);
+        
         return {
           type: user.plan || 'free',
-          startDate: new Date(), // TODO: 從後端獲取實際開始日期
-          endDate: user.plan === 'free' ? null : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30天後
+          startDate: new Date(),
+          endDate: user.plan === 'free' ? null : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
           status: 'active',
-          autoRenew: user.plan !== 'free'
+          autoRenew: user.plan !== 'free',
+          cancelAtPeriodEnd: false, // 默認值
+          cancelledAt: null
         };
       }
 
       // 如果未認證，返回免費方案
+      console.log('📊 User not authenticated, returning free plan');
       return {
         type: 'free',
         startDate: new Date(),
         endDate: null,
         status: 'active',
-        autoRenew: false
+        autoRenew: false,
+        cancelAtPeriodEnd: false,
+        cancelledAt: null
       };
     } catch (error) {
-      console.error('Failed to get user plan:', error);
+      console.error('❌ Failed to get user plan:', error);
       // 返回預設的免費方案，而不是拋出錯誤
       return {
         type: 'free',
         startDate: new Date(),
         endDate: null,
         status: 'active',
-        autoRenew: false
+        autoRenew: false,
+        cancelAtPeriodEnd: false,
+        cancelledAt: null
       };
     }
   }
