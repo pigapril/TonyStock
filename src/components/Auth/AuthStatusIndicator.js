@@ -82,7 +82,7 @@ function AuthSkeleton() {
         <div className="auth-skeleton">
             <div className="skeleton-avatar"></div>
             <div className="skeleton-text"></div>
-            <style jsx>{`
+            <style jsx="true">{`
                 .auth-skeleton {
                     display: flex;
                     align-items: center;
