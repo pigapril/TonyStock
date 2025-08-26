@@ -14,9 +14,9 @@
 }
 
 .admin-loading-spinner {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 8px;
     color: #666;
     font-size: 0.9rem;
 }
@@ -28,6 +28,7 @@
     border-top: 2px solid #007bff;
     border-radius: 50%;
     animation: admin-spin 1s linear infinite;
+    flex-shrink: 0;
 }
 
 @keyframes admin-spin {

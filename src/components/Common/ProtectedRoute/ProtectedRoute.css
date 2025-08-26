@@ -7,21 +7,20 @@
 }
 
 .loading-spinner {
-    /* 只保留置中用，不加動畫與寬高 */
-    display: flex;
-    justify-content: center;
+    display: inline-flex;
     align-items: center;
+    gap: 8px;
     margin-bottom: 1rem;
 }
 
 .spinner {
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #3498db;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     animation: spin 1s linear infinite;
-    margin-right: 12px;      /* 圈圈和文字間距 */
+    flex-shrink: 0;
 }
 
 .loading-text {
