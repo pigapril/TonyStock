@@ -9,6 +9,8 @@
     overflow: hidden;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     border: 1px solid rgba(0, 0, 0, 0.05);
+    z-index: 1;
+    isolation: isolate; /* 創建新的堆疊上下文 */
 }
 
 .gauge-blur-overlay {
@@ -20,9 +22,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
+}
+
+.feature-screenshot-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+.screenshot-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.4;
+    filter: blur(2px);
 }
 
 .blurred-gauge {
+    position: relative;
+    z-index: 6;
     opacity: 0.6;
 }
 
@@ -34,11 +59,16 @@
     bottom: 0;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    z-index: 7;
 }
 
 .restriction-overlay {
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
     display: flex;
     align-items: center;
     justify-content: center;

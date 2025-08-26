@@ -8,6 +8,15 @@ const RestrictedMarketSentimentGauge = ({ onUpgradeClick }) => {
     return (
         <div className="restricted-gauge-container">
             <div className="gauge-blur-overlay">
+                {/* 功能截圖背景 */}
+                <div className="feature-screenshot-background">
+                    <img 
+                        src="/images/market-sentiment/sentiment-gauge-feature.svg" 
+                        alt="Sentiment Gauge Feature"
+                        className="screenshot-image"
+                    />
+                </div>
+                
                 {/* 模糊的儀表盤背景 */}
                 <div className="blurred-gauge">
                     <svg width="200" height="120" viewBox="0 0 200 120">

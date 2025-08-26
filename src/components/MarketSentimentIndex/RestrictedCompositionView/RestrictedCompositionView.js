@@ -15,6 +15,15 @@ const RestrictedCompositionView = ({ onUpgradeClick, indicatorCount = 8 }) => {
     return (
         <div className="restricted-composition-container">
             <div className="composition-blur-overlay">
+                {/* 功能截圖背景 */}
+                <div className="composition-feature-screenshot-background">
+                    <img 
+                        src="/images/market-sentiment/composition-feature.png" 
+                        alt="Composition Feature"
+                        className="composition-screenshot-image"
+                    />
+                </div>
+                
                 {/* 模糊的組成數據背景 */}
                 <div className="blurred-composition">
                     {mockIndicators.map((indicator) => (
