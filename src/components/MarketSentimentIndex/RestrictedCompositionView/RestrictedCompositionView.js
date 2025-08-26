@@ -2,51 +2,29 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './RestrictedCompositionView.css';
 
-const RestrictedCompositionView = ({ onUpgradeClick, indicatorCount = 8 }) => {
+const RestrictedCompositionView = ({ onUpgradeClick }) => {
     const { t } = useTranslation();
 
-    // 創建模擬的指標項目
-    const mockIndicators = Array.from({ length: indicatorCount }, (_, index) => ({
-        id: index,
-        name: `Indicator ${index + 1}`,
-        value: Math.random() * 100
-    }));
+    // 添加圖片載入測試
+    const handleImageLoad = () => {
+        console.log('RestrictedCompositionView: Image loaded successfully');
+    };
+
+    const handleImageError = () => {
+        console.error('RestrictedCompositionView: Image failed to load');
+    };
 
     return (
         <div className="restricted-composition-container">
-            <div className="composition-blur-overlay">
-                {/* 功能截圖背景 */}
-                <div className="composition-feature-screenshot-background">
-                    <img 
-                        src="/images/market-sentiment/composition-feature.png" 
-                        alt="Composition Feature"
-                        className="composition-screenshot-image"
-                    />
-                </div>
-                
-                {/* 模糊的組成數據背景 */}
-                <div className="blurred-composition">
-                    {mockIndicators.map((indicator) => (
-                        <div key={indicator.id} className="mock-composition-item">
-                            <div className="mock-indicator-name">
-                                <div className="mock-text-line"></div>
-                            </div>
-                            <div className="mock-indicator-value">
-                                <div className="mock-bar-wrapper">
-                                    <div 
-                                        className="mock-bar"
-                                        style={{ width: `${indicator.value}%` }}
-                                    ></div>
-                                </div>
-                                <div className="mock-percentage"></div>
-                            </div>
-                            <div className="mock-emotion-tag"></div>
-                        </div>
-                    ))}
-                </div>
-                
-                {/* 模糊效果 */}
-                <div className="composition-blur-filter"></div>
+            {/* 功能截圖背景 */}
+            <div className="composition-feature-screenshot-background">
+                <img 
+                    src="/images/market-sentiment/composition-feature.png" 
+                    alt="Composition Feature"
+                    className="composition-screenshot-image"
+                    onLoad={handleImageLoad}
+                    onError={handleImageError}
+                />
             </div>
             
             <div className="composition-restriction-overlay">

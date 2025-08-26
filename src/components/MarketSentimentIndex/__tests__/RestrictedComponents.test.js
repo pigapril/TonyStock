@@ -29,7 +29,7 @@ describe('Restricted Components with Background Images', () => {
             // 檢查背景圖片是否存在
             const backgroundImage = screen.getByAltText('Sentiment Gauge Feature');
             expect(backgroundImage).toBeInTheDocument();
-            expect(backgroundImage).toHaveAttribute('src', '/images/market-sentiment/sentiment-gauge-feature.svg');
+            expect(backgroundImage).toHaveAttribute('src', '/images/market-sentiment/sentiment-gauge-feature.png');
             expect(backgroundImage).toHaveClass('screenshot-image');
         });
 
@@ -68,14 +68,15 @@ describe('Restricted Components with Background Images', () => {
             expect(backgroundImage).toHaveClass('composition-screenshot-image');
         });
 
-        test('renders mock composition items', () => {
+        test('renders composition feature screenshot', () => {
             render(
-                <RestrictedCompositionView onUpgradeClick={mockOnUpgradeClick} indicatorCount={5} />
+                <RestrictedCompositionView onUpgradeClick={mockOnUpgradeClick} />
             );
 
-            // 檢查模擬的組成項目
-            const mockItems = screen.getAllByTestId(/mock-composition-item/i);
-            expect(mockItems).toHaveLength(5);
+            // 檢查是否有功能截圖
+            const screenshot = screen.getByAltText('Composition Feature');
+            expect(screenshot).toBeInTheDocument();
+            expect(screenshot).toHaveAttribute('src', '/images/market-sentiment/composition-feature.png');
         });
 
         test('renders upgrade button with icon', () => {

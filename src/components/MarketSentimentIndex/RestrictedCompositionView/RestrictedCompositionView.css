@@ -10,16 +10,6 @@
     isolation: isolate; /* 創建新的堆疊上下文 */
 }
 
-.composition-blur-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 20px;
-    z-index: 10;
-}
-
 .composition-feature-screenshot-background {
     position: absolute;
     top: 0;
@@ -29,93 +19,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 5;
+    z-index: 1;
 }
 
 .composition-screenshot-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.3;
-    filter: blur(3px);
+    opacity: 0.6;
+    filter: blur(1px);
 }
 
-.blurred-composition {
-    position: relative;
-    z-index: 6;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    opacity: 0.4;
-}
-
-.mock-composition-item {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 12px 0;
-}
-
-.mock-indicator-name {
-    flex: 1;
-    min-width: 120px;
-}
-
-.mock-text-line {
-    height: 16px;
-    background: linear-gradient(90deg, #e0e0e0 0%, #f0f0f0 50%, #e0e0e0 100%);
-    border-radius: 8px;
-    animation: shimmer 1.5s infinite;
-}
-
-.mock-indicator-value {
-    flex: 2;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.mock-bar-wrapper {
-    flex: 1;
-    height: 8px;
-    background: #f0f0f0;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.mock-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #9D00FF, #C78F57);
-    border-radius: 4px;
-    transition: width 0.3s ease;
-}
-
-.mock-percentage {
-    width: 40px;
-    height: 14px;
-    background: linear-gradient(90deg, #e0e0e0 0%, #f0f0f0 50%, #e0e0e0 100%);
-    border-radius: 7px;
-    animation: shimmer 1.5s infinite;
-}
-
-.mock-emotion-tag {
-    width: 60px;
-    height: 24px;
-    background: linear-gradient(90deg, #e0e0e0 0%, #f0f0f0 50%, #e0e0e0 100%);
-    border-radius: 12px;
-    animation: shimmer 1.5s infinite;
-}
-
-.composition-blur-filter {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    z-index: 7;
-}
+/* 模擬樣式已移除 */
 
 .composition-restriction-overlay {
     position: absolute;
@@ -123,13 +38,13 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 20;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.6);  /* 從 0.85 降到 0.6，更透明 */
+    backdrop-filter: blur(2px);  /* 從 4px 降到 2px，減少模糊 */
+    -webkit-backdrop-filter: blur(2px);
 }
 
 .composition-restriction-content {
@@ -224,7 +139,7 @@
     }
 
     .composition-restriction-overlay {
-        background: rgba(28, 28, 30, 0.92);
+        background: rgba(28, 28, 30, 0.6);  /* 從 0.92 降到 0.6，更透明 */
     }
 
     .composition-restriction-title {
@@ -236,15 +151,7 @@
         color: #a1a1a6;
     }
 
-    .mock-text-line,
-    .mock-percentage,
-    .mock-emotion-tag {
-        background: linear-gradient(90deg, #3a3a3c 0%, #48484a 50%, #3a3a3c 100%);
-    }
-
-    .mock-bar-wrapper {
-        background: #3a3a3c;
-    }
+    /* 模擬樣式已移除 */
 }
 
 /* Responsive design */
