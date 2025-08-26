@@ -848,6 +848,26 @@
           "historicalInsight": "History tells us that extreme market sentiment is often an important signal for investment opportunities."
         }
       }
+    },
+    "paywall": {
+      "title": "Unlock Complete Market Sentiment Analysis",
+      "subtitle": "Upgrade to Pro for real-time market insights and full features",
+      "historicalPerformance": "Historical Performance Preview",
+      "historicalPeriod": "Past Performance (Reference Only)",
+      "successfulPrediction": "Successful Low Point Prediction",
+      "currentDataRestricted": "Current data requires Pro plan",
+
+      "upgradeButton": "Upgrade to Pro",
+      "priceLabel": "Starting from NT$299/month",
+      "disclaimer": "Cancel anytime, no long-term commitment"
+    },
+    "restricted": {
+      "gaugeTitle": "Real-time Sentiment Gauge",
+      "gaugeDescription": "Upgrade to Pro to view current market sentiment index and detailed analysis",
+      "compositionTitle": "Unlock Complete Indicator Analysis",
+      "compositionDescription": "View real-time data for all indicators, contribution analysis, and detailed insights",
+      "upgradeButton": "Upgrade Now",
+      "unlockButton": "Unlock Full Features"
     }
   },
   "pageContainer": {

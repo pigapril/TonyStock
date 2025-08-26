@@ -865,6 +865,27 @@
           "historicalInsight": "歷史告訴我們，極端的市場情緒往往是重要的投資機會信號。"
         }
       }
+    },
+    "paywall": {
+      "title": "解鎖完整市場情緒分析",
+      "subtitle": "升級至 Pro 方案，獲得即時市場洞察與完整功能",
+      "historicalPerformance": "歷史表現預覽",
+      "historicalPeriod": "過去表現（僅供參考）",
+      "successfulPrediction": "成功預測低點",
+      "currentDataRestricted": "當前數據需要 Pro 方案",
+
+      "upgradeButton": "升級至 Pro 方案",
+      "priceLabel": "每月 NT$299 起",
+      "disclaimer": "隨時可取消，無長期合約約束"
+    },
+    "restricted": {
+      "gaugeTitle": "即時情緒儀表盤",
+      "gaugeDescription": "升級至 Pro 方案以查看當前市場情緒指數與詳細分析",
+      "compositionTitle": "解鎖完整指標分析",
+      "compositionDescription": "查看所有指標的即時數據、貢獻度分析與詳細解讀",
+
+      "upgradeButton": "立即升級",
+      "unlockButton": "解鎖完整功能"
     }
   },
   "pageContainer": {

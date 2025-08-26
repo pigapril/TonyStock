@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { handleApiError } from '../../utils/errorHandler';
 import { Analytics } from '../../utils/analytics';
+import { useAuth } from '../Auth/useAuth';
 import './MarketSentimentIndex.css';
 import 'chartjs-adapter-date-fns';
 
 
 import MarketSentimentDescriptionSection from './MarketSentimentDescriptionSection';
 import MarketSentimentGauge from './MarketSentimentGauge';
+import MarketSentimentPaywall from './MarketSentimentPaywall/MarketSentimentPaywall';
+import RestrictedMarketSentimentGauge from './RestrictedMarketSentimentGauge/RestrictedMarketSentimentGauge';
+import RestrictedCompositionView from './RestrictedCompositionView/RestrictedCompositionView';
 import PageContainer from '../PageContainer/PageContainer';
 import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
@@ -108,8 +112,10 @@ const INDICATOR_DESCRIPTION_KEY_MAP = {
 const MarketSentimentIndex = () => {
   const { t, i18n } = useTranslation();
   const { showToast, toast, hideToast } = useToastManager();
+  const { user, isAuthenticated } = useAuth();
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showPaywall, setShowPaywall] = useState(false);
   const [selectedTimeRange, setSelectedTimeRange] = useState('1Y');
   const [indicatorsData, setIndicatorsData] = useState({});
   const [historicalData, setHistoricalData] = useState([]);
@@ -119,6 +125,10 @@ const MarketSentimentIndex = () => {
   const initialRenderRef = useRef(true);
   const { requestAdDisplay } = useAdContext();
   const currentLang = i18n.language;
+
+  // 檢查用戶計劃
+  const userPlan = user?.plan || 'free';
+  const isProUser = userPlan === 'pro';
 
   // 新增滑桿相關狀態
   const [sliderMinMax, setSliderMinMax] = useState([0, 0]); // [minTimestamp, maxTimestamp]
@@ -162,7 +172,10 @@ const MarketSentimentIndex = () => {
     async function fetchSentimentData() {
       try {
         setLoading(true);
-        const response = await enhancedApiClient.get('/api/market-sentiment');
+        
+        // 根據用戶計劃選擇不同的端點
+        const endpoint = isProUser ? '/api/market-sentiment' : '/api/market-sentiment-free';
+        const response = await enhancedApiClient.get(endpoint);
 
         if (isMounted) {
           setSentimentData(response.data);
@@ -172,7 +185,12 @@ const MarketSentimentIndex = () => {
           }, 100);
         }
       } catch (error) {
-        handleApiError(error, showToast, t);
+        // 如果是訪問被拒絕的錯誤，顯示 paywall
+        if (error.response?.status === 403) {
+          setShowPaywall(true);
+        } else {
+          handleApiError(error, showToast, t);
+        }
         setSentimentData(null);
       } finally {
         if (isMounted) {
@@ -186,7 +204,7 @@ const MarketSentimentIndex = () => {
     return () => {
       isMounted = false;
     };
-  }, [showToast, t]);
+  }, [showToast, t, isProUser]);
 
   useEffect(() => {
     async function fetchHistoricalData() {
@@ -420,6 +438,27 @@ const MarketSentimentIndex = () => {
       },
     ],
   }), [filteredData, t]);
+
+  // Paywall 處理函數
+  const handleUpgrade = useCallback(() => {
+    Analytics.marketSentiment.upgradeClicked({
+      source: 'marketSentimentPaywall'
+    });
+    // 導向訂閱頁面
+    window.location.href = '/subscription';
+  }, []);
+
+  const handleClosePaywall = useCallback(() => {
+    setShowPaywall(false);
+  }, []);
+
+  const handleRestrictedFeatureClick = useCallback((feature) => {
+    Analytics.marketSentiment.restrictedFeatureClicked({
+      feature,
+      userPlan
+    });
+    setShowPaywall(true);
+  }, [userPlan]);
 
   // 修改圖表選項
   const chartOptions = useMemo(() => ({
@@ -684,32 +723,40 @@ const MarketSentimentIndex = () => {
                 </div>
 
                 <div className="gauge-sentiment-container">
-                  <MarketSentimentGauge
-                    sentimentData={sentimentData}
-                    isDataLoaded={isDataLoaded}
-                    initialRenderRef={initialRenderRef}
-                    showAnalysisResult={false}
-                    showLastUpdate={false}
-                  />
+                  {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
+                    <>
+                      <MarketSentimentGauge
+                        sentimentData={sentimentData}
+                        isDataLoaded={isDataLoaded}
+                        initialRenderRef={initialRenderRef}
+                        showAnalysisResult={false}
+                        showLastUpdate={false}
+                      />
 
-                  {/* Current Market Sentiment 和 Last Update Time */}
-                  <div className="panel-subtitle-container">
-                    <span className="panel-subtitle">
-                      {currentLang === 'zh-TW' ? '目前的股市情緒是：' : 'Current Market Sentiment:'}
-                    </span>
-                    <span className={`panel-sentiment-value sentiment-${sentimentData && sentimentData.totalScore != null ? getSentiment(Math.round(sentimentData.totalScore)).split('.').pop() : 'neutral'}`}>
-                      {sentimentData && sentimentData.totalScore != null ? t(getSentiment(Math.round(sentimentData.totalScore))) : t('sentiment.neutral')}
-                    </span>
-                    {/* Last Update Time - 在 Current Market Sentiment 下方 */}
-                    {sentimentData && sentimentData.compositeScoreLastUpdate && (
-                      <div className="panel-last-update-time">
-                        {t('marketSentiment.lastUpdateLabel')}: {' '}
-                        {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString(
-                          currentLang === 'zh-TW' ? 'zh-TW' : 'en-US'
+                      {/* Current Market Sentiment 和 Last Update Time */}
+                      <div className="panel-subtitle-container">
+                        <span className="panel-subtitle">
+                          {currentLang === 'zh-TW' ? '目前的股市情緒是：' : 'Current Market Sentiment:'}
+                        </span>
+                        <span className={`panel-sentiment-value sentiment-${sentimentData && sentimentData.totalScore != null ? getSentiment(Math.round(sentimentData.totalScore)).split('.').pop() : 'neutral'}`}>
+                          {sentimentData && sentimentData.totalScore != null ? t(getSentiment(Math.round(sentimentData.totalScore))) : t('sentiment.neutral')}
+                        </span>
+                        {/* Last Update Time - 在 Current Market Sentiment 下方 */}
+                        {sentimentData && sentimentData.compositeScoreLastUpdate && (
+                          <div className="panel-last-update-time">
+                            {t('marketSentiment.lastUpdateLabel')}: {' '}
+                            {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString(
+                              currentLang === 'zh-TW' ? 'zh-TW' : 'en-US'
+                            )}
+                          </div>
                         )}
                       </div>
-                    )}
-                  </div>
+                    </>
+                  ) : (
+                    <RestrictedMarketSentimentGauge 
+                      onUpgradeClick={() => handleRestrictedFeatureClick('gauge')}
+                    />
+                  )}
                 </div>
 
               </div>
@@ -771,42 +818,49 @@ const MarketSentimentIndex = () => {
 
                   {compositeStep === 'composition' && (
                     <div className="composition-view">
-                      <div className="composition-list">
-                        {Object.entries(indicatorsData).map(([key, ind], index) => {
-                          const sentimentKey = getSentiment(ind.percentileRank ? Math.round(ind.percentileRank) : null);
-                          const raw = sentimentKey.split('.').pop();
-                          return (
-                            <div
-                              key={key}
-                              className="composition-item"
-                              onClick={() => setSelectedIndicatorKey(key)}
-                              role="button"
-                              tabIndex={0}
-                            >
-                              <span className="composition-name">{t(INDICATOR_TRANSLATION_KEY_MAP[key] || key)}</span>
-                              <div className="composition-analysis-value">
-                                <div className="composition-bar-wrapper">
-                                  <div
-                                    className={`composition-bar sentiment-${raw}`}
-                                    style={{ width: `${ind.percentileRank || 0}%` }}
-                                  ></div>
+                      {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
+                        <div className="composition-list">
+                          {Object.entries(indicatorsData).map(([key, ind], index) => {
+                            const sentimentKey = getSentiment(ind.percentileRank ? Math.round(ind.percentileRank) : null);
+                            const raw = sentimentKey.split('.').pop();
+                            return (
+                              <div
+                                key={key}
+                                className="composition-item"
+                                onClick={() => setSelectedIndicatorKey(key)}
+                                role="button"
+                                tabIndex={0}
+                              >
+                                <span className="composition-name">{t(INDICATOR_TRANSLATION_KEY_MAP[key] || key)}</span>
+                                <div className="composition-analysis-value">
+                                  <div className="composition-bar-wrapper">
+                                    <div
+                                      className={`composition-bar sentiment-${raw}`}
+                                      style={{ width: `${ind.percentileRank || 0}%` }}
+                                    ></div>
+                                  </div>
+                                  <span className="composition-score-text">{ind.percentileRank ? `${Math.round(ind.percentileRank)}%` : '-'}</span>
                                 </div>
-                                <span className="composition-score-text">{ind.percentileRank ? `${Math.round(ind.percentileRank)}%` : '-'}</span>
+                                <EmotionTag
+                                  sentimentType={raw}
+                                  sentimentText={t(sentimentKey)}
+                                  percentileValue={null}
+                                  isLoading={loading}
+                                  onTagClick={() => setSelectedIndicatorKey(key)}
+                                  showConnectionLine={false}
+                                  animationDelay={index * 100}
+                                  className="composition-emotion-tag"
+                                />
                               </div>
-                              <EmotionTag
-                                sentimentType={raw}
-                                sentimentText={t(sentimentKey)}
-                                percentileValue={null}
-                                isLoading={loading}
-                                onTagClick={() => setSelectedIndicatorKey(key)}
-                                showConnectionLine={false}
-                                animationDelay={index * 100}
-                                className="composition-emotion-tag"
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <RestrictedCompositionView 
+                          onUpgradeClick={() => handleRestrictedFeatureClick('composition')}
+                          indicatorCount={Object.keys(indicatorsData).length}
+                        />
+                      )}
                     </div>
                   )}
                 </div>
@@ -922,6 +976,24 @@ const MarketSentimentIndex = () => {
           </div>
         );
       })()}
+
+      {/* Market Sentiment Paywall */}
+      <MarketSentimentPaywall
+        isVisible={showPaywall}
+        onClose={handleClosePaywall}
+        onUpgrade={handleUpgrade}
+        historicalData={filteredData}
+        showHistoricalChart={true}
+      />
+
+      {/* Toast notifications */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+        />
+      )}
     </PageContainer>
   );
 };
