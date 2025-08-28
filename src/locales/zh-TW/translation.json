@@ -589,6 +589,13 @@
       "invalidData": "無效的數據格式"
     },
     "lastUpdateLabel": "最後更新時間",
+    "tutorial": {
+      "title": "歷史數據預覽",
+      "historicalMessage": "您正在查看過去十年的市場情緒趨勢，這些歷史數據可以幫助您識別市場的低點和高點。",
+      "upgradeMessage": "數據更新至兩個月前。升級至 Pro 方案即可獲得最新的市場情緒數據。",
+      "gotIt": "我知道了",
+      "upgradeCTA": "升級 Pro"
+    },
     "descriptions": {
       "composite": {
         "shortDescription": "Sentiment Inside Out 恐懼貪婪指標 (簡稱:SIO恐懼貪婪指標) 將市場情緒量化成 0~100 的分數，目的在於了解當前市場參與者的心理是偏向恐懼還是貪婪，類似於 CNN 恐懼貪婪指數和 BofA 牛熊指標。幫助投資人在非理性的股市波動中保持冷靜，避免跟著情緒追高殺低。",
@@ -882,7 +889,7 @@
       "gaugeTitle": "即時情緒儀表盤",
       "gaugeDescription": "升級至 Pro 方案以查看當前市場情緒指數與詳細分析",
       "compositionTitle": "解鎖完整指標分析",
-      "compositionDescription": "查看所有指標的即時數據、貢獻度分析與詳細解讀",
+      "compositionDescription": "查看所有指標的最新數據、貢獻度分析與詳細解讀",
 
       "upgradeButton": "立即升級",
       "unlockButton": "解鎖完整功能"
@@ -1520,7 +1527,18 @@
       "proceedPayment": "前往付款",
       "processing": "處理中...",
       "creating": "建立訂單中...",
-      "redirecting": "跳轉付款頁面中..."
+      "redirecting": "跳轉付款頁面中...",
+      "upgradeNow": "立即付款升級",
+      "confirmPlan": "確認方案",
+      "confirmTerms": "確認條款",
+      "confirmPayment": "確認付款",
+      "cancel": "取消",
+      "cancelOrder": "取消訂單",
+      "previous": "上一步",
+      "next": "下一步",
+      "createOrder": "創建訂單",
+      "creatingOrder": "創建訂單中...",
+      "proceedToPayment": "前往付款"
     },
     "status": {
       "title": "付款狀態",
@@ -1639,6 +1657,71 @@
       },
       "queryError": "無法確認付款狀態，請聯繫客服。",
       "noParams": "缺少付款資訊參數。"
+    },
+    "plan": {
+      "proPlan": "Pro 方案",
+      "features": {
+        "title": "包含功能",
+        "marketSentiment": "市場情緒分析",
+        "advancedAnalysis": "進階股票分析工具",
+        "unlimitedWatchlist": "無限制觀察清單",
+        "prioritySupport": "優先客戶支援"
+      },
+      "pricing": {
+        "monthly": "月",
+        "yearly": "年",
+        "originalPrice": "原價",
+        "totalAmount": "總金額"
+      }
+    },
+    "terms": {
+      "title": "服務條款與隱私政策",
+      "serviceTermsTitle": "服務條款重點",
+      "privacyPolicyTitle": "隱私政策重點",
+      "serviceTerms": [
+        "訂閱服務將於付款完成後立即生效",
+        "月付方案每月自動續費，年付方案每年自動續費",
+        "您可以隨時取消訂閱，取消後將在當前週期結束時停止服務",
+        "退款政策：付款後 7 天內可申請全額退款",
+        "我們承諾保護您的個人資料和付款資訊安全"
+      ],
+      "privacyPolicy": [
+        "我們僅收集提供服務所必需的個人資料",
+        "您的付款資訊由綠界支付安全處理，我們不會儲存信用卡資訊",
+        "我們不會將您的個人資料出售給第三方",
+        "您有權隨時查看、修改或刪除您的個人資料"
+      ],
+      "agreement": "我已閱讀並同意",
+      "serviceTermsLink": "服務條款",
+      "privacyPolicyLink": "隱私政策",
+      "and": "和"
+    },
+    "security": {
+      "title": "安全付款保障",
+      "notices": [
+        "點擊「前往付款」將跳轉到綠界支付頁面",
+        "請在 30 分鐘內完成付款，逾時訂單將自動取消",
+        "付款完成後將自動返回本網站",
+        "所有交易均採用 SSL 加密保護"
+      ]
+    },
+    "orderSummary": {
+      "title": "訂單摘要",
+      "orderId": "訂單編號",
+      "plan": "方案",
+      "paymentMethod": "付款方式",
+      "creditCardRecurring": "信用卡定期定額",
+      "discount": "折扣",
+      "monthlyPlan": "月付",
+      "yearlyPlan": "年付"
+    },
+    "redemption": {
+      "title": "兌換代碼",
+      "description": "有促銷代碼嗎？輸入代碼以獲得折扣優惠",
+      "placeholder": "輸入兌換代碼",
+      "applied": "兌換代碼已套用",
+      "savings": "節省 NT$ {{amount}}",
+      "notApplicable": "此兌換碼不適用於此方案"
     }
   },
   "invoice": {

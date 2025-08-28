@@ -11,6 +11,7 @@ import MarketSentimentGauge from './MarketSentimentGauge';
 import MarketSentimentPaywall from './MarketSentimentPaywall/MarketSentimentPaywall';
 import RestrictedMarketSentimentGauge from './RestrictedMarketSentimentGauge/RestrictedMarketSentimentGauge';
 import RestrictedCompositionView from './RestrictedCompositionView/RestrictedCompositionView';
+import DataRestrictionTutorial from './DataRestrictionTutorial/DataRestrictionTutorial';
 import PageContainer from '../PageContainer/PageContainer';
 import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
@@ -116,7 +117,8 @@ const MarketSentimentIndex = () => {
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showPaywall, setShowPaywall] = useState(false);
-  const [selectedTimeRange, setSelectedTimeRange] = useState('1Y');
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [selectedTimeRange, setSelectedTimeRange] = useState('10Y');
   const [indicatorsData, setIndicatorsData] = useState({});
   const [historicalData, setHistoricalData] = useState([]);
   const [activeTab, setActiveTab] = useState('composite');
@@ -134,8 +136,8 @@ const MarketSentimentIndex = () => {
   const [sliderMinMax, setSliderMinMax] = useState([0, 0]); // [minTimestamp, maxTimestamp]
   const [currentSliderRange, setCurrentSliderRange] = useState([0, 0]); // [startTimestamp, endTimestamp]
 
-  // 新增：漸進式導覽步驟狀態
-  const [compositeStep, setCompositeStep] = useState('composition');
+  // 新增：漸進式導覽步驟狀態 - 免費用戶預設顯示歷史趨勢
+  const [compositeStep, setCompositeStep] = useState(isProUser ? 'composition' : 'history');
   // 新增：組成項目點擊後的 Modal 狀態
   const [selectedIndicatorKey, setSelectedIndicatorKeyInternal] = useState(null);
 
@@ -460,6 +462,20 @@ const MarketSentimentIndex = () => {
     setShowPaywall(true);
   }, [userPlan]);
 
+  // Tutorial 處理函數
+  const handleCloseTutorial = useCallback(() => {
+    setShowTutorial(false);
+    localStorage.setItem('marketSentiment_tutorialSeen', 'true');
+  }, []);
+
+  const handleTutorialUpgrade = useCallback(() => {
+    handleCloseTutorial();
+    Analytics.marketSentiment.upgradeClicked({
+      source: 'marketSentimentTutorial'
+    });
+    window.location.href = '/subscription';
+  }, [handleCloseTutorial]);
+
   // 修改圖表選項
   const chartOptions = useMemo(() => ({
     scales: {
@@ -574,6 +590,19 @@ const MarketSentimentIndex = () => {
       initialRenderRef.current = false;
     }
   }, [isDataLoaded]);
+
+  // 免費用戶首次進入時顯示 tutorial
+  useEffect(() => {
+    if (!isProUser && isDataLoaded && compositeStep === 'history') {
+      const hasSeenTutorial = localStorage.getItem('marketSentiment_tutorialSeen');
+      if (!hasSeenTutorial) {
+        const timer = setTimeout(() => {
+          setShowTutorial(true);
+        }, 1000); // 延遲1秒顯示，讓用戶先看到內容
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [isProUser, isDataLoaded, compositeStep]);
 
 
 
@@ -992,6 +1021,14 @@ const MarketSentimentIndex = () => {
           message={toast.message}
           type={toast.type}
           onClose={hideToast}
+        />
+      )}
+
+      {/* Tutorial for free users */}
+      {showTutorial && (
+        <DataRestrictionTutorial
+          onClose={handleCloseTutorial}
+          onUpgradeClick={handleTutorialUpgrade}
         />
       )}
     </PageContainer>

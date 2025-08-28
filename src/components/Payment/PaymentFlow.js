@@ -11,6 +11,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import paymentService from '../../services/paymentService';
 import { systemLogger } from '../../utils/logger';
 import LoadingSpinner from '../Common/LoadingSpinner';
@@ -23,6 +24,7 @@ const PaymentFlow = ({
     onError,
     onCancel 
 }) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -239,10 +241,10 @@ const PaymentFlow = ({
      */
     const renderStepIndicator = () => {
         const steps = [
-            { number: 1, title: '確認方案' },
-            { number: 2, title: '選擇付款方式' },
-            { number: 3, title: '確認條款' },
-            { number: 4, title: '確認付款' }
+            { number: 1, title: t('payment.form.confirmPlan') },
+            { number: 2, title: t('payment.flow.selectPayment') },
+            { number: 3, title: t('payment.form.confirmTerms') },
+            { number: 4, title: t('payment.form.confirmPayment') }
         ];
 
         return (
@@ -283,12 +285,12 @@ const PaymentFlow = ({
      */
     const renderPlanConfirmation = () => (
         <div className="max-w-lg mx-auto">
-            <h2 className="text-2xl font-bold text-center mb-6">確認訂閱方案</h2>
+            <h2 className="text-2xl font-bold text-center mb-6">{t('payment.form.confirmPlan')}</h2>
             
             <div className="bg-white rounded-lg shadow-md p-6 border-2 border-blue-200 mb-6">
                 <div className="text-center">
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                        Pro 方案
+                        {t('payment.plan.proPlan')}
                     </h3>
                     
                     {/* Price Display with Redemption */}
@@ -302,7 +304,7 @@ const PaymentFlow = ({
                                     NT$ {finalAmount?.toLocaleString()}
                                 </div>
                                 <div className="text-sm text-green-600 font-medium">
-                                    已套用兌換代碼優惠
+                                    {t('payment.redemption.applied')}
                                 </div>
                             </div>
                         ) : (
@@ -323,31 +325,31 @@ const PaymentFlow = ({
                 </div>
 
                 <div className="border-t pt-4">
-                    <h4 className="font-medium text-gray-900 mb-3">包含功能：</h4>
+                    <h4 className="font-medium text-gray-900 mb-3">{t('payment.plan.features.title')}：</h4>
                     <ul className="space-y-2 text-sm text-gray-600">
                         <li className="flex items-center">
                             <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
-                            市場情緒分析
+                            {t('payment.plan.features.marketSentiment')}
                         </li>
                         <li className="flex items-center">
                             <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
-                            進階股票分析工具
+                            {t('payment.plan.features.advancedAnalysis')}
                         </li>
                         <li className="flex items-center">
                             <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
-                            無限制觀察清單
+                            {t('payment.plan.features.unlimitedWatchlist')}
                         </li>
                         <li className="flex items-center">
                             <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
-                            優先客戶支援
+                            {t('payment.plan.features.prioritySupport')}
                         </li>
                     </ul>
                 </div>
@@ -355,9 +357,9 @@ const PaymentFlow = ({
 
             {/* Redemption Code Section */}
             <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                <h4 className="text-lg font-semibold text-gray-900 mb-3">兌換代碼</h4>
+                <h4 className="text-lg font-semibold text-gray-900 mb-3">{t('payment.redemption.title')}</h4>
                 <p className="text-sm text-gray-600 mb-4">
-                    有促銷代碼嗎？輸入代碼以獲得折扣優惠
+                    {t('payment.redemption.description')}
                 </p>
                 
                 <RedemptionCodeInput
@@ -365,7 +367,7 @@ const PaymentFlow = ({
                     onPreviewSuccess={handleRedemptionPreview}
                     onRedemptionSuccess={handleRedemptionSuccess}
                     onRedemptionError={handleRedemptionError}
-                    placeholder="輸入兌換代碼"
+                    placeholder={t('payment.redemption.placeholder')}
                     showPreview={true}
                 />
 
@@ -378,10 +380,10 @@ const PaymentFlow = ({
                             </svg>
                             <div>
                                 <div className="text-sm font-medium text-green-800">
-                                    兌換代碼已套用
+                                    {t('payment.redemption.applied')}
                                 </div>
                                 <div className="text-xs text-green-600">
-                                    節省 NT$ {(originalAmount - finalAmount)?.toLocaleString()}
+                                    {t('payment.redemption.savings', { amount: (originalAmount - finalAmount)?.toLocaleString() })}
                                 </div>
                             </div>
                         </div>
@@ -394,13 +396,13 @@ const PaymentFlow = ({
                     onClick={handleCancel}
                     className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
                 >
-                    取消
+                    {t('payment.form.cancel')}
                 </button>
                 <button
                     onClick={handleNextStep}
                     className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                    確認方案
+                    {t('payment.form.confirmPlan')}
                 </button>
             </div>
         </div>
@@ -411,7 +413,7 @@ const PaymentFlow = ({
      */
     const renderPaymentMethodSelection = () => (
         <div className="max-w-md mx-auto">
-            <h2 className="text-2xl font-bold text-center mb-6">選擇付款方式</h2>
+            <h2 className="text-2xl font-bold text-center mb-6">{t('payment.flow.selectPayment')}</h2>
             
             <div className="space-y-3">
                 {paymentMethods.map((method) => (
@@ -450,13 +452,13 @@ const PaymentFlow = ({
                     onClick={handlePrevStep}
                     className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
                 >
-                    上一步
+                    {t('payment.form.previous')}
                 </button>
                 <button
                     onClick={handleNextStep}
                     className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                    下一步
+                    {t('payment.form.next')}
                 </button>
             </div>
         </div>
@@ -467,24 +469,21 @@ const PaymentFlow = ({
      */
     const renderTermsAgreement = () => (
         <div className="max-w-2xl mx-auto">
-            <h2 className="text-2xl font-bold text-center mb-6">服務條款與隱私政策</h2>
+            <h2 className="text-2xl font-bold text-center mb-6">{t('payment.terms.title')}</h2>
             
             <div className="bg-gray-50 rounded-lg p-6 mb-6 max-h-64 overflow-y-auto">
-                <h3 className="font-semibold mb-3">服務條款重點</h3>
+                <h3 className="font-semibold mb-3">{t('payment.terms.serviceTermsTitle')}</h3>
                 <ul className="space-y-2 text-sm text-gray-700">
-                    <li>• 訂閱服務將於付款完成後立即生效</li>
-                    <li>• 月付方案每月自動續費，年付方案每年自動續費</li>
-                    <li>• 您可以隨時取消訂閱，取消後將在當前週期結束時停止服務</li>
-                    <li>• 退款政策：付款後 7 天內可申請全額退款</li>
-                    <li>• 我們承諾保護您的個人資料和付款資訊安全</li>
+                    {t('payment.terms.serviceTerms', { returnObjects: true }).map((term, index) => (
+                        <li key={index}>• {term}</li>
+                    ))}
                 </ul>
 
-                <h3 className="font-semibold mt-4 mb-3">隱私政策重點</h3>
+                <h3 className="font-semibold mt-4 mb-3">{t('payment.terms.privacyPolicyTitle')}</h3>
                 <ul className="space-y-2 text-sm text-gray-700">
-                    <li>• 我們僅收集提供服務所必需的個人資料</li>
-                    <li>• 您的付款資訊由綠界支付安全處理，我們不會儲存信用卡資訊</li>
-                    <li>• 我們不會將您的個人資料出售給第三方</li>
-                    <li>• 您有權隨時查看、修改或刪除您的個人資料</li>
+                    {t('payment.terms.privacyPolicy', { returnObjects: true }).map((policy, index) => (
+                        <li key={index}>• {policy}</li>
+                    ))}
                 </ul>
             </div>
 
@@ -496,13 +495,13 @@ const PaymentFlow = ({
                     className="mt-1"
                 />
                 <span className="text-sm text-gray-700">
-                    我已閱讀並同意
+                    {t('payment.terms.agreement')}
                     <a href="/terms" target="_blank" className="text-blue-600 hover:underline mx-1">
-                        服務條款
+                        {t('payment.terms.serviceTermsLink')}
                     </a>
-                    和
+                    {t('payment.terms.and')}
                     <a href="/privacy" target="_blank" className="text-blue-600 hover:underline mx-1">
-                        隱私政策
+                        {t('payment.terms.privacyPolicyLink')}
                     </a>
                 </span>
             </label>
@@ -512,7 +511,7 @@ const PaymentFlow = ({
                     onClick={handlePrevStep}
                     className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
                 >
-                    上一步
+                    {t('payment.form.previous')}
                 </button>
                 <button
                     onClick={handleCreateOrder}
@@ -523,7 +522,7 @@ const PaymentFlow = ({
                             : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
                 >
-                    {loading ? '創建訂單中...' : '創建訂單'}
+                    {loading ? t('payment.form.creatingOrder') : t('payment.form.createOrder')}
                 </button>
             </div>
         </div>
@@ -534,7 +533,7 @@ const PaymentFlow = ({
      */
     const renderPaymentConfirmation = () => (
         <div className="max-w-md mx-auto">
-            <h2 className="text-2xl font-bold text-center mb-6">確認付款資訊</h2>
+            <h2 className="text-2xl font-bold text-center mb-6">{t('payment.form.confirmPayment')}</h2>
             
             {orderData && (
                 <div className="bg-white rounded-lg shadow-md p-6 mb-6">

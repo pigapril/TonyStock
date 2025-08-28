@@ -175,7 +175,7 @@ const PaymentPage = () => {
     // 創建訂單並跳轉到付款頁面
     const handleCreateOrder = async () => {
         if (!agreedToTerms) {
-            setError('請先同意服務條款和隱私政策');
+            setError(t('payment.errors.termsRequired'));
             return;
         }
 
@@ -204,7 +204,7 @@ const PaymentPage = () => {
             });
 
         } catch (error) {
-            setError('創建訂單時發生錯誤，請稍後再試');
+            setError(t('payment.errors.createOrderFailed'));
             handleError(error);
         } finally {
             setLoading(false);
@@ -214,7 +214,7 @@ const PaymentPage = () => {
     // 提交付款表單到綠界
     const handleSubmitPayment = () => {
         if (!orderData) {
-            setError('訂單資料不完整');
+            setError(t('payment.errors.invalidAmount'));
             return;
         }
 
@@ -222,7 +222,7 @@ const PaymentPage = () => {
             // 提交表單到綠界
             paymentService.submitPaymentForm(orderData);
         } catch (error) {
-            setError('跳轉到付款頁面時發生錯誤');
+            setError(t('payment.errors.paymentFailed'));
             handleError(error);
         }
     };
@@ -253,9 +253,9 @@ const PaymentPage = () => {
     // 渲染步驟指示器
     const renderStepIndicator = () => {
         const steps = [
-            { number: 1, title: '確認方案' },
-            { number: 2, title: '確認條款' },
-            { number: 3, title: '確認付款' }
+            { number: 1, title: t('payment.form.confirmPlan') },
+            { number: 2, title: t('payment.form.confirmTerms') },
+            { number: 3, title: t('payment.form.confirmPayment') }
         ];
 
         return (
@@ -299,19 +299,19 @@ const PaymentPage = () => {
             <div className="payment-page__plan-card">
                 <div className="payment-page__plan-header">
                     <div className="payment-page__plan-badge">Pro</div>
-                    <h3 className="payment-page__plan-name">Pro 方案</h3>
+                    <h3 className="payment-page__plan-name">{t('payment.plan.proPlan')}</h3>
                     <div className="payment-page__plan-price">
                         <span className="payment-page__plan-amount">
                             NT$ {currentPlan?.price?.toLocaleString()}
                         </span>
                         <span className="payment-page__plan-period">
-                            / {billingPeriod === 'monthly' ? '月' : '年'}
+                            / {billingPeriod === 'monthly' ? t('payment.plan.pricing.monthly') : t('payment.plan.pricing.yearly')}
                         </span>
                     </div>
                     {appliedDiscount && currentPlan?.originalPrice && (
                         <div className="payment-page__plan-discount">
                             <div className="payment-page__original-price">
-                                原價：NT$ {currentPlan.originalPrice.toLocaleString()}
+                                {t('payment.plan.pricing.originalPrice')}：NT$ {currentPlan.originalPrice.toLocaleString()}
                             </div>
                             <div className="payment-page__discount-badge">
                                 {appliedDiscount.type === 'percentage' 
@@ -324,31 +324,31 @@ const PaymentPage = () => {
                 </div>
 
                 <div className="payment-page__plan-features">
-                    <h4 className="payment-page__features-title">包含功能</h4>
+                    <h4 className="payment-page__features-title">{t('payment.plan.features.title')}</h4>
                     <ul className="payment-page__features-list">
                         <li className="payment-page__feature-item">
                             <svg className="payment-page__feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
                                 <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
-                            市場情緒分析
+                            {t('payment.plan.features.marketSentiment')}
                         </li>
                         <li className="payment-page__feature-item">
                             <svg className="payment-page__feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
                                 <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
-                            進階股票分析工具
+                            {t('payment.plan.features.advancedAnalysis')}
                         </li>
                         <li className="payment-page__feature-item">
                             <svg className="payment-page__feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
                                 <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
-                            無限制觀察清單
+                            {t('payment.plan.features.unlimitedWatchlist')}
                         </li>
                         <li className="payment-page__feature-item">
                             <svg className="payment-page__feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
                                 <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
-                            優先客戶支援
+                            {t('payment.plan.features.prioritySupport')}
                         </li>
                     </ul>
                 </div>
@@ -359,13 +359,13 @@ const PaymentPage = () => {
                     className="payment-page__button payment-page__button--secondary"
                     onClick={handleCancel}
                 >
-                    取消
+                    {t('payment.form.cancel')}
                 </button>
                 <button
                     className="payment-page__button payment-page__button--primary"
                     onClick={handleNextStep}
                 >
-                    確認方案
+                    {t('payment.form.confirmPlan')}
                 </button>
             </div>
         </div>
@@ -375,27 +375,24 @@ const PaymentPage = () => {
     const renderTermsAgreement = () => (
         <div className="payment-page__terms-section">
             <div className="payment-page__terms-content">
-                <h3 className="payment-page__terms-title">服務條款與隱私政策</h3>
+                <h3 className="payment-page__terms-title">{t('payment.terms.title')}</h3>
                 
                 <div className="payment-page__terms-box">
                     <div className="payment-page__terms-group">
-                        <h4>服務條款重點</h4>
+                        <h4>{t('payment.terms.serviceTermsTitle')}</h4>
                         <ul>
-                            <li>訂閱服務將於付款完成後立即生效</li>
-                            <li>月付方案每月自動續費，年付方案每年自動續費</li>
-                            <li>您可以隨時取消訂閱，取消後將在當前週期結束時停止服務</li>
-                            <li>退款政策：付款後 7 天內可申請全額退款</li>
-                            <li>我們承諾保護您的個人資料和付款資訊安全</li>
+                            {t('payment.terms.serviceTerms', { returnObjects: true }).map((term, index) => (
+                                <li key={index}>{term}</li>
+                            ))}
                         </ul>
                     </div>
 
                     <div className="payment-page__terms-group">
-                        <h4>隱私政策重點</h4>
+                        <h4>{t('payment.terms.privacyPolicyTitle')}</h4>
                         <ul>
-                            <li>我們僅收集提供服務所必需的個人資料</li>
-                            <li>您的付款資訊由綠界支付安全處理，我們不會儲存信用卡資訊</li>
-                            <li>我們不會將您的個人資料出售給第三方</li>
-                            <li>您有權隨時查看、修改或刪除您的個人資料</li>
+                            {t('payment.terms.privacyPolicy', { returnObjects: true }).map((policy, index) => (
+                                <li key={index}>{policy}</li>
+                            ))}
                         </ul>
                     </div>
                 </div>
@@ -408,13 +405,13 @@ const PaymentPage = () => {
                         className="payment-page__checkbox"
                     />
                     <span className="payment-page__checkbox-text">
-                        我已閱讀並同意
+                        {t('payment.terms.agreement')}
                         <a href="/terms" target="_blank" className="payment-page__link">
-                            服務條款
+                            {t('payment.terms.serviceTermsLink')}
                         </a>
-                        和
+                        {t('payment.terms.and')}
                         <a href="/privacy" target="_blank" className="payment-page__link">
-                            隱私政策
+                            {t('payment.terms.privacyPolicyLink')}
                         </a>
                     </span>
                 </label>
@@ -425,14 +422,14 @@ const PaymentPage = () => {
                     className="payment-page__button payment-page__button--secondary"
                     onClick={handlePrevStep}
                 >
-                    上一步
+                    {t('payment.form.previous')}
                 </button>
                 <button
                     className="payment-page__button payment-page__button--primary"
                     onClick={handleCreateOrder}
                     disabled={!agreedToTerms || loading}
                 >
-                    {loading ? '創建訂單中...' : '創建訂單'}
+                    {loading ? t('payment.form.creatingOrder') : t('payment.form.createOrder')}
                 </button>
             </div>
         </div>
@@ -442,30 +439,30 @@ const PaymentPage = () => {
     const renderPaymentConfirmation = () => (
         <div className="payment-page__confirmation-section">
             <div className="payment-page__order-summary">
-                <h3 className="payment-page__summary-title">訂單摘要</h3>
+                <h3 className="payment-page__summary-title">{t('payment.orderSummary.title')}</h3>
                 
                 {orderData && (
                     <div className="payment-page__order-details">
                         <div className="payment-page__order-row">
-                            <span>訂單編號</span>
+                            <span>{t('payment.orderSummary.orderId')}</span>
                             <span className="payment-page__order-id">{orderData.orderId}</span>
                         </div>
                         <div className="payment-page__order-row">
-                            <span>方案</span>
-                            <span>Pro 方案 ({billingPeriod === 'monthly' ? '月付' : '年付'})</span>
+                            <span>{t('payment.orderSummary.plan')}</span>
+                            <span>{t('payment.plan.proPlan')} ({billingPeriod === 'monthly' ? t('payment.orderSummary.monthlyPlan') : t('payment.orderSummary.yearlyPlan')})</span>
                         </div>
                         <div className="payment-page__order-row">
-                            <span>付款方式</span>
-                            <span>信用卡定期定額</span>
+                            <span>{t('payment.orderSummary.paymentMethod')}</span>
+                            <span>{t('payment.orderSummary.creditCardRecurring')}</span>
                         </div>
                         {appliedDiscount && currentPlan?.originalPrice && (
                             <>
                                 <div className="payment-page__order-row">
-                                    <span>原價</span>
+                                    <span>{t('payment.plan.pricing.originalPrice')}</span>
                                     <span>NT$ {currentPlan.originalPrice.toLocaleString()}</span>
                                 </div>
                                 <div className="payment-page__order-row payment-page__order-discount">
-                                    <span>折扣</span>
+                                    <span>{t('payment.orderSummary.discount')}</span>
                                     <span className="payment-page__discount-amount">
                                         -{appliedDiscount.type === 'percentage' 
                                             ? `${appliedDiscount.value}%` 
@@ -476,7 +473,7 @@ const PaymentPage = () => {
                             </>
                         )}
                         <div className="payment-page__order-row payment-page__order-total">
-                            <span>總金額</span>
+                            <span>{t('payment.plan.pricing.totalAmount')}</span>
                             <span>NT$ {orderData.amount?.toLocaleString()}</span>
                         </div>
                     </div>
@@ -490,12 +487,11 @@ const PaymentPage = () => {
                     </svg>
                 </div>
                 <div className="payment-page__security-text">
-                    <h4>安全付款保障</h4>
+                    <h4>{t('payment.security.title')}</h4>
                     <ul>
-                        <li>點擊「前往付款」將跳轉到綠界支付頁面</li>
-                        <li>請在 30 分鐘內完成付款，逾時訂單將自動取消</li>
-                        <li>付款完成後將自動返回本網站</li>
-                        <li>所有交易均採用 SSL 加密保護</li>
+                        {t('payment.security.notices', { returnObjects: true }).map((notice, index) => (
+                            <li key={index}>{notice}</li>
+                        ))}
                     </ul>
                 </div>
             </div>
@@ -505,13 +501,13 @@ const PaymentPage = () => {
                     className="payment-page__button payment-page__button--secondary"
                     onClick={handleCancel}
                 >
-                    取消訂單
+                    {t('payment.form.cancelOrder')}
                 </button>
                 <button
                     className="payment-page__button payment-page__button--primary payment-page__button--payment"
                     onClick={handleSubmitPayment}
                 >
-                    前往付款
+                    {t('payment.form.proceedToPayment')}
                 </button>
             </div>
         </div>

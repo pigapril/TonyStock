@@ -113,11 +113,11 @@ export const PlanCard = ({
   const adjustedPricing = getAdjustedPricing();
 
   const getButtonText = () => {
-    if (paymentLoading) return '處理中...';
+    if (paymentLoading) return t('payment.form.processing');
     if (isCurrentPlan) return t('subscription.subscriptionPlans.current');
     if (isFree && currentPlan !== 'free') return t('subscription.subscriptionPlans.manageSubscription');
     if (isFree) return t('subscription.subscriptionPlans.current');
-    if (isPro) return '立即付款升級';
+    if (isPro) return t('payment.form.upgradeNow');
     return t('subscription.subscriptionPlans.upgrade');
   };
 
@@ -213,7 +213,7 @@ export const PlanCard = ({
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
             </div>
-            <span>此兌換碼不適用於此方案</span>
+            <span>{t('payment.redemption.notApplicable')}</span>
           </div>
         )}
       </div>

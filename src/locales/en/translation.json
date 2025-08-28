@@ -572,6 +572,13 @@
       "invalidData": "Invalid data format"
     },
     "lastUpdateLabel": "Last Updated",
+    "tutorial": {
+      "title": "Historical Data Preview",
+      "historicalMessage": "You're viewing the past 10 years of market sentiment trends. This historical data helps you identify market lows and highs.",
+      "upgradeMessage": "Data is updated up to two months ago. Upgrade to Pro to access the latest market sentiment data.",
+      "gotIt": "Got it",
+      "upgradeCTA": "Upgrade Pro"
+    },
     "descriptions": {
       "composite": {
         "shortDescription": "The Sentiment Inside Out Fear & Greed Indicator (SIO Fear & Greed Indicator) quantifies market sentiment into a score from 0 to 100. Its purpose is to gauge whether current market participants' psychology leans towards fear or greed, similar to the CNN Fear & Greed Index and the BofA Bull & Bear Indicator. It helps investors remain calm during irrational stock market volatility and avoid emotionally driven decisions like chasing highs and selling lows.",
@@ -865,7 +872,7 @@
       "gaugeTitle": "Real-time Sentiment Gauge",
       "gaugeDescription": "Upgrade to Pro to view current market sentiment index and detailed analysis",
       "compositionTitle": "Unlock Complete Indicator Analysis",
-      "compositionDescription": "View real-time data for all indicators, contribution analysis, and detailed insights",
+      "compositionDescription": "View latest data for all indicators, contribution analysis, and detailed insights",
       "upgradeButton": "Upgrade Now",
       "unlockButton": "Unlock Full Features"
     }
@@ -1503,7 +1510,18 @@
       "proceedPayment": "Proceed to Payment",
       "processing": "Processing...",
       "creating": "Creating order...",
-      "redirecting": "Redirecting to payment page..."
+      "redirecting": "Redirecting to payment page...",
+      "upgradeNow": "Upgrade Now",
+      "confirmPlan": "Confirm Plan",
+      "confirmTerms": "Confirm Terms",
+      "confirmPayment": "Confirm Payment",
+      "cancel": "Cancel",
+      "cancelOrder": "Cancel Order",
+      "previous": "Previous",
+      "next": "Next",
+      "createOrder": "Create Order",
+      "creatingOrder": "Creating Order...",
+      "proceedToPayment": "Proceed to Payment"
     },
     "status": {
       "title": "Payment Status",
@@ -1635,6 +1653,71 @@
       "pci": "PCI DSS Compliant",
       "secure": "Secure Payment Environment",
       "privacy": "Privacy Data Protection"
+    },
+    "plan": {
+      "proPlan": "Pro Plan",
+      "features": {
+        "title": "Included Features",
+        "marketSentiment": "Market Sentiment Analysis",
+        "advancedAnalysis": "Advanced Stock Analysis Tools",
+        "unlimitedWatchlist": "Unlimited Watchlist",
+        "prioritySupport": "Priority Customer Support"
+      },
+      "pricing": {
+        "monthly": "month",
+        "yearly": "year",
+        "originalPrice": "Original Price",
+        "totalAmount": "Total Amount"
+      }
+    },
+    "terms": {
+      "title": "Terms of Service and Privacy Policy",
+      "serviceTermsTitle": "Key Terms of Service",
+      "privacyPolicyTitle": "Key Privacy Policy",
+      "serviceTerms": [
+        "Subscription service will take effect immediately after payment completion",
+        "Monthly plans auto-renew monthly, yearly plans auto-renew yearly",
+        "You can cancel your subscription at any time, service will stop at the end of current cycle",
+        "Refund policy: Full refund available within 7 days of payment",
+        "We are committed to protecting your personal data and payment information security"
+      ],
+      "privacyPolicy": [
+        "We only collect personal data necessary to provide services",
+        "Your payment information is securely processed by ECPay, we do not store credit card information",
+        "We will not sell your personal data to third parties",
+        "You have the right to view, modify or delete your personal data at any time"
+      ],
+      "agreement": "I have read and agree to the",
+      "serviceTermsLink": "Terms of Service",
+      "privacyPolicyLink": "Privacy Policy",
+      "and": "and"
+    },
+    "security": {
+      "title": "Secure Payment Guarantee",
+      "notices": [
+        "Clicking 'Proceed to Payment' will redirect to ECPay payment page",
+        "Please complete payment within 30 minutes, orders will be automatically cancelled if expired",
+        "You will be automatically redirected back to this website after payment completion",
+        "All transactions are protected with SSL encryption"
+      ]
+    },
+    "orderSummary": {
+      "title": "Order Summary",
+      "orderId": "Order ID",
+      "plan": "Plan",
+      "paymentMethod": "Payment Method",
+      "creditCardRecurring": "Credit Card Recurring",
+      "discount": "Discount",
+      "monthlyPlan": "Monthly",
+      "yearlyPlan": "Yearly"
+    },
+    "redemption": {
+      "title": "Redemption Code",
+      "description": "Have a promo code? Enter the code to get discount offers",
+      "placeholder": "Enter redemption code",
+      "applied": "Redemption code applied",
+      "savings": "Save NT$ {{amount}}",
+      "notApplicable": "This redemption code is not applicable to this plan"
     }
   },
   "invoice": {
