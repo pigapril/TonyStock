@@ -151,7 +151,8 @@
   },
   "protectedRoute": {
     "loading": "載入中...",
-    "loginRequired": "請先登入以繼續"
+    "loginRequired": "請先登入以繼續",
+    "watchlistUpgradeRequired": "觀察清單功能需要升級到 Pro 方案"
   },
   "timeRangeSelector": {
     "label": "時間範圍",

@@ -462,7 +462,6 @@
       "text": "Utilize LOHAS Five-Line Analysis to capture ETF or individual stock price trends, improving entry and exit win rates.",
       "alt": "Price Trend Analysis"
     },
-
     "feature3": {
       "title": "Market Sentiment Indicators",
       "text": "Interpret market sentiment, overcome human weaknesses, and seize entry opportunities during market fear.",
@@ -863,7 +862,6 @@
       "historicalPeriod": "Past Performance (Reference Only)",
       "successfulPrediction": "Successful Low Point Prediction",
       "currentDataRestricted": "Current data requires Pro plan",
-
       "upgradeButton": "Upgrade to Pro",
       "priceLabel": "Starting from NT$299/month",
       "disclaimer": "Cancel anytime, no long-term commitment"
@@ -1387,9 +1385,8 @@
         "price": "Free",
         "description": "Great for beginners looking to get into passive investing",
         "features": [
-          "Lohas Spectrum: 5 uses per month",
-          "Limited to 0050 & SPY stocks",
-          "Market Sentiment: 2 uses per month",
+          "Lohas Spectrum: Limited stock codes only",
+          "Market Sentiment: Historical data (2+ months old)",
           "Basic access only",
           "Watchlist disabled",
           "Includes ads"
@@ -1407,8 +1404,8 @@
           "All stocks, custom date ranges",
           "Market Sentiment: Unlimited usage",
           "Full component & historical access",
-          "Watchlist: 5 categories",
-          "Unlimited stocks per category",
+          "Watchlist: 10 categories",
+          "Up to 50 stocks per category",
           "Ad-free experience"
         ]
       }

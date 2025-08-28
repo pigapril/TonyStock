@@ -151,7 +151,8 @@
   },
   "protectedRoute": {
     "loading": "Loading...",
-    "loginRequired": "Please log in to continue"
+    "loginRequired": "Please log in to continue",
+    "watchlistUpgradeRequired": "Watchlist feature requires upgrading to Pro plan"
   },
   "timeRangeSelector": {
     "label": "Time Range",
