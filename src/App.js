@@ -3,6 +3,8 @@ import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { Link, Route, Routes, Navigate, useLocation, useParams, useNavigate, NavLink } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
+import { useSmartNavigation } from './hooks/useSmartNavigation';
+
 
 // 第三方庫
 import axios from 'axios';
@@ -110,6 +112,20 @@ function AppContent() {
   const location = useLocation();
   const isHomePage = location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
 
+  // 智能導航系統
+  const { 
+    shouldUseSideNav, 
+    isInitialized, 
+    navRef, 
+    triggerCheck 
+  } = useSmartNavigation({
+    debounceMs: 150,
+    threshold: 8
+  });
+
+  // 決定是否使用側邊導航：手機版 OR 智能檢測到需要切換
+  const useSideNavigation = isMobile || shouldUseSideNav;
+
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [googleTrendsDropdownOpen, setGoogleTrendsDropdownOpen] = React.useState(false);
 
@@ -184,7 +200,7 @@ function AppContent() {
       openDialog('auth', { returnPath: `/${lang}/watchlist` });
     }
     markWatchlistSeen();
-    if (isMobile) {
+    if (useSideNavigation) {
       setSidebarOpen(false);
     }
   };
@@ -192,7 +208,14 @@ function AppContent() {
   // 處理文章點擊
   const handleArticlesClick = () => {
     markArticlesSeen();
-    if (isMobile) {
+    if (useSideNavigation) {
+      setSidebarOpen(false);
+    }
+  };
+
+  // 處理導航項目點擊（通用）
+  const handleNavItemClick = () => {
+    if (useSideNavigation) {
       setSidebarOpen(false);
     }
   };
@@ -214,19 +237,30 @@ function AppContent() {
     window.scrollTo(0, 0);
   }, [location]);
 
+  // 監聽語言變化，觸發導航重新檢查
+  React.useEffect(() => {
+    if (triggerCheck) {
+      const timer = setTimeout(() => {
+        triggerCheck();
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [i18n.language, triggerCheck]);
+
 
 
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <PageViewTracker />
       <div className="App-inner">
-        {/* 側邊欄區塊 */}
-        <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+        {/* 側邊欄區塊 - 只在使用側邊導航模式時渲染 */}
+        {useSideNavigation && (
+          <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
           <ul>
             <li className="sidebar-item-1">
               <NavLink
                 to={`/${lang}/`}
-                onClick={() => isMobile && setSidebarOpen(false)}
+                onClick={handleNavItemClick}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
               >
@@ -237,7 +271,7 @@ function AppContent() {
             <li className="sidebar-item-2">
               <NavLink
                 to={`/${lang}/priceanalysis`}
-                onClick={() => isMobile && setSidebarOpen(false)}
+                onClick={handleNavItemClick}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
               >
@@ -248,7 +282,7 @@ function AppContent() {
             <li className="sidebar-item-3">
               <NavLink
                 to={`/${lang}/market-sentiment`}
-                onClick={() => isMobile && setSidebarOpen(false)}
+                onClick={handleNavItemClick}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
               >
@@ -322,7 +356,7 @@ function AppContent() {
             <li className="sidebar-item-7">
               <NavLink
                 to={`/${lang}/subscription-plans`}
-                onClick={() => isMobile && setSidebarOpen(false)}
+                onClick={handleNavItemClick}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
               >
@@ -343,11 +377,12 @@ function AppContent() {
             </li>
           </ul>
         </nav>
+        )}
 
         {/* 主內容區域 */}
         <main className="main-content">
           {/* 頂部導航欄 */}
-          <header className="top-nav">
+          <header className="top-nav" ref={navRef}>
             {/* Logo 區域 */}
             <div className="top-nav-logo">
               <NavLink to={`/${lang}/`}>
@@ -355,84 +390,64 @@ function AppContent() {
               </NavLink>
             </div>
 
-            {/* 桌面版導航項目 */}
-            <div className="desktop-nav-items">
-              <NavLink
-                to={`/${lang}/priceanalysis`}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
-              >
-                <FaChartLine />
-                <span>{t('nav.priceAnalysis')}</span>
-              </NavLink>
-              <NavLink
-                to={`/${lang}/market-sentiment`}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
-              >
-                <FaHeartbeat />
-                <span>{t('nav.marketSentiment')}</span>
-              </NavLink>
-              {/*
-              <div className="desktop-nav-item dropdown"
-                onMouseEnter={() => setGoogleTrendsDropdownOpen(true)}
-                onMouseLeave={() => setGoogleTrendsDropdownOpen(false)}
-              >
-                <Link to="/googletrends">
+            {/* 桌面版導航項目 - 只在不使用側邊導航時顯示 */}
+            {!useSideNavigation && (
+              <div className="desktop-nav-items">
+                <NavLink
+                  to={`/${lang}/priceanalysis`}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
                   <FaChartLine />
-                  <span>Google 搜尋熱度</span>
-                </Link>
-                {googleTrendsDropdownOpen && (
-                  <div className="desktop-dropdown-menu">
-                    <Link to="/googletrends">
-                      <span>單一標的熱度</span>
-                    </Link>
-                    <Link to="/googletrendsmarket">
-                      <span>整體市場熱度</span>
-                    </Link>
-                  </div>
-                )}
+                  <span>{t('nav.priceAnalysis')}</span>
+                </NavLink>
+                <NavLink
+                  to={`/${lang}/market-sentiment`}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
+                  <FaHeartbeat />
+                  <span>{t('nav.marketSentiment')}</span>
+                </NavLink>
+                <NavLink
+                  to={`/${lang}/watchlist`}
+                  onClick={handleWatchlistClick}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
+                  <FaList />
+                  <span>{t('nav.watchlist')}</span>
+                </NavLink>
+                <NavLink
+                  to={`/${lang}/articles`}
+                  onClick={handleArticlesClick}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
+                  <FaChartBar />
+                  <span>{t('nav.articles')}</span>
+                </NavLink>
+                <NavLink
+                  to={`/${lang}/subscription-plans`}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
+                  <FaPiggyBank />
+                  <span>{t('nav.subscription')}</span>
+                </NavLink>
+                <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
+                  <FaFacebook />
+                  <span>{t('nav.facebookLong')}</span>
+                </a>
               </div>
-              */}
-              <NavLink
-                to={`/${lang}/watchlist`}
-                onClick={handleWatchlistClick}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
-              >
-                <FaList />
-                <span>{t('nav.watchlist')}</span>
-              </NavLink>
-              <NavLink
-                to={`/${lang}/articles`}
-                onClick={handleArticlesClick}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
-              >
-                <FaChartBar />
-                <span>{t('nav.articles')}</span>
-              </NavLink>
-              <NavLink
-                to={`/${lang}/subscription-plans`}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
-              >
-                <FaPiggyBank />
-                <span>{t('nav.subscription')}</span>
-              </NavLink>
-              {/* AdminNavigation 已移除以提高安全性 */}
-              <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
-                <FaFacebook />
-                <span>{t('nav.facebookLong')}</span>
-              </a>
-            </div>
+            )}
 
             {/* 使用者操作和選單按鈕 */}
             <div className="user-actions">
               <LanguageSwitcher />
               <AuthStatusIndicator />
-              {/* 只在手機版顯示漢堡選單 */}
-              {isMobile && (
+              {/* 在使用側邊導航時顯示漢堡選單 */}
+              {useSideNavigation && (
                 <div className="menu-toggle-wrapper">
                   <FaBars className="menu-toggle" onClick={toggleSidebar} />
                   {hasNewWatchlist && <span className="notification-dot" />}
@@ -549,8 +564,8 @@ function AppContent() {
         {/* 添加文字對話客服元件 */}
         <ChatWidget />
 
-        {/* 添加遮罩層 (mobile 狀態下點擊收合側邊欄) */}
-        <Overlay isVisible={sidebarOpen && isMobile} onClick={closeSidebar} />
+        {/* 添加遮罩層 (使用側邊導航時點擊收合側邊欄) */}
+        <Overlay isVisible={sidebarOpen && useSideNavigation} onClick={closeSidebar} />
 
         {/* 將 Footer 移到這裡 */}
         <Footer />
@@ -570,6 +585,8 @@ function AppContent() {
           onClose={hideToast}
         />
       )}
+
+
     </div>
   );
 }

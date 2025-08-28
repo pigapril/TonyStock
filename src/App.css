@@ -244,20 +244,20 @@ body {
   margin-top: -10px; /* 減少頂部間距 */
 }
 
+/* 側邊欄預設隱藏狀態 */
+.sidebar {
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
 /* 響應式設計 */
 @media (max-width: 1300px) {
   .App-inner {
     flex-direction: column;
-  }
-
-  .sidebar {
-    transform: translateX(100%);
-    position: fixed;
-    z-index: 1001;
-  }
-
-  .sidebar.open {
-    transform: translateX(0);
   }
 
   /* 為每個選單項目添加延遲動畫 */
@@ -631,77 +631,70 @@ body {
   }
 }
 
-/* 新增桌面版導航項目容器 */
+/* 桌面版導航項目容器 */
 .desktop-nav-items {
-  display: none;  /* 預設隱藏 */
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  flex-wrap: nowrap; /* 防止換行 */
+  overflow: hidden; /* 隱藏溢出內容 */
+  transition: all 0.3s ease;
 }
 
-/* 桌面版顯示方式 */
-@media (min-width: 1301px) {
-  /* 隱藏側邊欄 */
-  .sidebar {
-    display: none;
-  }
-  
-  /* 顯示頂部導航項目 */
-  .desktop-nav-items {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-right: auto;
-    margin-left: auto;
-  }
 
-  /* 隱藏漢堡選單按鈕 */
-  .menu-toggle-wrapper {
-    display: none;
-  }
 
-  /* 調整導航項目樣式 */
-  .desktop-nav-items a {
-    color: #333;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-  }
-
-  .desktop-nav-items a:hover {
-    background-color: rgba(59, 130, 246, 0.08);
-    color: #3b82f6;
-  }
-
-  .desktop-nav-items svg {
-    font-size: 16px;
-  }
-
-  /* 新增：桌面導覽列活動連結樣式 */
-  .desktop-nav-items .active-nav-link {
-    background-color: rgba(59, 130, 246, 0.12); /* 與側邊欄活動狀態背景色一致 */
-    color: #3b82f6; /* 與側邊欄活動狀態文字顏色一致 */
-    font-weight: 500; /* 加粗字體 */
-  }
-  
-  /* 確保活動連結的 SVG 圖示顏色也改變 */
-  .desktop-nav-items .active-nav-link svg {
-    color: #3b82f6;
-  }
-
-  .desktop-nav-items svg {
-    font-size: 16px;
-  }
+/* 桌面版顯示方式 - 移除固定的媒體查詢限制 */
+.desktop-nav-items {
+  /* 移除 @media (min-width: 1301px) 的限制 */
 }
 
-/* 保持手機版的原有樣式 */
+/* 調整導航項目樣式 */
+.desktop-nav-items a {
+  color: #333;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  white-space: nowrap; /* 防止文字換行 */
+  flex-shrink: 0; /* 防止項目收縮 */
+}
+
+.desktop-nav-items a:hover {
+  background-color: rgba(59, 130, 246, 0.08);
+  color: #3b82f6;
+}
+
+.desktop-nav-items svg {
+  font-size: 16px;
+  flex-shrink: 0; /* 防止圖標收縮 */
+}
+
+/* 桌面導覽列活動連結樣式 */
+.desktop-nav-items .active-nav-link {
+  background-color: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+/* 確保活動連結的 SVG 圖示顏色也改變 */
+.desktop-nav-items .active-nav-link svg {
+  color: #3b82f6;
+}
+
+/* 手機版強制使用側邊導航 */
 @media (max-width: 1300px) {
   .desktop-nav-items {
-    display: none;
+    display: none !important;
   }
   
-  /* 保持原有的側邊欄相關樣式 */
+  .menu-toggle-wrapper {
+    display: block !important;
+  }
 }
 
 /* Logo 樣式 */
@@ -721,8 +714,19 @@ body {
 .top-nav {
   display: flex;
   align-items: center;
-  padding: 8px 20px;  /* 增加上下內邊距 */
-  height: 60px;  /* 增加導航列高度 */
+  padding: 8px 20px;
+  height: 60px;
+  min-height: 60px; /* 確保最小高度 */
+  overflow: visible; /* 允許內容可見以便檢測 */
+}
+
+
+
+/* 導航項目文字樣式 */
+.desktop-nav-items span {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
 }
 
 
