@@ -5,14 +5,13 @@ import { useSubscription } from '../SubscriptionContext';
 import { PlanInfo } from './components/PlanInfo';
 // import { UsageStats } from './components/UsageStats'; // Hidden per user request
 import PaymentHistory from '../../Payment/PaymentHistory';
-import { RedemptionCodeInput } from '../../Redemption/RedemptionCodeInput';
 import { Analytics } from '../../../utils/analytics';
 import './UserAccountPage.css';
 
 export const UserAccountPage = () => {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
-  const { userPlan, usageStats, subscriptionHistory, loading, error, refreshUserPlan } = useSubscription();
+  const { userPlan, loading, error } = useSubscription();
 
   useEffect(() => {
     Analytics.track('user_account_page_viewed', {
@@ -38,30 +37,6 @@ export const UserAccountPage = () => {
         context: 'UserAccountPage.handleLogout'
       });
     }
-  };
-
-  /**
-   * Handle successful redemption
-   */
-  const handleRedemptionSuccess = async (redemptionData) => {
-    // Refresh user plan data to reflect changes
-    await refreshUserPlan();
-    
-    Analytics.track('redemption_success_on_account_page', {
-      userId: user?.id,
-      benefitType: redemptionData.benefits?.type,
-      discountAmount: redemptionData.benefits?.discountAmount
-    });
-  };
-
-  /**
-   * Handle redemption error
-   */
-  const handleRedemptionError = (error) => {
-    Analytics.track('redemption_error_on_account_page', {
-      userId: user?.id,
-      errorCode: error.errorCode
-    });
   };
 
   if (!user) {
@@ -130,29 +105,6 @@ export const UserAccountPage = () => {
               {t('subscription.userAccount.currentPlan')}
             </h2>
             <PlanInfo plan={userPlan} loading={loading} />
-          </section>
-
-          {/* Redemption Code Section */}
-          <section className="user-account-section">
-            <h2 className="user-account-section__title">
-              {t('subscription.userAccount.redemptionCode')}
-            </h2>
-            <div className="user-account-section__content">
-              <div className="user-account-redemption">
-                <p className="user-account-redemption__description">
-                  {t('subscription.userAccount.redemptionDescription')}
-                </p>
-                <div className="user-account-redemption__input">
-                  <RedemptionCodeInput
-                    location="account"
-                    onRedemptionSuccess={handleRedemptionSuccess}
-                    onRedemptionError={handleRedemptionError}
-                    placeholder={t('redemption.inputPlaceholder')}
-                    showPreview={true}
-                  />
-                </div>
-              </div>
-            </div>
           </section>
 
           {/* Usage Statistics Section - Hidden per user request */}
