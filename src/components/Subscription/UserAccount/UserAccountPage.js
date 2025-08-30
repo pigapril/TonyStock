@@ -4,11 +4,8 @@ import { useAuth } from '../../Auth/useAuth';
 import { useSubscription } from '../SubscriptionContext';
 import { PlanInfo } from './components/PlanInfo';
 // import { UsageStats } from './components/UsageStats'; // Hidden per user request
-import { SubscriptionHistory } from './components/SubscriptionHistory';
 import PaymentHistory from '../../Payment/PaymentHistory';
 import { RedemptionCodeInput } from '../../Redemption/RedemptionCodeInput';
-import { RedemptionHistory } from '../../Redemption/RedemptionHistory';
-import { ActivePromotions } from '../../Redemption/ActivePromotions';
 import { Analytics } from '../../../utils/analytics';
 import './UserAccountPage.css';
 
@@ -135,16 +132,6 @@ export const UserAccountPage = () => {
             <PlanInfo plan={userPlan} loading={loading} />
           </section>
 
-          {/* Active Promotions Section */}
-          <section className="user-account-section">
-            <h2 className="user-account-section__title">
-              {t('redemption.activePromotions.title')}
-            </h2>
-            <div className="user-account-section__content">
-              <ActivePromotions />
-            </div>
-          </section>
-
           {/* Redemption Code Section */}
           <section className="user-account-section">
             <h2 className="user-account-section__title">
@@ -168,16 +155,6 @@ export const UserAccountPage = () => {
             </div>
           </section>
 
-          {/* Redemption History Section */}
-          <section className="user-account-section">
-            <h2 className="user-account-section__title">
-              {t('redemption.history.title')}
-            </h2>
-            <div className="user-account-section__content">
-              <RedemptionHistory />
-            </div>
-          </section>
-
           {/* Usage Statistics Section - Hidden per user request */}
           {/* 
           <section className="user-account-section">
@@ -187,14 +164,6 @@ export const UserAccountPage = () => {
             <UsageStats stats={usageStats} loading={loading} />
           </section>
           */}
-
-          {/* Subscription History Section */}
-          <section className="user-account-section">
-            <h2 className="user-account-section__title">
-              {t('subscription.userAccount.subscriptionHistory')}
-            </h2>
-            <SubscriptionHistory history={subscriptionHistory} loading={loading} />
-          </section>
 
           {/* Payment History Section */}
           <section className="user-account-section user-account-section--payment-history">
