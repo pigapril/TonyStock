@@ -323,23 +323,29 @@ const CodeGenerationWizard = ({ onClose, onSuccess }) => {
             setLoading(true);
             setError(null);
             
+            // Helper function to ensure valid numbers
+            const ensureValidNumber = (value, defaultValue = 1) => {
+                const num = typeof value === 'number' ? value : parseInt(value);
+                return isNaN(num) || num <= 0 ? defaultValue : num;
+            };
+
             // Prepare configuration
             const config = {
                 codeType: formData.codeType,
-                codeLength: formData.codeLength,
-                prefix: formData.count > 1 ? formData.prefix : undefined,
+                codeLength: ensureValidNumber(formData.codeLength, 12),
+                prefix: (formData.count > 1 && formData.prefix) ? formData.prefix : undefined,
                 
                 // Type-specific configuration
-                discountPercentage: formData.codeType === 'PERCENTAGE_DISCOUNT' ? formData.discountPercentage : undefined,
-                discountAmount: formData.codeType === 'FIXED_AMOUNT_DISCOUNT' ? formData.discountAmount : undefined,
+                discountPercentage: formData.codeType === 'PERCENTAGE_DISCOUNT' ? ensureValidNumber(formData.discountPercentage, 10) : undefined,
+                discountAmount: formData.codeType === 'FIXED_AMOUNT_DISCOUNT' ? ensureValidNumber(formData.discountAmount, 100) : undefined,
                 discountCurrency: formData.codeType === 'FIXED_AMOUNT_DISCOUNT' ? formData.discountCurrency : undefined,
-                extensionDuration: formData.codeType === 'TIME_EXTENSION' ? formData.extensionDuration : undefined,
+                extensionDuration: formData.codeType === 'TIME_EXTENSION' ? ensureValidNumber(formData.extensionDuration, 30) : undefined,
                 extensionUnit: formData.codeType === 'TIME_EXTENSION' ? formData.extensionUnit : undefined,
                 targetPlan: formData.targetPlan,
                 
                 // Usage limits
-                maxTotalUses: formData.maxTotalUses,
-                maxUsesPerUser: formData.maxUsesPerUser,
+                maxTotalUses: ensureValidNumber(formData.maxTotalUses, 100),
+                maxUsesPerUser: ensureValidNumber(formData.maxUsesPerUser, 1),
                 
                 // Eligibility
                 eligibilityType: formData.eligibilityType,
@@ -348,14 +354,14 @@ const CodeGenerationWizard = ({ onClose, onSuccess }) => {
                 
                 // Stacking
                 allowStacking: formData.allowStacking,
-                stackingGroup: formData.allowStacking ? formData.stackingGroup : undefined,
+                stackingGroup: (formData.allowStacking && formData.stackingGroup) ? formData.stackingGroup : undefined,
                 
                 // Lifecycle
                 expiresAt: formData.expiresAt,
                 activatesAt: formData.activatesAt || undefined,
                 
                 // Administrative
-                campaignName: formData.campaignName,
+                campaignName: formData.campaignName || undefined,
                 internalNotes: formData.internalNotes || undefined,
                 metadata: formData.metadata
             };
@@ -366,7 +372,8 @@ const CodeGenerationWizard = ({ onClose, onSuccess }) => {
                 campaignName: config.campaignName
             });
             
-            const response = await AdminRedemptionService.generateCodes(config, formData.count);
+            const validCount = ensureValidNumber(formData.count, 1);
+            const response = await AdminRedemptionService.generateCodes(config, validCount);
             
             if (response.success) {
                 setGenerationResult(response.data);
@@ -677,7 +684,7 @@ const Step1BasicConfig = ({ formData, validationErrors, onFieldChange, onLoadTem
                         min="1"
                         max="100"
                         value={formData.discountPercentage}
-                        onChange={(e) => onFieldChange('discountPercentage', parseInt(e.target.value))}
+                        onChange={(e) => onFieldChange('discountPercentage', e.target.value ? parseInt(e.target.value) : '')}
                         className={validationErrors.discountPercentage ? 'error' : ''}
                     />
                     {validationErrors.discountPercentage && (
@@ -694,7 +701,7 @@ const Step1BasicConfig = ({ formData, validationErrors, onFieldChange, onLoadTem
                             type="number"
                             min="1"
                             value={formData.discountAmount}
-                            onChange={(e) => onFieldChange('discountAmount', parseInt(e.target.value))}
+                            onChange={(e) => onFieldChange('discountAmount', e.target.value ? parseInt(e.target.value) : '')}
                             className={validationErrors.discountAmount ? 'error' : ''}
                         />
                         {validationErrors.discountAmount && (
@@ -723,7 +730,7 @@ const Step1BasicConfig = ({ formData, validationErrors, onFieldChange, onLoadTem
                             type="number"
                             min="1"
                             value={formData.extensionDuration}
-                            onChange={(e) => onFieldChange('extensionDuration', parseInt(e.target.value))}
+                            onChange={(e) => onFieldChange('extensionDuration', e.target.value ? parseInt(e.target.value) : '')}
                             className={validationErrors.extensionDuration ? 'error' : ''}
                         />
                         {validationErrors.extensionDuration && (
@@ -780,7 +787,7 @@ const Step2UsageLimits = ({ formData, validationErrors, onFieldChange, t }) => (
                     type="number"
                     min="1"
                     value={formData.maxTotalUses}
-                    onChange={(e) => onFieldChange('maxTotalUses', parseInt(e.target.value))}
+                    onChange={(e) => onFieldChange('maxTotalUses', e.target.value ? parseInt(e.target.value) : '')}
                     className={validationErrors.maxTotalUses ? 'error' : ''}
                 />
                 {validationErrors.maxTotalUses && (
@@ -794,7 +801,7 @@ const Step2UsageLimits = ({ formData, validationErrors, onFieldChange, t }) => (
                     type="number"
                     min="1"
                     value={formData.maxUsesPerUser}
-                    onChange={(e) => onFieldChange('maxUsesPerUser', parseInt(e.target.value))}
+                    onChange={(e) => onFieldChange('maxUsesPerUser', e.target.value ? parseInt(e.target.value) : '')}
                     className={validationErrors.maxUsesPerUser ? 'error' : ''}
                 />
                 {validationErrors.maxUsesPerUser && (
@@ -965,7 +972,7 @@ const Step4Review = ({ formData, validationErrors, previewData, onFieldChange, t
                     min="1"
                     max="10000"
                     value={formData.count}
-                    onChange={(e) => onFieldChange('count', parseInt(e.target.value))}
+                    onChange={(e) => onFieldChange('count', e.target.value ? parseInt(e.target.value) : '')}
                     className={validationErrors.count ? 'error' : ''}
                 />
                 {validationErrors.count && (
@@ -996,7 +1003,7 @@ const Step4Review = ({ formData, validationErrors, previewData, onFieldChange, t
                     min="8"
                     max="32"
                     value={formData.codeLength}
-                    onChange={(e) => onFieldChange('codeLength', parseInt(e.target.value))}
+                    onChange={(e) => onFieldChange('codeLength', e.target.value ? parseInt(e.target.value) : '')}
                     className={validationErrors.codeLength ? 'error' : ''}
                 />
                 {validationErrors.codeLength && (

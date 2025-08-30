@@ -1667,9 +1667,9 @@
       "proPlan": "Pro 方案",
       "features": {
         "title": "包含功能",
-        "marketSentiment": "市場情緒分析",
-        "advancedAnalysis": "進階股票分析工具",
-        "unlimitedWatchlist": "無限制觀察清單",
+        "marketSentiment": "最新市場情緒分析",
+        "advancedAnalysis": "完整股票價格趨勢分析工具",
+        "unlimitedWatchlist": "完整追蹤清單功能",
         "prioritySupport": "優先客戶支援"
       },
       "pricing": {
