@@ -1380,6 +1380,8 @@
       "downgrade": "Downgrade",
       "current": "Current",
       "manageSubscription": "Manage Subscription",
+      "resumeSubscription": "Resume Subscription",
+      "resubscribe": "Resubscribe",
       "freePlan": {
         "name": "Free Plan",
         "price": "Free",
@@ -1460,7 +1462,11 @@
       "expired": "Expired",
       "cancelled": "Cancelled"
     },
-    "autoRenewEnabled": "Auto-renewal enabled"
+    "autoRenewEnabled": "Auto-renewal enabled",
+    "status": {
+      "cancelledButActive": "Cancelled but Active",
+      "expiresOn": "Expires on: {{date}}"
+    }
   },
   "payment": {
     "pageTitle": "Payment",

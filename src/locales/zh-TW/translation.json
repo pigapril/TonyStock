@@ -1399,6 +1399,8 @@
       "downgrade": "降級",
       "current": "目前使用",
       "manageSubscription": "管理訂閱",
+      "resumeSubscription": "恢復訂閱",
+      "resubscribe": "重新訂閱",
       "freePlan": {
         "name": "免費方案",
         "price": "免費",
@@ -1479,7 +1481,11 @@
       "expired": "已過期",
       "cancelled": "已取消"
     },
-    "autoRenewEnabled": "自動續約已啟用"
+    "autoRenewEnabled": "自動續約已啟用",
+    "status": {
+      "cancelledButActive": "已取消但仍有效",
+      "expiresOn": "到期日：{{date}}"
+    }
   },
   "payment": {
     "pageTitle": "付款",

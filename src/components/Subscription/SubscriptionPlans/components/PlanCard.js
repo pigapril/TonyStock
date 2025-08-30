@@ -6,7 +6,7 @@ import { AppleButton } from '../../shared/AppleButton';
 import { useSubscription } from '../../SubscriptionContext';
 import { Analytics } from '../../../../utils/analytics';
 import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../utils/pricingUtils';
-import subscriptionService from '../../../../services/subscriptionService';
+
 import { useAuth } from '../../../Auth/useAuth';
 import './PlanCard.css';
 
@@ -20,14 +20,46 @@ export const PlanCard = ({
 }) => {
   const { t } = useTranslation();
   const { lang } = useParams();
-  const { updatePlan, loading, refreshSubscriptionHistory } = useSubscription();
-  const { checkAuthStatus } = useAuth();
+  const { userPlan, loading } = useSubscription();
   const navigate = useNavigate();
   const [paymentLoading, setPaymentLoading] = useState(false);
 
-  const isCurrentPlan = currentPlan === plan.id;
   const isFree = plan.id === 'free';
   const isPro = plan.id === 'pro';
+  
+  // 智能判斷當前方案狀態
+  const isCurrentPlan = (() => {
+    if (!currentPlan) {
+      return plan.id === 'free';
+    }
+    
+    if (currentPlan === plan.id) {
+      if (plan.id === 'free') {
+        return true;
+      }
+      
+      // 對於付費方案，檢查訂閱狀態
+      if (userPlan && userPlan.type === plan.id) {
+        // 如果訂閱已取消但仍有效，不視為當前方案（允許重新訂閱）
+        if (userPlan.cancelAtPeriodEnd || userPlan.isCancelled) {
+          return false;
+        }
+        
+        // 只有活躍且未取消的訂閱才視為當前方案
+        return userPlan.status === 'active';
+      }
+    }
+    
+    return false;
+  })();
+  
+  // 檢查是否為已取消但仍有效的訂閱
+  const isCancelledButActive = (() => {
+    return userPlan && 
+           userPlan.type === plan.id && 
+           (userPlan.cancelAtPeriodEnd || userPlan.isCancelled) && 
+           userPlan.status === 'active';
+  })();
 
   const handlePlanSelect = async () => {
     if (isCurrentPlan || loading || paymentLoading) return;
@@ -55,6 +87,11 @@ export const PlanCard = ({
       // 如果是 Pro 方案，導航到付款頁面
       if (isPro) {
         let paymentUrl = `/${lang}/payment?plan=${plan.id}&period=${billingPeriod}`;
+        
+        // 如果是恢復訂閱，添加 action 參數
+        if (isCancelledButActive) {
+          paymentUrl += `&action=resume`;
+        }
         
         // 如果有折扣，將折扣信息添加到URL參數
         if (adjustedPricing.hasRedemptionDiscount && adjustedPricing.redemptionDiscount) {
@@ -114,15 +151,32 @@ export const PlanCard = ({
 
   const getButtonText = () => {
     if (paymentLoading) return t('payment.form.processing');
+    
+    // 活躍的當前方案
     if (isCurrentPlan) return t('subscription.subscriptionPlans.current');
+    
+    // 已取消但仍有效的訂閱
+    if (isCancelledButActive) return t('subscription.subscriptionPlans.resumeSubscription');
+    
+    // 免費方案邏輯
     if (isFree && currentPlan !== 'free') return t('subscription.subscriptionPlans.manageSubscription');
     if (isFree) return t('subscription.subscriptionPlans.current');
-    if (isPro) return t('payment.form.upgradeNow');
+    
+    // Pro 方案邏輯
+    if (isPro) {
+      // 如果用戶曾經是 Pro 但現在不是（過期或降級）
+      if (currentPlan === 'free') {
+        return t('subscription.subscriptionPlans.resubscribe');
+      }
+      return t('payment.form.upgradeNow');
+    }
+    
     return t('subscription.subscriptionPlans.upgrade');
   };
 
   const getButtonVariant = () => {
     if (isCurrentPlan) return 'outline';
+    if (isCancelledButActive) return 'primary'; // 恢復訂閱使用主要按鈕樣式
     if (isFree) return 'secondary';
     return 'primary';
   };
@@ -228,6 +282,27 @@ export const PlanCard = ({
           ))}
         </ul>
       </div>
+
+      {/* 已取消但仍有效的狀態指示器 */}
+      {isCancelledButActive && (
+        <div className="plan-card__status-indicator plan-card__status-indicator--cancelled">
+          <div className="plan-card__status-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path fillRule="evenodd" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div className="plan-card__status-content">
+            <div className="plan-card__status-title">
+              {t('subscription.status.cancelledButActive')}
+            </div>
+            <div className="plan-card__status-subtitle">
+              {t('subscription.status.expiresOn', { 
+                date: new Date(userPlan?.endDate).toLocaleDateString() 
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="plan-card__action">
         <AppleButton
