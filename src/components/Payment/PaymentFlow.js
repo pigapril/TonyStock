@@ -10,7 +10,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import paymentService from '../../services/paymentService';
 import { systemLogger } from '../../utils/logger';
@@ -25,6 +25,7 @@ const PaymentFlow = ({
     onCancel 
 }) => {
     const { t } = useTranslation();
+    const { lang } = useParams();
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -496,12 +497,8 @@ const PaymentFlow = ({
                 />
                 <span className="text-sm text-gray-700">
                     {t('payment.terms.agreement')}
-                    <a href="/terms" target="_blank" className="text-blue-600 hover:underline mx-1">
-                        {t('payment.terms.serviceTermsLink')}
-                    </a>
-                    {t('payment.terms.and')}
-                    <a href="/privacy" target="_blank" className="text-blue-600 hover:underline mx-1">
-                        {t('payment.terms.privacyPolicyLink')}
+                    <a href={`/${lang}/legal`} target="_blank" className="text-blue-600 hover:underline mx-1">
+                        服務條款和隱私政策
                     </a>
                 </span>
             </label>

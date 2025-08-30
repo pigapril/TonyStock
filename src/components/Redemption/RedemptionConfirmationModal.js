@@ -11,6 +11,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import { useAuth } from '../Auth/useAuth';
 import { Dialog } from '../Common/Dialog/Dialog';
 import { useRedemptionFormatting } from '../../hooks/useRedemptionFormatting';
@@ -31,6 +32,7 @@ export const RedemptionConfirmationModal = ({
     requiresTermsAcceptance = true
 }) => {
     const { t } = useTranslation();
+    const { lang } = useParams();
     const { formatters, formatBenefitPreview } = useRedemptionFormatting();
     const { user } = useAuth();
     
@@ -233,14 +235,14 @@ export const RedemptionConfirmationModal = ({
                                 disabled={isProcessing || isRedeeming}
                             />
                             <span className="redemption-confirmation-checkbox-text">
-                                {t('redemption.confirmation.terms.accept')}
+                                我已閱讀並同意
                                 <a 
-                                    href="/terms" 
+                                    href={`/${lang}/legal`} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="redemption-confirmation-terms-link"
                                 >
-                                    {t('redemption.confirmation.terms.link')}
+                                    服務條款和隱私政策
                                 </a>
                             </span>
                         </label>

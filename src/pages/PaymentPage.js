@@ -406,12 +406,8 @@ const PaymentPage = () => {
                     />
                     <span className="payment-page__checkbox-text">
                         {t('payment.terms.agreement')}
-                        <a href="/terms" target="_blank" className="payment-page__link">
-                            {t('payment.terms.serviceTermsLink')}
-                        </a>
-                        {t('payment.terms.and')}
-                        <a href="/privacy" target="_blank" className="payment-page__link">
-                            {t('payment.terms.privacyPolicyLink')}
+                        <a href={`/${lang}/legal`} target="_blank" className="payment-page__link">
+                            服務條款和隱私政策
                         </a>
                     </span>
                 </label>
