@@ -136,25 +136,31 @@ export const useRedemptionFormatting = () => {
         // Get translated titles and descriptions
         switch (benefit.type) {
             case 'discount':
-                if (benefit.discountType === 'PERCENTAGE_DISCOUNT' || benefit.discountType === 'percentage') {
+                const isPercentageDiscount = benefit.discountType === 'PERCENTAGE_DISCOUNT' || 
+                                           benefit.discountType === 'percentage';
+                
+                if (isPercentageDiscount) {
+                    const percentage = benefit.savingsPercentage || benefit.percentage;
                     return {
                         ...formatted,
                         title: t('redemption.preview.percentageDiscount', { 
-                            percentage: benefit.savingsPercentage || benefit.percentage 
+                            percentage: percentage 
                         }),
                         description: t('redemption.confirmation.benefits.discount.percentage', { 
-                            percentage: benefit.savingsPercentage || benefit.percentage 
+                            percentage: percentage 
                         })
                     };
                 } else {
+                    // 支援多種金額字段名稱
+                    const discountAmount = benefit.estimatedValue || benefit.discountAmount || benefit.amount;
                     return {
                         ...formatted,
                         title: t('redemption.preview.fixedDiscount', { 
-                            amount: formatters.currency(benefit.discountAmount || benefit.amount, benefit.currency),
+                            amount: formatters.currency(discountAmount, benefit.currency),
                             currency: benefit.currency 
                         }),
                         description: t('redemption.confirmation.benefits.discount.fixed', { 
-                            amount: formatters.currency(benefit.discountAmount || benefit.amount, benefit.currency),
+                            amount: formatters.currency(discountAmount, benefit.currency),
                             currency: benefit.currency 
                         })
                     };

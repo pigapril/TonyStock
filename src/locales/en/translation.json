@@ -260,6 +260,7 @@
       "already_redeemed": "You already redeemed this code on {{redemptionDate}}",
       "user_limit_exceeded": "You have reached the usage limit for this code ({{maxUsesPerUser}} uses)",
       "eligibility_failed": "You are not eligible for this code",
+      "captcha_required": "CAPTCHA verification required",
       "eligibility_new_customers_only": "This code is for new customers only",
       "eligibility_plan_restriction": "This code is only for {{eligiblePlans}} plan users",
       "eligibility_first_time_only": "This code is for first-time redemption users only",

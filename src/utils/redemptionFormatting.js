@@ -84,6 +84,12 @@ const getCurrentLocale = () => {
  * @returns {string} Formatted currency string
  */
 export const formatCurrency = (amount, currency = 'TWD', locale = null) => {
+    // 檢查 amount 是否為有效數值
+    if (amount === null || amount === undefined || isNaN(amount)) {
+        console.warn('formatCurrency: Invalid amount provided:', amount);
+        return '0';
+    }
+    
     const currentLocale = locale || getCurrentLocale();
     const config = LOCALE_CONFIG[currentLocale] || LOCALE_CONFIG['en'];
     const currencyConfig = config.currency[currency] || config.currency['TWD'];
@@ -92,7 +98,7 @@ export const formatCurrency = (amount, currency = 'TWD', locale = null) => {
     const formattedAmount = new Intl.NumberFormat(currentLocale === 'zh-TW' ? 'zh-TW' : 'en-US', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
-    }).format(amount);
+    }).format(Number(amount));
     
     // Position symbol
     if (currencyConfig.position === 'before') {
@@ -216,14 +222,22 @@ export const formatTimeExtension = (duration, unit, locale = null) => {
 export const formatDiscountDescription = (discount, locale = null) => {
     const currentLocale = locale || getCurrentLocale();
     
-    if (discount.discountType === 'percentage') {
+    // 支援多種折扣類型名稱
+    const isPercentageDiscount = discount.discountType === 'percentage' || 
+                                discount.discountType === 'PERCENTAGE_DISCOUNT';
+    const isFixedDiscount = discount.discountType === 'fixed' || 
+                           discount.discountType === 'FIXED_AMOUNT_DISCOUNT';
+    
+    if (isPercentageDiscount) {
+        const percentage = discount.percentage || discount.savingsPercentage;
         if (currentLocale === 'zh-TW') {
-            return `${discount.percentage}% 折扣`;
+            return `${percentage}% 折扣`;
         } else {
-            return `${discount.percentage}% discount`;
+            return `${percentage}% discount`;
         }
-    } else if (discount.discountType === 'fixed') {
-        const formattedAmount = formatCurrency(discount.amount, discount.currency, currentLocale);
+    } else if (isFixedDiscount) {
+        const amount = discount.amount || discount.estimatedValue || discount.discountAmount;
+        const formattedAmount = formatCurrency(amount, discount.currency, currentLocale);
         if (currentLocale === 'zh-TW') {
             return `${formattedAmount} 折扣`;
         } else {
@@ -245,11 +259,21 @@ export const formatBenefitDescription = (benefit, locale = null) => {
     
     switch (benefit.type) {
         case 'discount':
+            // 支援多種金額字段名稱：estimatedValue, discountAmount, amount
+            const discountAmount = benefit.estimatedValue || benefit.discountAmount || benefit.amount;
+            const discountPercentage = benefit.savingsPercentage || benefit.percentage;
+            
             return {
                 title: currentLocale === 'zh-TW' ? '折扣優惠' : 'Discount Applied',
-                description: formatDiscountDescription(benefit, currentLocale),
+                description: formatDiscountDescription({
+                    ...benefit,
+                    amount: discountAmount,
+                    percentage: discountPercentage
+                }, currentLocale),
                 icon: '💰',
-                highlight: benefit.discountType === 'percentage' ? `${benefit.percentage}%` : formatCurrency(benefit.amount, benefit.currency, currentLocale)
+                highlight: (benefit.discountType === 'percentage' || benefit.discountType === 'PERCENTAGE_DISCOUNT') ? 
+                    `${discountPercentage}%` : 
+                    formatCurrency(discountAmount, benefit.currency, currentLocale)
             };
             
         case 'extension':

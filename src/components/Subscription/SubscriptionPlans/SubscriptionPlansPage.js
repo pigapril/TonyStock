@@ -107,7 +107,8 @@ export const SubscriptionPlansPage = () => {
               amount: discountAmount
             };
           } else if (previewData.benefits.discountType === 'FIXED_AMOUNT_DISCOUNT' || previewData.benefits.discountType === 'fixed') {
-            const discountAmount = previewData.benefits.discountAmount || 0;
+            // 支援多種金額字段名稱：estimatedValue, discountAmount, amount
+            const discountAmount = previewData.benefits.estimatedValue || previewData.benefits.discountAmount || previewData.benefits.amount || 0;
             adjustedPrice = Math.max(0, originalPrice - discountAmount);
             discount = {
               type: 'fixed',

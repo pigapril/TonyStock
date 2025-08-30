@@ -225,7 +225,7 @@ export const PlanCard = ({
                       percentage: adjustedPricing.redemptionDiscount.value 
                     })
                   : t('redemption.pricing.discountBadge.fixed', { 
-                      amount: formatPrice(adjustedPricing.redemptionDiscount.amount) 
+                      amount: formatPrice(adjustedPricing.redemptionDiscount.value) 
                     })
                 }
               </div>

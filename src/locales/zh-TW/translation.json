@@ -262,6 +262,7 @@
       "already_redeemed": "您已於 {{redemptionDate}} 兌換過此代碼",
       "user_limit_exceeded": "您已經使用過此代碼了",
       "eligibility_failed": "您不符合此代碼的使用條件",
+      "captcha_required": "需要完成驗證碼驗證",
       "plan_not_eligible": "此兌換代碼僅適用於 {{eligiblePlans}} 方案用戶",
       "eligibility_new_customers_only": "此代碼僅限新客戶使用",
       "not_new_customer": "此代碼僅限新客戶使用",
