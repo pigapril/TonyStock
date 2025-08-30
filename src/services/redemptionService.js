@@ -591,9 +591,8 @@ class RedemptionService {
         const requirements = {};
 
         switch (error.errorCode) {
-            case 'PAYMENT_METHOD_REQUIRED':
-                requirements.requiresPaymentMethod = true;
-                break;
+            // PAYMENT_METHOD_REQUIRED is no longer treated as an error
+            // Payment method requirement is handled during checkout flow
             case 'CONFIRMATION_REQUIRED':
                 requirements.requiresConfirmation = true;
                 break;
