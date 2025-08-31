@@ -19,14 +19,16 @@ import './components/Auth/styles/SignInDialog.css';
 import './components/NewFeatureBadge/NewFeatureBadge.css';
 import "react-datepicker/dist/react-datepicker.css";
 import './components/Common/global-styles.css';
-import './components/Common/Dialog/QuotaExceededDialog.css';
+import './components/Common/Dialog/FeatureUpgradeDialog.css';
+
 
 // 自定義組件
 import { Home } from './components/Home/Home';
 import MarketSentimentIndex from './components/MarketSentimentIndex/MarketSentimentIndex';
 import PageContainer from './components/PageContainer/PageContainer';
 import { AuthDialog } from './components/Auth/AuthDialog';
-import { QuotaExceededDialog } from './components/Common/Dialog/QuotaExceededDialog';
+import { GlobalFeatureUpgradeDialog } from './components/Common/Dialog/GlobalFeatureUpgradeDialog';
+
 import { UserProfile } from './components/Auth/UserProfile';
 import { AuthStatusIndicator } from './components/Auth/AuthStatusIndicator';
 import { PageViewTracker } from './components/Common/PageViewTracker';
@@ -571,7 +573,7 @@ function AppContent() {
         <Footer />
       </div>
       <AuthDialog />
-      <QuotaExceededDialog />
+      <GlobalFeatureUpgradeDialog />
       {/* 條件式 AdSense 載入 */}
       <ConditionalAdSense />
       {/* 根據是否為首頁決定是否渲染 AdBanner */}
@@ -685,4 +687,3 @@ function App() {
 }
 
 export default App;
-

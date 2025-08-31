@@ -8,10 +8,11 @@ import 'chartjs-adapter-date-fns';
 
 import MarketSentimentDescriptionSection from './MarketSentimentDescriptionSection';
 import MarketSentimentGauge from './MarketSentimentGauge';
-import MarketSentimentPaywall from './MarketSentimentPaywall/MarketSentimentPaywall';
+
 import RestrictedMarketSentimentGauge from './RestrictedMarketSentimentGauge/RestrictedMarketSentimentGauge';
 import RestrictedCompositionView from './RestrictedCompositionView/RestrictedCompositionView';
 import DataRestrictionTutorial from './DataRestrictionTutorial/DataRestrictionTutorial';
+import { FeatureUpgradeDialog } from '../Common/Dialog/FeatureUpgradeDialog';
 import PageContainer from '../PageContainer/PageContainer';
 import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
@@ -116,8 +117,9 @@ const MarketSentimentIndex = () => {
   const { user, isAuthenticated } = useAuth();
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showPaywall, setShowPaywall] = useState(false);
+
   const [showTutorial, setShowTutorial] = useState(false);
+  const [upgradeDialog, setUpgradeDialog] = useState({ isOpen: false, type: null, context: {} });
   const [selectedTimeRange, setSelectedTimeRange] = useState('10Y');
   const [indicatorsData, setIndicatorsData] = useState({});
   const [historicalData, setHistoricalData] = useState([]);
@@ -187,9 +189,16 @@ const MarketSentimentIndex = () => {
           }, 100);
         }
       } catch (error) {
-        // 如果是訪問被拒絕的錯誤，顯示 paywall
+        // 如果是訪問被拒絕的錯誤，顯示升級對話框
         if (error.response?.status === 403) {
-          setShowPaywall(true);
+          setUpgradeDialog({
+            isOpen: true,
+            type: 'marketSentimentAccess',
+            context: {
+              feature: 'currentData',
+              source: 'apiError'
+            }
+          });
         } else {
           handleApiError(error, showToast, t);
         }
@@ -441,25 +450,23 @@ const MarketSentimentIndex = () => {
     ],
   }), [filteredData, t]);
 
-  // Paywall 處理函數
-  const handleUpgrade = useCallback(() => {
-    Analytics.marketSentiment.upgradeClicked({
-      source: 'marketSentimentPaywall'
-    });
-    // 導向訂閱頁面
-    window.location.href = '/subscription';
-  }, []);
 
-  const handleClosePaywall = useCallback(() => {
-    setShowPaywall(false);
-  }, []);
 
   const handleRestrictedFeatureClick = useCallback((feature) => {
     Analytics.marketSentiment.restrictedFeatureClicked({
       feature,
       userPlan
     });
-    setShowPaywall(true);
+    
+    // 使用新的 FeatureUpgradeDialog 而不是舊的 paywall
+    setUpgradeDialog({
+      isOpen: true,
+      type: 'marketSentimentAccess',
+      context: {
+        feature,
+        source: 'marketSentimentIndex'
+      }
+    });
   }, [userPlan]);
 
   // Tutorial 處理函數
@@ -475,6 +482,20 @@ const MarketSentimentIndex = () => {
     });
     window.location.href = '/subscription';
   }, [handleCloseTutorial]);
+
+  // 新的升級對話框處理函數
+  const handleUpgradeDialogClose = useCallback(() => {
+    setUpgradeDialog({ isOpen: false, type: null, context: {} });
+  }, []);
+
+  const handleUpgradeDialogUpgrade = useCallback(() => {
+    Analytics.marketSentiment.upgradeClicked({
+      source: upgradeDialog.context.source || 'marketSentimentUpgradeDialog',
+      feature: upgradeDialog.context.feature
+    });
+    handleUpgradeDialogClose();
+    window.location.href = `/${i18n.language}/subscription-plans`;
+  }, [upgradeDialog.context, handleUpgradeDialogClose, i18n.language]);
 
   // 修改圖表選項
   const chartOptions = useMemo(() => ({
@@ -1006,13 +1027,15 @@ const MarketSentimentIndex = () => {
         );
       })()}
 
-      {/* Market Sentiment Paywall */}
-      <MarketSentimentPaywall
-        isVisible={showPaywall}
-        onClose={handleClosePaywall}
-        onUpgrade={handleUpgrade}
-        historicalData={filteredData}
-        showHistoricalChart={true}
+
+
+      {/* Feature Upgrade Dialog */}
+      <FeatureUpgradeDialog
+        isOpen={upgradeDialog.isOpen}
+        type={upgradeDialog.type}
+        context={upgradeDialog.context}
+        onClose={handleUpgradeDialogClose}
+        onUpgrade={handleUpgradeDialogUpgrade}
       />
 
       {/* Toast notifications */}

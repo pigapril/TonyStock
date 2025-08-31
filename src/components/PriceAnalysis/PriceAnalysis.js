@@ -13,7 +13,7 @@ import { formatPrice } from '../../utils/priceUtils';
 import { ExpandableDescription } from '../Common/ExpandableDescription/ExpandableDescription';
 import { Toast } from '../Watchlist/components/Toast';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
-import { useSearchParams, useLocation } from 'react-router-dom'; // 引入 useLocation
+import { useSearchParams, useLocation, useNavigate } from 'react-router-dom'; // 引入 useLocation 和 useNavigate
 import { useAdContext } from '../../components/Common/InterstitialAdModal/AdContext'; // 導入 useAdContext
 import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebouncedCallback
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
@@ -60,6 +60,7 @@ export function PriceAnalysis() {
   const currentLang = i18n.language; // 取得當前語言
   const [searchParams] = useSearchParams();
   const location = useLocation(); // <--- 獲取 location 物件
+  const navigate = useNavigate(); // <--- 獲取 navigate 函數
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const { showToast, toast, hideToast } = useToastManager();
   const { requestAdDisplay } = useAdContext(); // 從 Context 獲取函數
@@ -304,9 +305,11 @@ export function PriceAnalysis() {
   // 表單送出
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('Form submitted, checking auth:', { isAuthenticated, user });
 
     // 新增：檢查登入狀態
     if (!isAuthenticated) {
+      console.log('User not authenticated, opening auth dialog');
       openDialog('auth', {
         returnPath: location.pathname,
         message: t('protectedRoute.loginRequired')
@@ -316,14 +319,16 @@ export function PriceAnalysis() {
 
     // 新增：檢查股票代碼限制
     const userPlan = user?.plan || 'free'; // 從 auth context 獲取實際用戶計劃
+    console.log('Stock check:', { displayStockCode, userPlan, isAllowed: isStockAllowed(displayStockCode, userPlan) });
+    
     if (!isStockAllowed(displayStockCode, userPlan)) {
-      openDialog('quotaExceeded', {
+      console.log('Stock not allowed, opening dialog');
+      // 顯示功能升級對話框
+      openDialog('featureUpgrade', {
         feature: 'stockAccess',
-        currentPlan: userPlan,
-        message: t('priceAnalysis.errors.stockNotAllowed', { 
-          stockCode: displayStockCode,
-          allowedStocks: '0050, SPY, VOO'
-        })
+        stockCode: displayStockCode,
+        allowedStocks: ['0050', 'SPY', 'VOO'],
+        upgradeUrl: `/${i18n.language}/subscription-plans`
       });
       return;
     }
@@ -526,13 +531,12 @@ export function PriceAnalysis() {
     const userPlan = user?.plan || 'free'; // 從 auth context 獲取實際用戶計劃
     const upperClickedCode = searchItem.keyword.toUpperCase();
     if (!isStockAllowed(upperClickedCode, userPlan)) {
-      openDialog('quotaExceeded', {
+      // 顯示功能升級對話框
+      openDialog('featureUpgrade', {
         feature: 'stockAccess',
-        currentPlan: userPlan,
-        message: t('priceAnalysis.errors.stockNotAllowed', { 
-          stockCode: upperClickedCode,
-          allowedStocks: '0050, SPY, VOO'
-        })
+        stockCode: upperClickedCode,
+        allowedStocks: ['0050', 'SPY', 'VOO'],
+        upgradeUrl: `/${i18n.language}/subscription-plans`
       });
       return;
     }

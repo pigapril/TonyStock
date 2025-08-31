@@ -149,6 +149,14 @@ export const Analytics = {
         pushToDataLayer('dialog_close', {
           dialog_type: data.type
         });
+      },
+      action: (data) => {
+        pushToDataLayer('dialog_action', {
+          dialog_type: data.type,
+          action: data.action,
+          feature: data.feature,
+          ...data
+        });
       }
     }
   },
@@ -176,6 +184,15 @@ export const Analytics = {
       pushToDataLayer('sentiment_view_mode_switch', {
         view_mode: data.viewMode,
         indicator_name: data.currentIndicator
+      });
+    },
+
+    // 受限功能點擊追蹤
+    restrictedFeatureClicked: (data) => {
+      pushToDataLayer('sentiment_restricted_feature_clicked', {
+        feature: data.feature,
+        component: data.component,
+        user_type: data.userType || 'free'
       });
     }
   },

@@ -1312,9 +1312,7 @@
     "STOCK_LIMIT_EXCEEDED": "已達到股票數量上限",
     "CATEGORY_NOT_FOUND": "找不到指定的分類",
     "CATEGORY_UNAUTHORIZED": "無權限存取此分類",
-    "QUOTA_EXCEEDED": "您已超過每日使用限額，請稍後再試或升級您的方案",
-    "QUOTA_DETAILS": "使用量：{{usage}}/{{quota}}",
-    "QUOTA_RESET": "重置時間：{{resetTime}}",
+    "RATE_LIMIT_EXCEEDED": "請求過於頻繁，請稍等片刻後再試",
     "CANNOT_MODIFY_DEFAULT": "無法修改預設分類",
     "CANNOT_DELETE_DEFAULT": "無法刪除預設分類",
     "CANNOT_DELETE_LAST": "無法刪除最後一個分類",
@@ -1390,24 +1388,49 @@
       "text": "一起來使用 Sentiment Inside Out！使用我的推薦碼註冊，即可免費獲得一個月的高級會員資格：%@"
     }
   },
-  "quotaDialog": {
-    "title": "解鎖無限制存取",
-    "subtitle": "升級至 Pro 版本，享受完整的功能",
-    "message": "您已超過每日使用限額",
-    "usage": "使用量：{{usage}}/{{quota}}",
-    "resetTime": "重置時間：{{resetTime}}",
-    "requestsUsed": "次查詢已使用",
-    "upgrade": "立即升級 Pro",
-    "later": "稍後再說",
-    "warningIcon": "警告",
-    "upgradeAriaLabel": "升級至 Pro 版本",
+  "featureUpgrade": {
+    "stockAccess": {
+      "title": "Upgrade to Pro to analyze any stock",
+      "subtitle": "升級至 Pro 方案，查詢任何股票",
+      "description": "免費用戶僅能查詢 0050, SPY, VOO 股票。",
+      "descriptionWithStock": "想要查詢 {{stockCode}}？免費用戶僅能查詢 {{allowedStocks}} 股票。"
+    },
+    "currentData": {
+      "title": "解鎖即時數據",
+      "subtitle": "獲取最新的市場情緒數據",
+      "description": "免費用戶僅能查看歷史數據，升級後可獲得即時市場洞察。"
+    },
+    "marketSentimentAccess": {
+      "title": "解鎖完整市場情緒數據",
+      "subtitle": "升級至 Pro 方案，獲得即時市場情緒分析",
+      "description": "免費用戶僅能查看部分功能，升級後可獲得完整的市場情緒指標。"
+    },
+    "default": {
+      "title": "升級至 Pro",
+      "subtitle": "解鎖完整功能",
+      "description": "升級至 Pro 方案，享受完整的投資分析體驗。"
+    },
+    "features": {
+      "unlimitedStocks": "無限制股票查詢",
+      "realTimeData": "每日市場情緒資訊",
+      "watchlist": "個人追蹤清單",
+      "advancedAnalysis": "進階分析工具",
+      "currentSentiment": "當前市場情緒",
+      "liveCharts": "即時圖表更新",
+      "alerts": "市場警報通知",
+      "unlimitedAccess": "無限制存取",
+      "advancedTools": "進階工具",
+      "premiumSupport": "優先支援"
+    },
+    "upgradeButton": "升級至 Pro",
+    "laterButton": "稍後再說",
+    "upgradeAriaLabel": "升級至 Pro 方案",
     "laterAriaLabel": "稍後再說",
-    "proFeatures": "Pro 版本專屬功能",
-    "feature1": "無限制股票查詢",
-    "feature2": "個人追蹤清單",
-    "feature3": "每日市場情緒指數",
-    "secure": "安全付款",
-    "instant": "即時啟用"
+    "trust": {
+      "secure": "安全付款",
+      "instant": "即時啟用",
+      "cancel": "隨時取消"
+    }
   },
   "subscription": {
     "upgradeRequired": {

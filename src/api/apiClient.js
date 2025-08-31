@@ -195,54 +195,19 @@ apiClient.interceptors.response.use(
       }, 1000);
     }
     
-    // Handle 429 Too Many Requests (Quota Exceeded)
+    // Handle 429 Too Many Requests (Rate Limiting)
     else if (status === 429 && !isHandling429) {
       isHandling429 = true;
       
-      console.warn('API Client: 429 Too Many Requests - quota exceeded');
+      console.warn('API Client: 429 Too Many Requests - rate limit exceeded');
       
-      // Extract quota information from response
-      const quotaInfo = data?.data || data || {};
-      const { quota, usage, resetTime, upgradeUrl } = quotaInfo;
-      
-      // Show user-friendly quota exceeded message
+      // Show user-friendly rate limit message
       if (showToast && typeof showToast === 'function') {
-        let message;
-        if (t && typeof t === 'function') {
-          message = t('errors.QUOTA_EXCEEDED', 'You have exceeded your daily usage limit. Please try again later or upgrade your plan.');
-        } else {
-          message = 'You have exceeded your daily usage limit. Please try again later or upgrade your plan.';
-        }
-        
-        // Add quota details if available
-        if (quota && usage) {
-          const quotaDetails = t && typeof t === 'function'
-            ? t('errors.QUOTA_DETAILS', { usage, quota, defaultValue: `Usage: ${usage}/${quota}` })
-            : `Usage: ${usage}/${quota}`;
-          message += ` ${quotaDetails}`;
-        }
-        
-        if (resetTime) {
-          const resetDetails = t && typeof t === 'function'
-            ? t('errors.QUOTA_RESET', { resetTime, defaultValue: `Resets at: ${resetTime}` })
-            : `Resets at: ${resetTime}`;
-          message += ` ${resetDetails}`;
-        }
+        const message = t && typeof t === 'function' 
+          ? t('errors.RATE_LIMIT_EXCEEDED', 'Too many requests. Please wait a moment and try again.')
+          : 'Too many requests. Please wait a moment and try again.';
         
         showToast(message, 'warning');
-      }
-      
-      // Open quota exceeded dialog if available
-      if (openDialog && typeof openDialog === 'function') {
-        openDialog('quotaExceeded', {
-          quota,
-          usage,
-          resetTime,
-          upgradeUrl,
-          message: t && typeof t === 'function' 
-            ? t('errors.QUOTA_EXCEEDED', 'You have exceeded your daily usage limit.')
-            : 'You have exceeded your daily usage limit.'
-        });
       }
       
       // Reset flag after a delay
