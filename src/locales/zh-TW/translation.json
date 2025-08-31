@@ -98,6 +98,8 @@
     "inputPlaceholder": "輸入兌換代碼",
     "validate": "驗證",
     "validating": "驗證中...",
+    "apply": "套用優惠碼",
+    "applied": "已套用",
     "redeem": "兌換",
     "redeeming": "兌換中...",
     "processing": "處理中...",

@@ -10,10 +10,10 @@ import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../
 import { useAuth } from '../../../Auth/useAuth';
 import './PlanCard.css';
 
-export const PlanCard = ({ 
-  plan, 
-  currentPlan, 
-  isCurrentUser, 
+export const PlanCard = ({
+  plan,
+  currentPlan,
+  isCurrentUser,
   billingPeriod = 'monthly',
   planAdjustment = null,
   appliedRedemption = null
@@ -26,39 +26,39 @@ export const PlanCard = ({
 
   const isFree = plan.id === 'free';
   const isPro = plan.id === 'pro';
-  
+
   // 智能判斷當前方案狀態
   const isCurrentPlan = (() => {
     if (!currentPlan) {
       return plan.id === 'free';
     }
-    
+
     if (currentPlan === plan.id) {
       if (plan.id === 'free') {
         return true;
       }
-      
+
       // 對於付費方案，檢查訂閱狀態
       if (userPlan && userPlan.type === plan.id) {
         // 如果訂閱已取消但仍有效，不視為當前方案（允許重新訂閱）
         if (userPlan.cancelAtPeriodEnd || userPlan.isCancelled) {
           return false;
         }
-        
+
         // 只有活躍且未取消的訂閱才視為當前方案
         return userPlan.status === 'active';
       }
     }
-    
+
     return false;
   })();
-  
+
   // 檢查是否為已取消但仍有效的訂閱
   const isCancelledButActive = (() => {
-    return userPlan && 
-           userPlan.type === plan.id && 
-           (userPlan.cancelAtPeriodEnd || userPlan.isCancelled) && 
-           userPlan.status === 'active';
+    return userPlan &&
+      userPlan.type === plan.id &&
+      (userPlan.cancelAtPeriodEnd || userPlan.isCancelled) &&
+      userPlan.status === 'active';
   })();
 
   const handlePlanSelect = async () => {
@@ -87,17 +87,17 @@ export const PlanCard = ({
       // 如果是 Pro 方案，導航到付款頁面
       if (isPro) {
         let paymentUrl = `/${lang}/payment?plan=${plan.id}&period=${billingPeriod}`;
-        
+
         // 如果是恢復訂閱，添加 action 參數
         if (isCancelledButActive) {
           paymentUrl += `&action=resume`;
         }
-        
+
         // 如果有折扣，將折扣信息添加到URL參數
         if (adjustedPricing.hasRedemptionDiscount && adjustedPricing.redemptionDiscount) {
           const discount = adjustedPricing.redemptionDiscount;
           paymentUrl += `&discountType=${discount.type}`;
-          
+
           if (discount.type === 'percentage') {
             // 對於百分比折扣，傳遞百分比值
             paymentUrl += `&discountValue=${discount.value}`;
@@ -105,11 +105,16 @@ export const PlanCard = ({
             // 對於固定金額折扣，傳遞金額值
             paymentUrl += `&discountValue=${discount.value}`;
           }
-          
+
           paymentUrl += `&originalPrice=${adjustedPricing.originalPrice}`;
           paymentUrl += `&finalPrice=${adjustedPricing.displayPrice}`;
+
+          // 🔧 關鍵修復：傳遞優惠碼本身
+          if (appliedRedemption && appliedRedemption.code) {
+            paymentUrl += `&redemptionCode=${encodeURIComponent(appliedRedemption.code)}`;
+          }
         }
-        
+
         navigate(paymentUrl);
         return;
       }
@@ -137,7 +142,7 @@ export const PlanCard = ({
   // Get adjusted pricing if redemption code is applied
   const getAdjustedPricing = () => {
     if (!planAdjustment) return pricingData;
-    
+
     return {
       ...pricingData,
       displayPrice: planAdjustment.adjustedPrice,
@@ -151,17 +156,17 @@ export const PlanCard = ({
 
   const getButtonText = () => {
     if (paymentLoading) return t('payment.form.processing');
-    
+
     // 活躍的當前方案
     if (isCurrentPlan) return t('subscription.subscriptionPlans.current');
-    
+
     // 已取消但仍有效的訂閱
     if (isCancelledButActive) return t('subscription.subscriptionPlans.resumeSubscription');
-    
+
     // 免費方案邏輯
     if (isFree && currentPlan !== 'free') return t('subscription.subscriptionPlans.manageSubscription');
     if (isFree) return t('subscription.subscriptionPlans.current');
-    
+
     // Pro 方案邏輯
     if (isPro) {
       // 如果用戶曾經是 Pro 但現在不是（過期或降級）
@@ -170,7 +175,7 @@ export const PlanCard = ({
       }
       return t('payment.form.upgradeNow');
     }
-    
+
     return t('subscription.subscriptionPlans.upgrade');
   };
 
@@ -188,12 +193,12 @@ export const PlanCard = ({
           {t('subscription.subscriptionPlans.popular')}
         </div>
       )}
-      
+
       <div className="plan-card__header">
         <div className="plan-card__badge-container">
           <PlanBadge plan={plan.id} size="large" />
         </div>
-        
+
         <h3 className="plan-card__name">{plan.name}</h3>
         <p className="plan-card__description">
           {t(`subscription.subscriptionPlans.${plan.id}Plan.description`)}
@@ -212,7 +217,7 @@ export const PlanCard = ({
               </span>
             )}
           </div>
-          
+
           {/* Redemption Discount Display */}
           {adjustedPricing.hasRedemptionDiscount && adjustedPricing.redemptionDiscount && (
             <div className="plan-card__redemption-discount">
@@ -220,18 +225,18 @@ export const PlanCard = ({
                 {formatPriceDisplay(adjustedPricing.originalPrice)}
               </div>
               <div className="plan-card__redemption-badge">
-                {adjustedPricing.redemptionDiscount.type === 'percentage' 
-                  ? t('redemption.pricing.discountBadge.percentage', { 
-                      percentage: adjustedPricing.redemptionDiscount.value 
-                    })
-                  : t('redemption.pricing.discountBadge.fixed', { 
-                      amount: formatPrice(adjustedPricing.redemptionDiscount.value) 
-                    })
+                {adjustedPricing.redemptionDiscount.type === 'percentage'
+                  ? t('redemption.pricing.discountBadge.percentage', {
+                    percentage: adjustedPricing.redemptionDiscount.value
+                  })
+                  : t('redemption.pricing.discountBadge.fixed', {
+                    amount: formatPrice(adjustedPricing.redemptionDiscount.value)
+                  })
                 }
               </div>
             </div>
           )}
-          
+
           {/* Regular Billing Discount Display */}
           {!adjustedPricing.hasRedemptionDiscount && !isFree && pricingData.showDiscount && (
             <div className="plan-card__discount-info">
@@ -296,8 +301,8 @@ export const PlanCard = ({
               {t('subscription.status.cancelledButActive')}
             </div>
             <div className="plan-card__status-subtitle">
-              {t('subscription.status.expiresOn', { 
-                date: new Date(userPlan?.endDate).toLocaleDateString() 
+              {t('subscription.status.expiresOn', {
+                date: new Date(userPlan?.endDate).toLocaleDateString()
               })}
             </div>
           </div>

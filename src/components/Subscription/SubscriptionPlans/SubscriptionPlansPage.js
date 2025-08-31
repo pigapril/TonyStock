@@ -128,6 +128,11 @@ export const SubscriptionPlansPage = () => {
       
       setPlanAdjustments(adjustments);
       
+      // 🔧 修復：在預覽時也設置 appliedRedemption，確保有 code 字段
+      if (previewData.code) {
+        setAppliedRedemption(previewData);
+      }
+      
       Analytics.track('redemption_preview_applied_to_pricing', {
         userId: user?.id,
         benefitType: previewData.benefits.type,
@@ -143,10 +148,14 @@ export const SubscriptionPlansPage = () => {
    * Handle successful redemption
    */
   const handleRedemptionSuccess = (redemptionData) => {
+    console.log('🎉 SubscriptionPlansPage.handleRedemptionSuccess called with:', redemptionData);
+    console.log('🔍 redemptionData.code:', redemptionData.code);
+    
     setAppliedRedemption(redemptionData);
     
-    // Clear plan adjustments since redemption is now applied
-    setPlanAdjustments({});
+    // 🔧 修復：在 pricing 模式下，不要清除 planAdjustments，保持折扣顯示
+    // 只有在真正兌換時才清除 planAdjustments
+    // setPlanAdjustments({});
     
     Analytics.track('redemption_success_on_pricing_page', {
       userId: user?.id,

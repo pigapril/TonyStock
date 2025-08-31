@@ -238,6 +238,11 @@ export const RedemptionCodeInput = ({
                     try {
                         await getPreview(codeToValidate);
                         console.log('✅ getPreview completed successfully');
+
+                        // 在 checkout 流程中，驗證成功後自動應用優惠碼（不需要真正兌換）
+                        if (location === 'checkout') {
+                            console.log('🛒 Checkout mode: auto-applying redemption after validation');
+                        }
                     } catch (previewError) {
                         console.error('❌ getPreview failed:', previewError);
                     }
@@ -322,6 +327,13 @@ export const RedemptionCodeInput = ({
                 setTimeout(() => {
                     setPreview(result.data);
                     onPreviewSuccess?.(result.data);
+
+                    // 在 checkout 或 pricing 流程中，預覽成功後自動應用優惠碼（僅用於顯示，不真正兌換）
+                    if (location === 'checkout' || location === 'pricing') {
+                        console.log(`🛒 ${location} mode: auto-applying redemption preview`);
+                        // 使用 onRedemptionSuccess 來設置前端狀態，但不真正兌換
+                        onRedemptionSuccess?.(result.data);
+                    }
                 }, 0);  // 使用 setTimeout 確保狀態更新順序
 
                 Analytics.track('redemption_preview_loaded', {
@@ -374,7 +386,23 @@ export const RedemptionCodeInput = ({
             return;
         }
 
-        // If no validation result available, validate first
+        // 在 checkout 模式下，不允許手動兌換（會在付款時自動處理）
+        if (location === 'checkout') {
+            console.log('🛒 Checkout mode: manual redemption disabled');
+            return;
+        }
+
+        // 在 pricing 模式下，只做驗證和預覽，不做真正兌換
+        if (location === 'pricing') {
+            if (!validationResult) {
+                console.log('💰 Pricing mode: validating code for preview');
+                await validateCode(code.trim());
+            }
+            // 在 pricing 模式下不執行真正的兌換
+            return;
+        }
+
+        // 其他模式下的正常流程
         if (!validationResult) {
             await validateCode(code.trim());
             return;
@@ -504,6 +532,17 @@ export const RedemptionCodeInput = ({
                 default: return t('redemption.processing');
             }
         }
+
+        // 在 checkout 模式下，驗證成功後顯示"已套用"
+        if (location === 'checkout' && validationResult && (!showPreview || preview)) {
+            return t('redemption.applied');
+        }
+
+        // 在 pricing 模式下，始終顯示"套用優惠碼"（實際上是驗證+預覽）
+        if (location === 'pricing') {
+            return t('redemption.apply');
+        }
+
         if (validationResult && (!showPreview || preview)) return t('redemption.redeem');
         return t('redemption.validate');
     };
@@ -512,6 +551,11 @@ export const RedemptionCodeInput = ({
      * Check if button should be disabled
      */
     const isButtonDisabled = () => {
+        // 在 checkout 模式下，驗證成功後禁用按鈕（因為已自動應用）
+        if (location === 'checkout' && validationResult && (!showPreview || preview)) {
+            return true;
+        }
+
         return !code.trim() ||
             isValidating ||
             isRedeeming ||
@@ -615,30 +659,30 @@ export const RedemptionCodeInput = ({
                         <div className="redemption-error-message">
                             {redemptionService.formatErrorMessage(error, t)}
                         </div>
-                        
+
                         {/* 根據錯誤類型顯示相應的行動按鈕 */}
                         {error.data?.details?.upgradeRequired && (
                             <div className="redemption-error-actions">
-                                <button 
+                                <button
                                     className="redemption-upgrade-btn"
                                     onClick={() => {
                                         // 導航到升級頁面
                                         window.location.href = '/subscription';
                                     }}
                                 >
-                                    {error.data.details.eligiblePlanNames ? 
+                                    {error.data.details.eligiblePlanNames ?
                                         t('redemption.actions.upgrade_to_plan', { planName: error.data.details.eligiblePlanNames }) :
                                         t('redemption.actions.upgrade_plan')
                                     }
                                 </button>
                             </div>
                         )}
-                        
+
                         {/* PAYMENT_METHOD_REQUIRED error is no longer shown - payment method is handled during checkout */}
-                        
+
                         {(error.errorCode === 'USER_LIMIT_EXCEEDED' || error.errorCode === 'ALREADY_REDEEMED') && (
                             <div className="redemption-error-actions">
-                                <button 
+                                <button
                                     className="redemption-history-btn"
                                     onClick={() => {
                                         // 導航到兌換記錄頁面
@@ -649,10 +693,10 @@ export const RedemptionCodeInput = ({
                                 </button>
                             </div>
                         )}
-                        
+
                         {error.errorCode === 'CODE_NOT_FOUND' && (
                             <div className="redemption-error-actions">
-                                <button 
+                                <button
                                     className="redemption-retry-btn"
                                     onClick={() => {
                                         setCode('');
@@ -665,10 +709,10 @@ export const RedemptionCodeInput = ({
                                 </button>
                             </div>
                         )}
-                        
+
                         {(error.errorCode === 'CODE_EXPIRED' || error.errorCode === 'CODE_EXHAUSTED') && (
                             <div className="redemption-error-actions">
-                                <button 
+                                <button
                                     className="redemption-alternatives-btn"
                                     onClick={() => {
                                         // 導航到優惠頁面

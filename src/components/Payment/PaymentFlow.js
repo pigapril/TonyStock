@@ -10,7 +10,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import paymentService from '../../services/paymentService';
 import { systemLogger } from '../../utils/logger';
@@ -27,6 +27,7 @@ const PaymentFlow = ({
     const { t } = useTranslation();
     const { lang } = useParams();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const [currentStep, setCurrentStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -50,6 +51,25 @@ const PaymentFlow = ({
             setFinalAmount(appliedRedemption ? calculateDiscountedAmount(currentPlan.price, appliedRedemption) : currentPlan.price);
         }
     }, [currentPlan, appliedRedemption]);
+
+    // 處理 URL 參數中的優惠碼
+    useEffect(() => {
+        const redemptionCodeFromUrl = searchParams.get('redemptionCode');
+        if (redemptionCodeFromUrl && !appliedRedemption) {
+            console.log('🔗 從 URL 參數中發現優惠碼:', redemptionCodeFromUrl);
+            // 自動設置優惠碼狀態
+            setAppliedRedemption({
+                code: redemptionCodeFromUrl,
+                isValid: true,
+                canRedeem: true,
+                benefits: {
+                    type: 'discount',
+                    discountType: searchParams.get('discountType') || 'fixed',
+                    discountAmount: parseInt(searchParams.get('discountValue')) || 199
+                }
+            });
+        }
+    }, [searchParams, appliedRedemption]);
 
     useEffect(() => {
         systemLogger.info('PaymentFlow initialized:', {
@@ -113,6 +133,16 @@ const PaymentFlow = ({
         if (previewData?.benefits && currentPlan?.price) {
             const discountedAmount = calculateDiscountedAmount(currentPlan.price, previewData);
             setFinalAmount(discountedAmount);
+            
+            // 自動應用預覽的優惠碼到結帳流程
+            setAppliedRedemption(previewData);
+            
+            systemLogger.info('Redemption preview applied to checkout:', {
+                benefitType: previewData.benefits?.type,
+                discountAmount: previewData.benefits?.discountAmount,
+                originalAmount: currentPlan?.price,
+                code: previewData.code
+            });
         }
     };
 
@@ -168,6 +198,10 @@ const PaymentFlow = ({
                 paymentMethod
             });
 
+            // 🔍 調試：檢查 appliedRedemption 狀態
+            console.log('🔍 創建訂單前的 appliedRedemption:', appliedRedemption);
+            console.log('🔍 傳遞給後端的 redemptionCode:', appliedRedemption?.code);
+            
             const result = await paymentService.createOrder({
                 planType,
                 billingPeriod,

@@ -249,7 +249,10 @@ class RedemptionService {
                 console.log('✅ Response status is success, returning data:', response.data.data);
                 return {
                     success: true,
-                    data: response.data.data
+                    data: {
+                        ...response.data.data,
+                        code: normalizedCode  // 添加原始代碼到返回數據中
+                    }
                 };
             } else {
                 console.log('❌ Response status is not success:', response.data.status);
@@ -366,7 +369,10 @@ class RedemptionService {
                     console.log('✅ Code is valid, returning success');
                     return {
                         success: true,
-                        data: validationData
+                        data: {
+                            ...validationData,
+                            code: normalizedCode  // 添加原始代碼到返回數據中
+                        }
                     };
                 } else {
                     console.log('❌ API response status not success:', response.data.status);

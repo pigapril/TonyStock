@@ -23,6 +23,13 @@ const PaymentPage = () => {
     const { userPlan } = useSubscription();
     const [searchParams] = useSearchParams();
     
+    // 獲取方案價格
+    const getPlanPrice = (planType, billingPeriod) => {
+        const plans = subscriptionService.getAvailablePlans();
+        const plan = plans.find(p => p.id === planType);
+        return plan?.price?.[billingPeriod] || 0;
+    };
+    
     const planType = searchParams.get('plan') || 'pro';
     const billingPeriod = searchParams.get('period') || 'monthly';
     const [loading, setLoading] = useState(false);
@@ -32,6 +39,9 @@ const PaymentPage = () => {
     const [orderData, setOrderData] = useState(null);
     const [error, setError] = useState(null);
     const [appliedDiscount, setAppliedDiscount] = useState(null);
+    const [appliedRedemption, setAppliedRedemption] = useState(null);
+    const [originalAmount, setOriginalAmount] = useState(null);
+    const [finalAmount, setFinalAmount] = useState(null);
 
     // 確保用戶已登入並檢查折扣信息
     useEffect(() => {
@@ -50,7 +60,29 @@ const PaymentPage = () => {
         const discountType = searchParams.get('discountType');
         const originalPrice = searchParams.get('originalPrice');
         const finalPrice = searchParams.get('finalPrice');
+        const redemptionCode = searchParams.get('redemptionCode');
         
+        // 設置價格信息
+        if (originalPrice) setOriginalAmount(parseFloat(originalPrice));
+        if (finalPrice) setFinalAmount(parseFloat(finalPrice));
+        
+        // 處理優惠碼信息
+        if (redemptionCode) {
+            console.log('🔗 PaymentPage 從 URL 參數中發現優惠碼:', redemptionCode);
+            setAppliedRedemption({
+                code: redemptionCode,
+                isValid: true,
+                canRedeem: true,
+                benefits: {
+                    type: 'discount',
+                    discountType: discountType || 'fixed',
+                    discountAmount: discountValue ? parseFloat(discountValue) : 0,
+                    estimatedValue: discountValue ? parseFloat(discountValue) : 0
+                }
+            });
+        }
+        
+        // 向後兼容：設置舊的 appliedDiscount 格式
         if (discountValue && discountType) {
             setAppliedDiscount({
                 type: discountType,
@@ -183,10 +215,18 @@ const PaymentPage = () => {
         setError(null);
 
         try {
+            // 🔍 調試：檢查 appliedRedemption 狀態
+            console.log('🔍 PaymentPage 創建訂單前的 appliedRedemption:', appliedRedemption);
+            console.log('🔍 PaymentPage 傳遞給後端的 redemptionCode:', appliedRedemption?.code);
+            
             const result = await paymentService.createOrder({
                 planType,
                 billingPeriod,
                 paymentMethod,
+                redemptionCode: appliedRedemption?.code,
+                originalAmount: originalAmount,
+                finalAmount: finalAmount || getPlanPrice(planType, billingPeriod),
+                // 保持向後兼容
                 appliedDiscount: appliedDiscount ? {
                     type: appliedDiscount.type,
                     amount: appliedDiscount.value

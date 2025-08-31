@@ -98,6 +98,8 @@
     "inputPlaceholder": "Enter redemption code",
     "validate": "Validate",
     "validating": "Validating...",
+    "apply": "Apply Code",
+    "applied": "Applied",
     "redeem": "Redeem",
     "redeeming": "Redeeming...",
     "processing": "Processing...",
