@@ -1540,6 +1540,10 @@
     "status": {
       "cancelledButActive": "Cancelled but Active",
       "expiresOn": "Expires on: {{date}}"
+    },
+    "reactivation": {
+      "success": "Subscription successfully reactivated!",
+      "error": "Failed to reactivate subscription, please try again later"
     }
   },
   "payment": {

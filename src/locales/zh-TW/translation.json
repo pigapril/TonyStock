@@ -1559,6 +1559,10 @@
     "status": {
       "cancelledButActive": "已取消但仍有效",
       "expiresOn": "到期日：{{date}}"
+    },
+    "reactivation": {
+      "success": "訂閱已成功重新啟動！",
+      "error": "重新啟動訂閱失敗，請稍後再試"
     }
   },
   "payment": {

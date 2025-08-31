@@ -84,14 +84,55 @@ export const PlanCard = ({
         return;
       }
 
+      // 如果是已取消但仍有效的訂閱，直接調用重新啟動 API
+      if (isCancelledButActive && isPro) {
+        try {
+          setPaymentLoading(true);
+          
+          // 動態導入 CSRF 客戶端
+          const { default: csrfClient } = await import('../../../../utils/csrfClient');
+          
+          const response = await csrfClient.post('/api/payment/reactivate-subscription', {});
+          
+          if (response.ok) {
+            const result = await response.json();
+            
+            // 重新啟動成功，刷新訂閱狀態
+            if (window.location.reload) {
+              window.location.reload();
+            }
+            
+            Analytics.track('subscription_reactivated', {
+              planType: plan.id,
+              subscriptionId: result.data?.id
+            });
+            
+            console.log('訂閱已成功重新啟動');
+          } else {
+            const errorData = await response.json();
+            throw new Error(errorData.message || '重新啟動失敗');
+          }
+        } catch (error) {
+          console.error('重新啟動訂閱失敗:', error);
+          
+          Analytics.error({
+            type: 'SUBSCRIPTION_REACTIVATION_ERROR',
+            code: error.code || 500,
+            message: error.message || 'Failed to reactivate subscription',
+            context: 'PlanCard.handlePlanSelect'
+          });
+          
+          // 如果重新啟動失敗，仍然可以導航到付款頁面作為備用方案
+          alert(t('subscription.reactivation.error') || '重新啟動失敗，請稍後再試');
+        } finally {
+          setPaymentLoading(false);
+        }
+        return;
+      }
+
       // 如果是 Pro 方案，導航到付款頁面
       if (isPro) {
         let paymentUrl = `/${lang}/payment?plan=${plan.id}&period=${billingPeriod}`;
-
-        // 如果是恢復訂閱，添加 action 參數
-        if (isCancelledButActive) {
-          paymentUrl += `&action=resume`;
-        }
 
         // 如果有折扣，將折扣信息添加到URL參數
         if (adjustedPricing.hasRedemptionDiscount && adjustedPricing.redemptionDiscount) {
