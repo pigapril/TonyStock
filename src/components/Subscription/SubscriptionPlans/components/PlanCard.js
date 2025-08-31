@@ -20,7 +20,7 @@ export const PlanCard = ({
 }) => {
   const { t } = useTranslation();
   const { lang } = useParams();
-  const { userPlan, loading } = useSubscription();
+  const { userPlan, subscriptionHistory, loading } = useSubscription();
   const navigate = useNavigate();
   const [paymentLoading, setPaymentLoading] = useState(false);
 
@@ -169,10 +169,30 @@ export const PlanCard = ({
 
     // Pro 方案邏輯
     if (isPro) {
-      // 如果用戶曾經是 Pro 但現在不是（過期或降級）
-      if (currentPlan === 'free') {
+      // 檢查用戶是否曾經有過 Pro 訂閱（從訂閱歷史或當前狀態判斷）
+      const hasHadProSubscription = (() => {
+        // 檢查當前用戶計劃是否曾經是 Pro（但現在已過期或取消）
+        if (userPlan && userPlan.type === 'pro' && 
+            (userPlan.status === 'expired' || userPlan.status === 'cancelled')) {
+          return true;
+        }
+        
+        // 檢查訂閱歷史中是否有 Pro 訂閱記錄
+        if (subscriptionHistory && Array.isArray(subscriptionHistory)) {
+          return subscriptionHistory.some(sub => 
+            sub.planType === 'pro' || sub.type === 'pro'
+          );
+        }
+        
+        return false;
+      })();
+      
+      // 如果用戶曾經有過 Pro 訂閱但現在已過期/取消，顯示重新訂閱
+      if (hasHadProSubscription) {
         return t('subscription.subscriptionPlans.resubscribe');
       }
+      
+      // 對於新用戶或從未有過 Pro 訂閱的用戶，顯示立即升級
       return t('payment.form.upgradeNow');
     }
 
