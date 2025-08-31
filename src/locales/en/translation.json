@@ -1543,7 +1543,9 @@
     },
     "reactivation": {
       "success": "Subscription successfully reactivated!",
-      "error": "Failed to reactivate subscription, please try again later"
+      "error": "Failed to reactivate subscription, please try again later",
+      "requiresNewPayment": "According to ECPay policy, terminated recurring payments cannot be reactivated and require new payment method setup",
+      "extensionNotice": "Your remaining service time will be automatically extended to the new subscription, ensuring no loss of benefits"
     }
   },
   "payment": {

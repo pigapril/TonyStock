@@ -1562,7 +1562,9 @@
     },
     "reactivation": {
       "success": "訂閱已成功重新啟動！",
-      "error": "重新啟動訂閱失敗，請稍後再試"
+      "error": "重新啟動訂閱失敗，請稍後再試",
+      "requiresNewPayment": "根據 ECPay 政策，已終止的定期定額無法重新啟用，需要重新設定付款方式",
+      "extensionNotice": "您的剩餘服務時間將自動延長到新訂閱中，不會損失任何權益"
     }
   },
   "payment": {

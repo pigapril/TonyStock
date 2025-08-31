@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PlanBadge } from '../../shared/PlanBadge';
@@ -7,7 +7,6 @@ import { useSubscription } from '../../SubscriptionContext';
 import { Analytics } from '../../../../utils/analytics';
 import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../utils/pricingUtils';
 
-import { useAuth } from '../../../Auth/useAuth';
 import './PlanCard.css';
 
 export const PlanCard = ({
@@ -22,7 +21,8 @@ export const PlanCard = ({
   const { lang } = useParams();
   const { userPlan, subscriptionHistory, loading } = useSubscription();
   const navigate = useNavigate();
-  const [paymentLoading, setPaymentLoading] = useState(false);
+
+
 
   const isFree = plan.id === 'free';
   const isPro = plan.id === 'pro';
@@ -62,7 +62,7 @@ export const PlanCard = ({
   })();
 
   const handlePlanSelect = async () => {
-    if (isCurrentPlan || loading || paymentLoading) return;
+    if (isCurrentPlan || loading) return;
 
     try {
       Analytics.track('subscription_plan_select_clicked', {
@@ -84,49 +84,23 @@ export const PlanCard = ({
         return;
       }
 
-      // 如果是已取消但仍有效的訂閱，直接調用重新啟動 API
+      // 處理已取消但仍有效的訂閱重新訂閱場景
+      // 場景：用戶已取消訂閱（ECPay 定期定額已停止），但服務仍在有效期內
+      // 根據 ECPay 政策，需要創建新的定期定額訂單，系統會自動延長剩餘服務時間
       if (isCancelledButActive && isPro) {
-        try {
-          setPaymentLoading(true);
-          
-          // 動態導入 CSRF 客戶端
-          const { default: csrfClient } = await import('../../../../utils/csrfClient');
-          
-          const response = await csrfClient.post('/api/payment/reactivate-subscription', {});
-          
-          if (response.ok) {
-            const result = await response.json();
-            
-            // 重新啟動成功，刷新訂閱狀態
-            if (window.location.reload) {
-              window.location.reload();
-            }
-            
-            Analytics.track('subscription_reactivated', {
-              planType: plan.id,
-              subscriptionId: result.data?.id
-            });
-            
-            console.log('訂閱已成功重新啟動');
-          } else {
-            const errorData = await response.json();
-            throw new Error(errorData.message || '重新啟動失敗');
-          }
-        } catch (error) {
-          console.error('重新啟動訂閱失敗:', error);
-          
-          Analytics.error({
-            type: 'SUBSCRIPTION_REACTIVATION_ERROR',
-            code: error.code || 500,
-            message: error.message || 'Failed to reactivate subscription',
-            context: 'PlanCard.handlePlanSelect'
-          });
-          
-          // 如果重新啟動失敗，仍然可以導航到付款頁面作為備用方案
-          alert(t('subscription.reactivation.error') || '重新啟動失敗，請稍後再試');
-        } finally {
-          setPaymentLoading(false);
+        Analytics.track('subscription_reactivation_via_new_payment', {
+          planType: plan.id,
+          reason: 'ecpay_policy_requires_new_payment'
+        });
+        
+        // 直接導航到付款頁面，後端會處理延長邏輯
+        let paymentUrl = `/${lang}/payment?plan=${plan.id}&period=${billingPeriod}&extend=true`;
+        
+        if (appliedRedemption && appliedRedemption.code) {
+          paymentUrl += `&redemption=${encodeURIComponent(appliedRedemption.code)}`;
         }
+        
+        navigate(paymentUrl);
         return;
       }
 
@@ -196,7 +170,7 @@ export const PlanCard = ({
   const adjustedPricing = getAdjustedPricing();
 
   const getButtonText = () => {
-    if (paymentLoading) return t('payment.form.processing');
+    if (loading) return t('payment.form.processing');
 
     // 活躍的當前方案
     if (isCurrentPlan) return t('subscription.subscriptionPlans.current');
@@ -375,8 +349,8 @@ export const PlanCard = ({
           variant={getButtonVariant()}
           size="large"
           onClick={handlePlanSelect}
-          disabled={isCurrentPlan || loading || paymentLoading}
-          loading={loading || paymentLoading}
+          disabled={isCurrentPlan || loading}
+          loading={loading}
           className="plan-card__button"
         >
           {getButtonText()}
