@@ -194,6 +194,15 @@ export const Analytics = {
         component: data.component,
         user_type: data.userType || 'free'
       });
+    },
+
+    // 升級按鈕點擊追蹤
+    upgradeClicked: (data) => {
+      pushToDataLayer('sentiment_upgrade_clicked', {
+        source: data.source,
+        feature: data.feature,
+        component: data.component || 'marketSentiment'
+      });
     }
   },
 
