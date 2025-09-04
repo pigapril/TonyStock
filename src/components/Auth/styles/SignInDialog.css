@@ -87,8 +87,13 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideIn {
@@ -96,6 +101,7 @@
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -162,6 +168,7 @@
 .feature-list li:nth-child(1) {
     animation-delay: 0.2s;
 }
+
 .feature-list li:nth-child(1)::before {
     animation-delay: 0.4s;
 }
@@ -169,6 +176,7 @@
 .feature-list li:nth-child(2) {
     animation-delay: 0.7s;
 }
+
 .feature-list li:nth-child(2)::before {
     animation-delay: 0.9s;
 }
@@ -176,6 +184,7 @@
 .feature-list li:nth-child(3) {
     animation-delay: 1.2s;
 }
+
 .feature-list li:nth-child(3)::before {
     animation-delay: 1.4s;
 }
@@ -245,12 +254,12 @@
     width: 100%;
     cursor: pointer;
     transition: background-color 0.3s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .google-login-button:hover {
     background-color: #f8f9fa;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .google-login-button:before {
@@ -292,9 +301,40 @@
     text-align: center;
 }
 
-/* 自定義標題大小 */
+/* 自定義標題大小 - 更突出的樣式 */
 .auth-dialog-title {
-    font-size: 1rem !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1.5rem !important;
+    /* 備用顏色，適用於不支援 background-clip 的瀏覽器 */
+    color: #667eea;
+    /* 漸層文字效果 */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    position: relative;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: titleFadeIn 0.6s ease forwards;
+}
+
+/* 為不支援 background-clip 的瀏覽器提供備用樣式 */
+@supports not (-webkit-background-clip: text) {
+    .auth-dialog-title {
+        background: none;
+        color: #667eea;
+    }
+}
+
+/* 標題動畫 */
+@keyframes titleFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* 預覽圖片樣式 */
@@ -318,19 +358,25 @@
         align-items: center;
         justify-content: center;
     }
-    
+
     .auth-dialog-preview-image {
         max-width: 100%;
         max-height: 350px;
         margin: 16px auto;
     }
-    
+
     .dialog-title {
         font-size: 1.2rem;
     }
+
+    .auth-dialog-title {
+        font-size: 1.5rem !important;
+    }
+
     .feature-list {
         width: 100%;
     }
+
     .feature-list li {
         width: 100%;
         margin-left: -20px;
