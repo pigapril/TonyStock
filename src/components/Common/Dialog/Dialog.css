@@ -50,32 +50,35 @@
 
 .dialog-close {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 36px;
-    height: 36px;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
     border: none;
-    background: rgba(120, 120, 128, 0.12);
+    background: rgba(120, 120, 128, 0.16);
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    color: rgba(60, 60, 67, 0.6);
-    font-size: 18px;
+    color: rgba(60, 60, 67, 0.7);
+    font-size: 16px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    z-index: 10;
 }
 
 .dialog-close:hover {
-    background: rgba(120, 120, 128, 0.2);
-    color: rgba(60, 60, 67, 0.8);
-    transform: scale(1.05);
+    background: rgba(255, 59, 48, 0.15);
+    color: #ff3b30;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(255, 59, 48, 0.2);
 }
 
 .dialog-close:active {
-    transform: scale(0.95);
+    transform: scale(0.9);
+    background: rgba(255, 59, 48, 0.25);
 }
 
 .dialog-close::before,

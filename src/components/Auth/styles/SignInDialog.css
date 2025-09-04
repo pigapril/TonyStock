@@ -383,3 +383,67 @@
         justify-content: center;
     }
 }
+/* 
+認證對話框專用的關閉按鈕樣式 */
+.auth-dialog-content .dialog-close {
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    color: rgba(60, 60, 67, 0.8);
+    transition: all 0.2s ease;
+}
+
+.auth-dialog-content .dialog-close:hover {
+    background: rgba(255, 59, 48, 0.1);
+    border-color: rgba(255, 59, 48, 0.2);
+    color: #ff3b30;
+    transform: scale(1.05);
+}
+
+.auth-dialog-content .dialog-close:active {
+    transform: scale(0.95);
+    background: rgba(255, 59, 48, 0.15);
+}
+
+/* 為關閉按鈕添加工具提示效果 */
+.auth-dialog-content .dialog-close::after {
+    content: attr(aria-label);
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition: all 0.2s ease;
+    z-index: 1001;
+}
+
+.auth-dialog-content .dialog-close:hover::after {
+    opacity: 1;
+    transform: translateY(4px);
+}
+
+/* 手機版本的調整 */
+@media (max-width: 480px) {
+    .auth-dialog-content .dialog-close {
+        top: 8px;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+    }
+    
+    .auth-dialog-content .dialog-close::after {
+        display: none; /* 手機版隱藏工具提示 */
+    }
+}

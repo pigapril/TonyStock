@@ -113,7 +113,7 @@
     "sendMessageError": "Oops, the message seems lost. Please try again later!"
   },
   "dialog": {
-    "closeAriaLabel": "Back"
+    "closeAriaLabel": "Close dialog"
   },
   "errorBoundary": {
     "title": "Sorry, something went wrong",

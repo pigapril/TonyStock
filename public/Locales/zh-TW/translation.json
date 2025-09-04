@@ -113,7 +113,7 @@
     "sendMessageError": "糟糕，訊息好像迷路了，請稍後再試一次！"
   },
   "dialog": {
-    "closeAriaLabel": "返回"
+    "closeAriaLabel": "關閉對話框"
   },
   "errorBoundary": {
     "title": "很抱歉，發生了一些問題",

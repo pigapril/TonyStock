@@ -357,7 +357,7 @@
   },
   "dialog": {
     "close": "關閉",
-    "closeAriaLabel": "返回"
+    "closeAriaLabel": "關閉對話框"
   },
   "errorBoundary": {
     "title": "很抱歉，發生了一些問題",

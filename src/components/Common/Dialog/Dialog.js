@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IoArrowBack } from 'react-icons/io5';
+import { IoClose } from 'react-icons/io5';
 import { useTranslation } from 'react-i18next';
 import './Dialog.css';
 
@@ -51,7 +51,7 @@ export function Dialog({
                     onClick={handleClose}
                     aria-label={t('dialog.closeAriaLabel')}
                 >
-                    <IoArrowBack />
+                    <IoClose />
                 </button>
                 
                 <h2 id="dialog-title" className={`dialog-title ${titleClassName || ''}`}>

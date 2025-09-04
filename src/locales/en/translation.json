@@ -341,7 +341,7 @@
   },
   "dialog": {
     "close": "Close",
-    "closeAriaLabel": "Back"
+    "closeAriaLabel": "Close dialog"
   },
   "errorBoundary": {
     "title": "Sorry, something went wrong",
