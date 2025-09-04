@@ -76,7 +76,7 @@ export function AuthDialog() {
     const defaultDescription = (
         <div className="auth-dialog-description">
             <img 
-                src={getImagePath('watchlist-preview')}
+                src={getImagePath('home-feature1')}
                 alt={t('authDialog.previewAlt')}
                 className="auth-dialog-preview-image"
             />

@@ -87,9 +87,9 @@
     "jsonLdDescription": "Learn about the philosophy of the Sentiment Inside Out website, and how to use simple analysis tools to transform current market sentiment into important investment indicators, helping investors overcome their irrationality and avoid emotionally-driven decisions like chasing highs or selling lows."
   },
   "authDialog": {
-    "previewAlt": "Watchlist feature preview",
-    "feature1": "🎯 Track stocks you're interested in",
-    "feature2": "📊 Analyze multiple stocks at once",
+    "previewAlt": "LOHAS Five-Line Analysis Preview",
+    "feature1": "📈 Analyze stock price trends and sentiment",
+    "feature2": "📊 View historical market sentiment data",
     "feature3": "💬 Get answers from AI chat service",
     "title": "🚀 Log in to unlock full features!",
     "loading": "Loading..."

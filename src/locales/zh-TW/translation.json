@@ -87,9 +87,9 @@
     "jsonLdDescription": "了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化爲重要的投資指標，幫助大家克服自身的恐懼與貪婪心態。"
   },
   "authDialog": {
-    "previewAlt": "追蹤清單功能預覽",
-    "feature1": "🎯 追蹤感興趣的股票",
-    "feature2": "📊 一次分析多個結果",
+    "previewAlt": "樂活五線譜分析預覽",
+    "feature1": "📈 分析股價趨勢與情緒",
+    "feature2": "📊 查看市場情緒歷史資料",
     "feature3": "💬 由AI客服回答問題",
     "title": "🚀 登入使用免費功能！",
     "loading": "載入中..."
