@@ -1,75 +1,55 @@
 [build]
-  command = "SKIP_PREFLIGHT_CHECK=true CI=false npm run build"
+  command = "npm run build"
   publish = "build"
 
-[build.environment]
-  NODE_VERSION = "18.16.0"
-  NPM_VERSION = "9.5.1"
-  CI = "false"
+# Production 環境設定 - main 分支
+[context.production]
+  command = "npm run build"
 
-# 保留 Netlify 子域名重定向
-[[redirects]]
-  from = "/*"
-  to = "https://sentimentinsideout.com/:splat"
-  status = 301
-  force = true
-  conditions = {Host = ["niku-stock.netlify.app"]}
+# Production 環境設定 - feature 分支也可以是 production
+[context.production.environment]
+  NETLIFY_BRANCH = "main"
 
-# API 代理
-#staging網址 "https://sentiment-staging.publicvm.com/api/:splat"
-#production網址 "https://stockdatabase.publicvm.com/api/:splat"
-
-
-# SPA 回退路由
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
-
+# Staging/Deploy Preview 環境設定
+[context.deploy-preview]
+  command = "npm run build"
 
 [context.branch-deploy]
-  command = "SKIP_PREFLIGHT_CHECK=true CI=false npm run build"
-  publish = "build"
+  command = "npm run build"
 
-[context.branch-deploy.environment]
-  NODE_VERSION = "18.16.0"
-  NPM_VERSION = "9.5.1"
-  CI = "false"
+# 針對 staging 環境的 robots.txt 重定向
+[[redirects]]
+  from = "/robots.txt"
+  to = "/robots-staging.txt"
+  status = 200
+  conditions = {Role = ["branch-deploy", "deploy-preview"]}
+  force = true
 
+# 針對你的具體 staging 域名的 robots.txt 重定向
+[[redirects]]
+  from = "/robots.txt"
+  to = "/robots-staging.txt"
+  status = 200
+  conditions = {Domain = ["sentimentinsideout-staging.netlify.app"]}
+  force = true
 
-# 網站快取策略
-# --- 第一類：檔名帶有亂數的資源，應該永久快取 ---
-# 這些檔案的內容若有變更，檔名也會跟著變，所以可以安全地快取一年。
+# 針對 staging 環境添加 SEO 阻擋 headers
 [[headers]]
-  for = "/static/*"
+  for = "/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+  conditions = {Role = ["branch-deploy", "deploy-preview"]}
 
-# --- 第二類：檔名固定的資源 (根據變動頻率分層設定) ---
-
-# (A) 極少變動的資源：圖片、圖示等 (快取 10 天)
+# 針對你的具體 staging 域名添加 SEO 阻擋 headers
 [[headers]]
-  for = "/images/*"
+  for = "/*"
   [headers.values]
-    Cache-Control = "public, max-age=864000, must-revalidate" # 10 days
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+  conditions = {Domain = ["sentimentinsideout-staging.netlify.app"]}
 
-[[headers]]
-  for = "/*.(ico|png|jpg|jpeg|gif|svg|webp)"
-  [headers.values]
-    Cache-Control = "public, max-age=864000, must-revalidate" # 10 days
-
-# (B) 偶爾變動的資源：翻譯檔、設定檔 (快取 1 天)
-[[headers]]
-  for = "/locales/*"
-  [headers.values]
-    Cache-Control = "public, max-age=86400, must-revalidate" # 24 hours
-
-[[headers]]
-  for = "/*.(json|txt|xml)"
-  [headers.values]
-    Cache-Control = "public, max-age=86400, must-revalidate" # 24 hours
-
-# --- 第三類：入口 HTML 檔案，永遠不快取 ---
-# 為了確保使用者總能載入最新的網站版本，index.html 永遠不能被瀏覽器快取。
-# Netlify 會為所有未被上方規則匹配到的 HTML 檔案自動設定 no-cache，所以這裡無需額外設定。
+# Production 環境保持正常的 robots.txt
+[[redirects]]
+  from = "/robots.txt"
+  to = "/robots.txt"
+  status = 200
+  conditions = {Role = ["production"]}

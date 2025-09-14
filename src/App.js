@@ -81,6 +81,7 @@ import { handleApiError } from './utils/errorHandler';
 import { initializeApiClient } from './api/setupApiClient';
 import authGuard from './utils/authGuard';
 import authPreloader from './utils/authPreloader';
+import { setupRobotsProtection } from './utils/robotsHandler';
 
 // 設定 ChartJS
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
@@ -178,6 +179,9 @@ function AppContent() {
       console.log('Authentication not available on app start:', error.message);
       // 不需要顯示錯誤，因為用戶可能未登入
     });
+
+    // 設置 staging 環境的搜尋引擎保護
+    setupRobotsProtection();
   }, []);
 
   // 當側邊欄關閉時，自動收合Google搜尋熱度下拉選單

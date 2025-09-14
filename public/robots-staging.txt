@@ -1,0 +1,6 @@
+# Staging Environment - Do Not Index
+User-agent: *
+Disallow: /
+
+# Block all search engines from indexing staging
+Noindex: /
