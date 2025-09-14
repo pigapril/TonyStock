@@ -1,17 +1,16 @@
 // React 相關
-import React, { useState, useEffect, useCallback, Suspense } from 'react';
-import { Link, Route, Routes, Navigate, useLocation, useParams, useNavigate, NavLink } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Routes, Navigate, useLocation, useParams, useNavigate, NavLink } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
 import { useSmartNavigation } from './hooks/useSmartNavigation';
 
 
 // 第三方庫
-import axios from 'axios';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-crosshair';
-import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaBook, FaPiggyBank, FaGlobe } from 'react-icons/fa';
+import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaPiggyBank } from 'react-icons/fa';
 
 // 樣式引入
 import './App.css';
@@ -25,11 +24,9 @@ import './components/Common/Dialog/FeatureUpgradeDialog.css';
 // 自定義組件
 import { Home } from './components/Home/Home';
 import MarketSentimentIndex from './components/MarketSentimentIndex/MarketSentimentIndex';
-import PageContainer from './components/PageContainer/PageContainer';
 import { AuthDialog } from './components/Auth/AuthDialog';
 import { GlobalFeatureUpgradeDialog } from './components/Common/Dialog/GlobalFeatureUpgradeDialog';
 
-import { UserProfile } from './components/Auth/UserProfile';
 import { AuthStatusIndicator } from './components/Auth/AuthStatusIndicator';
 import { PageViewTracker } from './components/Common/PageViewTracker';
 import { About } from './components/About/About';
@@ -76,8 +73,6 @@ import { Toast } from './components/Watchlist/components/Toast';
 // import AdminNavigation from './components/Common/AdminNavigation'; // 移除以提高安全性
 
 // 工具函數
-import { Analytics } from './utils/analytics';
-import { handleApiError } from './utils/errorHandler';
 import { initializeApiClient } from './api/setupApiClient';
 import authGuard from './utils/authGuard';
 import authPreloader from './utils/authPreloader';
@@ -99,7 +94,7 @@ function AppContent() {
   const { t, i18n } = useTranslation();
   const { lang } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated, user, logout } = useAuth();
+  const { user, logout } = useAuth();
   const { userPlan } = useSubscription();
   const { openDialog } = useDialog();
   const { showToast, toast, hideToast } = useToastManager();
@@ -108,7 +103,6 @@ function AppContent() {
     markFeatureAsSeen: markWatchlistSeen
   } = useNewFeatureNotification(FEATURES.WATCHLIST);
   const {
-    hasNewFeature: hasNewArticles,
     markFeatureAsSeen: markArticlesSeen
   } = useNewFeatureNotification(FEATURES.ARTICLES);
   const isMobile = useMediaQuery({ query: '(max-width: 1300px)' });
@@ -118,7 +112,6 @@ function AppContent() {
   // 智能導航系統
   const { 
     shouldUseSideNav, 
-    isInitialized, 
     navRef, 
     triggerCheck 
   } = useSmartNavigation({
@@ -130,7 +123,6 @@ function AppContent() {
   const useSideNavigation = isMobile || shouldUseSideNav;
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
-  const [googleTrendsDropdownOpen, setGoogleTrendsDropdownOpen] = React.useState(false);
 
   useEffect(() => {
     if (lang && i18n.options.supportedLngs.includes(lang)) {
@@ -184,12 +176,7 @@ function AppContent() {
     setupRobotsProtection();
   }, []);
 
-  // 當側邊欄關閉時，自動收合Google搜尋熱度下拉選單
-  React.useEffect(() => {
-    if (!sidebarOpen) {
-      setGoogleTrendsDropdownOpen(false);
-    }
-  }, [sidebarOpen]);
+
 
   // 切換側邊欄
   const toggleSidebar = () => {

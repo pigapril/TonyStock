@@ -2,13 +2,9 @@
   command = "npm run build"
   publish = "build"
 
-# Production 環境設定 - main 分支
+# Production 環境設定
 [context.production]
   command = "npm run build"
-
-# Production 環境設定 - feature 分支也可以是 production
-[context.production.environment]
-  NETLIFY_BRANCH = "main"
 
 # Staging/Deploy Preview 環境設定
 [context.deploy-preview]
@@ -17,39 +13,10 @@
 [context.branch-deploy]
   command = "npm run build"
 
-# 針對 staging 環境的 robots.txt 重定向
-[[redirects]]
-  from = "/robots.txt"
-  to = "/robots-staging.txt"
-  status = 200
-  conditions = {Role = ["branch-deploy", "deploy-preview"]}
-  force = true
-
-# 針對你的具體 staging 域名的 robots.txt 重定向
+# 針對 staging 域名的 robots.txt 重定向（簡化版）
 [[redirects]]
   from = "/robots.txt"
   to = "/robots-staging.txt"
   status = 200
   conditions = {Domain = ["sentimentinsideout-staging.netlify.app"]}
   force = true
-
-# 針對 staging 環境添加 SEO 阻擋 headers
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
-  conditions = {Role = ["branch-deploy", "deploy-preview"]}
-
-# 針對你的具體 staging 域名添加 SEO 阻擋 headers
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
-  conditions = {Domain = ["sentimentinsideout-staging.netlify.app"]}
-
-# Production 環境保持正常的 robots.txt
-[[redirects]]
-  from = "/robots.txt"
-  to = "/robots.txt"
-  status = 200
-  conditions = {Role = ["production"]}
