@@ -61,6 +61,66 @@
   color: var(--color-text-secondary, #555);
 }
 
+/* Markdown 渲染器樣式 */
+.legal-intro {
+  text-align: center;
+  margin-bottom: var(--space-xl, 2rem);
+  padding: var(--space-m, 20px);
+  background-color: var(--color-bg-card, #ffffff);
+  border-radius: var(--border-radius-large, 12px);
+  box-shadow: var(--shadow-m, 0 5px 15px rgba(0,0,0,0.05));
+}
+
+.legal-last-updated {
+  color: var(--color-text-secondary, #666);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.markdown-content {
+  background-color: var(--color-bg-card, #ffffff);
+  padding: var(--space-xl, 40px);
+  border-radius: var(--border-radius-large, 12px);
+  box-shadow: var(--shadow-m, 0 5px 15px rgba(0,0,0,0.05));
+}
+
+.markdown-loading,
+.markdown-error {
+  text-align: center;
+  padding: var(--space-xl, 40px);
+  background-color: var(--color-bg-card, #ffffff);
+  border-radius: var(--border-radius-large, 12px);
+  box-shadow: var(--shadow-m, 0 5px 15px rgba(0,0,0,0.05));
+}
+
+.loading-spinner {
+  color: var(--color-text-secondary, #666);
+  font-size: 1.1rem;
+}
+
+.markdown-error p {
+  color: var(--color-error, #e74c3c);
+  font-weight: 500;
+}
+
+/* Markdown 內容樣式 */
+.markdown-content .legal-paragraph {
+  margin-bottom: var(--space-m, 1rem);
+  line-height: 1.8;
+  color: var(--color-text-secondary, #555);
+}
+
+.markdown-content .legal-strong {
+  font-weight: 600;
+  color: var(--color-text-primary, #333);
+}
+
+.markdown-content .legal-list-item {
+  margin-bottom: var(--space-s, 0.8rem);
+  line-height: 1.6;
+  color: var(--color-text-secondary, #555);
+}
+
 /* 響應式設計 */
 @media (max-width: 768px) {
   .legal-page {
@@ -81,5 +141,13 @@
 
   .subsection {
     padding: 15px;
+  }
+
+  .markdown-content {
+    padding: var(--space-l, 20px);
+  }
+
+  .legal-intro {
+    padding: var(--space-s, 15px);
   }
 } 

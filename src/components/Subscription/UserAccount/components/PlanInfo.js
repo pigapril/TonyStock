@@ -206,7 +206,7 @@ export const PlanInfo = ({ plan, loading }) => {
                   onClick={() => setShowCancelConfirm(false)}
                   disabled={cancelLoading}
                 >
-                  {t('common.cancel')}
+                  {t('subscription.userAccount.keepSubscription')}
                 </AppleButton>
                 <AppleButton 
                   variant="destructive" 
