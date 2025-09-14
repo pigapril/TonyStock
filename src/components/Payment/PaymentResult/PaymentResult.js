@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import apiClient from '../../../api/apiClient';
 import './PaymentResult.css';
 
 export const PaymentResult = () => {
@@ -17,19 +18,8 @@ export const PaymentResult = () => {
     // 查詢付款狀態的函數
     const queryPaymentStatus = async (merchantTradeNo) => {
         try {
-            const response = await fetch(`/api/payment/status/${merchantTradeNo}`, {
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            }
-
-            const result = await response.json();
+            const response = await apiClient.get(`/api/payment/status/${merchantTradeNo}`);
+            const result = response.data;
             
             if (result.success) {
                 // 付款狀態確認成功
