@@ -70,6 +70,7 @@
     "@craco/craco": "^7.1.0",
     "ajv": "^8.12.0",
     "ajv-keywords": "^5.1.0",
+    "clean-css-loader": "^4.2.1",
     "css-minimizer-webpack-plugin": "^7.0.2",
     "schema-utils": "^4.2.0"
   }
