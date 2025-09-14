@@ -1,0 +1,327 @@
+/* 🍎 蘋果風格登入按鈕設計 - 2025 優化版 - 專用於認證對話框 */
+.signin-dialog .btn-primary,
+.auth-dialog .btn-primary,
+.signin-dialog-overlay .btn-primary {
+    /* 重置基礎樣式 */
+    all: unset;
+    box-sizing: border-box;
+
+    /* 核心視覺設計 */
+    background: linear-gradient(135deg, #007AFF 0%, #5856D6 50%, #AF52DE 100%);
+    border: none;
+    border-radius: 16px;
+    color: white;
+
+    /* 字體與文字 */
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    text-align: center;
+    text-decoration: none;
+
+    /* 佈局與尺寸 */
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 32px;
+    margin: 8px auto !important;
+    width: auto !important;
+    max-width: 200px !important;
+    min-height: 50px;
+
+    /* 互動與動畫 */
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* 蘋果風格多層陰影 */
+    box-shadow:
+        0 8px 24px rgba(0, 122, 255, 0.25),
+        0 4px 12px rgba(0, 122, 255, 0.15),
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+    /* 初始狀態 */
+    transform: translateY(0) scale(1);
+    opacity: 1;
+
+    /* 微妙的內部光澤效果 */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover 效果 - 蘋果風格的微妙提升 */
+.signin-dialog .btn-primary:hover,
+.auth-dialog .btn-primary:hover,
+.signin-dialog-overlay .btn-primary:hover {
+    background: linear-gradient(135deg, #0056CC 0%, #4A44B8 50%, #9A47C7 100%);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow:
+        0 16px 40px rgba(0, 122, 255, 0.35),
+        0 8px 20px rgba(0, 122, 255, 0.25),
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* 專注狀態 - 無障礙設計 */
+.signin-dialog .btn-primary:focus-visible,
+.auth-dialog .btn-primary:focus-visible,
+.signin-dialog-overlay .btn-primary:focus-visible {
+    outline: 3px solid rgba(0, 122, 255, 0.5);
+    outline-offset: 2px;
+}
+
+/* Active 效果 - 按下時的回饋 */
+.signin-dialog .btn-primary:active,
+.auth-dialog .btn-primary:active,
+.signin-dialog-overlay .btn-primary:active {
+    transform: translateY(1px) scale(0.98);
+    background: linear-gradient(135deg, #004999 0%, #3D3A9F 50%, #8A3FB4 100%);
+    box-shadow:
+        0 4px 12px rgba(0, 122, 255, 0.2),
+        0 2px 6px rgba(0, 122, 255, 0.1),
+        inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.1s ease;
+}
+
+/* 禁用狀態 - 優雅的灰色 */
+.signin-dialog .btn-primary:disabled,
+.auth-dialog .btn-primary:disabled,
+.signin-dialog-overlay .btn-primary:disabled {
+    background: linear-gradient(135deg, #8E8E93 0%, #AEAEB2 100%);
+    color: rgba(255, 255, 255, 0.6);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        0 1px 4px rgba(0, 0, 0, 0.05);
+    opacity: 0.6;
+}
+
+/* 響應式設計 - 移動設備優化 */
+@media (max-width: 480px) {
+    .signin-dialog .btn-primary,
+    .auth-dialog .btn-primary,
+    .signin-dialog-overlay .btn-primary {
+        font-size: 16px !important;
+        padding: 14px 28px !important;
+        max-width: 180px !important;
+        min-height: 48px;
+        border-radius: 14px;
+
+        /* 移動設備上的觸控優化 */
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+}
+
+/* 平板設備優化 */
+@media (min-width: 481px) and (max-width: 768px) {
+    .signin-dialog .btn-primary,
+    .auth-dialog .btn-primary,
+    .signin-dialog-overlay .btn-primary {
+        font-size: 17px !important;
+        padding: 15px 30px !important;
+        max-width: 190px !important;
+        min-height: 49px;
+    }
+}
+
+/* 觸控設備優化 */
+@media (hover: none) and (pointer: coarse) {
+    .signin-dialog .btn-primary,
+    .auth-dialog .btn-primary,
+    .signin-dialog-overlay .btn-primary {
+        min-height: 52px;
+        padding: 16px 32px !important;
+        max-width: 200px !important;
+    }
+
+    .signin-dialog .btn-primary:hover,
+    .auth-dialog .btn-primary:hover,
+    .signin-dialog-overlay .btn-primary:hover {
+        transform: none;
+    }
+
+    .signin-dialog .btn-primary:active,
+    .auth-dialog .btn-primary:active,
+    .signin-dialog-overlay .btn-primary:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+    }
+}
+
+/* 🍎 Top Navigation 登入按鈕 - 蘋果風格設計 */
+.top-nav .user-actions .btn-primary {
+    /* 重置基礎樣式 */
+    all: unset;
+    box-sizing: border-box;
+
+    /* 核心視覺設計 */
+    background: linear-gradient(135deg, #007AFF 0%, #5856D6 50%, #AF52DE 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+
+    /* 字體與文字 */
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px !important;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+    text-align: center;
+    text-decoration: none;
+
+    /* 佈局與尺寸 - 適合 top-nav */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px;
+    padding: 8px 16px !important;
+    margin: 0 !important;
+    width: auto !important;
+    max-width: 120px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+
+    /* 互動與動畫 */
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* 蘋果風格陰影 - 較輕微適合 top-nav */
+    box-shadow:
+        0 4px 12px rgba(0, 122, 255, 0.2),
+        0 2px 6px rgba(0, 122, 255, 0.1),
+        0 1px 2px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+    /* 初始狀態 */
+    transform: translateY(0) scale(1);
+    opacity: 1;
+
+    /* 微妙的內部光澤效果 */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Top-nav 按鈕 Hover 效果 */
+.top-nav .user-actions .btn-primary:hover {
+    background: linear-gradient(135deg, #0056CC 0%, #4A44B8 50%, #9A47C7 100%);
+    transform: translateY(-1px) scale(1.02);
+    box-shadow:
+        0 6px 16px rgba(0, 122, 255, 0.25),
+        0 3px 8px rgba(0, 122, 255, 0.15),
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Top-nav 按鈕 Focus 狀態 */
+.top-nav .user-actions .btn-primary:focus-visible {
+    outline: 2px solid rgba(0, 122, 255, 0.5);
+    outline-offset: 1px;
+}
+
+/* Top-nav 按鈕 Active 效果 */
+.top-nav .user-actions .btn-primary:active {
+    transform: translateY(0) scale(0.98);
+    background: linear-gradient(135deg, #004999 0%, #3D3A9F 50%, #8A3FB4 100%);
+    box-shadow:
+        0 2px 6px rgba(0, 122, 255, 0.15),
+        0 1px 3px rgba(0, 122, 255, 0.08),
+        inset 0 1px 2px rgba(0, 0, 0, 0.08);
+    transition: all 0.1s ease;
+}
+
+/* Top-nav 按鈕禁用狀態 */
+.top-nav .user-actions .btn-primary:disabled {
+    background: linear-gradient(135deg, #8E8E93 0%, #AEAEB2 100%);
+    color: rgba(255, 255, 255, 0.6);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.08),
+        0 1px 2px rgba(0, 0, 0, 0.04);
+    opacity: 0.6;
+}
+
+/* Top-nav 按鈕內部光澤效果 */
+.top-nav .user-actions .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    height: 40%;
+    background: linear-gradient(180deg,
+            rgba(255, 255, 255, 0.2) 0%,
+            rgba(255, 255, 255, 0.08) 50%,
+            transparent 100%);
+    border-radius: 11px 11px 0 0;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.top-nav .user-actions .btn-primary:hover::before {
+    opacity: 0.8;
+}
+
+.top-nav .user-actions .btn-primary:active::before {
+    opacity: 0.3;
+}
+
+/* 響應式設計 - 手機版 top-nav 按鈕 */
+@media (max-width: 1300px) {
+    .top-nav .user-actions .btn-primary {
+        font-size: 13px !important;
+        padding: 6px 12px !important;
+        max-width: 100px !important;
+        height: 28px !important;
+        min-height: 28px !important;
+        border-radius: 10px;
+    }
+
+    .top-nav .user-actions .btn-primary::before {
+        border-radius: 9px 9px 0 0;
+    }
+}
+
+/* 深色模式支援 - Top-nav 按鈕 */
+@media (prefers-color-scheme: dark) {
+    .top-nav .user-actions .btn-primary {
+        background: linear-gradient(135deg, #0A84FF 0%, #5E5CE6 50%, #BF5AF2 100%);
+        box-shadow:
+            0 4px 12px rgba(10, 132, 255, 0.25),
+            0 2px 6px rgba(10, 132, 255, 0.15),
+            0 1px 2px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .top-nav .user-actions .btn-primary:hover {
+        background: linear-gradient(135deg, #0066E6 0%, #5048CC 50%, #A845E8 100%);
+        box-shadow:
+            0 6px 16px rgba(10, 132, 255, 0.3),
+            0 3px 8px rgba(10, 132, 255, 0.2),
+            0 2px 4px rgba(0, 0, 0, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    .top-nav .user-actions .btn-primary:active {
+        background: linear-gradient(135deg, #0052CC 0%, #423DB8 50%, #9538D4 100%);
+        box-shadow:
+            0 2px 6px rgba(10, 132, 255, 0.2),
+            0 1px 3px rgba(10, 132, 255, 0.1),
+            inset 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+
+    .top-nav .user-actions .btn-primary::before {
+        background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0.04) 50%,
+                transparent 100%);
+    }
+}
