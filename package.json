@@ -17,11 +17,13 @@
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-annotation": "^3.0.1",
     "chartjs-plugin-crosshair": "^2.0.0",
+    "customize-cra": "^1.0.0",
     "date-fns": "^4.1.0",
     "i18next": "^25.0.2",
     "i18next-http-backend": "^3.0.2",
     "rc-slider": "^11.1.8",
     "react": "^18.3.1",
+    "react-app-rewired": "^2.2.1",
     "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^7.5.0",
     "react-dom": "^18.3.1",
@@ -43,9 +45,10 @@
   },
   "scripts": {
     "prebuild": "npm install --legacy-peer-deps && npm install @babel/plugin-proposal-private-property-in-object --save",
-    "build": "SKIP_PREFLIGHT_CHECK=true craco build",
-    "start": "craco start",
-    "test": "craco test",
+    "build": "SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false react-app-rewired build",
+    "build:original": "SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false react-scripts build",
+    "start": "react-app-rewired start",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -67,11 +70,9 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "^7.1.0",
     "ajv": "^8.12.0",
     "ajv-keywords": "^5.1.0",
     "clean-css-loader": "^4.2.1",
-    "css-minimizer-webpack-plugin": "^7.0.2",
     "schema-utils": "^4.2.0"
   }
 }
