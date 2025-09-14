@@ -266,6 +266,71 @@ class PaymentService {
     }
 
     /**
+     * 輪詢付款狀態直到完成或超時（通過 merchantTradeNo）
+     * @param {string} merchantTradeNo - ECPay 交易編號
+     * @param {Object} options - 輪詢選項
+     * @param {number} options.maxAttempts - 最大嘗試次數 (預設: 60)
+     * @param {number} options.interval - 輪詢間隔毫秒 (預設: 5000)
+     * @returns {Promise<Object>} 最終付款狀態
+     */
+    async pollPaymentStatusByMerchantTradeNo(merchantTradeNo, options = {}) {
+        const { maxAttempts = 60, interval = 5000 } = options;
+        let attempts = 0;
+
+        systemLogger.info('Starting payment status polling by merchantTradeNo:', {
+            merchantTradeNo,
+            maxAttempts,
+            interval
+        });
+
+        return new Promise((resolve) => {
+            const poll = async () => {
+                attempts++;
+
+                try {
+                    const result = await this.queryPaymentStatus(merchantTradeNo);
+
+                    if (result) {
+                        systemLogger.info('Payment status found:', {
+                            merchantTradeNo,
+                            attempts,
+                            result
+                        });
+
+                        resolve({
+                            success: true,
+                            status: 'completed',
+                            data: result
+                        });
+                        return;
+                    }
+
+                } catch (error) {
+                    systemLogger.error('Query payment status error:', error);
+                }
+
+                // 繼續輪詢或超時
+                if (attempts >= maxAttempts) {
+                    systemLogger.warn('Payment status polling timeout:', {
+                        merchantTradeNo,
+                        attempts
+                    });
+
+                    resolve({
+                        success: false,
+                        status: 'timeout',
+                        error: '付款狀態查詢超時'
+                    });
+                } else {
+                    setTimeout(poll, interval);
+                }
+            };
+
+            poll();
+        });
+    }
+
+    /**
      * 輪詢付款狀態直到完成或超時
      * @param {string} orderId - 訂單 ID
      * @param {Object} options - 輪詢選項

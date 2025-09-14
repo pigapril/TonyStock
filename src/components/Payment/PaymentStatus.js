@@ -57,10 +57,23 @@ const PaymentStatus = () => {
 
             systemLogger.info('Starting payment status polling:', { orderId });
 
-            const result = await paymentService.pollPaymentStatus(orderId, {
-                maxAttempts: 60, // 5 分鐘
-                interval: 5000   // 5 秒間隔
-            });
+            // 檢查 orderId 是否為 UUID 格式
+            const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(orderId);
+            
+            let result;
+            if (isUUID) {
+                // 使用 orderId 查詢
+                result = await paymentService.pollPaymentStatus(orderId, {
+                    maxAttempts: 60, // 5 分鐘
+                    interval: 5000   // 5 秒間隔
+                });
+            } else {
+                // 使用 merchantTradeNo 查詢
+                result = await paymentService.pollPaymentStatusByMerchantTradeNo(orderId, {
+                    maxAttempts: 60, // 5 分鐘
+                    interval: 5000   // 5 秒間隔
+                });
+            }
 
             if (result.success) {
                 if (result.status === 'completed') {
