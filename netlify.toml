@@ -1,17 +1,17 @@
 [build]
-  command = "npm run build"
+  command = "CI=false npm run build"
   publish = "build"
 
 # Production 環境設定
 [context.production]
-  command = "npm run build"
+  command = "CI=false npm run build"
 
 # Staging/Deploy Preview 環境設定
 [context.deploy-preview]
-  command = "npm run build"
+  command = "CI=false npm run build"
 
 [context.branch-deploy]
-  command = "npm run build"
+  command = "CI=false npm run build"
 
 # 針對 staging 域名的 robots.txt 重定向（簡化版）
 [[redirects]]
