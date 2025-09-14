@@ -99,7 +99,7 @@ class PaymentService {
         try {
             systemLogger.info('Querying payment status by merchantTradeNo:', { merchantTradeNo });
 
-            const response = await this.makeRequest('GET', `/api/payment/return?orderId=${merchantTradeNo}`);
+            const response = await this.makeRequest('GET', `/api/payment/status/${merchantTradeNo}`);
 
             if (response.data.status === 'success') {
                 return response.data.data;
@@ -206,7 +206,7 @@ class PaymentService {
         try {
             systemLogger.info('Getting payment return status:', { orderId });
 
-            const response = await this.makeRequest('GET', `/api/payment/return?orderId=${orderId}`);
+            const response = await this.makeRequest('GET', `/api/payment/check-status/${orderId}`);
 
             if (response.data.status === 'success') {
                 return {
