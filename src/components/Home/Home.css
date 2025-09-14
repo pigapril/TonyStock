@@ -17,6 +17,8 @@
      漸層背景需要與 image-set() 一起定義在同一個 background 宣告中，
      因為它們共同構成背景圖層。 */
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('../../assets/images/home-top.webp');
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
     image-set(url('../../assets/images/home-top.webp') type('image/webp'),
       url('../../assets/images/home-top.png') type('image/png'));
   background-size: cover;

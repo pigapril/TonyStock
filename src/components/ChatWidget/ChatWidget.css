@@ -235,10 +235,13 @@
 
   /* 2. 現代瀏覽器使用 image-set()，優先選擇 WebP */
   /* 再次使用 background 簡寫來確保所有屬性被正確應用和覆蓋 */
+  background: url('../../assets/images/chatbot.webp') no-repeat center center;
+  background-size: cover;
   background: image-set(
               url('../../assets/images/chatbot.webp') type('image/webp'),
               url('../../assets/images/chatbot.png') type('image/png')
-            ) no-repeat center center / cover;
+            ) no-repeat center center;
+  background-size: cover;
   /* 舊版 Webkit 前綴的 image-set (可以考慮是否仍需要) */
   /* 如果要加，也需要完整的 background 宣告 */
   /* background: -webkit-image-set(
