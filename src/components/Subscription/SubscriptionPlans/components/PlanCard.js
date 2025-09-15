@@ -172,6 +172,17 @@ export const PlanCard = ({
   const getButtonText = () => {
     if (loading) return t('payment.form.processing');
 
+    // 🔧 未登入用戶的處理邏輯
+    if (!isCurrentUser) {
+      if (isFree) {
+        return t('subscription.subscriptionPlans.loginToStart');
+      }
+      if (isPro) {
+        return t('subscription.subscriptionPlans.loginToUpgrade');
+      }
+      return t('subscription.subscriptionPlans.loginRequired');
+    }
+
     // 活躍的當前方案
     if (isCurrentPlan) return t('subscription.subscriptionPlans.current');
 

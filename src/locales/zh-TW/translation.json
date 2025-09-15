@@ -1279,7 +1279,7 @@
   },
   "featureUpgrade": {
     "stockAccess": {
-      "title": "Upgrade to Pro to analyze any stock",
+      "title": "升級至 Pro 解鎖全部股票",
       "subtitle": "升級至 Pro 方案，查詢任何股票",
       "description": "免費用戶僅能查詢 0050, SPY, VOO 股票。",
       "descriptionWithStock": "想要查詢 {{stockCode}}？免費用戶僅能查詢 {{allowedStocks}} 股票。"
@@ -1388,6 +1388,9 @@
       "manageSubscription": "管理訂閱",
       "resumeSubscription": "恢復訂閱",
       "resubscribe": "重新訂閱",
+      "loginToStart": "登入開始使用",
+      "loginToUpgrade": "登入升級",
+      "loginRequired": "請先登入",
       "freePlan": {
         "name": "免費方案",
         "price": "免費",

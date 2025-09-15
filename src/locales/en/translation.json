@@ -1372,6 +1372,9 @@
       "manageSubscription": "Manage Subscription",
       "resumeSubscription": "Resume Subscription",
       "resubscribe": "Resubscribe",
+      "loginToStart": "Login to Start",
+      "loginToUpgrade": "Login to Upgrade",
+      "loginRequired": "Login Required",
       "freePlan": {
         "name": "Free Plan",
         "price": "Free",
