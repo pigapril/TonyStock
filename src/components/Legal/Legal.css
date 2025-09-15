@@ -19,7 +19,7 @@
   background-color: var(--color-bg-card, #ffffff);
   padding: var(--space-l, 20px);
   border-radius: var(--border-radius-large, 12px);
-  box-shadow: var(--shadow-m, 0 5px 15px rgba(0,0,0,0.05));
+  box-shadow: var(--shadow-m, 0 5px 15px rgba(0, 0, 0, 0.05));
 }
 
 .section-title {
@@ -68,7 +68,7 @@
   padding: var(--space-m, 20px);
   background-color: var(--color-bg-card, #ffffff);
   border-radius: var(--border-radius-large, 12px);
-  box-shadow: var(--shadow-m, 0 5px 15px rgba(0,0,0,0.05));
+  box-shadow: var(--shadow-m, 0 5px 15px rgba(0, 0, 0, 0.05));
 }
 
 .legal-last-updated {
@@ -81,7 +81,7 @@
   background-color: var(--color-bg-card, #ffffff);
   padding: var(--space-xl, 40px);
   border-radius: var(--border-radius-large, 12px);
-  box-shadow: var(--shadow-m, 0 5px 15px rgba(0,0,0,0.05));
+  box-shadow: var(--shadow-m, 0 5px 15px rgba(0, 0, 0, 0.05));
 }
 
 .markdown-loading,
@@ -90,7 +90,7 @@
   padding: var(--space-xl, 40px);
   background-color: var(--color-bg-card, #ffffff);
   border-radius: var(--border-radius-large, 12px);
-  box-shadow: var(--shadow-m, 0 5px 15px rgba(0,0,0,0.05));
+  box-shadow: var(--shadow-m, 0 5px 15px rgba(0, 0, 0, 0.05));
 }
 
 .loading-spinner {
@@ -150,4 +150,4 @@
   .legal-intro {
     padding: var(--space-s, 15px);
   }
-} 
+}
