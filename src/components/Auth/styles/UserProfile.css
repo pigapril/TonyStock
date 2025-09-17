@@ -30,6 +30,17 @@
     object-fit: cover;
 }
 
+.user-profile__avatar--default {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
 .user-profile__name {
     font-size: 14px;
     color: #333;

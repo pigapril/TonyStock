@@ -43,6 +43,22 @@
   box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
 }
 
+.user-account-header__avatar-default {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 32px;
+  text-transform: uppercase;
+  border: 3px solid var(--color-border-soft, #e5e5e5);
+  box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
+}
+
 .user-account-header__info {
   flex: 1;
   min-width: 0;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../Auth/useAuth';
 import { useSubscription } from '../SubscriptionContext';
@@ -12,6 +12,7 @@ export const UserAccountPage = () => {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
   const { userPlan, loading, error } = useSubscription();
+  const [avatarError, setAvatarError] = useState(false);
 
   useEffect(() => {
     Analytics.track('user_account_page_viewed', {
@@ -19,6 +20,25 @@ export const UserAccountPage = () => {
       planType: userPlan?.type || 'unknown'
     });
   }, [user, userPlan]);
+
+  const handleAvatarError = () => {
+    console.warn('User account avatar failed to load:', user?.avatarUrl);
+    setAvatarError(true);
+  };
+
+  const handleAvatarLoad = () => {
+    setAvatarError(false);
+  };
+
+  // 生成預設頭像（使用用戶名首字母）
+  const getDefaultAvatar = () => {
+    const initial = user?.username?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || '?';
+    return (
+      <div className="user-account-header__avatar-default">
+        {initial}
+      </div>
+    );
+  };
 
   const handleLogout = async () => {
     try {
@@ -59,11 +79,17 @@ export const UserAccountPage = () => {
         <header className="user-account-header">
           <div className="user-account-header__content">
             <div className="user-account-header__avatar">
-              <img 
-                src={user.avatarUrl} 
-                alt={t('userProfile.avatarAlt', { username: user.username })}
-                className="user-account-header__avatar-image"
-              />
+              {!avatarError && user.avatarUrl ? (
+                <img 
+                  src={user.avatarUrl} 
+                  alt={t('userProfile.avatarAlt', { username: user.username })}
+                  className="user-account-header__avatar-image"
+                  onError={handleAvatarError}
+                  onLoad={handleAvatarLoad}
+                />
+              ) : (
+                getDefaultAvatar()
+              )}
             </div>
             <div className="user-account-header__info">
               <h1 className="user-account-header__title">

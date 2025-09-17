@@ -181,12 +181,11 @@ export function AuthProvider({ children }) {
             }
 
             try {
-                window.google.accounts.id.initialize({
+                const initConfig = {
                     client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
                     callback: handleGoogleCredential,
                     auto_select: false,
                     cancel_on_tap_outside: true,
-                    use_fedcm_for_prompt: isCompatible, // 只在支援的瀏覽器啟用 FedCM
                     state_cookie_domain: window.location.hostname,
                     error_callback: (error) => {
                         console.error('Google Identity error:', error);
@@ -195,7 +194,15 @@ export function AuthProvider({ children }) {
                             errorMessage: error.message
                         });
                     }
-                });
+                };
+
+                // 只在完全支援 FedCM 的環境下啟用，避免 accountHint 錯誤
+                const chromeVersion = parseInt((/Chrome\/([0-9]+)/.exec(navigator.userAgent) || [])[1], 10);
+                if (isCompatible && chromeVersion >= 119) {
+                    initConfig.use_fedcm_for_prompt = true;
+                }
+
+                window.google.accounts.id.initialize(initConfig);
 
                 setIsGoogleInitialized(true);
                 Analytics.auth.identityService.initialize({ 
@@ -481,10 +488,11 @@ export function AuthProvider({ children }) {
             let identityServiceRevoked = false;
             if (window.google?.accounts?.id) {
                 try {
-                    window.google.accounts.id.revoke();
+                    // 使用 disableAutoSelect 而不是 revoke 來避免 FedCM 錯誤
+                    window.google.accounts.id.disableAutoSelect();
                     identityServiceRevoked = true;
                 } catch (error) {
-                    console.error('Google Identity Service revoke failed:', error);
+                    console.error('Google Identity Service disable auto-select failed:', error);
                 }
             }
 
