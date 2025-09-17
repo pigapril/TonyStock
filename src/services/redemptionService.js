@@ -16,8 +16,11 @@ import { systemLogger } from '../utils/logger';
 
 class RedemptionService {
     constructor() {
-        this.retryAttempts = 3;
+        this.retryAttempts = 2; // 減少重試次數
         this.retryDelay = 1000;
+        
+        // 請求節流控制
+        this.requestThrottle = new Map(); // 記錄最近的請求時間
         
         // Cache configuration
         this.cache = new Map();
@@ -97,10 +100,37 @@ class RedemptionService {
     }
 
     /**
+     * Check if request should be throttled
+     * @private
+     */
+    _shouldThrottleRequest(context) {
+        const key = `${context.operation || 'unknown'}-${context.code || 'no-code'}`;
+        const lastRequestTime = this.requestThrottle.get(key);
+        const now = Date.now();
+        
+        if (lastRequestTime && (now - lastRequestTime) < 500) { // 500ms 節流
+            return true;
+        }
+        
+        this.requestThrottle.set(key, now);
+        return false;
+    }
+
+    /**
      * Execute request with retry logic
      * @private
      */
     async _executeWithRetry(requestFn, context = {}) {
+        // 檢查請求節流
+        if (this._shouldThrottleRequest(context)) {
+            systemLogger.warn('Request throttled', { context });
+            return {
+                success: false,
+                error: '請求過於頻繁，請稍後再試',
+                errorCode: 'REQUEST_THROTTLED'
+            };
+        }
+        
         let lastError;
         
         for (let attempt = 1; attempt <= this.retryAttempts; attempt++) {
@@ -111,8 +141,9 @@ class RedemptionService {
                 
                 // Don't retry on client errors (4xx) except for specific cases
                 if (error.response?.status >= 400 && error.response?.status < 500) {
-                    // Only retry on 429 (rate limited) and 408 (timeout)
-                    if (error.response.status !== 429 && error.response.status !== 408) {
+                    // Don't retry on 429 (rate limited) to avoid making the problem worse
+                    // Only retry on 408 (timeout)
+                    if (error.response.status !== 408) {
                         // Return structured error for client errors
                         return {
                             success: false,
@@ -129,7 +160,9 @@ class RedemptionService {
                     systemLogger.error('Max retry attempts reached', {
                         context,
                         attempts: attempt,
-                        error: error.message
+                        error: error.message,
+                        httpStatus: error.response?.status,
+                        userId: context.userId || 'unknown'
                     });
                     break;
                 }
@@ -259,7 +292,7 @@ class RedemptionService {
                 console.log('🔍 Full response data:', response.data);
                 throw new Error(response.data.message || 'Preview failed');
             }
-        }, { operation: 'previewRedemption', code: maskedCode });
+        }, { operation: 'previewRedemption', code: maskedCode, userId: 'current' });
     }
 
     /**
@@ -296,7 +329,7 @@ class RedemptionService {
             } else {
                 throw new Error(response.data.message || 'Redemption failed');
             }
-        }, { operation: 'redeemCode', code: maskedCode, confirmed });
+        }, { operation: 'redeemCode', code: maskedCode, confirmed, userId: 'current' });
     }
 
     /**
@@ -378,7 +411,7 @@ class RedemptionService {
                     console.log('❌ API response status not success:', response.data.status);
                     throw new Error(response.data.message || 'Validation failed');
                 }
-            }, { operation: 'validateCode', code: normalizedCode.substring(0, 4) + '***' });
+            }, { operation: 'validateCode', code: normalizedCode.substring(0, 4) + '***', userId: 'current' });
         });
     }
 
@@ -625,8 +658,9 @@ class RedemptionService {
         
         const status = error.response.status;
         
-        // Retry on server errors and specific client errors
-        return status >= 500 || status === 429 || status === 408;
+        // Retry on server errors and timeout, but NOT on rate limiting
+        // 429 (rate limited) should not be retried as it makes the problem worse
+        return status >= 500 || status === 408;
     }
 
     /**

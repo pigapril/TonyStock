@@ -15,7 +15,7 @@ class AuthGuard {
         this.authPromise = null;
         this.isInitializing = false;
         this.retryQueue = [];
-        this.maxRetries = 3;
+        this.maxRetries = 2; // 減少重試次數，避免與上層重試疊加
         this.retryDelay = 1000; // 1 second
         
         // 新增：錯誤統計和監控
