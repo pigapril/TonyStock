@@ -153,7 +153,7 @@
 
 /* 表單樣式 */
 .price-analysis-view .input-group {
-  margin-bottom: 8px;
+  margin-bottom: 15px; /* 統一間距為 15px */
   width: 100%;
   max-width: 300px;
   display: flex;
@@ -495,7 +495,7 @@
 
 /* 查詢模式切換按鈕樣式 */
 .price-analysis-view .stock-analysis-card .query-mode-button {
-  margin-top: 1%;
+  margin-top: 15px; /* 增加上邊距，與 input-group 間距一致 */
   margin-bottom: 20px; /* 與其他 input-group 間距一致 */
   align-self: center;
   padding: 5px 10px;
@@ -533,7 +533,7 @@
 
 /* 所有查詢模式 - 輸入欄位容器樣式 (通用樣式) */
 .price-analysis-view .stock-analysis-card .query-mode-inputs {
-  margin-bottom: 15px; /* 與其他 input-group 間距一致 */
+  margin-bottom: 0; /* 移除額外間距，讓內部 input-group 控制間距 */
 }
 
 /* 確保 input-group 在容器內水平置中 */
