@@ -47,7 +47,7 @@ export function AuthProvider({ children }) {
         // 防止重複調用 - 檢查是否已經在檢查中
         const userId = user.id || user.userId;
         const checkingKey = `checking_admin_${userId}`;
-        
+
         if (sessionStorage.getItem(checkingKey)) {
             console.log('AuthContext: Admin status check already in progress for user:', userId);
             return;
@@ -56,20 +56,20 @@ export function AuthProvider({ children }) {
         try {
             setAdminLoading(true);
             sessionStorage.setItem(checkingKey, 'true');
-            
+
             console.log('AuthContext: Checking admin status for user:', user.email);
-            
+
             const response = await authService.checkAdminStatus();
             const adminStatus = response?.isAdmin || false;
-            
+
             console.log('AuthContext: Admin status result:', {
                 isAdmin: adminStatus,
                 userId,
                 timestamp: new Date().toISOString()
             });
-            
+
             setIsAdmin(adminStatus);
-            
+
         } catch (error) {
             console.error('AuthContext: Failed to check admin status:', error);
             setIsAdmin(false); // Default to false for security
@@ -95,10 +95,10 @@ export function AuthProvider({ children }) {
             });
 
             const { user: userData, csrfToken } = await authService.verifyGoogleToken(response.credential);
-            
+
             console.log('Setting user data:', userData);
             setUser(userData);
-            
+
             // 新增：若有 csrfToken，直接設置
             if (csrfToken) {
                 csrfClient.setCSRFToken(csrfToken);
@@ -111,16 +111,16 @@ export function AuthProvider({ children }) {
                 timestamp: Date.now()
             };
             authStateCache.saveAuthState(authState);
-            
+
             // 立即更新認證狀態管理器的快取
             authStateManager.setAuthState(authState);
 
             setTimeout(() => {
                 window.dispatchEvent(new CustomEvent('loginSuccess'));
             }, 0);
-            
-            Analytics.auth.login({ 
-                method: 'google', 
+
+            Analytics.auth.login({
+                method: 'google',
                 status: 'success',
                 variant: 'identity_service'
             });
@@ -133,8 +133,8 @@ export function AuthProvider({ children }) {
             });
 
             handleError(error);
-            Analytics.auth.login({ 
-                method: 'google', 
+            Analytics.auth.login({
+                method: 'google',
                 status: 'error',
                 variant: 'identity_service',
                 error: error.message
@@ -148,7 +148,7 @@ export function AuthProvider({ children }) {
     const checkBrowserCompatibility = useCallback(() => {
         const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
         const chromeVersion = parseInt((/Chrome\/([0-9]+)/.exec(navigator.userAgent) || [])[1], 10);
-        
+
         // 檢查 FedCM 支援
         const hasFedCMSupport = !!(
             window.google?.accounts?.id?.initialize &&
@@ -174,7 +174,7 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         const initializeGoogleIdentity = () => {
             const { isCompatible, useLegacy } = checkBrowserCompatibility();
-            
+
             if (!window.google?.accounts?.id) {
                 console.warn('Google Identity Service not loaded, waiting...');
                 return;
@@ -205,9 +205,9 @@ export function AuthProvider({ children }) {
                 window.google.accounts.id.initialize(initConfig);
 
                 setIsGoogleInitialized(true);
-                Analytics.auth.identityService.initialize({ 
+                Analytics.auth.identityService.initialize({
                     status: 'success',
-                    useLegacy 
+                    useLegacy
                 });
             } catch (error) {
                 console.error('Initialize failed:', error);
@@ -226,7 +226,7 @@ export function AuthProvider({ children }) {
         }
     }, [checkBrowserCompatibility, handleGoogleCredential]);
 
-        // 檢查認證狀態（減少請求頻率避免 IP 封鎖）
+    // 檢查認證狀態（減少請求頻率避免 IP 封鎖）
     const checkAuthStatus = useCallback(async () => {
         console.log('CheckAuthStatus initiated:', {
             currentCookies: document.cookie,
@@ -238,7 +238,7 @@ export function AuthProvider({ children }) {
             // 如果已經應用了預載入狀態，減少延遲
             if (preloadApplied) {
                 console.log('🚀 AuthContext: Using fast check (preload applied)');
-                
+
                 // 快速檢查模式：減少延遲和初始化時間
                 try {
                     await Promise.race([
@@ -248,14 +248,14 @@ export function AuthProvider({ children }) {
                 } catch (initError) {
                     console.warn('AuthInitFix initialization timeout (fast mode):', initError);
                 }
-                
+
                 // 減少延遲（因為已經有預載入狀態作為基礎）
                 const delay = Math.random() * 300 + 100; // 100-400ms 隨機延遲
                 await new Promise(resolve => setTimeout(resolve, delay));
             } else {
                 // 正常模式：完整的初始化和延遲
                 console.log('🔄 AuthContext: Using normal check (no preload)');
-                
+
                 try {
                     await Promise.race([
                         authInitFix.initialize(),
@@ -264,12 +264,12 @@ export function AuthProvider({ children }) {
                 } catch (initError) {
                     console.warn('AuthInitFix initialization timeout or failed, proceeding anyway:', initError);
                 }
-                
+
                 // 增加延遲避免觸發 IP 封鎖
                 const delay = Math.random() * 1000 + 500; // 500-1500ms 隨機延遲
                 await new Promise(resolve => setTimeout(resolve, delay));
             }
-            
+
             const { user: userData } = await authService.checkStatus();
             console.log('CheckAuthStatus response:', {
                 hasUser: !!userData,
@@ -286,7 +286,7 @@ export function AuthProvider({ children }) {
                 timestamp: Date.now()
             };
             authStateCache.saveAuthState(authState);
-            
+
             // 如果用戶已登入，嘗試初始化 CSRF token（如果還沒有的話）
             if (userData) {
                 if (!csrfClient.isTokenInitialized()) {
@@ -304,7 +304,7 @@ export function AuthProvider({ children }) {
                 // 如果用戶未登入，清除 CSRF token
                 csrfClient.clearCSRFToken();
             }
-            
+
             Analytics.auth.statusCheck({ status: 'success' });
         } catch (error) {
             console.log('CheckAuthStatus error:', {
@@ -325,38 +325,38 @@ export function AuthProvider({ children }) {
             // 如果是 403 錯誤，可能是 CSRF 配置問題
             if (error.response?.status === 403) {
                 console.warn('🔄 Auth status check got 403, this may indicate CSRF middleware misconfiguration');
-                
+
                 // 只在開發環境且沒有最近運行過診斷時才運行
                 const lastDiagnostic = sessionStorage.getItem('lastAuthDiagnostic');
                 const now = Date.now();
-                if (process.env.NODE_ENV === 'development' && 
+                if (process.env.NODE_ENV === 'development' &&
                     (!lastDiagnostic || now - parseInt(lastDiagnostic) > 60000)) { // 增加到 60 秒內不重複診斷
                     sessionStorage.setItem('lastAuthDiagnostic', now.toString());
                     authDiagnostics.diagnoseAuthIssue().catch(diagError => {
                         console.error('Diagnostics failed:', diagError);
                     });
                 }
-                
+
                 // 清除用戶狀態，因為 403 表示認證問題
                 setUser(null);
                 return;
             }
-            
+
             // 如果是網路錯誤（通常是 CORS 問題），保持當前狀態
             if (error.message === 'Network Error' || error.code === 'ERR_NETWORK') {
                 console.warn('🔄 Auth status check got network error (possibly CORS or server down)');
-                
+
                 // 只在開發環境且沒有最近運行過診斷時才運行
                 const lastNetworkDiagnostic = sessionStorage.getItem('lastNetworkDiagnostic');
                 const now = Date.now();
-                if (process.env.NODE_ENV === 'development' && 
+                if (process.env.NODE_ENV === 'development' &&
                     (!lastNetworkDiagnostic || now - parseInt(lastNetworkDiagnostic) > 120000)) { // 增加到 120 秒內不重複診斷
                     sessionStorage.setItem('lastNetworkDiagnostic', now.toString());
                     authDiagnostics.diagnoseAuthIssue().catch(diagError => {
                         console.error('Diagnostics failed:', diagError);
                     });
                 }
-                
+
                 // 不設置 user 為 null，保持當前狀態
                 return;
             }
@@ -402,7 +402,7 @@ export function AuthProvider({ children }) {
             try {
                 // 如果沒有快取，嘗試獲取預載入狀態
                 const preloadedState = await authPreloader.waitForPreload(1000);
-                
+
                 if (preloadedState && preloadedState.confidence !== 'none') {
                     console.log('🚀 AuthContext: Applying preloaded auth state:', {
                         isAuthenticated: preloadedState.isAuthenticated,
@@ -454,7 +454,7 @@ export function AuthProvider({ children }) {
             // 只在用戶 ID 實際改變時才檢查管理員狀態
             const userId = user.id || user.userId;
             const lastCheckedUserId = sessionStorage.getItem('lastCheckedAdminUserId');
-            
+
             if (lastCheckedUserId !== String(userId)) {
                 console.log('AuthContext: User changed, checking admin status for:', userId);
                 sessionStorage.setItem('lastCheckedAdminUserId', String(userId));
@@ -467,11 +467,11 @@ export function AuthProvider({ children }) {
         }
     }, [user?.id, user?.userId, checkAdminStatus]); // 只監聽用戶 ID 變化
 
-        // 登出處理
+    // 登出處理
     const logout = async () => {
         try {
             await authService.logout();
-            
+
             // 立即清除用戶狀態
             setUser(null);
             setError(null);
@@ -481,10 +481,10 @@ export function AuthProvider({ children }) {
 
             // 清除快取的認證狀態
             authStateCache.clearAuthState();
-            
+
             // 清除認證狀態管理器的快取
             authStateManager.invalidateCache();
-            
+
             let identityServiceRevoked = false;
             if (window.google?.accounts?.id) {
                 try {
@@ -505,10 +505,10 @@ export function AuthProvider({ children }) {
             // 新增：登出後自動導向首頁
             navigate('/');
 
-            Analytics.auth.logout({ 
+            Analytics.auth.logout({
                 status: 'success',
-                source: 'user_action', 
-                identityServiceRevoked 
+                source: 'user_action',
+                identityServiceRevoked
             });
         } catch (error) {
             handleError(error);
@@ -520,7 +520,7 @@ export function AuthProvider({ children }) {
     // 提供 Google 登入按鈕渲染方法
     const renderGoogleButton = useCallback((buttonElement) => {
         const { useLegacy } = checkBrowserCompatibility();
-        
+
         if (!window.google?.accounts?.id) {
             console.warn('Google Identity Service not available');
             Analytics.auth.identityService.buttonRender({
@@ -552,7 +552,7 @@ export function AuthProvider({ children }) {
                 // 在不支援 FedCM 的瀏覽器使用傳統模式
                 ux_mode: useLegacy ? 'popup' : undefined
             });
-            
+
             Analytics.auth.identityService.buttonRender({
                 status: 'success',
                 type: 'standard',

@@ -60,7 +60,7 @@ const PaymentPage = () => {
         const discountType = searchParams.get('discountType');
         const originalPrice = searchParams.get('originalPrice');
         const finalPrice = searchParams.get('finalPrice');
-        const redemptionCode = searchParams.get('redemptionCode');
+        const redemptionCode = searchParams.get('redemption') || searchParams.get('redemptionCode');
         
         // 設置價格信息
         if (originalPrice) setOriginalAmount(parseFloat(originalPrice));
@@ -69,12 +69,13 @@ const PaymentPage = () => {
         // 處理優惠碼信息
         if (redemptionCode) {
             console.log('🔗 PaymentPage 從 URL 參數中發現優惠碼:', redemptionCode);
-            console.log('🔍 PaymentPage URL 參數:', {
-                discountValue,
-                discountType,
-                originalPrice,
-                finalPrice,
-                redemptionCode
+            console.log('🔍 PaymentPage URL 參數詳細:', {
+                discountValue: discountValue,
+                discountType: discountType,
+                originalPrice: originalPrice,
+                finalPrice: finalPrice,
+                redemptionCode: redemptionCode,
+                allParams: Object.fromEntries(searchParams.entries())
             });
             
             // 🔧 修復：確保正確解析折扣數值
@@ -88,17 +89,36 @@ const PaymentPage = () => {
                 parsedFinalPrice
             });
             
+            // 🔧 修復：根據折扣類型設置正確的 benefits 結構
+            const benefits = {
+                type: 'discount',
+                discountType: discountType || 'FIXED_AMOUNT_DISCOUNT'
+            };
+            
+            // 根據折扣類型設置不同的字段
+            if (discountType === 'PERCENTAGE_DISCOUNT' || discountType === 'percentage') {
+                // 百分比折扣
+                benefits.savingsPercentage = parsedDiscountValue;
+                benefits.discountPercentage = parsedDiscountValue;
+                console.log('🔍 PaymentPage 設置百分比折扣:', parsedDiscountValue + '%');
+            } else {
+                // 固定金額折扣
+                benefits.discountAmount = parsedDiscountValue;
+                benefits.estimatedValue = parsedDiscountValue;
+                benefits.amount = parsedDiscountValue;
+                console.log('🔍 PaymentPage 設置固定金額折扣:', parsedDiscountValue);
+            }
+            
             setAppliedRedemption({
                 code: redemptionCode,
                 isValid: true,
                 canRedeem: true,
-                benefits: {
-                    type: 'discount',
-                    discountType: discountType || 'FIXED_AMOUNT_DISCOUNT',
-                    discountAmount: parsedDiscountValue,
-                    estimatedValue: parsedDiscountValue,
-                    amount: parsedDiscountValue
-                }
+                benefits: benefits
+            });
+            
+            console.log('🔍 PaymentPage 設置的 appliedRedemption:', {
+                code: redemptionCode,
+                benefits: benefits
             });
         }
         
@@ -199,7 +219,8 @@ const PaymentPage = () => {
                 const discountAmount = (basePrice * discountPercentage) / 100;
                 const calculatedPrice = Math.max(0, basePrice - discountAmount);
                 console.log('🔍 PaymentPage 百分比折扣計算:', {
-                    discountPercentage,
+                    basePrice,
+                    discountPercentage: discountPercentage + '%',
                     discountAmount,
                     calculatedPrice
                 });
@@ -239,7 +260,21 @@ const PaymentPage = () => {
     const basePrice = basePlan?.price || 0;
     
     // 🔧 修復：正確設置 originalPrice，無論是 appliedRedemption 還是 appliedDiscount
-    const hasDiscount = (appliedRedemption && appliedRedemption.benefits) || appliedDiscount || (originalAmount && finalAmount && originalAmount !== finalAmount);
+    const hasDiscount = Boolean(
+        (appliedRedemption && appliedRedemption.benefits) || 
+        appliedDiscount || 
+        (originalAmount && finalAmount && originalAmount !== finalAmount)
+    );
+    
+    // 🔧 修復：確保有折扣時 originalPrice 正確設置
+    let originalPriceToShow = null;
+    if (hasDiscount) {
+        if (originalAmount) {
+            originalPriceToShow = originalAmount;
+        } else if (appliedRedemption || appliedDiscount) {
+            originalPriceToShow = basePrice;
+        }
+    }
     
     console.log('🔍 PaymentPage 價格計算結果:', {
         basePrice,
@@ -247,6 +282,7 @@ const PaymentPage = () => {
         originalAmount,
         finalAmount,
         hasDiscount,
+        originalPriceToShow,
         appliedRedemption: appliedRedemption ? appliedRedemption.code : null,
         appliedDiscount
     });
@@ -254,7 +290,7 @@ const PaymentPage = () => {
     const currentPlan = {
         ...basePlan,
         price: finalPrice,
-        originalPrice: hasDiscount ? (originalAmount || basePrice) : null,
+        originalPrice: originalPriceToShow,
         discount: appliedDiscount,
         redemption: appliedRedemption
     };

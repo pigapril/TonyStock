@@ -100,20 +100,20 @@ export const SubscriptionPlansPage = () => {
             // 修復：使用正確的字段名
             const discountPercentage = previewData.benefits.savingsPercentage || previewData.benefits.discountPercentage || 0;
             const discountAmount = (originalPrice * discountPercentage) / 100;
-            adjustedPrice = Math.max(0, originalPrice - discountAmount);
+            adjustedPrice = Math.max(0, Math.round(originalPrice - discountAmount)); // 🔧 四捨五入，與後端保持一致
             discount = {
               type: 'percentage',
               value: discountPercentage,
-              amount: discountAmount
+              amount: Math.round(discountAmount) // 🔧 四捨五入折扣金額
             };
           } else if (previewData.benefits.discountType === 'FIXED_AMOUNT_DISCOUNT' || previewData.benefits.discountType === 'fixed') {
             // 支援多種金額字段名稱：estimatedValue, discountAmount, amount
             const discountAmount = previewData.benefits.estimatedValue || previewData.benefits.discountAmount || previewData.benefits.amount || 0;
-            adjustedPrice = Math.max(0, originalPrice - discountAmount);
+            adjustedPrice = Math.max(0, Math.round(originalPrice - discountAmount)); // 🔧 四捨五入，與後端保持一致
             discount = {
               type: 'fixed',
               value: discountAmount,
-              amount: discountAmount
+              amount: Math.round(discountAmount) // 🔧 四捨五入折扣金額
             };
           }
         }
@@ -126,6 +126,7 @@ export const SubscriptionPlansPage = () => {
         };
       });
       
+      console.log('🔍 SubscriptionPlansPage 設置 planAdjustments:', adjustments);
       setPlanAdjustments(adjustments);
       
       // 🔧 修復：在預覽時也設置 appliedRedemption，確保有 code 字段
