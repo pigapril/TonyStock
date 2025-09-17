@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaFolder } from 'react-icons/fa';
 import '../styles/CategoryTabs.css';
 import { useTranslation } from 'react-i18next';
 
@@ -19,7 +19,7 @@ export const CategoryTabs = ({
                 className="category-tab folder-tab"
                 aria-label={t('watchlist.categoryTabs.manageCategoriesAria')}
             >
-                <FaPencilAlt />
+                <FaFolder />
             </button>
             {categories.map((category) => (
                 <button
