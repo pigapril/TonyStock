@@ -153,9 +153,8 @@ export const SubscriptionPlansPage = () => {
     
     setAppliedRedemption(redemptionData);
     
-    // 🔧 修復：在 pricing 模式下，不要清除 planAdjustments，保持折扣顯示
-    // 只有在真正兌換時才清除 planAdjustments
-    // setPlanAdjustments({});
+    // 🔧 修復：調用 handleRedemptionPreview 來設置 planAdjustments
+    handleRedemptionPreview(redemptionData);
     
     Analytics.track('redemption_success_on_pricing_page', {
       userId: user?.id,

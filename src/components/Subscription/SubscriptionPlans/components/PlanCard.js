@@ -108,6 +108,11 @@ export const PlanCard = ({
       if (isPro) {
         let paymentUrl = `/${lang}/payment?plan=${plan.id}&period=${billingPeriod}`;
 
+        // 🔧 修復：無論是否有折扣，都要傳遞優惠碼
+        if (appliedRedemption && appliedRedemption.code) {
+          paymentUrl += `&redemptionCode=${encodeURIComponent(appliedRedemption.code)}`;
+        }
+
         // 如果有折扣，將折扣信息添加到URL參數
         if (adjustedPricing.hasRedemptionDiscount && adjustedPricing.redemptionDiscount) {
           const discount = adjustedPricing.redemptionDiscount;
@@ -123,11 +128,6 @@ export const PlanCard = ({
 
           paymentUrl += `&originalPrice=${adjustedPricing.originalPrice}`;
           paymentUrl += `&finalPrice=${adjustedPricing.displayPrice}`;
-
-          // 🔧 關鍵修復：傳遞優惠碼本身
-          if (appliedRedemption && appliedRedemption.code) {
-            paymentUrl += `&redemptionCode=${encodeURIComponent(appliedRedemption.code)}`;
-          }
         }
 
         navigate(paymentUrl);

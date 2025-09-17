@@ -69,15 +69,35 @@ const PaymentPage = () => {
         // 處理優惠碼信息
         if (redemptionCode) {
             console.log('🔗 PaymentPage 從 URL 參數中發現優惠碼:', redemptionCode);
+            console.log('🔍 PaymentPage URL 參數:', {
+                discountValue,
+                discountType,
+                originalPrice,
+                finalPrice,
+                redemptionCode
+            });
+            
+            // 🔧 修復：確保正確解析折扣數值
+            const parsedDiscountValue = discountValue ? parseFloat(discountValue) : 0;
+            const parsedOriginalPrice = originalPrice ? parseFloat(originalPrice) : null;
+            const parsedFinalPrice = finalPrice ? parseFloat(finalPrice) : null;
+            
+            console.log('🔍 PaymentPage 解析後的數值:', {
+                parsedDiscountValue,
+                parsedOriginalPrice,
+                parsedFinalPrice
+            });
+            
             setAppliedRedemption({
                 code: redemptionCode,
                 isValid: true,
                 canRedeem: true,
                 benefits: {
                     type: 'discount',
-                    discountType: discountType || 'fixed',
-                    discountAmount: discountValue ? parseFloat(discountValue) : 0,
-                    estimatedValue: discountValue ? parseFloat(discountValue) : 0
+                    discountType: discountType || 'FIXED_AMOUNT_DISCOUNT',
+                    discountAmount: parsedDiscountValue,
+                    estimatedValue: parsedDiscountValue,
+                    amount: parsedDiscountValue
                 }
             });
         }
@@ -161,29 +181,82 @@ const PaymentPage = () => {
     // 計算實際價格（考慮折扣）
     const calculateFinalPrice = () => {
         const basePrice = basePlan?.price || 0;
-        if (!appliedDiscount) return basePrice;
         
-        // 如果URL中已經有計算好的最終價格，直接使用
-        if (appliedDiscount.finalPrice !== null && appliedDiscount.finalPrice !== undefined) {
-            return appliedDiscount.finalPrice;
+        // 🔧 修復：優先使用 finalAmount（從 URL 參數計算好的價格）
+        if (finalAmount !== null && finalAmount !== undefined) {
+            console.log('🔍 PaymentPage 使用 URL 參數中的 finalAmount:', finalAmount);
+            return finalAmount;
         }
         
-        // 否則根據折扣類型重新計算
-        if (appliedDiscount.type === 'percentage') {
-            const discountAmount = (basePrice * appliedDiscount.value) / 100;
-            return Math.max(0, basePrice - discountAmount);
-        } else if (appliedDiscount.type === 'fixed') {
-            return Math.max(0, basePrice - appliedDiscount.value);
+        // 🔧 修復：檢查 appliedRedemption 而不是 appliedDiscount
+        if (appliedRedemption && appliedRedemption.benefits) {
+            const benefits = appliedRedemption.benefits;
+            console.log('🔍 PaymentPage 根據 appliedRedemption 計算價格:', benefits);
+            console.log('🔍 PaymentPage basePrice:', basePrice);
+            
+            if (benefits.discountType === 'PERCENTAGE_DISCOUNT' || benefits.discountType === 'percentage') {
+                const discountPercentage = benefits.savingsPercentage || benefits.discountPercentage || 0;
+                const discountAmount = (basePrice * discountPercentage) / 100;
+                const calculatedPrice = Math.max(0, basePrice - discountAmount);
+                console.log('🔍 PaymentPage 百分比折扣計算:', {
+                    discountPercentage,
+                    discountAmount,
+                    calculatedPrice
+                });
+                return calculatedPrice;
+            } else if (benefits.discountType === 'FIXED_AMOUNT_DISCOUNT' || benefits.discountType === 'fixed') {
+                const discountAmount = benefits.estimatedValue || benefits.discountAmount || benefits.amount || 0;
+                const calculatedPrice = Math.max(0, basePrice - discountAmount);
+                console.log('🔍 PaymentPage 固定金額折扣計算:', {
+                    discountAmount,
+                    basePrice,
+                    calculatedPrice
+                });
+                return calculatedPrice;
+            }
         }
+        
+        // 向後兼容：檢查舊的 appliedDiscount 格式
+        if (appliedDiscount) {
+            // 如果URL中已經有計算好的最終價格，直接使用
+            if (appliedDiscount.finalPrice !== null && appliedDiscount.finalPrice !== undefined) {
+                return appliedDiscount.finalPrice;
+            }
+            
+            // 否則根據折扣類型重新計算
+            if (appliedDiscount.type === 'percentage') {
+                const discountAmount = (basePrice * appliedDiscount.value) / 100;
+                return Math.max(0, basePrice - discountAmount);
+            } else if (appliedDiscount.type === 'fixed') {
+                return Math.max(0, basePrice - appliedDiscount.value);
+            }
+        }
+        
         return basePrice;
     };
     
     const finalPrice = calculateFinalPrice();
+    const basePrice = basePlan?.price || 0;
+    
+    // 🔧 修復：正確設置 originalPrice，無論是 appliedRedemption 還是 appliedDiscount
+    const hasDiscount = (appliedRedemption && appliedRedemption.benefits) || appliedDiscount || (originalAmount && finalAmount && originalAmount !== finalAmount);
+    
+    console.log('🔍 PaymentPage 價格計算結果:', {
+        basePrice,
+        finalPrice,
+        originalAmount,
+        finalAmount,
+        hasDiscount,
+        appliedRedemption: appliedRedemption ? appliedRedemption.code : null,
+        appliedDiscount
+    });
+    
     const currentPlan = {
         ...basePlan,
         price: finalPrice,
-        originalPrice: appliedDiscount ? basePlan?.price : null,
-        discount: appliedDiscount
+        originalPrice: hasDiscount ? (originalAmount || basePrice) : null,
+        discount: appliedDiscount,
+        redemption: appliedRedemption
     };
 
     // 處理步驟導航
@@ -219,19 +292,22 @@ const PaymentPage = () => {
             console.log('🔍 PaymentPage 創建訂單前的 appliedRedemption:', appliedRedemption);
             console.log('🔍 PaymentPage 傳遞給後端的 redemptionCode:', appliedRedemption?.code);
             
-            const result = await paymentService.createOrder({
+            // 🔧 修復：確保傳遞正確的參數給後端
+            const orderPayload = {
                 planType,
                 billingPeriod,
                 paymentMethod,
-                redemptionCode: appliedRedemption?.code,
-                originalAmount: originalAmount,
-                finalAmount: finalAmount || getPlanPrice(planType, billingPeriod),
+                redemptionCode: appliedRedemption?.code || null,
                 // 保持向後兼容
                 appliedDiscount: appliedDiscount ? {
                     type: appliedDiscount.type,
                     amount: appliedDiscount.value
                 } : null
-            });
+            };
+            
+            console.log('🔍 PaymentPage 完整的訂單參數:', orderPayload);
+            
+            const result = await paymentService.createOrder(orderPayload);
 
             setOrderData(result);
             setCurrentStep(3); // 跳轉到確認頁面
@@ -348,7 +424,27 @@ const PaymentPage = () => {
                             / {billingPeriod === 'monthly' ? t('payment.plan.pricing.monthly') : t('payment.plan.pricing.yearly')}
                         </span>
                     </div>
-                    {appliedDiscount && currentPlan?.originalPrice && (
+                    
+                    {/* 🔧 修復：優先顯示 appliedRedemption 的折扣信息 */}
+                    {appliedRedemption && appliedRedemption.benefits && currentPlan?.originalPrice && (
+                        <div className="payment-page__plan-discount">
+                            <div className="payment-page__original-price">
+                                {t('payment.plan.pricing.originalPrice')}：NT$ {currentPlan.originalPrice.toLocaleString()}
+                            </div>
+                            <div className="payment-page__discount-badge">
+                                {appliedRedemption.benefits.discountType === 'PERCENTAGE_DISCOUNT' || appliedRedemption.benefits.discountType === 'percentage'
+                                    ? `${appliedRedemption.benefits.savingsPercentage || appliedRedemption.benefits.discountPercentage}% 折扣`
+                                    : `折扣 NT$ ${(appliedRedemption.benefits.estimatedValue || appliedRedemption.benefits.discountAmount || appliedRedemption.benefits.amount || 0).toLocaleString()}`
+                                }
+                            </div>
+                            <div className="payment-page__redemption-code">
+                                優惠碼：{appliedRedemption.code}
+                            </div>
+                        </div>
+                    )}
+                    
+                    {/* 向後兼容：顯示舊的 appliedDiscount 格式 */}
+                    {!appliedRedemption && appliedDiscount && currentPlan?.originalPrice && (
                         <div className="payment-page__plan-discount">
                             <div className="payment-page__original-price">
                                 {t('payment.plan.pricing.originalPrice')}：NT$ {currentPlan.originalPrice.toLocaleString()}
@@ -491,7 +587,27 @@ const PaymentPage = () => {
                             <span>{t('payment.orderSummary.paymentMethod')}</span>
                             <span>{t('payment.orderSummary.creditCardRecurring')}</span>
                         </div>
-                        {appliedDiscount && currentPlan?.originalPrice && (
+                        {/* 🔧 修復：優先顯示 appliedRedemption 的折扣信息 */}
+                        {appliedRedemption && appliedRedemption.benefits && currentPlan?.originalPrice && (
+                            <>
+                                <div className="payment-page__order-row">
+                                    <span>{t('payment.plan.pricing.originalPrice')}</span>
+                                    <span>NT$ {currentPlan.originalPrice.toLocaleString()}</span>
+                                </div>
+                                <div className="payment-page__order-row payment-page__order-discount">
+                                    <span>{t('payment.orderSummary.discount')} ({appliedRedemption.code})</span>
+                                    <span className="payment-page__discount-amount">
+                                        -{appliedRedemption.benefits.discountType === 'PERCENTAGE_DISCOUNT' || appliedRedemption.benefits.discountType === 'percentage'
+                                            ? `${appliedRedemption.benefits.savingsPercentage || appliedRedemption.benefits.discountPercentage}%`
+                                            : `NT$ ${(appliedRedemption.benefits.estimatedValue || appliedRedemption.benefits.discountAmount || appliedRedemption.benefits.amount || 0).toLocaleString()}`
+                                        }
+                                    </span>
+                                </div>
+                            </>
+                        )}
+                        
+                        {/* 向後兼容：顯示舊的 appliedDiscount 格式 */}
+                        {!appliedRedemption && appliedDiscount && currentPlan?.originalPrice && (
                             <>
                                 <div className="payment-page__order-row">
                                     <span>{t('payment.plan.pricing.originalPrice')}</span>

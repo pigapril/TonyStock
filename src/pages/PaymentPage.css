@@ -214,9 +214,31 @@
 }
 
 .payment-page__plan-discount {
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(52, 199, 89, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(52, 199, 89, 0.2);
+}
+
+.payment-page__original-price {
+  font-size: 14px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  text-decoration: line-through;
+  margin-bottom: 4px;
+}
+
+.payment-page__discount-badge {
   font-size: 14px;
   color: #34C759;
   font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.payment-page__redemption-code {
+  font-size: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  font-weight: 500;
 }
 
 .payment-page__plan-features {
