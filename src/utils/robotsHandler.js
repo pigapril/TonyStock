@@ -32,11 +32,7 @@ export const setupRobotsProtection = () => {
     const originalTitle = document.title.replace('[STAGING] ', '');
     document.title = `[STAGING] ${originalTitle}`;
     
-    // 添加視覺邊框提示 (可選)
-    if (process.env.NODE_ENV === 'development') {
-      document.body.style.border = '3px solid orange';
-      document.body.style.boxSizing = 'border-box';
-    }
+    // 視覺邊框提示已移除
     
     // 在 console 中提醒
     console.warn('🚧 STAGING ENVIRONMENT - Search engines blocked');

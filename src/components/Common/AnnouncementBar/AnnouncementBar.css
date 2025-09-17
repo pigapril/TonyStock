@@ -1,75 +1,208 @@
 .announcement-bar {
-  background-color: #f0f8ff; /* AliceBlue */
-  color: #333;
-  padding: 8px 40px 8px 15px; /* Add more padding on the right for the close button */
-  text-align: center;
-  font-size: 0.9em;
-  border-bottom: 1px solid #e0e0e0;
+  /* 蘋果風格毛玻璃背景 */
+  background: linear-gradient(135deg, 
+    rgba(0, 122, 255, 0.08) 0%, 
+    rgba(88, 86, 214, 0.06) 50%, 
+    rgba(255, 45, 85, 0.04) 100%),
+    rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  
+  /* 現代化邊框與陰影 */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.04),
+    0 4px 16px rgba(0, 0, 0, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  
+  /* 佈局與間距 */
+  padding: 12px 56px 12px 20px;
+  position: relative;
   overflow: hidden;
-  white-space: nowrap;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: relative; /* For close button positioning */
+  
+  /* 字體與顏色 */
+  color: #1d1d1f;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  
+  /* 流暢過渡效果 */
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* 關閉動畫 */
+.announcement-bar.closing {
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .announcement-content {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  animation: marquee 20s linear infinite; /* Adjust duration as needed */
+  animation: marquee 25s linear infinite;
+  white-space: nowrap;
+  
+  /* 確保內容在容器中居中 */
+  min-width: 100%;
 }
 
 .announcement-message {
   margin: 0;
-  /* padding-right: 20px; /* Space for the close button */
+  padding: 0;
+  
+  /* 現代化字體樣式 */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: -0.01em;
+  
+  /* 表情符號優化 */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
 }
 
 .announcement-close {
-  background-color: rgb(255, 255, 255); /* Semi-transparent white background */
-  border-radius: 50%; /* Make it round */
-  border: none;
-  color: #888;
-  font-size: 1.2em;
-  cursor: pointer;
+  /* 蘋果風格按鈕設計 */
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 50%;
+  
+  /* 尺寸與位置 */
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  right: 10px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 100; /* Ensure it's above the marquee content */
-  padding: 2px 7px; /* Adjust padding for better appearance */
+  z-index: 100;
+  
+  /* 字體與顏色 */
+  color: #6e6e73;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1;
+  
+  /* 互動效果 */
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* 陰影效果 */
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .announcement-close:hover {
-  color: #555;
+  background: rgba(255, 255, 255, 1);
+  color: #1d1d1f;
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.announcement-close:active {
+  transform: translateY(-50%) scale(0.95);
+  transition-duration: 0.1s;
 }
 
 @keyframes marquee {
-  0% { transform: translateX(100vw); }
-  100% { transform: translateX(-100%); }
+  0% { 
+    transform: translateX(100vw); 
+  }
+  100% { 
+    transform: translateX(-100%); 
+  }
 }
 
 @keyframes marquee-mobile {
-  0% { transform: translateX(100vw); }
-  100% { transform: translateX(calc(-100% - 200%)); }
+  0% { 
+    transform: translateX(100vw); 
+  }
+  100% { 
+    transform: translateX(calc(-100% - 50vw)); 
+  }
 }
-/* Pause animation on hover */
+
+/* 淡入動畫 */
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.announcement-bar {
+  animation: fadeInSlide 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+/* 懸停時暫停動畫並增強視覺效果 */
+.announcement-bar:hover {
+  background: linear-gradient(135deg, 
+    rgba(0, 122, 255, 0.12) 0%, 
+    rgba(88, 86, 214, 0.08) 50%, 
+    rgba(255, 45, 85, 0.06) 100%),
+    rgba(255, 255, 255, 0.98);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.06),
+    0 6px 20px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
 .announcement-bar:hover .announcement-content {
   animation-play-state: paused;
 }
 
-/* Responsive adjustments */
+/* 響應式設計優化 */
 @media (max-width: 768px) {
   .announcement-bar {
-    font-size: 0.8em;
-    padding: 6px 10px;
-    margin-top: 5%;
+    font-size: 0.8rem;
+    padding: 10px 48px 10px 16px;
+    margin-top: 0;
+    
+    /* 移動端毛玻璃效果調整 */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
   }
+  
   .announcement-close {
-    font-size: 1em;
-    right: 5px;
+    width: 24px;
+    height: 24px;
+    right: 12px;
+    font-size: 14px;
   }
+  
   .announcement-content {
     animation-name: marquee-mobile;
-    animation-duration: 20s;
-    /* Adjust duration as needed */
+    animation-duration: 22s;
+  }
+  
+  .announcement-message {
+    gap: 0.3em;
+  }
+}
+
+/* 超小螢幕優化 */
+@media (max-width: 480px) {
+  .announcement-bar {
+    font-size: 0.75rem;
+    padding: 8px 40px 8px 12px;
+  }
+  
+  .announcement-close {
+    width: 22px;
+    height: 22px;
+    right: 10px;
+    font-size: 13px;
   }
 }
