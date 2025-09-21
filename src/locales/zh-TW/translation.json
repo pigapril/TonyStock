@@ -1626,7 +1626,29 @@
       "privacy": "隱私資料保護"
     },
     "result": {
-      "loading": "處理中...",
+      "loading": "正在確認付款狀態...",
+      "polling": "正在等待付款確認... ({{pollingCount}}/{{maxPollingAttempts}})",
+      "queryError": "無法確認付款狀態，請聯繫客服。",
+      "noParams": "缺少付款資訊參數。",
+      "details": "付款詳情",
+      "orderNumber": "訂單編號",
+      "amount": "付款金額",
+      "date": "付款時間",
+      "method": "付款方式",
+      "nextSteps": "接下來您可以",
+      "step1": "立即開始使用 Pro 功能",
+      "step2": "查看您的訂閱狀態",
+      "step3": "管理您的帳戶設定",
+      "goToAccount": "查看我的帳戶",
+      "backToHome": "返回首頁",
+      "autoRedirect": "{{countdown}}秒後將自動跳轉到您的帳戶頁面...",
+      "checkAccount": "查看我的帳戶",
+      "errorCode": "錯誤代碼",
+      "suggestions": "建議您",
+      "suggestion1": "檢查信用卡資訊是否正確",
+      "suggestion2": "確認信用卡額度是否足夠",
+      "suggestion3": "稍後再試或聯繫客服",
+      "tryAgain": "重新選擇方案",
       "success": {
         "title": "付款成功！",
         "message": "恭喜！您的訂閱已成功啟用。"
@@ -1635,29 +1657,18 @@
         "title": "付款失敗",
         "message": "很抱歉，付款過程中發生錯誤。"
       },
-      "details": "付款詳情",
-      "orderNumber": "訂單編號",
-      "amount": "付款金額",
-      "date": "付款時間",
-      "method": "付款方式",
-      "errorCode": "錯誤代碼",
-      "nextSteps": "接下來您可以",
-      "step1": "立即開始使用 Pro 功能",
-      "step2": "查看您的訂閱狀態",
-      "step3": "管理您的帳戶設定",
-      "suggestions": "建議您",
-      "suggestion1": "檢查信用卡資訊是否正確",
-      "suggestion2": "確認信用卡額度是否足夠",
-      "suggestion3": "稍後再試或聯繫客服",
-      "goToAccount": "查看我的帳戶",
-      "backToHome": "返回首頁",
-      "tryAgain": "重新選擇方案",
-      "autoRedirect": "5 秒後將自動跳轉到您的帳戶頁面...",
+      "pending": {
+        "title": "付款處理中",
+        "message": "付款正在處理中，請稍後查看您的訂閱狀態。",
+        "defaultMessage": "您的付款正在處理中，請稍後查看訂閱狀態。",
+        "info": "處理說明",
+        "info1": "付款已提交，正在等待銀行確認",
+        "info2": "通常在 1-5 分鐘內完成",
+        "info3": "您可以稍後查看帳戶中的訂閱狀態"
+      },
       "clientReturn": {
         "message": "您已從付款頁面返回。正在確認付款狀態..."
-      },
-      "queryError": "無法確認付款狀態，請聯繫客服。",
-      "noParams": "缺少付款資訊參數。"
+      }
     },
     "plan": {
       "proPlan": "Pro 方案",
