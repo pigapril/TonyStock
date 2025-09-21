@@ -11,7 +11,7 @@ export const PaymentResult = () => {
     const { lang } = useParams();
     const [paymentInfo, setPaymentInfo] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [countdown, setCountdown] = useState(5);
+    const [countdown, setCountdown] = useState(30);
     const [pollingCount, setPollingCount] = useState(0);
     const maxPollingAttempts = 30; // 最多輪詢 30 次（約 30 秒）
 
