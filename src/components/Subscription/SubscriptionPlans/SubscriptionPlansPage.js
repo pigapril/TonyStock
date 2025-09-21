@@ -46,6 +46,12 @@ export const SubscriptionPlansPage = () => {
   const handleBillingPeriodChange = (period) => {
     setBillingPeriod(period);
     
+    // 🔧 修復：當計費週期改變時，重新計算 planAdjustments
+    if (appliedRedemption?.benefits) {
+      console.log('🔧 計費週期改變，重新計算 planAdjustments，新週期:', period);
+      recalculatePlanAdjustments(appliedRedemption, period);
+    }
+    
     Analytics.track('billing_period_changed', {
       userId: user?.id,
       newPeriod: period,
@@ -54,80 +60,106 @@ export const SubscriptionPlansPage = () => {
   };
 
   /**
+   * 🔧 修復：重新計算 planAdjustments 的通用函數
+   * @param {Object} redemptionData - 兌換碼數據
+   * @param {string} currentBillingPeriod - 當前計費週期
+   */
+  const recalculatePlanAdjustments = (redemptionData, currentBillingPeriod = billingPeriod) => {
+    if (!redemptionData?.benefits) {
+      console.log('🔧 沒有 redemptionData.benefits，清空 planAdjustments');
+      setPlanAdjustments({});
+      return;
+    }
+
+    const adjustments = {};
+    
+    // 檢查是否有目標方案限制
+    const targetPlan = redemptionData.targetPlan;
+    const hasTargetPlanRestriction = targetPlan && targetPlan !== 'all';
+    
+    console.log('🔧 重新計算 planAdjustments，計費週期:', currentBillingPeriod, '目標方案:', targetPlan);
+    
+    // Calculate plan adjustments based on redemption benefits
+    availablePlans.forEach(plan => {
+      // 免費方案永遠不應該有折扣
+      if (plan.id === 'free') {
+        adjustments[plan.id] = {
+          originalPrice: 0,
+          adjustedPrice: 0,
+          discount: null,
+          benefits: null
+        };
+        return;
+      }
+      
+      // 如果有目標方案限制，只對目標方案應用折扣
+      if (hasTargetPlanRestriction && plan.id !== targetPlan) {
+        // 對於非目標方案，不應用折扣
+        adjustments[plan.id] = {
+          originalPrice: plan.price?.[currentBillingPeriod] || 0,
+          adjustedPrice: plan.price?.[currentBillingPeriod] || 0,
+          discount: null,
+          benefits: null
+        };
+        return;
+      }
+      
+      // 🔧 修復：使用傳入的 currentBillingPeriod 而不是狀態中的 billingPeriod
+      const originalPrice = plan.price?.[currentBillingPeriod] || 0;
+      let adjustedPrice = originalPrice;
+      let discount = null;
+      
+      if (redemptionData.benefits.type === 'discount') {
+        // 修復：支持新的 discountType 格式
+        if (redemptionData.benefits.discountType === 'PERCENTAGE_DISCOUNT' || redemptionData.benefits.discountType === 'percentage') {
+          // 修復：使用正確的字段名
+          const discountPercentage = redemptionData.benefits.savingsPercentage || redemptionData.benefits.discountPercentage || 0;
+          const discountAmount = (originalPrice * discountPercentage) / 100;
+          adjustedPrice = Math.max(0, Math.round(originalPrice - discountAmount)); // 🔧 四捨五入，與後端保持一致
+          discount = {
+            type: 'percentage',
+            value: discountPercentage,
+            amount: Math.round(discountAmount) // 🔧 四捨五入折扣金額
+          };
+        } else if (redemptionData.benefits.discountType === 'FIXED_AMOUNT_DISCOUNT' || redemptionData.benefits.discountType === 'fixed') {
+          // 支援多種金額字段名稱：estimatedValue, discountAmount, amount
+          const discountAmount = redemptionData.benefits.estimatedValue || redemptionData.benefits.discountAmount || redemptionData.benefits.amount || 0;
+          adjustedPrice = Math.max(0, Math.round(originalPrice - discountAmount)); // 🔧 四捨五入，與後端保持一致
+          discount = {
+            type: 'fixed',
+            value: discountAmount,
+            amount: Math.round(discountAmount) // 🔧 四捨五入折扣金額
+          };
+        }
+      }
+      
+      adjustments[plan.id] = {
+        originalPrice,
+        adjustedPrice,
+        discount,
+        benefits: redemptionData.benefits
+      };
+      
+      console.log(`🔧 方案 ${plan.id} (${currentBillingPeriod}):`, {
+        originalPrice,
+        adjustedPrice,
+        discount
+      });
+    });
+    
+    console.log('🔧 設置新的 planAdjustments:', adjustments);
+    setPlanAdjustments(adjustments);
+  };
+
+  /**
    * Handle successful redemption code preview
    */
   const handleRedemptionPreview = (previewData) => {
     if (previewData?.benefits) {
-      const adjustments = {};
+      console.log('🔍 SubscriptionPlansPage.handleRedemptionPreview，當前計費週期:', billingPeriod);
       
-      // 檢查是否有目標方案限制
-      const targetPlan = previewData.targetPlan;
-      const hasTargetPlanRestriction = targetPlan && targetPlan !== 'all';
-      
-      // Calculate plan adjustments based on redemption benefits
-      availablePlans.forEach(plan => {
-        // 免費方案永遠不應該有折扣
-        if (plan.id === 'free') {
-          adjustments[plan.id] = {
-            originalPrice: 0,
-            adjustedPrice: 0,
-            discount: null,
-            benefits: null
-          };
-          return;
-        }
-        
-        // 如果有目標方案限制，只對目標方案應用折扣
-        if (hasTargetPlanRestriction && plan.id !== targetPlan) {
-          // 對於非目標方案，不應用折扣
-          adjustments[plan.id] = {
-            originalPrice: plan.price?.[billingPeriod] || 0,
-            adjustedPrice: plan.price?.[billingPeriod] || 0,
-            discount: null,
-            benefits: null
-          };
-          return;
-        }
-        
-        // 修復：使用正確的屬性名 plan.price 而不是 plan.pricing
-        const originalPrice = plan.price?.[billingPeriod] || 0;
-        let adjustedPrice = originalPrice;
-        let discount = null;
-        
-        if (previewData.benefits.type === 'discount') {
-          // 修復：支持新的 discountType 格式
-          if (previewData.benefits.discountType === 'PERCENTAGE_DISCOUNT' || previewData.benefits.discountType === 'percentage') {
-            // 修復：使用正確的字段名
-            const discountPercentage = previewData.benefits.savingsPercentage || previewData.benefits.discountPercentage || 0;
-            const discountAmount = (originalPrice * discountPercentage) / 100;
-            adjustedPrice = Math.max(0, Math.round(originalPrice - discountAmount)); // 🔧 四捨五入，與後端保持一致
-            discount = {
-              type: 'percentage',
-              value: discountPercentage,
-              amount: Math.round(discountAmount) // 🔧 四捨五入折扣金額
-            };
-          } else if (previewData.benefits.discountType === 'FIXED_AMOUNT_DISCOUNT' || previewData.benefits.discountType === 'fixed') {
-            // 支援多種金額字段名稱：estimatedValue, discountAmount, amount
-            const discountAmount = previewData.benefits.estimatedValue || previewData.benefits.discountAmount || previewData.benefits.amount || 0;
-            adjustedPrice = Math.max(0, Math.round(originalPrice - discountAmount)); // 🔧 四捨五入，與後端保持一致
-            discount = {
-              type: 'fixed',
-              value: discountAmount,
-              amount: Math.round(discountAmount) // 🔧 四捨五入折扣金額
-            };
-          }
-        }
-        
-        adjustments[plan.id] = {
-          originalPrice,
-          adjustedPrice,
-          discount,
-          benefits: previewData.benefits
-        };
-      });
-      
-      console.log('🔍 SubscriptionPlansPage 設置 planAdjustments:', adjustments);
-      setPlanAdjustments(adjustments);
+      // 🔧 修復：使用新的通用函數來計算 planAdjustments
+      recalculatePlanAdjustments(previewData, billingPeriod);
       
       // 🔧 修復：在預覽時也設置 appliedRedemption，確保有 code 字段
       if (previewData.code) {
@@ -139,8 +171,8 @@ export const SubscriptionPlansPage = () => {
         benefitType: previewData.benefits.type,
         discountAmount: previewData.benefits.discountAmount,
         billingPeriod,
-        targetPlan: targetPlan,
-        hasTargetPlanRestriction: hasTargetPlanRestriction
+        targetPlan: previewData.targetPlan,
+        hasTargetPlanRestriction: !!(previewData.targetPlan && previewData.targetPlan !== 'all')
       });
     }
   };
@@ -154,8 +186,8 @@ export const SubscriptionPlansPage = () => {
     
     setAppliedRedemption(redemptionData);
     
-    // 🔧 修復：調用 handleRedemptionPreview 來設置 planAdjustments
-    handleRedemptionPreview(redemptionData);
+    // 🔧 修復：使用新的通用函數來計算 planAdjustments
+    recalculatePlanAdjustments(redemptionData, billingPeriod);
     
     Analytics.track('redemption_success_on_pricing_page', {
       userId: user?.id,
