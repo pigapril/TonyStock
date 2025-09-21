@@ -16,7 +16,7 @@ import { systemLogger } from '../utils/logger';
 
 class RedemptionService {
     constructor() {
-        this.retryAttempts = 2; // 減少重試次數
+        this.retryAttempts = 1; // 進一步減少重試次數，避免過多請求觸發詐欺檢測
         this.retryDelay = 1000;
         
         // 請求節流控制
