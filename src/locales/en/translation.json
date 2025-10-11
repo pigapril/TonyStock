@@ -1265,8 +1265,8 @@
     "stockAccess": {
       "title": "Upgrade to Pro to analyze any stock",
       "subtitle": "Upgrade to Pro to analyze any stock",
-      "description": "Free users can only query 0050, SPY, VOO stocks.",
-      "descriptionWithStock": "Want to analyze {{stockCode}}? Free users can only query {{allowedStocks}} stocks."
+      "description": "Free users can only query market ETFs and indices.",
+      "descriptionWithStock": "Want to analyze {{stockCode}}? Free users can only query market ETFs and indices."
     },
     "currentData": {
       "title": "Unlock Real-Time Data",

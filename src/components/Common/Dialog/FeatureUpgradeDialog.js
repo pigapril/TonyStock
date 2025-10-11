@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dialog } from './Dialog';
 import { Analytics } from '../../../utils/analytics';
+import { getFreeStockList } from '../../../constants/freeStockList';
 
 // 主要導出的組件，支援直接 props 模式
 export function FeatureUpgradeDialog({ 
@@ -49,7 +50,7 @@ export function FeatureUpgradeDialog({
 
     const feature = dialogData.props?.feature || 'stockAccess';
     const stockCode = dialogData.props?.stockCode;
-    const allowedStocks = dialogData.props?.allowedStocks || ['0050', 'SPY', 'VOO'];
+    const allowedStocks = dialogData.props?.allowedStocks || getFreeStockList();
 
     // 根據功能類型決定內容
     const getContent = () => {
@@ -59,8 +60,8 @@ export function FeatureUpgradeDialog({
                     title: t('featureUpgrade.stockAccess.title', '解鎖全部股票查詢'),
                     subtitle: t('featureUpgrade.stockAccess.subtitle', '升級至 Pro 方案，查詢任何股票'),
                     description: stockCode 
-                        ? t('featureUpgrade.stockAccess.descriptionWithStock', { stockCode, allowedStocks: allowedStocks.join(', ') })
-                        : t('featureUpgrade.stockAccess.description', { allowedStocks: allowedStocks.join(', ') }),
+                        ? t('featureUpgrade.stockAccess.descriptionWithStock', { stockCode })
+                        : t('featureUpgrade.stockAccess.description'),
                     icon: '📈',
                     features: [
                         { icon: '🚀', text: t('featureUpgrade.features.unlimitedStocks', '無限制股票查詢') },

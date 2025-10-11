@@ -1281,8 +1281,8 @@
     "stockAccess": {
       "title": "升級至 Pro 解鎖全部股票",
       "subtitle": "升級至 Pro 方案，查詢任何股票",
-      "description": "免費用戶僅能查詢 0050, SPY, VOO 股票。",
-      "descriptionWithStock": "想要查詢 {{stockCode}}？免費用戶僅能查詢 {{allowedStocks}} 股票。"
+      "description": "免費用戶僅能查詢市場型 ETF 和指數。",
+      "descriptionWithStock": "想要查詢 {{stockCode}}？免費用戶僅能查詢市場型 ETF 和指數。"
     },
     "currentData": {
       "title": "解鎖即時數據",

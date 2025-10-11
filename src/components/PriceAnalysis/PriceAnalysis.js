@@ -23,6 +23,7 @@ import AnnouncementBar from '../Common/AnnouncementBar/AnnouncementBar'; // 引�
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
 import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDialog
+import { isStockAllowed, getFreeStockList } from '../../constants/freeStockList'; // 導入免費股票清單檢查函數
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
 function getTimeUnit(dates) {
@@ -136,13 +137,7 @@ export function PriceAnalysis() {
     debouncedSetStockCode(convertedValue.toUpperCase());
   };
 
-  // 新增：檢查股票代碼是否被允許
-  const isStockAllowed = (stockCode, userPlan = 'free') => {
-    if (userPlan === 'pro') return true; // Pro 用戶無限制
-    
-    const allowedStocks = ['0050', 'SPY', 'VOO'];
-    return allowedStocks.includes(stockCode.toUpperCase());
-  };
+
 
   // 處理查詢期間輸入 (現在調用 debounced setter)
   const handleYearsChange = (e) => {
@@ -327,7 +322,7 @@ export function PriceAnalysis() {
       openDialog('featureUpgrade', {
         feature: 'stockAccess',
         stockCode: displayStockCode,
-        allowedStocks: ['0050', 'SPY', 'VOO'],
+        allowedStocks: getFreeStockList(),
         upgradeUrl: `/${i18n.language}/subscription-plans`
       });
       return;
@@ -535,7 +530,7 @@ export function PriceAnalysis() {
       openDialog('featureUpgrade', {
         feature: 'stockAccess',
         stockCode: upperClickedCode,
-        allowedStocks: ['0050', 'SPY', 'VOO'],
+        allowedStocks: getFreeStockList(),
         upgradeUrl: `/${i18n.language}/subscription-plans`
       });
       return;
