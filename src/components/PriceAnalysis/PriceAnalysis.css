@@ -842,6 +842,7 @@
 /* Tab 導航樣式 */
 .price-analysis-view .quick-select-tabs {
   display: flex;
+  flex-wrap: nowrap; /* 防止換行 */
   background-color: rgba(0, 122, 255, 0.05);
   border-bottom: 1px solid var(--color-border-light, #e9ecef);
 }
@@ -857,6 +858,9 @@
   color: var(--color-text-secondary, #666);
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
+  white-space: nowrap; /* 防止文字換行 */
+  overflow: hidden; /* 隱藏溢出內容 */
+  text-overflow: ellipsis; /* 顯示省略號 */
 }
 
 .price-analysis-view .quick-select-tab:hover {
@@ -886,6 +890,7 @@
   min-height: 120px;
   max-height: 300px;
   overflow-y: auto;
+  overflow-x: hidden; /* 防止水平滾動 */
 }
 
 /* 熱門搜尋 Tab 內容 */
@@ -971,8 +976,9 @@
   }
   
   .price-analysis-view .quick-select-tab {
-    padding: 10px 12px;
-    font-size: 0.85rem;
+    padding: 10px 8px;
+    font-size: 0.8rem;
+    min-width: 0; /* 允許收縮 */
   }
   
   .price-analysis-view .quick-select-content {

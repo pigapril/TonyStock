@@ -1068,7 +1068,7 @@
     "quickSelect": {
       "tabs": {
         "hotSearches": "Trending 🔥",
-        "freeStocks": "Free Stocks 💎"
+        "freeStocks": "Index ETF 💎"
       }
     },
     "freeStockList": {
@@ -1077,7 +1077,7 @@
       "upgradeHint": "Upgrade to Pro plan to access all stock symbols",
       "regions": {
         "americas": "Americas",
-        "europe": "Europe", 
+        "europe": "Europe",
         "asiaPacific": "Asia Pacific",
         "global": "Global Markets"
       },
