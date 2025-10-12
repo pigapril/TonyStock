@@ -253,7 +253,7 @@ export const PaymentResult = () => {
                         {/* 自動導向提示 */}
                         <div className="auto-redirect-notice">
                             <p className="redirect-text">
-                                {t('payment.result.autoRedirect', `${countdown}秒後將自動跳轉到您的帳戶頁面...`)}
+                                {t('payment.result.autoRedirect', { countdown })}
                             </p>
                         </div>
 
