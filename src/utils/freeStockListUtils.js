@@ -1,0 +1,222 @@
+/**
+ * 免費股票清單工具函數
+ * 通過 API 從後端獲取資料
+ */
+
+// API 基礎 URL
+const API_BASE_URL = process.env.REACT_APP_API_URL || '';
+
+// 快取變數
+let cachedStocksByRegion = null;
+let cachedTickers = null;
+let cacheTimestamp = null;
+const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 小時快取（資料更新頻率低）
+const CACHE_KEY_REGIONS = 'freeStockList_regions';
+const CACHE_KEY_TICKERS = 'freeStockList_tickers';
+const CACHE_KEY_TIMESTAMP = 'freeStockList_timestamp';
+const CACHE_KEY_VERSION = 'freeStockList_version';
+const CURRENT_CACHE_VERSION = '1.0'; // 當資料結構改變時更新此版本號
+
+/**
+ * 從 localStorage 載入快取
+ */
+const loadCacheFromStorage = () => {
+  try {
+    const storedVersion = localStorage.getItem(CACHE_KEY_VERSION);
+    const storedTimestamp = localStorage.getItem(CACHE_KEY_TIMESTAMP);
+    const storedRegions = localStorage.getItem(CACHE_KEY_REGIONS);
+    const storedTickers = localStorage.getItem(CACHE_KEY_TICKERS);
+    
+    // 檢查版本是否匹配
+    if (storedVersion !== CURRENT_CACHE_VERSION) {
+      console.info('Cache version mismatch, clearing old cache');
+      clearStorageCache();
+      return;
+    }
+    
+    if (storedTimestamp && storedRegions && storedTickers) {
+      cacheTimestamp = parseInt(storedTimestamp);
+      cachedStocksByRegion = JSON.parse(storedRegions);
+      cachedTickers = JSON.parse(storedTickers);
+    }
+  } catch (error) {
+    console.warn('Failed to load cache from localStorage:', error);
+    // 清除可能損壞的快取
+    clearStorageCache();
+  }
+};
+
+/**
+ * 儲存快取到 localStorage
+ */
+const saveCacheToStorage = () => {
+  try {
+    if (cacheTimestamp && cachedStocksByRegion && cachedTickers) {
+      localStorage.setItem(CACHE_KEY_VERSION, CURRENT_CACHE_VERSION);
+      localStorage.setItem(CACHE_KEY_TIMESTAMP, cacheTimestamp.toString());
+      localStorage.setItem(CACHE_KEY_REGIONS, JSON.stringify(cachedStocksByRegion));
+      localStorage.setItem(CACHE_KEY_TICKERS, JSON.stringify(cachedTickers));
+    }
+  } catch (error) {
+    console.warn('Failed to save cache to localStorage:', error);
+  }
+};
+
+/**
+ * 清除 localStorage 快取
+ */
+const clearStorageCache = () => {
+  try {
+    localStorage.removeItem(CACHE_KEY_VERSION);
+    localStorage.removeItem(CACHE_KEY_REGIONS);
+    localStorage.removeItem(CACHE_KEY_TICKERS);
+    localStorage.removeItem(CACHE_KEY_TIMESTAMP);
+  } catch (error) {
+    console.warn('Failed to clear localStorage cache:', error);
+  }
+};
+
+/**
+ * 檢查快取是否有效
+ * @returns {boolean} 快取是否有效
+ */
+const isCacheValid = () => {
+  // 如果記憶體中沒有快取，嘗試從 localStorage 載入
+  if (!cacheTimestamp && typeof localStorage !== 'undefined') {
+    loadCacheFromStorage();
+  }
+  
+  return cacheTimestamp && (Date.now() - cacheTimestamp) < CACHE_DURATION;
+};
+
+/**
+ * 從 API 獲取按區域分類的股票資料
+ * @returns {Promise<Object>} 按區域分類的股票資料
+ */
+export const getStocksByRegion = async () => {
+  // 如果有有效快取，直接返回
+  if (isCacheValid() && cachedStocksByRegion) {
+    return cachedStocksByRegion;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/public/free-stock-list/regions`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      // 更新快取
+      cachedStocksByRegion = result.data;
+      cacheTimestamp = Date.now();
+      
+      // 儲存到 localStorage
+      saveCacheToStorage();
+      
+      return result.data;
+    } else {
+      throw new Error(result.error || 'Failed to fetch stock data');
+    }
+  } catch (error) {
+    console.error('Failed to fetch stocks by region:', error);
+    
+    // 如果有舊快取，返回舊快取
+    if (cachedStocksByRegion) {
+      console.warn('Using cached data due to API error');
+      return cachedStocksByRegion;
+    }
+    
+    // 返回預設的空結構
+    return {
+      americas: { title: '美洲市場', icon: '🌎', stocks: [] },
+      europe: { title: '歐洲市場', icon: '🇪🇺', stocks: [] },
+      asiaPacific: { title: '亞太市場', icon: '🌏', stocks: [] },
+      global: { title: '全球市場', icon: '🌍', stocks: [] }
+    };
+  }
+};
+
+/**
+ * 獲取所有免費股票的 ticker 清單（用於權限檢查）
+ * @returns {Promise<string[]>} 股票代碼陣列
+ */
+export const getFreeStockTickers = async () => {
+  // 如果有有效快取，直接返回
+  if (isCacheValid() && cachedTickers) {
+    return cachedTickers;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/public/free-stock-list/tickers`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      // 更新快取
+      cachedTickers = result.data.tickers;
+      cacheTimestamp = Date.now();
+      
+      // 儲存到 localStorage
+      saveCacheToStorage();
+      
+      return result.data.tickers;
+    } else {
+      throw new Error(result.error || 'Failed to fetch tickers');
+    }
+  } catch (error) {
+    console.error('Failed to fetch free stock tickers:', error);
+    
+    // 如果有舊快取，返回舊快取
+    if (cachedTickers) {
+      console.warn('Using cached tickers due to API error');
+      return cachedTickers;
+    }
+    
+    // 返回預設的基本清單
+    return ['0050', 'SPY', 'VOO', 'QQQ', 'VTI'];
+  }
+};
+
+/**
+ * 檢查股票是否在免費清單中
+ * @param {string} stockCode - 股票代碼
+ * @param {string} userPlan - 用戶計劃 ('free' 或 'pro')
+ * @returns {Promise<boolean>} 是否允許訪問
+ */
+export const isStockAllowed = async (stockCode, userPlan = 'free') => {
+  if (userPlan === 'pro') return true; // Pro 用戶無限制
+  
+  try {
+    const freeStocks = await getFreeStockTickers();
+    return freeStocks.includes(stockCode.toUpperCase());
+  } catch (error) {
+    console.error('Failed to check stock permission:', error);
+    // 如果 API 失敗，返回 false（安全起見）
+    return false;
+  }
+};
+
+/**
+ * 獲取免費股票清單（向後兼容）
+ * @returns {Promise<string[]>} 股票代碼陣列
+ */
+export const getFreeStockList = async () => {
+  return await getFreeStockTickers();
+};
+
+/**
+ * 清除快取（用於測試或強制刷新）
+ */
+export const clearCache = () => {
+  cachedStocksByRegion = null;
+  cachedTickers = null;
+  cacheTimestamp = null;
+  clearStorageCache();
+};

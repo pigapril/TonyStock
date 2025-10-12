@@ -224,3 +224,35 @@
     color: #999;
   }
 }
+/* 載入和錯誤狀態樣式 */
+.loading-message,
+.error-message,
+.no-data-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary, #666);
+  text-align: center;
+}
+
+.error-message {
+  color: var(--color-error, #dc3545);
+}
+
+.loading-message {
+  color: var(--color-text-tertiary, #999);
+}
+
+/* 深色模式支援 - 狀態訊息 */
+@media (prefers-color-scheme: dark) {
+  .loading-message,
+  .no-data-message {
+    color: #999;
+  }
+  
+  .error-message {
+    color: #ff6b6b;
+  }
+}

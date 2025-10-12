@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dialog } from './Dialog';
 import { Analytics } from '../../../utils/analytics';
-import { getFreeStockList } from '../../../constants/freeStockList';
+import { getFreeStockList } from '../../../utils/freeStockListUtils';
 
 // 主要導出的組件，支援直接 props 模式
 export function FeatureUpgradeDialog({ 

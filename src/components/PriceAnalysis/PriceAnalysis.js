@@ -23,7 +23,7 @@ import AnnouncementBar from '../Common/AnnouncementBar/AnnouncementBar'; // 引�
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
 import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDialog
-import { isStockAllowed, getFreeStockList } from '../../constants/freeStockList'; // 導入免費股票清單檢查函數
+import { isStockAllowed, getFreeStockList } from '../../utils/freeStockListUtils'; // 導入免費股票清單檢查函數
 import FreeStockList from './FreeStockList'; // 新增：引入免費股票清單組件
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
