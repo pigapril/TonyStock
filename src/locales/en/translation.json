@@ -1877,7 +1877,67 @@
     },
     "tabs": {
       "codeManagement": "Code Management",
-      "analytics": "Analytics"
+      "analytics": "Analytics",
+      "userManagement": "User Management"
+    },
+    "userManagement": {
+      "title": "User Upgrade Management",
+      "description": "Search users and upgrade them to Pro membership",
+      "search": {
+        "placeholder": "Enter user email address",
+        "button": "Search",
+        "searching": "Searching...",
+        "errors": {
+          "emailRequired": "Please enter user email",
+          "invalidEmail": "Please enter a valid email format",
+          "searchFailed": "Failed to search user",
+          "networkError": "Error occurred while searching user"
+        }
+      },
+      "userInfo": {
+        "email": "Email",
+        "registeredAt": "Registered At",
+        "lastLogin": "Last Login",
+        "subscriptionStatus": "Subscription Status",
+        "noSubscription": "No Subscription",
+        "noLastLogin": "Never logged in"
+      },
+      "plans": {
+        "free": "Free Member",
+        "pro": "Pro Member",
+        "ultra": "Ultra Member"
+      },
+      "subscriptionStatus": {
+        "active": "Active",
+        "cancelled": "Cancelled",
+        "expired": "Expired",
+        "suspended": "Suspended",
+        "until": "until"
+      },
+      "upgrade": {
+        "title": "Upgrade Settings",
+        "duration": "Upgrade Duration",
+        "reason": "Upgrade Reason",
+        "reasonPlaceholder": "Optional: Reason for upgrade",
+        "button": "Upgrade to Pro",
+        "buttonUpgrading": "Upgrading...",
+        "buttonAlreadyPro": "Already Pro Member",
+        "units": {
+          "days": "days",
+          "months": "months"
+        },
+        "success": "Successfully upgraded user {{email}} to Pro membership for {{duration}} {{unit}}",
+        "errors": {
+          "noUserSelected": "Please select a user to upgrade first",
+          "invalidDuration": "Please enter a valid upgrade duration",
+          "upgradeFailed": "Failed to upgrade user",
+          "networkError": "Error occurred while upgrading user"
+        }
+      },
+      "noResults": {
+        "title": "No user found with this email",
+        "icon": "👤"
+      }
     },
     "actions": {
       "manageCodes": "Manage Codes",

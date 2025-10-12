@@ -14,6 +14,7 @@ import { useAdminPermissions } from '../hooks/useAdminPermissions';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
 import CodeManagementPanel from '../components/Admin/CodeManagement/CodeManagementPanel';
 import RedemptionAnalytics from '../components/Admin/Analytics/RedemptionAnalytics';
+import UserUpgradePanel from '../components/Admin/UserManagement/UserUpgradePanel';
 import './AdminPage.css';
 
 const AdminPage = () => {
@@ -79,6 +80,12 @@ const AdminPage = () => {
             label: t('admin.tabs.analytics'),
             icon: '📊',
             component: RedemptionAnalytics
+        },
+        {
+            id: 'users',
+            label: t('admin.tabs.userManagement'),
+            icon: '👥',
+            component: UserUpgradePanel
         }
     ];
 

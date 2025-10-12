@@ -1873,7 +1873,67 @@
     },
     "tabs": {
       "codeManagement": "代碼管理",
-      "analytics": "分析數據"
+      "analytics": "分析數據",
+      "userManagement": "用戶管理"
+    },
+    "userManagement": {
+      "title": "用戶升級管理",
+      "description": "搜尋用戶並升級為 Pro 會員",
+      "search": {
+        "placeholder": "輸入用戶 Email 地址",
+        "button": "搜尋",
+        "searching": "搜尋中...",
+        "errors": {
+          "emailRequired": "請輸入用戶 Email",
+          "invalidEmail": "請輸入有效的 Email 格式",
+          "searchFailed": "搜尋用戶失敗",
+          "networkError": "搜尋用戶時發生錯誤"
+        }
+      },
+      "userInfo": {
+        "email": "Email",
+        "registeredAt": "註冊時間",
+        "lastLogin": "最後登入",
+        "subscriptionStatus": "訂閱狀態",
+        "noSubscription": "無訂閱",
+        "noLastLogin": "從未登入"
+      },
+      "plans": {
+        "free": "免費會員",
+        "pro": "Pro 會員",
+        "ultra": "Ultra 會員"
+      },
+      "subscriptionStatus": {
+        "active": "有效",
+        "cancelled": "已取消",
+        "expired": "已過期",
+        "suspended": "已暫停",
+        "until": "至"
+      },
+      "upgrade": {
+        "title": "升級設定",
+        "duration": "升級期間",
+        "reason": "升級原因",
+        "reasonPlaceholder": "選填：升級原因說明",
+        "button": "升級為 Pro",
+        "buttonUpgrading": "升級中...",
+        "buttonAlreadyPro": "已是 Pro 會員",
+        "units": {
+          "days": "天",
+          "months": "月"
+        },
+        "success": "成功將用戶 {{email}} 升級為 Pro 會員，期限 {{duration}} {{unit}}",
+        "errors": {
+          "noUserSelected": "請先選擇要升級的用戶",
+          "invalidDuration": "請輸入有效的升級期間",
+          "upgradeFailed": "升級用戶失敗",
+          "networkError": "升級用戶時發生錯誤"
+        }
+      },
+      "noResults": {
+        "title": "找不到該 Email 的用戶",
+        "icon": "👤"
+      }
     },
     "actions": {
       "manageCodes": "管理代碼",
