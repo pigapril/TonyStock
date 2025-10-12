@@ -24,14 +24,30 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
       // 美國整體市場
       { ticker: 'VTI', name: 'Vanguard Total Stock Market ETF' },
       { ticker: 'ITOT', name: 'iShares Core S&P Total U.S. Stock Market ETF' },
+      // 美國小型股
+      { ticker: '^RUT', name: 'Russell 2000' },
+      { ticker: 'IWM', name: 'iShares Russell 2000 ETF' },
+      { ticker: 'VB', name: 'Vanguard Small-Cap ETF' },
       // 加拿大
       { ticker: 'EWC', name: 'iShares MSCI Canada ETF' },
       // 巴西
       { ticker: '^BVSP', name: 'Bovespa Index' },
       { ticker: 'EWZ', name: 'iShares MSCI Brazil ETF' },
+      // 墨西哥
+      { ticker: '^MXX', name: 'IPC Mexico' },
+      { ticker: 'EWW', name: 'iShares MSCI Mexico ETF' },
       // 德國
       { ticker: '^GDAXI', name: 'DAX' },
       { ticker: 'EWG', name: 'iShares MSCI Germany ETF' },
+      // 英國
+      { ticker: '^FTSE', name: 'FTSE 100' },
+      { ticker: 'EWU', name: 'iShares MSCI United Kingdom ETF' },
+      // 法國
+      { ticker: '^FCHI', name: 'CAC 40' },
+      { ticker: 'EWQ', name: 'iShares MSCI France ETF' },
+      // 歐洲整體
+      { ticker: 'VGK', name: 'Vanguard FTSE Europe ETF' },
+      { ticker: 'EFA', name: 'iShares MSCI EAFE ETF' },
       // 台灣
       { ticker: '^TWII', name: '臺灣加權指數' },
       { ticker: 'EWT', name: 'iShares MSCI Taiwan ETF' },
@@ -41,6 +57,18 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
       { ticker: '^N225', name: 'Nikkei 225' },
       { ticker: 'EWJ', name: 'iShares MSCI Japan ETF' },
       { ticker: '00645', name: '富邦日本' },
+      // 韓國
+      { ticker: '^KS11', name: 'KOSPI' },
+      { ticker: 'EWY', name: 'iShares MSCI South Korea ETF' },
+      // 印度
+      { ticker: '^NSEI', name: 'NIFTY 50' },
+      { ticker: 'INDA', name: 'iShares MSCI India ETF' },
+      // 澳洲
+      { ticker: '^AXJO', name: 'ASX 200' },
+      { ticker: 'EWA', name: 'iShares MSCI Australia ETF' },
+      // 香港
+      { ticker: '^HSI', name: '恆生指數' },
+      { ticker: 'EWH', name: 'iShares MSCI Hong Kong ETF' },
       // 中國
       { ticker: '000300.SS', name: '滬深300指數' },
       { ticker: 'ASHR', name: 'Xtrackers Harvest CSI 300 China A-Shares ETF' },
@@ -49,7 +77,12 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
       { ticker: 'VT', name: 'Vanguard Total World Stock ETF' },
       // 新興市場
       { ticker: 'VWO', name: 'Vanguard FTSE Emerging Markets ETF' },
-      { ticker: 'IEMG', name: 'iShares Core MSCI Emerging Markets ETF' }
+      { ticker: 'IEMG', name: 'iShares Core MSCI Emerging Markets ETF' },
+      // 已開發市場
+      { ticker: 'VEA', name: 'Vanguard FTSE Developed Markets ETF' },
+      { ticker: 'IEFA', name: 'iShares Core MSCI EAFE ETF' },
+      // 亞太已開發市場
+      { ticker: 'VPL', name: 'Vanguard FTSE Pacific ETF' }
     ];
   }, []);
 

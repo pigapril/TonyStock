@@ -9,22 +9,44 @@ export const FREE_STOCK_LIST = [
   '^NDX', 'QQQ', '00662',
   // 美國整體市場
   'VTI', 'ITOT',
+  // 美國小型股
+  '^RUT', 'IWM', 'VB',
   // 加拿大
   'EWC',
   // 巴西
   '^BVSP', 'EWZ',
+  // 墨西哥
+  '^MXX', 'EWW',
   // 德國
   '^GDAXI', 'EWG',
+  // 英國
+  '^FTSE', 'EWU',
+  // 法國
+  '^FCHI', 'EWQ',
+  // 歐洲整體
+  'VGK', 'EFA',
   // 台灣
   '^TWII', 'EWT', '0050', '006208',
   // 日本
   '^N225', 'EWJ', '00645',
+  // 韓國
+  '^KS11', 'EWY',
+  // 印度
+  '^NSEI', 'INDA',
+  // 澳洲
+  '^AXJO', 'EWA',
+  // 香港
+  '^HSI', 'EWH',
   // 中國
   '000300.SS', 'ASHR', '006206',
   // 全球市場
   'VT',
   // 新興市場
-  'VWO', 'IEMG'
+  'VWO', 'IEMG',
+  // 已開發市場
+  'VEA', 'IEFA',
+  // 亞太已開發市場
+  'VPL'
 ];
 
 /**
