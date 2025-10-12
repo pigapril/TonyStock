@@ -188,22 +188,22 @@ const UserUpgradePanel = () => {
             </div>
 
             {/* Search Section */}
-            <div className="search-section">
-                <div className="search-form">
-                    <div className="search-input-group">
+            <div className="upgrade-panel-search-section">
+                <div className="upgrade-panel-search-form">
+                    <div className="upgrade-panel-search-input-group">
                         <input
                             type="email"
                             value={searchEmail}
                             onChange={(e) => setSearchEmail(e.target.value)}
                             onKeyPress={handleSearchKeyPress}
                             placeholder={t('admin.userManagement.search.placeholder')}
-                            className="search-input"
+                            className="upgrade-panel-search-input"
                             disabled={isSearching}
                         />
                         <button
                             onClick={handleSearchUser}
                             disabled={isSearching || !searchEmail.trim()}
-                            className="search-button"
+                            className="upgrade-panel-search-button"
                         >
                             {isSearching ? <LoadingSpinner size="small" /> : t('admin.userManagement.search.button')}
                         </button>
@@ -220,7 +220,7 @@ const UserUpgradePanel = () => {
 
             {/* Search Results */}
             {searchResults && (
-                <div className="search-results">
+                <div className="upgrade-panel-search-results">
                     {searchResults.user ? (
                         <div className="user-card">
                             <div className="user-info">
