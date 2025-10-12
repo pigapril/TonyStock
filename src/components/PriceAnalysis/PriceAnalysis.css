@@ -820,29 +820,23 @@
 }
 
 /* 快速選擇區塊樣式 (整合熱門搜尋和免費股票清單) */
+/* 快速選擇區塊樣式 - 使用 Flexbox 佈局 */
 .price-analysis-view .stock-analysis-card .quick-select-section {
   margin-top: 20px;
   width: 100%;
+  height: 400px; /* 固定高度 */
   background-color: var(--color-bg-secondary, #f8f9fa);
   border-radius: var(--border-radius-medium, 8px);
   border: 1px solid var(--color-border-light, #e9ecef);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
-/* 快速選擇區塊樣式 (整合熱門搜尋和免費股票清單) */
-.price-analysis-view .stock-analysis-card .quick-select-section {
-  margin-top: 20px;
-  width: 100%;
-  background-color: var(--color-bg-secondary, #f8f9fa);
-  border-radius: var(--border-radius-medium, 8px);
-  border: 1px solid var(--color-border-light, #e9ecef);
-  overflow: hidden;
-}
-
-/* Tab 導航樣式 */
+/* Tab 導航樣式 - 固定在頂部 */
 .price-analysis-view .quick-select-tabs {
   display: flex;
-  flex-wrap: nowrap; /* 防止換行 */
+  flex-shrink: 0; /* 不收縮 */
   background-color: rgba(0, 122, 255, 0.05);
   border-bottom: 1px solid var(--color-border-light, #e9ecef);
 }
@@ -858,9 +852,9 @@
   color: var(--color-text-secondary, #666);
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
-  white-space: nowrap; /* 防止文字換行 */
-  overflow: hidden; /* 隱藏溢出內容 */
-  text-overflow: ellipsis; /* 顯示省略號 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .price-analysis-view .quick-select-tab:hover {
@@ -884,13 +878,13 @@
   background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
 }
 
-/* Tab 內容區域 */
+/* Tab 內容區域 - 可滾動 */
 .price-analysis-view .quick-select-content {
-  padding: 16px;
-  min-height: 120px;
-  max-height: 300px;
+  flex: 1; /* 佔據剩餘空間 */
   overflow-y: auto;
-  overflow-x: hidden; /* 防止水平滾動 */
+  overflow-x: hidden;
+  padding: 16px;
+  min-height: 0; /* 重要：允許 flex 子項收縮 */
 }
 
 /* 熱門搜尋 Tab 內容 */
@@ -943,24 +937,24 @@
   transform: translateY(0);
 }
 
-/* 免費股票清單 Tab 內容 */
+/* 免費股票清單 Tab 內容 - 簡化樣式 */
 .price-analysis-view .free-stocks-tab-content {
-  /* 移除額外的 padding，讓 FreeStockList 組件自己控制 */
-  padding: 0;
-  margin: -16px; /* 抵消父容器的 padding */
+  height: 100%; /* 填滿父容器 */
+  overflow: visible;
 }
 
 .price-analysis-view .integrated-free-stock-list {
-  /* 調整整合後的免費股票清單樣式 */
-  margin: 0;
+  height: 100%;
 }
 
 .price-analysis-view .integrated-free-stock-list .free-stock-list {
   background: transparent;
   box-shadow: none;
   border: none;
-  padding: 16px;
+  padding: 0;
   margin: 0;
+  height: 100%;
+  overflow: visible;
 }
 
 .price-analysis-view .integrated-free-stock-list .free-stock-list:hover {
@@ -973,21 +967,32 @@
   .price-analysis-view .stock-analysis-card .quick-select-section {
     margin-top: 16px;
     margin-bottom: 10px;
+    height: 350px; /* 在小螢幕上減少高度 */
   }
   
   .price-analysis-view .quick-select-tab {
     padding: 10px 8px;
     font-size: 0.8rem;
-    min-width: 0; /* 允許收縮 */
+    min-width: 0;
   }
   
   .price-analysis-view .quick-select-content {
     padding: 12px;
-    max-height: 250px;
   }
   
   .price-analysis-view .hot-search-item {
     padding: 6px 10px;
     font-size: 0.8em;
+  }
+}
+
+/* 更小螢幕的調整 */
+@media (max-width: 480px) {
+  .price-analysis-view .stock-analysis-card .quick-select-section {
+    height: 300px; /* 在更小螢幕上進一步減少高度 */
+  }
+  
+  .price-analysis-view .quick-select-content {
+    padding: 8px;
   }
 }

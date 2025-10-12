@@ -1,22 +1,10 @@
 /* 免費股票清單組件樣式 */
 .free-stock-list {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 12px;
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.04),
-    0 2px 4px rgba(0, 0, 0, 0.02);
-  padding: 16px;
-  margin-top: 20px;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.free-stock-list:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    0 8px 16px rgba(0, 0, 0, 0.06),
-    0 4px 8px rgba(0, 0, 0, 0.04);
+  background: transparent; /* 在 Tab 中使用透明背景 */
+  padding: 0; /* 移除 padding，由父容器控制 */
+  margin: 0; /* 移除 margin */
+  height: 100%; /* 填滿父容器 */
+  overflow: visible; /* 確保內容可見 */
 }
 
 /* 免費股票網格 */
