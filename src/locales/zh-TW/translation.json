@@ -961,6 +961,8 @@
     },
     "toast": {
       "invalidYears": "請輸入有效的查詢期間（年），且必須大於零。",
+      "invalidYearsHotSearch": "進階模式下的查詢期間無效，已使用預設值進行分析。",
+      "invalidYearsFreeStock": "進階模式下的查詢期間無效，已使用預設值進行分析。",
       "turnstileRequired": "請先完成驗證",
       "turnstileError": "驗證失敗，請重試",
       "turnstileExpired": "驗證已過期，請重新驗證",
@@ -1079,6 +1081,54 @@
     "hotSearches": {
       "title": "熱門分析 🔥",
       "noData": "暫無資料"
+    },
+    "quickSelect": {
+      "tabs": {
+        "hotSearches": "熱門分析 🔥",
+        "freeStocks": "免費標的 💎"
+      }
+    },
+    "freeStockList": {
+      "title": "免費查詢標的 💎",
+      "subtitle": "點擊下方股票代碼即可快速分析",
+      "upgradeHint": "升級至 Pro 方案可查詢所有股票標的",
+      "regions": {
+        "americas": "美洲市場",
+        "europe": "歐洲市場", 
+        "asiaPacific": "亞太市場",
+        "global": "全球市場"
+      },
+      "markets": {
+        "sp500": "美國 S&P 500",
+        "nasdaq": "美國 Nasdaq",
+        "usTotal": "美國整體市場",
+        "canada": "加拿大",
+        "brazil": "巴西",
+        "germany": "德國",
+        "taiwan": "台灣",
+        "japan": "日本",
+        "china": "中國",
+        "globalMarkets": "全球市場",
+        "emergingMarkets": "新興市場"
+      },
+      "descriptions": {
+        "sp500": "追蹤美國 500 家最大型上市公司，是全球最重要的股市基準。",
+        "nasdaq": "追蹤在納斯達克上市的 100 家最大非金融公司，以科技股為主。",
+        "usTotal": "涵蓋美國整體股市，包含大型、中型到小型股，是最多元的分散投資。",
+        "canada": "投資加拿大市場，能源和金融業佔比較高。",
+        "brazil": "拉丁美洲最大的經濟體，與原物料價格連動性高。",
+        "germany": "歐洲最大經濟體，以工業和汽車製造聞名。",
+        "taiwan": "EWT 是外資投資台股的風向標；0050/006208 是國內投資人的首選。",
+        "japan": "全球第三大經濟體，以汽車、電子和精密工業為強項。",
+        "china": "直接投資在中國上海、深圳掛牌的 A 股。",
+        "globalMarkets": "一檔 ETF 投資全球已開發及新興市場，是終極的分散投資工具。",
+        "emergingMarkets": "投資中國、台灣、印度、巴西等新興經濟體，潛在成長高但波動也較大。"
+      },
+      "types": {
+        "index": "指數",
+        "usEtf": "美股ETF",
+        "twEtf": "台股ETF"
+      }
     },
     "errors": {
       "stockNotAllowed": "免費用戶僅能查詢 {{allowedStocks}} 股票，升級至 Pro 方案可查詢所有股票。"

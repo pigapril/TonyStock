@@ -1,0 +1,157 @@
+/* 免費股票清單組件樣式 */
+.free-stock-list {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 12px;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.04),
+    0 2px 4px rgba(0, 0, 0, 0.02);
+  padding: 16px;
+  margin-top: 20px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.free-stock-list:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.06),
+    0 4px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* 免費股票網格 */
+.free-stock-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 6px;
+}
+
+/* 免費股票項目 */
+.free-stock-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-align: left;
+  position: relative;
+  width: 100%;
+}
+
+.free-stock-item:hover {
+  transform: translateY(-1px);
+  border-color: #007AFF;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.15);
+  background: rgba(0, 122, 255, 0.05);
+}
+
+.free-stock-item:active {
+  transform: translateY(0);
+}
+
+.free-stock-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  /* 允許內容收縮 */
+  gap: 4px;
+  /* ticker 和 name 之間的間距 */
+}
+
+.free-stock-ticker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #007AFF;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  flex-shrink: 0;
+  /* ticker 不收縮 */
+}
+
+.free-stock-name {
+  font-size: 0.65rem;
+  color: #1d1d1f;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  /* name 佔據剩餘空間 */
+  min-width: 0;
+  /* 允許收縮 */
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .free-stock-list {
+    padding: 12px;
+    margin-top: 16px;
+  }
+
+  .free-stock-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 4px;
+  }
+
+  .free-stock-item {
+    padding: 6px;
+  }
+
+  .free-stock-ticker {
+    font-size: 0.7rem;
+  }
+
+  .free-stock-name {
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .free-stock-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 3px;
+  }
+
+  .free-stock-item {
+    padding: 5px;
+  }
+
+  .free-stock-ticker {
+    font-size: 0.65rem;
+  }
+
+  .free-stock-name {
+    font-size: 0.55rem;
+  }
+
+  .free-stock-info {
+    gap: 3px;
+    /* 在小螢幕上減少間距 */
+  }
+}
+
+/* 深色模式支援 */
+@media (prefers-color-scheme: dark) {
+  .free-stock-list {
+    background: rgba(28, 28, 30, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .free-stock-item {
+    background: rgba(44, 44, 46, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .free-stock-item:hover {
+    background: rgba(0, 122, 255, 0.1);
+    border-color: #007AFF;
+  }
+
+  .free-stock-name {
+    color: #f5f5f7;
+  }
+}

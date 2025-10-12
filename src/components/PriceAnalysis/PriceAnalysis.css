@@ -819,32 +819,89 @@
   }
 }
 
-/* 熱門搜尋區塊樣式 - 整體容器 */
-.price-analysis-view .stock-analysis-card .hot-searches-section {
+/* 快速選擇區塊樣式 (整合熱門搜尋和免費股票清單) */
+.price-analysis-view .stock-analysis-card .quick-select-section {
   margin-top: 20px;
   width: 100%;
-  padding: 15px 10px;
-  height: 30%;
-  /* border-top: 1px solid var(--color-border-light, #f0f0f0); /* 可選：更淡的頂部分隔線 */
-  text-align: center;  
+  background-color: var(--color-bg-secondary, #f8f9fa);
+  border-radius: var(--border-radius-medium, 8px);
+  border: 1px solid var(--color-border-light, #e9ecef);
+  overflow: hidden;
 }
 
-/* 熱門搜尋區塊標題 */
-.price-analysis-view .stock-analysis-card .hot-searches-section h4 {
-  margin-top: 0;
-  margin-bottom: 10px; /* 略微減少與下方文字的間距 */
-  color: var(--color-text-secondary, #eb4646); /* 使用次要文字顏色，或更柔和的深灰色 */
+/* 快速選擇區塊樣式 (整合熱門搜尋和免費股票清單) */
+.price-analysis-view .stock-analysis-card .quick-select-section {
+  margin-top: 20px;
+  width: 100%;
+  background-color: var(--color-bg-secondary, #f8f9fa);
+  border-radius: var(--border-radius-medium, 8px);
+  border: 1px solid var(--color-border-light, #e9ecef);
+  overflow: hidden;
 }
 
-/* 熱門搜尋區塊說明文字 (如果有的話) */
-.price-analysis-view .stock-analysis-card .hot-searches-section p {
-  font-size: 0.85em; /* 略微縮小 */
-  color: var(--color-text-tertiary, #888); /* 更淡的灰色 */
-  margin-bottom: 12px;
+/* Tab 導航樣式 */
+.price-analysis-view .quick-select-tabs {
+  display: flex;
+  background-color: rgba(0, 122, 255, 0.05);
+  border-bottom: 1px solid var(--color-border-light, #e9ecef);
+}
+
+.price-analysis-view .quick-select-tab {
+  flex: 1;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #666);
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+}
+
+.price-analysis-view .quick-select-tab:hover {
+  background-color: rgba(0, 122, 255, 0.08);
+  color: var(--color-text-primary, #333);
+}
+
+.price-analysis-view .quick-select-tab.active {
+  background-color: rgba(0, 122, 255, 0.1);
+  color: #007AFF;
+  font-weight: 600;
+}
+
+.price-analysis-view .quick-select-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+}
+
+/* Tab 內容區域 */
+.price-analysis-view .quick-select-content {
+  padding: 16px;
+  min-height: 120px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* 熱門搜尋 Tab 內容 */
+.price-analysis-view .hot-searches-tab-content {
+  text-align: center;
+}
+
+.price-analysis-view .hot-searches-tab-content .loading-text,
+.price-analysis-view .hot-searches-tab-content .no-data-text {
+  font-size: 0.85em;
+  color: var(--color-text-tertiary, #888);
+  margin: 20px 0;
 }
 
 /* 熱門搜尋列表 */
-.price-analysis-view .stock-analysis-card .hot-search-list {
+.price-analysis-view .hot-search-list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -852,54 +909,79 @@
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
-  max-height: 100%; /* 保留滾動功能 */
-  overflow-y: auto;
-  padding-right: 5px; /* 為捲動軸留出空間 */
-}
-
-/* 熱門搜尋列表捲動條樣式 */
-.price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar {
-  width: 6px; /* 更細的捲動條 */
-}
-.price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar-track {
-  background: transparent; /* 軌道透明 */
-}
-.price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar-thumb {
-  background: var(--color-scrollbar-thumb, #dcdcdc); /* 淡灰色滑塊 */
-  border-radius: 6px;
-}
-.price-analysis-view .stock-analysis-card .hot-search-list::-webkit-scrollbar-thumb:hover {
-  background: var(--color-scrollbar-thumb-hover, #bfbfbf); /* 滑鼠懸停時略深 */
 }
 
 /* 熱門搜尋項目 */
-.price-analysis-view .stock-analysis-card .hot-search-item {
-  padding: 7px 14px; /* 略微調整 padding */
-  background-color: var(--color-bg-muted, #f8f8f8); /* 非常淡的灰色背景，接近白色 */
-  border-radius: var(--border-radius-medium, 8px); /* 圓角與卡片一致或略小 */
+.price-analysis-view .hot-search-item {
+  background-color: var(--color-bg-muted, #f5f5f5);
+  border-radius: var(--border-radius-small, 6px);
+  padding: 8px 12px;
   cursor: pointer;
-  font-size: 0.85em; /* 略微調整字體大小 */
-  font-weight: 400; /* 正常字重，不加粗 */
-  color: var(--color-text-secondary, #333333); /* 深灰色文字，確保對比度 */
-  transition: background-color 0.2s ease, color 0.2s ease; /* 平滑過渡 */
-  border: 1px solid var(--color-border-subtle, #eeeeee); /* 非常淡的邊框，或移除 border: none; */
-  /* box-shadow: none; /* 移除陰影以獲得更扁平的外觀 */
+  font-size: 0.85em;
+  font-weight: 500;
+  color: var(--color-text-secondary, #333);
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: 1px solid var(--color-border-subtle, #e0e0e0);
 }
 
-/* 熱門搜尋項目 - 滑鼠懸停/焦點狀態 */
-.price-analysis-view .stock-analysis-card .hot-search-item:hover,
-.price-analysis-view .stock-analysis-card .hot-search-item:focus {
-  background-color: var(--color-bg-muted-hover, #efefef); /* 懸停時背景色略微加深 */
-  color: var(--color-text-primary, #000000); /* 懸停時文字顏色可略微加深或保持不變 */
-  /* border-color: var(--color-border-muted-hover, #e0e0e0); /* 懸停時邊框顏色略微加深 */
-  /* box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.03)); /* 可選：非常細微的陰影 */
+.price-analysis-view .hot-search-item:hover,
+.price-analysis-view .hot-search-item:focus {
+  background-color: #007AFF;
+  color: white;
+  border-color: #007AFF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 122, 255, 0.2);
   outline: none;
-  /* transform: none; /* 移除變形效果，保持穩定 */
 }
 
-/* 熱門搜尋項目 - 按下狀態 */
-.price-analysis-view .stock-analysis-card .hot-search-item:active {
-  background-color: var(--color-bg-muted-active, #e8e8e8); /* 按下時背景色更深一點 */
-  /* transform: none; /* 移除變形效果 */
-  /* box-shadow: none; /* 按下時移除陰影 */
+.price-analysis-view .hot-search-item:active {
+  transform: translateY(0);
+}
+
+/* 免費股票清單 Tab 內容 */
+.price-analysis-view .free-stocks-tab-content {
+  /* 移除額外的 padding，讓 FreeStockList 組件自己控制 */
+  padding: 0;
+  margin: -16px; /* 抵消父容器的 padding */
+}
+
+.price-analysis-view .integrated-free-stock-list {
+  /* 調整整合後的免費股票清單樣式 */
+  margin: 0;
+}
+
+.price-analysis-view .integrated-free-stock-list .free-stock-list {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding: 16px;
+  margin: 0;
+}
+
+.price-analysis-view .integrated-free-stock-list .free-stock-list:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .price-analysis-view .stock-analysis-card .quick-select-section {
+    margin-top: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .price-analysis-view .quick-select-tab {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .price-analysis-view .quick-select-content {
+    padding: 12px;
+    max-height: 250px;
+  }
+  
+  .price-analysis-view .hot-search-item {
+    padding: 6px 10px;
+    font-size: 0.8em;
+  }
 }

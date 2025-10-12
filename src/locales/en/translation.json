@@ -1051,6 +1051,8 @@
     },
     "toast": {
       "invalidYears": "Invalid query period, please enter a number greater than 0.",
+      "invalidYearsHotSearch": "Invalid query period in advanced mode, using default value for analysis.",
+      "invalidYearsFreeStock": "Invalid query period in advanced mode, using default value for analysis.",
       "turnstileRequired": "Please complete the verification first",
       "turnstileError": "Verification failed, please try again",
       "turnstileExpired": "Verification expired, please verify again",
@@ -1062,6 +1064,54 @@
     "hotSearches": {
       "title": "Trending 🔥",
       "noData": "No data available"
+    },
+    "quickSelect": {
+      "tabs": {
+        "hotSearches": "Trending 🔥",
+        "freeStocks": "Free Stocks 💎"
+      }
+    },
+    "freeStockList": {
+      "title": "Free Analysis Stocks 💎",
+      "subtitle": "Click any stock symbol below for quick analysis",
+      "upgradeHint": "Upgrade to Pro plan to access all stock symbols",
+      "regions": {
+        "americas": "Americas",
+        "europe": "Europe", 
+        "asiaPacific": "Asia Pacific",
+        "global": "Global Markets"
+      },
+      "markets": {
+        "sp500": "US S&P 500",
+        "nasdaq": "US Nasdaq",
+        "usTotal": "US Total Market",
+        "canada": "Canada",
+        "brazil": "Brazil",
+        "germany": "Germany",
+        "taiwan": "Taiwan",
+        "japan": "Japan",
+        "china": "China",
+        "globalMarkets": "Global Markets",
+        "emergingMarkets": "Emerging Markets"
+      },
+      "descriptions": {
+        "sp500": "Tracks the 500 largest US public companies, the world's most important stock market benchmark.",
+        "nasdaq": "Tracks the 100 largest non-financial companies listed on Nasdaq, primarily tech stocks.",
+        "usTotal": "Covers the entire US stock market, including large, mid, and small-cap stocks for maximum diversification.",
+        "canada": "Invests in the Canadian market, with higher exposure to energy and financial sectors.",
+        "brazil": "Latin America's largest economy, highly correlated with commodity prices.",
+        "germany": "Europe's largest economy, renowned for industrial and automotive manufacturing.",
+        "taiwan": "EWT is the foreign investment benchmark for Taiwan stocks; 0050/006208 are domestic investor favorites.",
+        "japan": "The world's third-largest economy, strong in automotive, electronics, and precision industries.",
+        "china": "Direct investment in A-shares listed on Shanghai and Shenzhen exchanges.",
+        "globalMarkets": "One ETF investing in global developed and emerging markets, the ultimate diversification tool.",
+        "emergingMarkets": "Invests in emerging economies like China, Taiwan, India, Brazil with high growth potential but higher volatility."
+      },
+      "types": {
+        "index": "Index",
+        "usEtf": "US ETF",
+        "twEtf": "TW ETF"
+      }
     },
     "errors": {
       "stockNotAllowed": "Free users can only query {{allowedStocks}} stocks. Upgrade to Pro plan to access all stocks."

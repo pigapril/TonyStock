@@ -24,6 +24,7 @@ import enhancedApiClient from '../../utils/enhancedApiClient';
 import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
 import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDialog
 import { isStockAllowed, getFreeStockList } from '../../constants/freeStockList'; // 導入免費股票清單檢查函數
+import FreeStockList from './FreeStockList'; // 新增：引入免費股票清單組件
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
 function getTimeUnit(dates) {
@@ -111,6 +112,9 @@ export function PriceAnalysis() {
   // 新增：熱門搜尋狀態
   const [hotSearches, setHotSearches] = useState([]);
   const [loadingHotSearches, setLoadingHotSearches] = useState(false);
+
+  // 新增：快速選擇 Tab 狀態
+  const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('hotSearches'); // 'hotSearches' 或 'freeStocks'
 
   // --- Debounced State Setters ---
   // Debounce setStockCode with a 300ms delay
@@ -594,6 +598,85 @@ export function PriceAnalysis() {
     fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, false, true);
   };
 
+  // 新增：處理免費股票清單點擊事件
+  const handleFreeStockClick = (ticker) => {
+    // 新增：檢查登入狀態
+    if (!isAuthenticated) {
+      openDialog('auth', {
+        returnPath: location.pathname,
+        message: t('protectedRoute.loginRequired')
+      });
+      return;
+    }
+
+    // 免費股票清單中的股票都是允許的，但仍然檢查一下
+    const userPlan = user?.plan || 'free';
+    const upperClickedCode = ticker.toUpperCase();
+    if (!isStockAllowed(upperClickedCode, userPlan)) {
+      // 理論上不應該發生，但為了安全起見
+      openDialog('featureUpgrade', {
+        feature: 'stockAccess',
+        stockCode: upperClickedCode,
+        allowedStocks: getFreeStockList(),
+        upgradeUrl: `/${i18n.language}/subscription-plans`
+      });
+      return;
+    }
+
+    // 更新狀態以反映新的股票代碼
+    setDisplayStockCode(upperClickedCode);
+    setStockCode(upperClickedCode);
+
+    // 準備表單提交所需的參數
+    let numYearsToFetch;
+    if (isAdvancedQuery) {
+        const convertedYears = years
+            .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
+            .replace(/[．。]/g, '.');
+        const parsedYears = parseFloat(convertedYears);
+        if (!isNaN(parsedYears) && parsedYears > 0) {
+            numYearsToFetch = parsedYears;
+        } else {
+            numYearsToFetch = 3.5;
+            showToast(t('priceAnalysis.toast.invalidYearsFreeStock'), 'warning');
+        }
+    } else {
+        switch (analysisPeriod) {
+            case '短期': numYearsToFetch = 0.5; break;
+            case '中期': numYearsToFetch = 1.5; break;
+            case '長期': default: numYearsToFetch = 3.5; break;
+        }
+    }
+    const dateToFetch = isAdvancedQuery ? backTestDate : '';
+
+    // --- 立即更新 UI 反饋 ---
+    setLoading(true);
+    startTransition(() => {
+        setChartData(null);
+        setUlbandData(null);
+        setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
+        setDisplayedStockCode('');
+    });
+    // --- UI 反饋結束 ---
+
+    // --- 調用 Context 的函數來請求廣告 ---
+    requestAdDisplay('priceAnalysis', 3);
+    // --- 廣告請求結束 ---
+
+    // 延遲分析事件發送
+    setTimeout(() => {
+        Analytics.stockAnalysis.search({
+            stockCode: upperClickedCode,
+            years: numYearsToFetch,
+            backTestDate: dateToFetch,
+            source: 'freeStockList' // 標記來源為免費股票清單
+        });
+    }, 0);
+
+    // 直接調用 fetchStockData 執行分析
+    fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, false, true);
+  };
+
   // 切換簡易/進階查詢模式
   const toggleQueryMode = () => {
     setIsAdvancedQuery(!isAdvancedQuery);
@@ -861,29 +944,60 @@ export function PriceAnalysis() {
               </form>
             </div>
 
-            {/* 熱門搜尋區塊 (仍在 analysis-controls-wrapper 內) */}
-            <div className="hot-searches-section">
-              <h4>{t('priceAnalysis.hotSearches.title')}</h4>
-              {loadingHotSearches ? (
-                <p>{t('common.loading')}</p>
-              ) : hotSearches.length > 0 ? (
-                <ul className="hot-search-list">
-                  {hotSearches.map((searchItem, index) => (
-                    <li
-                      key={index}
-                      className="hot-search-item"
-                      onClick={() => handleHotSearchClick(searchItem)}
-                      role="button" // 增加可訪問性
-                      tabIndex={0}  // 增加可訪問性
-                      onKeyPress={(e) => e.key === 'Enter' && handleHotSearchClick(searchItem)} // 增加可訪問性
-                    >
-                      {searchItem.keyword}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>{t('priceAnalysis.hotSearches.noData')}</p>
-              )}
+            {/* 快速選擇區塊 (熱門搜尋 + 免費股票清單) */}
+            <div className="quick-select-section">
+              {/* Tab 導航 */}
+              <div className="quick-select-tabs">
+                <button
+                  className={`quick-select-tab ${activeQuickSelectTab === 'hotSearches' ? 'active' : ''}`}
+                  onClick={() => setActiveQuickSelectTab('hotSearches')}
+                >
+                  {t('priceAnalysis.quickSelect.tabs.hotSearches')}
+                </button>
+                <button
+                  className={`quick-select-tab ${activeQuickSelectTab === 'freeStocks' ? 'active' : ''}`}
+                  onClick={() => setActiveQuickSelectTab('freeStocks')}
+                >
+                  {t('priceAnalysis.quickSelect.tabs.freeStocks')}
+                </button>
+              </div>
+
+              {/* Tab 內容 */}
+              <div className="quick-select-content">
+                {activeQuickSelectTab === 'hotSearches' && (
+                  <div className="hot-searches-tab-content">
+                    {loadingHotSearches ? (
+                      <p className="loading-text">{t('common.loading')}</p>
+                    ) : hotSearches.length > 0 ? (
+                      <ul className="hot-search-list">
+                        {hotSearches.map((searchItem, index) => (
+                          <li
+                            key={index}
+                            className="hot-search-item"
+                            onClick={() => handleHotSearchClick(searchItem)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyPress={(e) => e.key === 'Enter' && handleHotSearchClick(searchItem)}
+                          >
+                            {searchItem.keyword}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="no-data-text">{t('priceAnalysis.hotSearches.noData')}</p>
+                    )}
+                  </div>
+                )}
+
+                {activeQuickSelectTab === 'freeStocks' && (
+                  <div className="free-stocks-tab-content">
+                    <FreeStockList 
+                      onStockSelect={handleFreeStockClick}
+                      className="integrated-free-stock-list"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div> {/* 結束 analysis-controls-wrapper */}
 
