@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getStocksByRegion } from '../../utils/freeStockListUtils';
 import './FreeStockList.css';
@@ -24,14 +24,14 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
         setStocksByRegion(data);
       } catch (err) {
         console.error('Failed to load stock data:', err);
-        setError('載入股票清單失敗');
+        setError(t('common.dataLoadError'));
       } finally {
         setLoading(false);
       }
     };
 
     loadStockData();
-  }, []);
+  }, [t]);
 
   // 處理股票點擊
   const handleStockClick = (ticker) => {
@@ -44,7 +44,7 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
   if (loading) {
     return (
       <div className={`free-stock-list ${className}`}>
-        <div className="loading-message">載入股票清單中...</div>
+        <div className="loading-message">{t('common.loading')}</div>
       </div>
     );
   }
@@ -62,7 +62,7 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
   if (!stocksByRegion) {
     return (
       <div className={`free-stock-list ${className}`}>
-        <div className="no-data-message">暫無股票資料</div>
+        <div className="no-data-message">{t('common.noData')}</div>
       </div>
     );
   }
@@ -74,7 +74,7 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
           <div key={regionKey} className="free-stock-region">
             <div className="region-header">
               <span className="region-icon">{region.icon}</span>
-              <h4 className="region-title">{region.title}</h4>
+              <h4 className="region-title">{t(`priceAnalysis.freeStockList.regions.${regionKey}`)}</h4>
             </div>
             <div className="region-stocks">
               {region.stocks.map((stock) => (

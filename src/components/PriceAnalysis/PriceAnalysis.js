@@ -99,7 +99,7 @@ export function PriceAnalysis() {
   // 新增狀態來切換簡易/進階查詢
   const [isAdvancedQuery, setIsAdvancedQuery] = useState(false);
   // 新增狀態來記錄分析期間的選擇
-  const [analysisPeriod, setAnalysisPeriod] = useState('長期'); // 預設為長期
+  const [analysisPeriod, setAnalysisPeriod] = useState('long'); // 預設為長期
   const [analysisClickCount, setAnalysisClickCount] = useState(0);
   const [showInterstitialAd, setShowInterstitialAd] = useState(false);
   const AD_DISPLAY_THRESHOLD = 3; // <--- 修改閾值為 3
@@ -368,9 +368,9 @@ export function PriceAnalysis() {
       }
     } else {
       switch (analysisPeriod) {
-        case '短期': numYears = 0.5; break;
-        case '中期': numYears = 1.5; break;
-        case '長期': default: numYears = 3.5; break;
+        case 'short': numYears = 0.5; break;
+        case 'medium': numYears = 1.5; break;
+        case 'long': default: numYears = 3.5; break;
       }
     }
 
@@ -407,9 +407,9 @@ export function PriceAnalysis() {
     if (['0.5', '1.5', '3.5'].includes(fetchYears)) {
         setIsAdvancedQuery(false);
         switch (fetchYears) {
-            case '0.5': setAnalysisPeriod('短期'); break;
-            case '1.5': setAnalysisPeriod('中期'); break;
-            case '3.5': setAnalysisPeriod('長期'); break;
+            case '0.5': setAnalysisPeriod('short'); break;
+            case '1.5': setAnalysisPeriod('medium'); break;
+            case '3.5': setAnalysisPeriod('long'); break;
             default: break;
         }
         setYears(fetchYears);
@@ -545,7 +545,7 @@ export function PriceAnalysis() {
     setStockCode(upperClickedCode);
 
     // 準備表單提交所需的參數
-    // 這裡我們假設點擊熱門搜尋時，使用預設的分析期間（例如 '長期' -> 3.5 年）
+    // 這裡我們假設點擊熱門搜尋時，使用預設的分析期間（例如 'long' -> 3.5 年）
     // 並且不使用回測日期，除非有特殊邏輯需要處理
     let numYearsToFetch;
     if (isAdvancedQuery) {
@@ -563,9 +563,9 @@ export function PriceAnalysis() {
         }
     } else {
         switch (analysisPeriod) {
-            case '短期': numYearsToFetch = 0.5; break;
-            case '中期': numYearsToFetch = 1.5; break;
-            case '長期': default: numYearsToFetch = 3.5; break;
+            case 'short': numYearsToFetch = 0.5; break;
+            case 'medium': numYearsToFetch = 1.5; break;
+            case 'long': default: numYearsToFetch = 3.5; break;
         }
     }
     const dateToFetch = isAdvancedQuery ? backTestDate : ''; // 進階模式才考慮回測日期
@@ -642,9 +642,9 @@ export function PriceAnalysis() {
         }
     } else {
         switch (analysisPeriod) {
-            case '短期': numYearsToFetch = 0.5; break;
-            case '中期': numYearsToFetch = 1.5; break;
-            case '長期': default: numYearsToFetch = 3.5; break;
+            case 'short': numYearsToFetch = 0.5; break;
+            case 'medium': numYearsToFetch = 1.5; break;
+            case 'long': default: numYearsToFetch = 3.5; break;
         }
     }
     const dateToFetch = isAdvancedQuery ? backTestDate : '';
@@ -684,16 +684,16 @@ export function PriceAnalysis() {
     if (!isAdvancedQuery) {
         // 可以選擇是否將 years state 設回 analysisPeriod 對應的值
         // switch (analysisPeriod) {
-        //     case '短期': setYears('0.5'); break;
-        //     case '中期': setYears('1.5'); break;
-        //     case '長期': default: setYears('3.5'); break;
+        //     case 'short': setYears('0.5'); break;
+        //     case 'medium': setYears('1.5'); break;
+        //     case 'long': default: setYears('3.5'); break;
         // }
     } else {
         // 從簡易切到進階時，將 analysisPeriod 對應的值填入 years 輸入框
         switch (analysisPeriod) {
-            case '短期': setYears('0.5'); break;
-            case '中期': setYears('1.5'); break;
-            case '長期': default: setYears('3.5'); break;
+            case 'short': setYears('0.5'); break;
+            case 'medium': setYears('1.5'); break;
+            case 'long': default: setYears('3.5'); break;
         }
     }
   };
@@ -860,9 +860,9 @@ export function PriceAnalysis() {
                       onChange={(e) => setAnalysisPeriod(e.target.value)}
                     >
                       {/* 使用 t() 翻譯 options */}
-                      <option value="短期">{t('priceAnalysis.form.periodShort')}</option>
-                      <option value="中期">{t('priceAnalysis.form.periodMedium')}</option>
-                      <option value="長期">{t('priceAnalysis.form.periodLong')}</option>
+                      <option value="short">{t('priceAnalysis.form.periodShort')}</option>
+                      <option value="medium">{t('priceAnalysis.form.periodMedium')}</option>
+                      <option value="long">{t('priceAnalysis.form.periodLong')}</option>
                     </select>
                   </div>
                 )}

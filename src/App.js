@@ -77,6 +77,7 @@ import { initializeApiClient } from './api/setupApiClient';
 import authGuard from './utils/authGuard';
 import authPreloader from './utils/authPreloader';
 import { setupRobotsProtection } from './utils/robotsHandler';
+import { initializeFreeStockList } from './utils/freeStockListUtils';
 
 // 設定 ChartJS
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
@@ -170,6 +171,13 @@ function AppContent() {
     authGuard.ensureAuthenticated().catch(error => {
       console.log('Authentication not available on app start:', error.message);
       // 不需要顯示錯誤，因為用戶可能未登入
+    });
+
+    // 初始化免費股票清單
+    initializeFreeStockList().then(() => {
+      console.log('🚀 App: Free stock list initialized');
+    }).catch(error => {
+      console.warn('⚠️ App: Free stock list initialization failed:', error);
     });
 
     // 設置 staging 環境的搜尋引擎保護

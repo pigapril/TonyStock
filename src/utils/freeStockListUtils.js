@@ -185,12 +185,39 @@ export const getFreeStockTickers = async () => {
 };
 
 /**
- * 檢查股票是否在免費清單中
+ * 檢查股票是否在免費清單中（同步版本）
+ * @param {string} stockCode - 股票代碼
+ * @param {string} userPlan - 用戶計劃 ('free' 或 'pro')
+ * @returns {boolean} 是否允許訪問
+ */
+export const isStockAllowed = (stockCode, userPlan = 'free') => {
+  if (userPlan === 'pro') return true; // Pro 用戶無限制
+  
+  // 使用快取的資料進行同步檢查
+  if (isCacheValid() && cachedTickers) {
+    return cachedTickers.includes(stockCode.toUpperCase());
+  }
+  
+  // 如果沒有快取，嘗試從 localStorage 載入
+  if (!cachedTickers && typeof localStorage !== 'undefined') {
+    loadCacheFromStorage();
+    if (cachedTickers) {
+      return cachedTickers.includes(stockCode.toUpperCase());
+    }
+  }
+  
+  // 如果沒有任何快取資料，返回基本的免費股票清單檢查
+  const basicFreeStocks = ['0050', 'SPY', 'VOO', 'QQQ', 'VTI'];
+  return basicFreeStocks.includes(stockCode.toUpperCase());
+};
+
+/**
+ * 檢查股票是否在免費清單中（異步版本）
  * @param {string} stockCode - 股票代碼
  * @param {string} userPlan - 用戶計劃 ('free' 或 'pro')
  * @returns {Promise<boolean>} 是否允許訪問
  */
-export const isStockAllowed = async (stockCode, userPlan = 'free') => {
+export const isStockAllowedAsync = async (stockCode, userPlan = 'free') => {
   if (userPlan === 'pro') return true; // Pro 用戶無限制
   
   try {
@@ -204,11 +231,49 @@ export const isStockAllowed = async (stockCode, userPlan = 'free') => {
 };
 
 /**
- * 獲取免費股票清單（向後兼容）
+ * 獲取免費股票清單（同步版本，向後兼容）
+ * @returns {string[]} 股票代碼陣列
+ */
+export const getFreeStockList = () => {
+  // 使用快取的資料進行同步返回
+  if (isCacheValid() && cachedTickers) {
+    return cachedTickers;
+  }
+  
+  // 如果沒有快取，嘗試從 localStorage 載入
+  if (!cachedTickers && typeof localStorage !== 'undefined') {
+    loadCacheFromStorage();
+    if (cachedTickers) {
+      return cachedTickers;
+    }
+  }
+  
+  // 如果沒有任何快取資料，返回基本的免費股票清單
+  return ['0050', 'SPY', 'VOO', 'QQQ', 'VTI'];
+};
+
+/**
+ * 獲取免費股票清單（異步版本）
  * @returns {Promise<string[]>} 股票代碼陣列
  */
-export const getFreeStockList = async () => {
+export const getFreeStockListAsync = async () => {
   return await getFreeStockTickers();
+};
+
+/**
+ * 初始化免費股票清單（預載資料）
+ * 應在應用啟動時調用
+ */
+export const initializeFreeStockList = async () => {
+  try {
+    // 預載免費股票清單到快取
+    await getFreeStockTickers();
+    console.log('Free stock list initialized successfully');
+  } catch (error) {
+    console.warn('Failed to initialize free stock list:', error);
+    // 確保至少載入 localStorage 中的快取
+    loadCacheFromStorage();
+  }
 };
 
 /**
