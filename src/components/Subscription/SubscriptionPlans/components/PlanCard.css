@@ -247,6 +247,23 @@
   margin-top: 2px;
 }
 
+.plan-card__feature-item--disabled .plan-card__feature-icon {
+  color: #ff3b30;
+}
+
+.plan-card__feature-item--disabled .plan-card__feature-text {
+  color: var(--color-text-tertiary, rgba(0, 0, 0, 0.40));
+  text-decoration: line-through;
+}
+
+.plan-card__feature-item--limited .plan-card__feature-icon {
+  color: #ff9500;
+}
+
+.plan-card__feature-item--limited .plan-card__feature-text {
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.50));
+}
+
 .plan-card__feature-text {
   font-size: 15px;
   color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
@@ -419,6 +436,22 @@
   .plan-card__applied-redemption-icon,
   .plan-card__applied-redemption span {
     color: #32D74B;
+  }
+  
+  .plan-card__feature-item--disabled .plan-card__feature-icon {
+    color: #ff453a;
+  }
+  
+  .plan-card__feature-item--disabled .plan-card__feature-text {
+    color: rgba(235, 235, 245, 0.30);
+  }
+  
+  .plan-card__feature-item--limited .plan-card__feature-icon {
+    color: #ffb340;
+  }
+  
+  .plan-card__feature-item--limited .plan-card__feature-text {
+    color: rgba(235, 235, 245, 0.50);
   }
 }/* 
 Not Applicable Indicator */

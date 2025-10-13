@@ -1428,13 +1428,12 @@
       "freePlan": {
         "name": "Free Plan",
         "price": "Free",
-        "description": "Great for beginners looking to get into passive investing",
+        "description": "Perfect for beginners entering the stock market who prefer passive investing",
         "features": [
-          "Lohas Spectrum: Limited stock codes only",
-          "Market Sentiment: Historical data (2+ months old)",
-          "Basic access only",
-          "Watchlist disabled",
-          "Includes ads"
+          "Lohas Spectrum: Market indices and ETFs only",
+          "Market Sentiment: Historical data (2+ months old only)",
+          "Watchlist Feature: View multiple stock sentiment levels",
+          "Ad-free Experience"
         ]
       },
       "proPlan": {
@@ -1446,12 +1445,10 @@
         "description": "Complete features for professional investors",
         "features": [
           "Lohas Spectrum: Unlimited usage",
-          "All stocks, custom date ranges",
           "Market Sentiment: Unlimited usage",
-          "Full component & historical access",
-          "Watchlist: 10 categories",
-          "Up to 50 stocks per category",
-          "Ad-free experience"
+          "Watchlist Feature: View multiple stock sentiment levels",
+          "Watchlist Storage: 10 categories, 50 stocks per category",
+          "Ad-free Experience"
         ]
       }
     },

@@ -7,7 +7,7 @@
 }
 
 /* Header */
-.analytics-header {
+.redemption-analytics-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -18,42 +18,42 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.header-content h1 {
+.redemption-analytics-header-content h1 {
     margin: 0 0 8px 0;
     font-size: 28px;
     font-weight: 600;
     color: #1a1a1a;
 }
 
-.header-content p {
+.redemption-analytics-header-content p {
     margin: 0;
     color: #666;
     font-size: 16px;
 }
 
-.header-controls {
+.redemption-analytics-header-controls {
     display: flex;
     gap: 20px;
     align-items: flex-end;
     flex-wrap: wrap;
 }
 
-.time-range-selector,
-.refresh-controls,
-.export-controls {
+.redemption-analytics-time-range-selector,
+.redemption-analytics-refresh-controls,
+.redemption-analytics-export-controls {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.time-range-selector label,
-.refresh-controls label {
+.redemption-analytics-time-range-selector label,
+.redemption-analytics-refresh-controls label {
     font-size: 14px;
     font-weight: 500;
     color: #666;
 }
 
-.time-range-selector select {
+.redemption-analytics-time-range-selector select {
     padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -61,13 +61,13 @@
     background: white;
 }
 
-.refresh-controls {
+.redemption-analytics-refresh-controls {
     flex-direction: row;
     align-items: center;
     gap: 12px;
 }
 
-.auto-refresh-toggle {
+.redemption-analytics-auto-refresh-toggle {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -76,17 +76,17 @@
     cursor: pointer;
 }
 
-.auto-refresh-toggle input[type="checkbox"] {
+.redemption-analytics-auto-refresh-toggle input[type="checkbox"] {
     margin: 0;
 }
 
-.export-controls {
+.redemption-analytics-export-controls {
     flex-direction: row;
     gap: 8px;
 }
 
 /* Fraud Alerts Section */
-.fraud-alerts-section {
+.redemption-analytics-fraud-alerts-section {
     margin-bottom: 32px;
     padding: 20px;
     background: white;
@@ -95,26 +95,26 @@
     border-left: 4px solid #f44336;
 }
 
-.alerts-header {
+.redemption-analytics-alerts-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
 
-.alerts-header h2 {
+.redemption-analytics-alerts-header h2 {
     margin: 0;
     font-size: 20px;
     font-weight: 600;
     color: #1a1a1a;
 }
 
-.alerts-summary {
+.redemption-analytics-alerts-summary {
     display: flex;
     gap: 12px;
 }
 
-.alert-badge {
+.redemption-analytics-alert-badge {
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 12px;
@@ -122,78 +122,78 @@
     text-transform: uppercase;
 }
 
-.alert-badge.alert-high {
+.redemption-analytics-alert-badge.alert-high {
     background: #ffebee;
     color: #c62828;
 }
 
-.alert-badge.alert-medium {
+.redemption-analytics-alert-badge.alert-medium {
     background: #fff3e0;
     color: #ef6c00;
 }
 
-.alert-badge.alert-low {
+.redemption-analytics-alert-badge.alert-low {
     background: #e8f5e8;
     color: #2e7d32;
 }
 
-.alerts-list {
+.redemption-analytics-alerts-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.fraud-alert {
+.redemption-analytics-fraud-alert {
     padding: 16px;
     border-radius: 8px;
     border: 1px solid;
 }
 
-.fraud-alert.alert-high {
+.redemption-analytics-fraud-alert.alert-high {
     background: #ffebee;
     border-color: #f44336;
 }
 
-.fraud-alert.alert-medium {
+.redemption-analytics-fraud-alert.alert-medium {
     background: #fff3e0;
     border-color: #ff9800;
 }
 
-.fraud-alert.alert-low {
+.redemption-analytics-fraud-alert.alert-low {
     background: #e8f5e8;
     border-color: #4caf50;
 }
 
-.alert-header {
+.redemption-analytics-alert-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
 }
 
-.alert-type {
+.redemption-analytics-alert-type {
     font-weight: 600;
     font-size: 14px;
 }
 
-.alert-timestamp {
+.redemption-analytics-alert-timestamp {
     font-size: 12px;
     color: #666;
 }
 
-.alert-message {
+.redemption-analytics-alert-message {
     font-size: 14px;
     margin-bottom: 8px;
     line-height: 1.4;
 }
 
-.alert-details {
+.redemption-analytics-alert-details {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
 }
 
-.detail-item {
+.redemption-analytics-detail-item {
     font-size: 12px;
     color: #666;
     background: rgba(255, 255, 255, 0.7);
@@ -202,17 +202,17 @@
 }
 
 /* Metrics Section */
-.metrics-section {
+.redemption-analytics-metrics-section {
     margin-bottom: 32px;
 }
 
-.metrics-grid {
+.redemption-analytics-metrics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
 }
 
-.metric-card {
+.redemption-analytics-metric-card {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -223,105 +223,105 @@
     border-left: 4px solid;
 }
 
-.metric-card.metric-blue {
+.redemption-analytics-metric-card.metric-blue {
     border-left-color: #2196f3;
 }
 
-.metric-card.metric-green {
+.redemption-analytics-metric-card.metric-green {
     border-left-color: #4caf50;
 }
 
-.metric-card.metric-purple {
+.redemption-analytics-metric-card.metric-purple {
     border-left-color: #9c27b0;
 }
 
-.metric-card.metric-orange {
+.redemption-analytics-metric-card.metric-orange {
     border-left-color: #ff9800;
 }
 
-.metric-icon {
+.redemption-analytics-metric-icon {
     font-size: 32px;
     opacity: 0.8;
 }
 
-.metric-content {
+.redemption-analytics-metric-content {
     flex: 1;
 }
 
-.metric-value {
+.redemption-analytics-metric-value {
     font-size: 28px;
     font-weight: 700;
     color: #1a1a1a;
     margin-bottom: 4px;
 }
 
-.metric-title {
+.redemption-analytics-metric-title {
     font-size: 14px;
     color: #666;
     font-weight: 500;
 }
 
-.metric-change {
+.redemption-analytics-metric-change {
     font-size: 12px;
     font-weight: 600;
     margin-top: 4px;
 }
 
-.metric-change.positive {
+.redemption-analytics-metric-change.positive {
     color: #4caf50;
 }
 
-.metric-change.negative {
+.redemption-analytics-metric-change.negative {
     color: #f44336;
 }
 
 /* Charts Section */
-.charts-section {
+.redemption-analytics-charts-section {
     margin-bottom: 32px;
 }
 
-.charts-grid {
+.redemption-analytics-charts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 20px;
 }
 
-.chart-card {
+.redemption-analytics-chart-card {
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
-.chart-card.full-width {
+.redemption-analytics-chart-card.full-width {
     grid-column: 1 / -1;
 }
 
-.chart-header {
+.redemption-analytics-chart-header {
     padding: 20px 24px 0;
     border-bottom: 1px solid #f0f0f0;
 }
 
-.chart-header h3 {
+.redemption-analytics-chart-header h3 {
     margin: 0 0 16px 0;
     font-size: 16px;
     font-weight: 600;
     color: #1a1a1a;
 }
 
-.chart-content {
+.redemption-analytics-chart-content {
     padding: 24px;
     min-height: 200px;
 }
 
 /* Simple Chart Styles */
-.simple-chart {
+.redemption-analytics-simple-chart {
     height: 150px;
     display: flex;
     align-items: end;
 }
 
-.chart-bars {
+.redemption-analytics-chart-bars {
     display: flex;
     align-items: end;
     gap: 8px;
@@ -329,7 +329,7 @@
     height: 100%;
 }
 
-.chart-bar {
+.redemption-analytics-chart-bar {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -337,7 +337,7 @@
     height: 100%;
 }
 
-.bar-fill {
+.redemption-analytics-bar-fill {
     width: 100%;
     background: linear-gradient(180deg, #2196f3, #1976d2);
     border-radius: 4px 4px 0 0;
@@ -345,56 +345,67 @@
     transition: height 0.3s ease;
 }
 
-.bar-label {
+.redemption-analytics-bar-label {
     font-size: 12px;
     color: #666;
     margin-top: 8px;
 }
 
-.pie-chart-simple {
+.redemption-analytics-pie-chart-simple {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.pie-item {
+.redemption-analytics-pie-item {
     display: flex;
     align-items: center;
     gap: 12px;
     font-size: 14px;
 }
 
-.pie-color {
+.redemption-analytics-pie-color {
     width: 16px;
     height: 16px;
     border-radius: 50%;
 }
 
-.pie-color.color-0 { background: #2196f3; }
-.pie-color.color-1 { background: #4caf50; }
-.pie-color.color-2 { background: #ff9800; }
-.pie-color.color-3 { background: #9c27b0; }
+.redemption-analytics-pie-color.color-0 {
+    background: #2196f3;
+}
 
-.horizontal-bars {
+.redemption-analytics-pie-color.color-1 {
+    background: #4caf50;
+}
+
+.redemption-analytics-pie-color.color-2 {
+    background: #ff9800;
+}
+
+.redemption-analytics-pie-color.color-3 {
+    background: #9c27b0;
+}
+
+.redemption-analytics-horizontal-bars {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.bar-row {
+.redemption-analytics-bar-row {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.bar-label {
+.redemption-analytics-bar-label {
     min-width: 120px;
     font-size: 14px;
     color: #333;
     font-weight: 500;
 }
 
-.bar-container {
+.redemption-analytics-bar-container {
     flex: 1;
     height: 20px;
     background: #f0f0f0;
@@ -402,14 +413,14 @@
     overflow: hidden;
 }
 
-.bar-container .bar-fill {
+.redemption-analytics-bar-container .redemption-analytics-bar-fill {
     height: 100%;
     background: linear-gradient(90deg, #4caf50, #2196f3);
     border-radius: 10px;
     transition: width 0.3s ease;
 }
 
-.bar-value {
+.redemption-analytics-bar-value {
     min-width: 40px;
     text-align: right;
     font-size: 14px;
@@ -417,13 +428,13 @@
     color: #333;
 }
 
-.fraud-patterns-list {
+.redemption-analytics-fraud-patterns-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.pattern-item {
+.redemption-analytics-pattern-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -432,32 +443,32 @@
     border: 1px solid;
 }
 
-.pattern-item.severity-high {
+.redemption-analytics-pattern-item.severity-high {
     background: #ffebee;
     border-color: #f44336;
 }
 
-.pattern-item.severity-medium {
+.redemption-analytics-pattern-item.severity-medium {
     background: #fff3e0;
     border-color: #ff9800;
 }
 
-.pattern-item.severity-low {
+.redemption-analytics-pattern-item.severity-low {
     background: #e8f5e8;
     border-color: #4caf50;
 }
 
-.pattern-name {
+.redemption-analytics-pattern-name {
     font-weight: 500;
     color: #333;
 }
 
-.pattern-count {
+.redemption-analytics-pattern-count {
     font-weight: 600;
     color: #666;
 }
 
-.pattern-severity {
+.redemption-analytics-pattern-severity {
     font-size: 12px;
     font-weight: 500;
     text-transform: uppercase;
@@ -465,35 +476,35 @@
     border-radius: 3px;
 }
 
-.pattern-severity.severity-high {
+.redemption-analytics-pattern-severity.severity-high {
     background: #f44336;
     color: white;
 }
 
-.pattern-severity.severity-medium {
+.redemption-analytics-pattern-severity.severity-medium {
     background: #ff9800;
     color: white;
 }
 
-.pattern-severity.severity-low {
+.redemption-analytics-pattern-severity.severity-low {
     background: #4caf50;
     color: white;
 }
 
 /* Detailed Analytics */
-.detailed-analytics {
+.redemption-analytics-detailed-analytics {
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
-.analytics-tabs {
+.redemption-analytics-tabs {
     display: flex;
     border-bottom: 1px solid #e0e0e0;
 }
 
-.tab-button {
+.redemption-analytics-tab-button {
     padding: 16px 24px;
     border: none;
     background: none;
@@ -505,48 +516,48 @@
     border-bottom: 2px solid transparent;
 }
 
-.tab-button:hover {
+.redemption-analytics-tab-button:hover {
     background: #f8f9fa;
     color: #333;
 }
 
-.tab-button.active {
+.redemption-analytics-tab-button.active {
     color: #2196f3;
     border-bottom-color: #2196f3;
     background: #f8f9fa;
 }
 
-.tab-content {
+.redemption-analytics-tab-content {
     padding: 32px;
 }
 
 /* Tab Content Styles */
-.overview-tab {
+.redemption-analytics-overview-tab {
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
 
-.overview-grid {
+.redemption-analytics-overview-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 24px;
 }
 
-.overview-section h4 {
+.redemption-analytics-overview-section h4 {
     margin: 0 0 16px 0;
     font-size: 16px;
     font-weight: 600;
     color: #1a1a1a;
 }
 
-.breakdown-list {
+.redemption-analytics-breakdown-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.breakdown-item {
+.redemption-analytics-breakdown-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -554,34 +565,34 @@
     border-bottom: 1px solid #f0f0f0;
 }
 
-.breakdown-item:last-child {
+.redemption-analytics-breakdown-item:last-child {
     border-bottom: none;
 }
 
-.breakdown-label {
+.redemption-analytics-breakdown-label {
     font-size: 14px;
     color: #666;
 }
 
-.breakdown-value {
+.redemption-analytics-breakdown-value {
     font-size: 14px;
     font-weight: 600;
     color: #333;
 }
 
-.conversion-tab {
+.redemption-analytics-conversion-tab {
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
 
-.conversion-metrics {
+.redemption-analytics-conversion-metrics {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
-.metric-row {
+.redemption-analytics-metric-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -590,43 +601,43 @@
     border-radius: 8px;
 }
 
-.metric-label {
+.redemption-analytics-metric-label {
     font-size: 16px;
     color: #666;
 }
 
-.metric-value {
+.redemption-analytics-metric-value {
     font-size: 20px;
     font-weight: 600;
     color: #2196f3;
 }
 
-.fraud-tab {
+.redemption-analytics-fraud-tab {
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
 
-.fraud-summary h4 {
+.redemption-analytics-fraud-summary h4 {
     margin: 0 0 16px 0;
     font-size: 16px;
     font-weight: 600;
     color: #1a1a1a;
 }
 
-.fraud-alerts-list {
+.redemption-analytics-fraud-alerts-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.campaigns-tab {
+.redemption-analytics-campaigns-tab {
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
 
-.campaigns-table {
+.redemption-analytics-campaigns-table {
     display: flex;
     flex-direction: column;
     border: 1px solid #e0e0e0;
@@ -634,31 +645,31 @@
     overflow: hidden;
 }
 
-.table-header {
+.redemption-analytics-table-header {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
     background: #f8f9fa;
     border-bottom: 1px solid #e0e0e0;
 }
 
-.header-cell {
+.redemption-analytics-header-cell {
     padding: 12px 16px;
     font-size: 14px;
     font-weight: 600;
     color: #333;
 }
 
-.table-row {
+.redemption-analytics-table-row {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
     border-bottom: 1px solid #f0f0f0;
 }
 
-.table-row:last-child {
+.redemption-analytics-table-row:last-child {
     border-bottom: none;
 }
 
-.table-cell {
+.redemption-analytics-table-cell {
     padding: 12px 16px;
     font-size: 14px;
     color: #666;
@@ -713,15 +724,15 @@
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-    .charts-grid {
+    .redemption-analytics-charts-grid {
         grid-template-columns: 1fr;
     }
-    
-    .metrics-grid {
+
+    .redemption-analytics-metrics-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
-    
-    .overview-grid {
+
+    .redemption-analytics-overview-grid {
         grid-template-columns: 1fr;
     }
 }
@@ -730,103 +741,103 @@
     .redemption-analytics {
         padding: 16px;
     }
-    
-    .analytics-header {
+
+    .redemption-analytics-header {
         flex-direction: column;
         gap: 20px;
         align-items: stretch;
     }
-    
-    .header-controls {
+
+    .redemption-analytics-header-controls {
         flex-direction: column;
         gap: 16px;
         align-items: stretch;
     }
-    
-    .refresh-controls,
-    .export-controls {
+
+    .redemption-analytics-refresh-controls,
+    .redemption-analytics-export-controls {
         flex-direction: row;
         justify-content: space-between;
     }
-    
-    .alerts-header {
+
+    .redemption-analytics-alerts-header {
         flex-direction: column;
         gap: 12px;
         align-items: stretch;
     }
-    
-    .analytics-tabs {
+
+    .redemption-analytics-tabs {
         overflow-x: auto;
     }
-    
-    .tab-button {
+
+    .redemption-analytics-tab-button {
         white-space: nowrap;
         min-width: 120px;
     }
-    
-    .table-header,
-    .table-row {
+
+    .redemption-analytics-table-header,
+    .redemption-analytics-table-row {
         grid-template-columns: 2fr 1fr 1fr 1fr;
         font-size: 12px;
     }
-    
-    .header-cell,
-    .table-cell {
+
+    .redemption-analytics-header-cell,
+    .redemption-analytics-table-cell {
         padding: 8px 12px;
     }
-    
-    .bar-row {
+
+    .redemption-analytics-bar-row {
         flex-direction: column;
         gap: 8px;
         align-items: stretch;
     }
-    
-    .bar-label {
+
+    .redemption-analytics-bar-label {
         min-width: auto;
     }
 }
 
 @media (max-width: 480px) {
-    .metrics-grid {
+    .redemption-analytics-metrics-grid {
         grid-template-columns: 1fr;
     }
-    
-    .metric-card {
+
+    .redemption-analytics-metric-card {
         padding: 16px;
     }
-    
-    .metric-value {
+
+    .redemption-analytics-metric-value {
         font-size: 24px;
     }
-    
-    .metric-icon {
+
+    .redemption-analytics-metric-icon {
         font-size: 24px;
     }
-    
-    .alerts-summary {
+
+    .redemption-analytics-alerts-summary {
         flex-direction: column;
         gap: 8px;
     }
-    
-    .alert-header {
+
+    .redemption-analytics-alert-header {
         flex-direction: column;
         gap: 4px;
         align-items: flex-start;
     }
-    
-    .alert-details {
+
+    .redemption-analytics-alert-details {
         flex-direction: column;
         gap: 8px;
     }
-    
-    .table-header,
-    .table-row {
+
+    .redemption-analytics-table-header,
+    .redemption-analytics-table-row {
         grid-template-columns: 1fr;
         gap: 8px;
     }
-    
-    .header-cell,
-    .table-cell {
+
+    .redemption-analytics-header-cell,
+    .redemption-analytics-table-cell {
         padding: 8px;
         border-bottom: 1px solid #f0f0f0;
     }

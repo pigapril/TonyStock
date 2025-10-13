@@ -351,14 +351,14 @@ const RedemptionAnalytics = () => {
     return (
         <div className="redemption-analytics">
             {/* Header */}
-            <div className="analytics-header">
-                <div className="header-content">
+            <div className="redemption-analytics-header">
+                <div className="redemption-analytics-header-content">
                     <h1>{t('admin.analytics.title')}</h1>
                     <p>{t('admin.analytics.description')}</p>
                 </div>
                 
-                <div className="header-controls">
-                    <div className="time-range-selector">
+                <div className="redemption-analytics-header-controls">
+                    <div className="redemption-analytics-time-range-selector">
                         <label>{t('admin.analytics.timeRange')}</label>
                         <select
                             value={selectedTimeRange}
@@ -370,8 +370,8 @@ const RedemptionAnalytics = () => {
                         </select>
                     </div>
                     
-                    <div className="refresh-controls">
-                        <label className="auto-refresh-toggle">
+                    <div className="redemption-analytics-refresh-controls">
+                        <label className="redemption-analytics-auto-refresh-toggle">
                             <input
                                 type="checkbox"
                                 checked={autoRefresh}
@@ -389,7 +389,7 @@ const RedemptionAnalytics = () => {
                         </button>
                     </div>
                     
-                    <div className="export-controls">
+                    <div className="redemption-analytics-export-controls">
                         <button
                             className="btn btn-secondary"
                             onClick={() => handleExport('json')}
@@ -419,19 +419,19 @@ const RedemptionAnalytics = () => {
 
             {/* Fraud Alerts */}
             {fraudAlerts.length > 0 && (
-                <div className="fraud-alerts-section">
-                    <div className="alerts-header">
+                <div className="redemption-analytics-fraud-alerts-section">
+                    <div className="redemption-analytics-alerts-header">
                         <h2>{t('admin.analytics.fraudAlerts.title')}</h2>
-                        <div className="alerts-summary">
+                        <div className="redemption-analytics-alerts-summary">
                             {Object.entries(fraudAlertsSummary).map(([severity, count]) => (
-                                <span key={severity} className={`alert-badge alert-${severity}`}>
+                                <span key={severity} className={`redemption-analytics-alert-badge alert-${severity}`}>
                                     {t(`admin.analytics.fraudAlerts.severity.${severity}`)}: {count}
                                 </span>
                             ))}
                         </div>
                     </div>
                     
-                    <div className="alerts-list">
+                    <div className="redemption-analytics-alerts-list">
                         {fraudAlerts.map(alert => (
                             <FraudAlert key={alert.id} alert={alert} t={t} />
                         ))}
@@ -443,8 +443,8 @@ const RedemptionAnalytics = () => {
             {analytics && (
                 <>
                     {/* Key Metrics */}
-                    <div className="metrics-section">
-                        <div className="metrics-grid">
+                    <div className="redemption-analytics-metrics-section">
+                        <div className="redemption-analytics-metrics-grid">
                             <MetricCard
                                 title={t('admin.analytics.metrics.totalCodes')}
                                 value={analytics.summary.totalCodes}
@@ -480,44 +480,44 @@ const RedemptionAnalytics = () => {
                     </div>
 
                     {/* Charts Section */}
-                    <div className="charts-section">
-                        <div className="charts-grid">
+                    <div className="redemption-analytics-charts-section">
+                        <div className="redemption-analytics-charts-grid">
                             {/* Redemption Trends Chart */}
-                            <div className="chart-card">
-                                <div className="chart-header">
+                            <div className="redemption-analytics-chart-card">
+                                <div className="redemption-analytics-chart-header">
                                     <h3>{t('admin.analytics.charts.redemptionTrends')}</h3>
                                 </div>
-                                <div className="chart-content">
+                                <div className="redemption-analytics-chart-content">
                                     <RedemptionTrendsChart data={chartData.redemptionTrends} t={t} />
                                 </div>
                             </div>
                             
                             {/* Code Type Distribution */}
-                            <div className="chart-card">
-                                <div className="chart-header">
+                            <div className="redemption-analytics-chart-card">
+                                <div className="redemption-analytics-chart-header">
                                     <h3>{t('admin.analytics.charts.codeTypeDistribution')}</h3>
                                 </div>
-                                <div className="chart-content">
+                                <div className="redemption-analytics-chart-content">
                                     <CodeTypeChart data={chartData.codeTypeDistribution} t={t} />
                                 </div>
                             </div>
                             
                             {/* Campaign Performance */}
-                            <div className="chart-card full-width">
-                                <div className="chart-header">
+                            <div className="redemption-analytics-chart-card full-width">
+                                <div className="redemption-analytics-chart-header">
                                     <h3>{t('admin.analytics.charts.campaignPerformance')}</h3>
                                 </div>
-                                <div className="chart-content">
+                                <div className="redemption-analytics-chart-content">
                                     <CampaignPerformanceChart data={topCampaigns} t={t} />
                                 </div>
                             </div>
                             
                             {/* Fraud Patterns */}
-                            <div className="chart-card">
-                                <div className="chart-header">
+                            <div className="redemption-analytics-chart-card">
+                                <div className="redemption-analytics-chart-header">
                                     <h3>{t('admin.analytics.charts.fraudPatterns')}</h3>
                                 </div>
-                                <div className="chart-content">
+                                <div className="redemption-analytics-chart-content">
                                     <FraudPatternsChart data={chartData.fraudPatterns} t={t} />
                                 </div>
                             </div>
@@ -525,12 +525,12 @@ const RedemptionAnalytics = () => {
                     </div>
 
                     {/* Detailed Analytics */}
-                    <div className="detailed-analytics">
-                        <div className="analytics-tabs">
+                    <div className="redemption-analytics-detailed-analytics">
+                        <div className="redemption-analytics-tabs">
                             {Object.entries(metrics).map(([key, metric]) => (
                                 <button
                                     key={key}
-                                    className={`tab-button ${selectedMetric === key ? 'active' : ''}`}
+                                    className={`redemption-analytics-tab-button ${selectedMetric === key ? 'active' : ''}`}
                                     onClick={() => setSelectedMetric(key)}
                                 >
                                     {metric.label}
@@ -538,7 +538,7 @@ const RedemptionAnalytics = () => {
                             ))}
                         </div>
                         
-                        <div className="tab-content">
+                        <div className="redemption-analytics-tab-content">
                             {selectedMetric === 'overview' && (
                                 <OverviewTab analytics={analytics} t={t} />
                             )}
@@ -565,13 +565,13 @@ const RedemptionAnalytics = () => {
  * Metric Card Component
  */
 const MetricCard = ({ title, value, change, icon, color }) => (
-    <div className={`metric-card metric-${color}`}>
-        <div className="metric-icon">{icon}</div>
-        <div className="metric-content">
-            <div className="metric-value">{value}</div>
-            <div className="metric-title">{title}</div>
+    <div className={`redemption-analytics-metric-card metric-${color}`}>
+        <div className="redemption-analytics-metric-icon">{icon}</div>
+        <div className="redemption-analytics-metric-content">
+            <div className="redemption-analytics-metric-value">{value}</div>
+            <div className="redemption-analytics-metric-title">{title}</div>
             {change && (
-                <div className={`metric-change ${change > 0 ? 'positive' : 'negative'}`}>
+                <div className={`redemption-analytics-metric-change ${change > 0 ? 'positive' : 'negative'}`}>
                     {change > 0 ? '+' : ''}{change}%
                 </div>
             )}
@@ -583,20 +583,20 @@ const MetricCard = ({ title, value, change, icon, color }) => (
  * Fraud Alert Component
  */
 const FraudAlert = ({ alert, t }) => (
-    <div className={`fraud-alert alert-${alert.severity}`}>
-        <div className="alert-header">
-            <div className="alert-type">
+    <div className={`redemption-analytics-fraud-alert alert-${alert.severity}`}>
+        <div className="redemption-analytics-alert-header">
+            <div className="redemption-analytics-alert-type">
                 {t(`admin.analytics.fraudAlerts.types.${alert.type}`)}
             </div>
-            <div className="alert-timestamp">
+            <div className="redemption-analytics-alert-timestamp">
                 {alert.timestamp.toLocaleTimeString()}
             </div>
         </div>
-        <div className="alert-message">{alert.message}</div>
+        <div className="redemption-analytics-alert-message">{alert.message}</div>
         {alert.details && (
-            <div className="alert-details">
+            <div className="redemption-analytics-alert-details">
                 {Object.entries(alert.details).map(([key, value]) => (
-                    <span key={key} className="detail-item">
+                    <span key={key} className="redemption-analytics-detail-item">
                         {key}: {value}
                     </span>
                 ))}
@@ -609,15 +609,15 @@ const FraudAlert = ({ alert, t }) => (
  * Simple Chart Components (using CSS for visualization)
  */
 const RedemptionTrendsChart = ({ data, t }) => (
-    <div className="simple-chart">
-        <div className="chart-bars">
+    <div className="redemption-analytics-simple-chart">
+        <div className="redemption-analytics-chart-bars">
             {data.slice(-7).map((item, index) => (
-                <div key={index} className="chart-bar">
+                <div key={index} className="redemption-analytics-chart-bar">
                     <div 
-                        className="bar-fill"
+                        className="redemption-analytics-bar-fill"
                         style={{ height: `${(item.redemptions / Math.max(...data.map(d => d.redemptions))) * 100}%` }}
                     />
-                    <div className="bar-label">{new Date(item.date).getDate()}</div>
+                    <div className="redemption-analytics-bar-label">{new Date(item.date).getDate()}</div>
                 </div>
             ))}
         </div>
@@ -625,10 +625,10 @@ const RedemptionTrendsChart = ({ data, t }) => (
 );
 
 const CodeTypeChart = ({ data, t }) => (
-    <div className="pie-chart-simple">
+    <div className="redemption-analytics-pie-chart-simple">
         {data.map((item, index) => (
-            <div key={index} className="pie-item">
-                <div className={`pie-color color-${index}`} />
+            <div key={index} className="redemption-analytics-pie-item">
+                <div className={`redemption-analytics-pie-color color-${index}`} />
                 <span>{t(`admin.codes.types.${item.name.toLowerCase()}`)}: {item.value}</span>
             </div>
         ))}
@@ -636,29 +636,29 @@ const CodeTypeChart = ({ data, t }) => (
 );
 
 const CampaignPerformanceChart = ({ data, t }) => (
-    <div className="horizontal-bars">
+    <div className="redemption-analytics-horizontal-bars">
         {data.map((item, index) => (
-            <div key={index} className="bar-row">
-                <div className="bar-label">{item.name}</div>
-                <div className="bar-container">
+            <div key={index} className="redemption-analytics-bar-row">
+                <div className="redemption-analytics-bar-label">{item.name}</div>
+                <div className="redemption-analytics-bar-container">
                     <div 
-                        className="bar-fill"
+                        className="redemption-analytics-bar-fill"
                         style={{ width: `${(item.usage / Math.max(...data.map(d => d.usage))) * 100}%` }}
                     />
                 </div>
-                <div className="bar-value">{item.usage}</div>
+                <div className="redemption-analytics-bar-value">{item.usage}</div>
             </div>
         ))}
     </div>
 );
 
 const FraudPatternsChart = ({ data, t }) => (
-    <div className="fraud-patterns-list">
+    <div className="redemption-analytics-fraud-patterns-list">
         {data.map((pattern, index) => (
-            <div key={index} className={`pattern-item severity-${pattern.severity}`}>
-                <div className="pattern-name">{pattern.pattern}</div>
-                <div className="pattern-count">{pattern.count}</div>
-                <div className={`pattern-severity severity-${pattern.severity}`}>
+            <div key={index} className={`redemption-analytics-pattern-item severity-${pattern.severity}`}>
+                <div className="redemption-analytics-pattern-name">{pattern.pattern}</div>
+                <div className="redemption-analytics-pattern-count">{pattern.count}</div>
+                <div className={`redemption-analytics-pattern-severity severity-${pattern.severity}`}>
                     {t(`admin.analytics.fraudAlerts.severity.${pattern.severity}`)}
                 </div>
             </div>
@@ -670,29 +670,29 @@ const FraudPatternsChart = ({ data, t }) => (
  * Tab Content Components
  */
 const OverviewTab = ({ analytics, t }) => (
-    <div className="overview-tab">
-        <div className="overview-grid">
-            <div className="overview-section">
+    <div className="redemption-analytics-overview-tab">
+        <div className="redemption-analytics-overview-grid">
+            <div className="redemption-analytics-overview-section">
                 <h4>{t('admin.analytics.overview.codeBreakdown')}</h4>
-                <div className="breakdown-list">
+                <div className="redemption-analytics-breakdown-list">
                     {analytics.breakdown.byType.map((item, index) => (
-                        <div key={index} className="breakdown-item">
-                            <span className="breakdown-label">
+                        <div key={index} className="redemption-analytics-breakdown-item">
+                            <span className="redemption-analytics-breakdown-label">
                                 {t(`admin.codes.types.${item.codeType.toLowerCase()}`)}
                             </span>
-                            <span className="breakdown-value">{item.count}</span>
+                            <span className="redemption-analytics-breakdown-value">{item.count}</span>
                         </div>
                     ))}
                 </div>
             </div>
             
-            <div className="overview-section">
+            <div className="redemption-analytics-overview-section">
                 <h4>{t('admin.analytics.overview.topCampaigns')}</h4>
-                <div className="breakdown-list">
+                <div className="redemption-analytics-breakdown-list">
                     {analytics.breakdown.byCampaign.slice(0, 5).map((item, index) => (
-                        <div key={index} className="breakdown-item">
-                            <span className="breakdown-label">{item.campaignName}</span>
-                            <span className="breakdown-value">{item.totalUsage}</span>
+                        <div key={index} className="redemption-analytics-breakdown-item">
+                            <span className="redemption-analytics-breakdown-label">{item.campaignName}</span>
+                            <span className="redemption-analytics-breakdown-value">{item.totalUsage}</span>
                         </div>
                     ))}
                 </div>
@@ -702,28 +702,28 @@ const OverviewTab = ({ analytics, t }) => (
 );
 
 const ConversionTab = ({ analytics, chartData, t }) => (
-    <div className="conversion-tab">
-        <div className="conversion-metrics">
-            <div className="metric-row">
-                <span className="metric-label">{t('admin.analytics.conversion.overallRate')}</span>
-                <span className="metric-value">{analytics.summary.conversionRate}%</span>
+    <div className="redemption-analytics-conversion-tab">
+        <div className="redemption-analytics-conversion-metrics">
+            <div className="redemption-analytics-metric-row">
+                <span className="redemption-analytics-metric-label">{t('admin.analytics.conversion.overallRate')}</span>
+                <span className="redemption-analytics-metric-value">{analytics.summary.conversionRate}%</span>
             </div>
-            <div className="metric-row">
-                <span className="metric-label">{t('admin.analytics.conversion.successRate')}</span>
-                <span className="metric-value">{analytics.summary.successRate}%</span>
+            <div className="redemption-analytics-metric-row">
+                <span className="redemption-analytics-metric-label">{t('admin.analytics.conversion.successRate')}</span>
+                <span className="redemption-analytics-metric-value">{analytics.summary.successRate}%</span>
             </div>
         </div>
     </div>
 );
 
 const FraudTab = ({ fraudAlerts, chartData, t }) => (
-    <div className="fraud-tab">
-        <div className="fraud-summary">
+    <div className="redemption-analytics-fraud-tab">
+        <div className="redemption-analytics-fraud-summary">
             <h4>{t('admin.analytics.fraud.recentAlerts')}</h4>
             {fraudAlerts.length === 0 ? (
                 <p>{t('admin.analytics.fraud.noAlerts')}</p>
             ) : (
-                <div className="fraud-alerts-list">
+                <div className="redemption-analytics-fraud-alerts-list">
                     {fraudAlerts.map(alert => (
                         <FraudAlert key={alert.id} alert={alert} t={t} />
                     ))}
@@ -734,20 +734,20 @@ const FraudTab = ({ fraudAlerts, chartData, t }) => (
 );
 
 const CampaignsTab = ({ analytics, chartData, t }) => (
-    <div className="campaigns-tab">
-        <div className="campaigns-table">
-            <div className="table-header">
-                <div className="header-cell">{t('admin.analytics.campaigns.name')}</div>
-                <div className="header-cell">{t('admin.analytics.campaigns.codes')}</div>
-                <div className="header-cell">{t('admin.analytics.campaigns.usage')}</div>
-                <div className="header-cell">{t('admin.analytics.campaigns.rate')}</div>
+    <div className="redemption-analytics-campaigns-tab">
+        <div className="redemption-analytics-campaigns-table">
+            <div className="redemption-analytics-table-header">
+                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.name')}</div>
+                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.codes')}</div>
+                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.usage')}</div>
+                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.rate')}</div>
             </div>
             {analytics.breakdown.byCampaign.map((campaign, index) => (
-                <div key={index} className="table-row">
-                    <div className="table-cell">{campaign.campaignName}</div>
-                    <div className="table-cell">{campaign.count}</div>
-                    <div className="table-cell">{campaign.totalUsage}</div>
-                    <div className="table-cell">{campaign.usageRate.toFixed(1)}%</div>
+                <div key={index} className="redemption-analytics-table-row">
+                    <div className="redemption-analytics-table-cell">{campaign.campaignName}</div>
+                    <div className="redemption-analytics-table-cell">{campaign.count}</div>
+                    <div className="redemption-analytics-table-cell">{campaign.totalUsage}</div>
+                    <div className="redemption-analytics-table-cell">{campaign.usageRate.toFixed(1)}%</div>
                 </div>
             ))}
         </div>

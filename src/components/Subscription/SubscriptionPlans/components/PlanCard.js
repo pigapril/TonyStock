@@ -71,7 +71,7 @@ export const PlanCard = ({
       currentPlan,
       planId: plan.id
     });
-    
+
     if (isCurrentPlan || loading) {
       console.log(`🔍 PlanCard[${plan.id}] 跳過：isCurrentPlan=${isCurrentPlan}, loading=${loading}`);
       return;
@@ -102,20 +102,20 @@ export const PlanCard = ({
       // 根據 ECPay 政策，需要創建新的定期定額訂單，系統會自動延長剩餘服務時間
       if (isCancelledButActive && isPro) {
         console.log('🔍 PlanCard 處理已取消但仍有效的訂閱重新訂閱');
-        
+
         Analytics.track('subscription_reactivation_via_new_payment', {
           planType: plan.id,
           reason: 'ecpay_policy_requires_new_payment'
         });
-        
+
         // 直接導航到付款頁面，後端會處理延長邏輯
         let paymentUrl = `/${lang}/payment?plan=${plan.id}&period=${billingPeriod}&extend=true`;
-        
+
         // 🔧 修復：無論是否有折扣，都要傳遞優惠碼
         if (appliedRedemption && appliedRedemption.code) {
           paymentUrl += `&redemption=${encodeURIComponent(appliedRedemption.code)}`;
         }
-        
+
         // 🔧 修復：如果有優惠碼應用，將完整的折扣信息添加到URL參數
         console.log('🔍 PlanCard 檢查折扣條件 (重新訂閱):', {
           hasAppliedRedemption: !!appliedRedemption,
@@ -124,11 +124,11 @@ export const PlanCard = ({
           appliedRedemption: appliedRedemption,
           adjustedPricing: adjustedPricing
         });
-        
+
         if (appliedRedemption && appliedRedemption.benefits && adjustedPricing.hasRedemptionDiscount) {
           const benefits = appliedRedemption.benefits;
           const discount = adjustedPricing.redemptionDiscount;
-          
+
           // 傳遞折扣類型
           paymentUrl += `&discountType=${benefits.discountType || discount.type}`;
 
@@ -142,18 +142,18 @@ export const PlanCard = ({
           // 傳遞原價和最終價格
           paymentUrl += `&originalPrice=${adjustedPricing.originalPrice}`;
           paymentUrl += `&finalPrice=${adjustedPricing.displayPrice}`;
-          
+
           console.log('🔍 PlanCard 傳遞給 PaymentPage 的完整參數 (重新訂閱):', {
             redemptionCode: appliedRedemption.code,
             discountType: benefits.discountType || discount.type,
-            discountValue: benefits.discountType === 'PERCENTAGE_DISCOUNT' || discount.type === 'percentage' 
+            discountValue: benefits.discountType === 'PERCENTAGE_DISCOUNT' || discount.type === 'percentage'
               ? (benefits.savingsPercentage || benefits.discountPercentage || discount.value)
               : (benefits.estimatedValue || benefits.discountAmount || benefits.amount || discount.value),
             originalPrice: adjustedPricing.originalPrice,
             finalPrice: adjustedPricing.displayPrice
           });
         }
-        
+
         navigate(paymentUrl);
         return;
       }
@@ -175,11 +175,11 @@ export const PlanCard = ({
           appliedRedemption: appliedRedemption,
           adjustedPricing: adjustedPricing
         });
-        
+
         if (appliedRedemption && appliedRedemption.benefits && adjustedPricing.hasRedemptionDiscount) {
           const benefits = appliedRedemption.benefits;
           const discount = adjustedPricing.redemptionDiscount;
-          
+
           // 傳遞折扣類型
           paymentUrl += `&discountType=${benefits.discountType || discount.type}`;
 
@@ -193,11 +193,11 @@ export const PlanCard = ({
           // 傳遞原價和最終價格
           paymentUrl += `&originalPrice=${adjustedPricing.originalPrice}`;
           paymentUrl += `&finalPrice=${adjustedPricing.displayPrice}`;
-          
+
           console.log('🔍 PlanCard 傳遞給 PaymentPage 的完整參數:', {
             redemptionCode: appliedRedemption.code,
             discountType: benefits.discountType || discount.type,
-            discountValue: benefits.discountType === 'PERCENTAGE_DISCOUNT' || discount.type === 'percentage' 
+            discountValue: benefits.discountType === 'PERCENTAGE_DISCOUNT' || discount.type === 'percentage'
               ? (benefits.savingsPercentage || benefits.discountPercentage || discount.value)
               : (benefits.estimatedValue || benefits.discountAmount || benefits.amount || discount.value),
             originalPrice: adjustedPricing.originalPrice,
@@ -232,7 +232,7 @@ export const PlanCard = ({
   // Get adjusted pricing if redemption code is applied
   const getAdjustedPricing = () => {
     console.log(`🔍 PlanCard[${plan.id}] getAdjustedPricing - planAdjustment:`, planAdjustment);
-    
+
     if (!planAdjustment) {
       console.log(`🔍 PlanCard[${plan.id}] 沒有 planAdjustment，返回原始 pricingData`);
       return pricingData;
@@ -245,7 +245,7 @@ export const PlanCard = ({
       hasRedemptionDiscount: !!(planAdjustment.discount && (planAdjustment.discount.value > 0 || planAdjustment.discount.amount > 0)), // 確保折扣值大於0
       redemptionDiscount: planAdjustment.discount
     };
-    
+
     console.log(`🔍 PlanCard[${plan.id}] planAdjustment.discount:`, planAdjustment.discount);
     console.log(`🔍 PlanCard[${plan.id}] hasRedemptionDiscount 計算:`, !!(planAdjustment.discount && (planAdjustment.discount.value > 0 || planAdjustment.discount.amount > 0)));
     console.log(`🔍 PlanCard[${plan.id}] 返回調整後的 pricing:`, result);
@@ -253,7 +253,7 @@ export const PlanCard = ({
   };
 
   const adjustedPricing = getAdjustedPricing();
-  
+
   // 🔍 調試：檢查 planAdjustment 和 adjustedPricing
   console.log(`🔍 PlanCard[${plan.id}] planAdjustment:`, planAdjustment);
   console.log(`🔍 PlanCard[${plan.id}] adjustedPricing:`, adjustedPricing);
@@ -287,26 +287,26 @@ export const PlanCard = ({
       // 檢查用戶是否曾經有過 Pro 訂閱（從訂閱歷史或當前狀態判斷）
       const hasHadProSubscription = (() => {
         // 檢查當前用戶計劃是否曾經是 Pro（但現在已過期或取消）
-        if (userPlan && userPlan.type === 'pro' && 
-            (userPlan.status === 'expired' || userPlan.status === 'cancelled')) {
+        if (userPlan && userPlan.type === 'pro' &&
+          (userPlan.status === 'expired' || userPlan.status === 'cancelled')) {
           return true;
         }
-        
+
         // 檢查訂閱歷史中是否有 Pro 訂閱記錄
         if (subscriptionHistory && Array.isArray(subscriptionHistory)) {
-          return subscriptionHistory.some(sub => 
+          return subscriptionHistory.some(sub =>
             sub.planType === 'pro' || sub.type === 'pro'
           );
         }
-        
+
         return false;
       })();
-      
+
       // 如果用戶曾經有過 Pro 訂閱但現在已過期/取消，顯示重新訂閱
       if (hasHadProSubscription) {
         return t('subscription.subscriptionPlans.resubscribe');
       }
-      
+
       // 對於新用戶或從未有過 Pro 訂閱的用戶，顯示立即升級
       return t('payment.form.upgradeNow');
     }
@@ -414,12 +414,44 @@ export const PlanCard = ({
 
       <div className="plan-card__features">
         <ul className="plan-card__features-list">
-          {t(`subscription.subscriptionPlans.${plan.id}Plan.features`, { returnObjects: true }).map((feature, index) => (
-            <li key={index} className="plan-card__feature-item">
-              <span className="plan-card__feature-icon">✓</span>
-              <span className="plan-card__feature-text">{feature}</span>
-            </li>
-          ))}
+          {t(`subscription.subscriptionPlans.${plan.id}Plan.features`, { returnObjects: true }).map((feature, index) => {
+            // 檢查是否為免費方案中被禁用的功能
+            const isDisabledFeature = plan.id === 'free' && (
+              feature.includes('追蹤清單功能') ||
+              feature.includes('無廣告體驗') ||
+              feature.includes('Watchlist Feature') ||
+              feature.includes('Ad-free Experience')
+            );
+
+            // 檢查是否為免費方案中受限制的功能（樂活五線譜和市場情緒分析）
+            const isLimitedFeature = plan.id === 'free' && (
+              feature.includes('樂活五線譜') ||
+              feature.includes('市場情緒分析') ||
+              feature.includes('Lohas Spectrum') ||
+              feature.includes('Market Sentiment')
+            );
+
+            // 決定圖示和樣式
+            let icon = '✓';
+            let className = 'plan-card__feature-item';
+
+            if (isDisabledFeature) {
+              icon = '✗';
+              className += ' plan-card__feature-item--disabled';
+            } else if (isLimitedFeature) {
+              icon = '⚠️';
+              className += ' plan-card__feature-item--limited';
+            }
+
+            return (
+              <li key={index} className={className}>
+                <span className="plan-card__feature-icon">
+                  {icon}
+                </span>
+                <span className="plan-card__feature-text">{feature}</span>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
