@@ -317,10 +317,12 @@ export function PriceAnalysis() {
     }
 
     // 新增：檢查股票代碼限制
+    const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
     const userPlan = user?.plan || 'free'; // 從 auth context 獲取實際用戶計劃
-    console.log('Stock check:', { displayStockCode, userPlan, isAllowed: isStockAllowed(displayStockCode, userPlan) });
+    const effectiveUserPlan = isTemporaryFreeMode ? 'pro' : userPlan;
+    console.log('Stock check:', { displayStockCode, userPlan, effectiveUserPlan, isTemporaryFreeMode, isAllowed: isStockAllowed(displayStockCode, effectiveUserPlan) });
     
-    if (!isStockAllowed(displayStockCode, userPlan)) {
+    if (!isStockAllowed(displayStockCode, effectiveUserPlan)) {
       console.log('Stock not allowed, opening dialog');
       // 顯示功能升級對話框
       openDialog('featureUpgrade', {
@@ -527,9 +529,11 @@ export function PriceAnalysis() {
     }
 
     // 新增：檢查股票代碼限制
+    const isTemporaryFreeMode2 = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
     const userPlan = user?.plan || 'free'; // 從 auth context 獲取實際用戶計劃
+    const effectiveUserPlan2 = isTemporaryFreeMode2 ? 'pro' : userPlan;
     const upperClickedCode = searchItem.keyword.toUpperCase();
-    if (!isStockAllowed(upperClickedCode, userPlan)) {
+    if (!isStockAllowed(upperClickedCode, effectiveUserPlan2)) {
       // 顯示功能升級對話框
       openDialog('featureUpgrade', {
         feature: 'stockAccess',
@@ -610,9 +614,11 @@ export function PriceAnalysis() {
     }
 
     // 免費股票清單中的股票都是允許的，但仍然檢查一下
+    const isTemporaryFreeMode3 = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
     const userPlan = user?.plan || 'free';
+    const effectiveUserPlan3 = isTemporaryFreeMode3 ? 'pro' : userPlan;
     const upperClickedCode = ticker.toUpperCase();
-    if (!isStockAllowed(upperClickedCode, userPlan)) {
+    if (!isStockAllowed(upperClickedCode, effectiveUserPlan3)) {
       // 理論上不應該發生，但為了安全起見
       openDialog('featureUpgrade', {
         feature: 'stockAccess',

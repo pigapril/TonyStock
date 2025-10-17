@@ -25,6 +25,10 @@ export function useAuth() {
     const watchlistAccess = useMemo(() => {
         if (!user) return false;
         
+        // 檢查臨時免費模式
+        const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+        if (isTemporaryFreeMode) return true;
+        
         // 獲取用戶計劃，預設為 'free'
         const userPlan = user.plan || 'free';
         

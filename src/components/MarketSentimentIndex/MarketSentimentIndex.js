@@ -131,8 +131,10 @@ const MarketSentimentIndex = () => {
   const currentLang = i18n.language;
 
   // 檢查用戶計劃
+  const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
   const userPlan = user?.plan || 'free';
-  const isProUser = userPlan === 'pro';
+  const effectiveUserPlan = isTemporaryFreeMode ? 'pro' : userPlan;
+  const isProUser = effectiveUserPlan === 'pro';
 
   // 新增滑桿相關狀態
   const [sliderMinMax, setSliderMinMax] = useState([0, 0]); // [minTimestamp, maxTimestamp]
@@ -178,7 +180,9 @@ const MarketSentimentIndex = () => {
         setLoading(true);
         
         // 根據用戶計劃選擇不同的端點
-        const endpoint = isProUser ? '/api/market-sentiment' : '/api/market-sentiment-free';
+        // 在臨時免費模式下，所有用戶都使用 Pro 端點
+        const shouldUsePro = isTemporaryFreeMode || isProUser;
+        const endpoint = shouldUsePro ? '/api/market-sentiment' : '/api/market-sentiment-free';
         const response = await enhancedApiClient.get(endpoint);
 
         if (isMounted) {
@@ -455,7 +459,7 @@ const MarketSentimentIndex = () => {
   const handleRestrictedFeatureClick = useCallback((feature) => {
     Analytics.marketSentiment.restrictedFeatureClicked({
       feature,
-      userPlan
+      userPlan: effectiveUserPlan
     });
     
     // 使用新的 FeatureUpgradeDialog 而不是舊的 paywall
@@ -467,7 +471,7 @@ const MarketSentimentIndex = () => {
         source: 'marketSentimentIndex'
       }
     });
-  }, [userPlan]);
+  }, [effectiveUserPlan]);
 
   // Tutorial 處理函數
   const handleCloseTutorial = useCallback(() => {

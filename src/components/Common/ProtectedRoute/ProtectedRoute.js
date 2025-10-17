@@ -51,13 +51,17 @@ export function ProtectedRoute({ children, requireAuth = true }) {
 
     // watchlist 頁面需要額外的權限檢查
     if (location.pathname.includes('/watchlist') && !watchlistAccess) {
-        // 重定向到訂閱頁面，並顯示升級提示
-        const currentLang = location.pathname.split('/')[1] || 'zh-TW';
-        return <Navigate to={`/${currentLang}/subscription-plans`} state={{ 
-            from: location.pathname,
-            reason: 'watchlist_upgrade_required',
-            message: t('protectedRoute.watchlistUpgradeRequired')
-        }} replace />;
+        // 檢查臨時免費模式
+        const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+        if (!isTemporaryFreeMode) {
+            // 重定向到訂閱頁面，並顯示升級提示
+            const currentLang = location.pathname.split('/')[1] || 'zh-TW';
+            return <Navigate to={`/${currentLang}/subscription-plans`} state={{ 
+                from: location.pathname,
+                reason: 'watchlist_upgrade_required',
+                message: t('protectedRoute.watchlistUpgradeRequired')
+            }} replace />;
+        }
     }
 
     return children;
