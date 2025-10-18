@@ -251,50 +251,7 @@ function AppContent() {
     }
   }, [i18n.language, triggerCheck]);
 
-  // 動態檢測 AnnouncementBar 的存在並調整佈局
-  React.useEffect(() => {
-    const checkAnnouncementBar = () => {
-      const announcementBar = document.querySelector('.announcement-bar');
-      const mainContent = document.querySelector('.main-content');
-      
-      if (mainContent) {
-        if (announcementBar) {
-          mainContent.classList.add('has-announcement-bar');
-        } else {
-          mainContent.classList.remove('has-announcement-bar');
-        }
-      }
-    };
-
-    // 初始檢查
-    checkAnnouncementBar();
-
-    // 設置 MutationObserver 來監聽 DOM 變化
-    const observer = new MutationObserver(checkAnnouncementBar);
-    const container = document.getElementById('announcement-container');
-    
-    if (container) {
-      observer.observe(container, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['class', 'style']
-      });
-    }
-
-    // 也監聽整個 main-content 區域
-    const mainContent = document.querySelector('.main-content');
-    if (mainContent) {
-      observer.observe(mainContent, {
-        childList: true,
-        subtree: true
-      });
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  // 移除動態檢測邏輯，因為現在使用覆蓋模式，不需要調整佈局
 
 
 
@@ -505,10 +462,8 @@ function AppContent() {
             </div>
           </header>
 
-          {/* 公告欄 */}
-          <div id="announcement-container">
-            <AnnouncementBar />
-          </div>
+          {/* 公告欄 - 覆蓋模式，不影響頁面佈局 */}
+          <AnnouncementBar />
 
           {/* 內容路由 */}
           <div className="content-area">

@@ -373,9 +373,12 @@
 /* 在市場情緒指數頁面中置中 TimeRangeSelector */
 .market-sentiment-view .indicator-item .time-range-selector,
 .composition-modal .indicator-item .time-range-selector {
+  display: flex;
   justify-content: center;
+  align-items: center;
   margin: 3% auto;
   width: fit-content;
+  text-align: center;
 }
 
 .market-sentiment-view .last-update-time {
@@ -823,7 +826,12 @@
   }
 
   .market-sentiment-view .indicator-item .time-range-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 3% auto;
+    width: fit-content;
+    text-align: center;
   }
 
   .market-sentiment-view .description-scroll-content .description-container {
@@ -1214,7 +1222,12 @@
   }
 
   .market-sentiment-view .indicator-item .time-range-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 5px auto;
+    width: fit-content;
+    text-align: center;
   }
 
   /* Gauge 相關樣式已移至 MarketSentimentGauge 組件 */

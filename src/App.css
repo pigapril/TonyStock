@@ -226,19 +226,13 @@ body {
 }
 
 .content-area {
-  margin-top: 50px; /* 基本為 top-nav (50px) 預留空間 */
+  margin-top: 50px; /* 只為 top-nav (50px) 預留空間 */
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
   margin-bottom: 0.5%;
-  transition: margin-top 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* 平滑過渡 */
-}
-
-/* 當 AnnouncementBar 存在時動態調整 */
-.main-content:has(.announcement-bar) .content-area,
-.main-content.has-announcement-bar .content-area {
-  margin-top: 110px; /* top-nav (50px) + AnnouncementBar (約60px) */
+  /* 移除過渡動畫，因為不再需要動態調整 */
 }
 
 .content-area h2 {
@@ -307,12 +301,7 @@ body {
     margin-left: 0;
     margin-right: 0;
     padding: 15px;
-  }
-
-  /* 手機版的 AnnouncementBar 調整 */
-  .main-content:has(.announcement-bar) .content-area,
-  .main-content.has-announcement-bar .content-area {
-    margin-top: 110px; /* 保持與桌面版相同 */
+    /* 手機版也不需要為 AnnouncementBar 調整 margin-top */
   }
 
   /* 確保 overlay 在側邊欄打開時正確顯示 */

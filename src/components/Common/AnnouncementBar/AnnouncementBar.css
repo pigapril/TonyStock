@@ -8,21 +8,22 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 
-  /* 現代化邊框與陰影 */
+  /* 現代化邊框與陰影 - 覆蓋模式需要更明顯的陰影 */
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.04),
-    0 4px 16px rgba(0, 0, 0, 0.02),
+    0 12px 40px rgba(0, 0, 0, 0.08),
+    0 6px 20px rgba(0, 0, 0, 0.04),
+    0 2px 8px rgba(0, 0, 0, 0.02),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
 
-  /* 佈局與間距 - 固定在 top-nav 下方 */
-  padding: 2px 56px 2px 20px;
+  /* 佈局與間距 - 固定在 top-nav 下方，覆蓋在頁面內容上 */
+  padding: 20px 56px 1px 20px;
   position: fixed;
-  top: 80px; /* top-nav 的高度 */
+  top: 50px; /* top-nav 的高度 */
   left: 0;
   right: 0;
-  z-index: 998; /* 比 top-nav (999) 稍低 */
+  z-index: 998; /* 比 top-nav (999) 稍低，但高於頁面內容，實現覆蓋效果 */
   overflow: hidden;
 
   /* 字體與顏色 */
@@ -46,7 +47,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 12px 60px 12px 20px; /* 上下內邊距，右側為關閉按鈕預留空間 */
+  padding: 12px 60px 8px 20px; /* 上下內邊距，右側為關閉按鈕預留空間 */
   width: 100%;
   box-sizing: border-box;
 }
@@ -87,7 +88,7 @@
   justify-content: center;
   position: absolute;
   right: 16px;
-  top: 50%;
+  top: 70%;
   transform: translateY(-50%);
   z-index: 100;
 
@@ -157,7 +158,7 @@
 @media (max-width: 768px) {
   .announcement-bar {
     font-size: 0.85rem;
-    top: 70px; /* 保持固定在 top-nav 下方 */
+    top: 50px; /* 保持固定在 top-nav 下方，覆蓋在內容上 */
     left: 8px;
     right: 8px;
     border-radius: 8px; /* 稍微減少圓角 */
@@ -224,14 +225,14 @@
 @media (max-width: 480px) {
   .announcement-bar {
     font-size: 0.8rem;
-    top: 70px; /* 保持固定在 top-nav 下方 */
+    top: 50px; /* 保持固定在 top-nav 下方，覆蓋在內容上 */
     left: 6px;
     right: 6px;
     border-radius: 6px;
   }
 
   .announcement-content {
-    padding: 2px 3px 2px 3px; /* 進一步優化小螢幕的內邊距 */
+    padding: 4px 3px 4px 3px; /* 進一步優化小螢幕的內邊距 */
   }
 
   .announcement-close {
