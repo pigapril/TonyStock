@@ -15,12 +15,16 @@ export const PlanCard = ({
   isCurrentUser,
   billingPeriod = 'monthly',
   planAdjustment = null,
-  appliedRedemption = null
+  appliedRedemption = null,
+  onShowFreeTrialDialog = null
 }) => {
   const { t } = useTranslation();
   const { lang } = useParams();
   const { userPlan, subscriptionHistory, loading } = useSubscription();
   const navigate = useNavigate();
+  
+  // 臨時免費模式檢查
+  const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
 
 
 
@@ -62,18 +66,17 @@ export const PlanCard = ({
   })();
 
   const handlePlanSelect = async () => {
-    console.log(`🔍 PlanCard[${plan.id}] handlePlanSelect 被調用`);
-    console.log(`🔍 PlanCard[${plan.id}] 狀態檢查:`, {
-      isCurrentPlan,
-      isCancelledButActive,
-      loading,
-      userPlan: userPlan,
-      currentPlan,
-      planId: plan.id
-    });
+    // 檢查臨時免費模式
+    if (isTemporaryFreeMode && onShowFreeTrialDialog) {
+      onShowFreeTrialDialog();
+      Analytics.track('temporary_free_mode_dialog_shown', {
+        planId: plan.id,
+        currentPlan: currentPlan || 'none'
+      });
+      return;
+    }
 
     if (isCurrentPlan || loading) {
-      console.log(`🔍 PlanCard[${plan.id}] 跳過：isCurrentPlan=${isCurrentPlan}, loading=${loading}`);
       return;
     }
 
@@ -488,7 +491,6 @@ export const PlanCard = ({
           {getButtonText()}
         </AppleButton>
       </div>
-
 
     </div>
   );

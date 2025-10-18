@@ -1528,6 +1528,16 @@
       "error": "重新啟動訂閱失敗，請稍後再試",
       "requiresNewPayment": "根據 ECPay 政策，已終止的定期定額無法重新啟用，需要重新設定付款方式",
       "extensionNotice": "您的剩餘服務時間將自動延長到新訂閱中，不會損失任何權益"
+    },
+    "freeTrialDialog": {
+      "title": "免費試用通知",
+      "heading": "目前所有功能免費開放！",
+      "message": "我們正在進行功能測試，目前所有 Pro 功能都免費開放給所有用戶使用。未來我們將會開始收費，敬請期待！",
+      "featuresTitle": "目前免費開放的功能：",
+      "feature1": "無限制股票查詢",
+      "feature2": "完整市場情緒分析",
+      "feature3": "個人化投資組合管理",
+      "understood": "我知道了"
     }
   },
   "payment": {

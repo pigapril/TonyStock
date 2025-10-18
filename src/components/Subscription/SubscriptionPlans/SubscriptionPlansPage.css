@@ -700,4 +700,113 @@
   .apple-redemption-success-content p {
     color: rgba(50, 215, 75, 0.8);
   }
+}/* 臨
+時免費模式對話框樣式 */
+.free-trial-dialog {
+  padding: 24px;
+  text-align: center;
+}
+
+.free-trial-dialog__content {
+  margin-bottom: 32px;
+}
+
+.free-trial-dialog__icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.free-trial-dialog__heading {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-primary, #1d1d1f);
+  margin: 0 0 16px 0;
+  line-height: 1.2;
+}
+
+.free-trial-dialog__message {
+  font-size: 16px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.free-trial-dialog__features {
+  background: var(--color-bg-soft, #f5f5f7);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+}
+
+.free-trial-dialog__features h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary, #1d1d1f);
+  margin: 0 0 12px 0;
+}
+
+.free-trial-dialog__features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.free-trial-dialog__features li {
+  font-size: 14px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  line-height: 1.5;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.free-trial-dialog__features li:last-child {
+  margin-bottom: 0;
+}
+
+.free-trial-dialog__actions {
+  display: flex;
+  justify-content: center;
+}
+
+.free-trial-dialog__button {
+  background: var(--accent-color-blue, #007aff);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.free-trial-dialog__button:hover {
+  background: var(--accent-color-blue-hover, #0056cc);
+  transform: translateY(-1px);
+}
+
+.free-trial-dialog__button:active {
+  transform: translateY(0);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .free-trial-dialog {
+    padding: 20px;
+  }
+  
+  .free-trial-dialog__heading {
+    font-size: 20px;
+  }
+  
+  .free-trial-dialog__message {
+    font-size: 14px;
+  }
+  
+  .free-trial-dialog__features {
+    padding: 16px;
+  }
 }

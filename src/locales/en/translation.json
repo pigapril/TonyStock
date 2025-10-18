@@ -1512,6 +1512,16 @@
       "error": "Failed to reactivate subscription, please try again later",
       "requiresNewPayment": "According to ECPay policy, terminated recurring payments cannot be reactivated and require new payment method setup",
       "extensionNotice": "Your remaining service time will be automatically extended to the new subscription, ensuring no loss of benefits"
+    },
+    "freeTrialDialog": {
+      "title": "Free Trial Notice",
+      "heading": "All Features Currently Free!",
+      "message": "We are currently testing our features, and all Pro functions are now available to all users for free. We will start charging in the future, so stay tuned!",
+      "featuresTitle": "Currently free features:",
+      "feature1": "Unlimited stock queries",
+      "feature2": "Complete market sentiment analysis",
+      "feature3": "Personalized portfolio management",
+      "understood": "Got it"
     }
   },
   "payment": {

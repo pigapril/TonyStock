@@ -8,6 +8,7 @@ import { BillingPeriodToggle } from '../shared/BillingPeriodToggle';
 import { RedemptionCodeInput } from '../../Redemption/RedemptionCodeInput';
 import { Analytics } from '../../../utils/analytics';
 import subscriptionService from '../../../api/subscriptionService';
+import { Dialog } from '../../Common/Dialog/Dialog';
 import './SubscriptionPlansPage.css';
 
 export const SubscriptionPlansPage = () => {
@@ -18,6 +19,10 @@ export const SubscriptionPlansPage = () => {
   const [upgradeNotification, setUpgradeNotification] = useState(null);
   const [billingPeriod, setBillingPeriod] = useState('monthly');
   const [appliedRedemption, setAppliedRedemption] = useState(null);
+  
+  // 臨時免費模式狀態
+  const [showFreeTrialDialog, setShowFreeTrialDialog] = useState(false);
+  const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
   const [planAdjustments, setPlanAdjustments] = useState({});
 
   useEffect(() => {
@@ -42,6 +47,11 @@ export const SubscriptionPlansPage = () => {
   }, [user, userPlan, location.state, t]);
 
   const availablePlans = subscriptionService.getAvailablePlans();
+
+  // 處理免費試用對話框
+  const handleShowFreeTrialDialog = () => {
+    setShowFreeTrialDialog(true);
+  };
 
   const handleBillingPeriodChange = (period) => {
     setBillingPeriod(period);
@@ -260,6 +270,7 @@ export const SubscriptionPlansPage = () => {
               billingPeriod={billingPeriod}
               planAdjustment={planAdjustments[plan.id]}
               appliedRedemption={appliedRedemption}
+              onShowFreeTrialDialog={handleShowFreeTrialDialog}
             />
           ))}
         </section>
@@ -312,6 +323,44 @@ export const SubscriptionPlansPage = () => {
           </div>
         </section>
       </div>
+
+      {/* 臨時免費模式對話框 */}
+      <Dialog
+        open={showFreeTrialDialog}
+        onClose={() => setShowFreeTrialDialog(false)}
+        title={t('subscription.freeTrialDialog.title', '免費試用通知')}
+        maxWidth="sm"
+      >
+        <div className="free-trial-dialog">
+          <div className="free-trial-dialog__content">
+            <div className="free-trial-dialog__icon">🎉</div>
+            <h3 className="free-trial-dialog__heading">
+              {t('subscription.freeTrialDialog.heading', '目前所有功能免費開放！')}
+            </h3>
+            <p className="free-trial-dialog__message">
+              {t('subscription.freeTrialDialog.message', 
+                '我們正在進行功能測試，目前所有 Pro 功能都免費開放給所有用戶使用。未來我們將會開始收費，敬請期待！'
+              )}
+            </p>
+            <div className="free-trial-dialog__features">
+              <h4>{t('subscription.freeTrialDialog.featuresTitle', '目前免費開放的功能：')}</h4>
+              <ul>
+                <li>✅ {t('subscription.freeTrialDialog.feature1', '無限制股票查詢')}</li>
+                <li>✅ {t('subscription.freeTrialDialog.feature2', '完整市場情緒分析')}</li>
+                <li>✅ {t('subscription.freeTrialDialog.feature3', '個人化投資組合管理')}</li>
+              </ul>
+            </div>
+          </div>
+          <div className="free-trial-dialog__actions">
+            <button
+              className="free-trial-dialog__button"
+              onClick={() => setShowFreeTrialDialog(false)}
+            >
+              {t('subscription.freeTrialDialog.understood', '我知道了')}
+            </button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 };
