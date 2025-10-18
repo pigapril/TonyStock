@@ -25,6 +25,9 @@ export const PlanCard = ({
   
   // 臨時免費模式檢查
   const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+  
+  // Pro方案價格顯示控制
+  const showProPricing = process.env.REACT_APP_SHOW_PRO_PRICING === 'true';
 
 
 
@@ -66,6 +69,11 @@ export const PlanCard = ({
   })();
 
   const handlePlanSelect = async () => {
+    // Pro 方案價格待定時不允許點擊
+    if (isPro && !showProPricing) {
+      return;
+    }
+
     // 檢查臨時免費模式
     if (isTemporaryFreeMode && onShowFreeTrialDialog) {
       onShowFreeTrialDialog();
@@ -229,6 +237,8 @@ export const PlanCard = ({
 
   const formatPriceDisplay = (price) => {
     if (price === 0) return t('subscription.subscriptionPlans.freePlan.price');
+    // 如果是pro方案且不顯示價格，顯示"待定"
+    if (plan.id === 'pro' && !showProPricing) return t('subscription.subscriptionPlans.proPlan.price');
     return formatPrice(price);
   };
 
@@ -263,6 +273,11 @@ export const PlanCard = ({
 
   const getButtonText = () => {
     if (loading) return t('payment.form.processing');
+
+    // Pro 方案價格待定時的特殊處理
+    if (isPro && !showProPricing) {
+      return t('subscription.subscriptionPlans.comingSoon');
+    }
 
     // 🔧 未登入用戶的處理邏輯
     if (!isCurrentUser) {
@@ -349,7 +364,7 @@ export const PlanCard = ({
             <span className="plan-card__price-amount">
               {formatPriceDisplay(adjustedPricing.displayPrice)}
             </span>
-            {!isFree && (
+            {!isFree && !(plan.id === 'pro' && !showProPricing) && (
               <span className="plan-card__price-period">
                 {adjustedPricing.period}
               </span>
@@ -484,7 +499,7 @@ export const PlanCard = ({
           variant={getButtonVariant()}
           size="large"
           onClick={handlePlanSelect}
-          disabled={isCurrentPlan || loading}
+          disabled={isCurrentPlan || loading || (isPro && !showProPricing)}
           loading={loading}
           className="plan-card__button"
         >
