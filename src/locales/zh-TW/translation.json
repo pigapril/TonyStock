@@ -1931,7 +1931,8 @@
     "tabs": {
       "codeManagement": "代碼管理",
       "analytics": "分析數據",
-      "userManagement": "用戶管理"
+      "userManagement": "用戶管理",
+      "announcementManagement": "公告管理"
     },
     "userManagement": {
       "title": "用戶升級管理",

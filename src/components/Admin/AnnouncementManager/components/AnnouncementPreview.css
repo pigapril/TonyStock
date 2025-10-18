@@ -1,0 +1,293 @@
+/* 預覽區域樣式 */
+.announcement-preview-container h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 24px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f5f5f7;
+}
+
+/* 預覽標題區域 */
+.announcement-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.announcement-preview-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.announcement-preview-control-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.announcement-preview-control-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* 預覽容器 */
+.announcement-preview-main-container {
+  margin-bottom: 24px;
+}
+
+/* 預覽框架 */
+.announcement-preview-frame {
+  border: 2px solid #e5e5ea;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* 模擬網站 */
+.announcement-preview-mock-website {
+  min-height: 300px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* 模擬標題欄 */
+.announcement-preview-mock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: white;
+  border-bottom: 1px solid #e5e5ea;
+}
+
+.announcement-preview-mock-logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #007aff;
+}
+
+.announcement-preview-mock-nav {
+  display: flex;
+  gap: 24px;
+}
+
+.announcement-preview-mock-nav span {
+  font-size: 0.9rem;
+  color: #6e6e73;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.announcement-preview-mock-nav span:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* 公告預覽區域 */
+.announcement-preview-area {
+  position: relative;
+  min-height: 60px;
+}
+
+.announcement-preview-no-announcement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.02);
+  border-top: 1px dashed #d1d1d6;
+  border-bottom: 1px dashed #d1d1d6;
+}
+
+.announcement-preview-no-announcement p {
+  color: #8e8e93;
+  font-size: 0.9rem;
+  margin: 0;
+  font-style: italic;
+}
+
+/* 模擬內容 */
+.announcement-preview-mock-content {
+  padding: 32px 24px;
+}
+
+.announcement-preview-mock-section h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 12px 0;
+}
+
+.announcement-preview-mock-section p {
+  color: #6e6e73;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 預覽資訊 */
+.announcement-preview-info {
+  background: rgba(0, 122, 255, 0.05);
+  border: 1px solid rgba(0, 122, 255, 0.1);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.announcement-preview-info h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 12px 0;
+}
+
+.announcement-preview-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.announcement-preview-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.announcement-preview-info-label {
+  font-size: 0.9rem;
+  color: #6e6e73;
+  font-weight: 500;
+}
+
+.announcement-preview-info-value {
+  font-size: 0.9rem;
+  color: #1d1d1f;
+  font-weight: 500;
+}
+
+.announcement-preview-info-value.status.enabled {
+  color: #34c759;
+}
+
+.announcement-preview-info-value.status.disabled {
+  color: #ff3b30;
+}
+
+/* 驗證資訊 */
+.announcement-preview-validation-info {
+  background: rgba(52, 199, 89, 0.05);
+  border: 1px solid rgba(52, 199, 89, 0.1);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.announcement-preview-validation-info h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 12px 0;
+}
+
+.announcement-preview-validation-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.announcement-preview-status-indicator {
+  font-size: 1rem;
+}
+
+.announcement-preview-validation-details {
+  font-size: 0.85rem;
+  color: #6e6e73;
+}
+
+/* 預覽說明 */
+.announcement-preview-notes {
+  background: rgba(142, 142, 147, 0.05);
+  border: 1px solid rgba(142, 142, 147, 0.1);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.announcement-preview-notes h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 12px 0;
+}
+
+.announcement-preview-notes ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #6e6e73;
+}
+
+.announcement-preview-notes li {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+.announcement-preview-notes li:last-child {
+  margin-bottom: 0;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .announcement-preview-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .announcement-preview-mock-header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .announcement-preview-mock-nav {
+    justify-content: center;
+  }
+
+  .announcement-preview-mock-content {
+    padding: 20px 16px;
+  }
+
+  .announcement-preview-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .announcement-preview-frame {
+    border-radius: 8px;
+  }
+
+  .announcement-preview-mock-header {
+    padding: 12px 16px;
+  }
+
+  .announcement-preview-mock-content {
+    padding: 16px 12px;
+  }
+
+  .announcement-preview-info,
+  .announcement-preview-validation-info,
+  .announcement-preview-notes {
+    padding: 12px;
+  }
+}

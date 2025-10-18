@@ -15,6 +15,7 @@ import LoadingSpinner from '../components/Common/LoadingSpinner';
 import CodeManagementPanel from '../components/Admin/CodeManagement/CodeManagementPanel';
 import RedemptionAnalytics from '../components/Admin/Analytics/RedemptionAnalytics';
 import UserUpgradePanel from '../components/Admin/UserManagement/UserUpgradePanel';
+import AnnouncementManager from '../components/Admin/AnnouncementManager/AnnouncementManager';
 import './AdminPage.css';
 
 const AdminPage = () => {
@@ -86,6 +87,12 @@ const AdminPage = () => {
             label: t('admin.tabs.userManagement'),
             icon: '👥',
             component: UserUpgradePanel
+        },
+        {
+            id: 'announcement',
+            label: t('admin.tabs.announcementManagement'),
+            icon: '📢',
+            component: AnnouncementManager
         }
     ];
 

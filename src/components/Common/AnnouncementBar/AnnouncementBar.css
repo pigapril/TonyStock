@@ -16,9 +16,13 @@
     0 4px 16px rgba(0, 0, 0, 0.02),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
 
-  /* 佈局與間距 */
-  padding: 12px 56px 12px 20px;
-  position: relative;
+  /* 佈局與間距 - 固定在 top-nav 下方 */
+  padding: 2px 56px 2px 20px;
+  position: fixed;
+  top: 80px; /* top-nav 的高度 */
+  left: 0;
+  right: 0;
+  z-index: 998; /* 比 top-nav (999) 稍低 */
   overflow: hidden;
 
   /* 字體與顏色 */
@@ -40,27 +44,31 @@
 
 .announcement-content {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: marquee 25s linear infinite;
-  white-space: nowrap;
-
-  /* 確保內容在容器中居中 */
-  min-width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 12px 60px 12px 20px; /* 上下內邊距，右側為關閉按鈕預留空間 */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .announcement-message {
   margin: 0;
   padding: 0;
+  width: 100%;
+  /* 更溫和的換行策略 */
+  word-wrap: break-word;
+  word-break: normal; /* 改為 normal，避免強制在任意字符間換行 */
+  overflow-wrap: break-word; /* 現代化的屬性，只在必要時換行 */
+  white-space: normal; /* 允許換行 */
+  line-height: 1.4;
 
   /* 現代化字體樣式 */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   letter-spacing: -0.01em;
-
-  /* 表情符號優化 */
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
+  
+  /* 確保 emoji 和文字在同一行 */
+  display: inline;
+  vertical-align: baseline;
 }
 
 .announcement-close {
@@ -113,25 +121,7 @@
   transition-duration: 0.1s;
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(100vw);
-  }
-
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes marquee-mobile {
-  0% {
-    transform: translateX(100vw);
-  }
-
-  100% {
-    transform: translateX(calc(-100% - 50vw));
-  }
-}
+/* 移除所有跑馬燈動畫 - 使用靜態顯示和自動換行 */
 
 /* 淡入動畫 */
 @keyframes fadeInSlide {
@@ -150,7 +140,7 @@
   animation: fadeInSlide 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* 懸停時暫停動畫並增強視覺效果 */
+/* 懸停時增強視覺效果 */
 .announcement-bar:hover {
   background: linear-gradient(135deg,
       rgba(0, 122, 255, 0.12) 0%,
@@ -163,53 +153,101 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
-.announcement-bar:hover .announcement-content {
-  animation-play-state: paused;
-}
-
 /* 響應式設計優化 */
 @media (max-width: 768px) {
   .announcement-bar {
-    font-size: 0.8rem;
-    padding: 10px 48px 10px 16px;
-    margin-top: 30px;
-    /* 為 top-nav 預留空間，避免被遮擋 */
-
+    font-size: 0.85rem;
+    top: 70px; /* 保持固定在 top-nav 下方 */
+    left: 8px;
+    right: 8px;
+    border-radius: 8px; /* 稍微減少圓角 */
+    
     /* 移動端毛玻璃效果調整 */
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
   }
 
+  .announcement-content {
+    padding: 10px 40px 10px 12px; /* 調整內邊距適應小螢幕 */
+  }
+
   .announcement-close {
     width: 24px;
     height: 24px;
-    right: 12px;
+    right: 8px;
     font-size: 14px;
   }
 
-  .announcement-content {
-    animation-name: marquee-mobile;
-    animation-duration: 22s;
-  }
-
   .announcement-message {
-    gap: 0.3em;
+    line-height: 1.5; /* 增加行高提高可讀性 */
+    /* 手機版特殊處理：確保 emoji 和文字不會意外換行 */
+    word-break: keep-all; /* 保持單詞完整 */
+    overflow-wrap: anywhere; /* 只在絕對必要時才換行 */
+    hyphens: none; /* 禁用連字符 */
+  }
+}
+
+/* Emoji 和文字組合優化 */
+.announcement-message {
+  /* 防止 emoji 和緊隨其後的文字分離 */
+  text-rendering: optimizeLegibility;
+  -webkit-font-feature-settings: "liga" 1, "kern" 1;
+  font-feature-settings: "liga" 1, "kern" 1;
+}
+
+/* 針對包含 emoji 的內容進行特殊處理 */
+.announcement-message.has-emoji {
+  /* 在手機版上，如果內容包含 emoji，使用更保守的換行策略 */
+  white-space: pre-line; /* 保留換行但允許自動換行 */
+  word-spacing: -0.1em; /* 稍微減少詞間距 */
+}
+
+@media (max-width: 768px) {
+  .announcement-message.has-emoji {
+    /* 手機版的 emoji 內容處理 */
+    word-break: normal;
+    overflow-wrap: normal;
+    white-space: nowrap; /* 嘗試保持單行 */
+    overflow: hidden;
+    text-overflow: ellipsis; /* 如果太長則顯示省略號 */
+  }
+  
+  /* 如果內容不是太長，允許顯示完整內容 */
+  .announcement-message.has-emoji.short-content {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
   }
 }
 
 /* 超小螢幕優化 */
 @media (max-width: 480px) {
   .announcement-bar {
-    font-size: 0.75rem;
-    padding: 8px 40px 8px 12px;
-    margin-top: 30px;
-    /* 超小螢幕稍微調整間距 */
+    font-size: 0.8rem;
+    top: 70px; /* 保持固定在 top-nav 下方 */
+    left: 6px;
+    right: 6px;
+    border-radius: 6px;
+  }
+
+  .announcement-content {
+    padding: 2px 3px 2px 3px; /* 進一步優化小螢幕的內邊距 */
   }
 
   .announcement-close {
     width: 22px;
     height: 22px;
-    right: 10px;
+    right: 6px;
     font-size: 13px;
+  }
+
+  .announcement-message {
+    line-height: 1.6; /* 小螢幕上更大的行高 */
+    /* 超小螢幕特殊處理 */
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    hyphens: none;
+    /* 確保 emoji 和數字緊密相連 */
+    font-variant-numeric: tabular-nums; /* 統一數字寬度 */
   }
 }

@@ -26,6 +26,7 @@ import { Home } from './components/Home/Home';
 import MarketSentimentIndex from './components/MarketSentimentIndex/MarketSentimentIndex';
 import { AuthDialog } from './components/Auth/AuthDialog';
 import { GlobalFeatureUpgradeDialog } from './components/Common/Dialog/GlobalFeatureUpgradeDialog';
+import AnnouncementBar from './components/Common/AnnouncementBar/AnnouncementBar';
 
 import { AuthStatusIndicator } from './components/Auth/AuthStatusIndicator';
 import { PageViewTracker } from './components/Common/PageViewTracker';
@@ -109,6 +110,8 @@ function AppContent() {
   const isMobile = useMediaQuery({ query: '(max-width: 1300px)' });
   const location = useLocation();
   const isHomePage = location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
+  
+
 
   // 智能導航系統
   const { 
@@ -247,6 +250,51 @@ function AppContent() {
       return () => clearTimeout(timer);
     }
   }, [i18n.language, triggerCheck]);
+
+  // 動態檢測 AnnouncementBar 的存在並調整佈局
+  React.useEffect(() => {
+    const checkAnnouncementBar = () => {
+      const announcementBar = document.querySelector('.announcement-bar');
+      const mainContent = document.querySelector('.main-content');
+      
+      if (mainContent) {
+        if (announcementBar) {
+          mainContent.classList.add('has-announcement-bar');
+        } else {
+          mainContent.classList.remove('has-announcement-bar');
+        }
+      }
+    };
+
+    // 初始檢查
+    checkAnnouncementBar();
+
+    // 設置 MutationObserver 來監聽 DOM 變化
+    const observer = new MutationObserver(checkAnnouncementBar);
+    const container = document.getElementById('announcement-container');
+    
+    if (container) {
+      observer.observe(container, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class', 'style']
+      });
+    }
+
+    // 也監聽整個 main-content 區域
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+      observer.observe(mainContent, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
 
 
@@ -456,6 +504,11 @@ function AppContent() {
               )}
             </div>
           </header>
+
+          {/* 公告欄 */}
+          <div id="announcement-container">
+            <AnnouncementBar />
+          </div>
 
           {/* 內容路由 */}
           <div className="content-area">
