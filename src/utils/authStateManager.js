@@ -5,6 +5,7 @@
 
 import requestTracker from './requestTracker';
 import authStatusFix from './authStatusFix';
+import { systemLogger } from './logger';
 
 class AuthStateManager {
         constructor() {
@@ -24,7 +25,7 @@ class AuthStateManager {
         if (this.isPageLoading) {
             window.addEventListener('load', () => {
                 this.isPageLoading = false;
-                console.log('📄 AuthStateManager: Page load completed');
+                systemLogger.debug('📄 AuthStateManager: Page load completed');
             });
         }
         
@@ -52,13 +53,13 @@ class AuthStateManager {
     async getAuthState(forceRefresh = false) {
         // 如果有正在進行的檢查，等待其完成
         if (this.pendingPromise && !forceRefresh) {
-            console.log('🔄 AuthStateManager: Waiting for pending auth check...');
+            systemLogger.debug('🔄 AuthStateManager: Waiting for pending auth check...');
             return await this.pendingPromise;
         }
 
         // 檢查快取是否有效
         if (!forceRefresh && this.isCacheValid()) {
-            console.log('✅ AuthStateManager: Using cached auth state:', {
+            systemLogger.debug('✅ AuthStateManager: Using cached auth state:', {
                 isAuthenticated: this.authState.isAuthenticated,
                 age: Date.now() - this.lastCheck,
                 source: 'cache',
@@ -82,7 +83,7 @@ class AuthStateManager {
      * 執行認證檢查（帶重試機制）
      */
     async _performAuthCheck() {
-        console.log('🔍 AuthStateManager: Performing auth check...');
+        systemLogger.debug('🔍 AuthStateManager: Performing auth check...');
         
         for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
             try {
@@ -109,7 +110,7 @@ class AuthStateManager {
                 // 通知訂閱者
                 this._notifySubscribers(this.authState);
 
-                console.log('✅ AuthStateManager: Auth check successful:', {
+                systemLogger.debug('✅ AuthStateManager: Auth check successful:', {
                     isAuthenticated: authState.isAuthenticated,
                     attempt,
                     confidence: 'high',
@@ -120,7 +121,7 @@ class AuthStateManager {
 
             } catch (error) {
                 this.consecutiveFailures++;
-                console.warn(`⚠️ AuthStateManager: Auth check attempt ${attempt} failed:`, error.message);
+                systemLogger.warn(`⚠️ AuthStateManager: Auth check attempt ${attempt} failed:`, error.message);
 
                 // 如果是最後一次嘗試，返回失敗狀態
                 if (attempt === this.maxRetries) {
@@ -139,13 +140,13 @@ class AuthStateManager {
                     this._recordStateHistory(this.authState);
                     this._notifySubscribers(this.authState);
 
-                    console.error('❌ AuthStateManager: All auth check attempts failed');
+                    systemLogger.error('❌ AuthStateManager: All auth check attempts failed');
                     return this.authState;
                 }
 
                 // 等待後重試
                 const delay = this._calculateRetryDelay(attempt);
-                console.log(`🔄 AuthStateManager: Retrying in ${delay}ms...`);
+                systemLogger.debug(`🔄 AuthStateManager: Retrying in ${delay}ms...`);
                 await this._delay(delay);
             }
         }
@@ -160,7 +161,7 @@ class AuthStateManager {
         
         // 檢查 Cookie 是否發生變化，如果是則稍微延遲
         if (this._hasCookiesChanged()) {
-            console.log('🍪 AuthStateManager: Cookies changed, adding delay');
+            systemLogger.debug('🍪 AuthStateManager: Cookies changed, adding delay');
             await this._delay(500); // 增加到 500ms
         }
 
@@ -185,7 +186,7 @@ class AuthStateManager {
             
             // 如果有錯誤，記錄但不拋出異常
             if (authState.error) {
-                console.warn('⚠️ AuthStateManager: Auth status check returned error:', authState.error);
+                systemLogger.warn('⚠️ AuthStateManager: Auth status check returned error:', authState.error);
                 requestTracker.completeTracking(requestId, null, new Error(authState.error));
                 throw new Error(authState.error);
             }
@@ -227,7 +228,7 @@ class AuthStateManager {
         const isValid = age < effectiveTimeout;
 
         if (!isValid) {
-            console.log('⏰ AuthStateManager: Cache expired:', {
+            systemLogger.debug('⏰ AuthStateManager: Cache expired:', {
                 age,
                 baseTimeout,
                 adjustedTimeout,
@@ -259,7 +260,7 @@ class AuthStateManager {
         
         const finalDelay = Math.floor(baseDelay * failureMultiplier * pageLoadMultiplier * jitter);
         
-        console.log(`🔄 AuthStateManager: Calculated retry delay: ${finalDelay}ms`, {
+        systemLogger.debug(`🔄 AuthStateManager: Calculated retry delay: ${finalDelay}ms`, {
             attempt,
             baseDelay,
             failureMultiplier,
@@ -293,7 +294,7 @@ class AuthStateManager {
             try {
                 callback(newState);
             } catch (error) {
-                console.error('AuthStateManager: Subscriber callback error:', error);
+                systemLogger.error('AuthStateManager: Subscriber callback error:', error);
             }
         });
     }
@@ -319,7 +320,7 @@ class AuthStateManager {
      * 清除認證狀態快取
      */
     invalidateCache() {
-        console.log('🗑️ AuthStateManager: Invalidating auth cache');
+        systemLogger.debug('🗑️ AuthStateManager: Invalidating auth cache');
         const oldState = this.authState;
         
         this.authState = null;
@@ -341,7 +342,7 @@ class AuthStateManager {
      * 設置認證狀態（用於登入後直接設置）
      */
     setAuthState(authState) {
-        console.log('📝 AuthStateManager: Setting auth state directly:', authState);
+        systemLogger.debug('📝 AuthStateManager: Setting auth state directly:', authState);
         
         this.authState = {
             ...authState,
@@ -393,7 +394,7 @@ class AuthStateManager {
             return true;
         }
 
-        console.log('⏳ AuthStateManager: Waiting for cookies to be ready...');
+        systemLogger.debug('⏳ AuthStateManager: Waiting for cookies to be ready...');
         
         return new Promise((resolve) => {
             const checkCookies = () => {
@@ -402,7 +403,7 @@ class AuthStateManager {
                 
                 // 如果有 Cookie 或頁面載入完成，認為 cookie 已就緒
                 if (hasCookies || !this.isPageLoading) {
-                    console.log('✅ AuthStateManager: Cookies are ready', {
+                    systemLogger.debug('✅ AuthStateManager: Cookies are ready', {
                         hasCookies,
                         cookieLength: document.cookie.length,
                         pageLoading: this.isPageLoading
@@ -419,7 +420,7 @@ class AuthStateManager {
             
             // 最多等待 2 秒（減少等待時間）
             setTimeout(() => {
-                console.log('⏰ AuthStateManager: Cookie wait timeout, proceeding anyway');
+                systemLogger.debug('⏰ AuthStateManager: Cookie wait timeout, proceeding anyway');
                 resolve(true);
             }, 2000);
         });
@@ -445,7 +446,7 @@ class AuthStateManager {
      * 重置管理器狀態
      */
     reset() {
-        console.log('🔄 AuthStateManager: Resetting state');
+        systemLogger.debug('🔄 AuthStateManager: Resetting state');
         this.invalidateCache();
         this.consecutiveFailures = 0;
         this.lastSuccessTime = null;
@@ -457,7 +458,7 @@ class AuthStateManager {
      */
     setCacheTimeout(timeout) {
         this.cacheTimeout = timeout;
-        console.log(`⏱️ AuthStateManager: Cache timeout set to ${timeout}ms`);
+        systemLogger.debug(`⏱️ AuthStateManager: Cache timeout set to ${timeout}ms`);
     }
 
     /**

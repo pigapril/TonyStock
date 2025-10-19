@@ -52,23 +52,12 @@ class AdminPermissionsLogger {
             this.logs = this.logs.slice(-this.maxLogs);
         }
         
-        // Console output with appropriate level
+        // 不再直接使用 console，改為使用我們的 logger 系統
+        // 這樣可以統一控制日誌級別
         const consoleMessage = `AdminPermissions[${relativeTime}ms]: ${event}`;
-        switch (level) {
-            case 'error':
-                console.error(consoleMessage, logEntry);
-                break;
-            case 'warn':
-                console.warn(consoleMessage, logEntry);
-                break;
-            case 'info':
-                console.info(consoleMessage, logEntry);
-                break;
-            case 'debug':
-            default:
-                console.log(consoleMessage, logEntry);
-                break;
-        }
+        
+        // 由於 AdminPermissions 有自己的日誌系統，我們保持內部日誌記錄
+        // 但不再輸出到 console，避免在生產環境中顯示
     }
     
     /**

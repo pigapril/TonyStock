@@ -4,6 +4,7 @@
  */
 
 import authService from '../components/Auth/auth.service';
+import { systemLogger } from './logger';
 
 class AuthPreloader {
     constructor() {
@@ -22,7 +23,7 @@ class AuthPreloader {
             return this.preloadPromise;
         }
 
-        console.log('🚀 AuthPreloader: Starting auth state preload...');
+        systemLogger.info('🚀 AuthPreloader: Starting auth state preload...');
         this.isPreloading = true;
         this.preloadStartTime = Date.now();
 
@@ -39,7 +40,7 @@ class AuthPreloader {
             const hasAuthCookies = this._hasAuthCookies();
             
             if (!hasAuthCookies) {
-                console.log('🍪 AuthPreloader: No auth cookies found, user likely not logged in');
+                systemLogger.info('🍪 AuthPreloader: No auth cookies found, user likely not logged in');
                 this.preloadedState = {
                     isAuthenticated: false,
                     user: null,
@@ -51,7 +52,7 @@ class AuthPreloader {
             }
 
             // 如果有 cookies，進行快速認證檢查
-            console.log('🍪 AuthPreloader: Auth cookies found, checking status...');
+            systemLogger.info('🍪 AuthPreloader: Auth cookies found, checking status...');
             const { user } = await authService.checkStatus();
             
             this.preloadedState = {
@@ -62,7 +63,7 @@ class AuthPreloader {
                 preloadTime: Date.now() - this.preloadStartTime
             };
 
-            console.log('✅ AuthPreloader: Preload completed:', {
+            systemLogger.info('✅ AuthPreloader: Preload completed:', {
                 isAuthenticated: this.preloadedState.isAuthenticated,
                 hasUser: !!this.preloadedState.user,
                 preloadTime: this.preloadedState.preloadTime
@@ -71,7 +72,7 @@ class AuthPreloader {
             return this.preloadedState;
 
         } catch (error) {
-            console.warn('⚠️ AuthPreloader: Preload failed:', error.message);
+            systemLogger.warn('⚠️ AuthPreloader: Preload failed:', error.message);
             
             // 預載入失敗時，根據 cookies 做基本判斷
             const hasAuthCookies = this._hasAuthCookies();
@@ -149,7 +150,7 @@ class AuthPreloader {
             await Promise.race([this.preloadPromise, timeoutPromise]);
             return this.preloadedState;
         } catch (error) {
-            console.warn('⏰ AuthPreloader: Wait timeout, returning current state');
+            systemLogger.warn('⏰ AuthPreloader: Wait timeout, returning current state');
             return this.preloadedState;
         }
     }
@@ -158,7 +159,7 @@ class AuthPreloader {
      * 清除預載入狀態
      */
     clear() {
-        console.log('🗑️ AuthPreloader: Clearing preloaded state');
+        systemLogger.debug('🗑️ AuthPreloader: Clearing preloaded state');
         this.preloadedState = null;
         this.preloadPromise = null;
         this.isPreloading = false;
