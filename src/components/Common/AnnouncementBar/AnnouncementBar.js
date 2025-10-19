@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './AnnouncementBar.css';
+import enhancedApiClient from '../../../utils/enhancedApiClient';
 
 const AnnouncementBar = () => {
   const [config, setConfig] = useState(null);
@@ -11,18 +12,8 @@ const AnnouncementBar = () => {
   // 載入公告配置
   const loadAnnouncementConfig = async () => {
     try {
-      const response = await fetch('/api/public/announcement', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
+      const response = await enhancedApiClient.get('/api/public/announcement');
+      const result = response.data;
       
       if (result.success && result.data) {
         setConfig(result.data);

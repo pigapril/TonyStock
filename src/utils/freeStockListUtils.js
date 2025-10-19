@@ -3,8 +3,7 @@
  * 通過 API 從後端獲取資料
  */
 
-// API 基礎 URL
-const API_BASE_URL = process.env.REACT_APP_API_URL || '';
+import enhancedApiClient from './enhancedApiClient';
 
 // 快取變數
 let cachedStocksByRegion = null;
@@ -100,13 +99,8 @@ export const getStocksByRegion = async () => {
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/public/free-stock-list/regions`);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const result = await response.json();
+    const response = await enhancedApiClient.get('/api/public/free-stock-list/regions');
+    const result = response.data;
     
     if (result.success) {
       // 更新快取
@@ -150,13 +144,8 @@ export const getFreeStockTickers = async () => {
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/public/free-stock-list/tickers`);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const result = await response.json();
+    const response = await enhancedApiClient.get('/api/public/free-stock-list/tickers');
+    const result = response.data;
     
     if (result.success) {
       // 更新快取
