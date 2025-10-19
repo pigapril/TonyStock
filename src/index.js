@@ -7,6 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import './i18n';
 
+// 設定 console 日誌級別
+import './utils/consoleConfig';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

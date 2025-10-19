@@ -1,86 +1,92 @@
 /**
- * 前端日誌工具
- * 
- * 提供結構化的日誌記錄功能
+ * 日誌管理工具
+ * 根據環境變數 REACT_APP_LOG_LEVEL 控制 console 輸出級別
+ * 級別順序：debug < info < warn < error
  */
 
+const LOG_LEVELS = {
+  debug: 0,
+  info: 1,
+  warn: 2,
+  error: 3
+};
+
 class Logger {
-    constructor() {
-        this.isDevelopment = process.env.NODE_ENV === 'development';
+  constructor() {
+    // 從環境變數讀取日誌級別，預設為 info
+    const envLogLevel = process.env.REACT_APP_LOG_LEVEL || 'info';
+    this.currentLevel = LOG_LEVELS[envLogLevel.toLowerCase()] || LOG_LEVELS.info;
+    
+    // 在生產環境中，如果沒有設定日誌級別，預設為 warn
+    if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_LOG_LEVEL) {
+      this.currentLevel = LOG_LEVELS.warn;
     }
+  }
 
-    /**
-     * 記錄資訊日誌
-     */
-    info(message, data = {}) {
-        if (this.isDevelopment) {
-            console.log(`[INFO] ${message}`, data);
-        }
-        
-        // 在生產環境中可以發送到日誌服務
-        this.sendToLogService('info', message, data);
-    }
+  /**
+   * 檢查是否應該輸出指定級別的日誌
+   * @param {string} level - 日誌級別
+   * @returns {boolean}
+   */
+  shouldLog(level) {
+    return LOG_LEVELS[level] >= this.currentLevel;
+  }
 
-    /**
-     * 記錄警告日誌
-     */
-    warn(message, data = {}) {
-        if (this.isDevelopment) {
-            console.warn(`[WARN] ${message}`, data);
-        }
-        
-        this.sendToLogService('warn', message, data);
+  /**
+   * Debug 級別日誌
+   * @param {...any} args - 要輸出的內容
+   */
+  debug(...args) {
+    if (this.shouldLog('debug')) {
+      console.log('[DEBUG]', ...args);
     }
+  }
 
-    /**
-     * 記錄錯誤日誌
-     */
-    error(message, data = {}) {
-        if (this.isDevelopment) {
-            console.error(`[ERROR] ${message}`, data);
-        }
-        
-        this.sendToLogService('error', message, data);
+  /**
+   * Info 級別日誌
+   * @param {...any} args - 要輸出的內容
+   */
+  info(...args) {
+    if (this.shouldLog('info')) {
+      console.info('[INFO]', ...args);
     }
+  }
 
-    /**
-     * 記錄除錯日誌
-     */
-    debug(message, data = {}) {
-        if (this.isDevelopment) {
-            console.debug(`[DEBUG] ${message}`, data);
-        }
+  /**
+   * Warning 級別日誌
+   * @param {...any} args - 要輸出的內容
+   */
+  warn(...args) {
+    if (this.shouldLog('warn')) {
+      console.warn('[WARN]', ...args);
     }
+  }
 
-    /**
-     * 發送日誌到服務端（生產環境）
-     */
-    sendToLogService(level, message, data) {
-        if (!this.isDevelopment) {
-            // 在生產環境中，可以發送到日誌收集服務
-            // 例如：Sentry, LogRocket, 或自建的日誌 API
-            try {
-                // 這裡可以實作實際的日誌發送邏輯
-                // fetch('/api/logs', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify({
-                //         level,
-                //         message,
-                //         data,
-                //         timestamp: new Date().toISOString(),
-                //         userAgent: navigator.userAgent,
-                //         url: window.location.href
-                //     })
-                // });
-            } catch (error) {
-                // 靜默處理日誌發送錯誤
-            }
-        }
+  /**
+   * Error 級別日誌
+   * @param {...any} args - 要輸出的內容
+   */
+  error(...args) {
+    if (this.shouldLog('error')) {
+      console.error('[ERROR]', ...args);
     }
+  }
+
+  /**
+   * 獲取當前日誌級別
+   * @returns {string}
+   */
+  getCurrentLevel() {
+    return Object.keys(LOG_LEVELS).find(key => LOG_LEVELS[key] === this.currentLevel);
+  }
 }
 
-// 創建單例實例
-export const systemLogger = new Logger();
+// 建立單例實例
+const logger = new Logger();
 
-export default systemLogger;
+// 在開發環境中顯示當前日誌級別
+if (process.env.NODE_ENV === 'development') {
+  console.info(`[Logger] Current log level: ${logger.getCurrentLevel()}`);
+}
+
+export default logger;
