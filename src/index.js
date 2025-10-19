@@ -10,6 +10,11 @@ import './i18n';
 // 設定 console 日誌級別
 import './utils/consoleConfig';
 
+// 在開發環境中測試日誌系統
+if (process.env.NODE_ENV === 'development') {
+  import('./utils/loggerTest');
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

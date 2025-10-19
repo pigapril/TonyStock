@@ -89,4 +89,6 @@ if (process.env.NODE_ENV === 'development') {
   console.info(`[Logger] Current log level: ${logger.getCurrentLevel()}`);
 }
 
+// 匯出預設實例和命名實例以保持向後相容性
 export default logger;
+export const systemLogger = logger;
