@@ -581,6 +581,13 @@
       "gotIt": "Got it",
       "upgradeCTA": "Upgrade Pro"
     },
+    "dataLimitation": {
+      "toastMessage": "💡 Latest data requires Pro. Free version data up to two months ago.",
+      "upgradeToast": "🔒 This feature requires Pro plan. Upgrade for complete market sentiment analysis!",
+      "upgradeDataToast": "📊 Latest market sentiment data requires Pro plan. Upgrade now for real-time insights!",
+      "upgradeGaugeToast": "🎯 Sentiment gauge requires Pro plan. Upgrade to view current market sentiment index!",
+      "upgradeCompositionToast": "🔍 Complete indicator composition analysis requires Pro plan. Upgrade for deep insights!"
+    },
     "descriptions": {
       "composite": {
         "shortDescription": "The Sentiment Inside Out Fear & Greed Indicator (SIO Fear & Greed Indicator) quantifies market sentiment into a score from 0 to 100. Its purpose is to gauge whether current market participants' psychology leans towards fear or greed, similar to the CNN Fear & Greed Index and the BofA Bull & Bear Indicator. It helps investors remain calm during irrational stock market volatility and avoid emotionally driven decisions like chasing highs and selling lows.",

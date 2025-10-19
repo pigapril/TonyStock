@@ -598,6 +598,13 @@
       "gotIt": "我知道了",
       "upgradeCTA": "升級 Pro"
     },
+    "dataLimitation": {
+      "toastMessage": "💡 免費版歷史數據顯示至兩個月前。升級 Pro 方案可查看最新數據！",
+      "upgradeToast": "🔒 此功能需要 Pro 方案。升級即可獲得完整的市場情緒分析！",
+      "upgradeDataToast": "📊 最新市場情緒數據需要 Pro 方案。立即升級獲得即時洞察！",
+      "upgradeGaugeToast": "🎯 情緒儀表盤需要 Pro 方案。升級查看當前市場情緒指數！",
+      "upgradeCompositionToast": "🔍 完整指標組成分析需要 Pro 方案。升級獲得深度洞察！"
+    },
     "descriptions": {
       "composite": {
         "shortDescription": "Sentiment Inside Out 恐懼貪婪指標 (簡稱:SIO恐懼貪婪指標) 將市場情緒量化成 0~100 的分數，目的在於了解當前市場參與者的心理是偏向恐懼還是貪婪，類似於 CNN 恐懼貪婪指數和 BofA 牛熊指標。幫助投資人在非理性的股市波動中保持冷靜，避免跟著情緒追高殺低。",

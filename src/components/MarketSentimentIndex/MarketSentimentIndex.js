@@ -22,6 +22,7 @@ import { useAdContext } from '../Common/InterstitialAdModal/AdContext';
 import { useTranslation } from 'react-i18next';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { Toast } from '../Watchlist/components/Toast';
+import { useDataLimitationToast } from './hooks/useDataLimitationToast';
 import { formatPrice } from '../../utils/priceUtils';
 import enhancedApiClient from '../../utils/enhancedApiClient';
 
@@ -115,6 +116,13 @@ const MarketSentimentIndex = () => {
   const { t, i18n } = useTranslation();
   const { showToast, toast, hideToast } = useToastManager();
   const { user, isAuthenticated } = useAuth();
+  
+  // 數據限制 Toast 提醒
+  const { 
+    isFreeUser, 
+    showHistoricalDataToast,
+    showUpgradeToast 
+  } = useDataLimitationToast(showToast);
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -462,16 +470,21 @@ const MarketSentimentIndex = () => {
       userPlan: effectiveUserPlan
     });
     
-    // 使用新的 FeatureUpgradeDialog 而不是舊的 paywall
-    setUpgradeDialog({
-      isOpen: true,
-      type: 'marketSentimentAccess',
-      context: {
-        feature,
-        source: 'marketSentimentIndex'
-      }
-    });
-  }, [effectiveUserPlan]);
+    // 顯示對應的 toast 提醒
+    showUpgradeToast(feature);
+    
+    // 短暫延遲後顯示升級對話框
+    setTimeout(() => {
+      setUpgradeDialog({
+        isOpen: true,
+        type: 'marketSentimentAccess',
+        context: {
+          feature,
+          source: 'marketSentimentIndex'
+        }
+      });
+    }, 1500); // 1.5秒後顯示對話框，讓用戶先看到 toast
+  }, [effectiveUserPlan, showUpgradeToast]);
 
   // Tutorial 處理函數
   const handleCloseTutorial = useCallback(() => {
@@ -616,9 +629,13 @@ const MarketSentimentIndex = () => {
     }
   }, [isDataLoaded]);
 
-  // 免費用戶首次進入時顯示 tutorial
+  // 免費用戶首次進入時顯示 tutorial 和數據限制提醒
   useEffect(() => {
     if (!isProUser && isDataLoaded && compositeStep === 'history') {
+      // 立即顯示數據限制提醒
+      showHistoricalDataToast();
+      
+      // 檢查是否需要顯示 tutorial
       const hasSeenTutorial = localStorage.getItem('marketSentiment_tutorialSeen');
       if (!hasSeenTutorial) {
         const timer = setTimeout(() => {
@@ -627,7 +644,7 @@ const MarketSentimentIndex = () => {
         return () => clearTimeout(timer);
       }
     }
-  }, [isProUser, isDataLoaded, compositeStep]);
+  }, [isProUser, isDataLoaded, compositeStep, showHistoricalDataToast]);
 
 
 
@@ -832,6 +849,10 @@ const MarketSentimentIndex = () => {
                     onClick={() => {
                       setCompositeStep('history');
                       requestAdDisplay('marketSentimentCompositeHistory', 1);
+                      // 免費用戶切換到歷史數據時顯示提醒
+                      if (isFreeUser) {
+                        showHistoricalDataToast();
+                      }
                     }}
                   >
                     {t('marketSentiment.cta.history')}

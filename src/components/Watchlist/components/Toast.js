@@ -6,7 +6,7 @@ export const Toast = ({ message, type, onClose }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             onClose();
-        }, 2000);  // 保持 2 秒的顯示時間
+        }, 4000);  // 保持 2 秒的顯示時間
         
         return () => clearTimeout(timer);
     }, [onClose]);
