@@ -1455,10 +1455,10 @@
       },
       "proPlan": {
         "name": "專業方案",
-        "price": "待定",
-        "priceYearly": "待定",
-        "period": "",
-        "periodYearly": "",
+        "price": "NT$299",
+        "priceYearly": "NT$2,990",
+        "period": "/月",
+        "periodYearly": "/年",
         "description": "專業投資者的完整功能",
         "features": [
           "樂活五線譜：無限制使用",
