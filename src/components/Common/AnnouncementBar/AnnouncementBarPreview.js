@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './AnnouncementBar.css';
+import AnnouncementModal from './AnnouncementModal';
 
 /**
  * 公告欄預覽組件
@@ -8,6 +9,7 @@ import './AnnouncementBar.css';
 const AnnouncementBarPreview = ({ message, isVisible, onClose, autoHide = false, autoHideDelay = 8000 }) => {
   const [showBar, setShowBar] = useState(isVisible);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const timeoutRef = useRef(null);
 
   useEffect(() => {
@@ -61,15 +63,51 @@ const AnnouncementBarPreview = ({ message, isVisible, onClose, autoHide = false,
     }
   };
 
+  // 檢測是否為長內容（需要展開功能）
+  const isLongContent = (text) => {
+    return text && text.length > 80; // 80 個字符以上視為長內容
+  };
+
+  // 檢測是否為移動設備
+  const isMobileDevice = () => {
+    return window.innerWidth <= 768;
+  };
+
+  // 處理點擊公告內容
+  const handleContentClick = (e) => {
+    e.stopPropagation(); // 防止事件冒泡
+    
+    // 只在移動設備且內容較長時顯示對話框
+    if (isMobileDevice() && isLongContent(message)) {
+      setShowModal(true);
+      
+      // 暫停自動隱藏
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    }
+  };
+
+  // 關閉對話框
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   // 處理公告內容，將 URL 轉換為連結
-  const renderAnnouncementContent = (message) => {
+  const renderAnnouncementContent = (message, shouldTruncate = false) => {
     if (!message) return null;
+    
+    // 在移動設備上，如果內容過長，則截斷顯示
+    let displayMessage = message;
+    if (shouldTruncate && isMobileDevice() && isLongContent(message)) {
+      displayMessage = message.substring(0, 60) + '⋯⋯';
+    }
     
     // 簡單的 URL 檢測正則表達式
     const urlRegex = /(https?:\/\/[^\s]+)/gi;
     
     // 檢查是否包含 URL
-    if (urlRegex.test(message)) {
+    if (urlRegex.test(displayMessage)) {
       // 重置正則表達式
       urlRegex.lastIndex = 0;
       
@@ -77,13 +115,13 @@ const AnnouncementBarPreview = ({ message, isVisible, onClose, autoHide = false,
       let lastIndex = 0;
       let match;
       
-      while ((match = urlRegex.exec(message)) !== null) {
+      while ((match = urlRegex.exec(displayMessage)) !== null) {
         const url = match[0];
         const startIndex = match.index;
         
         // 添加 URL 前的文字
         if (startIndex > lastIndex) {
-          parts.push(message.slice(lastIndex, startIndex));
+          parts.push(displayMessage.slice(lastIndex, startIndex));
         }
         
         // 添加連結
@@ -95,8 +133,9 @@ const AnnouncementBarPreview = ({ message, isVisible, onClose, autoHide = false,
             rel="noopener noreferrer"
             className="announcement-link"
             title={url}
+            onClick={(e) => e.stopPropagation()} // 防止觸發對話框
           >
-            {url.length > 40 ? url.substring(0, 37) + '...' : url}
+            {url.length > 40 ? url.substring(0, 37) + '⋯' : url}
           </a>
         );
         
@@ -104,15 +143,15 @@ const AnnouncementBarPreview = ({ message, isVisible, onClose, autoHide = false,
       }
       
       // 添加最後一部分文字
-      if (lastIndex < message.length) {
-        parts.push(message.slice(lastIndex));
+      if (lastIndex < displayMessage.length) {
+        parts.push(displayMessage.slice(lastIndex));
       }
       
       return parts;
     }
     
     // 如果沒有 URL，直接返回文字
-    return message;
+    return displayMessage;
   };
 
   // 檢測是否包含 URL
@@ -123,28 +162,52 @@ const AnnouncementBarPreview = ({ message, isVisible, onClose, autoHide = false,
 
   if (!showBar) return null;
 
+  // 檢查是否需要對話框功能
+  const needsModalFeature = isMobileDevice() && isLongContent(message);
+
+  // 計算 CSS 類名
+  const messageClasses = [
+    'announcement-message',
+    hasUrlsInMessage(message) ? 'announcement-has-links' : '',
+    needsModalFeature ? 'announcement-expandable' : ''
+  ].filter(Boolean).join(' ');
+
   return (
-    <div 
-      className={`announcement-bar ${isAnimating ? 'closing' : ''}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      role="banner"
-      aria-live="polite"
-    >
-      <div className="announcement-content">
-        <p className={`announcement-message ${hasUrlsInMessage(message) ? 'has-links' : ''}`}>
-          {renderAnnouncementContent(message)}
-        </p>
-      </div>
-      <button 
-        className="announcement-close" 
-        onClick={handleClose}
-        aria-label="關閉公告"
-        title="關閉公告"
+    <>
+      <div 
+        className={`announcement-bar ${isAnimating ? 'closing' : ''}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        role="banner"
+        aria-live="polite"
       >
-        ×
-      </button>
-    </div>
+        <div className="announcement-content">
+          <div 
+            className={messageClasses}
+            onClick={handleContentClick}
+            style={{ cursor: needsModalFeature ? 'pointer' : 'default' }}
+          >
+            {renderAnnouncementContent(message, needsModalFeature)}
+          </div>
+        </div>
+        
+        <button 
+          className="announcement-close" 
+          onClick={handleClose}
+          aria-label="關閉公告"
+          title="關閉公告"
+        >
+          ×
+        </button>
+      </div>
+
+      {/* 公告對話框 */}
+      <AnnouncementModal
+        isOpen={showModal}
+        onClose={handleCloseModal}
+        message={message}
+      />
+    </>
   );
 };
 

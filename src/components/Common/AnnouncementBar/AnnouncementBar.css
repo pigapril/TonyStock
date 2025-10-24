@@ -18,7 +18,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
 
   /* 佈局與間距 - 固定在 top-nav 下方，覆蓋在頁面內容上 */
-  padding: 20px 56px 1px 20px;
+  padding: 20px 6px 1px 20px;
   position: fixed;
   top: 50px;
   /* top-nav 的高度 */
@@ -75,7 +75,6 @@
 
   /* 確保 emoji 和文字在同一行 */
   display: block;
-  vertical-align: baseline;
 }
 
 .announcement-close {
@@ -216,7 +215,7 @@
   font-weight: 500;
   border-bottom: 1px solid transparent;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  
+
   /* 確保連結在公告欄中不會換行 */
   white-space: nowrap;
   display: inline;
@@ -238,22 +237,24 @@
   .announcement-link {
     color: #409CFF;
   }
-  
+
   .announcement-link:hover {
     color: #66B3FF;
     border-bottom-color: #409CFF;
   }
-  
+
   .announcement-link:active {
     color: #80CCFF;
   }
+
+  /* 深色模式下保持簡潔 - 省略號已經足夠暗示 */
 }
 
 /* 包含連結的公告訊息特殊處理 */
-.announcement-message.has-links {
+.announcement-message.announcement-has-links {
   /* 確保連結和文字的間距合適 */
   word-spacing: 0.1em;
-  
+
   /* 在移動端允許連結換行 */
   @media (max-width: 768px) {
     white-space: normal;
@@ -267,7 +268,7 @@
     /* 在小螢幕上允許連結換行 */
     white-space: normal;
     word-break: break-all;
-    
+
     /* 增加觸控區域 */
     padding: 2px 0;
     margin: -2px 0;
@@ -283,7 +284,7 @@
 }
 
 /* 針對包含 emoji 的內容進行特殊處理 */
-.announcement-message.has-emoji {
+.announcement-message.announcement-has-emoji {
   /* 在手機版上，如果內容包含 emoji，使用更保守的換行策略 */
   white-space: pre-line;
   /* 保留換行但允許自動換行 */
@@ -292,8 +293,8 @@
 }
 
 @media (max-width: 768px) {
-  .announcement-message.has-emoji {
-    /* 手機版的 emoji 內容處理 */
+  .announcement-message.announcement-has-emoji:not(.announcement-expandable) {
+    /* 手機版的 emoji 內容處理 - 但不包括可展開的公告 */
     word-break: normal;
     overflow-wrap: normal;
     white-space: nowrap;
@@ -304,11 +305,38 @@
   }
 
   /* 如果內容不是太長，允許顯示完整內容 */
-  .announcement-message.has-emoji.short-content {
+  .announcement-message.announcement-has-emoji.announcement-short-content {
     white-space: normal;
     overflow: visible;
     text-overflow: unset;
   }
+
+  /* 可展開的公告不使用 CSS 省略符號，改用 JavaScript 控制 */
+  .announcement-message.announcement-expandable {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+}
+
+/* 可展開公告樣式 - 簡潔的點擊提示 */
+.announcement-message.announcement-expandable {
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+}
+
+/* 桌面端懸停效果 */
+@media (hover: hover) and (pointer: fine) {
+  .announcement-message.announcement-expandable:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+  }
+}
+
+.announcement-message.announcement-expandable:active {
+  transform: scale(0.98);
+  transition-duration: 0.1s;
 }
 
 /* 超小螢幕優化 */
@@ -323,21 +351,22 @@
   }
 
   .announcement-content {
-    padding: 4px 3px 4px 3px;
-    /* 進一步優化小螢幕的內邊距 */
+    padding: 12px 40px 12px 12px;
+    /* 為關閉按鈕預留空間 */
   }
 
   .announcement-close {
     width: 22px;
     height: 22px;
     right: 6px;
+    top: 30px;
+    transform: none; /* 重置桌面版的 transform */
     font-size: 13px;
   }
 
   .announcement-message {
     line-height: 1.6;
     /* 小螢幕上更大的行高 */
-    /* 超小螢幕特殊處理 */
     word-break: keep-all;
     overflow-wrap: anywhere;
     hyphens: none;
@@ -345,4 +374,6 @@
     font-variant-numeric: tabular-nums;
     /* 統一數字寬度 */
   }
+
+  /* 移動端簡化樣式 - 省略號已經足夠暗示可點擊 */
 }

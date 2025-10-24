@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './AnnouncementBar.css';
 import enhancedApiClient from '../../../utils/enhancedApiClient';
+import AnnouncementModal from './AnnouncementModal';
 
 const AnnouncementBar = () => {
   const [config, setConfig] = useState(null);
   const [showBar, setShowBar] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const timeoutRef = useRef(null);
 
   // 載入公告配置
@@ -14,7 +16,7 @@ const AnnouncementBar = () => {
     try {
       const response = await enhancedApiClient.get('/api/public/announcement');
       const result = response.data;
-      
+
       if (result.success && result.data) {
         setConfig(result.data);
         const shouldShow = result.data.enabled && !!result.data.message;
@@ -53,7 +55,7 @@ const AnnouncementBar = () => {
         handleClose();
       }, config.autoHideDelay || 8000);
     }
-    
+
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -63,12 +65,12 @@ const AnnouncementBar = () => {
 
   const handleClose = () => {
     setIsAnimating(true);
-    
+
     // 清除自動隱藏計時器
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    
+
     // 延遲隱藏以顯示動畫效果
     setTimeout(() => {
       setShowBar(false);
@@ -104,42 +106,67 @@ const AnnouncementBar = () => {
     return text && text.length <= 50; // 50 個字符以內視為短內容
   };
 
+  // 檢測是否為長內容（需要對話框功能）
+  const isLongContent = (text) => {
+    return text && text.length > 80; // 80 個字符以上視為長內容
+  };
+
+  // 檢測是否為移動設備
+  const isMobileDevice = () => {
+    return window.innerWidth <= 768;
+  };
+
+  // 處理點擊公告內容
+  const handleContentClick = (e) => {
+    e.stopPropagation(); // 防止事件冒泡
+
+    // 只在移動設備且內容較長時顯示對話框
+    if (isMobileDevice() && isLongContent(config.message)) {
+      setShowModal(true);
+
+      // 暫停自動隱藏
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    }
+  };
+
+  // 關閉對話框
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   // 處理公告內容，將 URL 轉換為連結
-  const renderAnnouncementContent = (message) => {
+  const renderAnnouncementContent = (message, shouldTruncate = false) => {
     if (!message) return null;
-    
-    console.log('AnnouncementBar: 處理訊息:', message);
-    console.log('AnnouncementBar: 訊息長度:', message.length);
-    console.log('AnnouncementBar: 訊息字符碼:', [...message].map(c => c.charCodeAt(0)));
-    
+
+    // 在移動設備上，如果內容過長，則截斷顯示
+    let displayMessage = message;
+    if (shouldTruncate && isMobileDevice() && isLongContent(message)) {
+      displayMessage = message.substring(0, 23) + '⋯⋯';
+    }
+
     // 簡單的 URL 檢測正則表達式
     const urlRegex = /(https?:\/\/[^\s]+)/gi;
-    
-    // 嘗試更寬鬆的檢測
-    const simpleCheck = message.includes('https://') || message.includes('http://');
-    console.log('AnnouncementBar: 簡單檢測結果:', simpleCheck);
-    
+
     // 檢查是否包含 URL
-    const hasUrl = urlRegex.test(message);
-    console.log('AnnouncementBar: URL 檢測結果:', hasUrl);
-    
-    if (hasUrl) {
+    if (urlRegex.test(displayMessage)) {
       // 重置正則表達式
       urlRegex.lastIndex = 0;
-      
+
       const parts = [];
       let lastIndex = 0;
       let match;
-      
-      while ((match = urlRegex.exec(message)) !== null) {
+
+      while ((match = urlRegex.exec(displayMessage)) !== null) {
         const url = match[0];
         const startIndex = match.index;
-        
+
         // 添加 URL 前的文字
         if (startIndex > lastIndex) {
-          parts.push(message.slice(lastIndex, startIndex));
+          parts.push(displayMessage.slice(lastIndex, startIndex));
         }
-        
+
         // 添加連結
         parts.push(
           <a
@@ -149,24 +176,25 @@ const AnnouncementBar = () => {
             rel="noopener noreferrer"
             className="announcement-link"
             title={url}
+            onClick={(e) => e.stopPropagation()} // 防止觸發對話框
           >
-            {url.length > 40 ? url.substring(0, 37) + '...' : url}
+            {url.length > 40 ? url.substring(0, 37) + '⋯' : url}
           </a>
         );
-        
+
         lastIndex = urlRegex.lastIndex;
       }
-      
+
       // 添加最後一部分文字
-      if (lastIndex < message.length) {
-        parts.push(message.slice(lastIndex));
+      if (lastIndex < displayMessage.length) {
+        parts.push(displayMessage.slice(lastIndex));
       }
-      
+
       return parts;
     }
-    
+
     // 如果沒有 URL，直接返回文字
-    return message;
+    return displayMessage;
   };
 
   // 如果正在載入、沒有配置或不應該顯示，則不渲染
@@ -180,36 +208,54 @@ const AnnouncementBar = () => {
     return urlRegex.test(text);
   };
 
+  // 檢查是否需要對話框功能
+  const needsModalFeature = isMobileDevice() && isLongContent(config.message);
+
   // 計算 CSS 類名
   const messageClasses = [
     'announcement-message',
-    hasEmoji(config.message) ? 'has-emoji' : '',
-    isShortContent(config.message) ? 'short-content' : '',
-    hasUrlsInMessage(config.message) ? 'has-links' : ''
+    hasEmoji(config.message) ? 'announcement-has-emoji' : '',
+    isShortContent(config.message) ? 'announcement-short-content' : '',
+    hasUrlsInMessage(config.message) ? 'announcement-has-links' : '',
+    needsModalFeature ? 'announcement-expandable' : ''
   ].filter(Boolean).join(' ');
 
   return (
-    <div 
-      className={`announcement-bar ${isAnimating ? 'closing' : ''}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      role="banner"
-      aria-live="polite"
-    >
-      <div className="announcement-content">
-        <p className={messageClasses}>
-          {renderAnnouncementContent(config.message)}
-        </p>
-      </div>
-      <button 
-        className="announcement-close" 
-        onClick={handleClose}
-        aria-label="關閉公告"
-        title="關閉公告"
+    <>
+      <div
+        className={`announcement-bar ${isAnimating ? 'closing' : ''}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        role="banner"
+        aria-live="polite"
       >
-        ×
-      </button>
-    </div>
+        <div className="announcement-content">
+          <div
+            className={messageClasses}
+            onClick={handleContentClick}
+            style={{ cursor: needsModalFeature ? 'pointer' : 'default' }}
+          >
+            {renderAnnouncementContent(config.message, needsModalFeature)}
+          </div>
+        </div>
+
+        <button
+          className="announcement-close"
+          onClick={handleClose}
+          aria-label="關閉公告"
+          title="關閉公告"
+        >
+          ×
+        </button>
+      </div>
+
+      {/* 公告對話框 */}
+      <AnnouncementModal
+        isOpen={showModal}
+        onClose={handleCloseModal}
+        message={config.message}
+      />
+    </>
   );
 };
 
