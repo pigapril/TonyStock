@@ -333,7 +333,7 @@ class SubscriptionService {
         name: 'Pro',
         price: { monthly: 299, yearly: 2990 },
         displayPrice: { monthly: '$---', yearly: '$---' },
-        showRealPrice: false,
+        showRealPrice: true,
         currency: 'TWD',
         features: {
           lohasSpectrum: { limit: -1, description: 'Unlimited, all stocks, custom date ranges' },
