@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import './AnnouncementBar.css';
 import enhancedApiClient from '../../../utils/enhancedApiClient';
 import AnnouncementModal from './AnnouncementModal';
+import AnnouncementDevTools from './AnnouncementDevTools';
+import announcementCooldownManager from '../../../utils/announcementCooldown';
 
 const AnnouncementBar = () => {
   const [config, setConfig] = useState(null);
@@ -19,8 +21,21 @@ const AnnouncementBar = () => {
 
       if (result.success && result.data) {
         setConfig(result.data);
-        const shouldShow = result.data.enabled && !!result.data.message;
+        
+        // 使用冷卻期管理器檢查是否應該顯示公告
+        const shouldShow = announcementCooldownManager.shouldShowAnnouncement(result.data);
         setShowBar(shouldShow);
+        
+        // 開發模式下顯示調試資訊
+        if (process.env.NODE_ENV === 'development') {
+          const stats = announcementCooldownManager.getAnnouncementStats(result.data);
+          console.log('公告顯示狀態:', {
+            shouldShow,
+            enabled: result.data.enabled,
+            hasMessage: !!result.data.message,
+            stats
+          });
+        }
       } else {
         setConfig(null);
         setShowBar(false);
@@ -36,6 +51,9 @@ const AnnouncementBar = () => {
 
   // 組件載入時獲取配置
   useEffect(() => {
+    // 清理過期的冷卻期資料
+    announcementCooldownManager.cleanupExpiredData();
+    
     loadAnnouncementConfig();
   }, []);
 
@@ -64,6 +82,11 @@ const AnnouncementBar = () => {
   }, [showBar, config]);
 
   const handleClose = () => {
+    // 記錄公告關閉到冷卻期管理器
+    if (config) {
+      announcementCooldownManager.dismissAnnouncement(config);
+    }
+
     setIsAnimating(true);
 
     // 清除自動隱藏計時器
@@ -75,7 +98,6 @@ const AnnouncementBar = () => {
     setTimeout(() => {
       setShowBar(false);
       setIsAnimating(false);
-      // 不需要調用 onClose，因為這是內部狀態管理
     }, 300);
   };
 
@@ -255,6 +277,9 @@ const AnnouncementBar = () => {
         onClose={handleCloseModal}
         message={config.message}
       />
+
+      {/* 開發者工具 */}
+      <AnnouncementDevTools config={config} />
     </>
   );
 };
