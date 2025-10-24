@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import announcementCooldownManager from '../../../utils/announcementCooldown';
 
+// 在開發模式下載入測試函數
+if (process.env.NODE_ENV === 'development') {
+  import('../../../utils/announcementCooldown.test.js').then(module => {
+    window.testAnnouncementCooldown = module.testAnnouncementCooldown;
+  }).catch(err => {
+    console.warn('無法載入測試函數:', err);
+  });
+}
+
 /**
  * 公告系統開發者工具
  * 僅在開發模式下顯示，用於測試冷卻期功能
@@ -145,6 +154,26 @@ const AnnouncementDevTools = ({ config }) => {
               }}
             >
               重新整理
+            </button>
+            <button
+              onClick={() => {
+                if (window.testAnnouncementCooldown) {
+                  window.testAnnouncementCooldown();
+                } else {
+                  console.log('測試函數未載入，請檢查 announcementCooldown.test.js');
+                }
+              }}
+              style={{
+                backgroundColor: '#2ed573',
+                color: 'white',
+                border: 'none',
+                padding: '4px 8px',
+                borderRadius: '4px',
+                fontSize: '10px',
+                cursor: 'pointer'
+              }}
+            >
+              執行測試
             </button>
           </div>
 

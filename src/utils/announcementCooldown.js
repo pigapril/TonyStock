@@ -56,7 +56,26 @@ class AnnouncementCooldownManager {
     // 使用 lastUpdated 時間戳，如果沒有則使用當前時間
     const timestamp = config.lastUpdated || Date.now();
     
-    return `announcement_${btoa(messageHash).replace(/[^a-zA-Z0-9]/g, '')}_${timestamp}`;
+    // 使用安全的編碼方法處理中文字符
+    const safeEncode = (str) => {
+      try {
+        // 先將字符串轉為 UTF-8 bytes，再進行 base64 編碼
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+          return String.fromCharCode(parseInt(p1, 16));
+        })).replace(/[^a-zA-Z0-9]/g, '');
+      } catch (error) {
+        // 如果編碼失敗，使用簡單的 hash 方法
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+          const char = str.charCodeAt(i);
+          hash = ((hash << 5) - hash) + char;
+          hash = hash & hash; // 轉為32位整數
+        }
+        return Math.abs(hash).toString(36);
+      }
+    };
+    
+    return `announcement_${safeEncode(messageHash)}_${timestamp}`;
   }
 
   /**
