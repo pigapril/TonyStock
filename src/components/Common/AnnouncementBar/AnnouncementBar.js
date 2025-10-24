@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './AnnouncementBar.css';
 import enhancedApiClient from '../../../utils/enhancedApiClient';
+import { linkify, hasUrls } from '../../../utils/urlLinkifier';
 
 const AnnouncementBar = () => {
   const [config, setConfig] = useState(null);
@@ -104,6 +105,24 @@ const AnnouncementBar = () => {
     return text && text.length <= 50; // 50 個字符以內視為短內容
   };
 
+  // 處理公告內容，將 URL 轉換為連結
+  const renderAnnouncementContent = (message) => {
+    if (!message) return null;
+    
+    // 檢查是否包含 URL
+    if (hasUrls(message)) {
+      return linkify(message, {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        className: 'announcement-link',
+        maxLength: 40 // 在公告欄中縮短 URL 顯示長度
+      });
+    }
+    
+    // 如果沒有 URL，直接返回文字
+    return message;
+  };
+
   // 如果正在載入、沒有配置或不應該顯示，則不渲染
   if (loading || !config || !showBar) {
     return null;
@@ -113,7 +132,8 @@ const AnnouncementBar = () => {
   const messageClasses = [
     'announcement-message',
     hasEmoji(config.message) ? 'has-emoji' : '',
-    isShortContent(config.message) ? 'short-content' : ''
+    isShortContent(config.message) ? 'short-content' : '',
+    hasUrls(config.message) ? 'has-links' : ''
   ].filter(Boolean).join(' ');
 
   return (
@@ -125,7 +145,9 @@ const AnnouncementBar = () => {
       aria-live="polite"
     >
       <div className="announcement-content">
-        <p className={messageClasses}>{config.message}</p>
+        <p className={messageClasses}>
+          {renderAnnouncementContent(config.message)}
+        </p>
       </div>
       <button 
         className="announcement-close" 

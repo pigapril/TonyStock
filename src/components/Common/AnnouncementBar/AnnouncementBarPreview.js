@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './AnnouncementBar.css';
+import { linkify, hasUrls } from '../../../utils/urlLinkifier';
 
 /**
  * 公告欄預覽組件
@@ -61,6 +62,24 @@ const AnnouncementBarPreview = ({ message, isVisible, onClose, autoHide = false,
     }
   };
 
+  // 處理公告內容，將 URL 轉換為連結
+  const renderAnnouncementContent = (message) => {
+    if (!message) return null;
+    
+    // 檢查是否包含 URL
+    if (hasUrls(message)) {
+      return linkify(message, {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        className: 'announcement-link',
+        maxLength: 40 // 在公告欄中縮短 URL 顯示長度
+      });
+    }
+    
+    // 如果沒有 URL，直接返回文字
+    return message;
+  };
+
   if (!showBar) return null;
 
   return (
@@ -72,7 +91,9 @@ const AnnouncementBarPreview = ({ message, isVisible, onClose, autoHide = false,
       aria-live="polite"
     >
       <div className="announcement-content">
-        <p className="announcement-message">{message}</p>
+        <p className={`announcement-message ${hasUrls(message) ? 'has-links' : ''}`}>
+          {renderAnnouncementContent(message)}
+        </p>
       </div>
       <button 
         className="announcement-close" 

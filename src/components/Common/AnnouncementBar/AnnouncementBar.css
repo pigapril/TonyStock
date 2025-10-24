@@ -209,6 +209,79 @@
   font-feature-settings: "liga" 1, "kern" 1;
 }
 
+/* URL 連結樣式 */
+.announcement-link {
+  color: #007AFF;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* 確保連結在公告欄中不會換行 */
+  white-space: nowrap;
+  display: inline;
+}
+
+.announcement-link:hover {
+  color: #0051D5;
+  border-bottom-color: #007AFF;
+  text-decoration: none;
+}
+
+.announcement-link:active {
+  color: #003D99;
+  transform: scale(0.98);
+}
+
+/* 在深色模式下的連結樣式 */
+@media (prefers-color-scheme: dark) {
+  .announcement-link {
+    color: #409CFF;
+  }
+  
+  .announcement-link:hover {
+    color: #66B3FF;
+    border-bottom-color: #409CFF;
+  }
+  
+  .announcement-link:active {
+    color: #80CCFF;
+  }
+}
+
+/* 包含連結的公告訊息特殊處理 */
+.announcement-message.has-links {
+  /* 確保連結和文字的間距合適 */
+  word-spacing: 0.1em;
+  
+  /* 在移動端允許連結換行 */
+  @media (max-width: 768px) {
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+
+/* 連結在小螢幕上的特殊處理 */
+@media (max-width: 768px) {
+  .announcement-link {
+    /* 在小螢幕上允許連結換行 */
+    white-space: normal;
+    word-break: break-all;
+    
+    /* 增加觸控區域 */
+    padding: 2px 0;
+    margin: -2px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .announcement-link {
+    /* 超小螢幕上的連結樣式 */
+    font-size: 0.9em;
+    line-height: 1.4;
+  }
+}
+
 /* 針對包含 emoji 的內容進行特殊處理 */
 .announcement-message.has-emoji {
   /* 在手機版上，如果內容包含 emoji，使用更保守的換行策略 */
