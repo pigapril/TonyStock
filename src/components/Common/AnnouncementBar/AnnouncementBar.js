@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './AnnouncementBar.css';
 import enhancedApiClient from '../../../utils/enhancedApiClient';
-import { linkify, hasUrls } from '../../../utils/urlLinkifier';
 
 const AnnouncementBar = () => {
   const [config, setConfig] = useState(null);
@@ -109,14 +108,61 @@ const AnnouncementBar = () => {
   const renderAnnouncementContent = (message) => {
     if (!message) return null;
     
+    console.log('AnnouncementBar: 處理訊息:', message);
+    console.log('AnnouncementBar: 訊息長度:', message.length);
+    console.log('AnnouncementBar: 訊息字符碼:', [...message].map(c => c.charCodeAt(0)));
+    
+    // 簡單的 URL 檢測正則表達式
+    const urlRegex = /(https?:\/\/[^\s]+)/gi;
+    
+    // 嘗試更寬鬆的檢測
+    const simpleCheck = message.includes('https://') || message.includes('http://');
+    console.log('AnnouncementBar: 簡單檢測結果:', simpleCheck);
+    
     // 檢查是否包含 URL
-    if (hasUrls(message)) {
-      return linkify(message, {
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        className: 'announcement-link',
-        maxLength: 40 // 在公告欄中縮短 URL 顯示長度
-      });
+    const hasUrl = urlRegex.test(message);
+    console.log('AnnouncementBar: URL 檢測結果:', hasUrl);
+    
+    if (hasUrl) {
+      // 重置正則表達式
+      urlRegex.lastIndex = 0;
+      
+      const parts = [];
+      let lastIndex = 0;
+      let match;
+      
+      while ((match = urlRegex.exec(message)) !== null) {
+        const url = match[0];
+        const startIndex = match.index;
+        
+        // 添加 URL 前的文字
+        if (startIndex > lastIndex) {
+          parts.push(message.slice(lastIndex, startIndex));
+        }
+        
+        // 添加連結
+        parts.push(
+          <a
+            key={`link-${startIndex}`}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="announcement-link"
+            title={url}
+          >
+            {url.length > 40 ? url.substring(0, 37) + '...' : url}
+          </a>
+        );
+        
+        lastIndex = urlRegex.lastIndex;
+      }
+      
+      // 添加最後一部分文字
+      if (lastIndex < message.length) {
+        parts.push(message.slice(lastIndex));
+      }
+      
+      return parts;
     }
     
     // 如果沒有 URL，直接返回文字
@@ -128,12 +174,18 @@ const AnnouncementBar = () => {
     return null;
   }
 
+  // 檢測是否包含 URL
+  const hasUrlsInMessage = (text) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/gi;
+    return urlRegex.test(text);
+  };
+
   // 計算 CSS 類名
   const messageClasses = [
     'announcement-message',
     hasEmoji(config.message) ? 'has-emoji' : '',
     isShortContent(config.message) ? 'short-content' : '',
-    hasUrls(config.message) ? 'has-links' : ''
+    hasUrlsInMessage(config.message) ? 'has-links' : ''
   ].filter(Boolean).join(' ');
 
   return (

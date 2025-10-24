@@ -2,11 +2,13 @@
  * URL 連結化工具
  * 自動檢測文字中的 URL 並轉換為可點擊的連結
  */
+import React from 'react';
 
 /**
- * URL 正則表達式 - 支援 http/https/ftp 協議和常見的網址格式
+ * URL 正則表達式 - 簡化版本，主要檢測 http/https 開頭的 URL
+ * 匹配到空白字符或字符串結尾為止
  */
-const URL_REGEX = /(https?:\/\/[^\s<>"{}|\\^`[\]]+|ftp:\/\/[^\s<>"{}|\\^`[\]]+|www\.[^\s<>"{}|\\^`[\]]+\.[a-z]{2,})/gi;
+const URL_REGEX = /(https?:\/\/[^\s]+|www\.[^\s]+)/gi;
 
 /**
  * 檢測文字中是否包含 URL
@@ -103,19 +105,15 @@ export const renderLinkifiedText = (parts) => {
       return part;
     }
 
-    if (part.type === 'link') {
-      return (
-        <a
-          key={part.key || `link-${index}`}
-          href={part.href}
-          target={part.target}
-          rel={part.rel}
-          className={part.className}
-          title={part.href}
-        >
-          {part.text}
-        </a>
-      );
+    if (part && part.type === 'link') {
+      return React.createElement('a', {
+        key: part.key || `link-${index}`,
+        href: part.href,
+        target: part.target,
+        rel: part.rel,
+        className: part.className,
+        title: part.href
+      }, part.text);
     }
 
     return part;
