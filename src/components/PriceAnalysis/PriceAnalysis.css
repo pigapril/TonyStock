@@ -27,7 +27,7 @@
   padding: var(--space-l, 20px);
   /*flex: 1 1 15%;*/
   min-width: 200px;
-  max-width: 300px;
+  max-width: 300px; /* 保持原有限制，但在桌面版會被覆蓋 */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -606,23 +606,25 @@
   .price-analysis-view .content-layout-container .dashboard .analysis-controls-wrapper {
     display: flex;
     flex-direction: column;
-    flex-shrink: 0;
+    flex: 0 0 380px; /* 固定寬度380px，不收縮不擴展 */
     height: auto;
     max-height: 100%;
-    width: 100%;
+    min-width: 350px; /* 最小寬度保證 */
   }
   
   /* .dashboard 內部的物件：.stock-analysis-card 和 .chart-card */
   .price-analysis-view .content-layout-container .dashboard .stock-analysis-card {
     flex-shrink: 0; 
     width: 100%;
+    max-width: none; /* 移除最大寬度限制，讓它能使用父容器的完整寬度 */
   }
 
   .price-analysis-view .content-layout-container .dashboard .chart-card {
-    flex-grow: 1;
+    flex: 1 1 auto; /* 佔據剩餘空間，可收縮可擴展 */
     display: flex; 
     flex-direction: column; 
-    overflow: hidden; 
+    overflow: hidden;
+    min-width: 400px; /* 確保圖表有最小寬度 */
   }
    .price-analysis-view .content-layout-container .dashboard .chart-card .chart-container {
     flex-grow: 1; 
@@ -630,10 +632,22 @@
    }
 }
 
+/* 中大型螢幕優化 */
+@media (min-width: 1200px) {
+  .price-analysis-view .content-layout-container .dashboard .analysis-controls-wrapper {
+    flex: 0 0 400px; /* 中大型螢幕使用400px */
+  }
+}
+
 @media (min-width: 1500px) {
   .price-analysis-view .content-layout-container {
     height: 70vh; /* 設定固定高度，讓內部可以滾動 */
     max-height: 70vh; /* 確保不超過此高度 */
+  }
+
+  /* 在更大螢幕上給分析控制區更多空間 */
+  .price-analysis-view .content-layout-container .dashboard .analysis-controls-wrapper {
+    flex: 0 0 420px; /* 在大螢幕上增加到420px */
   }
 }
 
@@ -885,6 +899,7 @@
   overflow-x: hidden;
   padding: 16px;
   min-height: 0; /* 重要：允許 flex 子項收縮 */
+  box-sizing: border-box; /* 確保 padding 包含在尺寸內 */
 }
 
 /* 熱門搜尋 Tab 內容 */
@@ -918,6 +933,8 @@
   border: 1px solid rgba(0, 0, 0, 0.08);
   width: 100%;
   text-align: left;
+  box-sizing: border-box; /* 確保 padding 和 border 包含在寬度內 */
+  min-width: 0; /* 允許收縮 */
 }
 
 .price-analysis-view .hot-search-item:hover,
@@ -939,6 +956,8 @@
   align-items: center;
   gap: 8px;
   width: 100%;
+  min-width: 0; /* 允許收縮 */
+  box-sizing: border-box; /* 確保正確的盒模型 */
 }
 
 .price-analysis-view .hot-search-ticker {
@@ -957,6 +976,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0; /* 重要：允許 flex 項目收縮到內容以下 */
 }
 
 /* 當只有 ticker 沒有 name 時的樣式調整 */
