@@ -1005,9 +1005,9 @@
     },
     "form": {
       "title": "股價趨勢與情緒分析",
-      "stockCodeLabel": "股票代碼：",
+      "stockCodeLabel": "輸入股票代碼：",
       "stockCodePlaceholder": "例如: 2330、AAPL",
-      "analysisPeriodLabel": "分析期間：",
+      "analysisPeriodLabel": "選擇分析期長：",
       "periodShort": "短期 (0.5年)",
       "periodMedium": "中期 (1.5年)",
       "periodLong": "長期 (3.5年)",
