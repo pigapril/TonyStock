@@ -482,7 +482,6 @@ export function PriceAnalysis() {
         console.log('API response received:', response.data); // 添加這行
         // 假設 API 回應格式為 { data: { top_searches: [...] } }
         if (response.data && response.data.data && Array.isArray(response.data.data.top_searches)) {
-          console.log('Setting hot searches:', response.data.data.top_searches); // 添加這行
           setHotSearches(response.data.data.top_searches);
         } else {
           setHotSearches([]);
@@ -506,7 +505,9 @@ export function PriceAnalysis() {
 
     fetchHotSearches();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, location.state]); // <--- 修改：移除 fetchStockData, showToast, loading
+  }, [searchParams, location.state]); // <--- 修改：移除 getStockNameFromFreeList
+
+
 
 
 
@@ -964,9 +965,9 @@ export function PriceAnalysis() {
                     {loadingHotSearches ? (
                       <p className="loading-text">{t('common.loading')}</p>
                     ) : hotSearches.length > 0 ? (
-                      <ul className="hot-search-list">
+                      <div className="hot-search-list">
                         {hotSearches.map((searchItem, index) => (
-                          <li
+                          <div
                             key={index}
                             className="hot-search-item"
                             onClick={() => handleHotSearchClick(searchItem)}
@@ -974,10 +975,15 @@ export function PriceAnalysis() {
                             tabIndex={0}
                             onKeyPress={(e) => e.key === 'Enter' && handleHotSearchClick(searchItem)}
                           >
-                            {searchItem.keyword}
-                          </li>
+                            <div className="hot-search-info">
+                              <span className="hot-search-ticker">{searchItem.keyword}</span>
+                              {searchItem.name && searchItem.name !== searchItem.keyword && (
+                                <span className="hot-search-name">{searchItem.name}</span>
+                              )}
+                            </div>
+                          </div>
                         ))}
-                      </ul>
+                      </div>
                     ) : (
                       <p className="no-data-text">{t('priceAnalysis.hotSearches.noData')}</p>
                     )}

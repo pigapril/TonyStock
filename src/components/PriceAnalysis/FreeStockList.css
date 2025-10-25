@@ -1,10 +1,15 @@
 /* 免費股票清單組件樣式 */
 .free-stock-list {
-  background: transparent; /* 在 Tab 中使用透明背景 */
-  padding: 0; /* 移除 padding，由父容器控制 */
-  margin: 0; /* 移除 margin */
-  height: 100%; /* 填滿父容器 */
-  overflow: visible; /* 確保內容可見 */
+  background: transparent;
+  /* 在 Tab 中使用透明背景 */
+  padding: 0;
+  /* 移除 padding，由父容器控制 */
+  margin: 0;
+  /* 移除 margin */
+  height: 100%;
+  /* 填滿父容器 */
+  overflow: visible;
+  /* 確保內容可見 */
 }
 
 /* 區域容器 */
@@ -45,18 +50,18 @@
   text-transform: uppercase;
 }
 
-/* 區域內的股票網格 */
+/* 區域內的股票列表 - 改為垂直排列 */
 .region-stocks {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-/* 免費股票項目 */
+/* 免費股票項目 - 改為一列一個，增大字體 */
 .free-stock-item {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 12px 16px;
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 6px;
@@ -84,39 +89,35 @@
   align-items: center;
   width: 100%;
   min-width: 0;
-  /* 允許內容收縮 */
-  gap: 4px;
-  /* ticker 和 name 之間的間距 */
+  gap: 8px;
 }
 
 .free-stock-ticker {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: #007AFF;
   font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
   flex-shrink: 0;
-  /* ticker 不收縮 */
+  min-width: 60px;
 }
 
 .free-stock-name {
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   color: #1d1d1f;
-  line-height: 1.1;
+  line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   flex: 1;
-  /* name 佔據剩餘空間 */
   min-width: 0;
-  /* 允許收縮 */
 }
 
 /* 區域標籤 */
 .stock-region-badge {
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   color: var(--color-text-tertiary, #999);
   background: rgba(0, 0, 0, 0.05);
-  padding: 1px 4px;
+  padding: 2px 6px;
   border-radius: 3px;
   margin-left: auto;
   flex-shrink: 0;
@@ -143,25 +144,25 @@
   }
 
   .region-stocks {
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 4px;
+    gap: 6px;
   }
 
   .free-stock-item {
-    padding: 6px;
+    padding: 10px 12px;
   }
 
   .free-stock-ticker {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
+    min-width: 50px;
   }
 
   .free-stock-name {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
   }
 
   .stock-region-badge {
-    font-size: 0.55rem;
-    padding: 1px 3px;
+    font-size: 0.65rem;
+    padding: 1px 4px;
   }
 }
 
@@ -171,30 +172,29 @@
   }
 
   .region-stocks {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 3px;
+    gap: 4px;
   }
 
   .free-stock-item {
-    padding: 5px;
+    padding: 8px 10px;
   }
 
   .free-stock-ticker {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
+    min-width: 45px;
   }
 
   .free-stock-name {
-    font-size: 0.55rem;
+    font-size: 0.7rem;
   }
 
   .stock-region-badge {
-    font-size: 0.5rem;
-    padding: 1px 2px;
+    font-size: 0.6rem;
+    padding: 1px 3px;
   }
 
   .free-stock-info {
-    gap: 3px;
-    /* 在小螢幕上減少間距 */
+    gap: 6px;
   }
 }
 
@@ -224,6 +224,7 @@
     color: #999;
   }
 }
+
 /* 載入和錯誤狀態樣式 */
 .loading-message,
 .error-message,
@@ -247,11 +248,12 @@
 
 /* 深色模式支援 - 狀態訊息 */
 @media (prefers-color-scheme: dark) {
+
   .loading-message,
   .no-data-message {
     color: #999;
   }
-  
+
   .error-message {
     color: #ff6b6b;
   }

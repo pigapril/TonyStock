@@ -899,42 +899,71 @@
   margin: 20px 0;
 }
 
-/* 熱門搜尋列表 */
+/* 熱門搜尋列表 - 改為垂直排列 */
 .price-analysis-view .hot-search-list {
-  list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 8px;
-  justify-content: center;
 }
 
-/* 熱門搜尋項目 */
+/* 熱門搜尋項目 - 改為一列一個 */
 .price-analysis-view .hot-search-item {
-  background-color: var(--color-bg-muted, #f5f5f5);
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: var(--border-radius-small, 6px);
-  padding: 8px 12px;
+  padding: 12px 16px;
   cursor: pointer;
-  font-size: 0.85em;
-  font-weight: 500;
-  color: var(--color-text-secondary, #333);
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border: 1px solid var(--color-border-subtle, #e0e0e0);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  width: 100%;
+  text-align: left;
 }
 
 .price-analysis-view .hot-search-item:hover,
 .price-analysis-view .hot-search-item:focus {
-  background-color: #007AFF;
-  color: white;
+  background-color: rgba(0, 122, 255, 0.05);
   border-color: #007AFF;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 122, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.15);
   outline: none;
 }
 
 .price-analysis-view .hot-search-item:active {
   transform: translateY(0);
+}
+
+/* 熱門搜尋項目資訊 */
+.price-analysis-view .hot-search-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.price-analysis-view .hot-search-ticker {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #007AFF;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  flex-shrink: 0;
+  min-width: 60px;
+}
+
+.price-analysis-view .hot-search-name {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary, #666);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 當只有 ticker 沒有 name 時的樣式調整 */
+.price-analysis-view .hot-search-info .hot-search-ticker:only-child {
+  flex: 1;
+  text-align: left;
+  min-width: auto;
 }
 
 /* 免費股票清單 Tab 內容 - 簡化樣式 */
@@ -981,8 +1010,16 @@
   }
   
   .price-analysis-view .hot-search-item {
-    padding: 6px 10px;
-    font-size: 0.8em;
+    padding: 10px 12px;
+  }
+  
+  .price-analysis-view .hot-search-ticker {
+    font-size: 0.8rem;
+    min-width: 50px;
+  }
+  
+  .price-analysis-view .hot-search-name {
+    font-size: 0.75rem;
   }
 }
 

@@ -18,16 +18,16 @@ class SubscriptionService {
   async getUserPlan() {
     try {
       console.log('🔄 Getting user plan from subscription API...');
-      
+
       // 首先嘗試從訂閱 API 獲取詳細的訂閱信息
       try {
         const subscriptionResponse = await enhancedApiClient.get('/api/subscription/current');
-        
+
         console.log('📊 Subscription API response:', subscriptionResponse.data);
-        
+
         if (subscriptionResponse.data.status === 'success' && subscriptionResponse.data.data.subscription) {
           const subscription = subscriptionResponse.data.data.subscription;
-          
+
           console.log('📊 Found active subscription:', {
             id: subscription.id,
             planType: subscription.planType,
@@ -35,7 +35,7 @@ class SubscriptionService {
             cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
             currentPeriodEnd: subscription.currentPeriodEnd
           });
-          
+
           // 將後端的訂閱數據映射到前端期望的格式
           return {
             type: subscription.planType,
@@ -58,15 +58,15 @@ class SubscriptionService {
       } catch (subscriptionError) {
         console.warn('⚠️ Failed to get subscription details, falling back to auth status:', subscriptionError.message);
       }
-      
+
       // 如果沒有找到訂閱記錄，從 auth status API 獲取基本用戶方案資訊
       const response = await enhancedApiClient.get('/api/auth/status');
 
       if (response.data.status === 'success' && response.data.data.isAuthenticated) {
         const user = response.data.data.user;
-        
+
         console.log('📊 Fallback to user plan from auth status:', user.plan);
-        
+
         return {
           type: user.plan || 'free',
           startDate: new Date(),
@@ -140,7 +140,7 @@ class SubscriptionService {
 
       // 呼叫真實的後端 API
       const response = await enhancedApiClient.get('/api/subscription/history');
-      
+
       systemLogger.info('Subscription history API response:', response);
 
       // 添加詳細的響應日誌
