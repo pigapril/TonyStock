@@ -121,9 +121,6 @@
 }
 
 /* 組成指標標籤特定樣式 */
-.market-sentiment-description-section .composite-indicators {
-  /* 複合指標的特殊樣式 */
-}
 
 .market-sentiment-description-section .indicators-grid {
   display: grid;
@@ -151,9 +148,7 @@
   line-height: 1.4;
 }
 
-.market-sentiment-description-section .single-indicator .indicator-details {
-  /* 單一指標的詳細說明樣式 */
-}
+
 
 /* 使用技巧標籤特定樣式 */
 .market-sentiment-description-section .tips-section {
@@ -209,12 +204,16 @@
 
 @media (max-width: 480px) {
   .market-sentiment-description-section .description-tab {
-    flex: 1 1 100%;
+    flex: 1 1 45%;
     margin-bottom: 5px;
+    font-size: 0.75rem;
+    padding: 8px 6px;
   }
 
   .market-sentiment-description-section .description-tabs {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
 }
 
@@ -363,4 +362,58 @@
   flex: 1;
   max-height: none;
   overflow-y: auto;
+}
+
+/* 手機版響應式設計：覆蓋 side-layout 的垂直排列 */
+@media (max-width: 768px) {
+  .market-sentiment-description-section.side-layout .description-tabs-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .market-sentiment-description-section.side-layout .description-tabs {
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 2px solid var(--color-border-light, #f0f0f0);
+    margin-right: 0;
+    margin-bottom: 15px;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .market-sentiment-description-section.side-layout .description-tab {
+    border-right: none;
+    border-bottom: 3px solid transparent;
+    text-align: center;
+    flex: 1 1 45%;
+    font-size: 0.8rem;
+    padding: 10px 8px;
+    min-width: 0;
+  }
+
+  .market-sentiment-description-section.side-layout .description-tab.active {
+    border-right-color: transparent;
+    border-bottom-color: #007aff;
+  }
+
+  .market-sentiment-description-section.side-layout .description-tab-content {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .market-sentiment-description-section.side-layout .description-tab {
+    flex: 1 1 45%;
+    margin-bottom: 5px;
+    font-size: 0.75rem;
+    padding: 8px 6px;
+  }
+
+  .market-sentiment-description-section.side-layout .description-tabs {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 }
