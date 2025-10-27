@@ -314,7 +314,13 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  clear: both; /* 確保不與浮動元素重疊 */
+  position: relative;
+  z-index: 1; /* 確保在正確的層級 */
 }
+
+
+
 
 /* 側邊佈局：只在 modal 中使用 */
 .market-sentiment-description-section.side-layout {
