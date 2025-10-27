@@ -6,7 +6,7 @@
   z-index: 1000;
   width: 100%;
   max-width: 975px;
-  display: none; /* 隱藏 ad banner */
+  display: block; /* 顯示 ad banner */
 }
 
 .ad-banner {
