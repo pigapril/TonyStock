@@ -623,7 +623,145 @@ class PaymentService {
     }
 
     /**
-     * 獲取方案價格資訊
+     * 獲取方案價格資訊 (從 Plans API，帶智能快取)
+     * @param {Object} options - 選項
+     * @param {boolean} options.forceRefresh - 強制重新載入，忽略快取
+     * @returns {Promise<Object>} 方案價格
+     */
+    async getPlanPricingFromAPI(options = {}) {
+        const { forceRefresh = false } = options;
+        const cacheKey = 'plan_pricing_cache';
+        const cacheVersionKey = 'plan_pricing_version';
+        
+        try {
+            console.log('🌐 PaymentService: 從 Plans API 獲取定價資料');
+            
+            // 如果不是強制重新載入，檢查快取
+            if (!forceRefresh) {
+                const cachedPricing = localStorage.getItem(cacheKey);
+                const cachedVersion = localStorage.getItem(cacheVersionKey);
+                
+                if (cachedPricing && cachedVersion) {
+                    // 檢查版本是否仍然有效
+                    try {
+                        const versionResponse = await this.makeRequest('GET', '/api/plans/pricing');
+                        const serverVersion = versionResponse.data.data.version;
+                        
+                        if (serverVersion && serverVersion.toString() === cachedVersion) {
+                            console.log('✅ PaymentService: 使用快取的定價資料 (版本匹配)');
+                            return JSON.parse(cachedPricing);
+                        } else {
+                            console.log('🔄 PaymentService: 快取版本過期，重新載入');
+                        }
+                    } catch (versionError) {
+                        console.warn('⚠️ PaymentService: 無法檢查版本，使用快取資料', versionError);
+                        return JSON.parse(cachedPricing);
+                    }
+                }
+            }
+            
+            // 從 API 獲取最新資料
+            const response = await this.makeRequest('GET', '/api/plans/pricing');
+            
+            if (response.data.success && response.data.data.plans) {
+                const apiData = response.data.data;
+                const apiPlans = apiData.plans;
+                
+                // 轉換為 PaymentService 期望的格式
+                const formattedPricing = {};
+                
+                Object.keys(apiPlans).forEach(planId => {
+                    const apiPlan = apiPlans[planId];
+                    formattedPricing[planId] = {
+                        monthly: {
+                            price: apiPlan.pricing.monthly,
+                            currency: apiPlan.pricing.currency,
+                            period: '月'
+                        },
+                        yearly: {
+                            price: apiPlan.pricing.yearly,
+                            currency: apiPlan.pricing.currency,
+                            period: '年',
+                            discount: this.calculateYearlyDiscount(apiPlan.pricing.monthly, apiPlan.pricing.yearly)
+                        }
+                    };
+                });
+                
+                // 儲存到快取
+                try {
+                    localStorage.setItem(cacheKey, JSON.stringify(formattedPricing));
+                    if (apiData.version) {
+                        localStorage.setItem(cacheVersionKey, apiData.version.toString());
+                    }
+                    console.log('💾 PaymentService: 定價資料已快取');
+                } catch (storageError) {
+                    console.warn('⚠️ PaymentService: 無法儲存快取', storageError);
+                }
+                
+                console.log('✅ PaymentService: API 定價資料獲取成功', formattedPricing);
+                return formattedPricing;
+                
+            } else {
+                throw new Error('API 回應格式不正確');
+            }
+            
+        } catch (error) {
+            console.error('❌ PaymentService: 從 API 獲取定價失敗，嘗試使用快取或 fallback', error);
+            
+            // 嘗試使用快取資料
+            try {
+                const cachedPricing = localStorage.getItem(cacheKey);
+                if (cachedPricing) {
+                    console.log('🔄 PaymentService: 使用快取的定價資料 (API 失敗)');
+                    return JSON.parse(cachedPricing);
+                }
+            } catch (cacheError) {
+                console.warn('⚠️ PaymentService: 快取資料也無法使用', cacheError);
+            }
+            
+            // 最後使用 fallback 定價
+            console.log('🔄 PaymentService: 使用 fallback 定價');
+            return this.getPlanPricing();
+        }
+    }
+
+    /**
+     * 清除定價快取
+     * @returns {void}
+     */
+    clearPricingCache() {
+        try {
+            localStorage.removeItem('plan_pricing_cache');
+            localStorage.removeItem('plan_pricing_version');
+            console.log('🗑️ PaymentService: 定價快取已清除');
+        } catch (error) {
+            console.warn('⚠️ PaymentService: 清除快取時發生錯誤', error);
+        }
+    }
+
+    /**
+     * 計算年費折扣
+     * @param {number} monthlyPrice - 月費
+     * @param {number} yearlyPrice - 年費
+     * @returns {string} 折扣描述
+     */
+    calculateYearlyDiscount(monthlyPrice, yearlyPrice) {
+        if (!monthlyPrice || !yearlyPrice || monthlyPrice <= 0 || yearlyPrice <= 0) {
+            return '';
+        }
+        
+        const monthlyEquivalent = monthlyPrice * 12;
+        const discountPercentage = Math.round((1 - (yearlyPrice / monthlyEquivalent)) * 100);
+        
+        if (discountPercentage > 0) {
+            return `約 ${discountPercentage}% 折扣`;
+        }
+        
+        return '';
+    }
+
+    /**
+     * 獲取方案價格資訊 (同步 fallback 方法)
      * @returns {Object} 方案價格
      */
     getPlanPricing() {

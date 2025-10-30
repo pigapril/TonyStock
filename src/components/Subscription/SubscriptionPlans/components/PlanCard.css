@@ -6,7 +6,7 @@
   background: var(--color-bg-card, #ffffff);
   border-radius: var(--border-radius-large, 14px);
   padding: 32px;
-  box-shadow: var(--shadow-s, 0 2px 6px rgba(0,0,0,0.05));
+  box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
   border: 2px solid var(--color-border-soft, #e5e5e5);
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
@@ -15,7 +15,7 @@
 
 .plan-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-l, 0 10px 30px rgba(0,0,0,0.08));
+  box-shadow: var(--shadow-l, 0 10px 30px rgba(0, 0, 0, 0.08));
   border-color: rgba(0, 122, 255, 0.2);
 }
 
@@ -88,7 +88,8 @@
   padding-bottom: 24px;
   border-bottom: 1px solid var(--color-border-soft, #e5e5e5);
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  min-height: 80px; /* Ensure consistent height across plans */
+  min-height: 80px;
+  /* Ensure consistent height across plans */
 }
 
 .plan-card__price-row {
@@ -285,7 +286,7 @@
   .plan-card__features {
     margin-bottom: 48px;
   }
-  
+
   .plan-card__action {
     padding-top: 12px;
   }
@@ -296,42 +297,42 @@
   .plan-card {
     padding: 24px;
   }
-  
+
   .plan-card__name {
     font-size: 24px;
   }
-  
+
   .plan-card__description {
     font-size: 14px;
   }
-  
+
   .plan-card__price-amount {
     font-size: 32px;
   }
-  
+
   .plan-card__pricing {
     margin-bottom: 24px;
     padding-bottom: 20px;
   }
-  
+
   .plan-card__price-row {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .plan-card__discount-info {
     align-items: flex-start;
   }
-  
+
   .plan-card__features {
     margin-bottom: 24px;
   }
-  
+
   .plan-card__features-list {
     gap: 12px;
   }
-  
+
   .plan-card__feature-text {
     font-size: 14px;
   }
@@ -341,29 +342,29 @@
   .plan-card {
     padding: 20px;
   }
-  
+
   .plan-card__header {
     gap: 12px;
     margin-bottom: 20px;
   }
-  
+
   .plan-card__name {
     font-size: 20px;
   }
-  
+
   .plan-card__description {
     font-size: 13px;
   }
-  
+
   .plan-card__price-amount {
     font-size: 28px;
   }
-  
+
   .plan-card__pricing {
     margin-bottom: 20px;
     padding-bottom: 16px;
   }
-  
+
   .plan-card__features {
     margin-bottom: 20px;
   }
@@ -375,6 +376,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -387,73 +389,75 @@
     background: #1c1c1e;
     border-color: #38383a;
   }
-  
+
   .plan-card:hover {
     border-color: rgba(10, 132, 255, 0.3);
   }
-  
+
   .plan-card--current {
     border-color: #0a84ff;
     background: linear-gradient(135deg, rgba(10, 132, 255, 0.05) 0%, rgba(0, 86, 204, 0.05) 100%);
   }
-  
+
   .plan-card--popular {
     background: linear-gradient(135deg, rgba(255, 149, 0, 0.05) 0%, rgba(255, 95, 0, 0.05) 100%);
   }
-  
 
-  
+
+
   .plan-card__name,
   .plan-card__price-amount {
     color: rgba(235, 235, 245, 0.85);
   }
-  
+
   .plan-card__description,
   .plan-card__price-period,
   .plan-card__feature-text {
     color: rgba(235, 235, 245, 0.60);
   }
-  
+
   .plan-card__price-yearly,
   .plan-card__original-price {
     color: rgba(235, 235, 245, 0.40);
   }
-  
+
   .plan-card__pricing {
     border-color: #38383a;
   }
-  
+
   /* Redemption dark mode styles */
   .plan-card__original-price-redemption {
     color: rgba(235, 235, 245, 0.40);
   }
-  
+
   .plan-card__applied-redemption {
     background: rgba(50, 215, 75, 0.15);
     border-color: rgba(50, 215, 75, 0.3);
   }
-  
+
   .plan-card__applied-redemption-icon,
   .plan-card__applied-redemption span {
     color: #32D74B;
   }
-  
+
   .plan-card__feature-item--disabled .plan-card__feature-icon {
     color: #ff453a;
   }
-  
+
   .plan-card__feature-item--disabled .plan-card__feature-text {
     color: rgba(235, 235, 245, 0.30);
   }
-  
+
   .plan-card__feature-item--limited .plan-card__feature-icon {
     color: #ffb340;
   }
-  
+
   .plan-card__feature-item--limited .plan-card__feature-text {
     color: rgba(235, 235, 245, 0.50);
   }
-}/* 
+}
+
+/* 
 Not Applicable Indicator */
 .plan-card__not-applicable {
   display: flex;
@@ -553,16 +557,16 @@ Not Applicable Indicator */
     margin-bottom: 16px;
     font-size: 13px;
   }
-  
+
   .plan-card__status-icon {
     width: 18px;
     height: 18px;
   }
-  
+
   .plan-card__status-title {
     font-size: 13px;
   }
-  
+
   .plan-card__status-subtitle {
     font-size: 11px;
   }

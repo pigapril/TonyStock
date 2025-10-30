@@ -192,11 +192,46 @@ const PaymentPage = () => {
         navigate(`/${lang}/subscription-plans`);
     };
 
+    // 新增：定價資料狀態
+    const [planPricing, setPlanPricing] = useState(null);
+    const [pricingLoading, setPricingLoading] = useState(true);
+    const [pricingError, setPricingError] = useState(null);
+
     // 獲取方案資訊
     const availablePlans = subscriptionService.getAvailablePlans();
     const selectedPlan = availablePlans.find(plan => plan.id === planType);
-    const planPricing = paymentService.getPlanPricing();
-    const basePlan = planPricing[planType]?.[billingPeriod];
+    const basePlan = planPricing?.[planType]?.[billingPeriod];
+
+    // 載入定價資料
+    useEffect(() => {
+        const loadPricing = async () => {
+            try {
+                setPricingLoading(true);
+                setPricingError(null);
+                
+                console.log('🔄 PaymentPage: 開始載入定價資料');
+                
+                // 使用新的 API 方法載入定價
+                const pricing = await paymentService.getPlanPricingFromAPI();
+                
+                setPlanPricing(pricing);
+                console.log('✅ PaymentPage: 定價資料載入成功', pricing);
+                
+            } catch (error) {
+                console.error('❌ PaymentPage: 定價資料載入失敗', error);
+                setPricingError(error.message);
+                
+                // 使用 fallback 定價
+                const fallbackPricing = paymentService.getPlanPricing();
+                setPlanPricing(fallbackPricing);
+                
+            } finally {
+                setPricingLoading(false);
+            }
+        };
+
+        loadPricing();
+    }, []);
     
     // 計算實際價格（考慮折扣）
     const calculateFinalPrice = () => {
@@ -381,6 +416,42 @@ const PaymentPage = () => {
 
     if (!user) {
         return null; // 重定向處理中
+    }
+
+    // 如果定價資料還在載入中，顯示載入狀態
+    if (pricingLoading) {
+        return (
+            <div className="payment-page">
+                <div className="payment-page__container">
+                    <div className="payment-page__loading">
+                        <LoadingSpinner size="large" />
+                        <p className="payment-page__loading-text">
+                            {t('payment.loading.pricingData', '載入方案資料中...')}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // 如果定價資料載入失敗且沒有 fallback 資料
+    if (pricingError && !planPricing) {
+        return (
+            <div className="payment-page">
+                <div className="payment-page__container">
+                    <div className="payment-page__error">
+                        <h1>{t('payment.error.pricingLoadFailed', '載入方案資料失敗')}</h1>
+                        <p>{pricingError}</p>
+                        <button 
+                            className="payment-page__back-button"
+                            onClick={() => window.location.reload()}
+                        >
+                            {t('payment.error.retry', '重新載入')}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     if (!selectedPlan) {
@@ -662,7 +733,7 @@ const PaymentPage = () => {
                         )}
                         <div className="payment-page__order-row payment-page__order-total">
                             <span>{t('payment.plan.pricing.totalAmount')}</span>
-                            <span>NT$ {orderData.amount?.toLocaleString()}</span>
+                            <span>NT$ {finalPrice?.toLocaleString()}</span>
                         </div>
                     </div>
                 )}
