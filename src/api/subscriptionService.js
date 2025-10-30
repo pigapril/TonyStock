@@ -311,7 +311,91 @@ class SubscriptionService {
   }
 
   /**
-   * Get available subscription plans
+   * Get available subscription plans from API (新的 Source of Truth 方法)
+   */
+  async getAvailablePlansFromAPI() {
+    try {
+      console.log('🌐 SubscriptionService: 從 Plans API 獲取方案資料');
+
+      const response = await enhancedApiClient.get('/api/plans/pricing');
+
+      if (response.data.success && response.data.data.plans) {
+        const apiPlans = response.data.data.plans;
+
+        console.log('✅ SubscriptionService: API 方案資料獲取成功', {
+          plansCount: Object.keys(apiPlans).length,
+          currency: response.data.data.currency
+        });
+
+        // 將 API 資料轉換為前端期望的格式
+        const formattedPlans = Object.keys(apiPlans).map(planId => {
+          const apiPlan = apiPlans[planId];
+
+          return {
+            id: planId,
+            name: apiPlan.name,
+            price: {
+              monthly: apiPlan.pricing.monthly,
+              yearly: apiPlan.pricing.yearly
+            },
+            displayPrice: { monthly: '$---', yearly: '$---' },
+            showRealPrice: true, // 從 API 獲取時預設顯示真實價格
+            currency: apiPlan.pricing.currency,
+            features: this.mapAPIFeaturesToLegacyFormat(apiPlan.features, planId),
+            popular: planId === 'pro' // Pro 方案標記為熱門
+          };
+        });
+
+        console.log('🔄 SubscriptionService: 方案資料格式化完成', formattedPlans);
+        return formattedPlans;
+
+      } else {
+        throw new Error('API 回應格式不正確');
+      }
+
+    } catch (error) {
+      console.error('❌ SubscriptionService: 從 API 獲取方案失敗，使用 fallback', error);
+
+      // 使用 fallback 方案資料
+      return this.getAvailablePlans();
+    }
+  }
+
+  /**
+   * 將 API 功能格式轉換為舊版格式
+   * @param {Object} apiFeatures - API 回傳的功能物件
+   * @param {string} planId - 方案 ID
+   * @returns {Object} 舊版格式的功能物件
+   */
+  mapAPIFeaturesToLegacyFormat(apiFeatures, planId) {
+    if (planId === 'free') {
+      return {
+        lohasSpectrum: { limit: 5, description: 'Limited to 0050 & SPY stocks' },
+        marketSentiment: { limit: 2, description: 'Basic access only' },
+        watchlist: { limit: 0, description: 'Disabled' },
+        ads: apiFeatures.ads || true
+      };
+    } else if (planId === 'pro') {
+      return {
+        lohasSpectrum: { limit: -1, description: 'Unlimited, all stocks, custom date ranges' },
+        marketSentiment: { limit: -1, description: 'Unlimited, full component & historical access' },
+        watchlist: { limit: -1, description: 'Enabled, 5 categories, unlimited stocks per category' },
+        ads: apiFeatures.ads || false
+      };
+    }
+
+    // 預設格式
+    return {
+      lohasSpectrum: { limit: 0, description: 'Unknown' },
+      marketSentiment: { limit: 0, description: 'Unknown' },
+      watchlist: { limit: 0, description: 'Unknown' },
+      ads: true
+    };
+  }
+
+  /**
+   * Get available subscription plans (同步 fallback 方法)
+   * 保留原有的同步方法作為 fallback
    */
   getAvailablePlans() {
     return [
@@ -331,9 +415,9 @@ class SubscriptionService {
       {
         id: 'pro',
         name: 'Pro',
-        price: { monthly: 299, yearly: 2990 },
+        price: { monthly: 299, yearly: 2990 }, // 這些將被 API 資料覆蓋
         displayPrice: { monthly: '$---', yearly: '$---' },
-        showRealPrice: false,
+        showRealPrice: true,
         currency: 'TWD',
         features: {
           lohasSpectrum: { limit: -1, description: 'Unlimited, all stocks, custom date ranges' },

@@ -24,6 +24,42 @@ export const SubscriptionPlansPage = () => {
   const [showFreeTrialDialog, setShowFreeTrialDialog] = useState(false);
   const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
   const [planAdjustments, setPlanAdjustments] = useState({});
+  
+  // 新增：方案資料狀態
+  const [availablePlans, setAvailablePlans] = useState([]);
+  const [plansLoading, setPlansLoading] = useState(true);
+  const [plansError, setPlansError] = useState(null);
+
+  // 載入方案資料
+  useEffect(() => {
+    const loadPlans = async () => {
+      try {
+        setPlansLoading(true);
+        setPlansError(null);
+        
+        console.log('🔄 SubscriptionPlansPage: 開始載入方案資料');
+        
+        // 使用新的 API 方法載入方案
+        const plans = await subscriptionService.getAvailablePlansFromAPI();
+        
+        setAvailablePlans(plans);
+        console.log('✅ SubscriptionPlansPage: 方案資料載入成功', plans);
+        
+      } catch (error) {
+        console.error('❌ SubscriptionPlansPage: 方案資料載入失敗', error);
+        setPlansError(error.message);
+        
+        // 使用 fallback 方案
+        const fallbackPlans = subscriptionService.getAvailablePlans();
+        setAvailablePlans(fallbackPlans);
+        
+      } finally {
+        setPlansLoading(false);
+      }
+    };
+
+    loadPlans();
+  }, []);
 
   useEffect(() => {
     Analytics.track('subscription_plans_page_viewed', {
@@ -45,8 +81,6 @@ export const SubscriptionPlansPage = () => {
       });
     }
   }, [user, userPlan, location.state, t]);
-
-  const availablePlans = subscriptionService.getAvailablePlans();
 
   // 處理免費試用對話框
   const handleShowFreeTrialDialog = () => {
@@ -261,6 +295,22 @@ export const SubscriptionPlansPage = () => {
 
         {/* Plan Cards */}
         <section className="subscription-plans-cards">
+          {plansLoading ? (
+            <div className="subscription-plans-page__api-loading">
+              <div className="subscription-plans-page__api-loading-spinner"></div>
+              <p className="subscription-plans-page__api-loading-text">
+                {t('subscription.subscriptionPlans.loadingPlans', '載入方案資料中...')}
+              </p>
+            </div>
+          ) : plansError ? (
+            <div className="subscription-plans-page__api-error">
+              <p className="subscription-plans-page__api-error-message">
+                {t('subscription.subscriptionPlans.loadError', '載入方案失敗，使用預設資料')}
+              </p>
+              <small className="subscription-plans-page__api-error-details">{plansError}</small>
+            </div>
+          ) : null}
+          
           {availablePlans.map((plan) => (
             <PlanCard
               key={plan.id}

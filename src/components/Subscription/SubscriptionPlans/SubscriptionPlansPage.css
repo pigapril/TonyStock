@@ -810,3 +810,80 @@
     padding: 16px;
   }
 }
+
+/* Subscription Plans API Loading State */
+.subscription-plans-page__api-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  grid-column: 1 / -1; /* 佔滿整個 grid */
+}
+
+.subscription-plans-page__api-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 122, 255, 0.1);
+  border-top: 3px solid #007AFF;
+  border-radius: 50%;
+  animation: subscription-plans-api-spinner-spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.subscription-plans-page__api-loading-text {
+  font-size: 16px;
+  color: var(--color-text-secondary, #86868b);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Subscription Plans API Error State */
+.subscription-plans-page__api-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  grid-column: 1 / -1; /* 佔滿整個 grid */
+  background: rgba(255, 149, 0, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 149, 0, 0.2);
+}
+
+.subscription-plans-page__api-error-message {
+  font-size: 16px;
+  color: #FF9500;
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.subscription-plans-page__api-error-details {
+  font-size: 14px;
+  color: rgba(255, 149, 0, 0.7);
+  margin: 0;
+}
+
+/* Subscription Plans API Loading Animation */
+@keyframes subscription-plans-api-spinner-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments for subscription plans API loading states */
+@media (max-width: 768px) {
+  .subscription-plans-page__api-loading {
+    padding: 40px 20px;
+  }
+  
+  .subscription-plans-page__api-loading-spinner {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .subscription-plans-page__api-loading-text {
+    font-size: 14px;
+  }
+}
