@@ -196,6 +196,12 @@
   border: 1px solid rgba(255, 59, 48, 0.2);
 }
 
+.payment-status--expired {
+  background: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+  border: 1px solid rgba(255, 59, 48, 0.2);
+}
+
 .payment-status--pending {
   background: rgba(255, 149, 0, 0.1);
   color: #ff9500;

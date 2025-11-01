@@ -1604,7 +1604,7 @@
       "cancelledDesc": "You have cancelled this payment",
       "pending": "Payment Pending",
       "pendingDesc": "Please complete payment to activate your subscription",
-      "expired": "Payment Expired",
+      "expired": "Order Expired",
       "expiredDesc": "This payment link has expired, please initiate payment again"
     },
     "actions": {

@@ -81,6 +81,8 @@ const PaymentHistory = ({ userId }) => {
                 amount: payment.amount || 0,
                 currency: payment.currency || 'TWD',
                 status: payment.status || payment.paymentStatus,
+                displayText: payment.displayText, // 使用後端提供的顯示文字
+                statusKey: payment.statusKey, // 使用後端提供的翻譯鍵值
                 paymentMethod: payment.paymentMethod || t('payment.methods.creditCard'),
                 planType: payment.planType || 'pro',
                 billingPeriod: payment.billingPeriod || 'monthly',
@@ -91,7 +93,11 @@ const PaymentHistory = ({ userId }) => {
                     billingPeriod: payment.billingPeriod === 'yearly' ? t('payment.history.yearly') : t('payment.history.monthly')
                 }),
                 invoiceUrl: payment.invoiceUrl,
-                failureReason: payment.failureReason || payment.errorMessage
+                failureReason: payment.failureReason || payment.errorMessage,
+                // 保留原始狀態信息用於調試
+                originalPaymentStatus: payment.originalPaymentStatus,
+                orderStatus: payment.orderStatus,
+                isExpired: payment.isExpired
             }));
 
             setPayments(formattedPayments);
@@ -138,11 +144,37 @@ const PaymentHistory = ({ userId }) => {
 
 
     /**
-     * Get payment status text
+     * Get payment status text with smart display logic
      */
-    const getStatusText = (status) => {
+    const getStatusText = (payment) => {
+        // 優先使用後端提供的顯示文字
+        if (payment.displayText) {
+            // 直接使用後端提供的顯示文字，因為後端已經處理了國際化
+            return payment.displayText;
+        }
+
+        // 回退到原有邏輯（向後兼容）
+        const status = payment.status;
+        
+        // 針對不同狀態提供更友好的顯示文字，使用正確的付款歷史翻譯鍵值
+        if (status === 'expired') {
+            return t('payment.history.status.expired', '訂單已過期');
+        }
+        
+        if (status === 'failed') {
+            return t('payment.history.status.failed', '付款失敗');
+        }
+        
+        if (status === 'pending') {
+            return t('payment.history.status.pending', '處理中');
+        }
+        
+        if (status === 'success' || status === 'paid') {
+            return t('payment.history.status.success', '付款成功');
+        }
+        
         const statusKey = `payment.history.status.${status}`;
-        return t(statusKey, { defaultValue: t('payment.history.status.unknown') });
+        return t(statusKey, { defaultValue: t('payment.history.status.unknown', '未知狀態') });
     };
 
     /**
@@ -304,7 +336,7 @@ const PaymentHistory = ({ userId }) => {
                                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                         </svg>
                                     )}
-                                    {payment.status === 'failed' && (
+                                    {(payment.status === 'failed' || payment.status === 'expired') && (
                                         <svg className="payment-status__icon" fill="currentColor" viewBox="0 0 20 20">
                                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                                         </svg>
@@ -319,7 +351,7 @@ const PaymentHistory = ({ userId }) => {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
                                         </svg>
                                     )}
-                                    <span>{getStatusText(payment.status)}</span>
+                                    <span>{getStatusText(payment)}</span>
                                 </div>
                             </div>
                         </div>
@@ -409,7 +441,7 @@ const PaymentHistory = ({ userId }) => {
                                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                             </svg>
                                         )}
-                                        {selectedPayment.status === 'failed' && (
+                                        {(selectedPayment.status === 'failed' || selectedPayment.status === 'expired') && (
                                             <svg className="payment-status__icon" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                                             </svg>
@@ -424,7 +456,7 @@ const PaymentHistory = ({ userId }) => {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
                                             </svg>
                                         )}
-                                        <span>{getStatusText(selectedPayment.status)}</span>
+                                        <span>{getStatusText(selectedPayment)}</span>
                                     </div>
                                 </div>
                                 <button

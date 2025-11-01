@@ -1661,9 +1661,11 @@
       "close": "關閉",
       "retry": "重試",
       "status": {
-        "success": "成功",
-        "failed": "失敗",
+        "success": "付款成功",
+        "failed": "付款失敗",
         "pending": "處理中",
+        "processing": "處理中",
+        "expired": "訂單已過期",
         "refunded": "已退款",
         "unknown": "未知"
       }
