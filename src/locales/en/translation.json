@@ -1780,7 +1780,7 @@
       "title": "Secure Payment Guarantee",
       "notices": [
         "Clicking 'Proceed to Payment' will redirect to ECPay payment page",
-        "Please complete payment within 30 minutes, orders will be automatically cancelled if expired",
+        "Please complete payment within 5 minutes, orders will be automatically cancelled if expired",
         "All transactions are protected with SSL encryption"
       ]
     },
