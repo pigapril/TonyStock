@@ -166,8 +166,8 @@ class PlansService {
                     name: "專業方案",
                     description: "無廣告，完整功能",
                     pricing: {
-                        monthly: 299,
-                        yearly: 2990,
+                        monthly: 599,
+                        yearly: 5990,
                         currency: "TWD"
                     },
                     features: {

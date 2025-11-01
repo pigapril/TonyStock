@@ -415,7 +415,7 @@ class SubscriptionService {
       {
         id: 'pro',
         name: 'Pro',
-        price: { monthly: 299, yearly: 2990 }, // 這些將被 API 資料覆蓋
+        price: { monthly: 599, yearly: 5990 }, // 這些將被 API 資料覆蓋
         displayPrice: { monthly: '$---', yearly: '$---' },
         showRealPrice: true,
         currency: 'TWD',
