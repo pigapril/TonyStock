@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PlanBadge } from '../../shared/PlanBadge';
 import { AppleButton } from '../../shared/AppleButton';
 import { useSubscription } from '../../SubscriptionContext';
+import { useDialog } from '../../../Common/Dialog/useDialog';
 import { Analytics } from '../../../../utils/analytics';
 import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../utils/pricingUtils';
 
@@ -21,6 +22,7 @@ export const PlanCard = ({
   const { t } = useTranslation();
   const { lang } = useParams();
   const { userPlan, subscriptionHistory, loading } = useSubscription();
+  const { openDialog } = useDialog();
   const navigate = useNavigate();
   
   // 臨時免費模式檢查
@@ -93,8 +95,28 @@ export const PlanCard = ({
       });
 
       if (!isCurrentUser) {
-        // Redirect to login or show auth dialog
-        console.log('User needs to login first');
+        // 觸發登入對話框
+        console.log('User needs to login first - opening auth dialog');
+        openDialog('auth', {
+          source: 'subscription_plan_select',
+          customTitle: t('authDialog.upgradeTitle'),
+          customDescription: (
+            <div className="auth-dialog-description">
+              <p>{t('authDialog.upgradeDescription', { planName: plan.name })}</p>
+              <ul className="feature-list">
+                <li>{t('authDialog.feature1')}</li>
+                <li>{t('authDialog.feature2')}</li>
+                <li>{t('authDialog.feature3')}</li>
+              </ul>
+            </div>
+          )
+        });
+        
+        Analytics.auth.loginRequired({
+          source: 'subscription_plan_select',
+          planId: plan.id,
+          action: 'upgrade_attempt'
+        });
         return;
       }
 

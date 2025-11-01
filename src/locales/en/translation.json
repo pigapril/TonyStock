@@ -92,6 +92,8 @@
     "feature2": "📊 View historical market sentiment data",
     "feature3": "💬 Get answers from AI chat service",
     "title": "🚀 Start Your Free Experience Now",
+    "upgradeTitle": "🚀 Sign In to Upgrade to Pro Plan",
+    "upgradeDescription": "Sign in to your account to upgrade to {{planName}} plan and enjoy full features",
     "loading": "Loading..."
   },
   "redemption": {
