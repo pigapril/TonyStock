@@ -628,8 +628,8 @@ class PaymentService {
     clearLegacyPricingCache() {
         try {
             const legacyCacheKeys = [
-                'plan_pricing_cache',
-                'plan_pricing_version',
+                'plan_pricing_cache',      // 舊版本的快取
+                'plan_pricing_version',    // 舊版本的版本
                 'subscription_plans_cache',
                 'pricing_data_cache'
             ];
@@ -655,20 +655,63 @@ class PaymentService {
     }
 
     /**
-     * 獲取方案價格資訊 (從 Plans API，無快取)
+     * 獲取方案價格資訊 (帶版本控制的智能快取)
+     * @param {Object} options - 選項
+     * @param {boolean} options.forceRefresh - 強制重新載入，忽略快取
      * @returns {Promise<Object>} 方案價格
      */
-    async getPlanPricingFromAPI() {
+    async getPlanPricingFromAPI(options = {}) {
+        const { forceRefresh = false } = options;
+        const cacheKey = 'plan_pricing_cache_v2';
+        const versionKey = 'plan_pricing_version_v2';
+        
         // 清除可能存在的舊快取
         this.clearLegacyPricingCache();
         try {
-            console.log('🌐 PaymentService: 從 Plans API 獲取定價資料 (無快取)');
+            console.log('🌐 PaymentService: 從 Plans API 獲取定價資料 (智能快取)');
             
-            // 直接從 API 獲取最新資料
+            // 如果不是強制重新載入，檢查版本控制的快取
+            if (!forceRefresh) {
+                const cachedPricing = localStorage.getItem(cacheKey);
+                const cachedVersion = localStorage.getItem(versionKey);
+                
+                if (cachedPricing && cachedVersion) {
+                    try {
+                        // 先檢查伺服器版本
+                        console.log('🔍 PaymentService: 檢查版本是否匹配');
+                        const versionResponse = await this.makeRequest('GET', '/api/plans/pricing');
+                        const serverVersion = versionResponse.data.data.version;
+                        
+                        if (serverVersion && serverVersion.toString() === cachedVersion) {
+                            console.log('✅ PaymentService: 版本匹配，使用快取資料');
+                            console.log('📊 版本資訊:', {
+                                cached: cachedVersion,
+                                server: serverVersion.toString(),
+                                lastModified: new Date(parseInt(cachedVersion)).toLocaleString('zh-TW')
+                            });
+                            return JSON.parse(cachedPricing);
+                        } else {
+                            console.log('🔄 PaymentService: 版本不匹配，重新載入');
+                            console.log('📊 版本比較:', {
+                                cached: cachedVersion,
+                                server: serverVersion?.toString(),
+                                cacheTime: new Date(parseInt(cachedVersion)).toLocaleString('zh-TW'),
+                                serverTime: serverVersion ? new Date(parseInt(serverVersion)).toLocaleString('zh-TW') : 'N/A'
+                            });
+                        }
+                    } catch (versionError) {
+                        console.warn('⚠️ PaymentService: 版本檢查失敗，使用快取資料', versionError);
+                        return JSON.parse(cachedPricing);
+                    }
+                }
+            }
+            
+            // 從 API 獲取最新資料
             const response = await this.makeRequest('GET', '/api/plans/pricing');
             
             if (response.data.success && response.data.data.plans) {
-                const apiPlans = response.data.data.plans;
+                const apiData = response.data.data;
+                const apiPlans = apiData.plans;
                 
                 // 轉換為 PaymentService 期望的格式
                 const formattedPricing = {};
@@ -690,6 +733,20 @@ class PaymentService {
                     };
                 });
                 
+                // 儲存到版本控制的快取
+                try {
+                    localStorage.setItem(cacheKey, JSON.stringify(formattedPricing));
+                    if (apiData.version) {
+                        localStorage.setItem(versionKey, apiData.version.toString());
+                        console.log('💾 PaymentService: 已快取定價資料', {
+                            version: apiData.version,
+                            timestamp: new Date(parseInt(apiData.version)).toLocaleString('zh-TW')
+                        });
+                    }
+                } catch (storageError) {
+                    console.warn('⚠️ PaymentService: 無法儲存快取', storageError);
+                }
+                
                 console.log('✅ PaymentService: API 定價資料獲取成功', formattedPricing);
                 return formattedPricing;
                 
@@ -698,12 +755,73 @@ class PaymentService {
             }
             
         } catch (error) {
-            console.error('❌ PaymentService: 從 API 獲取定價失敗，使用 fallback', error);
+            console.error('❌ PaymentService: 從 API 獲取定價失敗，嘗試使用快取或 fallback', error);
+            
+            // 嘗試使用快取資料
+            try {
+                const cachedPricing = localStorage.getItem(cacheKey);
+                if (cachedPricing) {
+                    console.log('🔄 PaymentService: 使用快取的定價資料 (API 失敗)');
+                    return JSON.parse(cachedPricing);
+                }
+            } catch (cacheError) {
+                console.warn('⚠️ PaymentService: 快取資料也無法使用', cacheError);
+            }
             
             // 使用 fallback 定價
             console.log('🔄 PaymentService: 使用 fallback 定價');
             return this.getPlanPricing();
         }
+    }
+
+    /**
+     * 清除版本控制的定價快取
+     * @returns {void}
+     */
+    clearVersionedPricingCache() {
+        try {
+            localStorage.removeItem('plan_pricing_cache_v2');
+            localStorage.removeItem('plan_pricing_version_v2');
+            console.log('🗑️ PaymentService: 版本控制的定價快取已清除');
+        } catch (error) {
+            console.warn('⚠️ PaymentService: 清除快取時發生錯誤', error);
+        }
+    }
+
+    /**
+     * 獲取快取狀態資訊
+     * @returns {Object} 快取狀態
+     */
+    getCacheStatus() {
+        try {
+            const cachedPricing = localStorage.getItem('plan_pricing_cache_v2');
+            const cachedVersion = localStorage.getItem('plan_pricing_version_v2');
+            
+            return {
+                hasCachedData: !!cachedPricing,
+                cachedVersion: cachedVersion,
+                cacheSize: cachedPricing ? cachedPricing.length : 0,
+                lastCached: cachedVersion ? new Date(parseInt(cachedVersion)).toLocaleString('zh-TW') : null
+            };
+        } catch (error) {
+            console.warn('⚠️ PaymentService: 獲取快取狀態時發生錯誤', error);
+            return {
+                hasCachedData: false,
+                cachedVersion: null,
+                cacheSize: 0,
+                lastCached: null,
+                error: error.message
+            };
+        }
+    }
+
+    /**
+     * 強制重新載入定價資料（忽略快取）
+     * @returns {Promise<Object>} 方案價格
+     */
+    async forceRefreshPricing() {
+        console.log('🔄 PaymentService: 強制重新載入定價資料');
+        return this.getPlanPricingFromAPI({ forceRefresh: true });
     }
 
     /**
