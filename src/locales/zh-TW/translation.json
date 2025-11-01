@@ -1944,7 +1944,77 @@
       "codeManagement": "代碼管理",
       "analytics": "分析數據",
       "userManagement": "用戶管理",
-      "announcementManagement": "公告管理"
+      "announcementManagement": "公告管理",
+      "paymentRetryManagement": "付款重試管理"
+    },
+    "paymentRetry": {
+      "title": "付款重試管理",
+      "description": "監控和管理訂閱付款重試操作",
+      "sections": {
+        "overview": "系統概覽",
+        "stats": "統計數據",
+        "pending": "待處理重試",
+        "job": "任務控制"
+      },
+      "overview": {
+        "title": "系統健康狀態",
+        "healthy": "系統正常",
+        "unhealthy": "系統異常",
+        "service": "服務",
+        "initialized": "已初始化",
+        "lastCheck": "最後檢查",
+        "yes": "是",
+        "no": "否",
+        "loading": "載入健康狀態中...",
+        "viewStats": "查看統計",
+        "checkPending": "檢查待處理重試"
+      },
+      "stats": {
+        "title": "重試統計",
+        "totalRetries": "總重試次數",
+        "successful": "成功",
+        "failed": "失敗",
+        "pending": "待處理",
+        "noData": "無統計數據"
+      },
+      "pending": {
+        "title": "待處理重試",
+        "merchantTradeNo": "商店交易編號",
+        "errorType": "錯誤類型",
+        "retryCount": "重試次數",
+        "retryAt": "重試時間",
+        "actions": "操作",
+        "executeNow": "立即執行",
+        "noData": "無待處理重試"
+      },
+      "job": {
+        "title": "重試任務控制",
+        "status": "任務狀態",
+        "lastRun": "最後執行",
+        "nextRun": "下次執行",
+        "never": "從未",
+        "notScheduled": "未排程",
+        "triggerJob": "觸發重試任務",
+        "refreshStatus": "刷新狀態",
+        "running": "運行中",
+        "stopped": "已停止",
+        "idle": "閒置"
+      },
+      "confirmations": {
+        "executeRetry": "您確定要手動執行 %{merchantTradeNo} 的重試嗎？",
+        "triggerJob": "您確定要手動觸發重試任務嗎？"
+      },
+      "messages": {
+        "retryExecuted": "重試執行成功：%{message}",
+        "jobTriggered": "重試任務觸發成功：%{message}",
+        "success": "成功",
+        "loadHealthError": "載入系統健康狀態失敗",
+        "loadStatsError": "載入統計數據失敗：%{error}",
+        "loadPendingError": "載入待處理重試失敗：%{error}",
+        "loadJobStatusError": "載入任務狀態失敗：%{error}",
+        "executeRetryError": "執行重試失敗：%{error}",
+        "runJobError": "執行任務失敗：%{error}"
+      }
     },
     "userManagement": {
       "title": "用戶升級管理",

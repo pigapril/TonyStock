@@ -16,6 +16,7 @@ import CodeManagementPanel from '../components/Admin/CodeManagement/CodeManageme
 import RedemptionAnalytics from '../components/Admin/Analytics/RedemptionAnalytics';
 import UserUpgradePanel from '../components/Admin/UserManagement/UserUpgradePanel';
 import AnnouncementManager from '../components/Admin/AnnouncementManager/AnnouncementManager';
+import PaymentRetryPanel from '../components/Admin/PaymentRetry/PaymentRetryPanel';
 import './AdminPage.css';
 
 const AdminPage = () => {
@@ -93,6 +94,12 @@ const AdminPage = () => {
             label: t('admin.tabs.announcementManagement'),
             icon: '📢',
             component: AnnouncementManager
+        },
+        {
+            id: 'paymentRetry',
+            label: t('admin.tabs.paymentRetryManagement'),
+            icon: '🔄',
+            component: PaymentRetryPanel
         }
     ];
 

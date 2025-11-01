@@ -1946,7 +1946,77 @@
       "codeManagement": "Code Management",
       "analytics": "Analytics",
       "userManagement": "User Management",
-      "announcementManagement": "Announcement Management"
+      "announcementManagement": "Announcement Management",
+      "paymentRetryManagement": "Payment Retry Management"
+    },
+    "paymentRetry": {
+      "title": "Payment Retry Management",
+      "description": "Monitor and manage subscription payment retry operations",
+      "sections": {
+        "overview": "System Overview",
+        "stats": "Statistics",
+        "pending": "Pending Retries",
+        "job": "Job Control"
+      },
+      "overview": {
+        "title": "System Health Status",
+        "healthy": "System Healthy",
+        "unhealthy": "System Issues",
+        "service": "Service",
+        "initialized": "Initialized",
+        "lastCheck": "Last Check",
+        "yes": "Yes",
+        "no": "No",
+        "loading": "Loading health status...",
+        "viewStats": "View Statistics",
+        "checkPending": "Check Pending Retries"
+      },
+      "stats": {
+        "title": "Retry Statistics",
+        "totalRetries": "Total Retries",
+        "successful": "Successful",
+        "failed": "Failed",
+        "pending": "Pending",
+        "noData": "No statistics available"
+      },
+      "pending": {
+        "title": "Pending Retries",
+        "merchantTradeNo": "Merchant Trade No",
+        "errorType": "Error Type",
+        "retryCount": "Retry Count",
+        "retryAt": "Retry At",
+        "actions": "Actions",
+        "executeNow": "Execute Now",
+        "noData": "No pending retries"
+      },
+      "job": {
+        "title": "Retry Job Control",
+        "status": "Job Status",
+        "lastRun": "Last Run",
+        "nextRun": "Next Run",
+        "never": "Never",
+        "notScheduled": "Not scheduled",
+        "triggerJob": "Trigger Retry Job",
+        "refreshStatus": "Refresh Status",
+        "running": "running",
+        "stopped": "stopped",
+        "idle": "idle"
+      },
+      "confirmations": {
+        "executeRetry": "Are you sure you want to manually execute retry for %{merchantTradeNo}?",
+        "triggerJob": "Are you sure you want to manually trigger the retry job?"
+      },
+      "messages": {
+        "retryExecuted": "Retry executed successfully: %{message}",
+        "jobTriggered": "Retry job triggered successfully: %{message}",
+        "success": "Success",
+        "loadHealthError": "Failed to load system health status",
+        "loadStatsError": "Failed to load statistics: %{error}",
+        "loadPendingError": "Failed to load pending retries: %{error}",
+        "loadJobStatusError": "Failed to load job status: %{error}",
+        "executeRetryError": "Failed to execute retry: %{error}",
+        "runJobError": "Failed to run retry job: %{error}"
+      }
     },
     "userManagement": {
       "title": "User Upgrade Management",
