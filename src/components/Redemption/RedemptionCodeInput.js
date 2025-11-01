@@ -30,7 +30,7 @@ export const RedemptionCodeInput = ({
     disabled = false,
     autoFocus = false
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { formatters, formatError, formatBenefitPreview } = useRedemptionFormatting();
     const { user } = useAuth();
     const { refreshUserPlan } = useSubscription();
@@ -667,7 +667,7 @@ export const RedemptionCodeInput = ({
                                     className="redemption-upgrade-btn"
                                     onClick={() => {
                                         // 導航到升級頁面
-                                        window.location.href = '/subscription';
+                                        window.location.href = `/${i18n.language}/subscription-plans`;
                                     }}
                                 >
                                     {error.data.details.eligiblePlanNames ?

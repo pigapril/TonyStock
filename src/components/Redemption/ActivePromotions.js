@@ -26,7 +26,7 @@ export const ActivePromotions = ({
     onPromotionExpired,
     refreshInterval = 60000 // 1 minute
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { formatActivePromotion, formatters } = useRedemptionFormatting();
     const { user } = useAuth();
     const { userPlan, refreshUserPlan } = useSubscription();
@@ -225,7 +225,7 @@ export const ActivePromotions = ({
 
         // Navigate to subscription page or show payment modal
         // This would be implemented based on the existing subscription flow
-        window.location.href = '/subscription';
+        window.location.href = `/${i18n.language}/subscription-plans`;
     };
 
     /**

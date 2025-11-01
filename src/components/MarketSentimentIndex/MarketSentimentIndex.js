@@ -497,8 +497,8 @@ const MarketSentimentIndex = () => {
     Analytics.marketSentiment.upgradeClicked({
       source: 'marketSentimentTutorial'
     });
-    window.location.href = '/subscription';
-  }, [handleCloseTutorial]);
+    window.location.href = `/${i18n.language}/subscription-plans`;
+  }, [handleCloseTutorial, i18n.language]);
 
   // 新的升級對話框處理函數
   const handleUpgradeDialogClose = useCallback(() => {
