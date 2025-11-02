@@ -7,6 +7,8 @@ import { useSubscription } from '../../Subscription/SubscriptionContext';
 
 export const AdBanner = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isAdLoaded, setIsAdLoaded] = useState(false);
+  const [showBanner, setShowBanner] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 720 });
   const isTablet = useMediaQuery({ minWidth: 721, maxWidth: 969 });
   const collapseTimer = useRef(null);
@@ -14,6 +16,8 @@ export const AdBanner = () => {
   const bannerRef = useRef(null);
   const adContainerRef = useRef(null);
   const isInitialized = useRef(false);
+  const adObserver = useRef(null);
+  const fallbackTimer = useRef(null);
   const { userPlan } = useSubscription();
 
   // 檢查是否為 Pro 用戶
@@ -21,18 +25,54 @@ export const AdBanner = () => {
 
   const adKey = `${location.pathname}-${isMobile}-${isTablet}-${isCollapsed}`;
 
-  // AdSense 初始化邏輯
+  // 檢測廣告是否成功載入
+  const checkAdLoaded = () => {
+    const adElement = adContainerRef.current?.querySelector('.adsbygoogle');
+    if (adElement) {
+      const adStatus = adElement.getAttribute('data-adsbygoogle-status');
+      const hasContent = adElement.children.length > 0;
+      const hasIframe = adElement.querySelector('iframe');
+      
+      if (adStatus === 'done' && (hasContent || hasIframe)) {
+        console.log('AdBanner: Ad successfully loaded');
+        setIsAdLoaded(true);
+        setShowBanner(true);
+        
+        // 添加 loaded 類別以觸發淡入動畫
+        if (bannerRef.current) {
+          bannerRef.current.classList.add('loaded');
+        }
+        return true;
+      }
+    }
+    return false;
+  };
+
+  // AdSense 初始化和載入檢測邏輯
   useEffect(() => {
     // 如果是 Pro 用戶，不執行廣告相關邏輯
-    if (isProUser || isCollapsed || !adContainerRef.current) {
+    if (isProUser || isCollapsed) {
+      return;
+    }
+
+    // 重置狀態
+    setIsAdLoaded(false);
+    setShowBanner(false);
+    if (bannerRef.current) {
+      bannerRef.current.classList.remove('loaded');
+    }
+
+    if (!adContainerRef.current) {
       return;
     }
 
     // 檢查是否已經初始化過
     const existingAd = adContainerRef.current.querySelector('.adsbygoogle');
     if (existingAd && existingAd.getAttribute('data-adsbygoogle-status')) {
-      console.log('AdBanner: Ad already initialized, skipping');
-      return;
+      console.log('AdBanner: Ad already initialized, checking if loaded');
+      if (checkAdLoaded()) {
+        return;
+      }
     }
 
     // 避免重複初始化同一個廣告位
@@ -41,21 +81,62 @@ export const AdBanner = () => {
       return;
     }
 
-    // 使用短暫延遲讓 React 完成 DOM 更新
-    const timer = setTimeout(() => {
+    // 設置 MutationObserver 監聽廣告載入
+    if (adContainerRef.current) {
+      adObserver.current = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'childList' || mutation.type === 'attributes') {
+            if (checkAdLoaded()) {
+              adObserver.current?.disconnect();
+              if (fallbackTimer.current) {
+                clearTimeout(fallbackTimer.current);
+                fallbackTimer.current = null;
+              }
+            }
+          }
+        });
+      });
+
+      adObserver.current.observe(adContainerRef.current, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['data-adsbygoogle-status']
+      });
+    }
+
+    // 設置 fallback 機制 - 如果 5 秒後廣告還沒載入就隱藏 banner
+    fallbackTimer.current = setTimeout(() => {
+      if (!isAdLoaded) {
+        console.warn('AdBanner: Ad failed to load within timeout, hiding banner');
+        setShowBanner(false);
+        adObserver.current?.disconnect();
+      }
+    }, 5000);
+
+    // 使用短暫延遲讓 React 完成 DOM 更新後初始化廣告
+    const initTimer = setTimeout(() => {
       try {
         console.log(`AdBanner: Initializing ad for key: ${adKey}`);
         (window.adsbygoogle = window.adsbygoogle || []).push({});
         isInitialized.current = true;
       } catch (error) {
         console.error("AdSense initialization error:", error);
-        // 重置初始化狀態，允許重試
+        setShowBanner(false);
         isInitialized.current = false;
       }
     }, 100);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(initTimer);
+      if (fallbackTimer.current) {
+        clearTimeout(fallbackTimer.current);
+        fallbackTimer.current = null;
+      }
+      if (adObserver.current) {
+        adObserver.current.disconnect();
+        adObserver.current = null;
+      }
     };
   }, [adKey, isProUser, isCollapsed]);
 
@@ -74,8 +155,8 @@ export const AdBanner = () => {
     };
   }, []);
 
-  // 如果是 Pro 用戶，不顯示廣告
-  if (isProUser) {
+  // 如果是 Pro 用戶或廣告未載入成功，不顯示廣告
+  if (isProUser || !showBanner) {
     return null;
   }
 
@@ -106,7 +187,7 @@ export const AdBanner = () => {
 
 
   return (
-    <div className="ad-banner-container">
+    <div className={`ad-banner-container ${isAdLoaded ? 'loaded' : ''}`}>
       <div
         className={`ad-banner ${isCollapsed ? 'ad-banner--collapsed' : ''}`}
         ref={bannerRef}
