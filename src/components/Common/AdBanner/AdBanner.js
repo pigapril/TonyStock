@@ -62,6 +62,7 @@ export const AdBanner = () => {
   // 組件卸載或路由變化時重置初始化狀態
   useEffect(() => {
     isInitialized.current = false;
+    setIsCollapsed(false); 
   }, [location.pathname]);
 
   // 清理函數
@@ -81,6 +82,7 @@ export const AdBanner = () => {
 
   const handleCollapse = () => {
     setIsCollapsed(true);
+    isInitialized.current = false;
     if (bannerRef.current) {
       bannerRef.current.classList.add('ad-banner--collapsed');
       collapseTimer.current = setTimeout(() => {
