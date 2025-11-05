@@ -227,7 +227,7 @@ export function AuthProvider({ children }) {
         }
     }, [checkBrowserCompatibility, handleGoogleCredential]);
 
-    // 檢查認證狀態（減少請求頻率避免 IP 封鎖）
+    // 檢查認證狀態（已移除不必要的延遲，因為 /api/auth/status 已被後端豁免）
     const checkAuthStatus = useCallback(async () => {
         systemLogger.debug('CheckAuthStatus initiated:', {
             currentCookies: document.cookie,
@@ -236,40 +236,20 @@ export function AuthProvider({ children }) {
         });
 
         try {
-            // 如果已經應用了預載入狀態，減少延遲
-            if (preloadApplied) {
-                systemLogger.info('🚀 AuthContext: Using fast check (preload applied)');
+            // 移除人為延遲，因為認證端點已被後端 rate limiting 豁免
+            systemLogger.info('🚀 AuthContext: Performing auth check without artificial delay');
 
-                // 快速檢查模式：減少延遲和初始化時間
-                try {
-                    await Promise.race([
-                        authInitFix.initialize(),
-                        new Promise(resolve => setTimeout(resolve, 500)) // 減少到 500ms
-                    ]);
-                } catch (initError) {
-                    systemLogger.warn('AuthInitFix initialization timeout (fast mode):', initError);
-                }
-
-                // 減少延遲（因為已經有預載入狀態作為基礎）
-                const delay = Math.random() * 300 + 100; // 100-400ms 隨機延遲
-                await new Promise(resolve => setTimeout(resolve, delay));
-            } else {
-                // 正常模式：完整的初始化和延遲
-                systemLogger.info('🔄 AuthContext: Using normal check (no preload)');
-
-                try {
-                    await Promise.race([
-                        authInitFix.initialize(),
-                        new Promise(resolve => setTimeout(resolve, 2000)) // 2 秒
-                    ]);
-                } catch (initError) {
-                    systemLogger.warn('AuthInitFix initialization timeout or failed, proceeding anyway:', initError);
-                }
-
-                // 增加延遲避免觸發 IP 封鎖
-                const delay = Math.random() * 1000 + 500; // 500-1500ms 隨機延遲
-                await new Promise(resolve => setTimeout(resolve, delay));
+            // 保留 authInitFix 初始化，但縮短超時時間
+            try {
+                await Promise.race([
+                    authInitFix.initialize(),
+                    new Promise(resolve => setTimeout(resolve, 1000)) // 縮短到 1 秒
+                ]);
+            } catch (initError) {
+                systemLogger.warn('AuthInitFix initialization timeout, proceeding anyway:', initError);
             }
+
+            // 直接進行認證檢查，無延遲
 
             const { user: userData } = await authService.checkStatus();
             systemLogger.debug('CheckAuthStatus response:', {
