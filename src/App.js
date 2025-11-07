@@ -473,11 +473,7 @@ function AppContent() {
               {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
               <Route
                 path="priceanalysis"
-                element={
-                  <ProtectedRoute>
-                    <PriceAnalysis />
-                  </ProtectedRoute>
-                }
+                element={<PriceAnalysis />}
               />
 
               <Route
