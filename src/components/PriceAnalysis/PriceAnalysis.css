@@ -460,17 +460,16 @@
   }
 }
 
-/* 確保按鈕置中 */
-.price-analysis-view .stock-analysis-card .analysis-button {
-  margin-top: 5px;
-  margin-bottom: 15px;
-  align-self: center;
-  padding: 10px 24px;
-  font-size: 16px;
+/* 分析按鈕樣式 - 調整為在按鈕組中使用 */
+/* 使用更具體的選擇器來覆蓋 App.css 中的 .btn-primary 樣式 */
+.price-analysis-view .stock-analysis-card .button-group .analysis-button.btn-primary {
+  flex: 1;
+  padding: 10px 16px !important;
+  font-size: 14px !important;
   font-weight: 500;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 8px !important;
   cursor: pointer;
   background: linear-gradient(135deg,
       #FF00FF 0%,
@@ -483,31 +482,42 @@
       /* 天藍色 */
       #1E90FF 100%
       /* 道奇藍 */
-    );
+    ) !important;
   background-size: 200% 200%;
   transition: all 0.3s ease;
   box-shadow: 0 2px 10px rgba(0, 0, 255, 0.2);
+  white-space: nowrap;
+  margin: 0 !important;
+  display: inline-block;
+  text-align: center;
 }
 
-.price-analysis-view .stock-analysis-card .analysis-button:hover {
+.price-analysis-view .stock-analysis-card .button-group .analysis-button.btn-primary:hover {
+  background: linear-gradient(135deg,
+      #FF00FF 0%,
+      #4B0082 25%,
+      #0000FF 50%,
+      #00BFFF 75%,
+      #1E90FF 100%
+    ) !important;
   background-position: right center;
   transform: translateY(-1px);
   box-shadow: 0 4px 15px rgba(0, 0, 255, 0.3);
 }
 
-.price-analysis-view .stock-analysis-card .analysis-button:active {
+.price-analysis-view .stock-analysis-card .button-group .analysis-button.btn-primary:active {
   transform: translateY(1px);
   box-shadow: 0 2px 8px rgba(0, 0, 255, 0.2);
 }
 
 /* 禁用狀態 */
-.price-analysis-view .stock-analysis-card .analysis-button:disabled {
+.price-analysis-view .stock-analysis-card .button-group .analysis-button.btn-primary:disabled {
   background: linear-gradient(135deg,
       rgba(255, 0, 255, 0.5) 0%,
       rgba(75, 0, 130, 0.5) 25%,
       rgba(0, 0, 255, 0.5) 50%,
       rgba(0, 191, 255, 0.5) 75%,
-      rgba(30, 144, 255, 0.5) 100%);
+      rgba(30, 144, 255, 0.5) 100%) !important;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -529,47 +539,43 @@
   /* 隱藏三角形箭頭 */
 }
 
-/* 查詢模式切換按鈕樣式 */
-.price-analysis-view .stock-analysis-card .query-mode-button {
-  margin-top: 15px;
-  /* 增加上邊距，與 input-group 間距一致 */
-  margin-bottom: 20px;
-  /* 與其他 input-group 間距一致 */
+/* 按鈕組容器 - 讓兩個按鈕並排 */
+.price-analysis-view .stock-analysis-card .button-group {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+  margin-top: 5px;
+  margin-bottom: 15px;
   align-self: center;
-  padding: 5px 10px;
-  font-size: 12px;
+}
+
+/* 查詢模式切換按鈕樣式 - 調整為與分析按鈕相同大小 */
+.price-analysis-view .stock-analysis-card .query-mode-button {
+  flex: 1;
+  padding: 10px 16px;
+  font-size: 14px;
   font-weight: 500;
   color: #ffffff;
-  /* 白色文字 */
   border: none;
-  /* 移除邊框 */
   border-radius: 8px;
-  /* 更圓潤的邊角 */
   cursor: pointer;
   background-color: #586e86;
-  /* 藍色背景，更現代的顏色 */
-  transition: background-color 0.3s ease;
-  /* 更平滑的過渡效果 */
+  transition: all 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-  /* 增加輕微陰影 */
-  margin-left: auto;
-  margin-right: auto;
+  white-space: nowrap;
 }
 
 .price-analysis-view .stock-analysis-card .query-mode-button:hover {
   background-color: #2a4c6f;
-  /* Hover 時顏色加深 */
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
-  /* Hover 時陰影更明顯 */
+  transform: translateY(-1px);
 }
 
 .price-analysis-view .stock-analysis-card .query-mode-button:active {
   background-color: #004085;
-  /* Active 時顏色更深 */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-  /* Active 時陰影縮小 */
   transform: translateY(1px);
-  /* 輕微向下位移 */
 }
 
 /* 進階查詢模式 - 輸入欄位容器樣式 (垂直排列) */
@@ -583,7 +589,7 @@
 
 /* 所有查詢模式 - 輸入欄位容器樣式 (通用樣式) */
 .price-analysis-view .stock-analysis-card .query-mode-inputs {
-  margin-bottom: 0;
+  margin-bottom: 10;
   /* 移除額外間距，讓內部 input-group 控制間距 */
 }
 
@@ -894,6 +900,21 @@
   /* 滑鼠懸停時略深 */
 }
 
+@media (max-width: 768px) {
+  /* 按鈕組在小螢幕上保持並排，但調整間距 */
+  .price-analysis-view .stock-analysis-card .button-group {
+    gap: 8px;
+    max-width: 100%;
+  }
+
+  /* 調整按鈕文字大小以適應小螢幕 */
+  .price-analysis-view .stock-analysis-card .button-group .query-mode-button,
+  .price-analysis-view .stock-analysis-card .button-group .analysis-button.btn-primary {
+    font-size: 13px !important;
+    padding: 10px 12px !important;
+  }
+}
+
 @media (max-width: 430px) {
   .price-analysis-view .stock-analysis-card .input-group {
     align-items: center;
@@ -918,6 +939,17 @@
   .price-analysis-view .stock-analysis-card .react-datepicker-wrapper {
     width: 100% !important;
     max-width: 100% !important;
+  }
+
+  /* 在極小螢幕上進一步調整按鈕 */
+  .price-analysis-view .stock-analysis-card .button-group {
+    gap: 6px;
+  }
+
+  .price-analysis-view .stock-analysis-card .button-group .query-mode-button,
+  .price-analysis-view .stock-analysis-card .button-group .analysis-button.btn-primary {
+    font-size: 12px !important;
+    padding: 9px 10px !important;
   }
 }
 

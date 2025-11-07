@@ -901,8 +901,8 @@ export function PriceAnalysis() {
                   </div>
                 )}
 
-                {/* 進階/簡易 查詢切換按鈕 */}
-                <div className="input-group">
+                {/* 按鈕組：切換模式按鈕和分析按鈕並排 */}
+                <div className="button-group">
                   <button
                     type="button"
                     className="btn-secondary query-mode-button"
@@ -911,21 +911,21 @@ export function PriceAnalysis() {
                     {/* 使用 t() 翻譯按鈕文字 */}
                     {isAdvancedQuery ? t('priceAnalysis.form.switchToSimple') : t('priceAnalysis.form.switchToAdvanced')}
                   </button>
-                </div>
 
-                <button
-                  className={`btn-primary analysis-button ${loading ? 'btn-loading' : ''}`}
-                  type="submit"
-                  disabled={loading || (isTurnstileEnabled && !turnstileToken)}
-                >
-                  {/* 使用 t() 翻譯按鈕文字 */}
-                  {loading
-                    ? (isPending ? t('priceAnalysis.form.buttonProcessing') : t('priceAnalysis.form.buttonAnalyzing'))
-                    : (isTurnstileEnabled && !turnstileToken)
-                      ? t('priceAnalysis.form.buttonCompleteVerification')
-                      : t('priceAnalysis.form.buttonStartAnalysis')
-                  }
-                </button>
+                  <button
+                    className={`btn-primary analysis-button ${loading ? 'btn-loading' : ''}`}
+                    type="submit"
+                    disabled={loading || (isTurnstileEnabled && !turnstileToken)}
+                  >
+                    {/* 使用 t() 翻譯按鈕文字 */}
+                    {loading
+                      ? (isPending ? t('priceAnalysis.form.buttonProcessing') : t('priceAnalysis.form.buttonAnalyzing'))
+                      : (isTurnstileEnabled && !turnstileToken)
+                        ? t('priceAnalysis.form.buttonCompleteVerification')
+                        : t('priceAnalysis.form.buttonStartAnalysis')
+                    }
+                  </button>
+                </div>
                 {isTurnstileEnabled && turnstileVisible && (
                   <div className="turnstile-container">
                     <Turnstile
