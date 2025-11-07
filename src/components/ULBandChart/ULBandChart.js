@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { formatPrice } from '../../utils/priceUtils';
 import { useTranslation } from 'react-i18next';
 
 const ULBandChart = ({ data }) => {
     const { t } = useTranslation();
-    if (!data) return null;
+    const chartRef = useRef(null);
 
     // 計算合適的時間單位
     const calculateTimeUnit = () => {
@@ -146,8 +146,45 @@ const ULBandChart = ({ data }) => {
         }
     };
 
+    // 自動顯示最新數據點的 tooltip
+    useEffect(() => {
+        if (data && chartRef.current) {
+            // 使用 setTimeout 確保圖表已完全渲染
+            const timer = setTimeout(() => {
+                const chart = chartRef.current;
+                // 檢查圖表是否存在、已掛載且有數據
+                if (chart && chart.canvas && chart.canvas.parentNode && chart.data && chart.data.labels && chart.data.labels.length > 0) {
+                    try {
+                        const lastIndex = chart.data.labels.length - 1;
+                        
+                        // 設置活動元素為所有數據集的最後一個數據點
+                        const activeElements = chart.data.datasets.map((dataset, datasetIndex) => ({
+                            datasetIndex,
+                            index: lastIndex
+                        }));
+                        
+                        chart.setActiveElements(activeElements);
+                        
+                        // 強制顯示 tooltip
+                        chart.tooltip.setActiveElements(activeElements, { x: 0, y: 0 });
+                        
+                        // 更新圖表以顯示 tooltip
+                        chart.update('none');
+                    } catch (error) {
+                        console.warn('Failed to show tooltip:', error);
+                    }
+                }
+            }, 300);
+            
+            return () => clearTimeout(timer);
+        }
+    }, [data]);
+
+    // 提前返回，但在所有 Hooks 之後
+    if (!data) return null;
+
     return (
-        <Line data={chartData} options={options} />
+        <Line ref={chartRef} data={chartData} options={options} />
     );
 };
 

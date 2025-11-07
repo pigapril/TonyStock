@@ -106,6 +106,7 @@ export function PriceAnalysis() {
   const [isAdCooldownActive, setIsAdCooldownActive] = useState(false); // 新增：追蹤廣告冷卻狀態
   const cooldownTimeoutRef = useRef(null); // 新增：保存冷卻計時器 ID
   const [isPending, startTransition] = useTransition(); // 添加 useTransition
+  const chartRef = useRef(null); // 新增：圖表 ref 用於程式化控制 tooltip
 
 
   // 新增：熱門搜尋狀態
@@ -114,6 +115,41 @@ export function PriceAnalysis() {
 
   // 新增：快速選擇 Tab 狀態
   const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('hotSearches'); // 'hotSearches' 或 'freeStocks'
+
+  // 新增：自動顯示最新數據點的 tooltip
+  useEffect(() => {
+    // 只在標準差圖表顯示且有數據時執行
+    if (!loading && activeChart === 'sd' && chartData && chartRef.current) {
+      // 使用 setTimeout 確保圖表已完全渲染
+      const timer = setTimeout(() => {
+        const chart = chartRef.current;
+        // 檢查圖表是否存在、已掛載且有數據
+        if (chart && chart.canvas && chart.canvas.parentNode && chart.data && chart.data.labels && chart.data.labels.length > 0) {
+          try {
+            const lastIndex = chart.data.labels.length - 1;
+            
+            // 設置活動元素為所有數據集的最後一個數據點
+            const activeElements = chart.data.datasets.map((dataset, datasetIndex) => ({
+              datasetIndex,
+              index: lastIndex
+            }));
+            
+            chart.setActiveElements(activeElements);
+            
+            // 強制顯示 tooltip
+            chart.tooltip.setActiveElements(activeElements, { x: 0, y: 0 });
+            
+            // 更新圖表以顯示 tooltip
+            chart.update('none'); // 使用 'none' 模式避免動畫
+          } catch (error) {
+            console.warn('Failed to show tooltip:', error);
+          }
+        }
+      }, 300); // 延遲 300ms 確保圖表渲染完成
+      
+      return () => clearTimeout(timer);
+    }
+  }, [loading, activeChart, chartData]); // 依賴於 loading、activeChart 和 chartData
 
   // --- Debounced State Setters ---
   // Debounce setStockCode with a 300ms delay
@@ -1071,6 +1107,7 @@ export function PriceAnalysis() {
                   {/* 圖表 (僅在非 loading 狀態下顯示) */}
                   {!loading && activeChart === 'sd' && chartData && (
                     <Line
+                      ref={chartRef}
                       data={chartData}
                       options={lineChartOptions} // <--- 使用 useMemo 優化後的 options
                     />
