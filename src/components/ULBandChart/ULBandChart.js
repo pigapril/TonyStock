@@ -1,11 +1,10 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { formatPrice } from '../../utils/priceUtils';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from 'react-responsive';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { Chart as ChartJS } from 'chart.js';
-import { createLongPressPlugin } from '../../utils/chartLongPressPlugin';
 
 // 註冊 zoom 插件
 ChartJS.register(zoomPlugin);
@@ -228,29 +227,6 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
                     enabled: true,
                     mode: 'x', // 只在 x 軸平移
                     threshold: 10,
-                    // 在長按狀態下禁用平移
-                    onPanStart: ({ chart, event }) => {
-                        if (isMobile) {
-                            // 檢查是否處於長按狀態
-                            const state = chart.$longPressState;
-                            console.log('[Pan] onPanStart - isLongPress:', state?.isLongPress);
-                            if (state && state.isLongPress) {
-                                console.log('[Pan] Blocking pan due to long press');
-                                return false; // 禁用平移
-                            }
-                        }
-                        return true; // 允許平移
-                    },
-                    onPan: ({ chart }) => {
-                        if (isMobile) {
-                            const state = chart.$longPressState;
-                            if (state && state.isLongPress) {
-                                console.log('[Pan] Blocking pan during long press');
-                                return false;
-                            }
-                        }
-                        return true;
-                    },
                 },
                 limits: {
                     x: {
@@ -379,6 +355,126 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
             return () => clearTimeout(timer);
         }
     }, [data]);
+
+    // 新增：手機版長按顯示 tooltip 的原生事件處理
+    useEffect(() => {
+        if (!isMobile || !chartRef.current) return;
+
+        const chart = chartRef.current;
+        const canvas = chart.canvas;
+        if (!canvas) return;
+
+        let longPressTimer = null;
+        let isLongPress = false;
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        const handleTouchStart = (e) => {
+            if (e.touches.length !== 1) return;
+            
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+            isLongPress = false;
+
+            // 清除任何現有的 tooltip
+            chart.setActiveElements([]);
+            chart.tooltip.setActiveElements([]);
+            chart.update('none');
+
+            // 設置長按計時器
+            longPressTimer = setTimeout(() => {
+                isLongPress = true;
+                console.log('[Native ULBand] Long press activated');
+                
+                // 顯示 tooltip
+                const rect = canvas.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+                
+                const elements = chart.getElementsAtEventForMode(
+                    { x, y, native: e },
+                    'index',
+                    { intersect: false },
+                    false
+                );
+                
+                if (elements.length > 0) {
+                    chart.setActiveElements(elements);
+                    chart.tooltip.setActiveElements(elements, { x, y });
+                    chart.update('none');
+                }
+            }, 500);
+        };
+
+        const handleTouchMove = (e) => {
+            if (e.touches.length !== 1) return;
+
+            const touch = e.touches[0];
+            const moveX = Math.abs(touch.clientX - touchStartX);
+            const moveY = Math.abs(touch.clientY - touchStartY);
+
+            // 如果是長按狀態
+            if (isLongPress) {
+                console.log('[Native ULBand] Long press move - updating tooltip');
+                e.preventDefault(); // 阻止滾動和平移
+                e.stopPropagation();
+
+                const rect = canvas.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+                
+                const elements = chart.getElementsAtEventForMode(
+                    { x, y, native: e },
+                    'index',
+                    { intersect: false },
+                    false
+                );
+                
+                if (elements.length > 0) {
+                    chart.setActiveElements(elements);
+                    chart.tooltip.setActiveElements(elements, { x, y });
+                    chart.update('none');
+                }
+            } else if (moveX > 10 || moveY > 10) {
+                // 移動超過閾值，取消長按
+                if (longPressTimer) {
+                    clearTimeout(longPressTimer);
+                    longPressTimer = null;
+                }
+            }
+        };
+
+        const handleTouchEnd = () => {
+            if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                longPressTimer = null;
+            }
+
+            if (isLongPress) {
+                console.log('[Native ULBand] Long press ended - hiding tooltip');
+                chart.setActiveElements([]);
+                chart.tooltip.setActiveElements([]);
+                chart.update('none');
+            }
+
+            isLongPress = false;
+        };
+
+        // 添加事件監聽器，使用 capture 階段以優先處理
+        canvas.addEventListener('touchstart', handleTouchStart, { passive: false, capture: true });
+        canvas.addEventListener('touchmove', handleTouchMove, { passive: false, capture: true });
+        canvas.addEventListener('touchend', handleTouchEnd, { passive: false, capture: true });
+        canvas.addEventListener('touchcancel', handleTouchEnd, { passive: false, capture: true });
+
+        return () => {
+            if (longPressTimer) clearTimeout(longPressTimer);
+            canvas.removeEventListener('touchstart', handleTouchStart, { capture: true });
+            canvas.removeEventListener('touchmove', handleTouchMove, { capture: true });
+            canvas.removeEventListener('touchend', handleTouchEnd, { capture: true });
+            canvas.removeEventListener('touchcancel', handleTouchEnd, { capture: true });
+        };
+    }, [isMobile, data]);
 
     // 提前返回，但在所有 Hooks 之後
     if (!data) return null;

@@ -21,7 +21,6 @@ import '../Common/global-styles.css';
 import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
 import zoomPlugin from 'chartjs-plugin-zoom'; // 新增：引入 zoom 插件
 import { Chart as ChartJS } from 'chart.js';
-import { createLongPressPlugin } from '../../utils/chartLongPressPlugin'; // 新增：引入長按插件
 
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
@@ -167,6 +166,126 @@ export function PriceAnalysis() {
       return () => clearTimeout(timer);
     }
   }, [loading, activeChart, chartData]); // 依賴於 loading、activeChart 和 chartData
+
+  // 新增：手機版長按顯示 tooltip 的原生事件處理
+  useEffect(() => {
+    if (!isMobile || !chartRef.current) return;
+
+    const chart = chartRef.current;
+    const canvas = chart.canvas;
+    if (!canvas) return;
+
+    let longPressTimer = null;
+    let isLongPress = false;
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const handleTouchStart = (e) => {
+      if (e.touches.length !== 1) return;
+      
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      isLongPress = false;
+
+      // 清除任何現有的 tooltip
+      chart.setActiveElements([]);
+      chart.tooltip.setActiveElements([]);
+      chart.update('none');
+
+      // 設置長按計時器
+      longPressTimer = setTimeout(() => {
+        isLongPress = true;
+        console.log('[Native] Long press activated');
+        
+        // 顯示 tooltip
+        const rect = canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        
+        const elements = chart.getElementsAtEventForMode(
+          { x, y, native: e },
+          'index',
+          { intersect: false },
+          false
+        );
+        
+        if (elements.length > 0) {
+          chart.setActiveElements(elements);
+          chart.tooltip.setActiveElements(elements, { x, y });
+          chart.update('none');
+        }
+      }, 500);
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length !== 1) return;
+
+      const touch = e.touches[0];
+      const moveX = Math.abs(touch.clientX - touchStartX);
+      const moveY = Math.abs(touch.clientY - touchStartY);
+
+      // 如果是長按狀態
+      if (isLongPress) {
+        console.log('[Native] Long press move - updating tooltip');
+        e.preventDefault(); // 阻止滾動和平移
+        e.stopPropagation();
+
+        const rect = canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        
+        const elements = chart.getElementsAtEventForMode(
+          { x, y, native: e },
+          'index',
+          { intersect: false },
+          false
+        );
+        
+        if (elements.length > 0) {
+          chart.setActiveElements(elements);
+          chart.tooltip.setActiveElements(elements, { x, y });
+          chart.update('none');
+        }
+      } else if (moveX > 10 || moveY > 10) {
+        // 移動超過閾值，取消長按
+        if (longPressTimer) {
+          clearTimeout(longPressTimer);
+          longPressTimer = null;
+        }
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+
+      if (isLongPress) {
+        console.log('[Native] Long press ended - hiding tooltip');
+        chart.setActiveElements([]);
+        chart.tooltip.setActiveElements([]);
+        chart.update('none');
+      }
+
+      isLongPress = false;
+    };
+
+    // 添加事件監聽器，使用 capture 階段以優先處理
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false, capture: true });
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false, capture: true });
+    canvas.addEventListener('touchend', handleTouchEnd, { passive: false, capture: true });
+    canvas.addEventListener('touchcancel', handleTouchEnd, { passive: false, capture: true });
+
+    return () => {
+      if (longPressTimer) clearTimeout(longPressTimer);
+      canvas.removeEventListener('touchstart', handleTouchStart, { capture: true });
+      canvas.removeEventListener('touchmove', handleTouchMove, { capture: true });
+      canvas.removeEventListener('touchend', handleTouchEnd, { capture: true });
+      canvas.removeEventListener('touchcancel', handleTouchEnd, { capture: true });
+    };
+  }, [isMobile, chartRef, activeChart]);
 
   // --- Debounced State Setters ---
   // Debounce setStockCode with a 300ms delay
@@ -780,17 +899,6 @@ export function PriceAnalysis() {
       xAxisMax = new Date(lastDate.getTime() + timeRange * spaceRatio);
     }
 
-    // 註冊長按插件（手機版）
-    const longPressPlugin = createLongPressPlugin(isMobile);
-    if (longPressPlugin) {
-      if (!ChartJS.registry.plugins.get('longPressTooltip')) {
-        console.log('[PriceAnalysis] Registering long press plugin');
-        ChartJS.register(longPressPlugin);
-      }
-    } else {
-      console.log('[PriceAnalysis] Long press plugin not needed (desktop)');
-    }
-
     // 基本配置
     const options = {
       responsive: true,
@@ -971,29 +1079,6 @@ export function PriceAnalysis() {
             enabled: true,
             mode: 'x', // 只在 x 軸平移
             threshold: 10,
-            // 在長按狀態下禁用平移
-            onPanStart: ({ chart, event }) => {
-              if (isMobile) {
-                // 檢查是否處於長按狀態
-                const state = chart.$longPressState;
-                console.log('[Pan] onPanStart - isLongPress:', state?.isLongPress);
-                if (state && state.isLongPress) {
-                  console.log('[Pan] Blocking pan due to long press');
-                  return false; // 禁用平移
-                }
-              }
-              return true; // 允許平移
-            },
-            onPan: ({ chart }) => {
-              if (isMobile) {
-                const state = chart.$longPressState;
-                if (state && state.isLongPress) {
-                  console.log('[Pan] Blocking pan during long press');
-                  return false;
-                }
-              }
-              return true;
-            },
           },
           limits: {
             x: {
