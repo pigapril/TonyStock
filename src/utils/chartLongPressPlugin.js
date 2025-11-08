@@ -7,34 +7,36 @@
  * - 單指快速滑動平移圖表
  */
 
+// 全局狀態（因為插件可能被多個圖表實例共享）
+const pluginState = new WeakMap();
+
 export const createLongPressPlugin = (isMobile) => {
   if (!isMobile) {
     return null; // 桌面版不需要此插件
   }
 
-  let longPressTimer = null;
-  let isLongPress = false;
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let hasMoved = false;
-  let initialTooltipShown = false; // 追蹤初始 tooltip 是否已顯示
-
   return {
     id: 'longPressTooltip',
     
     afterInit(chart) {
-      // 允許初始的自動 tooltip 顯示
-      initialTooltipShown = false;
+      // 為每個圖表實例初始化狀態
+      const state = {
+        longPressTimer: null,
+        isLongPress: false,
+        touchStartX: 0,
+        touchStartY: 0,
+        hasMoved: false,
+      };
+      pluginState.set(chart, state);
+      // 也將狀態暴露到圖表實例上，方便 zoom 插件訪問
+      chart.$longPressState = state;
     },
     
     beforeEvent(chart, args) {
       const event = args.event;
+      const state = pluginState.get(chart);
       
-      // 如果是初始自動顯示的 tooltip，不要干擾
-      if (!initialTooltipShown && event.type === 'mousemove') {
-        initialTooltipShown = true;
-        return;
-      }
+      if (!state) return;
       
       if (event.type === 'touchstart') {
         const touch = event.native?.touches?.[0];
@@ -43,14 +45,19 @@ export const createLongPressPlugin = (isMobile) => {
           chart.setActiveElements([]);
           chart.tooltip.setActiveElements([]);
           
-          isLongPress = false;
-          hasMoved = false;
-          touchStartX = touch.clientX;
-          touchStartY = touch.clientY;
+          state.isLongPress = false;
+          state.hasMoved = false;
+          state.touchStartX = touch.clientX;
+          state.touchStartY = touch.clientY;
+          
+          // 清除舊的計時器
+          if (state.longPressTimer) {
+            clearTimeout(state.longPressTimer);
+          }
           
           // 設置長按計時器（500ms）
-          longPressTimer = setTimeout(() => {
-            isLongPress = true;
+          state.longPressTimer = setTimeout(() => {
+            state.isLongPress = true;
             
             // 獲取觸控點位置並顯示 tooltip
             const rect = chart.canvas.getBoundingClientRect();
@@ -76,15 +83,15 @@ export const createLongPressPlugin = (isMobile) => {
         const touch = event.native?.touches?.[0];
         if (touch && event.native.touches.length === 1) {
           // 檢查是否移動了足夠的距離（超過 10px 視為移動）
-          const moveX = Math.abs(touch.clientX - touchStartX);
-          const moveY = Math.abs(touch.clientY - touchStartY);
+          const moveX = Math.abs(touch.clientX - state.touchStartX);
+          const moveY = Math.abs(touch.clientY - state.touchStartY);
           
           if (moveX > 10 || moveY > 10) {
-            hasMoved = true;
+            state.hasMoved = true;
           }
           
-          // 如果是長按狀態，更新 tooltip 位置
-          if (isLongPress) {
+          // 如果是長按狀態，更新 tooltip 位置並阻止平移
+          if (state.isLongPress) {
             const rect = chart.canvas.getBoundingClientRect();
             const x = touch.clientX - rect.left;
             const y = touch.clientY - rect.top;
@@ -102,35 +109,46 @@ export const createLongPressPlugin = (isMobile) => {
               chart.update('none');
             }
             
-            // 阻止平移
+            // 阻止事件傳播，防止觸發平移
+            event.native.preventDefault();
+            event.native.stopPropagation();
             args.changed = false;
             return false;
-          } else if (hasMoved) {
+          } else if (state.hasMoved) {
             // 如果移動了，取消長按計時器
-            if (longPressTimer) {
-              clearTimeout(longPressTimer);
-              longPressTimer = null;
+            if (state.longPressTimer) {
+              clearTimeout(state.longPressTimer);
+              state.longPressTimer = null;
             }
           }
         }
       } else if (event.type === 'touchend' || event.type === 'touchcancel') {
         // 清除長按計時器
-        if (longPressTimer) {
-          clearTimeout(longPressTimer);
-          longPressTimer = null;
+        if (state.longPressTimer) {
+          clearTimeout(state.longPressTimer);
+          state.longPressTimer = null;
         }
         
         // 如果是長按狀態，隱藏 tooltip
-        if (isLongPress) {
+        if (state.isLongPress) {
           chart.setActiveElements([]);
           chart.tooltip.setActiveElements([]);
           chart.update('none');
         }
         
         // 重置狀態
-        isLongPress = false;
-        hasMoved = false;
+        state.isLongPress = false;
+        state.hasMoved = false;
       }
+    },
+    
+    destroy(chart) {
+      // 清理狀態
+      const state = pluginState.get(chart);
+      if (state && state.longPressTimer) {
+        clearTimeout(state.longPressTimer);
+      }
+      pluginState.delete(chart);
     },
   };
 };

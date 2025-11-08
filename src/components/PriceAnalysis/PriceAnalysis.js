@@ -839,7 +839,6 @@ export function PriceAnalysis() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          // 預設啟用 tooltip（長按插件會動態控制手機版的顯示）
           enabled: true,
           mode: 'index',
           intersect: false,
@@ -850,6 +849,8 @@ export function PriceAnalysis() {
           bodyColor: '#000000',
           borderColor: '#cccccc',
           borderWidth: 1,
+          // 手機版：禁用 hover 觸發的 tooltip
+          events: isMobile ? [] : ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
           yAlign: function(context) {
             // 動態判斷 tooltip 應該顯示在上方還是下方
             if (!context.tooltip || !context.tooltip.dataPoints || context.tooltip.dataPoints.length === 0) {
@@ -967,6 +968,20 @@ export function PriceAnalysis() {
             enabled: true,
             mode: 'x', // 只在 x 軸平移
             threshold: 10,
+            // 在長按狀態下禁用平移
+            onPanStart: ({ chart }) => {
+              if (isMobile) {
+                // 檢查是否處於長按狀態
+                const plugin = chart.config.plugins.find(p => p.id === 'longPressTooltip');
+                if (plugin) {
+                  const state = chart.$longPressState;
+                  if (state && state.isLongPress) {
+                    return false; // 禁用平移
+                  }
+                }
+              }
+              return true; // 允許平移
+            },
           },
           limits: {
             x: {
@@ -976,8 +991,11 @@ export function PriceAnalysis() {
           },
         }
       },
-      interaction: { mode: 'index', intersect: false },
-      hover: { mode: 'index', intersect: false },
+      interaction: { 
+        mode: isMobile ? null : 'index', 
+        intersect: false 
+      },
+      hover: isMobile ? false : { mode: 'index', intersect: false },
       layout: { padding: { left: 10, right: 25, top: 20, bottom: 25 } },
       clip: false
     };

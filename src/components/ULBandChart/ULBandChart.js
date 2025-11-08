@@ -96,7 +96,6 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
         plugins: {
             legend: { display: false },
             tooltip: {
-                // 預設啟用 tooltip（長按插件會動態控制手機版的顯示）
                 enabled: true,
                 mode: 'index',
                 intersect: false,
@@ -107,6 +106,8 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
                 bodyColor: '#000000',
                 borderColor: '#cccccc',
                 borderWidth: 1,
+                // 手機版：禁用 hover 觸發的 tooltip
+                events: isMobile ? [] : ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
                 yAlign: function(context) {
                     // 動態判斷 tooltip 應該顯示在上方還是下方
                     if (!context.tooltip || !context.tooltip.dataPoints || context.tooltip.dataPoints.length === 0) {
@@ -229,6 +230,17 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
                     enabled: true,
                     mode: 'x', // 只在 x 軸平移
                     threshold: 10,
+                    // 在長按狀態下禁用平移
+                    onPanStart: ({ chart }) => {
+                        if (isMobile) {
+                            // 檢查是否處於長按狀態
+                            const state = chart.$longPressState;
+                            if (state && state.isLongPress) {
+                                return false; // 禁用平移
+                            }
+                        }
+                        return true; // 允許平移
+                    },
                 },
                 limits: {
                     x: {
@@ -238,10 +250,11 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
                 },
             }
         },
-        hover: {
-            mode: 'index',
-            intersect: false
+        interaction: { 
+            mode: isMobile ? null : 'index', 
+            intersect: false 
         },
+        hover: isMobile ? false : { mode: 'index', intersect: false },
         scales: {
             x: {
                 type: 'time',
