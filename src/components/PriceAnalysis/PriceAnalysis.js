@@ -136,8 +136,19 @@ export function PriceAnalysis() {
             
             chart.setActiveElements(activeElements);
             
-            // 強制顯示 tooltip
-            chart.tooltip.setActiveElements(activeElements, { x: 0, y: 0 });
+            // 獲取價格線（datasetIndex = 0）的最後一個數據點位置
+            const priceDatasetMeta = chart.getDatasetMeta(0);
+            if (priceDatasetMeta && priceDatasetMeta.data[lastIndex]) {
+              const priceElement = priceDatasetMeta.data[lastIndex];
+              // 使用價格點的實際位置來顯示 tooltip
+              chart.tooltip.setActiveElements(activeElements, { 
+                x: priceElement.x, 
+                y: priceElement.y 
+              });
+            } else {
+              // 如果找不到價格點，使用預設方式
+              chart.tooltip.setActiveElements(activeElements);
+            }
             
             // 更新圖表以顯示 tooltip
             chart.update('none'); // 使用 'none' 模式避免動畫
@@ -778,9 +789,39 @@ export function PriceAnalysis() {
       plugins: {
         legend: { display: false },
         tooltip: {
+          enabled: true,
           mode: 'index',
           intersect: false,
           usePointStyle: true,
+          position: 'nearest',
+          yAlign: function(context) {
+            // 動態判斷 tooltip 應該顯示在上方還是下方
+            if (!context.tooltip || !context.tooltip.dataPoints || context.tooltip.dataPoints.length === 0) {
+              return 'top';
+            }
+            
+            // 找到價格線的數據點（datasetIndex = 0）
+            const pricePoint = context.tooltip.dataPoints.find(point => point.datasetIndex === 0);
+            if (!pricePoint || !pricePoint.element) return 'top';
+            
+            // 獲取圖表區域的高度
+            const chartArea = context.chart.chartArea;
+            if (!chartArea) return 'top';
+            
+            const chartHeight = chartArea.bottom - chartArea.top;
+            const chartMiddle = chartArea.top + (chartHeight / 2);
+            
+            // 使用價格點的 Y 座標來判斷（這個值對同一數據點是固定的）
+            const priceY = pricePoint.element.y;
+            
+            // 如果價格點在圖表上半部，tooltip 顯示在下方（yAlign: 'top'）
+            // 如果價格點在圖表下半部，tooltip 顯示在上方（yAlign: 'bottom'）
+            return priceY < chartMiddle ? 'top' : 'bottom';
+          },
+          xAlign: 'center',
+          caretSize: 6,
+          caretPadding: 35,
+          displayColors: true,
           callbacks: {
             labelColor: (context) => ({
               backgroundColor: context.dataset.borderColor,

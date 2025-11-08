@@ -992,10 +992,10 @@
       "label": {
         "price": "價格",
         "trendLine": "趨勢線",
-        "minus2sd": "-2個標準差",
-        "minus1sd": "-1個標準差",
-        "plus1sd": "+1個標準差",
-        "plus2sd": "+2個標準差"
+        "minus2sd": "極度悲觀",
+        "minus1sd": "悲觀",
+        "plus1sd": "樂觀",
+        "plus2sd": "極度樂觀"
       }
     },
     "sentiment": {

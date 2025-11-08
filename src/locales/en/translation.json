@@ -993,10 +993,10 @@
       "label": {
         "price": "Price",
         "trendLine": "Trend Line",
-        "minus2sd": "-2 SD",
-        "minus1sd": "-1 SD",
-        "plus1sd": "+1 SD",
-        "plus2sd": "+2 SD"
+        "minus2sd": "Extreme Pessimism",
+        "minus1sd": "Pessimism",
+        "plus1sd": "Optimism",
+        "plus2sd": "Extreme Optimism"
       }
     },
     "prompt": {
