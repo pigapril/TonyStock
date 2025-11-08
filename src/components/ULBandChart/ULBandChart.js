@@ -295,7 +295,17 @@ const ULBandChart = ({ data }) => {
             onPanComplete: ({ chart }) => {
                 const zoomed = chart.isZoomedOrPanned();
                 setIsZoomed(zoomed);
-            }
+            },
+            // 手機上只允許雙指平移
+            onPanStart: isMobile ? ({ event }) => {
+                // 檢查是否為觸控事件
+                if (event.native && event.native.touches) {
+                    // 只有雙指或以上才允許平移
+                    return event.native.touches.length >= 2;
+                }
+                // 非觸控事件（如滑鼠）允許平移
+                return true;
+            } : undefined
         },
         limits: {
             x: { min: 'original', max: 'original' }
