@@ -782,8 +782,13 @@ export function PriceAnalysis() {
 
     // 註冊長按插件（手機版）
     const longPressPlugin = createLongPressPlugin(isMobile);
-    if (longPressPlugin && !ChartJS.registry.plugins.get('longPressTooltip')) {
-      ChartJS.register(longPressPlugin);
+    if (longPressPlugin) {
+      if (!ChartJS.registry.plugins.get('longPressTooltip')) {
+        console.log('[PriceAnalysis] Registering long press plugin');
+        ChartJS.register(longPressPlugin);
+      }
+    } else {
+      console.log('[PriceAnalysis] Long press plugin not needed (desktop)');
     }
 
     // 基本配置
@@ -849,8 +854,6 @@ export function PriceAnalysis() {
           bodyColor: '#000000',
           borderColor: '#cccccc',
           borderWidth: 1,
-          // 手機版：禁用 hover 觸發的 tooltip
-          events: isMobile ? [] : ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
           yAlign: function(context) {
             // 動態判斷 tooltip 應該顯示在上方還是下方
             if (!context.tooltip || !context.tooltip.dataPoints || context.tooltip.dataPoints.length === 0) {

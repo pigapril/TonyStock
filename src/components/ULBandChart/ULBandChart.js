@@ -106,8 +106,6 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
                 bodyColor: '#000000',
                 borderColor: '#cccccc',
                 borderWidth: 1,
-                // 手機版：禁用 hover 觸發的 tooltip
-                events: isMobile ? [] : ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
                 yAlign: function(context) {
                     // 動態判斷 tooltip 應該顯示在上方還是下方
                     if (!context.tooltip || !context.tooltip.dataPoints || context.tooltip.dataPoints.length === 0) {

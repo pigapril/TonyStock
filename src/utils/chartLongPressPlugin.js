@@ -41,6 +41,8 @@ export const createLongPressPlugin = (isMobile) => {
       if (event.type === 'touchstart') {
         const touch = event.native?.touches?.[0];
         if (touch && event.native.touches.length === 1) {
+          console.log('[LongPress] touchstart detected');
+          
           // 隱藏任何現有的 tooltip
           chart.setActiveElements([]);
           chart.tooltip.setActiveElements([]);
@@ -57,28 +59,47 @@ export const createLongPressPlugin = (isMobile) => {
           
           // 設置長按計時器（500ms）
           state.longPressTimer = setTimeout(() => {
+            console.log('[LongPress] Long press triggered!');
             state.isLongPress = true;
             
-            // 獲取觸控點位置並顯示 tooltip
+            // 獲取當前觸控點位置（可能已經移動了）
+            const currentTouch = event.native?.touches?.[0];
+            if (!currentTouch) return;
+            
             const rect = chart.canvas.getBoundingClientRect();
-            const x = touch.clientX - rect.left;
-            const y = touch.clientY - rect.top;
+            const x = currentTouch.clientX - rect.left;
+            const y = currentTouch.clientY - rect.top;
+            
+            // 創建一個模擬事件來獲取元素
+            const mockEvent = {
+              x,
+              y,
+              native: event.native,
+              type: 'mousemove'
+            };
             
             // 找到最接近的數據點
             const elements = chart.getElementsAtEventForMode(
-              event,
+              mockEvent,
               'index',
               { intersect: false },
               false
             );
             
             if (elements.length > 0) {
+              console.log('[LongPress] Showing tooltip for', elements.length, 'elements');
               chart.setActiveElements(elements);
               chart.tooltip.setActiveElements(elements, { x, y });
               chart.update('none');
+            } else {
+              console.log('[LongPress] No elements found at position');
             }
           }, 500);
         }
+        
+        // 阻止 touchstart 觸發 tooltip
+        args.changed = false;
+        return false;
       } else if (event.type === 'touchmove') {
         const touch = event.native?.touches?.[0];
         if (touch && event.native.touches.length === 1) {
@@ -96,8 +117,16 @@ export const createLongPressPlugin = (isMobile) => {
             const x = touch.clientX - rect.left;
             const y = touch.clientY - rect.top;
             
+            // 創建一個模擬事件
+            const mockEvent = {
+              x,
+              y,
+              native: event.native,
+              type: 'mousemove'
+            };
+            
             const elements = chart.getElementsAtEventForMode(
-              event,
+              mockEvent,
               'index',
               { intersect: false },
               false
@@ -110,8 +139,6 @@ export const createLongPressPlugin = (isMobile) => {
             }
             
             // 阻止事件傳播，防止觸發平移
-            event.native.preventDefault();
-            event.native.stopPropagation();
             args.changed = false;
             return false;
           } else if (state.hasMoved) {
@@ -121,6 +148,12 @@ export const createLongPressPlugin = (isMobile) => {
               state.longPressTimer = null;
             }
           }
+        }
+        
+        // 阻止 touchmove 觸發 tooltip（除非是長按狀態）
+        if (!state.isLongPress) {
+          args.changed = false;
+          return false;
         }
       } else if (event.type === 'touchend' || event.type === 'touchcancel') {
         // 清除長按計時器
