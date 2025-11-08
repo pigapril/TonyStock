@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import { formatPrice } from '../../utils/priceUtils';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from 'react-responsive';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { Chart as ChartJS } from 'chart.js';
+import { createLongPressPlugin } from '../../utils/chartLongPressPlugin';
 
 // 註冊 zoom 插件
 ChartJS.register(zoomPlugin);
@@ -14,10 +15,6 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
     const internalRef = useRef(null);
     const chartRef = ref || internalRef;
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
-    
-    // 用於追蹤長按狀態的變數
-    const longPressTimerRef = useRef(null);
-    const isLongPressRef = useRef(false);
 
     // 計算合適的時間單位
     const calculateTimeUnit = () => {
@@ -46,6 +43,14 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
         const spaceRatio = isMobile ? 0.15 : 0.1;
         xAxisMax = new Date(lastDate.getTime() + timeRange * spaceRatio);
     }
+
+    // 註冊長按插件（手機版）
+    useMemo(() => {
+        const longPressPlugin = createLongPressPlugin(isMobile);
+        if (longPressPlugin && !ChartJS.registry.plugins.get('longPressTooltip')) {
+            ChartJS.register(longPressPlugin);
+        }
+    }, [isMobile]);
 
     const chartData = {
         labels: data.dates,
@@ -224,20 +229,6 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
                     enabled: true,
                     mode: 'x', // 只在 x 軸平移
                     threshold: 10,
-                    // 手機版：單指滑動平移（非長按狀態）
-                    onPanStart: ({ chart, event }) => {
-                        if (isMobile && event.touches) {
-                            const touchCount = event.touches.length;
-                            // 單指且非長按狀態時允許平移
-                            if (touchCount === 1 && !isLongPressRef.current) {
-                                return true;
-                            }
-                            // 雙指總是允許平移
-                            return touchCount >= 2;
-                        }
-                        // 桌面版或滑鼠事件，允許平移
-                        return true;
-                    },
                 },
                 limits: {
                     x: {
@@ -318,90 +309,7 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
                 bottom: 25
             }
         },
-        clip: false,
-        // 手機版：添加自定義觸控事件處理
-        ...(isMobile && {
-            onTouchStart: (event, activeElements, chart) => {
-                const touches = event.native?.touches;
-                if (touches && touches.length === 1) {
-                    isLongPressRef.current = false;
-                    
-                    // 設置長按計時器（500ms）
-                    longPressTimerRef.current = setTimeout(() => {
-                        isLongPressRef.current = true;
-                        // 啟用 tooltip
-                        chart.options.plugins.tooltip.enabled = true;
-                        
-                        // 獲取觸控點位置並顯示 tooltip
-                        const touch = touches[0];
-                        const rect = chart.canvas.getBoundingClientRect();
-                        const x = touch.clientX - rect.left;
-                        const y = touch.clientY - rect.top;
-                        
-                        // 找到最接近的數據點
-                        const elements = chart.getElementsAtEventForMode(
-                            { x, y, native: event.native },
-                            'index',
-                            { intersect: false },
-                            false
-                        );
-                        
-                        if (elements.length > 0) {
-                            chart.setActiveElements(elements);
-                            chart.tooltip.setActiveElements(elements, { x, y });
-                            chart.update('none');
-                        }
-                    }, 500);
-                }
-            },
-            onTouchMove: (event, activeElements, chart) => {
-                const touches = event.native?.touches;
-                if (touches && touches.length === 1) {
-                    // 如果是長按狀態，更新 tooltip 位置
-                    if (isLongPressRef.current) {
-                        const touch = touches[0];
-                        const rect = chart.canvas.getBoundingClientRect();
-                        const x = touch.clientX - rect.left;
-                        const y = touch.clientY - rect.top;
-                        
-                        const elements = chart.getElementsAtEventForMode(
-                            { x, y, native: event.native },
-                            'index',
-                            { intersect: false },
-                            false
-                        );
-                        
-                        if (elements.length > 0) {
-                            chart.setActiveElements(elements);
-                            chart.tooltip.setActiveElements(elements, { x, y });
-                            chart.update('none');
-                        }
-                    } else {
-                        // 如果移動了，取消長按計時器
-                        if (longPressTimerRef.current) {
-                            clearTimeout(longPressTimerRef.current);
-                            longPressTimerRef.current = null;
-                        }
-                    }
-                }
-            },
-            onTouchEnd: (event, activeElements, chart) => {
-                // 清除長按計時器
-                if (longPressTimerRef.current) {
-                    clearTimeout(longPressTimerRef.current);
-                    longPressTimerRef.current = null;
-                }
-                
-                // 重置狀態
-                isLongPressRef.current = false;
-                
-                // 隱藏 tooltip
-                chart.options.plugins.tooltip.enabled = false;
-                chart.setActiveElements([]);
-                chart.tooltip.setActiveElements([]);
-                chart.update('none');
-            },
-        }),
+        clip: false
     };
 
     // 自動顯示最新數據點的 tooltip
