@@ -290,27 +290,72 @@ const ULBandChart = ({ data }) => {
             }
         },
         pan: {
-            enabled: true,
+            enabled: true, // 初始啟用，由觸控事件動態控制
             mode: 'x',
             onPanComplete: ({ chart }) => {
                 const zoomed = chart.isZoomedOrPanned();
                 setIsZoomed(zoomed);
-            },
-            // 手機上只允許雙指平移
-            onPanStart: isMobile ? ({ event }) => {
-                // 檢查是否為觸控事件
-                if (event.native && event.native.touches) {
-                    // 只有雙指或以上才允許平移
-                    return event.native.touches.length >= 2;
-                }
-                // 非觸控事件（如滑鼠）允許平移
-                return true;
-            } : undefined
+            }
         },
         limits: {
             x: { min: 'original', max: 'original' }
         }
     };
+
+    // 手機上處理觸控事件，只允許雙指平移
+    useEffect(() => {
+        if (isMobile && chartRef.current) {
+            const canvas = chartRef.current.canvas;
+            if (!canvas) return;
+
+            let touchCount = 0;
+
+            const handleTouchStart = (e) => {
+                touchCount = e.touches.length;
+                // 如果是單指觸控，阻止平移但允許 tooltip
+                if (touchCount === 1) {
+                    // 暫時禁用平移
+                    const chart = chartRef.current;
+                    if (chart && chart.options.plugins.zoom) {
+                        chart.options.plugins.zoom.pan.enabled = false;
+                    }
+                }
+            };
+
+            const handleTouchMove = (e) => {
+                const currentTouchCount = e.touches.length;
+                const chart = chartRef.current;
+                
+                if (chart && chart.options.plugins.zoom) {
+                    // 雙指或以上：啟用平移
+                    if (currentTouchCount >= 2) {
+                        chart.options.plugins.zoom.pan.enabled = true;
+                    } else {
+                        // 單指：禁用平移
+                        chart.options.plugins.zoom.pan.enabled = false;
+                    }
+                }
+            };
+
+            const handleTouchEnd = () => {
+                // 觸控結束後恢復平移功能（為下次雙指做準備）
+                const chart = chartRef.current;
+                if (chart && chart.options.plugins.zoom) {
+                    chart.options.plugins.zoom.pan.enabled = true;
+                }
+            };
+
+            canvas.addEventListener('touchstart', handleTouchStart, { passive: true });
+            canvas.addEventListener('touchmove', handleTouchMove, { passive: true });
+            canvas.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+            return () => {
+                canvas.removeEventListener('touchstart', handleTouchStart);
+                canvas.removeEventListener('touchmove', handleTouchMove);
+                canvas.removeEventListener('touchend', handleTouchEnd);
+            };
+        }
+    }, [isMobile, chartRef.current]);
 
     // 自動顯示最新數據點的 tooltip
     useEffect(() => {
