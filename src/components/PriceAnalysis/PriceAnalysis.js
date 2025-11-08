@@ -108,6 +108,7 @@ export function PriceAnalysis() {
   const cooldownTimeoutRef = useRef(null); // 新增：保存冷卻計時器 ID
   const [isPending, startTransition] = useTransition(); // 添加 useTransition
   const chartRef = useRef(null); // 新增：圖表 ref 用於程式化控制 tooltip
+  const ulbandChartRef = useRef(null); // ULBand 圖表 ref
 
 
   // 新增：熱門搜尋狀態
@@ -1273,14 +1274,163 @@ export function PriceAnalysis() {
 
                   {/* 圖表 (僅在非 loading 狀態下顯示) */}
                   {!loading && activeChart === 'sd' && chartData && (
-                    <Line
-                      ref={chartRef}
-                      data={chartData}
-                      options={lineChartOptions} // <--- 使用 useMemo 優化後的 options
-                    />
+                    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                      {/* 縮放控制按鈕 */}
+                      <div className="chart-zoom-buttons">
+                        <button
+                          className="zoom-btn zoom-in"
+                          onClick={() => {
+                            if (chartRef.current) {
+                              const chart = chartRef.current;
+                              const xScale = chart.scales.x;
+                              const currentMin = xScale.min;
+                              const currentMax = xScale.max;
+                              const range = currentMax - currentMin;
+                              const newRange = range * 0.8; // 縮小 20%
+                              const newMin = currentMax - newRange;
+                              chart.zoomScale('x', { min: newMin, max: currentMax }, 'default');
+                            }
+                          }}
+                          title="放大"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                          </svg>
+                        </button>
+                        <button
+                          className="zoom-btn zoom-out"
+                          onClick={() => {
+                            if (chartRef.current && chartData?.labels && chartData.labels.length > 0) {
+                              const chart = chartRef.current;
+                              const xScale = chart.scales.x;
+                              const currentMin = xScale.min;
+                              const currentMax = xScale.max;
+                              const range = currentMax - currentMin;
+                              const newRange = range * 1.25; // 擴大 25%
+                              const newMin = currentMax - newRange;
+                              
+                              // 計算原始的最小值和最大值（包含 10% 空白）
+                              const firstDate = new Date(chartData.labels[0]);
+                              const lastDate = new Date(chartData.labels[chartData.labels.length - 1]);
+                              const timeRange = lastDate - firstDate;
+                              const spaceRatio = isMobile ? 0.15 : 0.1;
+                              const originalMax = new Date(lastDate.getTime() + timeRange * spaceRatio);
+                              
+                              // 確保不超過原始範圍
+                              const finalMin = Math.max(newMin, firstDate.getTime());
+                              const finalMax = Math.min(currentMax, originalMax.getTime());
+                              
+                              // 只有當範圍真的改變時才執行縮放
+                              if (finalMin < currentMin || finalMax > currentMax) {
+                                chart.zoomScale('x', { min: finalMin, max: finalMax }, 'default');
+                              }
+                            }
+                          }}
+                          title="縮小"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                          </svg>
+                        </button>
+                        <button
+                          className="zoom-btn zoom-reset"
+                          onClick={() => {
+                            if (chartRef.current) {
+                              chartRef.current.resetZoom();
+                            }
+                          }}
+                          title="重置"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M13 8C13 10.7614 10.7614 13 8 13C5.23858 13 3 10.7614 3 8C3 5.23858 5.23858 3 8 3C9.12583 3 10.1647 3.37194 11 3.99963M11 3.99963V2M11 3.99963H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </button>
+                      </div>
+                      <Line
+                        ref={chartRef}
+                        data={chartData}
+                        options={lineChartOptions}
+                      />
+                    </div>
                   )}
                   {!loading && activeChart === 'ulband' && ulbandData && (
-                    <ULBandChart data={ulbandData} />
+                    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                      {/* 縮放控制按鈕 */}
+                      <div className="chart-zoom-buttons">
+                        <button
+                          className="zoom-btn zoom-in"
+                          onClick={() => {
+                            if (ulbandChartRef.current) {
+                              const chart = ulbandChartRef.current;
+                              const xScale = chart.scales.x;
+                              const currentMin = xScale.min;
+                              const currentMax = xScale.max;
+                              const range = currentMax - currentMin;
+                              const newRange = range * 0.8;
+                              const newMin = currentMax - newRange;
+                              chart.zoomScale('x', { min: newMin, max: currentMax }, 'default');
+                            }
+                          }}
+                          title="放大"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                          </svg>
+                        </button>
+                        <button
+                          className="zoom-btn zoom-out"
+                          onClick={() => {
+                            if (ulbandChartRef.current && ulbandData?.dates && ulbandData.dates.length > 0) {
+                              const chart = ulbandChartRef.current;
+                              const xScale = chart.scales.x;
+                              const currentMin = xScale.min;
+                              const currentMax = xScale.max;
+                              const range = currentMax - currentMin;
+                              const newRange = range * 1.25; // 擴大 25%
+                              const newMin = currentMax - newRange;
+                              
+                              // 計算原始的最小值和最大值（包含 10% 空白）
+                              const firstDate = new Date(ulbandData.dates[0]);
+                              const lastDate = new Date(ulbandData.dates[ulbandData.dates.length - 1]);
+                              const timeRange = lastDate - firstDate;
+                              const spaceRatio = isMobile ? 0.15 : 0.1;
+                              const originalMax = new Date(lastDate.getTime() + timeRange * spaceRatio);
+                              
+                              // 確保不超過原始範圍
+                              const finalMin = Math.max(newMin, firstDate.getTime());
+                              const finalMax = Math.min(currentMax, originalMax.getTime());
+                              
+                              // 只有當範圍真的改變時才執行縮放
+                              if (finalMin < currentMin || finalMax > currentMax) {
+                                chart.zoomScale('x', { min: finalMin, max: finalMax }, 'default');
+                              }
+                            }
+                          }}
+                          title="縮小"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                          </svg>
+                        </button>
+                        <button
+                          className="zoom-btn zoom-reset"
+                          onClick={() => {
+                            if (ulbandChartRef.current) {
+                              ulbandChartRef.current.resetZoom();
+                            }
+                          }}
+                          title="重置"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M13 8C13 10.7614 10.7614 13 8 13C5.23858 13 3 10.7614 3 8C3 5.23858 5.23858 3 8 3C9.12583 3 10.1647 3.37194 11 3.99963M11 3.99963V2M11 3.99963H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </button>
+                      </div>
+                      <ULBandChart 
+                        data={ulbandData} 
+                        onChartReady={(chart) => { ulbandChartRef.current = chart; }}
+                      />
+                    </div>
                   )}
 
                   {/* 佔位符 */}

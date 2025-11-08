@@ -5,10 +5,17 @@ import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from 'react-responsive';
 import zoomPlugin from 'chartjs-plugin-zoom'; // 新增：引入縮放插件
 
-const ULBandChart = ({ data }) => {
+const ULBandChart = ({ data, onChartReady }) => {
     const { t } = useTranslation();
     const chartRef = useRef(null);
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
+    // 當圖表準備好時，通知父組件
+    useEffect(() => {
+        if (chartRef.current && onChartReady) {
+            onChartReady(chartRef.current);
+        }
+    }, [chartRef.current, onChartReady]);
 
     // 計算合適的時間單位
     const calculateTimeUnit = () => {
