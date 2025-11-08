@@ -274,10 +274,6 @@ const ULBandChart = ({ data }) => {
     };
 
     // 在 options 定義完成後，添加 zoom 插件配置到 plugins
-    if (!options.plugins) {
-        options.plugins = {};
-    }
-    
     options.plugins.zoom = {
         pan: {
             enabled: true,

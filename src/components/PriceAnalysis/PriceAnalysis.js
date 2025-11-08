@@ -1280,8 +1280,7 @@ export function PriceAnalysis() {
                     />
                   )}
                   {!loading && activeChart === 'ulband' && ulbandData && (
-                    // 使用 Memoized 版本
-                    <MemoizedULBandChart data={ulbandData} />
+                    <ULBandChart data={ulbandData} />
                   )}
 
                   {/* 佔位符 */}
