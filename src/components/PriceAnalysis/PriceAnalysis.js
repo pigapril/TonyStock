@@ -19,12 +19,17 @@ import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebounced
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
 import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
+import zoomPlugin from 'chartjs-plugin-zoom'; // 新增：引入 zoom 插件
+import { Chart as ChartJS } from 'chart.js';
 
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
 import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDialog
 import { isStockAllowed, getFreeStockList } from '../../utils/freeStockListUtils'; // 導入免費股票清單檢查函數
 import FreeStockList from './FreeStockList'; // 新增：引入免費股票清單組件
+
+// 註冊 zoom 插件
+ChartJS.register(zoomPlugin);
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
 function getTimeUnit(dates) {
@@ -774,6 +779,11 @@ export function PriceAnalysis() {
       xAxisMax = new Date(lastDate.getTime() + timeRange * spaceRatio);
     }
 
+    // 用於追蹤長按狀態的變數
+    let longPressTimer = null;
+    let isLongPress = false;
+    let touchStartTime = 0;
+
     // 基本配置
     const options = {
       responsive: true,
@@ -827,7 +837,8 @@ export function PriceAnalysis() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          enabled: true,
+          // 手機版：只在長按時啟用 tooltip；桌面版：總是啟用
+          enabled: !isMobile,
           mode: 'index',
           intersect: false,
           usePointStyle: true,
@@ -937,12 +948,135 @@ export function PriceAnalysis() {
             
             return annotations;
           })()
+        },
+        // 新增：縮放和平移配置
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true, // 啟用滾輪縮放
+              speed: 0.1,
+            },
+            pinch: {
+              enabled: true, // 啟用雙指捏合縮放
+            },
+            mode: 'x', // 只在 x 軸縮放
+          },
+          pan: {
+            enabled: true,
+            mode: 'x', // 只在 x 軸平移
+            threshold: 10,
+            // 手機版：單指滑動平移（非長按狀態）
+            onPanStart: ({ chart, event }) => {
+              if (isMobile && event.touches) {
+                const touchCount = event.touches.length;
+                // 單指且非長按狀態時允許平移
+                if (touchCount === 1 && !isLongPress) {
+                  return true;
+                }
+                // 雙指總是允許平移
+                return touchCount >= 2;
+              }
+              // 桌面版或滑鼠事件，允許平移
+              return true;
+            },
+          },
+          limits: {
+            x: {
+              min: 'original',
+              max: 'original',
+            },
+          },
         }
       },
       interaction: { mode: 'index', intersect: false },
       hover: { mode: 'index', intersect: false },
       layout: { padding: { left: 10, right: 25, top: 20, bottom: 25 } },
-      clip: false
+      clip: false,
+      // 手機版：添加自定義觸控事件處理
+      ...(isMobile && {
+        onTouchStart: (event, activeElements, chart) => {
+          const touches = event.native?.touches;
+          if (touches && touches.length === 1) {
+            touchStartTime = Date.now();
+            isLongPress = false;
+            
+            // 設置長按計時器（500ms）
+            longPressTimer = setTimeout(() => {
+              isLongPress = true;
+              // 啟用 tooltip
+              chart.options.plugins.tooltip.enabled = true;
+              
+              // 獲取觸控點位置並顯示 tooltip
+              const touch = touches[0];
+              const rect = chart.canvas.getBoundingClientRect();
+              const x = touch.clientX - rect.left;
+              const y = touch.clientY - rect.top;
+              
+              // 找到最接近的數據點
+              const elements = chart.getElementsAtEventForMode(
+                { x, y, native: event.native },
+                'index',
+                { intersect: false },
+                false
+              );
+              
+              if (elements.length > 0) {
+                chart.setActiveElements(elements);
+                chart.tooltip.setActiveElements(elements, { x, y });
+                chart.update('none');
+              }
+            }, 500);
+          }
+        },
+        onTouchMove: (event, activeElements, chart) => {
+          const touches = event.native?.touches;
+          if (touches && touches.length === 1) {
+            // 如果是長按狀態，更新 tooltip 位置
+            if (isLongPress) {
+              const touch = touches[0];
+              const rect = chart.canvas.getBoundingClientRect();
+              const x = touch.clientX - rect.left;
+              const y = touch.clientY - rect.top;
+              
+              const elements = chart.getElementsAtEventForMode(
+                { x, y, native: event.native },
+                'index',
+                { intersect: false },
+                false
+              );
+              
+              if (elements.length > 0) {
+                chart.setActiveElements(elements);
+                chart.tooltip.setActiveElements(elements, { x, y });
+                chart.update('none');
+              }
+            } else {
+              // 如果移動了，取消長按計時器
+              if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                longPressTimer = null;
+              }
+            }
+          }
+        },
+        onTouchEnd: (event, activeElements, chart) => {
+          // 清除長按計時器
+          if (longPressTimer) {
+            clearTimeout(longPressTimer);
+            longPressTimer = null;
+          }
+          
+          // 重置狀態
+          isLongPress = false;
+          touchStartTime = 0;
+          
+          // 隱藏 tooltip
+          chart.options.plugins.tooltip.enabled = false;
+          chart.setActiveElements([]);
+          chart.tooltip.setActiveElements([]);
+          chart.update('none');
+        },
+      }),
     };
 
     // 動態添加 time unit (如果 chartData 存在)
