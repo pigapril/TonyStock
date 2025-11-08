@@ -43,14 +43,6 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
         xAxisMax = new Date(lastDate.getTime() + timeRange * spaceRatio);
     }
 
-    // 註冊長按插件（手機版）
-    useMemo(() => {
-        const longPressPlugin = createLongPressPlugin(isMobile);
-        if (longPressPlugin && !ChartJS.registry.plugins.get('longPressTooltip')) {
-            ChartJS.register(longPressPlugin);
-        }
-    }, [isMobile]);
-
     const chartData = {
         labels: data.dates,
         datasets: [
