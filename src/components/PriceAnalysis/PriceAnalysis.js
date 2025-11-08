@@ -497,8 +497,7 @@ export function PriceAnalysis() {
         // 使用 t() 翻譯錯誤訊息 (假設有此 key)
         // showToast(t('priceAnalysis.toast.invalidUrlYears'), 'error');
         showToast('從 URL 讀取的查詢期間無效。', 'error'); // 暫時保留硬編碼，或添加新 key
-        // 清除圖表數據
-        setChartData(null);
+        // 清除圖表數據        setChartData(null);
         setUlbandData(null);
         // 清空時也清空 key 和 value
         setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
@@ -771,7 +770,7 @@ export function PriceAnalysis() {
       const firstDate = new Date(chartData.labels[0]);
       const timeRange = lastDate - firstDate;
       // 在右側增加 5% 的時間範圍作為空白
-      xAxisMax = new Date(lastDate.getTime() + timeRange * 0.05);
+      xAxisMax = new Date(lastDate.getTime() + timeRange * 0.10);
     }
 
     // 基本配置
@@ -910,7 +909,7 @@ export function PriceAnalysis() {
       },
       interaction: { mode: 'index', intersect: false },
       hover: { mode: 'index', intersect: false },
-      layout: { padding: { left: 10, right: 70, top: 20, bottom: 25 } },
+      layout: { padding: { left: 10, right: 25, top: 20, bottom: 25 } },
       clip: false
     };
 
