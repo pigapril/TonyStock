@@ -31,7 +31,7 @@ const ULBandChart = ({ data }) => {
         const firstDate = new Date(data.dates[0]);
         const timeRange = lastDate - firstDate;
         // 在右側增加 5% 的時間範圍作為空白
-        xAxisMax = new Date(lastDate.getTime() + timeRange * 0.05);
+        xAxisMax = new Date(lastDate.getTime() + timeRange * 0.08);
     }
 
     const chartData = {
@@ -153,37 +153,35 @@ const ULBandChart = ({ data }) => {
                                     borderDash: [5, 5]
                                 };
                                 
-                                // 只為價格線（index === 2）添加標籤
-                                if (index === 2) {
-                                    annotations['price-label'] = {
-                                        type: 'label',
-                                        drawTime: 'afterDraw',
-                                        xScaleID: 'x',
-                                        yScaleID: 'y',
-                                        xValue: xAxisMax || lastDate,
-                                        yValue: lastValue,
-                                        backgroundColor: dataset.borderColor || '#000000',
-                                        color: '#fff',
-                                        content: `$${formatPrice(lastValue)}`,
-                                        font: {
-                                            size: 11,
-                                            weight: 'bold'
-                                        },
-                                        padding: {
-                                            top: 3,
-                                            bottom: 3,
-                                            left: 6,
-                                            right: 6
-                                        },
-                                        borderRadius: 3,
-                                        position: {
-                                            x: 'end',
-                                            y: 'center'
-                                        },
-                                        xAdjust: 35,
-                                        yAdjust: 0
-                                    };
-                                }
+                                // 為所有線條添加標籤
+                                annotations[`label-${index}`] = {
+                                    type: 'label',
+                                    drawTime: 'afterDraw',
+                                    xScaleID: 'x',
+                                    yScaleID: 'y',
+                                    xValue: xAxisMax || lastDate,
+                                    yValue: lastValue,
+                                    backgroundColor: dataset.borderColor || '#999',
+                                    color: '#fff',
+                                    content: `${formatPrice(lastValue)}`,
+                                    font: {
+                                        size: 12,
+                                        weight: 'bold'
+                                    },
+                                    padding: {
+                                        top: 2,
+                                        bottom: 2,
+                                        left: 5,
+                                        right: 5
+                                    },
+                                    borderRadius: 3,
+                                    position: {
+                                        x: 'end',
+                                        y: 'center'
+                                    },
+                                    xAdjust: index === 2 ? 2 : 35, // 價格線（index=2）更靠右
+                                    yAdjust: 0
+                                };
                             }
                         });
                     }
@@ -225,6 +223,33 @@ const ULBandChart = ({ data }) => {
                 position: 'right',
                 grid: {
                     drawBorder: true
+                },
+                ticks: {
+                    callback: function(value, index, ticks) {
+                        // 獲取所有數據集的最後一個值
+                        if (!data.dates || data.dates.length === 0) return value;
+                        
+                        const lastIndex = data.dates.length - 1;
+                        const dataValues = [
+                            data.upperBand?.[lastIndex],
+                            data.ma20?.[lastIndex],
+                            data.prices?.[lastIndex],
+                            data.lowerBand?.[lastIndex]
+                        ].filter(v => v !== undefined && v !== null)
+                         .sort((a, b) => a - b); // 排序以找出最大最小值
+                        
+                        if (dataValues.length === 0) return value;
+                        
+                        const minDataValue = dataValues[0];
+                        const maxDataValue = dataValues[dataValues.length - 1];
+                        
+                        // 如果刻度值在數據值範圍之間，則隱藏
+                        if (value > minDataValue && value < maxDataValue) {
+                            return '';
+                        }
+                        
+                        return value;
+                    }
                 }
             }
         },

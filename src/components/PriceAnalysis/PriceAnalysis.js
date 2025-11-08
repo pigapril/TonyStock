@@ -770,7 +770,7 @@ export function PriceAnalysis() {
       const firstDate = new Date(chartData.labels[0]);
       const timeRange = lastDate - firstDate;
       // 在右側增加 5% 的時間範圍作為空白
-      xAxisMax = new Date(lastDate.getTime() + timeRange * 0.10);
+      xAxisMax = new Date(lastDate.getTime() + timeRange * 0.08);
     }
 
     // 基本配置
@@ -794,7 +794,34 @@ export function PriceAnalysis() {
           },
           ...(xAxisMax && { max: xAxisMax }) // 動態設置 x 軸最大值
         },
-        y: { position: 'right', grid: { drawBorder: true } }
+        y: { 
+          position: 'right', 
+          grid: { drawBorder: true },
+          ticks: {
+            callback: function(value, index, ticks) {
+              // 獲取所有數據集的最後一個值
+              if (!chartData?.datasets) return value;
+              
+              const lastIndex = chartData.labels.length - 1;
+              const dataValues = chartData.datasets
+                .map(dataset => dataset.data?.[lastIndex])
+                .filter(v => v !== undefined && v !== null)
+                .sort((a, b) => a - b); // 排序以找出最大最小值
+              
+              if (dataValues.length === 0) return value;
+              
+              const minDataValue = dataValues[0];
+              const maxDataValue = dataValues[dataValues.length - 1];
+              
+              // 如果刻度值在數據值範圍之間，則隱藏
+              if (value > minDataValue && value < maxDataValue) {
+                return '';
+              }
+              
+              return value;
+            }
+          }
+        }
       },
       plugins: {
         legend: { display: false },
@@ -852,11 +879,12 @@ export function PriceAnalysis() {
               const lastIndex = chartData.labels.length - 1;
               const lastDate = chartData.labels[lastIndex];
               
-              // 為所有線條添加虛線
+              // 為所有線條添加虛線和標籤
               chartData.datasets.forEach((dataset, index) => {
                 if (dataset.data && dataset.data.length > 0) {
                   const lastValue = dataset.data[lastIndex];
                   
+                  // 添加虛線
                   annotations[`line-${index}`] = {
                     type: 'line',
                     yMin: lastValue,
@@ -868,37 +896,35 @@ export function PriceAnalysis() {
                     borderDash: [5, 5]
                   };
                   
-                  // 只為價格線（index === 0）添加標籤
-                  if (index === 0) {
-                    annotations['price-label'] = {
-                      type: 'label',
-                      drawTime: 'afterDraw',
-                      xScaleID: 'x',
-                      yScaleID: 'y',
-                      xValue: xAxisMax || lastDate,
-                      yValue: lastValue,
-                      backgroundColor: dataset.borderColor || '#000000',
-                      color: '#fff',
-                      content: `${formatPrice(lastValue)}`,
-                      font: {
-                        size: isMobile ? 10 : 11,
-                        weight: 'bold'
-                      },
-                      padding: {
-                        top: 3,
-                        bottom: 3,
-                        left: 6,
-                        right: 6
-                      },
-                      borderRadius: 3,
-                      position: {
-                        x: 'end',
-                        y: 'center'
-                      },
-                      xAdjust: 35,
-                      yAdjust: 0
-                    };
-                  }
+                  // 為所有線條添加標籤
+                  annotations[`label-${index}`] = {
+                    type: 'label',
+                    drawTime: 'afterDraw',
+                    xScaleID: 'x',
+                    yScaleID: 'y',
+                    xValue: xAxisMax || lastDate,
+                    yValue: lastValue,
+                    backgroundColor: dataset.borderColor || '#999',
+                    color: '#fff',
+                    content: `${formatPrice(lastValue)}`,
+                    font: {
+                      size: isMobile ? 9 : 12,
+                      weight: 'bold'
+                    },
+                    padding: {
+                      top: 2,
+                      bottom: 2,
+                      left: 5,
+                      right: 5
+                    },
+                    borderRadius: 3,
+                    position: {
+                      x: 'end',
+                      y: 'center'
+                    },
+                    xAdjust: index === 0 ? 2 : 35, // 價格線（index=0）更靠右
+                    yAdjust: 0
+                  };
                 }
               });
             }
