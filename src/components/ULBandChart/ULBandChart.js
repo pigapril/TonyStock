@@ -83,6 +83,11 @@ const ULBandChart = ({ data }) => {
                 intersect: false,
                 usePointStyle: true,
                 position: 'nearest',
+                backgroundColor: '#ffffff',
+                titleColor: '#000000',
+                bodyColor: '#000000',
+                borderColor: '#cccccc',
+                borderWidth: 1,
                 yAlign: function(context) {
                     // 動態判斷 tooltip 應該顯示在上方還是下方
                     if (!context.tooltip || !context.tooltip.dataPoints || context.tooltip.dataPoints.length === 0) {
