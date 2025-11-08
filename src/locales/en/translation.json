@@ -997,6 +997,10 @@
         "minus1sd": "Pessimism",
         "plus1sd": "Optimism",
         "plus2sd": "Extreme Optimism"
+      },
+      "zoom": {
+        "resetButton": "Reset Zoom",
+        "instructions": "Scroll to zoom | Shift+Drag to pan"
       }
     },
     "prompt": {

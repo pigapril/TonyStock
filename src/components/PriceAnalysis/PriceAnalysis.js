@@ -19,6 +19,7 @@ import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebounced
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
 import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
+import zoomPlugin from 'chartjs-plugin-zoom'; // 新增：引入縮放插件
 
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
@@ -937,6 +938,29 @@ export function PriceAnalysis() {
             
             return annotations;
           })()
+        },
+        // 新增：縮放功能配置
+        zoom: {
+          pan: {
+            enabled: true,
+            mode: 'x'
+          },
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 0.1
+            },
+            pinch: {
+              enabled: true
+            },
+            mode: 'x'
+          },
+          limits: {
+            x: {
+              min: 'original',
+              max: 'original'
+            }
+          }
         }
       },
       interaction: { mode: 'index', intersect: false },

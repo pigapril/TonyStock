@@ -996,6 +996,10 @@
         "minus1sd": "悲觀",
         "plus1sd": "樂觀",
         "plus2sd": "極度樂觀"
+      },
+      "zoom": {
+        "resetButton": "重置縮放",
+        "instructions": "滾輪縮放 | Shift+拖動平移"
       }
     },
     "sentiment": {

@@ -3,6 +3,7 @@ import { Line } from 'react-chartjs-2';
 import { formatPrice } from '../../utils/priceUtils';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from 'react-responsive';
+import zoomPlugin from 'chartjs-plugin-zoom'; // 新增：引入縮放插件
 
 const ULBandChart = ({ data }) => {
     const { t } = useTranslation();
@@ -270,6 +271,34 @@ const ULBandChart = ({ data }) => {
             }
         },
         clip: false
+    };
+
+    // 在 options 定義完成後，添加 zoom 插件配置到 plugins
+    if (!options.plugins) {
+        options.plugins = {};
+    }
+    
+    options.plugins.zoom = {
+        pan: {
+            enabled: true,
+            mode: 'x'
+        },
+        zoom: {
+            wheel: {
+                enabled: true,
+                speed: 0.1
+            },
+            pinch: {
+                enabled: true
+            },
+            mode: 'x'
+        },
+        limits: {
+            x: {
+                min: 'original',
+                max: 'original'
+            }
+        }
     };
 
     // 自動顯示最新數據點的 tooltip
