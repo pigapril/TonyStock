@@ -2,10 +2,12 @@ import React, { useRef, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { formatPrice } from '../../utils/priceUtils';
 import { useTranslation } from 'react-i18next';
+import { useMediaQuery } from 'react-responsive';
 
 const ULBandChart = ({ data }) => {
     const { t } = useTranslation();
     const chartRef = useRef(null);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
     // 計算合適的時間單位
     const calculateTimeUnit = () => {
@@ -24,14 +26,15 @@ const ULBandChart = ({ data }) => {
 
     const timeUnit = calculateTimeUnit();
 
-    // 計算 x 軸的最大值，在最後一個數據點後增加 5% 的空間
+    // 計算 x 軸的最大值，手機版增加更多空間
     let xAxisMax = undefined;
     if (data.dates && data.dates.length > 0) {
         const lastDate = new Date(data.dates[data.dates.length - 1]);
         const firstDate = new Date(data.dates[0]);
         const timeRange = lastDate - firstDate;
-        // 在右側增加 5% 的時間範圍作為空白
-        xAxisMax = new Date(lastDate.getTime() + timeRange * 0.08);
+        // 手機版增加更多空間以容納標籤
+        const spaceRatio = isMobile ? 0.15 : 0.1;
+        xAxisMax = new Date(lastDate.getTime() + timeRange * spaceRatio);
     }
 
     const chartData = {
