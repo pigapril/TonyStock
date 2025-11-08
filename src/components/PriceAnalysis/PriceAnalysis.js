@@ -972,18 +972,27 @@ export function PriceAnalysis() {
             mode: 'x', // 只在 x 軸平移
             threshold: 10,
             // 在長按狀態下禁用平移
-            onPanStart: ({ chart }) => {
+            onPanStart: ({ chart, event }) => {
               if (isMobile) {
                 // 檢查是否處於長按狀態
-                const plugin = chart.config.plugins.find(p => p.id === 'longPressTooltip');
-                if (plugin) {
-                  const state = chart.$longPressState;
-                  if (state && state.isLongPress) {
-                    return false; // 禁用平移
-                  }
+                const state = chart.$longPressState;
+                console.log('[Pan] onPanStart - isLongPress:', state?.isLongPress);
+                if (state && state.isLongPress) {
+                  console.log('[Pan] Blocking pan due to long press');
+                  return false; // 禁用平移
                 }
               }
               return true; // 允許平移
+            },
+            onPan: ({ chart }) => {
+              if (isMobile) {
+                const state = chart.$longPressState;
+                if (state && state.isLongPress) {
+                  console.log('[Pan] Blocking pan during long press');
+                  return false;
+                }
+              }
+              return true;
             },
           },
           limits: {
