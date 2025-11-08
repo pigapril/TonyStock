@@ -116,6 +116,9 @@ export function PriceAnalysis() {
   // 新增：快速選擇 Tab 狀態
   const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('hotSearches'); // 'hotSearches' 或 'freeStocks'
 
+  // 新增：追蹤圖表是否被縮放
+  const [isChartZoomed, setIsChartZoomed] = useState(false);
+
   // 新增：自動顯示最新數據點的 tooltip
   useEffect(() => {
     // 只在標準差圖表顯示且有數據時執行
@@ -937,6 +940,33 @@ export function PriceAnalysis() {
             
             return annotations;
           })()
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 0.1
+            },
+            pinch: {
+              enabled: true
+            },
+            mode: 'x',
+            onZoomComplete: ({ chart }) => {
+              const isZoomed = chart.isZoomedOrPanned();
+              setIsChartZoomed(isZoomed);
+            }
+          },
+          pan: {
+            enabled: true,
+            mode: 'x',
+            onPanComplete: ({ chart }) => {
+              const isZoomed = chart.isZoomedOrPanned();
+              setIsChartZoomed(isZoomed);
+            }
+          },
+          limits: {
+            x: { min: 'original', max: 'original' }
+          }
         }
       },
       interaction: { mode: 'index', intersect: false },
@@ -1213,7 +1243,51 @@ export function PriceAnalysis() {
                     </div>
                   </div>
                 )}
-                <div className="chart-content">
+                <div className={`chart-content ${isChartZoomed ? 'zoomed' : ''}`}>
+                  {/* 縮放控制按鈕 */}
+                  {!loading && (chartData || ulbandData) && (
+                    <div className="chart-zoom-controls">
+                      <button
+                        className="chart-zoom-btn"
+                        onClick={() => {
+                          if (chartRef.current) {
+                            const chart = chartRef.current;
+                            const xScale = chart.scales.x;
+                            const currentMin = xScale.min;
+                            const currentMax = xScale.max;
+                            const range = currentMax - currentMin;
+                            // 以最右邊為基準，向左擴展 20%
+                            const newRange = range / 1.2;
+                            const newMin = currentMax - newRange;
+                            chart.zoomScale('x', { min: newMin, max: currentMax });
+                          }
+                        }}
+                        title="放大"
+                      >
+                        +
+                      </button>
+                      <button
+                        className="chart-zoom-btn"
+                        onClick={() => {
+                          if (chartRef.current) {
+                            const chart = chartRef.current;
+                            const xScale = chart.scales.x;
+                            const currentMin = xScale.min;
+                            const currentMax = xScale.max;
+                            const range = currentMax - currentMin;
+                            // 以最右邊為基準，向左縮小 20%
+                            const newRange = range * 1.2;
+                            const newMin = currentMax - newRange;
+                            chart.zoomScale('x', { min: newMin, max: currentMax });
+                          }
+                        }}
+                        title="縮小"
+                      >
+                        −
+                      </button>
+                    </div>
+                  )}
+                  
                   {/* 圖表 Tabs */}
                   {(chartData || ulbandData || loading) && (
                     <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>

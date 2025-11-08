@@ -8,6 +8,7 @@ const ULBandChart = ({ data }) => {
     const { t } = useTranslation();
     const chartRef = useRef(null);
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+    const [isZoomed, setIsZoomed] = React.useState(false);
 
     // 計算合適的時間單位
     const calculateTimeUnit = () => {
@@ -272,6 +273,35 @@ const ULBandChart = ({ data }) => {
         clip: false
     };
 
+    // 添加 zoom 插件配置
+    options.plugins.zoom = {
+        zoom: {
+            wheel: {
+                enabled: true,
+                speed: 0.1
+            },
+            pinch: {
+                enabled: true
+            },
+            mode: 'x',
+            onZoomComplete: ({ chart }) => {
+                const zoomed = chart.isZoomedOrPanned();
+                setIsZoomed(zoomed);
+            }
+        },
+        pan: {
+            enabled: true,
+            mode: 'x',
+            onPanComplete: ({ chart }) => {
+                const zoomed = chart.isZoomedOrPanned();
+                setIsZoomed(zoomed);
+            }
+        },
+        limits: {
+            x: { min: 'original', max: 'original' }
+        }
+    };
+
     // 自動顯示最新數據點的 tooltip
     useEffect(() => {
         if (data && chartRef.current) {
@@ -321,7 +351,50 @@ const ULBandChart = ({ data }) => {
     if (!data) return null;
 
     return (
-        <Line ref={chartRef} data={chartData} options={options} />
+        <div className={isZoomed ? 'zoomed' : ''} style={{ position: 'relative' }}>
+            {/* 縮放控制按鈕 */}
+            <div className="chart-zoom-controls">
+                <button
+                    className="chart-zoom-btn"
+                    onClick={() => {
+                        if (chartRef.current) {
+                            const chart = chartRef.current;
+                            const xScale = chart.scales.x;
+                            const currentMin = xScale.min;
+                            const currentMax = xScale.max;
+                            const range = currentMax - currentMin;
+                            // 以最右邊為基準，向左擴展 20%
+                            const newRange = range / 1.2;
+                            const newMin = currentMax - newRange;
+                            chart.zoomScale('x', { min: newMin, max: currentMax });
+                        }
+                    }}
+                    title="放大"
+                >
+                    +
+                </button>
+                <button
+                    className="chart-zoom-btn"
+                    onClick={() => {
+                        if (chartRef.current) {
+                            const chart = chartRef.current;
+                            const xScale = chart.scales.x;
+                            const currentMin = xScale.min;
+                            const currentMax = xScale.max;
+                            const range = currentMax - currentMin;
+                            // 以最右邊為基準，向左縮小 20%
+                            const newRange = range * 1.2;
+                            const newMin = currentMax - newRange;
+                            chart.zoomScale('x', { min: newMin, max: currentMax });
+                        }
+                    }}
+                    title="縮小"
+                >
+                    −
+                </button>
+            </div>
+            <Line ref={chartRef} data={chartData} options={options} />
+        </div>
     );
 };
 
