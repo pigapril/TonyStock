@@ -272,7 +272,7 @@ const ULBandChart = ({ data, onChartReady }) => {
         layout: {
             padding: {
                 left: 10,
-                right: 25,
+                right: 15,
                 top: 20,
                 bottom: 25
             }

@@ -966,7 +966,7 @@ export function PriceAnalysis() {
       },
       interaction: { mode: 'index', intersect: false },
       hover: { mode: 'index', intersect: false },
-      layout: { padding: { left: 10, right: 25, top: 20, bottom: 25 } },
+      layout: { padding: { left: 10, right: 15, top: 20, bottom: 25 } },
       clip: false
     };
 
