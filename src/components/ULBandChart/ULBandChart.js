@@ -24,6 +24,16 @@ const ULBandChart = ({ data }) => {
 
     const timeUnit = calculateTimeUnit();
 
+    // 計算 x 軸的最大值，在最後一個數據點後增加 5% 的空間
+    let xAxisMax = undefined;
+    if (data.dates && data.dates.length > 0) {
+        const lastDate = new Date(data.dates[data.dates.length - 1]);
+        const firstDate = new Date(data.dates[0]);
+        const timeRange = lastDate - firstDate;
+        // 在右側增加 5% 的時間範圍作為空白
+        xAxisMax = new Date(lastDate.getTime() + timeRange * 0.05);
+    }
+
     const chartData = {
         labels: data.dates,
         datasets: [
@@ -157,7 +167,8 @@ const ULBandChart = ({ data }) => {
                 },
                 grid: {
                     drawBorder: true
-                }
+                },
+                ...(xAxisMax && { max: xAxisMax }) // 動態設置 x 軸最大值
             },
             y: {
                 position: 'right',

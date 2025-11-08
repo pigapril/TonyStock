@@ -764,6 +764,16 @@ export function PriceAnalysis() {
 
   // 優化 Line Chart Options
   const lineChartOptions = useMemo(() => {
+    // 計算 x 軸的最大值，在最後一個數據點後增加 5% 的空間
+    let xAxisMax = undefined;
+    if (chartData?.labels && chartData.labels.length > 0) {
+      const lastDate = new Date(chartData.labels[chartData.labels.length - 1]);
+      const firstDate = new Date(chartData.labels[0]);
+      const timeRange = lastDate - firstDate;
+      // 在右側增加 5% 的時間範圍作為空白
+      xAxisMax = new Date(lastDate.getTime() + timeRange * 0.05);
+    }
+
     // 基本配置
     const options = {
       responsive: true,
@@ -782,7 +792,8 @@ export function PriceAnalysis() {
             maxRotation: isMobile ? 45 : 0,
             minRotation: isMobile ? 45 : 0,
             font: { size: isMobile ? 10 : 12 }
-          }
+          },
+          ...(xAxisMax && { max: xAxisMax }) // 動態設置 x 軸最大值
         },
         y: { position: 'right', grid: { drawBorder: true } }
       },
@@ -849,8 +860,8 @@ export function PriceAnalysis() {
     }
 
     return options;
-  // 依賴 isMobile 和 chartData?.timeUnit (安全訪問)
-  }, [isMobile, chartData?.timeUnit]);
+  // 依賴 isMobile、chartData?.timeUnit 和 chartData?.labels (安全訪問)
+  }, [isMobile, chartData?.timeUnit, chartData?.labels]);
 
   // 建立 ExpandableDescription 的 sections (使用 useMemo 和 t)
   const expandableSections = useMemo(() => [
