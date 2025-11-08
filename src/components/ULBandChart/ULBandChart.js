@@ -56,7 +56,7 @@ const ULBandChart = ({ data }) => {
             {
                 label: t('ulBandChart.priceLabel'),
                 data: data.prices,
-                borderColor: '787878',     // 保持與標準差分析相同的藍色
+                borderColor: '#000000',     // 保持與標準差分析相同的黑色
                 borderWidth: 2,
                 fill: false,
                 pointRadius: 0
@@ -127,18 +127,69 @@ const ULBandChart = ({ data }) => {
                 },
                 itemSort: (a, b) => b.parsed.y - a.parsed.y
             },
-            crosshair: {
-                line: {
-                    color: '#F66',
-                    width: 1,
-                    dashPattern: [5, 5]
-                },
-                sync: {
-                    enabled: false
-                },
-                zoom: {
-                    enabled: false
-                }
+
+            annotation: {
+                annotations: (() => {
+                    const annotations = {};
+                    
+                    // 只在有數據時添加 annotations
+                    if (data.dates && data.dates.length > 0) {
+                        const lastIndex = data.dates.length - 1;
+                        const lastDate = data.dates[lastIndex];
+                        
+                        // 為所有線條添加虛線
+                        chartData.datasets.forEach((dataset, index) => {
+                            if (dataset.data && dataset.data.length > 0) {
+                                const lastValue = dataset.data[lastIndex];
+                                
+                                annotations[`line-${index}`] = {
+                                    type: 'line',
+                                    yMin: lastValue,
+                                    yMax: lastValue,
+                                    xMin: lastDate,
+                                    xMax: xAxisMax || lastDate,
+                                    borderColor: dataset.borderColor || '#999',
+                                    borderWidth: index === 2 ? 2 : 1, // 價格線（index=2）稍粗
+                                    borderDash: [5, 5]
+                                };
+                                
+                                // 只為價格線（index === 2）添加標籤
+                                if (index === 2) {
+                                    annotations['price-label'] = {
+                                        type: 'label',
+                                        drawTime: 'afterDraw',
+                                        xScaleID: 'x',
+                                        yScaleID: 'y',
+                                        xValue: xAxisMax || lastDate,
+                                        yValue: lastValue,
+                                        backgroundColor: dataset.borderColor || '#000000',
+                                        color: '#fff',
+                                        content: `$${formatPrice(lastValue)}`,
+                                        font: {
+                                            size: 11,
+                                            weight: 'bold'
+                                        },
+                                        padding: {
+                                            top: 3,
+                                            bottom: 3,
+                                            left: 6,
+                                            right: 6
+                                        },
+                                        borderRadius: 3,
+                                        position: {
+                                            x: 'end',
+                                            y: 'center'
+                                        },
+                                        xAdjust: 35,
+                                        yAdjust: 0
+                                    };
+                                }
+                            }
+                        });
+                    }
+                    
+                    return annotations;
+                })()
             }
         },
         hover: {
@@ -180,11 +231,12 @@ const ULBandChart = ({ data }) => {
         layout: {
             padding: {
                 left: 10,
-                right: 30,
+                right: 70,
                 top: 20,
                 bottom: 25
             }
-        }
+        },
+        clip: false
     };
 
     // 自動顯示最新數據點的 tooltip

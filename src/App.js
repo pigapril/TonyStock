@@ -8,6 +8,7 @@ import { useSmartNavigation } from './hooks/useSmartNavigation';
 
 // 第三方庫
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
+import annotationPlugin from 'chartjs-plugin-annotation';
 import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-crosshair';
 import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaPiggyBank } from 'react-icons/fa';
@@ -81,7 +82,7 @@ import { setupRobotsProtection } from './utils/robotsHandler';
 import { initializeFreeStockList } from './utils/freeStockListUtils';
 
 // 設定 ChartJS
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, annotationPlugin);
 
 // 在 AppContent 之前加入 Overlay 元件定義
 const Overlay = ({ isVisible, onClick }) => (

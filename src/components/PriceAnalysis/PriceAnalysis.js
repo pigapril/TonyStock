@@ -286,7 +286,7 @@ export function PriceAnalysis() {
           labels: dates,
           datasets: [
             // 使用 t() 翻譯 dataset labels
-            { label: t('priceAnalysis.chart.label.price'), data: prices, borderColor: '787878', borderWidth: 2, fill: false, pointRadius: 0 }, // 價格線顏色維持灰色
+            { label: t('priceAnalysis.chart.label.price'), data: prices, borderColor: '#000000', borderWidth: 2, fill: false, pointRadius: 0 }, // 價格線顏色維持黑色
             { label: t('priceAnalysis.chart.label.trendLine'), data: sdAnalysis.trendLine, borderColor: '#708090', borderWidth: 2, fill: false, pointRadius: 0 }, // Neutral
             { label: t('priceAnalysis.chart.label.minus2sd'), data: sdAnalysis.tl_minus_2sd, borderColor: '#0000FF', borderWidth: 2, fill: false, pointRadius: 0 }, // extremePessimism
             { label: t('priceAnalysis.chart.label.minus1sd'), data: sdAnalysis.tl_minus_sd, borderColor: '#5B9BD5', borderWidth: 2, fill: false, pointRadius: 0 }, // pessimism
@@ -843,15 +843,75 @@ export function PriceAnalysis() {
           },
           itemSort: (a, b) => b.parsed.y - a.parsed.y
         },
-        crosshair: {
-          line: { color: '#F66', width: 1, dashPattern: [5, 5] },
-          sync: { enabled: false },
-          zoom: { enabled: false }
+
+        annotation: {
+          annotations: (() => {
+            const annotations = {};
+            
+            // 只在有數據時添加 annotations
+            if (chartData?.labels && chartData.labels.length > 0 && chartData.datasets) {
+              const lastIndex = chartData.labels.length - 1;
+              const lastDate = chartData.labels[lastIndex];
+              
+              // 為所有線條添加虛線
+              chartData.datasets.forEach((dataset, index) => {
+                if (dataset.data && dataset.data.length > 0) {
+                  const lastValue = dataset.data[lastIndex];
+                  
+                  annotations[`line-${index}`] = {
+                    type: 'line',
+                    yMin: lastValue,
+                    yMax: lastValue,
+                    xMin: lastDate,
+                    xMax: xAxisMax || lastDate,
+                    borderColor: dataset.borderColor || '#999',
+                    borderWidth: index === 0 ? 2 : 1,
+                    borderDash: [5, 5]
+                  };
+                  
+                  // 只為價格線（index === 0）添加標籤
+                  if (index === 0) {
+                    annotations['price-label'] = {
+                      type: 'label',
+                      drawTime: 'afterDraw',
+                      xScaleID: 'x',
+                      yScaleID: 'y',
+                      xValue: xAxisMax || lastDate,
+                      yValue: lastValue,
+                      backgroundColor: dataset.borderColor || '#000000',
+                      color: '#fff',
+                      content: `${formatPrice(lastValue)}`,
+                      font: {
+                        size: isMobile ? 10 : 11,
+                        weight: 'bold'
+                      },
+                      padding: {
+                        top: 3,
+                        bottom: 3,
+                        left: 6,
+                        right: 6
+                      },
+                      borderRadius: 3,
+                      position: {
+                        x: 'end',
+                        y: 'center'
+                      },
+                      xAdjust: 35,
+                      yAdjust: 0
+                    };
+                  }
+                }
+              });
+            }
+            
+            return annotations;
+          })()
         }
       },
       interaction: { mode: 'index', intersect: false },
       hover: { mode: 'index', intersect: false },
-      layout: { padding: { left: 10, right: 30, top: 20, bottom: 25 } }
+      layout: { padding: { left: 10, right: 70, top: 20, bottom: 25 } },
+      clip: false
     };
 
     // 動態添加 time unit (如果 chartData 存在)
