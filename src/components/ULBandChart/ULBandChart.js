@@ -96,8 +96,8 @@ const ULBandChart = React.forwardRef(({ data }, ref) => {
         plugins: {
             legend: { display: false },
             tooltip: {
-                // 手機版：只在長按時啟用 tooltip；桌面版：總是啟用
-                enabled: !isMobile,
+                // 預設啟用 tooltip（長按插件會動態控制手機版的顯示）
+                enabled: true,
                 mode: 'index',
                 intersect: false,
                 usePointStyle: true,
