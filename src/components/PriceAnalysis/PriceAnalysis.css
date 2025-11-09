@@ -70,8 +70,8 @@
   position: relative;
   /* 確保 transform 生效 */
   transform: translateY(-10px);
-  /* 允許雙指縮放，但禁止單指平移 */
-  touch-action: pinch-zoom;
+  /* 允許雙指縮放和平移，但禁止單指平移 */
+  touch-action: pan-x pinch-zoom;
 }
 
 /* 標題組容器樣式 */

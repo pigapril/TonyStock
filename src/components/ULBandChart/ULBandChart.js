@@ -283,15 +283,25 @@ const ULBandChart = ({ data, onChartReady }) => {
     // 在 options 定義完成後，添加 zoom 插件配置到 plugins
     options.plugins.zoom = {
         pan: {
-            enabled: !isMobile, // 手機版禁用拖動平移，避免與 tooltip 衝突
+            enabled: true, // 啟用平移功能
             mode: 'x',
             modifierKey: isMobile ? null : undefined, // 桌面版不需要按鍵即可平移
-            onPanStart: ({ chart, point }) => {
-                // 桌面版允許平移時，阻止預設行為
+            onPanStart: ({ chart, point, event }) => {
+                // 桌面版：允許滑鼠拖動平移
                 if (!isMobile) {
                     return true;
                 }
+                // 手機版：只允許雙指平移
+                if (event && event.touches && event.touches.length === 2) {
+                    return true;
+                }
                 return false;
+            },
+            onPan: ({ chart, event }) => {
+                // 手機版雙指平移時，阻止預設行為
+                if (isMobile && event && event.touches && event.touches.length === 2) {
+                    event.preventDefault();
+                }
             }
         },
         zoom: {
