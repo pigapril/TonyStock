@@ -51,6 +51,7 @@
 
 /* 圖表容器樣式 */
 .price-analysis-view .chart-container {
+  position: relative; /* 讓 ScrollToTopButton 相對於此定位 */
   width: 100%;
   height: 450px;
   max-width: 100%;
@@ -159,48 +160,6 @@
   color: var(--color-text-primary, #1d1d1f);
   box-shadow: var(--shadow-xs, 0 1px 3px rgba(0, 0, 0, 0.1));
   /* 更細微的陰影 */
-}
-
-/* 回到頂端按鈕 - 蘋果風格 */
-.price-analysis-view .scroll-to-top-btn {
-  position: absolute;
-  top: -30px; /* 懸浮在 chart-card 上方 */
-  left: 50%; /* 水平置中 */
-  transform: translateX(-50%); /* 完美置中 */
-  z-index: 100;
-  width: 44px;
-  height: 44px;
-  border: none;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 22px; /* 完美圓形 */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15),
-              0 0 0 0.5px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #007AFF; /* iOS 藍色 */
-}
-
-.price-analysis-view .scroll-to-top-btn:hover {
-  transform: translateX(-50%) translateY(-2px); /* 保持置中並上浮 */
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2),
-              0 0 0 0.5px rgba(0, 0, 0, 0.08);
-}
-
-.price-analysis-view .scroll-to-top-btn:active {
-  transform: translateX(-50%) translateY(0) scale(0.95); /* 保持置中並縮放 */
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15),
-              0 0 0 0.5px rgba(0, 0, 0, 0.08);
-}
-
-.price-analysis-view .scroll-to-top-btn svg {
-  width: 20px;
-  height: 20px;
-  color: inherit;
 }
 
 /* 圖表縮放按鈕組 - 蘋果風格 */

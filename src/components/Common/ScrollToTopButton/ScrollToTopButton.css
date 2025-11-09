@@ -1,0 +1,87 @@
+/* 回到頂端按鈕 - 蘋果風格 */
+.scroll-to-top-button {
+  position: absolute;
+  top: -25px; /* 懸浮在 chart-card 上方 */
+  left: 50%; /* 水平置中 */
+  transform: translateX(-50%); /* 完美置中 */
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 22px; /* 完美圓形 */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08),
+              0 0 0 0.5px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #8E8E93; /* iOS 柔和灰色 */
+  overflow: hidden; /* 隱藏超出的箭頭 */
+}
+
+.scroll-to-top-button:hover {
+  transform: translateX(-50%) translateY(-2px); /* 保持置中並上浮 */
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12),
+              0 0 0 0.5px rgba(0, 0, 0, 0.06);
+  color: #636366; /* Hover 時顏色稍深 */
+}
+
+.scroll-to-top-button:active {
+  transform: translateX(-50%) scale(0.95); /* 保持置中並縮放 */
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08),
+              0 0 0 0.5px rgba(0, 0, 0, 0.04);
+  color: #48484A; /* Active 時顏色更深 */
+}
+
+/* Chevron 圖標 */
+.scroll-to-top-button .arrow-icon {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  color: inherit;
+  animation: arrowFloat 2.5s ease-in-out infinite;
+  opacity: 0.9; /* 稍微透明，更柔和 */
+}
+
+/* 三個箭頭的延遲動畫 */
+.scroll-to-top-button .arrow-1 {
+  animation-delay: 0s;
+}
+
+.scroll-to-top-button .arrow-2 {
+  animation-delay: 0.5s;
+}
+
+.scroll-to-top-button .arrow-3 {
+  animation-delay: 1s;
+}
+
+/* 箭頭向上移動並淡出的動畫 */
+@keyframes arrowFloat {
+  0% {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-12px);
+    opacity: 0;
+  }
+}
+
+/* 暫停動畫當 hover 或 active 時 */
+.scroll-to-top-button:hover .arrow-icon,
+.scroll-to-top-button:active .arrow-icon {
+  animation-play-state: paused;
+}

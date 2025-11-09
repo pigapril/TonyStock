@@ -272,7 +272,7 @@
   .chat-toggle-button {
     width: 70px;
     height: 70px;
-    bottom: 100px;
+    bottom: 20px;
     right: 10px;
   }
 }

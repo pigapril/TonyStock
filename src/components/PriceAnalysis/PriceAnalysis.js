@@ -26,6 +26,7 @@ import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
 import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDialog
 import { isStockAllowed, getFreeStockList } from '../../utils/freeStockListUtils'; // 導入免費股票清單檢查函數
 import FreeStockList from './FreeStockList'; // 新增：引入免費股票清單組件
+import ScrollToTopButton from '../Common/ScrollToTopButton/ScrollToTopButton'; // 新增：引入回到頂端按鈕
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
 function getTimeUnit(dates) {
@@ -1244,23 +1245,8 @@ export function PriceAnalysis() {
 
             {/* 主圖表區塊 */}
             <div className="chart-card" ref={chartCardRef}>
-              {/* 回到頂端按鈕 - 只在手機版顯示 */}
-              {isMobile && (chartData || ulbandData) && (
-                <button
-                  className="scroll-to-top-btn"
-                  onClick={() => {
-                    window.scrollTo({
-                      top: 0,
-                      behavior: 'smooth'
-                    });
-                  }}
-                  title={t('common.scrollToTop') || '回到頂端'}
-                >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M10 15V5M10 5L5 10M10 5L15 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-              )}
+              {/* 回到頂端按鈕 - 只在手機版顯示，懸浮在圖表上方 */}
+              <ScrollToTopButton show={isMobile && (chartData || ulbandData)} />
               <div className="chart-container">
                 {/* 只有在 loading 或有數據時才顯示圖表標頭 */}
                 {(loading || chartData || ulbandData) && (
