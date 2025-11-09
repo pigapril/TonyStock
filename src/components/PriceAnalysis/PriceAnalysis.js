@@ -118,6 +118,7 @@ export function PriceAnalysis() {
 
   // 新增：快速選擇 Tab 狀態
   const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('hotSearches'); // 'hotSearches' 或 'freeStocks'
+  const [isUserInitiated, setIsUserInitiated] = useState(false); // 追蹤是否為用戶主動操作
 
   // 新增：自動顯示最新數據點的 tooltip
   useEffect(() => {
@@ -167,8 +168,8 @@ export function PriceAnalysis() {
 
   // 新增：手機版自動滾動到圖表
   useEffect(() => {
-    // 只在手機版、非 loading 狀態、且有數據時執行
-    if (isMobile && !loading && (chartData || ulbandData) && chartCardRef.current) {
+    // 只在手機版、非 loading 狀態、有數據、且是用戶主動操作時執行
+    if (isMobile && !loading && (chartData || ulbandData) && chartCardRef.current && isUserInitiated) {
       // 使用 setTimeout 確保圖表已完全渲染和 DOM 更新完成
       const timer = setTimeout(() => {
         if (chartCardRef.current) {
@@ -182,11 +183,13 @@ export function PriceAnalysis() {
             behavior: 'smooth'
           });
         }
+        // 滾動完成後重置標記
+        setIsUserInitiated(false);
       }, 100); // 延遲 500ms 確保圖表和數據都已渲染
       
       return () => clearTimeout(timer);
     }
-  }, [isMobile, loading, chartData, ulbandData]); // 依賴於 isMobile、loading、chartData 和 ulbandData
+  }, [isMobile, loading, chartData, ulbandData, isUserInitiated]); // 依賴於 isMobile、loading、chartData、ulbandData 和 isUserInitiated
 
   // --- Debounced State Setters ---
   // Debounce setStockCode with a 300ms delay
@@ -377,6 +380,9 @@ export function PriceAnalysis() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted, checking auth:', { isAuthenticated, user });
+
+    // 標記為用戶主動操作
+    setIsUserInitiated(true);
 
     // 新增：檢查登入狀態
     if (!isAuthenticated) {
@@ -585,6 +591,9 @@ export function PriceAnalysis() {
 
   // 新增：處理熱門搜尋項目點擊事件
   const handleHotSearchClick = (searchItem) => { // 參數名稱改為 searchItem 以清晰表示它是一個物件
+    // 標記為用戶主動操作
+    setIsUserInitiated(true);
+
     // 新增：檢查登入狀態
     if (!isAuthenticated) {
       openDialog('auth', {
@@ -670,6 +679,9 @@ export function PriceAnalysis() {
 
   // 新增：處理免費股票清單點擊事件
   const handleFreeStockClick = (ticker) => {
+    // 標記為用戶主動操作
+    setIsUserInitiated(true);
+
     // 新增：檢查登入狀態
     if (!isAuthenticated) {
       openDialog('auth', {
@@ -1232,6 +1244,23 @@ export function PriceAnalysis() {
 
             {/* 主圖表區塊 */}
             <div className="chart-card" ref={chartCardRef}>
+              {/* 回到頂端按鈕 - 只在手機版顯示 */}
+              {isMobile && (chartData || ulbandData) && (
+                <button
+                  className="scroll-to-top-btn"
+                  onClick={() => {
+                    window.scrollTo({
+                      top: 0,
+                      behavior: 'smooth'
+                    });
+                  }}
+                  title={t('common.scrollToTop') || '回到頂端'}
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 15V5M10 5L5 10M10 5L15 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              )}
               <div className="chart-container">
                 {/* 只有在 loading 或有數據時才顯示圖表標頭 */}
                 {(loading || chartData || ulbandData) && (
