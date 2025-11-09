@@ -149,7 +149,10 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         const touches = e.touches;
 
         if (touches.length === 1) {
-          // 單指觸控
+          // 單指觸控 - 攔截事件
+          e.preventDefault();
+          e.stopPropagation();
+          
           touchState.touchStartPos = {
             x: touches[0].clientX,
             y: touches[0].clientY
@@ -187,7 +190,10 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
 
         } else if (touches.length === 2) {
           console.log('✌️ Two fingers detected - pinch zoom');
-          // 雙指觸控，清除長壓計時器
+          // 雙指觸控 - 不攔截，讓事件穿透到 canvas
+          // 不調用 preventDefault()，讓事件自然傳遞
+          
+          // 清除長壓計時器
           if (touchState.longPressTimer) {
             clearTimeout(touchState.longPressTimer);
             touchState.longPressTimer = null;
@@ -201,9 +207,10 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
 
           // 記錄初始雙指距離
           touchState.initialPinchDistance = getDistance(touches[0], touches[1]);
-
-          // 轉發事件給 canvas，讓 zoom 插件處理
-          forwardTouchEvent(canvas, e);
+          
+          // 暫時隱藏透明層，讓事件直接到達 canvas
+          touchLayer.style.pointerEvents = 'none';
+          console.log('🔓 Touch layer disabled for pinch');
         }
       };
 
@@ -211,8 +218,11 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
       const handleTouchMove = (e) => {
         const touches = e.touches;
 
-        if (touches.length === 1) {
-          // 單指移動
+        if (touches.length === 1 && touchLayer.style.pointerEvents !== 'none') {
+          // 單指移動 - 只在透明層啟用時處理
+          e.preventDefault();
+          e.stopPropagation();
+          
           if (touchState.touchStartPos) {
             const moveDistance = Math.sqrt(
               Math.pow(touches[0].clientX - touchState.touchStartPos.x, 2) +
@@ -259,15 +269,13 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
               }
             }
           }
-        } else if (touches.length === 2) {
-          // 雙指移動，轉發給 canvas
-          forwardTouchEvent(canvas, e);
         }
+        // 雙指移動時，透明層已經禁用，事件會自然傳遞到 canvas
       };
 
       // 處理 touchend 事件
       const handleTouchEnd = (e) => {
-        console.log('🖐️ Touch end');
+        console.log('🖐️ Touch end, remaining fingers:', e.touches.length);
         
         if (touchState.longPressTimer) {
           clearTimeout(touchState.longPressTimer);
@@ -283,9 +291,15 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           console.log('Pan ended');
         }
 
-        // 如果是雙指操作結束，轉發事件
-        if (e.touches.length === 0 && touchState.initialPinchDistance !== null) {
-          forwardTouchEvent(canvas, e);
+        // 如果所有手指都離開，重新啟用透明層
+        if (e.touches.length === 0) {
+          touchLayer.style.pointerEvents = 'auto';
+          console.log('🔒 Touch layer re-enabled');
+          
+          // 如果之前是雙指操作，現在結束了
+          if (touchState.initialPinchDistance !== null) {
+            console.log('Pinch zoom ended');
+          }
         }
 
         // 重置狀態
@@ -293,7 +307,11 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         touchState.lastTouchPos = null;
         touchState.isLongPress = false;
         touchState.isPanning = false;
-        touchState.initialPinchDistance = null;
+        
+        // 只有在所有手指都離開時才重置 pinch 狀態
+        if (e.touches.length === 0) {
+          touchState.initialPinchDistance = null;
+        }
       };
 
       // 處理 touchcancel 事件
@@ -308,6 +326,10 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         if (touchState.isLongPress) {
           hideTooltip(chart);
         }
+
+        // 重新啟用透明層
+        touchLayer.style.pointerEvents = 'auto';
+        console.log('🔒 Touch layer re-enabled (cancel)');
 
         // 重置狀態
         touchState.touchStartPos = null;
