@@ -109,6 +109,7 @@ export function PriceAnalysis() {
   const [isPending, startTransition] = useTransition(); // 添加 useTransition
   const chartRef = useRef(null); // 新增：圖表 ref 用於程式化控制 tooltip
   const ulbandChartRef = useRef(null); // ULBand 圖表 ref
+  const chartCardRef = useRef(null); // 圖表卡片 ref 用於滾動
 
 
   // 新增：熱門搜尋狀態
@@ -163,6 +164,29 @@ export function PriceAnalysis() {
       return () => clearTimeout(timer);
     }
   }, [loading, activeChart, chartData]); // 依賴於 loading、activeChart 和 chartData
+
+  // 新增：手機版自動滾動到圖表
+  useEffect(() => {
+    // 只在手機版、非 loading 狀態、且有數據時執行
+    if (isMobile && !loading && (chartData || ulbandData) && chartCardRef.current) {
+      // 使用 setTimeout 確保圖表已完全渲染和 DOM 更新完成
+      const timer = setTimeout(() => {
+        if (chartCardRef.current) {
+          const rect = chartCardRef.current.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          const bottomPadding = 10; // 底部留一些空間，確保 X 軸完整顯示
+          // 計算滾動位置：讓 chart-card 的底部對齊視窗底部（加上 padding）
+          const scrollTarget = window.pageYOffset + rect.bottom - windowHeight + bottomPadding;
+          window.scrollTo({
+            top: scrollTarget,
+            behavior: 'smooth'
+          });
+        }
+      }, 100); // 延遲 500ms 確保圖表和數據都已渲染
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isMobile, loading, chartData, ulbandData]); // 依賴於 isMobile、loading、chartData 和 ulbandData
 
   // --- Debounced State Setters ---
   // Debounce setStockCode with a 300ms delay
@@ -1207,7 +1231,7 @@ export function PriceAnalysis() {
           </div> {/* 結束 analysis-controls-wrapper */}
 
             {/* 主圖表區塊 */}
-            <div className="chart-card">
+            <div className="chart-card" ref={chartCardRef}>
               <div className="chart-container">
                 {/* 只有在 loading 或有數據時才顯示圖表標頭 */}
                 {(loading || chartData || ulbandData) && (
