@@ -3,12 +3,15 @@ import { Line } from 'react-chartjs-2';
 import { formatPrice } from '../../utils/priceUtils';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from 'react-responsive';
-import zoomPlugin from 'chartjs-plugin-zoom'; // 新增：引入縮放插件
+import { useMobileTouchHandler } from './useMobileTouchHandler';
 
 const ULBandChart = ({ data, onChartReady }) => {
     const { t } = useTranslation();
     const chartRef = useRef(null);
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+    
+    // 使用自定義 Hook 處理手機版觸控
+    useMobileTouchHandler(chartRef, isMobile, true);
 
     // 當圖表準備好時，通知父組件
     useEffect(() => {
@@ -283,26 +286,10 @@ const ULBandChart = ({ data, onChartReady }) => {
     // 在 options 定義完成後，添加 zoom 插件配置到 plugins
     options.plugins.zoom = {
         pan: {
-            enabled: true, // 啟用平移功能
+            enabled: !isMobile, // 手機版禁用 pan（由透明層處理）
             mode: 'x',
-            modifierKey: isMobile ? null : undefined, // 桌面版不需要按鍵即可平移
-            onPanStart: ({ chart, point, event }) => {
-                // 桌面版：允許滑鼠拖動平移
-                if (!isMobile) {
-                    return true;
-                }
-                // 手機版：只允許雙指平移
-                if (event && event.touches && event.touches.length === 2) {
-                    return true;
-                }
-                return false;
-            },
-            onPan: ({ chart, event }) => {
-                // 手機版雙指平移時，阻止預設行為
-                if (isMobile && event && event.touches && event.touches.length === 2) {
-                    event.preventDefault();
-                }
-            }
+            modifierKey: undefined,
+            onPanStart: () => true
         },
         zoom: {
             wheel: {
@@ -310,7 +297,7 @@ const ULBandChart = ({ data, onChartReady }) => {
                 speed: 0.1
             },
             pinch: {
-                enabled: true // 保留雙指縮放
+                enabled: isMobile // 只在手機版啟用雙指縮放
             },
             mode: 'x',
             onZoomStart: ({ chart, event }) => {

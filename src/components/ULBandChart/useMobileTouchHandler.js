@@ -12,19 +12,25 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
   const touchStateRef = useRef({
     longPressTimer: null,
     touchStartPos: null,
+    lastTouchPos: null,
     isLongPress: false,
     isPanning: false,
     initialPinchDistance: null
   });
 
   useEffect(() => {
-    if (!enabled || !isMobile || !chartRef.current) {
-      return;
-    }
+    // 使用 setTimeout 確保圖表已經渲染
+    const initTimer = setTimeout(() => {
+      if (!enabled || !isMobile || !chartRef.current) {
+        console.log('Touch handler not initialized:', { enabled, isMobile, hasChart: !!chartRef.current });
+        return;
+      }
 
-    const chart = chartRef.current;
-    const canvas = chart.canvas;
-    const touchState = touchStateRef.current;
+      const chart = chartRef.current;
+      const canvas = chart.canvas;
+      const touchState = touchStateRef.current;
+      
+      console.log('Initializing touch handler for mobile', { canvas: !!canvas });
 
     // 輔助函數：計算兩點之間的距離
     const getDistance = (touch1, touch2) => {
@@ -98,7 +104,19 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
       chart.update('none');
     };
 
-    // 輔助函數：創建並轉發觸控事件給 canvas
+    // 輔助函數：手動執行平移（不轉發事件，直接調用 Chart.js API）
+    const panChart = (deltaX, deltaY) => {
+      try {
+        // 使用 Chart.js 的 pan 功能
+        if (chart.pan) {
+          chart.pan({ x: deltaX, y: 0 }, undefined, 'default');
+        }
+      } catch (error) {
+        console.warn('Failed to pan chart:', error);
+      }
+    };
+    
+    // 輔助函數：創建並轉發觸控事件給 canvas（用於雙指縮放）
     const forwardTouchEvent = (canvas, originalEvent) => {
       try {
         const newEvent = new TouchEvent(originalEvent.type, {
@@ -124,12 +142,17 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           x: touches[0].clientX,
           y: touches[0].clientY
         };
+        touchState.lastTouchPos = {
+          x: touches[0].clientX,
+          y: touches[0].clientY
+        };
         touchState.isLongPress = false;
         touchState.isPanning = false;
 
         // 設置長壓計時器
         touchState.longPressTimer = setTimeout(() => {
           touchState.isLongPress = true;
+          console.log('Long press detected');
 
           // 計算觸控點相對於 canvas 的位置
           const rect = canvas.getBoundingClientRect();
@@ -155,6 +178,12 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         if (touchState.longPressTimer) {
           clearTimeout(touchState.longPressTimer);
           touchState.longPressTimer = null;
+        }
+
+        // 隱藏 tooltip（如果正在顯示）
+        if (touchState.isLongPress) {
+          hideTooltip(chart);
+          touchState.isLongPress = false;
         }
 
         // 記錄初始雙指距離
@@ -186,9 +215,22 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
 
             if (!touchState.isLongPress) {
               // 不是長壓，開始平移
-              touchState.isPanning = true;
-              // 轉發事件給 canvas 讓 zoom 插件處理平移
-              forwardTouchEvent(canvas, e);
+              if (!touchState.isPanning) {
+                touchState.isPanning = true;
+                console.log('Pan started');
+              }
+              
+              // 計算移動增量
+              const deltaX = touches[0].clientX - touchState.lastTouchPos.x;
+              
+              // 使用我們自己的平移函數
+              panChart(deltaX, 0);
+              
+              // 更新最後位置
+              touchState.lastTouchPos = {
+                x: touches[0].clientX,
+                y: touches[0].clientY
+              };
             } else {
               // 是長壓後的移動，更新 tooltip 位置
               const rect = canvas.getBoundingClientRect();
@@ -219,14 +261,21 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
 
       if (touchState.isLongPress) {
         // 長壓結束，隱藏 tooltip
+        console.log('Long press ended');
         hideTooltip(chart);
       } else if (touchState.isPanning) {
-        // 平移結束，轉發事件給 canvas
+        // 平移結束
+        console.log('Pan ended');
+      }
+
+      // 如果是雙指操作結束，轉發事件
+      if (e.touches.length === 0 && touchState.initialPinchDistance !== null) {
         forwardTouchEvent(canvas, e);
       }
 
       // 重置狀態
       touchState.touchStartPos = null;
+      touchState.lastTouchPos = null;
       touchState.isLongPress = false;
       touchState.isPanning = false;
       touchState.initialPinchDistance = null;
@@ -277,25 +326,32 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
       touchLayer.addEventListener('touchcancel', handleTouchCancel, { passive: false });
     }
 
-    // 清理函數
-    return () => {
-      if (touchState.longPressTimer) {
-        clearTimeout(touchState.longPressTimer);
-      }
-
-      if (touchLayerRef.current) {
-        touchLayerRef.current.removeEventListener('touchstart', handleTouchStart);
-        touchLayerRef.current.removeEventListener('touchmove', handleTouchMove);
-        touchLayerRef.current.removeEventListener('touchend', handleTouchEnd);
-        touchLayerRef.current.removeEventListener('touchcancel', handleTouchCancel);
-
-        if (touchLayerRef.current.parentElement) {
-          touchLayerRef.current.parentElement.removeChild(touchLayerRef.current);
+      // 清理函數
+      return () => {
+        if (touchState.longPressTimer) {
+          clearTimeout(touchState.longPressTimer);
         }
-        touchLayerRef.current = null;
-      }
+
+        if (touchLayerRef.current) {
+          console.log('Cleaning up touch handler');
+          touchLayerRef.current.removeEventListener('touchstart', handleTouchStart);
+          touchLayerRef.current.removeEventListener('touchmove', handleTouchMove);
+          touchLayerRef.current.removeEventListener('touchend', handleTouchEnd);
+          touchLayerRef.current.removeEventListener('touchcancel', handleTouchCancel);
+
+          if (touchLayerRef.current.parentElement) {
+            touchLayerRef.current.parentElement.removeChild(touchLayerRef.current);
+          }
+          touchLayerRef.current = null;
+        }
+      };
+    }, 100); // 延遲 100ms 確保圖表已渲染
+
+    // 清理 setTimeout
+    return () => {
+      clearTimeout(initTimer);
     };
-  }, [chartRef, isMobile, enabled]);
+  }, [isMobile, enabled]); // 移除 chartRef.current，改為在內部檢查
 
   return touchLayerRef;
 };

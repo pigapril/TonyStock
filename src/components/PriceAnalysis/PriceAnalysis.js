@@ -984,13 +984,10 @@ export function PriceAnalysis() {
         // 新增：縮放功能配置
         zoom: {
           pan: {
-            enabled: true, // 啟用平移功能（手機版由透明層控制）
+            enabled: !isMobile, // 手機版禁用 pan（由透明層處理）
             mode: 'x',
-            modifierKey: isMobile ? null : undefined, // 桌面版不需要按鍵即可平移
-            onPanStart: ({ chart, point }) => {
-              // 允許平移
-              return true;
-            }
+            modifierKey: undefined,
+            onPanStart: () => true
           },
           zoom: {
             wheel: {
@@ -998,7 +995,7 @@ export function PriceAnalysis() {
               speed: 0.1
             },
             pinch: {
-              enabled: true // 保留雙指縮放
+              enabled: isMobile // 只在手機版啟用雙指縮放
             },
             mode: 'x',
             onZoomStart: ({ chart, event }) => {
