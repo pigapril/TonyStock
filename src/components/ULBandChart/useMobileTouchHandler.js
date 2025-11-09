@@ -143,9 +143,31 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         }
       };
 
-      // 處理 touchstart 事件
+      // 全局 touchstart 監聽器 - 檢測第二根手指
+      const handleGlobalTouchStart = (e) => {
+        if (e.touches.length >= 2) {
+          console.log('🌍 Global: Two+ fingers detected');
+          // 立即禁用透明層
+          touchLayer.style.pointerEvents = 'none';
+          console.log('🔓 Touch layer disabled (global)');
+          
+          // 清除長壓計時器
+          if (touchState.longPressTimer) {
+            clearTimeout(touchState.longPressTimer);
+            touchState.longPressTimer = null;
+          }
+          
+          // 隱藏 tooltip
+          if (touchState.isLongPress) {
+            hideTooltip(chart);
+            touchState.isLongPress = false;
+          }
+        }
+      };
+      
+      // 處理 touchstart 事件（在透明層上）
       const handleTouchStart = (e) => {
-        console.log('👆 Touch start:', e.touches.length, 'finger(s)');
+        console.log('👆 Touch start on layer:', e.touches.length, 'finger(s)');
         const touches = e.touches;
 
         if (touches.length === 1) {
@@ -188,29 +210,12 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
             }
           }, 500); // 500ms 長壓閾值
 
-        } else if (touches.length === 2) {
-          console.log('✌️ Two fingers detected - pinch zoom');
-          // 雙指觸控 - 不攔截，讓事件穿透到 canvas
-          // 不調用 preventDefault()，讓事件自然傳遞
-          
-          // 清除長壓計時器
-          if (touchState.longPressTimer) {
-            clearTimeout(touchState.longPressTimer);
-            touchState.longPressTimer = null;
-          }
-
-          // 隱藏 tooltip（如果正在顯示）
-          if (touchState.isLongPress) {
-            hideTooltip(chart);
-            touchState.isLongPress = false;
-          }
-
-          // 記錄初始雙指距離
-          touchState.initialPinchDistance = getDistance(touches[0], touches[1]);
-          
-          // 暫時隱藏透明層，讓事件直接到達 canvas
+        } else if (touches.length >= 2) {
+          console.log('✌️ Two+ fingers on layer');
+          // 這個分支可能不會執行，因為全局監聽器會先禁用透明層
+          // 但保留作為備份
           touchLayer.style.pointerEvents = 'none';
-          console.log('🔓 Touch layer disabled for pinch');
+          console.log('🔓 Touch layer disabled (layer)');
         }
       };
 
@@ -347,8 +352,11 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
       touchLayer.style.right = '0';
       touchLayer.style.bottom = '0';
       touchLayer.style.zIndex = '10';
-      touchLayer.style.touchAction = 'none'; // 防止瀏覽器預設行為
+      touchLayer.style.touchAction = 'pan-x pinch-zoom'; // 允許平移和縮放，但我們會攔截單指
       touchLayer.style.backgroundColor = 'rgba(255, 0, 0, 0.1)'; // 臨時：半透明紅色用於除錯
+      
+      // 關鍵：設置 CSS 讓雙指事件穿透
+      touchLayer.style.pointerEvents = 'auto';
 
       // 將觸控層插入到 canvas 的父容器中
       const canvasParent = canvas.parentElement;
@@ -363,12 +371,16 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         touchLayerRef.current = touchLayer;
         console.log('✅ Touch layer created and attached');
 
-        // 添加事件監聽器
+        // 添加全局監聽器（檢測第二根手指）
+        document.addEventListener('touchstart', handleGlobalTouchStart, { passive: true });
+        console.log('✅ Global touch listener attached');
+
+        // 添加透明層事件監聽器
         touchLayer.addEventListener('touchstart', handleTouchStart, { passive: false });
         touchLayer.addEventListener('touchmove', handleTouchMove, { passive: false });
         touchLayer.addEventListener('touchend', handleTouchEnd, { passive: false });
         touchLayer.addEventListener('touchcancel', handleTouchCancel, { passive: false });
-        console.log('✅ Event listeners attached');
+        console.log('✅ Layer event listeners attached');
       } else {
         console.error('❌ Canvas parent not found');
       }
@@ -383,6 +395,9 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         clearTimeout(touchState.longPressTimer);
       }
 
+      // 移除全局監聽器
+      document.removeEventListener('touchstart', () => {});
+      
       if (touchLayerRef.current) {
         console.log('🧹 Cleaning up touch handler');
         touchLayerRef.current.removeEventListener('touchstart', () => {});
