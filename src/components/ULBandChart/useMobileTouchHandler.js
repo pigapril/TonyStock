@@ -3,19 +3,20 @@ import { useEffect, useRef } from 'react';
 /**
  * 自定義 Hook：處理手機版圖表的長壓顯示 tooltip 和平移功能
  * 
+ * 新方案：直接在 Canvas 上監聽事件，不使用透明層
+ * 
  * @param {Object} chartRef - Chart.js 圖表的 ref
  * @param {boolean} isMobile - 是否為手機版
  * @param {boolean} enabled - 是否啟用此功能
  */
 export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
-  const touchLayerRef = useRef(null);
   const touchStateRef = useRef({
     longPressTimer: null,
     touchStartPos: null,
     lastTouchPos: null,
     isLongPress: false,
     isPanning: false,
-    initialPinchDistance: null
+    fingerCount: 0
   });
 
   useEffect(() => {
@@ -41,22 +42,13 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
       }
 
       const touchState = touchStateRef.current;
-      console.log('✅ Initializing touch handler for mobile');
-
-      // 輔助函數：計算兩點之間的距離
-      const getDistance = (touch1, touch2) => {
-        return Math.sqrt(
-          Math.pow(touch2.clientX - touch1.clientX, 2) +
-          Math.pow(touch2.clientY - touch1.clientY, 2)
-        );
-      };
+      console.log('✅ Initializing touch handler on canvas (no overlay)');
 
       // 輔助函數：找到觸控點附近的數據點
       const findNearestDataIndex = (chart, point) => {
         let nearestIndex = -1;
         let minDistance = Infinity;
 
-        // 只檢查價格線（通常是第一個或特定的 dataset）
         const priceDatasetIndex = chart.data.datasets.findIndex(
           ds => ds.label && (ds.label.includes('價格') || ds.label.includes('Price') || ds.label.includes('price'))
         );
@@ -74,7 +66,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           }
         });
 
-        // 只有在距離合理範圍內才返回索引
         return minDistance < 50 ? nearestIndex : -1;
       };
 
@@ -89,7 +80,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
 
         chart.setActiveElements(activeElements);
 
-        // 獲取價格線的數據點位置
         const priceDatasetIndex = chart.data.datasets.findIndex(
           ds => ds.label && (ds.label.includes('價格') || ds.label.includes('Price') || ds.label.includes('price'))
         );
@@ -115,10 +105,9 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         chart.update('none');
       };
 
-      // 輔助函數：手動執行平移（不轉發事件，直接調用 Chart.js API）
-      const panChart = (deltaX, deltaY) => {
+      // 輔助函數：手動執行平移
+      const panChart = (deltaX) => {
         try {
-          // 使用 Chart.js 的 pan 功能
           if (chart.pan) {
             chart.pan({ x: deltaX, y: 0 }, undefined, 'default');
           }
@@ -126,52 +115,16 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           console.warn('Failed to pan chart:', error);
         }
       };
-      
-      // 輔助函數：創建並轉發觸控事件給 canvas（用於雙指縮放）
-      const forwardTouchEvent = (canvas, originalEvent) => {
-        try {
-          const newEvent = new TouchEvent(originalEvent.type, {
-            bubbles: true,
-            cancelable: true,
-            touches: originalEvent.touches,
-            targetTouches: originalEvent.targetTouches,
-            changedTouches: originalEvent.changedTouches
-          });
-          canvas.dispatchEvent(newEvent);
-        } catch (error) {
-          console.warn('Failed to forward touch event:', error);
-        }
-      };
 
-      // 全局 touchstart 監聽器 - 檢測第二根手指
-      const handleGlobalTouchStart = (e) => {
-        if (e.touches.length >= 2) {
-          console.log('🌍 Global: Two+ fingers detected');
-          // 立即禁用透明層
-          touchLayer.style.pointerEvents = 'none';
-          console.log('🔓 Touch layer disabled (global)');
-          
-          // 清除長壓計時器
-          if (touchState.longPressTimer) {
-            clearTimeout(touchState.longPressTimer);
-            touchState.longPressTimer = null;
-          }
-          
-          // 隱藏 tooltip
-          if (touchState.isLongPress) {
-            hideTooltip(chart);
-            touchState.isLongPress = false;
-          }
-        }
-      };
-      
-      // 處理 touchstart 事件（在透明層上）
+      // 處理 touchstart 事件
       const handleTouchStart = (e) => {
-        console.log('👆 Touch start on layer:', e.touches.length, 'finger(s)');
         const touches = e.touches;
+        touchState.fingerCount = touches.length;
+        
+        console.log('👆 Touch start:', touches.length, 'finger(s)');
 
         if (touches.length === 1) {
-          // 單指觸控 - 攔截事件
+          // 單指觸控 - 攔截事件，不讓 Hammer 處理
           e.preventDefault();
           e.stopPropagation();
           
@@ -191,31 +144,38 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
             touchState.isLongPress = true;
             console.log('⏱️ Long press detected');
 
-            // 計算觸控點相對於 canvas 的位置
             const rect = canvas.getBoundingClientRect();
             const point = {
               x: touches[0].clientX - rect.left,
               y: touches[0].clientY - rect.top
             };
 
-            // 找到最近的數據點並顯示 tooltip
             const dataIndex = findNearestDataIndex(chart, point);
             if (dataIndex !== -1) {
               showTooltipAtIndex(chart, dataIndex);
 
-              // 震動反饋（如果支援）
               if (navigator.vibrate) {
                 navigator.vibrate(50);
               }
             }
-          }, 500); // 500ms 長壓閾值
+          }, 500);
 
         } else if (touches.length >= 2) {
-          console.log('✌️ Two+ fingers on layer');
-          // 這個分支可能不會執行，因為全局監聽器會先禁用透明層
-          // 但保留作為備份
-          touchLayer.style.pointerEvents = 'none';
-          console.log('🔓 Touch layer disabled (layer)');
+          console.log('✌️ Two+ fingers - let Hammer handle it');
+          // 雙指或多指 - 不攔截，讓 Hammer.js 處理
+          // 不調用 preventDefault()
+          
+          // 清除長壓計時器
+          if (touchState.longPressTimer) {
+            clearTimeout(touchState.longPressTimer);
+            touchState.longPressTimer = null;
+          }
+
+          // 隱藏 tooltip
+          if (touchState.isLongPress) {
+            hideTooltip(chart);
+            touchState.isLongPress = false;
+          }
         }
       };
 
@@ -223,8 +183,8 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
       const handleTouchMove = (e) => {
         const touches = e.touches;
 
-        if (touches.length === 1 && touchLayer.style.pointerEvents !== 'none') {
-          // 單指移動 - 只在透明層啟用時處理
+        if (touches.length === 1 && touchState.fingerCount === 1) {
+          // 只有在一直是單指的情況下才處理
           e.preventDefault();
           e.stopPropagation();
           
@@ -235,32 +195,25 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
             );
 
             if (moveDistance > 10) {
-              // 移動超過閾值
               if (touchState.longPressTimer) {
                 clearTimeout(touchState.longPressTimer);
                 touchState.longPressTimer = null;
               }
 
               if (!touchState.isLongPress) {
-                // 不是長壓，開始平移
                 if (!touchState.isPanning) {
                   touchState.isPanning = true;
                   console.log('↔️ Pan started');
                 }
                 
-                // 計算移動增量
                 const deltaX = touches[0].clientX - touchState.lastTouchPos.x;
+                panChart(deltaX);
                 
-                // 使用我們自己的平移函數
-                panChart(deltaX, 0);
-                
-                // 更新最後位置
                 touchState.lastTouchPos = {
                   x: touches[0].clientX,
                   y: touches[0].clientY
                 };
               } else {
-                // 是長壓後的移動，更新 tooltip 位置
                 const rect = canvas.getBoundingClientRect();
                 const point = {
                   x: touches[0].clientX - rect.left,
@@ -274,48 +227,37 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
               }
             }
           }
+        } else if (touches.length >= 2) {
+          // 雙指移動 - 不攔截
+          // 不調用 preventDefault()
         }
-        // 雙指移動時，透明層已經禁用，事件會自然傳遞到 canvas
       };
 
       // 處理 touchend 事件
       const handleTouchEnd = (e) => {
-        console.log('🖐️ Touch end, remaining fingers:', e.touches.length);
+        console.log('🖐️ Touch end, remaining:', e.touches.length);
+        
+        touchState.fingerCount = e.touches.length;
         
         if (touchState.longPressTimer) {
           clearTimeout(touchState.longPressTimer);
           touchState.longPressTimer = null;
         }
 
-        if (touchState.isLongPress) {
-          // 長壓結束，隱藏 tooltip
-          console.log('Long press ended');
-          hideTooltip(chart);
-        } else if (touchState.isPanning) {
-          // 平移結束
-          console.log('Pan ended');
-        }
-
-        // 如果所有手指都離開，重新啟用透明層
         if (e.touches.length === 0) {
-          touchLayer.style.pointerEvents = 'auto';
-          console.log('🔒 Touch layer re-enabled');
-          
-          // 如果之前是雙指操作，現在結束了
-          if (touchState.initialPinchDistance !== null) {
-            console.log('Pinch zoom ended');
+          // 所有手指都離開
+          if (touchState.isLongPress) {
+            console.log('Long press ended');
+            hideTooltip(chart);
+          } else if (touchState.isPanning) {
+            console.log('Pan ended');
           }
-        }
 
-        // 重置狀態
-        touchState.touchStartPos = null;
-        touchState.lastTouchPos = null;
-        touchState.isLongPress = false;
-        touchState.isPanning = false;
-        
-        // 只有在所有手指都離開時才重置 pinch 狀態
-        if (e.touches.length === 0) {
-          touchState.initialPinchDistance = null;
+          // 重置狀態
+          touchState.touchStartPos = null;
+          touchState.lastTouchPos = null;
+          touchState.isLongPress = false;
+          touchState.isPanning = false;
         }
       };
 
@@ -332,86 +274,40 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           hideTooltip(chart);
         }
 
-        // 重新啟用透明層
-        touchLayer.style.pointerEvents = 'auto';
-        console.log('🔒 Touch layer re-enabled (cancel)');
-
-        // 重置狀態
         touchState.touchStartPos = null;
         touchState.lastTouchPos = null;
         touchState.isLongPress = false;
         touchState.isPanning = false;
-        touchState.initialPinchDistance = null;
+        touchState.fingerCount = 0;
       };
 
-      // 創建透明觸控層
-      const touchLayer = document.createElement('div');
-      touchLayer.style.position = 'absolute';
-      touchLayer.style.top = '0';
-      touchLayer.style.left = '0';
-      touchLayer.style.right = '0';
-      touchLayer.style.bottom = '0';
-      touchLayer.style.zIndex = '10';
-      touchLayer.style.touchAction = 'pan-x pinch-zoom'; // 允許平移和縮放，但我們會攔截單指
-      touchLayer.style.backgroundColor = 'rgba(255, 0, 0, 0.1)'; // 臨時：半透明紅色用於除錯
-      
-      // 關鍵：設置 CSS 讓雙指事件穿透
-      touchLayer.style.pointerEvents = 'auto';
+      // 直接在 Canvas 上添加事件監聽器
+      // 使用 capture 階段，在 Hammer.js 之前攔截單指事件
+      canvas.addEventListener('touchstart', handleTouchStart, { passive: false, capture: true });
+      canvas.addEventListener('touchmove', handleTouchMove, { passive: false, capture: true });
+      canvas.addEventListener('touchend', handleTouchEnd, { passive: false, capture: true });
+      canvas.addEventListener('touchcancel', handleTouchCancel, { passive: false, capture: true });
+      console.log('✅ Event listeners attached to canvas (capture phase)');
 
-      // 將觸控層插入到 canvas 的父容器中
-      const canvasParent = canvas.parentElement;
-      if (canvasParent) {
-        // 確保父容器有 position: relative
-        const parentPosition = getComputedStyle(canvasParent).position;
-        if (parentPosition === 'static') {
-          canvasParent.style.position = 'relative';
+      // 清理函數
+      return () => {
+        if (touchState.longPressTimer) {
+          clearTimeout(touchState.longPressTimer);
         }
-        
-        canvasParent.appendChild(touchLayer);
-        touchLayerRef.current = touchLayer;
-        console.log('✅ Touch layer created and attached');
 
-        // 添加全局監聽器（檢測第二根手指）
-        document.addEventListener('touchstart', handleGlobalTouchStart, { passive: true });
-        console.log('✅ Global touch listener attached');
+        console.log('🧹 Cleaning up canvas touch handler');
+        canvas.removeEventListener('touchstart', handleTouchStart, { capture: true });
+        canvas.removeEventListener('touchmove', handleTouchMove, { capture: true });
+        canvas.removeEventListener('touchend', handleTouchEnd, { capture: true });
+        canvas.removeEventListener('touchcancel', handleTouchCancel, { capture: true });
+      };
+    }, 300);
 
-        // 添加透明層事件監聽器
-        touchLayer.addEventListener('touchstart', handleTouchStart, { passive: false });
-        touchLayer.addEventListener('touchmove', handleTouchMove, { passive: false });
-        touchLayer.addEventListener('touchend', handleTouchEnd, { passive: false });
-        touchLayer.addEventListener('touchcancel', handleTouchCancel, { passive: false });
-        console.log('✅ Layer event listeners attached');
-      } else {
-        console.error('❌ Canvas parent not found');
-      }
-    }, 300); // 延遲 300ms 確保圖表已渲染
-
-    // 清理函數
+    // 清理 setTimeout
     return () => {
       clearTimeout(initTimer);
-      
-      const touchState = touchStateRef.current;
-      if (touchState.longPressTimer) {
-        clearTimeout(touchState.longPressTimer);
-      }
-
-      // 移除全局監聽器
-      document.removeEventListener('touchstart', () => {});
-      
-      if (touchLayerRef.current) {
-        console.log('🧹 Cleaning up touch handler');
-        touchLayerRef.current.removeEventListener('touchstart', () => {});
-        touchLayerRef.current.removeEventListener('touchmove', () => {});
-        touchLayerRef.current.removeEventListener('touchend', () => {});
-        touchLayerRef.current.removeEventListener('touchcancel', () => {});
-
-        if (touchLayerRef.current.parentElement) {
-          touchLayerRef.current.parentElement.removeChild(touchLayerRef.current);
-        }
-        touchLayerRef.current = null;
-      }
     };
-  }, [isMobile, enabled]); // 只依賴 isMobile 和 enabled
+  }, [isMobile, enabled]);
 
-  return touchLayerRef;
+  return null; // 不再需要返回 touchLayerRef
 };
