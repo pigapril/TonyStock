@@ -176,6 +176,12 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
             hideTooltip(chart);
             touchState.isLongPress = false;
           }
+          
+          // 禁用 Chart.js 的 tooltip（縮放時不顯示）
+          if (chart.options.plugins.tooltip) {
+            chart.options.plugins.tooltip.enabled = false;
+            console.log('🚫 Tooltip disabled for pinch');
+          }
         }
       };
 
@@ -252,6 +258,12 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           } else if (touchState.isPanning) {
             console.log('Pan ended');
           }
+          
+          // 重新啟用 tooltip
+          if (chart.options.plugins.tooltip && chart.options.plugins.tooltip.enabled === false) {
+            chart.options.plugins.tooltip.enabled = true;
+            console.log('✅ Tooltip re-enabled');
+          }
 
           // 重置狀態
           touchState.touchStartPos = null;
@@ -272,6 +284,12 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
 
         if (touchState.isLongPress) {
           hideTooltip(chart);
+        }
+        
+        // 重新啟用 tooltip
+        if (chart.options.plugins.tooltip && chart.options.plugins.tooltip.enabled === false) {
+          chart.options.plugins.tooltip.enabled = true;
+          console.log('✅ Tooltip re-enabled (cancel)');
         }
 
         touchState.touchStartPos = null;
