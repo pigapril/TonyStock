@@ -980,18 +980,34 @@ export function PriceAnalysis() {
         // 新增：縮放功能配置
         zoom: {
           pan: {
-            enabled: true,
-            mode: 'x'
+            enabled: !isMobile, // 手機版禁用拖動平移，避免與 tooltip 衝突
+            mode: 'x',
+            modifierKey: isMobile ? null : undefined, // 桌面版不需要按鍵即可平移
+            onPanStart: ({ chart, point }) => {
+              // 桌面版允許平移時，阻止預設行為
+              if (!isMobile) {
+                return true;
+              }
+              return false;
+            }
           },
           zoom: {
             wheel: {
-              enabled: true,
+              enabled: !isMobile, // 手機版禁用滾輪縮放
               speed: 0.1
             },
             pinch: {
-              enabled: true
+              enabled: true // 保留雙指縮放
             },
-            mode: 'x'
+            mode: 'x',
+            onZoomStart: ({ chart, event }) => {
+              // 手機版雙指縮放時，阻止預設的頁面縮放行為
+              if (isMobile && event && event.touches && event.touches.length === 2) {
+                event.preventDefault();
+                return true;
+              }
+              return true;
+            }
           },
           limits: {
             x: {
