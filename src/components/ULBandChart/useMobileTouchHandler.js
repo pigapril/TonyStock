@@ -22,14 +22,12 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
   useEffect(() => {
     // 如果不啟用或不是手機版，直接返回
     if (!enabled || !isMobile) {
-      console.log('Touch handler disabled:', { enabled, isMobile });
       return;
     }
 
     // 延遲初始化，確保圖表已渲染
     const initTimer = setTimeout(() => {
       if (!chartRef.current) {
-        console.log('Chart not ready yet');
         return;
       }
 
@@ -37,12 +35,11 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
       const canvas = chart.canvas;
       
       if (!canvas) {
-        console.log('Canvas not found');
+        console.error('Mobile touch handler: Canvas not found');
         return;
       }
 
       const touchState = touchStateRef.current;
-      console.log('✅ Initializing touch handler on canvas (no overlay)');
 
       // 輔助函數：找到觸控點附近的數據點
       const findNearestDataIndex = (chart, point) => {
@@ -120,8 +117,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
       const handleTouchStart = (e) => {
         const touches = e.touches;
         touchState.fingerCount = touches.length;
-        
-        console.log('👆 Touch start:', touches.length, 'finger(s)');
 
         if (touches.length === 1) {
           // 單指觸控 - 攔截事件，不讓 Hammer 處理
@@ -142,7 +137,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           // 設置長壓計時器
           touchState.longPressTimer = setTimeout(() => {
             touchState.isLongPress = true;
-            console.log('⏱️ Long press detected');
 
             const rect = canvas.getBoundingClientRect();
             const point = {
@@ -161,7 +155,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           }, 500);
 
         } else if (touches.length >= 2) {
-          console.log('✌️ Two+ fingers - let Hammer handle it');
           // 雙指或多指 - 不攔截，讓 Hammer.js 處理
           // 不調用 preventDefault()
           
@@ -180,7 +173,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           // 禁用 Chart.js 的 tooltip（縮放時不顯示）
           if (chart.options.plugins.tooltip) {
             chart.options.plugins.tooltip.enabled = false;
-            console.log('🚫 Tooltip disabled for pinch');
           }
         }
       };
@@ -209,7 +201,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
               if (!touchState.isLongPress) {
                 if (!touchState.isPanning) {
                   touchState.isPanning = true;
-                  console.log('↔️ Pan started');
                 }
                 
                 const deltaX = touches[0].clientX - touchState.lastTouchPos.x;
@@ -241,8 +232,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
 
       // 處理 touchend 事件
       const handleTouchEnd = (e) => {
-        console.log('🖐️ Touch end, remaining:', e.touches.length);
-        
         touchState.fingerCount = e.touches.length;
         
         if (touchState.longPressTimer) {
@@ -253,16 +242,12 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         if (e.touches.length === 0) {
           // 所有手指都離開
           if (touchState.isLongPress) {
-            console.log('Long press ended');
             hideTooltip(chart);
-          } else if (touchState.isPanning) {
-            console.log('Pan ended');
           }
           
           // 重新啟用 tooltip
           if (chart.options.plugins.tooltip && chart.options.plugins.tooltip.enabled === false) {
             chart.options.plugins.tooltip.enabled = true;
-            console.log('✅ Tooltip re-enabled');
           }
 
           // 重置狀態
@@ -275,8 +260,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
 
       // 處理 touchcancel 事件
       const handleTouchCancel = () => {
-        console.log('❌ Touch cancelled');
-        
         if (touchState.longPressTimer) {
           clearTimeout(touchState.longPressTimer);
           touchState.longPressTimer = null;
@@ -289,7 +272,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         // 重新啟用 tooltip
         if (chart.options.plugins.tooltip && chart.options.plugins.tooltip.enabled === false) {
           chart.options.plugins.tooltip.enabled = true;
-          console.log('✅ Tooltip re-enabled (cancel)');
         }
 
         touchState.touchStartPos = null;
@@ -305,7 +287,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
       canvas.addEventListener('touchmove', handleTouchMove, { passive: false, capture: true });
       canvas.addEventListener('touchend', handleTouchEnd, { passive: false, capture: true });
       canvas.addEventListener('touchcancel', handleTouchCancel, { passive: false, capture: true });
-      console.log('✅ Event listeners attached to canvas (capture phase)');
 
       // 清理函數
       return () => {
@@ -313,7 +294,6 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           clearTimeout(touchState.longPressTimer);
         }
 
-        console.log('🧹 Cleaning up canvas touch handler');
         canvas.removeEventListener('touchstart', handleTouchStart, { capture: true });
         canvas.removeEventListener('touchmove', handleTouchMove, { capture: true });
         canvas.removeEventListener('touchend', handleTouchEnd, { capture: true });
