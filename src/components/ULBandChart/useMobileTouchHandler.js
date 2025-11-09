@@ -18,6 +18,9 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
     isPanning: false,
     fingerCount: 0
   });
+  
+  // 追蹤當前綁定的 Canvas 實例
+  const currentCanvasRef = useRef(null);
 
   useEffect(() => {
     // 如果不啟用或不是手機版，直接返回
@@ -47,6 +50,21 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         console.error('Mobile touch handler: Canvas not found');
         return null;
       }
+      
+      // 檢查是否是同一個 Canvas 實例
+      if (currentCanvasRef.current === canvas) {
+        // 已經綁定過了，不需要重複綁定
+        return null;
+      }
+      
+      // 如果之前綁定過其他 Canvas，先清理
+      if (currentCanvasRef.current) {
+        console.log('Canvas changed, cleaning up old listeners');
+        // 清理邏輯會在 useEffect 的 cleanup 中處理
+      }
+      
+      // 記錄當前 Canvas
+      currentCanvasRef.current = canvas;
 
       const touchState = touchStateRef.current;
 
@@ -307,16 +325,43 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         canvas.removeEventListener('touchmove', handleTouchMove, { capture: true });
         canvas.removeEventListener('touchend', handleTouchEnd, { capture: true });
         canvas.removeEventListener('touchcancel', handleTouchCancel, { capture: true });
+        
+        // 清除 Canvas 引用
+        currentCanvasRef.current = null;
       };
     };
     
     // 開始初始化（可能會重試）
     const timerId = tryInitialize();
+    
+    // 定期檢查 Canvas 是否變化（每 500ms 檢查一次）
+    const checkInterval = setInterval(() => {
+      if (chartRef.current && chartRef.current.canvas) {
+        const newCanvas = chartRef.current.canvas;
+        if (currentCanvasRef.current !== newCanvas) {
+          console.log('Canvas instance changed, re-initializing touch handler');
+          // Canvas 變化了，重新初始化
+          tryInitialize();
+        }
+      }
+    }, 500);
 
-    // 清理 setTimeout
+    // 清理函數
     return () => {
       if (timerId) {
         clearTimeout(timerId);
+      }
+      
+      clearInterval(checkInterval);
+      
+      // 清理事件監聽器
+      if (currentCanvasRef.current) {
+        const canvas = currentCanvasRef.current;
+        canvas.removeEventListener('touchstart', () => {}, { capture: true });
+        canvas.removeEventListener('touchmove', () => {}, { capture: true });
+        canvas.removeEventListener('touchend', () => {}, { capture: true });
+        canvas.removeEventListener('touchcancel', () => {}, { capture: true });
+        currentCanvasRef.current = null;
       }
     };
   }, [isMobile, enabled]);
