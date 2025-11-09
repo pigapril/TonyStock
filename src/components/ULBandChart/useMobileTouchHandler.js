@@ -21,6 +21,9 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
   
   // 追蹤當前綁定的 Canvas 實例
   const currentCanvasRef = useRef(null);
+  
+  // 追蹤長壓指示器元素
+  const indicatorRef = useRef(null);
 
   useEffect(() => {
     // 如果不啟用或不是手機版，直接返回
@@ -67,6 +70,110 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
       currentCanvasRef.current = canvas;
 
       const touchState = touchStateRef.current;
+      
+      // 創建長壓指示器元素
+      const indicator = document.createElement('div');
+      indicator.className = 'touch-long-press-indicator';
+      indicatorRef.current = indicator;
+      
+      // 設置指示器樣式
+      const indicatorStyles = `
+        position: absolute;
+        pointer-events: none;
+        z-index: 1000;
+        display: none;
+        transform: translate(-50%, -50%);
+        transition: all 0.1s ease-out;
+        width: 20px;
+        height: 20px;
+        background: rgba(59, 130, 246, 0.3);
+        border: 2px solid rgba(59, 130, 246, 0.6);
+        border-radius: 50%;
+      `;
+      indicator.style.cssText = indicatorStyles;
+      
+      // 添加 CSS 動畫
+      const styleSheet = document.createElement('style');
+      styleSheet.textContent = `
+        @keyframes touch-indicator-expand {
+          0% {
+            width: 20px;
+            height: 20px;
+            opacity: 0.6;
+          }
+          100% {
+            width: 60px;
+            height: 60px;
+            opacity: 0.3;
+          }
+        }
+        
+        @keyframes touch-indicator-pulse {
+          0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.1);
+          }
+        }
+        
+        .touch-long-press-indicator.expanding {
+          animation: touch-indicator-expand 400ms ease-out forwards;
+        }
+        
+        .touch-long-press-indicator.active {
+          width: 60px;
+          height: 60px;
+          background: rgba(59, 130, 246, 0.2);
+          border: 3px solid rgba(59, 130, 246, 0.8);
+          animation: touch-indicator-pulse 1s ease-in-out infinite;
+        }
+      `;
+      
+      // 將樣式和指示器添加到頁面
+      if (!document.getElementById('touch-indicator-styles')) {
+        styleSheet.id = 'touch-indicator-styles';
+        document.head.appendChild(styleSheet);
+      }
+      
+      const chartContainer = canvas.parentElement;
+      chartContainer.style.position = 'relative'; // 確保容器是相對定位
+      chartContainer.appendChild(indicator);
+      
+      // 輔助函數：顯示指示器
+      const showIndicator = (clientX, clientY) => {
+        const rect = chartContainer.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        
+        indicator.style.display = 'block';
+        indicator.style.left = `${x}px`;
+        indicator.style.top = `${y}px`;
+        indicator.classList.remove('active');
+        indicator.classList.add('expanding');
+      };
+      
+      // 輔助函數：更新指示器位置
+      const updateIndicatorPosition = (clientX, clientY) => {
+        const rect = chartContainer.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        
+        indicator.style.left = `${x}px`;
+        indicator.style.top = `${y}px`;
+      };
+      
+      // 輔助函數：激活指示器（長壓成功）
+      const activateIndicator = () => {
+        indicator.classList.remove('expanding');
+        indicator.classList.add('active');
+      };
+      
+      // 輔助函數：隱藏指示器
+      const hideIndicator = () => {
+        indicator.style.display = 'none';
+        indicator.classList.remove('expanding', 'active');
+      };
 
       // 輔助函數：找到觸控點附近的數據點
       const findNearestDataIndex = (chart, point) => {
@@ -161,6 +268,9 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           touchState.isLongPress = false;
           touchState.isPanning = false;
 
+          // 顯示指示器
+          showIndicator(touches[0].clientX, touches[0].clientY);
+
           // 設置長壓計時器
           touchState.longPressTimer = setTimeout(() => {
             touchState.isLongPress = true;
@@ -173,6 +283,9 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
 
             const dataIndex = findNearestDataIndex(chart, point);
             if (dataIndex !== -1) {
+              // 激活指示器（顯示脈衝效果）
+              activateIndicator();
+              
               showTooltipAtIndex(chart, dataIndex);
 
               if (navigator.vibrate) {
@@ -190,6 +303,9 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
             clearTimeout(touchState.longPressTimer);
             touchState.longPressTimer = null;
           }
+
+          // 隱藏指示器
+          hideIndicator();
 
           // 隱藏 tooltip
           if (touchState.isLongPress) {
@@ -226,6 +342,9 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
               }
 
               if (!touchState.isLongPress) {
+                // 開始平移 - 隱藏指示器
+                hideIndicator();
+                
                 if (!touchState.isPanning) {
                   touchState.isPanning = true;
                 }
@@ -238,6 +357,9 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
                   y: touches[0].clientY
                 };
               } else {
+                // 長壓狀態下移動 - 更新指示器位置
+                updateIndicatorPosition(touches[0].clientX, touches[0].clientY);
+                
                 const rect = canvas.getBoundingClientRect();
                 const point = {
                   x: touches[0].clientX - rect.left,
@@ -268,9 +390,15 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
 
         if (e.touches.length === 0) {
           // 所有手指都離開
-          if (touchState.isLongPress) {
-            hideTooltip(chart);
-          }
+          
+          // 隱藏指示器
+          hideIndicator();
+          
+          // 注意：如果是長壓狀態，不隱藏 tooltip，讓它持續顯示
+          // 只有在平移狀態下才不需要保留 tooltip
+          // if (touchState.isLongPress) {
+          //   hideTooltip(chart);  // 移除這行，讓 tooltip 持續顯示
+          // }
           
           // 重新啟用 tooltip
           if (chart.options.plugins.tooltip && chart.options.plugins.tooltip.enabled === false) {
@@ -291,6 +419,9 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
           clearTimeout(touchState.longPressTimer);
           touchState.longPressTimer = null;
         }
+
+        // 隱藏指示器
+        hideIndicator();
 
         if (touchState.isLongPress) {
           hideTooltip(chart);
@@ -325,6 +456,12 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         canvas.removeEventListener('touchmove', handleTouchMove, { capture: true });
         canvas.removeEventListener('touchend', handleTouchEnd, { capture: true });
         canvas.removeEventListener('touchcancel', handleTouchCancel, { capture: true });
+        
+        // 移除指示器元素
+        if (indicatorRef.current && indicatorRef.current.parentElement) {
+          indicatorRef.current.parentElement.removeChild(indicatorRef.current);
+          indicatorRef.current = null;
+        }
         
         // 清除 Canvas 引用
         currentCanvasRef.current = null;
@@ -362,6 +499,12 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         canvas.removeEventListener('touchend', () => {}, { capture: true });
         canvas.removeEventListener('touchcancel', () => {}, { capture: true });
         currentCanvasRef.current = null;
+      }
+      
+      // 清理指示器元素
+      if (indicatorRef.current && indicatorRef.current.parentElement) {
+        indicatorRef.current.parentElement.removeChild(indicatorRef.current);
+        indicatorRef.current = null;
       }
     };
   }, [isMobile, enabled]);
