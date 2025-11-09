@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
 import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
 import zoomPlugin from 'chartjs-plugin-zoom'; // 新增：引入縮放插件
+import { useMobileTouchHandler } from '../ULBandChart/useMobileTouchHandler'; // 新增：引入觸控處理 Hook
 
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
@@ -111,6 +112,9 @@ export function PriceAnalysis() {
   const chartRef = useRef(null); // 新增：圖表 ref 用於程式化控制 tooltip
   const ulbandChartRef = useRef(null); // ULBand 圖表 ref
   const chartCardRef = useRef(null); // 圖表卡片 ref 用於滾動
+  
+  // 使用自定義 Hook 處理手機版標準差圖表的觸控
+  useMobileTouchHandler(chartRef, isMobile, activeChart === 'sd');
 
 
   // 新增：熱門搜尋狀態
@@ -980,25 +984,12 @@ export function PriceAnalysis() {
         // 新增：縮放功能配置
         zoom: {
           pan: {
-            enabled: true, // 啟用平移功能
+            enabled: true, // 啟用平移功能（手機版由透明層控制）
             mode: 'x',
             modifierKey: isMobile ? null : undefined, // 桌面版不需要按鍵即可平移
-            onPanStart: ({ chart, point, event }) => {
-              // 桌面版：允許滑鼠拖動平移
-              if (!isMobile) {
-                return true;
-              }
-              // 手機版：只允許雙指平移
-              if (event && event.touches && event.touches.length === 2) {
-                return true;
-              }
-              return false;
-            },
-            onPan: ({ chart, event }) => {
-              // 手機版雙指平移時，阻止預設行為
-              if (isMobile && event && event.touches && event.touches.length === 2) {
-                event.preventDefault();
-              }
+            onPanStart: ({ chart, point }) => {
+              // 允許平移
+              return true;
             }
           },
           zoom: {
