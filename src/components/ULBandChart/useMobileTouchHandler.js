@@ -26,9 +26,18 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
     }
 
     // 延遲初始化，確保圖表已渲染
-    const initTimer = setTimeout(() => {
+    // 使用重試機制，最多嘗試 3 次
+    let retryCount = 0;
+    const maxRetries = 3;
+    
+    const tryInitialize = () => {
       if (!chartRef.current) {
-        return;
+        retryCount++;
+        if (retryCount < maxRetries) {
+          // 重試，每次延遲增加
+          return setTimeout(tryInitialize, 300 * retryCount);
+        }
+        return null;
       }
 
       const chart = chartRef.current;
@@ -36,7 +45,7 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
       
       if (!canvas) {
         console.error('Mobile touch handler: Canvas not found');
-        return;
+        return null;
       }
 
       const touchState = touchStateRef.current;
@@ -299,11 +308,16 @@ export const useMobileTouchHandler = (chartRef, isMobile, enabled = true) => {
         canvas.removeEventListener('touchend', handleTouchEnd, { capture: true });
         canvas.removeEventListener('touchcancel', handleTouchCancel, { capture: true });
       };
-    }, 300);
+    };
+    
+    // 開始初始化（可能會重試）
+    const timerId = tryInitialize();
 
     // 清理 setTimeout
     return () => {
-      clearTimeout(initTimer);
+      if (timerId) {
+        clearTimeout(timerId);
+      }
     };
   }, [isMobile, enabled]);
 
