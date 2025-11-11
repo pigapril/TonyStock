@@ -22,5 +22,8 @@ https://sitemap.sentimentinsideout.com/priceanalysis https://sentimentinsideout.
 
 
 
+# 靜態資源：直接返回文件（不重定向）
+/static/* /static/:splat 200
+
 # SPA 回退路由 (保持在最後)
-/* /index.html 200 
+/* /index.html 200
