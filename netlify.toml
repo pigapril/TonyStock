@@ -20,3 +20,15 @@
   status = 200
   conditions = {Domain = ["sentimentinsideout-staging.netlify.app"]}
   force = true
+
+# SPA 重定向規則：所有非靜態資源的請求都返回 index.html
+
+# 這讓 React Router 可以處理客戶端路由
+
+[[redirects]]
+
+  from = "/*"
+
+  to = "/index.html"
+
+  status = 200
