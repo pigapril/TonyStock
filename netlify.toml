@@ -20,3 +20,6 @@
   status = 200
   conditions = {Domain = ["sentimentinsideout-staging.netlify.app"]}
   force = true
+
+# 注意：其他重定向規則在 public/_redirects 文件中
+# 不要在這裡重複定義，避免衝突
