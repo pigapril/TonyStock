@@ -13,7 +13,16 @@
 [context.branch-deploy]
   command = "CI=false npm run build"
 
-# 針對 staging 域名的 robots.txt 重定向（簡化版）
+# 重定向規則（按優先級排序）
+
+# 1. 處理 niku-stock.netlify.app 的重定向
+[[redirects]]
+  from = "https://niku-stock.netlify.app/*"
+  to = "https://sentimentinsideout.com/:splat"
+  status = 301
+  force = true
+
+# 2. 針對 staging 域名的 robots.txt 重定向
 [[redirects]]
   from = "/robots.txt"
   to = "/robots-staging.txt"
@@ -21,5 +30,57 @@
   conditions = {Domain = ["sentimentinsideout-staging.netlify.app"]}
   force = true
 
-# 注意：SPA 重定向規則已在 public/_redirects 文件中定義
-# 不要在這裡重複定義，避免衝突
+# 3. 舊的靜態頁面 URL 重定向到 zh-TW 版本
+[[redirects]]
+  from = "/about"
+  to = "/zh-TW/about"
+  status = 301
+
+[[redirects]]
+  from = "/legal"
+  to = "/zh-TW/legal"
+  status = 301
+
+[[redirects]]
+  from = "/priceanalysis"
+  to = "/zh-TW/priceanalysis"
+  status = 301
+
+[[redirects]]
+  from = "/watchlist"
+  to = "/zh-TW/watchlist"
+  status = 301
+
+[[redirects]]
+  from = "/market-sentiment"
+  to = "/zh-TW/market-sentiment"
+  status = 301
+
+[[redirects]]
+  from = "/sponsor-us"
+  to = "/zh-TW/sponsor-us"
+  status = 301
+
+# 4. 舊文章 URL 重定向
+[[redirects]]
+  from = "/articles/:slug"
+  to = "/zh-TW/articles/:slug"
+  status = 301
+
+# 5. 重定向舊的 sitemap 網址
+[[redirects]]
+  from = "https://sitemap.sentimentinsideout.com/priceanalysis"
+  to = "https://sentimentinsideout.com/en/priceanalysis"
+  status = 301
+
+# 6. 靜態資源：直接返回（不重定向）
+[[redirects]]
+  from = "/static/*"
+  to = "/static/:splat"
+  status = 200
+
+# 7. SPA 回退路由（必須放在最後）
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
