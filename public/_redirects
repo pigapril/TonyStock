@@ -21,6 +21,3 @@ https://niku-stock.netlify.app/* https://sentimentinsideout.com/:splat 301!
 https://sitemap.sentimentinsideout.com/priceanalysis https://sentimentinsideout.com/en/priceanalysis 301
 
 
-
-# SPA 回退路由 (保持在最後)
-/* /index.html 200 
