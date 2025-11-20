@@ -21,6 +21,18 @@
   margin-bottom: 8px;
 }
 
+/* 語言標籤 */
+.language-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  background: rgba(0, 122, 255, 0.1);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #007aff;
+}
+
 /* 切換開關樣式 */
 .announcement-editor-toggle-label {
   display: flex;

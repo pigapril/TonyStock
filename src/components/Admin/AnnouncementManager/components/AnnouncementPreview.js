@@ -5,6 +5,7 @@ import './AnnouncementPreview.css';
 const AnnouncementPreview = ({ config, previewData }) => {
   const [showPreview, setShowPreview] = useState(false);
   const [previewConfig, setPreviewConfig] = useState(null);
+  const [previewLanguage, setPreviewLanguage] = useState('zh-TW'); // Default to Chinese
 
   // 當有預覽數據時更新預覽配置
   useEffect(() => {
@@ -41,11 +42,38 @@ const AnnouncementPreview = ({ config, previewData }) => {
     }, 100);
   };
 
+  // Get message based on preview language
+  const getPreviewMessage = () => {
+    if (!previewConfig) return '';
+    
+    if (previewLanguage === 'en') {
+      return previewConfig.message_en || previewConfig.message_zh || previewConfig.message || '';
+    } else {
+      return previewConfig.message_zh || previewConfig.message || previewConfig.message_en || '';
+    }
+  };
+
   return (
     <div className="announcement-preview-container">
       <div className="announcement-preview-header">
         <h2>即時預覽</h2>
         <div className="announcement-preview-controls">
+          <div className="language-switcher">
+            <button
+              onClick={() => setPreviewLanguage('zh-TW')}
+              className={`lang-btn ${previewLanguage === 'zh-TW' ? 'active' : ''}`}
+              title="預覽中文版本"
+            >
+              🇹🇼 中文
+            </button>
+            <button
+              onClick={() => setPreviewLanguage('en')}
+              className={`lang-btn ${previewLanguage === 'en' ? 'active' : ''}`}
+              title="預覽英文版本"
+            >
+              🇺🇸 English
+            </button>
+          </div>
           <button
             onClick={resetPreview}
             className="announcement-preview-control-btn"
@@ -73,7 +101,7 @@ const AnnouncementPreview = ({ config, previewData }) => {
             <div className="announcement-preview-area">
               {previewConfig && showPreview ? (
                 <AnnouncementBarPreview
-                  message={previewConfig.message}
+                  message={getPreviewMessage()}
                   isVisible={true}
                   onClose={handleClosePreview}
                   autoHide={previewConfig.autoHide}
@@ -112,8 +140,12 @@ const AnnouncementPreview = ({ config, previewData }) => {
                 </span>
               </div>
               <div className="announcement-preview-info-row">
+                <span className="announcement-preview-info-label">當前語言:</span>
+                <span className="announcement-preview-info-value">{previewLanguage === 'zh-TW' ? '繁體中文' : 'English'}</span>
+              </div>
+              <div className="announcement-preview-info-row">
                 <span className="announcement-preview-info-label">訊息長度:</span>
-                <span className="announcement-preview-info-value">{previewConfig.message?.length || 0} 字元</span>
+                <span className="announcement-preview-info-value">{getPreviewMessage()?.length || 0} 字元</span>
               </div>
               <div className="announcement-preview-info-row">
                 <span className="announcement-preview-info-label">自動隱藏:</span>

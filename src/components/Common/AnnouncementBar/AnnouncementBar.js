@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import './AnnouncementBar.css';
 import enhancedApiClient from '../../../utils/enhancedApiClient';
 import AnnouncementModal from './AnnouncementModal';
@@ -6,12 +7,49 @@ import AnnouncementDevTools from './AnnouncementDevTools';
 import announcementCooldownManager from '../../../utils/announcementCooldown';
 
 const AnnouncementBar = () => {
+  const { i18n } = useTranslation();
   const [config, setConfig] = useState(null);
   const [showBar, setShowBar] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const timeoutRef = useRef(null);
+
+  /**
+   * Get the appropriate message based on current language
+   * Uses useMemo to recalculate when language or config changes
+   */
+  const getLocalizedMessage = React.useMemo(() => {
+    if (!config) return '';
+    
+    const currentLang = i18n.language || 'zh-TW';
+    const isEnglish = currentLang.startsWith('en');
+    
+    let selectedMessage = '';
+    
+    // Priority: language-specific message > fallback to other language > legacy message field
+    if (isEnglish) {
+      selectedMessage = config.message_en || config.message_zh || config.message || '';
+    } else {
+      selectedMessage = config.message_zh || config.message || config.message_en || '';
+    }
+    
+    // 開發模式下顯示語言選擇資訊
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🌐 語言選擇:', {
+        currentLang,
+        isEnglish,
+        available: {
+          message_zh: config.message_zh ? '✓' : '✗',
+          message_en: config.message_en ? '✓' : '✗',
+          message: config.message ? '✓' : '✗'
+        },
+        selected: selectedMessage.substring(0, 50) + '...'
+      });
+    }
+    
+    return selectedMessage;
+  }, [config, i18n.language]);
 
   // 載入公告配置
   const loadAnnouncementConfig = async () => {
@@ -29,10 +67,13 @@ const AnnouncementBar = () => {
         // 開發模式下顯示調試資訊
         if (process.env.NODE_ENV === 'development') {
           const stats = announcementCooldownManager.getAnnouncementStats(result.data);
-          console.log('公告顯示狀態:', {
+          console.log('📢 公告配置已載入:', {
             shouldShow,
             enabled: result.data.enabled,
-            hasMessage: !!result.data.message,
+            hasMessage_zh: !!result.data.message_zh,
+            hasMessage_en: !!result.data.message_en,
+            hasLegacyMessage: !!result.data.message,
+            currentLanguage: i18n.language,
             stats
           });
         }
@@ -65,6 +106,16 @@ const AnnouncementBar = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  // 開發模式下記錄語言變化
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development' && config) {
+      console.log('🌐 語言已切換:', {
+        currentLanguage: i18n.language,
+        displayingMessage: getLocalizedMessage.substring(0, 50) + '...'
+      });
+    }
+  }, [i18n.language, config, getLocalizedMessage]);
 
   // 自動隱藏功能
   useEffect(() => {
@@ -143,7 +194,7 @@ const AnnouncementBar = () => {
     e.stopPropagation(); // 防止事件冒泡
 
     // 只在移動設備且內容較長時顯示對話框
-    if (isMobileDevice() && isLongContent(config.message)) {
+    if (isMobileDevice() && isLongContent(getLocalizedMessage)) {
       setShowModal(true);
 
       // 暫停自動隱藏
@@ -231,14 +282,14 @@ const AnnouncementBar = () => {
   };
 
   // 檢查是否需要對話框功能
-  const needsModalFeature = isMobileDevice() && isLongContent(config.message);
+  const needsModalFeature = isMobileDevice() && isLongContent(getLocalizedMessage);
 
   // 計算 CSS 類名
   const messageClasses = [
     'announcement-message',
-    hasEmoji(config.message) ? 'announcement-has-emoji' : '',
-    isShortContent(config.message) ? 'announcement-short-content' : '',
-    hasUrlsInMessage(config.message) ? 'announcement-has-links' : '',
+    hasEmoji(getLocalizedMessage) ? 'announcement-has-emoji' : '',
+    isShortContent(getLocalizedMessage) ? 'announcement-short-content' : '',
+    hasUrlsInMessage(getLocalizedMessage) ? 'announcement-has-links' : '',
     needsModalFeature ? 'announcement-expandable' : ''
   ].filter(Boolean).join(' ');
 
@@ -257,7 +308,7 @@ const AnnouncementBar = () => {
             onClick={handleContentClick}
             style={{ cursor: needsModalFeature ? 'pointer' : 'default' }}
           >
-            {renderAnnouncementContent(config.message, needsModalFeature)}
+            {renderAnnouncementContent(getLocalizedMessage, needsModalFeature)}
           </div>
         </div>
 
@@ -275,7 +326,7 @@ const AnnouncementBar = () => {
       <AnnouncementModal
         isOpen={showModal}
         onClose={handleCloseModal}
-        message={config.message}
+        message={getLocalizedMessage}
       />
 
       {/* 開發者工具 */}
