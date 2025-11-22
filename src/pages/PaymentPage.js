@@ -358,11 +358,12 @@ const PaymentPage = () => {
             console.log('🔍 PaymentPage 創建訂單前的 appliedRedemption:', appliedRedemption);
             console.log('🔍 PaymentPage 傳遞給後端的 redemptionCode:', appliedRedemption?.code);
 
-            // 🔧 修復：確保傳遞正確的參數給後端
+            // 🔧 修復：確保傳遞正確的參數給後端，包括語言偏好
             const orderPayload = {
                 planType,
                 billingPeriod,
                 paymentMethod,
+                language: lang || 'zh-TW', // 傳遞當前語言
                 redemptionCode: appliedRedemption?.code || null,
                 // 保持向後兼容
                 appliedDiscount: appliedDiscount ? {
