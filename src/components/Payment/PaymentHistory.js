@@ -194,7 +194,8 @@ const PaymentHistory = ({ userId }) => {
             month: 'long',
             day: 'numeric',
             hour: '2-digit',
-            minute: '2-digit'
+            minute: '2-digit',
+            hour12: false  // 使用 24 小時制，避免顯示 AM/PM
         });
     };
 
