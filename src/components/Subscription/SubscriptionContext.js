@@ -146,14 +146,23 @@ export const SubscriptionProvider = ({ children }) => {
       
       // If no active subscription found, create a default plan based on user's stored plan
       if (!plan && user?.plan) {
+        const isFree = user.plan === 'free';
         const defaultPlan = {
           type: user.plan,
-          status: user.plan === 'free' ? 'active' : 'inactive',
+          status: isFree ? 'active' : 'inactive',
           startDate: null,
           endDate: null,
           autoRenew: false,
-          cancelAtPeriodEnd: false
+          cancelAtPeriodEnd: false,
+          // ✅ 新增：明確定義時間驗證旗標
+          // 如果是付費版但 API 抓不到資料，為了安全起見，強制設為 false (無效)
+          // 除非是 Free 版，則永遠有效
+          isActive: isFree,
+          isExpired: !isFree,
+          // 標記這是備用資料 (方便除錯)
+          _isFallback: true
         };
+        console.warn('⚠️ Using fallback plan with secure flags:', defaultPlan);
         setUserPlan(defaultPlan);
       } else if (plan) {
         // Map backend subscription fields to frontend plan fields

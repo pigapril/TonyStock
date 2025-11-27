@@ -51,8 +51,9 @@ export const PlanCard = ({
           return false;
         }
 
-        // 只有活躍且未取消的訂閱才視為當前方案
-        return userPlan.status === 'active';
+        // ✅ 使用 isActive 而非 status（考慮時間因素）
+        // 只有活躍且未過期的訂閱才視為當前方案
+        return userPlan.isActive !== false && !userPlan.isExpired;
       }
     }
 
@@ -61,10 +62,11 @@ export const PlanCard = ({
 
   // 檢查是否為已取消但仍有效的訂閱
   const isCancelledButActive = (() => {
+    // ✅ 使用 isActive 而非 status（考慮時間因素）
     return userPlan &&
       userPlan.type === plan.id &&
       (userPlan.cancelAtPeriodEnd || userPlan.isCancelled) &&
-      userPlan.status === 'active';
+      (userPlan.isActive !== false && !userPlan.isExpired);
   })();
 
   const handlePlanSelect = async () => {

@@ -41,18 +41,19 @@ class SubscriptionService {
             type: subscription.planType,
             startDate: subscription.startDate ? new Date(subscription.startDate) : null,
             endDate: subscription.currentPeriodEnd ? new Date(subscription.currentPeriodEnd) : null,
-            status: subscription.status,
+            status: subscription.status, // 保留原始狀態供參考
             autoRenew: subscription.autoRenew,
             cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
             cancelledAt: subscription.cancelledAt ? new Date(subscription.cancelledAt) : null,
-            // 添加額外的訂閱信息
-            subscriptionId: subscription.id,
-            currentPeriodStart: subscription.currentPeriodStart ? new Date(subscription.currentPeriodStart) : null,
-            isActive: subscription.isActive,
-            isExpired: subscription.isExpired,
+            // ✅ 優先使用這些經過時間驗證的欄位
+            isActive: subscription.isActive, // 後端已進行時間比對
+            isExpired: subscription.isExpired, // 後端已進行時間比對
             isCancelled: subscription.isCancelled,
             willCancelAtPeriodEnd: subscription.willCancelAtPeriodEnd,
-            daysUntilExpiry: subscription.daysUntilExpiry
+            daysUntilExpiry: subscription.daysUntilExpiry,
+            // 添加額外的訂閱信息
+            subscriptionId: subscription.id,
+            currentPeriodStart: subscription.currentPeriodStart ? new Date(subscription.currentPeriodStart) : null
           };
         }
       } catch (subscriptionError) {
@@ -166,13 +167,16 @@ class SubscriptionService {
 
       // 格式化訂閱歷史資料以符合組件需求
       const formattedHistory = historyData.map(subscription => {
+        // ✅ 使用 isActive 和 isExpired 判斷有效狀態（考慮時間因素）
+        const isActiveNow = subscription.isActive && !subscription.isExpired;
+        
         // 判斷動作類型
         let action = 'renewal';
-        if (subscription.planType === 'pro' && subscription.status === 'active') {
+        if (subscription.planType === 'pro' && isActiveNow) {
           action = 'upgrade';
         } else if (subscription.planType === 'free') {
           action = 'downgrade';
-        } else if (subscription.status === 'cancelled') {
+        } else if (subscription.status === 'cancelled' || subscription.isCancelled) {
           action = 'cancellation';
         }
 
@@ -183,11 +187,15 @@ class SubscriptionService {
           fromPlan: subscription.previousPlanType || 'free',
           toPlan: subscription.planType,
           amount: subscription.amount || (subscription.planType === 'pro' ? 299 : 0),
-          status: subscription.status === 'active' ? 'completed' : subscription.status,
+          // ✅ 使用計算後的有效狀態
+          status: isActiveNow ? 'completed' : (subscription.isExpired ? 'expired' : subscription.status),
           planType: subscription.planType,
           billingPeriod: subscription.billingPeriod || 'monthly',
           currentPeriodStart: subscription.currentPeriodStart,
-          currentPeriodEnd: subscription.currentPeriodEnd
+          currentPeriodEnd: subscription.currentPeriodEnd,
+          // 保留時間驗證欄位供前端使用
+          isActive: subscription.isActive,
+          isExpired: subscription.isExpired
         };
       });
 

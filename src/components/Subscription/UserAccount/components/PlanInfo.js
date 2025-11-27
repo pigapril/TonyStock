@@ -112,7 +112,12 @@ export const PlanInfo = ({ plan, loading }) => {
   console.log('🔍 PlanInfo received plan:', plan);
   console.log('🔍 cancelAtPeriodEnd:', plan?.cancelAtPeriodEnd);
   console.log('🔍 status:', plan?.status);
+  console.log('🔍 isActive:', plan?.isActive);
+  console.log('🔍 isExpired:', plan?.isExpired);
   console.log('🔍 endDate:', plan?.endDate);
+
+  // ✅ 使用 isActive 而非 status 進行判斷（考慮時間因素）
+  const isSubscriptionActive = plan?.isActive !== false && !plan?.isExpired;
 
   return (
     <div className="plan-info">
@@ -134,7 +139,7 @@ export const PlanInfo = ({ plan, loading }) => {
           {plan.endDate && (
             <div className="plan-info__date">
               <span className="plan-info__date-label">
-                {(plan.status === 'active' && !plan.cancelAtPeriodEnd)
+                {(isSubscriptionActive && !plan.cancelAtPeriodEnd)
                   ? t('subscription.history.renewalDate')
                   : t('subscription.history.endDate')
                 }:
@@ -166,7 +171,7 @@ export const PlanInfo = ({ plan, loading }) => {
             </AppleButton>
           )}
           
-          {plan.type !== 'free' && plan.status === 'active' && !plan.cancelAtPeriodEnd && (
+          {plan.type !== 'free' && isSubscriptionActive && !plan.cancelAtPeriodEnd && (
             <AppleButton 
               variant="secondary" 
               onClick={() => setShowCancelConfirm(true)}
