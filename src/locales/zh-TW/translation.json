@@ -1169,6 +1169,7 @@
     "loadingRetry": "載入中，請稍候... ({{count}}/{{max}})",
     "loadFailed": "載入失敗，請重新整理頁面",
     "loginRequiredMessage": "請先登入後再使用此功能",
+    "upgradeRequired": "此功能需要升級至 Pro 方案",
     "loadingMessage": "追蹤清單一次分析多個標的，若長時間未查看會需要稍微等候，謝謝你的耐心",
     "editMode": {
       "finish": "完成編輯",

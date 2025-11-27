@@ -115,7 +115,7 @@ const INDICATOR_DESCRIPTION_KEY_MAP = {
 const MarketSentimentIndex = () => {
   const { t, i18n } = useTranslation();
   const { showToast, toast, hideToast } = useToastManager();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, checkAuthStatus } = useAuth();
   
   // 數據限制 Toast 提醒
   const { 
@@ -201,8 +201,18 @@ const MarketSentimentIndex = () => {
           }, 100);
         }
       } catch (error) {
-        // 如果是訪問被拒絕的錯誤，顯示升級對話框
+        // ✅ 修正 403 處理邏輯
         if (error.response?.status === 403) {
+          console.warn('MarketSentiment: 403 Forbidden on Pro endpoint. Falling back to Free data.');
+          
+          // 1. 同步用戶狀態
+          if (checkAuthStatus) {
+            checkAuthStatus().catch(err => {
+              console.error('Failed to refresh auth status:', err);
+            });
+          }
+          
+          // 2. 顯示升級對話框 (保持不變)
           setUpgradeDialog({
             isOpen: true,
             type: 'marketSentimentAccess',
@@ -211,10 +221,23 @@ const MarketSentimentIndex = () => {
               source: 'apiError'
             }
           });
+          
+          // 3. 【關鍵修正】自動降級：嘗試抓取免費版資料作為背景顯示
+          try {
+            const freeResponse = await enhancedApiClient.get('/api/market-sentiment-free');
+            if (isMounted && freeResponse.data) {
+              setSentimentData(freeResponse.data);
+              setIndicatorsData(freeResponse.data.indicators);
+              setIsDataLoaded(true);
+            }
+          } catch (fallbackError) {
+            console.error('Failed to fetch fallback free data:', fallbackError);
+            setSentimentData(null); // 真的失敗才設為 null
+          }
         } else {
           handleApiError(error, showToast, t);
+          setSentimentData(null);
         }
-        setSentimentData(null);
       } finally {
         if (isMounted) {
           setLoading(false);

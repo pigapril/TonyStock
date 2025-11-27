@@ -69,7 +69,7 @@ export function PriceAnalysis() {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const { showToast, toast, hideToast } = useToastManager();
   const { requestAdDisplay } = useAdContext(); // 從 Context 獲取函數
-  const { isAuthenticated, user } = useAuth(); // 新增：獲取認證狀態和用戶資訊
+  const { isAuthenticated, user, checkAuthStatus } = useAuth(); // 新增：獲取認證狀態和用戶資訊
   const { openDialog } = useDialog(); // 新增：獲取對話框功能
 
   // 檢查 Turnstile 功能是否啟用
@@ -364,6 +364,30 @@ export function PriceAnalysis() {
       setDisplayedStockCode(stock);
 
     } catch (error) {
+      // ✅ 新增：403 錯誤攔截 (後端 SSOT 判定無權限)
+      if (error.response?.status === 403) {
+        console.warn('PriceAnalysis: 403 Forbidden detected, refreshing auth status and showing upgrade dialog.');
+        
+        // 1. 強制刷新前端用戶狀態 (修正 stale cache)
+        if (checkAuthStatus) {
+          checkAuthStatus().catch(err => {
+            console.error('Failed to refresh auth status:', err);
+          });
+        }
+        
+        // 2. 顯示升級對話框 (取代原本的錯誤 Toast)
+        openDialog('featureUpgrade', {
+          feature: 'stockAccess',
+          stockCode: stock,
+          allowedStocks: getFreeStockList(),
+          upgradeUrl: `/${i18n.language}/subscription-plans`
+        });
+        
+        // 3. 清除 Loading 狀態並退出，不執行 handleApiError
+        setLoading(false);
+        return;
+      }
+      
       // 錯誤時也用 transition 清空數據
       startTransition(() => {
         setChartData(null);

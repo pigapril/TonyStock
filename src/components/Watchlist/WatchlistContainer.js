@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next';
 export function WatchlistContainer() {
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language; // 取得當前語言
-    const { user, isAuthenticated } = useAuth();
+    const { user, isAuthenticated, checkAuthStatus } = useAuth();
     const { toast, showToast, hideToast } = useToastManager();
     
     const [error, setError] = useState(null);
@@ -146,6 +146,18 @@ export function WatchlistContainer() {
         }
     };
 
+    // ✅ 新增：主動權限檢查 (Pre-emptive Check)
+    // 如果前端狀態已經更新為 free，直接導走
+    useEffect(() => {
+        if (isAuthenticated && user?.plan === 'free') {
+            // 顯示提示後導轉到訂閱頁面
+            showToast(t('watchlist.upgradeRequired'), 'info');
+            setTimeout(() => {
+                window.location.href = `/${i18n.language}/subscription-plans`;
+            }, 1500);
+        }
+    }, [user, isAuthenticated, i18n.language, showToast, t]);
+
     // 檢查用戶是否已登入
     useEffect(() => {
         if (!isAuthenticated) {
@@ -166,6 +178,25 @@ export function WatchlistContainer() {
                     setSelectedCategoryId(firstCategory.id);
                 }
             } catch (error) {
+                // ✅ 攔截 403 (後端判定無權限)
+                if (error.response?.status === 403) {
+                    console.warn('WatchlistContainer: 403 Forbidden detected, refreshing auth status and redirecting.');
+                    
+                    // 1. 同步用戶狀態
+                    if (checkAuthStatus) {
+                        checkAuthStatus().catch(err => {
+                            console.error('Failed to refresh auth status:', err);
+                        });
+                    }
+                    
+                    // 2. 導向訂閱頁面
+                    showToast(t('watchlist.upgradeRequired'), 'info');
+                    setTimeout(() => {
+                        window.location.href = `/${i18n.language}/subscription-plans`;
+                    }, 1500);
+                    return;
+                }
+                
                 if (retryCount < maxRetries) {
                     retryCount++;
                     showToast(t('watchlist.loadingRetry', { count: retryCount, max: maxRetries }), 'info');
@@ -178,7 +209,7 @@ export function WatchlistContainer() {
         };
 
         initializeCategories();
-    }, [isAuthenticated, loadCategories, showToast, activeTab, t]);
+    }, [isAuthenticated, loadCategories, showToast, activeTab, t, checkAuthStatus, i18n.language]);
 
     // 監聽登出事件，重置狀態
     useEffect(() => {

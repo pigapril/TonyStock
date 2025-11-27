@@ -1152,6 +1152,7 @@
     "loadingRetry": "Loading, please wait... ({{count}}/{{max}})",
     "loadFailed": "Load failed, please refresh the page",
     "loginRequiredMessage": "Please log in to use this feature",
+    "upgradeRequired": "This feature requires upgrading to Pro plan",
     "loadingMessage": "The watchlist analyzes multiple symbols at once. If you haven't viewed it for a while, it might take a moment. Thank you for your patience.",
     "editMode": {
       "finish": "Finish Editing",
