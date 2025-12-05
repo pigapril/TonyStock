@@ -244,9 +244,20 @@ const RedemptionAnalytics = () => {
             
             if (response.success) {
                 // Create download link
-                const blob = new Blob([JSON.stringify(response.data, null, 2)], {
-                    type: format === 'csv' ? 'text/csv' : 'application/json'
-                });
+                let blobContent;
+                let mimeType;
+                
+                if (format === 'csv') {
+                    // For CSV, response.data is already a string
+                    blobContent = response.data;
+                    mimeType = 'text/csv;charset=utf-8;';
+                } else {
+                    // For JSON, stringify the data
+                    blobContent = JSON.stringify(response.data, null, 2);
+                    mimeType = 'application/json';
+                }
+                
+                const blob = new Blob([blobContent], { type: mimeType });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;

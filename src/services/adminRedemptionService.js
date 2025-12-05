@@ -370,10 +370,22 @@ class AdminRedemptionService {
 
             const response = await enhancedApiClient.get(`/api/admin/redemption/export?${queryParams.toString()}`);
 
+            // Handle CSV format (plain text response)
+            if (params.format === 'csv') {
+                // For CSV, response.data is the raw CSV string
+                return {
+                    success: true,
+                    data: response.data,
+                    format: 'csv'
+                };
+            }
+
+            // Handle JSON format (structured response)
             if (response.data.status === 'success') {
                 return {
                     success: true,
-                    data: response.data
+                    data: response.data,
+                    format: 'json'
                 };
             } else {
                 throw new Error(response.data.message || 'Export failed');
