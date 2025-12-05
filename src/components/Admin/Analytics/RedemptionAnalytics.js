@@ -20,6 +20,199 @@ import AdminOnly from '../../AdminOnly';
 import { useAdminPermissions } from '../../../hooks/useAdminPermissions';
 import { systemLogger } from '../../../utils/logger';
 
+/**
+ * Metric Card Component
+ */
+const MetricCard = ({ title, value, change, icon, color }) => (
+    <div className={`redemption-analytics-metric-card metric-${color}`}>
+        <div className="redemption-analytics-metric-icon">{icon}</div>
+        <div className="redemption-analytics-metric-content">
+            <div className="redemption-analytics-metric-value">{value}</div>
+            <div className="redemption-analytics-metric-title">{title}</div>
+            {change && (
+                <div className={`redemption-analytics-metric-change ${change > 0 ? 'positive' : 'negative'}`}>
+                    {change > 0 ? '+' : ''}{change}%
+                </div>
+            )}
+        </div>
+    </div>
+);
+
+/**
+ * Fraud Alert Component
+ */
+const FraudAlert = ({ alert, t }) => (
+    <div className={`redemption-analytics-fraud-alert alert-${alert.severity}`}>
+        <div className="redemption-analytics-alert-header">
+            <div className="redemption-analytics-alert-type">
+                {t(`admin.analytics.fraudAlerts.types.${alert.type}`)}
+            </div>
+            <div className="redemption-analytics-alert-timestamp">
+                {alert.timestamp.toLocaleTimeString()}
+            </div>
+        </div>
+        <div className="redemption-analytics-alert-message">{alert.message}</div>
+        {alert.details && (
+            <div className="redemption-analytics-alert-details">
+                {Object.entries(alert.details).map(([key, value]) => (
+                    <span key={key} className="redemption-analytics-detail-item">
+                        {key}: {value}
+                    </span>
+                ))}
+            </div>
+        )}
+    </div>
+);
+
+/**
+ * Simple Chart Components (using CSS for visualization)
+ */
+const RedemptionTrendsChart = ({ data, t }) => (
+    <div className="redemption-analytics-simple-chart">
+        <div className="redemption-analytics-chart-bars">
+            {data.slice(-7).map((item, index) => (
+                <div key={index} className="redemption-analytics-chart-bar">
+                    <div 
+                        className="redemption-analytics-bar-fill"
+                        style={{ height: `${(item.redemptions / Math.max(...data.map(d => d.redemptions))) * 100}%` }}
+                    />
+                    <div className="redemption-analytics-bar-label">{new Date(item.date).getDate()}</div>
+                </div>
+            ))}
+        </div>
+    </div>
+);
+
+const CodeTypeChart = ({ data, t }) => (
+    <div className="redemption-analytics-pie-chart-simple">
+        {data.map((item, index) => (
+            <div key={index} className="redemption-analytics-pie-item">
+                <div className={`redemption-analytics-pie-color color-${index}`} />
+                <span>{t(`admin.codes.types.${item.name.toLowerCase()}`)}: {item.value}</span>
+            </div>
+        ))}
+    </div>
+);
+
+const CampaignPerformanceChart = ({ data, t }) => (
+    <div className="redemption-analytics-horizontal-bars">
+        {data.map((item, index) => (
+            <div key={index} className="redemption-analytics-bar-row">
+                <div className="redemption-analytics-bar-label">{item.name}</div>
+                <div className="redemption-analytics-bar-container">
+                    <div 
+                        className="redemption-analytics-bar-fill"
+                        style={{ width: `${(item.usage / Math.max(...data.map(d => d.usage))) * 100}%` }}
+                    />
+                </div>
+                <div className="redemption-analytics-bar-value">{item.usage}</div>
+            </div>
+        ))}
+    </div>
+);
+
+const FraudPatternsChart = ({ data, t }) => (
+    <div className="redemption-analytics-fraud-patterns-list">
+        {data.map((pattern, index) => (
+            <div key={index} className={`redemption-analytics-pattern-item severity-${pattern.severity}`}>
+                <div className="redemption-analytics-pattern-name">{pattern.pattern}</div>
+                <div className="redemption-analytics-pattern-count">{pattern.count}</div>
+                <div className={`redemption-analytics-pattern-severity severity-${pattern.severity}`}>
+                    {t(`admin.analytics.fraudAlerts.severity.${pattern.severity}`)}
+                </div>
+            </div>
+        ))}
+    </div>
+);
+
+/**
+ * Tab Content Components
+ */
+const OverviewTab = ({ analytics, t }) => (
+    <div className="redemption-analytics-overview-tab">
+        <div className="redemption-analytics-overview-grid">
+            <div className="redemption-analytics-overview-section">
+                <h4>{t('admin.analytics.overview.codeBreakdown')}</h4>
+                <div className="redemption-analytics-breakdown-list">
+                    {analytics.breakdown.byType.map((item, index) => (
+                        <div key={index} className="redemption-analytics-breakdown-item">
+                            <span className="redemption-analytics-breakdown-label">
+                                {t(`admin.codes.types.${item.codeType.toLowerCase()}`)}
+                            </span>
+                            <span className="redemption-analytics-breakdown-value">{item.count}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            
+            <div className="redemption-analytics-overview-section">
+                <h4>{t('admin.analytics.overview.topCampaigns')}</h4>
+                <div className="redemption-analytics-breakdown-list">
+                    {analytics.breakdown.byCampaign.slice(0, 5).map((item, index) => (
+                        <div key={index} className="redemption-analytics-breakdown-item">
+                            <span className="redemption-analytics-breakdown-label">{item.campaignName}</span>
+                            <span className="redemption-analytics-breakdown-value">{item.totalUsage}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
+const ConversionTab = ({ analytics, chartData, t }) => (
+    <div className="redemption-analytics-conversion-tab">
+        <div className="redemption-analytics-conversion-metrics">
+            <div className="redemption-analytics-metric-row">
+                <span className="redemption-analytics-metric-label">{t('admin.analytics.conversion.overallRate')}</span>
+                <span className="redemption-analytics-metric-value">{analytics.summary.conversionRate}%</span>
+            </div>
+            <div className="redemption-analytics-metric-row">
+                <span className="redemption-analytics-metric-label">{t('admin.analytics.conversion.successRate')}</span>
+                <span className="redemption-analytics-metric-value">{analytics.summary.successRate}%</span>
+            </div>
+        </div>
+    </div>
+);
+
+const FraudTab = ({ fraudAlerts, chartData, t }) => (
+    <div className="redemption-analytics-fraud-tab">
+        <div className="redemption-analytics-fraud-summary">
+            <h4>{t('admin.analytics.fraud.recentAlerts')}</h4>
+            {fraudAlerts.length === 0 ? (
+                <p>{t('admin.analytics.fraud.noAlerts')}</p>
+            ) : (
+                <div className="redemption-analytics-fraud-alerts-list">
+                    {fraudAlerts.map(alert => (
+                        <FraudAlert key={alert.id} alert={alert} t={t} />
+                    ))}
+                </div>
+            )}
+        </div>
+    </div>
+);
+
+const CampaignsTab = ({ analytics, chartData, t }) => (
+    <div className="redemption-analytics-campaigns-tab">
+        <div className="redemption-analytics-campaigns-table">
+            <div className="redemption-analytics-table-header">
+                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.name')}</div>
+                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.codes')}</div>
+                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.usage')}</div>
+                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.rate')}</div>
+            </div>
+            {analytics.breakdown.byCampaign.map((campaign, index) => (
+                <div key={index} className="redemption-analytics-table-row">
+                    <div className="redemption-analytics-table-cell">{campaign.campaignName}</div>
+                    <div className="redemption-analytics-table-cell">{campaign.count}</div>
+                    <div className="redemption-analytics-table-cell">{campaign.totalUsage}</div>
+                    <div className="redemption-analytics-table-cell">{campaign.usageRate.toFixed(1)}%</div>
+                </div>
+            ))}
+        </div>
+    </div>
+);
+
 const RedemptionAnalytics = () => {
     const { t } = useTranslation();
     const { isAdmin, loading: adminLoading, checkAdminStatus } = useAdminPermissions();
@@ -569,199 +762,6 @@ const RedemptionAnalytics = () => {
                     </div>
                 </>
             )}
-        </div>
-    );
-
-/**
- * Metric Card Component
- */
-const MetricCard = ({ title, value, change, icon, color }) => (
-    <div className={`redemption-analytics-metric-card metric-${color}`}>
-        <div className="redemption-analytics-metric-icon">{icon}</div>
-        <div className="redemption-analytics-metric-content">
-            <div className="redemption-analytics-metric-value">{value}</div>
-            <div className="redemption-analytics-metric-title">{title}</div>
-            {change && (
-                <div className={`redemption-analytics-metric-change ${change > 0 ? 'positive' : 'negative'}`}>
-                    {change > 0 ? '+' : ''}{change}%
-                </div>
-            )}
-        </div>
-    </div>
-);
-
-/**
- * Fraud Alert Component
- */
-const FraudAlert = ({ alert, t }) => (
-    <div className={`redemption-analytics-fraud-alert alert-${alert.severity}`}>
-        <div className="redemption-analytics-alert-header">
-            <div className="redemption-analytics-alert-type">
-                {t(`admin.analytics.fraudAlerts.types.${alert.type}`)}
-            </div>
-            <div className="redemption-analytics-alert-timestamp">
-                {alert.timestamp.toLocaleTimeString()}
-            </div>
-        </div>
-        <div className="redemption-analytics-alert-message">{alert.message}</div>
-        {alert.details && (
-            <div className="redemption-analytics-alert-details">
-                {Object.entries(alert.details).map(([key, value]) => (
-                    <span key={key} className="redemption-analytics-detail-item">
-                        {key}: {value}
-                    </span>
-                ))}
-            </div>
-        )}
-    </div>
-);
-
-/**
- * Simple Chart Components (using CSS for visualization)
- */
-const RedemptionTrendsChart = ({ data, t }) => (
-    <div className="redemption-analytics-simple-chart">
-        <div className="redemption-analytics-chart-bars">
-            {data.slice(-7).map((item, index) => (
-                <div key={index} className="redemption-analytics-chart-bar">
-                    <div 
-                        className="redemption-analytics-bar-fill"
-                        style={{ height: `${(item.redemptions / Math.max(...data.map(d => d.redemptions))) * 100}%` }}
-                    />
-                    <div className="redemption-analytics-bar-label">{new Date(item.date).getDate()}</div>
-                </div>
-            ))}
-        </div>
-    </div>
-);
-
-const CodeTypeChart = ({ data, t }) => (
-    <div className="redemption-analytics-pie-chart-simple">
-        {data.map((item, index) => (
-            <div key={index} className="redemption-analytics-pie-item">
-                <div className={`redemption-analytics-pie-color color-${index}`} />
-                <span>{t(`admin.codes.types.${item.name.toLowerCase()}`)}: {item.value}</span>
-            </div>
-        ))}
-    </div>
-);
-
-const CampaignPerformanceChart = ({ data, t }) => (
-    <div className="redemption-analytics-horizontal-bars">
-        {data.map((item, index) => (
-            <div key={index} className="redemption-analytics-bar-row">
-                <div className="redemption-analytics-bar-label">{item.name}</div>
-                <div className="redemption-analytics-bar-container">
-                    <div 
-                        className="redemption-analytics-bar-fill"
-                        style={{ width: `${(item.usage / Math.max(...data.map(d => d.usage))) * 100}%` }}
-                    />
-                </div>
-                <div className="redemption-analytics-bar-value">{item.usage}</div>
-            </div>
-        ))}
-    </div>
-);
-
-const FraudPatternsChart = ({ data, t }) => (
-    <div className="redemption-analytics-fraud-patterns-list">
-        {data.map((pattern, index) => (
-            <div key={index} className={`redemption-analytics-pattern-item severity-${pattern.severity}`}>
-                <div className="redemption-analytics-pattern-name">{pattern.pattern}</div>
-                <div className="redemption-analytics-pattern-count">{pattern.count}</div>
-                <div className={`redemption-analytics-pattern-severity severity-${pattern.severity}`}>
-                    {t(`admin.analytics.fraudAlerts.severity.${pattern.severity}`)}
-                </div>
-            </div>
-        ))}
-    </div>
-);
-
-/**
- * Tab Content Components
- */
-const OverviewTab = ({ analytics, t }) => (
-    <div className="redemption-analytics-overview-tab">
-        <div className="redemption-analytics-overview-grid">
-            <div className="redemption-analytics-overview-section">
-                <h4>{t('admin.analytics.overview.codeBreakdown')}</h4>
-                <div className="redemption-analytics-breakdown-list">
-                    {analytics.breakdown.byType.map((item, index) => (
-                        <div key={index} className="redemption-analytics-breakdown-item">
-                            <span className="redemption-analytics-breakdown-label">
-                                {t(`admin.codes.types.${item.codeType.toLowerCase()}`)}
-                            </span>
-                            <span className="redemption-analytics-breakdown-value">{item.count}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            
-            <div className="redemption-analytics-overview-section">
-                <h4>{t('admin.analytics.overview.topCampaigns')}</h4>
-                <div className="redemption-analytics-breakdown-list">
-                    {analytics.breakdown.byCampaign.slice(0, 5).map((item, index) => (
-                        <div key={index} className="redemption-analytics-breakdown-item">
-                            <span className="redemption-analytics-breakdown-label">{item.campaignName}</span>
-                            <span className="redemption-analytics-breakdown-value">{item.totalUsage}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    </div>
-);
-
-const ConversionTab = ({ analytics, chartData, t }) => (
-    <div className="redemption-analytics-conversion-tab">
-        <div className="redemption-analytics-conversion-metrics">
-            <div className="redemption-analytics-metric-row">
-                <span className="redemption-analytics-metric-label">{t('admin.analytics.conversion.overallRate')}</span>
-                <span className="redemption-analytics-metric-value">{analytics.summary.conversionRate}%</span>
-            </div>
-            <div className="redemption-analytics-metric-row">
-                <span className="redemption-analytics-metric-label">{t('admin.analytics.conversion.successRate')}</span>
-                <span className="redemption-analytics-metric-value">{analytics.summary.successRate}%</span>
-            </div>
-        </div>
-    </div>
-);
-
-const FraudTab = ({ fraudAlerts, chartData, t }) => (
-    <div className="redemption-analytics-fraud-tab">
-        <div className="redemption-analytics-fraud-summary">
-            <h4>{t('admin.analytics.fraud.recentAlerts')}</h4>
-            {fraudAlerts.length === 0 ? (
-                <p>{t('admin.analytics.fraud.noAlerts')}</p>
-            ) : (
-                <div className="redemption-analytics-fraud-alerts-list">
-                    {fraudAlerts.map(alert => (
-                        <FraudAlert key={alert.id} alert={alert} t={t} />
-                    ))}
-                </div>
-            )}
-        </div>
-    </div>
-);
-
-const CampaignsTab = ({ analytics, chartData, t }) => (
-    <div className="redemption-analytics-campaigns-tab">
-        <div className="redemption-analytics-campaigns-table">
-            <div className="redemption-analytics-table-header">
-                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.name')}</div>
-                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.codes')}</div>
-                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.usage')}</div>
-                <div className="redemption-analytics-header-cell">{t('admin.analytics.campaigns.rate')}</div>
-            </div>
-            {analytics.breakdown.byCampaign.map((campaign, index) => (
-                <div key={index} className="redemption-analytics-table-row">
-                    <div className="redemption-analytics-table-cell">{campaign.campaignName}</div>
-                    <div className="redemption-analytics-table-cell">{campaign.count}</div>
-                    <div className="redemption-analytics-table-cell">{campaign.totalUsage}</div>
-                    <div className="redemption-analytics-table-cell">{campaign.usageRate.toFixed(1)}%</div>
-                </div>
-            ))}
-        </div>
         </div>
     );
 };
