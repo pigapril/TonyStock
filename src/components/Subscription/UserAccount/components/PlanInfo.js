@@ -139,7 +139,7 @@ export const PlanInfo = ({ plan, loading }) => {
           {plan.endDate && (
             <div className="plan-info__date">
               <span className="plan-info__date-label">
-                {(isSubscriptionActive && !plan.cancelAtPeriodEnd)
+                {(isSubscriptionActive && !plan.cancelAtPeriodEnd && plan.autoRenew)
                   ? t('subscription.history.renewalDate')
                   : t('subscription.history.endDate')
                 }:
