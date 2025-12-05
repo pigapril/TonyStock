@@ -51,6 +51,12 @@ export const PlanCard = ({
           return false;
         }
 
+        // ✅ Admin 升級或兌換碼升級的用戶（autoRenew: false）
+        // 不視為「當前方案」，允許他們隨時付費訂閱
+        if (userPlan.autoRenew === false) {
+          return false;
+        }
+
         // ✅ 使用 isActive 而非 status（考慮時間因素）
         // 只有活躍且未過期的訂閱才視為當前方案
         return userPlan.isActive !== false && !userPlan.isExpired;
@@ -327,6 +333,16 @@ export const PlanCard = ({
 
     // Pro 方案邏輯
     if (isPro) {
+      // ✅ 檢查是否為 Admin 升級或兌換碼升級（autoRenew: false）
+      const isTrialOrPromo = userPlan && userPlan.type === 'pro' && 
+                             userPlan.autoRenew === false &&
+                             userPlan.isActive !== false && 
+                             !userPlan.isExpired;
+      
+      if (isTrialOrPromo) {
+        return t('subscription.subscriptionPlans.upgradeToFullPlan', '升級為付費方案');
+      }
+
       // 檢查用戶是否曾經有過 Pro 訂閱（從訂閱歷史或當前狀態判斷）
       const hasHadProSubscription = (() => {
         // 檢查當前用戶計劃是否曾經是 Pro（但現在已過期或取消）

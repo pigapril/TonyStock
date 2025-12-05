@@ -1437,6 +1437,7 @@
       "manageSubscription": "Manage Subscription",
       "resumeSubscription": "Resume Subscription",
       "resubscribe": "Resubscribe",
+      "upgradeToFullPlan": "Upgrade to Paid Plan",
       "loginToStart": "Login to Start",
       "loginToUpgrade": "Login to Upgrade",
       "loginRequired": "Login Required",
