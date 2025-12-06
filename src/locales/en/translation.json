@@ -1082,8 +1082,16 @@
     "quickSelect": {
       "tabs": {
         "hotSearches": "Trending 🔥",
-        "freeStocks": "Index ETF 💎"
+        "freeStocks": "Index ETF 💎",
+        "watchlist": "Watchlist 📋"
       }
+    },
+    "watchlistQuickAccess": {
+      "title": "Watchlist",
+      "noData": "Your watchlist is empty",
+      "addStocksHint": "Go to 'My Watchlist' to add stocks",
+      "loginRequired": "Please login to view your watchlist",
+      "upgradeRequired": "Upgrade to Pro plan to use watchlist feature"
     },
     "freeStockList": {
       "title": "Free Analysis Stocks 💎",

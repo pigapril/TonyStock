@@ -1099,8 +1099,16 @@
     "quickSelect": {
       "tabs": {
         "hotSearches": "熱門分析 🔥",
-        "freeStocks": "指數ETF 💎"
+        "freeStocks": "指數ETF 💎",
+        "watchlist": "觀察清單 📋"
       }
+    },
+    "watchlistQuickAccess": {
+      "title": "觀察清單",
+      "noData": "您的觀察清單是空的",
+      "addStocksHint": "前往「我的追蹤清單」新增股票",
+      "loginRequired": "請先登入以查看您的觀察清單",
+      "upgradeRequired": "升級至 Pro 方案以使用觀察清單功能"
     },
     "freeStockList": {
       "title": "免費查詢標的 💎",

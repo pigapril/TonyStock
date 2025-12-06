@@ -27,13 +27,16 @@
   gap: 8px;
 }
 
-/* 區域標題 */
+/* 區域標題 - 改為置中 + 橫線樣式 */
 .region-header {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 0 4px;
-  margin-bottom: 4px;
+  padding: 8px 4px 4px 4px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  position: relative;
 }
 
 .region-icon {
@@ -42,12 +45,13 @@
 }
 
 .region-title {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--color-text-secondary, #666);
   margin: 0;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  text-align: center;
 }
 
 /* 區域內的股票列表 - 改為垂直排列 */
@@ -132,7 +136,8 @@
 
   .region-header {
     gap: 6px;
-    margin-bottom: 2px;
+    margin-bottom: 6px;
+    padding: 6px 4px 4px 4px;
   }
 
   .region-icon {

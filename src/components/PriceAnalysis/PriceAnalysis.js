@@ -28,6 +28,7 @@ import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDi
 import { isStockAllowed, getFreeStockList } from '../../utils/freeStockListUtils'; // 導入免費股票清單檢查函數
 import FreeStockList from './FreeStockList'; // 新增：引入免費股票清單組件
 import ScrollToTopButton from '../Common/ScrollToTopButton/ScrollToTopButton'; // 新增：引入回到頂端按鈕
+import watchlistService from '../Watchlist/services/watchlistService'; // 新增：引入 watchlist service
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
 function getTimeUnit(dates) {
@@ -122,8 +123,12 @@ export function PriceAnalysis() {
   const [loadingHotSearches, setLoadingHotSearches] = useState(false);
 
   // 新增：快速選擇 Tab 狀態
-  const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('hotSearches'); // 'hotSearches' 或 'freeStocks'
+  const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('hotSearches'); // 'hotSearches', 'freeStocks', 或 'watchlist'
   const [isUserInitiated, setIsUserInitiated] = useState(false); // 追蹤是否為用戶主動操作
+
+  // 新增：Watchlist 狀態（改為保留分類結構）
+  const [watchlistCategories, setWatchlistCategories] = useState([]);
+  const [loadingWatchlist, setLoadingWatchlist] = useState(false);
 
   // 新增：自動顯示最新數據點的 tooltip
   useEffect(() => {
@@ -611,8 +616,63 @@ export function PriceAnalysis() {
     };
 
     fetchHotSearches();
+
+    // 新增：獲取 Watchlist 數據的函數（改為保留分類結構）
+    const fetchWatchlistStocks = async () => {
+      // 只有在已登入且為 Pro 用戶時才獲取
+      if (!isAuthenticated || !user) {
+        setWatchlistCategories([]);
+        return;
+      }
+
+      // 檢查是否為 Pro 用戶
+      const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+      const userPlan = user?.plan || 'free';
+      const isPro = isTemporaryFreeMode || userPlan === 'pro';
+
+      if (!isPro) {
+        setWatchlistCategories([]);
+        return;
+      }
+
+      setLoadingWatchlist(true);
+      try {
+        const categories = await watchlistService.getCategories();
+        
+        // 保留分類結構，只過濾掉空的分類
+        const validCategories = [];
+        if (Array.isArray(categories)) {
+          categories.forEach(category => {
+            if (category.stocks && Array.isArray(category.stocks) && category.stocks.length > 0) {
+              validCategories.push({
+                id: category.id,
+                name: category.name,
+                stocks: category.stocks.map(stock => ({
+                  // 確保正確讀取 stockCode（可能是 stockCode 或 stockSymbol）
+                  stockCode: stock.stockCode || stock.stockSymbol || stock.symbol,
+                  // 確保正確讀取 name（可能是 name 或 stockName）
+                  name: stock.name || stock.stockName || stock.stockCode || stock.stockSymbol || stock.symbol
+                }))
+              });
+            }
+          });
+        }
+        
+        console.log('Watchlist categories loaded:', validCategories); // Debug log
+        
+        setWatchlistCategories(validCategories);
+      } catch (error) {
+        console.error('Failed to fetch watchlist:', error);
+        // 靜默失敗，不顯示錯誤提示
+        setWatchlistCategories([]);
+      } finally {
+        setLoadingWatchlist(false);
+      }
+    };
+
+    fetchWatchlistStocks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, location.state]); // <--- 修改：移除 getStockNameFromFreeList
+  }, [searchParams, location.state, isAuthenticated, user]); // <--- 修改：新增依賴項
 
 
 
@@ -783,6 +843,100 @@ export function PriceAnalysis() {
             years: numYearsToFetch,
             backTestDate: dateToFetch,
             source: 'freeStockList' // 標記來源為免費股票清單
+        });
+    }, 0);
+
+    // 直接調用 fetchStockData 執行分析
+    fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, false, true);
+  };
+
+  // 新增：處理 Watchlist Tab 點擊事件
+  const handleWatchlistTabClick = () => {
+    // 檢查登入狀態
+    if (!isAuthenticated) {
+      openDialog('auth', {
+        returnPath: location.pathname,
+        message: t('priceAnalysis.watchlistQuickAccess.loginRequired')
+      });
+      return;
+    }
+
+    // 檢查是否為 Pro 用戶
+    const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+    const userPlan = user?.plan || 'free';
+    const isPro = isTemporaryFreeMode || userPlan === 'pro';
+
+    if (!isPro) {
+      openDialog('featureUpgrade', {
+        feature: 'watchlist',
+        upgradeUrl: `/${i18n.language}/subscription-plans`
+      });
+      return;
+    }
+
+    // Pro 用戶可以切換到 watchlist tab
+    setActiveQuickSelectTab('watchlist');
+  };
+
+  // 新增：處理 Watchlist 股票點擊事件
+  const handleWatchlistStockClick = (stockCode) => {
+    // 防禦性檢查
+    if (!stockCode) {
+      console.error('Stock code is undefined');
+      return;
+    }
+
+    // 標記為用戶主動操作
+    setIsUserInitiated(true);
+
+    const upperClickedCode = stockCode.toUpperCase();
+
+    // 更新狀態以反映新的股票代碼
+    setDisplayStockCode(upperClickedCode);
+    setStockCode(upperClickedCode);
+
+    // 準備表單提交所需的參數
+    let numYearsToFetch;
+    if (isAdvancedQuery) {
+        const convertedYears = years
+            .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
+            .replace(/[．。]/g, '.');
+        const parsedYears = parseFloat(convertedYears);
+        if (!isNaN(parsedYears) && parsedYears > 0) {
+            numYearsToFetch = parsedYears;
+        } else {
+            numYearsToFetch = 3.5;
+        }
+    } else {
+        switch (analysisPeriod) {
+            case 'short': numYearsToFetch = 0.5; break;
+            case 'medium': numYearsToFetch = 1.5; break;
+            case 'long': default: numYearsToFetch = 3.5; break;
+        }
+    }
+    const dateToFetch = isAdvancedQuery ? backTestDate : '';
+
+    // --- 立即更新 UI 反饋 ---
+    setLoading(true);
+    startTransition(() => {
+        setChartData(null);
+        setUlbandData(null);
+        setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
+        setDisplayedStockCode('');
+    });
+    // --- UI 反饋結束 ---
+
+    // --- 調用 Context 的函數來請求廣告 ---
+    requestAdDisplay('priceAnalysis', 3);
+    // --- 廣告請求結束 ---
+
+    // 延遲分析事件發送
+    setTimeout(() => {
+        Analytics.stockAnalysis.search({
+            stockCode: upperClickedCode,
+            years: numYearsToFetch,
+            backTestDate: dateToFetch,
+            source: 'watchlist' // 標記來源為 watchlist
         });
     }, 0);
 
@@ -1219,7 +1373,7 @@ export function PriceAnalysis() {
               </form>
             </div>
 
-            {/* 快速選擇區塊 (熱門搜尋 + 免費股票清單) */}
+            {/* 快速選擇區塊 (熱門搜尋 + 免費股票清單 + 我的關注) */}
             <div className="quick-select-section">
               {/* Tab 導航 */}
               <div className="quick-select-tabs">
@@ -1234,6 +1388,15 @@ export function PriceAnalysis() {
                   onClick={() => setActiveQuickSelectTab('freeStocks')}
                 >
                   {t('priceAnalysis.quickSelect.tabs.freeStocks')}
+                </button>
+                <button
+                  className={`quick-select-tab watchlist-tab ${activeQuickSelectTab === 'watchlist' ? 'active' : ''}`}
+                  onClick={handleWatchlistTabClick}
+                >
+                  {t('priceAnalysis.quickSelect.tabs.watchlist')}
+                  {(!isAuthenticated || (user && user.plan !== 'pro' && process.env.REACT_APP_TEMPORARY_FREE_MODE !== 'true')) && (
+                    <span className="watchlist-tab-lock-icon">🔒</span>
+                  )}
                 </button>
               </div>
 
@@ -1275,6 +1438,44 @@ export function PriceAnalysis() {
                       onStockSelect={handleFreeStockClick}
                       className="integrated-free-stock-list"
                     />
+                  </div>
+                )}
+
+                {activeQuickSelectTab === 'watchlist' && (
+                  <div className="watchlist-tab-content">
+                    {loadingWatchlist ? (
+                      <p className="loading-text">{t('common.loading')}</p>
+                    ) : watchlistCategories.length > 0 ? (
+                      <div className="watchlist-categories-container">
+                        {watchlistCategories.map((category) => (
+                          <div key={category.id} className="watchlist-category-group">
+                            <h4 className="watchlist-category-title">{category.name}</h4>
+                            <div className="watchlist-stock-list">
+                              {category.stocks.map((stock, index) => (
+                                <div
+                                  key={`${category.id}-${stock.stockCode}-${index}`}
+                                  className="watchlist-stock-item"
+                                  onClick={() => handleWatchlistStockClick(stock.stockCode)}
+                                  role="button"
+                                  tabIndex={0}
+                                  onKeyPress={(e) => e.key === 'Enter' && handleWatchlistStockClick(stock.stockCode)}
+                                >
+                                  <div className="watchlist-stock-info">
+                                    <span className="watchlist-stock-ticker">{stock.stockCode}</span>
+                                    <span className="watchlist-stock-name">{stock.name}</span>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="watchlist-empty-state">
+                        <p className="no-data-text">{t('priceAnalysis.watchlistQuickAccess.noData')}</p>
+                        <p className="hint-text">{t('priceAnalysis.watchlistQuickAccess.addStocksHint')}</p>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

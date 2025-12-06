@@ -1272,3 +1272,189 @@
     padding: 8px;
   }
 }
+
+/* ========================================
+   Watchlist Tab 樣式 (獨立命名避免衝突)
+   ======================================== */
+
+/* Watchlist Tab 按鈕的鎖定圖示 */
+.price-analysis-view .watchlist-tab-lock-icon {
+  margin-left: 4px;
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+/* Watchlist Tab 內容容器 */
+.price-analysis-view .watchlist-tab-content {
+  text-align: center;
+}
+
+.price-analysis-view .watchlist-tab-content .loading-text,
+.price-analysis-view .watchlist-tab-content .no-data-text {
+  padding: 10px;
+  font-size: 0.85em;
+  color: var(--color-text-tertiary, #888);
+}
+
+/* Watchlist 空狀態容器 */
+.price-analysis-view .watchlist-empty-state {
+  padding: 20px 10px;
+  text-align: center;
+}
+
+.price-analysis-view .watchlist-empty-state .no-data-text {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary, #666);
+  font-weight: 500;
+}
+
+.price-analysis-view .watchlist-empty-state .hint-text {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-tertiary, #999);
+  line-height: 1.4;
+}
+
+/* Watchlist 分類容器 */
+.price-analysis-view .watchlist-categories-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Watchlist 分類組 */
+.price-analysis-view .watchlist-category-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Watchlist 分類標題 - 置中 + 橫線樣式（與 FreeStockList 一致）*/
+.price-analysis-view .watchlist-category-title {
+  margin: 0;
+  padding: 8px 4px 4px 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-secondary, #666);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+/* Watchlist 股票列表 - 垂直排列 */
+.price-analysis-view .watchlist-stock-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Watchlist 股票項目 - 一列一個，內容靠左對齊 */
+.price-analysis-view .watchlist-stock-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: var(--border-radius-small, 6px);
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-apple, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: left;
+  width: 100%;
+}
+
+.price-analysis-view .watchlist-stock-item:hover,
+.price-analysis-view .watchlist-stock-item:focus {
+  transform: translateY(-1px);
+  background-color: rgba(0, 122, 255, 0.05);
+  border-color: #007AFF;
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.15);
+  outline: none;
+}
+
+.price-analysis-view .watchlist-stock-item:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0, 122, 255, 0.1);
+}
+
+/* Watchlist 股票資訊容器 - 改為水平排列（與 FreeStockList 一致）*/
+.price-analysis-view .watchlist-stock-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Watchlist 股票代碼 */
+.price-analysis-view .watchlist-stock-ticker {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #007AFF;
+  letter-spacing: 0.02em;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  flex-shrink: 0;
+  min-width: 60px;
+}
+
+/* Watchlist 股票名稱 */
+.price-analysis-view .watchlist-stock-name {
+  font-size: 0.8rem;
+  color: #1d1d1f;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+/* 手機版樣式調整 */
+@media (max-width: 768px) {
+  .price-analysis-view .watchlist-stock-item {
+    padding: 10px 12px;
+  }
+
+  .price-analysis-view .watchlist-stock-ticker {
+    font-size: 0.8rem;
+    min-width: 50px;
+  }
+
+  .price-analysis-view .watchlist-stock-name {
+    font-size: 0.75rem;
+  }
+
+  .price-analysis-view .watchlist-stock-info {
+    gap: 6px;
+  }
+
+  .price-analysis-view .watchlist-category-title {
+    font-size: 0.75rem;
+    padding: 6px 4px 4px 4px;
+  }
+
+  .price-analysis-view .watchlist-categories-container {
+    gap: 12px;
+  }
+
+  .price-analysis-view .watchlist-empty-state {
+    padding: 15px 8px;
+  }
+
+  .price-analysis-view .watchlist-empty-state .no-data-text {
+    font-size: 0.85rem;
+  }
+
+  .price-analysis-view .watchlist-empty-state .hint-text {
+    font-size: 0.75rem;
+  }
+}
