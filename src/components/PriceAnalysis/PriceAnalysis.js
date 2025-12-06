@@ -649,12 +649,20 @@ export function PriceAnalysis() {
               validCategories.push({
                 id: category.id,
                 name: category.name,
-                stocks: category.stocks.map(stock => ({
-                  // 確保正確讀取 stockCode（可能是 stockCode 或 stockSymbol）
-                  stockCode: stock.stockCode || stock.stockSymbol || stock.symbol,
-                  // 確保正確讀取 name（可能是 name 或 stockName）
-                  name: stock.name || stock.stockName || stock.stockCode || stock.stockSymbol || stock.symbol
-                }))
+                stocks: category.stocks.map(stock => {
+                  // 後端返回的資料結構：symbol, name, nameEn
+                  const stockCode = stock.symbol || stock.stockCode || stock.stockSymbol;
+                  // 優先使用當前語言的名稱，如果沒有則使用另一個語言的名稱
+                  const stockName = currentLang === 'zh-TW' 
+                    ? (stock.name || stock.nameEn || stock.stockName)
+                    : (stock.nameEn || stock.name || stock.stockName);
+                  
+                  return {
+                    stockCode: stockCode,
+                    // 只有當名稱存在且不等於代碼時才使用，否則不設定 name（讓 UI 只顯示代碼）
+                    name: (stockName && stockName !== stockCode) ? stockName : ''
+                  };
+                })
               });
             }
           });
@@ -1516,7 +1524,9 @@ export function PriceAnalysis() {
                                   >
                                     <div className="watchlist-stock-info">
                                       <span className="watchlist-stock-ticker">{stock.stockCode}</span>
-                                      <span className="watchlist-stock-name">{stock.name}</span>
+                                      {stock.name && stock.name !== stock.stockCode && (
+                                        <span className="watchlist-stock-name">{stock.name}</span>
+                                      )}
                                     </div>
                                   </div>
                                 ))}
