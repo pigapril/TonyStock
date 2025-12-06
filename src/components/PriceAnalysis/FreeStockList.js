@@ -13,6 +13,15 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
   const [stocksByRegion, setStocksByRegion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [collapsedRegions, setCollapsedRegions] = useState({}); // 新增：記錄哪些區域被收合
+
+  // 新增：切換區域收合狀態
+  const toggleRegionCollapse = (regionKey) => {
+    setCollapsedRegions(prev => ({
+      ...prev,
+      [regionKey]: !prev[regionKey]
+    }));
+  };
 
   // 從 API 載入股票資料
   useEffect(() => {
@@ -32,6 +41,17 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
 
     loadStockData();
   }, [t]);
+
+  // 新增：當股票資料載入完成時，預設全部收合
+  useEffect(() => {
+    if (stocksByRegion) {
+      const initialCollapsedState = {};
+      Object.keys(stocksByRegion).forEach(regionKey => {
+        initialCollapsedState[regionKey] = true; // 預設全部收合
+      });
+      setCollapsedRegions(initialCollapsedState);
+    }
+  }, [stocksByRegion]);
 
   // 處理股票點擊
   const handleStockClick = (ticker) => {
@@ -72,26 +92,52 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
       <div className="free-stock-regions">
         {Object.entries(stocksByRegion).map(([regionKey, region]) => (
           <div key={regionKey} className="free-stock-region">
-            <div className="region-header">
-              <span className="region-icon">{region.icon}</span>
-              <h4 className="region-title">{t(`priceAnalysis.freeStockList.regions.${regionKey}`)}</h4>
+            <div 
+              className="region-header collapsible"
+              onClick={() => toggleRegionCollapse(regionKey)}
+              role="button"
+              tabIndex={0}
+              onKeyPress={(e) => e.key === 'Enter' && toggleRegionCollapse(regionKey)}
+            >
+              <div className="region-header-content">
+                <span className="region-icon">{region.icon}</span>
+                <h4 className="region-title">{t(`priceAnalysis.freeStockList.regions.${regionKey}`)}</h4>
+                <span className="region-count-badge">{region.stocks.length}</span>
+              </div>
+              <svg 
+                className={`collapse-icon ${collapsedRegions[regionKey] ? 'collapsed' : ''}`}
+                width="16" 
+                height="16" 
+                viewBox="0 0 16 16" 
+                fill="none"
+              >
+                <path 
+                  d="M4 6L8 10L12 6" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
-            <div className="region-stocks">
-              {region.stocks.map((stock) => (
-                <button
-                  key={stock.ticker}
-                  className="free-stock-item"
-                  onClick={() => handleStockClick(stock.ticker)}
-                  title={`${stock.name} (${stock.ticker})`}
-                >
-                  <div className="free-stock-info">
-                    <span className="free-stock-ticker">{stock.ticker}</span>
-                    <span className="free-stock-name">{stock.name}</span>
-                    <span className="stock-region-badge">{stock.category}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
+            {!collapsedRegions[regionKey] && (
+              <div className="region-stocks">
+                {region.stocks.map((stock) => (
+                  <button
+                    key={stock.ticker}
+                    className="free-stock-item"
+                    onClick={() => handleStockClick(stock.ticker)}
+                    title={`${stock.name} (${stock.ticker})`}
+                  >
+                    <div className="free-stock-info">
+                      <span className="free-stock-ticker">{stock.ticker}</span>
+                      <span className="free-stock-name">{stock.name}</span>
+                      <span className="stock-region-badge">{stock.category}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>

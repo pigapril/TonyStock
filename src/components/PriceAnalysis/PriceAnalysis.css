@@ -1351,17 +1351,82 @@
   gap: 8px;
 }
 
-/* Watchlist 分類標題 - 置中 + 橫線樣式（與 FreeStockList 一致）*/
+/* Watchlist 分類標題 - 置中 + 橫線樣式 + 可收合（與 FreeStockList 一致）*/
 .price-analysis-view .watchlist-category-title {
   margin: 0;
-  padding: 8px 4px 4px 4px;
+  padding: 8px 12px 8px 8px;
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--color-text-secondary, #666);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 6px;
+  user-select: none;
+}
+
+.price-analysis-view .watchlist-category-title:hover {
+  background-color: rgba(0, 122, 255, 0.05);
+}
+
+.price-analysis-view .watchlist-category-title:active {
+  background-color: rgba(0, 122, 255, 0.1);
+}
+
+.price-analysis-view .watchlist-category-title .category-title-text {
+  flex: 1;
   text-align: center;
+}
+
+/* 計數徽章樣式 - Apple 風格 */
+.price-analysis-view .watchlist-category-title .category-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: rgba(0, 122, 255, 0.1);
+  color: #007AFF;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 10px;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.price-analysis-view .watchlist-category-title .collapse-icon {
+  flex-shrink: 0;
+  color: var(--color-text-secondary, #666);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 8px;
+}
+
+.price-analysis-view .watchlist-category-title .collapse-icon.collapsed {
+  transform: rotate(-90deg);
+}
+
+/* 視覺層級強化 - 展開的分類有淡陰影 */
+.price-analysis-view .watchlist-category-group {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.price-analysis-view .watchlist-category-group:has(.watchlist-stock-list) {
+  background: rgba(0, 122, 255, 0.02);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 4px;
+}
+
+/* 標的項目略微縮排，強化層級感 */
+.price-analysis-view .watchlist-stock-list {
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 /* Watchlist 股票列表 - 垂直排列 */

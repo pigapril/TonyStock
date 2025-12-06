@@ -129,6 +129,8 @@ export function PriceAnalysis() {
   // 新增：Watchlist 狀態（改為保留分類結構）
   const [watchlistCategories, setWatchlistCategories] = useState([]);
   const [loadingWatchlist, setLoadingWatchlist] = useState(false);
+  const [collapsedCategories, setCollapsedCategories] = useState({}); // 新增：記錄哪些分類被收合
+  const [collapsedRegions, setCollapsedRegions] = useState({}); // 新增：記錄 Index ETF 哪些區域被收合
 
   // 新增：自動顯示最新數據點的 tooltip
   useEffect(() => {
@@ -674,6 +676,17 @@ export function PriceAnalysis() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, location.state, isAuthenticated, user]); // <--- 修改：新增依賴項
 
+  // 新增：當 watchlist 資料載入完成時，預設全部收合
+  useEffect(() => {
+    if (watchlistCategories.length > 0) {
+      const initialCollapsedState = {};
+      watchlistCategories.forEach(category => {
+        initialCollapsedState[category.id] = true; // 預設全部收合
+      });
+      setCollapsedCategories(initialCollapsedState);
+    }
+  }, [watchlistCategories]);
+
 
 
 
@@ -876,6 +889,22 @@ export function PriceAnalysis() {
 
     // Pro 用戶可以切換到 watchlist tab
     setActiveQuickSelectTab('watchlist');
+  };
+
+  // 新增：切換 Watchlist 分類收合狀態
+  const toggleCategoryCollapse = (categoryId) => {
+    setCollapsedCategories(prev => ({
+      ...prev,
+      [categoryId]: !prev[categoryId]
+    }));
+  };
+
+  // 新增：切換 Index ETF 區域收合狀態
+  const toggleRegionCollapse = (regionKey) => {
+    setCollapsedRegions(prev => ({
+      ...prev,
+      [regionKey]: !prev[regionKey]
+    }));
   };
 
   // 新增：處理 Watchlist 股票點擊事件
@@ -1449,24 +1478,50 @@ export function PriceAnalysis() {
                       <div className="watchlist-categories-container">
                         {watchlistCategories.map((category) => (
                           <div key={category.id} className="watchlist-category-group">
-                            <h4 className="watchlist-category-title">{category.name}</h4>
-                            <div className="watchlist-stock-list">
-                              {category.stocks.map((stock, index) => (
-                                <div
-                                  key={`${category.id}-${stock.stockCode}-${index}`}
-                                  className="watchlist-stock-item"
-                                  onClick={() => handleWatchlistStockClick(stock.stockCode)}
-                                  role="button"
-                                  tabIndex={0}
-                                  onKeyPress={(e) => e.key === 'Enter' && handleWatchlistStockClick(stock.stockCode)}
-                                >
-                                  <div className="watchlist-stock-info">
-                                    <span className="watchlist-stock-ticker">{stock.stockCode}</span>
-                                    <span className="watchlist-stock-name">{stock.name}</span>
+                            <h4 
+                              className="watchlist-category-title collapsible"
+                              onClick={() => toggleCategoryCollapse(category.id)}
+                              role="button"
+                              tabIndex={0}
+                              onKeyPress={(e) => e.key === 'Enter' && toggleCategoryCollapse(category.id)}
+                            >
+                              <span className="category-title-text">{category.name}</span>
+                              <span className="category-count-badge">{category.stocks.length}</span>
+                              <svg 
+                                className={`collapse-icon ${collapsedCategories[category.id] ? 'collapsed' : ''}`}
+                                width="16" 
+                                height="16" 
+                                viewBox="0 0 16 16" 
+                                fill="none"
+                              >
+                                <path 
+                                  d="M4 6L8 10L12 6" 
+                                  stroke="currentColor" 
+                                  strokeWidth="2" 
+                                  strokeLinecap="round" 
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </h4>
+                            {!collapsedCategories[category.id] && (
+                              <div className="watchlist-stock-list">
+                                {category.stocks.map((stock, index) => (
+                                  <div
+                                    key={`${category.id}-${stock.stockCode}-${index}`}
+                                    className="watchlist-stock-item"
+                                    onClick={() => handleWatchlistStockClick(stock.stockCode)}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleWatchlistStockClick(stock.stockCode)}
+                                  >
+                                    <div className="watchlist-stock-info">
+                                      <span className="watchlist-stock-ticker">{stock.stockCode}</span>
+                                      <span className="watchlist-stock-name">{stock.name}</span>
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
-                            </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>

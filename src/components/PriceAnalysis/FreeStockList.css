@@ -27,16 +27,36 @@
   gap: 8px;
 }
 
-/* 區域標題 - 改為置中 + 橫線樣式 */
+/* 區域標題 - 改為置中 + 橫線樣式 + 可收合 */
 .region-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px 8px 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 6px;
+  user-select: none;
+}
+
+.region-header:hover {
+  background-color: rgba(0, 122, 255, 0.05);
+}
+
+.region-header:active {
+  background-color: rgba(0, 122, 255, 0.1);
+}
+
+.region-header-content {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 8px 4px 4px 4px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  position: relative;
+  flex: 1;
 }
 
 .region-icon {
@@ -52,6 +72,53 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   text-align: center;
+}
+
+/* 計數徽章樣式 - Apple 風格 */
+.region-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: rgba(0, 122, 255, 0.1);
+  color: #007AFF;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 10px;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+/* 收合圖示樣式 */
+.collapse-icon {
+  flex-shrink: 0;
+  color: var(--color-text-secondary, #666);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 8px;
+}
+
+.collapse-icon.collapsed {
+  transform: rotate(-90deg);
+}
+
+/* 視覺層級強化 - 展開的區域有淡陰影 */
+.free-stock-region {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.free-stock-region:has(.region-stocks) {
+  background: rgba(0, 122, 255, 0.02);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 4px;
+}
+
+/* 標的項目略微縮排，強化層級感 */
+.region-stocks {
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 /* 區域內的股票列表 - 改為垂直排列 */
