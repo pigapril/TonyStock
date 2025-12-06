@@ -1351,8 +1351,11 @@
   gap: 8px;
 }
 
-/* Watchlist 分類標題 - 置中 + 橫線樣式 + 可收合（與 FreeStockList 一致）*/
+/* Watchlist 分類標題 - 置中 + 橫線樣式 + 可收合 + Sticky（與 FreeStockList 一致）*/
 .price-analysis-view .watchlist-category-title {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   margin: 0;
   padding: 8px 12px 8px 8px;
   font-size: 0.85rem;
@@ -1368,9 +1371,20 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 6px;
   user-select: none;
+  background: white; /* 確保遮住下方內容 */
+  backdrop-filter: blur(10px); /* Apple 風格的毛玻璃效果 */
+  -webkit-backdrop-filter: blur(10px);
 }
 
-.price-analysis-view .watchlist-category-title:hover {
+/* 展開狀態：永久保持 hover 效果 */
+.price-analysis-view .watchlist-category-title:not(.collapsed) {
+  background-color: rgba(0, 122, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* hover 效果（收合時才需要） */
+.price-analysis-view .watchlist-category-title.collapsed:hover {
   background-color: rgba(0, 122, 255, 0.05);
 }
 

@@ -899,15 +899,38 @@ export function PriceAnalysis() {
     setActiveQuickSelectTab('watchlist');
   };
 
-  // 新增：切換 Watchlist 分類收合狀態
-  const toggleCategoryCollapse = (categoryId) => {
+  // 新增：切換 Watchlist 分類收合狀態（帶智能滾動）
+  const toggleCategoryCollapse = (categoryId, event) => {
+    const isCurrentlyCollapsed = collapsedCategories[categoryId];
+    
     setCollapsedCategories(prev => ({
       ...prev,
       [categoryId]: !prev[categoryId]
     }));
+
+    // 如果是展開操作，滾動到該分類標題
+    if (isCurrentlyCollapsed && event?.currentTarget) {
+      setTimeout(() => {
+        try {
+          const element = event.currentTarget;
+          if (!element) return;
+          
+          const container = element.closest('.quick-select-content');
+          if (container && element.offsetTop !== undefined) {
+            const elementTop = element.offsetTop;
+            container.scrollTo({
+              top: elementTop - 8, // 8px 的頂部間距
+              behavior: 'smooth'
+            });
+          }
+        } catch (error) {
+          console.warn('Smart scroll failed:', error);
+        }
+      }, 50); // 等待 DOM 更新
+    }
   };
 
-  // 新增：切換 Index ETF 區域收合狀態
+  // 新增：切換 Index ETF 區域收合狀態（帶智能滾動）
   const toggleRegionCollapse = (regionKey) => {
     setCollapsedRegions(prev => ({
       ...prev,
@@ -1487,11 +1510,11 @@ export function PriceAnalysis() {
                         {watchlistCategories.map((category) => (
                           <div key={category.id} className="watchlist-category-group">
                             <h4 
-                              className="watchlist-category-title collapsible"
-                              onClick={() => toggleCategoryCollapse(category.id)}
+                              className={`watchlist-category-title collapsible ${collapsedCategories[category.id] ? 'collapsed' : ''}`}
+                              onClick={(e) => toggleCategoryCollapse(category.id, e)}
                               role="button"
                               tabIndex={0}
-                              onKeyPress={(e) => e.key === 'Enter' && toggleCategoryCollapse(category.id)}
+                              onKeyPress={(e) => e.key === 'Enter' && toggleCategoryCollapse(category.id, e)}
                             >
                               <span className="category-title-text">{category.name}</span>
                               <span className="category-count-badge">{category.stocks.length}</span>

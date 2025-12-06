@@ -27,8 +27,11 @@
   gap: 8px;
 }
 
-/* 區域標題 - 改為置中 + 橫線樣式 + 可收合 */
+/* 區域標題 - 改為置中 + 橫線樣式 + 可收合 + Sticky */
 .region-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -36,14 +39,24 @@
   padding: 8px 12px 8px 8px;
   margin-bottom: 8px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  position: relative;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 6px;
   user-select: none;
+  background: white; /* 確保遮住下方內容 */
+  backdrop-filter: blur(10px); /* Apple 風格的毛玻璃效果 */
+  -webkit-backdrop-filter: blur(10px);
 }
 
-.region-header:hover {
+/* 展開狀態：永久保持 hover 效果 */
+.region-header:not(.collapsed) {
+  background-color: rgba(0, 122, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* hover 效果（收合時才需要） */
+.region-header.collapsed:hover {
   background-color: rgba(0, 122, 255, 0.05);
 }
 

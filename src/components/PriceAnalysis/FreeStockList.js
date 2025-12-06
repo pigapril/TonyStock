@@ -15,12 +15,38 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
   const [error, setError] = useState(null);
   const [collapsedRegions, setCollapsedRegions] = useState({}); // 新增：記錄哪些區域被收合
 
-  // 新增：切換區域收合狀態
-  const toggleRegionCollapse = (regionKey) => {
+  // 新增：切換區域收合狀態（帶智能滾動）
+  const toggleRegionCollapse = (regionKey, event) => {
+    const isCurrentlyCollapsed = collapsedRegions[regionKey];
+    
     setCollapsedRegions(prev => ({
       ...prev,
       [regionKey]: !prev[regionKey]
     }));
+
+    // 如果是展開操作，滾動到該區域標題
+    if (isCurrentlyCollapsed && event?.currentTarget) {
+      setTimeout(() => {
+        try {
+          const element = event.currentTarget;
+          if (!element) return;
+          
+          const container = element.closest('.free-stock-list');
+          if (!container) return;
+          
+          const scrollContainer = container.closest('.quick-select-content');
+          if (scrollContainer && element.offsetTop !== undefined) {
+            const elementTop = element.offsetTop;
+            scrollContainer.scrollTo({
+              top: elementTop - 8, // 8px 的頂部間距
+              behavior: 'smooth'
+            });
+          }
+        } catch (error) {
+          console.warn('Smart scroll failed:', error);
+        }
+      }, 50); // 等待 DOM 更新
+    }
   };
 
   // 從 API 載入股票資料
@@ -93,11 +119,11 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
         {Object.entries(stocksByRegion).map(([regionKey, region]) => (
           <div key={regionKey} className="free-stock-region">
             <div 
-              className="region-header collapsible"
-              onClick={() => toggleRegionCollapse(regionKey)}
+              className={`region-header collapsible ${collapsedRegions[regionKey] ? 'collapsed' : ''}`}
+              onClick={(e) => toggleRegionCollapse(regionKey, e)}
               role="button"
               tabIndex={0}
-              onKeyPress={(e) => e.key === 'Enter' && toggleRegionCollapse(regionKey)}
+              onKeyPress={(e) => e.key === 'Enter' && toggleRegionCollapse(regionKey, e)}
             >
               <div className="region-header-content">
                 <span className="region-icon">{region.icon}</span>
