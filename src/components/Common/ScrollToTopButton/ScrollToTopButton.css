@@ -1,7 +1,7 @@
 /* 回到頂端按鈕 - 蘋果風格 */
 .scroll-to-top-button {
   position: absolute;
-  top: -25px; /* 懸浮在 chart-card 上方 */
+  bottom: -35px; /* 懸浮在 chart-card 下方 */
   left: 50%; /* 水平置中 */
   transform: translateX(-50%); /* 完美置中 */
   z-index: 100;

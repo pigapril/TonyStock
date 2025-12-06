@@ -187,7 +187,7 @@ export function PriceAnalysis() {
         if (chartCardRef.current) {
           const rect = chartCardRef.current.getBoundingClientRect();
           const windowHeight = window.innerHeight;
-          const bottomPadding = 10; // 底部留一些空間，確保 X 軸完整顯示
+          const bottomPadding = 100; // 底部留更多空間，讓圖表往上移動，頁面往下滑更多
           // 計算滾動位置：讓 chart-card 的底部對齊視窗底部（加上 padding）
           const scrollTarget = window.pageYOffset + rect.bottom - windowHeight + bottomPadding;
           window.scrollTo({
@@ -1572,7 +1572,7 @@ export function PriceAnalysis() {
 
             {/* 主圖表區塊 */}
             <div className="chart-card" ref={chartCardRef}>
-              {/* 回到頂端按鈕 - 只在手機版顯示，懸浮在圖表上方 */}
+              {/* 回到頂端按鈕 - 只在手機版顯示，懸浮在圖表下方 */}
               <ScrollToTopButton show={isMobile && (chartData || ulbandData)} />
               <div className="chart-container">
                 {/* 只有在 loading 或有數據時才顯示圖表標頭 */}
