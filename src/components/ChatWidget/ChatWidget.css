@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: 1000;
+  z-index: 1001; /* 提升層級，確保在客服按鈕之上 */
 }
 
 @media(max-width: 768px) {
@@ -270,8 +270,8 @@
 
 @media (max-width: 768px) {
   .chat-toggle-button {
-    width: 70px;
-    height: 70px;
+    width: 56px; /* 縮小客服按鈕 (原 70px) */
+    height: 56px;
     bottom: 20px;
     right: 10px;
   }

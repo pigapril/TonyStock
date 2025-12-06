@@ -26,9 +26,9 @@
 
 @media (max-width: 768px) { /* 手機螢幕尺寸 */
   .floating-sponsor-button {
-    width: 70px; /* 在小螢幕上稍微縮小 */
-    height: 70px;
-    bottom: 100px; /* 調整到更靠近底部的位置 */
+    width: 56px; /* 在小螢幕上縮小 (原 70px) */
+    height: 56px;
+    bottom: 85px; /* 調整到更靠近底部的位置 */
     right: 10px;
   }
 }
