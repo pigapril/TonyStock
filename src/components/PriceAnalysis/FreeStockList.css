@@ -30,7 +30,7 @@
 /* 區域標題 - 改為置中 + 橫線樣式 + 可收合 + Sticky */
 .region-header {
   position: sticky;
-  top: 0;
+  top: -5px;
   z-index: 10;
   display: flex;
   align-items: center;
