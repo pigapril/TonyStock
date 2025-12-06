@@ -545,6 +545,13 @@ class SubscriptionService {
    * Check if a feature is enabled for the current plan
    */
   isFeatureEnabled(planType, featureType) {
+    // 检查临时免费模式
+    const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+    if (isTemporaryFreeMode) {
+      console.log('🎁 TEMPORARY_FREE_MODE enabled: granting access to', featureType);
+      return true;
+    }
+
     const plans = this.getAvailablePlans();
     const plan = plans.find(p => p.id === planType);
     if (!plan) return false;

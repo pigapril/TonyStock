@@ -149,7 +149,10 @@ export function WatchlistContainer() {
     // ✅ 新增：主動權限檢查 (Pre-emptive Check)
     // 如果前端狀態已經更新為 free，直接導走
     useEffect(() => {
-        if (isAuthenticated && user?.plan === 'free') {
+        // 检查临时免费模式
+        const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+        
+        if (isAuthenticated && user?.plan === 'free' && !isTemporaryFreeMode) {
             // 顯示提示後導轉到訂閱頁面
             showToast(t('watchlist.upgradeRequired'), 'info');
             setTimeout(() => {
