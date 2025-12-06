@@ -1341,14 +1341,14 @@
 .price-analysis-view .watchlist-categories-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
 /* Watchlist 分類組 */
 .price-analysis-view .watchlist-category-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 /* Watchlist 分類標題 - 置中 + 橫線樣式 + 可收合 + Sticky（與 FreeStockList 一致）*/
@@ -1547,7 +1547,7 @@
   }
 
   .price-analysis-view .watchlist-categories-container {
-    gap: 12px;
+    gap: 8px;
   }
 
   .price-analysis-view .watchlist-empty-state {
@@ -1566,7 +1566,7 @@
 /* 更小螢幕的調整 - 與 FreeStockList 完全一致 */
 @media (max-width: 480px) {
   .price-analysis-view .watchlist-categories-container {
-    gap: 10px;
+    gap: 6px;
   }
 
   .price-analysis-view .watchlist-stock-list {

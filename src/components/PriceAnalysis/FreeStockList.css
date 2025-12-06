@@ -16,7 +16,7 @@
 .free-stock-regions {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
   height: 100%;
 }
 
@@ -24,7 +24,7 @@
 .free-stock-region {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 /* 區域標題 - 改為置中 + 橫線樣式 + 可收合 + Sticky */
@@ -37,7 +37,7 @@
   justify-content: space-between;
   gap: 8px;
   padding: 8px 12px 8px 8px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -125,7 +125,7 @@
   background: rgba(0, 122, 255, 0.02);
   border-radius: 8px;
   padding: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 0;
 }
 
 /* 標的項目略微縮排，強化層級感 */
@@ -211,12 +211,12 @@
 /* 響應式設計 */
 @media (max-width: 768px) {
   .free-stock-regions {
-    gap: 12px;
+    gap: 8px;
   }
 
   .region-header {
     gap: 6px;
-    margin-bottom: 6px;
+    margin-bottom: 0;
     padding: 6px 4px 4px 4px;
   }
 
@@ -253,7 +253,7 @@
 
 @media (max-width: 480px) {
   .free-stock-regions {
-    gap: 10px;
+    gap: 6px;
   }
 
   .region-stocks {
