@@ -1354,7 +1354,7 @@
 /* Watchlist 分類標題 - 置中 + 橫線樣式 + 可收合 + Sticky（與 FreeStockList 一致）*/
 .price-analysis-view .watchlist-category-title {
   position: sticky;
-  top: -5px;
+  top: -10px;
   z-index: 10;
   margin: 0;
   padding: 8px 12px 8px 8px;
@@ -1540,6 +1540,7 @@
   .price-analysis-view .watchlist-category-title {
     font-size: 0.75rem;
     padding: 6px 4px 4px 4px;
+    top: -5px; /* 手機版使用較小的偏移值 */
   }
 
   .price-analysis-view .watchlist-stock-list {
