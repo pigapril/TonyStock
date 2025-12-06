@@ -1454,9 +1454,6 @@ export function PriceAnalysis() {
                   onClick={handleWatchlistTabClick}
                 >
                   {t('priceAnalysis.quickSelect.tabs.watchlist')}
-                  {(!isAuthenticated || (user && user.plan !== 'pro' && process.env.REACT_APP_TEMPORARY_FREE_MODE !== 'true')) && (
-                    <span className="watchlist-tab-lock-icon">🔒</span>
-                  )}
                 </button>
               </div>
 
