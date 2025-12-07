@@ -24,6 +24,34 @@
   animation: pulse 2s infinite;
 }
 
+/* 導航連結中的通知點 */
+.sidebar-item-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-item-content .notification-dot {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  width: 8px;
+  height: 8px;
+}
+
+/* 桌面導航中的通知點 */
+.desktop-nav-items a {
+  position: relative;
+}
+
+.desktop-nav-items a .notification-dot {
+  position: absolute;
+  top: 8px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+}
+
 /* 包裝漢堡選單圖示的容器 */
 .menu-toggle-wrapper {
   position: relative;

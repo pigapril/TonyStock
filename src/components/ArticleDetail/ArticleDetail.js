@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import PageContainer from '../PageContainer/PageContainer';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import './ArticleDetail.css';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -25,6 +26,10 @@ const articleMappings = {
     '2.用市場情緒綜合指數判斷買賣時機': {
         enSlug: 'using-market-sentiment-composite-index-to-time-buys-and-sells',
         enFilename: 'using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md'
+    },
+    '3.Netflix 併購華納全解析：如何利用「預期差」與「倒金字塔」策略獲利': {
+        enSlug: 'netflix-acquires-warner-capitalizing-on-expectation-gap-strategy',
+        enFilename: 'Netflix Acquires Warner Capitalizing on Expectation Gap Strategy.en.ini.md'
     }
 };
 
@@ -209,6 +214,7 @@ export function ArticleDetail() {
                 </div>
                 <div className="article-content">
                     <ReactMarkdown 
+                        remarkPlugins={[remarkGfm]}
                         components={{
                             img: ImageRenderer,
                             h2: ({node, ...props}) => {

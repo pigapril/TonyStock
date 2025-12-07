@@ -18,6 +18,10 @@ const articleMappings = {
     '2.用市場情緒綜合指數判斷買賣時機': {
         enSlug: 'using-market-sentiment-composite-index-to-time-buys-and-sells', // 您的英文 URL Slug
         enFilename: 'using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md'
+    },
+    '3.Netflix 併購華納全解析：如何利用「預期差」與「倒金字塔」策略獲利': {
+        enSlug: 'netflix-acquires-warner-capitalizing-on-expectation-gap-strategy',
+        enFilename: 'Netflix Acquires Warner Capitalizing on Expectation Gap Strategy.en.ini.md'
     }
     // 未來新增的文章也加在這裡
 };

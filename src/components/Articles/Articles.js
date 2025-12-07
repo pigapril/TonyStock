@@ -19,6 +19,13 @@ export function Articles() {
             try {
                 const articleList = await getAllArticles(currentLang);
                 setArticles(articleList);
+
+                // 當使用者進入文章列表頁面時，標記為已查看最新文章
+                if (articleList && articleList.length > 0) {
+                    const latestArticle = articleList[articleList.length - 1];
+                    const latestArticleSlug = latestArticle.originalSlug || latestArticle.slug;
+                    localStorage.setItem('lastViewedArticleSlug', latestArticleSlug);
+                }
             } catch (err) {
                 console.error("Failed to load articles:", err);
                 setError(err);
@@ -66,7 +73,7 @@ export function Articles() {
             >
                 <h1>{t('articles.heading')}</h1>
                 <ul className="articles-list">
-                    {articles.filter(article => article.content).map(article => (
+                    {articles.filter(article => article.content).reverse().map(article => (
                         <li key={article.id} className="article-item">
                             <Link to={`/${currentLang}/articles/${article.slug}`}>
                                 <div className="article-cover">

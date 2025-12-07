@@ -78,6 +78,7 @@ import { Toast } from './components/Watchlist/components/Toast';
 // 工具函數
 import { initializeApiClient } from './api/setupApiClient';
 import authGuard from './utils/authGuard';
+import { getAllArticles } from './utils/articleUtils';
 import authPreloader from './utils/authPreloader';
 import { setupRobotsProtection } from './utils/robotsHandler';
 import { initializeFreeStockList } from './utils/freeStockListUtils';
@@ -102,13 +103,20 @@ function AppContent() {
   const { userPlan } = useSubscription();
   const { openDialog } = useDialog();
   const { showToast, toast, hideToast } = useToastManager();
+  
+  // 文章列表狀態
+  const [articles, setArticles] = React.useState([]);
+  
+  // 通知系統
   const {
     hasNewFeature: hasNewWatchlist,
     markFeatureAsSeen: markWatchlistSeen
   } = useNewFeatureNotification(FEATURES.WATCHLIST);
   const {
+    hasNewFeature: hasNewArticles,
     markFeatureAsSeen: markArticlesSeen
-  } = useNewFeatureNotification(FEATURES.ARTICLES);
+  } = useNewFeatureNotification(FEATURES.ARTICLES, { articles });
+  
   const isMobile = useMediaQuery({ query: '(max-width: 1300px)' });
   const location = useLocation();
   const isHomePage = location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
@@ -163,6 +171,22 @@ function AppContent() {
     });
   }, [logout, showToast, openDialog, navigate, t]);
 
+  // 載入文章列表（用於新文章通知）
+  useEffect(() => {
+    const loadArticles = async () => {
+      try {
+        const articleList = await getAllArticles(lang || i18n.language);
+        setArticles(articleList);
+      } catch (error) {
+        console.error('Failed to load articles for notification:', error);
+      }
+    };
+    
+    if (lang || i18n.language) {
+      loadArticles();
+    }
+  }, [lang, i18n.language]);
+
   // 初始化認證守衛和預載入器
   useEffect(() => {
     // 確保認證預載入器已啟動
@@ -213,7 +237,13 @@ function AppContent() {
 
   // 處理文章點擊
   const handleArticlesClick = () => {
-    markArticlesSeen();
+    // 標記最新文章為已讀
+    if (articles && articles.length > 0) {
+      const latestArticle = articles[articles.length - 1];
+      const latestArticleSlug = latestArticle.originalSlug || latestArticle.slug;
+      markArticlesSeen(latestArticleSlug);
+    }
+    
     if (useSideNavigation) {
       setSidebarOpen(false);
     }
@@ -358,6 +388,7 @@ function AppContent() {
                 <div className="sidebar-item-content">
                   <FaChartBar />
                   <span>{t('nav.articles')}</span>
+                  {hasNewArticles && <span className="notification-dot" />}
                 </div>
               </NavLink>
             </li>
@@ -434,6 +465,7 @@ function AppContent() {
                 >
                   <FaChartBar />
                   <span>{t('nav.articles')}</span>
+                  {hasNewArticles && <span className="notification-dot" />}
                 </NavLink>
                 <NavLink
                   to={`/${lang}/subscription-plans`}
