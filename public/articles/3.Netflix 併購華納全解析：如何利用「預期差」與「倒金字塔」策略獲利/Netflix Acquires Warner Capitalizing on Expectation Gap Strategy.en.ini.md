@@ -21,8 +21,8 @@ Is this drawdown a value trap, or a rare **"Expectation Gap"**? We will dismantl
 1. [The Math of Panic: The Pessimism Implied by $100](#the-math-of-panic-the-pessimism-implied-by-100)
 2. [What is the Smart Money Saying? The Divergence Between Bond and Stock Markets](#what-is-the-smart-money-saying-the-divergence-between-bond-and-stock-markets)
 3. [Business Model Evolution: From "Venture Capital" to "Empire"](#business-model-evolution-from-venture-capital-to-empire)
-4. [Risk Guide: Why You Should Absolutely Not Buy WBD for Arbitrage](#risk-guide-why-you-should-absolutely-not-buy-wbd-for-arbitrage)
-5. [Execution Strategy: The 30-40-30 Inverted Pyramid](#execution-strategy-the-30-40-30-inverted-pyramid)
+4. [Why You Should Absolutely Not Buy WBD for Arbitrage](#why-you-should-absolutely-not-buy-wbd-for-arbitrage)
+5. [The 30-40-30 Inverted Pyramid](#the-30-40-30-inverted-pyramid)
 6. [Conclusion: Finding Signal in the Noise](#conclusion-finding-signal-in-the-noise)
 7. [FAQ](#faq)
 
@@ -77,7 +77,7 @@ The table below highlights the critical differences between the two models:
 | **Pricing Power** | Limited; relies on new hits | Strong; controls multi-generational IP |
 | **Cash Flow** | High volatility | Significantly improved stability |
 
-## Risk Guide: Why You Should Absolutely Not Buy WBD for Arbitrage
+## Why You Should Absolutely Not Buy WBD for Arbitrage
 
 Many investors notice Netflix is acquiring WBD at $27.75 per share, while WBD trades at $26.08, and consider buying WBD to capture the 6% spread. **Do not do this.**
 
@@ -87,7 +87,7 @@ This is the definition of "picking up pennies in front of a steamroller." We mus
 
 This is a **negative expected value game**. All the leverage in this transaction sits with the "Buyer" (Netflix): offensive potential (becoming an empire) and defensive safety (financial health). Therefore, the strategy must be to position in Netflix, not WBD.
 
-## Execution Strategy: The 30-40-30 Inverted Pyramid
+## The 30-40-30 Inverted Pyramid
 
 For "binary events" like antitrust reviews, time is the best hedge. We should not blindly "buy the dip," but rather **add to the position as certainty increases**. I recommend an "Inverted Pyramid" capital allocation strategy:
 
