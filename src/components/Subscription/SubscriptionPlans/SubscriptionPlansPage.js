@@ -7,6 +7,7 @@ import { PlanCard } from './components/PlanCard';
 import { BillingPeriodToggle } from '../shared/BillingPeriodToggle';
 import { RedemptionCodeInput } from '../../Redemption/RedemptionCodeInput';
 import { Analytics } from '../../../utils/analytics';
+import { canAccessPaymentFeatures, getWhitelistDebugInfo } from '../../../utils/premiumWhitelist';
 import subscriptionService from '../../../api/subscriptionService';
 import { Dialog } from '../../Common/Dialog/Dialog';
 import './SubscriptionPlansPage.css';
@@ -20,9 +21,10 @@ export const SubscriptionPlansPage = () => {
   const [billingPeriod, setBillingPeriod] = useState('monthly');
   const [appliedRedemption, setAppliedRedemption] = useState(null);
   
-  // 臨時免費模式狀態
+  // 臨時免費模式和白名單狀態
   const [showFreeTrialDialog, setShowFreeTrialDialog] = useState(false);
   const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+  const canUserAccessPayment = canAccessPaymentFeatures(user?.email);
   const [planAdjustments, setPlanAdjustments] = useState({});
   
   // 新增：方案資料狀態
@@ -85,6 +87,16 @@ export const SubscriptionPlansPage = () => {
   // 處理免費試用對話框
   const handleShowFreeTrialDialog = () => {
     setShowFreeTrialDialog(true);
+    
+    // 記錄白名單狀態用於分析
+    const whitelistInfo = getWhitelistDebugInfo();
+    Analytics.track('free_trial_dialog_opened', {
+      userId: user?.id,
+      userEmail: user?.email ? `${user.email.substring(0, 3)}***` : 'unknown',
+      isWhitelisted: canUserAccessPayment,
+      isTemporaryFreeMode,
+      whitelistCount: whitelistInfo.whitelistCount
+    });
   };
 
   const handleBillingPeriodChange = (period) => {

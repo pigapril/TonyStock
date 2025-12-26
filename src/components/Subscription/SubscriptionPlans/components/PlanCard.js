@@ -5,8 +5,10 @@ import { PlanBadge } from '../../shared/PlanBadge';
 import { AppleButton } from '../../shared/AppleButton';
 import { useSubscription } from '../../SubscriptionContext';
 import { useDialog } from '../../../Common/Dialog/useDialog';
+import { useAuth } from '../../../Auth/useAuth';
 import { Analytics } from '../../../../utils/analytics';
 import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../utils/pricingUtils';
+import { canAccessPaymentFeatures } from '../../../../utils/premiumWhitelist';
 
 import './PlanCard.css';
 
@@ -23,10 +25,12 @@ export const PlanCard = ({
   const { lang } = useParams();
   const { userPlan, subscriptionHistory, loading } = useSubscription();
   const { openDialog } = useDialog();
+  const { user } = useAuth();
   const navigate = useNavigate();
   
-  // 臨時免費模式檢查
+  // 臨時免費模式和白名單檢查
   const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+  const canUserAccessPayment = canAccessPaymentFeatures(user?.email);
 
 
 
@@ -81,12 +85,14 @@ export const PlanCard = ({
       return;
     }
 
-    // 檢查臨時免費模式
-    if (isTemporaryFreeMode && onShowFreeTrialDialog) {
+    // 檢查臨時免費模式和白名單
+    if (isTemporaryFreeMode && !canUserAccessPayment && onShowFreeTrialDialog) {
       onShowFreeTrialDialog();
       Analytics.track('temporary_free_mode_dialog_shown', {
         planId: plan.id,
-        currentPlan: currentPlan || 'none'
+        currentPlan: currentPlan || 'none',
+        userEmail: user?.email ? `${user.email.substring(0, 3)}***` : 'unknown',
+        isWhitelisted: canUserAccessPayment
       });
       return;
     }
