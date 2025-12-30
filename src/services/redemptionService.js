@@ -13,6 +13,7 @@
 
 import enhancedApiClient from '../utils/enhancedApiClient';
 import { systemLogger } from '../utils/logger';
+import { formatDate } from '../utils/redemptionFormatting';
 
 class RedemptionService {
     constructor() {
@@ -577,16 +578,18 @@ class RedemptionService {
                     
                 case 'CODE_EXPIRED':
                     if (details.expiryDate) {
+                        const formattedDate = formatDate(details.expiryDate, 'PPP');
                         return t('redemption.errors.code_expired', { 
-                            expiryDate: details.expiryDate 
+                            expiryDate: formattedDate 
                         });
                     }
                     break;
                     
                 case 'CODE_NOT_ACTIVE':
                     if (details.activationDate) {
+                        const formattedDate = formatDate(details.activationDate, 'PPP');
                         return t('redemption.errors.code_not_active', { 
-                            activationDate: details.activationDate 
+                            activationDate: formattedDate 
                         });
                     }
                     break;
