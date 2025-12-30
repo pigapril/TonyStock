@@ -552,6 +552,14 @@ class RedemptionService {
             const errors = error.data.errors || [];
             const primaryError = errors[0];
             
+            // 從 primaryError 中提取具體的錯誤詳情
+            let errorDetails = null;
+            if (primaryError) {
+                errorDetails = primaryError;
+            } else if (details) {
+                errorDetails = details;
+            }
+            
             switch (errorCode) {
                 case 'PLAN_NOT_ELIGIBLE':
                     // 嘗試從多個位置獲取方案名稱
@@ -577,8 +585,10 @@ class RedemptionService {
                     break;
                     
                 case 'CODE_EXPIRED':
-                    if (details.expiryDate) {
-                        const formattedDate = formatDate(details.expiryDate, 'PPP');
+                    // 檢查多個可能的位置
+                    const expiryDate = errorDetails?.expiresAt || errorDetails?.expiryDate || details.expiresAt;
+                    if (expiryDate) {
+                        const formattedDate = formatDate(expiryDate, 'PPP');
                         return t('redemption.errors.code_expired', { 
                             expiryDate: formattedDate 
                         });
@@ -586,8 +596,10 @@ class RedemptionService {
                     break;
                     
                 case 'CODE_NOT_ACTIVE':
-                    if (details.activationDate) {
-                        const formattedDate = formatDate(details.activationDate, 'PPP');
+                    // 檢查多個可能的位置
+                    const activationDate = errorDetails?.activationDate || errorDetails?.activatesAt || details.activationDate;
+                    if (activationDate) {
+                        const formattedDate = formatDate(activationDate, 'PPP');
                         return t('redemption.errors.code_not_active', { 
                             activationDate: formattedDate 
                         });
@@ -595,9 +607,10 @@ class RedemptionService {
                     break;
                     
                 case 'RATE_LIMITED':
-                    if (details.retryAfter) {
+                    const retryAfter = errorDetails?.retryAfter || details.retryAfter;
+                    if (retryAfter) {
                         return t('redemption.errors.rate_limited', { 
-                            retryAfter: details.retryAfter 
+                            retryAfter: retryAfter 
                         });
                     }
                     break;

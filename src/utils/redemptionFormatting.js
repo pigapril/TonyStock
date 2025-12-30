@@ -13,20 +13,40 @@ try {
     formatDistanceToNow = dateFns.formatDistanceToNow;
     parseISO = dateFns.parseISO;
     
+    // Verify functions are properly imported
+    if (typeof parseISO !== 'function') {
+        console.warn('parseISO not properly imported from date-fns, using fallback');
+        parseISO = (dateStr) => new Date(dateStr);
+    }
+    
     // Try to import locales
     try {
         zhTW = require('date-fns/locale/zh-TW');
         enUS = require('date-fns/locale/en-US');
     } catch (e) {
-        // Fallback if locales are not available
+        console.warn('date-fns locales not available, using fallback');
         zhTW = null;
         enUS = null;
     }
 } catch (e) {
-    // Fallback functions for testing environment
-    format = (date, formatStr) => date.toLocaleDateString();
-    formatDistanceToNow = (date) => 'some time ago';
-    parseISO = (dateStr) => new Date(dateStr);
+    console.warn('date-fns not available, using fallback functions');
+    // Fallback functions for testing environment or when date-fns is not available
+    format = (date, formatStr) => {
+        if (!date || isNaN(date.getTime())) return 'Invalid Date';
+        return date.toLocaleDateString();
+    };
+    formatDistanceToNow = (date) => {
+        if (!date || isNaN(date.getTime())) return 'Invalid Date';
+        return 'some time ago';
+    };
+    parseISO = (dateStr) => {
+        try {
+            return new Date(dateStr);
+        } catch (error) {
+            console.error('Error parsing date string:', dateStr, error);
+            return new Date(); // Return current date as fallback
+        }
+    };
     zhTW = null;
     enUS = null;
 }
@@ -119,16 +139,42 @@ export const formatDate = (date, formatString = 'PPP', locale = null) => {
     const currentLocale = locale || getCurrentLocale();
     const config = LOCALE_CONFIG[currentLocale] || LOCALE_CONFIG['en'];
     
-    const dateObj = typeof date === 'string' ? parseISO(date) : date;
-    
-    if (format && config.dateFnsLocale) {
-        return format(dateObj, formatString, {
-            locale: config.dateFnsLocale
-        });
+    // Safe date parsing with fallback
+    let dateObj;
+    if (typeof date === 'string') {
+        if (parseISO && typeof parseISO === 'function') {
+            dateObj = parseISO(date);
+        } else {
+            // Fallback: use native Date constructor
+            dateObj = new Date(date);
+        }
     } else {
-        // Fallback formatting
-        return dateObj.toLocaleDateString(currentLocale === 'zh-TW' ? 'zh-TW' : 'en-US');
+        dateObj = date;
     }
+    
+    // Validate the date object
+    if (!dateObj || isNaN(dateObj.getTime())) {
+        console.error('Invalid date provided to formatDate:', date);
+        return 'Invalid Date';
+    }
+    
+    if (format && typeof format === 'function' && config.dateFnsLocale) {
+        try {
+            return format(dateObj, formatString, {
+                locale: config.dateFnsLocale
+            });
+        } catch (error) {
+            console.error('Error formatting date with date-fns:', error);
+            // Fall through to native formatting
+        }
+    }
+    
+    // Fallback formatting using native methods
+    return dateObj.toLocaleDateString(currentLocale === 'zh-TW' ? 'zh-TW' : 'en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
 };
 
 /**
