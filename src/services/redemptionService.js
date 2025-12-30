@@ -583,7 +583,7 @@ class RedemptionService {
                     }
                     break;
                     
-                case 'CODE_NOT_YET_ACTIVE':
+                case 'CODE_NOT_ACTIVE':
                     if (details.activationDate) {
                         return t('redemption.errors.code_not_active', { 
                             activationDate: details.activationDate 
