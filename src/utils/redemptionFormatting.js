@@ -85,12 +85,22 @@ const LOCALE_CONFIG = {
 const getCurrentLocale = () => {
     // Try to get from i18n if available
     if (typeof window !== 'undefined' && window.i18n) {
-        return window.i18n.language || 'en';
+        const lang = window.i18n.language || 'en';
+        // Normalize language codes
+        if (lang === 'zh-TW' || lang === 'zh') {
+            return 'zh-TW';
+        }
+        return lang;
     }
     
     // Try to get from localStorage
     if (typeof localStorage !== 'undefined') {
-        return localStorage.getItem('i18nextLng') || 'en';
+        const lang = localStorage.getItem('i18nextLng') || 'en';
+        // Normalize language codes
+        if (lang === 'zh-TW' || lang === 'zh') {
+            return 'zh-TW';
+        }
+        return lang;
     }
     
     return 'en';
@@ -170,7 +180,8 @@ export const formatDate = (date, formatString = 'PPP', locale = null) => {
     }
     
     // Fallback formatting using native methods
-    return dateObj.toLocaleDateString(currentLocale === 'zh-TW' ? 'zh-TW' : 'en-US', {
+    const localeCode = currentLocale === 'zh-TW' ? 'zh-TW' : 'en-US';
+    return dateObj.toLocaleDateString(localeCode, {
         year: 'numeric',
         month: 'long',
         day: 'numeric'

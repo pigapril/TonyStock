@@ -545,6 +545,36 @@ class RedemptionService {
 
         const errorCode = error.errorCode || 'UNKNOWN';
         
+        // 獲取當前語言 - 使用更可靠的方法
+        const getCurrentLanguage = () => {
+            // 嘗試從 i18next 實例獲取
+            if (typeof window !== 'undefined' && window.i18n?.language) {
+                const lang = window.i18n.language;
+                return (lang === 'zh-TW' || lang === 'zh') ? 'zh-TW' : 'en';
+            }
+            
+            // 嘗試從 localStorage 獲取
+            if (typeof localStorage !== 'undefined') {
+                const lang = localStorage.getItem('i18nextLng');
+                if (lang) {
+                    return (lang === 'zh-TW' || lang === 'zh') ? 'zh-TW' : 'en';
+                }
+            }
+            
+            // 嘗試從 URL 路徑檢測
+            if (typeof window !== 'undefined' && window.location) {
+                const pathLang = window.location.pathname.split('/')[1];
+                if (pathLang === 'zh-TW' || pathLang === 'zh') {
+                    return 'zh-TW';
+                } else if (pathLang === 'en') {
+                    return 'en';
+                }
+            }
+            
+            // 默認返回英文
+            return 'en';
+        };
+        
         // 處理特殊的錯誤類型，需要參數替換
         if (error.data) {
             // 檢查錯誤詳細信息的多個可能位置
@@ -588,7 +618,8 @@ class RedemptionService {
                     // 檢查多個可能的位置
                     const expiryDate = errorDetails?.expiresAt || errorDetails?.expiryDate || details.expiresAt;
                     if (expiryDate) {
-                        const formattedDate = formatDate(expiryDate, 'PPP');
+                        const locale = getCurrentLanguage();
+                        const formattedDate = formatDate(expiryDate, 'PPP', locale);
                         return t('redemption.errors.code_expired', { 
                             expiryDate: formattedDate 
                         });
@@ -599,7 +630,8 @@ class RedemptionService {
                     // 檢查多個可能的位置
                     const activationDate = errorDetails?.activationDate || errorDetails?.activatesAt || details.activationDate;
                     if (activationDate) {
-                        const formattedDate = formatDate(activationDate, 'PPP');
+                        const locale = getCurrentLanguage();
+                        const formattedDate = formatDate(activationDate, 'PPP', locale);
                         return t('redemption.errors.code_not_active', { 
                             activationDate: formattedDate 
                         });
