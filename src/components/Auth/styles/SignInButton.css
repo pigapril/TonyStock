@@ -62,6 +62,51 @@
     max-width: none;
 }
 
+/* Loading 狀態樣式 */
+.signin-button-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    font-size: 14px;
+    color: #666;
+    width: auto;
+    max-width: 240px;
+    margin: 0 auto;
+    min-height: 40px;
+}
+
+.signin-button-loading--compact {
+    padding: 8px 12px;
+    max-width: 200px;
+    min-height: 36px;
+}
+
+.signin-button-loading--full {
+    width: 100%;
+    max-width: none;
+}
+
+/* Loading 旋轉動畫 */
+.signin-button-loading__spinner {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #4285f4;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: signin-spin 1s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes signin-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 /* Google 按鈕的自定義樣式 - 強制覆蓋 Google SDK 樣式 */
 .signin-button-container iframe {
     width: auto !important;

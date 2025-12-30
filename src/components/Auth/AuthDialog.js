@@ -98,7 +98,8 @@ export function AuthDialog() {
             <div className="auth-dialog-content">
                 {loading ? (
                     <div className="signin-dialog__loading">
-                        {t('authDialog.loading')}
+                        <div className="signin-dialog__loading__spinner"></div>
+                        <span>{t('signInButton.loading')}</span>
                     </div>
                 ) : (
                     <div 

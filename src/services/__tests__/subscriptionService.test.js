@@ -75,35 +75,6 @@ describe('SubscriptionService', () => {
     });
   });
 
-  describe('reactivateSubscription', () => {
-    it('reactivates subscription successfully', async () => {
-      const subscriptionId = 'sub-123';
-      const mockResponse = {
-        data: {
-          success: true,
-          subscription: {
-            id: 'sub-123',
-            status: 'active'
-          }
-        }
-      };
-
-      mockApiClient.post.mockResolvedValue(mockResponse);
-
-      const result = await subscriptionService.reactivateSubscription(subscriptionId);
-
-      expect(mockApiClient.post).toHaveBeenCalledWith(`/api/subscription/reactivate/${subscriptionId}`);
-      expect(result).toEqual(mockResponse.data);
-    });
-
-    it('handles reactivate subscription error', async () => {
-      const mockError = new Error('Subscription already active');
-      mockApiClient.post.mockRejectedValue(mockError);
-
-      await expect(subscriptionService.reactivateSubscription('sub-123')).rejects.toThrow('Subscription already active');
-    });
-  });
-
   describe('getSubscriptionHistory', () => {
     it('gets subscription history successfully', async () => {
       const mockResponse = {

@@ -115,6 +115,7 @@ export const PlanInfo = ({ plan, loading }) => {
   console.log('🔍 isActive:', plan?.isActive);
   console.log('🔍 isExpired:', plan?.isExpired);
   console.log('🔍 endDate:', plan?.endDate);
+  console.log('🔍 autoRenew:', plan?.autoRenew);
 
   // ✅ 使用 isActive 而非 status 進行判斷（考慮時間因素）
   const isSubscriptionActive = plan?.isActive !== false && !plan?.isExpired;
@@ -171,7 +172,8 @@ export const PlanInfo = ({ plan, loading }) => {
             </AppleButton>
           )}
           
-          {plan.type !== 'free' && isSubscriptionActive && !plan.cancelAtPeriodEnd && (
+          {/* ✅ 修正：加入 plan.autoRenew 判斷，只有自動續訂的用戶才顯示取消按鈕 */}
+          {plan.type !== 'free' && isSubscriptionActive && !plan.cancelAtPeriodEnd && plan.autoRenew && (
             <AppleButton 
               variant="secondary" 
               onClick={() => setShowCancelConfirm(true)}

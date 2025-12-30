@@ -114,6 +114,32 @@
     }
 }
 
+/* Loading 狀態樣式 */
+.signin-dialog__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.signin-dialog__loading__spinner {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #4285f4;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: signin-dialog-spin 1s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes signin-dialog-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .google-button-container {
     width: 100%;
     display: flex;

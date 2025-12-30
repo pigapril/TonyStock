@@ -48,7 +48,8 @@ export const SignInButton = ({ variant = 'default' }) => {
     if (!isGoogleInitialized) {
         return (
             <div className={`signin-button-loading signin-button-loading--${variant}`}>
-                {t('signInButton.loading')}
+                <div className="signin-button-loading__spinner"></div>
+                <span>{t('signInButton.loading')}</span>
             </div>
         );
     }
