@@ -100,7 +100,7 @@ function AppContent() {
   const { lang } = useParams();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { userPlan } = useSubscription();
+  const { userPlan, loading } = useSubscription();
   const { openDialog } = useDialog();
   const { showToast, toast, hideToast } = useToastManager();
   
@@ -151,14 +151,27 @@ function AppContent() {
 
   // 廣告阻擋邏輯 - 根據用戶訂閱狀態
   useEffect(() => {
+    // ✅ 等待 userPlan 載入完成再做判斷，避免競態條件
+    if (loading || userPlan === null) {
+      console.log('⏳ App.js: 等待用戶方案載入中...', { loading, userPlan });
+      return; // 不執行任何操作，避免誤判為 Free 用戶
+    }
+    
     const isProUser = userPlan?.type === 'pro' || userPlan?.type === 'premium';
+    
+    console.log('🔍 App.js: 廣告阻擋服務初始化', {
+      userPlan: userPlan?.type,
+      isProUser,
+      loading
+    });
+    
     adBlockingService.initialize(isProUser);
     
     return () => {
       // 清理資源
       adBlockingService.cleanup();
     };
-  }, [userPlan]);
+  }, [userPlan, loading]); // 同時監聽 loading 狀態
 
   // 初始化 API Client 攔截器
   useEffect(() => {
