@@ -3,6 +3,9 @@ export function filterDataByTimeRange(data, timeRange) {
   const endDate = new Date();
   let startDate;
 
+  // 設定最早可顯示的日期為 2010年1月1日
+  const earliestDate = new Date('2010-01-01');
+
   switch (timeRange) {
     case '1M':
       startDate = new Date();
@@ -46,8 +49,11 @@ export function filterDataByTimeRange(data, timeRange) {
   }
 
   if (startDate) {
-    return data.filter((item) => item.date >= startDate && item.date <= endDate);
+    // 確保開始日期不早於 2010年1月1日
+    const effectiveStartDate = startDate < earliestDate ? earliestDate : startDate;
+    return data.filter((item) => item.date >= effectiveStartDate && item.date <= endDate);
   } else {
-    return data;
+    // 如果沒有指定時間範圍，仍然應用 2010年的限制
+    return data.filter((item) => item.date >= earliestDate && item.date <= endDate);
   }
 } 

@@ -266,7 +266,9 @@ const MarketSentimentIndex = () => {
         setHistoricalData(formattedData);
 
         if (formattedData.length > 0) {
-          const minTs = formattedData[0].date.getTime();
+          // 設定最早可顯示的日期為 2010年1月1日
+          const earliestDate = new Date('2010-01-01');
+          const minTs = Math.max(formattedData[0].date.getTime(), earliestDate.getTime());
           const maxTs = formattedData[formattedData.length - 1].date.getTime();
           setSliderMinMax([minTs, maxTs]);
           // 初始化 currentSliderRange
