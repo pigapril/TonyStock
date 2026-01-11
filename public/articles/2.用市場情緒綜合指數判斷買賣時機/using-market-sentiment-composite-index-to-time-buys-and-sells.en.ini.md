@@ -36,11 +36,11 @@ However, the CNN index has a drawback: it fluctuates frequently and sharply. If 
 
 ## SIO Fear & Greed Index: A Long-Term Fear & Greed Indicator
 
-In contrast to the CNN index, the [SIO Fear & Greed Index](https://sentimentinsideout.com/market-sentiment) (pictured below) was specifically designed to reflect *long-term* overall market fear and greed. This tool integrates multiple market sentiment indicators, adjusts them based on their individual characteristics to reduce noise, and calculates a composite score that intuitively shows the current overall market mood. Backtesting against the S&P 500 ETF (SPY) shows that during major lows in 2009, 2020, and 2022, when the Sentiment Index was near or below 10, these periods proved to be excellent long-term buying opportunities.
+In contrast to the CNN index, the [SIO Fear & Greed Index](https://sentimentinsideout.com/market-sentiment) (pictured below) was specifically designed to reflect *long-term* overall market fear and greed. This tool integrates multiple market sentiment indicators, adjusts them based on their individual characteristics to reduce noise, and calculates a composite score that intuitively shows the current overall market mood. Backtesting against the S&P 500 ETF (SPY) shows that during major lows when the Sentiment Index was near or below 5, these periods proved to be excellent long-term buying opportunities.
 
 ![image2](./image2-en.png)
 
-> **The SIO Fear & Greed Index is a long-term indicator. Readings near or below 10 have historically been excellent long-term buying points.**
+> **The SIO Fear & Greed Index is a long-term indicator. Readings near or below 5 have historically been excellent long-term buying points.**
 
 ## Analyzing Individual Sentiment Indicators
 
@@ -190,6 +190,12 @@ Since these indicators have different scales, comparing them directly is difficu
 ![image-sentiment](./image-sentiment-en.png)
 
 If you don't have time to delve into each indicator, don't worry! This composite index summarizes the results for you, providing a quick snapshot of market sentiment.
+
+You might be thinking, 'Why not just wait for those once-in-a-decade panics where the score drops below 5 to buy?'
+
+Sure, you could do that, but you might also end up missing out on some great entry points. Not every market scare pushes the indicator below 5—for instance, the panics in 2011 and 2025 stayed above that level.
+
+The best approach is to scale in using a 'batch entry' strategy. According to my current backtest results, a solid plan is to start entering once the score hits 15 (deploying, say, 50% of your position) and then finish buying (getting to 100%) if it drops below 5. Of course, it ultimately depends on your own tolerance for short-term losses, so feel free to use your own judgment.
 
 > **Looking back at historical data, periods of Extreme Fear have consistently proven to be excellent buying opportunities for long-term investors.**
 

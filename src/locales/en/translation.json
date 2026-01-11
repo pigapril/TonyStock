@@ -611,10 +611,6 @@
           {
             "title": "Interpretation Method",
             "content": "An extremely high Bull-Bear Spread (well above the historical average) usually indicates excessive market optimism and could be a potential sell signal. Conversely, an extremely low Spread (well below the historical average, even negative) indicates excessive pessimism and could be a potential buying opportunity."
-          },
-          {
-            "title": "Indicator Characteristics",
-            "content": "This indicator reflects retail sentiment, which is often considered a contrarian indicator. Professional investors might use extreme retail sentiment for counter-trading."
           }
         ]
       },
@@ -624,10 +620,6 @@
           {
             "title": "Interpretation Method",
             "content": "A high Put/Call Ratio (typically above 1) indicates investors are buying more puts for hedging or bearish bets, suggesting market fear. A low Put/Call Ratio (typically below 0.7) indicates investors are buying more calls for speculation or bullish bets, suggesting market greed. Using a 5-day average smooths the data for better trend observation."
-          },
-          {
-            "title": "Indicator Characteristics",
-            "content": "Similar to the AAII survey, extremely high Put/Call Ratios often occur at market bottoms, while extremely low ratios often occur at market tops, exhibiting contrarian characteristics."
           }
         ]
       },
@@ -637,10 +629,6 @@
           {
             "title": "Interpretation Method",
             "content": "When the S&P 500 is significantly above its 125-day MA, it indicates a strong uptrend, strong momentum, and market greed. When the index is significantly below the MA, it indicates a downtrend, weak momentum, and market fear."
-          },
-          {
-            "title": "Indicator Characteristics",
-            "content": "Market momentum is a trend-following indicator and can be used in conjunction with other contrarian indicators (like the Put/Call Ratio) for a more comprehensive market assessment."
           }
         ]
       },
@@ -650,10 +638,6 @@
           {
             "title": "Interpretation Method",
             "content": "An ascending VIX 50-day moving average indicates rising market fear and increased demand for hedging. Conversely, a descending VIX 50-day moving average suggests a relatively calm market, higher investor risk appetite, and a shift in market sentiment towards greed."
-          },
-          {
-            "title": "Indicator Characteristics",
-            "content": "Extreme spikes in the VIX often accompany significant market downturns and can be considered a contrarian buy signal. Persistently low VIX levels, on the other hand, may indicate excessive greed in the market, warranting caution"
           }
         ]
       },
@@ -663,10 +647,6 @@
           {
             "title": "Interpretation Method",
             "content": "When bond returns significantly outperform stock returns (low indicator value), it indicates investors are flocking to safe-haven assets, suggesting market fear. When stock returns significantly outperform bond returns (high indicator value), it indicates higher risk appetite and fund flows into risk assets, suggesting market greed."
-          },
-          {
-            "title": "Indicator Characteristics",
-            "content": "This indicator provides a window into changes in overall market risk appetite and is an important reference for judging market sentiment."
           }
         ]
       },
@@ -676,10 +656,6 @@
           {
             "title": "Interpretation Method",
             "content": "When the spread widens (high indicator value), it means investors demand higher risk compensation to hold junk bonds. This usually happens when the market worries about economic prospects or tightening liquidity, indicating market fear. When the spread narrows (low indicator value), it means investors' risk tolerance increases, indicating market greed."
-          },
-          {
-            "title": "Indicator Characteristics",
-            "content": "The junk bond spread is an important leading indicator for observing the health of the credit market and overall market risk appetite."
           }
         ]
       },
@@ -689,10 +665,6 @@
           {
             "title": "Interpretation Method",
             "content": "A COT Index near 100% indicates large speculators' net long positions are at historical highs, suggesting the market might be overly bullish and leaning towards extreme greed. An index near 0% indicates net short positions are at historical highs (or net longs are extremely low), suggesting the market might be overly bearish and leaning towards extreme fear."
-          },
-          {
-            "title": "Indicator Characteristics",
-            "content": "Tracking the position changes of large speculators helps understand the outlook of the so-called 'smart money' on future market direction."
           }
         ]
       },
@@ -702,169 +674,65 @@
           {
             "title": "Interpretation Method",
             "content": "An extremely high exposure index (e.g., near or above 100%) indicates fund managers are generally bullish and actively holding stocks, suggesting market greed. An extremely low exposure index (e.g., near 0% or negative, indicating short positions) indicates managers are generally bearish and reducing stock holdings, suggesting market fear."
-          },
-          {
-            "title": "Indicator Characteristics",
-            "content": "This indicator reflects the sentiment and positioning adjustments of professional investment institutions, serving as an important reference for observing the mainstream market view."
           }
         ]
       }
     },
     "enhancedDescription": {
       "tabs": {
-        "overview": "Overview",
         "indicators": "Components",
         "tips": "Usage Tips",
-        "history": "Historical Analysis",
         "introduction": "Introduction",
-        "details": "Details"
+        "details": "Details",
+        "faq": "FAQ"
       },
       "content": {
-        "overview": {
-          "keyPoints": "Key Points",
-          "composite": {
-            "intro": "The SIO Fear & Greed Index is a comprehensive market sentiment indicator that integrates multiple US stock market data points into a 0-100 score, helping investors understand the current psychological state of market participants.",
-            "point1": "Scores closer to 0 indicate greater market fear, typically representing better buying opportunities",
-            "point2": "Scores closer to 100 indicate greater market greed, suggesting caution against chasing highs",
-            "point3": "Compared to the CNN Fear & Greed Index, it incorporates a more comprehensive set of indicators",
-            "components": "Index Components",
-            "componentsDesc": "This indicator integrates multiple key indicators including AAII retail surveys, CBOE Put/Call ratios, VIX volatility, market momentum, and more."
-          },
-          "aaiiSpread": {
-            "intro": "The AAII Bull-Bear Spread reflects the sentiment changes of US retail investors and serves as an important contrarian indicator.",
-            "point1": "Weekly survey of retail sentiment for the next six months",
-            "point2": "Extremely high spreads typically occur at market tops",
-            "point3": "Extremely low or negative spreads often appear at market bottoms"
-          },
-          "cboeRatio": {
-            "intro": "The CBOE Put/Call ratio measures speculative sentiment and hedging demand in the options market.",
-            "point1": "High ratios indicate investors favor defensive operations",
-            "point2": "Low ratios show investors have higher risk appetite",
-            "point3": "Uses 5-day average to smooth short-term volatility"
-          },
-          "marketMomentum": {
-            "intro": "The Market Momentum indicator reflects the S&P 500's position relative to its 125-day moving average, measuring medium-term trend strength.",
-            "point1": "Index above the moving average indicates strong upward trend",
-            "point2": "Index below the moving average shows clear downward trend",
-            "point3": "Can be combined with other contrarian indicators"
-          },
-          "vixMA50": {
-            "intro": "The VIX 50-day moving average reflects long-term trends in market expectations of future volatility.",
-            "point1": "Rising trend indicates increasing market panic sentiment",
-            "point2": "Declining trend shows relatively calm market conditions",
-            "point3": "Extreme values often accompany important market turning points"
-          },
-          "safeHaven": {
-            "intro": "The Safe Haven indicator compares the relative performance of stocks versus bonds, reflecting capital flows.",
-            "point1": "Bonds outperforming stocks indicates flight-to-safety sentiment",
-            "point2": "Stocks outperforming bonds reflects risk appetite",
-            "point3": "Provides important perspective on market risk preferences"
-          },
-          "junkBond": {
-            "intro": "The Junk Bond spread reflects market attitudes toward credit risk and liquidity conditions.",
-            "point1": "Widening spreads indicate declining market risk appetite",
-            "point2": "Narrowing spreads show increased investor risk tolerance",
-            "point3": "Leading indicator for observing credit market health"
-          },
-          "cotIndex": {
-            "intro": "The COT Index tracks large speculators' positioning changes in S&P 500 futures.",
-            "point1": "Near 100% indicates large speculators are extremely bullish",
-            "point2": "Near 0% shows large speculators are extremely bearish",
-            "point3": "Reflects the market view of so-called 'smart money'"
-          },
-          "naaimIndex": {
-            "intro": "The NAAIM Exposure Index reflects professional investment managers' equity market exposure levels.",
-            "point1": "High exposure levels indicate institutions are generally bullish",
-            "point2": "Low exposure levels show institutional caution or bearishness",
-            "point3": "Important reference for observing institutional sentiment"
-          }
-        },
         "indicators": {
           "composite": {
             "intro": "The SIO Fear & Greed Index consists of the following eight key indicators, each providing unique market insights:"
-          },
-          "calculation": "Calculation Method",
-          "interpretation": "Indicator Interpretation",
-          "dataSource": "Data Source",
-          "aaiiSpread": {
-            "summary": "US retail investor sentiment survey reflecting retail views on the market's next six months",
-            "calculation": "Weekly survey of AAII members on bullish, bearish, and neutral market outlook, calculating bullish minus bearish percentage",
-            "interpretation": "Extremely high values typically occur at market tops, extremely low values often appear at market bottoms, exhibiting contrarian characteristics",
-            "dataSource": "American Association of Individual Investors (AAII) Weekly Investor Sentiment Survey"
-          },
-          "cboeRatio": {
-            "summary": "Options market speculative sentiment indicator reflecting investor hedging demand",
-            "calculation": "Calculates the ratio of CBOE-traded Put option contracts to Call option contracts, using 5-day moving average",
-            "interpretation": "High ratios (>1) indicate fear sentiment, low ratios (<0.7) indicate greed sentiment",
-            "dataSource": "Chicago Board Options Exchange (CBOE) options trading data"
-          },
-          "marketMomentum": {
-            "summary": "Measures S&P 500 index position relative to medium-term moving average, reflecting trend strength",
-            "calculation": "Calculates S&P 500 index deviation from its 125-day moving average",
-            "interpretation": "Far above average indicates strong uptrend and greed sentiment, far below indicates downtrend and fear sentiment",
-            "dataSource": "S&P 500 index daily closing price data"
-          },
-          "vixMA50": {
-            "summary": "Long-term trend of VIX volatility index, reflecting market expectations of future volatility",
-            "calculation": "Calculates 50-day moving average of VIX index to observe long-term changes in panic sentiment",
-            "interpretation": "Rising trend indicates increasing panic sentiment, declining trend indicates relatively calm market",
-            "dataSource": "CBOE Volatility Index (VIX) historical data"
-          },
-          "safeHaven": {
-            "summary": "Compares stock versus bond performance, reflecting capital flows between risk and safe-haven assets",
-            "calculation": "Compares total returns of stocks versus US Treasuries over the past 20 trading days",
-            "interpretation": "Bonds outperforming stocks indicates flight-to-safety sentiment, stocks outperforming bonds indicates risk appetite",
-            "dataSource": "Stock index and US Treasury price data"
-          },
-          "junkBond": {
-            "summary": "Spread between high-yield and investment-grade bonds, reflecting market attitude toward credit risk",
-            "calculation": "Calculates yield spread between junk bonds and investment-grade corporate bonds",
-            "interpretation": "Widening spreads indicate declining risk appetite, narrowing spreads indicate increased risk tolerance",
-            "dataSource": "High-yield and investment-grade bond yield data"
-          },
-          "cotIndex": {
-            "summary": "Large speculators' positioning in S&P 500 futures market",
-            "calculation": "Based on CFTC commitment reports, calculates large speculators' net positioning relative to historical levels",
-            "interpretation": "Near 100% indicates extreme bullishness, near 0% indicates extreme bearishness",
-            "dataSource": "Commodity Futures Trading Commission (CFTC) weekly commitment reports"
-          },
-          "naaimIndex": {
-            "summary": "Professional investment managers' equity market exposure levels",
-            "calculation": "Weekly survey of NAAIM members on current equity market exposure percentage",
-            "interpretation": "High exposure indicates institutional bullishness, low exposure indicates institutional caution",
-            "dataSource": "National Association of Active Investment Managers (NAAIM) weekly exposure survey"
           }
         },
         "tips": {
           "basicUsage": "Basic Usage",
           "tip1": "When the indicator shows extreme fear (0-20), it's typically a good buying opportunity",
           "tip2": "When the indicator shows extreme greed (80-100), be cautious about chasing highs and consider profit-taking",
-          "tip3": "Observe multiple timeframes to avoid being misled by short-term fluctuations",
-          "advancedUsage": "Advanced Usage Tips",
-          "advanced1": "Focus on trend changes in the indicator, not just absolute values",
-          "advanced2": "Combine with fundamental analysis to find fundamentally sound stocks during emotional extremes",
-          "advanced3": "Use the historical slider to study market performance at similar sentiment levels in the past",
-          "warnings": "Important Notes",
-          "warning1": "Market sentiment indicators are auxiliary tools and should not be the sole basis for investment decisions",
-          "warning2": "Extreme sentiment can persist for extended periods, requiring patience for market reversals"
+          "tip3": "Observe multiple timeframes to avoid being misled by short-term fluctuations"
         },
-        "history": {
-          "patterns": "Historical Pattern Analysis",
-          "patternsDesc": "Through historical data analysis, we can discover important correlations between market sentiment and price movements:",
-          "pattern1": "Extreme fear periods (0-10 points) often correspond to important market bottoms",
-          "pattern2": "Extreme greed periods (90-100 points) frequently appear near market tops",
-          "pattern3": "Trend changes in sentiment indicators often lead price trend changes",
-          "sliderUsage": "Historical Slider Usage",
-          "sliderDesc": "Using the historical slider function on the page, you can:",
-          "slider1": "Select specific historical periods to observe sentiment levels at that time",
-          "slider2": "Compare the relationship between sentiment indicators and SPY prices across different periods",
-          "slider3": "Study the impact and duration of major events on market sentiment",
-          "historicalReview": "Major Historical Events Review",
-          "historicalReviewDesc": "Here are some important historical moments and their corresponding market sentiment:",
-          "event2009": "2009 Financial Crisis: Index reached historical lows, followed by a long bull market",
-          "event2020": "2020 COVID-19 Pandemic: Sentiment deteriorated rapidly in the short term but rebounded quickly",
-          "event2022": "2022 Russia-Ukraine War: Geopolitical risks elevated fear sentiment",
-          "historicalInsight": "History tells us that extreme market sentiment is often an important signal for investment opportunities."
+        "faq": {
+          "category1": "Introduction & Interpretation",
+          "category2": "Strategy & Application",
+          "category3": "Logic & Methodology",
+          "category4": "Validation & Backtesting",
+
+          "q1": "What is the SIO Market Sentiment Indicator?",
+          "a1": "The SIO Market Sentiment Indicator is a tool designed to measure overall market sentiment. It analyzes multiple technical and fundamental indicators to assess the levels of fear and greed in the market.",
+          
+          "q2": "How is this different from the 'CNN Fear & Greed Index' or the 'BofA Bull & Bear Indicator'?",
+          "a2": "The SIO indicator is designed for long-term allocation, with logic that benchmarks against the institutional-grade BofA indicator. While the CNN index is sensitive, it focuses more on the short term and can struggle to identify structural bottoms in long cycles. Our goal with SIO is to create a professional tool that aids long-term decision-making, aiming to match the BofA Bull & Bear Indicator's ability to catch long-term market turning points.",
+          
+          "q3": "What does the 0 to 100 score mean? How do I interpret it?",
+          "a3": "The score represents the current market state's relative position in history. It ranges from 0 to 100: 0-20 is Extreme Fear, 21-40 is Fear, 41-60 is Neutral, 61-80 is Greed, and 81-100 is Extreme Greed. It's important to note that a high score doesn't mean an immediate crash; greedy sentiment can often persist for a long time.",
+          
+          "q4": "How often is the data updated?",
+          "a4": "The composite score updates whenever the individual indicators update, so basically, it updates every day.",
+          
+          "q5": "How can you compare different indicators, like the 'VIX' and 'AAII Retail Sentiment', together?",
+          "a5": "We mainly use the statistical Z-Score normalization method. Since different indicators have different units (e.g., VIX is volatility, AAII is a net ratio), the Z-Score allows us to convert all of them into a unified statistical measure.",
+          
+          "q6": "For weekly data (like COT reports), how does the indicator handle 'publication delays' to avoid look-ahead bias?",
+          "a6": "We strictly enforce 'Point-in-Time' calibration during calculation to avoid 'peeking into the future.' For example, the CFTC COT report comes out on Friday but covers data up to Tuesday. So, our system forces a lag in the calculation. This means when backtesting a historical Wednesday or Thursday, we restore the state where that week's data wasn't available yet, simulating the information gap in a real trading environment to ensure credibility.",
+          
+          "q7": "Has the strategy of buying under 15 and selling over 96 gone through Out-of-Sample stress testing?",
+          "a7": "Yes, the backtest uses rigorous 'Walk-Forward Validation.' I deliberately locked the model parameters using data from before 2019 and set 2020 to 2026 as the 'blind test' period. The results show that even through the extreme environments of the COVID-19 crash and the 2022 stock/bond double dip, the strategy still delivered better risk-adjusted returns than the broader market during the blind test, with a significantly lower max drawdown than the S&P 500.",
+          
+          "q8": "Why do you suggest buying when it drops below 15? Past crashes went below 5, can't I just wait for 5?",
+          "a8": "To avoid missing out on mid-term pullbacks, we suggest a 'batch entry' strategy. While historical disasters (like the 2008 Financial Crisis or 2020 Pandemic) do push the indicator below 5, those are extremely rare. Some mid-sized corrections might bottom out around 8-12 (like the 2011 Euro Debt Crisis or the 2025 Trade War). If you insist on waiting for < 5, you might miss the entry entirely. Therefore, the best strategy is a 'Two-Stage Entry': Stage 1 (< 15): Deploy 50% to ensure you catch the rebound. Stage 2 (< 5): If a systemic crash happens, invest the remaining 50%. Backtests prove that this 'half now, half later' approach strikes the best balance between risk and reward.",
+          
+          "q9": "If the indicator shows 'Extreme Greed (96+)', should I sell everything or go short immediately?",
+          "a9": "That's not recommended. When the indicator enters the >96 Extreme Greed zone, the market often stays greedy for a while. Selling everything might make you miss the main rally, and shorting is extremely risky. We suggest you stop chasing highs at this point and moderately take profits in batches.",
+          
+          "q10": "Why is the composite score up at 90+ when none of the individual indicators have reached extreme greed?",
+          "a10": "Because the model values 'breadth.' When retail investors, whales, the hedging market, and the bond market all turn optimistic *at the same time*, that consensus is actually rarer historically than just one indicator hitting an extreme. This high level of consistency pushes up the composite percentile ranking, alerting investors to potential structural risks."
         }
       }
     },

@@ -1,0 +1,178 @@
+.market-sentiment-faq-container {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.market-sentiment-faq-category {
+  margin-bottom: 2rem;
+}
+
+.market-sentiment-faq-category-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  position: relative;
+}
+
+.market-sentiment-faq-category-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 3rem;
+  height: 2px;
+  background: linear-gradient(90deg, #9D00FF, #6366f1);
+}
+
+.market-sentiment-faq-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.market-sentiment-faq-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.market-sentiment-faq-item:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.market-sentiment-faq-question {
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s ease;
+}
+
+.market-sentiment-faq-question:hover {
+  background-color: #f9fafb;
+}
+
+.market-sentiment-faq-question.active {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+.market-sentiment-faq-question-text {
+  flex: 1;
+  margin-right: 1rem;
+  line-height: 1.5;
+}
+
+.market-sentiment-faq-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #9D00FF;
+  background-color: #f3f4f6;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.market-sentiment-faq-question.active .market-sentiment-faq-icon {
+  background-color: #9D00FF;
+  color: white;
+  transform: rotate(180deg);
+}
+
+.market-sentiment-faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.market-sentiment-faq-answer.open {
+  max-height: 500px;
+}
+
+.market-sentiment-faq-answer-content {
+  padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.market-sentiment-faq-answer-content p {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .market-sentiment-faq-question {
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+  }
+  
+  .market-sentiment-faq-question-text {
+    margin-right: 0.75rem;
+  }
+  
+  .market-sentiment-faq-answer-content {
+    padding: 1.25rem 1.25rem 1.25rem 1.25rem;
+  }
+  
+  .market-sentiment-faq-category-title {
+    font-size: 1.125rem;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .market-sentiment-faq-category-title {
+    color: #f9fafb;
+  }
+  
+  .market-sentiment-faq-item {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .market-sentiment-faq-item:hover {
+    border-color: #4b5563;
+  }
+  
+  .market-sentiment-faq-question {
+    color: #e5e7eb;
+  }
+  
+  .market-sentiment-faq-question:hover {
+    background-color: #374151;
+  }
+  
+  .market-sentiment-faq-question.active {
+    background-color: #374151;
+    color: #f9fafb;
+  }
+  
+  .market-sentiment-faq-answer-content {
+    border-top-color: #374151;
+  }
+  
+  .market-sentiment-faq-answer-content p {
+    color: #d1d5db;
+  }
+}
