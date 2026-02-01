@@ -16,11 +16,7 @@ export const AdBanner = () => {
   const isInitialized = useRef(false);
   const { userPlan, loading } = useSubscription();
 
-  // 防止 Pro 用戶因初始狀態為 null 而看到閃爍
-  // 在載入訂閱狀態前，暫不渲染
-  if (loading) {
-    return null;
-  }
+
 
   // 檢查是否為 Pro 用戶
   const isProUser = userPlan?.type === 'pro' || userPlan?.type === 'premium';
@@ -81,8 +77,9 @@ export const AdBanner = () => {
     };
   }, []);
 
-  // 如果是 Pro 用戶，不顯示廣告
-  if (isProUser) {
+  // 如果是 Pro 用戶或正在載入訂閱狀態，不顯示廣告
+  // 防止 Pro 用戶因初始狀態為 null 而看到閃爍
+  if (loading || isProUser) {
     return null;
   }
 
