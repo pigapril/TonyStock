@@ -116,12 +116,12 @@ const MarketSentimentIndex = () => {
   const { t, i18n } = useTranslation();
   const { showToast, toast, hideToast } = useToastManager();
   const { user, isAuthenticated, checkAuthStatus } = useAuth();
-  
+
   // 數據限制 Toast 提醒
-  const { 
-    isFreeUser, 
+  const {
+    isFreeUser,
     showHistoricalDataToast,
-    showUpgradeToast 
+    showUpgradeToast
   } = useDataLimitationToast(showToast);
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -186,7 +186,7 @@ const MarketSentimentIndex = () => {
     async function fetchSentimentData() {
       try {
         setLoading(true);
-        
+
         // 根據用戶計劃選擇不同的端點
         // 在臨時免費模式下，所有用戶都使用 Pro 端點
         const shouldUsePro = isTemporaryFreeMode || isProUser;
@@ -204,14 +204,14 @@ const MarketSentimentIndex = () => {
         // ✅ 修正 403 處理邏輯
         if (error.response?.status === 403) {
           console.warn('MarketSentiment: 403 Forbidden on Pro endpoint. Falling back to Free data.');
-          
+
           // 1. 同步用戶狀態
           if (checkAuthStatus) {
             checkAuthStatus().catch(err => {
               console.error('Failed to refresh auth status:', err);
             });
           }
-          
+
           // 2. 顯示升級對話框 (保持不變)
           setUpgradeDialog({
             isOpen: true,
@@ -221,7 +221,7 @@ const MarketSentimentIndex = () => {
               source: 'apiError'
             }
           });
-          
+
           // 3. 【關鍵修正】自動降級：嘗試抓取免費版資料作為背景顯示
           try {
             const freeResponse = await enhancedApiClient.get('/api/market-sentiment-free');
@@ -494,10 +494,10 @@ const MarketSentimentIndex = () => {
       feature,
       userPlan: effectiveUserPlan
     });
-    
+
     // 顯示對應的 toast 提醒
     showUpgradeToast(feature);
-    
+
     // 短暫延遲後顯示升級對話框
     setTimeout(() => {
       setUpgradeDialog({
@@ -659,7 +659,7 @@ const MarketSentimentIndex = () => {
     if (!isProUser && isDataLoaded && compositeStep === 'history') {
       // 立即顯示數據限制提醒
       showHistoricalDataToast();
-      
+
       // 檢查是否需要顯示 tutorial
       const hasSeenTutorial = localStorage.getItem('marketSentiment_tutorialSeen');
       if (!hasSeenTutorial) {
@@ -678,39 +678,72 @@ const MarketSentimentIndex = () => {
 
 
   // 定義用於結構化數據的 JSON-LD
-  const marketSentimentJsonLd = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": t('marketSentiment.pageTitle'), // 使用翻譯的頁面標題
-    "description": t('marketSentiment.pageDescription'), // 使用翻譯的頁面描述
-    "url": `${window.location.origin}/${currentLang}/market-sentiment`,
-    "inLanguage": currentLang,
-    "keywords": t('marketSentiment.keywords'), // 新增：關鍵字
-    "mainEntity": {
-      "@type": "Article",
-      "headline": t('marketSentiment.heading'), // 使用翻譯的主要標題
-      "author": {
-        "@type": "Organization",
-        "name": "Sentiment Inside Out"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Sentiment Inside Out",
-        "logo": {
-          "@type": "ImageObject",
-          "url": `${window.location.origin}/logo.png` // 假設您在 public 資料夾有 logo.png
+  const marketSentimentJsonLd = useMemo(() => {
+    // 1. 使用技巧 (Tips) - 組合為一個完整的問答
+    // Q: 如何解讀 SIO 指標？
+    // A: Tip1 + Tip2 + Tip3
+    const tipsItem = {
+      question: t('marketSentiment.enhancedDescription.content.tips.basicUsage'),
+      answer: `${t('marketSentiment.enhancedDescription.content.tips.tip1')} ${t('marketSentiment.enhancedDescription.content.tips.tip2')} ${t('marketSentiment.enhancedDescription.content.tips.tip3')}`
+    };
+
+    // 2. 常見問題 (FAQ) - 完整的 10 組問答
+    const faqIndices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const realFaqItems = faqIndices.map(index => ({
+      question: t(`marketSentiment.enhancedDescription.content.faq.q${index}`),
+      answer: t(`marketSentiment.enhancedDescription.content.faq.a${index}`)
+    }));
+
+    // 合併所有項目
+    const allFaqItems = [tipsItem, ...realFaqItems];
+
+    const baseSchema = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": t('marketSentiment.pageTitle'),
+      "description": t('marketSentiment.pageDescription'),
+      "url": `${window.location.origin}/${currentLang}/market-sentiment`,
+      "inLanguage": currentLang,
+      "keywords": t('marketSentiment.keywords'),
+      "mainEntity": {
+        "@type": "Article",
+        "headline": t('marketSentiment.heading'),
+        "author": {
+          "@type": "Organization",
+          "name": "Sentiment Inside Out"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Sentiment Inside Out",
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${window.location.origin}/logo.png`
+          }
+        },
+        "datePublished": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
+        "dateModified": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
+        "image": `${window.location.origin}/images/market-sentiment-og.png`
+      }
+    };
+
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        baseSchema,
+        {
+          "@type": "FAQPage",
+          "mainEntity": allFaqItems.map(item => ({
+            "@type": "Question",
+            "name": item.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": item.answer
+            }
+          }))
         }
-      },
-      "datePublished": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
-      "dateModified": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
-      "image": `${window.location.origin}/images/market-sentiment-og.png` // 主要圖片
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": `${window.location.origin}/${currentLang}/market-sentiment?timeRange={timeRange}&indicator={indicator}`,
-      "query-input": "required name=timeRange,indicator"
-    }
-  }), [t, currentLang, sentimentData?.compositeScoreLastUpdate]);
+      ]
+    };
+  }, [t, currentLang, sentimentData?.compositeScoreLastUpdate]);
 
   const handleSliderChange = (newRange) => {
     setCurrentSliderRange(newRange);
@@ -849,7 +882,7 @@ const MarketSentimentIndex = () => {
                       </div>
                     </>
                   ) : (
-                    <RestrictedMarketSentimentGauge 
+                    <RestrictedMarketSentimentGauge
                       onUpgradeClick={() => handleRestrictedFeatureClick('gauge')}
                     />
                   )}
@@ -956,7 +989,7 @@ const MarketSentimentIndex = () => {
                           })}
                         </div>
                       ) : (
-                        <RestrictedCompositionView 
+                        <RestrictedCompositionView
                           onUpgradeClick={() => handleRestrictedFeatureClick('composition')}
                           indicatorCount={Object.keys(indicatorsData).length}
                         />

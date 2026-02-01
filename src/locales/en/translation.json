@@ -592,19 +592,6 @@
       "upgradeCompositionToast": "🔍 Complete indicator composition analysis requires Pro plan. Upgrade for deep insights!"
     },
     "descriptions": {
-      "composite": {
-        "shortDescription": "The Sentiment Inside Out Fear & Greed Indicator (SIO Fear & Greed Indicator) quantifies market sentiment into a score from 0 to 100. Its purpose is to gauge whether current market participants' psychology leans towards fear or greed, similar to the CNN Fear & Greed Index and the BofA Bull & Bear Indicator. It helps investors remain calm during irrational stock market volatility and avoid emotionally driven decisions like chasing highs and selling lows.",
-        "sections": [
-          {
-            "title": "Composite Index Explanation",
-            "content": "The SIO Fear & Greed Indicator is a sentiment indicator calculated from a synthesis of multiple U.S. stock market data points, represented by a score from 0 to 100. A score closer to 0 signifies extreme fear in the market, potentially indicating a higher probability of success for buying at this time. Conversely, a score closer to 100 suggests extreme greed in the market, advising against chasing further highs. Compared to the CNN Fear & Greed Index, it incorporates a more comprehensive set of indicators, including the AAII Investor Sentiment Survey results—often considered a proxy for U.S. retail investor sentiment—to more accurately reflect the long-term relationship between market sentiment and prices."
-          },
-          {
-            "title": "Historical Data Review",
-            "content": "Historically, whenever the Sentiment Inside Out Fear & Greed Index (SIO Fear & Greed Index) reached around 10 points, it marked a bear market bottom (including the 2009 financial crisis, the 2020 COVID-19 pandemic, and the 2022 Russo-Ukrainian War). Seizing these moments presented excellent buying opportunities."
-          }
-        ]
-      },
       "aaiiSpread": {
         "shortDescription": "The AAII Investor Sentiment Survey weekly asks members their outlook for the stock market over the next six months (bullish, bearish, neutral). The Bull-Bear Spread (bullish percentage minus bearish percentage) is a common measure of retail investor sentiment.",
         "sections": [
@@ -703,34 +690,24 @@
           "category2": "Strategy & Application",
           "category3": "Logic & Methodology",
           "category4": "Validation & Backtesting",
-
           "q1": "What is the SIO Market Sentiment Indicator?",
           "a1": "The SIO Market Sentiment Indicator is a tool designed to measure overall market sentiment. It analyzes multiple technical and fundamental indicators to assess the levels of fear and greed in the market.",
-          
           "q2": "How is this different from the 'CNN Fear & Greed Index' or the 'BofA Bull & Bear Indicator'?",
           "a2": "The SIO indicator is designed for long-term allocation, with logic that benchmarks against the institutional-grade BofA indicator. While the CNN index is sensitive, it focuses more on the short term and can struggle to identify structural bottoms in long cycles. Our goal with SIO is to create a professional tool that aids long-term decision-making, aiming to match the BofA Bull & Bear Indicator's ability to catch long-term market turning points.",
-          
           "q3": "What does the 0 to 100 score mean? How do I interpret it?",
           "a3": "The score represents the current market state's relative position in history. It ranges from 0 to 100: 0-20 is Extreme Fear, 21-40 is Fear, 41-60 is Neutral, 61-80 is Greed, and 81-100 is Extreme Greed. It's important to note that a high score doesn't mean an immediate crash; greedy sentiment can often persist for a long time.",
-          
           "q4": "How often is the data updated?",
           "a4": "The composite score updates whenever the individual indicators update, so basically, it updates every day.",
-          
           "q5": "How can you compare different indicators, like the 'VIX' and 'AAII Retail Sentiment', together?",
           "a5": "We mainly use the statistical Z-Score normalization method. Since different indicators have different units (e.g., VIX is volatility, AAII is a net ratio), the Z-Score allows us to convert all of them into a unified statistical measure.",
-          
           "q6": "For weekly data (like COT reports), how does the indicator handle 'publication delays' to avoid look-ahead bias?",
           "a6": "We strictly enforce 'Point-in-Time' calibration during calculation to avoid 'peeking into the future.' For example, the CFTC COT report comes out on Friday but covers data up to Tuesday. So, our system forces a lag in the calculation. This means when backtesting a historical Wednesday or Thursday, we restore the state where that week's data wasn't available yet, simulating the information gap in a real trading environment to ensure credibility.",
-          
           "q7": "Has the strategy of buying under 15 and selling over 96 gone through Out-of-Sample stress testing?",
           "a7": "Yes, the backtest uses rigorous 'Walk-Forward Validation.' I deliberately locked the model parameters using data from before 2019 and set 2020 to 2026 as the 'blind test' period. The results show that even through the extreme environments of the COVID-19 crash and the 2022 stock/bond double dip, the strategy still delivered better risk-adjusted returns than the broader market during the blind test, with a significantly lower max drawdown than the S&P 500.",
-          
           "q8": "Why do you suggest buying when it drops below 15? Past crashes went below 5, can't I just wait for 5?",
           "a8": "To avoid missing out on mid-term pullbacks, we suggest a 'batch entry' strategy. While historical disasters (like the 2008 Financial Crisis or 2020 Pandemic) do push the indicator below 5, those are extremely rare. Some mid-sized corrections might bottom out around 8-12 (like the 2011 Euro Debt Crisis or the 2025 Trade War). If you insist on waiting for < 5, you might miss the entry entirely. Therefore, the best strategy is a 'Two-Stage Entry': Stage 1 (< 15): Deploy 50% to ensure you catch the rebound. Stage 2 (< 5): If a systemic crash happens, invest the remaining 50%. Backtests prove that this 'half now, half later' approach strikes the best balance between risk and reward.",
-          
           "q9": "If the indicator shows 'Extreme Greed (96+)', should I sell everything or go short immediately?",
           "a9": "That's not recommended. When the indicator enters the >96 Extreme Greed zone, the market often stays greedy for a while. Selling everything might make you miss the main rally, and shorting is extremely risky. We suggest you stop chasing highs at this point and moderately take profits in batches.",
-          
           "q10": "Why is the composite score up at 90+ when none of the individual indicators have reached extreme greed?",
           "a10": "Because the model values 'breadth.' When retail investors, whales, the hedging market, and the bond market all turn optimistic *at the same time*, that consensus is actually rarer historically than just one indicator hitting an extreme. This high level of consistency pushes up the composite percentile ranking, alerting investors to potential structural risks."
         }
