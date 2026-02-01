@@ -18,7 +18,7 @@
 [context.branch-deploy]
   command = "CI=false npm run build"
 
-# 針對 staging 域名的 robots.txt 重定向（簡化版）
+# 針對 staging 域名的 robots.txt 重定向
 [[redirects]]
   from = "/robots.txt"
   to = "/robots-staging.txt"
