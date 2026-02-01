@@ -1300,7 +1300,7 @@
       "cancelConfirmMessage": "您確定要取消訂閱嗎？您的訂閱將在 {{endDate}} 到期後停止續約，在此之前您仍可以使用所有功能。",
       "confirmCancel": "確認取消",
       "keepSubscription": "維持訂閱",
-      "cancelledNotice": "您的訂閱已設定為取消，將在 {{endDate}} 到期後停止續約。",
+      "cancelledNotice": "您的訂閱已取消，將在 {{endDate}} 到期後停止續約。",
       "cancelError": "取消訂閱失敗：{{error}}",
       "cancelSuccess": "訂閱取消成功！您可以繼續使用所有功能直到當前週期結束。"
     },
