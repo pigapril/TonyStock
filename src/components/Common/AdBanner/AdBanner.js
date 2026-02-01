@@ -14,7 +14,13 @@ export const AdBanner = () => {
   const bannerRef = useRef(null);
   const adContainerRef = useRef(null);
   const isInitialized = useRef(false);
-  const { userPlan } = useSubscription();
+  const { userPlan, loading } = useSubscription();
+
+  // 防止 Pro 用戶因初始狀態為 null 而看到閃爍
+  // 在載入訂閱狀態前，暫不渲染
+  if (loading) {
+    return null;
+  }
 
   // 檢查是否為 Pro 用戶
   const isProUser = userPlan?.type === 'pro' || userPlan?.type === 'premium';
@@ -62,7 +68,7 @@ export const AdBanner = () => {
   // 組件卸載或路由變化時重置初始化狀態
   useEffect(() => {
     isInitialized.current = false;
-    setIsCollapsed(false); 
+    setIsCollapsed(false);
   }, [location.pathname]);
 
   // 清理函數
@@ -119,19 +125,19 @@ export const AdBanner = () => {
             <>
               {isMobile ? (
                 <ins className="adsbygoogle"
-                     style={{ display: "inline-block", width: "300px", height: "100px" }}
-                     data-ad-client="ca-pub-9124378768777425"
-                     data-ad-slot="2305447757"></ins>
+                  style={{ display: "inline-block", width: "300px", height: "100px" }}
+                  data-ad-client="ca-pub-9124378768777425"
+                  data-ad-slot="2305447757"></ins>
               ) : isTablet ? (
                 <ins className="adsbygoogle"
-                     style={{ display: "inline-block", width: "728px", height: "90px" }}
-                     data-ad-client="ca-pub-9124378768777425"
-                     data-ad-slot="6690581177"></ins>
+                  style={{ display: "inline-block", width: "728px", height: "90px" }}
+                  data-ad-client="ca-pub-9124378768777425"
+                  data-ad-slot="6690581177"></ins>
               ) : (
                 <ins className="adsbygoogle"
-                     style={{ display: "inline-block", width: "970px", height: "90px" }}
-                     data-ad-client="ca-pub-9124378768777425"
-                     data-ad-slot="3736248809"></ins>
+                  style={{ display: "inline-block", width: "970px", height: "90px" }}
+                  data-ad-client="ca-pub-9124378768777425"
+                  data-ad-slot="3736248809"></ins>
               )}
             </>
           )}
