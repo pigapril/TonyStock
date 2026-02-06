@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
+import apiClient from '../../api/apiClient';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-date-fns';
 import {
@@ -23,9 +23,6 @@ import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { handleApiError } from '../../utils/errorHandler';
 import { Toast } from '../Watchlist/components/Toast';
 import { formatPrice } from '../../utils/priceUtils';
-
-// 添加這行來定義 API_BASE_URL
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 
 // 註冊 Chart.js 的元件和插件
 ChartJS.register(
@@ -80,12 +77,12 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
   useEffect(() => {
     const controller = new AbortController(); // 建立 AbortController
     setLoading(true);
-    axios
-      .get(`${API_BASE_URL}/api/indicator-history`, {
+    apiClient
+      .get('/api/indicator-history', {
         params: {
           indicator: indicatorKey,
         },
-        signal: controller.signal, // 將 signal傳遞給 axios
+        signal: controller.signal,
       })
       .then((response) => {
         // 檢查請求是否已被取消
@@ -103,7 +100,7 @@ function IndicatorItem({ indicatorKey, indicator, selectedTimeRange, handleTimeR
         setHistoricalData(formattedData);
       })
       .catch((error) => {
-        if (axios.isCancel(error)) {
+        if (error.name === 'CanceledError' || error.code === 'ERR_CANCELED') {
           console.log(`Request for ${indicatorKey} canceled:`, error.message);
         } else {
           handleApiError(error, showToast, t);
