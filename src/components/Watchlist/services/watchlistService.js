@@ -149,6 +149,36 @@ class WatchlistService {
             this._handleApiError(error, 'updateCategory');
         }
     }
+
+    /**
+     * 重新排序分類
+     * @param {Array<{id: string, sortOrder: number}>} orders - 排序資料陣列
+     */
+    async reorderCategories(orders) {
+        try {
+            const response = await csrfClient.put('/api/watchlist/categories/reorder', { orders });
+            return await this._handleApiResponse(response);
+        } catch (error) {
+            this._handleApiError(error, 'reorderCategories');
+        }
+    }
+
+    /**
+     * 重新排序分類內的股票
+     * @param {string} categoryId - 分類 ID
+     * @param {Array<{id: string, sortOrder: number}>} orders - 排序資料陣列
+     */
+    async reorderStocks(categoryId, orders) {
+        try {
+            const response = await csrfClient.put(
+                `/api/watchlist/categories/${categoryId}/stocks/reorder`,
+                { orders }
+            );
+            return await this._handleApiResponse(response);
+        } catch (error) {
+            this._handleApiError(error, 'reorderStocks');
+        }
+    }
 }
 
 // 創建單例實例

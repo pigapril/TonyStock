@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
-import { Dialog } from '../Common/Dialog/Dialog';
+
 import { Analytics } from '../../utils/analytics';
-import { handleApiError, getErrorMessage } from '../../utils/errorHandler';
+import { handleApiError } from '../../utils/errorHandler';
 import './styles/Watchlist.css';
-import debounce from 'lodash/debounce';
-import { FaPlus, FaEdit, FaTrash, FaSearch, FaListUl } from 'react-icons/fa';
+
+import { FaEdit } from 'react-icons/fa';
 import NewsDialog from './NewsDialog';
 import { SearchBox } from './SearchBox';
 import watchlistService from './services/watchlistService';
@@ -16,9 +16,9 @@ import { EditCategoryDialog } from './components/EditCategoryDialog';
 import { useCategories } from './hooks/useCategories';
 import { CategoryTabs } from './components/CategoryTabs';
 import { useToastManager } from './hooks/useToastManager';
-import { StockCard } from './components/StockCard/StockCard';
+
+import { DraggableStockList } from './components/StockCard/DraggableStockList';
 import { ErrorBoundary } from '../Common/ErrorBoundary/ErrorBoundary';
-import { formatPrice, isNearEdge } from '../../utils/priceUtils';
 import { useStocks } from './hooks/useStocks';
 import { InfoTool } from '../Common/InfoTool/InfoTool';
 import { Helmet } from 'react-helmet-async';
@@ -30,35 +30,98 @@ export function WatchlistContainer() {
     const currentLang = i18n.language; // 取得當前語言
     const { user, isAuthenticated, checkAuthStatus } = useAuth();
     const { toast, showToast, hideToast } = useToastManager();
-    
+
     const [error, setError] = useState(null);
-    
+
     // 使用 useCategories hook
     const {
         categories,
         loading: categoriesLoading,
         editingCategory,
         setEditingCategory,
+        setCategories, // 取得 setCategories 以支援樂觀更新
         loadCategories,
         createCategory,
         updateCategory,
         deleteCategory,
+        reorderCategories,
         handleCategoryDeleted
     } = useCategories(watchlistService, showToast);
 
     // 股票相關邏輯
     const handleStockOperationSuccess = useCallback(() => {
-        loadCategories();  // 重新載入分類資料
+        loadCategories(true);  // 使用 silent refresh (true) 避免全頁 Loading
     }, [loadCategories]);
 
     const {
         loading: stocksLoading,
         handleAddStock: onAddStock,
-        handleRemoveStock: onRemoveStock
+        handleRemoveStock: onRemoveStockApi,
+        handleReorderStocks: onReorderStocksApi
     } = useStocks(watchlistService, showToast, handleStockOperationSuccess);  // 添加成功回調
 
-    // 合併 loading 狀態
-    const isLoading = categoriesLoading || stocksLoading;
+    // 合併 loading 狀態 - UX 優化：只在分類載入時顯示全頁 Loading，股票操作使用局部狀態或靜默更新
+    const isLoading = categoriesLoading;
+
+    // 實作樂觀更新的股票排序
+    const onReorderStocks = useCallback(async (categoryId, orders) => {
+        // 1. 立即更新本地狀態 (Optimistic Update)
+        const previousCategories = [...categories];
+
+        setCategories(prevCategories => {
+            return prevCategories.map(category => {
+                if (category.id === categoryId) {
+                    const stockMap = new Map(category.stocks.map(stock => [stock.id, stock]));
+                    const newStocks = orders
+                        .sort((a, b) => a.sortOrder - b.sortOrder)
+                        .map(order => stockMap.get(order.id))
+                        .filter(Boolean);
+
+                    return {
+                        ...category,
+                        stocks: newStocks
+                    };
+                }
+                return category;
+            });
+        });
+
+        // 2. 背景發送 API 請求
+        try {
+            await onReorderStocksApi(categoryId, orders);
+        } catch (error) {
+            // 3. 失敗時回滾
+            console.error('Reorder stocks failed, rolling back:', error);
+            setCategories(previousCategories);
+        }
+    }, [categories, setCategories, onReorderStocksApi]);
+
+    // 實作樂觀更新的股票刪除
+    const onRemoveStock = useCallback(async (categoryId, stockId) => {
+        // 1. 立即更新本地狀態
+        const previousCategories = [...categories];
+
+        setCategories(prevCategories => {
+            return prevCategories.map(category => {
+                if (category.id === categoryId) {
+                    return {
+                        ...category,
+                        stocks: category.stocks.filter(s => s.id !== stockId)
+                    };
+                }
+                return category;
+            });
+        });
+
+        // 2. 背景發送 API 請求
+        const success = await onRemoveStockApi(categoryId, stockId);
+
+        // 3. 失敗時回滾
+        if (!success) {
+            console.error('Remove stock failed, rolling back');
+            setCategories(previousCategories);
+        }
+    }, [categories, setCategories, onRemoveStockApi]);
 
     const [activeTab, setActiveTab] = useState(null);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -105,13 +168,13 @@ export function WatchlistContainer() {
 
     const handleOperationError = useCallback((error, operation) => {
         const errorData = handleApiError(error);
-        
+
         // 特別處理身份驗證相關錯誤
         if (errorData.errorCode === 'UNAUTHORIZED' || errorData.errorCode === 'SESSION_EXPIRED') {
             showToast(t('protectedRoute.loginRequired'), 'error');
             return;
         }
-        
+
         showToast(errorData.message, 'error');
         Analytics.error({
             component: 'WatchlistContainer',
@@ -151,7 +214,7 @@ export function WatchlistContainer() {
     useEffect(() => {
         // 检查临时免费模式
         const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
-        
+
         if (isAuthenticated && user?.plan === 'free' && !isTemporaryFreeMode) {
             // 顯示提示後導轉到訂閱頁面
             showToast(t('watchlist.upgradeRequired'), 'info');
@@ -167,14 +230,14 @@ export function WatchlistContainer() {
             showToast(t('watchlist.loginRequiredMessage'), 'warning');
             return;
         }
-        
+
         let retryCount = 0;
         const maxRetries = 3;
-        
+
         const initializeCategories = async () => {
             try {
                 const loadedCategories = await loadCategories();
-                
+
                 if (loadedCategories?.length > 0 && !activeTab) {
                     const firstCategory = loadedCategories[0];
                     setActiveTab(firstCategory.id);
@@ -184,14 +247,14 @@ export function WatchlistContainer() {
                 // ✅ 攔截 403 (後端判定無權限)
                 if (error.response?.status === 403) {
                     console.warn('WatchlistContainer: 403 Forbidden detected, refreshing auth status and redirecting.');
-                    
+
                     // 1. 同步用戶狀態
                     if (checkAuthStatus) {
                         checkAuthStatus().catch(err => {
                             console.error('Failed to refresh auth status:', err);
                         });
                     }
-                    
+
                     // 2. 導向訂閱頁面
                     showToast(t('watchlist.upgradeRequired'), 'info');
                     setTimeout(() => {
@@ -199,7 +262,7 @@ export function WatchlistContainer() {
                     }, 1500);
                     return;
                 }
-                
+
                 if (retryCount < maxRetries) {
                     retryCount++;
                     showToast(t('watchlist.loadingRetry', { count: retryCount, max: maxRetries }), 'info');
@@ -355,7 +418,7 @@ export function WatchlistContainer() {
                         <button onClick={() => setError(null)}>{t('common.close')}</button>
                     </div>
                 )}
-                
+
                 {!isAuthenticated ? (
                     <div className="auth-required">
                         <p>{t('watchlist.loginRequiredMessage')}</p>
@@ -378,7 +441,7 @@ export function WatchlistContainer() {
                                     onTabChange={handleTabChange}
                                     onManageCategories={() => updateDialogState('categoryManager', true)}
                                 />
-                                
+
                                 {categories.map((category) => (
                                     <div
                                         key={category.id}
@@ -400,7 +463,7 @@ export function WatchlistContainer() {
                                                 />
                                             </div>
                                         </div>
-                                        
+
                                         {activeTab === category.id && (
                                             <SearchBox
                                                 onSelect={onAddStock}
@@ -408,21 +471,17 @@ export function WatchlistContainer() {
                                                 categoryId={category.id}
                                             />
                                         )}
-                                        
-                                        <div className="stock-list">
-                                            {category.stocks.map((stock, index) => (
-                                                <StockCard
-                                                    key={stock.id}
-                                                    stock={stock}
-                                                    onNewsClick={handleNewsClick}
-                                                    onRemove={() => onRemoveStock(category.id, stock.id)}
-                                                    isFirstInCategory={index === 0}
-                                                />
-                                            ))}
-                                        </div>
+
+                                        <DraggableStockList
+                                            stocks={category.stocks}
+                                            categoryId={category.id}
+                                            onRemoveStock={onRemoveStock}
+                                            onReorder={onReorderStocks}
+                                            onNewsClick={handleNewsClick}
+                                        />
                                     </div>
                                 ))}
-                                
+
                                 <CategoryManagerDialog
                                     open={dialogStates.categoryManager}
                                     onClose={() => updateDialogState('categoryManager', false)}
@@ -430,6 +489,7 @@ export function WatchlistContainer() {
                                     onEdit={handleEditCategory}
                                     onDelete={handleDeleteCategory}
                                     onCreate={() => updateDialogState('createCategory', true)}
+                                    onReorder={reorderCategories}
                                 />
                             </div>
                         )}
@@ -449,7 +509,7 @@ export function WatchlistContainer() {
                     onClose={() => updateDialogState('createCategory', false)}
                     onSubmit={handleCreateCategory}
                 />
-                
+
                 <EditCategoryDialog
                     open={dialogStates.editCategory}
                     onClose={() => {

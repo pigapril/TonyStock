@@ -38,15 +38,16 @@
 
 .category-item {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    padding: 12px 16px;
+    padding: 12px 16px 12px 8px;
     border-radius: 8px;
     background-color: #f8fafc;
     transition: all 0.2s ease;
     border: 1px solid #e2e8f0;
     width: 100%;
     box-sizing: border-box;
+    gap: 8px;
 }
 
 .category-item:hover {
@@ -115,4 +116,4 @@
         padding: 10px;
         font-size: 13px;
     }
-} 
+}

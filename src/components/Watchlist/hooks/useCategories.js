@@ -18,7 +18,8 @@ export const useCategories = (watchlistService, showToast) => {
         loadCategories,
         createCategory,
         updateCategory,
-        deleteCategory
+        deleteCategory,
+        reorderCategories
     } = useCategoryEdit(watchlistService, showToast, { setCategories, setLoading });
 
     const {
@@ -37,14 +38,16 @@ export const useCategories = (watchlistService, showToast) => {
         error,
         activeTab,
         selectedCategoryId,
-        
+
         // 操作方法
+        setCategories,
         setEditingCategory,
         clearError,
         loadCategories,
         createCategory,
         updateCategory,
         deleteCategory,
+        reorderCategories,
         handleTabChange,
         selectFirstCategory,
         handleCategoryDeleted
