@@ -224,7 +224,7 @@ export function WatchlistContainer() {
         }
     }, [user, isAuthenticated, i18n.language, showToast, t]);
 
-    // 檢查用戶是否已登入
+    // 檢查用戶是否已登入並載入資料
     useEffect(() => {
         if (!isAuthenticated) {
             showToast(t('watchlist.loginRequiredMessage'), 'warning');
@@ -236,13 +236,7 @@ export function WatchlistContainer() {
 
         const initializeCategories = async () => {
             try {
-                const loadedCategories = await loadCategories();
-
-                if (loadedCategories?.length > 0 && !activeTab) {
-                    const firstCategory = loadedCategories[0];
-                    setActiveTab(firstCategory.id);
-                    setSelectedCategoryId(firstCategory.id);
-                }
+                await loadCategories();
             } catch (error) {
                 // ✅ 攔截 403 (後端判定無權限)
                 if (error.response?.status === 403) {
@@ -275,7 +269,16 @@ export function WatchlistContainer() {
         };
 
         initializeCategories();
-    }, [isAuthenticated, loadCategories, showToast, activeTab, t, checkAuthStatus, i18n.language]);
+    }, [isAuthenticated, loadCategories, showToast, t, checkAuthStatus, i18n.language]);
+
+    // 當分類載入完成且無作用中標籤時，設定預設標籤
+    useEffect(() => {
+        if (categories?.length > 0 && !activeTab) {
+            const firstCategory = categories[0];
+            setActiveTab(firstCategory.id);
+            setSelectedCategoryId(firstCategory.id);
+        }
+    }, [categories, activeTab]);
 
     // 監聽登出事件，重置狀態
     useEffect(() => {

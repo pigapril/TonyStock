@@ -6,11 +6,14 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: clamp(4px, 1vw, 8px); /* Responsive gap */
+    gap: clamp(4px, 1vw, 8px);
+    /* Responsive gap */
     background: white;
     border-radius: 8px;
-    padding: clamp(4px, 1.5vw, 16px); /* Responsive padding */
-    min-height: 70px; /* Minimum height for consistency */
+    padding: clamp(4px, 1.5vw, 16px);
+    /* Responsive padding */
+    min-height: 70px;
+    /* Minimum height for consistency */
     height: auto;
     position: relative;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -25,8 +28,10 @@
 
 /* Section styles - Using flexible widths */
 .stock-header-section {
-    flex: 1 1 20%; /* Flexible growth and shrink */
-    min-width: 100px;
+    flex: 1 1 20%;
+    /* Flexible growth and shrink */
+    min-width: 60px;
+    /* Reduced from 100px */
     max-width: 25%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -56,8 +61,10 @@
     justify-content: center;
 }
 
-.stock-analysis-result-section { /* Added to align with sentiment header */
-    flex: 0 1 15%; /* Matches current-price-section for consistency */
+.stock-analysis-result-section {
+    /* Added to align with sentiment header */
+    flex: 0 1 15%;
+    /* Matches current-price-section for consistency */
     min-width: 60px;
     max-width: 100px;
     display: flex;
@@ -69,9 +76,12 @@
 }
 
 .stock-news-section {
-    flex: 1 1 20%; /* Adjusted to account for remove-button-section */
-    min-width: 180px;
-    max-width: 25%; /* Reduced to fit remove-button-section */
+    flex: 1 1 20%;
+    /* Adjusted to account for remove-button-section */
+    min-width: 80px;
+    /* Reduced from 180px */
+    max-width: 25%;
+    /* Reduced to fit remove-button-section */
     margin-left: clamp(8px, 2vw, 40px);
     overflow: hidden;
     position: relative;
@@ -85,6 +95,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 10;
+    /* Ensure it stays on top if anything weird happens */
 }
 
 /* Current price */
@@ -152,24 +164,34 @@
 
 /* 修改：情緒特定樣式，使用漸層背景 (取代原 sentiment-xxx 樣式) - 新顏色方案 */
 /* 將中文 class 修改為英文 */
-.status-label.status-extremeOptimism { /* 原為 status-極度樂觀 - StockGauge: #D24A93 */
-    background: linear-gradient(135deg, #D24A93 0%, #A83B75 100%); /* #A83B75 is a darker shade of #D24A93 */
+.status-label.status-extremeOptimism {
+    /* 原為 status-極度樂觀 - StockGauge: #D24A93 */
+    background: linear-gradient(135deg, #D24A93 0%, #A83B75 100%);
+    /* #A83B75 is a darker shade of #D24A93 */
 }
 
-.status-label.status-optimism { /* 原為 status-樂觀 - StockGauge: #F0B8CE */
-    background: linear-gradient(135deg, #F0B8CE 0%, #C093A4 100%); /* #C093A4 is a darker shade of #F0B8CE */
+.status-label.status-optimism {
+    /* 原為 status-樂觀 - StockGauge: #F0B8CE */
+    background: linear-gradient(135deg, #F0B8CE 0%, #C093A4 100%);
+    /* #C093A4 is a darker shade of #F0B8CE */
 }
 
-.status-label.status-neutral { /* 原為 status-中性 - StockGauge: #708090 */
-    background: linear-gradient(135deg, #708090 0%, #596673 100%); /* #596673 is a darker shade of #708090 */
+.status-label.status-neutral {
+    /* 原為 status-中性 - StockGauge: #708090 */
+    background: linear-gradient(135deg, #708090 0%, #596673 100%);
+    /* #596673 is a darker shade of #708090 */
 }
 
-.status-label.status-pessimism { /* 原為 status-悲觀 - StockGauge: #5B9BD5 */
-    background: linear-gradient(135deg, #5B9BD5 0%, #487CAA 100%); /* #487CAA is a darker shade of #5B9BD5 */
+.status-label.status-pessimism {
+    /* 原為 status-悲觀 - StockGauge: #5B9BD5 */
+    background: linear-gradient(135deg, #5B9BD5 0%, #487CAA 100%);
+    /* #487CAA is a darker shade of #5B9BD5 */
 }
 
-.status-label.status-extremePessimism { /* 原為 status-極度悲觀 - StockGauge: #0000FF */
-    background: linear-gradient(135deg, #0000FF 0%, #0000CC 100%); /* #0000CC is a darker shade of #0000FF */
+.status-label.status-extremePessimism {
+    /* 原為 status-極度悲觀 - StockGauge: #0000FF */
+    background: linear-gradient(135deg, #0000FF 0%, #0000CC 100%);
+    /* #0000CC is a darker shade of #0000FF */
 }
 
 /* 修改：Hover 效果 (取代原 analysis-result:hover 樣式) */
@@ -184,7 +206,7 @@
         padding: 8px;
     }
 
-    
+
     .stock-header-section {
         flex: 1 1 30%;
         max-width: 15%;
@@ -193,6 +215,7 @@
     .current-price-title {
         display: none;
     }
+
     .current-price-section {
         display: none;
     }
@@ -218,14 +241,17 @@
     .stock-analysis-title {
         margin-left: 10%;
     }
+
     .stock-sentiment-title {
         margin-left: 12%;
     }
+
     .stock-news-section {
         min-width: 50px;
         max-width: 150px;
         margin-right: 5%;
     }
+
     .remove-button-section {
         margin-left: -40px;
     }
@@ -235,6 +261,7 @@
     .stock-analysis-title {
         margin-left: 10%;
     }
+
     .stock-sentiment-title {
         margin-right: 0%;
     }
@@ -244,6 +271,7 @@
         max-width: 150px;
         margin-right: 5%;
     }
+
     .remove-button-section {
         margin-left: -40px;
     }
@@ -391,13 +419,15 @@
 }
 
 .stock-sentiment-title {
-    flex: 0 1 15%; /* Matches stock-analysis-result-section */
+    flex: 0 1 15%;
+    /* Matches stock-analysis-result-section */
     min-width: 60px;
     max-width: 100px;
 }
 
 .stock-news-title {
-    flex: 1 1 20%; /* Adjusted to match stock-news-section */
+    flex: 1 1 20%;
+    /* Adjusted to match stock-news-section */
     min-width: 180px;
     max-width: 25%;
 }

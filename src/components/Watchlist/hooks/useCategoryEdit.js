@@ -68,7 +68,7 @@ export const useCategoryEdit = (watchlistService, showToast, { setCategories, se
     const updateCategory = async (categoryId, name) => {
         try {
             await watchlistService.updateCategory(categoryId, name);
-            await loadCategories();
+            await loadCategories(true); // 使用 silent=true 避免全頁 loading
             showToast(t('watchlist.category.updateSuccess'), 'success');
         } catch (error) {
             handleOperationError(error, 'update_category');
@@ -83,7 +83,7 @@ export const useCategoryEdit = (watchlistService, showToast, { setCategories, se
             }
 
             await watchlistService.deleteCategory(categoryId);
-            const updatedCategories = await loadCategories();
+            const updatedCategories = await loadCategories(true); // 使用 silent=true 避免全頁 loading
             showToast(t('watchlist.category.deleteSuccess'), 'success');
 
             Analytics.watchlist.categoryDelete({

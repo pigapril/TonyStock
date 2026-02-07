@@ -35,6 +35,11 @@
     font-size: 1.1em;
     font-weight: 600;
     color: #1f2937;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
 }
 
 .stock-names {
@@ -50,4 +55,4 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-} 
+}
