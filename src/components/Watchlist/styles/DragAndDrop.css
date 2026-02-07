@@ -55,7 +55,8 @@
     align-items: stretch;
     gap: 0;
     margin-bottom: 8px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 8px;
+    transition: box-shadow 0.2s ease;
 }
 
 .draggable-stock-wrapper:last-child {
