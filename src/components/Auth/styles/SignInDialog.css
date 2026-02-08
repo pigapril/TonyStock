@@ -136,10 +136,16 @@
 }
 
 @keyframes signin-dialog-spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
+/* Google Auth Button Container */
 .google-button-container {
     width: 100%;
     display: flex;
@@ -148,6 +154,11 @@
     margin: 0px 0 0;
     height: 100%;
     position: relative;
+    transition: opacity 0.3s ease;
+}
+
+.google-button-container--hidden {
+    display: none !important;
 }
 
 /* 從 AuthDialog.css 合併過來的樣式 */

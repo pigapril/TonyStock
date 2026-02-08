@@ -24,7 +24,7 @@ export function AuthDialog() {
         };
 
         window.addEventListener('loginSuccess', handleLoginSuccess);
-        
+
         if (dialog.isOpen && dialog.type === 'auth') {
             if (user) {
                 console.log('Auth dialog closing due to user presence');
@@ -46,7 +46,7 @@ export function AuthDialog() {
                     logo_alignment: 'center',
                     context: dialog.source || 'dialog'
                 });
-                
+
                 Analytics.ui.dialog.open({
                     type: 'auth',
                     source: dialog.source || 'user_action'
@@ -64,8 +64,8 @@ export function AuthDialog() {
 
     const handleClose = () => {
         closeDialog();
-        Analytics.auth.login({ 
-            method: 'google', 
+        Analytics.auth.login({
+            method: 'google',
             status: 'cancelled',
             reason: 'user_close'
         });
@@ -75,7 +75,7 @@ export function AuthDialog() {
 
     const defaultDescription = (
         <div className="auth-dialog-description">
-            <img 
+            <img
                 src={getImagePath('home-feature1')}
                 alt={t('authDialog.previewAlt')}
                 className="auth-dialog-preview-image"
@@ -96,18 +96,17 @@ export function AuthDialog() {
             titleClassName="auth-dialog-title"
         >
             <div className="auth-dialog-content">
-                {loading ? (
+                {loading && (
                     <div className="signin-dialog__loading">
                         <div className="signin-dialog__loading__spinner"></div>
                         <span>{t('signInButton.loading')}</span>
                     </div>
-                ) : (
-                    <div 
-                        ref={buttonRef} 
-                        className="google-button-container" 
-                    />
                 )}
-                
+                <div
+                    ref={buttonRef}
+                    className={`google-button-container ${loading ? 'google-button-container--hidden' : ''}`}
+                />
+
                 {dialog.props?.customDescription || defaultDescription}
             </div>
         </Dialog>
