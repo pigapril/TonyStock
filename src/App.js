@@ -35,7 +35,7 @@ import { PageViewTracker } from './components/Common/PageViewTracker';
 import { About } from './components/About/About';
 import { Legal } from './components/Legal/Legal';
 import { WatchlistContainer } from './components/Watchlist/WatchlistContainer';
-import { AdBanner } from './components/Common/AdBanner/AdBanner';
+
 import { Footer } from './components/Common/Footer/Footer';
 import FloatingSponsorButton from './components/FloatingSponsorButton/FloatingSponsorButton';
 import ChatWidget from './components/ChatWidget/ChatWidget';
@@ -102,26 +102,26 @@ function AppContent() {
   const { userPlan } = useSubscription();
   const { openDialog } = useDialog();
   const { showToast, toast, hideToast } = useToastManager();
-  
 
-  
+
+
   // 通知系統
   const {
     hasNewFeature: hasNewWatchlist,
     markFeatureAsSeen: markWatchlistSeen
   } = useNewFeatureNotification(FEATURES.WATCHLIST);
-  
+
   const isMobile = useMediaQuery({ query: '(max-width: 1300px)' });
   const location = useLocation();
   const isHomePage = location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
-  
+
 
 
   // 智能導航系統
-  const { 
-    shouldUseSideNav, 
-    navRef, 
-    triggerCheck 
+  const {
+    shouldUseSideNav,
+    navRef,
+    triggerCheck
   } = useSmartNavigation({
     debounceMs: 150,
     threshold: 8
@@ -147,7 +147,7 @@ function AppContent() {
   useEffect(() => {
     const isProUser = userPlan?.type === 'pro' || userPlan?.type === 'premium';
     adBlockingService.initialize(isProUser);
-    
+
     return () => {
       // 清理資源
       adBlockingService.cleanup();
@@ -267,41 +267,41 @@ function AppContent() {
         {/* 側邊欄區塊 - 只在使用側邊導航模式時渲染 */}
         {useSideNavigation && (
           <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-          <ul>
-            <li className="sidebar-item-1">
-              <NavLink
-                to={`/${lang}/`}
-                onClick={handleNavItemClick}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
-              >
-                <FaHome />
-                <span>{t('nav.home')}</span>
-              </NavLink>
-            </li>
-            <li className="sidebar-item-2">
-              <NavLink
-                to={`/${lang}/priceanalysis`}
-                onClick={handleNavItemClick}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
-              >
-                <FaChartLine />
-                <span>{t('nav.priceAnalysis')}</span>
-              </NavLink>
-            </li>
-            <li className="sidebar-item-3">
-              <NavLink
-                to={`/${lang}/market-sentiment`}
-                onClick={handleNavItemClick}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
-              >
-                <FaHeartbeat />
-                <span>{t('nav.marketSentiment')}</span>
-              </NavLink>
-            </li>
-            {/*
+            <ul>
+              <li className="sidebar-item-1">
+                <NavLink
+                  to={`/${lang}/`}
+                  onClick={handleNavItemClick}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
+                  <FaHome />
+                  <span>{t('nav.home')}</span>
+                </NavLink>
+              </li>
+              <li className="sidebar-item-2">
+                <NavLink
+                  to={`/${lang}/priceanalysis`}
+                  onClick={handleNavItemClick}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
+                  <FaChartLine />
+                  <span>{t('nav.priceAnalysis')}</span>
+                </NavLink>
+              </li>
+              <li className="sidebar-item-3">
+                <NavLink
+                  to={`/${lang}/market-sentiment`}
+                  onClick={handleNavItemClick}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
+                  <FaHeartbeat />
+                  <span>{t('nav.marketSentiment')}</span>
+                </NavLink>
+              </li>
+              {/*
             <li className="sidebar-item dropdown">
               <div
                 className="sidebar-dropdown-title"
@@ -338,56 +338,56 @@ function AppContent() {
               )}
             </li>
             */}
-            <li className="sidebar-item-5">
-              <NavLink
-                to={`/${lang}/watchlist`}
-                onClick={handleWatchlistClick}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
-              >
-                <div className="sidebar-item-content">
-                  <FaList />
-                  <span>{t('nav.watchlist')}</span>
-                </div>
-              </NavLink>
-            </li>
-            <li className="sidebar-item-6">
-              <NavLink
-                to={`/${lang}/articles`}
-                onClick={handleArticlesClick}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
-              >
-                <div className="sidebar-item-content">
-                  <FaChartBar />
-                  <span>{t('nav.articles')}</span>
-                </div>
-              </NavLink>
-            </li>
-            <li className="sidebar-item-7">
-              <NavLink
-                to={`/${lang}/subscription-plans`}
-                onClick={handleNavItemClick}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
-              >
-                <FaPiggyBank />
-                <span>{t('nav.subscription')}</span>
-              </NavLink>
-            </li>
-            {/* AdminNavigation 已移除以提高安全性 */}
-            <li className="sidebar-item-8">
-              <a
-                href="https://www.facebook.com/profile.php?id=61565751412240"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FaFacebook />
-                <span>{t('nav.facebook')}</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+              <li className="sidebar-item-5">
+                <NavLink
+                  to={`/${lang}/watchlist`}
+                  onClick={handleWatchlistClick}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
+                  <div className="sidebar-item-content">
+                    <FaList />
+                    <span>{t('nav.watchlist')}</span>
+                  </div>
+                </NavLink>
+              </li>
+              <li className="sidebar-item-6">
+                <NavLink
+                  to={`/${lang}/articles`}
+                  onClick={handleArticlesClick}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
+                  <div className="sidebar-item-content">
+                    <FaChartBar />
+                    <span>{t('nav.articles')}</span>
+                  </div>
+                </NavLink>
+              </li>
+              <li className="sidebar-item-7">
+                <NavLink
+                  to={`/${lang}/subscription-plans`}
+                  onClick={handleNavItemClick}
+                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  aria-current={({ isActive }) => isActive ? "page" : undefined}
+                >
+                  <FaPiggyBank />
+                  <span>{t('nav.subscription')}</span>
+                </NavLink>
+              </li>
+              {/* AdminNavigation 已移除以提高安全性 */}
+              <li className="sidebar-item-8">
+                <a
+                  href="https://www.facebook.com/profile.php?id=61565751412240"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaFacebook />
+                  <span>{t('nav.facebook')}</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
         )}
 
         {/* 主內容區域 */}
@@ -585,7 +585,7 @@ function AppContent() {
       {/* 條件式 AdSense 載入 */}
       <ConditionalAdSense />
       {/* 根據是否為首頁決定是否渲染 AdBanner */}
-      {!isHomePage && <AdBanner />}
+
 
       {/* Global Toast for API Client error handling */}
       {toast && (
