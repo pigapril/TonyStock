@@ -5,7 +5,6 @@
 
 import apiClient from '../api/apiClient';
 import authGuard from './authGuard';
-import { handleApiError } from './errorHandler';
 
 class EnhancedApiClient {
     constructor() {
@@ -58,7 +57,7 @@ class EnhancedApiClient {
      */
     async _makeRequest(method, url, data, config = {}) {
         // Create a unique key for request deduplication
-        const requestKey = this._createRequestKey(method, url, data);
+        const requestKey = this._createRequestKey(method, url, data, config);
         
         // Check if the same request is already in progress
         if (this.requestQueue.has(requestKey)) {
@@ -148,18 +147,10 @@ class EnhancedApiClient {
      * Create a unique key for request deduplication
      * @private
      */
-    _createRequestKey(method, url, data) {
+    _createRequestKey(method, url, data, config = {}) {
+        const paramsHash = config?.params ? JSON.stringify(config.params) : '';
         const dataHash = data ? JSON.stringify(data) : '';
-        try {
-            // 使用 btoa 處理 Latin1 字符
-            return `${method.toUpperCase()}:${url}:${btoa(dataHash).substring(0, 10)}`;
-        } catch (error) {
-            // 如果 btoa 失敗（通常是因為非 Latin1 字符），使用簡單的 hash 替代
-            const simpleHash = dataHash.split('').reduce((hash, char) => {
-                return ((hash << 5) - hash + char.charCodeAt(0)) & 0xffffffff;
-            }, 0);
-            return `${method.toUpperCase()}:${url}:${Math.abs(simpleHash).toString(36).substring(0, 10)}`;
-        }
+        return `${method.toUpperCase()}:${url}:${paramsHash}::${dataHash}`;
     }
 
     /**

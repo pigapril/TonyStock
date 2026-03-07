@@ -557,7 +557,8 @@
         "ariaLabel": "Composite indicator historical comparison",
         "previousDay": "Previous Day",
         "previousWeek": "Previous Week",
-        "previousMonth": "30 Days Ago"
+        "previousMonth": "30 Days Ago",
+        "previousQuarter": "90 Days Ago"
       },
       "zoneDescription": {
         "extremefear": "Extreme fear zone - market panic and overselling",

@@ -17,7 +17,6 @@ import PageContainer from '../PageContainer/PageContainer';
 import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
 import { getSentiment } from '../../utils/sentimentUtils';
-import { Helmet } from 'react-helmet-async';
 import { useAdContext } from '../Common/InterstitialAdModal/AdContext';
 import { useTranslation } from 'react-i18next';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
@@ -47,9 +46,6 @@ import { Line } from 'react-chartjs-2';
 // 引入 IndicatorItem 組件
 import IndicatorItem from '../IndicatorItem/IndicatorItem';
 
-// 引入 EmotionTag 組件
-import EmotionTag from '../Common/EmotionTag';
-
 // 引入 rc-slider 和其樣式
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -68,10 +64,6 @@ ChartJS.register(
 );
 
 
-// 在文件頂部添加這兩個常量
-const BUBBLE_RADIUS = 155; // 控制泡泡圍繞的圓的半徑
-const BUBBLE_Y_OFFSET = 0; // 控制泡泡的垂直偏移，正值向上移動，負值向下移動
-
 // 新增：獲取時間單位的函數
 function getTimeUnit(dates) {
   const start = new Date(dates[0]);
@@ -85,6 +77,69 @@ function getTimeUnit(dates) {
   } else {
     return 'day';
   }
+}
+
+function buildSparklinePath(points, width = 148, height = 52, padding = 6) {
+  if (!points || points.length === 0) {
+    return '';
+  }
+
+  const values = points.map((point) => point.percentileRank ?? point.value ?? 0);
+
+  if (points.length === 1) {
+    const y = height / 2;
+    return `M ${padding} ${y} L ${width - padding} ${y}`;
+  }
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const range = max - min;
+
+  if (range === 0) {
+    const y = height / 2;
+    return points.map((_, index) => {
+      const x = padding + (index / (points.length - 1)) * (width - padding * 2);
+      return `${index === 0 ? 'M' : 'L'} ${x.toFixed(2)} ${y.toFixed(2)}`;
+    }).join(' ');
+  }
+
+  return points.map((point, index) => {
+    const value = values[index];
+    const x = padding + (index / (points.length - 1)) * (width - padding * 2);
+    const y = height - padding - ((value - min) / range) * (height - padding * 2);
+    return `${index === 0 ? 'M' : 'L'} ${x.toFixed(2)} ${y.toFixed(2)}`;
+  }).join(' ');
+}
+
+function getHistoricLowLabel(date, currentLang) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+
+  return currentLang === 'zh-TW'
+    ? `${year}/${month} 恐慌低點`
+    : `${year}/${month} panic low`;
+}
+
+function groupHistoricLows(data) {
+  return data.reduce((groups, item) => {
+    const lastGroup = groups[groups.length - 1];
+
+    if (!lastGroup) {
+      groups.push([item]);
+      return groups;
+    }
+
+    const lastItem = lastGroup[lastGroup.length - 1];
+    const diffDays = (item.date.getTime() - lastItem.date.getTime()) / (1000 * 60 * 60 * 24);
+
+    if (diffDays <= 45) {
+      lastGroup.push(item);
+    } else {
+      groups.push([item]);
+    }
+
+    return groups;
+  }, []);
 }
 
 
@@ -101,28 +156,90 @@ const INDICATOR_TRANSLATION_KEY_MAP = {
   'NAAIM Exposure Index': 'indicators.naaimIndex',
 };
 
-// 新增：創建一個映射，將原始 key 映射到描述翻譯鍵中使用的簡化 key
-const INDICATOR_DESCRIPTION_KEY_MAP = {
-  'AAII Bull-Bear Spread': 'aaiiSpread',
-  'CBOE Put/Call Ratio 5-Day Avg': 'cboeRatio',
-  'Market Momentum': 'marketMomentum',
-  'VIX MA50': 'vixMA50',
-  'Safe Haven Demand': 'safeHaven',
-  'Junk Bond Spread': 'junkBond',
-  "S&P 500 COT Index": 'cotIndex',
-  'NAAIM Exposure Index': 'naaimIndex',
+const INDICATOR_WORKSPACE_COPY = {
+  'AAII Bull-Bear Spread': {
+    zh: '觀察散戶情緒是否過度偏向多方或空方。',
+    en: 'Tracks whether retail sentiment is leaning too bullish or too bearish.'
+  },
+  'CBOE Put/Call Ratio 5-Day Avg': {
+    zh: '反映市場避險需求與短期防禦情緒。',
+    en: 'Reflects hedging demand and short-term defensive positioning.'
+  },
+  'Market Momentum': {
+    zh: '衡量價格相對長期趨勢的位置與延伸程度。',
+    en: 'Measures how far price has stretched relative to its long-term trend.'
+  },
+  'VIX MA50': {
+    zh: '用波動率壓力判斷市場是否處於恐慌狀態。',
+    en: 'Uses volatility pressure to gauge whether markets are under stress.'
+  },
+  'Safe Haven Demand': {
+    zh: '比較風險資產與避險資產之間的資金流向。',
+    en: 'Compares flows between risk assets and safe-haven assets.'
+  },
+  'Junk Bond Spread': {
+    zh: '信用利差顯示投資人承擔風險的意願。',
+    en: 'Credit spreads reveal how willing investors are to take risk.'
+  },
+  'S&P 500 COT Index': {
+    zh: '從期貨部位看大型資金對股市的偏向。',
+    en: 'Shows how large futures traders are positioned in equities.'
+  },
+  'NAAIM Exposure Index': {
+    zh: '主動型經理人的曝險程度可反映專業資金信心。',
+    en: 'Active manager exposure helps reveal professional risk appetite.'
+  }
+};
+
+const COMPOSITE_GAUGE_EXPLAINER = {
+  zh: {
+    title: '為什麼要看情緒指標？',
+    subtitle: '情緒指標不是為了預測股價明天漲跌，而是為了判斷現在進場的「勝率」與「風險」是否不對稱。',
+    sections: [
+      {
+        title: '1. 尋找「擁擠交易」的出口',
+        body: '市場最危險的時候，不是大家都在賠錢的時候，而是當每個人都達成共識的時候。當情緒指標處於「極度貪婪」時，代表想買的人都買了，市場上沒有更多的樂觀資金來推升價格，也就是擁擠交易。情緒指標能告訴你，現在船的一邊是不是站了太多人，可能隨時會翻。'
+      },
+      {
+        title: '2. 情緒是最好的「逆向指南針」',
+        body: '「行情總在絕望中誕生，在半信半疑中成長，在憧憬中成熟，在希望中毀滅。」當人們都處於極度恐懼狀態，只想關掉電腦、遠離市場時，通常是開始悄悄撿便宜的絕佳買點；反之，當人們都處於極度貪婪狀態、在炫耀賺了多少錢，通常也是該獲利了結的時候。情緒指標不是要你跟隨群眾，而是要你觀察，然後做他們的反面。'
+      },
+      {
+        title: '3. 避免被你的本能給騙了',
+        body: '人的天性是趨利避害，但在資本市場，當你看著大盤大跌時，大腦會急迫的想要賣出；當大盤狂飆時，貪婪卻會逼著你加碼。情緒指標的作用，就是把你從這種盲目的情緒中抽離出來。Sentiment Inside Out 恐懼貪婪指標提供的是客觀的數據，在市場瘋狂時，幫你的大腦保持冷靜。'
+      }
+    ]
+  },
+  en: {
+    title: 'Why watch a sentiment indicator?',
+    subtitle: 'A sentiment indicator is not for predicting whether stocks will rise or fall tomorrow. It is for judging whether the current entry setup offers asymmetric odds and risk.',
+    sections: [
+      {
+        title: '1. Find the exit in crowded trades',
+        body: 'The most dangerous markets are not when everyone is losing money. They are when everyone agrees. When sentiment reaches Extreme Greed, most of the buyers are already in, and there is little fresh optimism left to push prices higher. That is what a crowded trade looks like. A sentiment indicator helps you see when too many people are standing on the same side of the boat.'
+      },
+      {
+        title: '2. Emotion is the best contrarian compass',
+        body: 'Bull markets are born in despair, grow in doubt, mature in optimism, and die in euphoria. When investors are in extreme fear and just want to turn off the screen and walk away, it is often when value starts to reappear. On the other side, when everyone is in extreme greed and bragging about gains, it is often time to take profits. A sentiment indicator is not there to help you follow the crowd. It is there to help you observe the crowd and lean the other way.'
+      },
+      {
+        title: '3. Stop your instincts from fooling you',
+        body: 'Human instinct seeks safety and reward, but in capital markets that instinct often works against you. When indexes plunge, your brain wants to sell. When prices surge, greed urges you to add more. The role of a sentiment indicator is to pull you out of that reflexive loop. The Sentiment Inside Out Fear & Greed Index gives you an objective read so your decision-making can stay calm when the market is not.'
+      }
+    ]
+  }
 };
 
 const MarketSentimentIndex = () => {
   const { t, i18n } = useTranslation();
   const { showToast, toast, hideToast } = useToastManager();
-  const { user, isAuthenticated, checkAuthStatus } = useAuth();
-  
+  const { user, checkAuthStatus } = useAuth();
+
   // 數據限制 Toast 提醒
-  const { 
-    isFreeUser, 
+  const {
+    isFreeUser,
     showHistoricalDataToast,
-    showUpgradeToast 
+    showUpgradeToast
   } = useDataLimitationToast(showToast);
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -130,10 +247,10 @@ const MarketSentimentIndex = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [upgradeDialog, setUpgradeDialog] = useState({ isOpen: false, type: null, context: {} });
   const [selectedTimeRange, setSelectedTimeRange] = useState('10Y');
+  const selectedTimeRangeRef = useRef('10Y');
   const [indicatorsData, setIndicatorsData] = useState({});
+  const [indicatorTrendData, setIndicatorTrendData] = useState({});
   const [historicalData, setHistoricalData] = useState([]);
-  const [activeTab, setActiveTab] = useState('composite');
-  const [viewMode, setViewMode] = useState('overview');
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const initialRenderRef = useRef(true);
   const { requestAdDisplay } = useAdContext();
@@ -149,37 +266,8 @@ const MarketSentimentIndex = () => {
   const [sliderMinMax, setSliderMinMax] = useState([0, 0]); // [minTimestamp, maxTimestamp]
   const [currentSliderRange, setCurrentSliderRange] = useState([0, 0]); // [startTimestamp, endTimestamp]
 
-  // 新增：漸進式導覽步驟狀態 - 免費用戶預設顯示歷史趨勢
-  const [compositeStep, setCompositeStep] = useState(isProUser ? 'composition' : 'history');
-  // 新增：組成項目點擊後的 Modal 狀態
-  const [selectedIndicatorKey, setSelectedIndicatorKeyInternal] = useState(null);
-
-  // Throttling 相關 Refs
-  const lastCallTimeRef = useRef(0);
-  const throttleTimeoutRef = useRef(null);
-  const THROTTLE_DELAY = 2000; // 1 秒的延遲
-
-  // Throttled setSelectedIndicatorKey
-  const setSelectedIndicatorKey = useCallback((newKey) => {
-    const now = Date.now();
-    clearTimeout(throttleTimeoutRef.current);
-
-    if (now - lastCallTimeRef.current < THROTTLE_DELAY) {
-      throttleTimeoutRef.current = setTimeout(() => {
-        setSelectedIndicatorKeyInternal(newKey);
-        lastCallTimeRef.current = Date.now();
-      }, THROTTLE_DELAY - (now - lastCallTimeRef.current));
-    } else {
-      setSelectedIndicatorKeyInternal(newKey);
-      lastCallTimeRef.current = now;
-    }
-  }, [THROTTLE_DELAY]);
-
-  // Refs for swipe gesture
-  const touchStartXRef = useRef(null);
-  const touchEndXRef = useRef(null);
-  const MIN_SWIPE_DISTANCE = 50;
-  const currentModalContentRef = useRef(null);
+  const [compositeStep, setCompositeStep] = useState(isProUser ? 'indicators' : 'history');
+  const [selectedIndicatorKey, setSelectedIndicatorKey] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -187,7 +275,7 @@ const MarketSentimentIndex = () => {
     async function fetchSentimentData() {
       try {
         setLoading(true);
-        
+
         // 根據用戶計劃選擇不同的端點
         // 在臨時免費模式下，所有用戶都使用 Pro 端點
         const shouldUsePro = isTemporaryFreeMode || isProUser;
@@ -205,14 +293,14 @@ const MarketSentimentIndex = () => {
         // ✅ 修正 403 處理邏輯
         if (error.response?.status === 403) {
           console.warn('MarketSentiment: 403 Forbidden on Pro endpoint. Falling back to Free data.');
-          
+
           // 1. 同步用戶狀態
           if (checkAuthStatus) {
             checkAuthStatus().catch(err => {
               console.error('Failed to refresh auth status:', err);
             });
           }
-          
+
           // 2. 顯示升級對話框 (保持不變)
           setUpgradeDialog({
             isOpen: true,
@@ -222,7 +310,7 @@ const MarketSentimentIndex = () => {
               source: 'apiError'
             }
           });
-          
+
           // 3. 【關鍵修正】自動降級：嘗試抓取免費版資料作為背景顯示
           try {
             const freeResponse = await enhancedApiClient.get('/api/market-sentiment-free');
@@ -251,7 +339,11 @@ const MarketSentimentIndex = () => {
     return () => {
       isMounted = false;
     };
-  }, [showToast, t, isProUser]);
+  }, [checkAuthStatus, isProUser, isTemporaryFreeMode, showToast, t]);
+
+  useEffect(() => {
+    selectedTimeRangeRef.current = selectedTimeRange;
+  }, [selectedTimeRange]);
 
   useEffect(() => {
     async function fetchHistoricalData() {
@@ -273,7 +365,7 @@ const MarketSentimentIndex = () => {
           const maxTs = formattedData[formattedData.length - 1].date.getTime();
           setSliderMinMax([minTs, maxTs]);
           // 初始化 currentSliderRange
-          const initialRange = filterDataByTimeRange(formattedData, selectedTimeRange);
+          const initialRange = filterDataByTimeRange(formattedData, selectedTimeRangeRef.current);
           if (initialRange.length > 0) {
             setCurrentSliderRange([initialRange[0].date.getTime(), initialRange[initialRange.length - 1].date.getTime()]);
           } else {
@@ -304,116 +396,89 @@ const MarketSentimentIndex = () => {
     }
   }, [selectedTimeRange, historicalData, sliderMinMax]);
 
-  // Keyboard and Swipe navigation for Modal
   useEffect(() => {
-    if (!selectedIndicatorKey) {
+    const keys = Object.keys(indicatorsData).filter(
+      (key) => key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield'
+    );
+
+    if (keys.length === 0) {
       return;
     }
 
-    const keys = Object.keys(indicatorsData);
-    if (keys.length === 0 || !indicatorsData[selectedIndicatorKey]) {
+    if (!selectedIndicatorKey || !indicatorsData[selectedIndicatorKey]) {
+      setSelectedIndicatorKey(keys[0]);
+    }
+  }, [indicatorsData, selectedIndicatorKey]);
+
+  useEffect(() => {
+    const canLoadIndicatorTrends = isProUser || Boolean(sentimentData && !sentimentData.isRestricted);
+
+    if (!canLoadIndicatorTrends) {
+      setIndicatorTrendData({});
       return;
     }
-    const currentIndex = keys.indexOf(selectedIndicatorKey);
-    if (currentIndex === -1) {
+
+    const indicatorKeys = Object.keys(indicatorsData).filter(
+      (key) => key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield'
+    );
+
+    if (indicatorKeys.length === 0) {
       return;
     }
-    const prevIndicatorKey = keys[(currentIndex - 1 + keys.length) % keys.length];
-    const nextIndicatorKey = keys[(currentIndex + 1) % keys.length];
 
-    const handleKeyDown = (event) => {
-      if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
-        return;
-      }
-      if (event.key === 'ArrowLeft') {
-        event.preventDefault();
-        setSelectedIndicatorKey(prevIndicatorKey);
-      } else if (event.key === 'ArrowRight') {
-        event.preventDefault();
-        setSelectedIndicatorKey(nextIndicatorKey);
-      } else if (event.key === 'Escape') {
-        event.preventDefault();
-        setSelectedIndicatorKeyInternal(null);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
+    let cancelled = false;
 
-    const modalContentElement = currentModalContentRef.current;
-    const handleTouchStart = (e) => {
-      let target = e.target;
-      while (target && target !== modalContentElement) {
-        const style = window.getComputedStyle(target);
-        const overflowY = style.overflowY;
-        if ((overflowY === 'auto' || overflowY === 'scroll') && target.scrollHeight > target.clientHeight) {
-          touchStartXRef.current = null;
-          return;
-        }
-        if (target.tagName === 'BUTTON' || target.tagName === 'A' || typeof target.onclick === 'function') {
-          touchStartXRef.current = null;
-          return;
-        }
-        // 新增：如果事件目標在圖表或 tooltip 相關元素內部，則不觸發 modal 切換
-        if (target.classList &&
-          (target.classList.contains('indicator-chart') ||
-            target.classList.contains('tooltip') ||
-            target.closest('.indicator-chart') ||
-            target.closest('.tooltip'))
-        ) {
-          touchStartXRef.current = null;
-          return;
-        }
-        target = target.parentElement;
-      }
-      if (e.targetTouches.length === 1) {
-        touchStartXRef.current = e.targetTouches[0].clientX;
-        touchEndXRef.current = e.targetTouches[0].clientX;
-      } else {
-        touchStartXRef.current = null;
-      }
-    };
-    const handleTouchMove = (e) => {
-      if (touchStartXRef.current === null || e.targetTouches.length !== 1) {
-        return;
-      }
-      touchEndXRef.current = e.targetTouches[0].clientX;
-    };
-    const handleTouchEnd = () => {
-      if (touchStartXRef.current === null || touchEndXRef.current === null) {
-        return;
-      }
-      const distance = touchStartXRef.current - touchEndXRef.current;
-      const isLeftSwipe = distance > MIN_SWIPE_DISTANCE;
-      const isRightSwipe = distance < -MIN_SWIPE_DISTANCE;
-      if (isLeftSwipe) {
-        setSelectedIndicatorKey(nextIndicatorKey);
-      } else if (isRightSwipe) {
-        setSelectedIndicatorKey(prevIndicatorKey);
-      }
-      touchStartXRef.current = null;
-      touchEndXRef.current = null;
-    };
+    async function fetchIndicatorTrendData() {
+      try {
+        const results = await Promise.all(
+          indicatorKeys.map(async (key) => {
+            const response = await enhancedApiClient.get('/api/indicator-history', {
+              params: { indicator: key }
+            });
 
-    if (modalContentElement) {
-      modalContentElement.addEventListener('touchstart', handleTouchStart, { passive: true });
-      modalContentElement.addEventListener('touchmove', handleTouchMove, { passive: true });
-      modalContentElement.addEventListener('touchend', handleTouchEnd, { passive: true });
+            const normalized = response.data
+              .map((item) => ({
+                date: new Date(item.date),
+                value: item.value != null ? parseFloat(item.value) : null,
+                percentileRank: item.percentileRank != null ? parseFloat(item.percentileRank) : null
+              }))
+              .filter((item) => item.percentileRank != null)
+              .sort((a, b) => a.date - b.date);
+
+            if (normalized.length === 0) {
+              return [key, []];
+            }
+
+            const latestDate = normalized[normalized.length - 1].date;
+            const thresholdDate = new Date(latestDate);
+            thresholdDate.setMonth(thresholdDate.getMonth() - 3);
+            const last3Months = normalized.filter((item) => item.date >= thresholdDate);
+
+            return [key, last3Months];
+          })
+        );
+
+        if (!cancelled) {
+          setIndicatorTrendData(Object.fromEntries(results));
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.error('Failed to fetch indicator trend data:', error);
+        }
+      }
     }
+
+    fetchIndicatorTrendData();
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      if (modalContentElement) {
-        modalContentElement.removeEventListener('touchstart', handleTouchStart);
-        modalContentElement.removeEventListener('touchmove', handleTouchMove);
-        modalContentElement.removeEventListener('touchend', handleTouchEnd);
-      }
-      clearTimeout(throttleTimeoutRef.current);
+      cancelled = true;
     };
-  }, [selectedIndicatorKey, indicatorsData, setSelectedIndicatorKey, currentModalContentRef, MIN_SWIPE_DISTANCE]);
+  }, [indicatorsData, isProUser, sentimentData]);
 
   const handleTimeRangeChange = (e) => {
     Analytics.marketSentiment.changeTimeRange({
       timeRange: e.target.value,
-      currentIndicator: activeTab
+      currentIndicator: 'composite'
     });
     setSelectedTimeRange(e.target.value);
   };
@@ -495,10 +560,10 @@ const MarketSentimentIndex = () => {
       feature,
       userPlan: effectiveUserPlan
     });
-    
+
     // 顯示對應的 toast 提醒
     showUpgradeToast(feature);
-    
+
     // 短暫延遲後顯示升級對話框
     setTimeout(() => {
       setUpgradeDialog({
@@ -627,27 +692,6 @@ const MarketSentimentIndex = () => {
     maintainAspectRatio: false,
   }), [timeUnit, t]);
 
-  // 新增：處理標籤切換的函數
-  const handleTabChange = (tabKey) => {
-    Analytics.marketSentiment.switchIndicator({
-      indicatorName: tabKey,
-      fromIndicator: activeTab
-    });
-    setActiveTab(tabKey);
-  };
-
-  // 修改：處理視圖模式切換的函數
-  const handleViewModeChange = (mode) => {
-    requestAdDisplay('marketSentimentViewModeChange', 1);
-    Analytics.marketSentiment.switchViewMode({
-      viewMode: mode,
-      currentIndicator: activeTab
-    });
-    setViewMode(mode);
-  };
-
-
-
   // 在組件渲染完成後將 initialRenderRef 設為 false
   useEffect(() => {
     if (isDataLoaded) {
@@ -660,7 +704,7 @@ const MarketSentimentIndex = () => {
     if (!isProUser && isDataLoaded && compositeStep === 'history') {
       // 立即顯示數據限制提醒
       showHistoricalDataToast();
-      
+
       // 檢查是否需要顯示 tutorial
       const hasSeenTutorial = localStorage.getItem('marketSentiment_tutorialSeen');
       if (!hasSeenTutorial) {
@@ -719,11 +763,12 @@ const MarketSentimentIndex = () => {
     /* Analytics.marketSentiment.sliderRangeChanged({
       startDate: new Date(newRange[0]).toISOString().split('T')[0],
       endDate: new Date(newRange[1]).toISOString().split('T')[0],
-      currentIndicator: activeTab
+      currentIndicator: 'composite'
     }); */
   };
 
   const currentCompositeScore = sentimentData?.totalScore != null ? Math.round(sentimentData.totalScore) : null;
+  const gaugeExplainerCopy = currentLang === 'zh-TW' ? COMPOSITE_GAUGE_EXPLAINER.zh : COMPOSITE_GAUGE_EXPLAINER.en;
 
   const comparisonSnapshots = useMemo(() => {
     return getCompositeComparisonSnapshots({
@@ -733,6 +778,66 @@ const MarketSentimentIndex = () => {
       t
     });
   }, [currentCompositeScore, historicalData, sentimentData?.compositeScoreLastUpdate, t]);
+
+  const indicatorEntries = useMemo(() => {
+    return Object.entries(indicatorsData).filter(
+      ([key]) => key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield'
+    );
+  }, [indicatorsData]);
+
+  const sortedIndicatorEntries = useMemo(() => {
+    return [...indicatorEntries].sort(([, a], [, b]) => {
+      const aDistance = Math.abs((a?.percentileRank ?? 50) - 50);
+      const bDistance = Math.abs((b?.percentileRank ?? 50) - 50);
+      return bDistance - aDistance;
+    });
+  }, [indicatorEntries]);
+
+  const selectedIndicatorEntry = useMemo(() => {
+    if (!selectedIndicatorKey) {
+      return sortedIndicatorEntries[0] || null;
+    }
+
+    return sortedIndicatorEntries.find(([key]) => key === selectedIndicatorKey) || sortedIndicatorEntries[0] || null;
+  }, [selectedIndicatorKey, sortedIndicatorEntries]);
+
+  const historicalLowPoints = useMemo(() => {
+    if (historicalData.length === 0) {
+      return [];
+    }
+
+    const extremeLows = historicalData.filter((item) => item.compositeScore <= 5);
+    const source = extremeLows.length > 0
+      ? extremeLows
+      : [...historicalData].sort((a, b) => a.compositeScore - b.compositeScore).slice(0, 12);
+
+    return groupHistoricLows(source)
+      .map((group) => group.reduce(
+        (lowest, item) => (item.compositeScore < lowest.compositeScore ? item : lowest),
+        group[0]
+      ))
+      .sort((a, b) => b.date - a.date)
+      .slice(0, 4)
+      .map((item) => ({
+        label: getHistoricLowLabel(item.date, currentLang),
+        value: Math.round(item.compositeScore),
+        meta: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US')
+      }));
+  }, [currentLang, historicalData]);
+
+  const getIndicatorWorkspaceSummary = useCallback((key) => {
+    const copy = INDICATOR_WORKSPACE_COPY[key];
+    if (!copy) {
+      return currentLang === 'zh-TW'
+        ? '用來補足整體市場情緒的另一個觀察維度。'
+        : 'Adds another lens for understanding the current market mood.';
+    }
+    return currentLang === 'zh-TW' ? copy.zh : copy.en;
+  }, [currentLang]);
+
+  const getIndicatorLabel = useCallback((key) => {
+    return t(INDICATOR_TRANSLATION_KEY_MAP[key] || key);
+  }, [t]);
 
   // 1. 檢查載入狀態
   if (loading) {
@@ -787,69 +892,47 @@ const MarketSentimentIndex = () => {
       jsonLd={marketSentimentJsonLd}
     >
       <div className="market-sentiment-view">
-        <div className="tabs-grid">
-          <button
-            className={`tab-button ${activeTab === 'composite' ? 'active' : ''}`}
-            onClick={() => handleTabChange('composite')}
-          >
-            {t('marketSentiment.tabs.compositeIndex')}
-          </button>
-          {Object.keys(indicatorsData).map((key) => (
-            key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield' && (
-              <button
-                key={key}
-                className={`tab-button ${activeTab === key ? 'active' : ''}`}
-                onClick={() => handleTabChange(key)}
-              >
-                {t(INDICATOR_TRANSLATION_KEY_MAP[key] || key)}
-              </button>
-            )
-          ))}
-        </div>
-        <div className="content-layout-container">
-          {activeTab === 'composite' ? (
-            <>
-              {/* 左側面板 */}
-              <div className="left-panel">
-                <div className="panel-header">
-                  <h1 className="panel-title">
-                    <span className="panel-title-brand">Sentiment Inside Out (SIO)</span>
-                    <span className="panel-title-index">
-                      {currentLang === 'zh-TW' ? '恐懼貪婪指標' : 'Fear & Greed Index'}
-                    </span>
-                  </h1>
-                  <p className="panel-description">{t('marketSentiment.pageSubtitle')}</p>
-                </div>
+        <div className="composite-page-layout">
+          <section className="overview-hero">
+            <div className="left-panel">
+              <div className="panel-header">
+                <h1 className="panel-title">
+                  <span className="panel-title-brand">Sentiment Inside Out (SIO)</span>
+                  <span className="panel-title-index">
+                    {currentLang === 'zh-TW' ? '恐懼貪婪指標' : 'Fear & Greed Index'}
+                  </span>
+                </h1>
+                <p className="panel-description">{t('marketSentiment.pageSubtitle')}</p>
+              </div>
 
-                <div className="gauge-sentiment-container">
-                  {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
-                    <>
-                      <MarketSentimentGauge
-                        sentimentData={sentimentData}
-                        isDataLoaded={isDataLoaded}
-                        initialRenderRef={initialRenderRef}
-                        showAnalysisResult={false}
-                        showLastUpdate={true}
-                      />
-
-                      <div className="panel-market-summary">
-                        {(comparisonSnapshots.previousDay || comparisonSnapshots.previousWeek || comparisonSnapshots.previousMonth) && (
-                          <div className="panel-reference-block" aria-label={t('marketSentiment.gauge.comparison.ariaLabel')}>
-                            <span className="panel-reference-label">
-                              {currentLang === 'zh-TW' ? '近期參考' : 'Recent Reference'}
-                            </span>
-                            <div className="panel-comparison-strip">
+              <div className="gauge-sentiment-container">
+                {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
+                  <div className="gauge-sentiment-layout">
+                    <MarketSentimentGauge
+                      sentimentData={sentimentData}
+                      isDataLoaded={isDataLoaded}
+                      initialRenderRef={initialRenderRef}
+                      showAnalysisResult={false}
+                      showLastUpdate={true}
+                      supplementaryContent={(comparisonSnapshots.previousDay || comparisonSnapshots.previousWeek || comparisonSnapshots.previousMonth || comparisonSnapshots.previousQuarter) ? (
+                        <div className="panel-reference-block" aria-label={t('marketSentiment.gauge.comparison.ariaLabel')}>
+                          <span className="panel-reference-label">
+                            {currentLang === 'zh-TW' ? '近期參考' : 'Recent Reference'}
+                          </span>
+                          <div className="panel-comparison-strip">
                             {comparisonSnapshots.previousDay && (
                               <div className="panel-comparison-card">
                                 <span className="panel-comparison-label">
                                   {t('marketSentiment.gauge.comparison.previousDay')}
                                 </span>
-                                <span className="panel-comparison-score">
-                                  {comparisonSnapshots.previousDay.score}
-                                </span>
-                                <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousDay.sentimentKey.split('.').pop()}`}>
-                                  {comparisonSnapshots.previousDay.sentimentLabel}
-                                </span>
+                                <div className="panel-comparison-valueGroup">
+                                  <span className="panel-comparison-score">
+                                    {comparisonSnapshots.previousDay.score}
+                                  </span>
+                                  <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousDay.sentimentKey.split('.').pop()}`}>
+                                    {comparisonSnapshots.previousDay.sentimentLabel}
+                                  </span>
+                                </div>
                               </div>
                             )}
                             {comparisonSnapshots.previousWeek && (
@@ -857,12 +940,14 @@ const MarketSentimentIndex = () => {
                                 <span className="panel-comparison-label">
                                   {t('marketSentiment.gauge.comparison.previousWeek')}
                                 </span>
-                                <span className="panel-comparison-score">
-                                  {comparisonSnapshots.previousWeek.score}
-                                </span>
-                                <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousWeek.sentimentKey.split('.').pop()}`}>
-                                  {comparisonSnapshots.previousWeek.sentimentLabel}
-                                </span>
+                                <div className="panel-comparison-valueGroup">
+                                  <span className="panel-comparison-score">
+                                    {comparisonSnapshots.previousWeek.score}
+                                  </span>
+                                  <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousWeek.sentimentKey.split('.').pop()}`}>
+                                    {comparisonSnapshots.previousWeek.sentimentLabel}
+                                  </span>
+                                </div>
                               </div>
                             )}
                             {comparisonSnapshots.previousMonth && (
@@ -870,250 +955,283 @@ const MarketSentimentIndex = () => {
                                 <span className="panel-comparison-label">
                                   {t('marketSentiment.gauge.comparison.previousMonth')}
                                 </span>
-                                <span className="panel-comparison-score">
-                                  {comparisonSnapshots.previousMonth.score}
-                                </span>
-                                <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousMonth.sentimentKey.split('.').pop()}`}>
-                                  {comparisonSnapshots.previousMonth.sentimentLabel}
-                                </span>
+                                <div className="panel-comparison-valueGroup">
+                                  <span className="panel-comparison-score">
+                                    {comparisonSnapshots.previousMonth.score}
+                                  </span>
+                                  <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousMonth.sentimentKey.split('.').pop()}`}>
+                                    {comparisonSnapshots.previousMonth.sentimentLabel}
+                                  </span>
+                                </div>
                               </div>
                             )}
-                            </div>
+                            {comparisonSnapshots.previousQuarter && (
+                              <div className="panel-comparison-card panel-comparison-card--desktopOnly">
+                                <span className="panel-comparison-label">
+                                  {t('marketSentiment.gauge.comparison.previousQuarter')}
+                                </span>
+                                <div className="panel-comparison-valueGroup">
+                                  <span className="panel-comparison-score">
+                                    {comparisonSnapshots.previousQuarter.score}
+                                  </span>
+                                  <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousQuarter.sentimentKey.split('.').pop()}`}>
+                                    {comparisonSnapshots.previousQuarter.sentimentLabel}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
                           </div>
+                        </div>
+                      ) : null}
+                    />
+
+                    <div className="panel-market-summary">
+                      <div className="panel-explainer-card">
+                        <h3 className="panel-explainer-title">
+                          {gaugeExplainerCopy.title}
+                        </h3>
+                        <p className="panel-explainer-subtitle">
+                          {gaugeExplainerCopy.subtitle}
+                        </p>
+                        <div className="panel-explainer-sections">
+                          {gaugeExplainerCopy.sections.map((section) => (
+                            <div key={section.title} className="panel-explainer-section">
+                              <h4 className="panel-explainer-sectionTitle">{section.title}</h4>
+                              <p className="panel-explainer-body">
+                                {section.body}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <RestrictedMarketSentimentGauge
+                    onUpgradeClick={() => handleRestrictedFeatureClick('gauge')}
+                  />
+                )}
+              </div>
+            </div>
+          </section>
+
+          <section className="market-workspace">
+            <div className="market-workspace__header">
+              <div className="market-workspace__intro">
+                <h2 className="market-workspace__title">
+                  {currentLang === 'zh-TW' ? '指標拆解與歷史趨勢' : 'Indicators and history'}
+                </h2>
+                <p className="market-workspace__description">
+                  {currentLang === 'zh-TW'
+                    ? '先看哪些指標正在推動當前情緒，再切換到歷史走勢檢查現在處在週期的哪個位置。'
+                    : 'Move from today’s indicator drivers to longer-term context without leaving the same workspace.'}
+                </p>
+              </div>
+
+              <div className="market-workspace__tabs" role="tablist" aria-label={currentLang === 'zh-TW' ? '市場工作區切換' : 'Market workspace tabs'}>
+                <button
+                  className={`market-workspace__tab ${compositeStep === 'indicators' ? 'active' : ''}`}
+                  onClick={() => {
+                    setCompositeStep('indicators');
+                    requestAdDisplay('marketSentimentIndicatorsWorkspace', 1);
+                  }}
+                  role="tab"
+                  aria-selected={compositeStep === 'indicators'}
+                >
+                  {currentLang === 'zh-TW' ? '指標' : 'Indicators'}
+                </button>
+                <button
+                  className={`market-workspace__tab ${compositeStep === 'history' ? 'active' : ''}`}
+                  onClick={() => {
+                    setCompositeStep('history');
+                    requestAdDisplay('marketSentimentHistoryWorkspace', 1);
+                    if (isFreeUser) {
+                      showHistoricalDataToast();
+                    }
+                  }}
+                  role="tab"
+                  aria-selected={compositeStep === 'history'}
+                >
+                  {currentLang === 'zh-TW' ? '歷史' : 'History'}
+                </button>
+              </div>
+            </div>
+
+            <div className="market-workspace__body">
+              {compositeStep === 'indicators' ? (
+                <div className="indicators-workspace">
+                  {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
+                    <>
+                      <div className="indicators-workspace__list">
+                        <div className="indicators-workspace__listHeader">
+                          <div>
+                            <span className="indicators-workspace__eyebrow">
+                              {currentLang === 'zh-TW' ? '驅動因子' : 'Drivers'}
+                            </span>
+                            <h3 className="indicators-workspace__title">
+                              {currentLang === 'zh-TW' ? '哪些指標在推動情緒' : 'Which indicators are driving sentiment'}
+                            </h3>
+                          </div>
+                        </div>
+
+                        <div className="indicator-card-list">
+                          {sortedIndicatorEntries.map(([key, ind]) => {
+                            const sentimentKey = getSentiment(ind?.percentileRank ? Math.round(ind.percentileRank) : null);
+                            const tone = sentimentKey.split('.').pop();
+                            const percentile = ind?.percentileRank != null ? Math.round(ind.percentileRank) : null;
+                            const isSelected = selectedIndicatorEntry?.[0] === key;
+
+                            return (
+                              <button
+                                key={key}
+                                type="button"
+                                className={`indicator-summary-card ${isSelected ? 'is-selected' : ''}`}
+                                onClick={() => setSelectedIndicatorKey(key)}
+                              >
+                                <div className="indicator-summary-card__top">
+                                  <div className="indicator-summary-card__heading">
+                                    <span className="indicator-summary-card__name">{getIndicatorLabel(key)}</span>
+                                    <span className="indicator-summary-card__summary">
+                                      {getIndicatorWorkspaceSummary(key)}
+                                    </span>
+                                  </div>
+                                  <div className="indicator-summary-card__scoreColumn">
+                                    <span className="indicator-summary-card__score">
+                                      {percentile != null ? `${percentile}%` : '-'}
+                                    </span>
+                                    <span className={`indicator-summary-card__sentiment sentiment-${tone}`}>
+                                      {t(sentimentKey)}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="indicator-summary-card__sparkline" aria-hidden="true">
+                                  {indicatorTrendData[key]?.length > 1 ? (
+                                    <svg
+                                      className="indicator-summary-card__sparklineSvg"
+                                      viewBox="0 0 148 52"
+                                      preserveAspectRatio="none"
+                                    >
+                                      <path
+                                        className="indicator-summary-card__sparklineTrack"
+                                        d="M 6 26 L 142 26"
+                                      />
+                                      <path
+                                        className={`indicator-summary-card__sparklinePath sentiment-${tone}`}
+                                        d={buildSparklinePath(indicatorTrendData[key])}
+                                      />
+                                    </svg>
+                                  ) : (
+                                    <span className="indicator-summary-card__sparklineEmpty">
+                                      {currentLang === 'zh-TW' ? '載入近 3 個月趨勢中' : 'Loading 3M trend'}
+                                    </span>
+                                  )}
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div className="indicators-workspace__detail">
+                        {selectedIndicatorEntry && (
+                          <>
+                            <div className="indicators-workspace__detailIntro">
+                              <span className="indicators-workspace__detailEyebrow">
+                                {currentLang === 'zh-TW' ? '已選指標' : 'Selected indicator'}
+                              </span>
+                              <h3 className="indicators-workspace__detailTitle">
+                                {getIndicatorLabel(selectedIndicatorEntry[0])}
+                              </h3>
+                              <p className="indicators-workspace__detailSummary">
+                                {getIndicatorWorkspaceSummary(selectedIndicatorEntry[0])}
+                              </p>
+                            </div>
+                            <IndicatorItem
+                              key={selectedIndicatorEntry[0]}
+                              indicatorKey={selectedIndicatorEntry[0]}
+                              indicator={selectedIndicatorEntry[1]}
+                              selectedTimeRange={selectedTimeRange}
+                              handleTimeRangeChange={handleTimeRangeChange}
+                              historicalSPYData={historicalData}
+                            />
+                          </>
                         )}
                       </div>
                     </>
                   ) : (
-                    <RestrictedMarketSentimentGauge 
-                      onUpgradeClick={() => handleRestrictedFeatureClick('gauge')}
+                    <RestrictedCompositionView
+                      onUpgradeClick={() => handleRestrictedFeatureClick('composition')}
+                      indicatorCount={Object.keys(indicatorsData).length}
                     />
                   )}
                 </div>
+              ) : (
+                <div className="history-workspace">
+                  <div className="history-workspace__controls">
+                    <TimeRangeSelector
+                      selectedTimeRange={selectedTimeRange}
+                      handleTimeRangeChange={handleTimeRangeChange}
+                    />
+                  </div>
 
-              </div>
+                  <div className="indicator-chart">
+                    <Line data={chartData} options={chartOptions} />
+                  </div>
 
-              {/* 右側面板 - 可切換內容 */}
-              <div className="right-panel">
-                <div className="view-mode-selector-container">
-                  <button
-                    className={`view-mode-button ${compositeStep === 'composition' ? 'active' : ''}`}
-                    onClick={() => {
-                      setCompositeStep('composition');
-                      requestAdDisplay('marketSentimentCompositeComposition', 1);
-                    }}
-                  >
-                    {t('marketSentiment.cta.composition')}
-                  </button>
-                  <button
-                    className={`view-mode-button ${compositeStep === 'history' ? 'active' : ''}`}
-                    onClick={() => {
-                      setCompositeStep('history');
-                      requestAdDisplay('marketSentimentCompositeHistory', 1);
-                      // 免費用戶切換到歷史數據時顯示提醒
-                      if (isFreeUser) {
-                        showHistoricalDataToast();
-                      }
-                    }}
-                  >
-                    {t('marketSentiment.cta.history')}
-                  </button>
-                </div>
-
-                <div className="content-area">
-                  {compositeStep === 'history' && (
-                    <div className="history-view">
-                      <TimeRangeSelector
-                        selectedTimeRange={selectedTimeRange}
-                        handleTimeRangeChange={handleTimeRangeChange}
+                  {historicalData.length > 0 && sliderMinMax[1] > sliderMinMax[0] && (
+                    <div className="slider-container">
+                      <Slider
+                        range
+                        min={sliderMinMax[0]}
+                        max={sliderMinMax[1]}
+                        value={currentSliderRange[0] === 0 ? sliderMinMax : currentSliderRange}
+                        onChange={handleSliderChange}
+                        allowCross={false}
+                        trackStyle={[{ backgroundColor: '#C78F57' }]}
+                        handleStyle={[{ borderColor: '#C78F57', backgroundColor: 'white' }, { borderColor: '#C78F57', backgroundColor: 'white' }]}
+                        railStyle={{ backgroundColor: '#e9e9e9' }}
                       />
-                      <div className="indicator-chart">
-                        <Line data={chartData} options={chartOptions} />
+                      <div className="slider-labels">
+                        <span>{currentSliderRange[0] !== 0 ? new Date(currentSliderRange[0]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
+                        <span>{currentSliderRange[1] !== 0 ? new Date(currentSliderRange[1]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
                       </div>
-                      {historicalData.length > 0 && sliderMinMax[1] > sliderMinMax[0] && (
-                        <div className="slider-container">
-                          <Slider
-                            range
-                            min={sliderMinMax[0]}
-                            max={sliderMinMax[1]}
-                            value={currentSliderRange[0] === 0 ? sliderMinMax : currentSliderRange}
-                            onChange={handleSliderChange}
-                            allowCross={false}
-                            trackStyle={[{ backgroundColor: '#C78F57' }]}
-                            handleStyle={[{ borderColor: '#C78F57', backgroundColor: 'white' }, { borderColor: '#C78F57', backgroundColor: 'white' }]}
-                            railStyle={{ backgroundColor: '#e9e9e9' }}
-                          />
-                          <div className="slider-labels">
-                            <span>{currentSliderRange[0] !== 0 ? new Date(currentSliderRange[0]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
-                            <span>{currentSliderRange[1] !== 0 ? new Date(currentSliderRange[1]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   )}
 
-                  {compositeStep === 'composition' && (
-                    <div className="composition-view">
-                      {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
-                        <div className="composition-list">
-                          {Object.entries(indicatorsData).map(([key, ind], index) => {
-                            const sentimentKey = getSentiment(ind.percentileRank ? Math.round(ind.percentileRank) : null);
-                            const raw = sentimentKey.split('.').pop();
-                            return (
-                              <div
-                                key={key}
-                                className="composition-item"
-                                onClick={() => setSelectedIndicatorKey(key)}
-                                role="button"
-                                tabIndex={0}
-                              >
-                                <span className="composition-name">{t(INDICATOR_TRANSLATION_KEY_MAP[key] || key)}</span>
-                                <div className="composition-analysis-value">
-                                  <div className="composition-bar-wrapper">
-                                    <div
-                                      className={`composition-bar sentiment-${raw}`}
-                                      style={{ width: `${ind.percentileRank || 0}%` }}
-                                    ></div>
-                                  </div>
-                                  <span className="composition-score-text">{ind.percentileRank ? `${Math.round(ind.percentileRank)}%` : '-'}</span>
-                                </div>
-                                <EmotionTag
-                                  sentimentType={raw}
-                                  sentimentText={t(sentimentKey)}
-                                  percentileValue={null}
-                                  isLoading={loading}
-                                  onTagClick={() => setSelectedIndicatorKey(key)}
-                                  showConnectionLine={false}
-                                  animationDelay={index * 100}
-                                  className="composition-emotion-tag"
-                                />
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ) : (
-                        <RestrictedCompositionView 
-                          onUpgradeClick={() => handleRestrictedFeatureClick('composition')}
-                          indicatorCount={Object.keys(indicatorsData).length}
-                        />
-                      )}
-                    </div>
+                  {historicalLowPoints.length > 0 && (
+                    <aside className="history-workspace__summaryBlock" aria-label={currentLang === 'zh-TW' ? '近年極端恐懼時刻' : 'Recent extreme fear moments'}>
+                      <div className="history-workspace__summaryHeader">
+                        <span className="history-workspace__summaryEyebrow">
+                          {currentLang === 'zh-TW' ? '恐慌時刻' : 'Panic moments'}
+                        </span>
+                        <h3 className="history-workspace__summaryTitle">
+                          {currentLang === 'zh-TW' ? '近年極端恐懼時刻' : 'Recent extreme fear moments'}
+                        </h3>
+                      </div>
+                      <div className="history-workspace__summary">
+                        {historicalLowPoints.map((item) => (
+                          <div key={item.label} className="history-highlight-card">
+                            <span className="history-highlight-card__label">{item.label}</span>
+                            <span className="history-highlight-card__value">{item.value}</span>
+                            <span className="history-highlight-card__meta">{item.meta}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </aside>
                   )}
                 </div>
-              </div>
-            </>
-          ) : (
-            <div className="tab-content">
-              {activeTab !== 'composite' && indicatorsData[activeTab] && (
-                <IndicatorItem
-                  key={activeTab}
-                  indicatorKey={activeTab}
-                  indicator={indicatorsData[activeTab]}
-                  selectedTimeRange={selectedTimeRange}
-                  handleTimeRangeChange={handleTimeRangeChange}
-                  historicalSPYData={historicalData}
-                />
               )}
             </div>
-          )}
+          </section>
+
+          <MarketSentimentDescriptionSection
+            activeIndicator={compositeStep === 'indicators' && selectedIndicatorEntry ? selectedIndicatorEntry[0] : 'composite'}
+            currentView={compositeStep}
+            indicatorsData={indicatorsData}
+            className="learn-layout"
+          />
         </div>
-
-        {/* 新的底部說明區域 */}
-        <MarketSentimentDescriptionSection
-          activeIndicator={activeTab}
-          currentView={compositeStep}
-          indicatorsData={indicatorsData}
-          className="bottom-layout"
-        />
       </div>
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={hideToast}
-        />
-      )}
-      {selectedIndicatorKey && (() => {
-        const keys = Object.keys(indicatorsData);
-        if (keys.length === 0) return null;
-        const idx = keys.indexOf(selectedIndicatorKey);
-        if (idx === -1) return null;
-
-        const prevKeyForArrows = keys[(idx - 1 + keys.length) % keys.length];
-        const nextKeyForArrows = keys[(idx + 1) % keys.length];
-
-        return (
-          <div
-            className="composition-modal-overlay"
-            onClick={() => setSelectedIndicatorKeyInternal(null)}
-          >
-            <div className="composition-carousel">
-              <div
-                className="composition-modal prev"
-                onClick={e => { e.stopPropagation(); setSelectedIndicatorKey(prevKeyForArrows); }}
-              >
-                <IndicatorItem
-                  indicatorKey={prevKeyForArrows}
-                  indicator={indicatorsData[prevKeyForArrows]}
-                  selectedTimeRange={selectedTimeRange}
-                  handleTimeRangeChange={handleTimeRangeChange}
-                  historicalSPYData={historicalData}
-                  isInsideModal={true}
-                />
-              </div>
-              <div
-                className="carousel-arrow carousel-arrow--left"
-                onClick={e => { e.stopPropagation(); setSelectedIndicatorKey(prevKeyForArrows); }}
-              >◀</div>
-              <div
-                className="composition-modal current"
-                onClick={e => e.stopPropagation()}
-                ref={currentModalContentRef}
-              >
-                <button
-                  className="modal-close-btn"
-                  onClick={() => setSelectedIndicatorKeyInternal(null)}
-                >×</button>
-                <IndicatorItem
-                  indicatorKey={selectedIndicatorKey}
-                  indicator={indicatorsData[selectedIndicatorKey]}
-                  selectedTimeRange={selectedTimeRange}
-                  handleTimeRangeChange={handleTimeRangeChange}
-                  historicalSPYData={historicalData}
-                  isInsideModal={true}
-                />
-                <div className="modal-description">
-                  <MarketSentimentDescriptionSection
-                    activeIndicator={selectedIndicatorKey}
-                    currentView="latest"
-                    indicatorsData={indicatorsData}
-                    className="side-layout"
-                  />
-                </div>
-              </div>
-              <div
-                className="carousel-arrow carousel-arrow--right"
-                onClick={e => { e.stopPropagation(); setSelectedIndicatorKey(nextKeyForArrows); }}
-              >▶</div>
-              <div
-                className="composition-modal next"
-                onClick={e => { e.stopPropagation(); setSelectedIndicatorKey(nextKeyForArrows); }}
-              >
-                <IndicatorItem
-                  indicatorKey={nextKeyForArrows}
-                  indicator={indicatorsData[nextKeyForArrows]}
-                  selectedTimeRange={selectedTimeRange}
-                  handleTimeRangeChange={handleTimeRangeChange}
-                  historicalSPYData={historicalData}
-                  isInsideModal={true}
-                />
-              </div>
-            </div>
-          </div>
-        );
-      })()}
-
-
-
       {/* Feature Upgrade Dialog */}
       <FeatureUpgradeDialog
         isOpen={upgradeDialog.isOpen}

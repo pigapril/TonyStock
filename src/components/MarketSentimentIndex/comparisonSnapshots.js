@@ -2,6 +2,7 @@ import { getSentiment } from '../../utils/sentimentUtils';
 
 const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
 
 const buildComparisonSnapshot = (point, t) => {
   if (!point || point.compositeScore == null) {
@@ -29,7 +30,8 @@ export const getCompositeComparisonSnapshots = ({
     return {
       previousDay: null,
       previousWeek: null,
-      previousMonth: null
+      previousMonth: null,
+      previousQuarter: null
     };
   }
 
@@ -41,7 +43,8 @@ export const getCompositeComparisonSnapshots = ({
     return {
       previousDay: null,
       previousWeek: null,
-      previousMonth: null
+      previousMonth: null,
+      previousQuarter: null
     };
   }
 
@@ -61,9 +64,14 @@ export const getCompositeComparisonSnapshots = ({
     .reverse()
     .find((item) => item.date.getTime() <= referenceTimestamp - THIRTY_DAYS_MS);
 
+  const previousQuarterPoint = [...sortedHistoricalData]
+    .reverse()
+    .find((item) => item.date.getTime() <= referenceTimestamp - NINETY_DAYS_MS);
+
   return {
     previousDay: buildComparisonSnapshot(previousDayPoint, t),
     previousWeek: buildComparisonSnapshot(previousWeekPoint, t),
-    previousMonth: buildComparisonSnapshot(previousMonthPoint, t)
+    previousMonth: buildComparisonSnapshot(previousMonthPoint, t),
+    previousQuarter: buildComparisonSnapshot(previousQuarterPoint, t)
   };
 };

@@ -62,7 +62,8 @@ const MarketSentimentGauge = ({
   className = '',
   size = 'medium',
   showAnalysisResult = true,
-  showLastUpdate = true
+  showLastUpdate = true,
+  supplementaryContent = null
 }) => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
@@ -170,7 +171,7 @@ const MarketSentimentGauge = ({
       <section className={`msiArcGauge msiArcGauge--${sentimentInfo.rawSentiment}`}>
         <div className="msiArcGauge__frame">
           <div className="msiArcGauge__headline">
-            {currentLang === 'zh-TW' ? '當前股市情緒' : 'Current Market Sentiment'}
+            {currentLang === 'zh-TW' ? '當前美股市場情緒' : 'Current US market sentiment'}
           </div>
           <div className="msiArcGauge__canvasWrap">
             <svg
@@ -272,6 +273,12 @@ const MarketSentimentGauge = ({
         </div>
       </section>
 
+      {supplementaryContent && (
+        <div className="msiArcGauge__supplement">
+          {supplementaryContent}
+        </div>
+      )}
+
       {showAnalysisResult && (
         <div className="msiArcGauge__analysis">
           <div className="msiArcGauge__analysisItem">
@@ -301,7 +308,8 @@ MarketSentimentGauge.propTypes = {
   className: PropTypes.string,
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   showAnalysisResult: PropTypes.bool,
-  showLastUpdate: PropTypes.bool
+  showLastUpdate: PropTypes.bool,
+  supplementaryContent: PropTypes.node
 };
 
 MarketSentimentGauge.defaultProps = {
@@ -311,7 +319,8 @@ MarketSentimentGauge.defaultProps = {
   className: '',
   size: 'medium',
   showAnalysisResult: true,
-  showLastUpdate: true
+  showLastUpdate: true,
+  supplementaryContent: null
 };
 
 export default MarketSentimentGauge;

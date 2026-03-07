@@ -151,7 +151,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 25px;
   min-width: 132px;
   padding: 0 8px;
   pointer-events: none;
@@ -203,7 +203,7 @@
   background: rgba(255, 255, 255, 0.28);
   border: 1px solid rgba(255, 255, 255, 0.44);
   color: var(--msi-accent);
-  font-size: 0.78rem;
+  font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -258,6 +258,10 @@
   display: flex;
   justify-content: center;
   padding-top: 12px;
+}
+
+.msiArcGauge__supplement {
+  padding-top: 14px;
 }
 
 .msiArcGauge__analysisItem {
@@ -398,8 +402,8 @@
   }
 
   .msiArcGauge__coreBadge {
-    top: 75%;
-    gap: 13px;
+    top: 73%;
+    gap: 19px;
     min-width: 112px;
   }
 
@@ -410,7 +414,7 @@
   .msiArcGauge__coreStatus {
     min-height: 24px;
     padding: 0 10px;
-    font-size: 0.68rem;
+    font-size: 0.98rem;
   }
 
   .msiArcGauge__tooltip {

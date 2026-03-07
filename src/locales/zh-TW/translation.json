@@ -574,7 +574,8 @@
         "ariaLabel": "綜合指標歷史比較",
         "previousDay": "前一天",
         "previousWeek": "上一週",
-        "previousMonth": "30天前"
+        "previousMonth": "30天前",
+        "previousQuarter": "90天前"
       },
       "zoneDescription": {
         "extremefear": "極度恐懼區域 - 市場恐慌與超賣",

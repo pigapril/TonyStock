@@ -83,7 +83,72 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-top: 16px;
+  margin-top: 0;
+  justify-content: center;
+  align-self: stretch;
+  min-height: 0;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-explainer-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 22px;
+  flex: 1 1 auto;
+  min-height: 0;
+  box-sizing: border-box;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(246, 248, 252, 0.98) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  box-shadow:
+    0 20px 38px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-explainer-title {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: #101828;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-explainer-subtitle,
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-explainer-body {
+  margin: 0;
+  color: #667085;
+  line-height: 1.75;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-explainer-subtitle {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #475467;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-explainer-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-explainer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-explainer-sectionTitle {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-explainer-body {
+  font-size: 0.88rem;
 }
 
 .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-strip {
@@ -115,9 +180,9 @@
 
 .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-card {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
   padding: 14px 16px;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.78);
@@ -126,10 +191,20 @@
 }
 
 .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-label {
+  flex: 0 0 auto;
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: #64748b;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-valueGroup {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  text-align: right;
 }
 
 .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-score {
@@ -179,6 +254,14 @@
 }
 
 @media (max-width: 768px) {
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-card--desktopOnly {
+    display: none;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-card {
+    gap: 20px;
+  }
+
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
     font-size: 0.64rem;
   }
@@ -206,6 +289,11 @@
   .market-sentiment-view .left-panel {
     min-height: 360px !important;
   }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-explainer-card {
+    padding: 16px 18px;
+    border-radius: 22px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -221,6 +309,16 @@
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-strip {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-valueGroup {
+    align-items: flex-start;
+    text-align: left;
   }
 }
 
@@ -606,13 +704,13 @@
     min-height: 380px;
     /* 桌面版本圖表更大的最小高度，增加視覺效果 */
   }
-  
+
   /* 桌面版本組成視圖和列表的最小高度 */
   .market-sentiment-view .composition-view {
     min-height: 450px;
     /* 與 content-area 一致 */
   }
-  
+
   .market-sentiment-view .composition-list {
     min-height: 380px;
     /* 與圖表高度一致 */
@@ -1386,7 +1484,8 @@
   /* No scrolling - show all items */
   flex: 1;
   /* Take available space */
-  min-height: 300px; /* 設定最小高度 */
+  min-height: 300px;
+  /* 設定最小高度 */
   box-sizing: border-box;
   /* Ensure padding doesn't add to max-height calculation issues */
 }
@@ -1690,7 +1789,8 @@
 /* 新增：組成視圖樣式 */
 .market-sentiment-view .composition-view {
   height: 100%;
-  min-height: 400px; /* 設定最小高度與 content-area 一致 */
+  min-height: 400px;
+  /* 設定最小高度與 content-area 一致 */
   overflow-y: visible;
   /* No scrolling - show all items */
   display: flex;
@@ -1702,7 +1802,7 @@
   .market-sentiment-view .content-layout-container {
     flex-direction: column;
     height: auto;
- 
+
   }
 
   .market-sentiment-view .left-panel {
@@ -1902,5 +2002,543 @@
   .composition-item {
     gap: 8px;
     padding: 8px 10px;
+  }
+}
+
+/* Ideal page layout */
+.market-sentiment-view .composite-page-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.market-sentiment-view .overview-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.market-sentiment-view .overview-hero .left-panel {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 28px;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 28%),
+    linear-gradient(180deg, rgba(250, 251, 255, 0.98) 0%, rgba(255, 255, 255, 1) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.07);
+  box-sizing: border-box;
+}
+
+.market-sentiment-view .overview-hero .gauge-sentiment-container {
+  gap: 0;
+}
+
+.market-sentiment-view .gauge-sentiment-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.market-sentiment-view .gauge-sentiment-layout .market-sentiment-gauge,
+.market-sentiment-view .gauge-sentiment-layout .panel-market-summary {
+  min-width: 0;
+}
+
+.market-sentiment-view .gauge-sentiment-layout .panel-market-summary {
+  margin-top: 0;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-strip {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-reference-block {
+    padding: 12px;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    justify-items: stretch;
+    align-content: start;
+    row-gap: 6px;
+    flex: 1 1 0;
+    min-width: 0;
+    width: 100%;
+    padding: 10px 6px;
+    box-sizing: border-box;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-label {
+    align-self: start;
+    justify-self: start;
+    font-size: 0.72rem;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-valueGroup {
+    align-self: start;
+    justify-self: center;
+    align-items: center;
+    text-align: center;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-score {
+    font-size: 1.1rem;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-sentiment {
+    font-size: 0.68rem;
+    line-height: 1.15;
+  }
+}
+
+.market-sentiment-view .market-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 28px;
+  border-radius: 32px;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.92) 0%, rgba(255, 255, 255, 1) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.06);
+}
+
+.market-sentiment-view .market-workspace__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.market-sentiment-view .market-workspace__intro {
+  max-width: 680px;
+}
+
+.market-sentiment-view .market-workspace__eyebrow,
+.market-sentiment-view .indicators-workspace__eyebrow,
+.market-sentiment-view .indicators-workspace__detailEyebrow {
+  display: inline-flex;
+  margin-bottom: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #98a2b3;
+}
+
+.market-sentiment-view .market-workspace__title,
+.market-sentiment-view .indicators-workspace__title,
+.market-sentiment-view .indicators-workspace__detailTitle {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.8rem);
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  color: #101828;
+}
+
+.market-sentiment-view .market-workspace__description,
+.market-sentiment-view .indicators-workspace__detailSummary {
+  margin: 12px 0 0;
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: #667085;
+}
+
+.market-sentiment-view .market-workspace__tabs {
+  display: inline-flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.market-sentiment-view .market-workspace__tab {
+  border: 0;
+  background: transparent;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #667085;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.market-sentiment-view .market-workspace__tab.active {
+  background: #ffffff;
+  color: #101828;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.market-sentiment-view .market-workspace__body {
+  min-height: 420px;
+}
+
+.market-sentiment-view .indicators-workspace {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.35fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.market-sentiment-view .indicators-workspace__list,
+.market-sentiment-view .indicators-workspace__detail,
+.market-sentiment-view .history-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.market-sentiment-view .indicators-workspace__listHeader,
+.market-sentiment-view .indicators-workspace__detailIntro {
+  padding: 4px 2px 0;
+}
+
+.market-sentiment-view .indicator-card-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.market-sentiment-view .indicator-summary-card {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.88);
+  padding: 18px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.04);
+}
+
+.market-sentiment-view .indicator-summary-card:hover,
+.market-sentiment-view .indicator-summary-card.is-selected {
+  transform: translateY(-1px);
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 20px 36px rgba(15, 23, 42, 0.08);
+}
+
+.market-sentiment-view .indicator-summary-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.market-sentiment-view .indicator-summary-card__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: calc(100% - 112px);
+}
+
+.market-sentiment-view .indicator-summary-card__name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #101828;
+  line-height: 1.35;
+}
+
+.market-sentiment-view .indicator-summary-card__summary {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #667085;
+}
+
+.market-sentiment-view .indicator-summary-card__scoreColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex: 0 0 96px;
+  min-width: 96px;
+}
+
+.market-sentiment-view .indicator-summary-card__score {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #101828;
+  flex-shrink: 0;
+  line-height: 1.1;
+}
+
+.market-sentiment-view .indicator-summary-card__meter {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  margin-top: 16px;
+  border-radius: 999px;
+  background: #eef2f6;
+  overflow: hidden;
+}
+
+.market-sentiment-view .indicator-summary-card__sparkline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  margin-top: 14px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  overflow: hidden;
+}
+
+.market-sentiment-view .indicator-summary-card__sparklineSvg {
+  width: 100%;
+  height: 52px;
+  display: block;
+}
+
+.market-sentiment-view .indicator-summary-card__sparklineTrack {
+  fill: none;
+  stroke: rgba(148, 163, 184, 0.2);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.market-sentiment-view .indicator-summary-card__sparklinePath {
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.market-sentiment-view .indicator-summary-card__sparklinePath.sentiment-extremeFear {
+  stroke: #0000FF;
+}
+
+.market-sentiment-view .indicator-summary-card__sparklinePath.sentiment-fear {
+  stroke: #5B9BD5;
+}
+
+.market-sentiment-view .indicator-summary-card__sparklinePath.sentiment-neutral {
+  stroke: #708090;
+}
+
+.market-sentiment-view .indicator-summary-card__sparklinePath.sentiment-greed {
+  stroke: #F0B8CE;
+}
+
+.market-sentiment-view .indicator-summary-card__sparklinePath.sentiment-extremeGreed {
+  stroke: #D24A93;
+}
+
+.market-sentiment-view .indicator-summary-card__sparklineEmpty {
+  font-size: 0.8rem;
+  color: #98a2b3;
+}
+
+.market-sentiment-view .indicator-summary-card__meterFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+}
+
+.market-sentiment-view .indicator-summary-card__meterFill.sentiment-extremeFear {
+  background: linear-gradient(90deg, rgba(0, 0, 255, 0.9) 0%, #0000FF 100%);
+}
+
+.market-sentiment-view .indicator-summary-card__meterFill.sentiment-fear {
+  background: linear-gradient(90deg, rgba(91, 155, 213, 0.9) 0%, #5B9BD5 100%);
+}
+
+.market-sentiment-view .indicator-summary-card__meterFill.sentiment-neutral {
+  background: linear-gradient(90deg, rgba(112, 128, 144, 0.9) 0%, #708090 100%);
+}
+
+.market-sentiment-view .indicator-summary-card__meterFill.sentiment-greed {
+  background: linear-gradient(90deg, rgba(240, 184, 206, 0.95) 0%, #F0B8CE 100%);
+}
+
+.market-sentiment-view .indicator-summary-card__meterFill.sentiment-extremeGreed {
+  background: linear-gradient(90deg, rgba(210, 74, 147, 0.9) 0%, #D24A93 100%);
+}
+
+.market-sentiment-view .indicator-summary-card__footer {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 14px;
+}
+
+.market-sentiment-view .indicator-summary-card__sentiment {
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.market-sentiment-view .indicator-summary-card__sentiment.sentiment-extremeFear {
+  color: #0000FF;
+}
+
+.market-sentiment-view .indicator-summary-card__sentiment.sentiment-fear {
+  color: #5B9BD5;
+}
+
+.market-sentiment-view .indicator-summary-card__sentiment.sentiment-neutral {
+  color: #708090;
+}
+
+.market-sentiment-view .indicator-summary-card__sentiment.sentiment-greed {
+  color: #F0B8CE;
+}
+
+.market-sentiment-view .indicator-summary-card__sentiment.sentiment-extremeGreed {
+  color: #D24A93;
+}
+
+.market-sentiment-view .indicators-workspace__detail .indicator-item {
+  margin-bottom: 0;
+  padding-bottom: 24px;
+  border-radius: 28px;
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.05);
+}
+
+.market-sentiment-view .history-workspace__summaryBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 4px;
+  padding: 18px 20px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.92) 0%, rgba(255, 255, 255, 0.82) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.market-sentiment-view .history-workspace__summaryHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.market-sentiment-view .history-workspace__summaryEyebrow {
+  display: inline-flex;
+  margin-bottom: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #98a2b3;
+}
+
+.market-sentiment-view .history-workspace__summaryTitle {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  color: #101828;
+}
+
+.market-sentiment-view .history-workspace__summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.market-sentiment-view .history-highlight-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 20px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.market-sentiment-view .history-highlight-card__label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #98a2b3;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.market-sentiment-view .history-highlight-card__value {
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: #101828;
+  line-height: 1;
+}
+
+.market-sentiment-view .history-highlight-card__meta {
+  font-size: 0.9rem;
+  color: #667085;
+}
+
+.market-sentiment-view .history-workspace__controls {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.market-sentiment-view .learn-layout {
+  margin-top: 0;
+}
+
+@media (max-width: 1023px) {
+
+  .market-sentiment-view .overview-hero .left-panel,
+  .market-sentiment-view .market-workspace {
+    padding: 24px;
+    border-radius: 28px;
+  }
+
+  .market-sentiment-view .gauge-sentiment-layout,
+  .market-sentiment-view .history-workspace__summary,
+  .market-sentiment-view .indicators-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .market-sentiment-view .market-workspace__header {
+    flex-direction: column;
+  }
+
+  .market-sentiment-view .indicator-card-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .market-sentiment-view .overview-hero .left-panel,
+  .market-sentiment-view .market-workspace {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .market-sentiment-view .market-workspace__tabs {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .market-sentiment-view .market-workspace__tab {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .market-sentiment-view .indicator-summary-card {
+    padding: 16px;
+    border-radius: 20px;
   }
 }
