@@ -84,19 +84,22 @@
   flex-direction: column;
   gap: 14px;
   margin-top: 0;
-  justify-content: center;
+  justify-content: stretch;
   align-self: stretch;
+  height: 100%;
   min-height: 0;
 }
 
 .market-sentiment-view .left-panel .gauge-sentiment-container .panel-explainer-card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 16px;
   padding: 20px 22px;
   flex: 1 1 auto;
+  height: 100%;
   min-height: 0;
+  overflow-y: auto;
   box-sizing: border-box;
   border-radius: 28px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(246, 248, 252, 0.98) 100%);
@@ -2040,7 +2043,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
   gap: 20px;
-  align-items: stretch;
+  align-items: start;
 }
 
 .market-sentiment-view .gauge-sentiment-layout .market-sentiment-gauge,
@@ -2048,9 +2051,15 @@
   min-width: 0;
 }
 
+.market-sentiment-view .gauge-sentiment-layout .gauge-panel-slot {
+  min-width: 0;
+  min-height: 0;
+  align-self: start;
+}
+
 .market-sentiment-view .gauge-sentiment-layout .panel-market-summary {
   margin-top: 0;
-  justify-content: center;
+  justify-content: stretch;
 }
 
 @media (min-width: 1024px) {

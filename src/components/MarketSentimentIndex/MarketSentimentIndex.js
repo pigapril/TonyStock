@@ -268,6 +268,8 @@ const MarketSentimentIndex = () => {
 
   const [compositeStep, setCompositeStep] = useState(isProUser ? 'indicators' : 'history');
   const [selectedIndicatorKey, setSelectedIndicatorKey] = useState(null);
+  const gaugePanelRef = useRef(null);
+  const [gaugePanelHeight, setGaugePanelHeight] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -839,6 +841,26 @@ const MarketSentimentIndex = () => {
     return t(INDICATOR_TRANSLATION_KEY_MAP[key] || key);
   }, [t]);
 
+  useEffect(() => {
+    const node = gaugePanelRef.current;
+    if (!node || typeof ResizeObserver === 'undefined') {
+      return undefined;
+    }
+
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) {
+        return;
+      }
+
+      setGaugePanelHeight(Math.round(entry.contentRect.height));
+    });
+
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, [sentimentData, isDataLoaded, comparisonSnapshots]);
+
   // 1. 檢查載入狀態
   if (loading) {
     return (
@@ -908,84 +930,89 @@ const MarketSentimentIndex = () => {
               <div className="gauge-sentiment-container">
                 {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
                   <div className="gauge-sentiment-layout">
-                    <MarketSentimentGauge
-                      sentimentData={sentimentData}
-                      isDataLoaded={isDataLoaded}
-                      initialRenderRef={initialRenderRef}
-                      showAnalysisResult={false}
-                      showLastUpdate={true}
-                      supplementaryContent={(comparisonSnapshots.previousDay || comparisonSnapshots.previousWeek || comparisonSnapshots.previousMonth || comparisonSnapshots.previousQuarter) ? (
-                        <div className="panel-reference-block" aria-label={t('marketSentiment.gauge.comparison.ariaLabel')}>
-                          <span className="panel-reference-label">
-                            {currentLang === 'zh-TW' ? '近期參考' : 'Recent Reference'}
-                          </span>
-                          <div className="panel-comparison-strip">
-                            {comparisonSnapshots.previousDay && (
-                              <div className="panel-comparison-card">
-                                <span className="panel-comparison-label">
-                                  {t('marketSentiment.gauge.comparison.previousDay')}
-                                </span>
-                                <div className="panel-comparison-valueGroup">
-                                  <span className="panel-comparison-score">
-                                    {comparisonSnapshots.previousDay.score}
+                    <div ref={gaugePanelRef} className="gauge-panel-slot">
+                      <MarketSentimentGauge
+                        sentimentData={sentimentData}
+                        isDataLoaded={isDataLoaded}
+                        initialRenderRef={initialRenderRef}
+                        showAnalysisResult={false}
+                        showLastUpdate={true}
+                        supplementaryContent={(comparisonSnapshots.previousDay || comparisonSnapshots.previousWeek || comparisonSnapshots.previousMonth || comparisonSnapshots.previousQuarter) ? (
+                          <div className="panel-reference-block" aria-label={t('marketSentiment.gauge.comparison.ariaLabel')}>
+                            <span className="panel-reference-label">
+                              {currentLang === 'zh-TW' ? '近期參考' : 'Recent Reference'}
+                            </span>
+                            <div className="panel-comparison-strip">
+                              {comparisonSnapshots.previousDay && (
+                                <div className="panel-comparison-card">
+                                  <span className="panel-comparison-label">
+                                    {t('marketSentiment.gauge.comparison.previousDay')}
                                   </span>
-                                  <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousDay.sentimentKey.split('.').pop()}`}>
-                                    {comparisonSnapshots.previousDay.sentimentLabel}
-                                  </span>
+                                  <div className="panel-comparison-valueGroup">
+                                    <span className="panel-comparison-score">
+                                      {comparisonSnapshots.previousDay.score}
+                                    </span>
+                                    <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousDay.sentimentKey.split('.').pop()}`}>
+                                      {comparisonSnapshots.previousDay.sentimentLabel}
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                            )}
-                            {comparisonSnapshots.previousWeek && (
-                              <div className="panel-comparison-card">
-                                <span className="panel-comparison-label">
-                                  {t('marketSentiment.gauge.comparison.previousWeek')}
-                                </span>
-                                <div className="panel-comparison-valueGroup">
-                                  <span className="panel-comparison-score">
-                                    {comparisonSnapshots.previousWeek.score}
+                              )}
+                              {comparisonSnapshots.previousWeek && (
+                                <div className="panel-comparison-card">
+                                  <span className="panel-comparison-label">
+                                    {t('marketSentiment.gauge.comparison.previousWeek')}
                                   </span>
-                                  <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousWeek.sentimentKey.split('.').pop()}`}>
-                                    {comparisonSnapshots.previousWeek.sentimentLabel}
-                                  </span>
+                                  <div className="panel-comparison-valueGroup">
+                                    <span className="panel-comparison-score">
+                                      {comparisonSnapshots.previousWeek.score}
+                                    </span>
+                                    <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousWeek.sentimentKey.split('.').pop()}`}>
+                                      {comparisonSnapshots.previousWeek.sentimentLabel}
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                            )}
-                            {comparisonSnapshots.previousMonth && (
-                              <div className="panel-comparison-card">
-                                <span className="panel-comparison-label">
-                                  {t('marketSentiment.gauge.comparison.previousMonth')}
-                                </span>
-                                <div className="panel-comparison-valueGroup">
-                                  <span className="panel-comparison-score">
-                                    {comparisonSnapshots.previousMonth.score}
+                              )}
+                              {comparisonSnapshots.previousMonth && (
+                                <div className="panel-comparison-card">
+                                  <span className="panel-comparison-label">
+                                    {t('marketSentiment.gauge.comparison.previousMonth')}
                                   </span>
-                                  <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousMonth.sentimentKey.split('.').pop()}`}>
-                                    {comparisonSnapshots.previousMonth.sentimentLabel}
-                                  </span>
+                                  <div className="panel-comparison-valueGroup">
+                                    <span className="panel-comparison-score">
+                                      {comparisonSnapshots.previousMonth.score}
+                                    </span>
+                                    <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousMonth.sentimentKey.split('.').pop()}`}>
+                                      {comparisonSnapshots.previousMonth.sentimentLabel}
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                            )}
-                            {comparisonSnapshots.previousQuarter && (
-                              <div className="panel-comparison-card panel-comparison-card--desktopOnly">
-                                <span className="panel-comparison-label">
-                                  {t('marketSentiment.gauge.comparison.previousQuarter')}
-                                </span>
-                                <div className="panel-comparison-valueGroup">
-                                  <span className="panel-comparison-score">
-                                    {comparisonSnapshots.previousQuarter.score}
+                              )}
+                              {comparisonSnapshots.previousQuarter && (
+                                <div className="panel-comparison-card panel-comparison-card--desktopOnly">
+                                  <span className="panel-comparison-label">
+                                    {t('marketSentiment.gauge.comparison.previousQuarter')}
                                   </span>
-                                  <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousQuarter.sentimentKey.split('.').pop()}`}>
-                                    {comparisonSnapshots.previousQuarter.sentimentLabel}
-                                  </span>
+                                  <div className="panel-comparison-valueGroup">
+                                    <span className="panel-comparison-score">
+                                      {comparisonSnapshots.previousQuarter.score}
+                                    </span>
+                                    <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousQuarter.sentimentKey.split('.').pop()}`}>
+                                      {comparisonSnapshots.previousQuarter.sentimentLabel}
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      ) : null}
-                    />
+                        ) : null}
+                      />
+                    </div>
 
-                    <div className="panel-market-summary">
+                    <div
+                      className="panel-market-summary"
+                      style={gaugePanelHeight ? { height: `${gaugePanelHeight}px`, maxHeight: `${gaugePanelHeight}px` } : undefined}
+                    >
                       <div className="panel-explainer-card">
                         <h3 className="panel-explainer-title">
                           {gaugeExplainerCopy.title}
