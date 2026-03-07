@@ -553,6 +553,12 @@
     "gauge": {
       "interactiveZones": "Interactive sentiment zones",
       "zone": "zone",
+      "comparison": {
+        "ariaLabel": "Composite indicator historical comparison",
+        "previousDay": "Previous Day",
+        "previousWeek": "Previous Week",
+        "previousMonth": "30 Days Ago"
+      },
       "zoneDescription": {
         "extremefear": "Extreme fear zone - market panic and overselling",
         "fear": "Fear zone - market uncertainty and caution",

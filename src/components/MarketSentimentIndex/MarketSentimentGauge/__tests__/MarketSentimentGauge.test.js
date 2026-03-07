@@ -4,29 +4,6 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../../../../i18n';
 import MarketSentimentGauge from '../MarketSentimentGauge';
 
-// Mock styled-components
-jest.mock('styled-components', () => ({
-  __esModule: true,
-  default: () => (props) => {
-    const mockReact = require('react');
-    return mockReact.createElement('div', {
-      'data-testid': 'styled-gauge-chart',
-      ...props
-    });
-  },
-}));
-
-// Mock react-gauge-chart
-jest.mock('react-gauge-chart', () => {
-  const mockReact = require('react');
-  return function MockGaugeChart(props) {
-    return mockReact.createElement('div', {
-      'data-testid': 'gauge-chart',
-      'data-percent': props.percent
-    });
-  };
-});
-
 const mockSentimentData = {
   totalScore: 75,
   compositeScoreLastUpdate: '2024-01-15T10:30:00Z'
@@ -52,11 +29,8 @@ describe('MarketSentimentGauge', () => {
       />
     );
 
-    // 檢查是否顯示分析結果
-    expect(screen.getByText(/當前市場情緒|Current Market Sentiment/)).toBeInTheDocument();
-    
     // 檢查是否顯示 gauge 圖表
-    expect(screen.getByTestId('gauge-chart')).toBeInTheDocument();
+    expect(screen.getByTestId('msi-arc-gauge-svg')).toBeInTheDocument();
     
     // 檢查是否顯示數值
     expect(screen.getByText('75')).toBeInTheDocument();
@@ -109,7 +83,7 @@ describe('MarketSentimentGauge', () => {
     );
 
     // 檢查分析結果是否被隱藏
-    expect(screen.queryByText(/當前市場情緒|Current Market Sentiment/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/情緒|Sentiment/)).not.toBeInTheDocument();
   });
 
   test('respects showLastUpdate prop', () => {
@@ -131,7 +105,7 @@ describe('MarketSentimentGauge', () => {
   test('applies correct size class', () => {
     const initialRenderRef = { current: false };
     
-    const { container } = renderWithI18n(
+    renderWithI18n(
       <MarketSentimentGauge
         sentimentData={mockSentimentData}
         isDataLoaded={true}
@@ -141,13 +115,13 @@ describe('MarketSentimentGauge', () => {
     );
 
     // 檢查是否應用了正確的尺寸類
-    expect(container.firstChild).toHaveClass('size-large');
+    expect(screen.getByTestId('msi-arc-gauge-root')).toHaveClass('size-large');
   });
 
   test('applies custom className', () => {
     const initialRenderRef = { current: false };
     
-    const { container } = renderWithI18n(
+    renderWithI18n(
       <MarketSentimentGauge
         sentimentData={mockSentimentData}
         isDataLoaded={true}
@@ -157,6 +131,6 @@ describe('MarketSentimentGauge', () => {
     );
 
     // 檢查是否應用了自定義類名
-    expect(container.firstChild).toHaveClass('custom-class');
+    expect(screen.getByTestId('msi-arc-gauge-root')).toHaveClass('custom-class');
   });
 });

@@ -25,6 +25,7 @@ import { Toast } from '../Watchlist/components/Toast';
 import { useDataLimitationToast } from './hooks/useDataLimitationToast';
 import { formatPrice } from '../../utils/priceUtils';
 import enhancedApiClient from '../../utils/enhancedApiClient';
+import { getCompositeComparisonSnapshots } from './comparisonSnapshots';
 
 // 引入必要的 Chart.js 元件和插件
 import {
@@ -722,6 +723,17 @@ const MarketSentimentIndex = () => {
     }); */
   };
 
+  const currentCompositeScore = sentimentData?.totalScore != null ? Math.round(sentimentData.totalScore) : null;
+
+  const comparisonSnapshots = useMemo(() => {
+    return getCompositeComparisonSnapshots({
+      currentScore: currentCompositeScore,
+      historicalData,
+      referenceDate: sentimentData?.compositeScoreLastUpdate,
+      t
+    });
+  }, [currentCompositeScore, historicalData, sentimentData?.compositeScoreLastUpdate, t]);
+
   // 1. 檢查載入狀態
   if (loading) {
     return (
@@ -765,12 +777,6 @@ const MarketSentimentIndex = () => {
     );
   }
 
-  // 計算綜合指數的情緒鍵和翻譯
-  // 只有在 sentimentData 確定存在後才執行這些計算
-  const compositeSentimentKey = getSentiment(sentimentData.totalScore ? Math.round(sentimentData.totalScore) : null);
-  const compositeSentiment = t(compositeSentimentKey);
-  const compositeRawSentiment = compositeSentimentKey.split('.').pop(); // 用於 CSS class
-
   return (
     <PageContainer
       title={t('marketSentiment.pageTitle')} // 更新：使用新的翻譯鍵
@@ -805,7 +811,6 @@ const MarketSentimentIndex = () => {
             <>
               {/* 左側面板 */}
               <div className="left-panel">
-
                 <div className="panel-header">
                   <h1 className="panel-title">
                     <span className="panel-title-brand">Sentiment Inside Out (SIO)</span>
@@ -813,9 +818,7 @@ const MarketSentimentIndex = () => {
                       {currentLang === 'zh-TW' ? '恐懼貪婪指標' : 'Fear & Greed Index'}
                     </span>
                   </h1>
-                  <div className="panel-subtitle-container">
-                    <p className="panel-subtitle">{t('marketSentiment.pageSubtitle')}</p>
-                  </div>
+                  <p className="panel-description">{t('marketSentiment.pageSubtitle')}</p>
                 </div>
 
                 <div className="gauge-sentiment-container">
@@ -826,24 +829,56 @@ const MarketSentimentIndex = () => {
                         isDataLoaded={isDataLoaded}
                         initialRenderRef={initialRenderRef}
                         showAnalysisResult={false}
-                        showLastUpdate={false}
+                        showLastUpdate={true}
                       />
 
-                      {/* Current Market Sentiment 和 Last Update Time */}
-                      <div className="panel-subtitle-container">
-                        <span className="panel-subtitle">
-                          {currentLang === 'zh-TW' ? '目前的股市情緒是：' : 'Current Market Sentiment:'}
-                        </span>
-                        <span className={`panel-sentiment-value sentiment-${sentimentData && sentimentData.totalScore != null ? getSentiment(Math.round(sentimentData.totalScore)).split('.').pop() : 'neutral'}`}>
-                          {sentimentData && sentimentData.totalScore != null ? t(getSentiment(Math.round(sentimentData.totalScore))) : t('sentiment.neutral')}
-                        </span>
-                        {/* Last Update Time - 在 Current Market Sentiment 下方 */}
-                        {sentimentData && sentimentData.compositeScoreLastUpdate && (
-                          <div className="panel-last-update-time">
-                            {t('marketSentiment.lastUpdateLabel')}: {' '}
-                            {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString(
-                              currentLang === 'zh-TW' ? 'zh-TW' : 'en-US'
+                      <div className="panel-market-summary">
+                        {(comparisonSnapshots.previousDay || comparisonSnapshots.previousWeek || comparisonSnapshots.previousMonth) && (
+                          <div className="panel-reference-block" aria-label={t('marketSentiment.gauge.comparison.ariaLabel')}>
+                            <span className="panel-reference-label">
+                              {currentLang === 'zh-TW' ? '近期參考' : 'Recent Reference'}
+                            </span>
+                            <div className="panel-comparison-strip">
+                            {comparisonSnapshots.previousDay && (
+                              <div className="panel-comparison-card">
+                                <span className="panel-comparison-label">
+                                  {t('marketSentiment.gauge.comparison.previousDay')}
+                                </span>
+                                <span className="panel-comparison-score">
+                                  {comparisonSnapshots.previousDay.score}
+                                </span>
+                                <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousDay.sentimentKey.split('.').pop()}`}>
+                                  {comparisonSnapshots.previousDay.sentimentLabel}
+                                </span>
+                              </div>
                             )}
+                            {comparisonSnapshots.previousWeek && (
+                              <div className="panel-comparison-card">
+                                <span className="panel-comparison-label">
+                                  {t('marketSentiment.gauge.comparison.previousWeek')}
+                                </span>
+                                <span className="panel-comparison-score">
+                                  {comparisonSnapshots.previousWeek.score}
+                                </span>
+                                <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousWeek.sentimentKey.split('.').pop()}`}>
+                                  {comparisonSnapshots.previousWeek.sentimentLabel}
+                                </span>
+                              </div>
+                            )}
+                            {comparisonSnapshots.previousMonth && (
+                              <div className="panel-comparison-card">
+                                <span className="panel-comparison-label">
+                                  {t('marketSentiment.gauge.comparison.previousMonth')}
+                                </span>
+                                <span className="panel-comparison-score">
+                                  {comparisonSnapshots.previousMonth.score}
+                                </span>
+                                <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousMonth.sentimentKey.split('.').pop()}`}>
+                                  {comparisonSnapshots.previousMonth.sentimentLabel}
+                                </span>
+                              </div>
+                            )}
+                            </div>
                           </div>
                         )}
                       </div>

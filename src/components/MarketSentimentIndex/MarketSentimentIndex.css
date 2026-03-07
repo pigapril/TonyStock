@@ -9,324 +9,316 @@
 .market-sentiment-view .left-panel .panel-header {
   text-align: center;
   margin-bottom: 24px;
-  padding: 0 16px;
+  padding: 0 12px;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 12px;
+}
+
+.market-sentiment-view .left-panel .panel-header::before {
+  content: '';
+  width: 52px;
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #60a5fa 0%, #a855f7 100%);
+  box-shadow: 0 8px 20px rgba(96, 165, 250, 0.18);
 }
 
 .market-sentiment-view .left-panel .panel-title {
   font-size: 1.75rem;
   font-weight: 600;
   color: #1d1d1f;
-  margin: 0 0 12px 0;
+  margin: 0;
   text-align: center;
   letter-spacing: -0.022em;
   line-height: 1.2;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
   display: flex;
   flex-direction: column;
   gap: 4px;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
 }
 
 .market-sentiment-view .left-panel .panel-title-brand {
-  display: block !important;
+  display: block;
   font-size: 1em;
   font-weight: 600;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  visibility: visible !important;
   white-space: nowrap;
-  margin-bottom: 2px;
 }
 
 .market-sentiment-view .left-panel .panel-title-index {
-  display: block !important;
+  display: block;
   font-size: 0.85em;
   font-weight: 500;
-  opacity: 0.8;
-  visibility: visible !important;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  opacity: 0.86;
+  background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  min-height: 1.2em;
   line-height: 1.3;
   white-space: nowrap;
   letter-spacing: -0.01em;
 }
 
-/* Header 內的 subtitle container */
-.market-sentiment-view .left-panel .panel-header .panel-subtitle-container {
+.market-sentiment-view .left-panel .panel-description {
+  max-width: 34rem;
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: #667085;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  text-align: center;
+}
+
+/* Gauge summary layout */
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-market-summary {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 0 0 8px 0;
-  padding: 0 8px;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
   width: 100%;
 }
 
-/* Gauge 內的 subtitle container - 包含 Current Market Sentiment 和 Last Update Time */
-.market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
-  position: absolute;
-  bottom: 3%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-  width: 90%;
-  z-index: 10;
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-reference-block {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  /* 移除卡片效果 */
-  background: none;
-  backdrop-filter: none;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-  border: none;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 26px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(246, 248, 252, 0.96) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  box-shadow:
+    0 20px 38px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
 }
 
-/* 響應式調整：不同螢幕尺寸下的定位 */
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-reference-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #475569;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #64748b;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-score {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-sentiment {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #475569;
+  line-height: 1.2;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-sentiment.sentiment-extremeFear {
+  color: #0000FF;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-sentiment.sentiment-fear {
+  color: #5B9BD5;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-sentiment.sentiment-neutral {
+  color: #708090;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-sentiment.sentiment-greed {
+  color: #F0B8CE;
+}
+
+.market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-sentiment.sentiment-extremeGreed {
+  color: #D24A93;
+}
+
+/* 響應式調整 */
 @media (max-width: 1023px) {
-  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
-    bottom: -1% !important;
-    width: 92%;
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
+    font-size: 0.68rem;
   }
 
-  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
-    font-size: 0.65rem;
-    margin-top: 4px;
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-card {
+    padding: 12px 14px;
   }
 }
 
 @media (max-width: 768px) {
-  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
-    bottom: -3% !important;
-    width: 94%;
-  }
-
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
-    font-size: 0.6rem;
-    margin-top: 3px;
+    font-size: 0.64rem;
   }
 
-  /* 為 768px 以下增加高度 */
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-strip {
+    gap: 8px;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-label {
+    font-size: 0.6rem;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-score {
+    font-size: 1.45rem;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-sentiment {
+    font-size: 0.74rem;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-reference-label {
+    font-size: 0.62rem;
+  }
+
   .market-sentiment-view .left-panel {
     min-height: 360px !important;
   }
 }
 
 @media (max-width: 480px) {
-  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
-    bottom: -2% !important;
-    width: 96%;
-  }
-
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
-    font-size: 0.55rem;
-    margin-top: 2px;
+    font-size: 0.6rem;
   }
 
-  /* 增加 left-panel 高度以容納下移的元素 */
-  .market-sentiment-view .left-panel {
-    min-height: 360px !important;
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-reference-block {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
   }
 }
 
 /* 額外的小螢幕調整 */
 @media (max-width: 390px) {
-  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-subtitle-container {
-    bottom: -1% !important;
-    width: 98%;
-  }
-
   .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
-    font-size: 0.5rem;
-    margin-top: 1px;
+    font-size: 0.56rem;
   }
 
-  /* 超小螢幕需要更多高度 */
-  .market-sentiment-view .left-panel {
-    min-height: 330px !important;
+  .market-sentiment-view .left-panel .gauge-sentiment-container .panel-comparison-card {
+    padding: 11px 12px;
   }
-}
-
-.market-sentiment-view .left-panel .panel-subtitle {
-  font-size: 0.875rem;
-  color: #86868b;
-  margin: 0;
-  font-weight: 400;
-  line-height: 1.4;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 }
 
 .market-sentiment-view .left-panel .panel-sentiment-value {
-  font-size: 0.875rem;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.98rem;
+  font-weight: 700;
   margin: 0;
   line-height: 1.4;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 }
 
-/* Last Update Time - 在 gauge 容器內，Current Market Sentiment 下方 */
 .market-sentiment-view .left-panel .gauge-sentiment-container .panel-last-update-time {
-  font-size: 0.7rem;
-  color: #86868b;
-  font-weight: 400;
+  font-size: 0.74rem;
+  color: #64748b;
+  font-weight: 500;
   line-height: 1.4;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  margin-top: 6px;
   text-align: center;
   width: 100%;
-  /* 移除外框和背景 */
   padding: 0;
-  border-radius: 0;
-  border: none;
-  background: none;
-  box-shadow: none;
-  white-space: nowrap;
-  z-index: 20;
 }
 
 /* 桌面版本優化 - 蘋果風格 */
 @media (min-width: 1024px) {
   .market-sentiment-view .left-panel .panel-header {
-    padding: 0 24px;
-    margin-bottom: 15px;
+    padding: 0 12px;
+    margin-bottom: 18px;
   }
 
   .market-sentiment-view .left-panel .panel-title {
     font-size: 2rem;
-    margin-bottom: 16px;
   }
-
-  .market-sentiment-view .left-panel .panel-title-brand {
-    font-size: 1em;
-    margin-bottom: 4px;
-  }
-
-  .market-sentiment-view .left-panel .panel-title-index {
-    font-size: 0.8em;
-  }
-
-  /* Header 內的 subtitle container */
-
-
-  .market-sentiment-view .left-panel .panel-subtitle,
-  .market-sentiment-view .left-panel .panel-sentiment-value {
-    font-size: 0.9rem;
-  }
-
-
 }
 
 @media (max-width: 1023px) {
   .market-sentiment-view .left-panel .panel-header {
-    margin-bottom: 20px;
-    padding: 0 20px;
+    margin-bottom: 18px;
+    padding: 0 8px;
   }
 
   .market-sentiment-view .left-panel .panel-title {
     font-size: 1.625rem;
-    margin-bottom: 10px;
   }
 
-  .market-sentiment-view .left-panel .panel-title-brand {
-    font-size: 1em;
-    display: block !important;
+  .market-sentiment-view .left-panel .panel-description {
+    font-size: 0.92rem;
   }
-
-  .market-sentiment-view .left-panel .panel-title-index {
-    font-size: 0.82em !important;
-    display: block !important;
-    visibility: visible !important;
-  }
-
-  /* Header 內的 subtitle container */
-
-
-  .market-sentiment-view .left-panel .panel-subtitle,
-  .market-sentiment-view .left-panel .panel-sentiment-value {
-    font-size: 0.8rem;
-  }
-
 
 }
 
 @media (max-width: 768px) {
   .market-sentiment-view .left-panel .panel-header {
     margin-bottom: 16px;
-    padding: 0 16px;
+    padding: 0 4px;
   }
 
   .market-sentiment-view .left-panel .panel-title {
     font-size: 1.5rem;
-    margin-bottom: 8px;
   }
 
-  .market-sentiment-view .left-panel .panel-title-brand {
-    font-size: 1em;
-    display: block !important;
+  .market-sentiment-view .left-panel .panel-description {
+    font-size: 0.88rem;
   }
-
-  .market-sentiment-view .left-panel .panel-title-index {
-    font-size: 0.8em !important;
-    display: block !important;
-    visibility: visible !important;
-  }
-
-  /* Header 內的 subtitle container */
-
-
-  .market-sentiment-view .left-panel .panel-subtitle,
-  .market-sentiment-view .left-panel .panel-sentiment-value {
-    font-size: 0.75rem;
-  }
-
 
 }
 
 @media (max-width: 480px) {
   .market-sentiment-view .left-panel .panel-header {
     margin-bottom: 12px;
-    padding: 0 12px;
+    padding: 0;
   }
 
   .market-sentiment-view .left-panel .panel-title {
     font-size: 1.375rem;
-    margin-bottom: 6px;
   }
 
-  .market-sentiment-view .left-panel .panel-title-brand {
-    font-size: 1em;
-    display: block !important;
+  .market-sentiment-view .left-panel .panel-description {
+    font-size: 0.84rem;
   }
-
-  .market-sentiment-view .left-panel .panel-title-index {
-    font-size: 0.75em !important;
-    display: block !important;
-    visibility: visible !important;
-  }
-
-  /* Header 內的 subtitle container */
-
-
-  .market-sentiment-view .left-panel .panel-subtitle,
-  .market-sentiment-view .left-panel .panel-sentiment-value {
-    font-size: 0.7rem;
-  }
-
 
 }
 
@@ -630,25 +622,28 @@
 /* 左側面板樣式 */
 .market-sentiment-view .left-panel {
   flex: 0 0 35%;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  background:
+    radial-gradient(circle at top, rgba(103, 126, 234, 0.08) 0%, rgba(255, 255, 255, 0) 42%),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 28px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.08);
+  padding: 24px;
   display: flex;
   flex-direction: column;
   min-height: 0;
   gap: 0;
   position: relative;
-  /* 為絕對定位的 last-update-time 提供定位上下文 */
 }
 
-/* 新增：創建一個包含 gauge 和 sentiment 的容器 */
 .market-sentiment-view .left-panel .gauge-sentiment-container {
   flex: 1;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 14px;
   min-height: 0;
   width: 100%;
-  /* 簡化佈局，讓 gauge 直接佔據空間，不使用 flex 以避免佈局衝突 */
 }
 
 /* 右側面板樣式 */
@@ -896,86 +891,44 @@
 
 /* 新增：左側面板標題中的情緒值特殊設計 */
 .market-sentiment-view .left-panel .panel-sentiment-value {
-  position: relative;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-transform: none;
+  letter-spacing: normal;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
   backdrop-filter: blur(10px);
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  animation: sentimentPulse 1.8s ease-in-out infinite;
-  transform-origin: center;
-}
-
-.market-sentiment-view .left-panel .panel-sentiment-value::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  border-radius: 22px;
-  z-index: -1;
-  transition: all 0.3s ease;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  animation: none;
 }
 
 .market-sentiment-view .left-panel .panel-sentiment-value.sentiment-extremeFear {
   color: #ffffff !important;
-  background: linear-gradient(135deg, #0000FF 0%, #4169E1 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.market-sentiment-view .left-panel .panel-sentiment-value.sentiment-extremeFear::before {
-  background: linear-gradient(135deg, #0000FF 0%, #1E90FF 100%);
 }
 
 .market-sentiment-view .left-panel .panel-sentiment-value.sentiment-fear {
   color: #ffffff !important;
-  background: linear-gradient(135deg, #5B9BD5 0%, #87CEEB 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-.market-sentiment-view .left-panel .panel-sentiment-value.sentiment-fear::before {
-  background: linear-gradient(135deg, #4682B4 0%, #5B9BD5 100%);
 }
 
 .market-sentiment-view .left-panel .panel-sentiment-value.sentiment-neutral {
   color: #ffffff !important;
-  background: linear-gradient(135deg, #708090 0%, #9CA0B0 100%);
+  background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-.market-sentiment-view .left-panel .panel-sentiment-value.sentiment-neutral::before {
-  background: linear-gradient(135deg, #696969 0%, #708090 100%);
 }
 
 .market-sentiment-view .left-panel .panel-sentiment-value.sentiment-greed {
   color: #ffffff !important;
-  background: linear-gradient(135deg, #F0B8CE 0%, #FFB6C1 100%);
+  background: linear-gradient(135deg, #ea580c 0%, #fb923c 100%);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-.market-sentiment-view .left-panel .panel-sentiment-value.sentiment-greed::before {
-  background: linear-gradient(135deg, #FF69B4 0%, #F0B8CE 100%);
 }
 
 .market-sentiment-view .left-panel .panel-sentiment-value.sentiment-extremeGreed {
   color: #ffffff !important;
-  background: linear-gradient(135deg, #D24A93 0%, #FF1493 100%);
+  background: linear-gradient(135deg, #be185d 0%, #ec4899 100%);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  animation: sentimentPulseIntense 1.5s ease-in-out infinite;
-}
-
-.market-sentiment-view .left-panel .panel-sentiment-value.sentiment-extremeGreed::before {
-  background: linear-gradient(135deg, #C71585 0%, #D24A93 100%);
-}
-
-.market-sentiment-view .left-panel .panel-sentiment-value.sentiment-extremeFear {
-  animation: sentimentPulseIntense 1.5s ease-in-out infinite;
+  box-shadow: 0 16px 32px rgba(190, 24, 93, 0.2);
 }
 
 /* 脈動動畫效果 - 更明顯的跳動 */
@@ -1035,29 +988,16 @@
 
 /* Hover 效果 */
 .market-sentiment-view .left-panel .panel-sentiment-value:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  animation-play-state: paused;
+  transform: translateY(-1px);
+  box-shadow: 0 18px 32px rgba(15, 23, 42, 0.12);
 }
 
 /* 極小螢幕調整 */
 @media (max-width: 480px) {
   .market-sentiment-view .left-panel .panel-sentiment-value {
-    padding: 5px 10px;
-    font-size: 0.8rem;
-    letter-spacing: 0.3px;
+    padding: 8px 12px;
+    font-size: 0.84rem;
     border-radius: 16px;
-  }
-
-  .market-sentiment-view .left-panel .panel-sentiment-value::before {
-    border-radius: 18px;
-  }
-
-  /* 在小螢幕上減少動畫效果以提升性能 */
-  @media (prefers-reduced-motion: reduce) {
-    .market-sentiment-view .left-panel .panel-sentiment-value {
-      animation: none;
-    }
   }
 }
 

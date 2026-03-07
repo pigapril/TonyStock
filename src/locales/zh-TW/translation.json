@@ -570,6 +570,12 @@
     "gauge": {
       "interactiveZones": "互動情緒區域",
       "zone": "區域",
+      "comparison": {
+        "ariaLabel": "綜合指標歷史比較",
+        "previousDay": "前一天",
+        "previousWeek": "上一週",
+        "previousMonth": "30天前"
+      },
       "zoneDescription": {
         "extremefear": "極度恐懼區域 - 市場恐慌與超賣",
         "fear": "恐懼區域 - 市場不確定性與謹慎",
