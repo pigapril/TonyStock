@@ -3,6 +3,7 @@
  * Wraps the existing apiClient with authentication guard and retry logic
  */
 
+import axios from 'axios';
 import apiClient from '../api/apiClient';
 import authGuard from './authGuard';
 
@@ -56,11 +57,13 @@ class EnhancedApiClient {
      * @private
      */
     async _makeRequest(method, url, data, config = {}) {
+        const shouldDeduplicate = this._shouldDeduplicate(config);
+
         // Create a unique key for request deduplication
         const requestKey = this._createRequestKey(method, url, data, config);
         
         // Check if the same request is already in progress
-        if (this.requestQueue.has(requestKey)) {
+        if (shouldDeduplicate && this.requestQueue.has(requestKey)) {
             console.log(`🔄 Deduplicating request: ${method.toUpperCase()} ${url}`);
             return await this.requestQueue.get(requestKey);
         }
@@ -69,14 +72,18 @@ class EnhancedApiClient {
         const requestPromise = this._executeRequest(method, url, data, config);
         
         // Add to queue
-        this.requestQueue.set(requestKey, requestPromise);
+        if (shouldDeduplicate) {
+            this.requestQueue.set(requestKey, requestPromise);
+        }
         
         try {
             const result = await requestPromise;
             return result;
         } finally {
             // Remove from queue when done
-            this.requestQueue.delete(requestKey);
+            if (shouldDeduplicate) {
+                this.requestQueue.delete(requestKey);
+            }
         }
     }
 
@@ -123,6 +130,11 @@ class EnhancedApiClient {
 
             } catch (error) {
                 const duration = Date.now() - startTime;
+                if (this._isCanceledRequest(error)) {
+                    console.info(`🛑 Request canceled: ${method.toUpperCase()} ${url} (${duration}ms)`);
+                    throw error;
+                }
+
                 console.error(`❌ Request failed: ${method.toUpperCase()} ${url} (${duration}ms)`, error);
                 
                 // Enhanced error context
@@ -141,6 +153,16 @@ class EnhancedApiClient {
             maxRetries: config.maxRetries || 3,
             retryDelay: config.retryDelay || 1000
         });
+    }
+
+    _shouldDeduplicate(config = {}) {
+        return !(config.signal || config.cancelToken);
+    }
+
+    _isCanceledRequest(error) {
+        return axios.isCancel(error)
+            || error?.code === 'ERR_CANCELED'
+            || error?.name === 'CanceledError';
     }
 
     /**

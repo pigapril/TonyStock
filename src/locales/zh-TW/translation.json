@@ -629,7 +629,24 @@
       "upgradeToast": "🔒 此功能需要 Pro 方案。升級即可獲得完整的市場情緒分析！",
       "upgradeDataToast": "📊 最新市場情緒數據需要 Pro 方案。立即升級獲得即時洞察！",
       "upgradeGaugeToast": "🎯 情緒儀表盤需要 Pro 方案。升級查看當前市場情緒指數！",
-      "upgradeCompositionToast": "🔍 完整指標組成分析需要 Pro 方案。升級獲得深度洞察！"
+      "upgradeCompositionToast": "🔍 完整指標組成分析需要 Pro 方案。升級獲得深度洞察！",
+      "bannerEyebrow": "免費版目前顯示歷史快照",
+      "bannerTitle": "免費版僅能查看截至 {{date}} 的市場情緒資料",
+      "bannerBody": "免費版本仍可完整瀏覽儀表盤、歷史走勢與指標組成，但最近兩個月的資料與最新變化需要升級 Pro 才能查看。",
+      "currentGaugeHeadline": "當前美股市場情緒",
+      "snapshotGaugeHeadline": "{{date}} 的美股市場情緒",
+      "upgradeForLatest": "升級查看最新資料",
+      "unlockLatestCta": "解鎖最新數據",
+      "historicalSnapshotLabel": "截至 {{date}} 的歷史比較",
+      "currentCardNote": "這裡顯示的是免費版可查看的最新歷史快照。升級後可直接追蹤現在的市場情緒與最近 60 天變化。",
+      "historyRangeNote": "免費版可切換所有區間，但圖表只顯示截至 {{date}} 的資料；右側最近兩個月區段需升級 Pro。",
+      "historyShortRangeNote": "這個短區間的大部分都落在最近兩個月。免費版僅顯示截至 {{date}} 的可用資料，其餘區段需升級 Pro。",
+      "overlayEyebrow": "最新資料區",
+      "overlayTitle": "最近兩個月需升級 Pro",
+      "overlayCompactTitle": "升級查看最新走勢",
+      "overlayBody": "免費版資料目前停在 {{date}}。升級後可看到現在的情緒位置與最新變化。",
+      "compositionEyebrow": "指標組成仍可查看",
+      "compositionBody": "下方指標卡與細節目前顯示的是截至 {{date}} 的市場快照。升級 Pro 可看到最新指標組成與最近走勢。"
     },
     "descriptions": {
       "composite": {
@@ -1339,6 +1356,15 @@
       "monthly": "月繳",
       "yearly": "年繳",
       "save": "省下"
+    },
+    "marketSentimentContext": {
+      "notification": "升級以解鎖最新市場情緒數據",
+      "eyebrow": "來自市場情緒頁面",
+      "title": "你目前看到的是延遲兩個月的市場情緒資料",
+      "body": "升級 Pro 後可查看最新恐懼貪婪指數、最近兩個月走勢，以及最新是哪一些指標正在推動市場情緒。",
+      "feature1": "最新市場情緒指數與情緒區間",
+      "feature2": "最近 60 天的走勢與轉折",
+      "feature3": "最新指標組成與變化來源"
     },
     "subscriptionPlans": {
       "title": "選擇適合您的方案",

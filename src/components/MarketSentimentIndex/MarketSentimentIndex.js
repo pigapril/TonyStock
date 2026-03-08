@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { handleApiError } from '../../utils/errorHandler';
 import { Analytics } from '../../utils/analytics';
 import { useAuth } from '../Auth/useAuth';
@@ -8,20 +9,15 @@ import 'chartjs-adapter-date-fns';
 
 import MarketSentimentDescriptionSection from './MarketSentimentDescriptionSection';
 import MarketSentimentGauge from './MarketSentimentGauge';
-
-import RestrictedMarketSentimentGauge from './RestrictedMarketSentimentGauge/RestrictedMarketSentimentGauge';
-import RestrictedCompositionView from './RestrictedCompositionView/RestrictedCompositionView';
 import DataRestrictionTutorial from './DataRestrictionTutorial/DataRestrictionTutorial';
 import { FeatureUpgradeDialog } from '../Common/Dialog/FeatureUpgradeDialog';
 import PageContainer from '../PageContainer/PageContainer';
 import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
-import { filterDataByTimeRange } from '../../utils/timeUtils';
 import { getSentiment } from '../../utils/sentimentUtils';
 import { useAdContext } from '../Common/InterstitialAdModal/AdContext';
 import { useTranslation } from 'react-i18next';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
 import { Toast } from '../Watchlist/components/Toast';
-import { useDataLimitationToast } from './hooks/useDataLimitationToast';
 import { formatPrice } from '../../utils/priceUtils';
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { getCompositeComparisonSnapshots } from './comparisonSnapshots';
@@ -156,6 +152,91 @@ const extremeFearPulsePlugin = {
 
 ChartJS.register(extremeFearPulsePlugin);
 
+const restrictedWindowMaskPlugin = {
+  id: 'restrictedWindowMask',
+  beforeEvent(chart, args) {
+    const options = chart?.options?.plugins?.restrictedWindowMask;
+    const event = args?.event;
+
+    if (!options?.enabled || !options.cutoffDate || !event) {
+      return undefined;
+    }
+
+    const xScale = chart.scales?.x;
+    const chartArea = chart.chartArea;
+
+    if (!xScale || !chartArea) {
+      return undefined;
+    }
+
+    const cutoffValue = options.cutoffDate instanceof Date
+      ? options.cutoffDate
+      : new Date(options.cutoffDate);
+    const cutoffPixel = xScale.getPixelForValue(cutoffValue);
+    const maskStart = Math.max(chartArea.left, Math.min(cutoffPixel, chartArea.right));
+    const isInsideMaskedArea = event.x >= maskStart && event.x <= chartArea.right
+      && event.y >= chartArea.top && event.y <= chartArea.bottom;
+
+    if (!isInsideMaskedArea) {
+      return undefined;
+    }
+
+    if (typeof chart.setActiveElements === 'function') {
+      chart.setActiveElements([]);
+    }
+
+    if (chart.tooltip && typeof chart.tooltip.setActiveElements === 'function') {
+      chart.tooltip.setActiveElements([], { x: event.x, y: event.y });
+    }
+
+    chart.draw();
+    return false;
+  },
+  afterDatasetsDraw(chart) {
+    const options = chart?.options?.plugins?.restrictedWindowMask;
+
+    if (!options?.enabled || !options.cutoffDate) {
+      return;
+    }
+
+    const xScale = chart.scales?.x;
+    const chartArea = chart.chartArea;
+
+    if (!xScale || !chartArea) {
+      return;
+    }
+
+    const cutoffValue = options.cutoffDate instanceof Date
+      ? options.cutoffDate
+      : new Date(options.cutoffDate);
+    const cutoffPixel = xScale.getPixelForValue(cutoffValue);
+    const maskStart = Math.max(chartArea.left, Math.min(cutoffPixel, chartArea.right));
+
+    if (maskStart >= chartArea.right) {
+      return;
+    }
+
+    const ctx = chart.ctx;
+
+    ctx.save();
+    ctx.fillStyle = options.fillColor || '#f8fafc';
+    ctx.fillRect(maskStart, chartArea.top, chartArea.right - maskStart, chartArea.bottom - chartArea.top);
+
+    ctx.beginPath();
+    ctx.moveTo(maskStart, chartArea.top);
+    ctx.lineTo(maskStart, chartArea.bottom);
+    ctx.strokeStyle = options.lineColor || 'rgba(37, 99, 235, 0.88)';
+    ctx.lineWidth = options.lineWidth || 1.5;
+    ctx.stroke();
+    ctx.restore();
+  }
+};
+
+ChartJS.register(restrictedWindowMaskPlugin);
+
+const SPARKLINE_WIDTH = 148;
+const SPARKLINE_HEIGHT = 52;
+const SPARKLINE_PADDING = 6;
 
 // 新增：獲取時間單位的函數
 function getTimeUnit(dates) {
@@ -172,16 +253,49 @@ function getTimeUnit(dates) {
   }
 }
 
-function buildSparklinePath(points, width = 148, height = 52, padding = 6) {
+function buildSparklinePath(
+  points,
+  {
+    width = SPARKLINE_WIDTH,
+    height = SPARKLINE_HEIGHT,
+    padding = SPARKLINE_PADDING,
+    domainStart = null,
+    domainEnd = null
+  } = {}
+) {
   if (!points || points.length === 0) {
     return '';
   }
 
-  const values = points.map((point) => point.percentileRank ?? point.value ?? 0);
+  const defaultStart = points[0]?.date instanceof Date ? points[0].date : new Date(points[0]?.date);
+  const defaultEnd = points[points.length - 1]?.date instanceof Date
+    ? points[points.length - 1].date
+    : new Date(points[points.length - 1]?.date);
+  const rangeStart = domainStart ? new Date(domainStart) : defaultStart;
+  const rangeEnd = domainEnd ? new Date(domainEnd) : defaultEnd;
+  const startTs = rangeStart.getTime();
+  const endTs = rangeEnd.getTime();
+  const timeRange = Math.max(1, endTs - startTs);
+  const visiblePoints = points.filter((point) => {
+    const pointDate = point.date instanceof Date ? point.date : new Date(point.date);
+    const pointTs = pointDate.getTime();
+    return pointTs >= startTs && pointTs <= endTs;
+  });
 
-  if (points.length === 1) {
+  if (visiblePoints.length === 0) {
+    return '';
+  }
+
+  const values = visiblePoints.map((point) => point.percentileRank ?? point.value ?? 0);
+
+  if (visiblePoints.length === 1) {
+    const pointDate = visiblePoints[0].date instanceof Date ? visiblePoints[0].date : new Date(visiblePoints[0].date);
+    const pointRatio = Math.min(1, Math.max(0, (pointDate.getTime() - startTs) / timeRange));
+    const x = padding + pointRatio * (width - padding * 2);
     const y = height / 2;
-    return `M ${padding} ${y} L ${width - padding} ${y}`;
+    const lineStart = Math.max(padding, x - 4);
+    const lineEnd = Math.min(width - padding, x + 4);
+    return `M ${lineStart.toFixed(2)} ${y.toFixed(2)} L ${lineEnd.toFixed(2)} ${y.toFixed(2)}`;
   }
 
   const min = Math.min(...values);
@@ -190,27 +304,22 @@ function buildSparklinePath(points, width = 148, height = 52, padding = 6) {
 
   if (range === 0) {
     const y = height / 2;
-    return points.map((_, index) => {
-      const x = padding + (index / (points.length - 1)) * (width - padding * 2);
+    return visiblePoints.map((point, index) => {
+      const pointDate = point.date instanceof Date ? point.date : new Date(point.date);
+      const pointRatio = Math.min(1, Math.max(0, (pointDate.getTime() - startTs) / timeRange));
+      const x = padding + pointRatio * (width - padding * 2);
       return `${index === 0 ? 'M' : 'L'} ${x.toFixed(2)} ${y.toFixed(2)}`;
     }).join(' ');
   }
 
-  return points.map((point, index) => {
+  return visiblePoints.map((point, index) => {
     const value = values[index];
-    const x = padding + (index / (points.length - 1)) * (width - padding * 2);
+    const pointDate = point.date instanceof Date ? point.date : new Date(point.date);
+    const pointRatio = Math.min(1, Math.max(0, (pointDate.getTime() - startTs) / timeRange));
+    const x = padding + pointRatio * (width - padding * 2);
     const y = height - padding - ((value - min) / range) * (height - padding * 2);
     return `${index === 0 ? 'M' : 'L'} ${x.toFixed(2)} ${y.toFixed(2)}`;
   }).join(' ');
-}
-
-function getHistoricLowLabel(date, currentLang) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-
-  return currentLang === 'zh-TW'
-    ? `${year}/${month} 恐慌低點`
-    : `${year}/${month} panic low`;
 }
 
 function groupHistoricLows(data) {
@@ -292,24 +401,64 @@ const getDefaultTimeRangeByViewport = () => {
   return '10Y';
 };
 
+const EARLIEST_HISTORY_DATE = new Date('2010-01-01');
+
+const getTimeRangeBounds = (timeRange, endDate = new Date()) => {
+  const rangeEnd = new Date(endDate);
+  const rangeStart = new Date(endDate);
+
+  switch (timeRange) {
+    case '1M':
+      rangeStart.setMonth(rangeEnd.getMonth() - 1);
+      break;
+    case '3M':
+      rangeStart.setMonth(rangeEnd.getMonth() - 3);
+      break;
+    case '6M':
+      rangeStart.setMonth(rangeEnd.getMonth() - 6);
+      break;
+    case '1Y':
+      rangeStart.setFullYear(rangeEnd.getFullYear() - 1);
+      break;
+    case '2Y':
+      rangeStart.setFullYear(rangeEnd.getFullYear() - 2);
+      break;
+    case '3Y':
+      rangeStart.setFullYear(rangeEnd.getFullYear() - 3);
+      break;
+    case '5Y':
+      rangeStart.setFullYear(rangeEnd.getFullYear() - 5);
+      break;
+    case '10Y':
+      rangeStart.setFullYear(rangeEnd.getFullYear() - 10);
+      break;
+    case '20Y':
+      rangeStart.setFullYear(rangeEnd.getFullYear() - 20);
+      break;
+    default:
+      return {
+        start: new Date(EARLIEST_HISTORY_DATE),
+        end: rangeEnd
+      };
+  }
+
+  return {
+    start: rangeStart < EARLIEST_HISTORY_DATE ? new Date(EARLIEST_HISTORY_DATE) : rangeStart,
+    end: rangeEnd
+  };
+};
+
 const MarketSentimentIndex = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const { showToast, toast, hideToast } = useToastManager();
   const { user, checkAuthStatus } = useAuth();
-
-  // 數據限制 Toast 提醒
-  const {
-    isFreeUser,
-    showHistoricalDataToast,
-    showUpgradeToast
-  } = useDataLimitationToast(showToast);
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [showTutorial, setShowTutorial] = useState(false);
   const [upgradeDialog, setUpgradeDialog] = useState({ isOpen: false, type: null, context: {} });
   const [selectedTimeRange, setSelectedTimeRange] = useState(() => getDefaultTimeRangeByViewport());
-  const selectedTimeRangeRef = useRef(getDefaultTimeRangeByViewport());
   const [indicatorsData, setIndicatorsData] = useState({});
   const [indicatorTrendData, setIndicatorTrendData] = useState({});
   const [historicalData, setHistoricalData] = useState([]);
@@ -323,6 +472,7 @@ const MarketSentimentIndex = () => {
   const userPlan = user?.plan || 'free';
   const effectiveUserPlan = isTemporaryFreeMode ? 'pro' : userPlan;
   const isProUser = effectiveUserPlan === 'pro';
+  const isRestrictedPreview = Boolean(sentimentData?.isRestricted);
 
   // 新增滑桿相關狀態
   const [sliderMinMax, setSliderMinMax] = useState([0, 0]); // [minTimestamp, maxTimestamp]
@@ -332,7 +482,11 @@ const MarketSentimentIndex = () => {
   const [selectedIndicatorKey, setSelectedIndicatorKey] = useState(null);
   const [isMobileIndicatorSheetOpen, setIsMobileIndicatorSheetOpen] = useState(false);
   const gaugePanelRef = useRef(null);
+  const historyChartRef = useRef(null);
+  const historyChartContainerRef = useRef(null);
+  const historyOverlayCardRef = useRef(null);
   const [gaugePanelHeight, setGaugePanelHeight] = useState(null);
+  const [historyOverlayPosition, setHistoryOverlayPosition] = useState({ top: '50%', left: '50%' });
   const [isMobileViewport, setIsMobileViewport] = useState(() => (
     typeof window !== 'undefined' ? window.innerWidth <= 768 : false
   ));
@@ -451,10 +605,6 @@ const MarketSentimentIndex = () => {
   }, [checkAuthStatus, isProUser, isTemporaryFreeMode, showToast, t]);
 
   useEffect(() => {
-    selectedTimeRangeRef.current = selectedTimeRange;
-  }, [selectedTimeRange]);
-
-  useEffect(() => {
     async function fetchHistoricalData() {
       try {
         const response = await enhancedApiClient.get('/api/composite-historical-data');
@@ -466,22 +616,6 @@ const MarketSentimentIndex = () => {
             spyClose: parseFloat(item.spyClose),
           }));
         setHistoricalData(formattedData);
-
-        if (formattedData.length > 0) {
-          // 設定最早可顯示的日期為 2010年1月1日
-          const earliestDate = new Date('2010-01-01');
-          const minTs = Math.max(formattedData[0].date.getTime(), earliestDate.getTime());
-          const maxTs = formattedData[formattedData.length - 1].date.getTime();
-          setSliderMinMax([minTs, maxTs]);
-          // 初始化 currentSliderRange
-          const initialRange = filterDataByTimeRange(formattedData, selectedTimeRangeRef.current);
-          if (initialRange.length > 0) {
-            setCurrentSliderRange([initialRange[0].date.getTime(), initialRange[initialRange.length - 1].date.getTime()]);
-          } else {
-            setCurrentSliderRange([minTs, maxTs]);
-          }
-        }
-
       } catch (error) {
         handleApiError(error, showToast, t);
       }
@@ -490,19 +624,44 @@ const MarketSentimentIndex = () => {
     fetchHistoricalData();
   }, [showToast, t]);
 
-  // 當 selectedTimeRange 或 historicalData 變動時，更新滑桿的範圍
-  useEffect(() => {
-    if (historicalData.length === 0) return;
-
-    const newFilteredRange = filterDataByTimeRange(historicalData, selectedTimeRange);
-    if (newFilteredRange.length > 0) {
-      setCurrentSliderRange([
-        newFilteredRange[0].date.getTime(),
-        newFilteredRange[newFilteredRange.length - 1].date.getTime()
-      ]);
-    } else if (sliderMinMax[0] !== 0 && sliderMinMax[1] !== 0) { // Fallback to full range if filter result is empty
-      setCurrentSliderRange(sliderMinMax);
+  const latestAvailableHistoryTimestamp = useMemo(() => {
+    if (historicalData.length === 0) {
+      return 0;
     }
+
+    return historicalData[historicalData.length - 1].date.getTime();
+  }, [historicalData]);
+
+  const latestHistoryDomainEnd = useMemo(() => {
+    if (historicalData.length === 0) {
+      return 0;
+    }
+
+    return isRestrictedPreview ? Date.now() : latestAvailableHistoryTimestamp;
+  }, [historicalData, isRestrictedPreview, latestAvailableHistoryTimestamp]);
+
+  useEffect(() => {
+    if (historicalData.length === 0 || latestHistoryDomainEnd === 0) {
+      return;
+    }
+
+    const minTs = Math.max(historicalData[0].date.getTime(), EARLIEST_HISTORY_DATE.getTime());
+    const maxTs = Math.max(latestHistoryDomainEnd, minTs);
+
+    setSliderMinMax([minTs, maxTs]);
+  }, [historicalData, latestHistoryDomainEnd]);
+
+  // 當 selectedTimeRange 或歷史可視範圍變動時，更新滑桿範圍
+  useEffect(() => {
+    if (historicalData.length === 0 || sliderMinMax[1] === 0) {
+      return;
+    }
+
+    const { start, end } = getTimeRangeBounds(selectedTimeRange, new Date(sliderMinMax[1]));
+    const startTs = Math.max(start.getTime(), sliderMinMax[0]);
+    const endTs = Math.min(end.getTime(), sliderMinMax[1]);
+
+    setCurrentSliderRange([startTs, endTs]);
   }, [selectedTimeRange, historicalData, sliderMinMax]);
 
   useEffect(() => {
@@ -520,7 +679,7 @@ const MarketSentimentIndex = () => {
   }, [indicatorsData, selectedIndicatorKey]);
 
   useEffect(() => {
-    const canLoadIndicatorTrends = isProUser || Boolean(sentimentData && !sentimentData.isRestricted);
+    const canLoadIndicatorTrends = Boolean(sentimentData);
 
     if (!canLoadIndicatorTrends) {
       setIndicatorTrendData({});
@@ -539,7 +698,7 @@ const MarketSentimentIndex = () => {
 
     async function fetchIndicatorTrendData() {
       try {
-        const results = await Promise.all(
+        const settledResults = await Promise.allSettled(
           indicatorKeys.map(async (key) => {
             const response = await enhancedApiClient.get('/api/indicator-history', {
               params: { indicator: key }
@@ -558,14 +717,24 @@ const MarketSentimentIndex = () => {
               return [key, []];
             }
 
-            const latestDate = normalized[normalized.length - 1].date;
-            const thresholdDate = new Date(latestDate);
-            thresholdDate.setMonth(thresholdDate.getMonth() - 3);
-            const last3Months = normalized.filter((item) => item.date >= thresholdDate);
-
-            return [key, last3Months];
+            return [key, normalized];
           })
         );
+
+        const results = settledResults.flatMap((result, index) => {
+          if (result.status === 'fulfilled') {
+            return [result.value];
+          }
+
+          const error = result.reason;
+          const isCanceled = error?.code === 'ERR_CANCELED' || error?.name === 'CanceledError';
+
+          if (!isCanceled) {
+            console.error(`Failed to fetch indicator trend data for ${indicatorKeys[index]}:`, error);
+          }
+
+          return [];
+        });
 
         if (!cancelled) {
           setIndicatorTrendData(Object.fromEntries(results));
@@ -602,6 +771,84 @@ const MarketSentimentIndex = () => {
     });
   }, [historicalData, currentSliderRange]);
 
+  const restrictionCutoffDate = useMemo(() => {
+    if (sentimentData?.restrictionCutoffDate) {
+      return new Date(sentimentData.restrictionCutoffDate);
+    }
+
+    if (isRestrictedPreview && latestAvailableHistoryTimestamp) {
+      return new Date(latestAvailableHistoryTimestamp);
+    }
+
+    return null;
+  }, [isRestrictedPreview, latestAvailableHistoryTimestamp, sentimentData?.restrictionCutoffDate]);
+
+  const indicatorSparklineWindow = useMemo(
+    () => getTimeRangeBounds('3M', isRestrictedPreview && restrictionCutoffDate ? restrictionCutoffDate : new Date()),
+    [isRestrictedPreview, restrictionCutoffDate]
+  );
+
+  const indicatorSparklineData = useMemo(() => {
+    const windowStartTs = indicatorSparklineWindow.start.getTime();
+    const windowEndTs = indicatorSparklineWindow.end.getTime();
+
+    return Object.fromEntries(
+      Object.entries(indicatorTrendData).map(([key, points]) => {
+        const visiblePoints = (points || []).filter((point) => {
+          const pointTs = point.date instanceof Date ? point.date.getTime() : new Date(point.date).getTime();
+
+          if (pointTs < windowStartTs || pointTs > windowEndTs) {
+            return false;
+          }
+
+          return true;
+        });
+
+        return [key, visiblePoints];
+      })
+    );
+  }, [indicatorSparklineWindow, indicatorTrendData]);
+
+  const formattedRestrictionCutoffDate = useMemo(() => {
+    if (!restrictionCutoffDate) {
+      return '';
+    }
+
+    return restrictionCutoffDate.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }, [currentLang, restrictionCutoffDate]);
+
+  const historyRestrictionOverlay = useMemo(() => {
+    if (!isRestrictedPreview || !restrictionCutoffDate || currentSliderRange[1] === 0) {
+      return null;
+    }
+
+    const [rangeStart, rangeEnd] = currentSliderRange;
+    const cutoffTs = restrictionCutoffDate.getTime();
+
+    if (cutoffTs >= rangeEnd) {
+      return null;
+    }
+
+    const totalRange = rangeEnd - rangeStart;
+    if (totalRange <= 0) {
+      return null;
+    }
+
+    const leftRatio = cutoffTs <= rangeStart ? 0 : (cutoffTs - rangeStart) / totalRange;
+    const hiddenRatio = Math.max(0, 1 - leftRatio);
+
+    return {
+      left: `${Math.max(0, leftRatio) * 100}%`,
+      width: `${hiddenRatio * 100}%`,
+      compact: hiddenRatio < 0.24,
+      fullyLocked: cutoffTs <= rangeStart
+    };
+  }, [currentSliderRange, isRestrictedPreview, restrictionCutoffDate]);
+
   const historicalLowPoints = useMemo(() => {
     if (historicalData.length === 0) {
       return [];
@@ -628,16 +875,24 @@ const MarketSentimentIndex = () => {
   }, [currentLang, historicalData]);
 
   // 獲取時間單位
-  const timeUnit = useMemo(() => getTimeUnit(filteredData.map(item => item.date)), [filteredData]);
+  const timeUnit = useMemo(() => {
+    if (filteredData.length < 2) {
+      return 'month';
+    }
+
+    return getTimeUnit(filteredData.map(item => item.date));
+  }, [filteredData]);
 
   // 構建圖表數據
   const chartData = useMemo(() => ({
-    labels: filteredData.map((item) => item.date),
     datasets: [
       {
         label: t('marketSentiment.chart.compositeIndexLabel'),
         yAxisID: 'left-axis',
-        data: filteredData.map((item) => item.compositeScore),
+        data: filteredData.map((item) => ({
+          x: item.date,
+          y: item.compositeScore
+        })),
         borderColor: '#9D00FF',
         backgroundColor: (context) => {
           const chart = context.chart;
@@ -665,7 +920,10 @@ const MarketSentimentIndex = () => {
       {
         label: t('marketSentiment.chart.spyPriceLabel'),
         yAxisID: 'right-axis',
-        data: filteredData.map((item) => item.spyClose),
+        data: filteredData.map((item) => ({
+          x: item.date,
+          y: item.spyClose
+        })),
         borderColor: 'rgb(66, 66, 66)',
         backgroundColor: (context) => {
           const chart = context.chart;
@@ -707,33 +965,36 @@ const MarketSentimentIndex = () => {
         pointHoverBackgroundColor: '#ffedd5',
         pointHoverBorderColor: '#ea580c',
         pointStyle: 'circle',
+        parsing: false,
       },
     ],
   }), [currentLang, filteredData, historicalLowPoints, t]);
 
 
 
-  const handleRestrictedFeatureClick = useCallback((feature) => {
+  const navigateToSubscriptionPlans = useCallback((feature, source) => {
+    const state = {
+      reason: 'market_sentiment_latest_data',
+      feature,
+      from: `/${i18n.language}/market-sentiment`,
+      message: t('subscription.marketSentimentContext.notification'),
+      context: {
+        cutoffDate: formattedRestrictionCutoffDate
+      },
+      source
+    };
+
+    navigate(`/${i18n.language}/subscription-plans`, { state });
+  }, [formattedRestrictionCutoffDate, i18n.language, navigate, t]);
+
+  const handleRestrictedFeatureClick = useCallback((feature, source = 'marketSentimentIndex') => {
     Analytics.marketSentiment.restrictedFeatureClicked({
       feature,
       userPlan: effectiveUserPlan
     });
 
-    // 顯示對應的 toast 提醒
-    showUpgradeToast(feature);
-
-    // 短暫延遲後顯示升級對話框
-    setTimeout(() => {
-      setUpgradeDialog({
-        isOpen: true,
-        type: 'marketSentimentAccess',
-        context: {
-          feature,
-          source: 'marketSentimentIndex'
-        }
-      });
-    }, 1500); // 1.5秒後顯示對話框，讓用戶先看到 toast
-  }, [effectiveUserPlan, showUpgradeToast]);
+    navigateToSubscriptionPlans(feature, source);
+  }, [effectiveUserPlan, navigateToSubscriptionPlans]);
 
   // Tutorial 處理函數
   const handleCloseTutorial = useCallback(() => {
@@ -746,8 +1007,8 @@ const MarketSentimentIndex = () => {
     Analytics.marketSentiment.upgradeClicked({
       source: 'marketSentimentTutorial'
     });
-    window.location.href = `/${i18n.language}/subscription-plans`;
-  }, [handleCloseTutorial, i18n.language]);
+    navigateToSubscriptionPlans('currentData', 'marketSentimentTutorial');
+  }, [handleCloseTutorial, navigateToSubscriptionPlans]);
 
   // 新的升級對話框處理函數
   const handleUpgradeDialogClose = useCallback(() => {
@@ -760,14 +1021,16 @@ const MarketSentimentIndex = () => {
       feature: upgradeDialog.context.feature
     });
     handleUpgradeDialogClose();
-    window.location.href = `/${i18n.language}/subscription-plans`;
-  }, [upgradeDialog.context, handleUpgradeDialogClose, i18n.language]);
+    navigateToSubscriptionPlans(upgradeDialog.context.feature || 'currentData', upgradeDialog.context.source || 'marketSentimentUpgradeDialog');
+  }, [handleUpgradeDialogClose, navigateToSubscriptionPlans, upgradeDialog.context]);
 
   // 修改圖表選項
   const chartOptions = useMemo(() => ({
     scales: {
       x: {
         type: 'time',
+        min: currentSliderRange[0] || undefined,
+        max: currentSliderRange[1] || undefined,
         time: {
           unit: timeUnit,
           tooltipFormat: 'yyyy-MM-dd',
@@ -813,6 +1076,13 @@ const MarketSentimentIndex = () => {
       },
     },
     plugins: {
+      restrictedWindowMask: {
+        enabled: Boolean(isRestrictedPreview && restrictionCutoffDate),
+        cutoffDate: restrictionCutoffDate,
+        fillColor: '#f8fafc',
+        lineColor: 'rgba(37, 99, 235, 0.88)',
+        lineWidth: 1.5
+      },
       legend: {
         labels: {
           usePointStyle: true,
@@ -876,7 +1146,7 @@ const MarketSentimentIndex = () => {
     },
     responsive: true,
     maintainAspectRatio: false,
-  }), [currentLang, timeUnit, t]);
+  }), [currentLang, currentSliderRange, isRestrictedPreview, restrictionCutoffDate, timeUnit, t]);
 
   // 在組件渲染完成後將 initialRenderRef 設為 false
   useEffect(() => {
@@ -885,13 +1155,9 @@ const MarketSentimentIndex = () => {
     }
   }, [isDataLoaded]);
 
-  // 免費用戶首次進入時顯示 tutorial 和數據限制提醒
+  // 免費用戶首次進入時顯示 tutorial
   useEffect(() => {
     if (!isProUser && isDataLoaded && heroView === 'history') {
-      // 立即顯示數據限制提醒
-      showHistoricalDataToast();
-
-      // 檢查是否需要顯示 tutorial
       const hasSeenTutorial = localStorage.getItem('marketSentiment_tutorialSeen');
       if (!hasSeenTutorial) {
         const timer = setTimeout(() => {
@@ -900,7 +1166,7 @@ const MarketSentimentIndex = () => {
         return () => clearTimeout(timer);
       }
     }
-  }, [isProUser, isDataLoaded, heroView, showHistoricalDataToast]);
+  }, [isProUser, isDataLoaded, heroView]);
 
 
 
@@ -1050,6 +1316,76 @@ const MarketSentimentIndex = () => {
     return () => observer.disconnect();
   }, [sentimentData, isDataLoaded, comparisonSnapshots]);
 
+  const updateHistoryOverlayPosition = useCallback(() => {
+    const chart = historyChartRef.current;
+    const chartArea = chart?.chartArea;
+    const xScale = chart?.scales?.x;
+    const overlayCard = historyOverlayCardRef.current;
+
+    if (!chart || !chartArea || !xScale || !restrictionCutoffDate) {
+      return;
+    }
+
+    const cutoffPixel = xScale.getPixelForValue(restrictionCutoffDate);
+    const maskStart = Math.max(chartArea.left, Math.min(cutoffPixel, chartArea.right));
+    const maskedWidth = Math.max(0, chartArea.right - maskStart);
+    const cardWidth = overlayCard?.offsetWidth || 220;
+    const cardHeight = overlayCard?.offsetHeight || 160;
+    const horizontalPadding = 12;
+    const verticalPadding = 12;
+
+    const preferredLeft = maskedWidth > 0
+      ? maskStart + maskedWidth / 2
+      : (chartArea.left + chartArea.right) / 2;
+    const preferredTop = (chartArea.top + chartArea.bottom) / 2;
+
+    const minLeft = chartArea.left + (cardWidth / 2) + horizontalPadding;
+    const maxLeft = chartArea.right - (cardWidth / 2) - horizontalPadding;
+    const minTop = chartArea.top + (cardHeight / 2) + verticalPadding;
+    const maxTop = chartArea.bottom - (cardHeight / 2) - verticalPadding;
+
+    const nextLeft = minLeft <= maxLeft
+      ? Math.min(Math.max(preferredLeft, minLeft), maxLeft)
+      : (chartArea.left + chartArea.right) / 2;
+    const nextTop = minTop <= maxTop
+      ? Math.min(Math.max(preferredTop, minTop), maxTop)
+      : (chartArea.top + chartArea.bottom) / 2;
+
+    setHistoryOverlayPosition((prev) => (
+      prev.top === nextTop && prev.left === nextLeft
+        ? prev
+        : { top: nextTop, left: nextLeft }
+    ));
+  }, [restrictionCutoffDate]);
+
+  useEffect(() => {
+    if (heroView !== 'history') {
+      return undefined;
+    }
+
+    let frameId = requestAnimationFrame(() => {
+      updateHistoryOverlayPosition();
+    });
+
+    const node = historyChartContainerRef.current;
+    let observer;
+
+    if (node && typeof ResizeObserver !== 'undefined') {
+      observer = new ResizeObserver(() => {
+        cancelAnimationFrame(frameId);
+        frameId = requestAnimationFrame(() => {
+          updateHistoryOverlayPosition();
+        });
+      });
+      observer.observe(node);
+    }
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      observer?.disconnect();
+    };
+  }, [chartData, chartOptions, currentSliderRange, heroView, historyRestrictionOverlay, updateHistoryOverlayPosition]);
+
   // 1. 檢查載入狀態
   if (loading) {
     return (
@@ -1138,9 +1474,28 @@ const MarketSentimentIndex = () => {
                 </button>
               </div>
 
+              {isRestrictedPreview && (
+                <div className="market-sentiment-delay-banner">
+                  <div className="market-sentiment-delay-banner__copy">
+                    <h2 className="market-sentiment-delay-banner__title">
+                      {t('marketSentiment.dataLimitation.bannerTitle', { date: formattedRestrictionCutoffDate })}
+                    </h2>
+                    <p className="market-sentiment-delay-banner__body">
+                      {t('marketSentiment.dataLimitation.bannerBody')}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="market-sentiment-delay-banner__button"
+                    onClick={() => handleRestrictedFeatureClick('currentData', 'marketSentimentDelayBanner')}
+                  >
+                    {t('marketSentiment.dataLimitation.upgradeForLatest')}
+                  </button>
+                </div>
+              )}
+
               <div className="gauge-sentiment-container">
                 {heroView === 'current' ? (
-                  isProUser || (sentimentData && !sentimentData.isRestricted) ? (
                   <div className="gauge-sentiment-layout">
                     <div ref={gaugePanelRef} className="gauge-panel-slot">
                       <MarketSentimentGauge
@@ -1149,10 +1504,15 @@ const MarketSentimentIndex = () => {
                         initialRenderRef={initialRenderRef}
                         showAnalysisResult={false}
                         showLastUpdate={true}
+                        headlineText={isRestrictedPreview
+                          ? t('marketSentiment.dataLimitation.snapshotGaugeHeadline', { date: formattedRestrictionCutoffDate })
+                          : t('marketSentiment.dataLimitation.currentGaugeHeadline')}
                         supplementaryContent={(comparisonSnapshots.previousDay || comparisonSnapshots.previousWeek || comparisonSnapshots.previousMonth || comparisonSnapshots.previousQuarter) ? (
                           <div className="panel-reference-block" aria-label={t('marketSentiment.gauge.comparison.ariaLabel')}>
                             <span className="panel-reference-label">
-                              {currentLang === 'zh-TW' ? '近期參考' : 'Recent Reference'}
+                              {isRestrictedPreview
+                                ? t('marketSentiment.dataLimitation.historicalSnapshotLabel', { date: formattedRestrictionCutoffDate })
+                                : (currentLang === 'zh-TW' ? '近期參考' : 'Recent Reference')}
                             </span>
                             <div className="panel-comparison-strip">
                               {comparisonSnapshots.previousDay && (
@@ -1216,6 +1576,20 @@ const MarketSentimentIndex = () => {
                                 </div>
                               )}
                             </div>
+                            {isRestrictedPreview && (
+                              <div className="panel-reference-cta">
+                                <p className="panel-reference-cta__text">
+                                  {t('marketSentiment.dataLimitation.currentCardNote')}
+                                </p>
+                                <button
+                                  type="button"
+                                  className="panel-reference-cta__button"
+                                  onClick={() => handleRestrictedFeatureClick('currentData', 'marketSentimentGaugeSupplement')}
+                                >
+                                  {t('marketSentiment.dataLimitation.unlockLatestCta')}
+                                </button>
+                              </div>
+                            )}
                           </div>
                         ) : null}
                       />
@@ -1260,11 +1634,6 @@ const MarketSentimentIndex = () => {
                       </div>
                     </div>
                   </div>
-                  ) : (
-                  <RestrictedMarketSentimentGauge
-                    onUpgradeClick={() => handleRestrictedFeatureClick('gauge')}
-                  />
-                  )
                 ) : (
                   <div className="hero-history-workspace">
                     <div className="history-workspace__controls hero-history-workspace__controls">
@@ -1272,10 +1641,46 @@ const MarketSentimentIndex = () => {
                         selectedTimeRange={selectedTimeRange}
                         handleTimeRangeChange={handleTimeRangeChange}
                       />
+                      {isRestrictedPreview && (
+                        <p className="history-workspace__restriction-note">
+                          {selectedTimeRange === '3M' || selectedTimeRange === '1M'
+                            ? t('marketSentiment.dataLimitation.historyShortRangeNote', { date: formattedRestrictionCutoffDate })
+                            : t('marketSentiment.dataLimitation.historyRangeNote', { date: formattedRestrictionCutoffDate })}
+                        </p>
+                      )}
                     </div>
 
-                    <div className="indicator-chart hero-history-workspace__chart">
-                      <Line data={chartData} options={chartOptions} />
+                    <div ref={historyChartContainerRef} className="indicator-chart hero-history-workspace__chart">
+                      <Line ref={historyChartRef} data={chartData} options={chartOptions} />
+                      {historyRestrictionOverlay && (
+                        <div
+                          className={`history-restriction-overlay${historyRestrictionOverlay.compact ? ' is-compact' : ''}${historyRestrictionOverlay.fullyLocked ? ' is-fully-locked' : ''}`}
+                          style={historyOverlayPosition}
+                        >
+                          <div ref={historyOverlayCardRef} className="history-restriction-overlay__card">
+                            <span className="history-restriction-overlay__eyebrow">
+                              {t('marketSentiment.dataLimitation.overlayEyebrow')}
+                            </span>
+                            <strong className="history-restriction-overlay__title">
+                              {historyRestrictionOverlay.compact
+                                ? t('marketSentiment.dataLimitation.overlayCompactTitle')
+                                : t('marketSentiment.dataLimitation.overlayTitle')}
+                            </strong>
+                            {!historyRestrictionOverlay.compact && (
+                              <p className="history-restriction-overlay__body">
+                                {t('marketSentiment.dataLimitation.overlayBody', { date: formattedRestrictionCutoffDate })}
+                              </p>
+                            )}
+                            <button
+                              type="button"
+                              className="history-restriction-overlay__button"
+                              onClick={() => handleRestrictedFeatureClick('currentData', 'marketSentimentHistoryOverlay')}
+                            >
+                              {t('marketSentiment.dataLimitation.unlockLatestCta')}
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {historicalData.length > 0 && sliderMinMax[1] > sliderMinMax[0] && (
@@ -1319,10 +1724,28 @@ const MarketSentimentIndex = () => {
               </div>
             </div>
 
-            <div className="market-workspace__body">
-              <div className="indicators-workspace">
-                {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
-                  <>
+              <div className="market-workspace__body">
+                <div className="indicators-workspace">
+                  {isRestrictedPreview && (
+                    <div className="market-workspace__restriction">
+                      <div className="market-workspace__restrictionCopy">
+                        <span className="market-workspace__restrictionEyebrow">
+                          {t('marketSentiment.dataLimitation.compositionEyebrow')}
+                        </span>
+                        <p className="market-workspace__restrictionText">
+                          {t('marketSentiment.dataLimitation.compositionBody', { date: formattedRestrictionCutoffDate })}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        className="market-workspace__restrictionButton"
+                        onClick={() => handleRestrictedFeatureClick('composition', 'marketSentimentCompositionBanner')}
+                      >
+                        {t('marketSentiment.dataLimitation.unlockLatestCta')}
+                      </button>
+                    </div>
+                  )}
+
                     <div className="indicators-workspace__list">
                       <div className="indicator-card-list">
                         {sortedIndicatorEntries.map(([key, ind]) => {
@@ -1355,19 +1778,22 @@ const MarketSentimentIndex = () => {
                                 </div>
                               </div>
                               <div className="indicator-summary-card__sparkline" aria-hidden="true">
-                                {indicatorTrendData[key]?.length > 1 ? (
+                                {indicatorSparklineData[key]?.length > 0 ? (
                                   <svg
                                     className="indicator-summary-card__sparklineSvg"
-                                    viewBox="0 0 148 52"
+                                    viewBox={`0 0 ${SPARKLINE_WIDTH} ${SPARKLINE_HEIGHT}`}
                                     preserveAspectRatio="none"
                                   >
                                     <path
                                       className="indicator-summary-card__sparklineTrack"
-                                      d="M 6 26 L 142 26"
+                                      d={`M ${SPARKLINE_PADDING} ${SPARKLINE_HEIGHT / 2} L ${SPARKLINE_WIDTH - SPARKLINE_PADDING} ${SPARKLINE_HEIGHT / 2}`}
                                     />
                                     <path
                                       className={`indicator-summary-card__sparklinePath sentiment-${tone}`}
-                                      d={buildSparklinePath(indicatorTrendData[key])}
+                                      d={buildSparklinePath(indicatorSparklineData[key], {
+                                        domainStart: indicatorSparklineWindow.start,
+                                        domainEnd: indicatorSparklineWindow.end
+                                      })}
                                     />
                                   </svg>
                                 ) : (
@@ -1400,19 +1826,14 @@ const MarketSentimentIndex = () => {
                             selectedTimeRange={selectedTimeRange}
                             handleTimeRangeChange={handleTimeRangeChange}
                             historicalSPYData={historicalData}
+                            isRestrictedPreview={isRestrictedPreview}
+                            restrictionCutoffDate={sentimentData?.restrictionCutoffDate}
                           />
                         </>
                       )}
                     </div>
-                  </>
-                ) : (
-                  <RestrictedCompositionView
-                    onUpgradeClick={() => handleRestrictedFeatureClick('composition')}
-                    indicatorCount={Object.keys(indicatorsData).length}
-                  />
-                )}
+                </div>
               </div>
-            </div>
           </section>
 
           {isMobileViewport && isMobileIndicatorSheetOpen && selectedIndicatorEntry && (
@@ -1466,6 +1887,8 @@ const MarketSentimentIndex = () => {
                     selectedTimeRange={selectedTimeRange}
                     handleTimeRangeChange={handleTimeRangeChange}
                     historicalSPYData={historicalData}
+                    isRestrictedPreview={isRestrictedPreview}
+                    restrictionCutoffDate={sentimentData?.restrictionCutoffDate}
                   />
                 </div>
               </div>

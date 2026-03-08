@@ -82,6 +82,20 @@ export const SubscriptionPlansPage = () => {
         userId: user?.id
       });
     }
+
+    if (location.state?.reason === 'market_sentiment_latest_data') {
+      setUpgradeNotification({
+        message: location.state.message || t('subscription.marketSentimentContext.notification'),
+        from: location.state.from
+      });
+
+      Analytics.track('upgrade_notification_shown', {
+        reason: 'market_sentiment_latest_data',
+        from: location.state.from,
+        feature: location.state?.feature || 'currentData',
+        userId: user?.id
+      });
+    }
   }, [user, userPlan, location.state, t]);
 
   // 處理免費試用對話框

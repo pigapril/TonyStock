@@ -612,7 +612,24 @@
       "upgradeToast": "🔒 This feature requires Pro plan. Upgrade for complete market sentiment analysis!",
       "upgradeDataToast": "📊 Latest market sentiment data requires Pro plan. Upgrade now for real-time insights!",
       "upgradeGaugeToast": "🎯 Sentiment gauge requires Pro plan. Upgrade to view current market sentiment index!",
-      "upgradeCompositionToast": "🔍 Complete indicator composition analysis requires Pro plan. Upgrade for deep insights!"
+      "upgradeCompositionToast": "🔍 Complete indicator composition analysis requires Pro plan. Upgrade for deep insights!",
+      "bannerEyebrow": "Free plan is showing a historical snapshot",
+      "bannerTitle": "Free plan can only view market sentiment data through {{date}}",
+      "bannerBody": "The free plan still lets you explore the gauge, history, and indicator composition, but the most recent two months of data and the latest changes require a Pro upgrade.",
+      "currentGaugeHeadline": "Current US market sentiment",
+      "snapshotGaugeHeadline": "US market sentiment on {{date}}",
+      "upgradeForLatest": "Upgrade for latest data",
+      "unlockLatestCta": "Unlock latest data",
+      "historicalSnapshotLabel": "Historical comparison through {{date}}",
+      "currentCardNote": "This card shows the latest historical snapshot available on the free plan. Upgrade to follow current sentiment and the latest 60-day moves.",
+      "historyRangeNote": "Free users can switch every range, but charts stop at {{date}}. The shaded area on the right covers the latest two months available on Pro.",
+      "historyShortRangeNote": "Most of this short range falls inside the latest two months. The free plan only shows data through {{date}}; the rest requires Pro.",
+      "overlayEyebrow": "Latest window",
+      "overlayTitle": "The latest 2 months require Pro",
+      "overlayCompactTitle": "Upgrade to view latest trend",
+      "overlayBody": "Free plan data currently stops at {{date}}. Upgrade to see today's sentiment and the latest changes.",
+      "compositionEyebrow": "Indicator composition remains visible",
+      "compositionBody": "The indicator cards below currently reflect the snapshot through {{date}}. Upgrade to Pro for the latest composition and recent trend changes."
     },
     "descriptions": {
       "composite": {
@@ -1333,6 +1350,15 @@
       "monthly": "Monthly",
       "yearly": "Yearly",
       "save": "Save"
+    },
+    "marketSentimentContext": {
+      "notification": "Upgrade to unlock the latest market sentiment data",
+      "eyebrow": "From Market Sentiment",
+      "title": "You're currently viewing market sentiment data delayed by two months",
+      "body": "Upgrade to Pro to view the latest Fear & Greed reading, the most recent two months of trend changes, and which indicators are driving sentiment right now.",
+      "feature1": "Latest market sentiment score and zone",
+      "feature2": "Recent 60-day trend and turning points",
+      "feature3": "Latest indicator composition and drivers"
     },
     "subscriptionPlans": {
       "title": "Choose the plan that's right for you",
