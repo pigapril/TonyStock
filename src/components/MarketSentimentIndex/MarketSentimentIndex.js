@@ -63,6 +63,99 @@ ChartJS.register(
   Legend
 );
 
+function hasExtremeFearMarkerDataset(chart) {
+  return chart?.data?.datasets?.some((dataset) => dataset?.pulseMarker);
+}
+
+function stopExtremeFearPulse(chart) {
+  if (chart?.$extremeFearPulseFrame) {
+    cancelAnimationFrame(chart.$extremeFearPulseFrame);
+    chart.$extremeFearPulseFrame = null;
+  }
+}
+
+function startExtremeFearPulse(chart) {
+  if (!chart || chart.$extremeFearPulseFrame || !hasExtremeFearMarkerDataset(chart)) {
+    return;
+  }
+
+  const tick = () => {
+    if (!chart?.ctx) {
+      stopExtremeFearPulse(chart);
+      return;
+    }
+
+    if (!document.hidden) {
+      chart.draw();
+    }
+
+    chart.$extremeFearPulseFrame = requestAnimationFrame(tick);
+  };
+
+  chart.$extremeFearPulseFrame = requestAnimationFrame(tick);
+}
+
+const extremeFearPulsePlugin = {
+  id: 'extremeFearPulse',
+  afterInit(chart) {
+    startExtremeFearPulse(chart);
+  },
+  afterUpdate(chart) {
+    if (hasExtremeFearMarkerDataset(chart)) {
+      startExtremeFearPulse(chart);
+    } else {
+      stopExtremeFearPulse(chart);
+    }
+  },
+  afterDatasetsDraw(chart) {
+    const markerDatasetIndex = chart.data.datasets.findIndex((dataset) => dataset?.pulseMarker);
+
+    if (markerDatasetIndex === -1) {
+      return;
+    }
+
+    const datasetMeta = chart.getDatasetMeta(markerDatasetIndex);
+    const points = datasetMeta?.data || [];
+
+    if (!points.length) {
+      return;
+    }
+
+    const ctx = chart.ctx;
+    const pulse = (Math.sin(performance.now() / 420) + 1) / 2;
+
+    ctx.save();
+
+    points.forEach((point) => {
+      if (!point || point.skip) {
+        return;
+      }
+
+      const { x, y } = point.getProps(['x', 'y'], true);
+      const outerRadius = 10 + pulse * 4;
+      const innerRadius = 6 + pulse * 2;
+
+      ctx.beginPath();
+      ctx.arc(x, y, outerRadius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(245, 158, 11, ${0.08 + pulse * 0.14})`;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(x, y, innerRadius, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(249, 115, 22, ${0.28 + pulse * 0.28})`;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    });
+
+    ctx.restore();
+  },
+  beforeDestroy(chart) {
+    stopExtremeFearPulse(chart);
+  }
+};
+
+ChartJS.register(extremeFearPulsePlugin);
+
 
 // 新增：獲取時間單位的函數
 function getTimeUnit(dates) {
@@ -495,6 +588,31 @@ const MarketSentimentIndex = () => {
     });
   }, [historicalData, currentSliderRange]);
 
+  const historicalLowPoints = useMemo(() => {
+    if (historicalData.length === 0) {
+      return [];
+    }
+
+    const extremeLows = historicalData.filter((item) => item.compositeScore <= 5);
+    const source = extremeLows.length > 0
+      ? extremeLows
+      : [...historicalData].sort((a, b) => a.compositeScore - b.compositeScore).slice(0, 12);
+
+    return groupHistoricLows(source)
+      .map((group) => group.reduce(
+        (lowest, item) => (item.compositeScore < lowest.compositeScore ? item : lowest),
+        group[0]
+      ))
+      .sort((a, b) => b.date - a.date)
+      .slice(0, 4)
+      .map((item) => ({
+        date: item.date,
+        label: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US', { year: 'numeric', month: 'short' }),
+        value: Math.round(item.compositeScore),
+        meta: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US')
+      }));
+  }, [currentLang, historicalData]);
+
   // 獲取時間單位
   const timeUnit = useMemo(() => getTimeUnit(filteredData.map(item => item.date)), [filteredData]);
 
@@ -552,8 +670,32 @@ const MarketSentimentIndex = () => {
         tension: 0.4, // 增加曲線的平滑度
         pointRadius: 0,
       },
+      {
+        label: currentLang === 'zh-TW' ? '過往極端恐懼低點' : 'Past extreme fear lows',
+        yAxisID: 'left-axis',
+        pulseMarker: true,
+        order: 10,
+        data: historicalLowPoints
+          .filter((item) => filteredData.some((entry) => entry.date.getTime() === item.date.getTime()))
+          .map((item) => ({
+            x: item.date,
+            y: item.value,
+            meta: item.meta
+          })),
+        showLine: false,
+        pointRadius: 6,
+        pointHoverRadius: 9,
+        pointHitRadius: 14,
+        pointBorderWidth: 3,
+        pointHoverBorderWidth: 4,
+        pointBackgroundColor: '#fff7ed',
+        pointBorderColor: '#f97316',
+        pointHoverBackgroundColor: '#ffedd5',
+        pointHoverBorderColor: '#ea580c',
+        pointStyle: 'circle',
+      },
     ],
-  }), [filteredData, t]);
+  }), [currentLang, filteredData, historicalLowPoints, t]);
 
 
 
@@ -657,6 +799,30 @@ const MarketSentimentIndex = () => {
       },
     },
     plugins: {
+      legend: {
+        labels: {
+          usePointStyle: true,
+          generateLabels: (chart) => {
+            const defaultLabels = ChartJS.defaults.plugins.legend.labels.generateLabels(chart);
+
+            return defaultLabels.map((label) => {
+              const dataset = chart.data.datasets?.[label.datasetIndex];
+
+              if (dataset?.pulseMarker) {
+                return {
+                  ...label,
+                  fillStyle: dataset.pointBackgroundColor,
+                  strokeStyle: dataset.pointBorderColor,
+                  lineWidth: dataset.pointBorderWidth,
+                  pointStyle: 'circle'
+                };
+              }
+
+              return label;
+            });
+          }
+        }
+      },
       tooltip: {
         mode: 'index',
         intersect: false,
@@ -665,6 +831,10 @@ const MarketSentimentIndex = () => {
             let label = tooltipItem.dataset.label || '';
             if (label) {
               label += ': ';
+            }
+            if (tooltipItem.dataset.label === (currentLang === 'zh-TW' ? '過往極端恐懼低點' : 'Past extreme fear lows')) {
+              const rawPoint = tooltipItem.raw || {};
+              return `${label}${rawPoint.meta || ''} (${formatPrice(tooltipItem.parsed.y)})`;
             }
             if (tooltipItem.parsed.y !== null) {
               label += formatPrice(tooltipItem.parsed.y);
@@ -692,7 +862,7 @@ const MarketSentimentIndex = () => {
     },
     responsive: true,
     maintainAspectRatio: false,
-  }), [timeUnit, t]);
+  }), [currentLang, timeUnit, t]);
 
   // 在組件渲染完成後將 initialRenderRef 設為 false
   useEffect(() => {
@@ -805,30 +975,6 @@ const MarketSentimentIndex = () => {
 
     return sortedIndicatorEntries.find(([key]) => key === selectedIndicatorKey) || sortedIndicatorEntries[0] || null;
   }, [selectedIndicatorKey, sortedIndicatorEntries]);
-
-  const historicalLowPoints = useMemo(() => {
-    if (historicalData.length === 0) {
-      return [];
-    }
-
-    const extremeLows = historicalData.filter((item) => item.compositeScore <= 5);
-    const source = extremeLows.length > 0
-      ? extremeLows
-      : [...historicalData].sort((a, b) => a.compositeScore - b.compositeScore).slice(0, 12);
-
-    return groupHistoricLows(source)
-      .map((group) => group.reduce(
-        (lowest, item) => (item.compositeScore < lowest.compositeScore ? item : lowest),
-        group[0]
-      ))
-      .sort((a, b) => b.date - a.date)
-      .slice(0, 4)
-      .map((item) => ({
-        label: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US', { year: 'numeric', month: 'short' }),
-        value: Math.round(item.compositeScore),
-        meta: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US')
-      }));
-  }, [currentLang, historicalData]);
 
   const getIndicatorWorkspaceSummary = useCallback((key) => {
     const copy = INDICATOR_WORKSPACE_COPY[key];
@@ -1123,23 +1269,6 @@ const MarketSentimentIndex = () => {
                 )}
               </div>
 
-              {historicalLowPoints.length > 0 && (
-                <aside className="history-workspace__summaryBlock hero-history-workspace__summaryBlock" aria-label={currentLang === 'zh-TW' ? '過往極端恐懼低點' : 'Past extreme fear lows'}>
-                  <div className="history-workspace__summaryHeader">
-                    <h3 className="history-workspace__summaryTitle">
-                      {currentLang === 'zh-TW' ? '過往極端恐懼低點' : 'Past extreme fear lows'}
-                    </h3>
-                  </div>
-                  <div className="history-workspace__summary">
-                    {historicalLowPoints.map((item) => (
-                      <div key={item.meta} className="history-highlight-card">
-                        <span className="history-highlight-card__label">{item.label}</span>
-                        <span className="history-highlight-card__value">{item.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </aside>
-              )}
             </div>
           </section>
 
@@ -1147,12 +1276,12 @@ const MarketSentimentIndex = () => {
             <div className="market-workspace__header">
               <div className="market-workspace__intro">
                 <h2 className="market-workspace__title">
-                  {currentLang === 'zh-TW' ? '情緒子指標拆解' : 'Indicator breakdown'}
+                  {currentLang === 'zh-TW' ? '哪些指標在推動情緒' : 'Which indicators are driving sentiment'}
                 </h2>
                 <p className="market-workspace__description">
                   {currentLang === 'zh-TW'
-                    ? '綜合分數看整體方向，這裡再拆開看是哪一個子指標正在把市場推向恐懼或貪婪。'
-                    : 'Use the composite index for the big picture, then break it down here to see which underlying signals are pushing sentiment toward fear or greed.'}
+                    ? 'SIO 恐懼貪婪指標由多個情緒子指標組成。你可以在這裡查看目前是哪些指標正在推動市場情緒，以及它們各自反映了什麼。'
+                    : 'The SIO Fear & Greed Index is built from multiple sentiment sub-indicators. Explore which signals are driving market sentiment right now and what each of them is reflecting.'}
                 </p>
               </div>
             </div>
@@ -1162,14 +1291,6 @@ const MarketSentimentIndex = () => {
                 {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
                   <>
                     <div className="indicators-workspace__list">
-                      <div className="indicators-workspace__listHeader">
-                        <div>
-                          <h3 className="indicators-workspace__title">
-                            {currentLang === 'zh-TW' ? '哪些指標在推動情緒' : 'Which indicators are driving sentiment'}
-                          </h3>
-                        </div>
-                      </div>
-
                       <div className="indicator-card-list">
                         {sortedIndicatorEntries.map(([key, ind]) => {
                           const sentimentKey = getSentiment(ind?.percentileRank ? Math.round(ind.percentileRank) : null);
