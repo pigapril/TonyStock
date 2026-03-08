@@ -99,7 +99,7 @@ function AppContent() {
   const { lang } = useParams();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { userPlan } = useSubscription();
+  const { userPlan, loading: subscriptionLoading } = useSubscription();
   const { openDialog } = useDialog();
   const { showToast, toast, hideToast } = useToastManager();
   
@@ -583,9 +583,11 @@ function AppContent() {
       <AuthDialog />
       <GlobalFeatureUpgradeDialog />
       {/* 條件式 AdSense 載入 */}
-      <ConditionalAdSense />
+      <ConditionalAdSense key={`adsense-${user?.id || 'guest'}-${userPlan?.type || 'pending'}`} />
       {/* 根據是否為首頁決定是否渲染 AdBanner */}
-      {!isHomePage && <AdBanner />}
+      {!isHomePage && !subscriptionLoading && userPlan && (
+        <AdBanner key={`banner-${user?.id || 'guest'}-${userPlan?.type || 'pending'}`} />
+      )}
 
       {/* Global Toast for API Client error handling */}
       {toast && (
