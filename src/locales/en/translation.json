@@ -614,6 +614,7 @@
       },
       "aaiiSpread": {
         "shortDescription": "The AAII Investor Sentiment Survey weekly asks members their outlook for the stock market over the next six months (bullish, bearish, neutral). The Bull-Bear Spread (bullish percentage minus bearish percentage) is a common measure of retail investor sentiment.",
+        "detailDescription": "This indicator looks directly at whether retail investors are leaning bullish or bearish. When everyday investors become overwhelmingly optimistic, it usually means a lot of good news has already been priced in. When bearish responses dominate, fear has often spread broadly through the market. It works as a sentiment gauge because retail positioning is one of the clearest expressions of crowd emotion, and extreme readings often show up near turning points.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -623,6 +624,7 @@
       },
       "cboeRatio": {
         "shortDescription": "The CBOE Put/Call Ratio is an important indicator of market speculation sentiment. It calculates the ratio of traded put option contracts to call option contracts.",
+        "detailDescription": "This indicator shows whether the market has recently been loading up on protective puts or aggressively buying calls. A higher put/call ratio usually means investors are hedging and worrying about downside, while a lower ratio suggests they are leaning into upside bets. It is useful for reading sentiment because options markets often reveal fear and greed earlier than cash markets, and the 5-day average smooths out one-day noise.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -632,6 +634,7 @@
       },
       "marketMomentum": {
         "shortDescription": "The Market Momentum indicator measures the S&P 500 index's position relative to its 125-day moving average (approximately the half-year line). It reflects the strength of the market's medium-term trend.",
+        "detailDescription": "This indicator uses price versus its long-term moving average to judge whether the market has run too far too fast in either direction. When price sits far above trend for a long stretch, chasing behavior is usually strong and the market may be overheating. When price is deeply below trend, pessimism is often already heavy. It works as a sentiment read because emotion eventually shows up in price extension: the more stretched momentum becomes, the more one-sided the crowd usually is.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -641,6 +644,7 @@
       },
       "vixMA50": {
         "shortDescription": "The VIX Index (Volatility Index), often referred to as the 'Fear Gauge,' measures the market's expectation of 30-day forward-looking volatility of the S&P 500 Index. Here, the 50-day moving average of the VIX is calculated to observe long-term trends in market sentiment.",
+        "detailDescription": "VIX is essentially a measure of how much investors are willing to pay for protection, which ties closely to fear. Here we use the 50-day average instead of one-day spikes, so the signal is better for medium-term sentiment pressure rather than short-lived headlines. When VIX MA50 rises, the market is staying tense, defensive, and concerned about broader risk. When it falls, panic is cooling and risk appetite is beginning to recover.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -650,6 +654,7 @@
       },
       "safeHaven": {
         "shortDescription": "The Safe Haven Demand indicator compares the difference between the total return of stocks (risk asset) and US Treasury bonds (safe-haven asset)over the past 20 trading days. It reflects the extent of fund flows into safe-haven assets.",
+        "detailDescription": "This indicator compares whether money has recently preferred equities or safe-haven assets like Treasuries. When safe havens clearly outperform, the market is usually pulling back from risk and leaning defensive. When equities outperform, investors are more willing to take risk and sentiment is more optimistic. It works because flows themselves reflect risk appetite: where money is moving often tells you whether the market is in offense or defense mode.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -659,6 +664,7 @@
       },
       "junkBond": {
         "shortDescription": "The yield spread between junk bonds (high-yield corporate bonds) and investment-grade corporate bonds reflects the market's attitude towards credit risk. Junk bonds are riskier and typically have higher yields.",
+        "detailDescription": "The junk bond spread shows whether investors are willing to hold lower-quality corporate debt. When spreads widen, investors are demanding more compensation for credit risk, which usually means fear is rising. When spreads tighten, investors are becoming more comfortable with risk and sentiment is often leaning toward greed. It works as a sentiment indicator because credit markets reflect willingness to take risk very directly, not just price direction.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -668,6 +674,7 @@
       },
       "cotIndex": {
         "shortDescription": "The COT Index (Commitments of Traders Index), based on the weekly report from the CFTC, measures the net position (longs minus shorts) of large speculators (often considered more informed traders) in the S&P 500 futures market relative to historical levels.",
+        "detailDescription": "This indicator looks at whether speculative futures positions are tilted long or short, which effectively shows where leveraged money is standing. When speculators become heavily long, the market consensus may already be very optimistic. When positioning turns heavily short, pessimism is building. It works as a sentiment gauge because large speculative players are not just expressing opinions, they are backing them with positions, and crowded positioning often signals crowded trades.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -677,6 +684,7 @@
       },
       "naaimIndex": {
         "shortDescription": "The NAAIM Exposure Index (National Association of Active Investment Managers Exposure Index) surveys its members (active investment managers) weekly on their current equity market exposure level (0% = no stocks, 100% = fully invested, >100% = leveraged).",
+        "detailDescription": "This indicator shows how much equity exposure active investment managers are actually carrying. When exposure is very high, professional investors are broadly confident and optimism is already widespread. When exposure falls sharply, professional money is pulling risk back. It works as a sentiment measure because real portfolio exposure is more revealing than commentary: whether managers are willing to put actual capital to work tells you a lot about market confidence.",
         "sections": [
           {
             "title": "Interpretation Method",

@@ -266,7 +266,7 @@ const MarketSentimentIndex = () => {
   const [sliderMinMax, setSliderMinMax] = useState([0, 0]); // [minTimestamp, maxTimestamp]
   const [currentSliderRange, setCurrentSliderRange] = useState([0, 0]); // [startTimestamp, endTimestamp]
 
-  const [compositeStep, setCompositeStep] = useState(isProUser ? 'indicators' : 'history');
+  const [heroView, setHeroView] = useState('current');
   const [selectedIndicatorKey, setSelectedIndicatorKey] = useState(null);
   const gaugePanelRef = useRef(null);
   const [gaugePanelHeight, setGaugePanelHeight] = useState(null);
@@ -703,7 +703,7 @@ const MarketSentimentIndex = () => {
 
   // 免費用戶首次進入時顯示 tutorial 和數據限制提醒
   useEffect(() => {
-    if (!isProUser && isDataLoaded && compositeStep === 'history') {
+    if (!isProUser && isDataLoaded && heroView === 'history') {
       // 立即顯示數據限制提醒
       showHistoricalDataToast();
 
@@ -716,7 +716,7 @@ const MarketSentimentIndex = () => {
         return () => clearTimeout(timer);
       }
     }
-  }, [isProUser, isDataLoaded, compositeStep, showHistoricalDataToast]);
+  }, [isProUser, isDataLoaded, heroView, showHistoricalDataToast]);
 
 
 
@@ -771,6 +771,9 @@ const MarketSentimentIndex = () => {
 
   const currentCompositeScore = sentimentData?.totalScore != null ? Math.round(sentimentData.totalScore) : null;
   const gaugeExplainerCopy = currentLang === 'zh-TW' ? COMPOSITE_GAUGE_EXPLAINER.zh : COMPOSITE_GAUGE_EXPLAINER.en;
+  const summaryPanelStyle = gaugePanelHeight && gaugePanelHeight > 560
+    ? { height: `${gaugePanelHeight}px`, maxHeight: `${gaugePanelHeight}px` }
+    : undefined;
 
   const comparisonSnapshots = useMemo(() => {
     return getCompositeComparisonSnapshots({
@@ -821,7 +824,7 @@ const MarketSentimentIndex = () => {
       .sort((a, b) => b.date - a.date)
       .slice(0, 4)
       .map((item) => ({
-        label: getHistoricLowLabel(item.date, currentLang),
+        label: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US', { year: 'numeric', month: 'short' }),
         value: Math.round(item.compositeScore),
         meta: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US')
       }));
@@ -836,6 +839,17 @@ const MarketSentimentIndex = () => {
     }
     return currentLang === 'zh-TW' ? copy.zh : copy.en;
   }, [currentLang]);
+
+  const getIndicatorDetailSummary = useCallback((key) => {
+    const translationKey = INDICATOR_TRANSLATION_KEY_MAP[key];
+    if (!translationKey) {
+      return currentLang === 'zh-TW'
+        ? '這個指標提供另一個觀察市場情緒的角度，重點不是單看高低，而是看它是否已經反映出市場過度一致的樂觀或悲觀。'
+        : 'This indicator adds another way to read market sentiment. The point is not just the level itself, but whether it shows the crowd has become too one-sided in optimism or fear.';
+    }
+    const descriptionKey = translationKey.replace(/^indicators\./, '');
+    return t(`marketSentiment.descriptions.${descriptionKey}.detailDescription`);
+  }, [currentLang, t]);
 
   const getIndicatorLabel = useCallback((key) => {
     return t(INDICATOR_TRANSLATION_KEY_MAP[key] || key);
@@ -927,8 +941,31 @@ const MarketSentimentIndex = () => {
                 <p className="panel-description">{t('marketSentiment.pageSubtitle')}</p>
               </div>
 
+              <div className="hero-workspace__tabs" role="tablist" aria-label={currentLang === 'zh-TW' ? '綜合情緒視角切換' : 'Composite sentiment views'}>
+                <button
+                  className={`hero-workspace__tab ${heroView === 'current' ? 'active' : ''}`}
+                  onClick={() => setHeroView('current')}
+                  role="tab"
+                  aria-selected={heroView === 'current'}
+                >
+                  {currentLang === 'zh-TW' ? '當前情緒' : 'Current sentiment'}
+                </button>
+                <button
+                  className={`hero-workspace__tab ${heroView === 'history' ? 'active' : ''}`}
+                  onClick={() => {
+                    setHeroView('history');
+                    requestAdDisplay('marketSentimentHeroHistory', 1);
+                  }}
+                  role="tab"
+                  aria-selected={heroView === 'history'}
+                >
+                  {currentLang === 'zh-TW' ? '歷史趨勢' : 'History'}
+                </button>
+              </div>
+
               <div className="gauge-sentiment-container">
-                {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
+                {heroView === 'current' ? (
+                  isProUser || (sentimentData && !sentimentData.isRestricted) ? (
                   <div className="gauge-sentiment-layout">
                     <div ref={gaugePanelRef} className="gauge-panel-slot">
                       <MarketSentimentGauge
@@ -1011,7 +1048,7 @@ const MarketSentimentIndex = () => {
 
                     <div
                       className="panel-market-summary"
-                      style={gaugePanelHeight ? { height: `${gaugePanelHeight}px`, maxHeight: `${gaugePanelHeight}px` } : undefined}
+                      style={summaryPanelStyle}
                     >
                       <div className="panel-explainer-card">
                         <h3 className="panel-explainer-title">
@@ -1033,12 +1070,76 @@ const MarketSentimentIndex = () => {
                       </div>
                     </div>
                   </div>
-                ) : (
+                  ) : (
                   <RestrictedMarketSentimentGauge
                     onUpgradeClick={() => handleRestrictedFeatureClick('gauge')}
                   />
+                  )
+                ) : (
+                  <div className="hero-history-workspace">
+                    <div className="hero-history-workspace__intro">
+                      <h2 className="hero-history-workspace__title">
+                        {currentLang === 'zh-TW' ? 'SIO 恐懼貪婪指標歷史趨勢' : 'SIO Fear & Greed history'}
+                      </h2>
+                      <p className="hero-history-workspace__description">
+                        {currentLang === 'zh-TW'
+                          ? '把當前分數放回長期週期裡看，判斷現在更接近恐懼低點、過熱高點，還是中性區。'
+                          : 'Place today’s reading back into the long-term cycle to see whether sentiment is nearer to panic lows, overheated highs, or a neutral zone.'}
+                      </p>
+                    </div>
+
+                    <div className="history-workspace__controls hero-history-workspace__controls">
+                      <TimeRangeSelector
+                        selectedTimeRange={selectedTimeRange}
+                        handleTimeRangeChange={handleTimeRangeChange}
+                      />
+                    </div>
+
+                    <div className="indicator-chart hero-history-workspace__chart">
+                      <Line data={chartData} options={chartOptions} />
+                    </div>
+
+                    {historicalData.length > 0 && sliderMinMax[1] > sliderMinMax[0] && (
+                      <div className="slider-container hero-history-workspace__slider">
+                        <Slider
+                          range
+                          min={sliderMinMax[0]}
+                          max={sliderMinMax[1]}
+                          value={currentSliderRange[0] === 0 ? sliderMinMax : currentSliderRange}
+                          onChange={handleSliderChange}
+                          allowCross={false}
+                          trackStyle={[{ backgroundColor: '#C78F57' }]}
+                          handleStyle={[{ borderColor: '#C78F57', backgroundColor: 'white' }, { borderColor: '#C78F57', backgroundColor: 'white' }]}
+                          railStyle={{ backgroundColor: '#e9e9e9' }}
+                        />
+                        <div className="slider-labels">
+                          <span>{currentSliderRange[0] !== 0 ? new Date(currentSliderRange[0]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
+                          <span>{currentSliderRange[1] !== 0 ? new Date(currentSliderRange[1]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
+                        </div>
+                      </div>
+                    )}
+
+                  </div>
                 )}
               </div>
+
+              {historicalLowPoints.length > 0 && (
+                <aside className="history-workspace__summaryBlock hero-history-workspace__summaryBlock" aria-label={currentLang === 'zh-TW' ? '過往極端恐懼低點' : 'Past extreme fear lows'}>
+                  <div className="history-workspace__summaryHeader">
+                    <h3 className="history-workspace__summaryTitle">
+                      {currentLang === 'zh-TW' ? '過往極端恐懼低點' : 'Past extreme fear lows'}
+                    </h3>
+                  </div>
+                  <div className="history-workspace__summary">
+                    {historicalLowPoints.map((item) => (
+                      <div key={item.meta} className="history-highlight-card">
+                        <span className="history-highlight-card__label">{item.label}</span>
+                        <span className="history-highlight-card__value">{item.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </aside>
+              )}
             </div>
           </section>
 
@@ -1046,214 +1147,123 @@ const MarketSentimentIndex = () => {
             <div className="market-workspace__header">
               <div className="market-workspace__intro">
                 <h2 className="market-workspace__title">
-                  {currentLang === 'zh-TW' ? '指標拆解與歷史趨勢' : 'Indicators and history'}
+                  {currentLang === 'zh-TW' ? '情緒子指標拆解' : 'Indicator breakdown'}
                 </h2>
                 <p className="market-workspace__description">
                   {currentLang === 'zh-TW'
-                    ? '先看哪些指標正在推動當前情緒，再切換到歷史走勢檢查現在處在週期的哪個位置。'
-                    : 'Move from today’s indicator drivers to longer-term context without leaving the same workspace.'}
+                    ? '綜合分數看整體方向，這裡再拆開看是哪一個子指標正在把市場推向恐懼或貪婪。'
+                    : 'Use the composite index for the big picture, then break it down here to see which underlying signals are pushing sentiment toward fear or greed.'}
                 </p>
-              </div>
-
-              <div className="market-workspace__tabs" role="tablist" aria-label={currentLang === 'zh-TW' ? '市場工作區切換' : 'Market workspace tabs'}>
-                <button
-                  className={`market-workspace__tab ${compositeStep === 'indicators' ? 'active' : ''}`}
-                  onClick={() => {
-                    setCompositeStep('indicators');
-                    requestAdDisplay('marketSentimentIndicatorsWorkspace', 1);
-                  }}
-                  role="tab"
-                  aria-selected={compositeStep === 'indicators'}
-                >
-                  {currentLang === 'zh-TW' ? '指標' : 'Indicators'}
-                </button>
-                <button
-                  className={`market-workspace__tab ${compositeStep === 'history' ? 'active' : ''}`}
-                  onClick={() => {
-                    setCompositeStep('history');
-                    requestAdDisplay('marketSentimentHistoryWorkspace', 1);
-                    if (isFreeUser) {
-                      showHistoricalDataToast();
-                    }
-                  }}
-                  role="tab"
-                  aria-selected={compositeStep === 'history'}
-                >
-                  {currentLang === 'zh-TW' ? '歷史' : 'History'}
-                </button>
               </div>
             </div>
 
             <div className="market-workspace__body">
-              {compositeStep === 'indicators' ? (
-                <div className="indicators-workspace">
-                  {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
-                    <>
-                      <div className="indicators-workspace__list">
-                        <div className="indicators-workspace__listHeader">
-                          <div>
-                            <span className="indicators-workspace__eyebrow">
-                              {currentLang === 'zh-TW' ? '驅動因子' : 'Drivers'}
-                            </span>
-                            <h3 className="indicators-workspace__title">
-                              {currentLang === 'zh-TW' ? '哪些指標在推動情緒' : 'Which indicators are driving sentiment'}
-                            </h3>
-                          </div>
-                        </div>
-
-                        <div className="indicator-card-list">
-                          {sortedIndicatorEntries.map(([key, ind]) => {
-                            const sentimentKey = getSentiment(ind?.percentileRank ? Math.round(ind.percentileRank) : null);
-                            const tone = sentimentKey.split('.').pop();
-                            const percentile = ind?.percentileRank != null ? Math.round(ind.percentileRank) : null;
-                            const isSelected = selectedIndicatorEntry?.[0] === key;
-
-                            return (
-                              <button
-                                key={key}
-                                type="button"
-                                className={`indicator-summary-card ${isSelected ? 'is-selected' : ''}`}
-                                onClick={() => setSelectedIndicatorKey(key)}
-                              >
-                                <div className="indicator-summary-card__top">
-                                  <div className="indicator-summary-card__heading">
-                                    <span className="indicator-summary-card__name">{getIndicatorLabel(key)}</span>
-                                    <span className="indicator-summary-card__summary">
-                                      {getIndicatorWorkspaceSummary(key)}
-                                    </span>
-                                  </div>
-                                  <div className="indicator-summary-card__scoreColumn">
-                                    <span className="indicator-summary-card__score">
-                                      {percentile != null ? `${percentile}%` : '-'}
-                                    </span>
-                                    <span className={`indicator-summary-card__sentiment sentiment-${tone}`}>
-                                      {t(sentimentKey)}
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className="indicator-summary-card__sparkline" aria-hidden="true">
-                                  {indicatorTrendData[key]?.length > 1 ? (
-                                    <svg
-                                      className="indicator-summary-card__sparklineSvg"
-                                      viewBox="0 0 148 52"
-                                      preserveAspectRatio="none"
-                                    >
-                                      <path
-                                        className="indicator-summary-card__sparklineTrack"
-                                        d="M 6 26 L 142 26"
-                                      />
-                                      <path
-                                        className={`indicator-summary-card__sparklinePath sentiment-${tone}`}
-                                        d={buildSparklinePath(indicatorTrendData[key])}
-                                      />
-                                    </svg>
-                                  ) : (
-                                    <span className="indicator-summary-card__sparklineEmpty">
-                                      {currentLang === 'zh-TW' ? '載入近 3 個月趨勢中' : 'Loading 3M trend'}
-                                    </span>
-                                  )}
-                                </div>
-                              </button>
-                            );
-                          })}
+              <div className="indicators-workspace">
+                {isProUser || (sentimentData && !sentimentData.isRestricted) ? (
+                  <>
+                    <div className="indicators-workspace__list">
+                      <div className="indicators-workspace__listHeader">
+                        <div>
+                          <h3 className="indicators-workspace__title">
+                            {currentLang === 'zh-TW' ? '哪些指標在推動情緒' : 'Which indicators are driving sentiment'}
+                          </h3>
                         </div>
                       </div>
 
-                      <div className="indicators-workspace__detail">
-                        {selectedIndicatorEntry && (
-                          <>
-                            <div className="indicators-workspace__detailIntro">
-                              <span className="indicators-workspace__detailEyebrow">
-                                {currentLang === 'zh-TW' ? '已選指標' : 'Selected indicator'}
-                              </span>
-                              <h3 className="indicators-workspace__detailTitle">
-                                {getIndicatorLabel(selectedIndicatorEntry[0])}
-                              </h3>
-                              <p className="indicators-workspace__detailSummary">
-                                {getIndicatorWorkspaceSummary(selectedIndicatorEntry[0])}
-                              </p>
-                            </div>
-                            <IndicatorItem
-                              key={selectedIndicatorEntry[0]}
-                              indicatorKey={selectedIndicatorEntry[0]}
-                              indicator={selectedIndicatorEntry[1]}
-                              selectedTimeRange={selectedTimeRange}
-                              handleTimeRangeChange={handleTimeRangeChange}
-                              historicalSPYData={historicalData}
-                            />
-                          </>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <RestrictedCompositionView
-                      onUpgradeClick={() => handleRestrictedFeatureClick('composition')}
-                      indicatorCount={Object.keys(indicatorsData).length}
-                    />
-                  )}
-                </div>
-              ) : (
-                <div className="history-workspace">
-                  <div className="history-workspace__controls">
-                    <TimeRangeSelector
-                      selectedTimeRange={selectedTimeRange}
-                      handleTimeRangeChange={handleTimeRangeChange}
-                    />
-                  </div>
+                      <div className="indicator-card-list">
+                        {sortedIndicatorEntries.map(([key, ind]) => {
+                          const sentimentKey = getSentiment(ind?.percentileRank ? Math.round(ind.percentileRank) : null);
+                          const tone = sentimentKey.split('.').pop();
+                          const percentile = ind?.percentileRank != null ? Math.round(ind.percentileRank) : null;
+                          const isSelected = selectedIndicatorEntry?.[0] === key;
 
-                  <div className="indicator-chart">
-                    <Line data={chartData} options={chartOptions} />
-                  </div>
-
-                  {historicalData.length > 0 && sliderMinMax[1] > sliderMinMax[0] && (
-                    <div className="slider-container">
-                      <Slider
-                        range
-                        min={sliderMinMax[0]}
-                        max={sliderMinMax[1]}
-                        value={currentSliderRange[0] === 0 ? sliderMinMax : currentSliderRange}
-                        onChange={handleSliderChange}
-                        allowCross={false}
-                        trackStyle={[{ backgroundColor: '#C78F57' }]}
-                        handleStyle={[{ borderColor: '#C78F57', backgroundColor: 'white' }, { borderColor: '#C78F57', backgroundColor: 'white' }]}
-                        railStyle={{ backgroundColor: '#e9e9e9' }}
-                      />
-                      <div className="slider-labels">
-                        <span>{currentSliderRange[0] !== 0 ? new Date(currentSliderRange[0]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
-                        <span>{currentSliderRange[1] !== 0 ? new Date(currentSliderRange[1]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
+                          return (
+                            <button
+                              key={key}
+                              type="button"
+                              className={`indicator-summary-card ${isSelected ? 'is-selected' : ''}`}
+                              onClick={() => setSelectedIndicatorKey(key)}
+                            >
+                              <div className="indicator-summary-card__top">
+                                <div className="indicator-summary-card__heading">
+                                  <span className="indicator-summary-card__name">{getIndicatorLabel(key)}</span>
+                                  <span className="indicator-summary-card__summary">
+                                    {getIndicatorWorkspaceSummary(key)}
+                                  </span>
+                                </div>
+                                <div className="indicator-summary-card__scoreColumn">
+                                  <span className="indicator-summary-card__score">
+                                    {percentile != null ? `${percentile}%` : '-'}
+                                  </span>
+                                  <span className={`indicator-summary-card__sentiment sentiment-${tone}`}>
+                                    {t(sentimentKey)}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="indicator-summary-card__sparkline" aria-hidden="true">
+                                {indicatorTrendData[key]?.length > 1 ? (
+                                  <svg
+                                    className="indicator-summary-card__sparklineSvg"
+                                    viewBox="0 0 148 52"
+                                    preserveAspectRatio="none"
+                                  >
+                                    <path
+                                      className="indicator-summary-card__sparklineTrack"
+                                      d="M 6 26 L 142 26"
+                                    />
+                                    <path
+                                      className={`indicator-summary-card__sparklinePath sentiment-${tone}`}
+                                      d={buildSparklinePath(indicatorTrendData[key])}
+                                    />
+                                  </svg>
+                                ) : (
+                                  <span className="indicator-summary-card__sparklineEmpty">
+                                    {currentLang === 'zh-TW' ? '載入近 3 個月趨勢中' : 'Loading 3M trend'}
+                                  </span>
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
-                  )}
 
-                  {historicalLowPoints.length > 0 && (
-                    <aside className="history-workspace__summaryBlock" aria-label={currentLang === 'zh-TW' ? '近年極端恐懼時刻' : 'Recent extreme fear moments'}>
-                      <div className="history-workspace__summaryHeader">
-                        <span className="history-workspace__summaryEyebrow">
-                          {currentLang === 'zh-TW' ? '恐慌時刻' : 'Panic moments'}
-                        </span>
-                        <h3 className="history-workspace__summaryTitle">
-                          {currentLang === 'zh-TW' ? '近年極端恐懼時刻' : 'Recent extreme fear moments'}
-                        </h3>
-                      </div>
-                      <div className="history-workspace__summary">
-                        {historicalLowPoints.map((item) => (
-                          <div key={item.label} className="history-highlight-card">
-                            <span className="history-highlight-card__label">{item.label}</span>
-                            <span className="history-highlight-card__value">{item.value}</span>
-                            <span className="history-highlight-card__meta">{item.meta}</span>
+                    <div className="indicators-workspace__detail">
+                      {selectedIndicatorEntry && (
+                        <>
+                          <div className="indicators-workspace__detailIntro">
+                            <h3 className="indicators-workspace__detailTitle">
+                              {getIndicatorLabel(selectedIndicatorEntry[0])}
+                            </h3>
+                            <p className="indicators-workspace__detailSummary">
+                              {getIndicatorDetailSummary(selectedIndicatorEntry[0])}
+                            </p>
                           </div>
-                        ))}
-                      </div>
-                    </aside>
-                  )}
-                </div>
-              )}
+                          <IndicatorItem
+                            key={selectedIndicatorEntry[0]}
+                            indicatorKey={selectedIndicatorEntry[0]}
+                            indicator={selectedIndicatorEntry[1]}
+                            selectedTimeRange={selectedTimeRange}
+                            handleTimeRangeChange={handleTimeRangeChange}
+                            historicalSPYData={historicalData}
+                          />
+                        </>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <RestrictedCompositionView
+                    onUpgradeClick={() => handleRestrictedFeatureClick('composition')}
+                    indicatorCount={Object.keys(indicatorsData).length}
+                  />
+                )}
+              </div>
             </div>
           </section>
 
           <MarketSentimentDescriptionSection
-            activeIndicator={compositeStep === 'indicators' && selectedIndicatorEntry ? selectedIndicatorEntry[0] : 'composite'}
-            currentView={compositeStep}
+            activeIndicator={selectedIndicatorEntry ? selectedIndicatorEntry[0] : 'composite'}
+            currentView="indicators"
             indicatorsData={indicatorsData}
             className="learn-layout"
           />
