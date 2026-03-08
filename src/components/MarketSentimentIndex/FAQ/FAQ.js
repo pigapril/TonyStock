@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './FAQ.css';
 
 function FAQ({ activeIndicator = 'composite' }) {
-  const { t, i18n } = useTranslation();
-  const currentLang = i18n.language;
+  const { t } = useTranslation();
   const [openId, setOpenId] = useState('q1');
 
   const items = useMemo(() => ([
@@ -60,35 +59,8 @@ function FAQ({ activeIndicator = 'composite' }) {
     }
   ]), [t]);
 
-  const featuredIds = activeIndicator === 'composite'
-    ? ['q1', 'q2', 'q4']
-    : ['q3', 'q5', 'q10'];
-
   return (
     <div className="msiFaq">
-      <div className="msiFaq__header">
-        <span className="msiFaq__eyebrow">{currentLang === 'zh-TW' ? '熱門問題' : 'Popular questions'}</span>
-        <div className="msiFaq__chips" role="tablist" aria-label={currentLang === 'zh-TW' ? '熱門 FAQ' : 'Popular FAQ'}>
-          {featuredIds.map((id) => {
-            const item = items.find((entry) => entry.id === id);
-            if (!item) {
-              return null;
-            }
-
-            return (
-              <button
-                key={id}
-                type="button"
-                className={`msiFaq__chip ${openId === id ? 'active' : ''}`}
-                onClick={() => setOpenId(id)}
-              >
-                {item.question}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       <div className="msiFaq__list">
         {items.map((item) => {
           const isOpen = openId === item.id;

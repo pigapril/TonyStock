@@ -284,45 +284,6 @@ const INDICATOR_WORKSPACE_COPY = {
   }
 };
 
-const COMPOSITE_GAUGE_EXPLAINER = {
-  zh: {
-    title: '為什麼要看情緒指標？',
-    subtitle: '情緒指標不是為了預測股價明天漲跌，而是為了判斷現在進場的「勝率」與「風險」是否不對稱。',
-    sections: [
-      {
-        title: '1. 尋找「擁擠交易」的出口',
-        body: '市場最危險的時候，不是大家都在賠錢的時候，而是當每個人都達成共識的時候。當情緒指標處於「極度貪婪」時，代表想買的人都買了，市場上沒有更多的樂觀資金來推升價格，也就是擁擠交易。情緒指標能告訴你，現在船的一邊是不是站了太多人，可能隨時會翻。'
-      },
-      {
-        title: '2. 情緒是最好的「逆向指南針」',
-        body: '「行情總在絕望中誕生，在半信半疑中成長，在憧憬中成熟，在希望中毀滅。」當人們都處於極度恐懼狀態，只想關掉電腦、遠離市場時，通常是開始悄悄撿便宜的絕佳買點；反之，當人們都處於極度貪婪狀態、在炫耀賺了多少錢，通常也是該獲利了結的時候。情緒指標不是要你跟隨群眾，而是要你觀察，然後做他們的反面。'
-      },
-      {
-        title: '3. 避免被你的本能給騙了',
-        body: '人的天性是趨利避害，但在資本市場，當你看著大盤大跌時，大腦會急迫的想要賣出；當大盤狂飆時，貪婪卻會逼著你加碼。情緒指標的作用，就是把你從這種盲目的情緒中抽離出來。Sentiment Inside Out 恐懼貪婪指標提供的是客觀的數據，在市場瘋狂時，幫你的大腦保持冷靜。'
-      }
-    ]
-  },
-  en: {
-    title: 'Why watch a sentiment indicator?',
-    subtitle: 'A sentiment indicator is not for predicting whether stocks will rise or fall tomorrow. It is for judging whether the current entry setup offers asymmetric odds and risk.',
-    sections: [
-      {
-        title: '1. Find the exit in crowded trades',
-        body: 'The most dangerous markets are not when everyone is losing money. They are when everyone agrees. When sentiment reaches Extreme Greed, most of the buyers are already in, and there is little fresh optimism left to push prices higher. That is what a crowded trade looks like. A sentiment indicator helps you see when too many people are standing on the same side of the boat.'
-      },
-      {
-        title: '2. Emotion is the best contrarian compass',
-        body: 'Bull markets are born in despair, grow in doubt, mature in optimism, and die in euphoria. When investors are in extreme fear and just want to turn off the screen and walk away, it is often when value starts to reappear. On the other side, when everyone is in extreme greed and bragging about gains, it is often time to take profits. A sentiment indicator is not there to help you follow the crowd. It is there to help you observe the crowd and lean the other way.'
-      },
-      {
-        title: '3. Stop your instincts from fooling you',
-        body: 'Human instinct seeks safety and reward, but in capital markets that instinct often works against you. When indexes plunge, your brain wants to sell. When prices surge, greed urges you to add more. The role of a sentiment indicator is to pull you out of that reflexive loop. The Sentiment Inside Out Fear & Greed Index gives you an objective read so your decision-making can stay calm when the market is not.'
-      }
-    ]
-  }
-};
-
 const MarketSentimentIndex = () => {
   const { t, i18n } = useTranslation();
   const { showToast, toast, hideToast } = useToastManager();
@@ -363,6 +324,23 @@ const MarketSentimentIndex = () => {
   const [selectedIndicatorKey, setSelectedIndicatorKey] = useState(null);
   const gaugePanelRef = useRef(null);
   const [gaugePanelHeight, setGaugePanelHeight] = useState(null);
+  const [isMobileViewport, setIsMobileViewport] = useState(() => (
+    typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+  ));
+  const [isMobileSummaryExpanded, setIsMobileSummaryExpanded] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileViewport(window.innerWidth <= 768);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -940,8 +918,15 @@ const MarketSentimentIndex = () => {
   };
 
   const currentCompositeScore = sentimentData?.totalScore != null ? Math.round(sentimentData.totalScore) : null;
-  const gaugeExplainerCopy = currentLang === 'zh-TW' ? COMPOSITE_GAUGE_EXPLAINER.zh : COMPOSITE_GAUGE_EXPLAINER.en;
-  const summaryPanelStyle = gaugePanelHeight && gaugePanelHeight > 560
+  const gaugeExplainerCopy = useMemo(() => ({
+    title: t('marketSentiment.gauge.explainer.title'),
+    subtitle: t('marketSentiment.gauge.explainer.subtitle'),
+    sections: ['section1', 'section2', 'section3'].map((sectionKey) => ({
+      title: t(`marketSentiment.gauge.explainer.${sectionKey}.title`),
+      body: t(`marketSentiment.gauge.explainer.${sectionKey}.body`)
+    }))
+  }), [t]);
+  const summaryPanelStyle = !isMobileViewport && gaugePanelHeight && gaugePanelHeight > 560
     ? { height: `${gaugePanelHeight}px`, maxHeight: `${gaugePanelHeight}px` }
     : undefined;
 
@@ -1094,7 +1079,7 @@ const MarketSentimentIndex = () => {
                   role="tab"
                   aria-selected={heroView === 'current'}
                 >
-                  {currentLang === 'zh-TW' ? '當前情緒' : 'Current sentiment'}
+                  {currentLang === 'zh-TW' ? '最新市場情緒' : 'Latest market sentiment'}
                 </button>
                 <button
                   className={`hero-workspace__tab ${heroView === 'history' ? 'active' : ''}`}
@@ -1193,9 +1178,24 @@ const MarketSentimentIndex = () => {
                     </div>
 
                     <div
-                      className="panel-market-summary"
+                      className={`panel-market-summary ${isMobileSummaryExpanded ? 'is-expanded' : ''}`}
                       style={summaryPanelStyle}
                     >
+                      {isMobileViewport && (
+                        <button
+                          type="button"
+                          className="panel-market-summary__toggle"
+                          onClick={() => setIsMobileSummaryExpanded((prev) => !prev)}
+                          aria-expanded={isMobileSummaryExpanded}
+                        >
+                          <span className="panel-market-summary__toggleLabel">
+                            {gaugeExplainerCopy.title}
+                          </span>
+                          <span className="panel-market-summary__toggleIcon" aria-hidden="true">
+                            {isMobileSummaryExpanded ? '−' : '+'}
+                          </span>
+                        </button>
+                      )}
                       <div className="panel-explainer-card">
                         <h3 className="panel-explainer-title">
                           {gaugeExplainerCopy.title}
@@ -1223,17 +1223,6 @@ const MarketSentimentIndex = () => {
                   )
                 ) : (
                   <div className="hero-history-workspace">
-                    <div className="hero-history-workspace__intro">
-                      <h2 className="hero-history-workspace__title">
-                        {currentLang === 'zh-TW' ? 'SIO 恐懼貪婪指標歷史趨勢' : 'SIO Fear & Greed history'}
-                      </h2>
-                      <p className="hero-history-workspace__description">
-                        {currentLang === 'zh-TW'
-                          ? '把當前分數放回長期週期裡看，判斷現在更接近恐懼低點、過熱高點，還是中性區。'
-                          : 'Place today’s reading back into the long-term cycle to see whether sentiment is nearer to panic lows, overheated highs, or a neutral zone.'}
-                      </p>
-                    </div>
-
                     <div className="history-workspace__controls hero-history-workspace__controls">
                       <TimeRangeSelector
                         selectedTimeRange={selectedTimeRange}

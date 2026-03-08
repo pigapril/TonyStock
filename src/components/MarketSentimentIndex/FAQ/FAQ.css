@@ -1,45 +1,7 @@
 .msiFaq {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-.msiFaq__header {
-  display: flex;
-  flex-direction: column;
   gap: 12px;
-}
-
-.msiFaq__eyebrow {
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #667085;
-}
-
-.msiFaq__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.msiFaq__chip {
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(248, 250, 252, 0.95);
-  color: #475467;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.msiFaq__chip.active {
-  background: #101828;
-  color: #ffffff;
-  border-color: #101828;
 }
 
 .msiFaq__list {
@@ -108,11 +70,6 @@
 }
 
 @media (max-width: 640px) {
-  .msiFaq__chip {
-    width: 100%;
-    text-align: left;
-  }
-
   .msiFaq__question {
     padding: 16px;
   }

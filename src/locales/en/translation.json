@@ -553,6 +553,22 @@
     "gauge": {
       "interactiveZones": "Interactive sentiment zones",
       "zone": "zone",
+      "explainer": {
+        "title": "Why analyze market sentiment?",
+        "subtitle": "Analyzing market sentiment is not about guessing whether stocks will rise or fall tomorrow. It is about judging whether the current entry setup offers asymmetric odds and risk.",
+        "section1": {
+          "title": "1. The SIO Fear & Greed Index is a composite reading",
+          "body": "The SIO Fear & Greed Index brings retail sentiment, options hedging, volatility stress, capital flows, credit spreads, and institutional and active-manager positioning into one framework, then converts them into a score from 0 to 100 to form a composite reading of overall U.S. equity risk appetite."
+        },
+        "section2": {
+          "title": "2. Its value lies in spotting extremes, not chasing short-term moves",
+          "body": "Historically, when SIO falls below 15, fear is usually spreading quickly and it may be time to raise attention and start building positions gradually. When it drops toward 5, markets are often near major bear-market lows. On the other side, when the score rises above 80, sentiment is usually overheated. Once it moves beyond 96, the risk of chasing prices higher increases meaningfully."
+        },
+        "section3": {
+          "title": "3. It reveals market irrationality and helps you resist instinct",
+          "body": "When the market falls hard, people instinctively want to run. When it surges, FOMO makes it easy to chase. What makes the SIO Fear & Greed Index distinctive is that it gives you a long-term, cross-indicator objective reading, so you can see which side sentiment is leaning toward and keep your decisions disciplined."
+        }
+      },
       "comparison": {
         "ariaLabel": "Composite indicator historical comparison",
         "previousDay": "Previous Day",
