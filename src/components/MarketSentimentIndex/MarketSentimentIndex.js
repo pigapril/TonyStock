@@ -284,6 +284,14 @@ const INDICATOR_WORKSPACE_COPY = {
   }
 };
 
+const getDefaultTimeRangeByViewport = () => {
+  if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+    return '5Y';
+  }
+
+  return '10Y';
+};
+
 const MarketSentimentIndex = () => {
   const { t, i18n } = useTranslation();
   const { showToast, toast, hideToast } = useToastManager();
@@ -300,8 +308,8 @@ const MarketSentimentIndex = () => {
 
   const [showTutorial, setShowTutorial] = useState(false);
   const [upgradeDialog, setUpgradeDialog] = useState({ isOpen: false, type: null, context: {} });
-  const [selectedTimeRange, setSelectedTimeRange] = useState('10Y');
-  const selectedTimeRangeRef = useRef('10Y');
+  const [selectedTimeRange, setSelectedTimeRange] = useState(() => getDefaultTimeRangeByViewport());
+  const selectedTimeRangeRef = useRef(getDefaultTimeRangeByViewport());
   const [indicatorsData, setIndicatorsData] = useState({});
   const [indicatorTrendData, setIndicatorTrendData] = useState({});
   const [historicalData, setHistoricalData] = useState([]);
@@ -322,6 +330,7 @@ const MarketSentimentIndex = () => {
 
   const [heroView, setHeroView] = useState('current');
   const [selectedIndicatorKey, setSelectedIndicatorKey] = useState(null);
+  const [isMobileIndicatorSheetOpen, setIsMobileIndicatorSheetOpen] = useState(false);
   const gaugePanelRef = useRef(null);
   const [gaugePanelHeight, setGaugePanelHeight] = useState(null);
   const [isMobileViewport, setIsMobileViewport] = useState(() => (
@@ -341,6 +350,33 @@ const MarketSentimentIndex = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (!isMobileViewport) {
+      setIsMobileIndicatorSheetOpen(false);
+    }
+  }, [isMobileViewport]);
+
+  useEffect(() => {
+    if (!isMobileViewport || !isMobileIndicatorSheetOpen) {
+      return undefined;
+    }
+
+    const originalOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsMobileIndicatorSheetOpen(false);
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMobileIndicatorSheetOpen, isMobileViewport]);
 
   useEffect(() => {
     let isMounted = true;
@@ -961,6 +997,14 @@ const MarketSentimentIndex = () => {
     return sortedIndicatorEntries.find(([key]) => key === selectedIndicatorKey) || sortedIndicatorEntries[0] || null;
   }, [selectedIndicatorKey, sortedIndicatorEntries]);
 
+  const handleIndicatorCardSelect = useCallback((key) => {
+    setSelectedIndicatorKey(key);
+
+    if (isMobileViewport) {
+      setIsMobileIndicatorSheetOpen(true);
+    }
+  }, [isMobileViewport]);
+
   const getIndicatorWorkspaceSummary = useCallback((key) => {
     const copy = INDICATOR_WORKSPACE_COPY[key];
     if (!copy) {
@@ -1292,7 +1336,7 @@ const MarketSentimentIndex = () => {
                               key={key}
                               type="button"
                               className={`indicator-summary-card ${isSelected ? 'is-selected' : ''}`}
-                              onClick={() => setSelectedIndicatorKey(key)}
+                              onClick={() => handleIndicatorCardSelect(key)}
                             >
                               <div className="indicator-summary-card__top">
                                 <div className="indicator-summary-card__heading">
@@ -1370,6 +1414,63 @@ const MarketSentimentIndex = () => {
               </div>
             </div>
           </section>
+
+          {isMobileViewport && isMobileIndicatorSheetOpen && selectedIndicatorEntry && (
+            <div
+              className="indicator-mobile-sheet-overlay"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="indicator-mobile-sheet-title"
+              onClick={() => setIsMobileIndicatorSheetOpen(false)}
+            >
+              <div
+                className="indicator-mobile-sheet"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className="indicator-mobile-sheet__grabber" aria-hidden="true" />
+                <div className="indicator-mobile-sheet__header">
+                  <div className="indicator-mobile-sheet__headerText">
+                    <span className="indicator-mobile-sheet__eyebrow">
+                      {currentLang === 'zh-TW' ? '指標詳情' : 'Indicator detail'}
+                    </span>
+                    <h3
+                      id="indicator-mobile-sheet-title"
+                      className="indicator-mobile-sheet__title"
+                    >
+                      {getIndicatorLabel(selectedIndicatorEntry[0])}
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    className="indicator-mobile-sheet__close"
+                    onClick={() => setIsMobileIndicatorSheetOpen(false)}
+                    aria-label={currentLang === 'zh-TW' ? '關閉指標詳情' : 'Close indicator detail'}
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div className="indicator-mobile-sheet__body">
+                  <div className="indicators-workspace__detailIntro indicators-workspace__detailIntro--sheet">
+                    <h3 className="indicators-workspace__detailTitle">
+                      {getIndicatorLabel(selectedIndicatorEntry[0])}
+                    </h3>
+                    <p className="indicators-workspace__detailSummary">
+                      {getIndicatorDetailSummary(selectedIndicatorEntry[0])}
+                    </p>
+                  </div>
+                  <IndicatorItem
+                    key={`mobile-${selectedIndicatorEntry[0]}`}
+                    indicatorKey={selectedIndicatorEntry[0]}
+                    indicator={selectedIndicatorEntry[1]}
+                    selectedTimeRange={selectedTimeRange}
+                    handleTimeRangeChange={handleTimeRangeChange}
+                    historicalSPYData={historicalData}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           <MarketSentimentDescriptionSection
             activeIndicator={selectedIndicatorEntry ? selectedIndicatorEntry[0] : 'composite'}
