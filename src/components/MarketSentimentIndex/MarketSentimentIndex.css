@@ -2144,6 +2144,7 @@
   margin-top: 0;
   justify-content: stretch;
   min-height: 560px;
+  max-height: min(720px, calc(100vh - 220px));
 }
 
 .market-sentiment-view .hero-history-workspace {

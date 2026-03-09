@@ -481,11 +481,9 @@ const MarketSentimentIndex = () => {
   const [heroView, setHeroView] = useState('current');
   const [selectedIndicatorKey, setSelectedIndicatorKey] = useState(null);
   const [isMobileIndicatorSheetOpen, setIsMobileIndicatorSheetOpen] = useState(false);
-  const gaugePanelRef = useRef(null);
   const historyChartRef = useRef(null);
   const historyChartContainerRef = useRef(null);
   const historyOverlayCardRef = useRef(null);
-  const [gaugePanelHeight, setGaugePanelHeight] = useState(null);
   const [historyOverlayPosition, setHistoryOverlayPosition] = useState({ top: '50%', left: '50%' });
   const [isMobileViewport, setIsMobileViewport] = useState(() => (
     typeof window !== 'undefined' ? window.innerWidth <= 768 : false
@@ -1228,9 +1226,6 @@ const MarketSentimentIndex = () => {
       body: t(`marketSentiment.gauge.explainer.${sectionKey}.body`)
     }))
   }), [t]);
-  const summaryPanelStyle = !isMobileViewport && gaugePanelHeight && gaugePanelHeight > 560
-    ? { height: `${gaugePanelHeight}px`, maxHeight: `${gaugePanelHeight}px` }
-    : undefined;
 
   const comparisonSnapshots = useMemo(() => {
     return getCompositeComparisonSnapshots({
@@ -1295,26 +1290,6 @@ const MarketSentimentIndex = () => {
   const getIndicatorLabel = useCallback((key) => {
     return t(INDICATOR_TRANSLATION_KEY_MAP[key] || key);
   }, [t]);
-
-  useEffect(() => {
-    const node = gaugePanelRef.current;
-    if (!node || typeof ResizeObserver === 'undefined') {
-      return undefined;
-    }
-
-    const observer = new ResizeObserver((entries) => {
-      const entry = entries[0];
-      if (!entry) {
-        return;
-      }
-
-      setGaugePanelHeight(Math.round(entry.contentRect.height));
-    });
-
-    observer.observe(node);
-
-    return () => observer.disconnect();
-  }, [sentimentData, isDataLoaded, comparisonSnapshots]);
 
   const updateHistoryOverlayPosition = useCallback(() => {
     const chart = historyChartRef.current;
@@ -1497,7 +1472,7 @@ const MarketSentimentIndex = () => {
               <div className="gauge-sentiment-container">
                 {heroView === 'current' ? (
                   <div className="gauge-sentiment-layout">
-                    <div ref={gaugePanelRef} className="gauge-panel-slot">
+                    <div className="gauge-panel-slot">
                       <MarketSentimentGauge
                         sentimentData={sentimentData}
                         isDataLoaded={isDataLoaded}
@@ -1597,7 +1572,6 @@ const MarketSentimentIndex = () => {
 
                     <div
                       className={`panel-market-summary ${isMobileSummaryExpanded ? 'is-expanded' : ''}`}
-                      style={summaryPanelStyle}
                     >
                       {isMobileViewport && (
                         <button
