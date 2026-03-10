@@ -1385,7 +1385,12 @@ const MarketSentimentIndex = () => {
                 <p className="panel-description">{t('marketSentiment.pageSubtitle')}</p>
               </div>
 
-              <div className="hero-workspace__tabs" role="tablist" aria-label={currentLang === 'zh-TW' ? '綜合情緒視角切換' : 'Composite sentiment views'}>
+              <div
+                className="hero-workspace__tabs"
+                data-active-view={heroView}
+                role="tablist"
+                aria-label={currentLang === 'zh-TW' ? '綜合情緒視角切換' : 'Composite sentiment views'}
+              >
                 <button
                   className={`hero-workspace__tab ${heroView === 'current' ? 'active' : ''}`}
                   onClick={() => setHeroView('current')}
@@ -1429,7 +1434,7 @@ const MarketSentimentIndex = () => {
 
               <div className="gauge-sentiment-container">
                 {heroView === 'current' ? (
-                  <div className="gauge-sentiment-layout">
+                  <div className="gauge-sentiment-layout hero-panel-transition hero-panel-transition--current">
                     <div className="gauge-panel-slot">
                       <MarketSentimentGauge
                         sentimentData={sentimentData}
@@ -1560,7 +1565,7 @@ const MarketSentimentIndex = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="hero-history-workspace">
+                  <div className="hero-history-workspace hero-panel-transition hero-panel-transition--history">
                     <div className="history-workspace__controls hero-history-workspace__controls">
                       <TimeRangeSelector
                         selectedTimeRange={selectedTimeRange}

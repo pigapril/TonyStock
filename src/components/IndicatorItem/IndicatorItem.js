@@ -565,10 +565,10 @@ function IndicatorItem({
   };
 
   return (
-    <div className="indicator-item">
+    <div className={`indicator-item indicator-item--${rawSentiment}`}>
       <h3>{indicatorName}</h3>
       {!loading ? (
-        <>
+        <div className="indicator-item__content">
           <div className="analysis-result">
             <div className="analysis-item">
               <span className="analysis-label">{t('indicatorItem.latestDataLabel')}</span>
@@ -632,12 +632,29 @@ function IndicatorItem({
               <div className="chart-placeholder">{t('indicatorItem.noData')}</div>
             )}
           </div>
-        </>
+        </div>
       ) : (
-        <div className="loading-container">
-          <div className="loading-spinner">
-            <div className="spinner"></div>
-            <span>{t('indicatorItem.loading')}</span>
+        <div className="indicator-item__loadingShell" role="status" aria-live="polite">
+          <div className="indicator-item__loadingMetrics" aria-hidden="true">
+            <div className="indicator-item__loadingMetric">
+              <span className="indicator-item__skeleton indicator-item__skeleton--label" />
+              <span className="indicator-item__skeleton indicator-item__skeleton--value" />
+            </div>
+            <div className="indicator-item__loadingMetric">
+              <span className="indicator-item__skeleton indicator-item__skeleton--label" />
+              <span className="indicator-item__skeleton indicator-item__skeleton--value" />
+            </div>
+            <div className="indicator-item__loadingMetric">
+              <span className="indicator-item__skeleton indicator-item__skeleton--label" />
+              <span className="indicator-item__skeleton indicator-item__skeleton--value indicator-item__skeleton--valueShort" />
+            </div>
+          </div>
+          <div className="indicator-item__loadingRange" aria-hidden="true">
+            <span className="indicator-item__skeleton indicator-item__skeleton--range" />
+          </div>
+          <div className="indicator-item__loadingChart" aria-hidden="true">
+            <span className="indicator-item__loadingChartGlow" />
+            <span className="indicator-item__loadingChartGrid" />
           </div>
         </div>
       )}
