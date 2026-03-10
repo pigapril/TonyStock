@@ -554,19 +554,37 @@
       "interactiveZones": "Interactive sentiment zones",
       "zone": "zone",
       "explainer": {
-        "title": "Why analyze market sentiment?",
-        "subtitle": "Analyzing market sentiment is not about guessing whether stocks will rise or fall tomorrow. It is about judging whether the current entry setup offers asymmetric odds and risk.",
-        "section1": {
-          "title": "1. The SIO Fear & Greed Index is a composite reading",
-          "body": "The SIO Fear & Greed Index brings retail sentiment, options hedging, volatility stress, capital flows, credit spreads, and institutional and active-manager positioning into one framework, then converts them into a score from 0 to 100 to form a composite reading of overall U.S. equity risk appetite."
+        "current": {
+          "title": "What does the current market mood mean?",
+          "subtitle": "The current SIO score is {{score}}, which puts market sentiment in {{sentiment}} territory. This reading is not about guessing tomorrow's move. It is about judging where risk appetite currently sits and whether sentiment is getting one-sided.",
+          "section1": {
+            "title": "1. SIO is a composite sentiment reading",
+            "body": "It combines retail sentiment, options hedging, volatility stress, capital flows, credit spreads, and professional positioning into one 0 to 100 reading. The current score of {{score}} is the combined output of those signals."
+          },
+          "section2": {
+            "title": "2. The value is in spotting extremes, not chasing noise",
+            "body": "When the score drops into very low territory, fear is usually spreading. When it climbs too high, markets may already be overheated. With sentiment currently leaning {{sentiment}}, the real question is whether the setup is becoming more one-sided."
+          },
+          "section3": {
+            "title": "3. It helps you read the market with discipline",
+            "body": "Sharp selloffs make people want to run. Strong rallies make FOMO take over. SIO gives you an objective cross-indicator frame so your decisions are less driven by instinct."
+          }
         },
-        "section2": {
-          "title": "2. Its value lies in spotting extremes, not chasing short-term moves",
-          "body": "Historically, when SIO falls below 15, fear is usually spreading quickly and it may be time to raise attention and start building positions gradually. When it drops toward 5, markets are often near major bear-market lows. On the other side, when the score rises above 80, sentiment is usually overheated. Once it moves beyond 96, the risk of chasing prices higher increases meaningfully."
-        },
-        "section3": {
-          "title": "3. It reveals market irrationality and helps you resist instinct",
-          "body": "When the market falls hard, people instinctively want to run. When it surges, FOMO makes it easy to chase. What makes the SIO Fear & Greed Index distinctive is that it gives you a long-term, cross-indicator objective reading, so you can see which side sentiment is leaning toward and keep your decisions disciplined."
+        "snapshot": {
+          "title": "How should you read this snapshot?",
+          "subtitle": "This snapshot through {{date}} carries an SIO score of {{score}}, putting sentiment in {{sentiment}} territory at that time. It does not describe today's market, but it still shows where risk appetite stood then.",
+          "section1": {
+            "title": "1. This is a readable slice of market mood",
+            "body": "Even though it is not live, the snapshot still combines retail sentiment, hedging demand, volatility pressure, capital flows, and positioning into one composite reading. The {{score}} score is the condensed read of those conditions at that point in time."
+          },
+          "section2": {
+            "title": "2. The key is whether sentiment had already become extreme",
+            "body": "If the snapshot sits very low, fear was likely spreading at that time. If it sits very high, sentiment was probably overheated. With this snapshot leaning {{sentiment}}, it becomes easier to see which side of the market was in control."
+          },
+          "section3": {
+            "title": "3. To judge the market now, you still need live data",
+            "body": "This snapshot helps you understand the framework and the historical position, but it cannot tell you whether the market still looks the same today."
+          }
         }
       },
       "comparison": {
@@ -582,6 +600,39 @@
         "neutral": "Neutral zone - balanced market sentiment",
         "greed": "Greed zone - market optimism and risk-taking",
         "extremegreed": "Extreme greed zone - market euphoria and overbuying"
+      }
+    },
+    "indicators": {
+      "currentTitle": "Which indicators are driving sentiment",
+      "snapshotTitle": "Which indicators are shaping this snapshot",
+      "currentDescription": "The SIO Fear & Greed Index is built from multiple sentiment sub-indicators. This view helps you compare which signals are currently pushing market sentiment and where they sit now.",
+      "snapshotDescription": "The SIO Fear & Greed Index is built from multiple sentiment sub-indicators. You are viewing the snapshot through {{date}}, showing which signals were shaping market sentiment at that point.",
+      "detailSummaryCurrent": "How {{indicator}} is affecting market sentiment right now",
+      "detailSummarySnapshot": "How {{indicator}} was affecting market sentiment through {{date}}",
+      "mobileEyebrowCurrent": "Indicator detail",
+      "mobileEyebrowSnapshot": "Snapshot through {{date}}",
+      "trend": {
+        "up": "Up over the past month",
+        "flat": "Flat over the past month",
+        "down": "Down over the past month"
+      },
+      "summary": {
+        "currentEyebrow": "Current indicator mix",
+        "snapshotEyebrow": "Indicator mix through {{date}}",
+        "currentLine": "Out of {{total}} indicators, {{extremeFear}} are in extreme fear, {{fear}} in fear, {{neutral}} in neutral, {{greed}} in greed, and {{extremeGreed}} in extreme greed.",
+        "snapshotLine": "Through {{date}}, {{extremeFear}} indicators were in extreme fear, {{fear}} in fear, {{neutral}} in neutral, {{greed}} in greed, and {{extremeGreed}} in extreme greed out of {{total}} total indicators.",
+        "currentInsight": {
+          "fearDominant": "Fear-leaning indicators currently outnumber greed-leaning ones, so overall risk appetite still looks defensive.",
+          "greedDominant": "Greed-leaning indicators currently outnumber fear-leaning ones, suggesting risk appetite is warming up.",
+          "balanced": "Neutral readings still make up a large share of the mix, so sentiment remains fairly balanced.",
+          "mixed": "The indicator mix is still fairly dispersed, which suggests the market has not settled into one clear emotional direction."
+        },
+        "snapshotInsight": {
+          "fearDominant": "In this snapshot, fear-leaning indicators clearly outnumber greed-leaning ones, pointing to a more defensive market backdrop at the time.",
+          "greedDominant": "In this snapshot, greed-leaning indicators clearly outnumber fear-leaning ones, pointing to stronger risk appetite at the time.",
+          "balanced": "In this snapshot, neutral readings still made up a large share of the mix, so sentiment looked fairly balanced at the time.",
+          "mixed": "In this snapshot, the indicator mix remained dispersed, so the market did not show one strongly unified emotional direction."
+        }
       }
     },
     "viewMode": {
@@ -615,21 +666,22 @@
       "upgradeCompositionToast": "🔍 Complete indicator composition analysis requires Pro plan. Upgrade for deep insights!",
       "bannerEyebrow": "Free plan is showing a historical snapshot",
       "bannerTitle": "Free plan can only view market sentiment data through {{date}}",
-      "bannerBody": "The free plan still lets you explore the gauge, history, and indicator composition, but the most recent two months of data and the latest changes require a Pro upgrade.",
+      "bannerBody": "The free plan still lets you explore the gauge, history, and indicator composition; the latest two months and newest changes require Pro.",
       "currentGaugeHeadline": "Current US market sentiment",
       "snapshotGaugeHeadline": "US market sentiment on {{date}}",
       "upgradeForLatest": "Upgrade for latest data",
       "unlockLatestCta": "Unlock latest data",
+      "overlayMinimalLabel": "Unlock latest data",
       "historicalSnapshotLabel": "Historical comparison through {{date}}",
-      "currentCardNote": "This card shows the latest historical snapshot available on the free plan. Upgrade to follow current sentiment and the latest 60-day moves.",
+      "currentCardNote": "Upgrade to follow current sentiment and the latest 60-day moves.",
       "historyRangeNote": "Free users can switch every range, but charts stop at {{date}}. The shaded area on the right covers the latest two months available on Pro.",
       "historyShortRangeNote": "Most of this short range falls inside the latest two months. The free plan only shows data through {{date}}; the rest requires Pro.",
       "overlayEyebrow": "Latest window",
-      "overlayTitle": "The latest 2 months require Pro",
+      "overlayTitle": "Upgrade to view latest trend",
       "overlayCompactTitle": "Upgrade to view latest trend",
       "overlayBody": "Free plan data currently stops at {{date}}. Upgrade to see today's sentiment and the latest changes.",
-      "compositionEyebrow": "Indicator composition remains visible",
-      "compositionBody": "The indicator cards below currently reflect the snapshot through {{date}}. Upgrade to Pro for the latest composition and recent trend changes."
+      "compositionEyebrow": "Snapshot note",
+      "compositionBody": "The indicator cards and detail view below currently reflect the snapshot through {{date}}."
     },
     "descriptions": {
       "composite": {

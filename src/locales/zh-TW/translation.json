@@ -571,19 +571,37 @@
       "interactiveZones": "互動情緒區域",
       "zone": "區域",
       "explainer": {
-        "title": "為什麼要分析市場情緒？",
-        "subtitle": "分析市場情緒不是用來猜明天漲跌，而是為了判斷現在進場的「勝率」與「風險」是否不對稱",
-        "section1": {
-          "title": "1. SIO 恐懼貪婪指標是一個綜合讀數",
-          "body": "SIO 恐懼貪婪指標會把散戶情緒、選擇權避險、波動率壓力、資金流向、信用利差、機構與主動經理人的部位等資訊放在同一個框架裡，轉成 0 到 100 的分數，對整體美股風險偏好進行綜合判讀。"
+        "current": {
+          "title": "目前市場情緒代表什麼？",
+          "subtitle": "目前 SIO 分數為 {{score}}，代表市場情緒偏向「{{sentiment}}」。重點不是猜明天漲跌，而是判斷現在市場的風險偏好落在哪一側。",
+          "section1": {
+            "title": "1. SIO 提供的是整體情緒讀數",
+            "body": "SIO 會把散戶情緒、選擇權避險、波動率壓力、資金流向、信用利差，以及機構與主動經理人的部位放進同一個框架裡，轉成 0 到 100 的分數。你現在看到的 {{score}} 分，就是這些訊號整合後的當前情緒讀數。"
+          },
+          "section2": {
+            "title": "2. 重點不是追短線，而是辨識極端",
+            "body": "當分數落到極低區域，通常代表恐懼正在擴散；當分數升到極高區域，則代表市場可能已經過熱。以目前偏向「{{sentiment}}」的狀態來看，重點是判斷市場是否正在朝更極端的位置靠近。"
+          },
+          "section3": {
+            "title": "3. 它幫你用紀律讀市場，而不是跟情緒走",
+            "body": "當市場大跌時，人會本能地想逃；當市場狂漲時，又容易被 FOMO 推著追高。SIO 的作用，是替你的判斷加上一個客觀、跨指標的參考框架。"
+          }
         },
-        "section2": {
-          "title": "2. 它的價值在於抓極端，而不是追短線",
-          "body": "歷史上當 SIO 落到 15 以下，通常代表恐懼正在快速擴散，可以開始提高警覺、分批布局；若進一步跌到 5 附近，往往已經接近重大熊市低點。反過來說，當分數升到 80 以上，市場通常已經偏熱；若超過 96，代表情緒過度樂觀，追價的風險會明顯上升。"
-        },
-        "section3": {
-          "title": "3. 看見市場的不理性，也幫你對抗本能",
-          "body": "當市場大跌時，人會本能地想逃；當市場狂漲時，又容易被 FOMO 推著追高。SIO 恐懼貪婪指標的獨特性，在於它提供一個長線、跨指標的客觀值，讓你知道現在市場情緒偏向哪一邊，替自己的決策保留紀律。"
+        "snapshot": {
+          "title": "如何解讀這次市場快照？",
+          "subtitle": "這份截至 {{date}} 的快照分數為 {{score}}，代表當時市場情緒偏向「{{sentiment}}」。它不代表今天的市場狀態，但仍能幫你理解當時市場的風險偏好落在哪一側。",
+          "section1": {
+            "title": "1. 這是一個可回看的情緒切片",
+            "body": "即使不是最新資料，這個快照仍然把當時的散戶情緒、避險需求、波動率壓力、資金流向與部位配置整合成一個綜合讀數。你現在看到的 {{score}} 分，就是當時整體風險偏好的濃縮結果。"
+          },
+          "section2": {
+            "title": "2. 重點是看當時市場是否已經偏向極端",
+            "body": "如果快照落在很低的位置，通常代表當時市場恐懼明顯；如果落在很高的位置，則代表當時市場情緒已經偏熱。以這次偏向「{{sentiment}}」的快照來看，你能更快理解市場當時站在哪一邊。"
+          },
+          "section3": {
+            "title": "3. 若要判斷現在，仍需要最新資料",
+            "body": "這份快照可以幫你理解情緒框架與歷史位置，但若你想知道目前市場是否仍維持同樣狀態，還是需要最新的即時資料。"
+          }
         }
       },
       "comparison": {
@@ -599,6 +617,39 @@
         "neutral": "中性區域 - 市場情緒平衡",
         "greed": "貪婪區域 - 市場樂觀與冒險",
         "extremegreed": "極度貪婪區域 - 市場狂熱與超買"
+      }
+    },
+    "indicators": {
+      "currentTitle": "哪些指標在推動情緒",
+      "snapshotTitle": "哪些指標正在塑造這次市場快照",
+      "currentDescription": "SIO 恐懼貪婪指標由多個情緒子指標組成。這裡顯示目前是哪些指標正在推動市場情緒，以及它們各自偏向哪一側。",
+      "snapshotDescription": "SIO 恐懼貪婪指標由多個情緒子指標組成。你目前看到的是截至 {{date}} 的指標快照，可用來理解當時是哪些訊號在主導市場情緒。",
+      "detailSummaryCurrent": "{{indicator}} 目前如何影響市場情緒",
+      "detailSummarySnapshot": "截至 {{date}}，{{indicator}} 對市場情緒的影響",
+      "mobileEyebrowCurrent": "指標詳情",
+      "mobileEyebrowSnapshot": "截至 {{date}} 的市場快照",
+      "trend": {
+        "up": "近一個月上升",
+        "flat": "近一個月持平",
+        "down": "近一個月下降"
+      },
+      "summary": {
+        "currentEyebrow": "目前指標分布",
+        "snapshotEyebrow": "截至 {{date}} 的指標分布",
+        "currentLine": "{{total}} 項指標中，{{extremeFear}} 項極度恐懼、{{fear}} 項恐懼、{{neutral}} 項中性、{{greed}} 項貪婪、{{extremeGreed}} 項極度貪婪。",
+        "snapshotLine": "截至 {{date}}，{{total}} 項指標中，{{extremeFear}} 項極度恐懼、{{fear}} 項恐懼、{{neutral}} 項中性、{{greed}} 項貪婪、{{extremeGreed}} 項極度貪婪。",
+        "currentInsight": {
+          "fearDominant": "目前偏向恐懼的指標明顯較多，整體風險偏好仍偏保守。",
+          "greedDominant": "目前偏向貪婪的指標明顯較多，整體風險偏好正在升溫。",
+          "balanced": "目前中性指標占比較高，市場情緒仍偏向拉鋸與觀望。",
+          "mixed": "目前指標分布仍分散，市場尚未形成非常一致的情緒方向。"
+        },
+        "snapshotInsight": {
+          "fearDominant": "這份快照中，偏向恐懼的指標明顯較多，顯示當時市場風險偏好較保守。",
+          "greedDominant": "這份快照中，偏向貪婪的指標明顯較多，顯示當時市場風險偏好較積極。",
+          "balanced": "這份快照中，中性指標占比較高，顯示當時市場情緒仍偏拉鋸。",
+          "mixed": "這份快照中，指標分布仍分散，顯示當時市場沒有非常一致的情緒方向。"
+        }
       }
     },
     "viewMode": {
@@ -632,21 +683,22 @@
       "upgradeCompositionToast": "🔍 完整指標組成分析需要 Pro 方案。升級獲得深度洞察！",
       "bannerEyebrow": "免費版目前顯示歷史快照",
       "bannerTitle": "免費版僅能查看截至 {{date}} 的市場情緒資料",
-      "bannerBody": "免費版本仍可完整瀏覽儀表盤、歷史走勢與指標組成，但最近兩個月的資料與最新變化需要升級 Pro 才能查看。",
+      "bannerBody": "免費版仍可瀏覽儀表盤、歷史走勢與指標組成；最近兩個月的資料與最新變化需升級 Pro 才能查看。",
       "currentGaugeHeadline": "當前美股市場情緒",
       "snapshotGaugeHeadline": "{{date}} 的美股市場情緒",
       "upgradeForLatest": "升級查看最新資料",
       "unlockLatestCta": "解鎖最新數據",
+      "overlayMinimalLabel": "解鎖最新數據",
       "historicalSnapshotLabel": "截至 {{date}} 的歷史比較",
-      "currentCardNote": "這裡顯示的是免費版可查看的最新歷史快照。升級後可直接追蹤現在的市場情緒與最近 60 天變化。",
+      "currentCardNote": "升級後可直接追蹤現在的市場情緒與最近 60 天變化。",
       "historyRangeNote": "免費版可切換所有區間，但圖表只顯示截至 {{date}} 的資料；右側最近兩個月區段需升級 Pro。",
       "historyShortRangeNote": "這個短區間的大部分都落在最近兩個月。免費版僅顯示截至 {{date}} 的可用資料，其餘區段需升級 Pro。",
       "overlayEyebrow": "最新資料區",
-      "overlayTitle": "最近兩個月需升級 Pro",
+      "overlayTitle": "升級查看最新走勢",
       "overlayCompactTitle": "升級查看最新走勢",
       "overlayBody": "免費版資料目前停在 {{date}}。升級後可看到現在的情緒位置與最新變化。",
-      "compositionEyebrow": "指標組成仍可查看",
-      "compositionBody": "下方指標卡與細節目前顯示的是截至 {{date}} 的市場快照。升級 Pro 可看到最新指標組成與最近走勢。"
+      "compositionEyebrow": "快照說明",
+      "compositionBody": "下方指標卡與細節目前顯示的是截至 {{date}} 的市場快照。"
     },
     "descriptions": {
       "composite": {
