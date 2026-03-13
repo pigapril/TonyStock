@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import './PlanBadge.css';
+import { Badge } from '../../Common/Badge/Badge';
 
 export const PlanBadge = ({ 
   plan, 
@@ -24,21 +24,15 @@ export const PlanBadge = ({
   };
 
   const config = planConfig[plan] || planConfig.free;
-  
-  const badgeClass = [
-    'plan-badge',
-    `plan-badge--${config.color}`,
-    `plan-badge--${size}`,
-    !showLabel && 'plan-badge--icon-only',
-    className
-  ].filter(Boolean).join(' ');
 
   return (
-    <div className={badgeClass}>
-      <span className="plan-badge__icon">{config.icon}</span>
-      {showLabel && (
-        <span className="plan-badge__label">{config.label}</span>
-      )}
-    </div>
+    <Badge
+      icon={config.icon}
+      label={config.label}
+      variant={config.color === 'gray' ? 'neutral' : config.color}
+      size={size}
+      iconOnly={!showLabel}
+      className={className}
+    />
   );
 };

@@ -470,37 +470,239 @@
     "noResults": "找不到符合的股票"
   },
   "home": {
-    "pageTitle": "Sentiment Inside Out | 掌握投資市場情緒，克服恐懼貪婪弱點",
-    "pageDescription": "透過獨家恐懼貪婪指標、樂活五線譜等數據工具，Sentiment Inside Out 助您洞悉市場心理，避開非理性決策，做出更聰明的投資。",
-    "keywords": "市場情緒,價格趨勢分析,追蹤清單,市場情緒指標,恐懼貪婪指數,台股,投資工具",
+    "pageTitle": "SIO 恐懼貪婪指標 | 給長期投資者的市場情緒首頁",
+    "pageDescription": "Sentiment Inside Out 透過 SIO 恐懼貪婪指標、價格趨勢分析與追蹤清單，幫助長期投資者更穩定地理解市場情緒。",
+    "keywords": "恐懼貪婪指數,市場情緒,長期投資,價格趨勢分析,追蹤清單,投資人心理,投資工具",
     "jsonLd": {
-      "description": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點。提供價格趨勢分析、我的追蹤清單、市場情緒指標等工具。"
+      "name": "Sentiment Inside Out",
+      "description": "一個以長期投資者為核心的市場心理分析平台，用 SIO 恐懼貪婪指標、價格趨勢分析與追蹤清單，幫助你用數據理解市場。"
     },
     "hero": {
-      "title": "掌握市場情緒",
-      "subtitle": "用客觀數據，\n判斷股市當前情緒，\n克服恐懼和貪婪的人性弱點。"
+      "eyebrow": "Sentiment Inside Out",
+      "title": "看懂市場現在偏恐懼還是偏貪婪。",
+      "subtitle": "SIO 把多個市場情緒訊號整理成更清楚的一個讀數，幫助你用更穩定的方式判斷市場氣氛。",
+      "primaryAuthenticated": "查看市場情緒",
+      "primaryGuest": "登入查看市場情緒",
+      "secondary": "試試價格趨勢分析",
+      "delayNote": "首頁快照目前延遲到 {{date}}。",
+      "frameworkNote": "整合 {{count}} 個市場訊號。",
+      "experienceNote": "目前可先從 {{count}} 個免費 ticker 開始。",
+      "snapshotBadge": "市場快照",
+      "loading": "首頁資料更新中...",
+      "snapshotLabel": "SIO 分數",
+      "snapshotDate": "快照截至 {{date}}",
+      "metrics": {
+        "framework": "訊號數量",
+        "pro": "Pro 方案",
+        "delay": "資料延遲"
+      },
+      "moments": {
+        "headline": "Sentiment Inside Out (SIO) 恐懼貪婪指標",
+        "events": {
+          "chinaDevaluation": {
+            "title": "中國匯改震盪",
+            "description": "人民幣急貶引發全球市場震盪。"
+          },
+          "early2016Low": {
+            "title": "油價暴跌震盪",
+            "description": "油價暴跌與景氣疑慮拖累市場。"
+          },
+          "tradeWarSelloff": {
+            "title": "貿易戰拋售",
+            "description": "關稅升溫與緊縮壓力引發年底拋售。"
+          },
+          "prePandemicPeak": {
+            "title": "疫情前高點",
+            "description": "疫情全面擴散前，市場仍維持在偏熱區。"
+          },
+          "pandemicPanic": {
+            "title": "疫情恐慌崩跌",
+            "description": "疫情停擺衝擊快速擴散。"
+          },
+          "liquidityPeak": {
+            "title": "2021 流動性高點",
+            "description": "寬鬆流動性與成長股熱潮推升市場。"
+          },
+          "inflationShock": {
+            "title": "通膨升息衝擊",
+            "description": "高通膨與升息壓力升高時，市場重新定價風險，情緒快速降溫。"
+          },
+          "aiRally": {
+            "title": "AI Rally",
+            "description": "AI 題材帶動風險偏好回升，市場情緒重新回到偏樂觀區域。"
+          },
+          "inflationBearLow": {
+            "title": "2022 熊市低點",
+            "description": "升息、通膨與衰退擔憂持續升高。"
+          },
+          "trumpTradeWar2025": {
+            "title": "2025 川普貿易戰衝擊",
+            "description": "川普貿易戰消息再度擾動市場。"
+          }
+        }
+      },
+      "delayValue": "{{count}} 個月",
+      "scrollLabel": "捲動到 SIO 方法論區塊"
     },
-    "feature1": {
-      "title": "價格趨勢分析",
-      "text": "運用五線譜價格位階，抓出ETF或是個股的價格趨勢，提高進出場勝率",
-      "alt": "價格趨勢分析"
+    "announcement": {
+      "badge": "公告"
     },
-    "feature3": {
-      "title": "市場情緒指標",
-      "text": "解讀市場情緒，克服人性弱點，抓住市場恐懼的入場時機",
-      "alt": "市場情緒指標"
+    "positioning": {
+      "items": [
+        {
+          "title": "先把市場情緒看清楚",
+          "description": "不用在多個指標之間來回切換，先從一個更清楚的讀數理解市場現在偏恐懼還是偏貪婪。"
+        },
+        {
+          "title": "知道是什麼在推動情緒",
+          "description": "SIO 不是只看單一數字，而是同時觀察多個市場訊號，幫助你理解市場情緒為什麼會改變。"
+        },
+        {
+          "title": "把情緒判斷變成投資流程",
+          "description": "結合市場情緒、價格位階與自己的追蹤清單，讓市場波動時的決策更穩一些。"
+        }
+      ]
     },
-    "feature": {
-      "link": "免費體驗"
+    "methodology": {
+      "eyebrow": "SIO 怎麼看市場",
+      "title": "SIO 會把 8 個市場訊號整理成更清楚的一個讀數。",
+      "description": "它不是只看單一指標，而是把情緒、波動、避險需求、信用風險與部位變化一起放進來看。",
+      "frameworkEyebrow": "訊號",
+      "frameworkDescriptions": {
+        "aaiiSpread": "看散戶投資人的情緒傾向。",
+        "cboeRatio": "看市場對下跌保護的需求有多高。",
+        "marketMomentum": "看大盤趨勢是在轉強還是轉弱。",
+        "vixMA50": "看市場壓力是否正在升高。",
+        "safeHaven": "看資金是否開始往避險資產移動。",
+        "junkBond": "看市場是否還願意承擔風險。",
+        "cotIndex": "看投機部位是否開始變得擁擠。",
+        "naaimIndex": "看主動型經理人的曝險方向。"
+      },
+      "snapshot": {
+        "kicker": "市場快照",
+        "title": "最近一次的 SIO 讀數",
+        "badge": "延遲資料",
+        "body": "截至 {{date}}，SIO 分數為 {{score}}，當時市場情緒落在「{{sentiment}}」區域。免費版會看到延遲資料，Pro 則可以查看最新讀數。",
+        "distributionTitle": "這次讀數是怎麼形成的",
+        "distributionSummary": "{{total}} 個輸入中，{{extremeFear}} 個處於極度恐懼、{{fear}} 個恐懼、{{neutral}} 個中性、{{greed}} 個貪婪、{{extremeGreed}} 個極度貪婪。"
+      },
+      "preview": {
+        "kicker": "分數背後的訊號",
+        "title": "先看幾個 SIO 會追蹤的訊號",
+        "description": "這些例子可以幫助你理解市場情緒為什麼會改變，但真正有用的是把它們放在一起看。"
+      }
     },
-    "feature2": {
-      "title": "我的追蹤清單",
-      "text": "建立屬於你的個人清單，輕鬆查看多個標的五線譜價格位階",
-      "alt": "我的追蹤清單",
-      "link": "升級至專業版"
+    "proof": {
+      "eyebrow": "過去的恐懼低點",
+      "title": "看看 SIO 在幾次明顯恐懼時刻的表現。",
+      "description": "這些過去的低分讀數，可以幫助你理解市場情緒什麼時候已經接近極端恐懼。",
+      "scoreLabel": "SIO 分數 {{score}}",
+      "cardBody": "單一訊號通常不夠，真正有參考價值的是多個訊號同時往同一邊靠攏。",
+      "empty": "目前暫時無法取得歷史低點證據。"
     },
-    "cta": {
-      "button": "立即登入體驗完整功能"
+    "journey": {
+      "eyebrow": "怎麼開始用",
+      "title": "從市場情緒，到價格位置，再到自己的追蹤清單。",
+      "description": "先看大方向的市場情緒，再檢查一檔標的的位置，最後把你真的在意的標的留下來持續追蹤。",
+      "cards": {
+        "sentiment": {
+          "badge": "第 1 步",
+          "title": "先看整體市場",
+          "description": "先用 SIO 了解現在的市場情緒偏向恐懼、謹慎，還是樂觀。",
+          "cta": "查看市場情緒"
+        },
+        "price": {
+          "badge": "第 2 步",
+          "title": "再看價格位置",
+          "description": "用價格趨勢分析確認一檔股票或 ETF 現在大概位於什麼位置。",
+          "cta": "分析一檔標的"
+        },
+        "watchlist": {
+          "badge": "第 3 步",
+          "title": "留下你真正想追蹤的標的",
+          "description": "把你之後還想回頭看的標的整理成自己的清單，下次就能更快接續同樣的流程。",
+          "cta": "打開追蹤清單"
+        }
+      }
+    },
+    "tools": {
+      "eyebrow": "更多工具",
+      "title": "當一個分數還不夠時，可以往下看更多。",
+      "description": "把市場情緒、價格趨勢分析與追蹤清單一起用，能讓投資流程更完整。",
+      "cards": {
+        "price": {
+          "badge": "免費",
+          "title": "價格趨勢分析",
+          "description": "先看看一檔股票或 ETF 位於長期價格結構的哪個位置，再決定要不要深入研究。",
+          "cta": "分析一檔標的"
+        },
+        "watchlist": {
+          "badge": "Pro",
+          "title": "追蹤清單",
+          "description": "把自己真正關心的標的整理在一起，之後就能更快回看價格位階。",
+          "cta": "打開追蹤清單"
+        },
+        "sentiment": {
+          "badge": "市場情緒",
+          "title": "市場情緒",
+          "description": "進一步查看完整的 SIO 視圖、底層訊號，以及每次讀數背後的歷史脈絡。",
+          "cta": "打開市場情緒頁"
+        }
+      }
+    },
+    "story": {
+      "eyebrow": "比較平靜地看市場",
+      "title": "先看大方向，再讓細節隨著往下滑逐步出現。",
+      "description": "首頁不需要像儀表板一樣一次塞滿資訊。先用市場情緒建立背景，再看分數背後的訊號，最後把脈絡轉成你自己的追蹤清單。",
+      "blocks": {
+        "sentiment": {
+          "eyebrow": "先看整體市場",
+          "title": "在看單一標的之前，先知道整體市場現在是什麼氣氛。",
+          "description": "SIO 會把幾個市場訊號整理成一個延遲快照，讓你先從整體情緒背景出發，而不是直接被零散雜訊帶著走。",
+          "cta": "打開市場情緒"
+        },
+        "signals": {
+          "eyebrow": "再看分數背後",
+          "title": "幾個訊號可以幫你理解這個分數，但重點還是整體讀數。",
+          "description": "這裡放的是幫助理解的代表訊號，不是要把首頁做成滿版指標牆。真正的價值，在於把它們放在一起，並和過去恐懼低點一起看。"
+        },
+        "watchlist": {
+          "eyebrow": "把脈絡變成習慣",
+          "title": "當你開始有感覺的標的，就把它留進自己的追蹤清單。",
+          "description": "先看市場情緒，再看一檔標的的價格位置，最後把之後還想回來看的 ticker 留下來。這樣首頁的下一步會更自然，而不是直接推銷。",
+          "cta": "打開追蹤清單",
+          "mediaLabel": "追蹤清單預覽",
+          "steps": {
+            "market": "先看市場情緒",
+            "price": "再看價格位置",
+            "save": "存進追蹤清單"
+          },
+          "status": {
+            "0": "準備再看一次",
+            "1": "值得檢查價格結構",
+            "2": "先留在清單裡"
+          }
+        }
+      }
+    },
+    "entry": {
+      "eyebrow": "繼續往下探索",
+      "title": "先從熟悉的市場開始，再決定要不要看得更深。",
+      "description": "如果首頁已經幫你建立基本脈絡，下一步就應該很簡單：先試免費 ticker，或在需要時升級查看最新 SIO 讀數。",
+      "pricing": {
+        "badge": "Pro",
+        "title": "想看最新的市場讀數？",
+        "description": "Pro 會開放最新的 SIO 讀數、更完整的歷史資料，以及更順手的研究流程。",
+        "monthly": "月費",
+        "yearly": "年費",
+        "cta": "比較方案"
+      },
+      "tickers": {
+        "kicker": "開始使用",
+        "title": "先從你熟悉的市場開始。",
+        "description": "挑一檔你熟悉的 ETF 或股票，先試試免費分析工具。",
+        "cta": "打開免費分析"
+      }
     }
   },
   "indicatorItem": {

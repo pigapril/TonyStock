@@ -5,6 +5,7 @@ import { PlanBadge } from '../../shared/PlanBadge';
 import { AppleButton } from '../../shared/AppleButton';
 import { useSubscription } from '../../SubscriptionContext';
 import { useAuth } from '../../../Auth/useAuth';
+import { Dialog } from '../../../Common/Dialog/Dialog';
 import subscriptionService from '../../../../services/subscriptionService';
 import { Analytics } from '../../../../utils/analytics';
 import './PlanInfo.css';
@@ -195,38 +196,35 @@ export const PlanInfo = ({ plan, loading }) => {
           )}
         </div>
         
-        {/* Cancel Confirmation Dialog */}
-        {showCancelConfirm && (
-          <div className="plan-info__cancel-dialog-overlay">
-            <div className="plan-info__cancel-dialog">
-              <h3 className="plan-info__cancel-dialog-title">
-                {t('subscription.userAccount.cancelConfirmTitle')}
-              </h3>
-              <p className="plan-info__cancel-dialog-message">
-                {t('subscription.userAccount.cancelConfirmMessage', {
-                  endDate: formatDate(plan.endDate)
-                })}
-              </p>
-              <div className="plan-info__cancel-dialog-actions">
-                <AppleButton 
-                  variant="outline" 
-                  onClick={() => setShowCancelConfirm(false)}
-                  disabled={cancelLoading}
-                >
-                  {t('subscription.userAccount.keepSubscription')}
-                </AppleButton>
-                <AppleButton 
-                  variant="destructive" 
-                  onClick={handleCancelSubscription}
-                  loading={cancelLoading}
-                  disabled={cancelLoading}
-                >
-                  {t('subscription.userAccount.confirmCancel')}
-                </AppleButton>
-              </div>
-            </div>
+        <Dialog
+          open={showCancelConfirm}
+          onClose={() => setShowCancelConfirm(false)}
+          title={t('subscription.userAccount.cancelConfirmTitle')}
+          description={t('subscription.userAccount.cancelConfirmMessage', {
+            endDate: formatDate(plan.endDate)
+          })}
+          className="plan-info__cancel-dialog-shell"
+          contentClassName="plan-info__cancel-dialog-body"
+          maxWidth="sm"
+        >
+          <div className="plan-info__cancel-dialog-actions">
+            <AppleButton
+              variant="outline"
+              onClick={() => setShowCancelConfirm(false)}
+              disabled={cancelLoading}
+            >
+              {t('subscription.userAccount.keepSubscription')}
+            </AppleButton>
+            <AppleButton
+              variant="destructive"
+              onClick={handleCancelSubscription}
+              loading={cancelLoading}
+              disabled={cancelLoading}
+            >
+              {t('subscription.userAccount.confirmCancel')}
+            </AppleButton>
           </div>
-        )}
+        </Dialog>
       </div>
     </div>
   );

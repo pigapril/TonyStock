@@ -1,42 +1,247 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaArrowRight, FaChevronDown, FaClock, FaLayerGroup, FaLock, FaSignal } from 'react-icons/fa';
 import './Home.css';
 import { useDialog } from '../../components/Common/Dialog/useDialog';
 import { useAuth } from '../../components/Auth/useAuth';
 import PageContainer from '../PageContainer/PageContainer';
 import { useTranslation } from 'react-i18next';
+import { Badge } from '../Common/Badge/Badge';
+import { Button } from '../Common/Button/Button';
+import homepageService from '../../services/homepageService';
+import MarketSentimentGauge from '../MarketSentimentIndex/MarketSentimentGauge';
+
+const BUTTON_LINK_CLASS = (variant) => [
+  'ui-button',
+  `ui-button--${variant}`,
+  'ui-button--large',
+  'home-link-button'
+].join(' ');
+
+const FALLBACK_FRAMEWORK_IDS = [
+  'aaiiSpread',
+  'cboeRatio',
+  'marketMomentum',
+  'vixMA50',
+  'safeHaven',
+  'junkBond',
+  'cotIndex',
+  'naaimIndex'
+];
+
+const FEATURED_FRAMEWORK_IDS = [
+  'vixMA50',
+  'cboeRatio',
+  'aaiiSpread',
+  'junkBond'
+];
+
+const HERO_GAUGE_HEADLINE = (
+  <>
+    <span className="home-marketPreviewShell__headlineLine">Sentiment Inside Out</span>
+    <span className="home-marketPreviewShell__headlineLine">恐懼貪婪指標</span>
+  </>
+);
+
+function getSentimentSuffix(key) {
+  if (!key) {
+    return 'neutral';
+  }
+
+  const segments = key.split('.');
+  return segments[segments.length - 1];
+}
+
+function formatDate(value, locale) {
+  if (!value) {
+    return 'N/A';
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return 'N/A';
+  }
+
+  return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  }).format(date);
+}
+
+function formatCurrency(value, locale, currency = 'TWD') {
+  if (value === null || value === undefined) {
+    return '--';
+  }
+
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 0
+  }).format(value);
+}
+
+function formatHeroMomentDate(value, locale) {
+  if (!value) {
+    return { monthDay: 'N/A', year: '' };
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return { monthDay: 'N/A', year: '' };
+  }
+
+  if (locale === 'zh-TW') {
+    return {
+      monthDay: `${date.getMonth() + 1}月${date.getDate()}日`,
+      year: String(date.getFullYear())
+    };
+  }
+
+  const parts = new Intl.DateTimeFormat(locale, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  }).formatToParts(date);
+
+  return {
+    monthDay: [
+      parts.find(({ type }) => type === 'month')?.value || '',
+      parts.find(({ type }) => type === 'day')?.value || ''
+    ].filter(Boolean).join(' '),
+    year: parts.find(({ type }) => type === 'year')?.value || ''
+  };
+}
 
 export const Home = () => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
+  const locale = currentLang === 'zh' ? 'zh-TW' : currentLang;
   const { openDialog } = useDialog();
   const { isAuthenticated } = useAuth();
+  const [homepageData, setHomepageData] = useState(() => homepageService.getFallbackData());
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeExtremeIndex, setActiveExtremeIndex] = useState(0);
+  const [, startTransition] = useTransition();
 
-  // **新增：根據語言決定圖片路徑的輔助函數**
-  const getImagePath = (baseName, extension = 'png') => {
-    const langSuffix = currentLang !== 'zh-TW' ? '-en' : '';
-    return `/images/${baseName}${langSuffix}.${extension}`;
-  };
+  useEffect(() => {
+    let isMounted = true;
 
-  // 使用 useMemo 定義用於結構化數據的 JSON-LD，並加入 currentLang 依賴
+    const loadHomepageData = async () => {
+      const data = await homepageService.getHomepageData();
+
+      if (!isMounted) {
+        return;
+      }
+
+      startTransition(() => {
+        setHomepageData(data);
+        setIsLoading(false);
+      });
+    };
+
+    loadHomepageData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [startTransition]);
+
+  useEffect(() => {
+    const revealNodes = document.querySelectorAll('.home-reveal');
+
+    if (revealNodes.length === 0) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.2,
+      rootMargin: '0px 0px -8% 0px'
+    });
+
+    revealNodes.forEach((node) => observer.observe(node));
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!homepageData?.sentiment?.featuredMoments?.length || homepageData.sentiment.featuredMoments.length < 2) {
+      return undefined;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveExtremeIndex((currentIndex) => (
+        (currentIndex + 1) % homepageData.sentiment.featuredMoments.length
+      ));
+    }, 6800);
+
+    return () => window.clearInterval(intervalId);
+  }, [homepageData]);
+
   const homeJsonLd = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": t('home.jsonLd.name', 'Sentiment Inside Out'),
-    "description": t('home.jsonLd.description'),
-    "url": `${window.location.origin}/${currentLang}`,
-    "inLanguage": currentLang
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: t('home.jsonLd.name'),
+    description: t('home.jsonLd.description'),
+    url: `${window.location.origin}/${currentLang}`,
+    inLanguage: currentLang
   }), [t, currentLang]);
 
-  // Helper to render text with line breaks
-  const renderTextWithLineBreaks = (text) => {
-    return text.split('\n').map((line, index, array) => (
-      <React.Fragment key={index}>
-        {line}
-        {index < array.length - 1 && <br />}
-      </React.Fragment>
-    ));
+  const sentimentData = homepageData?.sentiment || {};
+  const pricingData = homepageData?.pricing || {};
+  const freeExperience = homepageData?.freeExperience || {};
+  const frameworkIndicatorIds = sentimentData.frameworkIndicatorIds?.length
+    ? sentimentData.frameworkIndicatorIds
+    : FALLBACK_FRAMEWORK_IDS;
+  const featuredFrameworkIds = FEATURED_FRAMEWORK_IDS.filter((indicatorId) => frameworkIndicatorIds.includes(indicatorId));
+  const previewIndicators = sentimentData.previewIndicators || [];
+  const historicLows = sentimentData.historicLows || [];
+  const featuredMoments = sentimentData.featuredMoments || [];
+  const distribution = sentimentData.distribution || {};
+  const activeHeroMoment = featuredMoments[activeExtremeIndex] || null;
+  const sentimentLabel = t(sentimentData.sentimentKey || 'sentiment.notAvailable');
+  const sentimentSuffix = getSentimentSuffix(sentimentData.sentimentKey);
+  const scoreValue = sentimentData.score === null || sentimentData.score === undefined
+    ? '--'
+    : Math.round(Number(sentimentData.score));
+  const activeHeroDate = activeHeroMoment?.date || sentimentData.restrictionCutoffDate || sentimentData.lastUpdated || null;
+  const activeHeroDateParts = formatHeroMomentDate(activeHeroDate, locale);
+  const activeHeroMomentTitle = activeHeroMoment
+    ? t(`home.hero.moments.events.${activeHeroMoment.eventId}.title`, {
+        defaultValue: activeHeroMoment.title || ''
+      })
+    : '';
+  const activeHeroMomentDescription = activeHeroMoment
+    ? t(`home.hero.moments.events.${activeHeroMoment.eventId}.description`, {
+        defaultValue: activeHeroMoment.description || ''
+      })
+    : '';
+  const heroGaugeData = {
+    totalScore: activeHeroMoment?.score === null || activeHeroMoment?.score === undefined
+      ? (sentimentData.score === null || sentimentData.score === undefined ? 0 : Number(sentimentData.score))
+      : Number(activeHeroMoment.score),
+    compositeScoreLastUpdate: activeHeroDate
+  };
+  const restrictionDateLabel = formatDate(
+    sentimentData.restrictionCutoffDate || sentimentData.lastUpdated,
+    locale
+  );
+  const announcementMessage = currentLang.startsWith('zh')
+    ? homepageData?.announcement?.message_zh || homepageData?.announcement?.message
+    : homepageData?.announcement?.message_en || homepageData?.announcement?.message;
+  const handlePrimaryAction = () => {
+    openDialog('auth', {
+      returnPath: `/${currentLang}/market-sentiment`
+    });
   };
 
   return (
@@ -49,92 +254,331 @@ export const Home = () => {
       jsonLd={homeJsonLd}
     >
       <div className="home-page">
-        <div className="home-container">
-          {/* 英雄區（Hero Section） */}
-          <section className="hero-section">
-            <h1>{t('home.hero.title')}</h1>
-            <p className="hero-subtitle">
-              {renderTextWithLineBreaks(t('home.hero.subtitle'))}
-            </p>
-            <FaChevronDown
-              className="scroll-arrow"
-              onClick={() => {
-                document.querySelector('#features').scrollIntoView({
-                  behavior: 'smooth'
-                });
-              }}
-            />
-          </section>
+        <section className="home-hero">
+          <div className="home-hero__backdrop" aria-hidden="true" />
+          <div className="ui-page-shell home-hero__inner">
+            <div className="home-hero__content">
+              <Badge
+                variant="blue"
+                size="large"
+                label={t('home.hero.eyebrow')}
+              />
+              <h1>{t('home.hero.title')}</h1>
+              <p className="home-hero__subtitle">{t('home.hero.subtitle')}</p>
 
-          {/* 特點區段（Feature Sections） */}
-          <div className="features-wrapper" id="features">
-            <section className="feature-section feature1">
-              <div className="feature-container">
-                <div className="feature-media">
-                  <picture>
-                    <source srcSet={getImagePath('home-feature1', 'webp')} type="image/webp" />
-                    <img src={getImagePath('home-feature1', 'png')} alt={t('home.feature1.alt')} />
-                  </picture>
-                </div>
-                <div className="feature-content">
-                  <h2>{t('home.feature1.title')}</h2>
-                  <p>{t('home.feature1.text')}</p>
-                  <Link to={`/${currentLang}/priceanalysis`} className="feature-link">
-                    {t('home.feature.link')} <span className="arrow">→</span>
-                  </Link>
-                </div>
-              </div>
-            </section>
-
-            <section className="feature-section feature2">
-              <div className="feature-container reverse">
-                <div className="feature-media">
-                  <picture>
-                    <source srcSet={getImagePath('home-feature2', 'webp')} type="image/webp" />
-                    <img src={getImagePath('home-feature2', 'png')} alt={t('home.feature2.alt')} />
-                  </picture>
-                </div>
-                <div className="feature-content">
-                  <h2>{t('home.feature2.title')}</h2>
-                  <p>{t('home.feature2.text')}</p>
+              <div className="home-hero__actions">
+                {isAuthenticated ? (
                   <Link
-                    to={`/${currentLang}/subscription-plans`}
-                    className="feature-link"
+                    to={`/${currentLang}/market-sentiment`}
+                    className={BUTTON_LINK_CLASS('primary')}
                   >
-                    {t('home.feature2.link')} <span className="arrow">→</span>
+                    <span>{t('home.hero.primaryAuthenticated')}</span>
+                    <FaArrowRight aria-hidden="true" />
                   </Link>
-                </div>
-              </div>
-            </section>
+                ) : (
+                  <Button
+                    size="large"
+                    onClick={handlePrimaryAction}
+                    className="home-hero__authButton"
+                  >
+                    <span>{t('home.hero.primaryGuest')}</span>
+                    <FaLock aria-hidden="true" />
+                  </Button>
+                )}
 
-            <section className="feature-section feature3">
-              <div className="feature-container">
-                <div className="feature-media">
-                  <picture>
-                    <source srcSet={getImagePath('home-feature3', 'webp')} type="image/webp" />
-                    <img src={getImagePath('home-feature3', 'png')} alt={t('home.feature3.alt')} />
-                  </picture>
-                </div>
-                <div className="feature-content">
-                  <h2>{t('home.feature3.title')}</h2>
-                  <p>{t('home.feature3.text')}</p>
-                  <Link to={`/${currentLang}/market-sentiment`} className="feature-link">
-                    {t('home.feature.link')} <span className="arrow">→</span>
-                  </Link>
-                </div>
+                <Link
+                  to={`/${currentLang}/priceanalysis?stockCode=SPY&years=3.5`}
+                  className={BUTTON_LINK_CLASS('outline')}
+                >
+                  <span>{t('home.hero.secondary')}</span>
+                  <FaArrowRight aria-hidden="true" />
+                </Link>
               </div>
-            </section>
+
+              <div className="home-hero__meta">
+                <span className="home-hero__metaItem">
+                  <FaClock aria-hidden="true" />
+                  {t('home.hero.delayNote', { date: restrictionDateLabel })}
+                </span>
+                <span className="home-hero__metaItem">
+                  <FaLayerGroup aria-hidden="true" />
+                  {t('home.hero.frameworkNote', { count: frameworkIndicatorIds.length })}
+                </span>
+                <span className="home-hero__metaItem">
+                  <FaSignal aria-hidden="true" />
+                  {t('home.hero.experienceNote', { count: freeExperience.totalTickerCount || freeExperience.tickers?.length || 0 })}
+                </span>
+              </div>
+            </div>
+
+            <div className="home-hero__visual">
+              <div className="home-marketPreviewShell">
+                <MarketSentimentGauge
+                  className="home-marketPreviewShell__gauge"
+                  sentimentData={heroGaugeData}
+                  isDataLoaded={!isLoading}
+                  showAnalysisResult={false}
+                  showLastUpdate={false}
+                  headlineText={HERO_GAUGE_HEADLINE}
+                  frameFooterContent={activeHeroMoment ? (
+                    <div className="home-marketMomentPanel">
+                      <div
+                        key={activeHeroMoment?.eventId || String(activeHeroDate || 'fallback')}
+                        className="home-marketMomentPanel__content"
+                      >
+                        <div className="home-marketMomentPanel__dateBlock">
+                          <span className="home-marketMomentPanel__date">
+                            <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--year">
+                              {activeHeroDateParts.year || '----'}
+                            </span>
+                            <span className="home-marketMomentPanel__dateDivider" aria-hidden="true" />
+                            <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--day">
+                              {activeHeroDateParts.monthDay}
+                            </span>
+                          </span>
+                        </div>
+                        <div className="home-marketMomentPanel__body">
+                          <div className="home-marketMomentPanel__copy">
+                            <strong className="home-marketMomentPanel__title">
+                              {activeHeroMomentTitle}
+                            </strong>
+                            <p className="home-marketMomentPanel__description">
+                              {activeHeroMomentDescription}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+                />
+              </div>
+            </div>
           </div>
 
-          {/* 行動呼籲區（CTA Section） - 只在未登入時顯示 */}
-          {!isAuthenticated && (
-            <section className="cta-section">
-              <button className="cta-button" onClick={() => openDialog('auth')}>
-                {t('home.cta.button')}
-              </button>
-            </section>
-          )}
-        </div>
+          <button
+            type="button"
+            className="home-scrollCue"
+            onClick={() => {
+              document.querySelector('#home-methodology')?.scrollIntoView({
+                behavior: 'smooth'
+              });
+            }}
+            aria-label={t('home.hero.scrollLabel')}
+          >
+            <FaChevronDown aria-hidden="true" />
+          </button>
+        </section>
+
+        {homepageData?.announcement?.enabled && announcementMessage && (
+          <section className="home-announcement">
+            <div className="ui-page-shell">
+              <div className="ui-callout ui-callout--brand home-announcement__card">
+                <Badge variant="warning" label={t('home.announcement.badge')} />
+                <p>{announcementMessage}</p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section id="home-methodology" className="ui-section home-narrative">
+          <div className="ui-page-shell">
+            <div className="ui-section-intro home-reveal">
+              <span className="ui-section-eyebrow">{t('home.story.eyebrow')}</span>
+              <h2 className="ui-section-title">{t('home.story.title')}</h2>
+              <p className="ui-section-description">{t('home.story.description')}</p>
+            </div>
+
+            <article className="home-storyBlock home-storyBlock--sentiment home-reveal">
+              <div className="home-storyBlock__content">
+                <span className="home-storyBlock__eyebrow">{t('home.story.blocks.sentiment.eyebrow')}</span>
+                <h3>{t('home.story.blocks.sentiment.title')}</h3>
+                <p>{t('home.story.blocks.sentiment.description')}</p>
+                <Link to={`/${currentLang}/market-sentiment`} className="home-toolCard__link">
+                  {t('home.story.blocks.sentiment.cta')} <FaArrowRight aria-hidden="true" />
+                </Link>
+              </div>
+
+              <div className="home-storyMedia home-storyMedia--sentiment ui-surface-card ui-surface-card--glass">
+                <div className="home-storyMedia__panel">
+                  <div>
+                    <span className="home-methodology__kicker">{t('home.methodology.snapshot.kicker')}</span>
+                    <h3>{t('home.methodology.snapshot.title')}</h3>
+                  </div>
+                  <Badge variant="blue" label={t('home.methodology.snapshot.badge')} />
+                </div>
+                <div className="home-storyMedia__scoreWrap">
+                  <div className={`home-storyMedia__score sentiment-${sentimentSuffix}`}>
+                    {scoreValue}
+                  </div>
+                  <div className="home-storyMedia__scoreMeta">
+                    <span className="home-snapshotCard__label">{t('home.hero.snapshotLabel')}</span>
+                    <strong>{sentimentLabel}</strong>
+                    <span>{t('home.hero.snapshotDate', { date: restrictionDateLabel })}</span>
+                  </div>
+                </div>
+                <p className="home-storyMedia__body">
+                  {t('home.methodology.snapshot.body', {
+                    score: scoreValue,
+                    sentiment: sentimentLabel,
+                    date: restrictionDateLabel
+                  })}
+                </p>
+                <div className="home-storyMedia__distribution">
+                  <div className="home-methodology__distributionLead">{t('home.methodology.snapshot.distributionTitle')}</div>
+                  <p className="home-methodology__distributionSummary">
+                    {t('home.methodology.snapshot.distributionSummary', {
+                      total: distribution.total || frameworkIndicatorIds.length,
+                      extremeFear: distribution.extremeFear || 0,
+                      fear: distribution.fear || 0,
+                      neutral: distribution.neutral || 0,
+                      greed: distribution.greed || 0,
+                      extremeGreed: distribution.extremeGreed || 0
+                    })}
+                  </p>
+                  <div className="home-methodology__distributionBars" aria-hidden="true">
+                    {['extremeFear', 'fear', 'neutral', 'greed', 'extremeGreed'].map((bucket) => (
+                      <span
+                        key={bucket}
+                        className={`home-methodology__distributionBar sentiment-${bucket}`}
+                        style={{
+                          width: `${((distribution[bucket] || 0) / Math.max(distribution.total || frameworkIndicatorIds.length, 1)) * 100}%`
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article className="home-storyBlock home-storyBlock--signals home-reveal">
+              <div className="home-storyMedia home-storyMedia--signals ui-surface-card">
+                <div className="home-storyMedia__orb" aria-hidden="true" />
+                <div className="home-storyMedia__signalGrid">
+                  {previewIndicators.map((indicator) => (
+                    <article key={indicator.id} className="home-storyMedia__signalCard">
+                      <span className="home-methodology__previewLabel">{t(`indicators.${indicator.id}`)}</span>
+                      <strong>{indicator.percentileRank === null || indicator.percentileRank === undefined ? '--' : Math.round(indicator.percentileRank)}</strong>
+                      <span className={`home-methodology__previewSentiment sentiment-${getSentimentSuffix(indicator.sentimentKey)}`}>
+                        {t(indicator.sentimentKey)}
+                      </span>
+                    </article>
+                  ))}
+                </div>
+                <div className="home-proof__grid home-proof__grid--inline">
+                  {historicLows.length > 0 ? historicLows.map((item) => (
+                    <article key={item.date} className="ui-surface-card ui-surface-card--prominent home-proof__card">
+                      <span className="home-proof__date">{formatDate(item.date, locale)}</span>
+                      <strong>{t('home.proof.scoreLabel', { score: Math.round(item.score) })}</strong>
+                      <span className={`home-proof__sentiment sentiment-${getSentimentSuffix(item.sentimentKey)}`}>
+                        {t(item.sentimentKey)}
+                      </span>
+                      <p>{t('home.proof.cardBody')}</p>
+                    </article>
+                  )) : (
+                    <article className="ui-surface-card home-proof__empty">
+                      <p>{t('home.proof.empty')}</p>
+                    </article>
+                  )}
+                </div>
+              </div>
+
+              <div className="home-storyBlock__content">
+                <span className="home-storyBlock__eyebrow">{t('home.story.blocks.signals.eyebrow')}</span>
+                <h3>{t('home.story.blocks.signals.title')}</h3>
+                <p>{t('home.story.blocks.signals.description')}</p>
+                <div className="home-frameworkStrip">
+                  {featuredFrameworkIds.map((indicatorId) => (
+                    <span key={indicatorId} className="home-frameworkStrip__item">
+                      {t(`indicators.${indicatorId}`)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </article>
+
+            <article className="home-storyBlock home-storyBlock--watchlist home-reveal">
+              <div className="home-storyBlock__content">
+                <span className="home-storyBlock__eyebrow">{t('home.story.blocks.watchlist.eyebrow')}</span>
+                <h3>{t('home.story.blocks.watchlist.title')}</h3>
+                <p>{t('home.story.blocks.watchlist.description')}</p>
+                <div className="home-watchlistFlow">
+                  <span>{t('home.story.blocks.watchlist.steps.market')}</span>
+                  <span>{t('home.story.blocks.watchlist.steps.price')}</span>
+                  <span>{t('home.story.blocks.watchlist.steps.save')}</span>
+                </div>
+                <Link to={`/${currentLang}/watchlist`} className="home-toolCard__link">
+                  {t('home.story.blocks.watchlist.cta')} <FaArrowRight aria-hidden="true" />
+                </Link>
+              </div>
+
+              <div className="home-storyMedia home-storyMedia--watchlist ui-surface-card">
+                <div className="home-storyMedia__watchlistHeader">
+                  <Badge variant="premium" label={t('home.story.blocks.watchlist.mediaLabel')} />
+                </div>
+                <div className="home-storyMedia__watchlistStack">
+                  {(freeExperience.tickers || []).slice(0, 6).map((ticker, index) => (
+                    <div key={ticker} className={`home-storyMedia__watchRow home-storyMedia__watchRow--${index % 3}`}>
+                      <strong>{ticker}</strong>
+                      <span>{t(`home.story.blocks.watchlist.status.${index % 3}`)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section className="ui-section home-entry home-reveal">
+          <div className="ui-page-shell">
+            <div className="ui-section-intro">
+              <span className="ui-section-eyebrow">{t('home.entry.eyebrow')}</span>
+              <h2 className="ui-section-title">{t('home.entry.title')}</h2>
+              <p className="ui-section-description">{t('home.entry.description')}</p>
+            </div>
+
+            <div className="home-entry__grid">
+              <div className="ui-callout ui-callout--brand home-entry__pricing">
+                <Badge variant="premium" label={t('home.entry.pricing.badge')} />
+                <h2>{t('home.entry.pricing.title')}</h2>
+                <p>{t('home.entry.pricing.description')}</p>
+                <div className="home-entry__prices">
+                  <div>
+                    <span>{t('home.entry.pricing.monthly')}</span>
+                    <strong>{formatCurrency(pricingData?.pro?.monthly, locale, pricingData?.currency)}</strong>
+                  </div>
+                  <div>
+                    <span>{t('home.entry.pricing.yearly')}</span>
+                    <strong>{formatCurrency(pricingData?.pro?.yearly, locale, pricingData?.currency)}</strong>
+                  </div>
+                </div>
+                <Link to={`/${currentLang}/subscription-plans`} className={BUTTON_LINK_CLASS('primary')}>
+                  <span>{t('home.entry.pricing.cta')}</span>
+                  <FaArrowRight aria-hidden="true" />
+                </Link>
+              </div>
+
+              <div className="ui-data-panel home-entry__tickers">
+                <span className="home-entry__kicker">{t('home.entry.tickers.kicker')}</span>
+                <h2>{t('home.entry.tickers.title')}</h2>
+                <p>{t('home.entry.tickers.description')}</p>
+                <div className="home-entry__tickerGrid">
+                  {(freeExperience.tickers || []).map((ticker) => (
+                    <Link
+                      key={ticker}
+                      to={`/${currentLang}/priceanalysis?stockCode=${ticker}&years=3.5`}
+                      className="home-entry__ticker"
+                    >
+                      {ticker}
+                    </Link>
+                  ))}
+                </div>
+                <Link to={`/${currentLang}/priceanalysis`} className="home-toolCard__link">
+                  {t('home.entry.tickers.cta')} <FaArrowRight aria-hidden="true" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </PageContainer>
   );

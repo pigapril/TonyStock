@@ -55,6 +55,8 @@ const getSegmentRenderRange = (segment, index) => {
   return { start, end };
 };
 
+const easeOutQuint = (value) => 1 - ((1 - value) ** 5);
+
 const MarketSentimentGauge = ({
   sentimentData,
   isDataLoaded = false,
@@ -64,13 +66,18 @@ const MarketSentimentGauge = ({
   showAnalysisResult = true,
   showLastUpdate = true,
   headlineText = null,
-  supplementaryContent = null
+  supplementaryContent = null,
+  frameFooterContent = null
 }) => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
   const [activeZone, setActiveZone] = useState(null);
   const [labelPosition, setLabelPosition] = useState({ top: 0, left: 0 });
+  const [animatedScore, setAnimatedScore] = useState(
+    sentimentData?.totalScore == null ? 0 : clampScore(sentimentData.totalScore)
+  );
   const isInteractionEnabledRef = useRef(true);
+  const animationFrameRef = useRef(null);
 
   useEffect(() => {
     if (isDataLoaded && sentimentData) {
@@ -84,8 +91,53 @@ const MarketSentimentGauge = ({
     return undefined;
   }, [isDataLoaded, sentimentData]);
 
+  useEffect(() => {
+    const targetScore = sentimentData?.totalScore == null ? 0 : clampScore(sentimentData.totalScore);
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      setAnimatedScore(targetScore);
+      return undefined;
+    }
+
+    setAnimatedScore((previousScore) => {
+      if (Math.abs(targetScore - previousScore) < 0.2) {
+        return targetScore;
+      }
+
+      const startScore = previousScore;
+      const scoreDelta = targetScore - startScore;
+      const durationMs = 1600;
+      const animationStart = performance.now();
+
+      const animate = (now) => {
+        const progress = Math.min((now - animationStart) / durationMs, 1);
+        const easedProgress = easeOutQuint(progress);
+        setAnimatedScore(startScore + (scoreDelta * easedProgress));
+
+        if (progress < 1) {
+          animationFrameRef.current = window.requestAnimationFrame(animate);
+        }
+      };
+
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+      }
+
+      animationFrameRef.current = window.requestAnimationFrame(animate);
+
+      return previousScore;
+    });
+
+    return () => {
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [sentimentData?.totalScore]);
+
   const sentimentInfo = useMemo(() => {
-    if (!sentimentData || sentimentData.totalScore == null) {
+    if (animatedScore == null) {
       return {
         sentiment: t('sentiment.neutral'),
         rawSentiment: 'neutral',
@@ -93,7 +145,7 @@ const MarketSentimentGauge = ({
       };
     }
 
-    const score = Math.round(sentimentData.totalScore);
+    const score = Math.round(animatedScore);
     const sentimentKey = getSentiment(score);
 
     return {
@@ -101,9 +153,9 @@ const MarketSentimentGauge = ({
       rawSentiment: sentimentKey.split('.').pop(),
       score
     };
-  }, [sentimentData, t]);
+  }, [animatedScore, t]);
 
-  const currentAngle = scoreToAngle(sentimentInfo.score);
+  const currentAngle = scoreToAngle(animatedScore);
 
   const markerPosition = useMemo(
     () => polarToCartesian(VIEWBOX.cx, VIEWBOX.cy, VIEWBOX.radius, currentAngle),
@@ -232,7 +284,7 @@ const MarketSentimentGauge = ({
 
               <g
                 className={`msiArcGauge__locator msiArcGauge__locator--${sentimentInfo.rawSentiment}`}
-                transform={`translate(${markerPosition.x}, ${markerPosition.y})`}
+                transform={`translate(${markerPosition.x} ${markerPosition.y})`}
                 aria-hidden="true"
               >
                 <circle className="msiArcGauge__locatorAura" r="14" />
@@ -269,6 +321,12 @@ const MarketSentimentGauge = ({
               }}
             >
               {t(`sentiment.${activeZone.replace(/-./g, (match) => match[1].toUpperCase())}`)}
+            </div>
+          )}
+
+          {frameFooterContent && (
+            <div className="msiArcGauge__frameFooter">
+              {frameFooterContent}
             </div>
           )}
         </div>
@@ -310,8 +368,9 @@ MarketSentimentGauge.propTypes = {
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   showAnalysisResult: PropTypes.bool,
   showLastUpdate: PropTypes.bool,
-  headlineText: PropTypes.string,
-  supplementaryContent: PropTypes.node
+  headlineText: PropTypes.node,
+  supplementaryContent: PropTypes.node,
+  frameFooterContent: PropTypes.node
 };
 
 MarketSentimentGauge.defaultProps = {
@@ -323,7 +382,8 @@ MarketSentimentGauge.defaultProps = {
   showAnalysisResult: true,
   showLastUpdate: true,
   headlineText: null,
-  supplementaryContent: null
+  supplementaryContent: null,
+  frameFooterContent: null
 };
 
 export default MarketSentimentGauge;

@@ -13,6 +13,8 @@ import { Analytics } from '../utils/analytics';
 import subscriptionService from '../api/subscriptionService';
 import paymentService from '../services/paymentService';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
+import { Button } from '../components/Common/Button/Button';
+import { Badge } from '../components/Common/Badge/Badge';
 import './PaymentPage.css';
 
 const PaymentPage = () => {
@@ -513,9 +515,14 @@ const PaymentPage = () => {
     // 渲染方案確認
     const renderPlanConfirmation = () => (
         <div className="payment-page__plan-section">
-            <div className="payment-page__plan-card">
+            <div className="payment-page__plan-card ui-surface-card ui-surface-card--prominent">
                 <div className="payment-page__plan-header">
-                    <div className="payment-page__plan-badge">Pro</div>
+                    <Badge
+                        label={selectedPlan?.name || 'Pro'}
+                        variant="blue"
+                        size="medium"
+                        className="payment-page__plan-badge"
+                    />
                     <h3 className="payment-page__plan-name">{t('payment.plan.proPlan')}</h3>
                     <div className="payment-page__plan-price">
                         <span className="payment-page__plan-amount">
@@ -592,18 +599,20 @@ const PaymentPage = () => {
             </div>
 
             <div className="payment-page__actions">
-                <button
-                    className="payment-page__button payment-page__button--secondary"
+                <Button
+                    className="payment-page__button"
+                    variant="outline"
                     onClick={handleCancel}
                 >
                     {t('payment.form.cancel')}
-                </button>
-                <button
-                    className="payment-page__button payment-page__button--primary"
+                </Button>
+                <Button
+                    className="payment-page__button"
+                    variant="primary"
                     onClick={handleNextStep}
                 >
                     {t('payment.form.confirmPlan')}
-                </button>
+                </Button>
             </div>
         </div>
     );
@@ -611,7 +620,7 @@ const PaymentPage = () => {
     // 渲染條款同意
     const renderTermsAgreement = () => (
         <div className="payment-page__terms-section">
-            <div className="payment-page__terms-content">
+            <div className="payment-page__terms-content ui-surface-card ui-surface-card--prominent">
                 <h3 className="payment-page__terms-title">{t('payment.terms.title')}</h3>
 
                 <div className="payment-page__terms-box">
@@ -651,19 +660,21 @@ const PaymentPage = () => {
             </div>
 
             <div className="payment-page__actions">
-                <button
-                    className="payment-page__button payment-page__button--secondary"
+                <Button
+                    className="payment-page__button"
+                    variant="outline"
                     onClick={handlePrevStep}
                 >
                     {t('payment.form.previous')}
-                </button>
-                <button
-                    className="payment-page__button payment-page__button--primary"
+                </Button>
+                <Button
+                    className="payment-page__button"
+                    variant="primary"
                     onClick={handleCreateOrder}
                     disabled={!agreedToTerms || loading}
                 >
                     {loading ? t('payment.form.creatingOrder') : t('payment.form.createOrder')}
-                </button>
+                </Button>
             </div>
         </div>
     );
@@ -671,7 +682,7 @@ const PaymentPage = () => {
     // 渲染付款確認
     const renderPaymentConfirmation = () => (
         <div className="payment-page__confirmation-section">
-            <div className="payment-page__order-summary">
+            <div className="payment-page__order-summary ui-surface-card ui-surface-card--prominent">
                 <h3 className="payment-page__summary-title">{t('payment.orderSummary.title')}</h3>
 
                 {orderData && (
@@ -733,7 +744,7 @@ const PaymentPage = () => {
                 )}
             </div>
 
-            <div className="payment-page__security-notice">
+            <div className="payment-page__security-notice ui-surface-card ui-surface-card--prominent">
                 <div className="payment-page__security-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -750,18 +761,20 @@ const PaymentPage = () => {
             </div>
 
             <div className="payment-page__actions">
-                <button
-                    className="payment-page__button payment-page__button--secondary"
+                <Button
+                    className="payment-page__button"
+                    variant="outline"
                     onClick={handleCancel}
                 >
                     {t('payment.form.cancelOrder')}
-                </button>
-                <button
-                    className="payment-page__button payment-page__button--primary payment-page__button--payment"
+                </Button>
+                <Button
+                    className="payment-page__button"
+                    variant="success"
                     onClick={handleSubmitPayment}
                 >
                     {t('payment.form.proceedToPayment')}
-                </button>
+                </Button>
             </div>
         </div>
     );

@@ -453,37 +453,239 @@
     "noResults": "No matching stocks found"
   },
   "home": {
-    "pageTitle": "Master Market Sentiment, Overcome Investment Weaknesses",
-    "pageDescription": "Master market sentiment and overcome investment weaknesses. Sentiment Inside Out provides objective data tools like the Fear & Greed Index, Price Trend Analysis, and Market Sentiment Indicators to help you navigate market psychology.",
-    "keywords": "market sentiment, price trend analysis, watchlist, market sentiment indicators, fear greed index, stock market, investment tools",
+    "pageTitle": "SIO Fear & Greed Index for Long-Term Investors",
+    "pageDescription": "Sentiment Inside Out helps long-term investors understand market mood with the SIO Fear & Greed Index, price trend analysis, and watchlist tools.",
+    "keywords": "fear greed index, market sentiment, long-term investing, price trend analysis, watchlist, investor psychology, investment tools",
     "jsonLd": {
-      "description": "Use objective data to determine if the current market sentiment is fear or greed, overcoming human weaknesses. Provides tools like price trend analysis, my watchlist, and market sentiment indicators."
+      "name": "Sentiment Inside Out",
+      "description": "A market psychology platform for long-term investors. Follow the SIO Fear & Greed Index, study price trends, and build steadier decisions with data."
     },
     "hero": {
-      "title": "Master Market Sentiment",
-      "subtitle": "Trade Smarter.\nOvercome Fear & Greed with Objective Data."
+      "eyebrow": "Sentiment Inside Out",
+      "title": "See when the market is driven by fear or greed.",
+      "subtitle": "SIO combines multiple market signals into one clearer read, so you can judge market mood with more discipline and less noise.",
+      "primaryAuthenticated": "View market sentiment",
+      "primaryGuest": "Sign in to view market sentiment",
+      "secondary": "Try price trend analysis",
+      "delayNote": "Homepage snapshot is delayed through {{date}}.",
+      "frameworkNote": "Built from {{count}} market signals.",
+      "experienceNote": "{{count}} free tickers to start with.",
+      "snapshotBadge": "Market snapshot",
+      "loading": "Refreshing homepage data...",
+      "snapshotLabel": "SIO score",
+      "snapshotDate": "Snapshot through {{date}}",
+      "metrics": {
+        "framework": "Signals",
+        "pro": "Pro plan",
+        "delay": "Data delay"
+      },
+      "moments": {
+        "headline": "Sentiment Inside Out (SIO) Fear & Greed Index",
+        "events": {
+          "chinaDevaluation": {
+            "title": "China Devaluation Shock",
+            "description": "Yuan devaluation triggered a global risk-off move."
+          },
+          "early2016Low": {
+            "title": "Oil Crash Selloff",
+            "description": "Oil weakness and growth fears weighed on markets."
+          },
+          "tradeWarSelloff": {
+            "title": "Trade War Selloff",
+            "description": "Tariff escalation and tighter conditions drove a year-end selloff."
+          },
+          "prePandemicPeak": {
+            "title": "Pre-Pandemic High",
+            "description": "Markets stayed overheated before the pandemic spread broadly."
+          },
+          "pandemicPanic": {
+            "title": "Pandemic Panic",
+            "description": "Pandemic shutdown fears spread rapidly."
+          },
+          "liquidityPeak": {
+            "title": "2021 Liquidity Peak",
+            "description": "Loose liquidity and growth-stock momentum lifted markets."
+          },
+          "inflationShock": {
+            "title": "Inflation Rate Shock",
+            "description": "As inflation and rate fears intensified, markets repriced risk and sentiment turned colder again."
+          },
+          "aiRally": {
+            "title": "AI Rally",
+            "description": "The AI-led run-up pulled risk appetite higher and sentiment moved back toward optimism."
+          },
+          "inflationBearLow": {
+            "title": "2022 Bear-Market Low",
+            "description": "Rate hikes, inflation, and recession fears kept building."
+          },
+          "trumpTradeWar2025": {
+            "title": "2025 Trade War Shock",
+            "description": "Trump trade-war headlines rattled markets again."
+          }
+        }
+      },
+      "delayValue": "{{count}} months",
+      "scrollLabel": "Scroll to the SIO methodology section"
     },
-    "feature1": {
-      "title": "Price Trend Analysis",
-      "text": "Utilize LOHAS Five-Line Analysis to capture ETF or individual stock price trends, improving entry and exit win rates.",
-      "alt": "Price Trend Analysis"
+    "announcement": {
+      "badge": "Announcement"
     },
-    "feature3": {
-      "title": "Market Sentiment Indicators",
-      "text": "Interpret market sentiment, overcome human weaknesses, and seize entry opportunities during market fear.",
-      "alt": "Market Sentiment Indicators"
+    "positioning": {
+      "items": [
+        {
+          "title": "Read market mood in one place",
+          "description": "Instead of bouncing between separate indicators, start with one clear read of whether the market is leaning toward fear or greed."
+        },
+        {
+          "title": "See what is driving sentiment",
+          "description": "SIO is not based on one number alone. It tracks several signals so you can understand what is pushing market mood."
+        },
+        {
+          "title": "Move from emotion to process",
+          "description": "Use sentiment, price structure, and your own watchlist together so decisions feel steadier when markets get noisy."
+        }
+      ]
     },
-    "feature": {
-      "link": "Free Trial"
+    "methodology": {
+      "eyebrow": "How SIO works",
+      "title": "SIO combines 8 market signals into one clearer view.",
+      "description": "Instead of relying on a single indicator, SIO tracks sentiment, volatility, hedging demand, credit stress, and positioning together.",
+      "frameworkEyebrow": "Signal",
+      "frameworkDescriptions": {
+        "aaiiSpread": "Shows how individual investors are feeling.",
+        "cboeRatio": "Shows how much downside protection traders are buying.",
+        "marketMomentum": "Shows whether the broader market trend is strengthening or weakening.",
+        "vixMA50": "Shows whether market stress is rising.",
+        "safeHaven": "Shows whether money is moving toward safety.",
+        "junkBond": "Shows whether investors are still comfortable taking risk.",
+        "cotIndex": "Shows whether speculative positioning is getting crowded.",
+        "naaimIndex": "Shows how active managers are positioned."
+      },
+      "snapshot": {
+        "kicker": "Market snapshot",
+        "title": "A recent SIO reading",
+        "badge": "Delayed data",
+        "body": "As of {{date}}, the SIO score was {{score}}, which placed market sentiment in {{sentiment}} territory. Free users see delayed data. Pro members can follow the latest reading.",
+        "distributionTitle": "What shaped this reading",
+        "distributionSummary": "Out of {{total}} inputs, {{extremeFear}} were in extreme fear, {{fear}} in fear, {{neutral}} in neutral, {{greed}} in greed, and {{extremeGreed}} in extreme greed."
+      },
+      "preview": {
+        "kicker": "Signals behind the score",
+        "title": "A few of the signals SIO tracks",
+        "description": "These examples help explain why sentiment changes. The full read is most useful when the signals are viewed together."
+      }
     },
-    "feature2": {
-      "title": "My Watchlist",
-      "text": "Create your personal list to easily view the LOHAS Five-Line Analysis levels of multiple targets.",
-      "alt": "My Watchlist",
-      "link": "Upgrade to Pro"
+    "proof": {
+      "eyebrow": "Past fear lows",
+      "title": "See how SIO behaved near major fear lows.",
+      "description": "These past low readings help show when market mood had already moved into an extreme fear zone.",
+      "scoreLabel": "SIO score {{score}}",
+      "cardBody": "One signal is never enough on its own. The value is seeing when several signals line up at the same time.",
+      "empty": "Historic low proof points are temporarily unavailable."
     },
-    "cta": {
-      "button": "Log in now to experience full features"
+    "journey": {
+      "eyebrow": "How to use it",
+      "title": "A simpler flow from market mood to your own watchlist.",
+      "description": "Start with the broader market, check the price structure of a ticker, then keep the names you care about in one place.",
+      "cards": {
+        "sentiment": {
+          "badge": "Step 1",
+          "title": "Read the market first",
+          "description": "Start with SIO to see whether the market is leaning toward fear, caution, or optimism.",
+          "cta": "View market sentiment"
+        },
+        "price": {
+          "badge": "Step 2",
+          "title": "Check the price structure",
+          "description": "Use price trend analysis to see where a stock or ETF sits before you act.",
+          "cta": "Analyze a ticker"
+        },
+        "watchlist": {
+          "badge": "Step 3",
+          "title": "Build your own list",
+          "description": "Save the names you want to follow so you can come back with the same process next time.",
+          "cta": "Open watchlist"
+        }
+      }
+    },
+    "tools": {
+      "eyebrow": "More tools",
+      "title": "Go deeper when one score is not enough.",
+      "description": "Use sentiment, price analysis, and your watchlist together to build a steadier investment process.",
+      "cards": {
+        "price": {
+          "badge": "Free",
+          "title": "Price Trend Analysis",
+          "description": "Check where a stock or ETF sits in its longer-term price structure before you act.",
+          "cta": "Analyze a ticker"
+        },
+        "watchlist": {
+          "badge": "Pro",
+          "title": "Watchlist",
+          "description": "Keep your own list of names and review them in one place instead of starting over each time.",
+          "cta": "Open watchlist"
+        },
+        "sentiment": {
+          "badge": "Sentiment",
+          "title": "Market Sentiment",
+          "description": "Explore the full SIO view, its underlying signals, and the historical context behind each reading.",
+          "cta": "Open sentiment page"
+        }
+      }
+    },
+    "story": {
+      "eyebrow": "A calmer way to read the market",
+      "title": "Start wide, then let the details show up as you move down the page.",
+      "description": "The homepage should feel more like a guided read than a dashboard. Start with the market mood, see what shaped it, then turn that context into names you want to follow.",
+      "blocks": {
+        "sentiment": {
+          "eyebrow": "Start with the market",
+          "title": "Read the overall mood before you look at a single ticker.",
+          "description": "SIO turns several market signals into one delayed snapshot, so you can start from the bigger emotional backdrop instead of isolated noise.",
+          "cta": "Open market sentiment"
+        },
+        "signals": {
+          "eyebrow": "See what is underneath",
+          "title": "A few signals tell the story, but the combined read is the point.",
+          "description": "These inputs are here to make the score feel understandable, not to turn the homepage into a wall of indicators. The strength comes from seeing them together and against past fear lows."
+        },
+        "watchlist": {
+          "eyebrow": "Turn context into a habit",
+          "title": "When something looks interesting, keep it in your own watchlist.",
+          "description": "Start from market mood, check the price structure of a name, then keep the tickers you want to revisit. That gives the homepage a natural next step instead of a hard sell.",
+          "cta": "Open watchlist",
+          "mediaLabel": "Watchlist preview",
+          "steps": {
+            "market": "Read market mood",
+            "price": "Check price structure",
+            "save": "Save names to revisit"
+          },
+          "status": {
+            "0": "Ready to review",
+            "1": "Price setup worth checking",
+            "2": "Keep on the list"
+          }
+        }
+      }
+    },
+    "entry": {
+      "eyebrow": "Keep exploring",
+      "title": "Start with a familiar market, then decide how deep you want to go.",
+      "description": "If the homepage gives you enough context, the next step should feel simple: try a free ticker, or unlock the latest SIO read when you need it.",
+      "pricing": {
+        "badge": "Pro",
+        "title": "Want the latest market reading?",
+        "description": "Pro unlocks the current SIO reading, fuller history, and a smoother research workflow.",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "cta": "Compare plans"
+      },
+      "tickers": {
+        "kicker": "Get started",
+        "title": "Start with a market you know.",
+        "description": "Pick a familiar ETF or stock and try the free analysis tools first.",
+        "cta": "Open free analysis"
+      }
     }
   },
   "indicatorItem": {

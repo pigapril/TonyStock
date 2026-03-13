@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--overlay-scrim, rgba(0, 0, 0, 0.45));
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     display: flex;
@@ -19,17 +19,12 @@
 }
 
 .dialog {
-    background: linear-gradient(135deg, 
-        rgba(0, 122, 255, 0.1) 0%, 
-        rgba(88, 86, 214, 0.08) 50%, 
-        rgba(255, 45, 85, 0.06) 100%),
-        rgba(255, 255, 255, 0.95);
+    background: var(--gradient-elevated, linear-gradient(135deg, rgba(0, 122, 255, 0.1) 0%, rgba(88, 86, 214, 0.08) 50%, rgba(255, 45, 85, 0.06) 100%), rgba(255, 255, 255, 0.95));
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 24px;
     width: 90%;
-    max-width: 420px;
     max-height: calc(100vh - 120px);
     position: relative;
     box-shadow: 
@@ -42,6 +37,18 @@
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
+}
+
+.dialog--sm {
+    max-width: 420px;
+}
+
+.dialog--md {
+    max-width: 560px;
+}
+
+.dialog--lg {
+    max-width: 720px;
 }
 
 .dialog--closing {
@@ -90,7 +97,7 @@
     font-size: 28px;
     font-weight: 700;
     margin: 16px 0 12px;
-    color: #1d1d1f;
+    color: var(--color-text-primary, #1d1d1f);
     text-align: center;
     padding: 0 20px;
     line-height: 1.2;
@@ -98,7 +105,7 @@
 }
 
 .dialog-description {
-    color: rgba(60, 60, 67, 0.7);
+    color: var(--color-text-secondary, rgba(60, 60, 67, 0.7));
     margin: 0 0 32px;
     font-size: 17px;
     line-height: 1.47;
@@ -277,9 +284,9 @@
         padding: 14px 28px;
         min-width: 180px;
     }
-} 
-/
-* Quota Dialog Specific Styles */
+}
+
+/* Quota Dialog Specific Styles */
 .quota-dialog-content {
     width: 100%;
     display: flex;

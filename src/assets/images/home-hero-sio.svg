@@ -1,0 +1,107 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="160" y1="120" x2="1380" y2="1120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0F2238"/>
+      <stop offset="0.48" stop-color="#142C45"/>
+      <stop offset="1" stop-color="#1A344B"/>
+    </linearGradient>
+    <radialGradient id="glowLeft" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(236 268) rotate(34.2) scale(422 364)">
+      <stop stop-color="#F59E0B" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#F59E0B" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowRight" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1268 310) rotate(154.7) scale(500 392)">
+      <stop stop-color="#38BDF8" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#38BDF8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="curveMain" x1="168" y1="664" x2="1426" y2="578" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBBF24"/>
+      <stop offset="0.42" stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+    <linearGradient id="curveSecondary" x1="180" y1="760" x2="1418" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FB923C"/>
+      <stop offset="0.5" stop-color="#CBD5E1"/>
+      <stop offset="1" stop-color="#38BDF8"/>
+    </linearGradient>
+    <linearGradient id="curveGhost" x1="210" y1="794" x2="1378" y2="408" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F59E0B" stop-opacity="0.28"/>
+      <stop offset="0.46" stop-color="#F8FAFC" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#22C55E" stop-opacity="0.28"/>
+    </linearGradient>
+    <linearGradient id="panelStroke" x1="335" y1="282" x2="1250" y2="907" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="white" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="panelFill" x1="364" y1="254" x2="1263" y2="903" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0.09"/>
+      <stop offset="1" stop-color="white" stop-opacity="0.02"/>
+    </linearGradient>
+    <filter id="softBlur" x="-120" y="-120" width="1840" height="1440" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1200" fill="url(#bg)"/>
+  <rect width="1600" height="1200" fill="url(#glowLeft)"/>
+  <rect width="1600" height="1200" fill="url(#glowRight)"/>
+
+  <g opacity="0.18">
+    <path d="M0 212H1600" stroke="white"/>
+    <path d="M0 356H1600" stroke="white"/>
+    <path d="M0 500H1600" stroke="white"/>
+    <path d="M0 644H1600" stroke="white"/>
+    <path d="M0 788H1600" stroke="white"/>
+    <path d="M0 932H1600" stroke="white"/>
+    <path d="M240 0V1200" stroke="white"/>
+    <path d="M460 0V1200" stroke="white"/>
+    <path d="M680 0V1200" stroke="white"/>
+    <path d="M900 0V1200" stroke="white"/>
+    <path d="M1120 0V1200" stroke="white"/>
+    <path d="M1340 0V1200" stroke="white"/>
+  </g>
+
+  <g opacity="0.55">
+    <path d="M174 741C264 707 320 674 402 628C470 590 541 541 635 545C731 549 806 626 897 617C1013 606 1070 464 1163 446C1265 427 1343 526 1428 560" stroke="url(#curveGhost)" stroke-width="3"/>
+    <path d="M168 670C244 650 319 630 405 598C491 566 554 505 645 509C730 513 799 598 892 589C986 580 1053 482 1131 451C1223 414 1322 442 1426 502" stroke="url(#curveSecondary)" stroke-opacity="0.9" stroke-width="4"/>
+    <path d="M168 615C254 598 344 585 428 540C515 494 563 410 650 418C749 427 810 548 905 545C1006 541 1066 418 1158 395C1247 372 1326 406 1426 478" stroke="url(#curveMain)" stroke-width="6"/>
+  </g>
+
+  <g filter="url(#softBlur)" opacity="0.42">
+    <circle cx="382" cy="530" r="24" fill="#FBBF24"/>
+    <circle cx="648" cy="420" r="18" fill="#F8FAFC"/>
+    <circle cx="906" cy="544" r="18" fill="#E2E8F0"/>
+    <circle cx="1160" cy="396" r="22" fill="#22C55E"/>
+  </g>
+
+  <g opacity="0.96">
+    <circle cx="382" cy="530" r="10" fill="#FBBF24"/>
+    <circle cx="648" cy="420" r="8" fill="#F8FAFC"/>
+    <circle cx="906" cy="544" r="8" fill="#E2E8F0"/>
+    <circle cx="1160" cy="396" r="10" fill="#34D399"/>
+  </g>
+
+  <g opacity="0.92">
+    <rect x="302" y="218" width="1006" height="618" rx="34" fill="url(#panelFill)" stroke="url(#panelStroke)"/>
+    <rect x="348" y="300" width="904" height="458" rx="24" stroke="white" stroke-opacity="0.09"/>
+    <path d="M348 391H1252" stroke="white" stroke-opacity="0.1"/>
+    <path d="M348 484H1252" stroke="white" stroke-opacity="0.1"/>
+    <path d="M348 577H1252" stroke="white" stroke-opacity="0.1"/>
+    <path d="M348 670H1252" stroke="white" stroke-opacity="0.1"/>
+
+    <rect x="402" y="858" width="220" height="118" rx="22" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12"/>
+    <rect x="690" y="858" width="220" height="118" rx="22" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12"/>
+    <rect x="978" y="858" width="220" height="118" rx="22" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.12"/>
+
+    <path d="M450 930H548" stroke="#F8FAFC" stroke-opacity="0.16" stroke-width="10" stroke-linecap="round"/>
+    <path d="M738 902H838" stroke="#F8FAFC" stroke-opacity="0.16" stroke-width="10" stroke-linecap="round"/>
+    <path d="M1026 942H1124" stroke="#F8FAFC" stroke-opacity="0.16" stroke-width="10" stroke-linecap="round"/>
+    <path d="M450 964H514" stroke="#F8FAFC" stroke-opacity="0.08" stroke-width="8" stroke-linecap="round"/>
+    <path d="M738 936H802" stroke="#F8FAFC" stroke-opacity="0.08" stroke-width="8" stroke-linecap="round"/>
+    <path d="M1026 976H1090" stroke="#F8FAFC" stroke-opacity="0.08" stroke-width="8" stroke-linecap="round"/>
+  </g>
+
+  <g opacity="0.75">
+    <path d="M144 1024H1456" stroke="white" stroke-opacity="0.18"/>
+    <path d="M144 1082H1456" stroke="white" stroke-opacity="0.11"/>
+  </g>
+</svg>

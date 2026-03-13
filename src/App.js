@@ -20,6 +20,7 @@ import './components/Auth/styles/SignInDialog.css';
 import './components/NewFeatureBadge/NewFeatureBadge.css';
 import "react-datepicker/dist/react-datepicker.css";
 import './components/Common/global-styles.css';
+import './components/Common/ui-recipes.css';
 import './components/Common/Dialog/FeatureUpgradeDialog.css';
 
 
