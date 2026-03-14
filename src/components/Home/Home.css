@@ -1,8 +1,8 @@
 .home-page {
   position: relative;
   background:
-    radial-gradient(circle at top, rgba(0, 122, 255, 0.14), transparent 32%),
-    linear-gradient(180deg, #f4f7fb 0%, #f7f9fc 38%, #eef3f8 100%);
+    radial-gradient(circle at top, rgba(14, 165, 233, 0.12), transparent 32%),
+    linear-gradient(180deg, #f8fbff 0%, #f7f9fc 36%, #eef3f8 100%);
   color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
 }
 
@@ -30,24 +30,35 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(124deg, rgba(7, 16, 28, 0.18), rgba(7, 16, 28, 0.02)),
-    radial-gradient(circle at 16% 24%, rgba(245, 158, 11, 0.16), transparent 26%),
-    radial-gradient(circle at 82% 18%, rgba(56, 189, 248, 0.18), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(244, 248, 252, 0.16)),
+    radial-gradient(circle at 14% 20%, rgba(245, 158, 11, 0.16), transparent 24%),
+    radial-gradient(circle at 78% 16%, rgba(14, 165, 233, 0.14), transparent 24%),
+    radial-gradient(circle at 84% 74%, rgba(16, 185, 129, 0.1), transparent 24%),
     url('../../assets/images/home-hero-sio.svg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  filter: saturate(1.03);
-  transform: scale(1.02);
+  filter: saturate(1.02);
+  transform: scale(1.01);
 }
 
+.home-hero__backdrop::before,
 .home-hero__backdrop::after {
   content: '';
   position: absolute;
   inset: 0;
+}
+
+.home-hero__backdrop::before {
   background:
-    linear-gradient(180deg, rgba(11, 19, 33, 0.2) 0%, rgba(11, 19, 33, 0.1) 40%, rgba(11, 19, 33, 0.42) 100%),
-    linear-gradient(90deg, rgba(15, 23, 42, 0.38) 0%, rgba(15, 23, 42, 0.08) 38%, rgba(15, 23, 42, 0.18) 100%);
+    linear-gradient(90deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.42) 34%, rgba(255, 255, 255, 0.14) 60%, rgba(255, 255, 255, 0.34) 100%),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.18), transparent 18%, rgba(226, 232, 240, 0.16) 100%);
+}
+
+.home-hero__backdrop::after {
+  background:
+    radial-gradient(circle at 22% 32%, rgba(255, 255, 255, 0.46), transparent 28%),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.16) 0%, rgba(248, 250, 252, 0.02) 40%, rgba(241, 245, 249, 0.48) 100%);
 }
 
 .home-hero::after {
@@ -55,7 +66,7 @@
   position: absolute;
   inset: auto 0 0;
   height: 180px;
-  background: linear-gradient(180deg, rgba(244, 247, 251, 0) 0%, #f4f7fb 100%);
+  background: linear-gradient(180deg, rgba(248, 251, 255, 0) 0%, #f8fbff 100%);
 }
 
 .home-hero__inner {
@@ -68,7 +79,7 @@
 }
 
 .home-hero__content {
-  color: #fff;
+  color: #10233a;
 }
 
 .home-hero h1 {
@@ -80,8 +91,9 @@
   font-size: clamp(3.4rem, 7vw, 6rem);
   line-height: 0.96;
   letter-spacing: -0.05em;
-  color: #fff;
+  color: #10233a;
   text-wrap: balance;
+  text-shadow: 0 12px 28px rgba(255, 255, 255, 0.4);
 }
 
 .home-hero__subtitle {
@@ -89,7 +101,7 @@
   margin: 0;
   font-size: clamp(1.08rem, 1.8vw, 1.35rem);
   line-height: 1.75;
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(16, 35, 58, 0.72);
 }
 
 .home-hero__actions {
@@ -119,18 +131,32 @@
   z-index: 1;
 }
 
+.home-hero__visual::before {
+  content: '';
+  position: absolute;
+  inset: 6% 4% 2%;
+  border-radius: 44px;
+  background:
+    radial-gradient(circle at center, rgba(14, 165, 233, 0.12), transparent 52%),
+    radial-gradient(circle at 18% 18%, rgba(245, 158, 11, 0.12), transparent 30%);
+  filter: blur(18px);
+  transform: translateY(24px);
+  pointer-events: none;
+}
+
 .home-marketPreviewShell {
   position: relative;
   overflow: hidden;
   padding: 18px;
   border-radius: 36px;
   background:
-    linear-gradient(180deg, rgba(251, 253, 255, 0.78), rgba(242, 247, 252, 0.9)),
-    rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.52);
+    linear-gradient(180deg, rgba(252, 254, 255, 0.92), rgba(243, 248, 252, 0.96)),
+    rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   box-shadow:
-    0 36px 90px rgba(7, 16, 28, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.68);
+    0 38px 90px rgba(120, 140, 162, 0.22),
+    0 8px 22px rgba(120, 140, 162, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(18px);
   animation: homePreviewFloat 8.5s ease-in-out infinite;
 }
@@ -483,10 +509,10 @@
   width: 46px;
   height: 46px;
   margin-left: -23px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(148, 163, 184, 0.26);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.66);
+  color: rgba(15, 23, 42, 0.76);
   backdrop-filter: blur(14px);
   cursor: pointer;
   transition: transform 0.28s ease, background-color 0.28s ease;
@@ -494,7 +520,7 @@
 
 .home-scrollCue:hover {
   transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.84);
 }
 
 .home-announcement {
