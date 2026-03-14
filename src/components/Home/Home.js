@@ -66,18 +66,6 @@ function formatDate(value, locale) {
   }).format(date);
 }
 
-function formatCurrency(value, locale, currency = 'TWD') {
-  if (value === null || value === undefined) {
-    return '--';
-  }
-
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency,
-    maximumFractionDigits: 0
-  }).format(value);
-}
-
 function formatPriceValue(value, locale, currency = 'USD') {
   if (value === null || value === undefined) {
     return '--';
@@ -221,8 +209,6 @@ export const Home = () => {
   }), [t, currentLang]);
 
   const sentimentData = homepageData?.sentiment || {};
-  const pricingData = homepageData?.pricing || {};
-  const freeExperience = homepageData?.freeExperience || {};
   const pricePreview = homepageData?.pricePreview || {};
   const featuredMoments = sentimentData.featuredMoments || [];
   const activeHeroMoment = featuredMoments[activeExtremeIndex] || null;
@@ -572,57 +558,6 @@ export const Home = () => {
           </div>
         </section>
 
-        <section className="ui-section home-entry home-reveal">
-          <div className="ui-page-shell">
-            <div className="ui-section-intro">
-              <span className="ui-section-eyebrow">{t('home.entry.eyebrow')}</span>
-              <h2 className="ui-section-title">{t('home.entry.title')}</h2>
-              <p className="ui-section-description">{t('home.entry.description')}</p>
-            </div>
-
-            <div className="home-entry__grid">
-              <div className="ui-callout ui-callout--brand home-entry__pricing">
-                <Badge variant="premium" label={t('home.entry.pricing.badge')} />
-                <h2>{t('home.entry.pricing.title')}</h2>
-                <p>{t('home.entry.pricing.description')}</p>
-                <div className="home-entry__prices">
-                  <div>
-                    <span>{t('home.entry.pricing.monthly')}</span>
-                    <strong>{formatCurrency(pricingData?.pro?.monthly, locale, pricingData?.currency)}</strong>
-                  </div>
-                  <div>
-                    <span>{t('home.entry.pricing.yearly')}</span>
-                    <strong>{formatCurrency(pricingData?.pro?.yearly, locale, pricingData?.currency)}</strong>
-                  </div>
-                </div>
-                <Link to={`/${currentLang}/subscription-plans`} className={BUTTON_LINK_CLASS('primary')}>
-                  <span>{t('home.entry.pricing.cta')}</span>
-                  <FaArrowRight aria-hidden="true" />
-                </Link>
-              </div>
-
-              <div className="ui-data-panel home-entry__tickers">
-                <span className="home-entry__kicker">{t('home.entry.tickers.kicker')}</span>
-                <h2>{t('home.entry.tickers.title')}</h2>
-                <p>{t('home.entry.tickers.description')}</p>
-                <div className="home-entry__tickerGrid">
-                  {(freeExperience.tickers || []).map((ticker) => (
-                    <Link
-                      key={ticker}
-                      to={`/${currentLang}/priceanalysis?stockCode=${ticker}&years=3.5`}
-                      className="home-entry__ticker"
-                    >
-                      {ticker}
-                    </Link>
-                  ))}
-                </div>
-                <Link to={`/${currentLang}/priceanalysis`} className="home-toolCard__link">
-                  {t('home.entry.tickers.cta')} <FaArrowRight aria-hidden="true" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
       </div>
     </PageContainer>
   );

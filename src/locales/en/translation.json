@@ -716,25 +716,6 @@
           }
         }
       }
-    },
-    "entry": {
-      "eyebrow": "Keep exploring",
-      "title": "Start with a familiar market, then decide how deep you want to go.",
-      "description": "After the homepage gives you context, you can try free stock and ETF analysis first, then unlock the latest SIO reading when you need it.",
-      "pricing": {
-        "badge": "Pro",
-        "title": "Want the latest market reading?",
-        "description": "Pro unlocks the current SIO reading, fuller history, and more complete tools for following the market.",
-        "monthly": "Monthly",
-        "yearly": "Yearly",
-        "cta": "Compare plans"
-      },
-      "tickers": {
-        "kicker": "Get started",
-        "title": "Start with a market you know.",
-        "description": "Pick a familiar ETF or stock and try the free analysis tools first.",
-        "cta": "Open free analysis"
-      }
     }
   },
   "indicatorItem": {
