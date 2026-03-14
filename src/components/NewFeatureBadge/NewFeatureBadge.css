@@ -58,6 +58,19 @@
   display: inline-block;
 }
 
+@media (max-width: 1300px) {
+  .top-nav .menu-toggle-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: -12px;
+  }
+
+  .top-nav .notification-dot {
+    right: 2px;
+  }
+}
+
 /* 閃爍動畫 */
 @keyframes pulse {
   0% {

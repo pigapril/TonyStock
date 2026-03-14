@@ -23,7 +23,7 @@
   position: relative;
   overflow: hidden;
   min-height: 100vh;
-  padding: 110px 0 56px;
+  padding: calc(var(--top-nav-height, 68px) + 88px) 0 40px;
 }
 
 .home-hero__backdrop {
@@ -61,24 +61,20 @@
     linear-gradient(180deg, rgba(248, 250, 252, 0.16) 0%, rgba(248, 250, 252, 0.02) 40%, rgba(241, 245, 249, 0.48) 100%);
 }
 
-.home-hero::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0;
-  height: 180px;
-  background: linear-gradient(180deg, rgba(248, 251, 255, 0) 0%, #f8fbff 100%);
-}
-
 .home-hero__inner {
   position: relative;
   z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  grid-template-areas:
+    'content visual'
+    'actions visual';
   gap: 48px;
-  align-items: center;
+  align-items: start;
 }
 
 .home-hero__content {
+  grid-area: content;
   color: #10233a;
 }
 
@@ -105,10 +101,15 @@
 }
 
 .home-hero__actions {
+  grid-area: actions;
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  margin-top: 32px;
+  margin-top: -4px;
+}
+
+.home-hero__action {
+  flex-shrink: 0;
 }
 
 .home-hero__meta {
@@ -127,6 +128,7 @@
 }
 
 .home-hero__visual {
+  grid-area: visual;
   position: relative;
   z-index: 1;
 }
@@ -305,6 +307,7 @@
 }
 
 @keyframes homePreviewFloat {
+
   0%,
   100% {
     transform: translate3d(0, 0, 0);
@@ -316,6 +319,7 @@
 }
 
 @keyframes homePreviewGaugeDrift {
+
   0%,
   100% {
     transform: translate3d(0, 0, 0) scale(1);
@@ -327,6 +331,7 @@
 }
 
 @keyframes homePreviewBadgeDrift {
+
   0%,
   100% {
     transform: translate(-50%, -50%);
@@ -362,6 +367,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .home-marketPreviewShell,
   .home-marketPreviewShell__gauge .msiArcGauge__canvasWrap,
   .home-marketPreviewShell__gauge .msiArcGauge__coreBadge {
@@ -502,7 +508,7 @@
 .home-scrollCue {
   position: absolute;
   left: 50%;
-  bottom: 18px;
+  bottom: 300px;
   z-index: 2;
   display: inline-grid;
   place-items: center;
@@ -569,7 +575,7 @@
   padding: 36px 0;
 }
 
-.home-storyBlock + .home-storyBlock {
+.home-storyBlock+.home-storyBlock {
   margin-top: 22px;
 }
 
@@ -744,6 +750,8 @@
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(15, 23, 42, 0.08);
+  justify-items: center;
+  text-align: center;
 }
 
 .home-pricePreview__stats span {
@@ -943,23 +951,23 @@
 }
 
 .home-storyMedia__watchTag.sentiment-neutral {
-  color: #64748b;
+  color: #708090;
 }
 
 .home-storyMedia__watchTag.sentiment-fear {
-  color: #2563eb;
+  color: #5B9BD5;
 }
 
 .home-storyMedia__watchTag.sentiment-extremeFear {
-  color: #1d4ed8;
+  color: #0000FF;
 }
 
 .home-storyMedia__watchTag.sentiment-greed {
-  color: #047857;
+  color: #F0B8CE;
 }
 
 .home-storyMedia__watchTag.sentiment-extremeGreed {
-  color: #065f46;
+  color: #D24A93;
 }
 
 .home-storyMedia__watchRow--0 {
@@ -1188,9 +1196,17 @@
 }
 
 @media (max-width: 1200px) {
+
   .home-hero__inner,
   .home-methodology__summary {
     grid-template-columns: 1fr;
+  }
+
+  .home-hero__inner {
+    grid-template-areas:
+      'content'
+      'visual'
+      'actions';
   }
 
   .home-storyBlock {
@@ -1205,6 +1221,7 @@
 }
 
 @media (max-width: 900px) {
+
   .home-frameworkGrid,
   .home-proof__grid,
   .home-journey__grid {
@@ -1223,11 +1240,57 @@
 @media (max-width: 768px) {
   .home-hero {
     min-height: auto;
-    padding: 92px 0 46px;
+    padding: calc(var(--top-nav-height-mobile, 56px) + 56px) 0 32px;
   }
 
   .home-hero h1 {
     font-size: clamp(2.7rem, 15vw, 4rem);
+  }
+
+  .home-hero__inner {
+    gap: 26px;
+  }
+
+  .home-hero__actions {
+    margin-top: 0;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    width: min(100%, 232px);
+  }
+
+  .home-hero__actions .ui-button,
+  .home-hero__actions .home-link-button {
+    min-height: 40px;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+  }
+
+  .home-hero__action--primary {
+    width: 100%;
+    justify-content: center;
+    border-radius: 16px;
+  }
+
+  .home-hero__action--secondary {
+    min-height: auto;
+    padding: 4px 2px;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    color: rgba(15, 76, 129, 0.92);
+    font-size: 0.92rem;
+    font-weight: 600;
+    justify-content: flex-start;
+  }
+
+  .home-hero__action--secondary:hover,
+  .home-hero__action--secondary:focus-visible {
+    transform: none;
+    background: transparent;
+    box-shadow: none;
+    color: rgba(8, 47, 73, 0.96);
   }
 
   .home-snapshotCard {
@@ -1285,7 +1348,16 @@
   }
 
   .home-pricePreview__stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .home-pricePreview__stats div {
+    padding: 14px 12px;
+  }
+
+  .home-pricePreview__stats strong {
+    font-size: 1rem;
   }
 
   .home-marketMomentPanel__body {
@@ -1296,7 +1368,22 @@
 @media (max-width: 560px) {
   .home-hero__actions {
     display: grid;
-    grid-template-columns: 1fr;
+    width: min(100%, 220px);
+    justify-content: center;
+    justify-items: center;
+    gap: 4px;
+  }
+
+  .home-hero__actions .ui-button,
+  .home-hero__actions .home-link-button {
+    width: 100%;
+  }
+
+  .home-hero__action--secondary {
+    width: fit-content;
+    min-height: auto;
+    padding: 2px 0;
+    font-size: 0.84rem;
   }
 
   .home-hero__meta {
@@ -1319,8 +1406,26 @@
   }
 
   .home-storyMedia__watchRow {
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .home-storyMedia__watchIdentity {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .home-storyMedia__watchIdentity span {
+    font-size: 0.86rem;
+    line-height: 1.35;
+  }
+
+  .home-storyMedia__watchTag {
+    min-height: 30px;
+    margin-left: auto;
+    padding: 0 10px;
+    font-size: 0.8rem;
   }
 
   .home-scrollCue {

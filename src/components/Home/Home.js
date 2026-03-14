@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaChevronDown, FaLock } from 'react-icons/fa';
+import { useMediaQuery } from 'react-responsive';
 import './Home.css';
 import { useDialog } from '../../components/Common/Dialog/useDialog';
 import { useAuth } from '../../components/Auth/useAuth';
@@ -12,6 +13,7 @@ import homepageService from '../../services/homepageService';
 import { HomePricePreviewChart } from './HomePricePreviewChart';
 import MarketSentimentGauge from '../MarketSentimentIndex/MarketSentimentGauge';
 import { SharedSentimentHistoryChart } from '../MarketSentimentIndex/SharedSentimentHistoryChart';
+import { formatPrice } from '../../utils/priceUtils';
 
 const BUTTON_LINK_CLASS = (variant) => [
   'ui-button',
@@ -22,6 +24,8 @@ const BUTTON_LINK_CLASS = (variant) => [
 
 const HISTORY_PREVIEW_START_YEAR = 2017;
 const HISTORY_PREVIEW_END_YEAR = 2023;
+const HISTORY_PREVIEW_MOBILE_START_YEAR = 2018;
+const HISTORY_PREVIEW_MOBILE_END_YEAR = 2022;
 
 const HERO_GAUGE_HEADLINE = (
   <>
@@ -64,19 +68,6 @@ function formatDate(value, locale) {
     month: 'short',
     day: 'numeric'
   }).format(date);
-}
-
-function formatPriceValue(value, locale, currency = 'USD') {
-  if (value === null || value === undefined) {
-    return '--';
-  }
-
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(value);
 }
 
 function formatHeroMomentDate(value, locale) {
@@ -131,6 +122,7 @@ export const Home = () => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
   const locale = currentLang === 'zh' ? 'zh-TW' : currentLang;
+  const isMobileHistoryPreview = useMediaQuery({ query: '(max-width: 768px)' });
   const { openDialog } = useDialog();
   const { isAuthenticated } = useAuth();
   const [homepageData, setHomepageData] = useState(() => homepageService.getFallbackData());
@@ -248,6 +240,17 @@ export const Home = () => {
   ), [pricePreview.series]);
   const pricePreviewUpdatedLabel = formatDate(pricePreview.lastUpdated, locale);
   const pricePreviewSentimentLabel = t(pricePreview.sentimentKey || 'priceAnalysis.sentiment.neutral');
+  const historyPreviewYearRange = useMemo(() => (
+    isMobileHistoryPreview
+      ? {
+          start: HISTORY_PREVIEW_MOBILE_START_YEAR,
+          end: HISTORY_PREVIEW_MOBILE_END_YEAR
+        }
+      : {
+          start: HISTORY_PREVIEW_START_YEAR,
+          end: HISTORY_PREVIEW_END_YEAR
+        }
+  ), [isMobileHistoryPreview]);
   const historyPreviewMilestones = useMemo(() => {
     const preferredIds = ['tradeWarSelloff', 'pandemicPanic', 'liquidityPeak', 'inflationBearLow', 'aiRally'];
 
@@ -261,7 +264,7 @@ export const Home = () => {
       const date = new Date(moment.date);
       const year = date.getUTCFullYear();
 
-      if (Number.isNaN(date.getTime()) || year < HISTORY_PREVIEW_START_YEAR || year > HISTORY_PREVIEW_END_YEAR) {
+      if (Number.isNaN(date.getTime()) || year < historyPreviewYearRange.start || year > historyPreviewYearRange.end) {
         return null;
       }
 
@@ -276,7 +279,7 @@ export const Home = () => {
         sentimentLabel: t(moment.sentimentKey || 'sentiment.notAvailable')
       };
     }).filter(Boolean);
-  }, [featuredMoments, t]);
+  }, [featuredMoments, historyPreviewYearRange, t]);
   const historyPreview = useMemo(() => {
     const mergedPoints = new Map();
 
@@ -305,7 +308,7 @@ export const Home = () => {
         return;
       }
 
-      if (date.getUTCFullYear() < HISTORY_PREVIEW_START_YEAR || date.getUTCFullYear() > HISTORY_PREVIEW_END_YEAR) {
+      if (date.getUTCFullYear() < historyPreviewYearRange.start || date.getUTCFullYear() > historyPreviewYearRange.end) {
         return;
       }
 
@@ -316,8 +319,13 @@ export const Home = () => {
       });
     });
 
-    return Array.from(mergedPoints.values()).sort((left, right) => left.date - right.date);
-  }, [featuredMoments, sentimentData.historyPreview]);
+    return Array.from(mergedPoints.values())
+      .filter((item) => {
+        const year = item.date.getUTCFullYear();
+        return year >= historyPreviewYearRange.start && year <= historyPreviewYearRange.end;
+      })
+      .sort((left, right) => left.date - right.date);
+  }, [featuredMoments, historyPreviewYearRange, sentimentData.historyPreview]);
   const historyChartLowPoints = useMemo(() => (
     historyPreviewMilestones
       .filter((item) => item.score <= 20)
@@ -349,36 +357,6 @@ export const Home = () => {
             <div className="home-hero__content">
               <h1>{renderTitleWithBreaks(t('home.hero.title'))}</h1>
               <p className="home-hero__subtitle">{t('home.hero.subtitle')}</p>
-
-              <div className="home-hero__actions">
-                {isAuthenticated ? (
-                  <Link
-                    to={`/${currentLang}/market-sentiment`}
-                    className={BUTTON_LINK_CLASS('primary')}
-                  >
-                    <span>{t('home.hero.primaryAuthenticated')}</span>
-                    <FaArrowRight aria-hidden="true" />
-                  </Link>
-                ) : (
-                  <Button
-                    size="large"
-                    onClick={handlePrimaryAction}
-                    className="home-hero__authButton"
-                  >
-                    <span>{t('home.hero.primaryGuest')}</span>
-                    <FaLock aria-hidden="true" />
-                  </Button>
-                )}
-
-                <Link
-                  to={`/${currentLang}/priceanalysis?stockCode=SPY&years=3.5`}
-                  className={BUTTON_LINK_CLASS('outline')}
-                >
-                  <span>{t('home.hero.secondary')}</span>
-                  <FaArrowRight aria-hidden="true" />
-                </Link>
-              </div>
-
             </div>
 
             <div className="home-hero__visual">
@@ -422,6 +400,35 @@ export const Home = () => {
                   ) : null}
                 />
               </div>
+            </div>
+
+            <div className="home-hero__actions">
+              {isAuthenticated ? (
+                <Link
+                  to={`/${currentLang}/market-sentiment`}
+                  className={`${BUTTON_LINK_CLASS('primary')} home-hero__action home-hero__action--primary`}
+                >
+                  <span>{t('home.hero.primaryAuthenticated')}</span>
+                  <FaArrowRight aria-hidden="true" />
+                </Link>
+              ) : (
+                <Button
+                  size="large"
+                  onClick={handlePrimaryAction}
+                  className="home-hero__authButton home-hero__action home-hero__action--primary"
+                >
+                  <span>{t('home.hero.primaryGuest')}</span>
+                  <FaLock aria-hidden="true" />
+                </Button>
+              )}
+
+              <Link
+                to={`/${currentLang}/priceanalysis?stockCode=SPY&years=3.5`}
+                className={`${BUTTON_LINK_CLASS('outline')} home-hero__action home-hero__action--secondary`}
+              >
+                <span>{t('home.hero.secondary')}</span>
+                <FaArrowRight aria-hidden="true" />
+              </Link>
             </div>
           </div>
 
@@ -504,7 +511,7 @@ export const Home = () => {
                     </div>
                     <div>
                       <span>{t('home.methodology.pricePreview.currentPrice')}</span>
-                      <strong>{formatPriceValue(pricePreview.currentPrice, locale, 'USD')}</strong>
+                      <strong>{pricePreview.currentPrice === null || pricePreview.currentPrice === undefined ? '--' : `$${formatPrice(pricePreview.currentPrice)}`}</strong>
                     </div>
                     <div>
                       <span>{t('home.methodology.pricePreview.currentSentiment')}</span>

@@ -1,7 +1,6 @@
 .language-switcher {
   position: relative;
   display: inline-block;
-  margin-right: 10px; /* Add some space to the right */
 }
 
 .language-switcher-button {
