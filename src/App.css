@@ -211,14 +211,14 @@ body {
 
 .top-nav__inner {
   display: grid;
-  grid-template-columns: minmax(132px, 172px) minmax(0, 1fr) max-content;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  column-gap: clamp(18px, 2.2vw, 36px);
+  column-gap: clamp(22px, 2.6vw, 44px);
   height: 100%;
 }
 
 .top-nav__shell {
-  width: min(1180px, calc(100% - 32px));
+  width: min(1440px, calc(100% - 24px));
   margin: 0 auto;
   box-sizing: border-box;
 }
@@ -266,9 +266,11 @@ body {
   align-items: center;
   justify-content: end;
   justify-self: end;
-  gap: 12px;
+  margin-right: 0;
+  gap: clamp(10px, 0.9vw, 18px);
   min-width: max-content;
   padding-right: 0;
+  flex-shrink: 0;
 }
 
 .user-actions .btn-primary {
@@ -550,16 +552,17 @@ body {
 .top-nav .user-profile {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     position: relative;
 }
 
 .top-nav .user-profile__trigger {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     min-height: 44px;
-    padding: 6px 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
     border: none;
     background: none;
     cursor: pointer;
@@ -710,12 +713,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(8px, 1vw, 16px);
+  gap: clamp(12px, 1.1vw, 22px);
   width: 100%;
   margin: 0;
   min-width: 0;
   flex-wrap: nowrap; /* 防止換行 */
-  overflow: hidden;
+  overflow: visible;
   transition: all 0.3s ease;
 }
 
@@ -732,9 +735,9 @@ body {
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   min-height: 42px;
-  padding: 8px 12px;
+  padding: 8px clamp(10px, 0.85vw, 15px);
   border-radius: 999px;
   transition:
     color 0.22s ease,
@@ -787,8 +790,8 @@ body {
   display: flex;
   align-items: center;
   justify-self: start;
-  width: clamp(132px, 11vw, 172px);
-  min-width: 132px;
+  width: clamp(144px, 12vw, 188px);
+  min-width: 144px;
 }
 
 .top-nav-logo a {
@@ -816,9 +819,46 @@ body {
 
 /* 導航項目文字樣式 */
 .desktop-nav-items span {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 400;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.18px;
+}
+
+@media (max-width: 1520px) and (min-width: 1301px) {
+  .top-nav__shell {
+    width: min(1400px, calc(100% - 20px));
+  }
+
+  .top-nav__inner {
+    column-gap: 18px;
+  }
+
+  .desktop-nav-items {
+    gap: 8px;
+  }
+
+  .desktop-nav-items a {
+    gap: 7px;
+    padding: 8px 10px;
+  }
+
+  .desktop-nav-items span {
+    font-size: 13px;
+    letter-spacing: 0.08px;
+  }
+
+  .top-nav-logo {
+    width: 156px;
+    min-width: 156px;
+  }
+
+  .user-actions {
+    gap: 10px;
+  }
+
+  .top-nav .user-profile__name {
+    max-width: 96px;
+  }
 }
 
 
@@ -832,8 +872,8 @@ body {
 
   .top-nav__shell {
     width: 100%;
-    padding-left: 10px;
-    padding-right: 2px;
+    padding-left: 12px;
+    padding-right: 12px;
     box-sizing: border-box;
   }
 

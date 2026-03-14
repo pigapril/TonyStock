@@ -787,19 +787,19 @@
       "zone": "zone",
       "explainer": {
         "current": {
-          "title": "What does the current market mood mean?",
-          "subtitle": "The current SIO score is {{score}}, which puts market sentiment in {{sentiment}} territory. This reading is not about guessing tomorrow's move. It is about judging where risk appetite currently sits and whether sentiment is getting one-sided.",
+          "title": "About the SIO Fear & Greed Indicator",
+          "subtitle": "It helps investors step back from subjective emotion and judge market risk appetite more objectively.",
           "section1": {
-            "title": "1. SIO is a composite sentiment reading",
-            "body": "It combines retail sentiment, options hedging, volatility stress, capital flows, credit spreads, and professional positioning into one 0 to 100 reading. The current score of {{score}} is the combined output of those signals."
+            "title": "1. It combines multiple indicators",
+            "body": "SIO brings retail sentiment, options hedging, volatility pressure, capital flows, credit spreads, and institutional and active-manager positioning into one framework, then converts them into a 0 to 100 score. The {{score}} reading you see now is the combined output of those signals."
           },
           "section2": {
-            "title": "2. The value is in spotting extremes, not chasing noise",
-            "body": "When the score drops into very low territory, fear is usually spreading. When it climbs too high, markets may already be overheated. With sentiment currently leaning {{sentiment}}, the real question is whether the setup is becoming more one-sided."
+            "title": "2. Spot extremes instead of chasing the short term",
+            "body": "When the score falls into very low territory, fear is usually spreading. When it rises into very high territory, the market may already be overheating. The key is to watch whether conditions are moving toward a more extreme reading."
           },
           "section3": {
-            "title": "3. It helps you read the market with discipline",
-            "body": "Sharp selloffs make people want to run. Strong rallies make FOMO take over. SIO gives you an objective cross-indicator frame so your decisions are less driven by instinct."
+            "title": "3. Read the market with discipline and resist fear and greed",
+            "body": "When markets fall hard, people instinctively want to get out. When markets surge, FOMO makes it easy to chase. SIO adds an objective, cross-indicator reference point to your decision-making."
           }
         },
         "snapshot": {
