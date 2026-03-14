@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '../Common/Badge/Badge';
 import { Button } from '../Common/Button/Button';
 import homepageService from '../../services/homepageService';
+import { HomePricePreviewChart } from './HomePricePreviewChart';
 import MarketSentimentGauge from '../MarketSentimentIndex/MarketSentimentGauge';
 import { SharedSentimentHistoryChart } from '../MarketSentimentIndex/SharedSentimentHistoryChart';
 
@@ -19,23 +20,6 @@ const BUTTON_LINK_CLASS = (variant) => [
   'home-link-button'
 ].join(' ');
 
-const FALLBACK_FRAMEWORK_IDS = [
-  'aaiiSpread',
-  'cboeRatio',
-  'marketMomentum',
-  'vixMA50',
-  'safeHaven',
-  'junkBond',
-  'cotIndex',
-  'naaimIndex'
-];
-
-const FEATURED_FRAMEWORK_IDS = [
-  'vixMA50',
-  'cboeRatio',
-  'aaiiSpread',
-  'junkBond'
-];
 const HISTORY_PREVIEW_START_YEAR = 2017;
 const HISTORY_PREVIEW_END_YEAR = 2023;
 
@@ -85,6 +69,19 @@ function formatCurrency(value, locale, currency = 'TWD') {
   }).format(value);
 }
 
+function formatPriceValue(value, locale, currency = 'USD') {
+  if (value === null || value === undefined) {
+    return '--';
+  }
+
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(value);
+}
+
 function formatHeroMomentDate(value, locale) {
   if (!value) {
     return { monthDay: 'N/A', year: '' };
@@ -116,12 +113,6 @@ function formatHeroMomentDate(value, locale) {
     ].filter(Boolean).join(' '),
     year: parts.find(({ type }) => type === 'year')?.value || ''
   };
-}
-
-function getHomepageIndicatorLabel(t, indicatorId) {
-  return t(`home.methodology.signalLabels.${indicatorId}.title`, {
-    defaultValue: t(`indicators.${indicatorId}`)
-  });
 }
 
 function renderTitleWithBreaks(title) {
@@ -223,12 +214,7 @@ export const Home = () => {
   const sentimentData = homepageData?.sentiment || {};
   const pricingData = homepageData?.pricing || {};
   const freeExperience = homepageData?.freeExperience || {};
-  const frameworkIndicatorIds = sentimentData.frameworkIndicatorIds?.length
-    ? sentimentData.frameworkIndicatorIds
-    : FALLBACK_FRAMEWORK_IDS;
-  const featuredFrameworkIds = FEATURED_FRAMEWORK_IDS.filter((indicatorId) => frameworkIndicatorIds.includes(indicatorId));
-  const previewIndicators = sentimentData.previewIndicators || [];
-  const historicLows = sentimentData.historicLows || [];
+  const pricePreview = homepageData?.pricePreview || {};
   const featuredMoments = sentimentData.featuredMoments || [];
   const activeHeroMoment = featuredMoments[activeExtremeIndex] || null;
   const activeHeroDate = activeHeroMoment?.date || sentimentData.restrictionCutoffDate || sentimentData.lastUpdated || null;
@@ -249,13 +235,24 @@ export const Home = () => {
       : Number(activeHeroMoment.score),
     compositeScoreLastUpdate: activeHeroDate
   };
-  const restrictionDateLabel = formatDate(
-    sentimentData.restrictionCutoffDate || sentimentData.lastUpdated,
-    locale
-  );
   const announcementMessage = currentLang.startsWith('zh')
     ? homepageData?.announcement?.message_zh || homepageData?.announcement?.message
     : homepageData?.announcement?.message_en || homepageData?.announcement?.message;
+  const pricePreviewSeries = useMemo(() => (
+    (pricePreview.series || [])
+      .map((item) => ({
+        date: item.date,
+        price: Number(item.price),
+        trendLine: Number(item.trendLine),
+        tlMinus2Sd: Number(item.tlMinus2Sd),
+        tlMinusSd: Number(item.tlMinusSd),
+        tlPlusSd: Number(item.tlPlusSd),
+        tlPlus2Sd: Number(item.tlPlus2Sd)
+      }))
+      .filter((item) => Number.isFinite(new Date(item.date).getTime()) && Number.isFinite(item.price))
+  ), [pricePreview.series]);
+  const pricePreviewUpdatedLabel = formatDate(pricePreview.lastUpdated, locale);
+  const pricePreviewSentimentLabel = t(pricePreview.sentimentKey || 'priceAnalysis.sentiment.neutral');
   const historyPreviewMilestones = useMemo(() => {
     const preferredIds = ['tradeWarSelloff', 'pandemicPanic', 'liquidityPeak', 'inflationBearLow', 'aiRally'];
 
@@ -496,49 +493,45 @@ export const Home = () => {
               </div>
             </article>
 
-            <article className="home-storyBlock home-storyBlock--signals home-reveal">
-              <div className="home-storyMedia home-storyMedia--signals ui-surface-card">
-                <div className="home-storyMedia__orb" aria-hidden="true" />
-                <div className="home-storyMedia__signalGrid">
-                  {previewIndicators.map((indicator) => (
-                    <article key={indicator.id} className="home-storyMedia__signalCard">
-                      <span className="home-methodology__previewLabel">{getHomepageIndicatorLabel(t, indicator.id)}</span>
-                      <strong>{indicator.percentileRank === null || indicator.percentileRank === undefined ? '--' : Math.round(indicator.percentileRank)}</strong>
-                      <span className={`home-methodology__previewSentiment sentiment-${getSentimentSuffix(indicator.sentimentKey)}`}>
-                        {t(indicator.sentimentKey)}
-                      </span>
-                    </article>
-                  ))}
-                </div>
-                <div className="home-proof__grid home-proof__grid--inline">
-                  {historicLows.length > 0 ? historicLows.map((item) => (
-                    <article key={item.date} className="ui-surface-card ui-surface-card--prominent home-proof__card">
-                      <span className="home-proof__date">{formatDate(item.date, locale)}</span>
-                      <strong>{t('home.proof.scoreLabel', { score: Math.round(item.score) })}</strong>
-                      <span className={`home-proof__sentiment sentiment-${getSentimentSuffix(item.sentimentKey)}`}>
-                        {t(item.sentimentKey)}
-                      </span>
-                      <p>{t('home.proof.cardBody')}</p>
-                    </article>
-                  )) : (
-                    <article className="ui-surface-card home-proof__empty">
-                      <p>{t('home.proof.empty')}</p>
-                    </article>
+            <article className="home-storyBlock home-storyBlock--price home-reveal">
+              <div className="home-storyMedia home-storyMedia--price ui-surface-card">
+                <div className="home-pricePreview">
+                  <div className="home-pricePreview__header">
+                    <div>
+                      <h3>{t('home.methodology.pricePreview.title')}</h3>
+                    </div>
+                  </div>
+                  <p className="home-pricePreview__body">{t('home.methodology.pricePreview.description')}</p>
+                  <div className="home-pricePreview__stats">
+                    <div>
+                      <span>{t('home.methodology.pricePreview.symbol')}</span>
+                      <strong>{pricePreview.stockCode || 'SPY'}</strong>
+                    </div>
+                    <div>
+                      <span>{t('home.methodology.pricePreview.currentPrice')}</span>
+                      <strong>{formatPriceValue(pricePreview.currentPrice, locale, 'USD')}</strong>
+                    </div>
+                    <div>
+                      <span>{t('home.methodology.pricePreview.currentSentiment')}</span>
+                      <strong className={`sentiment-${getSentimentSuffix(pricePreview.sentimentKey)}`}>{pricePreviewSentimentLabel}</strong>
+                    </div>
+                  </div>
+                  {pricePreviewSeries.length > 1 ? (
+                    <div className="home-pricePreview__chartShell">
+                      <HomePricePreviewChart className="home-pricePreview__chart" series={pricePreviewSeries} />
+                    </div>
+                  ) : (
+                    <p className="home-pricePreview__empty">{t('home.methodology.pricePreview.empty')}</p>
                   )}
                 </div>
               </div>
 
               <div className="home-storyBlock__content">
-                <span className="home-storyBlock__eyebrow">{t('home.story.blocks.signals.eyebrow')}</span>
-                <h3>{t('home.story.blocks.signals.title')}</h3>
-                <p>{t('home.story.blocks.signals.description')}</p>
-                <div className="home-frameworkStrip">
-                  {featuredFrameworkIds.map((indicatorId) => (
-                    <span key={indicatorId} className="home-frameworkStrip__item">
-                      {getHomepageIndicatorLabel(t, indicatorId)}
-                    </span>
-                  ))}
-                </div>
+                <h3>{t('home.story.blocks.price.title')}</h3>
+                <p>{t('home.story.blocks.price.description')}</p>
+                <Link to={`/${currentLang}/priceanalysis`} className="home-toolCard__link">
+                  {t('home.story.blocks.price.cta')} <FaArrowRight aria-hidden="true" />
+                </Link>
               </div>
             </article>
 

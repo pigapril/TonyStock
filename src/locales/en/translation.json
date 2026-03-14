@@ -602,6 +602,14 @@
         "chartLabel": "Preview of market sentiment history from 2017 to 2023",
         "empty": "This history preview is temporarily unavailable."
       },
+      "pricePreview": {
+        "title": "Quickly see a symbol's price sentiment zone",
+        "description": "Use the market index level to judge whether current sentiment is closer to fear or greed.",
+        "currentPrice": "Latest price",
+        "currentSentiment": "Current sentiment",
+        "symbol": "Symbol",
+        "empty": "SPY analysis is temporarily unavailable."
+      },
       "snapshot": {
         "kicker": "Market snapshot",
         "title": "A recent SIO reading",
@@ -681,10 +689,11 @@
           "description": "This is not about calling the exact bottom. It is about using data to remind you that when sentiment falls into extreme fear, the better move is often to evaluate disciplined, staged entries instead of selling in panic.",
           "cta": "See past fear lows"
         },
-        "signals": {
-          "eyebrow": "See what is underneath",
-          "title": "A few signals tell the story, but the combined read is the point.",
-          "description": "Looking at a few representative signals together helps explain whether sentiment is being driven by rising stress, stronger hedging demand, or returning risk appetite."
+        "price": {
+          "eyebrow": "Start with price position",
+          "title": "Analyze extreme sentiment through price trends",
+          "description": "You cannot predict tomorrow, but understanding the sentiment implied by today's price can improve entry and exit decisions.",
+          "cta": "Analyze other symbols"
         },
         "watchlist": {
           "eyebrow": "Turn context into a habit",
