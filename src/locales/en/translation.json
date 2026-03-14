@@ -692,7 +692,7 @@
         "price": {
           "eyebrow": "Start with price position",
           "title": "Analyze extreme sentiment through price trends",
-          "description": "You cannot predict tomorrow, but understanding the sentiment implied by today's price can improve entry and exit decisions.",
+          "description": "No one can predict price moves, but understanding the sentiment implied by today's price can improve entry and exit decisions.",
           "cta": "Analyze other symbols"
         },
         "watchlist": {
