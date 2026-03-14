@@ -113,9 +113,30 @@ function renderTitleWithBreaks(title) {
   return segments.map((segment, index) => (
     <React.Fragment key={`${segment}-${index}`}>
       {index > 0 ? <br /> : null}
-      {segment}
+      <span className={index > 0 ? 'home-hero__titleSegment home-hero__titleSegment--noBreak' : 'home-hero__titleSegment'}>
+        {segment}
+      </span>
     </React.Fragment>
   ));
+}
+
+function renderPriceStoryTitle(title, isChinese) {
+  const normalizedTitle = String(title);
+  const secondLine = '分析極端情緒位階';
+
+  if (!isChinese || !normalizedTitle.includes(secondLine)) {
+    return title;
+  }
+
+  const firstLine = normalizedTitle.replace(secondLine, '');
+
+  return (
+    <>
+      <span>{firstLine}</span>
+      <br />
+      <span className="home-storyBlock__titleSegment home-storyBlock__titleSegment--noBreak">{secondLine}</span>
+    </>
+  );
 }
 
 export const Home = () => {
@@ -529,7 +550,7 @@ export const Home = () => {
               </div>
 
               <div className="home-storyBlock__content">
-                <h3>{t('home.story.blocks.price.title')}</h3>
+                <h3>{renderPriceStoryTitle(t('home.story.blocks.price.title'), currentLang.startsWith('zh'))}</h3>
                 <p>{t('home.story.blocks.price.description')}</p>
                 <Link to={`/${currentLang}/priceanalysis`} className="home-toolCard__link">
                   {t('home.story.blocks.price.cta')} <FaArrowRight aria-hidden="true" />
