@@ -479,14 +479,14 @@
     },
     "hero": {
       "eyebrow": "Sentiment Inside Out",
-      "title": "看懂市場現在偏恐懼還是偏貪婪。",
-      "subtitle": "SIO 把多個市場情緒訊號整理成更清楚的一個讀數，幫助你用更穩定的方式判斷市場氣氛。",
+      "title": "洞悉市場｜恐懼貪婪情緒",
+      "subtitle": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點。",
       "primaryAuthenticated": "查看市場情緒",
       "primaryGuest": "登入查看市場情緒",
       "secondary": "試試價格趨勢分析",
       "delayNote": "首頁快照目前延遲到 {{date}}。",
       "frameworkNote": "整合 {{count}} 個市場訊號。",
-      "experienceNote": "目前可先從 {{count}} 個免費 ticker 開始。",
+      "experienceNote": "目前可先從 {{count}} 檔免費標的開始。",
       "snapshotBadge": "市場快照",
       "loading": "首頁資料更新中...",
       "snapshotLabel": "SIO 分數",
@@ -578,13 +578,55 @@
         "cotIndex": "看投機部位是否開始變得擁擠。",
         "naaimIndex": "看主動型經理人的曝險方向。"
       },
+      "signalLabels": {
+        "aaiiSpread": {
+          "title": "散戶情緒",
+          "subtitle": "看散戶投資人偏樂觀還是偏保守。"
+        },
+        "cboeRatio": {
+          "title": "避險需求",
+          "subtitle": "看市場對下跌保護的需求有多高。"
+        },
+        "marketMomentum": {
+          "title": "大盤趨勢",
+          "subtitle": "看大盤趨勢是在轉強還是轉弱。"
+        },
+        "vixMA50": {
+          "title": "市場壓力",
+          "subtitle": "看市場壓力是否正在升高。"
+        },
+        "safeHaven": {
+          "title": "資金避險傾向",
+          "subtitle": "看資金是否開始往避險資產移動。"
+        },
+        "junkBond": {
+          "title": "風險偏好",
+          "subtitle": "看市場是否還願意承擔風險。"
+        },
+        "cotIndex": {
+          "title": "投機部位",
+          "subtitle": "看投機部位是否開始變得擁擠。"
+        },
+        "naaimIndex": {
+          "title": "經理人持倉",
+          "subtitle": "看主動型經理人的曝險方向。"
+        }
+      },
+      "historyPreview": {
+        "kicker": "歷史走勢",
+        "title": "極端恐懼=市場低點",
+        "badge": "2017-2023",
+        "description": "當市場最害怕的時候，往往也是長期投資人最該冷靜的時候。",
+        "chartLabel": "2017 到 2023 年的市場情緒歷史走勢預覽",
+        "empty": "目前暫時無法載入這段歷史走勢。"
+      },
       "snapshot": {
         "kicker": "市場快照",
         "title": "最近一次的 SIO 讀數",
         "badge": "延遲資料",
         "body": "截至 {{date}}，SIO 分數為 {{score}}，當時市場情緒落在「{{sentiment}}」區域。免費版會看到延遲資料，Pro 則可以查看最新讀數。",
         "distributionTitle": "這次讀數是怎麼形成的",
-        "distributionSummary": "{{total}} 個輸入中，{{extremeFear}} 個處於極度恐懼、{{fear}} 個恐懼、{{neutral}} 個中性、{{greed}} 個貪婪、{{extremeGreed}} 個極度貪婪。"
+        "distributionSummary": "{{total}} 個訊號中，{{extremeFear}} 個處於極度恐懼、{{fear}} 個恐懼、{{neutral}} 個中性、{{greed}} 個貪婪、{{extremeGreed}} 個極度貪婪。"
       },
       "preview": {
         "kicker": "分數背後的訊號",
@@ -645,31 +687,28 @@
         "sentiment": {
           "badge": "市場情緒",
           "title": "市場情緒",
-          "description": "進一步查看完整的 SIO 視圖、底層訊號，以及每次讀數背後的歷史脈絡。",
+          "description": "進一步查看完整的市場情緒頁、各項訊號變化，以及每次讀數背後的歷史脈絡。",
           "cta": "打開市場情緒頁"
         }
       }
     },
     "story": {
-      "eyebrow": "比較平靜地看市場",
-      "title": "先看大方向，再讓細節隨著往下滑逐步出現。",
-      "description": "首頁不需要像儀表板一樣一次塞滿資訊。先用市場情緒建立背景，再看分數背後的訊號，最後把脈絡轉成你自己的追蹤清單。",
       "blocks": {
         "sentiment": {
-          "eyebrow": "先看整體市場",
-          "title": "在看單一標的之前，先知道整體市場現在是什麼氣氛。",
-          "description": "SIO 會把幾個市場訊號整理成一個延遲快照，讓你先從整體情緒背景出發，而不是直接被零散雜訊帶著走。",
-          "cta": "打開市場情緒"
+          "eyebrow": "恐慌時更要看",
+          "title": "在別人恐懼時展現貪婪",
+          "description": "不是要猜最低點，而是用數據提醒你：當市場情緒掉進極端恐懼，與其跟著恐慌賣出，不如開始更有紀律地評估、分批進場。",
+          "cta": "看歷史恐慌低點"
         },
         "signals": {
           "eyebrow": "再看分數背後",
           "title": "幾個訊號可以幫你理解這個分數，但重點還是整體讀數。",
-          "description": "這裡放的是幫助理解的代表訊號，不是要把首頁做成滿版指標牆。真正的價值，在於把它們放在一起，並和過去恐懼低點一起看。"
+          "description": "把代表性的訊號放在一起看，你會更清楚這次情緒變化是來自壓力升高、避險需求增加，還是風險偏好回來了。"
         },
         "watchlist": {
           "eyebrow": "把脈絡變成習慣",
           "title": "當你開始有感覺的標的，就把它留進自己的追蹤清單。",
-          "description": "先看市場情緒，再看一檔標的的價格位置，最後把之後還想回來看的 ticker 留下來。這樣首頁的下一步會更自然，而不是直接推銷。",
+          "description": "先看市場情緒，再看一檔標的的價格位置，最後把之後還想回來看的股票或 ETF 留進自己的追蹤清單。",
           "cta": "打開追蹤清單",
           "mediaLabel": "追蹤清單預覽",
           "steps": {
@@ -688,11 +727,11 @@
     "entry": {
       "eyebrow": "繼續往下探索",
       "title": "先從熟悉的市場開始，再決定要不要看得更深。",
-      "description": "如果首頁已經幫你建立基本脈絡，下一步就應該很簡單：先試免費 ticker，或在需要時升級查看最新 SIO 讀數。",
+      "description": "看完首頁後，你可以先試用免費的股票與 ETF 分析，再視需要查看最新的 SIO 讀數。",
       "pricing": {
         "badge": "Pro",
         "title": "想看最新的市場讀數？",
-        "description": "Pro 會開放最新的 SIO 讀數、更完整的歷史資料，以及更順手的研究流程。",
+        "description": "Pro 會開放最新的 SIO 讀數、更完整的歷史資料，以及更完整的觀察工具。",
         "monthly": "月費",
         "yearly": "年費",
         "cta": "比較方案"

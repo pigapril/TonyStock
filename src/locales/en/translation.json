@@ -462,14 +462,14 @@
     },
     "hero": {
       "eyebrow": "Sentiment Inside Out",
-      "title": "See when the market is driven by fear or greed.",
-      "subtitle": "SIO combines multiple market signals into one clearer read, so you can judge market mood with more discipline and less noise.",
+      "title": "Understand the market's fear and greed sentiment.",
+      "subtitle": "Use objective data to judge current market sentiment and overcome the human biases of fear and greed.",
       "primaryAuthenticated": "View market sentiment",
       "primaryGuest": "Sign in to view market sentiment",
       "secondary": "Try price trend analysis",
       "delayNote": "Homepage snapshot is delayed through {{date}}.",
       "frameworkNote": "Built from {{count}} market signals.",
-      "experienceNote": "{{count}} free tickers to start with.",
+      "experienceNote": "{{count}} free stocks and ETFs to start with.",
       "snapshotBadge": "Market snapshot",
       "loading": "Refreshing homepage data...",
       "snapshotLabel": "SIO score",
@@ -561,13 +561,54 @@
         "cotIndex": "Shows whether speculative positioning is getting crowded.",
         "naaimIndex": "Shows how active managers are positioned."
       },
+      "signalLabels": {
+        "aaiiSpread": {
+          "title": "Investor mood",
+          "subtitle": "Shows whether individual investors are leaning bullish or cautious."
+        },
+        "cboeRatio": {
+          "title": "Hedging demand",
+          "subtitle": "Shows how much downside protection traders are buying."
+        },
+        "marketMomentum": {
+          "title": "Market trend",
+          "subtitle": "Shows whether the broader market trend is strengthening or weakening."
+        },
+        "vixMA50": {
+          "title": "Market stress",
+          "subtitle": "Shows whether market stress is rising."
+        },
+        "safeHaven": {
+          "title": "Flight to safety",
+          "subtitle": "Shows whether money is moving toward safer assets."
+        },
+        "junkBond": {
+          "title": "Risk appetite",
+          "subtitle": "Shows whether investors are still comfortable taking risk."
+        },
+        "cotIndex": {
+          "title": "Speculative positioning",
+          "subtitle": "Shows whether positioning is getting crowded."
+        },
+        "naaimIndex": {
+          "title": "Manager exposure",
+          "subtitle": "Shows how active managers are positioned."
+        }
+      },
+      "historyPreview": {
+        "title": "Extreme fear = market lows",
+        "badge": "2017-2023",
+        "description": "When the market is most afraid, long-term investors need to be at their calmest.",
+        "chartLabel": "Preview of market sentiment history from 2017 to 2023",
+        "empty": "This history preview is temporarily unavailable."
+      },
       "snapshot": {
         "kicker": "Market snapshot",
         "title": "A recent SIO reading",
         "badge": "Delayed data",
         "body": "As of {{date}}, the SIO score was {{score}}, which placed market sentiment in {{sentiment}} territory. Free users see delayed data. Pro members can follow the latest reading.",
         "distributionTitle": "What shaped this reading",
-        "distributionSummary": "Out of {{total}} inputs, {{extremeFear}} were in extreme fear, {{fear}} in fear, {{neutral}} in neutral, {{greed}} in greed, and {{extremeGreed}} in extreme greed."
+        "distributionSummary": "Out of {{total}} signals, {{extremeFear}} were in extreme fear, {{fear}} in fear, {{neutral}} in neutral, {{greed}} in greed, and {{extremeGreed}} in extreme greed."
       },
       "preview": {
         "kicker": "Signals behind the score",
@@ -628,31 +669,27 @@
         "sentiment": {
           "badge": "Sentiment",
           "title": "Market Sentiment",
-          "description": "Explore the full SIO view, its underlying signals, and the historical context behind each reading.",
+          "description": "Explore the full market sentiment page, the underlying signals, and the historical context behind each reading.",
           "cta": "Open sentiment page"
         }
       }
     },
     "story": {
-      "eyebrow": "A calmer way to read the market",
-      "title": "Start wide, then let the details show up as you move down the page.",
-      "description": "The homepage should feel more like a guided read than a dashboard. Start with the market mood, see what shaped it, then turn that context into names you want to follow.",
       "blocks": {
         "sentiment": {
-          "eyebrow": "Start with the market",
-          "title": "Read the overall mood before you look at a single ticker.",
-          "description": "SIO turns several market signals into one delayed snapshot, so you can start from the bigger emotional backdrop instead of isolated noise.",
-          "cta": "Open market sentiment"
+          "title": "Be greedy when others are fearful",
+          "description": "This is not about calling the exact bottom. It is about using data to remind you that when sentiment falls into extreme fear, the better move is often to evaluate disciplined, staged entries instead of selling in panic.",
+          "cta": "See past fear lows"
         },
         "signals": {
           "eyebrow": "See what is underneath",
           "title": "A few signals tell the story, but the combined read is the point.",
-          "description": "These inputs are here to make the score feel understandable, not to turn the homepage into a wall of indicators. The strength comes from seeing them together and against past fear lows."
+          "description": "Looking at a few representative signals together helps explain whether sentiment is being driven by rising stress, stronger hedging demand, or returning risk appetite."
         },
         "watchlist": {
           "eyebrow": "Turn context into a habit",
           "title": "When something looks interesting, keep it in your own watchlist.",
-          "description": "Start from market mood, check the price structure of a name, then keep the tickers you want to revisit. That gives the homepage a natural next step instead of a hard sell.",
+          "description": "Start from market mood, check the price structure of a name, then keep the stocks or ETFs you want to revisit in your watchlist.",
           "cta": "Open watchlist",
           "mediaLabel": "Watchlist preview",
           "steps": {
@@ -671,11 +708,11 @@
     "entry": {
       "eyebrow": "Keep exploring",
       "title": "Start with a familiar market, then decide how deep you want to go.",
-      "description": "If the homepage gives you enough context, the next step should feel simple: try a free ticker, or unlock the latest SIO read when you need it.",
+      "description": "After the homepage gives you context, you can try free stock and ETF analysis first, then unlock the latest SIO reading when you need it.",
       "pricing": {
         "badge": "Pro",
         "title": "Want the latest market reading?",
-        "description": "Pro unlocks the current SIO reading, fuller history, and a smoother research workflow.",
+        "description": "Pro unlocks the current SIO reading, fuller history, and more complete tools for following the market.",
         "monthly": "Monthly",
         "yearly": "Yearly",
         "cta": "Compare plans"

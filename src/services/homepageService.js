@@ -49,7 +49,19 @@ const FALLBACK_HOMEPAGE_DATA = {
     },
     historicLows: [],
     historicExtremes: [],
-    featuredMoments: []
+    featuredMoments: [],
+    historyPreview: [
+      { date: '2017-01-01T00:00:00.000Z', score: 74, spyClose: 225 },
+      { date: '2018-12-01T00:00:00.000Z', score: 15, spyClose: 250 },
+      { date: '2018-12-24T00:00:00.000Z', score: 12, spyClose: 234 },
+      { date: '2020-03-01T00:00:00.000Z', score: 5, spyClose: 274 },
+      { date: '2020-03-16T00:00:00.000Z', score: 4, spyClose: 239 },
+      { date: '2021-11-01T00:00:00.000Z', score: 86, spyClose: 460 },
+      { date: '2021-11-15T00:00:00.000Z', score: 88, spyClose: 467 },
+      { date: '2022-10-01T00:00:00.000Z', score: 11, spyClose: 357 },
+      { date: '2022-10-12T00:00:00.000Z', score: 10, spyClose: 356 },
+      { date: '2023-11-01T00:00:00.000Z', score: 67, spyClose: 454 }
+    ]
   },
   freeExperience: {
     tickers: ['SPY', 'QQQ', 'VOO', 'AAPL', 'MSFT', 'NVDA'],

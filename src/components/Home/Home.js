@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
-import { FaArrowRight, FaChevronDown, FaClock, FaLayerGroup, FaLock, FaSignal } from 'react-icons/fa';
+import { FaArrowRight, FaChevronDown, FaLock } from 'react-icons/fa';
 import './Home.css';
 import { useDialog } from '../../components/Common/Dialog/useDialog';
 import { useAuth } from '../../components/Auth/useAuth';
@@ -10,6 +10,7 @@ import { Badge } from '../Common/Badge/Badge';
 import { Button } from '../Common/Button/Button';
 import homepageService from '../../services/homepageService';
 import MarketSentimentGauge from '../MarketSentimentIndex/MarketSentimentGauge';
+import { SharedSentimentHistoryChart } from '../MarketSentimentIndex/SharedSentimentHistoryChart';
 
 const BUTTON_LINK_CLASS = (variant) => [
   'ui-button',
@@ -35,6 +36,8 @@ const FEATURED_FRAMEWORK_IDS = [
   'aaiiSpread',
   'junkBond'
 ];
+const HISTORY_PREVIEW_START_YEAR = 2017;
+const HISTORY_PREVIEW_END_YEAR = 2023;
 
 const HERO_GAUGE_HEADLINE = (
   <>
@@ -113,6 +116,27 @@ function formatHeroMomentDate(value, locale) {
     ].filter(Boolean).join(' '),
     year: parts.find(({ type }) => type === 'year')?.value || ''
   };
+}
+
+function getHomepageIndicatorLabel(t, indicatorId) {
+  return t(`home.methodology.signalLabels.${indicatorId}.title`, {
+    defaultValue: t(`indicators.${indicatorId}`)
+  });
+}
+
+function renderTitleWithBreaks(title) {
+  const segments = String(title).split('｜').filter(Boolean);
+
+  if (segments.length <= 1) {
+    return title;
+  }
+
+  return segments.map((segment, index) => (
+    <React.Fragment key={`${segment}-${index}`}>
+      {index > 0 ? <br /> : null}
+      {segment}
+    </React.Fragment>
+  ));
 }
 
 export const Home = () => {
@@ -206,13 +230,7 @@ export const Home = () => {
   const previewIndicators = sentimentData.previewIndicators || [];
   const historicLows = sentimentData.historicLows || [];
   const featuredMoments = sentimentData.featuredMoments || [];
-  const distribution = sentimentData.distribution || {};
   const activeHeroMoment = featuredMoments[activeExtremeIndex] || null;
-  const sentimentLabel = t(sentimentData.sentimentKey || 'sentiment.notAvailable');
-  const sentimentSuffix = getSentimentSuffix(sentimentData.sentimentKey);
-  const scoreValue = sentimentData.score === null || sentimentData.score === undefined
-    ? '--'
-    : Math.round(Number(sentimentData.score));
   const activeHeroDate = activeHeroMoment?.date || sentimentData.restrictionCutoffDate || sentimentData.lastUpdated || null;
   const activeHeroDateParts = formatHeroMomentDate(activeHeroDate, locale);
   const activeHeroMomentTitle = activeHeroMoment
@@ -238,6 +256,85 @@ export const Home = () => {
   const announcementMessage = currentLang.startsWith('zh')
     ? homepageData?.announcement?.message_zh || homepageData?.announcement?.message
     : homepageData?.announcement?.message_en || homepageData?.announcement?.message;
+  const historyPreviewMilestones = useMemo(() => {
+    const preferredIds = ['tradeWarSelloff', 'pandemicPanic', 'liquidityPeak', 'inflationBearLow', 'aiRally'];
+
+    return preferredIds.map((eventId) => {
+      const moment = featuredMoments.find((item) => item.eventId === eventId);
+
+      if (!moment?.date || moment?.score === null || moment?.score === undefined) {
+        return null;
+      }
+
+      const date = new Date(moment.date);
+      const year = date.getUTCFullYear();
+
+      if (Number.isNaN(date.getTime()) || year < HISTORY_PREVIEW_START_YEAR || year > HISTORY_PREVIEW_END_YEAR) {
+        return null;
+      }
+
+      return {
+        ...moment,
+        date,
+        year,
+        score: Math.round(Number(moment.score)),
+        title: t(`home.hero.moments.events.${moment.eventId}.title`, {
+          defaultValue: moment.title || ''
+        }),
+        sentimentLabel: t(moment.sentimentKey || 'sentiment.notAvailable')
+      };
+    }).filter(Boolean);
+  }, [featuredMoments, t]);
+  const historyPreview = useMemo(() => {
+    const mergedPoints = new Map();
+
+    (sentimentData.historyPreview || []).forEach((item) => {
+      const date = new Date(item.date);
+      const score = Number(item.score);
+      const spyClose = Number(item.spyClose);
+
+      if (Number.isNaN(date.getTime()) || !Number.isFinite(score) || !Number.isFinite(spyClose)) {
+        return;
+      }
+
+      mergedPoints.set(date.toISOString(), {
+        date,
+        score,
+        spyClose
+      });
+    });
+
+    featuredMoments.forEach((item) => {
+      const date = new Date(item.date);
+      const score = Number(item.score);
+      const spyClose = Number(item.spyClose);
+
+      if (Number.isNaN(date.getTime()) || !Number.isFinite(score) || !Number.isFinite(spyClose)) {
+        return;
+      }
+
+      if (date.getUTCFullYear() < HISTORY_PREVIEW_START_YEAR || date.getUTCFullYear() > HISTORY_PREVIEW_END_YEAR) {
+        return;
+      }
+
+      mergedPoints.set(date.toISOString(), {
+        date,
+        score,
+        spyClose
+      });
+    });
+
+    return Array.from(mergedPoints.values()).sort((left, right) => left.date - right.date);
+  }, [featuredMoments, sentimentData.historyPreview]);
+  const historyChartLowPoints = useMemo(() => (
+    historyPreviewMilestones
+      .filter((item) => item.score <= 20)
+      .map((item) => ({
+        date: item.date,
+        score: item.score,
+        meta: `${item.year} ${item.title}`
+      }))
+  ), [historyPreviewMilestones]);
   const handlePrimaryAction = () => {
     openDialog('auth', {
       returnPath: `/${currentLang}/market-sentiment`
@@ -258,12 +355,7 @@ export const Home = () => {
           <div className="home-hero__backdrop" aria-hidden="true" />
           <div className="ui-page-shell home-hero__inner">
             <div className="home-hero__content">
-              <Badge
-                variant="blue"
-                size="large"
-                label={t('home.hero.eyebrow')}
-              />
-              <h1>{t('home.hero.title')}</h1>
+              <h1>{renderTitleWithBreaks(t('home.hero.title'))}</h1>
               <p className="home-hero__subtitle">{t('home.hero.subtitle')}</p>
 
               <div className="home-hero__actions">
@@ -295,20 +387,6 @@ export const Home = () => {
                 </Link>
               </div>
 
-              <div className="home-hero__meta">
-                <span className="home-hero__metaItem">
-                  <FaClock aria-hidden="true" />
-                  {t('home.hero.delayNote', { date: restrictionDateLabel })}
-                </span>
-                <span className="home-hero__metaItem">
-                  <FaLayerGroup aria-hidden="true" />
-                  {t('home.hero.frameworkNote', { count: frameworkIndicatorIds.length })}
-                </span>
-                <span className="home-hero__metaItem">
-                  <FaSignal aria-hidden="true" />
-                  {t('home.hero.experienceNote', { count: freeExperience.totalTickerCount || freeExperience.tickers?.length || 0 })}
-                </span>
-              </div>
             </div>
 
             <div className="home-hero__visual">
@@ -382,15 +460,8 @@ export const Home = () => {
 
         <section id="home-methodology" className="ui-section home-narrative">
           <div className="ui-page-shell">
-            <div className="ui-section-intro home-reveal">
-              <span className="ui-section-eyebrow">{t('home.story.eyebrow')}</span>
-              <h2 className="ui-section-title">{t('home.story.title')}</h2>
-              <p className="ui-section-description">{t('home.story.description')}</p>
-            </div>
-
             <article className="home-storyBlock home-storyBlock--sentiment home-reveal">
               <div className="home-storyBlock__content">
-                <span className="home-storyBlock__eyebrow">{t('home.story.blocks.sentiment.eyebrow')}</span>
                 <h3>{t('home.story.blocks.sentiment.title')}</h3>
                 <p>{t('home.story.blocks.sentiment.description')}</p>
                 <Link to={`/${currentLang}/market-sentiment`} className="home-toolCard__link">
@@ -399,53 +470,28 @@ export const Home = () => {
               </div>
 
               <div className="home-storyMedia home-storyMedia--sentiment ui-surface-card ui-surface-card--glass">
-                <div className="home-storyMedia__panel">
-                  <div>
-                    <span className="home-methodology__kicker">{t('home.methodology.snapshot.kicker')}</span>
-                    <h3>{t('home.methodology.snapshot.title')}</h3>
+                <div className="home-historyPreview">
+                  <div className="home-historyPreview__header">
+                    <div>
+                      <h3>{t('home.methodology.historyPreview.title')}</h3>
+                    </div>
                   </div>
-                  <Badge variant="blue" label={t('home.methodology.snapshot.badge')} />
-                </div>
-                <div className="home-storyMedia__scoreWrap">
-                  <div className={`home-storyMedia__score sentiment-${sentimentSuffix}`}>
-                    {scoreValue}
-                  </div>
-                  <div className="home-storyMedia__scoreMeta">
-                    <span className="home-snapshotCard__label">{t('home.hero.snapshotLabel')}</span>
-                    <strong>{sentimentLabel}</strong>
-                    <span>{t('home.hero.snapshotDate', { date: restrictionDateLabel })}</span>
-                  </div>
-                </div>
-                <p className="home-storyMedia__body">
-                  {t('home.methodology.snapshot.body', {
-                    score: scoreValue,
-                    sentiment: sentimentLabel,
-                    date: restrictionDateLabel
-                  })}
-                </p>
-                <div className="home-storyMedia__distribution">
-                  <div className="home-methodology__distributionLead">{t('home.methodology.snapshot.distributionTitle')}</div>
-                  <p className="home-methodology__distributionSummary">
-                    {t('home.methodology.snapshot.distributionSummary', {
-                      total: distribution.total || frameworkIndicatorIds.length,
-                      extremeFear: distribution.extremeFear || 0,
-                      fear: distribution.fear || 0,
-                      neutral: distribution.neutral || 0,
-                      greed: distribution.greed || 0,
-                      extremeGreed: distribution.extremeGreed || 0
-                    })}
-                  </p>
-                  <div className="home-methodology__distributionBars" aria-hidden="true">
-                    {['extremeFear', 'fear', 'neutral', 'greed', 'extremeGreed'].map((bucket) => (
-                      <span
-                        key={bucket}
-                        className={`home-methodology__distributionBar sentiment-${bucket}`}
-                        style={{
-                          width: `${((distribution[bucket] || 0) / Math.max(distribution.total || frameworkIndicatorIds.length, 1)) * 100}%`
-                        }}
+                  <p className="home-historyPreview__body">{t('home.methodology.historyPreview.description')}</p>
+
+                  {historyPreview.length > 1 ? (
+                    <div className="home-historyPreview__chartShell">
+                      <SharedSentimentHistoryChart
+                        className="home-historyPreview__chart"
+                        historicalData={historyPreview}
+                        lowPoints={historyChartLowPoints}
+                        showLegend={true}
+                        compact={true}
                       />
-                    ))}
-                  </div>
+                    </div>
+                  ) : (
+                    <p className="home-historyPreview__empty">{t('home.methodology.historyPreview.empty')}</p>
+                  )}
+
                 </div>
               </div>
             </article>
@@ -456,7 +502,7 @@ export const Home = () => {
                 <div className="home-storyMedia__signalGrid">
                   {previewIndicators.map((indicator) => (
                     <article key={indicator.id} className="home-storyMedia__signalCard">
-                      <span className="home-methodology__previewLabel">{t(`indicators.${indicator.id}`)}</span>
+                      <span className="home-methodology__previewLabel">{getHomepageIndicatorLabel(t, indicator.id)}</span>
                       <strong>{indicator.percentileRank === null || indicator.percentileRank === undefined ? '--' : Math.round(indicator.percentileRank)}</strong>
                       <span className={`home-methodology__previewSentiment sentiment-${getSentimentSuffix(indicator.sentimentKey)}`}>
                         {t(indicator.sentimentKey)}
@@ -489,7 +535,7 @@ export const Home = () => {
                 <div className="home-frameworkStrip">
                   {featuredFrameworkIds.map((indicatorId) => (
                     <span key={indicatorId} className="home-frameworkStrip__item">
-                      {t(`indicators.${indicatorId}`)}
+                      {getHomepageIndicatorLabel(t, indicatorId)}
                     </span>
                   ))}
                 </div>
