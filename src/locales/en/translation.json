@@ -696,20 +696,23 @@
           "cta": "Analyze other symbols"
         },
         "watchlist": {
-          "eyebrow": "Turn context into a habit",
-          "title": "When something looks interesting, keep it in your own watchlist.",
-          "description": "Start from market mood, check the price structure of a name, then keep the stocks or ETFs you want to revisit in your watchlist.",
+          "title": "Build a personal watchlist",
+          "description": "Quickly check the current price position of different symbols.",
           "cta": "Open watchlist",
-          "mediaLabel": "Watchlist preview",
-          "steps": {
-            "market": "Read market mood",
-            "price": "Check price structure",
-            "save": "Save names to revisit"
+          "items": {
+            "spy": "US broad market ETF",
+            "qqq": "US tech ETF",
+            "voo": "S&P 500 ETF",
+            "aapl": "Apple",
+            "nvda": "NVIDIA",
+            "msft": "Microsoft"
           },
-          "status": {
-            "0": "Ready to review",
-            "1": "Price setup worth checking",
-            "2": "Keep on the list"
+          "tags": {
+            "extremeGreed": "Extreme Greed",
+            "greed": "Greed",
+            "neutral": "Neutral",
+            "fear": "Fear",
+            "extremeFear": "Extreme Fear"
           }
         }
       }

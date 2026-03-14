@@ -832,42 +832,19 @@
   margin-top: 26px;
 }
 
-.home-watchlistFlow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.home-watchlistFlow span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 38px;
-  padding: 0 14px;
-  border-radius: 999px;
-  background: rgba(0, 122, 255, 0.08);
-  color: var(--accent-color-blue, #007aff);
-  font-weight: 600;
-}
-
 .home-storyMedia--watchlist {
   min-height: 420px;
   background:
-    linear-gradient(180deg, rgba(10, 18, 32, 0.98), rgba(15, 23, 42, 0.92)),
-    radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 30%);
-  color: #fff;
+    radial-gradient(circle at 14% 18%, rgba(56, 189, 248, 0.16), transparent 30%),
+    radial-gradient(circle at 84% 14%, rgba(59, 130, 246, 0.1), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.92));
+  color: var(--color-text-primary, #0f172a);
 }
 
 .home-storyMedia--watchlist::before {
   background:
-    linear-gradient(135deg, rgba(56, 189, 248, 0.14), transparent 38%),
-    radial-gradient(circle at 76% 18%, rgba(14, 165, 233, 0.18), transparent 26%);
-}
-
-.home-storyMedia__watchlistHeader {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: flex-start;
+    linear-gradient(135deg, rgba(255, 255, 255, 0.34), transparent 36%),
+    radial-gradient(circle at 76% 18%, rgba(255, 255, 255, 0.52), transparent 24%);
 }
 
 .home-storyMedia__watchlistStack {
@@ -876,7 +853,7 @@
   display: grid;
   gap: 14px;
   max-width: 420px;
-  margin-top: 36px;
+  margin-top: 20px;
 }
 
 .home-storyMedia__watchRow {
@@ -886,10 +863,18 @@
   gap: 18px;
   padding: 18px 20px;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.16);
+  border: 1px dashed rgba(148, 163, 184, 0.45);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.82)),
+    rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 18px 34px rgba(148, 163, 184, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.home-storyMedia__watchIdentity {
+  display: grid;
+  gap: 6px;
 }
 
 .home-storyMedia__watchRow strong {
@@ -897,9 +882,43 @@
   letter-spacing: 0.03em;
 }
 
-.home-storyMedia__watchRow span {
-  color: rgba(255, 255, 255, 0.72);
+.home-storyMedia__watchIdentity span {
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.62));
   font-size: 0.92rem;
+}
+
+.home-storyMedia__watchTag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(255, 255, 255, 0.82);
+  font-size: 0.86rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.home-storyMedia__watchTag.sentiment-neutral {
+  color: #64748b;
+}
+
+.home-storyMedia__watchTag.sentiment-fear {
+  color: #2563eb;
+}
+
+.home-storyMedia__watchTag.sentiment-extremeFear {
+  color: #1d4ed8;
+}
+
+.home-storyMedia__watchTag.sentiment-greed {
+  color: #047857;
+}
+
+.home-storyMedia__watchTag.sentiment-extremeGreed {
+  color: #065f46;
 }
 
 .home-storyMedia__watchRow--0 {
@@ -1328,10 +1347,6 @@
 
   .home-storyBlock__content h3 {
     font-size: 1.8rem;
-  }
-
-  .home-watchlistFlow {
-    display: grid;
   }
 
   .home-storyMedia__watchRow {

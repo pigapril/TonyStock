@@ -30,6 +30,15 @@ const HERO_GAUGE_HEADLINE = (
   </>
 );
 
+const WATCHLIST_MOCK_ITEMS = [
+  { symbol: 'SPY', nameKey: 'spy', tone: 'neutral' },
+  { symbol: 'QQQ', nameKey: 'qqq', tone: 'greed' },
+  { symbol: 'VOO', nameKey: 'voo', tone: 'fear' },
+  { symbol: 'AAPL', nameKey: 'aapl', tone: 'extremeGreed' },
+  { symbol: 'NVDA', nameKey: 'nvda', tone: 'neutral' },
+  { symbol: 'MSFT', nameKey: 'msft', tone: 'extremeFear' }
+];
+
 function getSentimentSuffix(key) {
   if (!key) {
     return 'neutral';
@@ -537,28 +546,24 @@ export const Home = () => {
 
             <article className="home-storyBlock home-storyBlock--watchlist home-reveal">
               <div className="home-storyBlock__content">
-                <span className="home-storyBlock__eyebrow">{t('home.story.blocks.watchlist.eyebrow')}</span>
                 <h3>{t('home.story.blocks.watchlist.title')}</h3>
                 <p>{t('home.story.blocks.watchlist.description')}</p>
-                <div className="home-watchlistFlow">
-                  <span>{t('home.story.blocks.watchlist.steps.market')}</span>
-                  <span>{t('home.story.blocks.watchlist.steps.price')}</span>
-                  <span>{t('home.story.blocks.watchlist.steps.save')}</span>
-                </div>
                 <Link to={`/${currentLang}/watchlist`} className="home-toolCard__link">
                   {t('home.story.blocks.watchlist.cta')} <FaArrowRight aria-hidden="true" />
                 </Link>
               </div>
 
               <div className="home-storyMedia home-storyMedia--watchlist ui-surface-card">
-                <div className="home-storyMedia__watchlistHeader">
-                  <Badge variant="premium" label={t('home.story.blocks.watchlist.mediaLabel')} />
-                </div>
                 <div className="home-storyMedia__watchlistStack">
-                  {(freeExperience.tickers || []).slice(0, 6).map((ticker, index) => (
-                    <div key={ticker} className={`home-storyMedia__watchRow home-storyMedia__watchRow--${index % 3}`}>
-                      <strong>{ticker}</strong>
-                      <span>{t(`home.story.blocks.watchlist.status.${index % 3}`)}</span>
+                  {WATCHLIST_MOCK_ITEMS.map((item, index) => (
+                    <div key={item.symbol} className={`home-storyMedia__watchRow home-storyMedia__watchRow--${index % 3}`}>
+                      <div className="home-storyMedia__watchIdentity">
+                        <strong>{item.symbol}</strong>
+                        <span>{t(`home.story.blocks.watchlist.items.${item.nameKey}`)}</span>
+                      </div>
+                      <span className={`home-storyMedia__watchTag sentiment-${item.tone}`}>
+                        {t(`home.story.blocks.watchlist.tags.${item.tone}`)}
+                      </span>
                     </div>
                   ))}
                 </div>
