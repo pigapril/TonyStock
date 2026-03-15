@@ -491,6 +491,10 @@
       "loading": "首頁資料更新中...",
       "snapshotLabel": "SIO 分數",
       "snapshotDate": "快照截至 {{date}}",
+      "marketPreviewHeadline": {
+        "brand": "Sentiment Inside Out",
+        "index": "恐懼貪婪指標"
+      },
       "metrics": {
         "framework": "訊號數量",
         "pro": "Pro 方案",

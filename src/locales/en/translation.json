@@ -474,6 +474,10 @@
       "loading": "Refreshing homepage data...",
       "snapshotLabel": "SIO score",
       "snapshotDate": "Snapshot through {{date}}",
+      "marketPreviewHeadline": {
+        "brand": "Sentiment Inside Out",
+        "index": "Fear & Greed Index"
+      },
       "metrics": {
         "framework": "Signals",
         "pro": "Pro plan",

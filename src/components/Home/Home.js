@@ -27,13 +27,6 @@ const HISTORY_PREVIEW_END_YEAR = 2023;
 const HISTORY_PREVIEW_MOBILE_START_YEAR = 2018;
 const HISTORY_PREVIEW_MOBILE_END_YEAR = 2022;
 
-const HERO_GAUGE_HEADLINE = (
-  <>
-    <span className="home-marketPreviewShell__headlineLine">Sentiment Inside Out</span>
-    <span className="home-marketPreviewShell__headlineLine">恐懼貪婪指標</span>
-  </>
-);
-
 const WATCHLIST_MOCK_ITEMS = [
   { symbol: 'SPY', nameKey: 'spy', tone: 'neutral' },
   { symbol: 'QQQ', nameKey: 'qqq', tone: 'greed' },
@@ -143,6 +136,12 @@ export const Home = () => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
   const locale = currentLang === 'zh' ? 'zh-TW' : currentLang;
+  const heroGaugeHeadline = (
+    <>
+      <span className="home-marketPreviewShell__headlineLine">{t('home.hero.marketPreviewHeadline.brand')}</span>
+      <span className="home-marketPreviewShell__headlineLine">{t('home.hero.marketPreviewHeadline.index')}</span>
+    </>
+  );
   const isMobileHistoryPreview = useMediaQuery({ query: '(max-width: 768px)' });
   const { openDialog } = useDialog();
   const { isAuthenticated } = useAuth();
@@ -388,7 +387,7 @@ export const Home = () => {
                   isDataLoaded={!isLoading}
                   showAnalysisResult={false}
                   showLastUpdate={false}
-                  headlineText={HERO_GAUGE_HEADLINE}
+                  headlineText={heroGaugeHeadline}
                   frameFooterContent={activeHeroMoment ? (
                     <div className="home-marketMomentPanel">
                       <div
