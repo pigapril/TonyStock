@@ -207,11 +207,11 @@
         padding: 0;
         gap: 10px;
     }
-    
+
     .watchlist-container {
         padding: 1px;
     }
-    
+
     .category-content {
         padding: 8px;
     }
@@ -351,11 +351,11 @@
         width: 95%;
         padding: 16px;
     }
-    
+
     .search-input {
         padding: 10px 36px;
     }
-    
+
     .search-results-container {
         max-height: 320px;
     }
@@ -510,6 +510,7 @@
 
 /* 在較小螢幕上調整最大寬度 */
 @media (max-width: 768px) {
+
     .stock-name-zh,
     .stock-name-en {
         /* 移除 max-width 限制 */
@@ -551,6 +552,7 @@
 .dialog-overlay {
     z-index: 1000;
 }
+
 /* 新
 的標題區域設計 */
 .watchlist-header-section {

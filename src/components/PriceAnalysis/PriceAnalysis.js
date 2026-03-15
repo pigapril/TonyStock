@@ -1026,21 +1026,72 @@ export function PriceAnalysis() {
   };
 
   // 定義用於結構化數據的 JSON-LD
-  const priceAnalysisJsonLd = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": t('priceAnalysis.jsonLd.name'),
-    "description": t('priceAnalysis.jsonLd.description'),
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web",
-    "url": `${window.location.origin}/${currentLang}/priceanalysis`,
-    "inLanguage": currentLang,
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": `${window.location.origin}/${currentLang}/priceanalysis?stockCode={stockCode}&years={years}&backTestDate={backTestDate}`,
-      "query-input": "required name=stockCode,years,backTestDate"
-    }
-  }), [t, currentLang]);
+  const priceAnalysisJsonLd = useMemo(() => {
+    const appSchema = {
+      "@type": "SoftwareApplication",
+      "name": t('priceAnalysis.jsonLd.name'),
+      "description": t('priceAnalysis.jsonLd.description'),
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "url": `${window.location.origin}/${currentLang}/priceanalysis`,
+      "inLanguage": currentLang,
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": `${window.location.origin}/${currentLang}/priceanalysis?stockCode={stockCode}&years={years}&backTestDate={backTestDate}`,
+        "query-input": "required name=stockCode,years,backTestDate"
+      }
+    };
+
+    const faqItems = [
+      {
+        question: t('priceAnalysis.description.overview.title'),
+        answer: t('priceAnalysis.description.overview.content')
+      },
+      {
+        question: t('priceAnalysis.description.sd.title'),
+        answer: [
+          t('priceAnalysis.description.sd.point1'),
+          t('priceAnalysis.description.sd.point2'),
+          t('priceAnalysis.description.sd.point3'),
+          t('priceAnalysis.description.sd.point4')
+        ].join(' ')
+      },
+      {
+        question: t('priceAnalysis.description.ulband.title'),
+        answer: [
+          t('priceAnalysis.description.ulband.point1'),
+          t('priceAnalysis.description.ulband.point2'),
+          t('priceAnalysis.description.ulband.point3')
+        ].join(' ')
+      },
+      {
+        question: t('priceAnalysis.description.tips.title'),
+        answer: [
+          t('priceAnalysis.description.tips.point1'),
+          t('priceAnalysis.description.tips.point2'),
+          t('priceAnalysis.description.tips.point3')
+        ].join(' ')
+      }
+    ];
+
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        appSchema,
+        {
+          "@type": "FAQPage",
+          "mainEntity": faqItems.map((item) => ({
+            "@type": "Question",
+            "name": item.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": item.answer
+            }
+          }))
+        }
+      ]
+    };
+  }, [t, currentLang]);
 
   // 優化 Line Chart Options
   const lineChartOptions = useMemo(() => {

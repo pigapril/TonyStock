@@ -1012,39 +1012,69 @@ const MarketSentimentIndex = () => {
   }, [isDataLoaded]);
 
   // 定義用於結構化數據的 JSON-LD
-  const marketSentimentJsonLd = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": t('marketSentiment.pageTitle'), // 使用翻譯的頁面標題
-    "description": t('marketSentiment.pageDescription'), // 使用翻譯的頁面描述
-    "url": `${window.location.origin}/${currentLang}/market-sentiment`,
-    "inLanguage": currentLang,
-    "keywords": t('marketSentiment.keywords'), // 新增：關鍵字
-    "mainEntity": {
-      "@type": "Article",
-      "headline": t('marketSentiment.heading'), // 使用翻譯的主要標題
-      "author": {
-        "@type": "Organization",
-        "name": "Sentiment Inside Out"
+  const marketSentimentJsonLd = useMemo(() => {
+    const pageSchema = {
+      "@type": "WebPage",
+      "name": t('marketSentiment.pageTitle'),
+      "description": t('marketSentiment.pageDescription'),
+      "url": `${window.location.origin}/${currentLang}/market-sentiment`,
+      "inLanguage": currentLang,
+      "keywords": t('marketSentiment.keywords'),
+      "mainEntity": {
+        "@type": "Article",
+        "headline": t('marketSentiment.heading'),
+        "author": {
+          "@type": "Organization",
+          "name": "Sentiment Inside Out"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Sentiment Inside Out",
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${window.location.origin}/logo.png`
+          }
+        },
+        "datePublished": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
+        "dateModified": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
+        "image": `${window.location.origin}/images/market-sentiment-og.png`
       },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Sentiment Inside Out",
-        "logo": {
-          "@type": "ImageObject",
-          "url": `${window.location.origin}/logo.png` // 假設您在 public 資料夾有 logo.png
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": `${window.location.origin}/${currentLang}/market-sentiment?timeRange={timeRange}&indicator={indicator}`,
+        "query-input": "required name=timeRange,indicator"
+      }
+    };
+
+    const faqItems = [
+      {
+        question: t('marketSentiment.enhancedDescription.content.tips.basicUsage'),
+        answer: `${t('marketSentiment.enhancedDescription.content.tips.tip1')} ${t('marketSentiment.enhancedDescription.content.tips.tip2')} ${t('marketSentiment.enhancedDescription.content.tips.tip3')}`
+      },
+      ...Array.from({ length: 10 }, (_, index) => ({
+        question: t(`marketSentiment.enhancedDescription.content.faq.q${index + 1}`),
+        answer: t(`marketSentiment.enhancedDescription.content.faq.a${index + 1}`)
+      }))
+    ];
+
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        pageSchema,
+        {
+          "@type": "FAQPage",
+          "mainEntity": faqItems.map((item) => ({
+            "@type": "Question",
+            "name": item.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": item.answer
+            }
+          }))
         }
-      },
-      "datePublished": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
-      "dateModified": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
-      "image": `${window.location.origin}/images/market-sentiment-og.png` // 主要圖片
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": `${window.location.origin}/${currentLang}/market-sentiment?timeRange={timeRange}&indicator={indicator}`,
-      "query-input": "required name=timeRange,indicator"
-    }
-  }), [t, currentLang, sentimentData?.compositeScoreLastUpdate]);
+      ]
+    };
+  }, [t, currentLang, sentimentData?.compositeScoreLastUpdate]);
 
   const handleSliderChange = (newRange) => {
     setCurrentSliderRange(newRange);

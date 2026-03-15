@@ -36,7 +36,6 @@ import { PageViewTracker } from './components/Common/PageViewTracker';
 import { About } from './components/About/About';
 import { Legal } from './components/Legal/Legal';
 import { WatchlistContainer } from './components/Watchlist/WatchlistContainer';
-import { AdBanner } from './components/Common/AdBanner/AdBanner';
 import { Footer } from './components/Common/Footer/Footer';
 import FloatingSponsorButton from './components/FloatingSponsorButton/FloatingSponsorButton';
 import ChatWidget from './components/ChatWidget/ChatWidget';
@@ -100,7 +99,7 @@ function AppContent() {
   const { lang } = useParams();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { userPlan, loading: subscriptionLoading } = useSubscription();
+  const { userPlan } = useSubscription();
   const { openDialog } = useDialog();
   const { showToast, toast, hideToast } = useToastManager();
   
@@ -606,11 +605,6 @@ function AppContent() {
       <GlobalFeatureUpgradeDialog />
       {/* 條件式 AdSense 載入 */}
       <ConditionalAdSense key={`adsense-${user?.id || 'guest'}-${userPlan?.type || 'pending'}`} />
-      {/* 根據是否為首頁決定是否渲染 AdBanner */}
-      {!isHomePage && !subscriptionLoading && userPlan && (
-        <AdBanner key={`banner-${user?.id || 'guest'}-${userPlan?.type || 'pending'}`} />
-      )}
-
       {/* Global Toast for API Client error handling */}
       {toast && (
         <Toast
