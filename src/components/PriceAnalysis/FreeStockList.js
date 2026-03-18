@@ -90,7 +90,26 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
   if (loading) {
     return (
       <div className={`free-stock-list ${className}`}>
-        <div className="loading-message">{t('common.loading')}</div>
+        <div className="free-stock-loading-state" aria-live="polite" aria-busy="true">
+          <div className="free-stock-loading-header">
+            <div className="free-stock-loading-title-skeleton free-stock-skeleton-block" />
+            <div className="free-stock-loading-subtitle-skeleton free-stock-skeleton-block" />
+          </div>
+          {[0, 1].map((groupIndex) => (
+            <div key={groupIndex} className="free-stock-loading-group">
+              <div className="free-stock-loading-category-skeleton free-stock-skeleton-block" />
+              <div className="free-stock-loading-list">
+                {[0, 1, 2].map((itemIndex) => (
+                  <div key={itemIndex} className="free-stock-loading-item">
+                    <div className="free-stock-loading-ticker-skeleton free-stock-skeleton-block" />
+                    <div className="free-stock-loading-name-skeleton free-stock-skeleton-block" />
+                    <div className="free-stock-loading-badge-skeleton free-stock-skeleton-block" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

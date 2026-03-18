@@ -129,6 +129,7 @@ export function PriceAnalysis() {
   // 新增：Watchlist 狀態（改為保留分類結構）
   const [watchlistCategories, setWatchlistCategories] = useState([]);
   const [loadingWatchlist, setLoadingWatchlist] = useState(false);
+  const [hasLoadedWatchlist, setHasLoadedWatchlist] = useState(false);
   const [collapsedCategories, setCollapsedCategories] = useState({}); // 新增：記錄哪些分類被收合
   const [collapsedRegions, setCollapsedRegions] = useState({}); // 新增：記錄 Index ETF 哪些區域被收合
 
@@ -412,6 +413,61 @@ export function PriceAnalysis() {
     }
   }, [isTurnstileEnabled, turnstileToken, showToast, startTransition, t, requestAdDisplay, isAdCooldownActive, analysisClickCount]); // 確保 t 在依賴項中
 
+  const fetchWatchlistStocks = useCallback(async () => {
+    if (!isAuthenticated || !user) {
+      setWatchlistCategories([]);
+      setHasLoadedWatchlist(false);
+      return;
+    }
+
+    const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+    const userPlan = user?.plan || 'free';
+    const isPro = isTemporaryFreeMode || userPlan === 'pro';
+
+    if (!isPro) {
+      setWatchlistCategories([]);
+      setHasLoadedWatchlist(false);
+      return;
+    }
+
+    setLoadingWatchlist(true);
+    try {
+      const categories = await watchlistService.getCategories();
+
+      const validCategories = [];
+      if (Array.isArray(categories)) {
+        categories.forEach(category => {
+          if (category.stocks && Array.isArray(category.stocks) && category.stocks.length > 0) {
+            validCategories.push({
+              id: category.id,
+              name: category.name,
+              stocks: category.stocks.map(stock => {
+                const stockCode = stock.symbol || stock.stockCode || stock.stockSymbol;
+                const stockName = currentLang === 'zh-TW'
+                  ? (stock.name || stock.nameEn || stock.stockName)
+                  : (stock.nameEn || stock.name || stock.stockName);
+
+                return {
+                  stockCode: stockCode,
+                  name: (stockName && stockName !== stockCode) ? stockName : ''
+                };
+              })
+            });
+          }
+        });
+      }
+
+      console.log('Watchlist categories loaded:', validCategories);
+      setWatchlistCategories(validCategories);
+      setHasLoadedWatchlist(true);
+    } catch (error) {
+      console.error('Failed to fetch watchlist:', error);
+      setWatchlistCategories([]);
+    } finally {
+      setLoadingWatchlist(false);
+    }
+  }, [currentLang, isAuthenticated, user]);
+
   // 表單送出
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -619,68 +675,6 @@ export function PriceAnalysis() {
 
     fetchHotSearches();
 
-    // 新增：獲取 Watchlist 數據的函數（改為保留分類結構）
-    const fetchWatchlistStocks = async () => {
-      // 只有在已登入且為 Pro 用戶時才獲取
-      if (!isAuthenticated || !user) {
-        setWatchlistCategories([]);
-        return;
-      }
-
-      // 檢查是否為 Pro 用戶
-      const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
-      const userPlan = user?.plan || 'free';
-      const isPro = isTemporaryFreeMode || userPlan === 'pro';
-
-      if (!isPro) {
-        setWatchlistCategories([]);
-        return;
-      }
-
-      setLoadingWatchlist(true);
-      try {
-        const categories = await watchlistService.getCategories();
-
-        // 保留分類結構，只過濾掉空的分類
-        const validCategories = [];
-        if (Array.isArray(categories)) {
-          categories.forEach(category => {
-            if (category.stocks && Array.isArray(category.stocks) && category.stocks.length > 0) {
-              validCategories.push({
-                id: category.id,
-                name: category.name,
-                stocks: category.stocks.map(stock => {
-                  // 後端返回的資料結構：symbol, name, nameEn
-                  const stockCode = stock.symbol || stock.stockCode || stock.stockSymbol;
-                  // 優先使用當前語言的名稱，如果沒有則使用另一個語言的名稱
-                  const stockName = currentLang === 'zh-TW'
-                    ? (stock.name || stock.nameEn || stock.stockName)
-                    : (stock.nameEn || stock.name || stock.stockName);
-
-                  return {
-                    stockCode: stockCode,
-                    // 只有當名稱存在且不等於代碼時才使用，否則不設定 name（讓 UI 只顯示代碼）
-                    name: (stockName && stockName !== stockCode) ? stockName : ''
-                  };
-                })
-              });
-            }
-          });
-        }
-
-        console.log('Watchlist categories loaded:', validCategories); // Debug log
-
-        setWatchlistCategories(validCategories);
-      } catch (error) {
-        console.error('Failed to fetch watchlist:', error);
-        // 靜默失敗，不顯示錯誤提示
-        setWatchlistCategories([]);
-      } finally {
-        setLoadingWatchlist(false);
-      }
-    };
-
-    fetchWatchlistStocks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, location.state, isAuthenticated, user]); // <--- 修改：新增依賴項
 
@@ -897,6 +891,10 @@ export function PriceAnalysis() {
 
     // Pro 用戶可以切換到 watchlist tab
     setActiveQuickSelectTab('watchlist');
+
+    if (!hasLoadedWatchlist && !loadingWatchlist) {
+      fetchWatchlistStocks();
+    }
   };
 
   // 新增：切換 Watchlist 分類收合狀態（帶智能滾動）
@@ -1513,7 +1511,20 @@ export function PriceAnalysis() {
                   {activeQuickSelectTab === 'hotSearches' && (
                     <div className="hot-searches-tab-content">
                       {loadingHotSearches ? (
-                        <p className="loading-text">{t('common.loading')}</p>
+                        <div className="quick-select-loading-state" aria-live="polite" aria-busy="true">
+                          <div className="quick-select-loading-header">
+                            <div className="quick-select-loading-title-skeleton quick-select-skeleton-block" />
+                            <div className="quick-select-loading-subtitle-skeleton quick-select-skeleton-block" />
+                          </div>
+                          <div className="quick-select-loading-list">
+                            {[0, 1, 2, 3].map((itemIndex) => (
+                              <div key={itemIndex} className="quick-select-loading-item">
+                                <div className="quick-select-loading-ticker-skeleton quick-select-skeleton-block" />
+                                <div className="quick-select-loading-name-skeleton quick-select-skeleton-block" />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       ) : hotSearches.length > 0 ? (
                         <div className="hot-search-list">
                           {hotSearches.map((searchItem, index) => (
@@ -1552,7 +1563,25 @@ export function PriceAnalysis() {
                   {activeQuickSelectTab === 'watchlist' && (
                     <div className="watchlist-tab-content">
                       {loadingWatchlist ? (
-                        <p className="loading-text">{t('common.loading')}</p>
+                        <div className="watchlist-loading-state" aria-live="polite" aria-busy="true">
+                          <div className="watchlist-loading-header">
+                            <div className="watchlist-loading-title-skeleton watchlist-skeleton-block" />
+                            <div className="watchlist-loading-subtitle-skeleton watchlist-skeleton-block" />
+                          </div>
+                          {[0, 1].map((groupIndex) => (
+                            <div key={groupIndex} className="watchlist-loading-group">
+                              <div className="watchlist-loading-category-skeleton watchlist-skeleton-block" />
+                              <div className="watchlist-loading-list">
+                                {[0, 1, 2].map((itemIndex) => (
+                                  <div key={itemIndex} className="watchlist-loading-item">
+                                    <div className="watchlist-loading-ticker-skeleton watchlist-skeleton-block" />
+                                    <div className="watchlist-loading-name-skeleton watchlist-skeleton-block" />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       ) : watchlistCategories.length > 0 ? (
                         <div className="watchlist-categories-container">
                           {watchlistCategories.map((category) => (
