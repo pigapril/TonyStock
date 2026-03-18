@@ -1563,19 +1563,19 @@ export function PriceAnalysis() {
                   {activeQuickSelectTab === 'watchlist' && (
                     <div className="watchlist-tab-content">
                       {loadingWatchlist ? (
-                        <div className="watchlist-loading-state" aria-live="polite" aria-busy="true">
-                          <div className="watchlist-loading-header">
-                            <div className="watchlist-loading-title-skeleton watchlist-skeleton-block" />
-                            <div className="watchlist-loading-subtitle-skeleton watchlist-skeleton-block" />
+                        <div className="quick-select-loading-state watchlist-loading-state" aria-live="polite" aria-busy="true">
+                          <div className="quick-select-loading-header">
+                            <div className="quick-select-loading-title-skeleton quick-select-skeleton-block" />
+                            <div className="quick-select-loading-subtitle-skeleton quick-select-skeleton-block" />
                           </div>
                           {[0, 1].map((groupIndex) => (
-                            <div key={groupIndex} className="watchlist-loading-group">
-                              <div className="watchlist-loading-category-skeleton watchlist-skeleton-block" />
-                              <div className="watchlist-loading-list">
+                            <div key={groupIndex} className="quick-select-loading-group watchlist-loading-group">
+                              <div className="quick-select-loading-title-skeleton watchlist-loading-category-skeleton quick-select-skeleton-block" />
+                              <div className="quick-select-loading-list watchlist-loading-list">
                                 {[0, 1, 2].map((itemIndex) => (
-                                  <div key={itemIndex} className="watchlist-loading-item">
-                                    <div className="watchlist-loading-ticker-skeleton watchlist-skeleton-block" />
-                                    <div className="watchlist-loading-name-skeleton watchlist-skeleton-block" />
+                                  <div key={itemIndex} className="quick-select-loading-item watchlist-loading-item">
+                                    <div className="quick-select-loading-ticker-skeleton quick-select-skeleton-block" />
+                                    <div className="quick-select-loading-name-skeleton quick-select-skeleton-block" />
                                   </div>
                                 ))}
                               </div>

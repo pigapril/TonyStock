@@ -1386,75 +1386,12 @@
   color: var(--color-text-tertiary, #888);
 }
 
-.price-analysis-view .watchlist-loading-state {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.price-analysis-view .watchlist-loading-header {
-  padding: 4px 4px 2px;
-}
-
-.price-analysis-view .watchlist-loading-title-skeleton {
-  width: 42%;
-  height: 14px;
-  border-radius: 999px;
-  margin-bottom: 8px;
-}
-
-.price-analysis-view .watchlist-loading-subtitle-skeleton {
-  width: 68%;
-  height: 10px;
-  border-radius: 999px;
+.price-analysis-view .watchlist-loading-category-skeleton {
+  width: 38%;
 }
 
 .price-analysis-view .watchlist-loading-group {
-  padding: 10px 10px 12px;
-  border-radius: 10px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(247, 250, 255, 0.96) 100%);
-  border: 1px solid rgba(0, 122, 255, 0.08);
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
-}
-
-.price-analysis-view .watchlist-loading-category-skeleton {
-  width: 38%;
-  height: 12px;
-  border-radius: 999px;
-  margin-bottom: 12px;
-}
-
-.price-analysis-view .watchlist-loading-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.price-analysis-view .watchlist-loading-item {
-  display: flex;
-  align-items: center;
   gap: 10px;
-  padding: 12px 14px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid rgba(15, 23, 42, 0.05);
-}
-
-.price-analysis-view .watchlist-loading-ticker-skeleton {
-  width: 54px;
-  height: 12px;
-  border-radius: 999px;
-  flex-shrink: 0;
-}
-
-.price-analysis-view .watchlist-loading-name-skeleton {
-  flex: 1;
-  height: 12px;
-  border-radius: 999px;
-}
-
-.price-analysis-view .watchlist-skeleton-block {
-  animation-name: priceAnalysisQuickSelectShimmer;
 }
 
 /* Watchlist 空狀態容器 */
