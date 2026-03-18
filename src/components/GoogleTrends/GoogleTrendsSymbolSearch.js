@@ -83,7 +83,7 @@ const GoogleTrendsSymbolSearch = ({ onSearch }) => {
             .replace(/[０-９Ａ-Ｚａ-ｚ]/g, char => 
                 String.fromCharCode(char.charCodeAt(0) - 0xFEE0)
             )
-            .replace(/[^A-Za-z0-9]/g, '')
+            .replace(/[^A-Za-z0-9.^-]/g, '')
             .toUpperCase();
 
         if (processedValue) {

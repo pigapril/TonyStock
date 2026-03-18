@@ -3,6 +3,9 @@ import { useTranslation } from 'react-i18next';
 import twFlag from '../../../../assets/flags/tw-flag.svg';
 import usFlag from '../../../../assets/flags/us-flag.svg';
 import hkFlag from '../../../../assets/flags/hk-flag.svg';
+import jpFlag from '../../../../assets/flags/jp-flag.svg';
+import cnFlag from '../../../../assets/flags/cn-flag.svg';
+import ksFlag from '../../../../assets/flags/ks-flag.svg';
 
 import '../../styles/StockHeader.css';
 
@@ -30,7 +33,36 @@ export const StockHeader = memo(function StockHeader({ stock }) {
                     />
                 </div>
             );
-            
+        } else if (stock.logo === 'JP') {
+            return (
+                <div className="default-logo jp-stock">
+                    <img
+                        src={jpFlag}
+                        alt={t('watchlist.stockCard.header.jpFlagAlt', { defaultValue: 'Japan market flag' })}
+                        className="flag-icon"
+                    />
+                </div>
+            );
+        } else if (stock.logo === 'CN') {
+            return (
+                <div className="default-logo cn-stock">
+                    <img
+                        src={cnFlag}
+                        alt={t('watchlist.stockCard.header.cnFlagAlt', { defaultValue: 'China market flag' })}
+                        className="flag-icon"
+                    />
+                </div>
+            );
+        } else if (stock.logo === 'KR') {
+            return (
+                <div className="default-logo kr-stock">
+                    <img
+                        src={ksFlag}
+                        alt={t('watchlist.stockCard.header.krFlagAlt', { defaultValue: 'Korea market flag' })}
+                        className="flag-icon"
+                    />
+                </div>
+            );
         } else if (stock.logo === 'US_ETF') {
             return (
                 <div className="default-logo us-etf">
