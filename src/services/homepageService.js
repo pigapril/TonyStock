@@ -9,19 +9,6 @@ const FALLBACK_HOMEPAGE_DATA = {
     message_en: '',
     lastUpdated: null
   },
-  pricing: {
-    currency: 'TWD',
-    free: {
-      name: 'Free Plan',
-      description: ''
-    },
-    pro: {
-      name: 'Pro Plan',
-      description: '',
-      monthly: 599,
-      yearly: 5990
-    }
-  },
   sentiment: {
     score: null,
     sentimentKey: 'sentiment.notAvailable',
@@ -66,49 +53,80 @@ const FALLBACK_HOMEPAGE_DATA = {
   pricePreview: {
     stockCode: 'SPY',
     years: 3.5,
-    lastUpdated: '2023-11-01',
-    currentPrice: 454,
-    sentimentKey: 'priceAnalysis.sentiment.optimism',
-    trendLineValue: 430,
-    tlMinus2SdValue: 350,
-    tlMinusSdValue: 390,
-    tlPlusSdValue: 450,
-    tlPlus2SdValue: 490,
-    series: [
-      { date: '2021-01-01', price: 370, trendLine: 340, tlMinus2Sd: 280, tlMinusSd: 310, tlPlusSd: 370, tlPlus2Sd: 400 },
-      { date: '2021-06-01', price: 420, trendLine: 360, tlMinus2Sd: 300, tlMinusSd: 330, tlPlusSd: 390, tlPlus2Sd: 420 },
-      { date: '2021-12-01', price: 453, trendLine: 385, tlMinus2Sd: 320, tlMinusSd: 350, tlPlusSd: 420, tlPlus2Sd: 455 },
-      { date: '2022-06-01', price: 410, trendLine: 398, tlMinus2Sd: 338, tlMinusSd: 368, tlPlusSd: 428, tlPlus2Sd: 458 },
-      { date: '2022-10-01', price: 357, trendLine: 400, tlMinus2Sd: 345, tlMinusSd: 372, tlPlusSd: 428, tlPlus2Sd: 455 },
-      { date: '2023-04-01', price: 412, trendLine: 407, tlMinus2Sd: 350, tlMinusSd: 378, tlPlusSd: 435, tlPlus2Sd: 463 },
-      { date: '2023-11-01', price: 454, trendLine: 430, tlMinus2Sd: 350, tlMinusSd: 390, tlPlusSd: 450, tlPlus2Sd: 490 }
-    ]
-  },
-  freeExperience: {
-    tickers: ['SPY', 'QQQ', 'VOO', 'AAPL', 'MSFT', 'NVDA'],
-    totalTickerCount: 6
+    lastUpdated: null,
+    currentPrice: null,
+    sentimentKey: 'priceAnalysis.sentiment.neutral',
+    trendLineValue: null,
+    tlMinus2SdValue: null,
+    tlMinusSdValue: null,
+    tlPlusSdValue: null,
+    tlPlus2SdValue: null,
+    series: []
   }
 };
 
 class HomepageService {
-  async getHomepageData() {
+  getFallbackData(section = 'all') {
+    if (section === 'hero') {
+      return {
+        generatedAt: FALLBACK_HOMEPAGE_DATA.generatedAt,
+        sentiment: FALLBACK_HOMEPAGE_DATA.sentiment
+      };
+    }
+
+    if (section === 'narrative') {
+      return {
+        generatedAt: FALLBACK_HOMEPAGE_DATA.generatedAt,
+        announcement: FALLBACK_HOMEPAGE_DATA.announcement,
+        sentiment: {
+          historyPreview: FALLBACK_HOMEPAGE_DATA.sentiment.historyPreview
+        }
+      };
+    }
+
+    if (section === 'price') {
+      return {
+        generatedAt: FALLBACK_HOMEPAGE_DATA.generatedAt,
+        pricePreview: FALLBACK_HOMEPAGE_DATA.pricePreview
+      };
+    }
+
+    if (section === 'content') {
+      return FALLBACK_HOMEPAGE_DATA;
+    }
+
+    return FALLBACK_HOMEPAGE_DATA;
+  }
+
+  async getHomepageData(section = 'all') {
     try {
-      const response = await apiClient.get('/api/public/homepage');
+      const response = await apiClient.get('/api/public/homepage', {
+        params: { section }
+      });
 
       if (response.data?.success && response.data?.data) {
         return response.data.data;
       }
 
-      return FALLBACK_HOMEPAGE_DATA;
+      return this.getFallbackData(section);
     } catch (error) {
       console.warn('HomepageService: failed to fetch homepage data, using fallback.', error);
-      return FALLBACK_HOMEPAGE_DATA;
+      return this.getFallbackData(section);
     }
   }
 
-  getFallbackData() {
-    return FALLBACK_HOMEPAGE_DATA;
+  async getHomepageHeroData() {
+    return this.getHomepageData('hero');
   }
+
+  async getHomepageNarrativeData() {
+    return this.getHomepageData('narrative');
+  }
+
+  async getHomepagePriceData() {
+    return this.getHomepageData('price');
+  }
+
 }
 
 const homepageService = new HomepageService();

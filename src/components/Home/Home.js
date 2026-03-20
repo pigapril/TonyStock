@@ -132,6 +132,35 @@ function renderPriceStoryTitle(title, isChinese) {
   );
 }
 
+function mergeHomepageData(currentData, nextData) {
+  return {
+    ...(currentData || {}),
+    ...nextData,
+    announcement: nextData?.announcement
+      ? {
+          ...(currentData?.announcement || {}),
+          ...nextData.announcement
+        }
+      : currentData?.announcement,
+    sentiment: nextData?.sentiment
+      ? {
+          ...(currentData?.sentiment || {}),
+          ...nextData.sentiment
+        }
+      : currentData?.sentiment,
+    pricePreview: nextData?.pricePreview
+      ? {
+          ...(currentData?.pricePreview || {}),
+          ...nextData.pricePreview
+        }
+      : currentData?.pricePreview
+  };
+}
+
+function HomeSkeletonLine({ className = '' }) {
+  return <div className={`home-skeleton ${className}`.trim()} aria-hidden="true" />;
+}
+
 export const Home = () => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
@@ -145,33 +174,76 @@ export const Home = () => {
   const isMobileHistoryPreview = useMediaQuery({ query: '(max-width: 768px)' });
   const { openDialog } = useDialog();
   const { isAuthenticated } = useAuth();
-  const [homepageData, setHomepageData] = useState(() => homepageService.getFallbackData());
-  const [isLoading, setIsLoading] = useState(true);
+  const [homepageData, setHomepageData] = useState(null);
+  const [isHeroLoading, setIsHeroLoading] = useState(true);
+  const [isNarrativeLoading, setIsNarrativeLoading] = useState(true);
+  const [isPriceLoading, setIsPriceLoading] = useState(true);
   const [activeExtremeIndex, setActiveExtremeIndex] = useState(0);
   const [, startTransition] = useTransition();
 
   useEffect(() => {
     let isMounted = true;
 
-    const loadHomepageData = async () => {
-      const data = await homepageService.getHomepageData();
+    const loadHeroData = async () => {
+      const data = await homepageService.getHomepageHeroData();
 
       if (!isMounted) {
         return;
       }
 
       startTransition(() => {
-        setHomepageData(data);
-        setIsLoading(false);
+        setHomepageData((currentData) => mergeHomepageData(currentData, data));
+        setIsHeroLoading(false);
       });
     };
 
-    loadHomepageData();
+    loadHeroData();
 
     return () => {
       isMounted = false;
     };
   }, [startTransition]);
+
+  useEffect(() => {
+    if (isHeroLoading) {
+      return undefined;
+    }
+
+    let isMounted = true;
+
+    const loadNarrativeData = async () => {
+      const data = await homepageService.getHomepageNarrativeData();
+
+      if (!isMounted) {
+        return;
+      }
+
+      startTransition(() => {
+        setHomepageData((currentData) => mergeHomepageData(currentData, data));
+        setIsNarrativeLoading(false);
+      });
+    };
+
+    const loadPriceData = async () => {
+      const data = await homepageService.getHomepagePriceData();
+
+      if (!isMounted) {
+        return;
+      }
+
+      startTransition(() => {
+        setHomepageData((currentData) => mergeHomepageData(currentData, data));
+        setIsPriceLoading(false);
+      });
+    };
+
+    loadNarrativeData();
+    loadPriceData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isHeroLoading, startTransition]);
 
   useEffect(() => {
     const revealNodes = document.querySelectorAll('.home-reveal');
@@ -361,6 +433,69 @@ export const Home = () => {
     });
   };
 
+  const heroLoadingState = (
+    <div className="home-hero__loading" aria-busy="true" aria-live="polite">
+      <div className="home-hero__loadingCopy">
+        <HomeSkeletonLine className="home-hero__loadingTitle home-hero__loadingTitle--primary" />
+        <HomeSkeletonLine className="home-hero__loadingTitle home-hero__loadingTitle--secondary" />
+        <HomeSkeletonLine className="home-hero__loadingText" />
+        <HomeSkeletonLine className="home-hero__loadingText home-hero__loadingText--short" />
+        <div className="home-hero__loadingActions">
+          <HomeSkeletonLine className="home-hero__loadingButton" />
+          <HomeSkeletonLine className="home-hero__loadingButton home-hero__loadingButton--secondary" />
+        </div>
+      </div>
+
+      <div className="home-hero__loadingVisual">
+        <div className="home-marketPreviewShell home-marketPreviewShell--loading ui-surface-card" aria-hidden="true">
+          <div className="home-hero__loadingGauge" />
+          <div className="home-hero__loadingGaugeFoot">
+            <HomeSkeletonLine className="home-hero__loadingBadge" />
+            <HomeSkeletonLine className="home-hero__loadingBadge home-hero__loadingBadge--short" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const narrativeLoadingState = (
+    <div className="home-historyPreview home-historyPreview--loading" aria-busy="true" aria-live="polite">
+      <div className="home-historyPreview__header">
+        <HomeSkeletonLine className="home-historyPreview__loadingTitle" />
+      </div>
+      <HomeSkeletonLine className="home-historyPreview__loadingBody" />
+      <div className="home-historyPreview__chartShell home-historyPreview__chartShell--loading">
+        <div className="home-historyPreview__loadingChart" />
+      </div>
+    </div>
+  );
+
+  const priceLoadingState = (
+    <div className="home-pricePreview home-pricePreview--loading" aria-busy="true" aria-live="polite">
+      <div className="home-pricePreview__header">
+        <HomeSkeletonLine className="home-pricePreview__loadingTitle" />
+      </div>
+      <HomeSkeletonLine className="home-pricePreview__loadingBody" />
+      <div className="home-pricePreview__stats">
+        <div>
+          <HomeSkeletonLine className="home-pricePreview__loadingStatLabel" />
+          <HomeSkeletonLine className="home-pricePreview__loadingStatValue" />
+        </div>
+        <div>
+          <HomeSkeletonLine className="home-pricePreview__loadingStatLabel" />
+          <HomeSkeletonLine className="home-pricePreview__loadingStatValue" />
+        </div>
+        <div>
+          <HomeSkeletonLine className="home-pricePreview__loadingStatLabel" />
+          <HomeSkeletonLine className="home-pricePreview__loadingStatValue" />
+        </div>
+      </div>
+      <div className="home-pricePreview__chartShell home-pricePreview__chartShell--loading">
+        <div className="home-pricePreview__loadingChart" />
+      </div>
+    </div>
+  );
+
   return (
     <PageContainer
       title={t('home.pageTitle')}
@@ -374,82 +509,88 @@ export const Home = () => {
         <section className="home-hero">
           <div className="home-hero__backdrop" aria-hidden="true" />
           <div className="ui-page-shell home-hero__inner">
-            <div className="home-hero__content">
-              <h1>{renderTitleWithBreaks(t('home.hero.title'))}</h1>
-              <p className="home-hero__subtitle">{t('home.hero.subtitle')}</p>
-            </div>
+            {isHeroLoading ? (
+              heroLoadingState
+            ) : (
+              <>
+                <div className="home-hero__content">
+                  <h1>{renderTitleWithBreaks(t('home.hero.title'))}</h1>
+                  <p className="home-hero__subtitle">{t('home.hero.subtitle')}</p>
+                </div>
 
-            <div className="home-hero__visual">
-              <div className="home-marketPreviewShell">
-                <MarketSentimentGauge
-                  className="home-marketPreviewShell__gauge"
-                  sentimentData={heroGaugeData}
-                  isDataLoaded={!isLoading}
-                  showAnalysisResult={false}
-                  showLastUpdate={false}
-                  headlineText={heroGaugeHeadline}
-                  frameFooterContent={activeHeroMoment ? (
-                    <div className="home-marketMomentPanel">
-                      <div
-                        key={activeHeroMoment?.eventId || String(activeHeroDate || 'fallback')}
-                        className="home-marketMomentPanel__content"
-                      >
-                        <div className="home-marketMomentPanel__dateBlock">
-                          <span className="home-marketMomentPanel__date">
-                            <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--year">
-                              {activeHeroDateParts.year || '----'}
-                            </span>
-                            <span className="home-marketMomentPanel__dateDivider" aria-hidden="true" />
-                            <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--day">
-                              {activeHeroDateParts.monthDay}
-                            </span>
-                          </span>
-                        </div>
-                        <div className="home-marketMomentPanel__body">
-                          <div className="home-marketMomentPanel__copy">
-                            <strong className="home-marketMomentPanel__title">
-                              {activeHeroMomentTitle}
-                            </strong>
-                            <p className="home-marketMomentPanel__description">
-                              {activeHeroMomentDescription}
-                            </p>
+                <div className="home-hero__visual">
+                  <div className="home-marketPreviewShell">
+                    <MarketSentimentGauge
+                      className="home-marketPreviewShell__gauge"
+                      sentimentData={heroGaugeData}
+                      isDataLoaded={!isHeroLoading}
+                      showAnalysisResult={false}
+                      showLastUpdate={false}
+                      headlineText={heroGaugeHeadline}
+                      frameFooterContent={activeHeroMoment ? (
+                        <div className="home-marketMomentPanel">
+                          <div
+                            key={activeHeroMoment?.eventId || String(activeHeroDate || 'fallback')}
+                            className="home-marketMomentPanel__content"
+                          >
+                            <div className="home-marketMomentPanel__dateBlock">
+                              <span className="home-marketMomentPanel__date">
+                                <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--year">
+                                  {activeHeroDateParts.year || '----'}
+                                </span>
+                                <span className="home-marketMomentPanel__dateDivider" aria-hidden="true" />
+                                <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--day">
+                                  {activeHeroDateParts.monthDay}
+                                </span>
+                              </span>
+                            </div>
+                            <div className="home-marketMomentPanel__body">
+                              <div className="home-marketMomentPanel__copy">
+                                <strong className="home-marketMomentPanel__title">
+                                  {activeHeroMomentTitle}
+                                </strong>
+                                <p className="home-marketMomentPanel__description">
+                                  {activeHeroMomentDescription}
+                                </p>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  ) : null}
-                />
-              </div>
-            </div>
+                      ) : null}
+                    />
+                  </div>
+                </div>
 
-            <div className="home-hero__actions">
-              {isAuthenticated ? (
-                <Link
-                  to={`/${currentLang}/market-sentiment`}
-                  className={`${BUTTON_LINK_CLASS('primary')} home-hero__action home-hero__action--primary`}
-                >
-                  <span>{t('home.hero.primaryAuthenticated')}</span>
-                  <FaArrowRight aria-hidden="true" />
-                </Link>
-              ) : (
-                <Button
-                  size="large"
-                  onClick={handlePrimaryAction}
-                  className="home-hero__authButton home-hero__action home-hero__action--primary"
-                >
-                  <span>{t('home.hero.primaryGuest')}</span>
-                  <FaLock aria-hidden="true" />
-                </Button>
-              )}
+                <div className="home-hero__actions">
+                  {isAuthenticated ? (
+                    <Link
+                      to={`/${currentLang}/market-sentiment`}
+                      className={`${BUTTON_LINK_CLASS('primary')} home-hero__action home-hero__action--primary`}
+                    >
+                      <span>{t('home.hero.primaryAuthenticated')}</span>
+                      <FaArrowRight aria-hidden="true" />
+                    </Link>
+                  ) : (
+                    <Button
+                      size="large"
+                      onClick={handlePrimaryAction}
+                      className="home-hero__authButton home-hero__action home-hero__action--primary"
+                    >
+                      <span>{t('home.hero.primaryGuest')}</span>
+                      <FaLock aria-hidden="true" />
+                    </Button>
+                  )}
 
-              <Link
-                to={`/${currentLang}/priceanalysis?stockCode=SPY&years=3.5`}
-                className={`${BUTTON_LINK_CLASS('outline')} home-hero__action home-hero__action--secondary`}
-              >
-                <span>{t('home.hero.secondary')}</span>
-                <FaArrowRight aria-hidden="true" />
-              </Link>
-            </div>
+                  <Link
+                    to={`/${currentLang}/priceanalysis?stockCode=SPY&years=3.5`}
+                    className={`${BUTTON_LINK_CLASS('outline')} home-hero__action home-hero__action--secondary`}
+                  >
+                    <span>{t('home.hero.secondary')}</span>
+                    <FaArrowRight aria-hidden="true" />
+                  </Link>
+                </div>
+              </>
+            )}
           </div>
 
           <button
@@ -466,7 +607,7 @@ export const Home = () => {
           </button>
         </section>
 
-        {homepageData?.announcement?.enabled && announcementMessage && (
+        {!isNarrativeLoading && homepageData?.announcement?.enabled && announcementMessage && (
           <section className="home-announcement">
             <div className="ui-page-shell">
               <div className="ui-callout ui-callout--brand home-announcement__card">
@@ -489,63 +630,71 @@ export const Home = () => {
               </div>
 
               <div className="home-storyMedia home-storyMedia--sentiment ui-surface-card ui-surface-card--glass">
-                <div className="home-historyPreview">
-                  <div className="home-historyPreview__header">
-                    <div>
-                      <h3>{t('home.methodology.historyPreview.title')}</h3>
+                {isNarrativeLoading ? (
+                  narrativeLoadingState
+                ) : (
+                  <div className="home-historyPreview">
+                    <div className="home-historyPreview__header">
+                      <div>
+                        <h3>{t('home.methodology.historyPreview.title')}</h3>
+                      </div>
                     </div>
+                    <p className="home-historyPreview__body">{t('home.methodology.historyPreview.description')}</p>
+
+                    {historyPreview.length > 1 ? (
+                      <div className="home-historyPreview__chartShell">
+                        <SharedSentimentHistoryChart
+                          className="home-historyPreview__chart"
+                          historicalData={historyPreview}
+                          lowPoints={historyChartLowPoints}
+                          showLegend={true}
+                          compact={true}
+                        />
+                      </div>
+                    ) : (
+                      <p className="home-historyPreview__empty">{t('home.methodology.historyPreview.empty')}</p>
+                    )}
+
                   </div>
-                  <p className="home-historyPreview__body">{t('home.methodology.historyPreview.description')}</p>
-
-                  {historyPreview.length > 1 ? (
-                    <div className="home-historyPreview__chartShell">
-                      <SharedSentimentHistoryChart
-                        className="home-historyPreview__chart"
-                        historicalData={historyPreview}
-                        lowPoints={historyChartLowPoints}
-                        showLegend={true}
-                        compact={true}
-                      />
-                    </div>
-                  ) : (
-                    <p className="home-historyPreview__empty">{t('home.methodology.historyPreview.empty')}</p>
-                  )}
-
-                </div>
+                )}
               </div>
             </article>
 
             <article className="home-storyBlock home-storyBlock--price home-reveal">
               <div className="home-storyMedia home-storyMedia--price ui-surface-card">
-                <div className="home-pricePreview">
-                  <div className="home-pricePreview__header">
-                    <div>
-                      <h3>{t('home.methodology.pricePreview.title')}</h3>
+                {isPriceLoading ? (
+                  priceLoadingState
+                ) : (
+                  <div className="home-pricePreview">
+                    <div className="home-pricePreview__header">
+                      <div>
+                        <h3>{t('home.methodology.pricePreview.title')}</h3>
+                      </div>
                     </div>
+                    <p className="home-pricePreview__body">{t('home.methodology.pricePreview.description')}</p>
+                    <div className="home-pricePreview__stats">
+                      <div>
+                        <span>{t('home.methodology.pricePreview.symbol')}</span>
+                        <strong>{pricePreview.stockCode || 'SPY'}</strong>
+                      </div>
+                      <div>
+                        <span>{t('home.methodology.pricePreview.currentPrice')}</span>
+                        <strong>{pricePreview.currentPrice === null || pricePreview.currentPrice === undefined ? '--' : `$${formatPrice(pricePreview.currentPrice)}`}</strong>
+                      </div>
+                      <div>
+                        <span>{t('home.methodology.pricePreview.currentSentiment')}</span>
+                        <strong className={`sentiment-${getSentimentSuffix(pricePreview.sentimentKey)}`}>{pricePreviewSentimentLabel}</strong>
+                      </div>
+                    </div>
+                    {pricePreviewSeries.length > 1 ? (
+                      <div className="home-pricePreview__chartShell">
+                        <HomePricePreviewChart className="home-pricePreview__chart" series={pricePreviewSeries} />
+                      </div>
+                    ) : (
+                      <p className="home-pricePreview__empty">{t('home.methodology.pricePreview.empty')}</p>
+                    )}
                   </div>
-                  <p className="home-pricePreview__body">{t('home.methodology.pricePreview.description')}</p>
-                  <div className="home-pricePreview__stats">
-                    <div>
-                      <span>{t('home.methodology.pricePreview.symbol')}</span>
-                      <strong>{pricePreview.stockCode || 'SPY'}</strong>
-                    </div>
-                    <div>
-                      <span>{t('home.methodology.pricePreview.currentPrice')}</span>
-                      <strong>{pricePreview.currentPrice === null || pricePreview.currentPrice === undefined ? '--' : `$${formatPrice(pricePreview.currentPrice)}`}</strong>
-                    </div>
-                    <div>
-                      <span>{t('home.methodology.pricePreview.currentSentiment')}</span>
-                      <strong className={`sentiment-${getSentimentSuffix(pricePreview.sentimentKey)}`}>{pricePreviewSentimentLabel}</strong>
-                    </div>
-                  </div>
-                  {pricePreviewSeries.length > 1 ? (
-                    <div className="home-pricePreview__chartShell">
-                      <HomePricePreviewChart className="home-pricePreview__chart" series={pricePreviewSeries} />
-                    </div>
-                  ) : (
-                    <p className="home-pricePreview__empty">{t('home.methodology.pricePreview.empty')}</p>
-                  )}
-                </div>
+                )}
               </div>
 
               <div className="home-storyBlock__content">
