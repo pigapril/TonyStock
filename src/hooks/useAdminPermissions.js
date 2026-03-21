@@ -11,6 +11,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../components/Auth/useAuth';
 import adminPermissions from '../utils/adminPermissions';
 
+const ADMIN_CHECK_RETRY_DELAY_MS = 15000;
+
 /**
  * Custom hook for admin permissions management (Simplified)
  * 
@@ -21,9 +23,16 @@ export function useAdminPermissions() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const userKey = user?.id || user?.userId || user?.email || null;
     
     // Use ref to track if component is mounted
     const isMountedRef = useRef(true);
+    const isAdminRef = useRef(false);
+    const loadingRef = useRef(false);
+    const checkedUserRef = useRef(null);
+    const inFlightUserRef = useRef(null);
+    const inFlightPromiseRef = useRef(null);
+    const retryTimerRef = useRef(null);
     
     // Cleanup on unmount
     useEffect(() => {
@@ -31,6 +40,25 @@ export function useAdminPermissions() {
             isMountedRef.current = false;
         };
     }, []);
+
+    const clearRetryTimer = useCallback(() => {
+        if (retryTimerRef.current) {
+            clearTimeout(retryTimerRef.current);
+            retryTimerRef.current = null;
+        }
+    }, []);
+
+    useEffect(() => {
+        isAdminRef.current = isAdmin;
+    }, [isAdmin]);
+
+    useEffect(() => {
+        loadingRef.current = loading;
+    }, [loading]);
+
+    useEffect(() => {
+        clearRetryTimer();
+    }, [userKey, isAuthenticated, clearRetryTimer]);
     
     /**
      * 簡化的日誌記錄
@@ -43,22 +71,38 @@ export function useAdminPermissions() {
             });
         }
     }, []);
+
+    const isRetryableAdminCheckError = useCallback((err) => {
+        const status = err?.response?.status;
+
+        return !err?.response
+            || status >= 500
+            || err?.code === 'ECONNABORTED';
+    }, []);
     
     /**
      * 檢查 admin 狀態 - 簡化版本
      */
-    const checkAdminStatus = useCallback(async () => {
+    const checkAdminStatus = useCallback(async ({ force = false } = {}) => {
+        clearRetryTimer();
+
         // 如果用戶未認證，直接返回 false
         if (!isAuthenticated || !user) {
             logAdminState('USER_NOT_AUTHENTICATED', {
                 isAuthenticated,
                 hasUser: !!user
             });
+
+            clearRetryTimer();
             
             if (isMountedRef.current) {
                 setIsAdmin(false);
                 setError(null);
             }
+
+            checkedUserRef.current = null;
+            inFlightUserRef.current = null;
+            inFlightPromiseRef.current = null;
             return false;
         }
         
@@ -66,27 +110,48 @@ export function useAdminPermissions() {
         if (authContextIsAdmin !== undefined && authContextIsAdmin !== null) {
             logAdminState('USING_AUTH_CONTEXT_ADMIN_STATUS', {
                 authContextIsAdmin,
-                currentIsAdmin: isAdmin,
-                willUpdate: authContextIsAdmin !== isAdmin
+                currentIsAdmin: isAdminRef.current,
+                willUpdate: authContextIsAdmin !== isAdminRef.current
             });
+
+            clearRetryTimer();
             
-            if (isMountedRef.current && authContextIsAdmin !== isAdmin) {
+            if (isMountedRef.current && authContextIsAdmin !== isAdminRef.current) {
                 setIsAdmin(authContextIsAdmin);
                 setError(null);
             }
+
+            checkedUserRef.current = userKey;
             return authContextIsAdmin;
         }
         
         // 如果 AuthContext 沒有提供 admin 狀態，則進行 API 調用
-        if (loading || authContextAdminLoading) {
+        if (!force && authContextAdminLoading) {
             logAdminState('ADMIN_STATUS_LOADING', {
-                hookLoading: loading,
+                hookLoading: loadingRef.current,
                 authContextAdminLoading
             });
-            return isAdmin; // 返回當前狀態
+            return isAdminRef.current;
+        }
+
+        if (!force && checkedUserRef.current === userKey) {
+            logAdminState('USING_CACHED_HOOK_STATUS', {
+                userKey,
+                currentIsAdmin: isAdminRef.current
+            });
+            return isAdminRef.current;
+        }
+
+        if (!force && inFlightPromiseRef.current && inFlightUserRef.current === userKey) {
+            logAdminState('REUSING_IN_FLIGHT_ADMIN_CHECK', {
+                userKey
+            });
+            return await inFlightPromiseRef.current;
         }
         
-        try {
+        let shouldRetry = false;
+
+        const requestPromise = (async () => {
             if (isMountedRef.current) {
                 setLoading(true);
                 setError(null);
@@ -101,6 +166,7 @@ export function useAdminPermissions() {
             
             if (isMountedRef.current) {
                 setIsAdmin(adminStatus);
+                setError(null);
                 
                 logAdminState('API_CALL_SUCCESS', {
                     adminStatus,
@@ -110,7 +176,9 @@ export function useAdminPermissions() {
             
             return adminStatus;
             
-        } catch (err) {
+        })().catch((err) => {
+            shouldRetry = isRetryableAdminCheckError(err);
+
             logAdminState('API_CALL_ERROR', {
                 error: err.message,
                 userId: user?.id || user?.userId
@@ -121,22 +189,70 @@ export function useAdminPermissions() {
                 setIsAdmin(false);
             }
             
+            if (shouldRetry && isMountedRef.current && isAuthenticated && userKey) {
+                clearRetryTimer();
+                checkedUserRef.current = null;
+
+                retryTimerRef.current = setTimeout(() => {
+                    retryTimerRef.current = null;
+
+                    if (!isMountedRef.current || !isAuthenticated || !user) {
+                        return;
+                    }
+
+                    const currentUserKey = user?.id || user?.userId || user?.email || null;
+                    if (currentUserKey !== userKey) {
+                        return;
+                    }
+
+                    checkAdminStatus({ force: true });
+                }, ADMIN_CHECK_RETRY_DELAY_MS);
+            }
+
             return false;
             
-        } finally {
+        }).finally(() => {
+            if (!shouldRetry) {
+                checkedUserRef.current = userKey;
+            }
+
+            if (inFlightUserRef.current === userKey) {
+                inFlightUserRef.current = null;
+            }
+
+            if (inFlightPromiseRef.current === requestPromise) {
+                inFlightPromiseRef.current = null;
+            }
+
             if (isMountedRef.current) {
                 setLoading(false);
             }
-        }
-    }, [user, isAuthenticated, authContextIsAdmin, authContextAdminLoading, loading, isAdmin, logAdminState]);
+        });
+
+        inFlightUserRef.current = userKey;
+        inFlightPromiseRef.current = requestPromise;
+
+        return await requestPromise;
+    }, [
+        user,
+        userKey,
+        isAuthenticated,
+        authContextIsAdmin,
+        authContextAdminLoading,
+        logAdminState,
+        clearRetryTimer,
+        isRetryableAdminCheckError
+    ]);
     
     /**
      * Force refresh admin status
      */
     const refreshAdminStatus = useCallback(async () => {
         logAdminState('FORCE_REFRESH_REQUESTED', {});
-        return await checkAdminStatus();
-    }, [checkAdminStatus]);
+        clearRetryTimer();
+        checkedUserRef.current = null;
+        return await checkAdminStatus({ force: true });
+    }, [checkAdminStatus, clearRetryTimer]);
     
     /**
      * Clear admin status
@@ -151,7 +267,11 @@ export function useAdminPermissions() {
             setError(null);
             setLoading(false);
         }
-    }, [isAdmin, logAdminState]);
+        clearRetryTimer();
+        checkedUserRef.current = null;
+        inFlightUserRef.current = null;
+        inFlightPromiseRef.current = null;
+    }, [isAdmin, logAdminState, clearRetryTimer]);
     
     // 主要的狀態同步邏輯 - 大幅簡化
     useEffect(() => {
@@ -168,10 +288,12 @@ export function useAdminPermissions() {
         if (isAuthenticated && user) {
             // 優先使用 AuthContext 的 admin 狀態
             if (authContextIsAdmin !== undefined && authContextIsAdmin !== null) {
-                if (authContextIsAdmin !== isAdmin) {
+                checkedUserRef.current = userKey;
+
+                if (authContextIsAdmin !== isAdminRef.current) {
                     logAdminState('SYNCING_WITH_AUTH_CONTEXT', {
                         authContextIsAdmin,
-                        currentIsAdmin: isAdmin
+                        currentIsAdmin: isAdminRef.current
                     });
                     
                     if (isMountedRef.current) {
@@ -183,28 +305,37 @@ export function useAdminPermissions() {
             }
             
             // 如果 AuthContext 沒有提供狀態且當前沒有在載入，則檢查
-            if (!authContextAdminLoading && !loading) {
+            if (
+                !authContextAdminLoading
+                && !authLoading
+                && checkedUserRef.current !== userKey
+                && !inFlightPromiseRef.current
+            ) {
                 checkAdminStatus();
             }
         } 
         // 處理未認證用戶
         else if (!isAuthenticated && !authLoading) {
-            if (isAdmin || loading) {
+            if (isAdminRef.current || loadingRef.current) {
                 clearAdminStatus();
             }
         }
     }, [
         isAuthenticated, 
-        user?.id, 
-        user?.userId,
+        userKey,
+        !!user,
         authContextIsAdmin,
         authContextAdminLoading,
         authLoading,
         checkAdminStatus,
-        clearAdminStatus,
-        isAdmin,
-        loading
+        clearAdminStatus
     ]);
+
+    useEffect(() => {
+        return () => {
+            clearRetryTimer();
+        };
+    }, [clearRetryTimer]);
     
     /**
      * Check if admin features should be shown

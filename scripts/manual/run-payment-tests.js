@@ -45,7 +45,7 @@ const runTests = () => {
         
         execSync(command, {
             stdio: 'inherit',
-            cwd: path.resolve(__dirname, '../../../..')
+            cwd: path.resolve(__dirname, '../..')
         });
         
         console.log('\n✅ All Phase 5 tests completed successfully!');
@@ -64,7 +64,7 @@ const runLinting = () => {
         
         execSync(lintCommand, {
             stdio: 'inherit',
-            cwd: path.resolve(__dirname, '../../../..')
+            cwd: path.resolve(__dirname, '../..')
         });
         
         console.log('✅ Linting passed!');
@@ -80,7 +80,7 @@ const runTypeCheck = () => {
         console.log('🔍 Running TypeScript type checking...');
         
         // Check if TypeScript is configured
-        const tsConfigPath = path.resolve(__dirname, '../../../..', 'tsconfig.json');
+        const tsConfigPath = path.resolve(__dirname, '../..', 'tsconfig.json');
         const fs = require('fs');
         
         if (fs.existsSync(tsConfigPath)) {
@@ -88,7 +88,7 @@ const runTypeCheck = () => {
             
             execSync(typeCheckCommand, {
                 stdio: 'inherit',
-                cwd: path.resolve(__dirname, '../../../..')
+                cwd: path.resolve(__dirname, '../..')
             });
             
             console.log('✅ Type checking passed!');

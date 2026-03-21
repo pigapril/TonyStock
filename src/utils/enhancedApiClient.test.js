@@ -1,3 +1,11 @@
+jest.mock('axios', () => ({
+  __esModule: true,
+  default: {
+    isCancel: jest.fn(() => false)
+  },
+  isCancel: jest.fn(() => false)
+}));
+
 jest.mock('../api/apiClient', () => ({
   get: jest.fn(),
   post: jest.fn(),

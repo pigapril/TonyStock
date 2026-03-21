@@ -1,21 +1,8 @@
-/**
- * useAdminPermissions Hook Tests
- * 
- * Tests for the useAdminPermissions React hook.
- * Covers integration with auth context, state management, and event handling.
- */
-
 import { renderHook, act, waitFor } from '@testing-library/react';
 
-// Mock dependencies first
 const mockUseAuth = jest.fn();
 const mockAdminPermissions = {
-    checkIsAdmin: jest.fn(),
-    isCurrentUserAdmin: jest.fn(),
-    clearCache: jest.fn(),
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    getDebugInfo: jest.fn()
+    checkIsAdmin: jest.fn()
 };
 
 jest.mock('../../components/Auth/useAuth', () => ({
@@ -24,205 +11,158 @@ jest.mock('../../components/Auth/useAuth', () => ({
 
 jest.mock('../../utils/adminPermissions', () => mockAdminPermissions);
 
-// Import after mocking
 const { useAdminPermissions } = require('../useAdminPermissions');
 
 describe('useAdminPermissions', () => {
-    const mockAuthState = {
-        user: null,
-        isAuthenticated: false,
-        loading: false
-    };
-    
     beforeEach(() => {
         jest.clearAllMocks();
-        mockUseAuth.mockReturnValue(mockAuthState);
-        
-        // Mock console methods
-        jest.spyOn(console, 'log').mockImplementation(() => {});
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-    });
-    
-    afterEach(() => {
-        jest.restoreAllMocks();
-    });
-    
-    describe('initial state', () => {
-        it('should initialize with correct default values', () => {
-            // Act
-            const { result } = renderHook(() => useAdminPermissions());
-            
-            // Assert
-            expect(result.current.isAdmin).toBe(false);
-            expect(result.current.loading).toBe(false);
-            expect(result.current.error).toBe(null);
-            expect(result.current.lastChecked).toBe(null);
-            expect(result.current.shouldShowAdminFeatures).toBe(false);
+        mockUseAuth.mockReturnValue({
+            user: null,
+            isAuthenticated: false,
+            loading: false,
+            isAdmin: undefined,
+            adminLoading: false
         });
     });
-    
-    describe('authentication integration', () => {
-        it('should check admin status when user is authenticated', async () => {
-            // Arrange
-            const mockUser = { id: '123', email: 'admin@example.com' };
+
+    it('stays false and skips API calls for unauthenticated users', () => {
+        const { result } = renderHook(() => useAdminPermissions());
+
+        expect(result.current.isAdmin).toBe(false);
+        expect(result.current.loading).toBe(false);
+        expect(result.current.error).toBe(null);
+        expect(result.current.shouldShowAdminFeatures()).toBe(false);
+        expect(mockAdminPermissions.checkIsAdmin).not.toHaveBeenCalled();
+    });
+
+    it('uses AuthContext admin state without issuing an API request', async () => {
+        mockUseAuth.mockReturnValue({
+            user: { id: 'admin-1', email: 'admin@example.com' },
+            isAuthenticated: true,
+            loading: false,
+            isAdmin: true,
+            adminLoading: false
+        });
+
+        const { result } = renderHook(() => useAdminPermissions());
+
+        await waitFor(() => {
+            expect(result.current.isAdmin).toBe(true);
+        });
+
+        expect(result.current.shouldShowAdminFeatures()).toBe(true);
+        expect(mockAdminPermissions.checkIsAdmin).not.toHaveBeenCalled();
+    });
+
+    it('falls back to API checks when AuthContext has no admin status yet', async () => {
+        mockUseAuth.mockReturnValue({
+            user: { id: 'user-1', email: 'user@example.com' },
+            isAuthenticated: true,
+            loading: false,
+            isAdmin: undefined,
+            adminLoading: false
+        });
+        mockAdminPermissions.checkIsAdmin.mockResolvedValue(true);
+
+        const { result } = renderHook(() => useAdminPermissions());
+
+        await waitFor(() => {
+            expect(result.current.isAdmin).toBe(true);
+        });
+
+        expect(mockAdminPermissions.checkIsAdmin).toHaveBeenCalledTimes(1);
+        expect(result.current.shouldShowAdminFeatures()).toBe(true);
+    });
+
+    it('surfaces API failures and keeps admin access disabled', async () => {
+        const apiError = new Error('Admin API unavailable');
+
+        mockUseAuth.mockReturnValue({
+            user: { id: 'user-2', email: 'user2@example.com' },
+            isAuthenticated: true,
+            loading: false,
+            isAdmin: undefined,
+            adminLoading: false
+        });
+        mockAdminPermissions.checkIsAdmin.mockRejectedValue(apiError);
+
+        const { result } = renderHook(() => useAdminPermissions());
+
+        await waitFor(() => {
+            expect(result.current.error).toBe(apiError);
+        });
+
+        expect(result.current.isAdmin).toBe(false);
+        expect(result.current.shouldShowAdminFeatures()).toBe(false);
+    });
+
+    it('retries transient admin check failures and recovers on the next attempt', async () => {
+        jest.useFakeTimers();
+        try {
+            const transientError = new Error('Transient admin API failure');
+
             mockUseAuth.mockReturnValue({
-                ...mockAuthState,
-                user: mockUser,
+                user: { id: 'user-4', email: 'user4@example.com' },
                 isAuthenticated: true,
-                loading: false
+                loading: false,
+                isAdmin: undefined,
+                adminLoading: false
             });
-            
-            mockAdminPermissions.checkIsAdmin.mockResolvedValue(true);
-            
-            // Act
+            mockAdminPermissions.checkIsAdmin
+                .mockRejectedValueOnce(transientError)
+                .mockResolvedValueOnce(true);
+
             const { result } = renderHook(() => useAdminPermissions());
-            
-            // Assert
+
             await waitFor(() => {
-                expect(mockAdminPermissions.checkIsAdmin).toHaveBeenCalled();
-            });
-        });
-        
-        it('should not check admin status while auth is loading', () => {
-            // Arrange
-            mockUseAuth.mockReturnValue({
-                ...mockAuthState,
-                user: null,
-                isAuthenticated: false,
-                loading: true
-            });
-            
-            // Act
-            renderHook(() => useAdminPermissions());
-            
-            // Assert
-            expect(mockAdminPermissions.checkIsAdmin).not.toHaveBeenCalled();
-        });
-    });
-    
-    describe('admin status checking', () => {
-        it('should update admin status when check succeeds', async () => {
-            // Arrange
-            const mockUser = { id: '123', email: 'admin@example.com' };
-            mockUseAuth.mockReturnValue({
-                ...mockAuthState,
-                user: mockUser,
-                isAuthenticated: true,
-                loading: false
-            });
-            
-            mockAdminPermissions.checkIsAdmin.mockResolvedValue(true);
-            
-            // Act
-            const { result } = renderHook(() => useAdminPermissions());
-            
-            // Assert
-            await waitFor(() => {
-                expect(result.current.isAdmin).toBe(true);
-                expect(result.current.lastChecked).toBeTruthy();
-            });
-        });
-        
-        it('should handle admin status check errors', async () => {
-            // Arrange
-            const mockUser = { id: '123', email: 'user@example.com' };
-            mockUseAuth.mockReturnValue({
-                ...mockAuthState,
-                user: mockUser,
-                isAuthenticated: true,
-                loading: false
-            });
-            
-            const mockError = new Error('API Error');
-            mockAdminPermissions.checkIsAdmin.mockRejectedValue(mockError);
-            
-            // Act
-            const { result } = renderHook(() => useAdminPermissions());
-            
-            // Assert
-            await waitFor(() => {
-                expect(result.current.error).toBe(mockError);
+                expect(mockAdminPermissions.checkIsAdmin).toHaveBeenCalledTimes(1);
+                expect(result.current.error).toBe(transientError);
                 expect(result.current.isAdmin).toBe(false);
             });
-        });
-    });
-    
-    describe('methods', () => {
-        it('should provide checkAdminStatus method', async () => {
-            // Arrange
-            const mockUser = { id: '123', email: 'admin@example.com' };
-            mockUseAuth.mockReturnValue({
-                ...mockAuthState,
-                user: mockUser,
-                isAuthenticated: true,
-                loading: false
+
+            await act(async () => {
+                jest.advanceTimersByTime(15000);
             });
-            
-            mockAdminPermissions.checkIsAdmin.mockResolvedValue(true);
-            
-            const { result } = renderHook(() => useAdminPermissions());
-            
-            // Act
-            const adminStatus = await act(async () => {
-                return await result.current.checkAdminStatus();
-            });
-            
-            // Assert
-            expect(adminStatus).toBe(true);
-            expect(mockAdminPermissions.checkIsAdmin).toHaveBeenCalled();
-        });
-        
-        it('should provide isCurrentUserAdmin method', () => {
-            // Arrange
-            mockAdminPermissions.isCurrentUserAdmin.mockReturnValue(true);
-            
-            const { result } = renderHook(() => useAdminPermissions());
-            
-            // Act
-            const isAdmin = result.current.isCurrentUserAdmin();
-            
-            // Assert
-            expect(isAdmin).toBe(true);
-            expect(mockAdminPermissions.isCurrentUserAdmin).toHaveBeenCalled();
-        });
-    });
-    
-    describe('computed values', () => {
-        it('should calculate shouldShowAdminFeatures correctly', async () => {
-            // Arrange
-            const mockUser = { id: '123', email: 'admin@example.com' };
-            mockUseAuth.mockReturnValue({
-                ...mockAuthState,
-                user: mockUser,
-                isAuthenticated: true,
-                loading: false
-            });
-            
-            mockAdminPermissions.checkIsAdmin.mockResolvedValue(true);
-            
-            // Act
-            const { result } = renderHook(() => useAdminPermissions());
-            
-            // Assert
+
             await waitFor(() => {
-                expect(result.current.shouldShowAdminFeatures).toBe(true);
+                expect(mockAdminPermissions.checkIsAdmin).toHaveBeenCalledTimes(2);
+                expect(result.current.isAdmin).toBe(true);
             });
-        });
+        } finally {
+            jest.useRealTimers();
+        }
     });
-    
-    describe('listener management', () => {
-        it('should add and remove admin permissions listeners', () => {
-            // Act
-            const { unmount } = renderHook(() => useAdminPermissions());
-            
-            // Assert listener was added
-            expect(mockAdminPermissions.addListener).toHaveBeenCalled();
-            
-            // Act
-            unmount();
-            
-            // Assert listener was removed
-            expect(mockAdminPermissions.removeListener).toHaveBeenCalled();
+
+    it('reports combined loading state and exposes debug info', async () => {
+        mockUseAuth.mockReturnValue({
+            user: { id: 'user-3', email: 'user3@example.com' },
+            isAuthenticated: true,
+            loading: false,
+            isAdmin: undefined,
+            adminLoading: true
         });
+
+        const { result } = renderHook(() => useAdminPermissions());
+
+        expect(result.current.loading).toBe(true);
+
+        await act(async () => {
+            const status = await result.current.checkAdminStatus();
+            expect(status).toBe(false);
+        });
+
+        expect(mockAdminPermissions.checkIsAdmin).not.toHaveBeenCalled();
+        expect(result.current.getDebugInfo()).toEqual(expect.objectContaining({
+            hookState: expect.objectContaining({
+                isAdmin: false,
+                isAuthenticated: true,
+                hasUser: true
+            }),
+            authContextState: expect.objectContaining({
+                authContextAdminLoading: true,
+                authLoading: false
+            }),
+            shouldShowAdminFeatures: false
+        }));
     });
 });

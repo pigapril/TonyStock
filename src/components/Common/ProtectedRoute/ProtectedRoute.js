@@ -29,7 +29,7 @@ export function ProtectedRoute({ children, requireAuth = true }) {
 
     if (loading) {
         return (
-            <div className="loading-container">
+            <div className="loading-container" role="status" aria-live="polite">
                 <div className="spinner"></div>
                 <span className="loading-text">{t('protectedRoute.loading')}</span>
             </div>

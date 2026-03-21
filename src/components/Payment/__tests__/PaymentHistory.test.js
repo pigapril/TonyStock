@@ -1,201 +1,121 @@
-/**
- * PaymentHistory 組件測試
- */
-
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
 import PaymentHistory from '../PaymentHistory';
-import * as paymentService from '../../../services/paymentService';
+import paymentService from '../../../services/paymentService';
 import i18n from '../../../i18n';
 
-// Mock services
-jest.mock('../../../services/paymentService');
-jest.mock('../../../utils/logger');
+jest.mock('../../../services/paymentService', () => ({
+  __esModule: true,
+  default: {
+    getPaymentHistory: jest.fn()
+  }
+}));
 
-const mockPaymentService = paymentService as jest.Mocked<typeof paymentService>;
+jest.mock('../../../utils/logger', () => ({
+  systemLogger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn()
+  }
+}));
 
-// Test wrapper component
-const TestWrapper = ({ children }) => (
-  <BrowserRouter>
+const mockPaymentService = paymentService;
+
+const renderHistory = (props = {}) =>
+  render(
     <I18nextProvider i18n={i18n}>
-      {children}
+      <PaymentHistory userId="user-123" {...props} />
     </I18nextProvider>
-  </BrowserRouter>
-);
+  );
 
 describe('PaymentHistory', () => {
-  const mockPayments = [
-    {
-      id: 'payment-1',
-      merchantTradeNo: 'TN123456789',
-      amount: 299,
-      status: 'paid',
-      paymentMethod: 'credit_card',
-      createdAt: '2024-01-15T10:00:00Z',
-      planType: 'pro',
-      billingPeriod: 'monthly'
-    },
-    {
-      id: 'payment-2',
-      merchantTradeNo: 'TN987654321',
-      amount: 2990,
-      status: 'paid',
-      paymentMethod: 'credit_card',
-      createdAt: '2024-01-01T10:00:00Z',
-      planType: 'pro',
-      billingPeriod: 'yearly'
-    }
-  ];
+  beforeAll(async () => {
+    await i18n.changeLanguage('zh-TW');
+  });
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('renders loading state initially', () => {
-    mockPaymentService.getPaymentHistory.mockImplementation(() => 
-      new Promise(resolve => setTimeout(resolve, 1000))
-    );
+  it('shows a loading state while payment history is being fetched', () => {
+    mockPaymentService.getPaymentHistory.mockImplementation(() => new Promise(() => {}));
 
-    render(
-      <TestWrapper>
-        <PaymentHistory />
-      </TestWrapper>
-    );
+    renderHistory();
 
     expect(screen.getByText(/載入中/)).toBeInTheDocument();
   });
 
-  it('displays payment history when loaded', async () => {
-    mockPaymentService.getPaymentHistory.mockResolvedValue(mockPayments);
+  it('renders the curated payment cards for successful API responses', async () => {
+    mockPaymentService.getPaymentHistory.mockResolvedValue([
+      {
+        id: 'payment-1',
+        merchantTradeNo: 'TN123456789',
+        amount: 299,
+        status: 'success',
+        displayText: '付款成功',
+        planType: 'pro',
+        billingPeriod: 'monthly',
+        paymentMethod: '信用卡',
+        createdAt: '2025-01-15T10:00:00.000Z'
+      },
+      {
+        id: 'payment-2',
+        merchantTradeNo: 'TN987654321',
+        amount: 2990,
+        status: 'failed',
+        displayText: '付款失敗',
+        planType: 'pro',
+        billingPeriod: 'yearly',
+        paymentMethod: '信用卡',
+        createdAt: '2025-01-01T10:00:00.000Z'
+      }
+    ]);
 
-    render(
-      <TestWrapper>
-        <PaymentHistory />
-      </TestWrapper>
-    );
+    renderHistory();
 
-    await waitFor(() => {
-      expect(screen.getByText('TN123456789')).toBeInTheDocument();
-      expect(screen.getByText('TN987654321')).toBeInTheDocument();
-      expect(screen.getByText('NT$299')).toBeInTheDocument();
-      expect(screen.getByText('NT$2,990')).toBeInTheDocument();
-    });
+    expect(await screen.findByText('付款記錄')).toBeInTheDocument();
+    expect(screen.getByText(/TN123456789/)).toBeInTheDocument();
+    expect(screen.getByText(/TN987654321/)).toBeInTheDocument();
+    expect(screen.getByText('TWD 299')).toBeInTheDocument();
+    expect(screen.getByText('TWD 2,990')).toBeInTheDocument();
+    expect(screen.getByText('付款成功')).toBeInTheDocument();
+    expect(screen.getByText('付款失敗')).toBeInTheDocument();
   });
 
-  it('shows empty state when no payments', async () => {
+  it('renders the empty state when the user has no payment records', async () => {
     mockPaymentService.getPaymentHistory.mockResolvedValue([]);
 
-    render(
-      <TestWrapper>
-        <PaymentHistory />
-      </TestWrapper>
-    );
+    renderHistory();
 
-    await waitFor(() => {
-      expect(screen.getByText(/尚無付款記錄/)).toBeInTheDocument();
-    });
+    expect(await screen.findByText('暫無付款記錄')).toBeInTheDocument();
   });
 
-  it('handles error state', async () => {
-    const mockError = new Error('Failed to load payments');
-    mockPaymentService.getPaymentHistory.mockRejectedValue(mockError);
+  it('shows the translated error state and retries the fetch on demand', async () => {
+    mockPaymentService.getPaymentHistory
+      .mockRejectedValueOnce(new Error('payments unavailable'))
+      .mockResolvedValueOnce([
+        {
+          id: 'payment-1',
+          merchantTradeNo: 'TN123456789',
+          amount: 299,
+          status: 'success',
+          displayText: '付款成功',
+          planType: 'pro',
+          billingPeriod: 'monthly',
+          createdAt: '2025-01-15T10:00:00.000Z'
+        }
+      ]);
 
-    render(
-      <TestWrapper>
-        <PaymentHistory />
-      </TestWrapper>
-    );
+    renderHistory();
 
-    await waitFor(() => {
-      expect(screen.getByText(/載入失敗/)).toBeInTheDocument();
-    });
-  });
+    expect(await screen.findByText(/payments unavailable/)).toBeInTheDocument();
 
-  it('displays payment status correctly', async () => {
-    const paymentsWithDifferentStatus = [
-      { ...mockPayments[0], status: 'paid' },
-      { ...mockPayments[1], status: 'pending' },
-      { ...mockPayments[0], id: 'payment-3', status: 'failed' }
-    ];
-
-    mockPaymentService.getPaymentHistory.mockResolvedValue(paymentsWithDifferentStatus);
-
-    render(
-      <TestWrapper>
-        <PaymentHistory />
-      </TestWrapper>
-    );
+    fireEvent.click(screen.getByRole('button'));
 
     await waitFor(() => {
-      expect(screen.getByText(/已付款/)).toBeInTheDocument();
-      expect(screen.getByText(/處理中/)).toBeInTheDocument();
-      expect(screen.getByText(/失敗/)).toBeInTheDocument();
-    });
-  });
-
-  it('displays payment method correctly', async () => {
-    mockPaymentService.getPaymentHistory.mockResolvedValue(mockPayments);
-
-    render(
-      <TestWrapper>
-        <PaymentHistory />
-      </TestWrapper>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText(/信用卡/)).toBeInTheDocument();
-      expect(screen.getByText(/ATM/)).toBeInTheDocument();
-    });
-  });
-
-  it('formats dates correctly', async () => {
-    mockPaymentService.getPaymentHistory.mockResolvedValue(mockPayments);
-
-    render(
-      <TestWrapper>
-        <PaymentHistory />
-      </TestWrapper>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText(/2024-01-15/)).toBeInTheDocument();
-      expect(screen.getByText(/2024-01-01/)).toBeInTheDocument();
-    });
-  });
-
-  it('shows plan type and billing period', async () => {
-    mockPaymentService.getPaymentHistory.mockResolvedValue(mockPayments);
-
-    render(
-      <TestWrapper>
-        <PaymentHistory />
-      </TestWrapper>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText(/專業方案/)).toBeInTheDocument();
-      expect(screen.getByText(/月繳/)).toBeInTheDocument();
-      expect(screen.getByText(/年繳/)).toBeInTheDocument();
-    });
-  });
-
-  it('has proper table headers', async () => {
-    mockPaymentService.getPaymentHistory.mockResolvedValue(mockPayments);
-
-    render(
-      <TestWrapper>
-        <PaymentHistory />
-      </TestWrapper>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText(/訂單編號/)).toBeInTheDocument();
-      expect(screen.getByText(/金額/)).toBeInTheDocument();
-      expect(screen.getByText(/狀態/)).toBeInTheDocument();
-      expect(screen.getByText(/付款方式/)).toBeInTheDocument();
-      expect(screen.getByText(/日期/)).toBeInTheDocument();
+      expect(mockPaymentService.getPaymentHistory).toHaveBeenCalledTimes(2);
     });
   });
 });

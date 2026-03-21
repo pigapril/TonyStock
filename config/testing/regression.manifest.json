@@ -1,0 +1,16 @@
+{
+  "tests": [
+    "src/services/__tests__/paymentService.test.js",
+    "src/services/__tests__/subscriptionService.test.js",
+    "src/hooks/__tests__/useAdminPermissions.test.js",
+    "src/components/AdminOnly/__tests__/AdminOnly.test.js",
+    "src/components/Common/ProtectedRoute/ProtectedRoute.test.js",
+    "src/components/Payment/__tests__/PaymentFlow.test.js",
+    "src/components/Payment/__tests__/PaymentFlow.integration.test.js",
+    "src/components/Payment/__tests__/PaymentStatus.test.js",
+    "src/components/Payment/__tests__/PaymentHistory.test.js",
+    "src/components/Payment/__tests__/ErrorDisplay.test.js",
+    "src/components/Payment/__tests__/usePaymentErrorHandler.test.js",
+    "src/utils/enhancedApiClient.test.js"
+  ]
+}

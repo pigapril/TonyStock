@@ -52,6 +52,10 @@ const AdminOnly = ({
         shouldShowAdminFeatures,
         getDebugInfo
     } = useAdminPermissions();
+
+    const canShowAdminFeatures = typeof shouldShowAdminFeatures === 'function'
+        ? shouldShowAdminFeatures()
+        : Boolean(shouldShowAdminFeatures);
     
     // Debug logging in development
     if (debug && process.env.NODE_ENV === 'development') {
@@ -59,7 +63,7 @@ const AdminOnly = ({
             isAdmin,
             loading,
             error: error?.message,
-            shouldShowAdminFeatures,
+            shouldShowAdminFeatures: canShowAdminFeatures,
             hasChildren: !!children,
             hasFallback: !!fallback,
             debugInfo: getDebugInfo()
@@ -87,7 +91,7 @@ const AdminOnly = ({
     }
     
     // Show admin content if user is admin
-    if (shouldShowAdminFeatures) {
+    if (canShowAdminFeatures) {
         // Wrap in container if className or style is provided
         if (className || style) {
             return (

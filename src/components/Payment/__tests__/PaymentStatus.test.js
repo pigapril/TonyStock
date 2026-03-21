@@ -1,222 +1,146 @@
-/**
- * PaymentStatus 組件測試
- */
-
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
-import { BrowserRouter, useLocation } from 'react-router-dom';
-import { I18nextProvider } from 'react-i18next';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import PaymentStatus from '../PaymentStatus';
-import * as paymentService from '../../../services/paymentService';
-import i18n from '../../../i18n';
+import paymentService from '../../../services/paymentService';
 
-// Mock services
-jest.mock('../../../services/paymentService');
-jest.mock('../../../utils/logger');
+const mockNavigate = jest.fn();
+let mockSearchParams = new URLSearchParams();
 
-// Mock react-router-dom
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useLocation: jest.fn(),
-  useNavigate: jest.fn(() => jest.fn()),
-  useSearchParams: jest.fn(() => [new URLSearchParams()]),
+  useNavigate: () => mockNavigate,
+  useSearchParams: () => [mockSearchParams]
 }));
 
-const mockPaymentService = paymentService as jest.Mocked<typeof paymentService>;
-const mockUseLocation = useLocation as jest.MockedFunction<typeof useLocation>;
+jest.mock('../../../services/paymentService', () => ({
+  __esModule: true,
+  default: {
+    pollPaymentStatus: jest.fn(),
+    pollPaymentStatusByMerchantTradeNo: jest.fn()
+  }
+}));
 
-// Test wrapper component
-const TestWrapper = ({ children }) => (
-  <BrowserRouter>
-    <I18nextProvider i18n={i18n}>
-      {children}
-    </I18nextProvider>
-  </BrowserRouter>
-);
+jest.mock('../../../utils/logger', () => ({
+  systemLogger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn()
+  }
+}));
+
+const mockPaymentService = paymentService;
 
 describe('PaymentStatus', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockSearchParams = new URLSearchParams();
   });
 
-  it('shows loading state initially', () => {
-    mockUseLocation.mockReturnValue({
-      state: null,
-      pathname: '/payment/status',
-      search: '',
-      hash: '',
-      key: 'test'
-    });
+  it('shows a failed state immediately when orderId is missing', async () => {
+    render(<PaymentStatus />);
 
-    render(
-      <TestWrapper>
-        <PaymentStatus />
-      </TestWrapper>
-    );
-
-    expect(screen.getByText(/查詢付款狀態中/)).toBeInTheDocument();
+    expect(await screen.findByText('付款失敗')).toBeInTheDocument();
+    expect(screen.getByText('缺少訂單資訊')).toBeInTheDocument();
   });
 
-  it('displays success state when payment succeeds', () => {
-    mockUseLocation.mockReturnValue({
-      state: {
-        success: true,
+  it('polls by merchantTradeNo for non-UUID order ids and renders success details', async () => {
+    mockSearchParams = new URLSearchParams('orderId=TN123456789');
+    mockPaymentService.pollPaymentStatusByMerchantTradeNo.mockResolvedValue({
+      success: true,
+      status: 'completed',
+      data: {
+        amount: 299,
+        billingPeriod: 'monthly',
         subscription: {
-          id: 'sub-123',
           planType: 'pro',
-          status: 'active'
+          startDate: '2025-01-15T00:00:00.000Z',
+          endDate: '2025-02-15T00:00:00.000Z'
         }
-      },
-      pathname: '/payment/status',
-      search: '',
-      hash: '',
-      key: 'test'
-    });
-
-    render(
-      <TestWrapper>
-        <PaymentStatus />
-      </TestWrapper>
-    );
-
-    expect(screen.getByText(/付款成功/)).toBeInTheDocument();
-    expect(screen.getByText(/恭喜您成功升級/)).toBeInTheDocument();
-  });
-
-  it('displays error state when payment fails', () => {
-    mockUseLocation.mockReturnValue({
-      state: {
-        error: true,
-        errorMessage: 'Payment failed'
-      },
-      pathname: '/payment/status',
-      search: '',
-      hash: '',
-      key: 'test'
-    });
-
-    render(
-      <TestWrapper>
-        <PaymentStatus />
-      </TestWrapper>
-    );
-
-    expect(screen.getByText(/付款失敗/)).toBeInTheDocument();
-    expect(screen.getByText(/Payment failed/)).toBeInTheDocument();
-  });
-
-  it('queries payment status when merchantTradeNo is provided', async () => {
-    const mockStatus = {
-      status: 'paid',
-      subscription: {
-        id: 'sub-123',
-        planType: 'pro'
       }
-    };
+    });
 
-    mockPaymentService.queryPaymentStatus.mockResolvedValue(mockStatus);
-    
-    // Mock URLSearchParams
-    const mockSearchParams = new URLSearchParams();
-    mockSearchParams.set('merchantTradeNo', 'TN123456789');
-    
-    jest.doMock('react-router-dom', () => ({
-      ...jest.requireActual('react-router-dom'),
-      useSearchParams: () => [mockSearchParams],
-      useLocation: () => ({
-        state: null,
-        pathname: '/payment/status',
-        search: '?merchantTradeNo=TN123456789',
-        hash: '',
-        key: 'test'
-      }),
-      useNavigate: () => jest.fn(),
-    }));
-
-    render(
-      <TestWrapper>
-        <PaymentStatus />
-      </TestWrapper>
-    );
+    render(<PaymentStatus />);
 
     await waitFor(() => {
-      expect(mockPaymentService.queryPaymentStatus).toHaveBeenCalledWith('TN123456789');
-    });
-  });
-
-  it('handles payment status query error', async () => {
-    const mockError = new Error('Query failed');
-    mockPaymentService.queryPaymentStatus.mockRejectedValue(mockError);
-
-    const mockSearchParams = new URLSearchParams();
-    mockSearchParams.set('merchantTradeNo', 'TN123456789');
-    
-    jest.doMock('react-router-dom', () => ({
-      ...jest.requireActual('react-router-dom'),
-      useSearchParams: () => [mockSearchParams],
-      useLocation: () => ({
-        state: null,
-        pathname: '/payment/status',
-        search: '?merchantTradeNo=TN123456789',
-        hash: '',
-        key: 'test'
-      }),
-      useNavigate: () => jest.fn(),
-    }));
-
-    render(
-      <TestWrapper>
-        <PaymentStatus />
-      </TestWrapper>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText(/查詢失敗/)).toBeInTheDocument();
-    });
-  });
-
-  it('shows retry button on error', () => {
-    mockUseLocation.mockReturnValue({
-      state: {
-        error: true,
-        errorMessage: 'Payment failed'
-      },
-      pathname: '/payment/status',
-      search: '',
-      hash: '',
-      key: 'test'
+      expect(mockPaymentService.pollPaymentStatusByMerchantTradeNo).toHaveBeenCalledWith('TN123456789', {
+        maxAttempts: 60,
+        interval: 5000
+      });
     });
 
-    render(
-      <TestWrapper>
-        <PaymentStatus />
-      </TestWrapper>
-    );
+    expect(await screen.findByText('付款成功！')).toBeInTheDocument();
+    expect(screen.getByText('查看帳戶資訊')).toBeInTheDocument();
 
-    expect(screen.getByText(/重試/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '查看帳戶資訊' }));
+    expect(mockNavigate).toHaveBeenCalledWith('/account');
   });
 
-  it('shows return to plans button', () => {
-    mockUseLocation.mockReturnValue({
-      state: {
-        success: true,
+  it('polls by order id for UUID-based return URLs', async () => {
+    mockSearchParams = new URLSearchParams('orderId=123e4567-e89b-42d3-a456-426614174000');
+    mockPaymentService.pollPaymentStatus.mockResolvedValue({
+      success: true,
+      status: 'completed',
+      data: {
+        amount: 299,
+        billingPeriod: 'monthly',
         subscription: {
-          id: 'sub-123',
-          planType: 'pro'
+          planType: 'pro',
+          startDate: '2025-01-15T00:00:00.000Z',
+          endDate: '2025-02-15T00:00:00.000Z'
         }
-      },
-      pathname: '/payment/status',
-      search: '',
-      hash: '',
-      key: 'test'
+      }
     });
 
-    render(
-      <TestWrapper>
-        <PaymentStatus />
-      </TestWrapper>
+    render(<PaymentStatus />);
+
+    await waitFor(() => {
+      expect(mockPaymentService.pollPaymentStatus).toHaveBeenCalledWith(
+        '123e4567-e89b-42d3-a456-426614174000',
+        {
+          maxAttempts: 60,
+          interval: 5000
+        }
+      );
+    });
+  });
+
+  it('keeps the processing UI visible while the polling promise is still pending', () => {
+    mockSearchParams = new URLSearchParams('orderId=TN123456789');
+    mockPaymentService.pollPaymentStatusByMerchantTradeNo.mockImplementation(
+      () => new Promise(() => {})
     );
 
-    expect(screen.getByText(/查看我的帳戶/)).toBeInTheDocument();
+    render(<PaymentStatus />);
+
+    expect(screen.getByText('付款處理中...')).toBeInTheDocument();
+    expect(screen.getByText('手動重新檢查')).toBeInTheDocument();
+  });
+
+  it('renders the failure state and retry navigation when polling fails', async () => {
+    mockSearchParams = new URLSearchParams('orderId=TN123456789');
+    mockPaymentService.pollPaymentStatusByMerchantTradeNo.mockResolvedValue({
+      success: false,
+      status: 'failed',
+      error: '付款驗證失敗',
+      data: {
+        orderId: 'order-123',
+        orderStatus: 'failed',
+        paymentStatus: 'failed'
+      }
+    });
+
+    render(<PaymentStatus />);
+
+    expect(await screen.findByText('付款失敗')).toBeInTheDocument();
+    expect(screen.getByText('付款驗證失敗')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: '重新付款' }));
+    expect(mockNavigate).toHaveBeenCalledWith('/subscription', {
+      state: {
+        retryPayment: true,
+        previousOrderId: 'TN123456789'
+      }
+    });
   });
 });

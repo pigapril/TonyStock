@@ -41,6 +41,9 @@ const AdminPermissionsDemo = () => {
     };
 
     const debugInfo = getDebugInfo();
+    const canShowAdminFeatures = typeof shouldShowAdminFeatures === 'function'
+        ? shouldShowAdminFeatures()
+        : Boolean(shouldShowAdminFeatures);
 
     return (
         <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
@@ -58,7 +61,7 @@ const AdminPermissionsDemo = () => {
                 <h2>Admin Status</h2>
                 <p><strong>Is Admin:</strong> {isAdmin ? 'Yes' : 'No'}</p>
                 <p><strong>Loading:</strong> {loading ? 'Yes' : 'No'}</p>
-                <p><strong>Should Show Admin Features:</strong> {shouldShowAdminFeatures ? 'Yes' : 'No'}</p>
+                <p><strong>Should Show Admin Features:</strong> {canShowAdminFeatures ? 'Yes' : 'No'}</p>
                 {error && <p style={{ color: 'red' }}><strong>Error:</strong> {error.message}</p>}
                 
                 <div style={{ marginTop: '10px' }}>

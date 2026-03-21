@@ -54,6 +54,7 @@
     "start": "react-app-rewired start",
     "start:staging": "REACT_APP_ENVIRONMENT=staging react-app-rewired start",
     "test": "react-app-rewired test",
+    "test:ci": "node ./scripts/run-ci-tests.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
