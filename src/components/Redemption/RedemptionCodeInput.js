@@ -66,6 +66,7 @@ export const RedemptionCodeInput = ({
     const abortControllerRef = useRef(null);
     const requestTimeoutRef = useRef(null);
     const componentMountedRef = useRef(true);
+    const activeRequestKeyRef = useRef(null);
 
     // Cleanup effect
     useEffect(() => {
@@ -155,6 +156,7 @@ export const RedemptionCodeInput = ({
             requestStartTime: Date.now(),
             operationType
         });
+        activeRequestKeyRef.current = requestKey;
 
         // Set timeout to reset request state if request takes too long
         requestTimeoutRef.current = setTimeout(() => {
@@ -185,6 +187,7 @@ export const RedemptionCodeInput = ({
                 requestStartTime: Date.now() // Keep timestamp for duplicate detection
             }));
         }
+        activeRequestKeyRef.current = null;
     }, []);
 
     /**
@@ -287,7 +290,7 @@ export const RedemptionCodeInput = ({
             }
             abortControllerRef.current = null;
         }
-    }, [showPreview, location, user?.id, formatError, shouldBlockRequest, startRequestTracking, endRequestTracking, requestState.lastRequestKey]);
+    }, [showPreview, location, user?.id, formatError, shouldBlockRequest, startRequestTracking, endRequestTracking]);
 
     /**
      * Get redemption preview with duplicate request prevention
@@ -438,7 +441,7 @@ export const RedemptionCodeInput = ({
             const result = await redemptionService.redeemCode(code.trim(), true);
 
             // Check if component is still mounted and this is the current request
-            if (!componentMountedRef.current || requestState.lastRequestKey !== requestKey) {
+            if (!componentMountedRef.current || activeRequestKeyRef.current !== requestKey) {
                 return;
             }
 

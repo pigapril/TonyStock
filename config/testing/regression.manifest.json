@@ -2,7 +2,9 @@
   "tests": [
     "src/services/__tests__/paymentService.test.js",
     "src/services/__tests__/subscriptionService.test.js",
+    "src/services/__tests__/redemptionService.gate.test.js",
     "src/hooks/__tests__/useAdminPermissions.test.js",
+    "src/hooks/__tests__/useRedemptionIntegration.gate.test.js",
     "src/components/AdminOnly/__tests__/AdminOnly.test.js",
     "src/components/Common/ProtectedRoute/ProtectedRoute.test.js",
     "src/components/Payment/__tests__/PaymentFlow.test.js",
@@ -11,6 +13,8 @@
     "src/components/Payment/__tests__/PaymentHistory.test.js",
     "src/components/Payment/__tests__/ErrorDisplay.test.js",
     "src/components/Payment/__tests__/usePaymentErrorHandler.test.js",
+    "src/components/Redemption/__tests__/RedemptionCodeInput.gate.test.js",
+    "src/components/Redemption/__tests__/RedemptionContext.gate.test.js",
     "src/utils/enhancedApiClient.test.js"
   ]
 }
