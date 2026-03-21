@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import '../scripts/test-warning-filter';
 
 if (!window.matchMedia) {
   Object.defineProperty(window, 'matchMedia', {

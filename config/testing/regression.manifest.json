@@ -15,6 +15,7 @@
     "src/components/Payment/__tests__/usePaymentErrorHandler.test.js",
     "src/components/Redemption/__tests__/RedemptionCodeInput.gate.test.js",
     "src/components/Redemption/__tests__/RedemptionContext.gate.test.js",
+    "src/components/Subscription/__tests__/SubscriptionContext.gate.test.js",
     "src/utils/enhancedApiClient.test.js"
   ]
 }
