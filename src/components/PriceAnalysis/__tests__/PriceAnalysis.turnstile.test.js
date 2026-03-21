@@ -1,65 +1,159 @@
-/**
- * Test for PriceAnalysis component Turnstile feature flag behavior
- */
-
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../../../i18n/i18n';
+import i18n from '../../../i18n';
 import { PriceAnalysis } from '../PriceAnalysis';
 
-// Mock dependencies
-jest.mock('../../../utils/enhancedApiClient');
+const mockAuthState = {
+  isAuthenticated: true,
+  user: { id: 'user-1' },
+  checkAuthStatus: jest.fn()
+};
+
+const mockDialogApi = {
+  openDialog: jest.fn()
+};
+
+const mockAdContext = {
+  requestAdDisplay: jest.fn()
+};
+
+const mockToastApi = {
+  showToast: jest.fn(),
+  toast: null,
+  hideToast: jest.fn()
+};
+
+jest.mock('react-responsive', () => ({
+  useMediaQuery: jest.fn(() => false)
+}));
+
+jest.mock('react-chartjs-2', () => ({
+  Line: require('react').forwardRef((props, ref) => <div ref={ref} data-testid="price-analysis-line-chart" {...props} />)
+}));
+
+jest.mock('../../PageContainer/PageContainer', () => ({
+  __esModule: true,
+  default: ({ children }) => <div data-testid="page-container">{children}</div>
+}));
+
+jest.mock('../../ULBandChart/ULBandChart', () => ({
+  __esModule: true,
+  default: () => <div data-testid="ul-band-chart" />
+}));
+
+jest.mock('../../../utils/enhancedApiClient', () => ({
+  get: jest.fn()
+}));
+
 jest.mock('../../../components/Auth/useAuth', () => ({
-  useAuth: () => ({ isAuthenticated: true })
+  useAuth: () => mockAuthState
 }));
+
 jest.mock('../../../components/Common/Dialog/useDialog', () => ({
-  useDialog: () => ({ openDialog: jest.fn() })
+  useDialog: () => mockDialogApi
 }));
+
 jest.mock('../../../components/Common/InterstitialAdModal/AdContext', () => ({
-  useAdContext: () => ({ requestAdDisplay: jest.fn() })
+  useAdContext: () => mockAdContext
 }));
+
 jest.mock('../../../components/Watchlist/hooks/useToastManager', () => ({
-  useToastManager: () => ({
-    showToast: jest.fn(),
-    toast: null,
-    hideToast: jest.fn()
-  })
+  useToastManager: () => mockToastApi
 }));
+
+jest.mock('../../../components/Watchlist/services/watchlistService', () => ({
+  getWatchlist: jest.fn().mockResolvedValue([])
+}));
+
+jest.mock('../../../utils/freeStockListUtils', () => ({
+  isStockAllowed: jest.fn(() => true),
+  getFreeStockList: jest.fn(() => [])
+}));
+
+const mockTurnstile = jest.fn();
+const createIntegratedAnalysisPayload = (stockCode = 'SPY') => ({
+  data: {
+    data: {
+      stockCode,
+      dates: ['2026-03-20'],
+      prices: [100],
+      sdAnalysis: {
+        trendLine: [100],
+        tl_minus_2sd: [80],
+        tl_minus_sd: [90],
+        tl_plus_sd: [110],
+        tl_plus_2sd: [120]
+      },
+      weeklyDates: ['2026-03-20'],
+      weeklyPrices: [100],
+      upperBand: [110],
+      lowerBand: [90],
+      ma20: [100],
+      currentPrice: 100,
+      currentPricePosition: 0,
+      sentiment: {
+        key: 'sentiment.neutral',
+        value: 'Neutral'
+      }
+    }
+  }
+});
+
 jest.mock('react-turnstile', () => {
-  return function MockTurnstile({ onSuccess }) {
-    React.useEffect(() => {
-      // Auto-trigger success for testing
-      setTimeout(() => onSuccess('mock-token'), 100);
-    }, [onSuccess]);
+  return function MockTurnstile(props) {
+    mockTurnstile(props);
     return <div data-testid="turnstile-widget">Turnstile Widget</div>;
   };
 });
 
-// Test wrapper component
+const mockEnhancedApiClient = require('../../../utils/enhancedApiClient');
+
 const TestWrapper = ({ children }) => (
-  <BrowserRouter>
+  <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
     <I18nextProvider i18n={i18n}>
       {children}
     </I18nextProvider>
-  </BrowserRouter>
+  </MemoryRouter>
 );
 
-describe('PriceAnalysis Turnstile Feature Flag', () => {
+describe('PriceAnalysis Turnstile gating', () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
-    jest.resetModules();
+    jest.clearAllMocks();
     process.env = { ...originalEnv };
+    mockEnhancedApiClient.get.mockImplementation((url, config = {}) => {
+      if (url === '/api/hot-searches') {
+        return Promise.resolve({
+          data: {
+            data: {
+              top_searches: []
+            }
+          }
+        });
+      }
+
+      if (url === '/api/integrated-analysis') {
+        return Promise.resolve(
+          createIntegratedAnalysisPayload(config?.params?.stockCode || 'SPY')
+        );
+      }
+
+      return Promise.resolve({
+        data: {
+          data: []
+        }
+      });
+    });
   });
 
   afterEach(() => {
     process.env = originalEnv;
   });
 
-  test('should not render Turnstile widget when feature is disabled', async () => {
-    // Set environment variable to disable Turnstile
+  it('does not render Turnstile when the feature flag is disabled', async () => {
     process.env.REACT_APP_TURNSTILE_ENABLED = 'false';
 
     render(
@@ -68,17 +162,14 @@ describe('PriceAnalysis Turnstile Feature Flag', () => {
       </TestWrapper>
     );
 
-    // Wait for component to render
     await waitFor(() => {
-      expect(screen.getByText(/股票代碼/)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /開始分析|Start Analysis/i })).toBeInTheDocument();
     });
 
-    // Turnstile widget should not be present
     expect(screen.queryByTestId('turnstile-widget')).not.toBeInTheDocument();
   });
 
-  test('should render Turnstile widget when feature is enabled', async () => {
-    // Set environment variable to enable Turnstile
+  it('keeps analysis blocked until verification succeeds when the feature flag is enabled', async () => {
     process.env.REACT_APP_TURNSTILE_ENABLED = 'true';
 
     render(
@@ -87,82 +178,21 @@ describe('PriceAnalysis Turnstile Feature Flag', () => {
       </TestWrapper>
     );
 
-    // Wait for component to render
     await waitFor(() => {
-      expect(screen.getByText(/股票代碼/)).toBeInTheDocument();
+      expect(screen.getByTestId('turnstile-widget')).toBeInTheDocument();
     });
 
-    // Turnstile widget should be present
-    expect(screen.getByTestId('turnstile-widget')).toBeInTheDocument();
-  });
-
-  test('should show correct button text when Turnstile is disabled', async () => {
-    // Set environment variable to disable Turnstile
-    process.env.REACT_APP_TURNSTILE_ENABLED = 'false';
-
-    render(
-      <TestWrapper>
-        <PriceAnalysis />
-      </TestWrapper>
-    );
-
-    // Wait for component to render
-    await waitFor(() => {
-      expect(screen.getByText(/股票代碼/)).toBeInTheDocument();
-    });
-
-    // Button should show "開始分析" instead of "請先完成驗證"
-    const submitButton = screen.getByRole('button', { name: /開始分析|Start Analysis/i });
-    expect(submitButton).toBeInTheDocument();
-    expect(submitButton).not.toBeDisabled();
-  });
-
-  test('should show verification button text when Turnstile is enabled and no token', async () => {
-    // Set environment variable to enable Turnstile
-    process.env.REACT_APP_TURNSTILE_ENABLED = 'true';
-
-    render(
-      <TestWrapper>
-        <PriceAnalysis />
-      </TestWrapper>
-    );
-
-    // Wait for component to render
-    await waitFor(() => {
-      expect(screen.getByText(/股票代碼/)).toBeInTheDocument();
-    });
-
-    // Initially, button should show verification text and be disabled
     const submitButton = screen.getByRole('button', { name: /請先完成驗證|Complete Verification/i });
-    expect(submitButton).toBeInTheDocument();
     expect(submitButton).toBeDisabled();
-  });
 
-  test('should enable button after Turnstile verification when feature is enabled', async () => {
-    // Set environment variable to enable Turnstile
-    process.env.REACT_APP_TURNSTILE_ENABLED = 'true';
+    mockTurnstile.mock.calls[0][0].onSuccess('mock-token');
 
-    render(
-      <TestWrapper>
-        <PriceAnalysis />
-      </TestWrapper>
-    );
-
-    // Wait for component to render and Turnstile to auto-verify
     await waitFor(() => {
-      expect(screen.getByText(/股票代碼/)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /開始分析|Start Analysis/i })).not.toBeDisabled();
     });
-
-    // Wait for Turnstile auto-verification
-    await waitFor(() => {
-      const submitButton = screen.getByRole('button', { name: /開始分析|Start Analysis/i });
-      expect(submitButton).toBeInTheDocument();
-      expect(submitButton).not.toBeDisabled();
-    }, { timeout: 3000 });
   });
 
-  test('should handle form submission without Turnstile token when feature is disabled', async () => {
-    // Set environment variable to disable Turnstile
+  it('allows form submission without a token when Turnstile is disabled', async () => {
     process.env.REACT_APP_TURNSTILE_ENABLED = 'false';
 
     render(
@@ -171,25 +201,17 @@ describe('PriceAnalysis Turnstile Feature Flag', () => {
       </TestWrapper>
     );
 
-    // Wait for component to render
     await waitFor(() => {
-      expect(screen.getByText(/股票代碼/)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/請輸入股票代碼|e\.g\., SPY, AAPL/i)).toBeInTheDocument();
     });
 
-    // Fill in stock code
-    const stockInput = screen.getByPlaceholderText(/請輸入股票代碼/);
-    fireEvent.change(stockInput, { target: { value: 'AAPL' } });
+    fireEvent.change(screen.getByPlaceholderText(/請輸入股票代碼|e\.g\., SPY, AAPL/i), {
+      target: { value: 'AAPL' }
+    });
+    fireEvent.click(screen.getByRole('button', { name: /開始分析|Start Analysis/i }));
 
-    // Submit form
-    const submitButton = screen.getByRole('button', { name: /開始分析|Start Analysis/i });
-    fireEvent.click(submitButton);
-
-    // Should not show Turnstile-related errors
     await waitFor(() => {
-      expect(screen.queryByText(/請先完成驗證/)).not.toBeInTheDocument();
-      expect(screen.queryByText(/驗證失敗/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/請先完成驗證|Complete Verification/i)).not.toBeInTheDocument();
     });
   });
 });
-
-export default {};

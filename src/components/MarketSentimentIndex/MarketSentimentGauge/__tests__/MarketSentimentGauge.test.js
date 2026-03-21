@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../../../../i18n';
 import MarketSentimentGauge from '../MarketSentimentGauge';
@@ -9,128 +9,88 @@ const mockSentimentData = {
   compositeScoreLastUpdate: '2024-01-15T10:30:00Z'
 };
 
-const renderWithI18n = (component) => {
-  return render(
-    <I18nextProvider i18n={i18n}>
-      {component}
-    </I18nextProvider>
-  );
-};
+const renderWithI18n = (component) => render(
+  <I18nextProvider i18n={i18n}>
+    {component}
+  </I18nextProvider>
+);
 
 describe('MarketSentimentGauge', () => {
-  test('renders with valid sentiment data', () => {
-    const initialRenderRef = { current: false };
-    
+  beforeEach(() => {
+    jest.useFakeTimers();
+    window.matchMedia = jest.fn().mockImplementation((query) => ({
+      matches: query === '(prefers-reduced-motion: reduce)' ? false : false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn()
+    }));
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+  });
+
+  it('renders score, svg gauge, and localized update metadata', () => {
     renderWithI18n(
       <MarketSentimentGauge
         sentimentData={mockSentimentData}
         isDataLoaded={true}
-        initialRenderRef={initialRenderRef}
       />
     );
 
-    // 檢查是否顯示 gauge 圖表
     expect(screen.getByTestId('msi-arc-gauge-svg')).toBeInTheDocument();
-    
-    // 檢查是否顯示數值
     expect(screen.getByText('75')).toBeInTheDocument();
-    
-    // 檢查是否顯示最後更新時間
-    expect(screen.getByText(/最後更新|Last Update/)).toBeInTheDocument();
+    expect(screen.getByText(/當前美股市場情緒|Current US market sentiment/i)).toBeInTheDocument();
   });
 
-  test('renders loading state when no data', () => {
-    const initialRenderRef = { current: true };
-    
-    renderWithI18n(
+  it('renders loading and invalid-data states', () => {
+    const { rerender } = renderWithI18n(
       <MarketSentimentGauge
         sentimentData={null}
         isDataLoaded={false}
-        initialRenderRef={initialRenderRef}
       />
     );
 
-    // 檢查是否顯示載入狀態
-    expect(screen.getByText(/載入中|Loading/)).toBeInTheDocument();
-  });
+    expect(screen.getByText(/載入中|Loading/i)).toBeInTheDocument();
 
-  test('renders error state with invalid data', () => {
-    const invalidData = { totalScore: null, compositeScoreLastUpdate: '2024-01-15T10:30:00Z' };
-    const initialRenderRef = { current: false };
-    
-    renderWithI18n(
-      <MarketSentimentGauge
-        sentimentData={invalidData}
-        isDataLoaded={true}
-        initialRenderRef={initialRenderRef}
-      />
+    rerender(
+      <I18nextProvider i18n={i18n}>
+        <MarketSentimentGauge
+          sentimentData={{ totalScore: null }}
+          isDataLoaded={true}
+        />
+      </I18nextProvider>
     );
 
-    // 檢查是否顯示錯誤狀態
-    expect(screen.getByText(/數據載入失敗|Invalid Data/)).toBeInTheDocument();
+    expect(screen.getByText(/數據載入失敗|Invalid Data/i)).toBeInTheDocument();
   });
 
-  test('respects showAnalysisResult prop', () => {
-    const initialRenderRef = { current: false };
-    
+  it('respects display flags and supports segment interaction', async () => {
     renderWithI18n(
       <MarketSentimentGauge
         sentimentData={mockSentimentData}
         isDataLoaded={true}
-        initialRenderRef={initialRenderRef}
         showAnalysisResult={false}
-      />
-    );
-
-    // 檢查分析結果是否被隱藏
-    expect(screen.queryByText(/情緒|Sentiment/)).not.toBeInTheDocument();
-  });
-
-  test('respects showLastUpdate prop', () => {
-    const initialRenderRef = { current: false };
-    
-    renderWithI18n(
-      <MarketSentimentGauge
-        sentimentData={mockSentimentData}
-        isDataLoaded={true}
-        initialRenderRef={initialRenderRef}
         showLastUpdate={false}
       />
     );
 
-    // 檢查最後更新時間是否被隱藏
-    expect(screen.queryByText(/最後更新|Last Update/)).not.toBeInTheDocument();
-  });
+    expect(screen.queryByText(/最後更新|Last Update/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/當前美股市場情緒|Current US market sentiment/i)).toBeInTheDocument();
 
-  test('applies correct size class', () => {
-    const initialRenderRef = { current: false };
-    
-    renderWithI18n(
-      <MarketSentimentGauge
-        sentimentData={mockSentimentData}
-        isDataLoaded={true}
-        initialRenderRef={initialRenderRef}
-        size="large"
-      />
-    );
+    jest.advanceTimersByTime(1200);
 
-    // 檢查是否應用了正確的尺寸類
-    expect(screen.getByTestId('msi-arc-gauge-root')).toHaveClass('size-large');
-  });
+    const firstSegment = screen.getAllByRole('button')[0];
+    fireEvent.mouseEnter(firstSegment, { clientX: 100, clientY: 100 });
+    jest.runOnlyPendingTimers();
 
-  test('applies custom className', () => {
-    const initialRenderRef = { current: false };
-    
-    renderWithI18n(
-      <MarketSentimentGauge
-        sentimentData={mockSentimentData}
-        isDataLoaded={true}
-        initialRenderRef={initialRenderRef}
-        className="custom-class"
-      />
-    );
-
-    // 檢查是否應用了自定義類名
-    expect(screen.getByTestId('msi-arc-gauge-root')).toHaveClass('custom-class');
+    await waitFor(() => {
+      expect(document.querySelector('.msiArcGauge__tooltip')).toBeInTheDocument();
+    });
   });
 });

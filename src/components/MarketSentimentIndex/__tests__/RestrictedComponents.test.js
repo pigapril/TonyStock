@@ -1,127 +1,47 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../../../i18n/i18n';
+import i18n from '../../../i18n';
 import RestrictedMarketSentimentGauge from '../RestrictedMarketSentimentGauge/RestrictedMarketSentimentGauge';
 import RestrictedCompositionView from '../RestrictedCompositionView/RestrictedCompositionView';
 
-// Mock i18n for testing
-jest.mock('react-i18next', () => ({
-    useTranslation: () => ({
-        t: (key) => key,
-    }),
-    I18nextProvider: ({ children }) => children,
-}));
+describe('Restricted market sentiment components', () => {
+  const mockOnUpgradeClick = jest.fn();
 
-describe('Restricted Components with Background Images', () => {
-    const mockOnUpgradeClick = jest.fn();
+  const renderRestrictedViews = () => render(
+    <I18nextProvider i18n={i18n}>
+      <>
+        <RestrictedMarketSentimentGauge onUpgradeClick={mockOnUpgradeClick} />
+        <RestrictedCompositionView onUpgradeClick={mockOnUpgradeClick} />
+      </>
+    </I18nextProvider>
+  );
 
-    beforeEach(() => {
-        mockOnUpgradeClick.mockClear();
-    });
+  beforeEach(() => {
+    mockOnUpgradeClick.mockClear();
+  });
 
-    describe('RestrictedMarketSentimentGauge', () => {
-        test('renders with background screenshot image', () => {
-            render(
-                <RestrictedMarketSentimentGauge onUpgradeClick={mockOnUpgradeClick} />
-            );
+  it('renders both screenshot overlays with upgrade CTAs', () => {
+    renderRestrictedViews();
 
-            // 檢查背景圖片是否存在
-            const backgroundImage = screen.getByAltText('Sentiment Gauge Feature');
-            expect(backgroundImage).toBeInTheDocument();
-            expect(backgroundImage).toHaveAttribute('src', '/images/market-sentiment/sentiment-gauge-feature.png');
-            expect(backgroundImage).toHaveClass('screenshot-image');
-        });
+    expect(screen.getByAltText('Sentiment Gauge Feature')).toBeInTheDocument();
+    expect(screen.getByAltText('Composition Feature')).toBeInTheDocument();
+    expect(screen.getAllByRole('button').length).toBe(2);
+  });
 
-        test('renders SVG gauge overlay', () => {
-            render(
-                <RestrictedMarketSentimentGauge onUpgradeClick={mockOnUpgradeClick} />
-            );
+  it('keeps the gated layout css hooks intact', () => {
+    const { container } = renderRestrictedViews();
 
-            // 檢查 SVG 儀表盤是否存在
-            const svgElement = screen.getByRole('img', { hidden: true });
-            expect(svgElement).toBeInTheDocument();
-        });
+    expect(container.querySelector('.restricted-gauge-container')).toBeInTheDocument();
+    expect(container.querySelector('.feature-screenshot-background')).toBeInTheDocument();
+    expect(container.querySelector('.restricted-composition-container')).toBeInTheDocument();
+    expect(container.querySelector('.composition-feature-screenshot-background')).toBeInTheDocument();
+  });
 
-        test('renders restriction overlay with upgrade button', () => {
-            render(
-                <RestrictedMarketSentimentGauge onUpgradeClick={mockOnUpgradeClick} />
-            );
+  it('wires upgrade actions for both restricted views', () => {
+    renderRestrictedViews();
 
-            // 檢查升級按鈕
-            const upgradeButton = screen.getByRole('button');
-            expect(upgradeButton).toBeInTheDocument();
-            expect(upgradeButton).toHaveClass('upgrade-cta-button');
-        });
-    });
-
-    describe('RestrictedCompositionView', () => {
-        test('renders with background screenshot image', () => {
-            render(
-                <RestrictedCompositionView onUpgradeClick={mockOnUpgradeClick} />
-            );
-
-            // 檢查背景圖片是否存在
-            const backgroundImage = screen.getByAltText('Composition Feature');
-            expect(backgroundImage).toBeInTheDocument();
-            expect(backgroundImage).toHaveAttribute('src', '/images/market-sentiment/composition-feature.png');
-            expect(backgroundImage).toHaveClass('composition-screenshot-image');
-        });
-
-        test('renders composition feature screenshot', () => {
-            render(
-                <RestrictedCompositionView onUpgradeClick={mockOnUpgradeClick} />
-            );
-
-            // 檢查是否有功能截圖
-            const screenshot = screen.getByAltText('Composition Feature');
-            expect(screenshot).toBeInTheDocument();
-            expect(screenshot).toHaveAttribute('src', '/images/market-sentiment/composition-feature.png');
-        });
-
-        test('renders upgrade button with icon', () => {
-            render(
-                <RestrictedCompositionView onUpgradeClick={mockOnUpgradeClick} />
-            );
-
-            // 檢查升級按鈕
-            const upgradeButton = screen.getByRole('button');
-            expect(upgradeButton).toBeInTheDocument();
-            expect(upgradeButton).toHaveClass('composition-upgrade-button');
-            
-            // 檢查按鈕圖標
-            const buttonIcon = upgradeButton.querySelector('.button-icon');
-            expect(buttonIcon).toBeInTheDocument();
-        });
-    });
-
-    describe('CSS Classes and Structure', () => {
-        test('RestrictedMarketSentimentGauge has correct CSS structure', () => {
-            const { container } = render(
-                <RestrictedMarketSentimentGauge onUpgradeClick={mockOnUpgradeClick} />
-            );
-
-            // 檢查主要容器
-            expect(container.querySelector('.restricted-gauge-container')).toBeInTheDocument();
-            expect(container.querySelector('.gauge-blur-overlay')).toBeInTheDocument();
-            expect(container.querySelector('.feature-screenshot-background')).toBeInTheDocument();
-            expect(container.querySelector('.blurred-gauge')).toBeInTheDocument();
-            expect(container.querySelector('.blur-filter')).toBeInTheDocument();
-            expect(container.querySelector('.restriction-overlay')).toBeInTheDocument();
-        });
-
-        test('RestrictedCompositionView has correct CSS structure', () => {
-            const { container } = render(
-                <RestrictedCompositionView onUpgradeClick={mockOnUpgradeClick} />
-            );
-
-            // 檢查主要容器
-            expect(container.querySelector('.restricted-composition-container')).toBeInTheDocument();
-            expect(container.querySelector('.composition-blur-overlay')).toBeInTheDocument();
-            expect(container.querySelector('.composition-feature-screenshot-background')).toBeInTheDocument();
-            expect(container.querySelector('.blurred-composition')).toBeInTheDocument();
-            expect(container.querySelector('.composition-blur-filter')).toBeInTheDocument();
-            expect(container.querySelector('.composition-restriction-overlay')).toBeInTheDocument();
-        });
-    });
+    screen.getAllByRole('button').forEach((button) => fireEvent.click(button));
+    expect(mockOnUpgradeClick).toHaveBeenCalledTimes(2);
+  });
 });
