@@ -16,8 +16,9 @@ const nodeOptions = [
     `--require=${warningFilterPath}`
 ].filter(Boolean).join(' ');
 
+const rewiredBin = path.resolve(frontendRoot, 'node_modules', 'react-app-rewired', 'bin', 'index.js');
 const testCommand = [
-    require.resolve('react-app-rewired/bin/index.js'),
+    rewiredBin,
     'test',
     '--watch=false',
     '--watchman=false',
