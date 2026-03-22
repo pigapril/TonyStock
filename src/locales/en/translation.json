@@ -1154,7 +1154,7 @@
     "keywords": "LOHAS Five-Line Analysis, Price Trend Analysis, Stock Analysis, Market Sentiment, Mean Reversion, Overbought Oversold, LOHAS Channel, Standard Deviation",
     "jsonLd": {
       "name": "LOHAS Five-Line Analysis",
-      "description": "Utilize standard deviation to analyze stock price trends and gauge market sentiment. Assess whether the current price reflects excessive optimism or pessimism. Track long-term trends and determine price position using statistical mean reversion properties."
+      "description": "Utilize standard deviation to analyze stock price trends and gauge market sentiment. Assess whether the current price reflects excessive greed or fear. Track long-term trends and determine price position using statistical mean reversion properties."
     },
     "form": {
       "title": "Stock Price Sentiment",
@@ -1180,11 +1180,11 @@
       "marketSentiment": "Sentiment"
     },
     "sentiment": {
-      "extremeOptimism": "Extreme Optimism",
-      "optimism": "Optimism",
+      "extremeGreed": "Extreme Greed",
+      "greed": "Greed",
       "neutral": "Neutral",
-      "pessimism": "Pessimism",
-      "extremePessimism": "Extreme Pessimism"
+      "fear": "Fear",
+      "extremeFear": "Extreme Fear"
     },
     "chart": {
       "tabs": {
@@ -1198,10 +1198,10 @@
       "label": {
         "price": "Price",
         "trendLine": "Trend Line",
-        "minus2sd": "Extreme Pessimism",
-        "minus1sd": "Pessimism",
-        "plus1sd": "Optimism",
-        "plus2sd": "Extreme Optimism"
+        "minus2sd": "Extreme Fear",
+        "minus1sd": "Fear",
+        "plus1sd": "Greed",
+        "plus2sd": "Extreme Greed"
       },
       "zoom": {
         "resetButton": "Reset Zoom",
@@ -1220,15 +1220,15 @@
       },
       "overview": {
         "title": "What is the LOHAS Five-Line Analysis?",
-        "content": "Analyze whether the current stock price is overly optimistic or pessimistic. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
+        "content": "Analyze whether the current stock price is overly greedy or fearful. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
         "readMore": "For detailed instructions, please see the article"
       },
       "sd": {
         "title": "LOHAS Five-Line Analysis",
         "point1": "The middle trend line is a long-term moving average, serving as the baseline for assessing the long-term price trend. Two standard deviations are added above and below this baseline.",
         "point2": "The further the price moves from the middle trend line, the further it deviates from the long-term average, increasing the probability of reverting to the trend line.",
-        "point3": "When the price touches the uppermost band, it indicates a strong short-term overbought condition and extreme market optimism, posing a risk of pullback.",
-        "point4": "When the price touches the lowermost band, it indicates a strong short-term oversold condition and extreme market pessimism, presenting an opportunity for a rebound."
+        "point3": "When the price touches the uppermost band, it indicates a strong short-term overbought condition and extreme market greed, posing a risk of pullback.",
+        "point4": "When the price touches the lowermost band, it indicates a strong short-term oversold condition and extreme market fear, presenting an opportunity for a rebound."
       },
       "ulband": {
         "title": "LOHAS Channel",
@@ -1245,15 +1245,15 @@
     },
     "explanation": {
       "mainTitle": "What is the LOHAS Five-Line Analysis?",
-      "shortDescription": "Analyze whether the current stock price is overly optimistic or pessimistic. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
+      "shortDescription": "Analyze whether the current stock price is overly greedy or fearful. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
       "readMorePrefix": "For detailed instructions, please see the article:",
       "readMoreLinkText": "Analyze Price Trends and Sentiment with LOHAS Five-Line Analysis",
       "sd": {
         "title": "LOHAS Five-Line Analysis",
         "l1": "The middle trend line is a long-term moving average, serving as the baseline for assessing the long-term price trend. Two standard deviations are added above and below this baseline.",
         "l2": "The further the price moves from the middle trend line, the further it deviates from the long-term average, increasing the probability of reverting to the trend line.",
-        "l3": "When the price touches the uppermost band, it indicates a strong short-term overbought condition and extreme market optimism, posing a risk of pullback.",
-        "l4": "When the price touches the lowermost band, it indicates a strong short-term oversold condition and extreme market pessimism, presenting an opportunity for a rebound."
+        "l3": "When the price touches the uppermost band, it indicates a strong short-term overbought condition and extreme market greed, posing a risk of pullback.",
+        "l4": "When the price touches the lowermost band, it indicates a strong short-term oversold condition and extreme market fear, presenting an opportunity for a rebound."
       },
       "ulBand": {
         "title": "LOHAS Channel",
@@ -1370,7 +1370,7 @@
       "finish": "Finish Editing",
       "start": "Edit Mode"
     },
-    "infoTooltip": "Add a stock, and we'll automatically determine its current price position within the LOHAS Five-Line sentiment bands (Extreme Pessimism to Extreme Optimism) based on its 3.5-year trend. Click the stock for the full LOHAS Five-Line Analysis chart.",
+    "infoTooltip": "Add a stock, and we'll automatically determine its current price position within the LOHAS Five-Line sentiment bands (Extreme Fear to Extreme Greed) based on its 3.5-year trend. Click the stock for the full LOHAS Five-Line Analysis chart.",
     "categoryTabs": {
       "manageCategoriesAria": "Manage Categories"
     },

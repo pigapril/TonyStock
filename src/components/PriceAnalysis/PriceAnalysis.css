@@ -493,14 +493,14 @@
 }
 
 /* 情緒狀態顏色 (修改選擇器) */
-.price-analysis-view .sentiment-extremeOptimism {
-  /* 原 .sentiment-極度樂觀 */
+.price-analysis-view .sentiment-extremeGreed {
+  /* 原 .sentiment-極度貪婪 */
   color: #D24A93;
   /* 與圖表上軌顏色一致 - 深紅褐色 */
 }
 
-.price-analysis-view .sentiment-optimism {
-  /* 原 .sentiment-樂觀 */
+.price-analysis-view .sentiment-greed {
+  /* 原 .sentiment-貪婪 */
   color: #F0B8CE;
   /* 較淺的紅褐色 */
 }
@@ -511,14 +511,14 @@
   /* 與 MA20 顏色一致 - 橙黃色 */
 }
 
-.price-analysis-view .sentiment-pessimism {
-  /* 原 .sentiment-悲觀 */
+.price-analysis-view .sentiment-fear {
+  /* 原 .sentiment-恐懼 */
   color: #5B9BD5;
   /* 較淺的墨綠色 */
 }
 
-.price-analysis-view .sentiment-extremePessimism {
-  /* 原 .sentiment-極度悲觀 */
+.price-analysis-view .sentiment-extremeFear {
+  /* 原 .sentiment-極度恐懼 */
   color: #0000FF;
   /* 與圖表下軌顏色一致 - 深墨綠色 */
 }

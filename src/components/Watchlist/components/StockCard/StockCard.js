@@ -21,13 +21,13 @@ const StockAnalysisResult = memo(function StockAnalysisResult({ price, analysis 
     let sentimentKey = 'sentiment.neutral'; // 預設為中性
 
     if (price >= tl_plus_2sd) {
-        sentimentKey = 'sentiment.extremeOptimism'; // 極度樂觀
+        sentimentKey = 'sentiment.extremeGreed'; // 極度貪婪
     } else if (price > tl_plus_sd) {
-        sentimentKey = 'sentiment.optimism'; // 樂觀
+        sentimentKey = 'sentiment.greed'; // 貪婪
     } else if (price <= tl_minus_2sd) {
-        sentimentKey = 'sentiment.extremePessimism'; // 極度悲觀
+        sentimentKey = 'sentiment.extremeFear'; // 極度恐懼
     } else if (price < tl_minus_sd) {
-        sentimentKey = 'sentiment.pessimism'; // 悲觀
+        sentimentKey = 'sentiment.fear'; // 恐懼
     }
 
     return (

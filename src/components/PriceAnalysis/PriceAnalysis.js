@@ -56,6 +56,15 @@ const getSentimentSuffix = (key) => {
   return parts[parts.length - 1]; // 返回最後一部分，例如 'pessimism'
 };
 
+const PRICE_CHART_LABEL_KEYS = [
+  'priceAnalysis.chart.label.price',
+  'priceAnalysis.chart.label.trendLine',
+  'priceAnalysis.chart.label.minus2sd',
+  'priceAnalysis.chart.label.minus1sd',
+  'priceAnalysis.chart.label.plus1sd',
+  'priceAnalysis.chart.label.plus2sd'
+];
+
 /**
  * 價格標準差分析頁面 (PriceAnalysisPage)
  *
@@ -113,6 +122,23 @@ export function PriceAnalysis() {
   const chartRef = useRef(null); // 新增：圖表 ref 用於程式化控制 tooltip
   const ulbandChartRef = useRef(null); // ULBand 圖表 ref
   const chartCardRef = useRef(null); // 圖表卡片 ref 用於滾動
+
+  const analysisSentimentText = useMemo(() => {
+    if (!analysisResult.sentimentKey) return null;
+    return t(analysisResult.sentimentKey);
+  }, [analysisResult.sentimentKey, t]);
+
+  const localizedChartData = useMemo(() => {
+    if (!chartData) return null;
+
+    return {
+      ...chartData,
+      datasets: chartData.datasets.map((dataset, index) => ({
+        ...dataset,
+        label: t(dataset.labelKey || PRICE_CHART_LABEL_KEYS[index] || dataset.label)
+      }))
+    };
+  }, [chartData, t]);
 
   // 使用自定義 Hook 處理手機版標準差圖表的觸控
   useMobileTouchHandler(chartRef, isMobile, activeChart === 'sd');
@@ -327,13 +353,13 @@ export function PriceAnalysis() {
         setChartData({
           labels: dates,
           datasets: [
-            // 使用 t() 翻譯 dataset labels
-            { label: t('priceAnalysis.chart.label.price'), data: prices, borderColor: '#000000', borderWidth: 2, fill: false, pointRadius: 0 }, // 價格線顏色維持黑色
-            { label: t('priceAnalysis.chart.label.trendLine'), data: sdAnalysis.trendLine, borderColor: '#708090', borderWidth: 2, fill: false, pointRadius: 0 }, // Neutral
-            { label: t('priceAnalysis.chart.label.minus2sd'), data: sdAnalysis.tl_minus_2sd, borderColor: '#0000FF', borderWidth: 2, fill: false, pointRadius: 0 }, // extremePessimism
-            { label: t('priceAnalysis.chart.label.minus1sd'), data: sdAnalysis.tl_minus_sd, borderColor: '#5B9BD5', borderWidth: 2, fill: false, pointRadius: 0 }, // pessimism
-            { label: t('priceAnalysis.chart.label.plus1sd'), data: sdAnalysis.tl_plus_sd, borderColor: '#F0B8CE', borderWidth: 2, fill: false, pointRadius: 0 }, // optimism
-            { label: t('priceAnalysis.chart.label.plus2sd'), data: sdAnalysis.tl_plus_2sd, borderColor: '#D24A93', borderWidth: 2, fill: false, pointRadius: 0 }  // extremeOptimism
+            // 保留翻譯 key，讓切換語言時可即時重繪圖表文字
+            { labelKey: PRICE_CHART_LABEL_KEYS[0], label: PRICE_CHART_LABEL_KEYS[0], data: prices, borderColor: '#000000', borderWidth: 2, fill: false, pointRadius: 0 }, // 價格線顏色維持黑色
+            { labelKey: PRICE_CHART_LABEL_KEYS[1], label: PRICE_CHART_LABEL_KEYS[1], data: sdAnalysis.trendLine, borderColor: '#708090', borderWidth: 2, fill: false, pointRadius: 0 }, // Neutral
+            { labelKey: PRICE_CHART_LABEL_KEYS[2], label: PRICE_CHART_LABEL_KEYS[2], data: sdAnalysis.tl_minus_2sd, borderColor: '#0000FF', borderWidth: 2, fill: false, pointRadius: 0 }, // extremePessimism
+            { labelKey: PRICE_CHART_LABEL_KEYS[3], label: PRICE_CHART_LABEL_KEYS[3], data: sdAnalysis.tl_minus_sd, borderColor: '#5B9BD5', borderWidth: 2, fill: false, pointRadius: 0 }, // pessimism
+            { labelKey: PRICE_CHART_LABEL_KEYS[4], label: PRICE_CHART_LABEL_KEYS[4], data: sdAnalysis.tl_plus_sd, borderColor: '#F0B8CE', borderWidth: 2, fill: false, pointRadius: 0 }, // optimism
+            { labelKey: PRICE_CHART_LABEL_KEYS[5], label: PRICE_CHART_LABEL_KEYS[5], data: sdAnalysis.tl_plus_2sd, borderColor: '#D24A93', borderWidth: 2, fill: false, pointRadius: 0 }  // extremeOptimism
           ],
           timeUnit: getTimeUnit(dates)
         });
@@ -351,16 +377,16 @@ export function PriceAnalysis() {
 
           // 決定 sentimentKey
           let sentimentKey = 'priceAnalysis.sentiment.neutral'; // Default key
-          if (lastPrice >= lastTlPlus2Sd) sentimentKey = 'priceAnalysis.sentiment.extremeOptimism';
-          else if (lastPrice > lastTlPlusSd) sentimentKey = 'priceAnalysis.sentiment.optimism';
-          else if (lastPrice <= lastTlMinus2Sd) sentimentKey = 'priceAnalysis.sentiment.extremePessimism';
-          else if (lastPrice < lastTlMinusSd) sentimentKey = 'priceAnalysis.sentiment.pessimism';
+          if (lastPrice >= lastTlPlus2Sd) sentimentKey = 'priceAnalysis.sentiment.extremeGreed';
+          else if (lastPrice > lastTlPlusSd) sentimentKey = 'priceAnalysis.sentiment.greed';
+          else if (lastPrice <= lastTlMinus2Sd) sentimentKey = 'priceAnalysis.sentiment.extremeFear';
+          else if (lastPrice < lastTlMinusSd) sentimentKey = 'priceAnalysis.sentiment.fear';
 
           // 同時設定 key 和翻譯後的 value
           setAnalysisResult({
             price: formatPrice(lastPrice),
             sentimentKey: sentimentKey,
-            sentimentValue: t(sentimentKey) // 使用 t() 獲取翻譯值
+            sentimentValue: t(sentimentKey) // 保留欄位以兼容舊資料結構
           });
         } else {
           // 清空時也清空 key 和 value
@@ -1675,7 +1701,7 @@ export function PriceAnalysis() {
                         <span className="analysis-label">{t('priceAnalysis.result.marketSentiment')}</span>
                         {/* 修改 className：使用 getSentimentSuffix 提取後綴 */}
                         <span className={`analysis-value sentiment-${getSentimentSuffix(analysisResult.sentimentKey)}`}>
-                          {analysisResult.sentimentValue}
+                          {analysisSentimentText}
                         </span>
                       </div>
                     </div>
@@ -1791,7 +1817,7 @@ export function PriceAnalysis() {
                       </div>
                       <Line
                         ref={chartRef}
-                        data={chartData}
+                        data={localizedChartData || chartData}
                         options={lineChartOptions}
                       />
                     </div>
