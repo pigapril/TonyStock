@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Read the RedemptionCodeInput component
-const componentPath = path.join(__dirname, '../RedemptionCodeInput.js');
+const componentPath = path.join(__dirname, '../../src/components/Redemption/RedemptionCodeInput.js');
 const componentContent = fs.readFileSync(componentPath, 'utf8');
 
 console.log('🔍 Verifying RedemptionCodeInput Manual Validation Changes...\n');

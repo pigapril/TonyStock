@@ -3,6 +3,16 @@ import { handleApiError } from '../../../utils/errorHandler';
 import csrfClient from '../../../utils/csrfClient'; // 導入 CSRF 客戶端
 
 class WatchlistService {
+    constructor() {
+        this._categoriesRequest = null;
+        this._categoriesCache = null;
+        this._categoriesCacheTtlMs = 2000;
+    }
+
+    _invalidateCategoriesCache() {
+        this._categoriesRequest = null;
+        this._categoriesCache = null;
+    }
 
     /**
      * 獲取包含 CSRF token 和超時設定的 Axios 配置。
@@ -61,28 +71,49 @@ class WatchlistService {
 
     async getCategories() {
         try {
-            const response = await csrfClient.fetchWithCSRF('/api/watchlist/categories', {
-                method: 'GET'
-            });
-            const responseData = await this._handleApiResponse(response);
-
-            // 確保返回的是數組
-            if (Array.isArray(responseData)) {
-                return responseData;
-            } else if (responseData && Array.isArray(responseData.categories)) {
-                return responseData.categories;
+            if (this._categoriesCache && this._categoriesCache.expiresAt > Date.now()) {
+                return this._categoriesCache.data;
             }
 
-            console.warn('Unexpected categories response format:', responseData);
-            return [];
+            if (this._categoriesRequest) {
+                return this._categoriesRequest;
+            }
+
+            this._categoriesRequest = (async () => {
+                const response = await csrfClient.fetchWithCSRF('/api/watchlist/categories', {
+                    method: 'GET'
+                });
+                const responseData = await this._handleApiResponse(response);
+
+                let categories = [];
+                if (Array.isArray(responseData)) {
+                    categories = responseData;
+                } else if (responseData && Array.isArray(responseData.categories)) {
+                    categories = responseData.categories;
+                } else {
+                    console.warn('Unexpected categories response format:', responseData);
+                }
+
+                this._categoriesCache = {
+                    data: categories,
+                    expiresAt: Date.now() + this._categoriesCacheTtlMs
+                };
+
+                return categories;
+            })();
+
+            return await this._categoriesRequest;
         } catch (error) {
             this._handleApiError(error, 'getCategories');
+        } finally {
+            this._categoriesRequest = null;
         }
     }
 
     async createCategory(name) {
         try {
             const response = await csrfClient.post('/api/watchlist/categories', { name });
+            this._invalidateCategoriesCache();
             return await this._handleApiResponse(response);
         } catch (error) {
             this._handleApiError(error, 'createCategory');
@@ -93,6 +124,7 @@ class WatchlistService {
         try {
             const stockSymbol = typeof stock === 'string' ? stock : stock.symbol;
             const response = await csrfClient.post(`/api/watchlist/categories/${categoryId}/stocks`, { stockSymbol });
+            this._invalidateCategoriesCache();
             return await this._handleApiResponse(response);
         } catch (error) {
             this._handleApiError(error, 'addStock');
@@ -102,6 +134,7 @@ class WatchlistService {
     async removeStock(categoryId, itemId) {
         try {
             const response = await csrfClient.delete(`/api/watchlist/categories/${categoryId}/stocks/${itemId}`);
+            this._invalidateCategoriesCache();
             return await this._handleApiResponse(response);
         } catch (error) {
             this._handleApiError(error, 'removeStock');
@@ -135,6 +168,7 @@ class WatchlistService {
     async deleteCategory(categoryId) {
         try {
             const response = await csrfClient.delete(`/api/watchlist/categories/${categoryId}`);
+            this._invalidateCategoriesCache();
             return await this._handleApiResponse(response);
         } catch (error) {
             this._handleApiError(error, 'deleteCategory');
@@ -144,9 +178,42 @@ class WatchlistService {
     async updateCategory(categoryId, name) {
         try {
             const response = await csrfClient.put(`/api/watchlist/categories/${categoryId}`, { name });
+            this._invalidateCategoriesCache();
             return await this._handleApiResponse(response);
         } catch (error) {
             this._handleApiError(error, 'updateCategory');
+        }
+    }
+
+    /**
+     * 重新排序分類
+     * @param {Array<{id: string, sortOrder: number}>} orders - 排序資料陣列
+     */
+    async reorderCategories(orders) {
+        try {
+            const response = await csrfClient.put('/api/watchlist/categories/reorder', { orders });
+            this._invalidateCategoriesCache();
+            return await this._handleApiResponse(response);
+        } catch (error) {
+            this._handleApiError(error, 'reorderCategories');
+        }
+    }
+
+    /**
+     * 重新排序分類內的股票
+     * @param {string} categoryId - 分類 ID
+     * @param {Array<{id: string, sortOrder: number}>} orders - 排序資料陣列
+     */
+    async reorderStocks(categoryId, orders) {
+        try {
+            const response = await csrfClient.put(
+                `/api/watchlist/categories/${categoryId}/stocks/reorder`,
+                { orders }
+            );
+            this._invalidateCategoriesCache();
+            return await this._handleApiResponse(response);
+        } catch (error) {
+            this._handleApiError(error, 'reorderStocks');
         }
     }
 }

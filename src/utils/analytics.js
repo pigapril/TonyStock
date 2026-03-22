@@ -25,7 +25,7 @@ export const Analytics = {
         back_test_date: data.backTestDate
       });
     },
-    
+
     chartSwitch: (chartType) => {
       pushToDataLayer('chart_switch', {
         chart_type: chartType
@@ -48,7 +48,7 @@ export const Analytics = {
         } : undefined
       });
     },
-    
+
     logout: (data) => {
       pushToDataLayer('auth_logout', {
         status: data.status,
@@ -56,7 +56,7 @@ export const Analytics = {
         identity_service_revoked: data.identityServiceRevoked
       });
     },
-    
+
     statusCheck: (data) => {
       pushToDataLayer('auth_status_check', {
         status: data.status,
@@ -78,7 +78,7 @@ export const Analytics = {
           error: data.error
         });
       },
-      
+
       buttonRender: (data) => {
         pushToDataLayer('auth_identity_service_button_render', {
           status: data.status,
@@ -170,7 +170,7 @@ export const Analytics = {
         from_indicator: data.fromIndicator
       });
     },
-    
+
     // 切換時間範圍
     changeTimeRange: (data) => {
       pushToDataLayer('sentiment_timerange_change', {
@@ -237,6 +237,16 @@ export const Analytics = {
         current_count: currentCount,
         max_limit: maxLimit
       });
+    },
+
+    reorderStocks: ({ categoryId }) => {
+      pushToDataLayer('watchlist_reorder_stocks', {
+        category_id: categoryId
+      });
+    },
+
+    reorderCategories: () => {
+      pushToDataLayer('watchlist_reorder_categories', {});
     }
   }
 };

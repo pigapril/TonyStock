@@ -18,15 +18,15 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
         try {
             const result = await watchlistService.addStock(categoryId, stock);
             const stockSymbol = typeof stock === 'string' ? stock : stock.symbol;
-            
+
             showToast(t('watchlist.stock.addSuccess', { symbol: stockSymbol }), 'success');
             Analytics.watchlist.addStock({ categoryId, stockSymbol });
-            
+
             if (onSuccess) {
                 onSuccess();
             }
             return true;
-            
+
         } catch (error) {
             console.error('Add stock error:', error);
 
@@ -50,7 +50,7 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
                     maxLimit: error.response?.data?.data?.maxLimit
                 });
             }
-            
+
             return false;
         } finally {
             setLoading(false);
@@ -61,7 +61,7 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
         setLoading(true);
         try {
             await watchlistService.removeStock(categoryId, itemId);
-            
+
             Analytics.watchlist.removeStock({
                 categoryId,
                 stockId: itemId
@@ -85,10 +85,45 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
         }
     }, [watchlistService, showToast, onSuccess, t]);
 
+    /**
+     * 重新排序分類內的股票
+     * @param {string} categoryId - 分類 ID
+     * @param {Array<{id: string, sortOrder: number}>} orders - 排序資料
+     */
+    const handleReorderStocks = useCallback(async (categoryId, orders) => {
+        try {
+            await watchlistService.reorderStocks(categoryId, orders);
+
+            Analytics.watchlist.reorderStocks({
+                categoryId,
+                count: orders.length,
+                component: 'WatchlistContainer'
+            });
+
+            // 成功後重新載入分類以確保排序正確
+            if (onSuccess) {
+                onSuccess();
+            }
+        } catch (error) {
+            console.error('Reorder stocks failed:', error);
+            const errorData = handleApiError(error, showToast, t);
+            Analytics.error({
+                component: 'useStocks',
+                action: 'reorder_stocks',
+                error: errorData
+            });
+            // 失敗時重新載入以回滾
+            if (onSuccess) {
+                onSuccess();
+            }
+        }
+    }, [watchlistService, showToast, onSuccess, t]);
+
     return {
         loading,
         error,
         handleAddStock,
-        handleRemoveStock
+        handleRemoveStock,
+        handleReorderStocks
     };
 }; 

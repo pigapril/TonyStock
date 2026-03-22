@@ -1,189 +1,143 @@
-/**
- * PaymentFlow 組件測試
- */
-
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import PaymentFlow from '../PaymentFlow';
-import * as paymentService from '../../../services/paymentService';
+import paymentService from '../../../services/paymentService';
 import i18n from '../../../i18n';
 
-// Mock services
-jest.mock('../../../services/paymentService');
-jest.mock('../../../utils/logger');
+const mockNavigate = jest.fn();
+let mockSearchParams = new URLSearchParams();
 
-const mockPaymentService = paymentService as jest.Mocked<typeof paymentService>;
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+  useParams: () => ({ lang: 'zh-TW' }),
+  useSearchParams: () => [mockSearchParams]
+}));
 
-// Test wrapper component
-const TestWrapper = ({ children }) => (
-  <BrowserRouter>
+jest.mock('../../../services/paymentService', () => ({
+  __esModule: true,
+  default: {
+    createOrder: jest.fn(),
+    submitPaymentForm: jest.fn(),
+    getPlanPricingFromAPI: jest.fn(),
+    getPlanPricing: jest.fn()
+  }
+}));
+
+jest.mock('../../../utils/logger', () => ({
+  systemLogger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn()
+  }
+}));
+
+jest.mock('../../Redemption/RedemptionCodeInput', () => ({
+  RedemptionCodeInput: () => <div data-testid="redemption-code-input" />
+}));
+
+const mockPaymentService = paymentService;
+
+const pricing = {
+  pro: {
+    monthly: {
+      price: 299,
+      currency: 'TWD',
+      period: '月'
+    },
+    yearly: {
+      price: 2990,
+      currency: 'TWD',
+      period: '年',
+      discount: '省 598'
+    }
+  }
+};
+
+const renderPaymentFlow = async (props = {}, search = '') => {
+  mockSearchParams = new URLSearchParams(search);
+
+  render(
     <I18nextProvider i18n={i18n}>
-      {children}
+      <PaymentFlow {...props} />
     </I18nextProvider>
-  </BrowserRouter>
-);
+  );
+
+  await screen.findByRole('button', { name: '確認方案' });
+};
 
 describe('PaymentFlow', () => {
-  const defaultProps = {
-    planType: 'pro',
-    billingPeriod: 'monthly',
-    onSuccess: jest.fn(),
-    onError: jest.fn(),
-    onCancel: jest.fn(),
-  };
+  beforeAll(async () => {
+    await i18n.changeLanguage('zh-TW');
+  });
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockSearchParams = new URLSearchParams();
+    mockPaymentService.getPlanPricingFromAPI.mockResolvedValue(pricing);
+    mockPaymentService.getPlanPricing.mockReturnValue(pricing);
   });
 
-  it('renders payment flow correctly', () => {
-    render(
-      <TestWrapper>
-        <PaymentFlow {...defaultProps} />
-      </TestWrapper>
-    );
-
-    expect(screen.getByText(/付款方式/)).toBeInTheDocument();
-    expect(screen.getByText(/信用卡/)).toBeInTheDocument();
-    expect(screen.getByText(/ATM 轉帳/)).toBeInTheDocument();
-  });
-
-  it('shows loading state when creating order', async () => {
-    mockPaymentService.createOrder.mockImplementation(() => 
-      new Promise(resolve => setTimeout(resolve, 1000))
-    );
-
-    render(
-      <TestWrapper>
-        <PaymentFlow {...defaultProps} />
-      </TestWrapper>
-    );
-
-    const creditCardButton = screen.getByText(/信用卡/);
-    fireEvent.click(creditCardButton);
-
-    const proceedButton = screen.getByText(/確認付款/);
-    fireEvent.click(proceedButton);
-
-    expect(screen.getByText(/處理中/)).toBeInTheDocument();
-  });
-
-  it('handles payment method selection', () => {
-    render(
-      <TestWrapper>
-        <PaymentFlow {...defaultProps} />
-      </TestWrapper>
-    );
-
-    const atmButton = screen.getByText(/ATM 轉帳/);
-    fireEvent.click(atmButton);
-
-    expect(atmButton).toHaveClass('selected');
-  });
-
-  it('calls onCancel when cancel button is clicked', () => {
-    render(
-      <TestWrapper>
-        <PaymentFlow {...defaultProps} />
-      </TestWrapper>
-    );
-
-    const cancelButton = screen.getByText(/取消/);
-    fireEvent.click(cancelButton);
-
-    expect(defaultProps.onCancel).toHaveBeenCalled();
-  });
-
-  it('handles order creation success', async () => {
-    const mockOrder = {
-      id: 'order-123',
+  it('creates an order from the curated checkout flow and submits the payment form', async () => {
+    const orderData = {
+      orderId: 'order-123',
+      merchantTradeNo: 'TN123456789',
+      amount: 299,
       paymentUrl: 'https://payment.ecpay.com.tw/test',
-      merchantTradeNo: 'TN123456789'
+      formData: {
+        MerchantTradeNo: 'TN123456789'
+      }
     };
 
-    mockPaymentService.createOrder.mockResolvedValue(mockOrder);
+    mockPaymentService.createOrder.mockResolvedValue(orderData);
 
-    render(
-      <TestWrapper>
-        <PaymentFlow {...defaultProps} />
-      </TestWrapper>
-    );
+    await renderPaymentFlow();
 
-    const creditCardButton = screen.getByText(/信用卡/);
-    fireEvent.click(creditCardButton);
+    fireEvent.click(screen.getByRole('button', { name: '確認方案' }));
+    expect(screen.getByLabelText('信用卡定期定額')).toBeChecked();
 
-    const proceedButton = screen.getByText(/確認付款/);
-    fireEvent.click(proceedButton);
+    fireEvent.click(screen.getByRole('button', { name: '下一步' }));
+
+    const createOrderButton = screen.getByRole('button', { name: '創建訂單' });
+    expect(createOrderButton).toBeDisabled();
+
+    fireEvent.click(screen.getByRole('checkbox'));
+    expect(createOrderButton).not.toBeDisabled();
+
+    fireEvent.click(createOrderButton);
 
     await waitFor(() => {
       expect(mockPaymentService.createOrder).toHaveBeenCalledWith({
         planType: 'pro',
         billingPeriod: 'monthly',
-        paymentMethod: 'credit_card'
+        paymentMethod: 'Credit',
+        redemptionCode: undefined,
+        originalAmount: 299,
+        finalAmount: 299
       });
     });
+
+    fireEvent.click(await screen.findByRole('button', { name: '前往付款' }));
+
+    expect(mockPaymentService.submitPaymentForm).toHaveBeenCalledWith(orderData);
   });
 
-  it('handles order creation error', async () => {
-    const mockError = new Error('Payment failed');
-    mockPaymentService.createOrder.mockRejectedValue(mockError);
+  it('surfaces create-order failures without breaking the checkout state machine', async () => {
+    const onError = jest.fn();
+    const requestError = new Error('network down');
 
-    render(
-      <TestWrapper>
-        <PaymentFlow {...defaultProps} />
-      </TestWrapper>
-    );
+    mockPaymentService.createOrder.mockRejectedValue(requestError);
 
-    const creditCardButton = screen.getByText(/信用卡/);
-    fireEvent.click(creditCardButton);
+    await renderPaymentFlow({ onError });
 
-    const proceedButton = screen.getByText(/確認付款/);
-    fireEvent.click(proceedButton);
+    fireEvent.click(screen.getByRole('button', { name: '確認方案' }));
+    fireEvent.click(screen.getByRole('button', { name: '下一步' }));
+    fireEvent.click(screen.getByRole('checkbox'));
+    fireEvent.click(screen.getByRole('button', { name: '創建訂單' }));
 
-    await waitFor(() => {
-      expect(defaultProps.onError).toHaveBeenCalledWith(mockError);
-    });
-  });
-
-  it('validates required fields before submission', () => {
-    render(
-      <TestWrapper>
-        <PaymentFlow {...defaultProps} />
-      </TestWrapper>
-    );
-
-    const proceedButton = screen.getByText(/確認付款/);
-    fireEvent.click(proceedButton);
-
-    expect(screen.getByText(/請選擇付款方式/)).toBeInTheDocument();
-  });
-
-  it('shows terms and conditions checkbox', () => {
-    render(
-      <TestWrapper>
-        <PaymentFlow {...defaultProps} />
-      </TestWrapper>
-    );
-
-    expect(screen.getByText(/我同意服務條款/)).toBeInTheDocument();
-    expect(screen.getByRole('checkbox')).toBeInTheDocument();
-  });
-
-  it('requires terms acceptance before payment', () => {
-    render(
-      <TestWrapper>
-        <PaymentFlow {...defaultProps} />
-      </TestWrapper>
-    );
-
-    const creditCardButton = screen.getByText(/信用卡/);
-    fireEvent.click(creditCardButton);
-
-    const proceedButton = screen.getByText(/確認付款/);
-    fireEvent.click(proceedButton);
-
-    expect(screen.getByText(/請同意服務條款/)).toBeInTheDocument();
+    expect(await screen.findByText('創建訂單時發生錯誤，請稍後再試')).toBeInTheDocument();
+    expect(onError).toHaveBeenCalledWith(requestError);
   });
 });

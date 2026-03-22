@@ -68,12 +68,6 @@ export const SubscriptionProvider = ({ children }) => {
     setPromotionalBenefits(planData.activePromotions || null);
     setPromotionExpiresAt(planData.promotionalExpirationDate || null);
 
-    console.log('🎁 Updated redemption state:', {
-      hasActivePromotions: hasPromo,
-      isPromotionalSubscription: planData.redemptionSource === 'redemption',
-      promotionCount: planData.activePromotions?.length || 0,
-      expiresAt: planData.promotionalExpirationDate
-    });
   }, []);
 
   // Refresh usage statistics
@@ -140,9 +134,7 @@ export const SubscriptionProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      console.log('🔄 Calling subscriptionService.getUserPlan()...');
       const plan = await subscriptionService.getUserPlan();
-      console.log('📊 Received plan from service:', plan);
       
       // If no active subscription found, create a default plan based on user's stored plan
       if (!plan && user?.plan) {
@@ -172,11 +164,6 @@ export const SubscriptionProvider = ({ children }) => {
         };
         
         // Debug log to check the plan data
-        console.log('📊 Mapped plan data:', mappedPlan);
-        console.log('📊 cancelAtPeriodEnd:', mappedPlan.cancelAtPeriodEnd);
-        console.log('📊 status:', mappedPlan.status);
-        console.log('📊 endDate:', mappedPlan.endDate);
-        
         setUserPlan(mappedPlan);
       } else {
         setUserPlan(null);
@@ -218,18 +205,13 @@ export const SubscriptionProvider = ({ children }) => {
       const historyResult = await subscriptionService.getSubscriptionHistory();
       
       // 檢查結果並提取實際的訂閱數據
-      console.log('📊 Subscription history result:', historyResult);
-      
       // API 服務直接返回數組，不是 {success, data} 結構
       if (Array.isArray(historyResult) && historyResult.length > 0) {
         setSubscriptionHistory(historyResult);
-        console.log('📊 Setting subscription history:', historyResult);
       } else if (historyResult && historyResult.success && historyResult.data) {
         // 兼容其他可能的結構
         setSubscriptionHistory(historyResult.data);
-        console.log('📊 Setting subscription history (from data):', historyResult.data);
       } else {
-        console.warn('📊 No subscription data or failed:', historyResult);
         setSubscriptionHistory([]);
       }
 
@@ -373,6 +355,10 @@ export const SubscriptionProvider = ({ children }) => {
       setUsageStats(null);
       setSubscriptionHistory(null);
       setError(null);
+      setHasActivePromotions(false);
+      setPromotionalBenefits(null);
+      setIsPromotionalSubscription(false);
+      setPromotionExpiresAt(null);
     }
   }, [isAuthenticated, user, refreshUserPlan, refreshUsageStats, refreshSubscriptionHistory]);
 

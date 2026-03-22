@@ -62,7 +62,7 @@ export const PlanComparison = ({ plans }) => {
         </p>
       </div>
 
-      <div className="plan-comparison__table">
+      <div className="plan-comparison__table ui-surface-card">
         <div className="plan-comparison__table-header">
           <div className="plan-comparison__feature-header">
             {t('subscription.comparison.features')}

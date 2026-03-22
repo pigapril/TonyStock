@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../Auth/useAuth';
 import { useSubscription } from '../SubscriptionContext';
 import { PlanInfo } from './components/PlanInfo';
+import { Button } from '../../Common/Button/Button';
 // import { UsageStats } from './components/UsageStats'; // Hidden per user request
 import PaymentHistory from '../../Payment/PaymentHistory';
 import { Analytics } from '../../../utils/analytics';
@@ -63,7 +64,7 @@ export const UserAccountPage = () => {
     return (
       <div className="user-account-page">
         <div className="user-account-container">
-          <div className="user-account-error">
+          <div className="user-account-error ui-surface-card">
             <h2>{t('userProfile.loginRequired')}</h2>
             <p>{t('userProfile.loginRequiredMessage')}</p>
           </div>
@@ -76,7 +77,7 @@ export const UserAccountPage = () => {
     <div className="user-account-page">
       <div className="user-account-container">
         {/* Header Section */}
-        <header className="user-account-header">
+        <header className="user-account-header ui-surface-card">
           <div className="user-account-header__content">
             <div className="user-account-header__avatar">
               {!avatarError && user.avatarUrl ? (
@@ -101,23 +102,23 @@ export const UserAccountPage = () => {
               </div>
             </div>
             <div className="user-account-header__actions">
-              <button className="logout-button" onClick={handleLogout}>
+              <Button className="logout-button" variant="outline" size="small" onClick={handleLogout}>
                 {t('subscription.userAccount.logout')}
-              </button>
+              </Button>
             </div>
           </div>
         </header>
 
         {/* Error State */}
         {error && (
-          <div className="user-account-error">
+          <div className="user-account-error ui-surface-card">
             <p>{error}</p>
           </div>
         )}
 
         {/* Loading State */}
         {loading && (
-          <div className="user-account-loading">
+          <div className="user-account-loading ui-surface-card">
             <div className="user-account-loading__spinner" />
             <p>{t('common.loading')}</p>
           </div>
@@ -126,7 +127,7 @@ export const UserAccountPage = () => {
         {/* Main Content */}
         <div className="user-account-content">
           {/* Current Plan Section */}
-          <section className="user-account-section">
+          <section className="user-account-section ui-surface-card">
             <h2 className="user-account-section__title">
               {t('subscription.userAccount.currentPlan')}
             </h2>
@@ -144,7 +145,7 @@ export const UserAccountPage = () => {
           */}
 
           {/* Payment History Section */}
-          <section className="user-account-section user-account-section--payment-history">
+          <section className="user-account-section user-account-section--payment-history ui-surface-card">
             <PaymentHistory userId={user?.id} />
           </section>
         </div>

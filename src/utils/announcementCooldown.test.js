@@ -1,79 +1,98 @@
-/**
- * 公告冷卻期管理器測試
- * 用於驗證中文字符編碼和基本功能
- */
-
 import announcementCooldownManager from './announcementCooldown';
 
-// 測試用的公告配置
-const testConfigs = [
-  {
-    message: "系統維護通知：今晚23:00-01:00進行維護",
+describe('announcementCooldownManager', () => {
+  const baseConfig = {
     enabled: true,
-    lastUpdated: "2024-01-15T10:00:00Z"
-  },
-  {
-    message: "🎉 新功能上線！歡迎體驗我們的市場情緒分析功能",
-    enabled: true,
-    lastUpdated: "2024-01-15T11:00:00Z"
-  },
-  {
-    message: "Hello World! This is an English announcement.",
-    enabled: true,
-    lastUpdated: "2024-01-15T12:00:00Z"
-  }
-];
+    message: '系統維護通知',
+    lastUpdated: '2026-03-21T10:00:00.000Z'
+  };
 
-// 測試函數
-function testAnnouncementCooldown() {
-  console.log('🧪 開始測試公告冷卻期管理器...');
-  
-  // 清除所有記錄
-  announcementCooldownManager.clearAllAnnouncementData();
-  
-  testConfigs.forEach((config, index) => {
-    console.log(`\n📝 測試公告 ${index + 1}: "${config.message.substring(0, 30)}..."`);
-    
-    try {
-      // 測試 ID 生成
-      const id = announcementCooldownManager.generateAnnouncementId(config);
-      console.log(`✅ ID 生成成功: ${id}`);
-      
-      // 測試首次顯示
-      const shouldShow1 = announcementCooldownManager.shouldShowAnnouncement(config);
-      console.log(`✅ 首次顯示檢查: ${shouldShow1 ? '應該顯示' : '不應該顯示'}`);
-      
-      // 測試關閉記錄
-      announcementCooldownManager.dismissAnnouncement(config);
-      console.log(`✅ 關閉記錄成功`);
-      
-      // 測試冷卻期檢查
-      const shouldShow2 = announcementCooldownManager.shouldShowAnnouncement(config);
-      console.log(`✅ 冷卻期檢查: ${shouldShow2 ? '應該顯示' : '不應該顯示'}`);
-      
-      // 測試統計資訊
-      const stats = announcementCooldownManager.getAnnouncementStats(config);
-      console.log(`✅ 統計資訊:`, {
-        dismissCount: stats.dismissCount,
-        isInCooldown: stats.isInCooldown,
-        nextShowTime: stats.nextShowTime ? new Date(stats.nextShowTime).toLocaleString() : null
-      });
-      
-    } catch (error) {
-      console.error(`❌ 測試失敗:`, error);
-    }
+  beforeEach(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2026-03-21T12:00:00.000Z'));
+    localStorage.clear();
   });
-  
-  console.log('\n🎯 測試完成！');
-  
-  // 顯示冷卻期設定
-  console.log('\n⏰ 冷卻期設定:', announcementCooldownManager.getCooldownPeriods());
-}
 
-// 如果在瀏覽器環境中，將測試函數掛載到 window 對象
-if (typeof window !== 'undefined') {
-  window.testAnnouncementCooldown = testAnnouncementCooldown;
-  console.log('💡 在瀏覽器控制台中執行 testAnnouncementCooldown() 來測試功能');
-}
+  afterEach(() => {
+    jest.useRealTimers();
+    localStorage.clear();
+  });
 
-export { testAnnouncementCooldown };
+  it('uses progressive cooldown windows for repeated dismissals', () => {
+    expect(announcementCooldownManager.shouldShowAnnouncement(baseConfig)).toBe(true);
+
+    announcementCooldownManager.dismissAnnouncement(baseConfig);
+    let stats = announcementCooldownManager.getAnnouncementStats(baseConfig);
+    expect(stats.dismissCount).toBe(1);
+    expect(stats.isInCooldown).toBe(true);
+
+    jest.advanceTimersByTime((6 * 60 * 60 * 1000) + 1);
+    expect(announcementCooldownManager.shouldShowAnnouncement(baseConfig)).toBe(true);
+
+    announcementCooldownManager.dismissAnnouncement(baseConfig);
+    stats = announcementCooldownManager.getAnnouncementStats(baseConfig);
+    expect(stats.dismissCount).toBe(2);
+
+    jest.advanceTimersByTime((24 * 60 * 60 * 1000) - 1);
+    expect(announcementCooldownManager.shouldShowAnnouncement(baseConfig)).toBe(false);
+    jest.advanceTimersByTime(1);
+    expect(announcementCooldownManager.shouldShowAnnouncement(baseConfig)).toBe(true);
+  });
+
+  it('treats an updated announcement version as a fresh item', () => {
+    announcementCooldownManager.dismissAnnouncement(baseConfig);
+    expect(announcementCooldownManager.shouldShowAnnouncement(baseConfig)).toBe(false);
+
+    const updatedConfig = {
+      ...baseConfig,
+      lastUpdated: '2026-03-22T08:00:00.000Z'
+    };
+
+    expect(announcementCooldownManager.shouldShowAnnouncement(updatedConfig)).toBe(true);
+    expect(announcementCooldownManager.getAnnouncementStats(updatedConfig)).toEqual({
+      dismissCount: 0,
+      lastDismissed: null,
+      nextShowTime: null,
+      isInCooldown: false
+    });
+  });
+
+  it('fails closed when localStorage read or write throws', () => {
+    const getItemSpy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+      throw new Error('storage unavailable');
+    });
+    const setItemSpy = jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('storage unavailable');
+    });
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    expect(announcementCooldownManager.shouldShowAnnouncement(baseConfig)).toBe(true);
+    expect(() => announcementCooldownManager.dismissAnnouncement(baseConfig)).not.toThrow();
+    expect(consoleErrorSpy).toHaveBeenCalled();
+
+    getItemSpy.mockRestore();
+    setItemSpy.mockRestore();
+    consoleErrorSpy.mockRestore();
+  });
+
+  it('cleans up expired announcement entries older than thirty days', () => {
+    const staleConfig = {
+      ...baseConfig,
+      message: '舊公告'
+    };
+
+    announcementCooldownManager.dismissAnnouncement(baseConfig);
+    announcementCooldownManager.dismissAnnouncement(staleConfig);
+
+    const staleStats = announcementCooldownManager.getAnnouncementStats(staleConfig);
+    const storedData = JSON.parse(localStorage.getItem('tony_stock_announcement_cooldown'));
+    storedData[staleStats.announcementId].lastDismissed = '2026-01-01T00:00:00.000Z';
+    localStorage.setItem('tony_stock_announcement_cooldown', JSON.stringify(storedData));
+
+    announcementCooldownManager.cleanupExpiredData();
+
+    const cleanedData = JSON.parse(localStorage.getItem('tony_stock_announcement_cooldown'));
+    expect(cleanedData[staleStats.announcementId]).toBeUndefined();
+    expect(Object.keys(cleanedData)).toHaveLength(1);
+  });
+});

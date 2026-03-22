@@ -148,6 +148,11 @@
     margin: 0px 0 0;
     height: 100%;
     position: relative;
+    transition: opacity 0.3s ease;
+}
+
+.google-button-container--hidden {
+    display: none !important;
 }
 
 /* 從 AuthDialog.css 合併過來的樣式 */

@@ -4,6 +4,7 @@ import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import './AdBanner.css';
 import { useMediaQuery } from 'react-responsive';
 import { useSubscription } from '../../Subscription/SubscriptionContext';
+import { getAdElement, initializeAdSlot, isAdInitialized } from '../../../utils/adsense';
 
 export const AdBanner = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -14,7 +15,7 @@ export const AdBanner = () => {
   const bannerRef = useRef(null);
   const adContainerRef = useRef(null);
   const isInitialized = useRef(false);
-  const { userPlan } = useSubscription();
+  const { userPlan, loading } = useSubscription();
 
   // 檢查是否為 Pro 用戶
   const isProUser = userPlan?.type === 'pro' || userPlan?.type === 'premium';
@@ -24,13 +25,14 @@ export const AdBanner = () => {
   // AdSense 初始化邏輯
   useEffect(() => {
     // 如果是 Pro 用戶，不執行廣告相關邏輯
-    if (isProUser || isCollapsed || !adContainerRef.current) {
+    if (loading || isProUser || isCollapsed || !adContainerRef.current) {
       return;
     }
 
+    const adElement = getAdElement(adContainerRef.current);
+
     // 檢查是否已經初始化過
-    const existingAd = adContainerRef.current.querySelector('.adsbygoogle');
-    if (existingAd && existingAd.getAttribute('data-adsbygoogle-status')) {
+    if (isAdInitialized(adElement)) {
       console.log('AdBanner: Ad already initialized, skipping');
       return;
     }
@@ -45,8 +47,7 @@ export const AdBanner = () => {
     const timer = setTimeout(() => {
       try {
         console.log(`AdBanner: Initializing ad for key: ${adKey}`);
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        isInitialized.current = true;
+        isInitialized.current = initializeAdSlot(adElement);
       } catch (error) {
         console.error("AdSense initialization error:", error);
         // 重置初始化狀態，允許重試
@@ -57,7 +58,7 @@ export const AdBanner = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [adKey, isProUser, isCollapsed]);
+  }, [adKey, isProUser, isCollapsed, loading]);
 
   // 組件卸載或路由變化時重置初始化狀態
   useEffect(() => {
@@ -76,7 +77,7 @@ export const AdBanner = () => {
   }, []);
 
   // 如果是 Pro 用戶，不顯示廣告
-  if (isProUser) {
+  if (loading || !userPlan || isProUser) {
     return null;
   }
 

@@ -4,6 +4,7 @@
  * 增強版：整合 AuthStateManager 和改進錯誤處理
  */
 
+import axios from 'axios';
 import csrfClient from './csrfClient';
 import { authDiagnostics } from './authDiagnostics';
 import apiClient from '../api/apiClient';
@@ -224,6 +225,11 @@ class AuthGuard {
                 return result;
 
             } catch (error) {
+                if (this._isCanceledRequest(error)) {
+                    console.info(`🛑 AuthGuard: Request ${requestId} canceled on attempt ${attempt}`);
+                    throw error;
+                }
+
                 this.errorStats.requestFailures++;
                 this.errorStats.consecutiveFailures++;
                 this.errorStats.lastFailureTime = Date.now();
@@ -275,6 +281,12 @@ class AuthGuard {
                error.status === 403 || 
                error.message?.includes('403') ||
                error.message?.includes('Forbidden');
+    }
+
+    _isCanceledRequest(error) {
+        return axios.isCancel(error)
+            || error?.code === 'ERR_CANCELED'
+            || error?.name === 'CanceledError';
     }
 
     /**

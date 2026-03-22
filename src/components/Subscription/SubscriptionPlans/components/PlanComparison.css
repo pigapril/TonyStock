@@ -28,11 +28,7 @@
 }
 
 .plan-comparison__table {
-  background: var(--color-bg-card, #ffffff);
-  border-radius: var(--border-radius-large, 14px);
   overflow: hidden;
-  box-shadow: var(--shadow-s, 0 2px 6px rgba(0,0,0,0.05));
-  border: 1px solid var(--color-border-soft, #e5e5e5);
 }
 
 .plan-comparison__table-header {

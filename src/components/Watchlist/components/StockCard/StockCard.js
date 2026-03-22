@@ -71,69 +71,58 @@ export const StockCard = memo(function StockCard({
     };
 
     return (
-        <>
-            {isFirstInCategory && !isMobile() && (
-                <div className="stock-card-header-row">
-                    <span className="stock-header-title">{t('watchlist.stockCard.header.symbol')}</span>
-                    <span className="current-price-title">{t('watchlist.stockCard.header.price')}</span>
-                    <span className="stock-analysis-title">{t('watchlist.stockCard.header.analysis')}</span>
-                    <span className="stock-sentiment-title">{t('watchlist.stockCard.header.sentiment')}</span>
-                    <span className="stock-news-title">{t('watchlist.stockCard.header.news')}</span>
-                </div>
-            )}
-            <div className="stock-item" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
-                <div className="stock-header-section">
-                    <StockHeader stock={stock} />
-                </div>
-                <div className="current-price-section">
-                    <span className="current-price">
-                        ${formatPrice(stock.price)}
-                    </span>
-                </div>
-                {isMobile() ? ( // Conditionally render for mobile
-                    <div className="stock-analysis-container-mobile">
-                        <div className="stock-analysis-section">
-                            <StockAnalysis
-                                price={stock.price}
-                                analysis={stock.analysis}
-                            />
-                        </div>
-                        <div className="stock-analysis-result-section">
-                            <StockAnalysisResult
-                                price={stock.price}
-                                analysis={stock.analysis}
-                            />
-                        </div>
-                    </div>
-                ) : ( // Render for larger screens (desktop) - original structure
-                    <>
-                        <div className="stock-analysis-section">
-                            <StockAnalysis
-                                price={stock.price}
-                                analysis={stock.analysis}
-                            />
-                        </div>
-                        <div className="stock-analysis-result-section">
-                            <StockAnalysisResult
-                                price={stock.price}
-                                analysis={stock.analysis}
-                            />
-                        </div>
-                    </>
-                )}
-                <div className="stock-news-section">
-                    <StockNews
-                        news={stock.news}
-                        onNewsClick={onNewsClick}
-                    />
-                </div>
-                <div className="remove-button-section">
-                    <RemoveButton
-                        symbol={stock.symbol}
-                        onRemove={() => onRemove(stock.id)}
-                    />
-                </div>
+        <div className="stock-item" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
+            <div className="stock-header-section">
+                <StockHeader stock={stock} />
             </div>
-        </>
+            <div className="current-price-section">
+                <span className="current-price">
+                    ${formatPrice(stock.price)}
+                </span>
+            </div>
+            {isMobile() ? ( // Conditionally render for mobile
+                <div className="stock-analysis-container-mobile">
+                    <div className="stock-analysis-section">
+                        <StockAnalysis
+                            price={stock.price}
+                            analysis={stock.analysis}
+                        />
+                    </div>
+                    <div className="stock-analysis-result-section">
+                        <StockAnalysisResult
+                            price={stock.price}
+                            analysis={stock.analysis}
+                        />
+                    </div>
+                </div>
+            ) : ( // Render for larger screens (desktop) - original structure
+                <>
+                    <div className="stock-analysis-section">
+                        <StockAnalysis
+                            price={stock.price}
+                            analysis={stock.analysis}
+                        />
+                    </div>
+                    <div className="stock-analysis-result-section">
+                        <StockAnalysisResult
+                            price={stock.price}
+                            analysis={stock.analysis}
+                        />
+                    </div>
+                </>
+            )}
+            <div className="stock-news-section">
+                <StockNews
+                    news={stock.news}
+                    onNewsClick={onNewsClick}
+                />
+            </div>
+            <div className="remove-button-section">
+                <RemoveButton
+                    symbol={stock.symbol}
+                    onRemove={() => onRemove(stock.id)}
+                />
+            </div>
+        </div>
     );
 });

@@ -332,6 +332,17 @@
   color: var(--color-text-tertiary, #999);
 }
 
+.free-stock-loading-category-skeleton {
+  width: 36%;
+}
+
+.free-stock-loading-badge-skeleton {
+  width: 46px;
+  height: 18px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
 /* 深色模式支援 - 狀態訊息 */
 @media (prefers-color-scheme: dark) {
 
@@ -342,5 +353,11 @@
 
   .error-message {
     color: #ff6b6b;
+  }
+}
+
+@media (max-width: 768px) {
+  .free-stock-loading-badge-skeleton {
+    width: 40px;
   }
 }

@@ -96,18 +96,17 @@ export function AuthDialog() {
             titleClassName="auth-dialog-title"
         >
             <div className="auth-dialog-content">
-                {loading ? (
+                {loading && (
                     <div className="signin-dialog__loading">
                         <div className="signin-dialog__loading__spinner"></div>
                         <span>{t('signInButton.loading')}</span>
                     </div>
-                ) : (
-                    <div 
-                        ref={buttonRef} 
-                        className="google-button-container" 
-                    />
                 )}
-                
+                <div
+                    ref={buttonRef}
+                    className={`google-button-container ${loading ? 'google-button-container--hidden' : ''}`}
+                />
+
                 {dialog.props?.customDescription || defaultDescription}
             </div>
         </Dialog>

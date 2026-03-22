@@ -470,37 +470,275 @@
     "noResults": "找不到符合的股票"
   },
   "home": {
-    "pageTitle": "Sentiment Inside Out | 掌握投資市場情緒，克服恐懼貪婪弱點",
-    "pageDescription": "透過獨家恐懼貪婪指標、樂活五線譜等數據工具，Sentiment Inside Out 助您洞悉市場心理，避開非理性決策，做出更聰明的投資。",
-    "keywords": "市場情緒,價格趨勢分析,追蹤清單,市場情緒指標,恐懼貪婪指數,台股,投資工具",
+    "pageTitle": "SIO 恐懼貪婪指標 | 給長期投資者的市場情緒首頁",
+    "pageDescription": "Sentiment Inside Out 透過 SIO 恐懼貪婪指標、價格趨勢分析與追蹤清單，幫助長期投資者更穩定地理解市場情緒。",
+    "keywords": "恐懼貪婪指數,市場情緒,長期投資,價格趨勢分析,追蹤清單,投資人心理,投資工具",
     "jsonLd": {
-      "description": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點。提供價格趨勢分析、我的追蹤清單、市場情緒指標等工具。"
+      "name": "Sentiment Inside Out",
+      "description": "一個以長期投資者為核心的市場心理分析平台，用 SIO 恐懼貪婪指標、價格趨勢分析與追蹤清單，幫助你用數據理解市場。"
     },
     "hero": {
-      "title": "掌握市場情緒",
-      "subtitle": "用客觀數據，\n判斷股市當前情緒，\n克服恐懼和貪婪的人性弱點。"
+      "eyebrow": "Sentiment Inside Out",
+      "title": "洞悉市場｜恐懼貪婪情緒",
+      "subtitle": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點",
+      "primaryAuthenticated": "查看市場情緒",
+      "primaryGuest": "登入查看市場情緒",
+      "secondary": "試試價格趨勢分析",
+      "delayNote": "首頁快照目前延遲到 {{date}}。",
+      "frameworkNote": "整合 {{count}} 個市場訊號。",
+      "experienceNote": "目前可先從 {{count}} 檔免費標的開始。",
+      "snapshotBadge": "市場快照",
+      "loading": "首頁資料更新中...",
+      "snapshotLabel": "SIO 分數",
+      "snapshotDate": "快照截至 {{date}}",
+      "marketPreviewHeadline": {
+        "brand": "Sentiment Inside Out",
+        "index": "恐懼貪婪指標"
+      },
+      "metrics": {
+        "framework": "訊號數量",
+        "pro": "Pro 方案",
+        "delay": "資料延遲"
+      },
+      "moments": {
+        "headline": "Sentiment Inside Out (SIO) 恐懼貪婪指標",
+        "events": {
+          "chinaDevaluation": {
+            "title": "中國匯改震盪",
+            "description": "人民幣急貶引發全球市場震盪。"
+          },
+          "early2016Low": {
+            "title": "油價暴跌震盪",
+            "description": "油價暴跌與景氣疑慮拖累市場。"
+          },
+          "tradeWarSelloff": {
+            "title": "貿易戰拋售",
+            "description": "關稅升溫與緊縮壓力引發年底拋售。"
+          },
+          "prePandemicPeak": {
+            "title": "疫情前高點",
+            "description": "疫情全面擴散前，市場仍維持在偏熱區。"
+          },
+          "pandemicPanic": {
+            "title": "疫情恐慌崩跌",
+            "description": "疫情停擺衝擊快速擴散。"
+          },
+          "liquidityPeak": {
+            "title": "2021 流動性高點",
+            "description": "寬鬆流動性與成長股熱潮推升市場。"
+          },
+          "inflationShock": {
+            "title": "通膨升息衝擊",
+            "description": "高通膨與升息壓力升高時，市場重新定價風險，情緒快速降溫。"
+          },
+          "aiRally": {
+            "title": "AI Rally",
+            "description": "AI 題材帶動風險偏好回升，市場情緒重新回到偏樂觀區域。"
+          },
+          "inflationBearLow": {
+            "title": "2022 熊市低點",
+            "description": "升息、通膨與衰退擔憂持續升高。"
+          },
+          "trumpTradeWar2025": {
+            "title": "2025 川普貿易戰衝擊",
+            "description": "川普貿易戰消息再度擾動市場。"
+          }
+        }
+      },
+      "delayValue": "{{count}} 個月",
+      "scrollLabel": "捲動到 SIO 方法論區塊"
     },
-    "feature1": {
-      "title": "價格趨勢分析",
-      "text": "運用五線譜價格位階，抓出ETF或是個股的價格趨勢，提高進出場勝率",
-      "alt": "價格趨勢分析"
+    "announcement": {
+      "badge": "公告"
     },
-    "feature3": {
-      "title": "市場情緒指標",
-      "text": "解讀市場情緒，克服人性弱點，抓住市場恐懼的入場時機",
-      "alt": "市場情緒指標"
+    "positioning": {
+      "items": [
+        {
+          "title": "先把市場情緒看清楚",
+          "description": "不用在多個指標之間來回切換，先從一個更清楚的讀數理解市場現在偏恐懼還是偏貪婪。"
+        },
+        {
+          "title": "知道是什麼在推動情緒",
+          "description": "SIO 不是只看單一數字，而是同時觀察多個市場訊號，幫助你理解市場情緒為什麼會改變。"
+        },
+        {
+          "title": "把情緒判斷變成投資流程",
+          "description": "結合市場情緒、價格位階與自己的追蹤清單，讓市場波動時的決策更穩一些。"
+        }
+      ]
     },
-    "feature": {
-      "link": "免費體驗"
+    "methodology": {
+      "eyebrow": "SIO 怎麼看市場",
+      "title": "SIO 會把 8 個市場訊號整理成更清楚的一個讀數。",
+      "description": "它不是只看單一指標，而是把情緒、波動、避險需求、信用風險與部位變化一起放進來看。",
+      "frameworkEyebrow": "訊號",
+      "frameworkDescriptions": {
+        "aaiiSpread": "看散戶投資人的情緒傾向。",
+        "cboeRatio": "看市場對下跌保護的需求有多高。",
+        "marketMomentum": "看大盤趨勢是在轉強還是轉弱。",
+        "vixMA50": "看市場壓力是否正在升高。",
+        "safeHaven": "看資金是否開始往避險資產移動。",
+        "junkBond": "看市場是否還願意承擔風險。",
+        "cotIndex": "看投機部位是否開始變得擁擠。",
+        "naaimIndex": "看主動型經理人的曝險方向。"
+      },
+      "signalLabels": {
+        "aaiiSpread": {
+          "title": "散戶情緒",
+          "subtitle": "看散戶投資人偏樂觀還是偏保守。"
+        },
+        "cboeRatio": {
+          "title": "避險需求",
+          "subtitle": "看市場對下跌保護的需求有多高。"
+        },
+        "marketMomentum": {
+          "title": "大盤趨勢",
+          "subtitle": "看大盤趨勢是在轉強還是轉弱。"
+        },
+        "vixMA50": {
+          "title": "市場壓力",
+          "subtitle": "看市場壓力是否正在升高。"
+        },
+        "safeHaven": {
+          "title": "資金避險傾向",
+          "subtitle": "看資金是否開始往避險資產移動。"
+        },
+        "junkBond": {
+          "title": "風險偏好",
+          "subtitle": "看市場是否還願意承擔風險。"
+        },
+        "cotIndex": {
+          "title": "投機部位",
+          "subtitle": "看投機部位是否開始變得擁擠。"
+        },
+        "naaimIndex": {
+          "title": "經理人持倉",
+          "subtitle": "看主動型經理人的曝險方向。"
+        }
+      },
+      "historyPreview": {
+        "kicker": "歷史走勢",
+        "title": "極端恐懼=市場低點",
+        "badge": "2017-2023",
+        "description": "當市場最害怕的時候，往往也是長期投資人最該冷靜的時候。",
+        "chartLabel": "2017 到 2023 年的市場情緒歷史走勢預覽",
+        "empty": "目前暫時無法載入這段歷史走勢。"
+      },
+      "pricePreview": {
+        "title": "快速查看標的價格情緒位階",
+        "description": "由市場指數的位階判斷當前情緒接近恐懼還是貪婪",
+        "currentPrice": "最新價格",
+        "currentSentiment": "當前情緒",
+        "symbol": "標的代號",
+        "empty": "目前暫時無法載入 SPY 分析。"
+      },
+      "snapshot": {
+        "kicker": "市場快照",
+        "title": "最近一次的 SIO 讀數",
+        "badge": "延遲資料",
+        "body": "截至 {{date}}，SIO 分數為 {{score}}，當時市場情緒落在「{{sentiment}}」區域。免費版會看到延遲資料，Pro 則可以查看最新讀數。",
+        "distributionTitle": "這次讀數是怎麼形成的",
+        "distributionSummary": "{{total}} 個訊號中，{{extremeFear}} 個處於極度恐懼、{{fear}} 個恐懼、{{neutral}} 個中性、{{greed}} 個貪婪、{{extremeGreed}} 個極度貪婪。"
+      },
+      "preview": {
+        "kicker": "分數背後的訊號",
+        "title": "先看幾個 SIO 會追蹤的訊號",
+        "description": "這些例子可以幫助你理解市場情緒為什麼會改變，但真正有用的是把它們放在一起看。"
+      }
     },
-    "feature2": {
-      "title": "我的追蹤清單",
-      "text": "建立屬於你的個人清單，輕鬆查看多個標的五線譜價格位階",
-      "alt": "我的追蹤清單",
-      "link": "升級至專業版"
+    "proof": {
+      "eyebrow": "過去的恐懼低點",
+      "title": "看看 SIO 在幾次明顯恐懼時刻的表現。",
+      "description": "這些過去的低分讀數，可以幫助你理解市場情緒什麼時候已經接近極端恐懼。",
+      "scoreLabel": "SIO 分數 {{score}}",
+      "cardBody": "單一訊號通常不夠，真正有參考價值的是多個訊號同時往同一邊靠攏。",
+      "empty": "目前暫時無法取得歷史低點證據。"
     },
-    "cta": {
-      "button": "立即登入體驗完整功能"
+    "journey": {
+      "eyebrow": "怎麼開始用",
+      "title": "從市場情緒，到價格位置，再到自己的追蹤清單。",
+      "description": "先看大方向的市場情緒，再檢查一檔標的的位置，最後把你真的在意的標的留下來持續追蹤。",
+      "cards": {
+        "sentiment": {
+          "badge": "第 1 步",
+          "title": "先看整體市場",
+          "description": "先用 SIO 了解現在的市場情緒偏向恐懼、謹慎，還是樂觀。",
+          "cta": "查看市場情緒"
+        },
+        "price": {
+          "badge": "第 2 步",
+          "title": "再看價格位置",
+          "description": "用價格趨勢分析確認一檔股票或 ETF 現在大概位於什麼位置。",
+          "cta": "分析一檔標的"
+        },
+        "watchlist": {
+          "badge": "第 3 步",
+          "title": "留下你真正想追蹤的標的",
+          "description": "把你之後還想回頭看的標的整理成自己的清單，下次就能更快接續同樣的流程。",
+          "cta": "打開追蹤清單"
+        }
+      }
+    },
+    "tools": {
+      "eyebrow": "更多工具",
+      "title": "當一個分數還不夠時，可以往下看更多。",
+      "description": "把市場情緒、價格趨勢分析與追蹤清單一起用，能讓投資流程更完整。",
+      "cards": {
+        "price": {
+          "badge": "免費",
+          "title": "價格趨勢分析",
+          "description": "先看看一檔股票或 ETF 位於長期價格結構的哪個位置，再決定要不要深入研究。",
+          "cta": "分析一檔標的"
+        },
+        "watchlist": {
+          "badge": "Pro",
+          "title": "追蹤清單",
+          "description": "把自己真正關心的標的整理在一起，之後就能更快回看價格位階。",
+          "cta": "打開追蹤清單"
+        },
+        "sentiment": {
+          "badge": "市場情緒",
+          "title": "市場情緒",
+          "description": "進一步查看完整的市場情緒頁、各項訊號變化，以及每次讀數背後的歷史脈絡。",
+          "cta": "打開市場情緒頁"
+        }
+      }
+    },
+    "story": {
+      "blocks": {
+        "sentiment": {
+          "eyebrow": "恐慌時更要看",
+          "title": "在別人恐懼時展現貪婪",
+          "description": "不是要猜最低點，而是用數據提醒你：當市場情緒掉進極端恐懼，與其跟著恐慌賣出，不如開始更有紀律地評估、分批進場",
+          "cta": "看歷史恐慌低點"
+        },
+        "price": {
+          "eyebrow": "先看價格位置",
+          "title": "依據價格趨勢，分析極端情緒位階",
+          "description": "誰都無法預測漲跌，但了解當前價格背後隱含的情緒，可以提升進出場勝率",
+          "cta": "分析其他標的"
+        },
+        "watchlist": {
+          "title": "建立個人追蹤清單",
+          "description": "輕鬆查看不同標的當前的價格位階",
+          "cta": "打開追蹤清單",
+          "items": {
+            "spy": "美國大盤 ETF",
+            "qqq": "美國科技 ETF",
+            "voo": "S&P 500 ETF",
+            "aapl": "蘋果",
+            "nvda": "輝達",
+            "msft": "微軟"
+          },
+          "tags": {
+            "extremeGreed": "極度貪婪",
+            "greed": "貪婪",
+            "neutral": "中性",
+            "fear": "恐懼",
+            "extremeFear": "極度恐懼"
+          }
+        }
+      }
     }
   },
   "indicatorItem": {
@@ -570,12 +808,86 @@
     "gauge": {
       "interactiveZones": "互動情緒區域",
       "zone": "區域",
+      "explainer": {
+        "current": {
+          "title": "關於 SIO 恐懼貪婪指標",
+          "subtitle": "幫助投資者抽離主觀情緒，客觀判斷市場風險偏好。",
+          "section1": {
+            "title": "1. 整合多項指標",
+            "body": "SIO 會把散戶情緒、選擇權避險、波動率壓力、資金流向、信用利差，以及機構與主動經理人的部位放進同一個框架裡，轉成 0 到 100 的分數。你現在看到的 {{score}} 分，就是這些訊號整合後的當前情緒讀數。"
+          },
+          "section2": {
+            "title": "2. 辨識極端，而非追逐短線",
+            "body": "當分數落到極低區域，通常代表恐懼正在擴散；當分數升到極高區域，則代表市場可能已經過熱。重點是觀察市場是否正在朝更極端的位置靠近。"
+          },
+          "section3": {
+            "title": "3. 用紀律讀市場，對抗恐懼貪婪的本性",
+            "body": "當市場大跌時，人會本能地想逃；當市場狂漲時，又容易被 FOMO 推著追高。SIO 的作用，是替你的判斷加上一個客觀、跨指標的參考框架。"
+          }
+        },
+        "snapshot": {
+          "title": "如何解讀這次市場快照？",
+          "subtitle": "這份截至 {{date}} 的快照分數為 {{score}}，代表當時市場情緒偏向「{{sentiment}}」。它不代表今天的市場狀態，但仍能幫你理解當時市場的風險偏好落在哪一側。",
+          "section1": {
+            "title": "1. 這是一個可回看的情緒切片",
+            "body": "即使不是最新資料，這個快照仍然把當時的散戶情緒、避險需求、波動率壓力、資金流向與部位配置整合成一個綜合讀數。你現在看到的 {{score}} 分，就是當時整體風險偏好的濃縮結果。"
+          },
+          "section2": {
+            "title": "2. 重點是看當時市場是否已經偏向極端",
+            "body": "如果快照落在很低的位置，通常代表當時市場恐懼明顯；如果落在很高的位置，則代表當時市場情緒已經偏熱。以這次偏向「{{sentiment}}」的快照來看，你能更快理解市場當時站在哪一邊。"
+          },
+          "section3": {
+            "title": "3. 若要判斷現在，仍需要最新資料",
+            "body": "這份快照可以幫你理解情緒框架與歷史位置，但若你想知道目前市場是否仍維持同樣狀態，還是需要最新的即時資料。"
+          }
+        }
+      },
+      "comparison": {
+        "ariaLabel": "綜合指標歷史比較",
+        "previousDay": "前一天",
+        "previousWeek": "上一週",
+        "previousMonth": "30天前",
+        "previousQuarter": "90天前"
+      },
       "zoneDescription": {
         "extremefear": "極度恐懼區域 - 市場恐慌與超賣",
         "fear": "恐懼區域 - 市場不確定性與謹慎",
         "neutral": "中性區域 - 市場情緒平衡",
         "greed": "貪婪區域 - 市場樂觀與冒險",
         "extremegreed": "極度貪婪區域 - 市場狂熱與超買"
+      }
+    },
+    "indicators": {
+      "currentTitle": "哪些指標在推動情緒",
+      "snapshotTitle": "哪些指標正在塑造這次市場快照",
+      "currentDescription": "SIO 恐懼貪婪指標由多個情緒子指標組成。這裡顯示目前是哪些指標正在推動市場情緒，以及它們各自偏向哪一側。",
+      "snapshotDescription": "SIO 恐懼貪婪指標由多個情緒子指標組成。你目前看到的是截至 {{date}} 的指標快照，可用來理解當時是哪些訊號在主導市場情緒。",
+      "detailSummaryCurrent": "{{indicator}} 目前如何影響市場情緒",
+      "detailSummarySnapshot": "截至 {{date}}，{{indicator}} 對市場情緒的影響",
+      "mobileEyebrowCurrent": "指標詳情",
+      "mobileEyebrowSnapshot": "截至 {{date}} 的市場快照",
+      "trend": {
+        "up": "近一個月上升",
+        "flat": "近一個月持平",
+        "down": "近一個月下降"
+      },
+      "summary": {
+        "currentEyebrow": "目前指標分布",
+        "snapshotEyebrow": "截至 {{date}} 的指標分布",
+        "currentLine": "{{total}} 項指標中，{{extremeFear}} 項極度恐懼、{{fear}} 項恐懼、{{neutral}} 項中性、{{greed}} 項貪婪、{{extremeGreed}} 項極度貪婪。",
+        "snapshotLine": "截至 {{date}}，{{total}} 項指標中，{{extremeFear}} 項極度恐懼、{{fear}} 項恐懼、{{neutral}} 項中性、{{greed}} 項貪婪、{{extremeGreed}} 項極度貪婪。",
+        "currentInsight": {
+          "fearDominant": "目前偏向恐懼的指標明顯較多，整體風險偏好仍偏保守。",
+          "greedDominant": "目前偏向貪婪的指標明顯較多，整體風險偏好正在升溫。",
+          "balanced": "目前中性指標占比較高，市場情緒仍偏向拉鋸與觀望。",
+          "mixed": "目前指標分布仍分散，市場尚未形成非常一致的情緒方向。"
+        },
+        "snapshotInsight": {
+          "fearDominant": "這份快照中，偏向恐懼的指標明顯較多，顯示當時市場風險偏好較保守。",
+          "greedDominant": "這份快照中，偏向貪婪的指標明顯較多，顯示當時市場風險偏好較積極。",
+          "balanced": "這份快照中，中性指標占比較高，顯示當時市場情緒仍偏拉鋸。",
+          "mixed": "這份快照中，指標分布仍分散，顯示當時市場沒有非常一致的情緒方向。"
+        }
       }
     },
     "viewMode": {
@@ -606,7 +918,25 @@
       "upgradeToast": "🔒 此功能需要 Pro 方案。升級即可獲得完整的市場情緒分析！",
       "upgradeDataToast": "📊 最新市場情緒數據需要 Pro 方案。立即升級獲得即時洞察！",
       "upgradeGaugeToast": "🎯 情緒儀表盤需要 Pro 方案。升級查看當前市場情緒指數！",
-      "upgradeCompositionToast": "🔍 完整指標組成分析需要 Pro 方案。升級獲得深度洞察！"
+      "upgradeCompositionToast": "🔍 完整指標組成分析需要 Pro 方案。升級獲得深度洞察！",
+      "bannerEyebrow": "免費版目前顯示歷史快照",
+      "bannerTitle": "免費版僅能查看截至 {{date}} 的市場情緒資料",
+      "bannerBody": "免費版仍可瀏覽儀表盤、歷史走勢與指標組成；最近兩個月的資料與最新變化需升級 Pro 才能查看。",
+      "currentGaugeHeadline": "當前美股市場情緒",
+      "snapshotGaugeHeadline": "{{date}} 的美股市場情緒",
+      "upgradeForLatest": "升級查看最新資料",
+      "unlockLatestCta": "解鎖最新數據",
+      "overlayMinimalLabel": "解鎖最新數據",
+      "historicalSnapshotLabel": "截至 {{date}} 的歷史比較",
+      "currentCardNote": "升級後可直接追蹤現在的市場情緒與最近 60 天變化。",
+      "historyRangeNote": "免費版可切換所有區間，但圖表只顯示截至 {{date}} 的資料；右側最近兩個月區段需升級 Pro。",
+      "historyShortRangeNote": "這個短區間的大部分都落在最近兩個月。免費版僅顯示截至 {{date}} 的可用資料，其餘區段需升級 Pro。",
+      "overlayEyebrow": "最新資料區",
+      "overlayTitle": "升級查看最新走勢",
+      "overlayCompactTitle": "升級查看最新走勢",
+      "overlayBody": "免費版資料目前停在 {{date}}。升級後可看到現在的情緒位置與最新變化。",
+      "compositionEyebrow": "快照說明",
+      "compositionBody": "下方指標卡與細節目前顯示的是截至 {{date}} 的市場快照。"
     },
     "descriptions": {
       "composite": {
@@ -624,6 +954,7 @@
       },
       "aaiiSpread": {
         "shortDescription": "AAII 投資人情緒調查每週詢問會員對未來六個月市場走勢的看法（看漲、看跌、中立）。看漲比例減去看跌比例（Bull-Bear Spread）是衡量散戶情緒的常用指標。",
+        "detailDescription": "觀察散戶現在偏向看多還是看空。如果連一般投資人都一面倒地樂觀，通常代表好消息已經被很多人先押注；反過來，如果看空的人明顯比看多的人多，往往表示市場恐懼已經擴散。它之所以能衡量情緒，是因為散戶的集體態度本身就是情緒最直接的表現，而當這種態度走到極端時，也常常代表市場開始接近反轉區。",
         "sections": [
           {
             "title": "解讀方式",
@@ -633,6 +964,7 @@
       },
       "cboeRatio": {
         "shortDescription": "CBOE 買/賣權比例（Put/Call Ratio）是衡量市場投機情緒的重要指標。它計算的是交易所交易的賣權（Put）合約數量與買權（Call）合約數量的比率。",
+        "detailDescription": "觀察市場最近在大量買保護性的賣權，還是在積極買進看漲部位。當 Put/Call Ratio 升高，通常代表投資人更想避險、害怕下跌；當比率偏低，則代表市場更願意押注上漲。它能衡量情緒，是因為選擇權往往最先反映投資人的焦慮與貪婪，而 5 日平均則能把單日雜訊濾掉，讓你更清楚看到整體情緒方向。",
         "sections": [
           {
             "title": "解讀方式",
@@ -642,6 +974,7 @@
       },
       "marketMomentum": {
         "shortDescription": "市場動能指標衡量 S&P 500 指數相對於其 125 日移動平均線（約半年線）的位置。它反映了市場的中期趨勢強度。",
+        "detailDescription": "觀察價格相對長期均線的位置，去看市場是不是已經漲得太快、或跌得太深。當價格長時間遠高於均線，代表追價氣氛很強，市場容易進入過熱；當價格大幅跌破均線，則代表悲觀情緒已經壓得很深。它能衡量情緒，因為情緒最後都會反映在價格延伸上，動能越極端，通常代表市場參與者越一致地站在同一邊。",
         "sections": [
           {
             "title": "解讀方式",
@@ -651,6 +984,7 @@
       },
       "vixMA50": {
         "shortDescription": "VIX 指數（波動率指數），常被稱為「恐慌指數」，衡量市場對未來 30 天 S&P 500 指數波動性的預期。此處計算 VIX  50 日移動平均線來觀察恐慌情緒的長期變化趨勢。",
+        "detailDescription": "VIX 本質上是在看市場願意付出多少成本去買保護，而這通常和恐慌程度直接相關。這裡用的是 VIX 的 50 日均線，不是單日尖峰，所以更適合看中期的情緒壓力，而不是一天兩天的新聞波動。當 VIX MA50 升高，表示市場持續處在緊張、防守、怕風險擴大的狀態；當它回落，代表恐慌逐漸降溫，風險偏好開始恢復。",
         "sections": [
           {
             "title": "解讀方式",
@@ -660,6 +994,7 @@
       },
       "safeHaven": {
         "shortDescription": "避險需求指標比較過去 20 個交易日中，股票（風險資產）的總回報與美國公債（避險資產）的總回報兩者之間的差異。它反映了資金流向避險資產的程度。",
+        "detailDescription": "比較資金最近更偏好股票，還是更偏好美債這類避險資產。當避險資產明顯跑贏，通常代表市場正在收縮風險、情緒偏向保守與害怕；當股票明顯跑贏，則表示資金願意承擔風險、情緒偏向樂觀。它能衡量情緒，是因為資金流向本身就是投資人風險偏好的結果，從錢往哪裡跑，往往就能看出市場現在更像是在進攻還是防守。",
         "sections": [
           {
             "title": "解讀方式",
@@ -669,6 +1004,7 @@
       },
       "junkBond": {
         "shortDescription": "垃圾債券（高收益債券）與投資級公司債券之間的殖利率差（Spread）反映了市場對信用風險的態度。垃圾債券風險較高，其殖利率通常也較高。",
+        "detailDescription": "垃圾債利差看的是投資人願不願意持有風險比較高的公司債。如果市場開始要求更高的利差才肯持有，代表大家對信用風險變得敏感，情緒偏向恐懼；如果利差持續收窄，表示市場對風險越來越不在意，情緒通常偏向貪婪。它能衡量情緒，是因為信用市場比股市更直接反映「願不願意承擔風險」這件事，當這個態度改變，往往不只是價格問題，而是整體風險偏好在變。",
         "sections": [
           {
             "title": "解讀方式",
@@ -678,6 +1014,7 @@
       },
       "cotIndex": {
         "shortDescription": "COT 指數（Commitments of Traders Index）基於美國商品期貨交易委員會（CFTC）每週公佈的持倉報告，衡量大型投機者（通常被認為是掌握更多資訊的交易者）在 S&P 500 期貨市場的淨持倉（多單減空單）相對於歷史水平的位置。",
+        "detailDescription": "觀察期貨市場裡投機部位現在偏多還是偏空，等於是在觀察槓桿資金站在哪一邊。當投機者大量偏多，代表市場共識可能已經很樂觀；當部位轉向偏空，則代表悲觀預期正在累積。它能衡量情緒，是因為大型投機資金不只表達看法，還會真的用部位押注，當這些部位變得過度集中時，市場就容易出現擁擠交易。",
         "sections": [
           {
             "title": "解讀方式",
@@ -687,6 +1024,7 @@
       },
       "naaimIndex": {
         "shortDescription": "NAAIM 曝險指數（National Association of Active Investment Managers Exposure Index）每週調查其會員（主動型投資經理人）當前的股票市場曝險水平（0% 表示完全沒有持股，100% 表示完全持股，可超過 100% 表示使用槓桿）。",
+        "detailDescription": "觀察主動型投資經理人目前把多少資金放在股票上。當這些專業經理人整體曝險很高，代表他們對市場更有信心，也意味著樂觀情緒已經相當普遍；當曝險顯著下降，則表示專業資金正在收縮風險。它能衡量情緒，是因為專業經理人的實際倉位比口頭看法更有參考價值，從他們敢不敢把錢真正壓上去，可以看出市場信心到底強不強。",
         "sections": [
           {
             "title": "解讀方式",
@@ -720,7 +1058,6 @@
           "category2": "實戰策略與應用",
           "category3": "運算邏輯與原理",
           "category4": "量化驗證與回測",
-
           "q1": "什麼是 SIO 市場情緒指標？",
           "a1": "SIO 市場情緒指標是衡量市場整體情緒的工具，通過分析多個技術和基本面指標來評估市場的恐懼和貪婪程度。",
           "q2": "這和常見的「CNN 恐懼與貪婪指數」或「BofA 牛熊指標」有什麼不同？",
@@ -738,10 +1075,9 @@
           "q8": "為什麼建議在 15 分以下就開始買？過去大崩盤都殺到 5 分以下，我不能等 5 分再進場嗎？",
           "a8": "為了避免錯失中期回調的機會，可以採用「分批佈局」策略。 雖然歷史級別的災難（如 2008 年金融海嘯、2020 年疫情）確實會讓指標殺到 5 分以下，但這種情況極為罕見。部分中型修正可能在指標來到 8~12 分 附近就止跌反彈（例如 2011 年歐債危機或 2025 貿易戰）。如果堅持只在 < 5 分才出手，可能會錯過進場機會。因此，最佳的策略是採用「兩階段進場」：第一階段 (< 15 分)： 建立 50% 基礎倉位，確保不錯過反彈行情。第二階段 (< 5 分)： 若市場發生系統性崩盤，再將剩餘 50% 資金投入。回測證明，這種「先進一半，保留一半」的做法，能在風險與回報之間取得最佳平衡。",
           "q9": "如果指標出現「極度貪婪 (96+)」，我應該馬上清倉或放空嗎？",
-          "a9": "不建議，當指標進入 >96 的極度貪婪區時，市場常常會持續貪婪一段時間。清倉可能會錯失主升段，放空風險極高。建議這時候應該停止追高，並適度分批獲利了結",        
+          "a9": "不建議，當指標進入 >96 的極度貪婪區時，市場常常會持續貪婪一段時間。清倉可能會錯失主升段，放空風險極高。建議這時候應該停止追高，並適度分批獲利了結",
           "q10": "為什麼單一指標都沒達到極度貪婪，綜合分數卻已經高達 90 分以上？",
-          "a10": "因為模型看重的是廣度。當散戶、大戶、避險市場、債券市場同時轉向樂觀時，即使個別指標未達歷史極值，這種全市場的樂觀共識，在歷史上反而更為罕見。這種高度一致性會推升綜合排名的百分位數，提醒投資人注意潛在的結構性風險。"        
-
+          "a10": "因為模型看重的是廣度。當散戶、大戶、避險市場、債券市場同時轉向樂觀時，即使個別指標未達歷史極值，這種全市場的樂觀共識，在歷史上反而更為罕見。這種高度一致性會推升綜合排名的百分位數，提醒投資人注意潛在的結構性風險。"
         }
       }
     },
@@ -1310,6 +1646,15 @@
       "monthly": "月繳",
       "yearly": "年繳",
       "save": "省下"
+    },
+    "marketSentimentContext": {
+      "notification": "升級以解鎖最新市場情緒數據",
+      "eyebrow": "來自市場情緒頁面",
+      "title": "你目前看到的是延遲兩個月的市場情緒資料",
+      "body": "升級 Pro 後可查看最新恐懼貪婪指數、最近兩個月走勢，以及最新是哪一些指標正在推動市場情緒。",
+      "feature1": "最新市場情緒指數與情緒區間",
+      "feature2": "最近 60 天的走勢與轉折",
+      "feature3": "最新指標組成與變化來源"
     },
     "subscriptionPlans": {
       "title": "選擇適合您的方案",

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { getAdElement, initializeAdSlot, isAdInitialized } from '../../utils/adsense';
 
 function AdSense({ client, slot, layout, format }) {
   const adRef = useRef(null);
@@ -11,16 +12,16 @@ function AdSense({ client, slot, layout, format }) {
     }
 
     try {
+      const adElement = getAdElement(adRef.current);
+
       // 檢查廣告位是否已經有廣告
-      const existingAd = adRef.current.querySelector('.adsbygoogle');
-      if (existingAd && existingAd.getAttribute('data-adsbygoogle-status')) {
+      if (isAdInitialized(adElement)) {
         console.log('AdSense: Ad already initialized, skipping');
         return;
       }
 
       // 初始化廣告
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-      isInitialized.current = true;
+      isInitialized.current = initializeAdSlot(adElement);
       console.log('AdSense: Ad initialized successfully');
     } catch (error) {
       console.error("AdSense initialization error:", error);

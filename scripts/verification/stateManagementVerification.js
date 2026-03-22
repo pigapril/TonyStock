@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Read the useAdminPermissions hook file
-const hookPath = path.join(__dirname, '../../hooks/useAdminPermissions.js');
+const hookPath = path.join(__dirname, '../../src/hooks/useAdminPermissions.js');
 const hookContent = fs.readFileSync(hookPath, 'utf8');
 
 console.log('🔍 Verifying useAdminPermissions State Management Improvements...\n');

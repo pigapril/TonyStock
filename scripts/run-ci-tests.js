@@ -1,0 +1,53 @@
+const fs = require('fs');
+const path = require('path');
+const { spawnSync } = require('child_process');
+
+const frontendRoot = path.resolve(__dirname, '..');
+const manifestPath = path.join(frontendRoot, 'config', 'testing', 'regression.manifest.json');
+const warningFilterPath = path.join(__dirname, 'test-warning-filter.js');
+const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+const testPaths = manifest.tests.map((relativePath) => path.join(frontendRoot, relativePath));
+const cliArgs = process.argv.slice(2);
+const hasExplicitTestPaths = cliArgs.includes('--runTestsByPath');
+const hasCoverageFlag = cliArgs.includes('--coverage') || cliArgs.includes('--coverage=false');
+const nodeOptions = [
+    process.env.NODE_OPTIONS,
+    '--max-old-space-size=4096',
+    `--require=${warningFilterPath}`
+].filter(Boolean).join(' ');
+
+const rewiredBin = path.resolve(frontendRoot, 'node_modules', 'react-app-rewired', 'bin', 'index.js');
+const testCommand = [
+    rewiredBin,
+    'test',
+    '--watch=false',
+    '--watchman=false',
+    '--runInBand'
+];
+
+if (!hasCoverageFlag) {
+    testCommand.push('--coverage');
+}
+
+if (hasExplicitTestPaths) {
+    testCommand.push(...cliArgs);
+} else {
+    testCommand.push('--runTestsByPath', ...testPaths, ...cliArgs);
+}
+
+const result = spawnSync(
+    process.execPath,
+    testCommand,
+    {
+        cwd: frontendRoot,
+        env: {
+            ...process.env,
+            CI: 'true',
+            WATCHMAN_DISABLE_WATCHMAN: '1',
+            NODE_OPTIONS: nodeOptions
+        },
+        stdio: 'inherit'
+    }
+);
+
+process.exit(result.status === null ? 1 : result.status);

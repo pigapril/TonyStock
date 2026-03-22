@@ -18,13 +18,13 @@ const DataRestrictionNotice = ({ onUpgradeClick, className = '' }) => {
         </div>
         <div className="restriction-text">
           <div className="restriction-message">
-            {t('marketSentiment.dataRestriction.historicalOnly')}
+            {t('marketSentiment.dataLimitation.toastMessage')}
           </div>
           <button 
             className="upgrade-link"
             onClick={onUpgradeClick}
           >
-            {t('marketSentiment.dataRestriction.upgradeForLatest')}
+            {t('marketSentiment.dataLimitation.upgradeForLatest')}
           </button>
         </div>
       </div>

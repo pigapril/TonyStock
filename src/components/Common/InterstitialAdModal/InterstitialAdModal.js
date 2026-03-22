@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import { useSubscription } from '../../Subscription/SubscriptionContext';
 import './InterstitialAdModal.css'; // 我們需要創建這個 CSS 檔案
+import { initializeAdSlot, isAdInitialized } from '../../../utils/adsense';
 
 export function InterstitialAdModal({ onClose }) {
   const { t } = useTranslation(); // 2. Initialize t function
@@ -23,8 +24,12 @@ export function InterstitialAdModal({ onClose }) {
     }
 
     try {
+      if (!adInsRef.current || isAdInitialized(adInsRef.current)) {
+        return;
+      }
+
       // 檢查 adsbygoogle 是否已存在，如果不存在則初始化
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      initializeAdSlot(adInsRef.current);
       console.log('AdSense push called.');
     } catch (e) {
       console.error('Error pushing AdSense ad:', e);

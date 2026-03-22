@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import announcementCooldownManager from '../../../utils/announcementCooldown';
 
-// 在開發模式下載入測試函數
-if (process.env.NODE_ENV === 'development') {
-  import('../../../utils/announcementCooldown.test.js').then(module => {
-    window.testAnnouncementCooldown = module.testAnnouncementCooldown;
-  }).catch(err => {
-    console.warn('無法載入測試函數:', err);
-  });
-}
-
 /**
  * 公告系統開發者工具
  * 僅在開發模式下顯示，用於測試冷卻期功能
@@ -18,11 +9,9 @@ const AnnouncementDevTools = ({ config }) => {
   const [stats, setStats] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // 更新統計資訊
   const updateStats = () => {
     if (config) {
-      const newStats = announcementCooldownManager.getAnnouncementStats(config);
-      setStats(newStats);
+      setStats(announcementCooldownManager.getAnnouncementStats(config));
     }
   };
 
@@ -30,7 +19,6 @@ const AnnouncementDevTools = ({ config }) => {
     updateStats();
   }, [config]);
 
-  // 清除當前公告記錄
   const handleClearCurrent = () => {
     if (config) {
       announcementCooldownManager.clearAnnouncementData(config);
@@ -39,14 +27,12 @@ const AnnouncementDevTools = ({ config }) => {
     }
   };
 
-  // 清除所有記錄
   const handleClearAll = () => {
     announcementCooldownManager.clearAllAnnouncementData();
     updateStats();
     alert('所有公告記錄已清除！');
   };
 
-  // 僅在開發模式下顯示
   if (process.env.NODE_ENV !== 'development' || !config) {
     return null;
   }
@@ -65,13 +51,13 @@ const AnnouncementDevTools = ({ config }) => {
       fontSize: '12px',
       fontFamily: 'monospace',
       zIndex: 10000,
-      maxWidth: '300px',
+      maxWidth: '320px',
       boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
     }}>
-      <div 
-        style={{ 
-          cursor: 'pointer', 
-          display: 'flex', 
+      <div
+        style={{
+          cursor: 'pointer',
+          display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           marginBottom: isExpanded ? '10px' : '0'
@@ -155,36 +141,16 @@ const AnnouncementDevTools = ({ config }) => {
             >
               重新整理
             </button>
-            <button
-              onClick={() => {
-                if (window.testAnnouncementCooldown) {
-                  window.testAnnouncementCooldown();
-                } else {
-                  console.log('測試函數未載入，請檢查 announcementCooldown.test.js');
-                }
-              }}
-              style={{
-                backgroundColor: '#2ed573',
-                color: 'white',
-                border: 'none',
-                padding: '4px 8px',
-                borderRadius: '4px',
-                fontSize: '10px',
-                cursor: 'pointer'
-              }}
-            >
-              執行測試
-            </button>
           </div>
 
-          <div style={{ 
-            marginTop: '10px', 
-            fontSize: '10px', 
+          <div style={{
+            marginTop: '10px',
+            fontSize: '10px',
             color: '#ccc',
             borderTop: '1px solid #333',
             paddingTop: '5px'
           }}>
-            💡 提示: 關閉公告後會進入冷卻期，時間會逐漸增加
+            💡 手動驗證腳本已搬到 `frontend/scripts/verification/announcementCooldownVerification.js`
           </div>
         </div>
       )}

@@ -1,168 +1,160 @@
-/**
- * PaymentService 測試
- */
-
 import paymentService from '../paymentService';
 import apiClient from '../../api/apiClient';
 
-// Mock API client
-jest.mock('../../api/apiClient');
-jest.mock('../../utils/logger');
+jest.mock('../../api/apiClient', () => jest.fn());
+jest.mock('../../utils/logger', () => ({
+  systemLogger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn()
+  }
+}));
 
-const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;
+const mockApiClient = apiClient;
 
-describe('PaymentService', () => {
+describe('paymentService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('createOrder', () => {
-    it('creates order successfully', async () => {
-      const mockOrderData = {
-        planType: 'pro',
-        billingPeriod: 'monthly',
-        paymentMethod: 'credit_card'
-      };
+  it('creates an order through the create-order endpoint', async () => {
+    const orderData = {
+      planType: 'pro',
+      billingPeriod: 'monthly',
+      paymentMethod: 'Credit'
+    };
+    const responseData = {
+      orderId: 'order-123',
+      merchantTradeNo: 'TN123456789',
+      amount: 299,
+      paymentUrl: 'https://payment.ecpay.com.tw/test'
+    };
 
-      const mockResponse = {
-        data: {
-          id: 'order-123',
-          merchantTradeNo: 'TN123456789',
-          paymentUrl: 'https://payment.ecpay.com.tw/test',
-          amount: 299
-        }
-      };
-
-      mockApiClient.post.mockResolvedValue(mockResponse);
-
-      const result = await paymentService.createOrder(mockOrderData);
-
-      expect(mockApiClient.post).toHaveBeenCalledWith('/api/payment/orders', mockOrderData);
-      expect(result).toEqual(mockResponse.data);
+    mockApiClient.mockResolvedValue({
+      data: {
+        status: 'success',
+        data: responseData
+      }
     });
 
-    it('handles create order error', async () => {
-      const mockError = new Error('Network error');
-      mockApiClient.post.mockRejectedValue(mockError);
+    const result = await paymentService.createOrder(orderData);
 
-      await expect(paymentService.createOrder({
-        planType: 'pro',
-        billingPeriod: 'monthly',
-        paymentMethod: 'credit_card'
-      })).rejects.toThrow('Network error');
+    expect(mockApiClient).toHaveBeenCalledWith({
+      method: 'POST',
+      url: '/api/payment/create-order',
+      data: orderData
     });
+    expect(result).toEqual(responseData);
   });
 
-  describe('queryPaymentStatus', () => {
-    it('queries payment status successfully', async () => {
-      const merchantTradeNo = 'TN123456789';
-      const mockResponse = {
-        data: {
-          status: 'paid',
-          subscription: {
-            id: 'sub-123',
-            planType: 'pro',
-            status: 'active'
-          }
-        }
-      };
+  it('queries payment status by merchantTradeNo', async () => {
+    const responseData = {
+      orderStatus: 'paid',
+      paymentStatus: 'success'
+    };
 
-      mockApiClient.get.mockResolvedValue(mockResponse);
-
-      const result = await paymentService.queryPaymentStatus(merchantTradeNo);
-
-      expect(mockApiClient.get).toHaveBeenCalledWith(`/api/payment/status/${merchantTradeNo}`);
-      expect(result).toEqual(mockResponse.data);
+    mockApiClient.mockResolvedValue({
+      data: {
+        status: 'success',
+        data: responseData
+      }
     });
 
-    it('handles query status error', async () => {
-      const mockError = new Error('Payment not found');
-      mockApiClient.get.mockRejectedValue(mockError);
+    const result = await paymentService.queryPaymentStatus('TN123456789');
 
-      await expect(paymentService.queryPaymentStatus('invalid')).rejects.toThrow('Payment not found');
+    expect(mockApiClient).toHaveBeenCalledWith({
+      method: 'GET',
+      url: '/api/payment/status/TN123456789'
     });
+    expect(result).toEqual(responseData);
   });
 
-  describe('getPaymentHistory', () => {
-    it('gets payment history successfully', async () => {
-      const mockResponse = {
-        data: [
-          {
-            id: 'payment-1',
-            merchantTradeNo: 'TN123456789',
-            amount: 299,
-            status: 'paid',
-            paymentMethod: 'credit_card',
-            createdAt: '2024-01-15T10:00:00Z'
-          }
-        ]
-      };
+  it('returns the normalized payment history payload', async () => {
+    const responseData = [
+      {
+        id: 'payment-1',
+        merchantTradeNo: 'TN123456789',
+        amount: 299,
+        status: 'success'
+      }
+    ];
 
-      mockApiClient.get.mockResolvedValue(mockResponse);
-
-      const result = await paymentService.getPaymentHistory();
-
-      expect(mockApiClient.get).toHaveBeenCalledWith('/api/payment/history');
-      expect(result).toEqual(mockResponse.data);
+    mockApiClient.mockResolvedValue({
+      data: {
+        status: 'success',
+        data: responseData
+      }
     });
 
-    it('handles get history error', async () => {
-      const mockError = new Error('Unauthorized');
-      mockApiClient.get.mockRejectedValue(mockError);
+    const result = await paymentService.getPaymentHistory();
 
-      await expect(paymentService.getPaymentHistory()).rejects.toThrow('Unauthorized');
+    expect(mockApiClient).toHaveBeenCalledWith({
+      method: 'GET',
+      url: '/api/payment/history'
     });
+    expect(result).toEqual(responseData);
   });
 
-  describe('cancelPayment', () => {
-    it('cancels payment successfully', async () => {
-      const orderId = 'order-123';
-      const mockResponse = {
-        data: {
-          success: true,
-          message: 'Payment cancelled'
-        }
-      };
+  it('calls the cancel-order endpoint when cancelling a payment', async () => {
+    const responseData = {
+      orderId: 'order-123',
+      status: 'cancelled'
+    };
 
-      mockApiClient.post.mockResolvedValue(mockResponse);
-
-      const result = await paymentService.cancelPayment(orderId);
-
-      expect(mockApiClient.post).toHaveBeenCalledWith(`/api/payment/cancel/${orderId}`);
-      expect(result).toEqual(mockResponse.data);
+    mockApiClient.mockResolvedValue({
+      data: {
+        status: 'success',
+        data: responseData
+      }
     });
 
-    it('handles cancel payment error', async () => {
-      const mockError = new Error('Cannot cancel paid order');
-      mockApiClient.post.mockRejectedValue(mockError);
+    const result = await paymentService.cancelPayment('order-123');
 
-      await expect(paymentService.cancelPayment('order-123')).rejects.toThrow('Cannot cancel paid order');
+    expect(mockApiClient).toHaveBeenCalledWith({
+      method: 'POST',
+      url: '/api/payment/cancel-order/order-123'
     });
+    expect(result).toEqual(responseData);
   });
 
-  describe('retryPayment', () => {
-    it('retries payment successfully', async () => {
-      const orderId = 'order-123';
-      const mockResponse = {
-        data: {
-          paymentUrl: 'https://payment.ecpay.com.tw/retry',
-          merchantTradeNo: 'TN987654321'
-        }
-      };
+  it('submits retry requests to the retry endpoint', async () => {
+    const responseData = {
+      orderId: 'order-123',
+      paymentUrl: 'https://payment.ecpay.com.tw/retry'
+    };
 
-      mockApiClient.post.mockResolvedValue(mockResponse);
-
-      const result = await paymentService.retryPayment(orderId);
-
-      expect(mockApiClient.post).toHaveBeenCalledWith(`/api/payment/retry/${orderId}`);
-      expect(result).toEqual(mockResponse.data);
+    mockApiClient.mockResolvedValue({
+      data: {
+        status: 'success',
+        data: responseData
+      }
     });
 
-    it('handles retry payment error', async () => {
-      const mockError = new Error('Order already paid');
-      mockApiClient.post.mockRejectedValue(mockError);
+    const result = await paymentService.retryPayment('order-123');
 
-      await expect(paymentService.retryPayment('order-123')).rejects.toThrow('Order already paid');
+    expect(mockApiClient).toHaveBeenCalledWith({
+      method: 'POST',
+      url: '/api/payment/retry/order-123'
+    });
+    expect(result).toEqual(responseData);
+  });
+
+  it('returns a structured failure result when polling by orderId fails', async () => {
+    jest.spyOn(paymentService, 'checkPaymentStatus').mockResolvedValue({
+      success: false,
+      error: '訂單不存在'
+    });
+
+    const result = await paymentService.pollPaymentStatus('order-123', {
+      maxAttempts: 1,
+      interval: 1
+    });
+
+    expect(result).toEqual({
+      success: false,
+      status: 'timeout',
+      error: '付款狀態查詢超時，請稍後再試'
     });
   });
 });

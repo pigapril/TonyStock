@@ -20,6 +20,7 @@ import './components/Auth/styles/SignInDialog.css';
 import './components/NewFeatureBadge/NewFeatureBadge.css';
 import "react-datepicker/dist/react-datepicker.css";
 import './components/Common/global-styles.css';
+import './components/Common/ui-recipes.css';
 import './components/Common/Dialog/FeatureUpgradeDialog.css';
 
 
@@ -35,7 +36,6 @@ import { PageViewTracker } from './components/Common/PageViewTracker';
 import { About } from './components/About/About';
 import { Legal } from './components/Legal/Legal';
 import { WatchlistContainer } from './components/Watchlist/WatchlistContainer';
-import { AdBanner } from './components/Common/AdBanner/AdBanner';
 import { Footer } from './components/Common/Footer/Footer';
 import FloatingSponsorButton from './components/FloatingSponsorButton/FloatingSponsorButton';
 import ChatWidget from './components/ChatWidget/ChatWidget';
@@ -114,6 +114,7 @@ function AppContent() {
   const isMobile = useMediaQuery({ query: '(max-width: 1300px)' });
   const location = useLocation();
   const isHomePage = location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
+  const [isTopNavScrolled, setIsTopNavScrolled] = React.useState(false);
   
 
 
@@ -245,6 +246,17 @@ function AppContent() {
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
+
+  React.useEffect(() => {
+    const syncTopNavState = () => {
+      setIsTopNavScrolled(window.scrollY > 24);
+    };
+
+    syncTopNavState();
+    window.addEventListener('scroll', syncTopNavState, { passive: true });
+
+    return () => window.removeEventListener('scroll', syncTopNavState);
+  }, [location.pathname]);
 
   // 監聽語言變化，觸發導航重新檢查
   React.useEffect(() => {
@@ -391,79 +403,88 @@ function AppContent() {
         )}
 
         {/* 主內容區域 */}
-        <main className="main-content">
+        <main className={`main-content ${isHomePage ? 'main-content--home' : ''}`}>
           {/* 頂部導航欄 */}
-          <header className="top-nav" ref={navRef}>
-            {/* Logo 區域 */}
-            <div className="top-nav-logo">
-              <NavLink to={`/${lang}/`}>
-                <img src="/logo.png" alt={t('appName')} className="logo" />
-              </NavLink>
-            </div>
-
-            {/* 桌面版導航項目 - 只在不使用側邊導航時顯示 */}
-            {!useSideNavigation && (
-              <div className="desktop-nav-items">
-                <NavLink
-                  to={`/${lang}/priceanalysis`}
-                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                  aria-current={({ isActive }) => isActive ? "page" : undefined}
-                >
-                  <FaChartLine />
-                  <span>{t('nav.priceAnalysis')}</span>
+          <header
+            className={[
+              'top-nav',
+              isHomePage ? 'top-nav--immersive' : 'top-nav--default',
+              isTopNavScrolled ? 'top-nav--scrolled' : ''
+            ].filter(Boolean).join(' ')}
+            ref={navRef}
+          >
+            <div className="top-nav__shell top-nav__inner">
+              {/* Logo 區域 */}
+              <div className="top-nav-logo">
+                <NavLink to={`/${lang}/`}>
+                  <img src="/logo.png" alt={t('appName')} className="logo" />
                 </NavLink>
-                <NavLink
-                  to={`/${lang}/market-sentiment`}
-                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                  aria-current={({ isActive }) => isActive ? "page" : undefined}
-                >
-                  <FaHeartbeat />
-                  <span>{t('nav.marketSentiment')}</span>
-                </NavLink>
-                <NavLink
-                  to={`/${lang}/watchlist`}
-                  onClick={handleWatchlistClick}
-                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                  aria-current={({ isActive }) => isActive ? "page" : undefined}
-                >
-                  <FaList />
-                  <span>{t('nav.watchlist')}</span>
-                </NavLink>
-                <NavLink
-                  to={`/${lang}/articles`}
-                  onClick={handleArticlesClick}
-                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                  aria-current={({ isActive }) => isActive ? "page" : undefined}
-                >
-                  <FaChartBar />
-                  <span>{t('nav.articles')}</span>
-                </NavLink>
-                <NavLink
-                  to={`/${lang}/subscription-plans`}
-                  className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                  aria-current={({ isActive }) => isActive ? "page" : undefined}
-                >
-                  <FaPiggyBank />
-                  <span>{t('nav.subscription')}</span>
-                </NavLink>
-                <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
-                  <FaFacebook />
-                  <span>{t('nav.facebookLong')}</span>
-                </a>
               </div>
-            )}
 
-            {/* 使用者操作和選單按鈕 */}
-            <div className="user-actions">
-              <LanguageSwitcher />
-              <AuthStatusIndicator />
-              {/* 在使用側邊導航時顯示漢堡選單 */}
-              {useSideNavigation && (
-                <div className="menu-toggle-wrapper">
-                  <FaBars className="menu-toggle" onClick={toggleSidebar} />
-                  {hasNewWatchlist && <span className="notification-dot" />}
+              {/* 桌面版導航項目 - 只在不使用側邊導航時顯示 */}
+              {!useSideNavigation && (
+                <div className="desktop-nav-items">
+                  <NavLink
+                    to={`/${lang}/priceanalysis`}
+                    className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                    aria-current={({ isActive }) => isActive ? "page" : undefined}
+                  >
+                    <FaChartLine />
+                    <span>{t('nav.priceAnalysis')}</span>
+                  </NavLink>
+                  <NavLink
+                    to={`/${lang}/market-sentiment`}
+                    className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                    aria-current={({ isActive }) => isActive ? "page" : undefined}
+                  >
+                    <FaHeartbeat />
+                    <span>{t('nav.marketSentiment')}</span>
+                  </NavLink>
+                  <NavLink
+                    to={`/${lang}/watchlist`}
+                    onClick={handleWatchlistClick}
+                    className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                    aria-current={({ isActive }) => isActive ? "page" : undefined}
+                  >
+                    <FaList />
+                    <span>{t('nav.watchlist')}</span>
+                  </NavLink>
+                  <NavLink
+                    to={`/${lang}/articles`}
+                    onClick={handleArticlesClick}
+                    className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                    aria-current={({ isActive }) => isActive ? "page" : undefined}
+                  >
+                    <FaChartBar />
+                    <span>{t('nav.articles')}</span>
+                  </NavLink>
+                  <NavLink
+                    to={`/${lang}/subscription-plans`}
+                    className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                    aria-current={({ isActive }) => isActive ? "page" : undefined}
+                  >
+                    <FaPiggyBank />
+                    <span>{t('nav.subscription')}</span>
+                  </NavLink>
+                  <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
+                    <FaFacebook />
+                    <span>{t('nav.facebookLong')}</span>
+                  </a>
                 </div>
               )}
+
+              {/* 使用者操作和選單按鈕 */}
+              <div className="user-actions">
+                <LanguageSwitcher />
+                <AuthStatusIndicator />
+                {/* 在使用側邊導航時顯示漢堡選單 */}
+                {useSideNavigation && (
+                  <div className="menu-toggle-wrapper">
+                    <FaBars className="menu-toggle" onClick={toggleSidebar} />
+                    {hasNewWatchlist && <span className="notification-dot" />}
+                  </div>
+                )}
+              </div>
             </div>
           </header>
 
@@ -471,7 +492,7 @@ function AppContent() {
           <AnnouncementBar />
 
           {/* 內容路由 */}
-          <div className="content-area">
+          <div className={`content-area ${isHomePage ? 'content-area--home' : ''}`}>
             <Routes>
               <Route path="/" element={<Home />} />
 
@@ -583,10 +604,7 @@ function AppContent() {
       <AuthDialog />
       <GlobalFeatureUpgradeDialog />
       {/* 條件式 AdSense 載入 */}
-      <ConditionalAdSense />
-      {/* 根據是否為首頁決定是否渲染 AdBanner */}
-      {!isHomePage && <AdBanner />}
-
+      <ConditionalAdSense key={`adsense-${user?.id || 'guest'}-${userPlan?.type || 'pending'}`} />
       {/* Global Toast for API Client error handling */}
       {toast && (
         <Toast

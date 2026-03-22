@@ -1,146 +1,141 @@
-/**
- * SubscriptionService 測試
- */
-
 import subscriptionService from '../subscriptionService';
 import apiClient from '../../api/apiClient';
 
-// Mock API client
-jest.mock('../../api/apiClient');
-jest.mock('../../utils/logger');
+jest.mock('../../api/apiClient', () => jest.fn());
+jest.mock('../../utils/logger', () => ({
+  systemLogger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn()
+  }
+}));
 
-const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;
+const mockApiClient = apiClient;
 
-describe('SubscriptionService', () => {
+describe('subscriptionService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('getCurrentSubscription', () => {
-    it('gets current subscription successfully', async () => {
-      const mockResponse = {
+  it('returns the current subscription wrapped in a success payload', async () => {
+    const subscription = {
+      id: 'sub-123',
+      planType: 'pro',
+      status: 'active'
+    };
+
+    mockApiClient.mockResolvedValue({
+      data: {
+        status: 'success',
         data: {
-          id: 'sub-123',
-          planType: 'pro',
-          status: 'active',
-          billingPeriod: 'monthly',
-          nextBillingDate: '2024-02-15T00:00:00Z',
-          ecpaySubscriptionId: 'ecpay-sub-456'
+          subscription
         }
-      };
-
-      mockApiClient.get.mockResolvedValue(mockResponse);
-
-      const result = await subscriptionService.getCurrentSubscription();
-
-      expect(mockApiClient.get).toHaveBeenCalledWith('/api/subscription/current');
-      expect(result).toEqual(mockResponse.data);
+      }
     });
 
-    it('handles get subscription error', async () => {
-      const mockError = new Error('Subscription not found');
-      mockApiClient.get.mockRejectedValue(mockError);
+    const result = await subscriptionService.getCurrentSubscription();
 
-      await expect(subscriptionService.getCurrentSubscription()).rejects.toThrow('Subscription not found');
+    expect(mockApiClient).toHaveBeenCalledWith({
+      method: 'GET',
+      url: '/api/subscription/current',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      withCredentials: true
+    });
+    expect(result).toEqual({
+      success: true,
+      data: subscription
     });
   });
 
-  describe('cancelSubscription', () => {
-    it('cancels subscription successfully', async () => {
-      const subscriptionId = 'sub-123';
-      const mockResponse = {
-        data: {
-          success: true,
-          message: 'Subscription cancelled',
-          subscription: {
-            id: 'sub-123',
-            status: 'cancelled'
-          }
-        }
-      };
+  it('submits cancellation with the normalized API payload', async () => {
+    const responseData = {
+      subscriptionId: 'sub-123',
+      status: 'cancelled'
+    };
 
-      mockApiClient.post.mockResolvedValue(mockResponse);
-
-      const result = await subscriptionService.cancelSubscription(subscriptionId);
-
-      expect(mockApiClient.post).toHaveBeenCalledWith(`/api/subscription/cancel/${subscriptionId}`);
-      expect(result).toEqual(mockResponse.data);
+    mockApiClient.mockResolvedValue({
+      data: {
+        status: 'success',
+        data: responseData
+      }
     });
 
-    it('handles cancel subscription error', async () => {
-      const mockError = new Error('Cannot cancel active subscription');
-      mockApiClient.post.mockRejectedValue(mockError);
-
-      await expect(subscriptionService.cancelSubscription('sub-123')).rejects.toThrow('Cannot cancel active subscription');
-    });
-  });
-
-  describe('getSubscriptionHistory', () => {
-    it('gets subscription history successfully', async () => {
-      const mockResponse = {
-        data: [
-          {
-            id: 'sub-123',
-            planType: 'pro',
-            status: 'active',
-            createdAt: '2024-01-15T10:00:00Z',
-            billingPeriod: 'monthly'
-          },
-          {
-            id: 'sub-456',
-            planType: 'free',
-            status: 'cancelled',
-            createdAt: '2024-01-01T10:00:00Z',
-            billingPeriod: 'monthly'
-          }
-        ]
-      };
-
-      mockApiClient.get.mockResolvedValue(mockResponse);
-
-      const result = await subscriptionService.getSubscriptionHistory();
-
-      expect(mockApiClient.get).toHaveBeenCalledWith('/api/subscription/history');
-      expect(result).toEqual(mockResponse.data);
+    const result = await subscriptionService.cancelSubscription({
+      cancelAtPeriodEnd: false,
+      reason: 'billing_issue'
     });
 
-    it('handles get history error', async () => {
-      const mockError = new Error('Unauthorized');
-      mockApiClient.get.mockRejectedValue(mockError);
-
-      await expect(subscriptionService.getSubscriptionHistory()).rejects.toThrow('Unauthorized');
+    expect(mockApiClient).toHaveBeenCalledWith({
+      method: 'POST',
+      url: '/api/subscription/cancel',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      withCredentials: true,
+      data: {
+        cancelAtPeriodEnd: false,
+        reason: 'billing_issue'
+      }
+    });
+    expect(result).toEqual({
+      success: true,
+      data: responseData
     });
   });
 
-  describe('updateSubscription', () => {
-    it('updates subscription successfully', async () => {
-      const subscriptionId = 'sub-123';
-      const updateData = {
-        billingPeriod: 'yearly'
-      };
+  it('returns subscription history and pagination metadata', async () => {
+    const subscriptions = [
+      { id: 'sub-1', planType: 'pro' },
+      { id: 'sub-2', planType: 'free' }
+    ];
+    const pagination = {
+      limit: 10,
+      offset: 0,
+      total: 2
+    };
 
-      const mockResponse = {
+    mockApiClient.mockResolvedValue({
+      data: {
+        status: 'success',
         data: {
-          id: 'sub-123',
-          planType: 'pro',
-          billingPeriod: 'yearly',
-          status: 'active'
+          subscriptions,
+          pagination
         }
-      };
-
-      mockApiClient.put.mockResolvedValue(mockResponse);
-
-      const result = await subscriptionService.updateSubscription(subscriptionId, updateData);
-
-      expect(mockApiClient.put).toHaveBeenCalledWith(`/api/subscription/${subscriptionId}`, updateData);
-      expect(result).toEqual(mockResponse.data);
+      }
     });
 
-    it('handles update subscription error', async () => {
-      const mockError = new Error('Invalid subscription data');
-      mockApiClient.put.mockRejectedValue(mockError);
+    const result = await subscriptionService.getSubscriptionHistory({
+      limit: 10,
+      offset: 0
+    });
 
-      await expect(subscriptionService.updateSubscription('sub-123', {})).rejects.toThrow('Invalid subscription data');
+    expect(mockApiClient).toHaveBeenCalledWith({
+      method: 'GET',
+      url: '/api/subscription/history?limit=10&offset=0',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      withCredentials: true
+    });
+    expect(result).toEqual({
+      success: true,
+      data: subscriptions,
+      pagination
+    });
+  });
+
+  it('returns a structured failure payload instead of throwing when current subscription lookup fails', async () => {
+    mockApiClient.mockRejectedValue(new Error('network down'));
+
+    const result = await subscriptionService.getCurrentSubscription();
+
+    expect(result).toEqual({
+      success: false,
+      error: 'network down',
+      errorCode: 'GET_SUBSCRIPTION_FAILED'
     });
   });
 });

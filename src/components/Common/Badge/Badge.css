@@ -1,0 +1,88 @@
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: fit-content;
+  border-radius: var(--border-radius-pill, 999px);
+  font-family: var(--font-family-sans, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif);
+  font-weight: 600;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.ui-badge--neutral {
+  background: rgba(142, 142, 147, 0.12);
+  color: rgba(60, 60, 67, 0.85);
+}
+
+.ui-badge--blue {
+  background: rgba(0, 122, 255, 0.12);
+  color: var(--accent-color-blue, #007aff);
+  border: 1px solid rgba(0, 122, 255, 0.18);
+}
+
+.ui-badge--premium {
+  background: rgba(255, 149, 0, 0.14);
+  color: var(--color-accent-premium, #ff9500);
+  border: 1px solid rgba(255, 149, 0, 0.2);
+}
+
+.ui-badge--success {
+  background: var(--color-success-bg, rgba(52, 199, 89, 0.12));
+  color: var(--color-success, #34c759);
+  border: 1px solid var(--color-success-border, rgba(52, 199, 89, 0.24));
+}
+
+.ui-badge--warning {
+  background: var(--color-warning-bg, #fff3cd);
+  color: var(--color-warning-text, #856404);
+  border: 1px solid var(--color-warning-border, #ffeaa7);
+}
+
+.ui-badge--small {
+  padding: 2px 8px;
+  font-size: 10px;
+}
+
+.ui-badge--medium {
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+.ui-badge--large {
+  padding: 6px 16px;
+  font-size: 14px;
+}
+
+.ui-badge--icon-only {
+  padding: 6px;
+  aspect-ratio: 1;
+}
+
+.ui-badge__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.ui-badge__label {
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ui-badge--neutral {
+    background: rgba(142, 142, 147, 0.24);
+    color: rgba(235, 235, 245, 0.85);
+  }
+
+  .ui-badge--blue {
+    background: rgba(10, 132, 255, 0.18);
+    color: #0a84ff;
+    border-color: rgba(10, 132, 255, 0.28);
+  }
+}

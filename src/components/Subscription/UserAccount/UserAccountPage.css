@@ -15,11 +15,7 @@
 
 /* Header Section */
 .user-account-header {
-  background: var(--color-bg-card, #ffffff);
-  border-radius: var(--border-radius-large, 14px);
   padding: 32px;
-  box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
-  border: 1px solid var(--color-border-soft, #e5e5e5);
 }
 
 .user-account-header__content {
@@ -100,22 +96,11 @@
 }
 
 .logout-button {
-  padding: 10px 20px;
-  background: transparent;
-  border: 1px solid var(--color-border-soft, #e5e5e5);
-  border-radius: var(--border-radius-small, 6px);
-  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  min-width: 96px;
 }
 
 .logout-button:hover {
-  background: var(--color-bg-subtle, #f5f5f5);
-  border-color: var(--color-border-medium, #d0d0d0);
-  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+  text-decoration: none;
 }
 
 /* Content Sections */
@@ -126,11 +111,7 @@
 }
 
 .user-account-section {
-  background: var(--color-bg-card, #ffffff);
-  border-radius: var(--border-radius-large, 14px);
   padding: 32px;
-  box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
-  border: 1px solid var(--color-border-soft, #e5e5e5);
 }
 
 .user-account-section__title {
@@ -171,12 +152,8 @@
 
 /* Error State */
 .user-account-error {
-  background: var(--color-bg-card, #ffffff);
-  border-radius: var(--border-radius-large, 14px);
   padding: 48px 32px;
   text-align: center;
-  box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
-  border: 1px solid var(--color-border-soft, #e5e5e5);
 }
 
 .user-account-error h2 {
@@ -196,12 +173,8 @@
 
 /* Loading State */
 .user-account-loading {
-  background: var(--color-bg-card, #ffffff);
-  border-radius: var(--border-radius-large, 14px);
   padding: 48px 32px;
   text-align: center;
-  box-shadow: var(--shadow-s, 0 2px 6px rgba(0, 0, 0, 0.05));
-  border: 1px solid var(--color-border-soft, #e5e5e5);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -362,17 +335,6 @@
   .user-account-error p,
   .user-account-loading p {
     color: rgba(235, 235, 245, 0.60);
-  }
-
-  .logout-button {
-    border-color: #38383a;
-    color: rgba(235, 235, 245, 0.60);
-  }
-
-  .logout-button:hover {
-    background: rgba(142, 142, 147, 0.24);
-    border-color: #48484a;
-    color: rgba(235, 235, 245, 0.85);
   }
 
   .user-account-header__avatar-image {

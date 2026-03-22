@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useSubscription } from '../../Subscription/SubscriptionContext';
+import { useAuth } from '../../Auth/useAuth';
 
 /**
  * 條件式 AdSense 組件
@@ -8,41 +9,50 @@ import { useSubscription } from '../../Subscription/SubscriptionContext';
 export const ConditionalAdSense = () => {
   // 1. 從 Context 取得 loading 狀態
   const { userPlan, loading } = useSubscription();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
   
-  // 用來記錄上一次的狀態，判斷是否發生「現場升級」
-  const prevUserPlanRef = useRef(userPlan?.type);
+  const currentAccountKey = useMemo(
+    () => (isAuthenticated ? `${user?.id || 'unknown'}:${userPlan?.type || 'pending'}` : 'guest'),
+    [isAuthenticated, user?.id, userPlan?.type]
+  );
+  const prevAccountKeyRef = useRef(currentAccountKey);
+  const prevAdEligibilityRef = useRef(null);
 
   useEffect(() => {
     // === 關鍵修正：守門員 ===
     // 如果 userPlan 是 null 且正在 loading，或者根本還沒初始化
     // 這時候絕對不能做決定，直接 return
-    if (loading || userPlan === null || userPlan === undefined) {
+    if (authLoading || loading || userPlan === null || userPlan === undefined) {
       // 可以在這裡 log 觀察： console.log('⏳ 用戶狀態讀取中，暫緩廣告載入...');
       return;
     }
 
     const isProUser = userPlan?.type === 'pro' || userPlan?.type === 'premium';
-    const wasProUser = prevUserPlanRef.current === 'pro' || prevUserPlanRef.current === 'premium';
+    const canShowAds = !isProUser;
+    const hadPreviousEligibility = prevAdEligibilityRef.current;
+    const accountChanged = prevAccountKeyRef.current !== currentAccountKey;
 
-    // 2. 處理「剛升級」的狀況 (Clean up)
-    // 如果之前是 Free，現在變 Pro -> 強制刷新以清除記憶體中的廣告殘留
-    if (isProUser && !wasProUser && prevUserPlanRef.current) {
-        console.log('✨ 用戶剛升級，刷新頁面以清除廣告...');
+    // AdSense 對既有 DOM/佇列狀態的清理能力很差，帳號切換或廣告資格改變時直接刷新最穩定。
+    if (
+      prevAdEligibilityRef.current !== null &&
+      (accountChanged || hadPreviousEligibility !== canShowAds)
+    ) {
+        console.log('✨ 帳號或廣告資格變更，刷新頁面以重建 AdSense 狀態...');
         window.location.reload();
         return;
     }
     
-    // 更新 ref 狀態
-    prevUserPlanRef.current = userPlan?.type;
+    prevAccountKeyRef.current = currentAccountKey;
+    prevAdEligibilityRef.current = canShowAds;
     
     // 3. 只有「確認」是 Free 用戶後，才載入廣告
-    if (!isProUser) {
+    if (canShowAds) {
       loadAdSenseScript();
     } 
     // 注意：不需要 else removeAdSenseScript()
     // 因為如果一開始沒載入，就不需要移；如果載入過了，移了也沒用(必須靠上面的 reload)
 
-  }, [userPlan, loading]); // 這裡一定要監聽 loading
+  }, [authLoading, currentAccountKey, loading, userPlan]); // 這裡一定要監聽 loading
 
   const loadAdSenseScript = () => {
     // 避免重複載入

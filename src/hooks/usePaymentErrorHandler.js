@@ -149,9 +149,9 @@ export const usePaymentErrorHandler = (options = {}) => {
      * 執行帶錯誤處理的操作
      */
     const executeWithErrorHandling = useCallback(async (operation, operationContext) => {
-        operationRef.current = operation;
         clearError();
         setRetryCount(0);
+        operationRef.current = operation;
 
         try {
             return await operation();

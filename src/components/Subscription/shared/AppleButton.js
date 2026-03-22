@@ -1,36 +1,25 @@
 import React from 'react';
-import './AppleButton.css';
+import { Button } from '../../Common/Button/Button';
 
 export const AppleButton = ({ 
-  children, 
-  variant = 'primary', 
-  size = 'medium', 
-  disabled = false, 
+  children,
+  variant = 'primary',
+  size = 'medium',
+  disabled = false,
   loading = false,
-  onClick,
   className = '',
-  ...props 
+  ...props
 }) => {
-  const buttonClass = [
-    'apple-button',
-    `apple-button--${variant}`,
-    `apple-button--${size}`,
-    disabled && 'apple-button--disabled',
-    loading && 'apple-button--loading',
-    className
-  ].filter(Boolean).join(' ');
-
   return (
-    <button
-      className={buttonClass}
-      disabled={disabled || loading}
-      onClick={onClick}
+    <Button
+      variant={variant}
+      size={size}
+      disabled={disabled}
+      loading={loading}
+      className={className}
       {...props}
     >
-      {loading && <div className="apple-button__spinner" />}
-      <span className="apple-button__content">
-        {children}
-      </span>
-    </button>
+      {children}
+    </Button>
   );
 };

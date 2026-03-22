@@ -186,8 +186,9 @@
     border-color: #38383a;
     color: rgba(235, 235, 245, 0.60);
   }
-}/* Ca
-ncel Subscription Styles */
+}
+
+/* Cancel Subscription Styles */
 .plan-info__actions {
   display: flex;
   flex-direction: column;
@@ -220,67 +221,30 @@ ncel Subscription Styles */
   font-weight: 500;
 }
 
-/* Cancel Confirmation Dialog */
-.plan-info__cancel-dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 20px;
+.plan-info__cancel-dialog-shell {
+  width: min(100%, 480px);
 }
 
-.plan-info__cancel-dialog {
-  background: var(--color-bg-primary, #ffffff);
-  border-radius: var(--border-radius-large, 14px);
-  padding: 32px;
-  max-width: 480px;
-  width: 100%;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  animation: plan-info-dialog-appear 0.2s ease-out;
+.plan-info__cancel-dialog-body {
+  align-items: stretch;
+  gap: 24px;
 }
 
-.plan-info__cancel-dialog-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
-  margin: 0 0 16px 0;
-  text-align: center;
-}
-
-.plan-info__cancel-dialog-message {
-  font-size: 16px;
-  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
-  line-height: 1.5;
-  margin: 0 0 24px 0;
-  text-align: center;
+.plan-info__cancel-dialog-shell .dialog-description {
+  max-width: 420px;
+  margin-bottom: 24px;
 }
 
 .plan-info__cancel-dialog-actions {
   display: flex;
   gap: 12px;
   justify-content: center;
+  width: 100%;
 }
 
 .plan-info__cancel-dialog-actions > * {
   flex: 1;
   min-width: 100px;
-}
-
-@keyframes plan-info-dialog-appear {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
 }
 
 /* Responsive adjustments for cancel functionality */
@@ -292,11 +256,6 @@ ncel Subscription Styles */
   .plan-info__cancel-button,
   .plan-info__upgrade-button {
     width: 100%;
-  }
-  
-  .plan-info__cancel-dialog {
-    margin: 20px;
-    padding: 24px;
   }
   
   .plan-info__cancel-dialog-actions {
@@ -315,19 +274,4 @@ ncel Subscription Styles */
     color: #ffc107;
   }
   
-  .plan-info__cancel-dialog {
-    background: var(--color-bg-secondary, #1c1c1e);
-  }
-  
-  .plan-info__cancel-dialog-title {
-    color: rgba(235, 235, 245, 0.85);
-  }
-  
-  .plan-info__cancel-dialog-message {
-    color: rgba(235, 235, 245, 0.60);
-  }
-  
-  .plan-info__cancel-dialog-overlay {
-    background: rgba(0, 0, 0, 0.7);
-  }
 }

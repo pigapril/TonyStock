@@ -10,8 +10,18 @@
 [context.deploy-preview]
   command = "CI=false npm run build"
 
+[[context.deploy-preview.headers]]
+  for = "/*"
+  [context.deploy-preview.headers.values]
+    X-Robots-Tag = "noindex"
+
 [context.branch-deploy]
   command = "CI=false npm run build"
+
+[[context.branch-deploy.headers]]
+  for = "/*"
+  [context.branch-deploy.headers.values]
+    X-Robots-Tag = "noindex"
 
 # 針對 staging 域名的 robots.txt 重定向（簡化版）
 [[redirects]]
