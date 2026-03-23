@@ -1,5 +1,25 @@
 import apiClient from '../api/apiClient';
 
+const PRICE_PREVIEW_SENTIMENT_KEY_MAP = {
+  'priceAnalysis.sentiment.optimism': 'priceAnalysis.sentiment.greed',
+  'priceAnalysis.sentiment.extremeOptimism': 'priceAnalysis.sentiment.extremeGreed',
+  'priceAnalysis.sentiment.pessimism': 'priceAnalysis.sentiment.fear',
+  'priceAnalysis.sentiment.extremePessimism': 'priceAnalysis.sentiment.extremeFear'
+};
+
+function normalizePricePreview(pricePreview) {
+  if (!pricePreview) {
+    return pricePreview;
+  }
+
+  return {
+    ...pricePreview,
+    sentimentKey: PRICE_PREVIEW_SENTIMENT_KEY_MAP[pricePreview.sentimentKey]
+      || pricePreview.sentimentKey
+      || 'priceAnalysis.sentiment.neutral'
+  };
+}
+
 const FALLBACK_HOMEPAGE_DATA = {
   generatedAt: null,
   announcement: {
@@ -105,7 +125,16 @@ class HomepageService {
       });
 
       if (response.data?.success && response.data?.data) {
-        return response.data.data;
+        const payload = response.data.data;
+
+        if (payload?.pricePreview) {
+          return {
+            ...payload,
+            pricePreview: normalizePricePreview(payload.pricePreview)
+          };
+        }
+
+        return payload;
       }
 
       return this.getFallbackData(section);

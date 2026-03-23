@@ -28,6 +28,172 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Sentiment Inside Out - 市場情緒追蹤平台</title>
+    <style>
+      :root {
+        --top-nav-height: 68px;
+        --top-nav-height-mobile: 56px;
+      }
+
+      .top-nav-logo {
+        display: flex;
+        align-items: center;
+        justify-self: start;
+        width: clamp(144px, 12vw, 188px);
+        min-width: 144px;
+      }
+
+      .top-nav-logo a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 44px;
+      }
+
+      .top-nav-logo .logo {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        height: 38px;
+        object-fit: contain;
+      }
+
+      .home-hero {
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+        padding: calc(var(--top-nav-height, 68px) + 88px) 0 40px;
+      }
+
+      .home-hero__backdrop {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(244, 248, 252, 0.16)),
+          radial-gradient(circle at 14% 20%, rgba(245, 158, 11, 0.16), transparent 24%),
+          radial-gradient(circle at 78% 16%, rgba(14, 165, 233, 0.14), transparent 24%),
+          radial-gradient(circle at 84% 74%, rgba(16, 185, 129, 0.1), transparent 24%);
+        filter: saturate(1.02);
+        transform: scale(1.01);
+      }
+
+      .home-hero__backdropImage {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .home-hero__backdrop::before,
+      .home-hero__backdrop::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+      }
+
+      .home-hero__backdrop::before {
+        background:
+          linear-gradient(90deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.42) 34%, rgba(255, 255, 255, 0.14) 60%, rgba(255, 255, 255, 0.34) 100%),
+          linear-gradient(180deg, rgba(248, 250, 252, 0.18), transparent 18%, rgba(226, 232, 240, 0.16) 100%);
+      }
+
+      .home-hero__backdrop::after {
+        background:
+          radial-gradient(circle at 22% 32%, rgba(255, 255, 255, 0.46), transparent 28%),
+          linear-gradient(180deg, rgba(248, 250, 252, 0.16) 0%, rgba(248, 250, 252, 0.02) 40%, rgba(241, 245, 249, 0.48) 100%);
+      }
+
+      .home-hero__inner {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+        grid-template-areas:
+          'content visual'
+          'actions visual';
+        gap: 48px;
+        align-items: start;
+      }
+
+      .home-hero__content {
+        grid-area: content;
+      }
+
+      .home-hero__visual {
+        grid-area: visual;
+        position: relative;
+        z-index: 1;
+      }
+
+      .home-hero__actions {
+        grid-area: actions;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: -4px;
+        align-items: stretch;
+      }
+
+      .home-hero__action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .home-hero__action--primary {
+        min-width: clamp(232px, 24vw, 292px);
+      }
+
+      .home-hero__action--secondary {
+        min-width: clamp(220px, 22vw, 272px);
+      }
+
+      @media (max-width: 1300px) {
+        .top-nav-logo {
+          width: auto;
+          min-width: 0;
+        }
+
+        .top-nav-logo .logo {
+          height: 32px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .home-hero {
+          min-height: auto;
+          padding: calc(var(--top-nav-height-mobile, 56px) + 56px) 0 32px;
+        }
+
+        .home-hero__inner {
+          grid-template-columns: 1fr;
+          grid-template-areas:
+            'content'
+            'visual'
+            'actions';
+          gap: 26px;
+        }
+
+        .home-hero__actions {
+          margin-top: 0;
+          gap: 8px;
+          justify-content: center;
+          align-items: center;
+          justify-self: center;
+          width: min(100%, 232px);
+        }
+
+        .home-hero__action--primary {
+          width: 100%;
+          min-width: 0;
+        }
+
+        .home-hero__action--secondary {
+          min-width: 0;
+        }
+      }
+    </style>
     <!-- 結構化資料範例 (JSON-LD) -->
     <script type="application/ld+json">
     {

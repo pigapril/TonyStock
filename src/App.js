@@ -73,7 +73,6 @@ const PaymentResult = lazy(() => import('./components/Payment/PaymentResult/Paym
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 const AdminDiagnostic = lazy(() => import('./pages/AdminDiagnostic'));
 const AnnouncementBar = lazy(() => import('./components/Common/AnnouncementBar/AnnouncementBar'));
-const FloatingSponsorButton = lazy(() => import('./components/FloatingSponsorButton/FloatingSponsorButton'));
 const ChatWidget = lazy(() => import('./components/ChatWidget/ChatWidget'));
 const ConditionalAdSense = lazy(() => import('./components/Common/ConditionalAdSense/ConditionalAdSense'));
 
@@ -123,10 +122,13 @@ function AppContent() {
   const isHomePage = location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
   const [isTopNavScrolled, setIsTopNavScrolled] = React.useState(false);
   const shouldLoadAnnouncementBar = useDeferredFeature({ timeoutMs: 1500, useIdleCallback: true, triggerOnInteraction: true });
-  const shouldLoadFloatingSponsorButton = useDeferredFeature({ timeoutMs: 2200, useIdleCallback: true, triggerOnInteraction: true });
   const shouldLoadChatWidget = useDeferredFeature({ timeoutMs: 3200, useIdleCallback: true, triggerOnInteraction: true });
   const shouldLoadAdSense = useDeferredFeature({ timeoutMs: 4500, useIdleCallback: true, triggerOnInteraction: true });
-  const shouldLoadTagManager = useDeferredFeature({ timeoutMs: 2500, useIdleCallback: true, triggerOnInteraction: true });
+  const shouldLoadTagManager = useDeferredFeature({
+    timeoutMs: isHomePage ? 10000 : 2500,
+    useIdleCallback: true,
+    triggerOnInteraction: !isHomePage
+  });
   
 
 
@@ -432,7 +434,14 @@ function AppContent() {
               {/* Logo 區域 */}
               <div className="top-nav-logo">
                 <NavLink to={`/${lang}/`}>
-                  <img src="/logo.png" alt={t('appName')} className="logo" />
+                  <img
+                    src="/logo.png"
+                    alt={t('appName')}
+                    className="logo"
+                    width="156"
+                    height="27"
+                    decoding="async"
+                  />
                 </NavLink>
               </div>
 
@@ -605,10 +614,6 @@ function AppContent() {
           </div>
         </main>
 
-        {/* 添加浮動贊助按鈕元件 */}
-        <Suspense fallback={null}>
-          {shouldLoadFloatingSponsorButton ? <FloatingSponsorButton /> : null}
-        </Suspense>
         {/* 添加文字對話客服元件 */}
         <Suspense fallback={null}>
           {shouldLoadChatWidget ? <ChatWidget /> : null}

@@ -245,14 +245,6 @@ export function AuthProvider({ children }) {
         }
     }, [checkBrowserCompatibility, handleGoogleCredential, isGoogleScriptReady]);
 
-    useEffect(() => {
-        const timer = window.setTimeout(() => {
-            ensureGoogleIdentityLoaded();
-        }, 2500);
-
-        return () => window.clearTimeout(timer);
-    }, [ensureGoogleIdentityLoaded]);
-
     // 檢查認證狀態（已移除不必要的延遲，因為 /api/auth/status 已被後端豁免）
     const checkAuthStatus = useCallback(async () => {
         systemLogger.debug('CheckAuthStatus initiated:', {

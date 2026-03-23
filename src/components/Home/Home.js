@@ -13,6 +13,7 @@ import homepageService from '../../services/homepageService';
 import MarketSentimentGauge from '../MarketSentimentIndex/MarketSentimentGauge';
 import { formatPrice } from '../../utils/priceUtils';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
+import heroBackdropImage from '../../assets/images/home-hero-sio.svg';
 
 const HomePricePreviewChart = lazy(() => import('./HomePricePreviewChart').then((module) => ({ default: module.HomePricePreviewChart })));
 const SharedSentimentHistoryChart = lazy(() => import('../MarketSentimentIndex/SharedSentimentHistoryChart').then((module) => ({ default: module.SharedSentimentHistoryChart })));
@@ -486,7 +487,17 @@ export const Home = () => {
     >
       <div className="home-page">
         <section className="home-hero">
-          <div className="home-hero__backdrop" aria-hidden="true" />
+          <div className="home-hero__backdrop" aria-hidden="true">
+            <img
+              src={heroBackdropImage}
+              alt=""
+              className="home-hero__backdropImage"
+              fetchPriority="high"
+              decoding="async"
+              width="1600"
+              height="1200"
+            />
+          </div>
           <div className="ui-page-shell home-hero__inner">
             <>
               <div className="home-hero__content">
