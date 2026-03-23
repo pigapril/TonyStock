@@ -986,7 +986,7 @@ const MarketSentimentIndex = () => {
           "name": "Sentiment Inside Out",
           "logo": {
             "@type": "ImageObject",
-            "url": `${window.location.origin}/logo-wordmark.svg`
+            "url": `${window.location.origin}/logo.png`
           }
         },
         "datePublished": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),

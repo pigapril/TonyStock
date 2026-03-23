@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const BRAND_LOGO_SRC = '/logo-wordmark.svg';
+export const BRAND_LOGO_SRC = '/logo.png';
 
 export function BrandLogo({
   alt,

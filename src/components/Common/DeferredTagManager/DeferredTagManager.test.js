@@ -55,10 +55,10 @@ describe('DeferredTagManager', () => {
 
   it('returns the long interaction-first strategy for analysis routes', () => {
     expect(getTagManagerDeferConfig('/zh-TW/market-sentiment')).toEqual({
-      timeoutMs: 20000,
-      useIdleCallback: true,
+      timeoutMs: 45000,
+      useIdleCallback: false,
       triggerOnInteraction: true,
-      interactionEvents: ['pointerdown', 'keydown', 'touchstart', 'wheel']
+      interactionEvents: ['pointerdown', 'keydown', 'touchstart']
     });
   });
 });

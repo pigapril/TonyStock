@@ -5,7 +5,7 @@ import { useDeferredFeature } from '../../../hooks/useDeferredFeature';
 import { ensureGoogleTagManager } from '../../../utils/deferredScripts';
 
 const DEFAULT_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
-const ANALYSIS_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart', 'wheel'];
+const ANALYSIS_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
 
 export function getTagManagerDeferConfig(pathname = '') {
   const normalizedPath = pathname.toLowerCase();
@@ -23,8 +23,8 @@ export function getTagManagerDeferConfig(pathname = '') {
 
   if (isAnalysisRoute) {
     return {
-      timeoutMs: 20000,
-      useIdleCallback: true,
+      timeoutMs: 45000,
+      useIdleCallback: false,
       triggerOnInteraction: true,
       interactionEvents: ANALYSIS_INTERACTION_EVENTS
     };
