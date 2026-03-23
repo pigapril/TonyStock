@@ -28,6 +28,13 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Sentiment Inside Out - 市場情緒追蹤平台</title>
+    <link
+      rel="preload"
+      as="image"
+      href="%PUBLIC_URL%/home-hero-sio.svg"
+      fetchpriority="high"
+      type="image/svg+xml"
+    />
     <style>
       :root {
         --top-nav-height: 68px;
@@ -123,6 +130,19 @@
         grid-area: visual;
         position: relative;
         z-index: 1;
+      }
+
+      .home-hero__visual::before {
+        content: '';
+        position: absolute;
+        inset: 6% 4% 2%;
+        border-radius: 44px;
+        background:
+          radial-gradient(circle at center, rgba(14, 165, 233, 0.12), transparent 52%),
+          radial-gradient(circle at 18% 18%, rgba(245, 158, 11, 0.12), transparent 30%);
+        filter: blur(18px);
+        transform: translateY(24px);
+        pointer-events: none;
       }
 
       .home-hero__actions {
