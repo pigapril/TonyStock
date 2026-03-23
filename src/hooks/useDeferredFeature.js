@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+const DEFAULT_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+
 function scheduleIdle(callback, timeoutMs) {
   if (typeof window === 'undefined') {
     return () => {};
@@ -17,7 +19,8 @@ function scheduleIdle(callback, timeoutMs) {
 export function useDeferredFeature({
   timeoutMs = 0,
   useIdleCallback = false,
-  triggerOnInteraction = false
+  triggerOnInteraction = false,
+  interactionEvents = DEFAULT_INTERACTION_EVENTS
 } = {}) {
   const [isReady, setIsReady] = useState(false);
 
@@ -47,10 +50,9 @@ export function useDeferredFeature({
     }
 
     if (triggerOnInteraction) {
-      const events = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
       const handleInteraction = () => markReady();
 
-      events.forEach((eventName) => {
+      interactionEvents.forEach((eventName) => {
         window.addEventListener(eventName, handleInteraction, { passive: true, once: true });
         cleanups.push(() => window.removeEventListener(eventName, handleInteraction));
       });
@@ -60,7 +62,7 @@ export function useDeferredFeature({
       cleanedUp = true;
       cleanups.forEach((cleanup) => cleanup());
     };
-  }, [isReady, timeoutMs, triggerOnInteraction, useIdleCallback]);
+  }, [interactionEvents, isReady, timeoutMs, triggerOnInteraction, useIdleCallback]);
 
   return isReady;
 }

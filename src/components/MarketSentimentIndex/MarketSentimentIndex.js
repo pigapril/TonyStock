@@ -321,6 +321,7 @@ const MarketSentimentIndex = () => {
   ));
   const [isMobileSummaryExpanded, setIsMobileSummaryExpanded] = useState(false);
   const shouldLoadHistoricalData = heroView === 'history' || isIndicatorWorkspaceActivated || isMobileIndicatorSheetOpen;
+  const shouldLoadIndicatorTrend = isIndicatorWorkspaceActivated || isMobileIndicatorSheetOpen;
   const shouldLoadDescriptionSection = useDeferredFeature({
     timeoutMs: 1500,
     useIdleCallback: true,
@@ -573,7 +574,7 @@ const MarketSentimentIndex = () => {
   }, [sentimentData]);
 
   useEffect(() => {
-    const canLoadIndicatorTrend = Boolean(sentimentData && selectedIndicatorKey);
+    const canLoadIndicatorTrend = Boolean(sentimentData && selectedIndicatorKey && shouldLoadIndicatorTrend);
 
     if (!canLoadIndicatorTrend || indicatorTrendData[selectedIndicatorKey]) {
       return;
@@ -629,7 +630,7 @@ const MarketSentimentIndex = () => {
     return () => {
       cancelled = true;
     };
-  }, [indicatorTrendData, selectedIndicatorKey, sentimentData]);
+  }, [indicatorTrendData, selectedIndicatorKey, sentimentData, shouldLoadIndicatorTrend]);
 
   const handleTimeRangeChange = (e) => {
     Analytics.marketSentiment.changeTimeRange({
@@ -985,7 +986,7 @@ const MarketSentimentIndex = () => {
           "name": "Sentiment Inside Out",
           "logo": {
             "@type": "ImageObject",
-            "url": `${window.location.origin}/logo.png`
+            "url": `${window.location.origin}/logo-wordmark.svg`
           }
         },
         "datePublished": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),

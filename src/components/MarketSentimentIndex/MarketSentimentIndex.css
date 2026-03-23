@@ -607,7 +607,7 @@
   color: #555;
 }
 
-.chart-container {
+.market-sentiment-view .chart-container {
   position: relative;
   width: 100%;
   height: 450px;

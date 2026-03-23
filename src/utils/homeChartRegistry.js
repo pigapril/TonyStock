@@ -1,8 +1,17 @@
 import {
   Chart as ChartJS,
   _adapters,
-  registerables
+  Filler,
+  Legend,
+  LineController,
+  LineElement,
+  LinearScale,
+  PointElement,
+  TimeScale,
+  Title,
+  Tooltip
 } from 'chart.js';
+import annotationPlugin from 'chartjs-plugin-annotation';
 import {
   addDays,
   addHours,
@@ -46,6 +55,19 @@ import {
 } from 'date-fns';
 
 let isRegistered = false;
+
+export const HOME_CHART_MODULES = [
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  TimeScale,
+  Tooltip,
+  Legend,
+  Title,
+  Filler,
+  annotationPlugin
+];
 
 const FORMATS = {
   datetime: 'MMM d, yyyy, h:mm:ss aaaa',
@@ -148,6 +170,6 @@ export function ensureHomeChartsRegistered() {
   }
 
   ensureDateAdapterLoaded();
-  ChartJS.register(...registerables);
+  ChartJS.register(...HOME_CHART_MODULES);
   isRegistered = true;
 }

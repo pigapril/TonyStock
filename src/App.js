@@ -50,7 +50,8 @@ import authGuard from './utils/authGuard';
 import authPreloader from './utils/authPreloader';
 import { setupRobotsProtection } from './utils/robotsHandler';
 import { initializeFreeStockList } from './utils/freeStockListUtils';
-import { ensureGoogleTagManager } from './utils/deferredScripts';
+import BrandLogo from './components/Common/BrandLogo/BrandLogo';
+import DeferredTagManager from './components/Common/DeferredTagManager/DeferredTagManager';
 
 const MarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/MarketSentimentIndex'));
 const About = lazy(() => import('./components/About/About').then((module) => ({ default: module.About })));
@@ -124,12 +125,6 @@ function AppContent() {
   const shouldLoadAnnouncementBar = useDeferredFeature({ timeoutMs: 1500, useIdleCallback: true, triggerOnInteraction: true });
   const shouldLoadChatWidget = useDeferredFeature({ timeoutMs: 3200, useIdleCallback: true, triggerOnInteraction: true });
   const shouldLoadAdSense = useDeferredFeature({ timeoutMs: 4500, useIdleCallback: true, triggerOnInteraction: true });
-  const shouldLoadTagManager = useDeferredFeature({
-    timeoutMs: isHomePage ? 10000 : 2500,
-    useIdleCallback: true,
-    triggerOnInteraction: !isHomePage
-  });
-  
 
 
   // 智能導航系統
@@ -168,16 +163,6 @@ function AppContent() {
       adBlockingService.cleanup();
     };
   }, [userPlan]);
-
-  useEffect(() => {
-    if (!shouldLoadTagManager || process.env.NODE_ENV !== 'production') {
-      return;
-    }
-
-    ensureGoogleTagManager('GTM-NR4P4S7W').catch((error) => {
-      console.warn('Failed to defer-load Google Tag Manager:', error);
-    });
-  }, [shouldLoadTagManager]);
 
   // 初始化 API Client 攔截器
   useEffect(() => {
@@ -292,6 +277,7 @@ function AppContent() {
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <PageViewTracker />
+      <DeferredTagManager />
       <div className="App-inner">
         {/* 側邊欄區塊 - 只在使用側邊導航模式時渲染 */}
         {useSideNavigation && (
@@ -434,14 +420,7 @@ function AppContent() {
               {/* Logo 區域 */}
               <div className="top-nav-logo">
                 <NavLink to={`/${lang}/`}>
-                  <img
-                    src="/logo.png"
-                    alt={t('appName')}
-                    className="logo"
-                    width="156"
-                    height="27"
-                    decoding="async"
-                  />
+                  <BrandLogo alt={t('appName')} />
                 </NavLink>
               </div>
 

@@ -6,7 +6,7 @@ const ImageTest = () => {
     const testPaths = [
         '/images/market-sentiment/composition-feature.png',
         '/images/market-sentiment/placeholder-composition.svg',
-        '/logo.png'
+        '/logo-wordmark.svg'
     ];
 
     const handleImageLoad = (path) => {

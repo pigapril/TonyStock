@@ -9,7 +9,9 @@ const budgets = {
   initialJsGzipBytes: 560 * 1024,
   initialCssGzipBytes: 120 * 1024,
   totalInitialGzipBytes: 680 * 1024,
-  maxEntrypoints: 6
+  maxEntrypoints: 6,
+  mainJsGzipBytes: 230 * 1024,
+  mainCssGzipBytes: 35 * 1024
 };
 
 if (!fs.existsSync(manifestPath)) {
@@ -25,10 +27,15 @@ const gzipSize = (filePath) => zlib.gzipSync(fs.readFileSync(filePath)).length;
 
 const jsEntrypoints = entrypoints.filter((asset) => asset.endsWith('.js'));
 const cssEntrypoints = entrypoints.filter((asset) => asset.endsWith('.css'));
+const files = manifest.files || {};
+const mainJsAsset = files['main.js'] || Object.values(files).find((assetPath) => /^\/?static\/js\/main\..+\.js$/.test(assetPath));
+const mainCssAsset = files['main.css'] || Object.values(files).find((assetPath) => /^\/?static\/css\/main\..+\.css$/.test(assetPath));
 
 const jsGzipBytes = jsEntrypoints.reduce((total, assetPath) => total + gzipSize(getAbsolutePath(assetPath)), 0);
 const cssGzipBytes = cssEntrypoints.reduce((total, assetPath) => total + gzipSize(getAbsolutePath(assetPath)), 0);
 const totalInitialGzipBytes = jsGzipBytes + cssGzipBytes;
+const mainJsGzipBytes = mainJsAsset ? gzipSize(getAbsolutePath(mainJsAsset)) : 0;
+const mainCssGzipBytes = mainCssAsset ? gzipSize(getAbsolutePath(mainCssAsset)) : 0;
 
 const failures = [];
 
@@ -48,13 +55,25 @@ if (entrypoints.length > budgets.maxEntrypoints) {
   failures.push(`Entrypoint count ${entrypoints.length} exceeds budget ${budgets.maxEntrypoints}`);
 }
 
+if (mainJsAsset && mainJsGzipBytes > budgets.mainJsGzipBytes) {
+  failures.push(`Main JS gzip size ${mainJsGzipBytes} exceeds budget ${budgets.mainJsGzipBytes}`);
+}
+
+if (mainCssAsset && mainCssGzipBytes > budgets.mainCssGzipBytes) {
+  failures.push(`Main CSS gzip size ${mainCssGzipBytes} exceeds budget ${budgets.mainCssGzipBytes}`);
+}
+
 console.log(JSON.stringify({
   entrypoints,
   budgets,
   current: {
     jsGzipBytes,
     cssGzipBytes,
-    totalInitialGzipBytes
+    totalInitialGzipBytes,
+    mainJsAsset,
+    mainJsGzipBytes,
+    mainCssAsset,
+    mainCssGzipBytes
   },
   status: failures.length ? 'fail' : 'pass'
 }, null, 2));

@@ -326,11 +326,6 @@ body {
   border-bottom: 1px solid var(--color-border-divider, #eee);
 }
 
-/* 添加這個新的樣式 */
-.market-sentiment-container {
-  margin-top: -10px; /* 減少頂部間距 */
-}
-
 /* 側邊欄預設隱藏狀態 */
 .sidebar {
   transform: translateX(100%);
@@ -517,57 +512,6 @@ body {
   body {
     -webkit-text-size-adjust: none;  /* 防止 iOS 自動調整字體大小 */
   }
-}
-
-/* 為標準差和情緒指標頁面添加特定樣式 */
-.standard-deviation-page,
-.market-sentiment-index {
-  width: 100%;
-  max-width: 100%;
-  padding: 0 20px; /* 添加左右內邊距 */
-  box-sizing: border-box;
-}
-
-/* 調整圖表容器和輸入區塊的寬度 */
-.chart-container,
-.indicator-chart-container,
-.input-group {  /* 添加 input-group */
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-
-/* 響應式設計調整 */
-@media (max-width: 1300px) {
-  .standard-deviation-page,
-  .market-sentiment-index {
-    padding: 0 10px; /* 減少左右內邊距 */
-  }
-}
-
-
-
-.tab-button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    background-color: #f5f5f5;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.tab-button.active {
-    background-color: #1a73e8;
-    color: white;
-}
-
-.tab-button:hover {
-    background-color: #e4e6e9;
-}
-
-.tab-button.active:hover {
-    background-color: #1557b0;
 }
 
 /* UserProfile 在頂部導航欄中的特定樣式 */

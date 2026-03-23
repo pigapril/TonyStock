@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 72" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">Sentiment Inside Out</title>
+  <desc id="logoDesc">Sentiment Inside Out brand mark</desc>
+  <defs>
+    <linearGradient id="brandPulse" x1="8" x2="56" y1="10" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#28d7e5" />
+      <stop offset="0.55" stop-color="#6b79f3" />
+      <stop offset="1" stop-color="#ef3f98" />
+    </linearGradient>
+    <linearGradient id="brandText" x1="76" x2="392" y1="16" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f172a" />
+      <stop offset="0.48" stop-color="#4338ca" />
+      <stop offset="1" stop-color="#be185d" />
+    </linearGradient>
+  </defs>
+  <g transform="translate(4 7)">
+    <path
+      fill="url(#brandPulse)"
+      d="M32 57C18 47 8 38 8 24.5 8 16.5 14 10 21.8 10c4.7 0 8.1 2.2 10.2 5.5C34.1 12.2 37.5 10 42.2 10 50 10 56 16.5 56 24.5 56 38 46 47 32 57Z"
+    />
+    <path
+      fill="none"
+      stroke="#fff8fb"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="4.5"
+      d="M3 34h12l5-9 6 18 7-24 5 15 5-8h18"
+    />
+  </g>
+  <g fill="url(#brandText)">
+    <text x="78" y="32" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="-0.6">
+      Sentiment
+    </text>
+    <text x="78" y="56" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="21" font-weight="600" letter-spacing="-0.4">
+      Inside Out
+    </text>
+  </g>
+</svg>
