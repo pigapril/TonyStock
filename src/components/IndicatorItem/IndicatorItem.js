@@ -1,18 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { Line } from 'react-chartjs-2';
-import 'chartjs-adapter-date-fns';
-import {
-  Chart as ChartJS,
-  LineElement,
-  PointElement,
-  LineController,
-  CategoryScale,
-  LinearScale,
-  TimeScale,
-  Filler,
-  Tooltip,
-  Legend,
-} from 'chart.js';
 import './IndicatorItem.css';
 import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
@@ -23,21 +10,10 @@ import { handleApiError } from '../../utils/errorHandler';
 import { Toast } from '../Watchlist/components/Toast';
 import { formatPrice } from '../../utils/priceUtils';
 import enhancedApiClient from '../../utils/enhancedApiClient';
+import { ensureHomeChartsRegistered } from '../../utils/homeChartRegistry';
 
 const EARLIEST_HISTORY_DATE = new Date('2010-01-01');
-
-// 註冊 Chart.js 的元件和插件
-ChartJS.register(
-  LineElement,
-  PointElement,
-  LineController,
-  CategoryScale,
-  LinearScale,
-  TimeScale,
-  Filler,
-  Tooltip,
-  Legend
-);
+ensureHomeChartsRegistered();
 
 const restrictedWindowMaskPlugin = {
   id: 'restrictedWindowMask',
@@ -118,8 +94,6 @@ const restrictedWindowMaskPlugin = {
     ctx.restore();
   }
 };
-
-ChartJS.register(restrictedWindowMaskPlugin);
 
 // 新增：獲取時間單位的函數
 function getTimeUnit(dates) {

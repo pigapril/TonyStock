@@ -1,10 +1,15 @@
 .info-tool-container {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
 }
 
 .info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     color: #666;
     font-size: 1.1em;
@@ -16,6 +21,18 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-operations .info-tool-container {
+    height: 32px;
+}
+
+.category-operations .info-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    line-height: 1;
+    box-sizing: border-box;
 }
 
 .info-icon:hover {

@@ -1,31 +1,9 @@
 import React, { useMemo } from 'react';
-import 'chartjs-adapter-date-fns';
-import {
-  Chart as ChartJS,
-  LineElement,
-  PointElement,
-  LineController,
-  CategoryScale,
-  LinearScale,
-  TimeScale,
-  Filler,
-  Tooltip,
-  Legend
-} from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
+import { ensureHomeChartsRegistered } from '../../utils/homeChartRegistry';
 
-ChartJS.register(
-  LineElement,
-  PointElement,
-  LineController,
-  CategoryScale,
-  LinearScale,
-  TimeScale,
-  Filler,
-  Tooltip,
-  Legend
-);
+ensureHomeChartsRegistered();
 
 export function HomePricePreviewChart({ series, className = '' }) {
   const { t } = useTranslation();
@@ -126,7 +104,7 @@ export function HomePricePreviewChart({ series, className = '' }) {
 
   return (
     <div className={className}>
-      <Line data={chartData} options={chartOptions} />
+      <Line data={chartData} options={chartOptions} datasetIdKey="label" />
     </div>
   );
 }

@@ -1,34 +1,32 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo, useTransition } from 'react';
-import { Line } from 'react-chartjs-2';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useState, useEffect, useCallback, useRef, useMemo, useTransition, lazy, Suspense } from 'react';
 import './PriceAnalysis.css';
 import PageContainer from '../PageContainer/PageContainer';
-import ULBandChart from '../ULBandChart/ULBandChart';
 import { Analytics } from '../../utils/analytics';
 import { handleApiError } from '../../utils/errorHandler';
 import { useMediaQuery } from 'react-responsive';
-import Turnstile from 'react-turnstile';
 import { formatPrice } from '../../utils/priceUtils';
-import { ExpandableDescription } from '../Common/ExpandableDescription/ExpandableDescription';
 import { Toast } from '../Watchlist/components/Toast';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
-import { useSearchParams, useLocation, useNavigate } from 'react-router-dom'; // 引入 useLocation 和 useNavigate
+import { useSearchParams, useLocation } from 'react-router-dom'; // 引入 useLocation
 import { useAdContext } from '../../components/Common/InterstitialAdModal/AdContext'; // 導入 useAdContext
 import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebouncedCallback
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
-import AdSense from '../Common/AdSense'; // <--- 新增：引入 AdSense 組件
-import zoomPlugin from 'chartjs-plugin-zoom'; // 新增：引入縮放插件
-import { useMobileTouchHandler } from '../ULBandChart/useMobileTouchHandler'; // 新增：引入觸控處理 Hook
+import { useDeferredFeature } from '../../hooks/useDeferredFeature';
+import { ensureChartZoomRegistered } from '../../utils/chartZoomRegistry';
 
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
 import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDialog
 import { isStockAllowed, getFreeStockList } from '../../utils/freeStockListUtils'; // 導入免費股票清單檢查函數
 import FreeStockList from './FreeStockList'; // 新增：引入免費股票清單組件
-import ScrollToTopButton from '../Common/ScrollToTopButton/ScrollToTopButton'; // 新增：引入回到頂端按鈕
 import watchlistService from '../Watchlist/services/watchlistService'; // 新增：引入 watchlist service
+
+const DeferredBacktestDatePicker = lazy(() => import('./DeferredBacktestDatePicker'));
+const PriceAnalysisChartWorkspace = lazy(() => import('./PriceAnalysisChartWorkspace'));
+const PriceAnalysisDescriptionTabs = lazy(() => import('./PriceAnalysisDescriptionTabs'));
+
+ensureChartZoomRegistered();
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
 function getTimeUnit(dates) {
@@ -44,10 +42,6 @@ function getTimeUnit(dates) {
     return 'day';
   }
 }
-
-// 在組件外部或文件末尾創建 Memoized 版本
-const MemoizedULBandChart = React.memo(ULBandChart);
-const MemoizedExpandableDescription = React.memo(ExpandableDescription);
 
 // 新增輔助函數：從翻譯鍵提取後綴
 const getSentimentSuffix = (key) => {
@@ -65,6 +59,76 @@ const PRICE_CHART_LABEL_KEYS = [
   'priceAnalysis.chart.label.plus2sd'
 ];
 
+const renderDeferredDatePickerFallback = () => (
+  <div className="price-analysis-date-picker-skeleton" aria-hidden="true" />
+);
+
+const renderChartWorkspaceFallback = () => (
+  <div className="chart-card">
+    <div className="chart-container">
+      <div className="chart-header chart-header--skeleton" aria-hidden="true">
+        <div className="analysis-result analysis-result--skeleton">
+          <div className="analysis-item">
+            <span className="analysis-label" />
+            <span className="analysis-value-skeleton" />
+          </div>
+          <div className="analysis-item">
+            <span className="analysis-label" />
+            <span className="analysis-value-skeleton" />
+          </div>
+          <div className="analysis-item">
+            <span className="analysis-label" />
+            <span className="analysis-value-skeleton analysis-value-skeleton--wide" />
+          </div>
+        </div>
+      </div>
+      <div className="chart-content">
+        <div className="chart-tabs-row chart-tabs-row--skeleton" aria-hidden="true">
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
+            <div className="chart-tabs">
+              <button className="chart-tab" type="button" disabled>SD</button>
+              <button className="chart-tab" type="button" disabled>UL</button>
+            </div>
+          </div>
+        </div>
+        <div className="chart-loading-indicator chart-loading-indicator--deferred">
+          <div className="loading-spinner">
+            <div className="spinner"></div>
+            <span>Preparing chart…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const renderDescriptionTabsFallback = () => (
+  <div className="bottom-description-section" aria-hidden="true">
+    <div className="description-tabs-container">
+      <div className="description-tabs">
+        <button className="description-tab active" type="button" disabled />
+        <button className="description-tab" type="button" disabled />
+        <button className="description-tab" type="button" disabled />
+        <button className="description-tab" type="button" disabled />
+      </div>
+      <div className="description-tab-content">
+        <div className="description-list">
+          <div className="analysis-value-skeleton analysis-value-skeleton--wide" />
+          <div className="analysis-value-skeleton analysis-value-skeleton--wide" />
+          <div className="analysis-value-skeleton analysis-value-skeleton--wide" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+function isChartAttached(chart) {
+  const canvas = chart?.canvas;
+  const ownerDocument = canvas?.ownerDocument;
+
+  return Boolean(canvas && ownerDocument?.contains(canvas));
+}
+
 /**
  * 價格標準差分析頁面 (PriceAnalysisPage)
  *
@@ -75,23 +139,15 @@ export function PriceAnalysis() {
   const currentLang = i18n.language; // 取得當前語言
   const [searchParams] = useSearchParams();
   const location = useLocation(); // <--- 獲取 location 物件
-  const navigate = useNavigate(); // <--- 獲取 navigate 函數
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const { showToast, toast, hideToast } = useToastManager();
   const { requestAdDisplay } = useAdContext(); // 從 Context 獲取函數
   const { isAuthenticated, user, checkAuthStatus } = useAuth(); // 新增：獲取認證狀態和用戶資訊
   const { openDialog } = useDialog(); // 新增：獲取對話框功能
 
-  // 檢查 Turnstile 功能是否啟用
-  const isTurnstileEnabled = process.env.REACT_APP_TURNSTILE_ENABLED === 'true';
-
   // 從 URL 參數或預設值初始化狀態
-  const initialStockCode = searchParams.get('stockCode') || 'SPY';
-  const initialYears = searchParams.get('years') || '3.5';
-  const initialBackTestDate = searchParams.get('backTestDate') || ''; // 如果需要也可以從 URL 讀取
-
   // 這裡保留所有原本在 App.js 中標準差分析需要的狀態
-  const [stockCode, setStockCode] = useState(''); // 初始值改為空，由 useEffect 決定
+  const [, setStockCode] = useState(''); // 初始值改為空，由 useEffect 決定
   const [displayStockCode, setDisplayStockCode] = useState(''); // 新增：用於輸入框即時顯示
   const [years, setYears] = useState('');       // 初始值改為空
   const [backTestDate, setBackTestDate] = useState(''); // 初始值改為空
@@ -101,8 +157,6 @@ export function PriceAnalysis() {
   const [activeChart, setActiveChart] = useState('sd');
   const [activeDescriptionTab, setActiveDescriptionTab] = useState('overview'); // 新增：說明標籤狀態
   const [ulbandData, setUlbandData] = useState(null);
-  const [turnstileToken, setTurnstileToken] = useState(isTurnstileEnabled ? null : 'disabled');
-  const [turnstileVisible, setTurnstileVisible] = useState(isTurnstileEnabled);
   // 修改分析結果狀態，包含 key 和 value
   const [analysisResult, setAnalysisResult] = useState({
     price: null,
@@ -113,15 +167,13 @@ export function PriceAnalysis() {
   const [isAdvancedQuery, setIsAdvancedQuery] = useState(false);
   // 新增狀態來記錄分析期間的選擇
   const [analysisPeriod, setAnalysisPeriod] = useState('long'); // 預設為長期
-  const [analysisClickCount, setAnalysisClickCount] = useState(0);
-  const [showInterstitialAd, setShowInterstitialAd] = useState(false);
-  const AD_DISPLAY_THRESHOLD = 3; // <--- 修改閾值為 3
-  const [isAdCooldownActive, setIsAdCooldownActive] = useState(false); // 新增：追蹤廣告冷卻狀態
-  const cooldownTimeoutRef = useRef(null); // 新增：保存冷卻計時器 ID
   const [isPending, startTransition] = useTransition(); // 添加 useTransition
   const chartRef = useRef(null); // 新增：圖表 ref 用於程式化控制 tooltip
   const ulbandChartRef = useRef(null); // ULBand 圖表 ref
   const chartCardRef = useRef(null); // 圖表卡片 ref 用於滾動
+  const tooltipTimerRef = useRef(null);
+  const scrollTimerRef = useRef(null);
+  const analyticsTimerRef = useRef(null);
 
   const analysisSentimentText = useMemo(() => {
     if (!analysisResult.sentimentKey) return null;
@@ -139,9 +191,174 @@ export function PriceAnalysis() {
       }))
     };
   }, [chartData, t]);
+  const xAxisMax = useMemo(() => {
+    if (!chartData?.labels || chartData.labels.length === 0) {
+      return undefined;
+    }
 
-  // 使用自定義 Hook 處理手機版標準差圖表的觸控
-  useMobileTouchHandler(chartRef, isMobile, activeChart === 'sd');
+    const lastDate = new Date(chartData.labels[chartData.labels.length - 1]);
+    const firstDate = new Date(chartData.labels[0]);
+    const timeRange = lastDate - firstDate;
+    const spaceRatio = isMobile ? 0.15 : 0.1;
+
+    return new Date(lastDate.getTime() + timeRange * spaceRatio);
+  }, [chartData?.labels, isMobile]);
+  const chartAnnotations = useMemo(() => {
+    const annotations = {};
+
+    if (!chartData?.labels || chartData.labels.length === 0 || !chartData.datasets) {
+      return annotations;
+    }
+
+    const lastIndex = chartData.labels.length - 1;
+    const lastDate = chartData.labels[lastIndex];
+
+    chartData.datasets.forEach((dataset, index) => {
+      if (!dataset.data || dataset.data.length === 0) {
+        return;
+      }
+
+      const lastValue = dataset.data[lastIndex];
+
+      annotations[`line-${index}`] = {
+        type: 'line',
+        yMin: lastValue,
+        yMax: lastValue,
+        xMin: lastDate,
+        xMax: xAxisMax || lastDate,
+        borderColor: dataset.borderColor || '#999',
+        borderWidth: index === 0 ? 2 : 1,
+        borderDash: [5, 5]
+      };
+
+      annotations[`label-${index}`] = {
+        type: 'label',
+        drawTime: 'afterDraw',
+        xScaleID: 'x',
+        yScaleID: 'y',
+        xValue: xAxisMax || lastDate,
+        yValue: lastValue,
+        backgroundColor: dataset.borderColor || '#999',
+        color: '#fff',
+        content: `${formatPrice(lastValue)}`,
+        font: {
+          size: 12,
+          weight: 'bold'
+        },
+        padding: {
+          top: 2,
+          bottom: 2,
+          left: 5,
+          right: 5
+        },
+        borderRadius: 3,
+        position: {
+          x: 'end',
+          y: 'center'
+        },
+        xAdjust: index === 0 ? 2 : 35,
+        yAdjust: 0
+      };
+    });
+
+    return annotations;
+  }, [chartData?.datasets, chartData?.labels, xAxisMax]);
+  const yTickLabelFormatter = useCallback((value) => {
+    if (!chartData?.datasets || !chartData?.labels?.length) {
+      return value;
+    }
+
+    const lastIndex = chartData.labels.length - 1;
+    const dataValues = chartData.datasets
+      .map((dataset) => dataset.data?.[lastIndex])
+      .filter((v) => v !== undefined && v !== null)
+      .sort((a, b) => a - b);
+
+    if (dataValues.length === 0) {
+      return value;
+    }
+
+    const minDataValue = dataValues[0];
+    const maxDataValue = dataValues[dataValues.length - 1];
+
+    if (value > minDataValue && value < maxDataValue) {
+      return '';
+    }
+
+    return formatPrice(value);
+  }, [chartData?.datasets, chartData?.labels]);
+  const tooltipLabelFormatter = useCallback((context) => `${context.dataset.label || ''}: ${formatPrice(context.parsed.y)}`, []);
+  const tooltipLabelColorFormatter = useCallback((context) => ({
+    backgroundColor: context.dataset.borderColor,
+    borderColor: context.dataset.borderColor,
+    borderWidth: 0
+  }), []);
+  const tooltipYAlign = useCallback((context) => {
+    if (!context.tooltip || !context.tooltip.dataPoints || context.tooltip.dataPoints.length === 0) {
+      return 'top';
+    }
+
+    const pricePoint = context.tooltip.dataPoints.find(point => point.datasetIndex === 0);
+    if (!pricePoint || !pricePoint.element) return 'top';
+
+    const chartArea = context.chart.chartArea;
+    if (!chartArea) return 'top';
+
+    const chartHeight = chartArea.bottom - chartArea.top;
+    const chartMiddle = chartArea.top + (chartHeight / 2);
+    const priceY = pricePoint.element.y;
+
+    return priceY < chartMiddle ? 'top' : 'bottom';
+  }, []);
+  const lineChartZoomOptions = useMemo(() => ({
+    pan: {
+      enabled: !isMobile,
+      mode: 'x',
+      modifierKey: undefined,
+      onPanStart: () => true
+    },
+    zoom: {
+      wheel: {
+        enabled: !isMobile,
+        speed: 0.1
+      },
+      pinch: {
+        enabled: isMobile
+      },
+      mode: 'x',
+      onZoomStart: ({ event }) => {
+        if (isMobile && event && event.touches && event.touches.length === 2) {
+          event.preventDefault();
+          return true;
+        }
+        return true;
+      }
+    },
+    limits: {
+      x: {
+        min: 'original',
+        max: 'original'
+      }
+    }
+  }), [isMobile]);
+
+  const hasAnalysisContent = Boolean(loading || chartData || ulbandData);
+  const shouldLoadChartWorkspace = useDeferredFeature({
+    timeoutMs: 1200,
+    useIdleCallback: true,
+    triggerOnInteraction: true
+  });
+  const shouldRenderChartWorkspace = shouldLoadChartWorkspace || hasAnalysisContent;
+  const shouldLoadDescriptionTabs = useDeferredFeature({
+    timeoutMs: 1500,
+    useIdleCallback: true,
+    triggerOnInteraction: true
+  });
+  const shouldPrefetchWatchlist = useDeferredFeature({
+    timeoutMs: 4000,
+    useIdleCallback: true,
+    triggerOnInteraction: false
+  });
 
 
   // 新增：熱門搜尋狀態
@@ -157,78 +374,94 @@ export function PriceAnalysis() {
   const [loadingWatchlist, setLoadingWatchlist] = useState(false);
   const [hasLoadedWatchlist, setHasLoadedWatchlist] = useState(false);
   const [collapsedCategories, setCollapsedCategories] = useState({}); // 新增：記錄哪些分類被收合
-  const [collapsedRegions, setCollapsedRegions] = useState({}); // 新增：記錄 Index ETF 哪些區域被收合
-
-  // 新增：自動顯示最新數據點的 tooltip
-  useEffect(() => {
-    // 只在標準差圖表顯示且有數據時執行
-    if (!loading && activeChart === 'sd' && chartData && chartRef.current) {
-      // 使用 setTimeout 確保圖表已完全渲染
-      const timer = setTimeout(() => {
-        const chart = chartRef.current;
-        // 檢查圖表是否存在、已掛載且有數據
-        if (chart && chart.canvas && chart.canvas.parentNode && chart.data && chart.data.labels && chart.data.labels.length > 0) {
-          try {
-            const lastIndex = chart.data.labels.length - 1;
-
-            // 設置活動元素為所有數據集的最後一個數據點
-            const activeElements = chart.data.datasets.map((dataset, datasetIndex) => ({
-              datasetIndex,
-              index: lastIndex
-            }));
-
-            chart.setActiveElements(activeElements);
-
-            // 獲取價格線（datasetIndex = 0）的最後一個數據點位置
-            const priceDatasetMeta = chart.getDatasetMeta(0);
-            if (priceDatasetMeta && priceDatasetMeta.data[lastIndex]) {
-              const priceElement = priceDatasetMeta.data[lastIndex];
-              // 使用價格點的實際位置來顯示 tooltip
-              chart.tooltip.setActiveElements(activeElements, {
-                x: priceElement.x,
-                y: priceElement.y
-              });
-            } else {
-              // 如果找不到價格點，使用預設方式
-              chart.tooltip.setActiveElements(activeElements);
-            }
-
-            // 更新圖表以顯示 tooltip
-            chart.update('none'); // 使用 'none' 模式避免動畫
-          } catch (error) {
-            console.warn('Failed to show tooltip:', error);
-          }
-        }
-      }, 300); // 延遲 300ms 確保圖表渲染完成
-
-      return () => clearTimeout(timer);
+  const clearPostAnalysisTimers = useCallback(() => {
+    if (tooltipTimerRef.current) {
+      clearTimeout(tooltipTimerRef.current);
+      tooltipTimerRef.current = null;
     }
-  }, [loading, activeChart, chartData]); // 依賴於 loading、activeChart 和 chartData
 
-  // 新增：手機版自動滾動到圖表
+    if (scrollTimerRef.current) {
+      clearTimeout(scrollTimerRef.current);
+      scrollTimerRef.current = null;
+    }
+
+    if (analyticsTimerRef.current) {
+      clearTimeout(analyticsTimerRef.current);
+      analyticsTimerRef.current = null;
+    }
+  }, []);
+
+  const resetAnalysisOutputs = useCallback(() => {
+    startTransition(() => {
+      setChartData(null);
+      setUlbandData(null);
+      setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
+      setDisplayedStockCode('');
+    });
+  }, [startTransition]);
+
   useEffect(() => {
-    // 只在手機版、非 loading 狀態、有數據、且是用戶主動操作時執行
-    if (isMobile && !loading && (chartData || ulbandData) && chartCardRef.current && isUserInitiated) {
-      // 使用 setTimeout 確保圖表已完全渲染和 DOM 更新完成
-      const timer = setTimeout(() => {
+    clearPostAnalysisTimers();
+
+    const hasRenderedAnalysis = !loading && (chartData || ulbandData);
+    if (!hasRenderedAnalysis) {
+      return undefined;
+    }
+
+    if (activeChart === 'sd' && chartData && chartRef.current) {
+      tooltipTimerRef.current = window.setTimeout(() => {
+        const chart = chartRef.current;
+        if (!isChartAttached(chart) || !chart.data?.labels?.length) {
+          return;
+        }
+
+        try {
+          const lastIndex = chart.data.labels.length - 1;
+          const activeElements = chart.data.datasets.map((dataset, datasetIndex) => ({
+            datasetIndex,
+            index: lastIndex
+          }));
+
+          chart.setActiveElements(activeElements);
+
+          const priceDatasetMeta = chart.getDatasetMeta(0);
+          if (priceDatasetMeta?.data?.[lastIndex]) {
+            const priceElement = priceDatasetMeta.data[lastIndex];
+            chart.tooltip.setActiveElements(activeElements, {
+              x: priceElement.x,
+              y: priceElement.y
+            });
+          } else {
+            chart.tooltip.setActiveElements(activeElements);
+          }
+
+          chart.update('none');
+        } catch (error) {
+          console.warn('Failed to show tooltip:', error);
+        }
+      }, 220);
+    }
+
+    if (isMobile && isUserInitiated && chartCardRef.current) {
+      scrollTimerRef.current = window.setTimeout(() => {
         if (chartCardRef.current) {
           const rect = chartCardRef.current.getBoundingClientRect();
           const windowHeight = window.innerHeight;
-          const bottomPadding = 100; // 底部留更多空間，讓圖表往上移動，頁面往下滑更多
-          // 計算滾動位置：讓 chart-card 的底部對齊視窗底部（加上 padding）
+          const bottomPadding = 100;
           const scrollTarget = window.pageYOffset + rect.bottom - windowHeight + bottomPadding;
           window.scrollTo({
             top: scrollTarget,
             behavior: 'smooth'
           });
         }
-        // 滾動完成後重置標記
         setIsUserInitiated(false);
-      }, 100); // 延遲 500ms 確保圖表和數據都已渲染
-
-      return () => clearTimeout(timer);
+      }, 120);
     }
-  }, [isMobile, loading, chartData, ulbandData, isUserInitiated]); // 依賴於 isMobile、loading、chartData、ulbandData 和 isUserInitiated
+
+    return clearPostAnalysisTimers;
+  }, [activeChart, chartData, clearPostAnalysisTimers, isMobile, isUserInitiated, loading, ulbandData]);
+
+  useEffect(() => clearPostAnalysisTimers, [clearPostAnalysisTimers]);
 
   // --- Debounced State Setters ---
   // Debounce setStockCode with a 300ms delay
@@ -285,50 +518,8 @@ export function PriceAnalysis() {
     setActiveDescriptionTab(tabType);
   };
 
-  // 處理 Turnstile 回調
-  const handleTurnstileVerify = (response) => {
-    console.log("Turnstile verified:", response);
-    setTurnstileToken(response);
-    setTurnstileVisible(false); // 驗證成功後隱藏
-  };
-
-  const handleTurnstileError = (response) => {
-    console.error("Turnstile error:", response); // 保留日誌以供調試
-    // 建立帶有 errorCode 的錯誤物件，並使用現有的翻譯鍵
-    const turnstileError = new Error(t('errors.TURNSTILE_ERROR'));
-    turnstileError.errorCode = 'TURNSTILE_ERROR'; // 關鍵：添加 errorCode 屬性
-    // 將新的錯誤物件和 t 傳遞給 handleApiError
-    handleApiError(turnstileError, showToast, t);
-    setTurnstileToken(null); // 清除 token
-    setTurnstileVisible(true); // 保持可見以便重試
-  };
-
-  const handleTurnstileExpire = () => {
-    console.warn("Turnstile expired");
-    // 建立帶有 errorCode 的錯誤物件，並使用現有的翻譯鍵
-    const turnstileExpiredError = new Error(t('errors.TURNSTILE_EXPIRED'));
-    turnstileExpiredError.errorCode = 'TURNSTILE_EXPIRED'; // 關鍵：添加 errorCode 屬性
-    // 將新的錯誤物件和 t 傳遞給 handleApiError
-    handleApiError(turnstileExpiredError, showToast, t);
-    setTurnstileToken(null); // 清除 token
-    setTurnstileVisible(true); // 顯示以便重新驗證
-  };
-
   // 資料抓取函式
-  const fetchStockData = useCallback(async (stock, yrs, testDate, bypassTurnstile = false, isManualSearch = false) => {
-    // 驗證 Turnstile Token (只有在功能啟用時才檢查)
-    if (isTurnstileEnabled && !bypassTurnstile && !turnstileToken) {
-      // 可以直接調用 showToast 或通過 handleApiError
-      // 方式一：直接調用
-      // showToast(t('errors.TURNSTILE_REQUIRED'), 'error');
-      // 方式二：通過 handleApiError (如果希望統一追蹤)
-      const turnstileError = new Error(t('errors.TURNSTILE_REQUIRED'));
-      turnstileError.errorCode = 'TURNSTILE_REQUIRED'; // 添加 errorCode
-      handleApiError(turnstileError, showToast, t);
-      setLoading(false);
-      return;
-    }
-
+  const fetchStockData = useCallback(async (stock, yrs, testDate, isManualSearch = false) => {
     // setLoading(true) 和清除訊息已移至 handleSubmit
 
     try {
@@ -339,9 +530,6 @@ export function PriceAnalysis() {
 
       const response = await enhancedApiClient.get('/api/integrated-analysis', {
         params: params,
-        headers: {
-          ...(isTurnstileEnabled && !bypassTurnstile && turnstileToken && { 'CF-Turnstile-Token': turnstileToken })
-        },
         timeout: 30000
       });
 
@@ -369,7 +557,7 @@ export function PriceAnalysis() {
         // 計算情緒分析
         if (prices && prices.length > 0 && sdAnalysis) {
           const lastPrice = prices[prices.length - 1];
-          const { trendLine, tl_plus_2sd, tl_plus_sd, tl_minus_sd, tl_minus_2sd } = sdAnalysis;
+          const { tl_plus_2sd, tl_plus_sd, tl_minus_sd, tl_minus_2sd } = sdAnalysis;
           const lastTlPlus2Sd = tl_plus_2sd[tl_plus_2sd.length - 1];
           const lastTlMinus2Sd = tl_minus_2sd[tl_minus_2sd.length - 1];
           const lastTlPlusSd = tl_plus_sd[tl_plus_sd.length - 1];
@@ -417,9 +605,9 @@ export function PriceAnalysis() {
           upgradeUrl: `/${i18n.language}/subscription-plans`
         });
 
-        // 3. 清除 Loading 狀態並退出，不執行 handleApiError
-        setLoading(false);
-        return;
+      // 3. 清除 Loading 狀態並退出，不執行 handleApiError
+      setLoading(false);
+      return;
       }
 
       // 錯誤時也用 transition 清空數據
@@ -437,9 +625,77 @@ export function PriceAnalysis() {
       // 注意：如果 transition 非常慢，Loading 可能會比數據出現早消失
       setLoading(false);
     }
-  }, [isTurnstileEnabled, turnstileToken, showToast, startTransition, t, requestAdDisplay, isAdCooldownActive, analysisClickCount]); // 確保 t 在依賴項中
+  }, [checkAuthStatus, i18n.language, openDialog, showToast, startTransition, t]); // 確保 t 在依賴項中
+
+  const resolveAnalysisYears = useCallback((invalidYearsMessage) => {
+    if (isAdvancedQuery) {
+      const convertedYears = years
+        .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
+        .replace(/[．。]/g, '.');
+      const parsedYears = parseFloat(convertedYears);
+
+      if (!isNaN(parsedYears) && parsedYears > 0) {
+        return parsedYears;
+      }
+
+      if (invalidYearsMessage) {
+        showToast(invalidYearsMessage, 'warning');
+      }
+      return 3.5;
+    }
+
+    switch (analysisPeriod) {
+      case 'short':
+        return 0.5;
+      case 'medium':
+        return 1.5;
+      case 'long':
+      default:
+        return 3.5;
+    }
+  }, [analysisPeriod, isAdvancedQuery, showToast, years]);
+
+  const queueAnalysisEvent = useCallback((payload) => {
+    if (analyticsTimerRef.current) {
+      clearTimeout(analyticsTimerRef.current);
+    }
+
+    analyticsTimerRef.current = window.setTimeout(() => {
+      Analytics.stockAnalysis.search(payload);
+      analyticsTimerRef.current = null;
+    }, 0);
+  }, []);
+
+  const beginAnalysisRequest = useCallback(() => {
+    clearPostAnalysisTimers();
+    setLoading(true);
+    resetAnalysisOutputs();
+    requestAdDisplay('priceAnalysis', 3);
+  }, [clearPostAnalysisTimers, requestAdDisplay, resetAnalysisOutputs]);
+
+  const runAnalysisForStock = useCallback((nextStockCode, source, invalidYearsMessage) => {
+    const upperClickedCode = nextStockCode.toUpperCase();
+    const numYearsToFetch = resolveAnalysisYears(invalidYearsMessage);
+    const dateToFetch = isAdvancedQuery ? backTestDate : '';
+
+    setIsUserInitiated(true);
+    setDisplayStockCode(upperClickedCode);
+    setStockCode(upperClickedCode);
+    beginAnalysisRequest();
+    queueAnalysisEvent({
+      stockCode: upperClickedCode,
+      years: numYearsToFetch,
+      backTestDate: dateToFetch,
+      source
+    });
+    fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, true);
+  }, [backTestDate, beginAnalysisRequest, fetchStockData, isAdvancedQuery, queueAnalysisEvent, resolveAnalysisYears]);
 
   const fetchWatchlistStocks = useCallback(async () => {
+    if (loadingWatchlist || hasLoadedWatchlist) {
+      return;
+    }
+
     if (!isAuthenticated || !user) {
       setWatchlistCategories([]);
       setHasLoadedWatchlist(false);
@@ -458,7 +714,7 @@ export function PriceAnalysis() {
 
     setLoadingWatchlist(true);
     try {
-      const categories = await watchlistService.getCategories();
+      const categories = await watchlistService.getCategoriesLite();
 
       const validCategories = [];
       if (Array.isArray(categories)) {
@@ -483,7 +739,6 @@ export function PriceAnalysis() {
         });
       }
 
-      console.log('Watchlist categories loaded:', validCategories);
       setWatchlistCategories(validCategories);
       setHasLoadedWatchlist(true);
     } catch (error) {
@@ -492,19 +747,38 @@ export function PriceAnalysis() {
     } finally {
       setLoadingWatchlist(false);
     }
-  }, [currentLang, isAuthenticated, user]);
+  }, [currentLang, hasLoadedWatchlist, isAuthenticated, loadingWatchlist, user]);
+
+  useEffect(() => {
+    if (!shouldPrefetchWatchlist) {
+      return;
+    }
+
+    if (loading || (!chartData && !ulbandData)) {
+      return;
+    }
+
+    if (!isAuthenticated || !user) {
+      return;
+    }
+
+    const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+    const userPlan = user?.plan || 'free';
+    const isPro = isTemporaryFreeMode || userPlan === 'pro';
+
+    if (!isPro) {
+      return;
+    }
+
+    fetchWatchlistStocks();
+  }, [chartData, fetchWatchlistStocks, isAuthenticated, loading, shouldPrefetchWatchlist, ulbandData, user]);
 
   // 表單送出
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted, checking auth:', { isAuthenticated, user });
-
-    // 標記為用戶主動操作
-    setIsUserInitiated(true);
 
     // 新增：檢查登入狀態
     if (!isAuthenticated) {
-      console.log('User not authenticated, opening auth dialog');
       openDialog('auth', {
         returnPath: location.pathname,
         message: t('protectedRoute.loginRequired')
@@ -516,10 +790,8 @@ export function PriceAnalysis() {
     const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
     const userPlan = user?.plan || 'free'; // 從 auth context 獲取實際用戶計劃
     const effectiveUserPlan = isTemporaryFreeMode ? 'pro' : userPlan;
-    console.log('Stock check:', { displayStockCode, userPlan, effectiveUserPlan, isTemporaryFreeMode, isAllowed: isStockAllowed(displayStockCode, effectiveUserPlan) });
 
     if (!isStockAllowed(displayStockCode, effectiveUserPlan)) {
-      console.log('Stock not allowed, opening dialog');
       // 顯示功能升級對話框
       openDialog('featureUpgrade', {
         feature: 'stockAccess',
@@ -530,60 +802,21 @@ export function PriceAnalysis() {
       return;
     }
 
-    // --- 立即更新 UI 反饋 ---
-    setLoading(true);
-    startTransition(() => {
-      setChartData(null);
-      setUlbandData(null);
-      // 清空時也清空 key 和 value
-      setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
-      setDisplayedStockCode('');
-    });
-    // --- UI 反饋結束 ---
-
-    // --- 調用 Context 的函數來請求廣告 ---
-    requestAdDisplay('priceAnalysis', 3);
-    // --- 廣告請求結束 ---
-
-    // --- 開始：表單處理邏輯 ---
-    let numYears;
-    let stockToFetch = displayStockCode;
-    let dateToFetch = backTestDate;
+    const stockToFetch = displayStockCode;
 
     if (isAdvancedQuery) {
-      // 驗證 years 狀態
-      const convertedYears = years // 使用 state 中的 years
+      const convertedYears = years
         .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
         .replace(/[．。]/g, '.');
-      numYears = parseFloat(convertedYears);
+      const numYears = parseFloat(convertedYears);
 
       if (isNaN(numYears) || numYears <= 0) {
-        // 對於純前端驗證，可以直接顯示 Toast
-        // showToast(t('errors.INVALID_YEARS_INPUT'), 'error'); 
         showToast(t('priceAnalysis.toast.invalidYears'), 'error');
-        setLoading(false);
         return;
-      }
-    } else {
-      switch (analysisPeriod) {
-        case 'short': numYears = 0.5; break;
-        case 'medium': numYears = 1.5; break;
-        case 'long': default: numYears = 3.5; break;
       }
     }
 
-    // 延遲分析事件發送
-    setTimeout(() => {
-      Analytics.stockAnalysis.search({
-        stockCode: stockToFetch,
-        years: numYears,
-        backTestDate: dateToFetch
-      });
-    }, 0);
-
-    // 觸發數據抓取
-    fetchStockData(stockToFetch, numYears, dateToFetch, false, true);
-    // --- 結束：表單處理邏輯 ---
+    runAnalysisForStock(stockToFetch, 'manual_price_analysis');
   };
 
   // 初始化資料 (componentDidMount 或 URL/location.state 變化時)
@@ -634,14 +867,12 @@ export function PriceAnalysis() {
 
     // 根據判斷結果執行操作
     if (shouldAutoFetch) {
-      // 清除舊圖表
-      setChartData(null);
-      setUlbandData(null);
-      // 清空時也清空 key 和 value
-      setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
-      setDisplayedStockCode('');
+      clearPostAnalysisTimers();
+      setLoading(true);
+      setDisplayStockCode(fetchStock.toUpperCase());
+      resetAnalysisOutputs();
       // 執行初始查詢
-      fetchStockData(fetchStock, numYears, fetchDate, true);
+      fetchStockData(fetchStock, numYears, fetchDate);
     } else if (urlYears && (isNaN(numYears) || numYears <= 0)) {
       console.error("Invalid years parameter from URL:", fetchYears);
       // 使用 t() 翻譯錯誤訊息 (假設有此 key)
@@ -666,7 +897,6 @@ export function PriceAnalysis() {
 
     // 新增：useEffect 鉤子以獲取熱門搜尋數據
     const fetchHotSearches = async () => {
-      console.log('Fetching hot searches...'); // 添加這行
       setLoadingHotSearches(true);
       try {
         // 使用增強的 API 客戶端，自動處理認證和重試
@@ -675,7 +905,6 @@ export function PriceAnalysis() {
           maxRetries: 2, // 減少重試次數以避免過多請求
           retryDelay: 500 // 較短的重試延遲
         });
-        console.log('API response received:', response.data); // 添加這行
         // 假設 API 回應格式為 { data: { top_searches: [...] } }
         if (response.data && response.data.data && Array.isArray(response.data.data.top_searches)) {
           setHotSearches(response.data.data.top_searches);
@@ -690,11 +919,8 @@ export function PriceAnalysis() {
         // 只在非 403 錯誤時顯示錯誤提示，避免認證問題時的重複提示
         if (error.response?.status !== 403) {
           handleApiError(error, showToast, t);
-        } else {
-          console.log('403 error detected, likely authentication issue - not showing toast');
         }
       } finally {
-        console.log('Finished fetching hot searches.'); // 添加這行
         setLoadingHotSearches(false);
       }
     };
@@ -702,7 +928,7 @@ export function PriceAnalysis() {
     fetchHotSearches();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, location.state, isAuthenticated, user]); // <--- 修改：新增依賴項
+  }, [searchParams, location.state, isAuthenticated, user, fetchStockData, clearPostAnalysisTimers, resetAnalysisOutputs, showToast, t]); // <--- 修改：新增依賴項
 
   // 新增：當 watchlist 資料載入完成時，預設全部收合
   useEffect(() => {
@@ -721,9 +947,6 @@ export function PriceAnalysis() {
 
   // 新增：處理熱門搜尋項目點擊事件
   const handleHotSearchClick = (searchItem) => { // 參數名稱改為 searchItem 以清晰表示它是一個物件
-    // 標記為用戶主動操作
-    setIsUserInitiated(true);
-
     // 新增：檢查登入狀態
     if (!isAuthenticated) {
       openDialog('auth', {
@@ -749,69 +972,11 @@ export function PriceAnalysis() {
       return;
     }
 
-    // 更新狀態以反映新的股票代碼
-    setDisplayStockCode(upperClickedCode);
-    setStockCode(upperClickedCode);
-
-    // 準備表單提交所需的參數
-    // 這裡我們假設點擊熱門搜尋時，使用預設的分析期間（例如 'long' -> 3.5 年）
-    // 並且不使用回測日期，除非有特殊邏輯需要處理
-    let numYearsToFetch;
-    if (isAdvancedQuery) {
-      // 如果在進階模式，且 years 有效，則使用 years 的值
-      const convertedYears = years
-        .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
-        .replace(/[．。]/g, '.');
-      const parsedYears = parseFloat(convertedYears);
-      if (!isNaN(parsedYears) && parsedYears > 0) {
-        numYearsToFetch = parsedYears;
-      } else {
-        // 如果進階模式下的 years 無效，則退回簡易模式的預設值
-        numYearsToFetch = 3.5; // 或者根據 analysisPeriod
-        showToast(t('priceAnalysis.toast.invalidYearsHotSearch'), 'warning');
-      }
-    } else {
-      switch (analysisPeriod) {
-        case 'short': numYearsToFetch = 0.5; break;
-        case 'medium': numYearsToFetch = 1.5; break;
-        case 'long': default: numYearsToFetch = 3.5; break;
-      }
-    }
-    const dateToFetch = isAdvancedQuery ? backTestDate : ''; // 進階模式才考慮回測日期
-
-    // --- 立即更新 UI 反饋 ---
-    setLoading(true);
-    startTransition(() => {
-      setChartData(null);
-      setUlbandData(null);
-      setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
-      setDisplayedStockCode(''); // 清空舊的 displayedStockCode，fetchStockData 成功後會更新
-    });
-    // --- UI 反饋結束 ---
-
-    // --- 調用 Context 的函數來請求廣告 ---
-    requestAdDisplay('priceAnalysis', 3);
-    // --- 廣告請求結束 ---
-
-    // 延遲分析事件發送
-    setTimeout(() => {
-      Analytics.stockAnalysis.search({
-        stockCode: upperClickedCode,
-        years: numYearsToFetch,
-        backTestDate: dateToFetch,
-        source: 'hotSearch' // 標記來源為熱門搜尋
-      });
-    }, 0);
-
-    // 直接調用 fetchStockData 執行分析
-    fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, false, true);
+    runAnalysisForStock(upperClickedCode, 'hotSearch', t('priceAnalysis.toast.invalidYearsHotSearch'));
   };
 
   // 新增：處理免費股票清單點擊事件
   const handleFreeStockClick = (ticker) => {
-    // 標記為用戶主動操作
-    setIsUserInitiated(true);
-
     // 新增：檢查登入狀態
     if (!isAuthenticated) {
       openDialog('auth', {
@@ -837,58 +1002,7 @@ export function PriceAnalysis() {
       return;
     }
 
-    // 更新狀態以反映新的股票代碼
-    setDisplayStockCode(upperClickedCode);
-    setStockCode(upperClickedCode);
-
-    // 準備表單提交所需的參數
-    let numYearsToFetch;
-    if (isAdvancedQuery) {
-      const convertedYears = years
-        .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
-        .replace(/[．。]/g, '.');
-      const parsedYears = parseFloat(convertedYears);
-      if (!isNaN(parsedYears) && parsedYears > 0) {
-        numYearsToFetch = parsedYears;
-      } else {
-        numYearsToFetch = 3.5;
-        showToast(t('priceAnalysis.toast.invalidYearsFreeStock'), 'warning');
-      }
-    } else {
-      switch (analysisPeriod) {
-        case 'short': numYearsToFetch = 0.5; break;
-        case 'medium': numYearsToFetch = 1.5; break;
-        case 'long': default: numYearsToFetch = 3.5; break;
-      }
-    }
-    const dateToFetch = isAdvancedQuery ? backTestDate : '';
-
-    // --- 立即更新 UI 反饋 ---
-    setLoading(true);
-    startTransition(() => {
-      setChartData(null);
-      setUlbandData(null);
-      setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
-      setDisplayedStockCode('');
-    });
-    // --- UI 反饋結束 ---
-
-    // --- 調用 Context 的函數來請求廣告 ---
-    requestAdDisplay('priceAnalysis', 3);
-    // --- 廣告請求結束 ---
-
-    // 延遲分析事件發送
-    setTimeout(() => {
-      Analytics.stockAnalysis.search({
-        stockCode: upperClickedCode,
-        years: numYearsToFetch,
-        backTestDate: dateToFetch,
-        source: 'freeStockList' // 標記來源為免費股票清單
-      });
-    }, 0);
-
-    // 直接調用 fetchStockData 執行分析
-    fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, false, true);
+    runAnalysisForStock(upperClickedCode, 'freeStockList', t('priceAnalysis.toast.invalidYearsFreeStock'));
   };
 
   // 新增：處理 Watchlist Tab 點擊事件
@@ -954,14 +1068,6 @@ export function PriceAnalysis() {
     }
   };
 
-  // 新增：切換 Index ETF 區域收合狀態（帶智能滾動）
-  const toggleRegionCollapse = (regionKey) => {
-    setCollapsedRegions(prev => ({
-      ...prev,
-      [regionKey]: !prev[regionKey]
-    }));
-  };
-
   // 新增：處理 Watchlist 股票點擊事件
   const handleWatchlistStockClick = (stockCode) => {
     // 防禦性檢查
@@ -970,62 +1076,9 @@ export function PriceAnalysis() {
       return;
     }
 
-    // 標記為用戶主動操作
-    setIsUserInitiated(true);
-
     const upperClickedCode = stockCode.toUpperCase();
 
-    // 更新狀態以反映新的股票代碼
-    setDisplayStockCode(upperClickedCode);
-    setStockCode(upperClickedCode);
-
-    // 準備表單提交所需的參數
-    let numYearsToFetch;
-    if (isAdvancedQuery) {
-      const convertedYears = years
-        .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
-        .replace(/[．。]/g, '.');
-      const parsedYears = parseFloat(convertedYears);
-      if (!isNaN(parsedYears) && parsedYears > 0) {
-        numYearsToFetch = parsedYears;
-      } else {
-        numYearsToFetch = 3.5;
-      }
-    } else {
-      switch (analysisPeriod) {
-        case 'short': numYearsToFetch = 0.5; break;
-        case 'medium': numYearsToFetch = 1.5; break;
-        case 'long': default: numYearsToFetch = 3.5; break;
-      }
-    }
-    const dateToFetch = isAdvancedQuery ? backTestDate : '';
-
-    // --- 立即更新 UI 反饋 ---
-    setLoading(true);
-    startTransition(() => {
-      setChartData(null);
-      setUlbandData(null);
-      setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
-      setDisplayedStockCode('');
-    });
-    // --- UI 反饋結束 ---
-
-    // --- 調用 Context 的函數來請求廣告 ---
-    requestAdDisplay('priceAnalysis', 3);
-    // --- 廣告請求結束 ---
-
-    // 延遲分析事件發送
-    setTimeout(() => {
-      Analytics.stockAnalysis.search({
-        stockCode: upperClickedCode,
-        years: numYearsToFetch,
-        backTestDate: dateToFetch,
-        source: 'watchlist' // 標記來源為 watchlist
-      });
-    }, 0);
-
-    // 直接調用 fetchStockData 執行分析
-    fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, false, true);
+    runAnalysisForStock(upperClickedCode, 'watchlist');
   };
 
   // 切換簡易/進階查詢模式
@@ -1119,18 +1172,6 @@ export function PriceAnalysis() {
 
   // 優化 Line Chart Options
   const lineChartOptions = useMemo(() => {
-    // 計算 x 軸的最大值，在最後一個數據點後增加 10% 的空間
-    let xAxisMax = undefined;
-    if (chartData?.labels && chartData.labels.length > 0) {
-      const lastDate = new Date(chartData.labels[chartData.labels.length - 1]);
-      const firstDate = new Date(chartData.labels[0]);
-      const timeRange = lastDate - firstDate;
-      // 手機版增加更多空間以容納標籤
-      const spaceRatio = isMobile ? 0.15 : 0.1;
-      xAxisMax = new Date(lastDate.getTime() + timeRange * spaceRatio);
-    }
-
-    // 基本配置
     const options = {
       responsive: true,
       maintainAspectRatio: false,
@@ -1155,28 +1196,7 @@ export function PriceAnalysis() {
           position: 'right',
           grid: { drawBorder: true },
           ticks: {
-            callback: function (value, index, ticks) {
-              // 獲取所有數據集的最後一個值
-              if (!chartData?.datasets) return value;
-
-              const lastIndex = chartData.labels.length - 1;
-              const dataValues = chartData.datasets
-                .map(dataset => dataset.data?.[lastIndex])
-                .filter(v => v !== undefined && v !== null)
-                .sort((a, b) => a - b); // 排序以找出最大最小值
-
-              if (dataValues.length === 0) return value;
-
-              const minDataValue = dataValues[0];
-              const maxDataValue = dataValues[dataValues.length - 1];
-
-              // 如果刻度值在數據值範圍之間，則隱藏
-              if (value > minDataValue && value < maxDataValue) {
-                return '';
-              }
-
-              return formatPrice(value);
-            }
+            callback: yTickLabelFormatter
           }
         }
       },
@@ -1193,140 +1213,22 @@ export function PriceAnalysis() {
           bodyColor: '#000000',
           borderColor: '#cccccc',
           borderWidth: 1,
-          yAlign: function (context) {
-            // 動態判斷 tooltip 應該顯示在上方還是下方
-            if (!context.tooltip || !context.tooltip.dataPoints || context.tooltip.dataPoints.length === 0) {
-              return 'top';
-            }
-
-            // 找到價格線的數據點（datasetIndex = 0）
-            const pricePoint = context.tooltip.dataPoints.find(point => point.datasetIndex === 0);
-            if (!pricePoint || !pricePoint.element) return 'top';
-
-            // 獲取圖表區域的高度
-            const chartArea = context.chart.chartArea;
-            if (!chartArea) return 'top';
-
-            const chartHeight = chartArea.bottom - chartArea.top;
-            const chartMiddle = chartArea.top + (chartHeight / 2);
-
-            // 使用價格點的 Y 座標來判斷（這個值對同一數據點是固定的）
-            const priceY = pricePoint.element.y;
-
-            // 如果價格點在圖表上半部，tooltip 顯示在下方（yAlign: 'top'）
-            // 如果價格點在圖表下半部，tooltip 顯示在上方（yAlign: 'bottom'）
-            return priceY < chartMiddle ? 'top' : 'bottom';
-          },
+          yAlign: tooltipYAlign,
           xAlign: 'center',
           caretSize: 6,
           caretPadding: 35,
           displayColors: true,
           callbacks: {
-            labelColor: (context) => ({
-              backgroundColor: context.dataset.borderColor,
-              borderColor: context.dataset.borderColor,
-              borderWidth: 0
-            }),
-            label: (context) => `${context.dataset.label || ''}: ${formatPrice(context.parsed.y)}`
+            labelColor: tooltipLabelColorFormatter,
+            label: tooltipLabelFormatter
           },
           itemSort: (a, b) => b.parsed.y - a.parsed.y
         },
 
         annotation: {
-          annotations: (() => {
-            const annotations = {};
-
-            // 只在有數據時添加 annotations
-            if (chartData?.labels && chartData.labels.length > 0 && chartData.datasets) {
-              const lastIndex = chartData.labels.length - 1;
-              const lastDate = chartData.labels[lastIndex];
-
-              // 為所有線條添加虛線和標籤
-              chartData.datasets.forEach((dataset, index) => {
-                if (dataset.data && dataset.data.length > 0) {
-                  const lastValue = dataset.data[lastIndex];
-
-                  // 添加虛線
-                  annotations[`line-${index}`] = {
-                    type: 'line',
-                    yMin: lastValue,
-                    yMax: lastValue,
-                    xMin: lastDate,
-                    xMax: xAxisMax || lastDate,
-                    borderColor: dataset.borderColor || '#999',
-                    borderWidth: index === 0 ? 2 : 1,
-                    borderDash: [5, 5]
-                  };
-
-                  // 為所有線條添加標籤
-                  annotations[`label-${index}`] = {
-                    type: 'label',
-                    drawTime: 'afterDraw',
-                    xScaleID: 'x',
-                    yScaleID: 'y',
-                    xValue: xAxisMax || lastDate,
-                    yValue: lastValue,
-                    backgroundColor: dataset.borderColor || '#999',
-                    color: '#fff',
-                    content: `${formatPrice(lastValue)}`,
-                    font: {
-                      size: isMobile ? 12 : 12,
-                      weight: 'bold'
-                    },
-                    padding: {
-                      top: 2,
-                      bottom: 2,
-                      left: 5,
-                      right: 5
-                    },
-                    borderRadius: 3,
-                    position: {
-                      x: 'end',
-                      y: 'center'
-                    },
-                    xAdjust: index === 0 ? 2 : 35, // 價格線（index=0）更靠右
-                    yAdjust: 0
-                  };
-                }
-              });
-            }
-
-            return annotations;
-          })()
+          annotations: chartAnnotations
         },
-        // 新增：縮放功能配置
-        zoom: {
-          pan: {
-            enabled: !isMobile, // 手機版禁用 pan（由透明層處理）
-            mode: 'x',
-            modifierKey: undefined,
-            onPanStart: () => true
-          },
-          zoom: {
-            wheel: {
-              enabled: !isMobile, // 手機版禁用滾輪縮放
-              speed: 0.1
-            },
-            pinch: {
-              enabled: isMobile // 只在手機版啟用雙指縮放
-            },
-            mode: 'x',
-            onZoomStart: ({ chart, event }) => {
-              // 手機版雙指縮放時，阻止預設的頁面縮放行為
-              if (isMobile && event && event.touches && event.touches.length === 2) {
-                event.preventDefault();
-                return true;
-              }
-              return true;
-            }
-          },
-          limits: {
-            x: {
-              min: 'original',
-              max: 'original'
-            }
-          }
-        }
+        zoom: lineChartZoomOptions
       },
       interaction: { mode: 'index', intersect: false },
       hover: { mode: 'index', intersect: false },
@@ -1340,39 +1242,7 @@ export function PriceAnalysis() {
     }
 
     return options;
-    // 依賴 isMobile、chartData?.timeUnit 和 chartData?.labels (安全訪問)
-  }, [isMobile, chartData?.timeUnit, chartData?.labels]);
-
-  // 建立 ExpandableDescription 的 sections (使用 useMemo 和 t)
-  const expandableSections = useMemo(() => [
-    {
-      title: t('priceAnalysis.explanation.sd.title'), // 翻譯標題
-      type: "list",
-      content: [ // 翻譯列表內容
-        t('priceAnalysis.explanation.sd.l1'),
-        t('priceAnalysis.explanation.sd.l2'),
-        t('priceAnalysis.explanation.sd.l3'),
-        t('priceAnalysis.explanation.sd.l4'),
-      ],
-    },
-    {
-      title: t('priceAnalysis.explanation.ulBand.title'), // 翻譯標題
-      type: "list",
-      content: [ // 翻譯列表內容
-        t('priceAnalysis.explanation.ulBand.l1'),
-        t('priceAnalysis.explanation.ulBand.l2'),
-        t('priceAnalysis.explanation.ulBand.l3'),
-      ],
-    },
-    {
-      title: t('priceAnalysis.explanation.combined.title'),
-      type: "list",
-      content: [
-        t('priceAnalysis.explanation.combined.l1'),
-        t('priceAnalysis.explanation.combined.l2'),
-      ]
-    },
-  ], [t]); // 添加 t 作為依賴
+  }, [chartAnnotations, chartData?.timeUnit, lineChartZoomOptions, tooltipLabelColorFormatter, tooltipLabelFormatter, tooltipYAlign, xAxisMax, yTickLabelFormatter]);
 
   return (
     <PageContainer
@@ -1452,19 +1322,13 @@ export function PriceAnalysis() {
                       <div className="input-group">
                         {/* 使用 t() 翻譯 label */}
                         <label>{t('priceAnalysis.form.backTestDateLabel')}</label>
-                        <DatePicker
-                          selected={backTestDate ? new Date(backTestDate) : null}
-                          onChange={(date) => setBackTestDate(date ? date.toISOString().split('T')[0] : '')}
-                          // 使用 t() 翻譯 placeholder
-                          placeholderText={t('priceAnalysis.form.backTestDatePlaceholder')}
-                          className="form-control"
-                          dateFormat="yyyy/MM/dd"
-                          isClearable
-                          popperPlacement="auto"
-                          popperProps={{
-                            strategy: 'fixed', // <--- 新增：讓彈出框使用固定定位
-                          }}
-                        />
+                        <Suspense fallback={renderDeferredDatePickerFallback()}>
+                          <DeferredBacktestDatePicker
+                            backTestDate={backTestDate}
+                            setBackTestDate={setBackTestDate}
+                            placeholderText={t('priceAnalysis.form.backTestDatePlaceholder')}
+                          />
+                        </Suspense>
                       </div>
                     </div>
                   )}
@@ -1483,28 +1347,15 @@ export function PriceAnalysis() {
                     <button
                       className={`btn-primary analysis-button ${loading ? 'btn-loading' : ''}`}
                       type="submit"
-                      disabled={loading || (isTurnstileEnabled && !turnstileToken)}
+                      disabled={loading}
                     >
                       {/* 使用 t() 翻譯按鈕文字 */}
                       {loading
                         ? (isPending ? t('priceAnalysis.form.buttonProcessing') : t('priceAnalysis.form.buttonAnalyzing'))
-                        : (isTurnstileEnabled && !turnstileToken)
-                          ? t('priceAnalysis.form.buttonCompleteVerification')
-                          : t('priceAnalysis.form.buttonStartAnalysis')
+                        : t('priceAnalysis.form.buttonStartAnalysis')
                       }
                     </button>
                   </div>
-                  {isTurnstileEnabled && turnstileVisible && (
-                    <div className="turnstile-container">
-                      <Turnstile
-                        sitekey={process.env.REACT_APP_TURNSTILE_SITE_KEY}
-                        onSuccess={handleTurnstileVerify}
-                        onError={handleTurnstileError}
-                        onExpire={handleTurnstileExpire}
-                        refreshExpired="auto"
-                      />
-                    </div>
-                  )}
                 </form>
               </div>
 
@@ -1674,328 +1525,45 @@ export function PriceAnalysis() {
             </div> {/* 結束 analysis-controls-wrapper */}
 
             {/* 主圖表區塊 */}
-            <div className="chart-card" ref={chartCardRef}>
-              {/* 回到頂端按鈕 - 只在手機版顯示，懸浮在圖表下方 */}
-              <ScrollToTopButton show={isMobile && (chartData || ulbandData)} />
-              <div className="chart-container">
-                {/* 只有在 loading 或有數據時才顯示圖表標頭 */}
-                {(loading || chartData || ulbandData) && (
-                  <div className="chart-header">
-                    <div className="analysis-result">
-                      <div className="analysis-item">
-                        {/* 使用 t() 翻譯 label */}
-                        <span className="analysis-label">{t('priceAnalysis.result.stockCode')}</span>
-                        <span className="analysis-value">
-                          {displayedStockCode}
-                        </span>
-                      </div>
-                      <div className="analysis-item">
-                        {/* 使用 t() 翻譯 label */}
-                        <span className="analysis-label">{t('priceAnalysis.result.stockPrice')}</span>
-                        <span className="analysis-value">
-                          ${formatPrice(analysisResult.price)}
-                        </span>
-                      </div>
-                      <div className="analysis-item">
-                        {/* 使用 t() 翻譯 label */}
-                        <span className="analysis-label">{t('priceAnalysis.result.marketSentiment')}</span>
-                        {/* 修改 className：使用 getSentimentSuffix 提取後綴 */}
-                        <span className={`analysis-value sentiment-${getSentimentSuffix(analysisResult.sentimentKey)}`}>
-                          {analysisSentimentText}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <div className="chart-content">
-                  {/* 圖表 Tabs */}
-                  {(chartData || ulbandData || loading) && (
-                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
-                      <div className="chart-tabs">
-                        <button
-                          className={`chart-tab ${activeChart === 'sd' ? 'active' : ''}`}
-                          onClick={() => handleChartSwitch('sd')}
-                          disabled={loading}
-                        >
-                          {t('priceAnalysis.chart.tabs.sd')}
-                        </button>
-                        <button
-                          className={`chart-tab ${activeChart === 'ulband' ? 'active' : ''}`}
-                          onClick={() => handleChartSwitch('ulband')}
-                          disabled={loading}
-                        >
-                          {t('priceAnalysis.chart.tabs.ulband')}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Loading 指示器 */}
-                  {loading && (
-                    <div className="chart-loading-indicator">
-                      <div className="loading-spinner">
-                        <div className="spinner"></div>
-                        {/* 使用 t() 翻譯 Loading 文字 */}
-                        <span>{isPending ? t('priceAnalysis.chart.loading.generating') : t('priceAnalysis.chart.loading.fetching')}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 圖表 (僅在非 loading 狀態下顯示) */}
-                  {!loading && activeChart === 'sd' && chartData && (
-                    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                      {/* 縮放控制按鈕 */}
-                      <div className="chart-zoom-buttons">
-                        <button
-                          className="zoom-btn zoom-in"
-                          onClick={() => {
-                            if (chartRef.current) {
-                              const chart = chartRef.current;
-                              const xScale = chart.scales.x;
-                              const currentMin = xScale.min;
-                              const currentMax = xScale.max;
-                              const range = currentMax - currentMin;
-                              const newRange = range * 0.8; // 縮小 20%
-                              const newMin = currentMax - newRange;
-                              chart.zoomScale('x', { min: newMin, max: currentMax }, 'default');
-                            }
-                          }}
-                          title="放大"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                          </svg>
-                        </button>
-                        <button
-                          className="zoom-btn zoom-out"
-                          onClick={() => {
-                            if (chartRef.current && chartData?.labels && chartData.labels.length > 0) {
-                              const chart = chartRef.current;
-                              const xScale = chart.scales.x;
-                              const currentMin = xScale.min;
-                              const currentMax = xScale.max;
-                              const range = currentMax - currentMin;
-                              const newRange = range * 1.25; // 擴大 25%
-                              const newMin = currentMax - newRange;
-
-                              // 計算原始的最小值和最大值（包含 10% 空白）
-                              const firstDate = new Date(chartData.labels[0]);
-                              const lastDate = new Date(chartData.labels[chartData.labels.length - 1]);
-                              const timeRange = lastDate - firstDate;
-                              const spaceRatio = isMobile ? 0.15 : 0.1;
-                              const originalMax = new Date(lastDate.getTime() + timeRange * spaceRatio);
-
-                              // 確保不超過原始範圍
-                              const finalMin = Math.max(newMin, firstDate.getTime());
-                              const finalMax = Math.min(currentMax, originalMax.getTime());
-
-                              // 只有當範圍真的改變時才執行縮放
-                              if (finalMin < currentMin || finalMax > currentMax) {
-                                chart.zoomScale('x', { min: finalMin, max: finalMax }, 'default');
-                              }
-                            }
-                          }}
-                          title="縮小"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                          </svg>
-                        </button>
-                        <button
-                          className="zoom-btn zoom-reset"
-                          onClick={() => {
-                            if (chartRef.current) {
-                              chartRef.current.resetZoom();
-                            }
-                          }}
-                          title="重置"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M13 8C13 10.7614 10.7614 13 8 13C5.23858 13 3 10.7614 3 8C3 5.23858 5.23858 3 8 3C9.12583 3 10.1647 3.37194 11 3.99963M11 3.99963V2M11 3.99963H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </button>
-                      </div>
-                      <Line
-                        ref={chartRef}
-                        data={localizedChartData || chartData}
-                        options={lineChartOptions}
-                      />
-                    </div>
-                  )}
-                  {!loading && activeChart === 'ulband' && ulbandData && (
-                    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                      {/* 縮放控制按鈕 */}
-                      <div className="chart-zoom-buttons">
-                        <button
-                          className="zoom-btn zoom-in"
-                          onClick={() => {
-                            if (ulbandChartRef.current) {
-                              const chart = ulbandChartRef.current;
-                              const xScale = chart.scales.x;
-                              const currentMin = xScale.min;
-                              const currentMax = xScale.max;
-                              const range = currentMax - currentMin;
-                              const newRange = range * 0.8;
-                              const newMin = currentMax - newRange;
-                              chart.zoomScale('x', { min: newMin, max: currentMax }, 'default');
-                            }
-                          }}
-                          title="放大"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                          </svg>
-                        </button>
-                        <button
-                          className="zoom-btn zoom-out"
-                          onClick={() => {
-                            if (ulbandChartRef.current && ulbandData?.dates && ulbandData.dates.length > 0) {
-                              const chart = ulbandChartRef.current;
-                              const xScale = chart.scales.x;
-                              const currentMin = xScale.min;
-                              const currentMax = xScale.max;
-                              const range = currentMax - currentMin;
-                              const newRange = range * 1.25; // 擴大 25%
-                              const newMin = currentMax - newRange;
-
-                              // 計算原始的最小值和最大值（包含 10% 空白）
-                              const firstDate = new Date(ulbandData.dates[0]);
-                              const lastDate = new Date(ulbandData.dates[ulbandData.dates.length - 1]);
-                              const timeRange = lastDate - firstDate;
-                              const spaceRatio = isMobile ? 0.15 : 0.1;
-                              const originalMax = new Date(lastDate.getTime() + timeRange * spaceRatio);
-
-                              // 確保不超過原始範圍
-                              const finalMin = Math.max(newMin, firstDate.getTime());
-                              const finalMax = Math.min(currentMax, originalMax.getTime());
-
-                              // 只有當範圍真的改變時才執行縮放
-                              if (finalMin < currentMin || finalMax > currentMax) {
-                                chart.zoomScale('x', { min: finalMin, max: finalMax }, 'default');
-                              }
-                            }
-                          }}
-                          title="縮小"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                          </svg>
-                        </button>
-                        <button
-                          className="zoom-btn zoom-reset"
-                          onClick={() => {
-                            if (ulbandChartRef.current) {
-                              ulbandChartRef.current.resetZoom();
-                            }
-                          }}
-                          title="重置"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M13 8C13 10.7614 10.7614 13 8 13C5.23858 13 3 10.7614 3 8C3 5.23858 5.23858 3 8 3C9.12583 3 10.1647 3.37194 11 3.99963M11 3.99963V2M11 3.99963H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </button>
-                      </div>
-                      <ULBandChart
-                        data={ulbandData}
-                        onChartReady={(chart) => { ulbandChartRef.current = chart; }}
-                      />
-                    </div>
-                  )}
-
-                  {/* 佔位符 */}
-                  {!loading && !chartData && !ulbandData && (
-                    // 使用 t() 翻譯佔位符文字
-                    <div className="chart-placeholder">{t('priceAnalysis.prompt.enterSymbol')}</div>
-                  )}
-                </div>
-              </div>
-            </div>
+            {shouldRenderChartWorkspace ? (
+              <Suspense fallback={renderChartWorkspaceFallback()}>
+                <PriceAnalysisChartWorkspace
+                  isMobile={isMobile}
+                  loading={loading}
+                  isPending={isPending}
+                  chartRef={chartRef}
+                  ulbandChartRef={ulbandChartRef}
+                  chartCardRef={chartCardRef}
+                  chartData={chartData}
+                  localizedChartData={localizedChartData}
+                  lineChartOptions={lineChartOptions}
+                  ulbandData={ulbandData}
+                  activeChart={activeChart}
+                  handleChartSwitch={handleChartSwitch}
+                  displayedStockCode={displayedStockCode}
+                  analysisResult={analysisResult}
+                  analysisSentimentText={analysisSentimentText}
+                  getSentimentSuffix={getSentimentSuffix}
+                  formatPrice={formatPrice}
+                  t={t}
+                />
+              </Suspense>
+            ) : renderChartWorkspaceFallback()}
           </div>
 
 
         </div> {/* 結束 content-layout-container */}
 
         {/* 底部說明區域 */}
-        <div className="bottom-description-section">
-          <div className="description-tabs-container">
-            {/* 標籤導航 */}
-            <div className="description-tabs">
-              <button
-                className={`description-tab ${activeDescriptionTab === 'overview' ? 'active' : ''}`}
-                onClick={() => handleDescriptionTabSwitch('overview')}
-              >
-                {t('priceAnalysis.description.tabs.overview')}
-              </button>
-              <button
-                className={`description-tab ${activeDescriptionTab === 'sd' ? 'active' : ''}`}
-                onClick={() => handleDescriptionTabSwitch('sd')}
-              >
-                {t('priceAnalysis.description.tabs.sd')}
-              </button>
-              <button
-                className={`description-tab ${activeDescriptionTab === 'ulband' ? 'active' : ''}`}
-                onClick={() => handleDescriptionTabSwitch('ulband')}
-              >
-                {t('priceAnalysis.description.tabs.ulband')}
-              </button>
-              <button
-                className={`description-tab ${activeDescriptionTab === 'tips' ? 'active' : ''}`}
-                onClick={() => handleDescriptionTabSwitch('tips')}
-              >
-                {t('priceAnalysis.description.tabs.tips')}
-              </button>
-            </div>
-
-            {/* 標籤內容 */}
-            <div className="description-tab-content">
-              {activeDescriptionTab === 'overview' && (
-                <div className="tab-content-overview">
-                  <h3>{t('priceAnalysis.description.overview.title')}</h3>
-                  <p>{t('priceAnalysis.description.overview.content')}</p>
-                  <div className="overview-links">
-                    <a href="https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92" target="_blank" rel="noopener noreferrer">
-                      {t('priceAnalysis.description.overview.readMore')}
-                    </a>
-                  </div>
-                </div>
-              )}
-
-              {activeDescriptionTab === 'sd' && (
-                <div className="tab-content-sd">
-                  <h3>{t('priceAnalysis.description.sd.title')}</h3>
-                  <ul className="description-list">
-                    <li>{t('priceAnalysis.description.sd.point1')}</li>
-                    <li>{t('priceAnalysis.description.sd.point2')}</li>
-                    <li>{t('priceAnalysis.description.sd.point3')}</li>
-                    <li>{t('priceAnalysis.description.sd.point4')}</li>
-                  </ul>
-                </div>
-              )}
-
-              {activeDescriptionTab === 'ulband' && (
-                <div className="tab-content-ulband">
-                  <h3>{t('priceAnalysis.description.ulband.title')}</h3>
-                  <ul className="description-list">
-                    <li>{t('priceAnalysis.description.ulband.point1')}</li>
-                    <li>{t('priceAnalysis.description.ulband.point2')}</li>
-                    <li>{t('priceAnalysis.description.ulband.point3')}</li>
-                  </ul>
-                </div>
-              )}
-
-              {activeDescriptionTab === 'tips' && (
-                <div className="tab-content-tips">
-                  <h3>{t('priceAnalysis.description.tips.title')}</h3>
-                  <ul className="description-list">
-                    <li>{t('priceAnalysis.description.tips.point1')}</li>
-                    <li>{t('priceAnalysis.description.tips.point2')}</li>
-                    <li>{t('priceAnalysis.description.tips.point3')}</li>
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        {shouldLoadDescriptionTabs ? (
+          <Suspense fallback={renderDescriptionTabsFallback()}>
+            <PriceAnalysisDescriptionTabs
+              activeDescriptionTab={activeDescriptionTab}
+              onSwitchTab={handleDescriptionTabSwitch}
+              t={t}
+            />
+          </Suspense>
+        ) : null}
       </div>
 
       {/* 條件式渲染 Toast 元件 */}

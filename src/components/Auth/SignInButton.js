@@ -6,7 +6,7 @@ import './styles/SignInButton.css';
 
 export const SignInButton = ({ variant = 'default' }) => {
     const buttonRef = useRef(null);
-    const { renderGoogleButton, loading, isGoogleInitialized } = useAuth();
+    const { renderGoogleButton, loading, isGoogleInitialized, ensureGoogleIdentityLoaded } = useAuth();
     const [browserSupport, setBrowserSupport] = useState(null);
     const { t } = useTranslation();
     
@@ -31,6 +31,10 @@ export const SignInButton = ({ variant = 'default' }) => {
 
         checkBrowser();
     }, []);
+
+    useEffect(() => {
+        ensureGoogleIdentityLoaded();
+    }, [ensureGoogleIdentityLoaded]);
 
     useEffect(() => {
         if (!loading && isGoogleInitialized && buttonRef.current) {

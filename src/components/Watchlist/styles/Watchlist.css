@@ -15,19 +15,27 @@
 
 /* 操作按鈕容器 */
 .category-operations {
-    position: absolute;
-    right: 16px;
-    top: 8px;
-    display: flex;
+    box-sizing: border-box;
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
-    width: 100%;
+    justify-content: center;
+    gap: 8px;
+    width: auto;
+    height: 40px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 /* 所有圓形按鈕的共用基礎樣式 */
 .category-operations button {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
@@ -65,7 +73,7 @@
 /* 移除舊的編輯模式相關樣式 */
 .category-operations .edit-mode-button,
 .category-operations .edit-mode-button.active {
-    display: none;
+    display: flex;
 }
 
 /* 分類區塊 */
@@ -308,6 +316,46 @@
     width: 100%;
 }
 
+.watchlist-controls-row {
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 350px) 1fr;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.watchlist-controls-row > .watchlist-search-area {
+    grid-column: 2;
+}
+
+.watchlist-loading-state {
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.watchlist-mode-loading {
+    height: 160px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(241, 245, 249, 0.9), rgba(226, 232, 240, 0.65));
+}
+
+.watchlist-list-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    flex: 0 0 auto;
+    grid-column: 3;
+    justify-self: end;
+    height: 40px;
+}
+
+.watchlist-list-toolbar__spacer {
+    display: none;
+}
+
 .add-category-tab {
     padding: 10px;
     min-width: 40px;
@@ -431,54 +479,6 @@
     text-decoration: underline;
 }
 
-/* 新增搜尋區域樣式 */
-.watchlist-search-area {
-    position: relative;
-    margin-bottom: 16px;
-    z-index: 100;
-    max-width: 350px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* 更新搜尋容器樣式 */
-.search-container {
-    position: relative;
-    width: 100%;
-    max-width: 350px;
-}
-
-/* 更新搜尋結果容器樣式 */
-.search-results-container {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    max-width: 350px;
-    width: 100%;
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    max-height: 320px;
-    overflow-y: auto;
-    margin-top: 8px;
-    z-index: 100;
-}
-
-/* 響應式調整 */
-@media (max-width: 640px) {
-    .watchlist-search-area {
-        max-width: 65%;
-        padding: 0 px;
-    }
-
-    .search-container,
-    .search-results-container {
-        max-width: 100%;
-    }
-}
-
 .stock-text-info {
     display: flex;
     flex-direction: column;
@@ -519,27 +519,60 @@
 
 /* 調整其他可能會影響到 InfoTool 的元素 z-index */
 .info-tool-wrapper {
-    position: absolute;
-    right: 350px;
-    top: 0;
+    position: static;
 }
 
 /* 響應式調整 InfoTool 位置 */
 @media (max-width: 1200px) {
     .info-tool-wrapper {
-        right: 100px;
+        right: auto;
     }
 }
 
 @media (max-width: 768px) {
-    .info-tool-wrapper {
-        right: 30px;
+    .watchlist-list-toolbar {
+        margin: 0;
     }
 }
 
 @media (max-width: 640px) {
-    .info-tool-wrapper {
-        right: 0px;
+    .watchlist-loading-state {
+        min-height: 220px;
+        padding: 24px 12px;
+    }
+
+    .watchlist-controls-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .watchlist-controls-row > .watchlist-search-area {
+        grid-column: auto;
+    }
+
+    .watchlist-list-toolbar {
+        justify-content: flex-end;
+        gap: 0;
+        height: 40px;
+        justify-self: auto;
+        grid-column: auto;
+        margin: 0;
+    }
+
+    .watchlist-list-toolbar__spacer {
+        display: none;
+    }
+
+    .category-operations {
+        flex: 0 0 auto;
+    }
+
+    .category-operations button {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        box-shadow: none;
     }
 }
 

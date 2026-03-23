@@ -87,6 +87,28 @@ body {
   width: 100%;
 }
 
+.route-loading-placeholder {
+  min-height: 40vh;
+}
+
+.route-loading-placeholder--priceanalysis {
+  min-height: 1380px;
+}
+
+.route-loading-placeholder--market-sentiment {
+  min-height: 1280px;
+}
+
+@media (min-width: 1024px) {
+  .route-loading-placeholder--priceanalysis {
+    min-height: 980px;
+  }
+
+  .route-loading-placeholder--market-sentiment {
+    min-height: 920px;
+  }
+}
+
 /* 側邊欄樣式 */
 .sidebar {
   position: fixed;

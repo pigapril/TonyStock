@@ -7,11 +7,15 @@ class WatchlistService {
         this._categoriesRequest = null;
         this._categoriesCache = null;
         this._categoriesCacheTtlMs = 2000;
+        this._categoriesLiteRequest = null;
+        this._categoriesLiteCache = null;
     }
 
     _invalidateCategoriesCache() {
         this._categoriesRequest = null;
         this._categoriesCache = null;
+        this._categoriesLiteRequest = null;
+        this._categoriesLiteCache = null;
     }
 
     /**
@@ -107,6 +111,47 @@ class WatchlistService {
             this._handleApiError(error, 'getCategories');
         } finally {
             this._categoriesRequest = null;
+        }
+    }
+
+    async getCategoriesLite() {
+        try {
+            if (this._categoriesLiteCache && this._categoriesLiteCache.expiresAt > Date.now()) {
+                return this._categoriesLiteCache.data;
+            }
+
+            if (this._categoriesLiteRequest) {
+                return this._categoriesLiteRequest;
+            }
+
+            this._categoriesLiteRequest = (async () => {
+                const response = await csrfClient.fetchWithCSRF('/api/watchlist/categories-lite', {
+                    method: 'GET'
+                });
+                const responseData = await this._handleApiResponse(response);
+
+                let categories = [];
+                if (Array.isArray(responseData)) {
+                    categories = responseData;
+                } else if (responseData && Array.isArray(responseData.categories)) {
+                    categories = responseData.categories;
+                } else {
+                    console.warn('Unexpected lite categories response format:', responseData);
+                }
+
+                this._categoriesLiteCache = {
+                    data: categories,
+                    expiresAt: Date.now() + this._categoriesCacheTtlMs
+                };
+
+                return categories;
+            })();
+
+            return await this._categoriesLiteRequest;
+        } catch (error) {
+            this._handleApiError(error, 'getCategoriesLite');
+        } finally {
+            this._categoriesLiteRequest = null;
         }
     }
 

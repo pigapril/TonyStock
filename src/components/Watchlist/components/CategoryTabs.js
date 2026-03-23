@@ -18,6 +18,7 @@ export const CategoryTabs = ({
                 onClick={onManageCategories}
                 className="category-tab folder-tab"
                 aria-label={t('watchlist.categoryTabs.manageCategoriesAria')}
+                data-testid="manage-categories-button"
             >
                 <FaFolder />
             </button>

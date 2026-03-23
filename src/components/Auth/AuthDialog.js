@@ -9,7 +9,7 @@ export function AuthDialog() {
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language;
     const { dialog, closeDialog } = useDialog();
-    const { loading, renderGoogleButton, user } = useAuth();
+    const { loading, renderGoogleButton, user, ensureGoogleIdentityLoaded } = useAuth();
     const buttonRef = useRef(null);
 
     const getImagePath = (baseName, extension = 'png') => {
@@ -31,6 +31,8 @@ export function AuthDialog() {
                 closeDialog();
                 return;
             }
+
+            ensureGoogleIdentityLoaded();
 
             if (buttonRef.current) {
                 if (window.google?.accounts?.id) {
@@ -60,7 +62,7 @@ export function AuthDialog() {
             }
             window.removeEventListener('loginSuccess', handleLoginSuccess);
         };
-    }, [dialog.isOpen, dialog.type, dialog.source, closeDialog, renderGoogleButton, user]);
+    }, [dialog.isOpen, dialog.type, dialog.source, closeDialog, ensureGoogleIdentityLoaded, renderGoogleButton, user]);
 
     const handleClose = () => {
         closeDialog();
@@ -79,6 +81,8 @@ export function AuthDialog() {
                 src={getImagePath('home-feature1')}
                 alt={t('authDialog.previewAlt')}
                 className="auth-dialog-preview-image"
+                width="1200"
+                height="675"
             />
             <ul className="feature-list">
                 <li>{t('authDialog.feature1')}</li>

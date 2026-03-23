@@ -1,15 +1,18 @@
 /* 搜尋區域容器 */
 .watchlist-search-area {
     width: 100%;
+    max-width: 350px;
+    min-width: 0;
     box-sizing: border-box;
     position: relative;
+    justify-self: center;
 }
 
 /* 搜尋框容器 */
 .search-container {
     position: relative;
     width: 100%;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     box-sizing: border-box;
 }
 
@@ -156,6 +159,12 @@
 
 /* 響應式設計 */
 @media (max-width: 640px) {
+    .watchlist-search-area {
+        max-width: none;
+        min-width: 0;
+        justify-self: auto;
+    }
+
     .search-loading,
     .search-empty-state {
         padding: 20px 16px;

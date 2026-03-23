@@ -267,6 +267,7 @@
 .auth-dialog-preview-image {
     width: 100%;
     max-width: 400px;
+    aspect-ratio: 16 / 9;
     margin: 20px auto;
     height: auto;
     max-height: 400px;

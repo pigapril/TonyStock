@@ -1,17 +1,13 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { handleApiError } from '../../utils/errorHandler';
 import { Analytics } from '../../utils/analytics';
 import { useAuth } from '../Auth/useAuth';
 import './MarketSentimentIndex.css';
-import 'chartjs-adapter-date-fns';
 
-
-import MarketSentimentDescriptionSection from './MarketSentimentDescriptionSection';
 import MarketSentimentGauge from './MarketSentimentGauge';
 import { FeatureUpgradeDialog } from '../Common/Dialog/FeatureUpgradeDialog';
 import PageContainer from '../PageContainer/PageContainer';
-import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { getSentiment } from '../../utils/sentimentUtils';
 import { useAdContext } from '../Common/InterstitialAdModal/AdContext';
 import { useTranslation } from 'react-i18next';
@@ -20,218 +16,148 @@ import { Toast } from '../Watchlist/components/Toast';
 import { formatPrice } from '../../utils/priceUtils';
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { getCompositeComparisonSnapshots } from './comparisonSnapshots';
+import { useDeferredFeature } from '../../hooks/useDeferredFeature';
+import { generateHistoryLegendLabels } from './historyChartPlugins';
 
-// 引入必要的 Chart.js 元件和插件
-import {
-  Chart as ChartJS,
-  LineElement,
-  PointElement,
-  LineController,
-  CategoryScale,
-  LinearScale,
-  TimeScale,
-  Filler,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+const MarketSentimentDescriptionSection = lazy(() => import('./MarketSentimentDescriptionSection'));
+const DeferredHistoryWorkspace = lazy(() => import('./DeferredHistoryWorkspace'));
+const IndicatorItem = lazy(() => import('../IndicatorItem/IndicatorItem'));
 
-// 引入 Line 組件
-import { Line } from 'react-chartjs-2';
-
-// 引入 IndicatorItem 組件
-import IndicatorItem from '../IndicatorItem/IndicatorItem';
-
-// 引入 rc-slider 和其樣式
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
-
-// 註冊 Chart.js 的元件和插件
-ChartJS.register(
-  LineElement,
-  PointElement,
-  LineController,
-  CategoryScale,
-  LinearScale,
-  TimeScale,
-  Filler,
-  Tooltip,
-  Legend
-);
-
-function hasExtremeFearMarkerDataset(chart) {
-  return chart?.data?.datasets?.some((dataset) => dataset?.pulseMarker);
-}
-
-function stopExtremeFearPulse(chart) {
-  if (chart?.$extremeFearPulseFrame) {
-    cancelAnimationFrame(chart.$extremeFearPulseFrame);
-    chart.$extremeFearPulseFrame = null;
-  }
-}
-
-function startExtremeFearPulse(chart) {
-  if (!chart || chart.$extremeFearPulseFrame || !hasExtremeFearMarkerDataset(chart)) {
-    return;
+const HeroReferenceStrip = React.memo(function HeroReferenceStrip({
+  comparisonSnapshots,
+  currentLang,
+  formattedRestrictionCutoffDate,
+  isRestrictedPreview,
+  t
+}) {
+  if (!comparisonSnapshots.previousDay && !comparisonSnapshots.previousWeek && !comparisonSnapshots.previousMonth && !comparisonSnapshots.previousQuarter) {
+    return null;
   }
 
-  const tick = () => {
-    if (!chart?.ctx) {
-      stopExtremeFearPulse(chart);
-      return;
-    }
+  return (
+    <div className="panel-reference-block" aria-label={t('marketSentiment.gauge.comparison.ariaLabel')}>
+      <span className="panel-reference-label">
+        {isRestrictedPreview
+          ? t('marketSentiment.dataLimitation.historicalSnapshotLabel', { date: formattedRestrictionCutoffDate })
+          : (currentLang === 'zh-TW' ? '近期參考' : 'Recent Reference')}
+      </span>
+      <div className="panel-comparison-strip">
+        {comparisonSnapshots.previousDay && (
+          <div className="panel-comparison-card">
+            <span className="panel-comparison-label">
+              {t('marketSentiment.gauge.comparison.previousDay')}
+            </span>
+            <div className="panel-comparison-valueGroup">
+              <span className="panel-comparison-score">
+                {comparisonSnapshots.previousDay.score}
+              </span>
+              <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousDay.sentimentKey.split('.').pop()}`}>
+                {comparisonSnapshots.previousDay.sentimentLabel}
+              </span>
+            </div>
+          </div>
+        )}
+        {comparisonSnapshots.previousWeek && (
+          <div className="panel-comparison-card">
+            <span className="panel-comparison-label">
+              {t('marketSentiment.gauge.comparison.previousWeek')}
+            </span>
+            <div className="panel-comparison-valueGroup">
+              <span className="panel-comparison-score">
+                {comparisonSnapshots.previousWeek.score}
+              </span>
+              <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousWeek.sentimentKey.split('.').pop()}`}>
+                {comparisonSnapshots.previousWeek.sentimentLabel}
+              </span>
+            </div>
+          </div>
+        )}
+        {comparisonSnapshots.previousMonth && (
+          <div className="panel-comparison-card">
+            <span className="panel-comparison-label">
+              {t('marketSentiment.gauge.comparison.previousMonth')}
+            </span>
+            <div className="panel-comparison-valueGroup">
+              <span className="panel-comparison-score">
+                {comparisonSnapshots.previousMonth.score}
+              </span>
+              <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousMonth.sentimentKey.split('.').pop()}`}>
+                {comparisonSnapshots.previousMonth.sentimentLabel}
+              </span>
+            </div>
+          </div>
+        )}
+        {comparisonSnapshots.previousQuarter && (
+          <div className="panel-comparison-card panel-comparison-card--desktopOnly">
+            <span className="panel-comparison-label">
+              {t('marketSentiment.gauge.comparison.previousQuarter')}
+            </span>
+            <div className="panel-comparison-valueGroup">
+              <span className="panel-comparison-score">
+                {comparisonSnapshots.previousQuarter.score}
+              </span>
+              <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousQuarter.sentimentKey.split('.').pop()}`}>
+                {comparisonSnapshots.previousQuarter.sentimentLabel}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+      {isRestrictedPreview && (
+        <div className="panel-reference-cta">
+          <p className="panel-reference-cta__text">
+            {t('marketSentiment.dataLimitation.currentCardNote')}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+});
 
-    if (!document.hidden) {
-      chart.draw();
-    }
-
-    chart.$extremeFearPulseFrame = requestAnimationFrame(tick);
-  };
-
-  chart.$extremeFearPulseFrame = requestAnimationFrame(tick);
-}
-
-const extremeFearPulsePlugin = {
-  id: 'extremeFearPulse',
-  afterInit(chart) {
-    startExtremeFearPulse(chart);
-  },
-  afterUpdate(chart) {
-    if (hasExtremeFearMarkerDataset(chart)) {
-      startExtremeFearPulse(chart);
-    } else {
-      stopExtremeFearPulse(chart);
-    }
-  },
-  afterDatasetsDraw(chart) {
-    const markerDatasetIndex = chart.data.datasets.findIndex((dataset) => dataset?.pulseMarker);
-
-    if (markerDatasetIndex === -1) {
-      return;
-    }
-
-    const datasetMeta = chart.getDatasetMeta(markerDatasetIndex);
-    const points = datasetMeta?.data || [];
-
-    if (!points.length) {
-      return;
-    }
-
-    const ctx = chart.ctx;
-    const pulse = (Math.sin(performance.now() / 420) + 1) / 2;
-
-    ctx.save();
-
-    points.forEach((point) => {
-      if (!point || point.skip) {
-        return;
-      }
-
-      const { x, y } = point.getProps(['x', 'y'], true);
-      const outerRadius = 10 + pulse * 4;
-      const innerRadius = 6 + pulse * 2;
-
-      ctx.beginPath();
-      ctx.arc(x, y, outerRadius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(245, 158, 11, ${0.08 + pulse * 0.14})`;
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.arc(x, y, innerRadius, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(249, 115, 22, ${0.28 + pulse * 0.28})`;
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    });
-
-    ctx.restore();
-  },
-  beforeDestroy(chart) {
-    stopExtremeFearPulse(chart);
-  }
-};
-
-ChartJS.register(extremeFearPulsePlugin);
-
-const restrictedWindowMaskPlugin = {
-  id: 'restrictedWindowMask',
-  beforeEvent(chart, args) {
-    const options = chart?.options?.plugins?.restrictedWindowMask;
-    const event = args?.event;
-
-    if (!options?.enabled || !options.cutoffDate || !event) {
-      return undefined;
-    }
-
-    const xScale = chart.scales?.x;
-    const chartArea = chart.chartArea;
-
-    if (!xScale || !chartArea) {
-      return undefined;
-    }
-
-    const cutoffValue = options.cutoffDate instanceof Date
-      ? options.cutoffDate
-      : new Date(options.cutoffDate);
-    const cutoffPixel = xScale.getPixelForValue(cutoffValue);
-    const maskStart = Math.max(chartArea.left, Math.min(cutoffPixel, chartArea.right));
-    const isInsideMaskedArea = event.x >= maskStart && event.x <= chartArea.right
-      && event.y >= chartArea.top && event.y <= chartArea.bottom;
-
-    if (!isInsideMaskedArea) {
-      return undefined;
-    }
-
-    if (typeof chart.setActiveElements === 'function') {
-      chart.setActiveElements([]);
-    }
-
-    if (chart.tooltip && typeof chart.tooltip.setActiveElements === 'function') {
-      chart.tooltip.setActiveElements([], { x: event.x, y: event.y });
-    }
-
-    chart.draw();
-    return false;
-  },
-  afterDatasetsDraw(chart) {
-    const options = chart?.options?.plugins?.restrictedWindowMask;
-
-    if (!options?.enabled || !options.cutoffDate) {
-      return;
-    }
-
-    const xScale = chart.scales?.x;
-    const chartArea = chart.chartArea;
-
-    if (!xScale || !chartArea) {
-      return;
-    }
-
-    const cutoffValue = options.cutoffDate instanceof Date
-      ? options.cutoffDate
-      : new Date(options.cutoffDate);
-    const cutoffPixel = xScale.getPixelForValue(cutoffValue);
-    const maskStart = Math.max(chartArea.left, Math.min(cutoffPixel, chartArea.right));
-
-    if (maskStart >= chartArea.right) {
-      return;
-    }
-
-    const ctx = chart.ctx;
-
-    ctx.save();
-    ctx.fillStyle = options.fillColor || '#f8fafc';
-    ctx.fillRect(maskStart, chartArea.top, chartArea.right - maskStart, chartArea.bottom - chartArea.top);
-
-    ctx.beginPath();
-    ctx.moveTo(maskStart, chartArea.top);
-    ctx.lineTo(maskStart, chartArea.bottom);
-    ctx.strokeStyle = options.lineColor || 'rgba(37, 99, 235, 0.88)';
-    ctx.lineWidth = options.lineWidth || 1.5;
-    ctx.stroke();
-    ctx.restore();
-  }
-};
-
-ChartJS.register(restrictedWindowMaskPlugin);
+const HeroExplainerCard = React.memo(function HeroExplainerCard({
+  gaugeExplainerCopy,
+  isMobileSummaryExpanded,
+  isMobileViewport,
+  onToggleExpand
+}) {
+  return (
+    <div className={`panel-market-summary ${isMobileSummaryExpanded ? 'is-expanded' : ''}`}>
+      {isMobileViewport && (
+        <button
+          type="button"
+          className="panel-market-summary__toggle"
+          onClick={onToggleExpand}
+          aria-expanded={isMobileSummaryExpanded}
+        >
+          <span className="panel-market-summary__toggleLabel">
+            {gaugeExplainerCopy.title}
+          </span>
+          <span className="panel-market-summary__toggleIcon" aria-hidden="true">
+            {isMobileSummaryExpanded ? '−' : '+'}
+          </span>
+        </button>
+      )}
+      <div className="panel-explainer-card">
+        <h3 className="panel-explainer-title">
+          {gaugeExplainerCopy.title}
+        </h3>
+        <p className="panel-explainer-subtitle">
+          {gaugeExplainerCopy.subtitle}
+        </p>
+        <div className="panel-explainer-sections">
+          {gaugeExplainerCopy.sections.map((section) => (
+            <div key={section.title} className="panel-explainer-section">
+              <h4 className="panel-explainer-sectionTitle">{section.title}</h4>
+              <p className="panel-explainer-body">
+                {section.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+});
 
 // 新增：獲取時間單位的函數
 function getTimeUnit(dates) {
@@ -364,7 +290,6 @@ const MarketSentimentIndex = () => {
   const [indicatorTrendData, setIndicatorTrendData] = useState({});
   const [historicalData, setHistoricalData] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const initialRenderRef = useRef(true);
   const { requestAdDisplay } = useAdContext();
   const currentLang = i18n.language;
 
@@ -382,15 +307,25 @@ const MarketSentimentIndex = () => {
   const [heroView, setHeroView] = useState('current');
   const [selectedIndicatorKey, setSelectedIndicatorKey] = useState(null);
   const [isMobileIndicatorSheetOpen, setIsMobileIndicatorSheetOpen] = useState(false);
+  const [isIndicatorWorkspaceActivated, setIsIndicatorWorkspaceActivated] = useState(false);
   const historyChartRef = useRef(null);
   const historyChartContainerRef = useRef(null);
   const historyOverlayCardRef = useRef(null);
+  const historyOverlayFrameRef = useRef(null);
+  const indicatorDetailViewportRef = useRef(null);
+  const historicalFetchStartedRef = useRef(false);
   const [historyOverlayPosition, setHistoryOverlayPosition] = useState({ top: '50%', left: '50%' });
   const [historyOverlayMode, setHistoryOverlayMode] = useState('hidden');
   const [isMobileViewport, setIsMobileViewport] = useState(() => (
     typeof window !== 'undefined' ? window.innerWidth <= 768 : false
   ));
   const [isMobileSummaryExpanded, setIsMobileSummaryExpanded] = useState(false);
+  const shouldLoadHistoricalData = heroView === 'history' || isIndicatorWorkspaceActivated || isMobileIndicatorSheetOpen;
+  const shouldLoadDescriptionSection = useDeferredFeature({
+    timeoutMs: 1500,
+    useIdleCallback: true,
+    triggerOnInteraction: true
+  });
 
   useEffect(() => {
     const handleResize = () => {
@@ -410,6 +345,44 @@ const MarketSentimentIndex = () => {
       setIsMobileIndicatorSheetOpen(false);
     }
   }, [isMobileViewport]);
+
+  useEffect(() => {
+    if (isMobileViewport || !selectedIndicatorKey || isIndicatorWorkspaceActivated) {
+      return;
+    }
+
+    setIsIndicatorWorkspaceActivated(true);
+  }, [isIndicatorWorkspaceActivated, isMobileViewport, selectedIndicatorKey]);
+
+  useEffect(() => {
+    if (isIndicatorWorkspaceActivated) {
+      return undefined;
+    }
+
+    const node = indicatorDetailViewportRef.current;
+
+    if (!node || typeof IntersectionObserver === 'undefined') {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsIndicatorWorkspaceActivated(true);
+          observer.disconnect();
+        }
+      });
+    }, {
+      threshold: 0.25,
+      rootMargin: '0px'
+    });
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isIndicatorWorkspaceActivated]);
 
   useEffect(() => {
     if (!isMobileViewport || !isMobileIndicatorSheetOpen) {
@@ -505,9 +478,19 @@ const MarketSentimentIndex = () => {
   }, [checkAuthStatus, isProUser, isTemporaryFreeMode, showToast, t]);
 
   useEffect(() => {
+    if (!shouldLoadHistoricalData || historicalFetchStartedRef.current) {
+      return;
+    }
+
+    historicalFetchStartedRef.current = true;
+
     async function fetchHistoricalData() {
       try {
-        const response = await enhancedApiClient.get('/api/composite-historical-data');
+        const response = await enhancedApiClient.get('/api/composite-historical-data', {
+          skipAuthHandling: true,
+          maxRetries: 1,
+          retryDelay: 250
+        });
         const formattedData = response.data
           .filter(item => item.compositeScore != null && item.spyClose != null)
           .map((item) => ({
@@ -517,12 +500,17 @@ const MarketSentimentIndex = () => {
           }));
         setHistoricalData(formattedData);
       } catch (error) {
+        if (error?.response?.status === 401) {
+          setHistoricalData([]);
+          return;
+        }
+
         handleApiError(error, showToast, t);
       }
     }
 
     fetchHistoricalData();
-  }, [showToast, t]);
+  }, [shouldLoadHistoricalData, showToast, t]);
 
   const latestAvailableHistoryTimestamp = useMemo(() => {
     if (historicalData.length === 0) {
@@ -579,18 +567,15 @@ const MarketSentimentIndex = () => {
   }, [indicatorsData, selectedIndicatorKey]);
 
   useEffect(() => {
-    const canLoadIndicatorTrends = Boolean(sentimentData);
-
-    if (!canLoadIndicatorTrends) {
+    if (!sentimentData) {
       setIndicatorTrendData({});
-      return;
     }
+  }, [sentimentData]);
 
-    const indicatorKeys = Object.keys(indicatorsData).filter(
-      (key) => key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield'
-    );
+  useEffect(() => {
+    const canLoadIndicatorTrend = Boolean(sentimentData && selectedIndicatorKey);
 
-    if (indicatorKeys.length === 0) {
+    if (!canLoadIndicatorTrend || indicatorTrendData[selectedIndicatorKey]) {
       return;
     }
 
@@ -598,50 +583,43 @@ const MarketSentimentIndex = () => {
 
     async function fetchIndicatorTrendData() {
       try {
-        const settledResults = await Promise.allSettled(
-          indicatorKeys.map(async (key) => {
-            const response = await enhancedApiClient.get('/api/indicator-history', {
-              params: { indicator: key }
-            });
-
-            const normalized = response.data
-              .map((item) => ({
-                date: new Date(item.date),
-                value: item.value != null ? parseFloat(item.value) : null,
-                percentileRank: item.percentileRank != null ? parseFloat(item.percentileRank) : null
-              }))
-              .filter((item) => item.percentileRank != null)
-              .sort((a, b) => a.date - b.date);
-
-            if (normalized.length === 0) {
-              return [key, []];
-            }
-
-            return [key, normalized];
-          })
-        );
-
-        const results = settledResults.flatMap((result, index) => {
-          if (result.status === 'fulfilled') {
-            return [result.value];
-          }
-
-          const error = result.reason;
-          const isCanceled = error?.code === 'ERR_CANCELED' || error?.name === 'CanceledError';
-
-          if (!isCanceled) {
-            console.error(`Failed to fetch indicator trend data for ${indicatorKeys[index]}:`, error);
-          }
-
-          return [];
+        const response = await enhancedApiClient.get('/api/indicator-history', {
+          params: { indicator: selectedIndicatorKey },
+          skipAuthHandling: true,
+          maxRetries: 1,
+          retryDelay: 250
         });
 
+        const normalized = response.data
+          .map((item) => ({
+            date: new Date(item.date),
+            value: item.value != null ? parseFloat(item.value) : null,
+            percentileRank: item.percentileRank != null ? parseFloat(item.percentileRank) : null
+          }))
+          .filter((item) => item.percentileRank != null)
+          .sort((a, b) => a.date - b.date);
+
         if (!cancelled) {
-          setIndicatorTrendData(Object.fromEntries(results));
+          setIndicatorTrendData((prev) => ({
+            ...prev,
+            [selectedIndicatorKey]: normalized
+          }));
         }
       } catch (error) {
-        if (!cancelled) {
-          console.error('Failed to fetch indicator trend data:', error);
+        const isCanceled = error?.code === 'ERR_CANCELED' || error?.name === 'CanceledError';
+        const isUnauthorized = error?.response?.status === 401;
+
+        if (!cancelled && !isCanceled && !isUnauthorized) {
+          console.error(`Failed to fetch indicator trend data for ${selectedIndicatorKey}:`, error);
+          setIndicatorTrendData((prev) => ({
+            ...prev,
+            [selectedIndicatorKey]: []
+          }));
+        } else if (!cancelled && isUnauthorized) {
+          setIndicatorTrendData((prev) => ({
+            ...prev,
+            [selectedIndicatorKey]: []
+          }));
         }
       }
     }
@@ -651,7 +629,7 @@ const MarketSentimentIndex = () => {
     return () => {
       cancelled = true;
     };
-  }, [indicatorsData, isProUser, sentimentData]);
+  }, [indicatorTrendData, selectedIndicatorKey, sentimentData]);
 
   const handleTimeRangeChange = (e) => {
     Analytics.marketSentiment.changeTimeRange({
@@ -942,25 +920,7 @@ const MarketSentimentIndex = () => {
       legend: {
         labels: {
           usePointStyle: true,
-          generateLabels: (chart) => {
-            const defaultLabels = ChartJS.defaults.plugins.legend.labels.generateLabels(chart);
-
-            return defaultLabels.map((label) => {
-              const dataset = chart.data.datasets?.[label.datasetIndex];
-
-              if (dataset?.pulseMarker) {
-                return {
-                  ...label,
-                  fillStyle: dataset.pointBackgroundColor,
-                  strokeStyle: dataset.pointBorderColor,
-                  lineWidth: dataset.pointBorderWidth,
-                  pointStyle: 'circle'
-                };
-              }
-
-              return label;
-            });
-          }
+          generateLabels: generateHistoryLegendLabels
         }
       },
       tooltip: {
@@ -1003,13 +963,6 @@ const MarketSentimentIndex = () => {
     responsive: true,
     maintainAspectRatio: false,
   }), [currentLang, currentSliderRange, isRestrictedPreview, restrictionCutoffDate, timeUnit, t]);
-
-  // 在組件渲染完成後將 initialRenderRef 設為 false
-  useEffect(() => {
-    if (isDataLoaded) {
-      initialRenderRef.current = false;
-    }
-  }, [isDataLoaded]);
 
   // 定義用於結構化數據的 JSON-LD
   const marketSentimentJsonLd = useMemo(() => {
@@ -1129,6 +1082,18 @@ const MarketSentimentIndex = () => {
       t
     });
   }, [currentCompositeScore, historicalData, sentimentData?.compositeScoreLastUpdate, t]);
+  const gaugeSupplementaryContent = useMemo(() => (
+    <HeroReferenceStrip
+      comparisonSnapshots={comparisonSnapshots}
+      currentLang={currentLang}
+      formattedRestrictionCutoffDate={formattedRestrictionCutoffDate}
+      isRestrictedPreview={isRestrictedPreview}
+      t={t}
+    />
+  ), [comparisonSnapshots, currentLang, formattedRestrictionCutoffDate, isRestrictedPreview, t]);
+  const handleToggleMobileSummary = useCallback(() => {
+    setIsMobileSummaryExpanded((prev) => !prev);
+  }, []);
 
   const indicatorEntries = useMemo(() => {
     return Object.entries(indicatorsData).filter(
@@ -1154,6 +1119,7 @@ const MarketSentimentIndex = () => {
 
   const handleIndicatorCardSelect = useCallback((key) => {
     setSelectedIndicatorKey(key);
+    setIsIndicatorWorkspaceActivated(true);
 
     if (isMobileViewport) {
       setIsMobileIndicatorSheetOpen(true);
@@ -1315,6 +1281,17 @@ const MarketSentimentIndex = () => {
     ));
   }, [historyRestrictionWindow, restrictionCutoffDate]);
 
+  const scheduleHistoryOverlayUpdate = useCallback(() => {
+    if (historyOverlayFrameRef.current) {
+      cancelAnimationFrame(historyOverlayFrameRef.current);
+    }
+
+    historyOverlayFrameRef.current = requestAnimationFrame(() => {
+      historyOverlayFrameRef.current = null;
+      updateHistoryOverlayPosition();
+    });
+  }, [updateHistoryOverlayPosition]);
+
   useEffect(() => {
     if (heroView !== 'history' || !historyRestrictionWindow) {
       setHistoryOverlayMode('hidden');
@@ -1326,70 +1303,95 @@ const MarketSentimentIndex = () => {
       return undefined;
     }
 
-    let frameId = requestAnimationFrame(() => {
-      updateHistoryOverlayPosition();
-    });
+    scheduleHistoryOverlayUpdate();
 
     const node = historyChartContainerRef.current;
     let observer;
+    const handleViewportChange = () => {
+      scheduleHistoryOverlayUpdate();
+    };
 
     if (node && typeof ResizeObserver !== 'undefined') {
       observer = new ResizeObserver(() => {
-        cancelAnimationFrame(frameId);
-        frameId = requestAnimationFrame(() => {
-          updateHistoryOverlayPosition();
-        });
+        scheduleHistoryOverlayUpdate();
       });
       observer.observe(node);
     }
 
+    window.addEventListener('resize', handleViewportChange, { passive: true });
+    window.addEventListener('scroll', handleViewportChange, { passive: true });
+
     return () => {
-      cancelAnimationFrame(frameId);
+      if (historyOverlayFrameRef.current) {
+        cancelAnimationFrame(historyOverlayFrameRef.current);
+        historyOverlayFrameRef.current = null;
+      }
+      window.removeEventListener('resize', handleViewportChange);
+      window.removeEventListener('scroll', handleViewportChange);
       observer?.disconnect();
     };
-  }, [chartData, chartOptions, currentSliderRange, heroView, historyOverlayMode, historyRestrictionWindow, updateHistoryOverlayPosition]);
+  }, [chartData, chartOptions, currentSliderRange, heroView, historyOverlayMode, historyRestrictionWindow, scheduleHistoryOverlayUpdate]);
+
+  const renderPageShell = (state = 'loading') => (
+    <PageContainer
+      title={t('marketSentiment.pageTitle')}
+      description={t('marketSentiment.pageDescription')}
+      keywords={t('marketSentiment.keywords')}
+      ogImage="/images/market-sentiment-og.png"
+      ogUrl={`${window.location.origin}/${currentLang}/market-sentiment`}
+    >
+      <div className={`market-sentiment-shell market-sentiment-shell--${state}`} aria-hidden={state === 'loading' ? 'true' : undefined}>
+        <div className="market-sentiment-shell__hero" />
+        <div className="market-sentiment-shell__workspace" />
+        {state === 'loading' ? (
+          <div className="market-sentiment-shell__loading">
+            <div className="loading-spinner">
+              <div className="spinner"></div>
+              <span>{t('common.loading')}</span>
+            </div>
+          </div>
+        ) : (
+          <div className="market-sentiment-shell__errorCopy">
+            <span>{t('marketSentiment.error.fetchFailed')}</span>
+          </div>
+        )}
+      </div>
+    </PageContainer>
+  );
+
+  const renderHistoryWorkspaceFallback = () => (
+    <div className="hero-history-workspace hero-panel-transition hero-panel-transition--history hero-history-workspace--loading" aria-busy="true">
+      <div className="history-workspace__controls hero-history-workspace__controls">
+        <div className="history-workspace__controlsFallback" />
+      </div>
+      <div className="indicator-chart hero-history-workspace__chart hero-history-workspace__chartSkeleton" />
+      <div className="slider-container hero-history-workspace__slider hero-history-workspace__sliderSkeleton">
+        <div className="hero-history-workspace__sliderBar" />
+        <div className="slider-labels">
+          <span>----</span>
+          <span>----</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderIndicatorDetailFallback = () => (
+    <div className="indicator-detail-skeleton" aria-busy="true">
+      <div className="indicator-detail-skeleton__headline" />
+      <div className="indicator-detail-skeleton__body" />
+      <div className="indicator-detail-skeleton__chart" />
+    </div>
+  );
 
   // 1. 檢查載入狀態
   if (loading) {
-    return (
-      <div
-        className="loading-container"
-        style={{
-          minHeight: '60vh', // 設定最小高度，減少頁腳跳動。你可以根據實際內容調整此值
-          display: 'flex',
-          flexDirection: 'column', // 讓文字在 spinner 下方
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '20px', // 增加一些內邊距，讓視覺效果好一點
-        }}
-      >
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <span>{t('common.loading')}</span>
-        </div>
-      </div>
-    );
+    return renderPageShell('loading');
   }
 
   // 2. 新增：在載入完成後，檢查 sentimentData 是否存在
   // 如果 API 請求失敗，sentimentData 會是 null
   if (!sentimentData) {
-    return (
-      <div
-        className="error-container"
-        style={{
-          minHeight: '60vh', // 同樣設定最小高度
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '20px',
-          textAlign: 'center', // 確保錯誤訊息文字居中
-        }}
-      >
-        <span>{t('marketSentiment.error.fetchFailed')}</span>
-      </div>
-    );
+    return renderPageShell('error');
   }
 
   return (
@@ -1469,214 +1471,43 @@ const MarketSentimentIndex = () => {
                       <MarketSentimentGauge
                         sentimentData={sentimentData}
                         isDataLoaded={isDataLoaded}
-                        initialRenderRef={initialRenderRef}
                         showAnalysisResult={false}
                         showLastUpdate={true}
                         headlineText={isRestrictedPreview
                           ? t('marketSentiment.dataLimitation.snapshotGaugeHeadline', { date: formattedRestrictionCutoffDate })
                           : t('marketSentiment.dataLimitation.currentGaugeHeadline')}
-                        supplementaryContent={(comparisonSnapshots.previousDay || comparisonSnapshots.previousWeek || comparisonSnapshots.previousMonth || comparisonSnapshots.previousQuarter) ? (
-                          <div className="panel-reference-block" aria-label={t('marketSentiment.gauge.comparison.ariaLabel')}>
-                            <span className="panel-reference-label">
-                              {isRestrictedPreview
-                                ? t('marketSentiment.dataLimitation.historicalSnapshotLabel', { date: formattedRestrictionCutoffDate })
-                                : (currentLang === 'zh-TW' ? '近期參考' : 'Recent Reference')}
-                            </span>
-                            <div className="panel-comparison-strip">
-                              {comparisonSnapshots.previousDay && (
-                                <div className="panel-comparison-card">
-                                  <span className="panel-comparison-label">
-                                    {t('marketSentiment.gauge.comparison.previousDay')}
-                                  </span>
-                                  <div className="panel-comparison-valueGroup">
-                                    <span className="panel-comparison-score">
-                                      {comparisonSnapshots.previousDay.score}
-                                    </span>
-                                    <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousDay.sentimentKey.split('.').pop()}`}>
-                                      {comparisonSnapshots.previousDay.sentimentLabel}
-                                    </span>
-                                  </div>
-                                </div>
-                              )}
-                              {comparisonSnapshots.previousWeek && (
-                                <div className="panel-comparison-card">
-                                  <span className="panel-comparison-label">
-                                    {t('marketSentiment.gauge.comparison.previousWeek')}
-                                  </span>
-                                  <div className="panel-comparison-valueGroup">
-                                    <span className="panel-comparison-score">
-                                      {comparisonSnapshots.previousWeek.score}
-                                    </span>
-                                    <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousWeek.sentimentKey.split('.').pop()}`}>
-                                      {comparisonSnapshots.previousWeek.sentimentLabel}
-                                    </span>
-                                  </div>
-                                </div>
-                              )}
-                              {comparisonSnapshots.previousMonth && (
-                                <div className="panel-comparison-card">
-                                  <span className="panel-comparison-label">
-                                    {t('marketSentiment.gauge.comparison.previousMonth')}
-                                  </span>
-                                  <div className="panel-comparison-valueGroup">
-                                    <span className="panel-comparison-score">
-                                      {comparisonSnapshots.previousMonth.score}
-                                    </span>
-                                    <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousMonth.sentimentKey.split('.').pop()}`}>
-                                      {comparisonSnapshots.previousMonth.sentimentLabel}
-                                    </span>
-                                  </div>
-                                </div>
-                              )}
-                              {comparisonSnapshots.previousQuarter && (
-                                <div className="panel-comparison-card panel-comparison-card--desktopOnly">
-                                  <span className="panel-comparison-label">
-                                    {t('marketSentiment.gauge.comparison.previousQuarter')}
-                                  </span>
-                                  <div className="panel-comparison-valueGroup">
-                                    <span className="panel-comparison-score">
-                                      {comparisonSnapshots.previousQuarter.score}
-                                    </span>
-                                    <span className={`panel-comparison-sentiment sentiment-${comparisonSnapshots.previousQuarter.sentimentKey.split('.').pop()}`}>
-                                      {comparisonSnapshots.previousQuarter.sentimentLabel}
-                                    </span>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                            {isRestrictedPreview && (
-                              <div className="panel-reference-cta">
-                                <p className="panel-reference-cta__text">
-                                  {t('marketSentiment.dataLimitation.currentCardNote')}
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                        ) : null}
+                        supplementaryContent={gaugeSupplementaryContent}
                       />
                     </div>
-
-                    <div
-                      className={`panel-market-summary ${isMobileSummaryExpanded ? 'is-expanded' : ''}`}
-                    >
-                      {isMobileViewport && (
-                        <button
-                          type="button"
-                          className="panel-market-summary__toggle"
-                          onClick={() => setIsMobileSummaryExpanded((prev) => !prev)}
-                          aria-expanded={isMobileSummaryExpanded}
-                        >
-                          <span className="panel-market-summary__toggleLabel">
-                            {gaugeExplainerCopy.title}
-                          </span>
-                          <span className="panel-market-summary__toggleIcon" aria-hidden="true">
-                            {isMobileSummaryExpanded ? '−' : '+'}
-                          </span>
-                        </button>
-                      )}
-                      <div className="panel-explainer-card">
-                        <h3 className="panel-explainer-title">
-                          {gaugeExplainerCopy.title}
-                        </h3>
-                        <p className="panel-explainer-subtitle">
-                          {gaugeExplainerCopy.subtitle}
-                        </p>
-                        <div className="panel-explainer-sections">
-                          {gaugeExplainerCopy.sections.map((section) => (
-                            <div key={section.title} className="panel-explainer-section">
-                              <h4 className="panel-explainer-sectionTitle">{section.title}</h4>
-                              <p className="panel-explainer-body">
-                                {section.body}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
+                    <HeroExplainerCard
+                      gaugeExplainerCopy={gaugeExplainerCopy}
+                      isMobileSummaryExpanded={isMobileSummaryExpanded}
+                      isMobileViewport={isMobileViewport}
+                      onToggleExpand={handleToggleMobileSummary}
+                    />
                   </div>
                 ) : (
-                  <div className="hero-history-workspace hero-panel-transition hero-panel-transition--history">
-                    <div className="history-workspace__controls hero-history-workspace__controls">
-                      <TimeRangeSelector
-                        selectedTimeRange={selectedTimeRange}
-                        handleTimeRangeChange={handleTimeRangeChange}
-                      />
-                      {isRestrictedPreview && (
-                        <p className="history-workspace__restriction-note">
-                          {selectedTimeRange === '3M' || selectedTimeRange === '1M'
-                            ? t('marketSentiment.dataLimitation.historyShortRangeNote', { date: formattedRestrictionCutoffDate })
-                            : t('marketSentiment.dataLimitation.historyRangeNote', { date: formattedRestrictionCutoffDate })}
-                        </p>
-                      )}
-                    </div>
-
-                    <div ref={historyChartContainerRef} className="indicator-chart hero-history-workspace__chart">
-                      <Line ref={historyChartRef} data={chartData} options={chartOptions} />
-                      {historyRestrictionWindow && historyOverlayMode !== 'hidden' && (
-                        <div
-                          className={`history-restriction-overlay is-${historyOverlayMode}${historyRestrictionWindow.fullyLocked ? ' is-fully-locked' : ''}`}
-                          style={historyOverlayPosition}
-                        >
-                          {historyOverlayMode === 'minimal' ? (
-                            <button
-                              ref={historyOverlayCardRef}
-                              type="button"
-                              className="history-restriction-overlay__pill"
-                              onClick={() => handleRestrictedFeatureClick('currentData', 'marketSentimentHistoryOverlayMinimal')}
-                            >
-                              {t('marketSentiment.dataLimitation.overlayMinimalLabel')}
-                            </button>
-                          ) : (
-                            <div ref={historyOverlayCardRef} className="history-restriction-overlay__card">
-                              {historyOverlayMode === 'expanded' && (
-                                <span className="history-restriction-overlay__eyebrow">
-                                  {t('marketSentiment.dataLimitation.overlayEyebrow')}
-                                </span>
-                              )}
-                              <strong className="history-restriction-overlay__title">
-                                {historyOverlayMode === 'compact'
-                                  ? t('marketSentiment.dataLimitation.overlayCompactTitle')
-                                  : t('marketSentiment.dataLimitation.overlayTitle')}
-                              </strong>
-                              {historyOverlayMode === 'expanded' && (
-                                <p className="history-restriction-overlay__body">
-                                  {t('marketSentiment.dataLimitation.overlayBody', { date: formattedRestrictionCutoffDate })}
-                                </p>
-                              )}
-                              <button
-                                type="button"
-                                className="history-restriction-overlay__button"
-                                onClick={() => handleRestrictedFeatureClick('currentData', 'marketSentimentHistoryOverlay')}
-                              >
-                                {t('marketSentiment.dataLimitation.unlockLatestCta')}
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-                    {historicalData.length > 0 && sliderMinMax[1] > sliderMinMax[0] && (
-                      <div className="slider-container hero-history-workspace__slider">
-                        <Slider
-                          range
-                          min={sliderMinMax[0]}
-                          max={sliderMinMax[1]}
-                          value={currentSliderRange[0] === 0 ? sliderMinMax : currentSliderRange}
-                          onChange={handleSliderChange}
-                          allowCross={false}
-                          trackStyle={[{ backgroundColor: '#C78F57' }]}
-                          handleStyle={[{ borderColor: '#C78F57', backgroundColor: 'white' }, { borderColor: '#C78F57', backgroundColor: 'white' }]}
-                          railStyle={{ backgroundColor: '#e9e9e9' }}
-                        />
-                        <div className="slider-labels">
-                          <span>{currentSliderRange[0] !== 0 ? new Date(currentSliderRange[0]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
-                          <span>{currentSliderRange[1] !== 0 ? new Date(currentSliderRange[1]).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</span>
-                        </div>
-                      </div>
-                    )}
-
-                  </div>
+                  <Suspense fallback={renderHistoryWorkspaceFallback()}>
+                    <DeferredHistoryWorkspace
+                      selectedTimeRange={selectedTimeRange}
+                      handleTimeRangeChange={handleTimeRangeChange}
+                      isRestrictedPreview={isRestrictedPreview}
+                      formattedRestrictionCutoffDate={formattedRestrictionCutoffDate}
+                      historyChartContainerRef={historyChartContainerRef}
+                      historyChartRef={historyChartRef}
+                      chartData={chartData}
+                      chartOptions={chartOptions}
+                      historyRestrictionWindow={historyRestrictionWindow}
+                      historyOverlayMode={historyOverlayMode}
+                      historyOverlayPosition={historyOverlayPosition}
+                      historyOverlayCardRef={historyOverlayCardRef}
+                      handleRestrictedFeatureClick={handleRestrictedFeatureClick}
+                      historicalData={historicalData}
+                      sliderMinMax={sliderMinMax}
+                      currentSliderRange={currentSliderRange}
+                      handleSliderChange={handleSliderChange}
+                    />
+                  </Suspense>
                 )}
               </div>
 
@@ -1785,7 +1616,7 @@ const MarketSentimentIndex = () => {
                       </div>
                     </div>
 
-                    <div className="indicators-workspace__detail">
+                    <div ref={indicatorDetailViewportRef} className="indicators-workspace__detail">
                       {selectedIndicatorEntry && (
                         <>
                           <div className="indicators-workspace__detailIntro">
@@ -1796,16 +1627,20 @@ const MarketSentimentIndex = () => {
                               {getIndicatorDetailSummary(selectedIndicatorEntry[0])}
                             </p>
                           </div>
-                          <IndicatorItem
-                            key={selectedIndicatorEntry[0]}
-                            indicatorKey={selectedIndicatorEntry[0]}
-                            indicator={selectedIndicatorEntry[1]}
-                            selectedTimeRange={selectedTimeRange}
-                            handleTimeRangeChange={handleTimeRangeChange}
-                            historicalSPYData={historicalData}
-                            isRestrictedPreview={isRestrictedPreview}
-                            restrictionCutoffDate={sentimentData?.restrictionCutoffDate}
-                          />
+                          {isIndicatorWorkspaceActivated ? (
+                            <Suspense fallback={renderIndicatorDetailFallback()}>
+                              <IndicatorItem
+                                key={selectedIndicatorEntry[0]}
+                                indicatorKey={selectedIndicatorEntry[0]}
+                                indicator={selectedIndicatorEntry[1]}
+                                selectedTimeRange={selectedTimeRange}
+                                handleTimeRangeChange={handleTimeRangeChange}
+                                historicalSPYData={historicalData}
+                                isRestrictedPreview={isRestrictedPreview}
+                                restrictionCutoffDate={sentimentData?.restrictionCutoffDate}
+                              />
+                            </Suspense>
+                          ) : renderIndicatorDetailFallback()}
                         </>
                       )}
                     </div>
@@ -1859,27 +1694,33 @@ const MarketSentimentIndex = () => {
                       {getIndicatorDetailSummary(selectedIndicatorEntry[0])}
                     </p>
                   </div>
-                  <IndicatorItem
-                    key={`mobile-${selectedIndicatorEntry[0]}`}
-                    indicatorKey={selectedIndicatorEntry[0]}
-                    indicator={selectedIndicatorEntry[1]}
-                    selectedTimeRange={selectedTimeRange}
-                    handleTimeRangeChange={handleTimeRangeChange}
-                    historicalSPYData={historicalData}
-                    isRestrictedPreview={isRestrictedPreview}
-                    restrictionCutoffDate={sentimentData?.restrictionCutoffDate}
-                  />
+                  <Suspense fallback={renderIndicatorDetailFallback()}>
+                    <IndicatorItem
+                      key={`mobile-${selectedIndicatorEntry[0]}`}
+                      indicatorKey={selectedIndicatorEntry[0]}
+                      indicator={selectedIndicatorEntry[1]}
+                      selectedTimeRange={selectedTimeRange}
+                      handleTimeRangeChange={handleTimeRangeChange}
+                      historicalSPYData={historicalData}
+                      isRestrictedPreview={isRestrictedPreview}
+                      restrictionCutoffDate={sentimentData?.restrictionCutoffDate}
+                    />
+                  </Suspense>
                 </div>
               </div>
             </div>
           )}
 
-          <MarketSentimentDescriptionSection
-            activeIndicator={selectedIndicatorEntry ? selectedIndicatorEntry[0] : 'composite'}
-            currentView="indicators"
-            indicatorsData={indicatorsData}
-            className="learn-layout"
-          />
+          {shouldLoadDescriptionSection ? (
+            <Suspense fallback={null}>
+              <MarketSentimentDescriptionSection
+                activeIndicator={selectedIndicatorEntry ? selectedIndicatorEntry[0] : 'composite'}
+                currentView="indicators"
+                indicatorsData={indicatorsData}
+                className="learn-layout"
+              />
+            </Suspense>
+          ) : null}
         </div>
       </div>
       {/* Feature Upgrade Dialog */}

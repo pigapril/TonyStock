@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useTransition } from 'react';
+import React, { Suspense, lazy, useEffect, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaChevronDown, FaLock } from 'react-icons/fa';
 import { useMediaQuery } from 'react-responsive';
@@ -10,10 +10,12 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '../Common/Badge/Badge';
 import { Button } from '../Common/Button/Button';
 import homepageService from '../../services/homepageService';
-import { HomePricePreviewChart } from './HomePricePreviewChart';
 import MarketSentimentGauge from '../MarketSentimentIndex/MarketSentimentGauge';
-import { SharedSentimentHistoryChart } from '../MarketSentimentIndex/SharedSentimentHistoryChart';
 import { formatPrice } from '../../utils/priceUtils';
+import { useDeferredFeature } from '../../hooks/useDeferredFeature';
+
+const HomePricePreviewChart = lazy(() => import('./HomePricePreviewChart').then((module) => ({ default: module.HomePricePreviewChart })));
+const SharedSentimentHistoryChart = lazy(() => import('../MarketSentimentIndex/SharedSentimentHistoryChart').then((module) => ({ default: module.SharedSentimentHistoryChart })));
 
 const BUTTON_LINK_CLASS = (variant) => [
   'ui-button',
@@ -180,6 +182,8 @@ export const Home = () => {
   const [isPriceLoading, setIsPriceLoading] = useState(true);
   const [activeExtremeIndex, setActiveExtremeIndex] = useState(0);
   const [, startTransition] = useTransition();
+  const shouldLoadSecondaryContent = useDeferredFeature({ timeoutMs: 1600, useIdleCallback: true, triggerOnInteraction: true });
+  const shouldLoadPreviewCharts = useDeferredFeature({ timeoutMs: 2400, useIdleCallback: true, triggerOnInteraction: true });
 
   useEffect(() => {
     let isMounted = true;
@@ -205,7 +209,7 @@ export const Home = () => {
   }, [startTransition]);
 
   useEffect(() => {
-    if (isHeroLoading) {
+    if (isHeroLoading || !shouldLoadSecondaryContent) {
       return undefined;
     }
 
@@ -243,7 +247,7 @@ export const Home = () => {
     return () => {
       isMounted = false;
     };
-  }, [isHeroLoading, startTransition]);
+  }, [isHeroLoading, shouldLoadSecondaryContent, startTransition]);
 
   useEffect(() => {
     const revealNodes = document.querySelectorAll('.home-reveal');
@@ -433,31 +437,6 @@ export const Home = () => {
     });
   };
 
-  const heroLoadingState = (
-    <div className="home-hero__loading" aria-busy="true" aria-live="polite">
-      <div className="home-hero__loadingCopy">
-        <HomeSkeletonLine className="home-hero__loadingTitle home-hero__loadingTitle--primary" />
-        <HomeSkeletonLine className="home-hero__loadingTitle home-hero__loadingTitle--secondary" />
-        <HomeSkeletonLine className="home-hero__loadingText" />
-        <HomeSkeletonLine className="home-hero__loadingText home-hero__loadingText--short" />
-        <div className="home-hero__loadingActions">
-          <HomeSkeletonLine className="home-hero__loadingButton" />
-          <HomeSkeletonLine className="home-hero__loadingButton home-hero__loadingButton--secondary" />
-        </div>
-      </div>
-
-      <div className="home-hero__loadingVisual">
-        <div className="home-marketPreviewShell home-marketPreviewShell--loading ui-surface-card" aria-hidden="true">
-          <div className="home-hero__loadingGauge" />
-          <div className="home-hero__loadingGaugeFoot">
-            <HomeSkeletonLine className="home-hero__loadingBadge" />
-            <HomeSkeletonLine className="home-hero__loadingBadge home-hero__loadingBadge--short" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   const narrativeLoadingState = (
     <div className="home-historyPreview home-historyPreview--loading" aria-busy="true" aria-live="polite">
       <div className="home-historyPreview__header">
@@ -509,16 +488,22 @@ export const Home = () => {
         <section className="home-hero">
           <div className="home-hero__backdrop" aria-hidden="true" />
           <div className="ui-page-shell home-hero__inner">
-            {isHeroLoading ? (
-              heroLoadingState
-            ) : (
-              <>
-                <div className="home-hero__content">
-                  <h1>{renderTitleWithBreaks(t('home.hero.title'))}</h1>
-                  <p className="home-hero__subtitle">{t('home.hero.subtitle')}</p>
-                </div>
+            <>
+              <div className="home-hero__content">
+                <h1>{renderTitleWithBreaks(t('home.hero.title'))}</h1>
+                <p className="home-hero__subtitle">{t('home.hero.subtitle')}</p>
+              </div>
 
-                <div className="home-hero__visual">
+              <div className="home-hero__visual">
+                {isHeroLoading ? (
+                  <div className="home-marketPreviewShell home-marketPreviewShell--loading ui-surface-card" aria-hidden="true">
+                    <div className="home-hero__loadingGauge" />
+                    <div className="home-hero__loadingGaugeFoot">
+                      <HomeSkeletonLine className="home-hero__loadingBadge" />
+                      <HomeSkeletonLine className="home-hero__loadingBadge home-hero__loadingBadge--short" />
+                    </div>
+                  </div>
+                ) : (
                   <div className="home-marketPreviewShell">
                     <MarketSentimentGauge
                       className="home-marketPreviewShell__gauge"
@@ -559,38 +544,38 @@ export const Home = () => {
                       ) : null}
                     />
                   </div>
-                </div>
+                )}
+              </div>
 
-                <div className="home-hero__actions">
-                  {isAuthenticated ? (
-                    <Link
-                      to={`/${currentLang}/market-sentiment`}
-                      className={`${BUTTON_LINK_CLASS('primary')} home-hero__action home-hero__action--primary`}
-                    >
-                      <span>{t('home.hero.primaryAuthenticated')}</span>
-                      <FaArrowRight aria-hidden="true" />
-                    </Link>
-                  ) : (
-                    <Button
-                      size="large"
-                      onClick={handlePrimaryAction}
-                      className="home-hero__authButton home-hero__action home-hero__action--primary"
-                    >
-                      <span>{t('home.hero.primaryGuest')}</span>
-                      <FaLock aria-hidden="true" />
-                    </Button>
-                  )}
-
+              <div className="home-hero__actions">
+                {isAuthenticated ? (
                   <Link
-                    to={`/${currentLang}/priceanalysis?stockCode=SPY&years=3.5`}
-                    className={`${BUTTON_LINK_CLASS('outline')} home-hero__action home-hero__action--secondary`}
+                    to={`/${currentLang}/market-sentiment`}
+                    className={`${BUTTON_LINK_CLASS('primary')} home-hero__action home-hero__action--primary`}
                   >
-                    <span>{t('home.hero.secondary')}</span>
+                    <span>{t('home.hero.primaryAuthenticated')}</span>
                     <FaArrowRight aria-hidden="true" />
                   </Link>
-                </div>
-              </>
-            )}
+                ) : (
+                  <Button
+                    size="large"
+                    onClick={handlePrimaryAction}
+                    className="home-hero__authButton home-hero__action home-hero__action--primary"
+                  >
+                    <span>{t('home.hero.primaryGuest')}</span>
+                    <FaLock aria-hidden="true" />
+                  </Button>
+                )}
+
+                <Link
+                  to={`/${currentLang}/priceanalysis?stockCode=SPY&years=3.5`}
+                  className={`${BUTTON_LINK_CLASS('outline')} home-hero__action home-hero__action--secondary`}
+                >
+                  <span>{t('home.hero.secondary')}</span>
+                  <FaArrowRight aria-hidden="true" />
+                </Link>
+              </div>
+            </>
           </div>
 
           <button
@@ -643,13 +628,19 @@ export const Home = () => {
 
                     {historyPreview.length > 1 ? (
                       <div className="home-historyPreview__chartShell">
-                        <SharedSentimentHistoryChart
-                          className="home-historyPreview__chart"
-                          historicalData={historyPreview}
-                          lowPoints={historyChartLowPoints}
-                          showLegend={true}
-                          compact={true}
-                        />
+                        {shouldLoadPreviewCharts ? (
+                          <Suspense fallback={<div className="home-historyPreview__loadingChart" aria-hidden="true" />}>
+                            <SharedSentimentHistoryChart
+                              className="home-historyPreview__chart"
+                              historicalData={historyPreview}
+                              lowPoints={historyChartLowPoints}
+                              showLegend={true}
+                              compact={true}
+                            />
+                          </Suspense>
+                        ) : (
+                          <div className="home-historyPreview__loadingChart" aria-hidden="true" />
+                        )}
                       </div>
                     ) : (
                       <p className="home-historyPreview__empty">{t('home.methodology.historyPreview.empty')}</p>
@@ -688,7 +679,13 @@ export const Home = () => {
                     </div>
                     {pricePreviewSeries.length > 1 ? (
                       <div className="home-pricePreview__chartShell">
-                        <HomePricePreviewChart className="home-pricePreview__chart" series={pricePreviewSeries} />
+                        {shouldLoadPreviewCharts ? (
+                          <Suspense fallback={<div className="home-pricePreview__loadingChart" aria-hidden="true" />}>
+                            <HomePricePreviewChart className="home-pricePreview__chart" series={pricePreviewSeries} />
+                          </Suspense>
+                        ) : (
+                          <div className="home-pricePreview__loadingChart" aria-hidden="true" />
+                        )}
                       </div>
                     ) : (
                       <p className="home-pricePreview__empty">{t('home.methodology.pricePreview.empty')}</p>

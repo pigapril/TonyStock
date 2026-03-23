@@ -28,35 +28,6 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Sentiment Inside Out - 市場情緒追蹤平台</title>
-    <!-- Google Identity Service -->
-    <script>
-        // 先定義回調函數
-        function handleGoogleSDKLoad() {
-            window.googleSDKLoaded && window.googleSDKLoaded();
-        }
-    </script>
-    <script src="https://accounts.google.com/gsi/client" 
-        async 
-        defer
-        onload="handleGoogleSDKLoad()"
-    ></script>
-    <script>
-        window.googleSDKLoaded = function() {
-            console.log('Google SDK loaded with details:', {
-                hasSDK: !!window.google,
-                hasAccounts: !!window.google?.accounts,
-                origin: window.location.origin,
-                timestamp: new Date().toISOString()
-            });
-        };
-    </script>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NR4P4S7W');</script>
-    <!-- End Google Tag Manager -->
     <!-- 結構化資料範例 (JSON-LD) -->
     <script type="application/ld+json">
     {
@@ -95,9 +66,5 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NR4P4S7W"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
   </body>
 </html>

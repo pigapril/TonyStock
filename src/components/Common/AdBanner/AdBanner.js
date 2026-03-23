@@ -5,6 +5,7 @@ import './AdBanner.css';
 import { useMediaQuery } from 'react-responsive';
 import { useSubscription } from '../../Subscription/SubscriptionContext';
 import { getAdElement, initializeAdSlot, isAdInitialized } from '../../../utils/adsense';
+import { ensureAdSenseScript } from '../../../utils/deferredScripts';
 
 export const AdBanner = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -45,14 +46,18 @@ export const AdBanner = () => {
 
     // 使用短暫延遲讓 React 完成 DOM 更新
     const timer = setTimeout(() => {
-      try {
-        console.log(`AdBanner: Initializing ad for key: ${adKey}`);
-        isInitialized.current = initializeAdSlot(adElement);
-      } catch (error) {
-        console.error("AdSense initialization error:", error);
-        // 重置初始化狀態，允許重試
+      ensureAdSenseScript().then(() => {
+        try {
+          console.log(`AdBanner: Initializing ad for key: ${adKey}`);
+          isInitialized.current = initializeAdSlot(adElement);
+        } catch (error) {
+          console.error('AdSense initialization error:', error);
+          isInitialized.current = false;
+        }
+      }).catch((error) => {
+        console.error('AdSense script load error:', error);
         isInitialized.current = false;
-      }
+      });
     }, 100);
 
     return () => {

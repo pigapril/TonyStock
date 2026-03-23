@@ -16,6 +16,7 @@ export function useAuth() {
         logout, 
         checkAuthStatus,
         renderGoogleButton,
+        ensureGoogleIdentityLoaded,
         isAdmin,
         adminLoading,
         checkAdminStatus
@@ -45,6 +46,7 @@ export function useAuth() {
         logout,
         checkAuthStatus,
         renderGoogleButton,
+        ensureGoogleIdentityLoaded,
         isAdmin,
         adminLoading,
         checkAdminStatus
