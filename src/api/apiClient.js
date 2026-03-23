@@ -30,6 +30,16 @@ let openDialog = null;
 let navigate = null;
 let t = null;
 
+const requiresAuthRedirect = (pathname = '') => {
+  return [
+    /^\/[^/]+\/watchlist(?:\/|$)/,
+    /^\/[^/]+\/user-account(?:\/|$)/,
+    /^\/[^/]+\/payment(?:\/|$)/,
+    /^\/[^/]+\/google-trends(?:\/|$)/,
+    /^\/[^/]+\/NK-Admin(?:\/|$)/
+  ].some((pattern) => pattern.test(pathname));
+};
+
 /**
  * Setup interceptors with external dependencies
  * This should be called once in the app initialization
@@ -151,6 +161,10 @@ apiClient.interceptors.response.use(
     }
 
     // Handle 401 Unauthorized
+    if (status === 401 && error.config?.skipAuthHandling) {
+      return Promise.reject(error);
+    }
+
     if (status === 401 && !isHandling401) {
       isHandling401 = true;
       
@@ -162,6 +176,9 @@ apiClient.interceptors.response.use(
           await authLogout();
         }
         
+        const currentPath = window.location.pathname || '/';
+        const shouldPromptReauth = requiresAuthRedirect(currentPath);
+
         // Show user-friendly message
         if (showToast && typeof showToast === 'function') {
           const message = t && typeof t === 'function' 
@@ -170,18 +187,17 @@ apiClient.interceptors.response.use(
           showToast(message, 'warning');
         }
         
-        // Open login dialog
-        if (openDialog && typeof openDialog === 'function') {
+        // Only force re-auth flows on pages that require authentication.
+        if (shouldPromptReauth && openDialog && typeof openDialog === 'function') {
           openDialog('auth', {
-            returnPath: window.location.pathname,
+            returnPath: currentPath,
             message: t && typeof t === 'function' 
               ? t('protectedRoute.loginRequired', 'Please log in to continue')
               : 'Please log in to continue'
           });
         }
         
-        // Navigate to home page
-        if (navigate && typeof navigate === 'function') {
+        if (shouldPromptReauth && navigate && typeof navigate === 'function') {
           navigate('/', { replace: true });
         }
         

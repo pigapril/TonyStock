@@ -10,6 +10,7 @@ import authStateManager from '../../utils/authStateManager';
 import authPreloader from '../../utils/authPreloader';
 import authStateCache from '../../utils/authStateCache';
 import { systemLogger } from '../../utils/logger';
+import { ensureGoogleIdentityScript } from '../../utils/deferredScripts';
 
 export const AuthContext = createContext({
     user: null,
@@ -18,6 +19,7 @@ export const AuthContext = createContext({
     loading: true,
     error: null,
     isGoogleInitialized: false,
+    ensureGoogleIdentityLoaded: async () => false,
     isAdmin: false,
     adminLoading: false
 });
@@ -28,6 +30,7 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isGoogleInitialized, setIsGoogleInitialized] = useState(false);
+    const [isGoogleScriptReady, setIsGoogleScriptReady] = useState(() => Boolean(window.google?.accounts?.id));
     const [isAdmin, setIsAdmin] = useState(false);
     const [adminLoading, setAdminLoading] = useState(false);
     const [preloadApplied, setPreloadApplied] = useState(false);
@@ -171,8 +174,23 @@ export function AuthProvider({ children }) {
         return compatibility;
     }, []);
 
+    const ensureGoogleIdentityLoaded = useCallback(async () => {
+        try {
+            await ensureGoogleIdentityScript();
+            setIsGoogleScriptReady(true);
+            return true;
+        } catch (scriptError) {
+            systemLogger.error('Failed to load Google Identity script:', scriptError);
+            return false;
+        }
+    }, []);
+
     // 初始化 Google Identity Service
     useEffect(() => {
+        if (!isGoogleScriptReady) {
+            return undefined;
+        }
+
         const initializeGoogleIdentity = () => {
             const { isCompatible, useLegacy } = checkBrowserCompatibility();
 
@@ -225,7 +243,15 @@ export function AuthProvider({ children }) {
                 initializeGoogleIdentity();
             };
         }
-    }, [checkBrowserCompatibility, handleGoogleCredential]);
+    }, [checkBrowserCompatibility, handleGoogleCredential, isGoogleScriptReady]);
+
+    useEffect(() => {
+        const timer = window.setTimeout(() => {
+            ensureGoogleIdentityLoaded();
+        }, 2500);
+
+        return () => window.clearTimeout(timer);
+    }, [ensureGoogleIdentityLoaded]);
 
     // 檢查認證狀態（已移除不必要的延遲，因為 /api/auth/status 已被後端豁免）
     const checkAuthStatus = useCallback(async () => {
@@ -559,6 +585,7 @@ export function AuthProvider({ children }) {
         checkAuthStatus,
         renderGoogleButton,
         isGoogleInitialized,
+        ensureGoogleIdentityLoaded,
         isAdmin,
         adminLoading,
         checkAdminStatus

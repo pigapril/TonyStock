@@ -1,28 +1,27 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { Suspense, lazy, useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
 
-import { Analytics } from '../../utils/analytics';
-import { handleApiError } from '../../utils/errorHandler';
 import './styles/Watchlist.css';
 
 import { FaEdit } from 'react-icons/fa';
-import NewsDialog from './NewsDialog';
 import { SearchBox } from './SearchBox';
 import watchlistService from './services/watchlistService';
 import { Toast } from './components/Toast';
-import { CategoryManagerDialog } from './components/CategoryManagerDialog';
-import { CreateCategoryDialog } from './components/CreateCategoryDialog';
-import { EditCategoryDialog } from './components/EditCategoryDialog';
 import { useCategories } from './hooks/useCategories';
 import { CategoryTabs } from './components/CategoryTabs';
 import { useToastManager } from './hooks/useToastManager';
-
-import { DraggableStockList } from './components/StockCard/DraggableStockList';
 import { ErrorBoundary } from '../Common/ErrorBoundary/ErrorBoundary';
 import { useStocks } from './hooks/useStocks';
 import { InfoTool } from '../Common/InfoTool/InfoTool';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+import { StaticStockList } from './components/StockCard/StaticStockList';
+
+const DraggableStockList = lazy(() => import('./components/StockCard/DraggableStockList'));
+const CategoryManagerDialog = lazy(() => import('./components/CategoryManagerDialog').then((module) => ({ default: module.CategoryManagerDialog })));
+const CreateCategoryDialog = lazy(() => import('./components/CreateCategoryDialog').then((module) => ({ default: module.CreateCategoryDialog })));
+const EditCategoryDialog = lazy(() => import('./components/EditCategoryDialog').then((module) => ({ default: module.EditCategoryDialog })));
+const NewsDialog = lazy(() => import('./NewsDialog'));
 
 // Watchlist 主元件
 export function WatchlistContainer() {
@@ -44,8 +43,7 @@ export function WatchlistContainer() {
         createCategory,
         updateCategory,
         deleteCategory,
-        reorderCategories,
-        handleCategoryDeleted
+        reorderCategories
     } = useCategories(watchlistService, showToast);
 
     // 股票相關邏輯
@@ -54,7 +52,6 @@ export function WatchlistContainer() {
     }, [loadCategories]);
 
     const {
-        loading: stocksLoading,
         handleAddStock: onAddStock,
         handleRemoveStock: onRemoveStockApi,
         handleReorderStocks: onReorderStocksApi
@@ -124,7 +121,6 @@ export function WatchlistContainer() {
     }, [categories, setCategories, onRemoveStockApi]);
 
     const [activeTab, setActiveTab] = useState(null);
-    const [selectedCategoryId, setSelectedCategoryId] = useState(null);
     const [dialogStates, setDialogStates] = useState({
         categoryManager: false,
         createCategory: false,
@@ -132,61 +128,9 @@ export function WatchlistContainer() {
     });
     const [isEditing, setIsEditing] = useState(false);
     const [selectedNews, setSelectedNews] = useState(null);
-    const [newsDialogOpen, setNewsDialogOpen] = useState(false);
-    const [keyword, setKeyword] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
-    const [searchLoading, setSearchLoading] = useState(false);
-    const [searchError, setSearchError] = useState(null);
-    const [showSearchResults, setShowSearchResults] = useState(false);
-
-    // 使用 useRef 來保持搜尋框的狀態
-    const searchRef = useRef(null);
-    const [searchState, setSearchState] = useState({
-        keyword: '',
-        results: [],
-        loading: false,
-        error: null,
-        showResults: false
-    });
-
-    // 處理點擊外部關閉搜尋結果
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (searchRef.current && !searchRef.current.contains(event.target)) {
-                setSearchState(prev => ({
-                    ...prev,
-                    showResults: false
-                }));
-            }
-        }
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
-
-    const handleOperationError = useCallback((error, operation) => {
-        const errorData = handleApiError(error);
-
-        // 特別處理身份驗證相關錯誤
-        if (errorData.errorCode === 'UNAUTHORIZED' || errorData.errorCode === 'SESSION_EXPIRED') {
-            showToast(t('protectedRoute.loginRequired'), 'error');
-            return;
-        }
-
-        showToast(errorData.message, 'error');
-        Analytics.error({
-            component: 'WatchlistContainer',
-            action: operation,
-            error: errorData,
-            userId: user?.id  // 添加用戶 ID 用於追
-        });
-    }, [showToast, user, t]);
 
     const handleTabChange = (categoryId) => {
         setActiveTab(categoryId);
-        setSelectedCategoryId(categoryId);
     };
 
     // 統一的對話框控制函數
@@ -196,10 +140,6 @@ export function WatchlistContainer() {
             [dialogName]: isOpen
         }));
     }, []);
-
-    const handleOpenCreateCategory = () => {
-        updateDialogState('createCategory', true);
-    };
 
     const handleEditCategory = (categoryId) => {
         const category = categories.find(c => c.id === categoryId);
@@ -276,7 +216,6 @@ export function WatchlistContainer() {
         if (categories?.length > 0 && !activeTab) {
             const firstCategory = categories[0];
             setActiveTab(firstCategory.id);
-            setSelectedCategoryId(firstCategory.id);
         }
     }, [categories, activeTab]);
 
@@ -284,27 +223,14 @@ export function WatchlistContainer() {
     useEffect(() => {
         const handleLogout = () => {
             setActiveTab(null);
-            setSelectedCategoryId(null);
             setDialogStates({
                 categoryManager: false,
                 createCategory: false,
                 editCategory: false
             });
             setIsEditing(false);
+            setEditingCategory(null);
             setSelectedNews(null);
-            setNewsDialogOpen(false);
-            setKeyword('');
-            setSearchResults([]);
-            setSearchLoading(false);
-            setSearchError(null);
-            setShowSearchResults(false);
-            setSearchState({
-                keyword: '',
-                results: [],
-                loading: false,
-                error: null,
-                showResults: false
-            });
             setError(null);
         };
 
@@ -320,7 +246,6 @@ export function WatchlistContainer() {
 
     const handleNewsClick = (news) => {
         setSelectedNews(news);
-        setNewsDialogOpen(true);
     };
 
     // 處理創建分類
@@ -351,14 +276,21 @@ export function WatchlistContainer() {
         try {
             const result = await deleteCategory(categoryId);
             if (result.success) {
-                // 處理分類刪除的重選邏輯
-                handleCategoryDeleted(categoryId, result.updatedCategories);
+                if (categoryId === activeTab) {
+                    const nextCategory = result.updatedCategories?.[0];
+                    setActiveTab(nextCategory?.id || null);
+                }
                 updateDialogState('categoryManager', false);
             }
         } catch (error) {
             console.error('刪除分類失敗:', error);
         }
     };
+
+    const activeCategory = useMemo(
+        () => categories.find((category) => category.id === activeTab) || null,
+        [activeTab, categories]
+    );
 
     // 3. 使用 useMemo 來定義 JSON-LD，並加入 currentLang 作為依賴
     const watchlistJsonLd = useMemo(() => ({
@@ -427,9 +359,11 @@ export function WatchlistContainer() {
                         <p>{t('watchlist.loginRequiredMessage')}</p>
                     </div>
                 ) : isLoading ? (
-                    <div className="loading-spinner">
-                        <div className="spinner"></div>
-                        <p>{t('watchlist.loadingMessage')}</p>
+                    <div className="watchlist-loading-state">
+                        <div className="loading-spinner">
+                            <div className="spinner"></div>
+                            <p>{t('watchlist.loadingMessage')}</p>
+                        </div>
                     </div>
                 ) : (
                     <>
@@ -445,55 +379,60 @@ export function WatchlistContainer() {
                                     onManageCategories={() => updateDialogState('categoryManager', true)}
                                 />
 
-                                {categories.map((category) => (
+                                {activeCategory ? (
                                     <div
-                                        key={category.id}
-                                        className={`category-content ${activeTab === category.id ? 'active' : ''} ${isEditing ? 'editing' : ''}`}
+                                        key={activeCategory.id}
+                                        className={`category-content active ${isEditing ? 'editing' : ''}`}
                                     >
-                                        <div className="category-operations">
-                                            <button
-                                                className={`edit-mode-button ${isEditing ? 'active' : ''}`}
-                                                onClick={toggleEditMode}
-                                                title={isEditing ? t('watchlist.editMode.finish') : t('watchlist.editMode.start')}
-                                            >
-                                                <FaEdit />
-                                            </button>
-                                            <div className="info-tool-wrapper">
-                                                <InfoTool
-                                                    content={t('watchlist.infoTooltip')}
-                                                    position="bottom-right"
-                                                    className="watchlist-infotool"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {activeTab === category.id && (
+                                        <div className="watchlist-controls-row">
                                             <SearchBox
                                                 onSelect={onAddStock}
                                                 watchlistService={watchlistService}
-                                                categoryId={category.id}
+                                                categoryId={activeCategory.id}
+                                            />
+
+                                            <div className="watchlist-list-toolbar">
+                                                <div className="category-operations">
+                                                    <button
+                                                        className={`edit-mode-button ${isEditing ? 'active' : ''}`}
+                                                        onClick={toggleEditMode}
+                                                        aria-label={isEditing ? t('watchlist.editMode.finish') : t('watchlist.editMode.start')}
+                                                        title={isEditing ? t('watchlist.editMode.finish') : t('watchlist.editMode.start')}
+                                                        data-testid="watchlist-edit-mode-button"
+                                                    >
+                                                        <FaEdit />
+                                                    </button>
+                                                    <div className="info-tool-wrapper">
+                                                        <InfoTool
+                                                            content={t('watchlist.infoTooltip')}
+                                                            position="bottom-right"
+                                                            className="watchlist-infotool"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {isEditing ? (
+                                            <Suspense fallback={<div className="watchlist-mode-loading" data-testid="watchlist-edit-loading" />}>
+                                                <DraggableStockList
+                                                    stocks={activeCategory.stocks}
+                                                    categoryId={activeCategory.id}
+                                                    onRemoveStock={onRemoveStock}
+                                                    onReorder={onReorderStocks}
+                                                    onNewsClick={handleNewsClick}
+                                                />
+                                            </Suspense>
+                                        ) : (
+                                            <StaticStockList
+                                                stocks={activeCategory.stocks}
+                                                categoryId={activeCategory.id}
+                                                onRemoveStock={onRemoveStock}
+                                                onNewsClick={handleNewsClick}
                                             />
                                         )}
-
-                                        <DraggableStockList
-                                            stocks={category.stocks}
-                                            categoryId={category.id}
-                                            onRemoveStock={onRemoveStock}
-                                            onReorder={onReorderStocks}
-                                            onNewsClick={handleNewsClick}
-                                        />
                                     </div>
-                                ))}
-
-                                <CategoryManagerDialog
-                                    open={dialogStates.categoryManager}
-                                    onClose={() => updateDialogState('categoryManager', false)}
-                                    categories={categories}
-                                    onEdit={handleEditCategory}
-                                    onDelete={handleDeleteCategory}
-                                    onCreate={() => updateDialogState('createCategory', true)}
-                                    onReorder={reorderCategories}
-                                />
+                                ) : null}
                             </div>
                         )}
                     </>
@@ -507,34 +446,58 @@ export function WatchlistContainer() {
                     />
                 )}
 
-                <CreateCategoryDialog
-                    open={dialogStates.createCategory}
-                    onClose={() => updateDialogState('createCategory', false)}
-                    onSubmit={handleCreateCategory}
-                />
+                {dialogStates.categoryManager ? (
+                    <Suspense fallback={null}>
+                        <CategoryManagerDialog
+                            open={dialogStates.categoryManager}
+                            onClose={() => updateDialogState('categoryManager', false)}
+                            categories={categories}
+                            onEdit={handleEditCategory}
+                            onDelete={handleDeleteCategory}
+                            onCreate={() => updateDialogState('createCategory', true)}
+                            onReorder={reorderCategories}
+                        />
+                    </Suspense>
+                ) : null}
 
-                <EditCategoryDialog
-                    open={dialogStates.editCategory}
-                    onClose={() => {
-                        requestAnimationFrame(() => {
-                            updateDialogState('editCategory', false);
-                            setEditingCategory(null);
-                        });
-                    }}
-                    category={editingCategory}
-                    onSubmit={handleUpdateCategory}
-                />
+                {dialogStates.createCategory ? (
+                    <Suspense fallback={null}>
+                        <CreateCategoryDialog
+                            open={dialogStates.createCategory}
+                            onClose={() => updateDialogState('createCategory', false)}
+                            onSubmit={handleCreateCategory}
+                        />
+                    </Suspense>
+                ) : null}
 
-                <NewsDialog
-                    news={selectedNews}
-                    open={newsDialogOpen}
-                    onClose={() => {
-                        setNewsDialogOpen(false);
-                        setSelectedNews(null);
-                    }}
-                />
+                {dialogStates.editCategory ? (
+                    <Suspense fallback={null}>
+                        <EditCategoryDialog
+                            open={dialogStates.editCategory}
+                            onClose={() => {
+                                requestAnimationFrame(() => {
+                                    updateDialogState('editCategory', false);
+                                    setEditingCategory(null);
+                                });
+                            }}
+                            category={editingCategory}
+                            onSubmit={handleUpdateCategory}
+                        />
+                    </Suspense>
+                ) : null}
+
+                {selectedNews ? (
+                    <Suspense fallback={null}>
+                        <NewsDialog
+                            news={selectedNews}
+                            open={Boolean(selectedNews)}
+                            onClose={() => {
+                                setSelectedNews(null);
+                            }}
+                        />
+                    </Suspense>
+                ) : null}
             </div>
         </ErrorBoundary>
     );
 }
-

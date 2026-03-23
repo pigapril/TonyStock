@@ -1,17 +1,13 @@
 // React 相關
-import React, { useEffect } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { Route, Routes, Navigate, useLocation, useParams, useNavigate, NavLink } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
 import { useSmartNavigation } from './hooks/useSmartNavigation';
+import { useDeferredFeature } from './hooks/useDeferredFeature';
 
 
 // 第三方庫
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
-import annotationPlugin from 'chartjs-plugin-annotation';
-import zoomPlugin from 'chartjs-plugin-zoom'; // 新增：引入縮放插件
-import 'chartjs-adapter-date-fns';
-import 'chartjs-plugin-crosshair';
 import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaPiggyBank } from 'react-icons/fa';
 
 // 樣式引入
@@ -26,39 +22,13 @@ import './components/Common/Dialog/FeatureUpgradeDialog.css';
 
 // 自定義組件
 import { Home } from './components/Home/Home';
-import MarketSentimentIndex from './components/MarketSentimentIndex/MarketSentimentIndex';
 import { AuthDialog } from './components/Auth/AuthDialog';
 import { GlobalFeatureUpgradeDialog } from './components/Common/Dialog/GlobalFeatureUpgradeDialog';
-import AnnouncementBar from './components/Common/AnnouncementBar/AnnouncementBar';
-
 import { AuthStatusIndicator } from './components/Auth/AuthStatusIndicator';
 import { PageViewTracker } from './components/Common/PageViewTracker';
-import { About } from './components/About/About';
-import { Legal } from './components/Legal/Legal';
-import { WatchlistContainer } from './components/Watchlist/WatchlistContainer';
 import { Footer } from './components/Common/Footer/Footer';
-import FloatingSponsorButton from './components/FloatingSponsorButton/FloatingSponsorButton';
-import ChatWidget from './components/ChatWidget/ChatWidget';
 import LanguageSwitcher from './components/LanguageSwitcher/LanguageSwitcher';
 import { ProtectedRoute } from './components/Common/ProtectedRoute/ProtectedRoute'; // 新增：引入 ProtectedRoute
-
-// 導入拆分後的價格標準差分析頁面
-import { PriceAnalysis } from './components/PriceAnalysis/PriceAnalysis';
-import { Articles } from './components/Articles/Articles';
-import { ArticleDetail } from './components/ArticleDetail/ArticleDetail';
-import { SponsorUs } from './components/SponsorUs/SponsorUs';
-import { UserAccountPage } from './components/Subscription/UserAccount/UserAccountPage';
-import { SubscriptionPlansPage } from './components/Subscription/SubscriptionPlans/SubscriptionPlansPage';
-import { SponsorSuccess } from './components/SponsorSuccess/SponsorSuccess';
-import { GoogleTrendsSymbolPage } from './components/GoogleTrendsSymbolPage/GoogleTrendsSymbolPage';
-import { GoogleTrendsMarketPage } from './components/GoogleTrendsMarketPage/GoogleTrendsMarketPage';
-import CSRFExample from './components/Example/CSRFExample';
-import PaymentPage from './pages/PaymentPage';
-import PaymentFlowPage from './pages/PaymentFlowPage';
-import PaymentStatusPage from './pages/PaymentStatusPage';
-import { PaymentResult } from './components/Payment/PaymentResult/PaymentResult';
-import AdminPage from './pages/AdminPage';
-import AdminDiagnostic from './pages/AdminDiagnostic';
 
 // Context 和 Hooks
 import { AuthProvider } from './components/Auth/AuthContext';
@@ -70,7 +40,6 @@ import { useNewFeatureNotification, FEATURES } from './components/NewFeatureBadg
 import { AdProvider } from './components/Common/InterstitialAdModal/AdContext';
 import { useSubscription } from './components/Subscription/SubscriptionContext';
 import adBlockingService from './services/adBlockingService';
-import ConditionalAdSense from './components/Common/ConditionalAdSense/ConditionalAdSense';
 import { useToastManager } from './components/Watchlist/hooks/useToastManager';
 import { Toast } from './components/Watchlist/components/Toast';
 // import AdminNavigation from './components/Common/AdminNavigation'; // 移除以提高安全性
@@ -81,9 +50,47 @@ import authGuard from './utils/authGuard';
 import authPreloader from './utils/authPreloader';
 import { setupRobotsProtection } from './utils/robotsHandler';
 import { initializeFreeStockList } from './utils/freeStockListUtils';
+import { ensureGoogleTagManager } from './utils/deferredScripts';
 
-// 設定 ChartJS
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, annotationPlugin, zoomPlugin);
+const MarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/MarketSentimentIndex'));
+const About = lazy(() => import('./components/About/About').then((module) => ({ default: module.About })));
+const Legal = lazy(() => import('./components/Legal/Legal').then((module) => ({ default: module.Legal })));
+const WatchlistContainer = lazy(() => import('./components/Watchlist/WatchlistContainer').then((module) => ({ default: module.WatchlistContainer })));
+const PriceAnalysis = lazy(() => import('./components/PriceAnalysis/PriceAnalysis').then((module) => ({ default: module.PriceAnalysis })));
+const Articles = lazy(() => import('./components/Articles/Articles').then((module) => ({ default: module.Articles })));
+const ArticleDetail = lazy(() => import('./components/ArticleDetail/ArticleDetail').then((module) => ({ default: module.ArticleDetail })));
+const SponsorUs = lazy(() => import('./components/SponsorUs/SponsorUs').then((module) => ({ default: module.SponsorUs })));
+const UserAccountPage = lazy(() => import('./components/Subscription/UserAccount/UserAccountPage').then((module) => ({ default: module.UserAccountPage })));
+const SubscriptionPlansPage = lazy(() => import('./components/Subscription/SubscriptionPlans/SubscriptionPlansPage').then((module) => ({ default: module.SubscriptionPlansPage })));
+const SponsorSuccess = lazy(() => import('./components/SponsorSuccess/SponsorSuccess').then((module) => ({ default: module.SponsorSuccess })));
+const GoogleTrendsSymbolPage = lazy(() => import('./components/GoogleTrendsSymbolPage/GoogleTrendsSymbolPage').then((module) => ({ default: module.GoogleTrendsSymbolPage })));
+const GoogleTrendsMarketPage = lazy(() => import('./components/GoogleTrendsMarketPage/GoogleTrendsMarketPage').then((module) => ({ default: module.GoogleTrendsMarketPage })));
+const CSRFExample = lazy(() => import('./components/Example/CSRFExample'));
+const PaymentPage = lazy(() => import('./pages/PaymentPage'));
+const PaymentFlowPage = lazy(() => import('./pages/PaymentFlowPage'));
+const PaymentStatusPage = lazy(() => import('./pages/PaymentStatusPage'));
+const PaymentResult = lazy(() => import('./components/Payment/PaymentResult/PaymentResult').then((module) => ({ default: module.PaymentResult })));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
+const AdminDiagnostic = lazy(() => import('./pages/AdminDiagnostic'));
+const AnnouncementBar = lazy(() => import('./components/Common/AnnouncementBar/AnnouncementBar'));
+const FloatingSponsorButton = lazy(() => import('./components/FloatingSponsorButton/FloatingSponsorButton'));
+const ChatWidget = lazy(() => import('./components/ChatWidget/ChatWidget'));
+const ConditionalAdSense = lazy(() => import('./components/Common/ConditionalAdSense/ConditionalAdSense'));
+
+const RouteFallback = () => {
+  const location = useLocation();
+  const pathname = location.pathname || '';
+
+  let fallbackClassName = 'route-loading-placeholder';
+
+  if (pathname.includes('/priceanalysis')) {
+    fallbackClassName += ' route-loading-placeholder--priceanalysis';
+  } else if (pathname.includes('/market-sentiment')) {
+    fallbackClassName += ' route-loading-placeholder--market-sentiment';
+  }
+
+  return <div className={fallbackClassName} aria-hidden="true" />;
+};
 
 // 在 AppContent 之前加入 Overlay 元件定義
 const Overlay = ({ isVisible, onClick }) => (
@@ -115,6 +122,11 @@ function AppContent() {
   const location = useLocation();
   const isHomePage = location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
   const [isTopNavScrolled, setIsTopNavScrolled] = React.useState(false);
+  const shouldLoadAnnouncementBar = useDeferredFeature({ timeoutMs: 1500, useIdleCallback: true, triggerOnInteraction: true });
+  const shouldLoadFloatingSponsorButton = useDeferredFeature({ timeoutMs: 2200, useIdleCallback: true, triggerOnInteraction: true });
+  const shouldLoadChatWidget = useDeferredFeature({ timeoutMs: 3200, useIdleCallback: true, triggerOnInteraction: true });
+  const shouldLoadAdSense = useDeferredFeature({ timeoutMs: 4500, useIdleCallback: true, triggerOnInteraction: true });
+  const shouldLoadTagManager = useDeferredFeature({ timeoutMs: 2500, useIdleCallback: true, triggerOnInteraction: true });
   
 
 
@@ -155,6 +167,16 @@ function AppContent() {
     };
   }, [userPlan]);
 
+  useEffect(() => {
+    if (!shouldLoadTagManager || process.env.NODE_ENV !== 'production') {
+      return;
+    }
+
+    ensureGoogleTagManager('GTM-NR4P4S7W').catch((error) => {
+      console.warn('Failed to defer-load Google Tag Manager:', error);
+    });
+  }, [shouldLoadTagManager]);
+
   // 初始化 API Client 攔截器
   useEffect(() => {
     initializeApiClient({
@@ -183,15 +205,20 @@ function AppContent() {
       // 不需要顯示錯誤，因為用戶可能未登入
     });
 
-    // 初始化免費股票清單
-    initializeFreeStockList().then(() => {
-      console.log('🚀 App: Free stock list initialized');
-    }).catch(error => {
-      console.warn('⚠️ App: Free stock list initialization failed:', error);
-    });
-
     // 設置 staging 環境的搜尋引擎保護
     setupRobotsProtection();
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      initializeFreeStockList().then(() => {
+        console.log('🚀 App: Free stock list initialized');
+      }).catch(error => {
+        console.warn('⚠️ App: Free stock list initialization failed:', error);
+      });
+    }, 2000);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
 
@@ -229,18 +256,6 @@ function AppContent() {
       setSidebarOpen(false);
     }
   };
-
-  // 頁面追蹤
-  React.useEffect(() => {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'pageview',
-      page: {
-        path: window.location.pathname,
-        title: document.title,
-      },
-    });
-  }, [location.pathname]);
 
   // 每次路由改變時滾動到頂部
   React.useEffect(() => {
@@ -489,111 +504,115 @@ function AppContent() {
           </header>
 
           {/* 公告欄 - 覆蓋模式，不影響頁面佈局 */}
-          <AnnouncementBar />
+          <Suspense fallback={null}>
+            {shouldLoadAnnouncementBar ? <AnnouncementBar /> : null}
+          </Suspense>
 
           {/* 內容路由 */}
           <div className={`content-area ${isHomePage ? 'content-area--home' : ''}`}>
-            <Routes>
-              <Route path="/" element={<Home />} />
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
 
-              {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
-              <Route
-                path="priceanalysis"
-                element={<PriceAnalysis />}
-              />
+                {/* 拆分後: PriceAnalysisPage 擔任標準差分析頁面 */}
+                <Route
+                  path="priceanalysis"
+                  element={<PriceAnalysis />}
+                />
 
-              <Route
-                path="market-sentiment"
-                element={
-                  <ProtectedRoute>
-                    <MarketSentimentIndex />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="about"
-                element={<About />}
-              />
-              <Route
-                path="legal"
-                element={<Legal />}
-              />
-              <Route
-                path="watchlist"
-                element={
-                  <ProtectedRoute>
-                    <WatchlistContainer />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="articles" element={<Articles />} />
-              <Route path="articles/:slug" element={<ArticleDetail />} />
-              <Route path="user-account" element={
-                <ProtectedRoute>
-                  <UserAccountPage />
-                </ProtectedRoute>
-              } />
-              <Route path="subscription-plans" element={<SubscriptionPlansPage />} />
-              <Route path="sponsor-us" element={<SponsorUs />} />
-              <Route path="sponsor-success" element={<SponsorSuccess />} />
-              <Route path="payment" element={
-                <ProtectedRoute>
-                  <PaymentPage />
-                </ProtectedRoute>
-              } />
-              <Route path="payment/flow" element={
-                <ProtectedRoute>
-                  <PaymentFlowPage />
-                </ProtectedRoute>
-              } />
-              <Route path="payment/status" element={
-                <ProtectedRoute>
-                  <PaymentStatusPage />
-                </ProtectedRoute>
-              } />
-              <Route path="payment/result" element={<PaymentResult />} />
-              <Route
-                path="google-trends/symbol/:symbol"
-                element={
-                  <ProtectedRoute>
-                    <GoogleTrendsSymbolPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="google-trends/market"
-                element={
-                  <ProtectedRoute>
-                    <GoogleTrendsMarketPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="NK-Admin" element={
-                <ProtectedRoute>
-                  <AdminPage />
-                </ProtectedRoute>
-              } />
-              {process.env.NODE_ENV === 'development' && (
-                <>
-                  <Route path="/test-csrf" element={<CSRFExample />} />
-                  <Route path="NK-Admin-diagnostic" element={
+                <Route
+                  path="market-sentiment"
+                  element={<MarketSentimentIndex />}
+                />
+                <Route
+                  path="about"
+                  element={<About />}
+                />
+                <Route
+                  path="legal"
+                  element={<Legal />}
+                />
+                <Route
+                  path="watchlist"
+                  element={
                     <ProtectedRoute>
-                      <AdminDiagnostic />
+                      <WatchlistContainer />
                     </ProtectedRoute>
-                  } />
-                </>
-              )}
+                  }
+                />
+                <Route path="articles" element={<Articles />} />
+                <Route path="articles/:slug" element={<ArticleDetail />} />
+                <Route path="user-account" element={
+                  <ProtectedRoute>
+                    <UserAccountPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="subscription-plans" element={<SubscriptionPlansPage />} />
+                <Route path="sponsor-us" element={<SponsorUs />} />
+                <Route path="sponsor-success" element={<SponsorSuccess />} />
+                <Route path="payment" element={
+                  <ProtectedRoute>
+                    <PaymentPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="payment/flow" element={
+                  <ProtectedRoute>
+                    <PaymentFlowPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="payment/status" element={
+                  <ProtectedRoute>
+                    <PaymentStatusPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="payment/result" element={<PaymentResult />} />
+                <Route
+                  path="google-trends/symbol/:symbol"
+                  element={
+                    <ProtectedRoute>
+                      <GoogleTrendsSymbolPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="google-trends/market"
+                  element={
+                    <ProtectedRoute>
+                      <GoogleTrendsMarketPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="NK-Admin" element={
+                  <ProtectedRoute>
+                    <AdminPage />
+                  </ProtectedRoute>
+                } />
+                {process.env.NODE_ENV === 'development' && (
+                  <>
+                    <Route path="/test-csrf" element={<CSRFExample />} />
+                    <Route path="NK-Admin-diagnostic" element={
+                      <ProtectedRoute>
+                        <AdminDiagnostic />
+                      </ProtectedRoute>
+                    } />
+                  </>
+                )}
 
-              {/* 可以添加一個捕獲無效相對路徑的路由 */}
-              <Route path="*" element={<Navigate to={`/${lang}/`} replace />} />
-            </Routes>
+                {/* 可以添加一個捕獲無效相對路徑的路由 */}
+                <Route path="*" element={<Navigate to={`/${lang}/`} replace />} />
+              </Routes>
+            </Suspense>
           </div>
         </main>
 
         {/* 添加浮動贊助按鈕元件 */}
-        <FloatingSponsorButton />
+        <Suspense fallback={null}>
+          {shouldLoadFloatingSponsorButton ? <FloatingSponsorButton /> : null}
+        </Suspense>
         {/* 添加文字對話客服元件 */}
-        <ChatWidget />
+        <Suspense fallback={null}>
+          {shouldLoadChatWidget ? <ChatWidget /> : null}
+        </Suspense>
 
         {/* 添加遮罩層 (使用側邊導航時點擊收合側邊欄) */}
         <Overlay isVisible={sidebarOpen && useSideNavigation} onClick={closeSidebar} />
@@ -604,7 +623,11 @@ function AppContent() {
       <AuthDialog />
       <GlobalFeatureUpgradeDialog />
       {/* 條件式 AdSense 載入 */}
-      <ConditionalAdSense key={`adsense-${user?.id || 'guest'}-${userPlan?.type || 'pending'}`} />
+      <Suspense fallback={null}>
+        {shouldLoadAdSense ? (
+          <ConditionalAdSense key={`adsense-${user?.id || 'guest'}-${userPlan?.type || 'pending'}`} />
+        ) : null}
+      </Suspense>
       {/* Global Toast for API Client error handling */}
       {toast && (
         <Toast

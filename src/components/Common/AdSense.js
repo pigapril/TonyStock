@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { getAdElement, initializeAdSlot, isAdInitialized } from '../../utils/adsense';
+import { ensureAdSenseScript } from '../../utils/deferredScripts';
 
 function AdSense({ client, slot, layout, format }) {
   const adRef = useRef(null);
@@ -20,9 +21,22 @@ function AdSense({ client, slot, layout, format }) {
         return;
       }
 
-      // 初始化廣告
-      isInitialized.current = initializeAdSlot(adElement);
-      console.log('AdSense: Ad initialized successfully');
+      ensureAdSenseScript().then(() => {
+        if (!adRef.current) {
+          return;
+        }
+
+        const latestAdElement = getAdElement(adRef.current);
+        if (isAdInitialized(latestAdElement)) {
+          return;
+        }
+
+        isInitialized.current = initializeAdSlot(latestAdElement);
+        console.log('AdSense: Ad initialized successfully');
+      }).catch((error) => {
+        console.error('AdSense script load error:', error);
+        isInitialized.current = false;
+      });
     } catch (error) {
       console.error("AdSense initialization error:", error);
       // 重置初始化狀態，允許重試

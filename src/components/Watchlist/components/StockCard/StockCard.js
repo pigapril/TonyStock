@@ -41,16 +41,20 @@ export const StockCard = memo(function StockCard({
     stock,
     onNewsClick,
     onRemove,
-    isFirstInCategory
+    isFirstInCategory,
+    showRemoveButton = true,
+    isEditing = false
 }) {
     const navigate = useNavigate(); // 獲取 navigate 函數
     const { requestAdDisplay } = useAdContext(); // <--- 2. 獲取 requestAdDisplay
-    const { t, i18n } = useTranslation(); // 在 StockCard 中也使用 hook
-    // Function to check if it's a mobile screen (you can adjust the breakpoint if needed)
-    const isMobile = () => window.innerWidth <= 640;
+    const { i18n } = useTranslation(); // 在 StockCard 中也使用 hook
 
     // 點擊卡片時的處理函數
     const handleCardClick = (e) => {
+        if (isEditing) {
+            return;
+        }
+
         // 正向表列：檢查點擊目標是否在允許的區塊內
         const allowedSections = '.stock-header-section, .current-price-section, .stock-analysis-section, .stock-analysis-result-section';
         if (!e.target.closest(allowedSections)) {
@@ -71,7 +75,11 @@ export const StockCard = memo(function StockCard({
     };
 
     return (
-        <div className="stock-item" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
+        <div
+            className={`stock-item${isEditing ? ' stock-item--editing' : ''}`}
+            onClick={handleCardClick}
+            style={{ cursor: isEditing ? 'grab' : 'pointer' }}
+        >
             <div className="stock-header-section">
                 <StockHeader stock={stock} />
             </div>
@@ -80,37 +88,20 @@ export const StockCard = memo(function StockCard({
                     ${formatPrice(stock.price)}
                 </span>
             </div>
-            {isMobile() ? ( // Conditionally render for mobile
-                <div className="stock-analysis-container-mobile">
-                    <div className="stock-analysis-section">
-                        <StockAnalysis
-                            price={stock.price}
-                            analysis={stock.analysis}
-                        />
-                    </div>
-                    <div className="stock-analysis-result-section">
-                        <StockAnalysisResult
-                            price={stock.price}
-                            analysis={stock.analysis}
-                        />
-                    </div>
+            <div className="stock-analysis-container-mobile">
+                <div className="stock-analysis-section">
+                    <StockAnalysis
+                        price={stock.price}
+                        analysis={stock.analysis}
+                    />
                 </div>
-            ) : ( // Render for larger screens (desktop) - original structure
-                <>
-                    <div className="stock-analysis-section">
-                        <StockAnalysis
-                            price={stock.price}
-                            analysis={stock.analysis}
-                        />
-                    </div>
-                    <div className="stock-analysis-result-section">
-                        <StockAnalysisResult
-                            price={stock.price}
-                            analysis={stock.analysis}
-                        />
-                    </div>
-                </>
-            )}
+                <div className="stock-analysis-result-section">
+                    <StockAnalysisResult
+                        price={stock.price}
+                        analysis={stock.analysis}
+                    />
+                </div>
+            </div>
             <div className="stock-news-section">
                 <StockNews
                     news={stock.news}
@@ -118,10 +109,14 @@ export const StockCard = memo(function StockCard({
                 />
             </div>
             <div className="remove-button-section">
-                <RemoveButton
-                    symbol={stock.symbol}
-                    onRemove={() => onRemove(stock.id)}
-                />
+                {showRemoveButton ? (
+                    <RemoveButton
+                        symbol={stock.symbol}
+                        onRemove={() => onRemove(stock.id)}
+                    />
+                ) : (
+                    <div className="remove-button-placeholder" aria-hidden="true" />
+                )}
             </div>
         </div>
     );

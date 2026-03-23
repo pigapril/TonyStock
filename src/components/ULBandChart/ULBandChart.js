@@ -4,6 +4,9 @@ import { formatPrice } from '../../utils/priceUtils';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from 'react-responsive';
 import { useMobileTouchHandler } from './useMobileTouchHandler';
+import { ensureHomeChartsRegistered } from '../../utils/homeChartRegistry';
+
+ensureHomeChartsRegistered();
 
 const ULBandChart = ({ data, onChartReady }) => {
     const { t } = useTranslation();

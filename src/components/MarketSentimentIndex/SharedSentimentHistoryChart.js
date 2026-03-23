@@ -1,124 +1,13 @@
 import React, { useMemo } from 'react';
-import 'chartjs-adapter-date-fns';
-import {
-  Chart as ChartJS,
-  LineElement,
-  PointElement,
-  LineController,
-  CategoryScale,
-  LinearScale,
-  TimeScale,
-  Filler,
-  Tooltip,
-  Legend
-} from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
+import { ensureHomeChartsRegistered } from '../../utils/homeChartRegistry';
+import {
+  extremeFearPulsePlugin,
+  generateHistoryLegendLabels
+} from './historyChartPlugins';
 
-ChartJS.register(
-  LineElement,
-  PointElement,
-  LineController,
-  CategoryScale,
-  LinearScale,
-  TimeScale,
-  Filler,
-  Tooltip,
-  Legend
-);
-
-function hasExtremeFearMarkerDataset(chart) {
-  return chart?.data?.datasets?.some((dataset) => dataset?.pulseMarker);
-}
-
-function stopExtremeFearPulse(chart) {
-  if (chart?.$extremeFearPulseFrame) {
-    cancelAnimationFrame(chart.$extremeFearPulseFrame);
-    chart.$extremeFearPulseFrame = null;
-  }
-}
-
-function startExtremeFearPulse(chart) {
-  if (!chart || chart.$extremeFearPulseFrame || !hasExtremeFearMarkerDataset(chart)) {
-    return;
-  }
-
-  const tick = () => {
-    if (!chart?.ctx) {
-      stopExtremeFearPulse(chart);
-      return;
-    }
-
-    if (!document.hidden) {
-      chart.draw();
-    }
-
-    chart.$extremeFearPulseFrame = requestAnimationFrame(tick);
-  };
-
-  chart.$extremeFearPulseFrame = requestAnimationFrame(tick);
-}
-
-const extremeFearPulsePlugin = {
-  id: 'sharedExtremeFearPulse',
-  afterInit(chart) {
-    startExtremeFearPulse(chart);
-  },
-  afterUpdate(chart) {
-    if (hasExtremeFearMarkerDataset(chart)) {
-      startExtremeFearPulse(chart);
-    } else {
-      stopExtremeFearPulse(chart);
-    }
-  },
-  afterDatasetsDraw(chart) {
-    const markerDatasetIndex = chart.data.datasets.findIndex((dataset) => dataset?.pulseMarker);
-
-    if (markerDatasetIndex === -1) {
-      return;
-    }
-
-    const datasetMeta = chart.getDatasetMeta(markerDatasetIndex);
-    const points = datasetMeta?.data || [];
-
-    if (!points.length) {
-      return;
-    }
-
-    const ctx = chart.ctx;
-    const pulse = (Math.sin(performance.now() / 420) + 1) / 2;
-
-    ctx.save();
-
-    points.forEach((point) => {
-      if (!point || point.skip) {
-        return;
-      }
-
-      const { x, y } = point.getProps(['x', 'y'], true);
-      const outerRadius = 10 + pulse * 4;
-      const innerRadius = 6 + pulse * 2;
-
-      ctx.beginPath();
-      ctx.arc(x, y, outerRadius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(245, 158, 11, ${0.08 + pulse * 0.14})`;
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.arc(x, y, innerRadius, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(249, 115, 22, ${0.28 + pulse * 0.28})`;
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    });
-
-    ctx.restore();
-  },
-  beforeDestroy(chart) {
-    stopExtremeFearPulse(chart);
-  }
-};
-
-ChartJS.register(extremeFearPulsePlugin);
+ensureHomeChartsRegistered();
 
 export function SharedSentimentHistoryChart({
   historicalData,
@@ -211,25 +100,7 @@ export function SharedSentimentHistoryChart({
           boxWidth: 10,
           boxHeight: 10,
           padding: compact ? 12 : 16,
-          generateLabels: (chart) => {
-            const defaultLabels = ChartJS.defaults.plugins.legend.labels.generateLabels(chart);
-
-            return defaultLabels.map((label) => {
-              const dataset = chart.data.datasets?.[label.datasetIndex];
-
-              if (dataset?.pulseMarker) {
-                return {
-                  ...label,
-                  fillStyle: dataset.pointBackgroundColor,
-                  strokeStyle: dataset.pointBorderColor,
-                  lineWidth: dataset.pointBorderWidth,
-                  pointStyle: 'circle'
-                };
-              }
-
-              return label;
-            });
-          }
+          generateLabels: generateHistoryLegendLabels
         }
       },
       tooltip: {
@@ -299,7 +170,7 @@ export function SharedSentimentHistoryChart({
 
   return (
     <div className={className}>
-      <Line data={chartData} options={chartOptions} />
+      <Line data={chartData} options={chartOptions} datasetIdKey="label" plugins={[extremeFearPulsePlugin]} />
     </div>
   );
 }

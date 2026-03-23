@@ -70,6 +70,10 @@ export const SearchBox = ({ onSelect, watchlistService, categoryId }) => {
         [searchStocks]
     );
 
+    useEffect(() => () => {
+        debouncedSearch.cancel();
+    }, [debouncedSearch]);
+
     const handleSearchInput = useCallback((e) => {
         const value = e.target.value;
         

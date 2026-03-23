@@ -72,6 +72,8 @@ describe('apiClient interceptor contract', () => {
     const navigateFn = jest.fn();
     const translateFn = jest.fn((key, fallback) => fallback || key);
 
+    window.history.pushState({}, '', '/');
+
     apiClientModule.setupApiClientInterceptors({
       logout,
       showToastFn,
@@ -96,8 +98,45 @@ describe('apiClient interceptor contract', () => {
 
     expect(logout).toHaveBeenCalledTimes(1);
     expect(showToastFn).toHaveBeenCalledWith('Your session has expired. Please log in again.', 'warning');
+    expect(openDialogFn).not.toHaveBeenCalled();
+    expect(navigateFn).not.toHaveBeenCalled();
+  });
+
+  it('opens auth dialog and redirects when a protected route receives 401', async () => {
+    const logout = jest.fn().mockResolvedValue(undefined);
+    const showToastFn = jest.fn();
+    const openDialogFn = jest.fn();
+    const navigateFn = jest.fn();
+    const translateFn = jest.fn((key, fallback) => fallback || key);
+
+    window.history.pushState({}, '', '/zh-TW/watchlist');
+
+    apiClientModule.setupApiClientInterceptors({
+      logout,
+      showToastFn,
+      openDialogFn,
+      navigateFn,
+      translateFn
+    });
+
+    const error = {
+      response: {
+        status: 401,
+        data: {
+          message: 'Unauthenticated'
+        }
+      },
+      config: {
+        url: '/api/watchlist/categories'
+      }
+    };
+
+    await expect(responseRejected(error)).rejects.toBe(error);
+
+    expect(logout).toHaveBeenCalledTimes(1);
+    expect(showToastFn).toHaveBeenCalledWith('Your session has expired. Please log in again.', 'warning');
     expect(openDialogFn).toHaveBeenCalledWith('auth', expect.objectContaining({
-      returnPath: '/',
+      returnPath: '/zh-TW/watchlist',
       message: 'Please log in to continue'
     }));
     expect(navigateFn).toHaveBeenCalledWith('/', { replace: true });

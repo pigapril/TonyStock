@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { StockCard } from './StockCard';
-import { FaGripVertical } from 'react-icons/fa';
+import { StockListHeaderRow } from './StockListHeaderRow';
 import '../../styles/DragAndDrop.css';
 
 /**
@@ -43,43 +43,13 @@ export const DraggableStockList = ({
         }
     }, [stocks, categoryId, onReorder]);
 
-    // 檢查是否為手機版
-    const isMobile = () => window.innerWidth <= 640;
-
-    // 定義 Header Row 元件
-    const HeaderRow = () => {
-        // 使用 react-i18next 的 hook (需要確認 import)
-        // 由於 DraggableStockList 尚未引入 useTranslation，我們需要修改 import 或傳遞 t
-        // 這裡為了簡單，假設我們將引入 useTranslation
-        const { t } = require('react-i18next').useTranslation();
-
-        if (isMobile()) return null;
-
-        return (
-            <div className="draggable-stock-wrapper header-wrapper" style={{ marginBottom: 0, backgroundColor: 'transparent', boxShadow: 'none' }}>
-                {/* 隱藏的 Handle 佔位符，確保對齊 */}
-                <div className="drag-handle" style={{ visibility: 'hidden' }}>
-                    <FaGripVertical />
-                </div>
-                {/* Header 內容 */}
-                <div className="stock-card-header-row" style={{ flex: 1, borderRadius: '8px' }}>
-                    <span className="stock-header-title">{t('watchlist.stockCard.header.symbol')}</span>
-                    <span className="current-price-title">{t('watchlist.stockCard.header.price')}</span>
-                    <span className="stock-analysis-title">{t('watchlist.stockCard.header.analysis')}</span>
-                    <span className="stock-sentiment-title">{t('watchlist.stockCard.header.sentiment')}</span>
-                    <span className="stock-news-title">{t('watchlist.stockCard.header.news')}</span>
-                </div>
-            </div>
-        );
-    };
-
     if (!stocks || stocks.length === 0) {
         return null;
     }
 
     return (
         <>
-            <HeaderRow />
+            <StockListHeaderRow />
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId={`stocks-${categoryId}`}>
                     {(provided, snapshot) => (
@@ -98,20 +68,16 @@ export const DraggableStockList = ({
                                         <div
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
-                                            className={`draggable-stock-wrapper ${snapshot.isDragging ? 'dragging' : ''}`}
+                                            {...provided.dragHandleProps}
+                                            className={`stock-row-wrapper draggable-stock-wrapper ${snapshot.isDragging ? 'dragging' : ''}`}
                                         >
-                                            <div
-                                                className="drag-handle"
-                                                {...provided.dragHandleProps}
-                                                aria-label="拖拉以重新排序"
-                                            >
-                                                <FaGripVertical />
-                                            </div>
                                             <StockCard
                                                 stock={stock}
                                                 onRemove={() => onRemoveStock(categoryId, stock.id)}
                                                 onNewsClick={onNewsClick}
                                                 isFirstInCategory={index === 0}
+                                                showRemoveButton
+                                                isEditing
                                             />
                                         </div>
                                     )}

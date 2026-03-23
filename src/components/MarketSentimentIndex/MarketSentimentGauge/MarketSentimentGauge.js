@@ -56,11 +56,38 @@ const getSegmentRenderRange = (segment, index) => {
 };
 
 const easeOutQuint = (value) => 1 - ((1 - value) ** 5);
+const TRACK_PATH = describeUpperArc(VIEWBOX.cx, VIEWBOX.cy, VIEWBOX.radius, 0, 100);
+const GAUGE_SEGMENT_RENDER_CONFIG = GAUGE_SEGMENTS.map((segment, index) => {
+  const range = getSegmentRenderRange(segment, index);
+
+  return {
+    ...segment,
+    segmentPath: describeUpperArc(VIEWBOX.cx, VIEWBOX.cy, VIEWBOX.radius, range.start, range.end),
+    hitAreaPath: describeUpperArc(VIEWBOX.cx, VIEWBOX.cy, VIEWBOX.radius, segment.start, segment.end)
+  };
+});
+
+const GaugeDefs = React.memo(function GaugeDefs() {
+  return (
+    <defs>
+      <linearGradient id="msiArcGaugeTrack" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#eef2f7" />
+        <stop offset="100%" stopColor="#f8fafc" />
+      </linearGradient>
+      <filter id="msiArcGaugeGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="6" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+  );
+});
 
 const MarketSentimentGauge = ({
   sentimentData,
   isDataLoaded = false,
-  initialRenderRef,
   className = '',
   size = 'medium',
   showAnalysisResult = true,
@@ -233,37 +260,23 @@ const MarketSentimentGauge = ({
               aria-label={`${t('marketSentiment.composite.scoreLabel')} ${sentimentInfo.score}`}
               data-testid="msi-arc-gauge-svg"
             >
-              <defs>
-                <linearGradient id="msiArcGaugeTrack" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#eef2f7" />
-                  <stop offset="100%" stopColor="#f8fafc" />
-                </linearGradient>
-                <filter id="msiArcGaugeGlow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="6" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
+              <GaugeDefs />
 
               <path
-                d={describeUpperArc(VIEWBOX.cx, VIEWBOX.cy, VIEWBOX.radius, 0, 100)}
+                d={TRACK_PATH}
                 className="msiArcGauge__track"
               />
 
-              {GAUGE_SEGMENTS.map((segment, index) => {
-                const range = getSegmentRenderRange(segment, index);
-
+              {GAUGE_SEGMENT_RENDER_CONFIG.map((segment) => {
                 return (
                   <g key={segment.zone}>
                     <path
-                      d={describeUpperArc(VIEWBOX.cx, VIEWBOX.cy, VIEWBOX.radius, range.start, range.end)}
+                      d={segment.segmentPath}
                       className="msiArcGauge__segment"
                       style={{ '--msi-segment-color': segment.color }}
                     />
                     <path
-                      d={describeUpperArc(VIEWBOX.cx, VIEWBOX.cy, VIEWBOX.radius, segment.start, segment.end)}
+                      d={segment.hitAreaPath}
                       className="msiArcGauge__hitArea"
                       onMouseEnter={(event) => handleZoneHover(event, segment.zone)}
                       onMouseLeave={handleZoneLeave}
@@ -361,9 +374,6 @@ MarketSentimentGauge.propTypes = {
     compositeScoreLastUpdate: PropTypes.string
   }),
   isDataLoaded: PropTypes.bool,
-  initialRenderRef: PropTypes.shape({
-    current: PropTypes.bool
-  }),
   className: PropTypes.string,
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   showAnalysisResult: PropTypes.bool,
@@ -376,7 +386,6 @@ MarketSentimentGauge.propTypes = {
 MarketSentimentGauge.defaultProps = {
   sentimentData: null,
   isDataLoaded: false,
-  initialRenderRef: { current: true },
   className: '',
   size: 'medium',
   showAnalysisResult: true,
@@ -386,4 +395,16 @@ MarketSentimentGauge.defaultProps = {
   frameFooterContent: null
 };
 
-export default MarketSentimentGauge;
+function areGaugePropsEqual(prevProps, nextProps) {
+  return prevProps.sentimentData === nextProps.sentimentData
+    && prevProps.isDataLoaded === nextProps.isDataLoaded
+    && prevProps.className === nextProps.className
+    && prevProps.size === nextProps.size
+    && prevProps.showAnalysisResult === nextProps.showAnalysisResult
+    && prevProps.showLastUpdate === nextProps.showLastUpdate
+    && prevProps.headlineText === nextProps.headlineText
+    && prevProps.supplementaryContent === nextProps.supplementaryContent
+    && prevProps.frameFooterContent === nextProps.frameFooterContent;
+}
+
+export default React.memo(MarketSentimentGauge, areGaugePropsEqual);

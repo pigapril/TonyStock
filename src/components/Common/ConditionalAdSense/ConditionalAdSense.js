@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useSubscription } from '../../Subscription/SubscriptionContext';
 import { useAuth } from '../../Auth/useAuth';
+import { ensureAdSenseScript } from '../../../utils/deferredScripts';
 
 /**
  * 條件式 AdSense 組件
@@ -15,7 +16,6 @@ export const ConditionalAdSense = () => {
     () => (isAuthenticated ? `${user?.id || 'unknown'}:${userPlan?.type || 'pending'}` : 'guest'),
     [isAuthenticated, user?.id, userPlan?.type]
   );
-  const prevAccountKeyRef = useRef(currentAccountKey);
   const prevAdEligibilityRef = useRef(null);
 
   useEffect(() => {
@@ -29,20 +29,6 @@ export const ConditionalAdSense = () => {
 
     const isProUser = userPlan?.type === 'pro' || userPlan?.type === 'premium';
     const canShowAds = !isProUser;
-    const hadPreviousEligibility = prevAdEligibilityRef.current;
-    const accountChanged = prevAccountKeyRef.current !== currentAccountKey;
-
-    // AdSense 對既有 DOM/佇列狀態的清理能力很差，帳號切換或廣告資格改變時直接刷新最穩定。
-    if (
-      prevAdEligibilityRef.current !== null &&
-      (accountChanged || hadPreviousEligibility !== canShowAds)
-    ) {
-        console.log('✨ 帳號或廣告資格變更，刷新頁面以重建 AdSense 狀態...');
-        window.location.reload();
-        return;
-    }
-    
-    prevAccountKeyRef.current = currentAccountKey;
     prevAdEligibilityRef.current = canShowAds;
     
     // 3. 只有「確認」是 Free 用戶後，才載入廣告
@@ -55,21 +41,11 @@ export const ConditionalAdSense = () => {
   }, [authLoading, currentAccountKey, loading, userPlan]); // 這裡一定要監聽 loading
 
   const loadAdSenseScript = () => {
-    // 避免重複載入
-    if (document.getElementById('adsense-script')) {
-      return;
-    }
-
     console.log('📢 狀態確認完畢：Free 用戶，載入 AdSense...');
 
-    // 這裡建議同時載入 Funding Choices (如果需要的話)，或只載入主廣告
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9124378768777425';
-    script.crossOrigin = 'anonymous';
-    script.id = 'adsense-script';
-    
-    document.head.appendChild(script);
+    ensureAdSenseScript().catch((error) => {
+      console.warn('AdSense script failed to load:', error);
+    });
   };
 
   return null;

@@ -51,6 +51,7 @@
     "build": "SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false ESLINT_NO_DEV_ERRORS=true react-app-rewired build",
     "build:staging": "REACT_APP_ENVIRONMENT=staging SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false ESLINT_NO_DEV_ERRORS=true react-app-rewired build",
     "build:original": "SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false react-scripts build",
+    "perf:budget": "node ./scripts/check-performance-budget.js",
     "start": "react-app-rewired start",
     "start:staging": "REACT_APP_ENVIRONMENT=staging react-app-rewired start",
     "test": "react-app-rewired test",

@@ -50,30 +50,24 @@
 }
 
 /* 可拖拉股票卡片 wrapper */
-.draggable-stock-wrapper {
+.stock-row-wrapper {
     display: flex;
     align-items: stretch;
     gap: 0;
     margin-bottom: 8px;
-    margin-bottom: 8px;
     transition: box-shadow 0.2s ease;
+}
+
+.stock-row-wrapper:last-child {
+    margin-bottom: 0;
+}
+
+.draggable-stock-wrapper {
+    margin-bottom: 14px;
 }
 
 .draggable-stock-wrapper:last-child {
     margin-bottom: 0;
-}
-
-/* 股票卡片中的拖拉把手 */
-.draggable-stock-wrapper .drag-handle {
-    background-color: #f9fafb;
-    border-radius: 8px 0 0 8px;
-    border: 1px solid #e5e7eb;
-    border-right: none;
-    padding: 0 12px;
-}
-
-.draggable-stock-wrapper .drag-handle:hover {
-    background-color: #f3f4f6;
 }
 
 /* 響應式調整 */
@@ -82,8 +76,8 @@
         padding: 6px;
     }
 
-    .draggable-stock-wrapper .drag-handle {
-        padding: 0 8px;
+    .stock-row-wrapper {
+        display: block;
     }
 }
 
