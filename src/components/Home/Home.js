@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useEffect, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
-import { FaArrowRight, FaChevronDown, FaLock } from 'react-icons/fa';
+import { FaArrowRight, FaChevronDown } from 'react-icons/fa';
 import { useMediaQuery } from 'react-responsive';
 import './Home.css';
 import { useDialog } from '../../components/Common/Dialog/useDialog';
@@ -564,7 +564,6 @@ export const Home = () => {
                     className={`${BUTTON_LINK_CLASS('primary')} home-hero__action home-hero__action--primary`}
                   >
                     <span>{t('home.hero.primaryAuthenticated')}</span>
-                    <FaArrowRight aria-hidden="true" />
                   </Link>
                 ) : (
                   <Button
@@ -573,7 +572,6 @@ export const Home = () => {
                     className="home-hero__authButton home-hero__action home-hero__action--primary"
                   >
                     <span>{t('home.hero.primaryGuest')}</span>
-                    <FaLock aria-hidden="true" />
                   </Button>
                 )}
 
@@ -582,7 +580,6 @@ export const Home = () => {
                   className={`${BUTTON_LINK_CLASS('outline')} home-hero__action home-hero__action--secondary`}
                 >
                   <span>{t('home.hero.secondary')}</span>
-                  <FaArrowRight aria-hidden="true" />
                 </Link>
               </div>
             </>
