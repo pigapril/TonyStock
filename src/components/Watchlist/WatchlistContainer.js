@@ -17,7 +17,8 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { StaticStockList } from './components/StockCard/StaticStockList';
 
-const DraggableStockList = lazy(() => import('./components/StockCard/DraggableStockList'));
+const loadDraggableStockList = () => import('./components/StockCard/DraggableStockList');
+const DraggableStockList = lazy(loadDraggableStockList);
 const CategoryManagerDialog = lazy(() => import('./components/CategoryManagerDialog').then((module) => ({ default: module.CategoryManagerDialog })));
 const CreateCategoryDialog = lazy(() => import('./components/CreateCategoryDialog').then((module) => ({ default: module.CreateCategoryDialog })));
 const EditCategoryDialog = lazy(() => import('./components/EditCategoryDialog').then((module) => ({ default: module.EditCategoryDialog })));
@@ -127,6 +128,8 @@ export function WatchlistContainer() {
         editCategory: false
     });
     const [isEditing, setIsEditing] = useState(false);
+    const [isEditModeReady, setIsEditModeReady] = useState(false);
+    const [isPreparingEditMode, setIsPreparingEditMode] = useState(false);
     const [selectedNews, setSelectedNews] = useState(null);
 
     const handleTabChange = (categoryId) => {
@@ -240,9 +243,62 @@ export function WatchlistContainer() {
         };
     }, []);
 
-    const toggleEditMode = () => {
-        setIsEditing(prev => !prev);
-    };
+    useEffect(() => {
+        if (isEditModeReady || isLoading || !isAuthenticated || categories.length === 0) {
+            return undefined;
+        }
+
+        let cancelled = false;
+
+        const preloadEditMode = () => {
+            loadDraggableStockList()
+                .then(() => {
+                    if (!cancelled) {
+                        setIsEditModeReady(true);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Failed to preload draggable stock list:', error);
+                });
+        };
+
+        if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+            const idleId = window.requestIdleCallback(preloadEditMode, { timeout: 1200 });
+            return () => {
+                cancelled = true;
+                window.cancelIdleCallback(idleId);
+            };
+        }
+
+        const timeoutId = window.setTimeout(preloadEditMode, 0);
+        return () => {
+            cancelled = true;
+            window.clearTimeout(timeoutId);
+        };
+    }, [categories.length, isAuthenticated, isEditModeReady, isLoading]);
+
+    const toggleEditMode = useCallback(async () => {
+        if (isEditing) {
+            setIsEditing(false);
+            return;
+        }
+
+        if (isEditModeReady) {
+            setIsEditing(true);
+            return;
+        }
+
+        setIsPreparingEditMode(true);
+        try {
+            await loadDraggableStockList();
+            setIsEditModeReady(true);
+            setIsEditing(true);
+        } catch (error) {
+            console.error('Failed to enter edit mode:', error);
+        } finally {
+            setIsPreparingEditMode(false);
+        }
+    }, [isEditing, isEditModeReady]);
 
     const handleNewsClick = (news) => {
         setSelectedNews(news);
@@ -399,6 +455,7 @@ export function WatchlistContainer() {
                                                         aria-label={isEditing ? t('watchlist.editMode.finish') : t('watchlist.editMode.start')}
                                                         title={isEditing ? t('watchlist.editMode.finish') : t('watchlist.editMode.start')}
                                                         data-testid="watchlist-edit-mode-button"
+                                                        disabled={isPreparingEditMode}
                                                     >
                                                         <FaEdit />
                                                     </button>
@@ -414,7 +471,7 @@ export function WatchlistContainer() {
                                         </div>
 
                                         {isEditing ? (
-                                            <Suspense fallback={<div className="watchlist-mode-loading" data-testid="watchlist-edit-loading" />}>
+                                            <Suspense fallback={null}>
                                                 <DraggableStockList
                                                     stocks={activeCategory.stocks}
                                                     categoryId={activeCategory.id}

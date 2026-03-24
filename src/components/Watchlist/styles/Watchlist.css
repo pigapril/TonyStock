@@ -350,6 +350,8 @@
     grid-column: 3;
     justify-self: end;
     height: 40px;
+    position: relative;
+    z-index: 20;
 }
 
 .watchlist-list-toolbar__spacer {

@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import './InfoTool.css';
 
@@ -10,7 +11,7 @@ const InfoTool = ({
 }) => {
     const { t } = useTranslation();
     const [isVisible, setIsVisible] = useState(false);
-    const [adjustedPosition, setAdjustedPosition] = useState(position);
+    const [tooltipStyle, setTooltipStyle] = useState(null);
     const tooltipRef = useRef(null);
     const triggerRef = useRef(null);
     const timeoutRef = useRef(null);
@@ -68,21 +69,61 @@ const InfoTool = ({
         }
     }, [isVisible]);
 
-    // 調整提示框位置
-    useEffect(() => {
-        if (isVisible && tooltipRef.current && triggerRef.current) {
-            const tooltip = tooltipRef.current;
-            const trigger = triggerRef.current;
-            const triggerRect = trigger.getBoundingClientRect();
-            const windowWidth = window.innerWidth;
-
-            // 根據觸發點位置決定展開方向
-            const shouldAlignLeft = triggerRect.left > (windowWidth / 2);
-            
-            // 添加對應的對齊類別
-            tooltip.classList.remove('left-aligned', 'right-aligned');
-            tooltip.classList.add(shouldAlignLeft ? 'left-aligned' : 'right-aligned');
+    const updateTooltipPosition = () => {
+        if (!tooltipRef.current || !triggerRef.current) {
+            return;
         }
+
+        const tooltip = tooltipRef.current;
+        const triggerRect = triggerRef.current.getBoundingClientRect();
+        const tooltipRect = tooltip.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const spacing = 12;
+
+        let top = triggerRect.bottom + spacing;
+        let left = triggerRect.right - tooltipRect.width;
+
+        if (position.startsWith('top')) {
+            top = triggerRect.top - tooltipRect.height - spacing;
+        } else if (position.startsWith('left')) {
+            top = triggerRect.top + (triggerRect.height - tooltipRect.height) / 2;
+            left = triggerRect.left - tooltipRect.width - spacing;
+        } else if (position.startsWith('right')) {
+            top = triggerRect.top + (triggerRect.height - tooltipRect.height) / 2;
+            left = triggerRect.right + spacing;
+        } else if (position.endsWith('left')) {
+            left = triggerRect.left;
+        }
+
+        const maxLeft = Math.max(spacing, viewportWidth - tooltipRect.width - spacing);
+        const maxTop = Math.max(spacing, viewportHeight - tooltipRect.height - spacing);
+
+        setTooltipStyle({
+            top: Math.min(Math.max(spacing, top), maxTop),
+            left: Math.min(Math.max(spacing, left), maxLeft),
+            width
+        });
+    };
+
+    useLayoutEffect(() => {
+        if (!isVisible) {
+            return undefined;
+        }
+
+        updateTooltipPosition();
+
+        const handleViewportChange = () => {
+            updateTooltipPosition();
+        };
+
+        window.addEventListener('resize', handleViewportChange);
+        window.addEventListener('scroll', handleViewportChange, true);
+
+        return () => {
+            window.removeEventListener('resize', handleViewportChange);
+            window.removeEventListener('scroll', handleViewportChange, true);
+        };
     }, [isVisible]);
 
     return (
@@ -99,17 +140,18 @@ const InfoTool = ({
             >
                 {icon}
             </span>
-            {isVisible && (
-                <div 
+            {isVisible && typeof document !== 'undefined' && createPortal(
+                <div
                     ref={tooltipRef}
-                    className={`info-tooltip ${adjustedPosition}`}
-                    style={{ width }}
+                    className={`info-tooltip info-tooltip--portal ${position}`}
+                    style={tooltipStyle ?? { width }}
                     role="tooltip"
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                 >
                     {content}
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

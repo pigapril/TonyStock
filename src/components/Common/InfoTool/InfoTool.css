@@ -62,6 +62,10 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.info-tooltip--portal {
+    position: fixed;
+}
+
 @keyframes tooltip-fade {
     from {
         opacity: 0;
@@ -74,93 +78,16 @@
 }
 
 /* 位置變體 */
-.info-tooltip.top {
-    bottom: 100%;
-    margin-bottom: 8px;
-    /* right: 0; */
-    left: auto;
-}
-
-.info-tooltip.top-left {
-    bottom: 100%;
-    margin-bottom: 8px;
-    right: auto;
-    left: 0;
-}
-
-.info-tooltip.top-right {
-    bottom: 100%;
-    margin-bottom: 8px;
-    right: 0;
-    left: auto;
-}
-
-.info-tooltip.bottom {
-    top: 100%;
-    margin-top: 12px;
-    width: 300px !important;
-    max-width: 300px !important;
-    white-space: normal;
-    line-height: 1.6;
-    z-index: 10000;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-}
-
-.info-tooltip.bottom-left {
-    top: 100%;
-    margin-top: 12px;
-    width: 300px !important;
-    max-width: 300px !important;
-    white-space: normal;
-    line-height: 1.6;
-    z-index: 10000;
-    right: auto;
-    left: 0;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-}
-
+.info-tooltip.bottom,
+.info-tooltip.bottom-left,
 .info-tooltip.bottom-right {
-    top: 100%;
-    margin-top: 12px;
     width: 300px !important;
     max-width: 300px !important;
     white-space: normal;
     line-height: 1.6;
     z-index: 10000;
-    right: 0;
-    left: auto;
     overflow-wrap: break-word;
     word-wrap: break-word;
-}
-
-.info-tooltip.left {
-    right: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-right: 8px;
-}
-
-.info-tooltip.left-right {
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-left: 8px;
-}
-
-.info-tooltip.right {
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-left: 8px;
-}
-
-.info-tooltip.right-left {
-    right: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-right: 8px;
 }
 
 /* 行動裝置適配 */
@@ -182,20 +109,5 @@
     .info-tooltip.bottom-right {
         width: calc(100vw - 40px) !important;
         max-width: 300px !important;
-        left: auto;
-        right: 0;
-        transform: none;
     }
-} 
-
-/* 向左展開的樣式 */
-.info-tooltip.bottom.left-aligned {
-    right: auto;
-    left: 0;
 }
-
-/* 向右展開的樣式 */
-.info-tooltip.bottom.right-aligned {
-    right: 0;
-    left: auto;
-} 
