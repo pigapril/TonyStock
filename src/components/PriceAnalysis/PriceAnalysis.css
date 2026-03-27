@@ -245,6 +245,7 @@
   justify-content: space-between;
   gap: 6px;
   /* 從 8px 減少到 6px，讓 label 和 input 更接近 */
+  position: relative;
 }
 
 .price-analysis-view .input-group label {
@@ -275,7 +276,7 @@
 .price-analysis-view .form-control:focus,
 .price-analysis-view .react-datepicker__input-container input:focus {
   border-color: var(--accent-color-blue, #007aff);
-  box-shadow: var(--shadow-focus-ring, 0 0 0 4px rgba(0, 122, 255, 0.3));
+  box-shadow: inset 0 0 0 1px rgba(0, 122, 255, 0.2);
   outline: none;
 }
 
@@ -297,6 +298,13 @@
   font-size: 16px;
   box-sizing: border-box;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.price-analysis-view .input-group .react-datepicker__tab-loop {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  height: 0;
 }
 
 .price-analysis-view .input-group.query-mode-inputs.advanced-query-mode-inputs,
