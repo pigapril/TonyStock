@@ -3,7 +3,6 @@ import { useAuth } from '../Auth/useAuth'; // 更新路徑
 
 import './styles/Watchlist.css';
 
-import { FaEdit } from 'react-icons/fa';
 import { SearchBox } from './SearchBox';
 import watchlistService from './services/watchlistService';
 import { Toast } from './components/Toast';
@@ -277,8 +276,12 @@ export function WatchlistContainer() {
         };
     }, [categories.length, isAuthenticated, isEditModeReady, isLoading]);
 
-    const toggleEditMode = useCallback(async () => {
-        if (isEditing) {
+    const switchEditMode = useCallback(async (nextIsEditing) => {
+        if (nextIsEditing === isEditing) {
+            return;
+        }
+
+        if (!nextIsEditing) {
             setIsEditing(false);
             return;
         }
@@ -395,9 +398,18 @@ export function WatchlistContainer() {
                 {/* 新的標題設計 */}
                 <div className="watchlist-header-section">
                     <div className="watchlist-title-group">
-                        <h1 className="watchlist-main-title">
-                            {t('watchlist.pageTitle')}
-                        </h1>
+                        <div className="watchlist-title-row">
+                            <h1 className="watchlist-main-title">
+                                {t('watchlist.pageTitle')}
+                            </h1>
+                            <div className="info-tool-wrapper watchlist-title-info">
+                                <InfoTool
+                                    content={t('watchlist.infoTooltip')}
+                                    position="bottom-right"
+                                    className="watchlist-infotool"
+                                />
+                            </div>
+                        </div>
                         <div className="watchlist-subtitle-container">
                             <p className="watchlist-subtitle">{t('watchlist.pageSubtitle')}</p>
                         </div>
@@ -450,22 +462,33 @@ export function WatchlistContainer() {
                                             <div className="watchlist-list-toolbar">
                                                 <div className="category-operations">
                                                     <button
+                                                        type="button"
+                                                        className={`edit-mode-button ${!isEditing ? 'active' : ''}`}
+                                                        onClick={() => switchEditMode(false)}
+                                                        aria-label={t('watchlist.editMode.switchToBrowse')}
+                                                        title={t('watchlist.editMode.switchToBrowse')}
+                                                        aria-pressed={!isEditing}
+                                                        data-testid="watchlist-browse-mode-button"
+                                                        disabled={isPreparingEditMode}
+                                                    >
+                                                        <span className="edit-mode-button__label">
+                                                            {t('watchlist.editMode.browse')}
+                                                        </span>
+                                                    </button>
+                                                    <button
+                                                        type="button"
                                                         className={`edit-mode-button ${isEditing ? 'active' : ''}`}
-                                                        onClick={toggleEditMode}
-                                                        aria-label={isEditing ? t('watchlist.editMode.finish') : t('watchlist.editMode.start')}
-                                                        title={isEditing ? t('watchlist.editMode.finish') : t('watchlist.editMode.start')}
+                                                        onClick={() => switchEditMode(true)}
+                                                        aria-label={t('watchlist.editMode.switchToEdit')}
+                                                        title={t('watchlist.editMode.switchToEdit')}
+                                                        aria-pressed={isEditing}
                                                         data-testid="watchlist-edit-mode-button"
                                                         disabled={isPreparingEditMode}
                                                     >
-                                                        <FaEdit />
+                                                        <span className="edit-mode-button__label">
+                                                            {t('watchlist.editMode.edit')}
+                                                        </span>
                                                     </button>
-                                                    <div className="info-tool-wrapper">
-                                                        <InfoTool
-                                                            content={t('watchlist.infoTooltip')}
-                                                            position="bottom-right"
-                                                            className="watchlist-infotool"
-                                                        />
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

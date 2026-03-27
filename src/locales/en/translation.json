@@ -1368,7 +1368,11 @@
     "loadingMessage": "The watchlist analyzes multiple symbols at once. If you haven't viewed it for a while, it might take a moment. Thank you for your patience.",
     "editMode": {
       "finish": "Finish Editing",
-      "start": "Edit Mode"
+      "start": "Edit Mode",
+      "browse": "Browse",
+      "edit": "Edit",
+      "switchToBrowse": "Switch to browse mode",
+      "switchToEdit": "Switch to edit mode"
     },
     "infoTooltip": "Add a stock, and we'll automatically determine its current price position within the LOHAS Five-Line sentiment bands (Extreme Fear to Extreme Greed) based on its 3.5-year trend. Click the stock for the full LOHAS Five-Line Analysis chart.",
     "categoryTabs": {
