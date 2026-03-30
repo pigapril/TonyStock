@@ -509,20 +509,22 @@
 }
 
 .home-marketPreviewShell__gauge .msiArcGauge__coreBadge {
-  top: 66.5%;
+  top: 62.5%;
   animation: homePreviewBadgeDrift 7.2s ease-in-out infinite;
 }
 
 .home-marketPreviewShell__gauge .msiArcGauge__frameFooter {
-  min-height: 164px;
+  min-height: 80px;
+  margin-top: -18px;
+  padding-bottom: 0;
   backdrop-filter: blur(10px);
 }
 
 .home-marketMomentPanel__content {
   display: grid;
-  grid-template-rows: minmax(88px, 1fr);
+  grid-template-rows: minmax(48px, 1fr);
   gap: 0;
-  min-height: 88px;
+  min-height: 48px;
   animation: homePreviewMomentSwap 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -585,7 +587,7 @@
   gap: 8px;
   justify-items: center;
   max-width: 420px;
-  min-height: 88px;
+  min-height: 48px;
   align-content: start;
 }
 
@@ -604,6 +606,7 @@
 @media (min-width: 1441px) {
   .home-hero__content {
     max-width: 620px;
+    padding-top: 72px;
   }
 
   .home-hero h1 {
@@ -1666,6 +1669,55 @@
   }
 }
 
+@media (min-width: 1800px) {
+  .home-hero {
+    min-height: min(100vh, 1080px);
+    padding: calc(var(--top-nav-height, 68px) + 112px) 0 18px;
+  }
+
+  .home-hero__inner {
+    grid-template-columns: minmax(0, 1.08fr) minmax(520px, 0.8fr);
+    gap: 72px 208px;
+    align-items: center;
+    padding-top: 44px;
+  }
+
+  .home-hero__content {
+    max-width: 780px;
+    padding-top: 18px;
+  }
+
+  .home-hero h1 {
+    margin: 0 0 28px;
+    font-size: clamp(4.4rem, 4.8vw, 6.9rem);
+  }
+
+  .home-hero__subtitle {
+    max-width: 720px;
+    font-size: clamp(1.18rem, 1.2vw, 1.5rem);
+    line-height: 1.82;
+  }
+
+  .home-hero__actions {
+    margin-top: 10px;
+  }
+
+  .home-hero__visual {
+    justify-self: end;
+    width: min(100%, 640px);
+    transform: translate(32px, 26px);
+  }
+
+  .home-marketPreviewShell {
+    padding: 22px;
+    border-radius: 40px;
+  }
+
+  .home-scrollCue {
+    top: calc(100% - 72px);
+  }
+}
+
 @media (max-width: 900px) {
 
   .home-scrollCue {
@@ -1763,7 +1815,7 @@
   }
 
   .home-marketPreviewShell__gauge .msiArcGauge__coreBadge {
-    top: 62%;
+    top: 70%;
     gap: 10px;
   }
 
@@ -1827,7 +1879,7 @@
 
 @media (max-width: 560px) {
   .home-marketPreviewShell__gauge .msiArcGauge__coreBadge {
-    top: 59%;
+    top: 67%;
     gap: 8px;
   }
 
