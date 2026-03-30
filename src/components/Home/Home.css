@@ -464,12 +464,52 @@
   font-size: clamp(1.42rem, 2.05vw, 1.88rem);
 }
 
+.home-marketPreviewShell__headlineContent {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.home-marketPreviewShell__headlineTitle {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+}
+
+.home-marketPreviewShell__headlineMeta {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.home-marketPreviewShell__headlineEyebrow {
+  font-size: 0.88rem;
+  font-weight: 780;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  color: rgba(15, 23, 42, 0.82);
+}
+
+.home-marketPreviewShell__headlineDate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
 .home-marketPreviewShell__gauge .msiArcGauge__canvasWrap {
   animation: homePreviewGaugeDrift 7.2s ease-in-out infinite;
 }
 
 .home-marketPreviewShell__gauge .msiArcGauge__coreBadge {
-  top: 54.5%;
+  top: 66.5%;
   animation: homePreviewBadgeDrift 7.2s ease-in-out infinite;
 }
 
@@ -480,9 +520,9 @@
 
 .home-marketMomentPanel__content {
   display: grid;
-  grid-template-rows: auto minmax(88px, 1fr);
-  gap: 14px;
-  min-height: 146px;
+  grid-template-rows: minmax(88px, 1fr);
+  gap: 0;
+  min-height: 88px;
   animation: homePreviewMomentSwap 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -1722,6 +1762,20 @@
     border-radius: 28px;
   }
 
+  .home-marketPreviewShell__gauge .msiArcGauge__coreBadge {
+    top: 62%;
+    gap: 10px;
+  }
+
+  .home-marketPreviewShell__gauge .msiArcGauge__frameFooter {
+    min-height: 0;
+    padding-top: 4px;
+  }
+
+  .home-marketMomentPanel__content {
+    min-height: 0;
+  }
+
   .home-storyBlock {
     gap: 22px;
     padding: 24px 0;
@@ -1772,6 +1826,37 @@
 }
 
 @media (max-width: 560px) {
+  .home-marketPreviewShell__gauge .msiArcGauge__coreBadge {
+    top: 59%;
+    gap: 8px;
+  }
+
+  .home-marketPreviewShell__gauge .msiArcGauge__frameFooter {
+    padding-top: 2px;
+  }
+
+  .home-marketPreviewShell__headlineContent {
+    gap: 8px;
+  }
+
+  .home-marketPreviewShell__headlineMeta {
+    margin-top: 14px;
+    gap: 8px;
+  }
+
+  .home-marketPreviewShell__headlineEyebrow {
+    font-size: 0.8rem;
+  }
+
+  .home-marketPreviewShell__headlineDate {
+    gap: 8px;
+    padding: 6px 12px;
+  }
+
+  .home-marketMomentPanel__dateSegment {
+    font-size: 0.92rem;
+  }
+
   .home-hero__actions {
     display: grid;
     width: min(100%, 220px);

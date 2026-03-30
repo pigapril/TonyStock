@@ -167,7 +167,7 @@ export const Home = () => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
   const locale = currentLang === 'zh' ? 'zh-TW' : currentLang;
-  const heroGaugeHeadline = (
+  const heroGaugeHeadlineBase = (
     <>
       <span className="home-marketPreviewShell__headlineLine">{t('home.hero.marketPreviewHeadline.brand')}</span>
       <span className="home-marketPreviewShell__headlineLine">{t('home.hero.marketPreviewHeadline.index')}</span>
@@ -312,6 +312,29 @@ export const Home = () => {
         defaultValue: activeHeroMoment.description || ''
       })
     : '';
+  const heroGaugeHeadline = (
+    <div className="home-marketPreviewShell__headlineContent">
+      <div className="home-marketPreviewShell__headlineTitle">
+        {heroGaugeHeadlineBase}
+      </div>
+      {activeHeroMoment && (
+        <div className="home-marketPreviewShell__headlineMeta">
+          <span className="home-marketPreviewShell__headlineEyebrow">
+            {currentLang === 'zh-TW' ? '歷史上的極端情緒' : 'Historic extreme sentiment'}
+          </span>
+          <span className="home-marketPreviewShell__headlineDate">
+            <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--year">
+              {activeHeroDateParts.year || '----'}
+            </span>
+            <span className="home-marketMomentPanel__dateDivider" aria-hidden="true" />
+            <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--day">
+              {activeHeroDateParts.monthDay}
+            </span>
+          </span>
+        </div>
+      )}
+    </div>
+  );
   const heroGaugeData = {
     totalScore: activeHeroMoment?.score === null || activeHeroMoment?.score === undefined
       ? (sentimentData.score === null || sentimentData.score === undefined ? 0 : Number(sentimentData.score))
@@ -528,17 +551,6 @@ export const Home = () => {
                             key={activeHeroMoment?.eventId || String(activeHeroDate || 'fallback')}
                             className="home-marketMomentPanel__content"
                           >
-                            <div className="home-marketMomentPanel__dateBlock">
-                              <span className="home-marketMomentPanel__date">
-                                <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--year">
-                                  {activeHeroDateParts.year || '----'}
-                                </span>
-                                <span className="home-marketMomentPanel__dateDivider" aria-hidden="true" />
-                                <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--day">
-                                  {activeHeroDateParts.monthDay}
-                                </span>
-                              </span>
-                            </div>
                             <div className="home-marketMomentPanel__body">
                               <div className="home-marketMomentPanel__copy">
                                 <strong className="home-marketMomentPanel__title">
