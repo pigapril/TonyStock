@@ -324,21 +324,21 @@
 /* 新增情緒文字顏色 */
 /* 更新：使用英文鍵名 */
 .analysis-value.sentiment-extremeFear {
-  color: #143829; /* 極度恐懼 - 深綠色 */
+  color: #0000FF; /* 極度恐懼 - 藍色 */
 }
 
 .analysis-value.sentiment-fear {
-  color: #2B5B3F; /* 恐懼 - 綠色 */
+  color: #5B9BD5; /* 恐懼 - 淺藍色 */
 }
 
 .analysis-value.sentiment-neutral {
-  color: #E9972D; /* 中性 - 黃色 */
+  color: #708090; /* 中性 - 灰藍色 */
 }
 
 .analysis-value.sentiment-greed {
-  color: #C4501B; /* 貪婪 - 橘色 */
+  color: #F0B8CE; /* 貪婪 - 淺粉色 */
 }
 
 .analysis-value.sentiment-extremeGreed {
-  color: #A0361B; /* 極度貪婪 - 紅色 */
+  color: #D24A93; /* 極度貪婪 - 粉紅色 */
 }

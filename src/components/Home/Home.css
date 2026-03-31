@@ -1592,21 +1592,21 @@
 }
 
 .sentiment-extremeFear {
-  color: #ea580c;
+  color: #0000FF;
 }
 
 .home-snapshotCard__ingredientFill.sentiment-extremeFear,
 .home-methodology__distributionBar.sentiment-extremeFear {
-  background: linear-gradient(90deg, #f59e0b, #f97316);
+  background: linear-gradient(90deg, #5B9BD5, #0000FF);
 }
 
 .sentiment-fear {
-  color: #d97706;
+  color: #5B9BD5;
 }
 
 .home-snapshotCard__ingredientFill.sentiment-fear,
 .home-methodology__distributionBar.sentiment-fear {
-  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  background: linear-gradient(90deg, #dbeafe, #5B9BD5);
 }
 
 .sentiment-neutral {
@@ -1619,21 +1619,21 @@
 }
 
 .sentiment-greed {
-  color: #059669;
+  color: #F0B8CE;
 }
 
 .home-snapshotCard__ingredientFill.sentiment-greed,
 .home-methodology__distributionBar.sentiment-greed {
-  background: linear-gradient(90deg, #34d399, #10b981);
+  background: linear-gradient(90deg, #fde7f0, #F0B8CE);
 }
 
 .sentiment-extremeGreed {
-  color: #0f766e;
+  color: #D24A93;
 }
 
 .home-snapshotCard__ingredientFill.sentiment-extremeGreed,
 .home-methodology__distributionBar.sentiment-extremeGreed {
-  background: linear-gradient(90deg, #2dd4bf, #14b8a6);
+  background: linear-gradient(90deg, #F0B8CE, #D24A93);
 }
 
 @media (max-width: 1200px) {
