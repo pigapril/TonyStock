@@ -1,13 +1,17 @@
 .ui-button {
+  box-sizing: border-box;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  appearance: none;
+  -webkit-appearance: none;
   border: 1px solid transparent;
   border-radius: var(--border-radius-large, 14px);
   font-family: var(--font-family-sans, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif);
   font-weight: 600;
   line-height: 1.5;
+  margin: 0;
   text-decoration: none;
   cursor: pointer;
   transition:

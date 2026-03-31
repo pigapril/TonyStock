@@ -575,7 +575,9 @@ export const Home = () => {
                     to={`/${currentLang}/market-sentiment`}
                     className={`${BUTTON_LINK_CLASS('primary')} home-hero__action home-hero__action--primary`}
                   >
-                    <span>{t('home.hero.primaryAuthenticated')}</span>
+                    <span className="ui-button__content">
+                      <span>{t('home.hero.primaryAuthenticated')}</span>
+                    </span>
                   </Link>
                 ) : (
                   <Button
@@ -591,7 +593,9 @@ export const Home = () => {
                   to={`/${currentLang}/priceanalysis?stockCode=SPY&years=3.5`}
                   className={`${BUTTON_LINK_CLASS('outline')} home-hero__action home-hero__action--secondary`}
                 >
-                  <span>{t('home.hero.secondary')}</span>
+                  <span className="ui-button__content">
+                    <span>{t('home.hero.secondary')}</span>
+                  </span>
                 </Link>
               </div>
             </>
