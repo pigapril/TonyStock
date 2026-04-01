@@ -14,7 +14,8 @@ export function SharedSentimentHistoryChart({
   lowPoints,
   className = '',
   showLegend = true,
-  compact = false
+  compact = false,
+  benchmarkLabel = null
 }) {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
@@ -47,7 +48,7 @@ export function SharedSentimentHistoryChart({
         pointRadius: 0
       },
       {
-        label: t('marketSentiment.chart.spyPriceLabel'),
+        label: benchmarkLabel || t('marketSentiment.chart.spyPriceLabel'),
         yAxisID: 'right-axis',
         data: historicalData.map((item) => ({
           x: item.date,
@@ -82,7 +83,7 @@ export function SharedSentimentHistoryChart({
         parsing: false
       }
     ]
-  }), [currentLang, historicalData, lowPoints, t]);
+  }), [benchmarkLabel, currentLang, historicalData, lowPoints, t]);
 
   const chartOptions = useMemo(() => ({
     animation: false,
@@ -156,7 +157,7 @@ export function SharedSentimentHistoryChart({
         position: 'right',
         title: {
           display: !compact,
-          text: t('marketSentiment.chart.spyPriceAxisLabel')
+          text: benchmarkLabel || t('marketSentiment.chart.spyPriceAxisLabel')
         },
         grid: {
           drawOnChartArea: false
@@ -166,7 +167,7 @@ export function SharedSentimentHistoryChart({
         }
       }
     }
-  }), [compact, showLegend, t]);
+  }), [benchmarkLabel, compact, showLegend, t]);
 
   return (
     <div className={className}>

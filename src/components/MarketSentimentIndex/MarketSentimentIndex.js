@@ -295,6 +295,9 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   const { requestAdDisplay } = useAdContext();
   const currentLang = i18n.language;
   const pageRoutePath = `/${i18n.language}/${marketConfig.routePath}`;
+  const benchmarkSeriesLabel = marketConfig.benchmarkAxisLabel
+    ? (marketConfig.benchmarkAxisLabel[currentLang] || marketConfig.benchmarkAxisLabel.en)
+    : t('marketSentiment.chart.spyPriceLabel');
 
   // 檢查用戶計劃
   const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
@@ -773,7 +776,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
         pointRadius: 0,
       },
       ...(filteredData.some((item) => item.spyClose != null) ? [{
-        label: t('marketSentiment.chart.spyPriceLabel'),
+        label: benchmarkSeriesLabel,
         yAxisID: 'right-axis',
         data: filteredData.map((item) => ({
           x: item.date,
@@ -823,7 +826,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
         parsing: false,
       },
     ],
-  }), [currentLang, filteredData, historicalLowPoints, t]);
+  }), [benchmarkSeriesLabel, currentLang, filteredData, historicalLowPoints, t]);
 
 
 
@@ -904,9 +907,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
         position: 'right',
         title: {
           display: filteredData.some((item) => item.spyClose != null),
-          text: marketConfig.benchmarkAxisLabel
-            ? (marketConfig.benchmarkAxisLabel[currentLang] || marketConfig.benchmarkAxisLabel.en)
-            : t('marketSentiment.chart.spyPriceAxisLabel'),
+          text: benchmarkSeriesLabel,
         },
         grid: {
           drawOnChartArea: false,
@@ -972,7 +973,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
     },
     responsive: true,
     maintainAspectRatio: false,
-  }), [currentLang, currentSliderRange, filteredData, isRestrictedPreview, marketConfig.benchmarkAxisLabel, restrictionCutoffDate, timeUnit, t]);
+  }), [benchmarkSeriesLabel, currentLang, currentSliderRange, filteredData, isRestrictedPreview, restrictionCutoffDate, timeUnit, t]);
 
   // 定義用於結構化數據的 JSON-LD
   const marketSentimentJsonLd = useMemo(() => {
@@ -1680,6 +1681,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                                 detailEndpoint={marketConfig.detailEndpoint}
                                 detailQueryParam={marketConfig.detailQueryParam}
                                 detailIncludesRange={marketConfig.detailIncludesRange}
+                                benchmarkSeriesLabel={benchmarkSeriesLabel}
                                 benchmarkAxisLabel={marketConfig.benchmarkAxisLabel?.[currentLang] || marketConfig.benchmarkAxisLabel?.en || null}
                                 isRestrictedPreview={isRestrictedPreview}
                                 restrictionCutoffDate={sentimentData?.restrictionCutoffDate}
@@ -1751,6 +1753,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                       detailEndpoint={marketConfig.detailEndpoint}
                       detailQueryParam={marketConfig.detailQueryParam}
                       detailIncludesRange={marketConfig.detailIncludesRange}
+                      benchmarkSeriesLabel={benchmarkSeriesLabel}
                       benchmarkAxisLabel={marketConfig.benchmarkAxisLabel?.[currentLang] || marketConfig.benchmarkAxisLabel?.en || null}
                       isRestrictedPreview={isRestrictedPreview}
                       restrictionCutoffDate={sentimentData?.restrictionCutoffDate}

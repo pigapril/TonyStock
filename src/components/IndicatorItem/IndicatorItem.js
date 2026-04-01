@@ -169,6 +169,7 @@ function IndicatorItem({
   detailEndpoint = '/api/indicator-history',
   detailQueryParam = 'indicator',
   detailIncludesRange = false,
+  benchmarkSeriesLabel = null,
   benchmarkAxisLabel = null,
   isInsideModal,
   isRestrictedPreview = false,
@@ -382,7 +383,7 @@ function IndicatorItem({
         pointRadius: 0,
       },
       ...(hasBenchmarkSeries ? [{
-        label: t('indicatorItem.spyPriceLabel'),
+        label: benchmarkSeriesLabel || benchmarkAxisLabel || t('indicatorItem.spyPriceLabel'),
         yAxisID: 'spy-axis',
         data: filteredSPYData.map((item) => ({
           x: item.date,
@@ -395,7 +396,7 @@ function IndicatorItem({
         pointRadius: 0,
       }] : []),
     ],
-  }), [filteredData, filteredSPYData, hasBenchmarkSeries, indicatorName, t]);
+  }), [benchmarkAxisLabel, benchmarkSeriesLabel, filteredData, filteredSPYData, hasBenchmarkSeries, indicatorName, t]);
 
   // 圖表選項
   const chartOptions = useMemo(() => ({
@@ -452,7 +453,7 @@ function IndicatorItem({
         position: 'right',
         title: {
           display: hasBenchmarkSeries,
-          text: benchmarkAxisLabel || t('indicatorItem.spyPriceLabel'),
+          text: benchmarkAxisLabel || benchmarkSeriesLabel || t('indicatorItem.spyPriceLabel'),
         },
         grid: {
           drawOnChartArea: false,
@@ -498,7 +499,7 @@ function IndicatorItem({
     },
     responsive: true,
     maintainAspectRatio: false,
-  }), [benchmarkAxisLabel, cutoffDateObject, hasBenchmarkSeries, indicatorName, isInsideModal, isRestrictedPreview, t, timeUnit, visibleRange.max, visibleRange.min]);
+  }), [benchmarkAxisLabel, benchmarkSeriesLabel, cutoffDateObject, hasBenchmarkSeries, indicatorName, isInsideModal, isRestrictedPreview, t, timeUnit, visibleRange.max, visibleRange.min]);
 
   useEffect(() => {
     if (!chartRestrictionOverlay) {
