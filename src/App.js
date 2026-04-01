@@ -54,6 +54,7 @@ import BrandLogo from './components/Common/BrandLogo/BrandLogo';
 import DeferredTagManager from './components/Common/DeferredTagManager/DeferredTagManager';
 
 const MarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/MarketSentimentIndex'));
+const TwMarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/TwMarketSentimentIndex'));
 const About = lazy(() => import('./components/About/About').then((module) => ({ default: module.About })));
 const Legal = lazy(() => import('./components/Legal/Legal').then((module) => ({ default: module.Legal })));
 const WatchlistContainer = lazy(() => import('./components/Watchlist/WatchlistContainer').then((module) => ({ default: module.WatchlistContainer })));
@@ -511,6 +512,10 @@ function AppContent() {
                 <Route
                   path="market-sentiment"
                   element={<MarketSentimentIndex />}
+                />
+                <Route
+                  path="tw-market-sentiment"
+                  element={<TwMarketSentimentIndex />}
                 />
                 <Route
                   path="about"

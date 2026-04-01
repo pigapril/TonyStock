@@ -162,9 +162,14 @@ function getTimeRangeBounds(timeRange, endDate = new Date()) {
 function IndicatorItem({
   indicatorKey,
   indicator,
+  indicatorLabel = null,
   selectedTimeRange,
   handleTimeRangeChange,
   historicalSPYData,
+  detailEndpoint = '/api/indicator-history',
+  detailQueryParam = 'indicator',
+  detailIncludesRange = false,
+  benchmarkAxisLabel = null,
   isInsideModal,
   isRestrictedPreview = false,
   restrictionCutoffDate = null
@@ -172,6 +177,9 @@ function IndicatorItem({
   const { t } = useTranslation();
   const { showToast, toast, hideToast } = useToastManager();
   const indicatorName = useMemo(() => {
+    if (indicatorLabel) {
+      return indicatorLabel;
+    }
     const keyMap = {
       'AAII Bull-Bear Spread': 'indicators.aaiiSpread',
       'CBOE Put/Call Ratio 5-Day Avg': 'indicators.cboeRatio',
@@ -184,7 +192,7 @@ function IndicatorItem({
     };
     const translationKey = keyMap[indicatorKey] || indicatorKey;
     return t(translationKey);
-  }, [indicatorKey, t]);
+  }, [indicatorKey, indicatorLabel, t]);
 
   const [historicalData, setHistoricalData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -199,9 +207,10 @@ function IndicatorItem({
     setLoading(true);
 
     enhancedApiClient
-      .get('/api/indicator-history', {
+      .get(detailEndpoint, {
         params: {
-          indicator: indicatorKey,
+          [detailQueryParam]: indicatorKey,
+          ...(detailIncludesRange ? { range: selectedTimeRange } : {})
         },
         signal: controller.signal,
       })
@@ -209,7 +218,10 @@ function IndicatorItem({
         if (controller.signal.aborted) {
           return;
         }
-        const formattedData = response.data.map((item) => ({
+        const rawHistory = Array.isArray(response.data)
+          ? response.data
+          : (response.data?.history || []);
+        const formattedData = rawHistory.map((item) => ({
           date: new Date(item.date),
           value: parseFloat(item.value),
           percentileRank:
@@ -235,7 +247,7 @@ function IndicatorItem({
     return () => {
       controller.abort();
     };
-  }, [indicatorKey, t, showToast]);
+  }, [detailEndpoint, detailIncludesRange, detailQueryParam, indicatorKey, selectedTimeRange, t, showToast]);
 
   const filteredData = React.useMemo(() => {
     return filterDataByTimeRange(historicalData, selectedTimeRange);
@@ -244,6 +256,11 @@ function IndicatorItem({
   const filteredSPYData = React.useMemo(() => {
     return filterDataByTimeRange(historicalSPYData, selectedTimeRange);
   }, [historicalSPYData, selectedTimeRange]);
+
+  const hasBenchmarkSeries = useMemo(
+    () => filteredSPYData.some((item) => item.spyClose != null),
+    [filteredSPYData]
+  );
 
   const latestAvailableTimestamp = useMemo(() => {
     if (historicalData.length === 0) {
@@ -364,7 +381,7 @@ function IndicatorItem({
         tension: 0.1,
         pointRadius: 0,
       },
-      {
+      ...(hasBenchmarkSeries ? [{
         label: t('indicatorItem.spyPriceLabel'),
         yAxisID: 'spy-axis',
         data: filteredSPYData.map((item) => ({
@@ -376,9 +393,9 @@ function IndicatorItem({
         fill: true,
         tension: 0.4,
         pointRadius: 0,
-      },
+      }] : []),
     ],
-  }), [filteredData, filteredSPYData, indicatorName, t]);
+  }), [filteredData, filteredSPYData, hasBenchmarkSeries, indicatorName, t]);
 
   // 圖表選項
   const chartOptions = useMemo(() => ({
@@ -434,13 +451,13 @@ function IndicatorItem({
       'spy-axis': {
         position: 'right',
         title: {
-          display: true,
-          text: t('indicatorItem.spyPriceLabel'),
+          display: hasBenchmarkSeries,
+          text: benchmarkAxisLabel || t('indicatorItem.spyPriceLabel'),
         },
         grid: {
           drawOnChartArea: false,
         },
-        display: !isInsideModal,
+        display: !isInsideModal && hasBenchmarkSeries,
         ticks: {
           callback: function(value, index, values) {
             return formatPrice(value);
@@ -481,7 +498,7 @@ function IndicatorItem({
     },
     responsive: true,
     maintainAspectRatio: false,
-  }), [cutoffDateObject, indicatorName, isInsideModal, isRestrictedPreview, t, timeUnit, visibleRange.max, visibleRange.min]);
+  }), [benchmarkAxisLabel, cutoffDateObject, hasBenchmarkSeries, indicatorName, isInsideModal, isRestrictedPreview, t, timeUnit, visibleRange.max, visibleRange.min]);
 
   useEffect(() => {
     if (!chartRestrictionOverlay) {

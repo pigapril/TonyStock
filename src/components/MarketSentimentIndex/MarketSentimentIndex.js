@@ -18,6 +18,8 @@ import enhancedApiClient from '../../utils/enhancedApiClient';
 import { getCompositeComparisonSnapshots } from './comparisonSnapshots';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
 import { generateHistoryLegendLabels } from './historyChartPlugins';
+import { US_MARKET_SENTIMENT_CONFIG } from './marketConfigs';
+import { adaptDetailPayload, adaptHistoryPayload, adaptSummaryPayload } from './sentimentAdapters';
 
 const MarketSentimentDescriptionSection = lazy(() => import('./MarketSentimentDescriptionSection'));
 const DeferredHistoryWorkspace = lazy(() => import('./DeferredHistoryWorkspace'));
@@ -277,7 +279,7 @@ const getTimeRangeBounds = (timeRange, endDate = new Date()) => {
   };
 };
 
-const MarketSentimentIndex = () => {
+const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { showToast, toast, hideToast } = useToastManager();
@@ -292,6 +294,7 @@ const MarketSentimentIndex = () => {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const { requestAdDisplay } = useAdContext();
   const currentLang = i18n.language;
+  const pageRoutePath = `/${i18n.language}/${marketConfig.routePath}`;
 
   // 檢查用戶計劃
   const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
@@ -416,12 +419,13 @@ const MarketSentimentIndex = () => {
         // 根據用戶計劃選擇不同的端點
         // 在臨時免費模式下，所有用戶都使用 Pro 端點
         const shouldUsePro = isTemporaryFreeMode || isProUser;
-        const endpoint = shouldUsePro ? '/api/market-sentiment' : '/api/market-sentiment-free';
+        const endpoint = shouldUsePro ? marketConfig.summaryEndpointPro : marketConfig.summaryEndpointFree;
         const response = await enhancedApiClient.get(endpoint);
 
         if (isMounted) {
-          setSentimentData(response.data);
-          setIndicatorsData(response.data.indicators);
+          const adaptedSummary = adaptSummaryPayload(response.data, marketConfig);
+          setSentimentData(adaptedSummary);
+          setIndicatorsData(adaptedSummary?.indicators || {});
           setTimeout(() => {
             setIsDataLoaded(true);
           }, 100);
@@ -450,10 +454,11 @@ const MarketSentimentIndex = () => {
 
           // 3. 【關鍵修正】自動降級：嘗試抓取免費版資料作為背景顯示
           try {
-            const freeResponse = await enhancedApiClient.get('/api/market-sentiment-free');
+            const freeResponse = await enhancedApiClient.get(marketConfig.summaryEndpointFree);
             if (isMounted && freeResponse.data) {
-              setSentimentData(freeResponse.data);
-              setIndicatorsData(freeResponse.data.indicators);
+              const adaptedSummary = adaptSummaryPayload(freeResponse.data, marketConfig);
+              setSentimentData(adaptedSummary);
+              setIndicatorsData(adaptedSummary?.indicators || {});
               setIsDataLoaded(true);
             }
           } catch (fallbackError) {
@@ -476,29 +481,27 @@ const MarketSentimentIndex = () => {
     return () => {
       isMounted = false;
     };
-  }, [checkAuthStatus, isProUser, isTemporaryFreeMode, showToast, t]);
+  }, [checkAuthStatus, isProUser, isTemporaryFreeMode, marketConfig, showToast, t]);
 
   useEffect(() => {
     if (!shouldLoadHistoricalData || historicalFetchStartedRef.current) {
       return;
     }
 
-    historicalFetchStartedRef.current = true;
+    if (marketConfig.historyMode === 'single') {
+      historicalFetchStartedRef.current = true;
+    }
 
     async function fetchHistoricalData() {
       try {
-        const response = await enhancedApiClient.get('/api/composite-historical-data', {
+        const response = await enhancedApiClient.get(marketConfig.historyEndpoint, {
+          params: marketConfig.historyMode === 'range' ? { range: selectedTimeRange } : undefined,
           skipAuthHandling: true,
           maxRetries: 1,
           retryDelay: 250
         });
-        const formattedData = response.data
-          .filter(item => item.compositeScore != null && item.spyClose != null)
-          .map((item) => ({
-            date: new Date(item.date),
-            compositeScore: parseFloat(item.compositeScore),
-            spyClose: parseFloat(item.spyClose),
-          }));
+        const formattedData = adaptHistoryPayload(response.data)
+          .filter((item) => item.compositeScore != null);
         setHistoricalData(formattedData);
       } catch (error) {
         if (error?.response?.status === 401) {
@@ -511,7 +514,7 @@ const MarketSentimentIndex = () => {
     }
 
     fetchHistoricalData();
-  }, [shouldLoadHistoricalData, showToast, t]);
+  }, [marketConfig.historyEndpoint, marketConfig.historyMode, selectedTimeRange, shouldLoadHistoricalData, showToast, t]);
 
   const latestAvailableHistoryTimestamp = useMemo(() => {
     if (historicalData.length === 0) {
@@ -584,14 +587,17 @@ const MarketSentimentIndex = () => {
 
     async function fetchIndicatorTrendData() {
       try {
-        const response = await enhancedApiClient.get('/api/indicator-history', {
-          params: { indicator: selectedIndicatorKey },
+        const response = await enhancedApiClient.get(marketConfig.detailEndpoint, {
+          params: {
+            [marketConfig.detailQueryParam]: selectedIndicatorKey,
+            ...(marketConfig.detailIncludesRange ? { range: selectedTimeRange } : {})
+          },
           skipAuthHandling: true,
           maxRetries: 1,
           retryDelay: 250
         });
 
-        const normalized = response.data
+        const normalized = adaptDetailPayload(response.data).history
           .map((item) => ({
             date: new Date(item.date),
             value: item.value != null ? parseFloat(item.value) : null,
@@ -630,7 +636,7 @@ const MarketSentimentIndex = () => {
     return () => {
       cancelled = true;
     };
-  }, [indicatorTrendData, selectedIndicatorKey, sentimentData, shouldLoadIndicatorTrend]);
+  }, [indicatorTrendData, marketConfig.detailEndpoint, marketConfig.detailIncludesRange, marketConfig.detailQueryParam, selectedIndicatorKey, selectedTimeRange, sentimentData, shouldLoadIndicatorTrend]);
 
   const handleTimeRangeChange = (e) => {
     Analytics.marketSentiment.changeTimeRange({
@@ -766,7 +772,7 @@ const MarketSentimentIndex = () => {
         tension: 0.4,
         pointRadius: 0,
       },
-      {
+      ...(filteredData.some((item) => item.spyClose != null) ? [{
         label: t('marketSentiment.chart.spyPriceLabel'),
         yAxisID: 'right-axis',
         data: filteredData.map((item) => ({
@@ -790,7 +796,7 @@ const MarketSentimentIndex = () => {
         fill: true,
         tension: 0.4, // 增加曲線的平滑度
         pointRadius: 0,
-      },
+      }] : []),
       {
         label: currentLang === 'zh-TW' ? '過往極端恐懼低點' : 'Past extreme fear lows',
         yAxisID: 'left-axis',
@@ -825,7 +831,7 @@ const MarketSentimentIndex = () => {
     const state = {
       reason: 'market_sentiment_latest_data',
       feature,
-      from: `/${i18n.language}/market-sentiment`,
+      from: pageRoutePath,
       message: t('subscription.marketSentimentContext.notification'),
       context: {
         cutoffDate: formattedRestrictionCutoffDate
@@ -834,7 +840,7 @@ const MarketSentimentIndex = () => {
     };
 
     navigate(`/${i18n.language}/subscription-plans`, { state });
-  }, [formattedRestrictionCutoffDate, i18n.language, navigate, t]);
+  }, [formattedRestrictionCutoffDate, navigate, pageRoutePath, t]);
 
   const handleRestrictedFeatureClick = useCallback((feature, source = 'marketSentimentIndex') => {
     Analytics.marketSentiment.restrictedFeatureClicked({
@@ -897,12 +903,15 @@ const MarketSentimentIndex = () => {
       'right-axis': {
         position: 'right',
         title: {
-          display: true,
-          text: t('marketSentiment.chart.spyPriceAxisLabel'),
+          display: filteredData.some((item) => item.spyClose != null),
+          text: marketConfig.benchmarkAxisLabel
+            ? (marketConfig.benchmarkAxisLabel[currentLang] || marketConfig.benchmarkAxisLabel.en)
+            : t('marketSentiment.chart.spyPriceAxisLabel'),
         },
         grid: {
           drawOnChartArea: false,
         },
+        display: filteredData.some((item) => item.spyClose != null),
         ticks: {
           callback: function (value, index, values) {
             return formatPrice(value);
@@ -963,7 +972,7 @@ const MarketSentimentIndex = () => {
     },
     responsive: true,
     maintainAspectRatio: false,
-  }), [currentLang, currentSliderRange, isRestrictedPreview, restrictionCutoffDate, timeUnit, t]);
+  }), [currentLang, currentSliderRange, filteredData, isRestrictedPreview, marketConfig.benchmarkAxisLabel, restrictionCutoffDate, timeUnit, t]);
 
   // 定義用於結構化數據的 JSON-LD
   const marketSentimentJsonLd = useMemo(() => {
@@ -971,7 +980,7 @@ const MarketSentimentIndex = () => {
       "@type": "WebPage",
       "name": t('marketSentiment.pageTitle'),
       "description": t('marketSentiment.pageDescription'),
-      "url": `${window.location.origin}/${currentLang}/market-sentiment`,
+      "url": `${window.location.origin}${pageRoutePath}`,
       "inLanguage": currentLang,
       "keywords": t('marketSentiment.keywords'),
       "mainEntity": {
@@ -995,7 +1004,7 @@ const MarketSentimentIndex = () => {
       },
       "potentialAction": {
         "@type": "SearchAction",
-        "target": `${window.location.origin}/${currentLang}/market-sentiment?timeRange={timeRange}&indicator={indicator}`,
+        "target": `${window.location.origin}${pageRoutePath}?timeRange={timeRange}&indicator={indicator}`,
         "query-input": "required name=timeRange,indicator"
       }
     };
@@ -1028,7 +1037,7 @@ const MarketSentimentIndex = () => {
         }
       ]
     };
-  }, [t, currentLang, sentimentData?.compositeScoreLastUpdate]);
+  }, [currentLang, pageRoutePath, t, sentimentData?.compositeScoreLastUpdate]);
 
   const handleSliderChange = (newRange) => {
     setCurrentSliderRange(newRange);
@@ -1051,38 +1060,61 @@ const MarketSentimentIndex = () => {
   );
   const gaugeExplainerVariant = isRestrictedPreview ? 'snapshot' : 'current';
   const gaugeExplainerCopy = useMemo(() => ({
-    title: t(`marketSentiment.gauge.explainer.${gaugeExplainerVariant}.title`, {
+    title: marketConfig.buildGaugeExplainerCopy
+      ? marketConfig.buildGaugeExplainerCopy({ currentLang, currentCompositeScore, currentCompositeSentimentLabel }).title
+      : t(`marketSentiment.gauge.explainer.${gaugeExplainerVariant}.title`, {
       date: formattedRestrictionCutoffDate,
       score: currentCompositeScore,
       sentiment: currentCompositeSentimentLabel
     }),
-    subtitle: t(`marketSentiment.gauge.explainer.${gaugeExplainerVariant}.subtitle`, {
+    subtitle: marketConfig.buildGaugeExplainerCopy
+      ? marketConfig.buildGaugeExplainerCopy({ currentLang, currentCompositeScore, currentCompositeSentimentLabel }).subtitle
+      : t(`marketSentiment.gauge.explainer.${gaugeExplainerVariant}.subtitle`, {
       date: formattedRestrictionCutoffDate,
       score: currentCompositeScore,
       sentiment: currentCompositeSentimentLabel
     }),
-    sections: ['section1', 'section2', 'section3'].map((sectionKey) => ({
-      title: t(`marketSentiment.gauge.explainer.${gaugeExplainerVariant}.${sectionKey}.title`, {
-        date: formattedRestrictionCutoffDate,
-        score: currentCompositeScore,
-        sentiment: currentCompositeSentimentLabel
-      }),
-      body: t(`marketSentiment.gauge.explainer.${gaugeExplainerVariant}.${sectionKey}.body`, {
-        date: formattedRestrictionCutoffDate,
-        score: currentCompositeScore,
-        sentiment: currentCompositeSentimentLabel
-      })
-    }))
-  }), [currentCompositeScore, currentCompositeSentimentLabel, formattedRestrictionCutoffDate, gaugeExplainerVariant, t]);
+    sections: marketConfig.buildGaugeExplainerCopy
+      ? marketConfig.buildGaugeExplainerCopy({ currentLang, currentCompositeScore, currentCompositeSentimentLabel }).sections
+      : ['section1', 'section2', 'section3'].map((sectionKey) => ({
+        title: t(`marketSentiment.gauge.explainer.${gaugeExplainerVariant}.${sectionKey}.title`, {
+          date: formattedRestrictionCutoffDate,
+          score: currentCompositeScore,
+          sentiment: currentCompositeSentimentLabel
+        }),
+        body: t(`marketSentiment.gauge.explainer.${gaugeExplainerVariant}.${sectionKey}.body`, {
+          date: formattedRestrictionCutoffDate,
+          score: currentCompositeScore,
+          sentiment: currentCompositeSentimentLabel
+        })
+      }))
+  }), [currentCompositeScore, currentCompositeSentimentLabel, currentLang, formattedRestrictionCutoffDate, gaugeExplainerVariant, marketConfig, t]);
 
   const comparisonSnapshots = useMemo(() => {
+    if (sentimentData?.comparisonSnapshots) {
+      return Object.fromEntries(
+        Object.entries(sentimentData.comparisonSnapshots).map(([key, snapshot]) => {
+          if (!snapshot || snapshot.score == null) {
+            return [key, null];
+          }
+
+          const sentimentKey = getSentiment(snapshot.score);
+          return [key, {
+            ...snapshot,
+            sentimentKey,
+            sentimentLabel: t(sentimentKey)
+          }];
+        })
+      );
+    }
+
     return getCompositeComparisonSnapshots({
       currentScore: currentCompositeScore,
       historicalData,
       referenceDate: sentimentData?.compositeScoreLastUpdate,
       t
     });
-  }, [currentCompositeScore, historicalData, sentimentData?.compositeScoreLastUpdate, t]);
+  }, [currentCompositeScore, historicalData, sentimentData?.comparisonSnapshots, sentimentData?.compositeScoreLastUpdate, t]);
   const gaugeSupplementaryContent = useMemo(() => (
     <HeroReferenceStrip
       comparisonSnapshots={comparisonSnapshots}
@@ -1128,10 +1160,13 @@ const MarketSentimentIndex = () => {
   }, [isMobileViewport]);
 
   const getIndicatorLabel = useCallback((key) => {
-    return t(INDICATOR_TRANSLATION_KEY_MAP[key] || key);
-  }, [t]);
+    return indicatorsData[key]?.label || t(INDICATOR_TRANSLATION_KEY_MAP[key] || key);
+  }, [indicatorsData, t]);
 
   const getIndicatorDetailSummary = useCallback((key) => {
+    if (indicatorsData[key]?.detailSummary) {
+      return indicatorsData[key].detailSummary;
+    }
     const translationKey = INDICATOR_TRANSLATION_KEY_MAP[key];
     if (!translationKey) {
       return currentLang === 'zh-TW'
@@ -1140,7 +1175,7 @@ const MarketSentimentIndex = () => {
     }
     const descriptionKey = translationKey.replace(/^indicators\./, '');
     return t(`marketSentiment.descriptions.${descriptionKey}.detailDescription`);
-  }, [currentLang, t]);
+  }, [currentLang, indicatorsData, t]);
 
   const indicatorTrendSummaries = useMemo(() => {
     const trendEndDate = isRestrictedPreview && restrictionCutoffDate
@@ -1339,7 +1374,7 @@ const MarketSentimentIndex = () => {
       description={t('marketSentiment.pageDescription')}
       keywords={t('marketSentiment.keywords')}
       ogImage="/images/market-sentiment-og.png"
-      ogUrl={`${window.location.origin}/${currentLang}/market-sentiment`}
+      ogUrl={`${window.location.origin}${pageRoutePath}`}
     >
       <div className={`market-sentiment-shell market-sentiment-shell--${state}`} aria-hidden={state === 'loading' ? 'true' : undefined}>
         <div className="market-sentiment-shell__hero" />
@@ -1401,7 +1436,7 @@ const MarketSentimentIndex = () => {
       description={t('marketSentiment.pageDescription')} // 更新：使用新的翻譯鍵
       keywords={t('marketSentiment.keywords')} // 更新：使用新的翻譯鍵
       ogImage="/images/market-sentiment-og.png"
-      ogUrl={`${window.location.origin}/${currentLang}/market-sentiment`}
+      ogUrl={`${window.location.origin}${pageRoutePath}`}
       jsonLd={marketSentimentJsonLd}
     >
       <div className="market-sentiment-view">
@@ -1412,7 +1447,7 @@ const MarketSentimentIndex = () => {
                 <h1 className="panel-title">
                   <span className="panel-title-brand">Sentiment Inside Out (SIO)</span>
                   <span className="panel-title-index">
-                    {currentLang === 'zh-TW' ? '恐懼貪婪指標' : 'Fear & Greed Index'}
+                    {marketConfig.titleIndex[currentLang] || marketConfig.titleIndex.en}
                   </span>
                 </h1>
                 <p className="panel-description">{t('marketSentiment.pageSubtitle')}</p>
@@ -1475,8 +1510,12 @@ const MarketSentimentIndex = () => {
                         showAnalysisResult={false}
                         showLastUpdate={true}
                         headlineText={isRestrictedPreview
-                          ? t('marketSentiment.dataLimitation.snapshotGaugeHeadline', { date: formattedRestrictionCutoffDate })
-                          : t('marketSentiment.dataLimitation.currentGaugeHeadline')}
+                          ? (marketConfig.snapshotGaugeHeadlineFormatter
+                            ? marketConfig.snapshotGaugeHeadlineFormatter({ currentLang, formattedRestrictionCutoffDate })
+                            : t(marketConfig.snapshotGaugeHeadlineKey || 'marketSentiment.dataLimitation.snapshotGaugeHeadline', { date: formattedRestrictionCutoffDate }))
+                          : (currentLang === 'zh-TW'
+                            ? marketConfig.currentGaugeHeadlineZh
+                            : (marketConfig.currentGaugeHeadlineEn || t('marketSentiment.dataLimitation.currentGaugeHeadline')))}
                         supplementaryContent={gaugeSupplementaryContent}
                       />
                     </div>
@@ -1634,9 +1673,14 @@ const MarketSentimentIndex = () => {
                                 key={selectedIndicatorEntry[0]}
                                 indicatorKey={selectedIndicatorEntry[0]}
                                 indicator={selectedIndicatorEntry[1]}
+                                indicatorLabel={selectedIndicatorEntry[1]?.label || getIndicatorLabel(selectedIndicatorEntry[0])}
                                 selectedTimeRange={selectedTimeRange}
                                 handleTimeRangeChange={handleTimeRangeChange}
                                 historicalSPYData={historicalData}
+                                detailEndpoint={marketConfig.detailEndpoint}
+                                detailQueryParam={marketConfig.detailQueryParam}
+                                detailIncludesRange={marketConfig.detailIncludesRange}
+                                benchmarkAxisLabel={marketConfig.benchmarkAxisLabel?.[currentLang] || marketConfig.benchmarkAxisLabel?.en || null}
                                 isRestrictedPreview={isRestrictedPreview}
                                 restrictionCutoffDate={sentimentData?.restrictionCutoffDate}
                               />
@@ -1700,9 +1744,14 @@ const MarketSentimentIndex = () => {
                       key={`mobile-${selectedIndicatorEntry[0]}`}
                       indicatorKey={selectedIndicatorEntry[0]}
                       indicator={selectedIndicatorEntry[1]}
+                      indicatorLabel={selectedIndicatorEntry[1]?.label || getIndicatorLabel(selectedIndicatorEntry[0])}
                       selectedTimeRange={selectedTimeRange}
                       handleTimeRangeChange={handleTimeRangeChange}
                       historicalSPYData={historicalData}
+                      detailEndpoint={marketConfig.detailEndpoint}
+                      detailQueryParam={marketConfig.detailQueryParam}
+                      detailIncludesRange={marketConfig.detailIncludesRange}
+                      benchmarkAxisLabel={marketConfig.benchmarkAxisLabel?.[currentLang] || marketConfig.benchmarkAxisLabel?.en || null}
                       isRestrictedPreview={isRestrictedPreview}
                       restrictionCutoffDate={sentimentData?.restrictionCutoffDate}
                     />
@@ -1712,7 +1761,7 @@ const MarketSentimentIndex = () => {
             </div>
           )}
 
-          {shouldLoadDescriptionSection ? (
+          {marketConfig.showDescriptionSection && shouldLoadDescriptionSection ? (
             <Suspense fallback={null}>
               <MarketSentimentDescriptionSection
                 activeIndicator={selectedIndicatorEntry ? selectedIndicatorEntry[0] : 'composite'}
