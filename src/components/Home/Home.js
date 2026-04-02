@@ -11,6 +11,7 @@ import { Badge } from '../Common/Badge/Badge';
 import { Button } from '../Common/Button/Button';
 import homepageService from '../../services/homepageService';
 import MarketSentimentGauge from '../MarketSentimentIndex/MarketSentimentGauge';
+import { selectHistoricalLowPoints } from '../MarketSentimentIndex/historicalLowPointUtils';
 import { formatPrice } from '../../utils/priceUtils';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
 
@@ -370,35 +371,6 @@ export const Home = () => {
           end: HISTORY_PREVIEW_END_YEAR
         }
   ), [isMobileHistoryPreview]);
-  const historyPreviewMilestones = useMemo(() => {
-    const preferredIds = ['tradeWarSelloff', 'pandemicPanic', 'liquidityPeak', 'inflationBearLow', 'aiRally'];
-
-    return preferredIds.map((eventId) => {
-      const moment = featuredMoments.find((item) => item.eventId === eventId);
-
-      if (!moment?.date || moment?.score === null || moment?.score === undefined) {
-        return null;
-      }
-
-      const date = new Date(moment.date);
-      const year = date.getUTCFullYear();
-
-      if (Number.isNaN(date.getTime()) || year < historyPreviewYearRange.start || year > historyPreviewYearRange.end) {
-        return null;
-      }
-
-      return {
-        ...moment,
-        date,
-        year,
-        score: Math.round(Number(moment.score)),
-        title: t(`home.hero.moments.events.${moment.eventId}.title`, {
-          defaultValue: moment.title || ''
-        }),
-        sentimentLabel: t(moment.sentimentKey || 'sentiment.notAvailable')
-      };
-    }).filter(Boolean);
-  }, [featuredMoments, historyPreviewYearRange, t]);
   const historyPreview = useMemo(() => {
     const mergedPoints = new Map();
 
@@ -446,14 +418,13 @@ export const Home = () => {
       .sort((left, right) => left.date - right.date);
   }, [featuredMoments, historyPreviewYearRange, sentimentData.historyPreview]);
   const historyChartLowPoints = useMemo(() => (
-    historyPreviewMilestones
-      .filter((item) => item.score <= 20)
+    selectHistoricalLowPoints(historyPreview, (item) => item.score)
       .map((item) => ({
         date: item.date,
         score: item.score,
-        meta: `${item.year} ${item.title}`
+        meta: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US')
       }))
-  ), [historyPreviewMilestones]);
+  ), [currentLang, historyPreview]);
   const handlePrimaryAction = () => {
     openDialog('auth', {
       returnPath: `/${currentLang}/market-sentiment`

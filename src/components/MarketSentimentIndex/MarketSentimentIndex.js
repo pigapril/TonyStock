@@ -20,6 +20,7 @@ import { useDeferredFeature } from '../../hooks/useDeferredFeature';
 import { generateHistoryLegendLabels } from './historyChartPlugins';
 import { US_MARKET_SENTIMENT_CONFIG } from './marketConfigs';
 import { adaptDetailPayload, adaptHistoryPayload, adaptSummaryPayload } from './sentimentAdapters';
+import { selectHistoricalLowPoints } from './historicalLowPointUtils';
 
 const MarketSentimentDescriptionSection = lazy(() => import('./MarketSentimentDescriptionSection'));
 const DeferredHistoryWorkspace = lazy(() => import('./DeferredHistoryWorkspace'));
@@ -175,30 +176,6 @@ function getTimeUnit(dates) {
     return 'day';
   }
 }
-
-function groupHistoricLows(data) {
-  return data.reduce((groups, item) => {
-    const lastGroup = groups[groups.length - 1];
-
-    if (!lastGroup) {
-      groups.push([item]);
-      return groups;
-    }
-
-    const lastItem = lastGroup[lastGroup.length - 1];
-    const diffDays = (item.date.getTime() - lastItem.date.getTime()) / (1000 * 60 * 60 * 24);
-
-    if (diffDays <= 45) {
-      lastGroup.push(item);
-    } else {
-      groups.push([item]);
-    }
-
-    return groups;
-  }, []);
-}
-
-
 
 // 創建一個映射，將原始 key 映射到翻譯鍵中使用的簡化 key
 const INDICATOR_TRANSLATION_KEY_MAP = {
@@ -712,22 +689,11 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
       return [];
     }
 
-    const extremeLows = historicalData.filter((item) => item.compositeScore <= 5);
-    const source = extremeLows.length > 0
-      ? extremeLows
-      : [...historicalData].sort((a, b) => a.compositeScore - b.compositeScore).slice(0, 12);
-
-    return groupHistoricLows(source)
-      .map((group) => group.reduce(
-        (lowest, item) => (item.compositeScore < lowest.compositeScore ? item : lowest),
-        group[0]
-      ))
-      .sort((a, b) => b.date - a.date)
-      .slice(0, 4)
+    return selectHistoricalLowPoints(historicalData, (item) => item.compositeScore)
       .map((item) => ({
         date: item.date,
         label: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US', { year: 'numeric', month: 'short' }),
-        value: Math.round(item.compositeScore),
+        value: Math.round(item.score),
         meta: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US')
       }));
   }, [currentLang, historicalData]);
