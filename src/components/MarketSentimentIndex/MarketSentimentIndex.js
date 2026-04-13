@@ -187,6 +187,9 @@ const INDICATOR_TRANSLATION_KEY_MAP = {
   'Junk Bond Spread': 'indicators.junkBond',
   "S&P 500 COT Index": 'indicators.cotIndex',
   'NAAIM Exposure Index': 'indicators.naaimIndex',
+  'Margin_Short_Ratio': 'indicators.marginShortRatio',
+  'TW_Market_Momentum': 'indicators.twMarketMomentum',
+  'ETA_Deviation_189d': 'indicators.etaDeviation189d',
 };
 
 function getTrendDirection(delta, threshold = 3) {
@@ -275,6 +278,14 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   const benchmarkSeriesLabel = marketConfig.benchmarkAxisLabel
     ? (marketConfig.benchmarkAxisLabel[currentLang] || marketConfig.benchmarkAxisLabel.en)
     : t('marketSentiment.chart.spyPriceLabel');
+  const isVisibleIndicator = useCallback((indicator) => {
+    if (!indicator) {
+      return false;
+    }
+
+    const weight = Number(indicator.weight);
+    return Number.isFinite(weight) && weight > 0;
+  }, []);
 
   // 檢查用戶計劃
   const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
@@ -538,7 +549,9 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
 
   useEffect(() => {
     const keys = Object.keys(indicatorsData).filter(
-      (key) => key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield'
+      (key) => key !== 'Investment Grade Bond Yield'
+        && key !== 'Junk Bond Yield'
+        && isVisibleIndicator(indicatorsData[key])
     );
 
     if (keys.length === 0) {
@@ -548,7 +561,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
     if (!selectedIndicatorKey || !indicatorsData[selectedIndicatorKey]) {
       setSelectedIndicatorKey(keys[0]);
     }
-  }, [indicatorsData, selectedIndicatorKey]);
+  }, [indicatorsData, isVisibleIndicator, selectedIndicatorKey]);
 
   useEffect(() => {
     if (!sentimentData) {
@@ -1097,9 +1110,11 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
 
   const indicatorEntries = useMemo(() => {
     return Object.entries(indicatorsData).filter(
-      ([key]) => key !== 'Investment Grade Bond Yield' && key !== 'Junk Bond Yield'
+      ([key, indicator]) => key !== 'Investment Grade Bond Yield'
+        && key !== 'Junk Bond Yield'
+        && isVisibleIndicator(indicator)
     );
-  }, [indicatorsData]);
+  }, [indicatorsData, isVisibleIndicator]);
 
   const sortedIndicatorEntries = useMemo(() => {
     return [...indicatorEntries].sort(([, a], [, b]) => {

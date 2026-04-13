@@ -72,11 +72,13 @@ const sentimentPayload = {
   indicators: {
     'AAII Bull-Bear Spread': {
       percentileRank: 65,
-      value: 12.5
+      value: 12.5,
+      weight: 1.5
     },
     'Market Momentum': {
       percentileRank: 40,
-      value: 8.2
+      value: 8.2,
+      weight: 1
     }
   }
 };

@@ -742,7 +742,10 @@
     "safeHaven": "Safe Haven Demand",
     "junkBond": "Junk Bond Spread",
     "cotIndex": "Speculative Net Positions",
-    "naaimIndex": "NAAIM Exposure Index"
+    "naaimIndex": "NAAIM Exposure Index",
+    "marginShortRatio": "Margin short ratio",
+    "twMarketMomentum": "Taiwan market momentum",
+    "etaDeviation189d": "Effective trading accounts"
   },
   "sentiment": {
     "extremeFear": "Extreme Fear",
@@ -960,6 +963,36 @@
           {
             "title": "Interpretation Method",
             "content": "When the S&P 500 is significantly above its 125-day MA, it indicates a strong uptrend, strong momentum, and market greed. When the index is significantly below the MA, it indicates a downtrend, weak momentum, and market fear."
+          }
+        ]
+      },
+      "marginShortRatio": {
+        "shortDescription": "The margin short ratio compares margin lending and short-selling activity to show shifts in leverage and bearish positioning.",
+        "detailDescription": "When the margin short ratio rises, it usually means short positioning is increasing relative to margin buying, which points to a more defensive or bearish crowd. When it falls, downside pressure eases and risk appetite is generally stronger. It works as a sentiment read because changes in lending and shorting behavior often show how traders are leaning before price fully reflects it.",
+        "sections": [
+          {
+            "title": "Interpretation Method",
+            "content": "A higher margin short ratio usually reflects stronger bearish pressure and more cautious sentiment. A lower ratio usually reflects stronger bullish pressure and a more risk-on market."
+          }
+        ]
+      },
+      "twMarketMomentum": {
+        "shortDescription": "Taiwan market momentum measures the Taiwan weighted index's position relative to its medium-term trend and reflects chasing pressure in local equities.",
+        "detailDescription": "This indicator looks at how far Taiwan's market sits above or below its trend line to judge whether prices have become stretched. When the index stays well above trend, buyers are chasing and sentiment is typically optimistic. When the index is far below trend, pessimism is more dominant and the market is usually in defense mode. It works as a sentiment read because market mood eventually shows up as price extension away from trend.",
+        "sections": [
+          {
+            "title": "Interpretation Method",
+            "content": "When Taiwan's market is clearly above its medium-term moving average, sentiment is usually greedier. When it is clearly below the average, sentiment is usually more fearful."
+          }
+        ]
+      },
+      "etaDeviation189d": {
+        "shortDescription": "Effective trading accounts measures the number of actively trading accounts.",
+        "detailDescription": "This indicator shows whether market participation is unusually expanding or contracting. When the value rises, more accounts are actively participating and attention is usually building. When it falls, participation cools and the crowd is typically becoming more cautious. It works as a sentiment read because broad changes in participation often reveal shifts in attention and risk appetite.",
+        "sections": [
+          {
+            "title": "Interpretation Method",
+            "content": "A higher effective trading accounts reading usually means participation is heating up. A lower reading usually means participation is cooling down."
           }
         ]
       },

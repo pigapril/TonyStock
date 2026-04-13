@@ -190,6 +190,9 @@ function IndicatorItem({
       'Junk Bond Spread': 'indicators.junkBond',
       "S&P 500 COT Index": 'indicators.cotIndex',
       'NAAIM Exposure Index': 'indicators.naaimIndex',
+      'Margin_Short_Ratio': 'indicators.marginShortRatio',
+      'TW_Market_Momentum': 'indicators.twMarketMomentum',
+      'ETA_Deviation_189d': 'indicators.etaDeviation189d',
     };
     const translationKey = keyMap[indicatorKey] || indicatorKey;
     return t(translationKey);

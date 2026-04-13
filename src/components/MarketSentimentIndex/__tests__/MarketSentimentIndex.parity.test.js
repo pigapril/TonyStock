@@ -85,7 +85,7 @@ describe('Market sentiment shared shell parity', () => {
             totalScore: 52,
             compositeScoreLastUpdate: '2026-03-20',
             indicators: {
-              'AAII Bull-Bear Spread': { percentileRank: 65, value: 12.5 }
+              'AAII Bull-Bear Spread': { percentileRank: 65, value: 12.5, weight: 1.5 }
             }
           }
         });
@@ -98,7 +98,7 @@ describe('Market sentiment shared shell parity', () => {
             compositeScoreLastUpdate: '2026-03-20',
             comparisonSnapshots: {},
             indicators: {
-              tw_vix: { id: 'tw_vix', label: '台指選擇權波動率', percentileRank: 35, value: 18.2 }
+              tw_vix: { id: 'tw_vix', label: '台指選擇權波動率', percentileRank: 35, value: 18.2, weight: 3 }
             }
           }
         });

@@ -78,13 +78,15 @@ const summaryPayload = {
       id: 'tw_vix',
       label: '台指選擇權波動率',
       percentileRank: 35,
-      value: 18.2
+      value: 18.2,
+      weight: 3
     },
     pcr_ratio: {
       id: 'pcr_ratio',
       label: 'Put/Call Ratio',
       percentileRank: 68,
-      value: 1.14
+      value: 1.14,
+      weight: 3
     }
   }
 };
