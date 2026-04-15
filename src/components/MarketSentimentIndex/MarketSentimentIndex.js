@@ -270,6 +270,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   const [selectedTimeRange, setSelectedTimeRange] = useState(() => getDefaultTimeRangeByViewport());
   const [indicatorsData, setIndicatorsData] = useState({});
   const [indicatorTrendData, setIndicatorTrendData] = useState({});
+  const [directTrendSummaries, setDirectTrendSummaries] = useState(null);
   const [historicalData, setHistoricalData] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const { requestAdDisplay } = useAdContext();
@@ -307,6 +308,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   const historyOverlayCardRef = useRef(null);
   const historyOverlayFrameRef = useRef(null);
   const indicatorDetailViewportRef = useRef(null);
+  const indicatorCardListRef = useRef(null);
   const historicalFetchStartedRef = useRef(false);
   const [historyOverlayPosition, setHistoryOverlayPosition] = useState({ top: '50%', left: '50%' });
   const [historyOverlayMode, setHistoryOverlayMode] = useState('hidden');
@@ -566,6 +568,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   useEffect(() => {
     if (!sentimentData) {
       setIndicatorTrendData({});
+      setDirectTrendSummaries(null);
     }
   }, [sentimentData]);
 
@@ -630,6 +633,47 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
       cancelled = true;
     };
   }, [indicatorTrendData, marketConfig.detailEndpoint, marketConfig.detailIncludesRange, marketConfig.detailQueryParam, selectedIndicatorKey, selectedTimeRange, sentimentData, shouldLoadIndicatorTrend]);
+
+  useEffect(() => {
+    if (!sentimentData || !marketConfig.trendSummaryEndpoint || directTrendSummaries !== null) {
+      return undefined;
+    }
+
+    const node = indicatorCardListRef.current;
+
+    if (!node || typeof IntersectionObserver === 'undefined') {
+      return undefined;
+    }
+
+    let cancelled = false;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      observer.disconnect();
+
+      enhancedApiClient.get(marketConfig.trendSummaryEndpoint, {
+        skipAuthHandling: true,
+        maxRetries: 1,
+        retryDelay: 250
+      }).then((response) => {
+        if (!cancelled && response.data?.directions) {
+          setDirectTrendSummaries(response.data.directions);
+        }
+      }).catch(() => {
+        // Silently fail — trend icons fall back to default flat
+      });
+    }, {
+      rootMargin: '200px 0px',
+      threshold: 0
+    });
+
+    observer.observe(node);
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+    };
+  }, [directTrendSummaries, marketConfig.trendSummaryEndpoint, sentimentData]);
 
   const handleTimeRangeChange = (e) => {
     Analytics.marketSentiment.changeTimeRange({
@@ -1167,7 +1211,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
     const startTs = start.getTime();
     const endTs = end.getTime();
 
-    return Object.fromEntries(
+    const fromHistory = Object.fromEntries(
       Object.entries(indicatorTrendData).map(([key, points]) => {
         const trendPoints = (points || []).filter((point) => {
           const pointTs = point.date instanceof Date ? point.date.getTime() : new Date(point.date).getTime();
@@ -1193,7 +1237,21 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
         }];
       })
     );
-  }, [indicatorTrendData, isRestrictedPreview, latestAvailableHistoryTimestamp, restrictionCutoffDate, t]);
+
+    if (!directTrendSummaries) {
+      return fromHistory;
+    }
+
+    const result = { ...fromHistory };
+    Object.entries(directTrendSummaries).forEach(([key, direction]) => {
+      result[key] = {
+        direction,
+        label: t(`marketSentiment.indicators.trend.${direction}`),
+        icon: direction === 'up' ? '↑' : direction === 'down' ? '↓' : '→'
+      };
+    });
+    return result;
+  }, [directTrendSummaries, indicatorTrendData, isRestrictedPreview, latestAvailableHistoryTimestamp, restrictionCutoffDate, t]);
 
   const indicatorSentimentDistribution = useMemo(() => {
     const counts = {
@@ -1568,7 +1626,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                   )}
 
                     <div className="indicators-workspace__list">
-                      <div className="indicator-card-list">
+                      <div ref={indicatorCardListRef} className="indicator-card-list">
                         {sortedIndicatorEntries.map(([key, ind]) => {
                           const sentimentKey = getSentiment(ind?.percentileRank ? Math.round(ind.percentileRank) : null);
                           const tone = sentimentKey.split('.').pop();
