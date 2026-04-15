@@ -1264,7 +1264,7 @@ export function PriceAnalysis() {
             <div className="analysis-controls-wrapper stock-analysis-card">
               <div className="stock-analysis-card">
                 <div className="title-group">
-                  <h1 className="analysis-main-title">{t('priceAnalysis.pageTitle')}</h1>
+                  <h1 className="analysis-main-title">{t('priceAnalysis.heading')}</h1>
                   <h4 className="analysis-subtitle">{t('priceAnalysis.form.title')}</h4>
                 </div>
                 <form onSubmit={handleSubmit}>

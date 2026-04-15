@@ -1,0 +1,378 @@
+1. 先統一每頁的 pageTitle、H1、首段摘要，讓三者講的是同一件事。
+2. 把過度口號化、投資績效暗示過強的句子改成「工具用途 + 判讀範圍 + 限制」。
+3. 把 FAQ/schema 改成真實問句，而不是章節標題。
+4. 補強首頁的明確站點摘要，讓 AI 能直接總結這是什麼站、給誰用、三個核心工具是什麼。
+5. 統一中英文術語與語氣，避免同頁中文、英文、品牌話術混雜。
+
+以下是依上述指定的 5 個方向，針對首頁、`priceanalysis`、`marketsentiment` 的完整修正建議。我會用「現狀 → 建議修正」來列。
+
+**原則**
+- 不是三頁寫成一樣，而是每一頁自己的 `pageTitle`、H1、首段摘要要對齊同一個主題。
+- 文案優先寫成：
+  `這是什麼工具` + `用來判斷什麼` + `適用範圍/限制是什麼`
+- 避免：
+  `口號先行`、`勝率/買點/清倉` 這種太像投資建議的表述、`中英術語混雜但沒規則`
+
+---
+
+## 1. 先統一每頁的 pageTitle、H1、首段摘要，讓三者講的是同一件事
+
+### 首頁
+
+位置：
+- `pageTitle` [translation.json](/Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:473)
+- `pageDescription` [translation.json](/Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:474)
+- H1 [Home.js](/Users/tony/stock-analysis-project/Web/frontend/src/components/Home/Home.js:497)
+- 首段摘要 [translation.json](/Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:483)
+
+現狀：
+- `pageTitle`：`SIO 恐懼貪婪指標 | 給長期投資者的市場情緒首頁`
+- H1：`洞悉市場｜恐懼貪婪情緒`
+- 首段摘要：`用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點`
+
+問題：
+- `pageTitle` 在講「首頁」
+- H1 在講口號
+- 首段摘要在講投資心態
+- 三者沒有共同回答「這一頁是什麼」
+
+建議修正：
+- `pageTitle`：`Sentiment Inside Out｜市場情緒分析、價格趨勢分析與追蹤清單`
+- H1：`用市場情緒與價格位階，建立更有紀律的投資判讀流程`
+- 首段摘要：`Sentiment Inside Out 是一個以長期投資者為核心的市場分析平台，提供 SIO 市場情緒指標、價格趨勢分析與追蹤清單，幫助你用同一套流程觀察市場、標的與持續追蹤的名單。`
+
+更聚焦版本也可以：
+- `pageTitle`：`Sentiment Inside Out｜市場情緒分析平台`
+- H1：`市場情緒分析平台`
+- 首段摘要：`整合 SIO 市場情緒指標、價格趨勢分析與追蹤清單，幫助長期投資者用更一致的方式判讀市場與標的位置階。`
+
+---
+
+### PriceAnalysis
+
+位置：
+- `pageTitle` [translation.json](/Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1194)
+- `pageDescription` [translation.json](/Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1195)
+- H1 [PriceAnalysis.js](/Users/tony/stock-analysis-project/Web/frontend/src/components/PriceAnalysis/PriceAnalysis.js:1267)
+- 首段摘要/H2 [PriceAnalysis.js](/Users/tony/stock-analysis-project/Web/frontend/src/components/PriceAnalysis/PriceAnalysis.js:1268)
+
+現狀：
+- `pageTitle`：`樂活五線譜`
+- H1：`樂活五線譜`
+- 首段摘要：`股價趨勢與情緒分析`
+
+問題：
+- `pageTitle` 太短，只懂產品名的人才知道
+- H1 跟 `pageTitle` 一樣，但沒有補足用途
+- 首段摘要太泛，不知道是用什麼方法、判斷什麼
+
+建議修正：
+- `pageTitle`：`樂活五線譜｜股價趨勢與價格位階分析工具`
+- H1：`股價趨勢與價格位階分析`
+- 首段摘要：`樂活五線譜透過長期趨勢、均值回歸與標準差區間，協助你判讀股價目前位於偏高、偏低或中性區域；它提供的是價格位階參考，不是買賣建議。`
+
+如果你想保留品牌名更強：
+- H1：`樂活五線譜：股價趨勢與價格位階分析`
+
+---
+
+### Market Sentiment
+
+位置：
+- `pageTitle` [translation.json](/Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:782)
+- `pageDescription` [translation.json](/Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:784)
+- H1 [MarketSentimentIndex.js](/Users/tony/stock-analysis-project/Web/frontend/src/components/MarketSentimentIndex/MarketSentimentIndex.js:1429)
+- 首段摘要 [translation.json](/Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:783)
+
+現狀：
+- `pageTitle`：`每日更新恐懼貪婪指數 | 市場情緒儀表板`
+- H1：`Sentiment Inside Out (SIO) ...`
+- 首段摘要：`整合多項數據，客觀分析市場恐懼與貪婪程度`
+
+問題：
+- `pageTitle` 強調每日更新
+- 頁內又大量講免費版只能看延遲資料
+- H1 偏品牌展示
+- 首段摘要太抽象
+
+建議修正：
+- `pageTitle`：`SIO 市場情緒儀表板｜整合多項市場訊號判讀恐懼與貪婪`
+- H1：`SIO 市場情緒儀表板`
+- 首段摘要：`這個頁面整合波動率、避險需求、散戶調查、信用風險與部位資料，將市場情緒整理成可追蹤的分數與歷史走勢；分數反映的是情緒位置與風險偏好，不直接預測短期漲跌。`
+
+如果要保留「每日更新」，建議改得更精確：
+- `pageTitle`：`SIO 市場情緒儀表板｜追蹤市場情緒與歷史走勢`
+不要把「每日更新」放在最前面。
+
+---
+
+## 2. 把過度口號化、投資績效暗示過強的句子改成「工具用途 + 判讀範圍 + 限制」
+
+### 首頁
+
+位置：
+- [translation.json:711](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:711>)
+- [translation.json:717](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:717>)
+- [translation.json:483](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:483>)
+
+現狀 → 建議修正
+
+- `在別人恐懼時展現貪婪`
+- → `在市場情緒偏向極端恐懼時，回頭檢查歷史位置與風險區間`
+
+- `不是要猜最低點，而是用數據提醒你：當市場情緒掉進極端恐懼，與其跟著恐慌賣出，不如開始更有紀律地評估、分批進場`
+- → `這個工具用來觀察市場情緒是否接近歷史低檔區域，幫助你在波動加劇時保留判讀框架；它提供的是情緒位置參考，不保證市場已經落底。`
+
+- `依據價格趨勢，分析極端情緒位階`
+- → `根據價格趨勢與區間位置，判讀標的目前位於偏高、偏低或中性區域`
+
+- `誰都無法預測漲跌，但了解當前價格背後隱含的情緒，可以提升進出場勝率`
+- → `這個工具協助你判讀價格相對長期趨勢的位置，適合拿來做估值與風險感受的輔助參考；它不負責預測短期走勢。`
+
+---
+
+### PriceAnalysis
+
+位置：
+- [translation.json:1195](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1195>)
+- [translation.json:1281](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1281>)
+- [translation.json:1282](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1282>)
+- [translation.json:1292](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1292>)
+- [translation.json:1294](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1294>)
+
+現狀 → 建議修正
+
+- `幫助您找到更佳的買賣點`
+- → `幫助你判讀股價相對長期趨勢的位置與區間`
+
+- `當股價觸及最上緣...有回調的風險`
+- → `當股價接近最上緣，代表價格已明顯高於長期平均，通常需要留意偏熱風險與波動放大。`
+
+- `當股價觸及最下緣...有反彈的機會`
+- → `當股價接近最下緣，代表價格已明顯低於長期平均，可視為觀察是否進入偏低區域的參考訊號。`
+
+- `可能代表趨勢的延續，可以等回到通道內再進行操作`
+- → `若價格同時偏離五線譜與樂活通道，通常代表短期波動擴大；實際判讀仍需搭配趨勢方向、基本面與風險承受度。`
+
+- `不應該單獨作為買賣依據`
+- → 這句保留，但可補強成：
+- `此工具適合用來判讀價格位階，不應單獨作為買賣決策依據。`
+
+---
+
+### Market Sentiment
+
+位置：
+- [translation.json:946](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:946>)
+- [translation.json:950](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:950>)
+- [translation.json:954](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:954>)
+- [translation.json:1087](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1087>)
+- [translation.json:1111](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1111>)
+
+現狀 → 建議修正
+
+- `此時買入勝率愈高`
+- → `通常代表市場情緒已經接近歷史偏低區域，可作為觀察風險偏好是否過度收縮的參考。`
+
+- `不應繼續追高`
+- → `通常代表市場情緒已偏熱，解讀時需留意估值、風險偏好與波動是否同步升高。`
+
+- `若能把握都是極佳的買點`
+- → `回顧歷史，極低分常出現在市場壓力明顯升高的時段，但分數本身不能單獨視為進場訊號。`
+
+- `當指標低於 15 可以開始建立部位`
+- → `當指標低於 15，通常表示情緒進入極端恐懼區，可作為觀察市場是否過度悲觀的參考。`
+
+- `建議這時候應該停止追高，並適度分批獲利了結`
+- → `這通常代表市場情緒已相當樂觀，較適合提醒自己重新檢查風險暴露與部位配置。`
+
+---
+
+## 3. 把 FAQ/schema 改成真實問句，而不是章節標題
+
+### PriceAnalysis FAQ/schema
+
+位置：
+- [PriceAnalysis.js:1122](</Users/tony/stock-analysis-project/Web/frontend/src/components/PriceAnalysis/PriceAnalysis.js:1122>)
+
+現狀：
+- `什麼是樂活五線譜？`
+- `樂活五線譜說明`
+- `樂活通道說明`
+- `使用技巧`
+
+問題：
+- 後三個不是自然問句
+- FAQ schema 對搜尋引擎與 AI 來說較像章節目錄，不像使用者提問
+
+建議修正：
+- `什麼是樂活五線譜？`
+- `樂活五線譜中的五條線代表什麼？`
+- `樂活通道是什麼？和樂活五線譜有什麼差別？`
+- `樂活五線譜應該怎麼搭配其他指標使用？`
+
+對應答案也要改成問句回答式，不要只是條列拼接。
+
+---
+
+### Market Sentiment FAQ/schema
+
+位置：
+- schema 組裝 [MarketSentimentIndex.js:992](</Users/tony/stock-analysis-project/Web/frontend/src/components/MarketSentimentIndex/MarketSentimentIndex.js:992>)
+- FAQ 實際內容 [translation.json:1094](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1094>)
+
+現狀：
+- 比 `priceanalysis` 好，已經多半是真問句
+- 但第一題答案與前文有些概念不一致，且部分問答過於策略導向
+
+建議修正重點：
+- `什麼是 SIO 市場情緒指標？`
+- 答案現狀：`通過分析多個技術和基本面指標...`
+- 建議：`SIO 市場情緒指標整合波動率、避險需求、散戶調查、信用風險與部位資料，用來衡量市場風險偏好目前偏向恐懼、中性還是貪婪。`
+
+- `分數 0 到 100 代表什麼？如何解讀？`
+- 建議補一句限制：
+- `分數代表目前情緒在歷史分布中的相對位置，不等於短期漲跌預測。`
+
+- `如果指標出現極度貪婪，我應該馬上清倉或放空嗎？`
+- 建議答案改弱化交易指令：
+- `不一定。極度貪婪更適合解讀為市場風險偏好已偏熱，應回頭檢查估值、部位集中度與風險承受能力。`
+
+---
+
+### FAQ 區塊標題
+
+位置：
+- [MarketSentimentDescriptionSection.js:13](</Users/tony/stock-analysis-project/Web/frontend/src/components/MarketSentimentIndex/MarketSentimentDescriptionSection.js:13>)
+
+現狀：
+- `FAQ`
+
+建議修正：
+- `常見問題`
+或
+- `SIO 市場情緒常見問題`
+
+---
+
+## 4. 補強首頁的明確站點摘要，讓 AI 能直接總結這是什麼站、給誰用、三個核心工具是什麼
+
+位置：
+- `jsonLd.description` [translation.json:478](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:478>)
+- hero 摘要 [translation.json:483](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:483>)
+- 可新增首頁首屏摘要區塊，接在 hero 下方或 methodology 前
+
+現狀：
+- `一個以長期投資者為核心的市場心理分析平台...`
+- 不差，但還不夠明確列出三個工具與用途
+
+建議修正為更 AI-friendly 的版本：
+
+- `jsonLd.description`
+- 現狀：`一個以長期投資者為核心的市場心理分析平台，用 SIO 恐懼貪婪指標、價格趨勢分析與追蹤清單，幫助你用數據理解市場。`
+- 建議：
+`Sentiment Inside Out 是一個面向長期投資者的市場分析平台，核心工具包含 SIO 市場情緒指標、價格趨勢分析與追蹤清單。它用來幫助使用者先看整體市場情緒，再看個別標的的價格位階，最後持續追蹤自己關注的名單。`
+
+- 首頁 hero 摘要
+- 現狀：`用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點`
+- 建議：
+`這裡提供三個核心工具：用 SIO 指標看整體市場情緒、用價格趨勢分析看個別標的位階、用追蹤清單持續管理你真正關心的標的。`
+
+- 若要新增一段「站點摘要」
+- 建議文案：
+`Sentiment Inside Out 適合想用固定流程判讀市場的長期投資者。你可以先看市場情緒，再看標的價格位階，最後把關注標的放進追蹤清單，減少只靠情緒做判斷。`
+
+這一段對 GEO 很有價值，因為 AI 很容易直接摘成：
+- 這是什麼站
+- 給誰用
+- 三個工具是什麼
+- 建議怎麼使用
+
+---
+
+## 5. 統一中英文術語與語氣，避免同頁中文、英文、品牌話術混雜
+
+### 首頁
+
+位置：
+- [translation.json:535](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:535>)
+- [translation.json:473](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:473>)
+- [translation.json:482](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:482>)
+
+現狀問題：
+- `AI Rally`
+- `SIO 恐懼貪婪指標`
+- `Sentiment Inside Out`
+- `洞悉市場｜恐懼貪婪情緒`
+混在一起，語氣有時像品牌 slogan，有時像功能頁標題
+
+建議統一規則：
+- 品牌首次出現：`Sentiment Inside Out（SIO）`
+- 後續工具名稱：`SIO 市場情緒指標` 或 `SIO 恐懼貪婪指標`
+- 中文頁面內，事件名稱盡量中文化
+- `AI Rally` → `AI 熱潮反彈` 或 `AI 題材熱潮`
+
+---
+
+### PriceAnalysis
+
+位置：
+- [translation.json:1219](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1219>)
+- [translation.json:1331](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1331>)
+- [translation.json:1379](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1379>)
+
+現狀問題：
+- `Loading...` 英文殘留
+- `指數ETF` 少空格
+- `美股ETF`、`台股ETF`、`S&P 500`、`Nasdaq` 的中文化規則不完全一致
+
+建議修正：
+- `Loading...` → `載入中...`
+- `指數ETF` → `指數 ETF`
+- `美股ETF` → `美股 ETF`
+- `台股ETF` → `台股 ETF`
+- `Nasdaq` 可統一為 `NASDAQ`
+或全文維持 `Nasdaq`，但全站一致
+
+語氣也建議統一：
+- 不用 `幫助您找到更佳買賣點`
+- 改成 `協助你判讀價格位階`
+整站語氣會更穩。
+
+---
+
+### Market Sentiment
+
+位置：
+- [translation.json:784](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:784>)
+- [translation.json:789](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:789>)
+- [translation.json:969](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:969>)
+- [translation.json:1080](</Users/tony/stock-analysis-project/Web/frontend/src/locales/zh-TW/translation.json:1080>)
+
+現狀問題：
+- `VIX、Put/Call Ratio、AAII...`
+- 有些地方中文化，有些地方保留英文
+- `SIO恐懼貪婪指標` 有時沒空格
+- FAQ 裡 `Out-of-Sample`、`Walk-Forward Validation`、`Point-in-Time` 很學術，可以保留，但要統一格式
+
+建議統一規則：
+- 首次出現：`Put/Call Ratio（買賣權比）`
+- 後續可用：`買賣權比`
+- `SIO恐懼貪婪指標` → `SIO 恐懼貪婪指標`
+- `VIX分析` → `VIX 分析`
+- `AAII散戶調查` → `AAII 散戶調查`
+- 技術名詞統一格式：
+  `樣本外測試（Out-of-Sample）`
+  `滾動前進驗證（Walk-Forward Validation）`
+  `時點一致資料校正（Point-in-Time）`
+
+這樣可讀性和 GEO 都會更好，因為 AI 比較容易知道哪個是主術語、哪個是括號補充。
+
+---
+
+## 我建議的實作順序
+
+1. 先改三頁 `pageTitle / H1 / 首段摘要`
+2. 再改首頁站點摘要
+3. 再清理高風險措辭
+4. 最後重寫 FAQ/schema 與術語統一

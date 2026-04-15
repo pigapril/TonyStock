@@ -1249,7 +1249,7 @@
         "overview": "Overview",
         "sd": "Five-Line",
         "ulband": "Channel",
-        "tips": "Tips"
+        "tips": "Usage Tips"
       },
       "overview": {
         "title": "What is the LOHAS Five-Line Analysis?",
@@ -1270,7 +1270,7 @@
         "point3": "When the price breaks below the lower LOHAS Channel, it may indicate short-term cooling."
       },
       "tips": {
-        "title": "Usage Tips",
+        "title": "How should I combine LOHAS Five-Line Analysis with other indicators?",
         "point1": "When the price touches the uppermost or lowermost band of the LOHAS Five-Line Analysis and simultaneously breaks the LOHAS Channel, it might signify a continuation of the trend. Consider waiting for the price to return within the LOHAS Channel before taking action.",
         "point2": "It is recommended for use with index ETFs or large-cap stocks with clear trends, in conjunction with fundamental analysis.",
         "point3": "It should not be used as the sole basis for buy/sell decisions. Please combine with other technical indicators and fundamental analysis."
