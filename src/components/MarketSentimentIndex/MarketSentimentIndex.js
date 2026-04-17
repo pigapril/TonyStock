@@ -190,6 +190,15 @@ const INDICATOR_TRANSLATION_KEY_MAP = {
   'Margin_Short_Ratio': 'indicators.marginShortRatio',
   'TW_Market_Momentum': 'indicators.twMarketMomentum',
   'ETA_Deviation_189d': 'indicators.etaDeviation189d',
+  'tw_vix': 'indicators.twVix',
+  'pcr_ratio': 'indicators.twPcr',
+  'usd_twd': 'indicators.usdTwd',
+  'margin_maintenance_ratio': 'indicators.marginMaintenanceRatio',
+  'fini_futures': 'indicators.finiFutures',
+  'market_breadth': 'indicators.marketBreadth',
+  'margin_short_ratio': 'indicators.marginShortRatio',
+  'tw_market_momentum': 'indicators.twMarketMomentum',
+  'eta_deviation_189d': 'indicators.etaDeviation189d',
 };
 
 function getTrendDirection(delta, threshold = 3) {

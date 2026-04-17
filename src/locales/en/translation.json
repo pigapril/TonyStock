@@ -745,7 +745,13 @@
     "naaimIndex": "NAAIM Exposure Index",
     "marginShortRatio": "Margin short ratio",
     "twMarketMomentum": "Taiwan market momentum",
-    "etaDeviation189d": "Effective trading accounts"
+    "etaDeviation189d": "Effective trading accounts",
+    "twVix": "TAIEX options volatility (TW VIX)",
+    "twPcr": "TAIEX options Put/Call ratio",
+    "usdTwd": "USD/TWD exchange rate",
+    "marginMaintenanceRatio": "Margin maintenance ratio",
+    "finiFutures": "Foreign-institution net futures OI",
+    "marketBreadth": "Market breadth"
   },
   "sentiment": {
     "extremeFear": "Extreme Fear",
@@ -987,12 +993,72 @@
         ]
       },
       "etaDeviation189d": {
-        "shortDescription": "Effective trading accounts measures the number of actively trading accounts.",
-        "detailDescription": "This indicator shows whether market participation is unusually expanding or contracting. When the value rises, more accounts are actively participating and attention is usually building. When it falls, participation cools and the crowd is typically becoming more cautious. It works as a sentiment read because broad changes in participation often reveal shifts in attention and risk appetite.",
+        "shortDescription": "Effective trading accounts measures actively trading Taiwan accounts versus their 189-day trend, highlighting shifts in participation.",
+        "detailDescription": "This indicator compares the current count of actively trading accounts to its 189-day trend, so it reveals whether participation is unusually heated or cooled relative to the longer trajectory. When the reading sits well above trend, more accounts are being drawn in and sentiment is generally risk-on. When it sits well below trend, participation is thinning and risk appetite is fading. It works as a sentiment read because expansion or contraction in the crowd's participation versus trend often leads broader shifts in attention and risk appetite.",
         "sections": [
           {
             "title": "Interpretation Method",
-            "content": "A higher effective trading accounts reading usually means participation is heating up. A lower reading usually means participation is cooling down."
+            "content": "Readings above the 189-day trend indicate heated participation and greed. Readings below the trend indicate cooling participation and fear."
+          }
+        ]
+      },
+      "twVix": {
+        "shortDescription": "The Taiwan VIX is the TAIFEX implied volatility index on TAIEX options and reads the cost of hedging Taiwan equities.",
+        "detailDescription": "TW VIX essentially measures how much investors are willing to pay for downside protection, which ties directly to fear. When TW VIX rises, expected volatility and hedging demand are increasing and the market is tense. When it falls, hedging demand cools and risk appetite rebuilds. It works as a sentiment read because changes in the cost of protection typically reveal trader anxiety earlier than price itself.",
+        "sections": [
+          {
+            "title": "Interpretation Method",
+            "content": "A rising TW VIX indicates growing fear and hedging demand. A falling TW VIX indicates recovering risk appetite and greedier positioning."
+          }
+        ]
+      },
+      "twPcr": {
+        "shortDescription": "The TAIEX options Put/Call ratio compares put activity (or open interest) to call activity, revealing the hedging-versus-speculation balance.",
+        "detailDescription": "PCR puts put demand and call demand on the same scale. When PCR is elevated, hedging dominates and fear is widespread — which historically clusters near durable lows. When PCR is depressed, call demand dominates and speculation is heating up, which often maps to overheated conditions. It works as a sentiment read because options positioning reflects the direction in which traders are actually willing to commit capital.",
+        "sections": [
+          {
+            "title": "Interpretation Method",
+            "content": "Elevated PCR (extreme hedging) typically points to washed-out sentiment and potential rebounds. Depressed PCR points to speculative, risk-on conditions."
+          }
+        ]
+      },
+      "usdTwd": {
+        "shortDescription": "The USD/TWD exchange rate tracks capital-flow pressure in and out of Taiwan and links to foreign-investor risk appetite for Taiwan equities.",
+        "detailDescription": "When the TWD weakens (USD/TWD rises), foreign capital is typically flowing out and hedging demand is rising — a headwind for Taiwan equities. When the TWD strengthens (USD/TWD falls), capital is returning and global risk appetite for Taiwan assets is generally improving. It works as a sentiment read because FX reflects both international risk posture and the allocation preference toward Taiwan assets, and often leads equity sentiment.",
+        "sections": [
+          {
+            "title": "Interpretation Method",
+            "content": "A rising USD/TWD points to outflows and fear. A falling USD/TWD points to inflows and greed."
+          }
+        ]
+      },
+      "marginMaintenanceRatio": {
+        "shortDescription": "The margin maintenance ratio tracks the financial health of Taiwan margin accounts and is the primary read on retail leverage stress.",
+        "detailDescription": "A higher margin maintenance ratio means margin positions are safer and further from forced-liquidation thresholds, while a falling ratio means margin losses are widening and forced-selling pressure is rising. During sharp drawdowns this ratio often reveals that retail leverage has reached its breaking point faster than the index does. It works as a sentiment read because the safety buffer of margin traders directly reflects the willingness and capacity of Taiwan retail to carry risk.",
+        "sections": [
+          {
+            "title": "Interpretation Method",
+            "content": "A higher margin maintenance ratio indicates safer retail leverage and greedier sentiment. A lower ratio indicates mounting margin-call pressure and fear."
+          }
+        ]
+      },
+      "finiFutures": {
+        "shortDescription": "Foreign-institution net futures open interest tracks the net long/short TAIEX futures position held by foreign institutions, reflecting their directional bet on the Taiwan market.",
+        "detailDescription": "Foreign institutions are one of the most influential capital groups in Taiwan, and their net long or short TAIEX futures position reveals hedging or offensive intent more directly than cash-market flows. When net longs expand to historically elevated levels, sentiment is generally optimistic and the setup often coincides with interim tops. When net shorts deepen, foreign money is defensive and pessimism is usually already priced in. It works as a sentiment read because futures positioning represents actual capital carrying directional risk.",
+        "sections": [
+          {
+            "title": "Interpretation Method",
+            "content": "Very large foreign net longs often mark top risk (contrarian fear signal). Very deep foreign net shorts often mark exhausted pessimism."
+          }
+        ]
+      },
+      "marketBreadth": {
+        "shortDescription": "Market breadth compares the number of advancing versus declining Taiwan stocks to measure how widely a rally or decline is participating.",
+        "detailDescription": "When the index rallies it does not mean every stock is rallying, and breadth tells you exactly that. Strong breadth means advancing names are widespread and the rally is broad — a hallmark of greed. Weakening breadth means even a rising index is being carried by a handful of heavyweights, which quietly warns of internal exhaustion. It works as a sentiment read because breadth reflects whether the broader crowd is aligned with the trend, not just the headline index.",
+        "sections": [
+          {
+            "title": "Interpretation Method",
+            "content": "Broadening market breadth signals broad participation and greed. Narrowing breadth signals concentrated leadership and underlying fear."
           }
         ]
       },
