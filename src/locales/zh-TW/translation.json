@@ -1,13 +1,4 @@
 {
-  "launch": {
-    "loading": {
-      "authenticating": "正在驗證登入資訊...",
-      "preparing": "正在準備儀表板資訊..."
-    },
-    "login": {
-      "prompt": "登入以繼續"
-    }
-  },
   "nav": {
     "home": "首頁",
     "priceAnalysis": "樂活五線譜",
@@ -23,25 +14,6 @@
   "userActions": {
     "login": "登入"
   },
-  "dashboard": {
-    "welcome": "歡迎！",
-    "greeting": "你好，%@！",
-    "subtitle": "這是您的市場快照。",
-    "marketSentimentCard": {
-      "title": "市場情緒",
-      "currentSentiment": "當前的情緒是"
-    },
-    "watchlistCard": {
-      "title": "近期清單中需要關注的股票",
-      "loginPrompt": "登入以查看您的個人化追蹤清單。",
-      "empty": "您的追蹤清單是空的，新增一些股票吧！"
-    },
-    "quickAnalysisCard": {
-      "title": "快速分析",
-      "placeholder": "輸入股票代碼",
-      "button": "分析"
-    }
-  },
   "language": {
     "change": "更改語言",
     "zhTW": "繁體中文",
@@ -52,7 +24,6 @@
     "pageDescription": "深入分析市場趨勢和投資策略以及如何使用網站工具判斷市場情緒。",
     "keywords": "市場分析,投資策略,市場情緒,投資文章,金融分析,教學",
     "heading": "分析專欄",
-    "coverAlt": "文章封面圖片",
     "jsonLdName": "分析專欄",
     "jsonLdDescription": "深入分析市場趨勢和投資策略以及如何使用網站工具判斷市場情緒。",
     "noCategory": "未分類",
@@ -61,7 +32,6 @@
   "articleDetail": {
     "loadingTitle": "載入中...",
     "loadingDescription": "載入文章內容中...",
-    "loadingText": "載入中...",
     "errorTitle": "錯誤",
     "errorDescription": "載入文章失敗",
     "errorText": "載入文章失敗：",
@@ -93,8 +63,7 @@
     "feature3": "💬 由AI客服回答問題",
     "title": "🚀 立即開始免費體驗",
     "upgradeTitle": "🚀 登入以升級至 Pro 方案",
-    "upgradeDescription": "登入您的帳戶以升級至 {{planName}} 方案，享受完整功能",
-    "loading": "載入中..."
+    "upgradeDescription": "登入您的帳戶以升級至 {{planName}} 方案，享受完整功能"
   },
   "redemption": {
     "inputPlaceholder": "輸入兌換代碼",
@@ -112,23 +81,17 @@
       "fixedDiscount": "{{amount}} {{currency}} 折扣",
       "timeExtension": "延長 {{duration}} {{unit}}",
       "planUpgrade": "升級至 {{plan}}",
-      "benefits": "特殊優惠",
-      "paymentMethodRequired": "需要綁定付款方式"
+      "benefits": "特殊優惠"
     },
     "confirmation": {
       "title": "確認兌換",
       "codeLabel": "兌換代碼",
       "benefitsTitle": "您將獲得：",
       "valueLabel": "預估價值：",
-      "estimatedValue": "{{amount}} {{currency}}",
       "paymentMethod": {
         "title": "需要付款方式",
         "description": "此優惠需要您綁定有效的付款方式。",
         "acknowledge": "我了解需要綁定付款方式"
-      },
-      "terms": {
-        "accept": "我同意",
-        "link": "條款與條件"
       },
       "cancel": "取消",
       "confirm": "確認兌換",
@@ -136,29 +99,22 @@
       "info": "確認後此操作無法撤銷。",
       "benefits": {
         "discount": {
-          "title": "折扣優惠",
           "percentage": "訂閱享 {{percentage}}% 折扣",
           "fixed": "訂閱減免 {{amount}} {{currency}}"
         },
         "extension": {
-          "title": "訂閱延長",
           "description": "您的訂閱將延長 {{duration}} {{unit}}"
         },
         "upgrade": {
-          "title": "方案升級",
           "description": "升級至 {{plan}} 方案 {{duration}} {{unit}}"
         },
         "general": {
-          "title": "特殊優惠",
-          "description": "您將獲得特殊優惠優惠",
-          "highlight": "高級權限"
+          "description": "您將獲得特殊優惠優惠"
         }
       }
     },
     "history": {
-      "title": "兌換記錄",
       "loading": "載入記錄中...",
-      "export": "匯出",
       "retry": "重試",
       "empty": {
         "title": "無兌換記錄",
@@ -207,8 +163,6 @@
       }
     },
     "activePromotions": {
-      "title": "目前優惠",
-      "count": "{{count}} 個有效",
       "loading": "載入優惠中...",
       "retry": "重試",
       "empty": {
@@ -323,27 +277,11 @@
         "percentage": "{{percentage}}% 折扣",
         "fixed": "折扣 {{amount}}"
       }
-    },
-    "checkout": {
-      "title": "兌換代碼",
-      "subtitle": "有優惠代碼嗎？輸入代碼以獲得折扣優惠",
-      "placeholder": "輸入優惠代碼",
-      "appliedTitle": "優惠已套用",
-      "appliedMessage": "節省 {{amount}}",
-      "originalPrice": "原價：",
-      "discount": "折扣：",
-      "finalPrice": "總金額：",
-      "paymentMethodRequired": "此優惠代碼需要在結帳時綁定付款方式才能套用。"
     }
   },
   "userProfile": {
-    "title": "個人資料",
-    "openMenuAria": "開啟使用者選單",
     "goToAccountAria": "前往帳戶頁面",
     "avatarAlt": "{{username}} 的頭像",
-    "menuAria": "使用者選單",
-    "logout": "登出",
-    "notLoggedIn": "未登入",
     "loginRequired": "需要登入",
     "loginRequiredMessage": "請先登入以查看您的帳戶資訊"
   },
@@ -351,7 +289,6 @@
     "loginRequired": "需要登入才能使用客服功能",
     "headerTitle": "小豬客服",
     "closeButton": "✖",
-    "welcomeMessage": "你好~<br />對網站功能有疑問嗎？<br />由小豬客服解答！",
     "inputPlaceholder": "輸入訊息...",
     "sendButton": "傳送",
     "quickReplyTitle": "對網站有疑問嗎？<br />點選下方常見問題，<br />或是直接與小豬客服對話",
@@ -385,7 +322,6 @@
     "aboutSite": "關於本站",
     "legal": "隱私權政策與服務條款",
     "sponsor": "贊助我們",
-    "subscription": "訂閱方案",
     "copyright": "Copyright © {{year}} Sentiment Inside Out",
     "disclaimer1": "本網站提供之數據、資料、分析結果、工具和說明內容僅供參考，任何投資行為須自行判斷並承擔風險，實際資訊需以官方公佈資料為準。本網站不負擔盈虧之法律責任。",
     "disclaimer2": "歡迎分享本網站提供之資訊連結，如需轉載內容務必經由本網站同意。聯絡信箱：support@sentimentinsideout.com"
@@ -402,7 +338,6 @@
     "watchlistUpgradeRequired": "追蹤清單功能需要升級到 Pro 方案"
   },
   "timeRangeSelector": {
-    "label": "時間範圍",
     "month1": "最近1個月",
     "month3": "最近3個月",
     "month6": "最近6個月",
@@ -411,25 +346,16 @@
     "year3": "最近3年",
     "year5": "最近5年",
     "year10": "最近10年",
-    "year20": "最近20年",
-    "all": "全部"
+    "year20": "最近20年"
   },
   "common": {
-    "learnMore": "了解更多",
-    "collapse": "收合",
     "loading": "載入中...",
-    "processing": "處理中...",
     "error": "錯誤",
-    "success": "成功",
     "noData": "無可顯示的數據",
-    "notAvailable": "N/A",
     "invalidParams": "無效的操作參數",
     "close": "關閉",
     "back": "返回",
-    "done": "完成",
-    "copied": "已複製",
     "scrollToTop": "回到頂端",
-    "copyToClipboard": "複製到剪貼簿",
     "unknown": "未知",
     "unknownError": "未知錯誤",
     "refresh": "重新整理",
@@ -478,30 +404,16 @@
       "description": "Sentiment Inside Out 是一個面向長期投資者的市場分析平台，核心工具包含 SIO 市場情緒指標、價格趨勢分析與追蹤清單。它用來幫助使用者先看整體市場情緒，再看個別標的的價格位階，最後持續追蹤自己關注的名單。"
     },
     "hero": {
-      "eyebrow": "Sentiment Inside Out",
       "title": "洞悉市場｜恐懼貪婪情緒",
       "subtitle": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點",
       "primaryAuthenticated": "查看市場情緒",
       "primaryGuest": "登入查看市場情緒",
       "secondary": "試試價格趨勢分析",
-      "delayNote": "首頁快照目前延遲到 {{date}}。",
-      "frameworkNote": "整合 {{count}} 個市場訊號。",
-      "experienceNote": "目前可先從 {{count}} 檔免費標的開始。",
-      "snapshotBadge": "市場快照",
-      "loading": "首頁資料更新中...",
-      "snapshotLabel": "SIO 分數",
-      "snapshotDate": "快照截至 {{date}}",
       "marketPreviewHeadline": {
         "brand": "Sentiment Inside Out",
         "index": "恐懼貪婪指標"
       },
-      "metrics": {
-        "framework": "訊號數量",
-        "pro": "Pro 方案",
-        "delay": "資料延遲"
-      },
       "moments": {
-        "headline": "Sentiment Inside Out (SIO) 恐懼貪婪指標",
         "events": {
           "chinaDevaluation": {
             "title": "中國匯改震盪",
@@ -545,83 +457,16 @@
           }
         }
       },
-      "delayValue": "{{count}} 個月",
       "scrollLabel": "捲動到 SIO 方法論區塊"
     },
     "announcement": {
       "badge": "公告"
     },
-    "positioning": {
-      "items": [
-        {
-          "title": "先把市場情緒看清楚",
-          "description": "不用在多個指標之間來回切換，先從一個更清楚的讀數理解市場現在偏恐懼還是偏貪婪。"
-        },
-        {
-          "title": "知道是什麼在推動情緒",
-          "description": "SIO 不是只看單一數字，而是同時觀察多個市場訊號，幫助你理解市場情緒為什麼會改變。"
-        },
-        {
-          "title": "把情緒判斷變成投資流程",
-          "description": "結合市場情緒、價格位階與自己的追蹤清單，讓市場波動時的決策更穩一些。"
-        }
-      ]
-    },
     "methodology": {
-      "eyebrow": "SIO 怎麼看市場",
-      "title": "SIO 會把 8 個市場訊號整理成更清楚的一個讀數。",
-      "description": "它不是只看單一指標，而是把情緒、波動、避險需求、信用風險與部位變化一起放進來看。",
-      "frameworkEyebrow": "訊號",
-      "frameworkDescriptions": {
-        "aaiiSpread": "看散戶投資人的情緒傾向。",
-        "cboeRatio": "看市場對下跌保護的需求有多高。",
-        "marketMomentum": "看大盤趨勢是在轉強還是轉弱。",
-        "vixMA50": "看市場壓力是否正在升高。",
-        "safeHaven": "看資金是否開始往避險資產移動。",
-        "junkBond": "看市場是否還願意承擔風險。",
-        "cotIndex": "看投機部位是否開始變得擁擠。",
-        "naaimIndex": "看主動型經理人的曝險方向。"
-      },
-      "signalLabels": {
-        "aaiiSpread": {
-          "title": "散戶情緒",
-          "subtitle": "看散戶投資人偏樂觀還是偏保守。"
-        },
-        "cboeRatio": {
-          "title": "避險需求",
-          "subtitle": "看市場對下跌保護的需求有多高。"
-        },
-        "marketMomentum": {
-          "title": "大盤趨勢",
-          "subtitle": "看大盤趨勢是在轉強還是轉弱。"
-        },
-        "vixMA50": {
-          "title": "市場壓力",
-          "subtitle": "看市場壓力是否正在升高。"
-        },
-        "safeHaven": {
-          "title": "資金避險傾向",
-          "subtitle": "看資金是否開始往避險資產移動。"
-        },
-        "junkBond": {
-          "title": "風險偏好",
-          "subtitle": "看市場是否還願意承擔風險。"
-        },
-        "cotIndex": {
-          "title": "投機部位",
-          "subtitle": "看投機部位是否開始變得擁擠。"
-        },
-        "naaimIndex": {
-          "title": "經理人持倉",
-          "subtitle": "看主動型經理人的曝險方向。"
-        }
-      },
       "historyPreview": {
         "kicker": "歷史走勢",
         "title": "極端恐懼=市場低點",
-        "badge": "2017-2023",
         "description": "當市場最害怕的時候，往往也是長期投資人最該冷靜的時候。",
-        "chartLabel": "2017 到 2023 年的市場情緒歷史走勢預覽",
         "empty": "目前暫時無法載入這段歷史走勢。"
       },
       "pricePreview": {
@@ -631,77 +476,6 @@
         "currentSentiment": "當前情緒",
         "symbol": "標的代號",
         "empty": "目前暫時無法載入 SPY 分析。"
-      },
-      "snapshot": {
-        "kicker": "市場快照",
-        "title": "最近一次的 SIO 讀數",
-        "badge": "延遲資料",
-        "body": "截至 {{date}}，SIO 分數為 {{score}}，當時市場情緒落在「{{sentiment}}」區域。免費版會看到延遲資料，Pro 則可以查看最新讀數。",
-        "distributionTitle": "這次讀數是怎麼形成的",
-        "distributionSummary": "{{total}} 個訊號中，{{extremeFear}} 個處於極度恐懼、{{fear}} 個恐懼、{{neutral}} 個中性、{{greed}} 個貪婪、{{extremeGreed}} 個極度貪婪。"
-      },
-      "preview": {
-        "kicker": "分數背後的訊號",
-        "title": "先看幾個 SIO 會追蹤的訊號",
-        "description": "這些例子可以幫助你理解市場情緒為什麼會改變，但真正有用的是把它們放在一起看。"
-      }
-    },
-    "proof": {
-      "eyebrow": "過去的恐懼低點",
-      "title": "看看 SIO 在幾次明顯恐懼時刻的表現。",
-      "description": "這些過去的低分讀數，可以幫助你理解市場情緒什麼時候已經接近極端恐懼。",
-      "scoreLabel": "SIO 分數 {{score}}",
-      "cardBody": "單一訊號通常不夠，真正有參考價值的是多個訊號同時往同一邊靠攏。",
-      "empty": "目前暫時無法取得歷史低點證據。"
-    },
-    "journey": {
-      "eyebrow": "怎麼開始用",
-      "title": "從市場情緒，到價格位置，再到自己的追蹤清單。",
-      "description": "先看大方向的市場情緒，再檢查一檔標的的位置，最後把你真的在意的標的留下來持續追蹤。",
-      "cards": {
-        "sentiment": {
-          "badge": "第 1 步",
-          "title": "先看整體市場",
-          "description": "先用 SIO 了解現在的市場情緒偏向恐懼、謹慎，還是樂觀。",
-          "cta": "查看市場情緒"
-        },
-        "price": {
-          "badge": "第 2 步",
-          "title": "再看價格位置",
-          "description": "用價格趨勢分析確認一檔股票或 ETF 現在大概位於什麼位置。",
-          "cta": "分析一檔標的"
-        },
-        "watchlist": {
-          "badge": "第 3 步",
-          "title": "留下你真正想追蹤的標的",
-          "description": "把你之後還想回頭看的標的整理成自己的清單，下次就能更快接續同樣的流程。",
-          "cta": "打開追蹤清單"
-        }
-      }
-    },
-    "tools": {
-      "eyebrow": "更多工具",
-      "title": "當一個分數還不夠時，可以往下看更多。",
-      "description": "把市場情緒、價格趨勢分析與追蹤清單一起用，能讓投資流程更完整。",
-      "cards": {
-        "price": {
-          "badge": "免費",
-          "title": "價格趨勢分析",
-          "description": "先看看一檔股票或 ETF 位於長期價格結構的哪個位置，再決定要不要深入研究。",
-          "cta": "分析一檔標的"
-        },
-        "watchlist": {
-          "badge": "Pro",
-          "title": "追蹤清單",
-          "description": "把自己真正關心的標的整理在一起，之後就能更快回看價格位階。",
-          "cta": "打開追蹤清單"
-        },
-        "sentiment": {
-          "badge": "市場情緒",
-          "title": "市場情緒",
-          "description": "進一步查看完整的市場情緒頁、各項訊號變化，以及每次讀數背後的歷史脈絡。",
-          "cta": "打開市場情緒頁"
-        }
       }
     },
     "story": {
@@ -713,7 +487,6 @@
           "cta": "看歷史恐慌低點"
         },
         "price": {
-          "eyebrow": "先看價格位置",
           "title": "依據價格趨勢，分析極端情緒位階",
           "description": "誰都無法預測漲跌，但了解當前價格位置相對長期趨勢的高低，有助於在波動中維持更穩定的判讀框架",
           "cta": "分析其他標的"
@@ -742,14 +515,11 @@
     }
   },
   "indicatorItem": {
-    "fetchError": "獲取 {{indicatorName}} 的歷史數據時出錯:",
-    "percentileRankLabel": "{{indicatorName}}(百分等級)",
     "spyPriceLabel": "SPY 價格",
     "latestDataLabel": "最新數據",
     "fearGreedScoreLabel": "恐懼貪婪分數",
     "fearGreedTooltip": "為方便統一衡量不同指標，將實際數值依據歷史位階轉換為百分標準，作為恐懼貪婪分數(0~100)。分數愈高代表市場愈貪婪；分數愈低代表市場愈恐懼",
     "marketSentimentLabel": "市場情緒",
-    "loading": "載入中...",
     "notAvailable": "N/A",
     "noData": "暫無數據，請稍後重試"
   },
@@ -790,14 +560,6 @@
     "pageDescription": "SIO 市場情緒儀表板整合了波動率（VIX）、選擇權買賣比（Put/Call Ratio）、散戶情緒調查（AAII）、信用利差、機構持倉與市場動能共八項指標，將市場情緒量化為 0 到 100 的分數。數值越低代表市場越偏向恐懼，越接近 0 時通常代表已到達熊市末端；數值越高代表市場越偏向貪婪，當接近 100 且開始回落時，通常代表已到達牛市末端。這個工具適合長期投資者用來觀察整體市場情緒是否進入極端區域，幫助在波動中維持穩定的判讀框架。",
     "keywords": "市場情緒,投資者情緒,恐懼貪婪指數,VIX分析,Put Call Ratio,股市心理學,投資策略,市場指標,情緒追蹤,台股情緒,美股情緒",
     "heading": "市場情緒分析",
-    "meta": {
-      "title": "市場情緒透視：掌握恐懼與貪婪指標",
-      "description": "透過VIX、Put/Call Ratio、恐懼貪婪指數等關鍵指標，深入分析即時市場情緒。洞察投資者心理，助您做出更佳投資決策，有效追蹤市場恐懼與貪婪動態。",
-      "keywords": "市場情緒,投資者情緒,恐懼貪婪指數,VIX分析,Put Call Ratio,股市心理學,投資策略,市場指標,情緒追蹤,台股情緒,美股情緒"
-    },
-    "tabs": {
-      "compositeIndex": "SIO 恐懼貪婪指標"
-    },
     "composite": {
       "scoreLabel": "指數",
       "sentimentLabel": "情緒"
@@ -806,16 +568,9 @@
       "compositeIndexLabel": "SIO 恐懼貪婪指標",
       "spyPriceLabel": "SPY 價格",
       "compositeIndexAxisLabel": "SIO 恐懼貪婪指標",
-      "spyPriceAxisLabel": "SPY 價格",
-      "tooltipScore": "恐懼貪婪分數",
-      "tooltipSPY": "SPY 價格"
-    },
-    "indicatorDetail": {
-      "valueLabel": "指標數值",
-      "sentimentScoreLabel": "恐懼貪婪分數"
+      "spyPriceAxisLabel": "SPY 價格"
     },
     "gauge": {
-      "interactiveZones": "互動情緒區域",
       "zone": "區域",
       "explainer": {
         "current": {
@@ -857,13 +612,6 @@
         "previousWeek": "上一週",
         "previousMonth": "30天前",
         "previousQuarter": "90天前"
-      },
-      "zoneDescription": {
-        "extremefear": "極度恐懼區域 - 市場恐慌與超賣",
-        "fear": "恐懼區域 - 市場不確定性與謹慎",
-        "neutral": "中性區域 - 市場情緒平衡",
-        "greed": "貪婪區域 - 市場樂觀與冒險",
-        "extremegreed": "極度貪婪區域 - 市場狂熱與超買"
       }
     },
     "indicators": {
@@ -871,8 +619,6 @@
       "snapshotTitle": "哪些指標正在塑造這次市場快照",
       "currentDescription": "SIO 恐懼貪婪指標由多個情緒子指標組成。這裡顯示目前是哪些指標正在推動市場情緒，以及它們各自偏向哪一側。",
       "snapshotDescription": "SIO 恐懼貪婪指標由多個情緒子指標組成。你目前看到的是截至 {{date}} 的指標快照，可用來理解當時是哪些訊號在主導市場情緒。",
-      "detailSummaryCurrent": "{{indicator}} 目前如何影響市場情緒",
-      "detailSummarySnapshot": "截至 {{date}}，{{indicator}} 對市場情緒的影響",
       "mobileEyebrowCurrent": "指標詳情",
       "mobileEyebrowSnapshot": "截至 {{date}} 的市場快照",
       "trend": {
@@ -899,17 +645,6 @@
         }
       }
     },
-    "viewMode": {
-      "overview": "最新情緒指數",
-      "timeline": "歷史走勢",
-      "overviewAria": "切換至最新情緒視圖",
-      "timelineAria": "切換至歷史走勢視圖"
-    },
-    "cta": {
-      "latestData": "最新情緒指數",
-      "history": "歷史走勢",
-      "composition": "指標組成"
-    },
     "error": {
       "fetchFailed": "未能獲取市場情緒數據。",
       "invalidData": "無效的數據格式"
@@ -925,10 +660,6 @@
     "dataLimitation": {
       "toastMessage": "💡 免費版歷史數據顯示至兩個月前。升級 Pro 方案可查看最新數據！",
       "upgradeToast": "🔒 此功能需要 Pro 方案。升級即可獲得完整的市場情緒分析！",
-      "upgradeDataToast": "📊 最新市場情緒數據需要 Pro 方案。立即升級獲得即時洞察！",
-      "upgradeGaugeToast": "🎯 情緒儀表盤需要 Pro 方案。升級查看當前市場情緒指數！",
-      "upgradeCompositionToast": "🔍 完整指標組成分析需要 Pro 方案。升級獲得深度洞察！",
-      "bannerEyebrow": "免費版目前顯示歷史快照",
       "bannerTitle": "免費版僅能查看截至 {{date}} 的市場情緒資料",
       "bannerBody": "免費版仍可瀏覽儀表盤、歷史走勢與指標組成；最近兩個月的資料與最新變化需升級 Pro 才能查看。",
       "currentGaugeHeadline": "當前美股市場情緒",
@@ -1134,18 +865,9 @@
     },
     "enhancedDescription": {
       "tabs": {
-        "indicators": "組成指標",
-        "tips": "使用方法",
-        "introduction": "簡介",
-        "details": "詳細說明",
         "faq": "常見問題"
       },
       "content": {
-        "indicators": {
-          "composite": {
-            "intro": "SIO 恐懼貪婪指標由以下八個關鍵指標組成，每個指標都有其獨特的市場洞察："
-          }
-        },
         "tips": {
           "basicUsage": "如何解讀 SIO 指標？",
           "tip1": "Sentiment Inside Out 恐懼貪婪指標 (簡稱:SIO 恐懼貪婪指標) 將市場情緒量化成 0~100 的分數，目的在於了解當前市場參與者的心理是偏向恐懼還是貪婪，類似於 CNN 恐懼貪婪指數和 BofA 牛熊指標。幫助投資人在非理性的股市波動中保持冷靜，避免跟著情緒追高殺低。",
@@ -1153,10 +875,6 @@
           "tip3": "當指標低於 15，數值越低代表股市處於熊市；接近 0 時，通常代表已到達熊市末端，市場恐懼情緒已相當極端。當指標高於 96，數值越高代表股市處於牛市；當接近 100 且開始回落時，通常代表已到達牛市末端，風險偏好開始收縮。市場情緒不是對稱的，樂觀貪婪的情緒可以持續很長一段時間"
         },
         "faq": {
-          "category1": "指標介紹與解讀",
-          "category2": "實戰策略與應用",
-          "category3": "運算邏輯與原理",
-          "category4": "量化驗證與回測",
           "q1": "什麼是 SIO 市場情緒指標？",
           "a1": "SIO 市場情緒指標是衡量市場整體情緒的工具，通過分析多個技術和基本面指標來評估市場的恐懼和貪婪程度。",
           "q2": "這和常見的「CNN 恐懼與貪婪指數」或「BofA 牛熊指標」有什麼不同？",
@@ -1179,17 +897,6 @@
           "a10": "因為模型看重的是廣度。當散戶、大戶、避險市場、債券市場同時轉向樂觀時，即使個別指標未達歷史極值，這種全市場的樂觀共識，在歷史上反而更為罕見。這種高度一致性會推升綜合排名的百分位數，提醒投資人注意潛在的結構性風險。"
         }
       }
-    },
-    "paywall": {
-      "title": "解鎖完整市場情緒分析",
-      "subtitle": "升級至 Pro 方案，獲得即時市場洞察與完整功能",
-      "historicalPerformance": "歷史表現預覽",
-      "historicalPeriod": "過去表現（僅供參考）",
-      "successfulPrediction": "成功預測低點",
-      "currentDataRestricted": "當前數據需要 Pro 方案",
-      "upgradeButton": "升級至 Pro 方案",
-      "priceLabel": "每月 NT$299 起",
-      "disclaimer": "隨時可取消，無長期合約約束"
     },
     "restricted": {
       "gaugeTitle": "即時情緒儀表盤",
@@ -1269,13 +976,7 @@
       "invalidYears": "請輸入有效的查詢期間（年），且必須大於零。",
       "invalidYearsHotSearch": "進階模式下的查詢期間無效，已使用預設值進行分析。",
       "invalidYearsFreeStock": "進階模式下的查詢期間無效，已使用預設值進行分析。",
-      "turnstileRequired": "請先完成驗證",
-      "turnstileError": "驗證失敗，請重試",
-      "turnstileExpired": "驗證已過期，請重新驗證",
       "invalidUrlYears": "從 URL 讀取的查詢期間無效。"
-    },
-    "announcement": {
-      "message": "📣 0050 (元大台灣50) 股票分割後資料已完成修正，分析結果恢復正常囉🥳！  ｜  為避免惡意網路攻擊⚠️，網站多數功能已經改為登入後才能使用，請放心都還是免費的～大家多多包涵😥 ！"
     },
     "chart": {
       "tabs": {
@@ -1293,10 +994,6 @@
         "minus1sd": "恐懼",
         "plus1sd": "貪婪",
         "plus2sd": "極度貪婪"
-      },
-      "zoom": {
-        "resetButton": "重置縮放",
-        "instructions": "滾輪縮放 | Shift+拖動平移"
       }
     },
     "sentiment": {
@@ -1321,8 +1018,7 @@
       "switchToSimple": "簡易設定",
       "buttonStartAnalysis": "開始分析",
       "buttonAnalyzing": "分析中...",
-      "buttonProcessing": "處理數據中...",
-      "buttonCompleteVerification": "請完成下方驗證"
+      "buttonProcessing": "處理數據中..."
     },
     "result": {
       "stockCode": "股票代碼",
@@ -1361,35 +1057,10 @@
         "point3": "不應該單獨作為買賣依據，請結合其他技術指標和基本面分析。"
       }
     },
-    "explanation": {
-      "mainTitle": "什麼是樂活五線譜？",
-      "shortDescription": "樂活五線譜可以分析當前股價是否過度貪婪或恐懼。利用股價均值回歸的統計特性，追蹤長期趨勢、判斷股價所處位置。",
-      "readMorePrefix": "詳細使用方式請參考文章：",
-      "readMoreLinkText": "用樂活五線譜分析價格趨勢與情緒",
-      "sd": {
-        "title": "樂活五線譜",
-        "l1": "中間的趨勢線為長期移動平均線，是評估股價長期趨勢的基準，以此為基準，上下分別添加兩個標準差。",
-        "l2": "愈遠離中間的趨勢線，代表股價愈遠離長期平均值，回歸趨勢線的機率將逐漸增加。",
-        "l3": "當股價觸及最上緣，表示股價短期內強烈超買，市場極度貪婪，需留意偏熱風險與波動放大。",
-        "l4": "當股價觸及最下緣，表示股價短期內強烈超賣，市場極度恐懼，可視為觀察是否進入偏低區域的參考訊號。"
-      },
-      "ulBand": {
-        "title": "樂活通道",
-        "l1": "樂活通道是更敏感的指標，用來輔助判斷短期內的超買超賣。",
-        "l2": "當股價突破樂活通道上緣時，表示短期可能過熱。",
-        "l3": "當股價跌破樂活通道下緣時，表示短期可能過冷。"
-      },
-      "combined": {
-        "title": "兩者搭配使用",
-        "l1": "當股價觸及五線譜的最上緣或是最下緣時，若同時也突破了樂活通道，可能代表趨勢的延續，可以等回到通道內再進行操作。",
-        "l2": "建議使用在指數型ETF或具有趨勢性的大型股票，搭配基本面分析，不應該單獨作為買賣依據。"
-      }
-    },
     "prompt": {
       "enterSymbol": "請輸入條件並點擊「開始分析」。"
     },
     "hotSearches": {
-      "title": "熱門分析 🔥",
       "noData": "暫無資料"
     },
     "quickSelect": {
@@ -1400,75 +1071,26 @@
       }
     },
     "watchlistQuickAccess": {
-      "title": "追蹤清單",
       "noData": "你的追蹤清單是空的",
       "addStocksHint": "前往「我的追蹤清單」新增股票",
-      "loginRequired": "請先登入以查看你的追蹤清單",
-      "upgradeRequired": "升級至 Pro 方案以使用追蹤清單功能"
+      "loginRequired": "請先登入以查看你的追蹤清單"
     },
     "freeStockList": {
-      "title": "免費查詢標的 💎",
-      "subtitle": "點擊下方股票代碼即可快速分析",
-      "upgradeHint": "升級至 Pro 方案可查詢所有股票標的",
       "regions": {
         "americas": "美洲市場",
         "europe": "歐洲市場",
         "asiaPacific": "亞太市場",
         "global": "全球市場"
-      },
-      "markets": {
-        "sp500": "美國 S&P 500",
-        "nasdaq": "美國 Nasdaq",
-        "usTotal": "美國整體市場",
-        "canada": "加拿大",
-        "brazil": "巴西",
-        "germany": "德國",
-        "taiwan": "台灣",
-        "japan": "日本",
-        "china": "中國",
-        "globalMarkets": "全球市場",
-        "emergingMarkets": "新興市場"
-      },
-      "descriptions": {
-        "sp500": "追蹤美國 500 家最大型上市公司，是全球最重要的股市基準。",
-        "nasdaq": "追蹤在納斯達克上市的 100 家最大非金融公司，以科技股為主。",
-        "usTotal": "涵蓋美國整體股市，包含大型、中型到小型股，是最多元的分散投資。",
-        "canada": "投資加拿大市場，能源和金融業佔比較高。",
-        "brazil": "拉丁美洲最大的經濟體，與原物料價格連動性高。",
-        "germany": "歐洲最大經濟體，以工業和汽車製造聞名。",
-        "taiwan": "EWT 是外資投資台股的風向標；0050/006208 是國內投資人的首選。",
-        "japan": "全球第三大經濟體，以汽車、電子和精密工業為強項。",
-        "china": "直接投資在中國上海、深圳掛牌的 A 股。",
-        "globalMarkets": "一檔 ETF 投資全球已開發及新興市場，是終極的分散投資工具。",
-        "emergingMarkets": "投資中國、台灣、印度、巴西等新興經濟體，潛在成長高但波動也較大。"
-      },
-      "types": {
-        "index": "指數",
-        "usEtf": "美股ETF",
-        "twEtf": "台股ETF"
       }
-    },
-    "errors": {
-      "stockNotAllowed": "免費用戶僅能查詢 {{allowedStocks}} 股票，升級至 Pro 方案可查詢所有股票。"
     }
   },
   "watchlist": {
-    "loginPrompt": {
-      "message": "登入以建立並管理您的個人股票追蹤清單。"
-    },
     "pageTitle": "我的追蹤清單",
     "pageSubtitle": "追蹤你感興趣的股票，快速掌握多個標的價格情緒",
     "pageDescription": "追蹤你感興趣的股票，快速掌握多個標的價格情緒。",
-    "keywords": "我的追蹤清單,自選股,股票監控,市場情緒,價格分析",
     "jsonLd": {
       "name": "我的追蹤清單",
-      "description": "追蹤你感興趣的股票，掌握價格情緒位階。方便同時查看多個股票在長期趨勢之下的價格位階，避免買在高點、賣在低點。",
-      "url": "https://sentimentinsideout.com/watchlist",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://sentimentinsideout.com/watchlist?category={category}&stock={stock}",
-        "query-input": "required name=category,stock"
-      }
+      "description": "追蹤你感興趣的股票，掌握價格情緒位階。方便同時查看多個股票在長期趨勢之下的價格位階，避免買在高點、賣在低點。"
     },
     "loadingRetry": "載入中，請稍候... ({{count}}/{{max}})",
     "loadFailed": "載入失敗，請重新整理頁面",
@@ -1476,8 +1098,6 @@
     "upgradeRequired": "此功能需要升級至 Pro 方案",
     "loadingMessage": "追蹤清單一次分析多個標的，若長時間未查看會需要稍微等候，謝謝你的耐心",
     "editMode": {
-      "finish": "完成編輯",
-      "start": "編輯模式",
       "browse": "瀏覽",
       "edit": "編輯",
       "switchToBrowse": "切換到瀏覽模式",
@@ -1507,17 +1127,11 @@
     "category": {
       "createSuccess": "分類創建成功",
       "updateSuccess": "分類已更新",
-      "deleteCategory": "刪除分類",
       "deleteConfirm": "確定要刪除此分類嗎？此操作無法復原。",
       "delete": "刪除",
-      "deleteSuccess": "分類已刪除",
-      "noCategory": "目前沒有任何分類",
-      "noCategoryMessage": "新增一個分類並開始追蹤你的股票吧！",
-      "emptyTitle": "這個分類是空的喔",
-      "emptyMessage": "點擊「新增股票」按鈕，開始追蹤標的吧！"
+      "deleteSuccess": "分類已刪除"
     },
     "stock": {
-      "addTitle": "新增股票",
       "addSuccess": "已添加 {{symbol}} 到追蹤清單"
     },
     "stockCard": {
@@ -1604,52 +1218,6 @@
     "expand": "了解更多",
     "collapse": "收合"
   },
-  "paywall": {
-    "title": "一天只要不到 2 塊",
-    "feature1": "解鎖完整功能",
-    "feature2": "沒有廣告打擾",
-    "feature3": "未來優先功能更新",
-    "plan": {
-      "monthly": {
-        "title": "月繳方案",
-        "price": "NT$ 59",
-        "period": "/ 月",
-        "description": "每月自動續訂"
-      },
-      "annual": {
-        "title": "年繳方案",
-        "price": "NT$ 590",
-        "period": "/ 年",
-        "description": "年繳方案，現省 17%",
-        "badge": "贈送2個月"
-      }
-    },
-    "cta": {
-      "trial": "開始7天免費試用"
-    },
-    "terms": "首次訂閱享7天免費試用。試用結束後，將依您選擇的方案自動續訂，您可以隨時在 App Store 帳號設定中取消。",
-    "restore": "恢復購買"
-  },
-  "referral": {
-    "pageTitle": "邀請好友",
-    "title": "邀請好友，賺取免費資格！",
-    "description": "與朋友分享您的推薦碼。當他們註冊時，您們雙方都將免費獲得一個月的高級會員資格！",
-    "yourCodeLabel": "您的推薦碼",
-    "rewardStatus": "您已成功透過推薦賺取 %d 個月的免費資格。感謝您的支持！",
-    "shareButton": "分享我的推薦碼",
-    "apply": {
-      "title": "嗨~你有推薦碼嗎？",
-      "description": "在下方輸入推薦碼，即可領取獎勵並免費獲得一個月使用資格。",
-      "placeholder": "在這裡輸入代碼",
-      "submitButton": "使用推薦碼",
-      "skipButton": "我沒有推薦碼",
-      "successTitle": "成功！",
-      "successMessage": "一個月的免費高級會員資格已加入您的帳戶。"
-    },
-    "shareSheet": {
-      "text": "一起來使用 Sentiment Inside Out！使用我的推薦碼註冊，即可免費獲得一個月的高級會員資格：%@"
-    }
-  },
   "featureUpgrade": {
     "stockAccess": {
       "title": "升級至 Pro 解鎖全部股票",
@@ -1676,7 +1244,6 @@
       "unlimitedStocks": "無限制股票查詢",
       "realTimeData": "每日市場情緒資訊",
       "watchlist": "個人追蹤清單",
-      "advancedAnalysis": "進階分析工具",
       "currentSentiment": "當前市場情緒",
       "liveCharts": "即時圖表更新",
       "alerts": "市場警報通知",
@@ -1711,39 +1278,23 @@
       "watchlistDesc": "個人化股票追蹤功能",
       "ads": "廣告",
       "adsDesc": "是否顯示廣告",
-      "included": "包含功能",
       "unavailable": "功能不可用"
     },
     "userAccount": {
       "title": "我的帳號",
       "currentPlan": "目前方案",
       "usageStats": "使用統計",
-      "subscriptionHistory": "訂閱記錄",
       "paymentHistory": "付款記錄",
-      "accountSettings": "帳戶設定",
-      "email": "電子郵件",
       "logout": "登出",
       "viewAccount": "查看帳戶",
       "planLoadError": "無法載入方案資訊",
       "statsLoadError": "無法載入使用統計",
-      "userNotFound": "找不到用戶資料",
-      "emailVerified": "已驗證",
-      "accountActions": "帳戶操作",
-      "userInfo": "用戶資訊",
-      "userId": "用戶ID",
-      "username": "用戶名稱",
-      "joinDate": "加入日期",
-      "privacyTitle": "隱私保護",
-      "privacyDescription": "我們重視您的隱私，所有資料都經過加密保護。",
-      "redemptionCode": "兌換代碼",
-      "redemptionDescription": "輸入優惠代碼以解鎖特殊優惠和訂閱折扣。",
       "cancelSubscription": "取消訂閱",
       "cancelConfirmTitle": "確認取消訂閱",
       "cancelConfirmMessage": "您確定要取消訂閱嗎？您的訂閱將在 {{endDate}} 到期後停止續約，在此之前您仍可以使用所有功能。",
       "confirmCancel": "確認取消",
       "keepSubscription": "維持訂閱",
       "cancelledNotice": "您的訂閱已設定為取消，將在 {{endDate}} 到期後停止續約。",
-      "cancelError": "取消訂閱失敗：{{error}}",
       "cancelSuccess": "訂閱取消成功！您可以繼續使用所有功能直到當前週期結束。"
     },
     "billingPeriod": {
@@ -1752,13 +1303,7 @@
       "save": "省下"
     },
     "marketSentimentContext": {
-      "notification": "升級以解鎖最新市場情緒數據",
-      "eyebrow": "來自市場情緒頁面",
-      "title": "你目前看到的是延遲兩個月的市場情緒資料",
-      "body": "升級 Pro 後可查看最新恐懼貪婪指數、最近兩個月走勢，以及最新是哪一些指標正在推動市場情緒。",
-      "feature1": "最新市場情緒指數與情緒區間",
-      "feature2": "最近 60 天的走勢與轉折",
-      "feature3": "最新指標組成與變化來源"
+      "notification": "升級以解鎖最新市場情緒數據"
     },
     "subscriptionPlans": {
       "title": "選擇適合您的方案",
@@ -1800,7 +1345,8 @@
           "追蹤清單可存放10個分類，每個分類50個標的",
           "無廣告體驗"
         ]
-      }
+      },
+      "loadingPlans": "載入方案資料中..."
     },
     "usage": {
       "daily": "每日使用量",
@@ -1817,12 +1363,8 @@
       "period": "週期"
     },
     "history": {
-      "title": "訂閱記錄",
-      "date": "日期",
       "action": "操作",
-      "plan": "方案",
       "status": "狀態",
-      "amount": "金額",
       "actions": {
         "upgrade": "升級",
         "downgrade": "降級",
@@ -1847,21 +1389,10 @@
       "subtitle": "詳細比較各方案功能差異",
       "features": "功能"
     },
-    "statuses": {
-      "active": "使用中",
-      "expired": "已過期",
-      "cancelled": "已取消"
-    },
     "autoRenewEnabled": "自動續約已啟用",
     "status": {
       "cancelledButActive": "已取消但仍有效",
       "expiresOn": "到期日：{{date}}"
-    },
-    "reactivation": {
-      "success": "訂閱已成功重新啟動！",
-      "error": "重新啟動訂閱失敗，請稍後再試",
-      "requiresNewPayment": "根據 ECPay 政策，已終止的定期定額無法重新啟用，需要重新設定付款方式",
-      "extensionNotice": "您的剩餘服務時間將自動延長到新訂閱中，不會損失任何權益"
     },
     "freeTrialDialog": {
       "title": "免費試用通知",
@@ -1875,10 +1406,6 @@
     }
   },
   "payment": {
-    "pageTitle": "付款",
-    "pageDescription": "安全便捷的付款流程",
-    "keywords": "付款,綠界支付,信用卡,ATM,超商付款",
-    "heading": "付款資訊",
     "upgradeTitle": "升級到 {{planName}} 方案",
     "upgradeSubtitle": "選擇最適合您的付款方式，立即享受完整功能",
     "backToPlans": "返回方案選擇",
@@ -1888,38 +1415,15 @@
       "message": "您選擇的方案不存在，請重新選擇。"
     },
     "flow": {
-      "title": "付款流程",
-      "step1": "選擇方案",
-      "step2": "付款方式",
-      "step3": "確認付款",
-      "step4": "完成訂閱",
-      "selectPlan": "選擇方案",
-      "selectPayment": "選擇付款方式",
-      "confirmPayment": "確認付款",
-      "complete": "完成"
+      "selectPayment": "選擇付款方式"
     },
     "methods": {
-      "title": "付款方式",
-      "creditCard": "信用卡",
-      "creditCardDesc": "支援 Visa、MasterCard、JCB",
-      "atm": "ATM 轉帳",
-      "atmDesc": "虛擬帳號轉帳，3 天內完成付款",
-      "cvs": "超商付款",
-      "cvsDesc": "7-11、全家、萊爾富、OK 超商",
-      "webatm": "網路 ATM",
-      "webatmDesc": "需要讀卡機和晶片卡"
+      "creditCard": "信用卡"
     },
     "form": {
-      "planType": "方案類型",
-      "billingCycle": "付款週期",
-      "amount": "付款金額",
-      "paymentMethod": "付款方式",
-      "agreeTerms": "我同意",
       "termsAndConditions": "服務條款與隱私權政策",
-      "proceedPayment": "前往付款",
       "processing": "處理中...",
       "creating": "建立訂單中...",
-      "redirecting": "跳轉付款頁面中...",
       "upgradeNow": "立即付款升級",
       "confirmPlan": "確認方案",
       "confirmTerms": "確認條款",
@@ -1932,27 +1436,7 @@
       "creatingOrder": "創建訂單中...",
       "proceedToPayment": "前往付款"
     },
-    "status": {
-      "title": "付款狀態",
-      "processing": "付款處理中",
-      "processingDesc": "您的付款正在處理中，請稍候...",
-      "success": "付款成功",
-      "successDesc": "恭喜！您的付款已成功完成",
-      "failed": "付款失敗",
-      "failedDesc": "很抱歉，您的付款未能成功完成",
-      "cancelled": "付款已取消",
-      "cancelledDesc": "您已取消此次付款",
-      "pending": "等待付款",
-      "pendingDesc": "請完成付款以啟用您的訂閱",
-      "expired": "付款已過期",
-      "expiredDesc": "此付款連結已過期，請重新發起付款"
-    },
     "actions": {
-      "retry": "重新付款",
-      "cancel": "取消付款",
-      "backToPlans": "返回方案選擇",
-      "viewSubscription": "查看訂閱",
-      "contactSupport": "聯絡客服",
       "downloadInvoice": "下載發票"
     },
     "history": {
@@ -1960,30 +1444,6 @@
       "noPayments": "暫無付款記錄",
       "orderId": "訂單編號",
       "date": "付款日期",
-      "amount": "金額",
-      "status": "狀態",
-      "method": "付款方式",
-      "plan": "方案",
-      "cycle": "週期",
-      "actions": "操作",
-      "viewDetails": "查看詳情",
-      "downloadReceipt": "下載收據",
-      "loading": "載入付款歷史中...",
-      "loadError": "載入付款歷史失敗：{{message}}",
-      "planDescription": "{{planType}} - {{billingPeriod}}",
-      "planName": "{{planType}} 方案",
-      "cancellationDescription": "取消 {{planType}} 訂閱，將於 {{endDate}} 結束",
-      "monthly": "月付",
-      "yearly": "年付",
-      "paymentDetails": "付款詳情",
-      "paymentId": "付款 ID",
-      "paymentDate": "付款日期",
-      "paymentMethod": "付款方式",
-      "planType": "方案類型",
-      "billingCycle": "計費週期",
-      "failureReason": "失敗原因",
-      "close": "關閉",
-      "retry": "重試",
       "status": {
         "success": "付款成功",
         "failed": "付款失敗",
@@ -1992,31 +1452,31 @@
         "expired": "訂單已過期",
         "refunded": "已退款",
         "unknown": "未知"
-      }
+      },
+      "method": "付款方式",
+      "plan": "方案",
+      "cycle": "週期",
+      "viewDetails": "查看詳情",
+      "loadError": "載入付款歷史失敗：{{message}}",
+      "planDescription": "{{planType}} - {{billingPeriod}}",
+      "monthly": "月付",
+      "yearly": "年付",
+      "paymentId": "付款 ID",
+      "failureReason": "失敗原因"
     },
     "errors": {
-      "invalidPlan": "無效的方案選擇",
       "invalidAmount": "無效的付款金額",
-      "paymentMethodRequired": "請選擇付款方式",
       "termsRequired": "請同意服務條款",
       "createOrderFailed": "建立訂單失敗",
-      "paymentFailed": "付款處理失敗",
-      "networkError": "網路連線錯誤，請稍後重試",
-      "serverError": "伺服器錯誤，請聯絡客服",
-      "sessionExpired": "會話已過期，請重新登入",
-      "insufficientFunds": "餘額不足",
-      "cardDeclined": "信用卡被拒絕",
-      "invalidCard": "無效的信用卡資訊",
-      "expiredCard": "信用卡已過期",
-      "securityCodeError": "安全碼錯誤",
-      "duplicatePayment": "重複付款，請勿重複提交"
+      "paymentFailed": "付款處理失敗"
     },
     "security": {
-      "title": "付款安全",
-      "ssl": "SSL 加密保護",
-      "pci": "PCI DSS 合規",
-      "secure": "安全付款環境",
-      "privacy": "隱私資料保護"
+      "title": "安全付款保障",
+      "notices": [
+        "點擊「前往付款」將跳轉到綠界支付頁面",
+        "請在 5 分鐘內完成付款，逾時訂單將自動取消",
+        "所有交易均採用 SSL 加密保護"
+      ]
     },
     "result": {
       "loading": "正在確認付款狀態...",
@@ -2093,18 +1553,7 @@
         "您的付款資訊由綠界支付安全處理，我們不會儲存信用卡資訊",
         "我們不會將您的個人資料出售給第三方"
       ],
-      "agreement": "我已閱讀並同意",
-      "serviceTermsLink": "服務條款",
-      "privacyPolicyLink": "隱私政策",
-      "and": "和"
-    },
-    "security": {
-      "title": "安全付款保障",
-      "notices": [
-        "點擊「前往付款」將跳轉到綠界支付頁面",
-        "請在 5 分鐘內完成付款，逾時訂單將自動取消",
-        "所有交易均採用 SSL 加密保護"
-      ]
+      "agreement": "我已閱讀並同意"
     },
     "orderSummary": {
       "title": "訂單摘要",
@@ -2127,28 +1576,9 @@
   },
   "invoice": {
     "title": "發票管理",
-    "pageTitle": "發票管理",
-    "pageDescription": "管理您的付款發票",
-    "list": {
-      "title": "發票列表",
-      "noInvoices": "暫無發票記錄",
-      "invoiceNumber": "發票號碼",
-      "date": "開立日期",
-      "amount": "金額",
-      "status": "狀態",
-      "actions": "操作"
-    },
     "status": {
-      "pending": "待開立",
-      "issued": "已開立",
       "sent": "已寄送",
-      "failed": "開立失敗",
       "cancelled": "已作廢"
-    },
-    "actions": {
-      "download": "下載 PDF",
-      "resend": "重新寄送",
-      "view": "查看詳情"
     },
     "details": {
       "title": "發票詳情",
@@ -2161,92 +1591,13 @@
       "buyerInfo": "買方資訊",
       "sellerInfo": "賣方資訊",
       "items": "項目明細"
-    },
-    "messages": {
-      "downloadSuccess": "發票下載成功",
-      "downloadFailed": "發票下載失敗",
-      "resendSuccess": "發票重新寄送成功",
-      "resendFailed": "發票重新寄送失敗"
     }
   },
   "refund": {
-    "title": "退款管理",
-    "pageTitle": "退款管理",
-    "pageDescription": "申請和管理退款",
-    "request": {
-      "title": "申請退款",
-      "selectPayment": "選擇要退款的付款",
-      "reason": "退款原因",
-      "reasonRequired": "請選擇退款原因",
-      "reasonOptions": {
-        "notSatisfied": "服務不滿意",
-        "technicalIssue": "技術問題",
-        "billing": "帳單錯誤",
-        "duplicate": "重複付款",
-        "other": "其他原因"
-      },
-      "description": "詳細說明",
-      "descriptionPlaceholder": "請詳細說明退款原因...",
-      "amount": "退款金額",
-      "fullRefund": "全額退款",
-      "partialRefund": "部分退款",
-      "submit": "提交申請",
-      "submitting": "提交中..."
-    },
-    "list": {
-      "title": "退款記錄",
-      "noRefunds": "暫無退款記錄",
-      "refundId": "退款編號",
-      "paymentId": "原付款編號",
-      "date": "申請日期",
-      "amount": "退款金額",
-      "status": "狀態",
-      "reason": "退款原因",
-      "actions": "操作"
-    },
     "status": {
       "pending": "審核中",
-      "approved": "已核准",
       "processing": "處理中",
-      "completed": "已完成",
-      "rejected": "已拒絕",
       "cancelled": "已取消"
-    },
-    "actions": {
-      "viewDetails": "查看詳情",
-      "cancel": "取消申請",
-      "contact": "聯絡客服"
-    },
-    "details": {
-      "title": "退款詳情",
-      "refundId": "退款編號",
-      "originalPayment": "原付款資訊",
-      "requestDate": "申請日期",
-      "processDate": "處理日期",
-      "completionDate": "完成日期",
-      "amount": "退款金額",
-      "method": "退款方式",
-      "reason": "退款原因",
-      "description": "詳細說明",
-      "status": "目前狀態",
-      "timeline": "處理時程"
-    },
-    "messages": {
-      "submitSuccess": "退款申請提交成功",
-      "submitFailed": "退款申請提交失敗",
-      "cancelSuccess": "退款申請取消成功",
-      "cancelFailed": "退款申請取消失敗",
-      "processingTime": "退款處理時間為 3-7 個工作天",
-      "creditCardRefund": "信用卡退款將退回原卡片",
-      "manualRefund": "其他付款方式將由客服人員處理"
-    },
-    "errors": {
-      "paymentNotFound": "找不到對應的付款記錄",
-      "alreadyRefunded": "此付款已申請過退款",
-      "refundNotAllowed": "此付款不允許退款",
-      "amountExceeded": "退款金額超過原付款金額",
-      "reasonRequired": "請選擇退款原因",
-      "descriptionRequired": "請填寫詳細說明"
     }
   },
   "admin": {
@@ -2346,7 +1697,6 @@
       "search": {
         "placeholder": "輸入用戶 Email 地址",
         "button": "搜尋",
-        "searching": "搜尋中...",
         "errors": {
           "emailRequired": "請輸入用戶 Email",
           "invalidEmail": "請輸入有效的 Email 格式",
@@ -2782,5 +2132,6 @@
       "client_error": "發生客戶端錯誤",
       "retry_exhausted": "已達到最大重試次數"
     }
-  }
+  },
+  "appName": "市場情緒追蹤平台"
 }

@@ -1,13 +1,4 @@
 {
-  "launch": {
-    "loading": {
-      "authenticating": "Verifying your information...",
-      "preparing": "Preparing your dashboard..."
-    },
-    "login": {
-      "prompt": "Sign in to continue"
-    }
-  },
   "nav": {
     "home": "Home",
     "priceAnalysis": "LOHAS Five-Line",
@@ -23,25 +14,6 @@
   "userActions": {
     "login": "Login"
   },
-  "dashboard": {
-    "welcome": "Welcome!",
-    "greeting": "Hello, %@!",
-    "subtitle": "Here's your market snapshot.",
-    "marketSentimentCard": {
-      "title": "Market Sentiment",
-      "currentSentiment": "The mood is now"
-    },
-    "watchlistCard": {
-      "title": "Noteworthy stocks from the watchlist",
-      "loginPrompt": "Log in to see your personalized watchlist.",
-      "empty": "Your watchlist is empty. Add some stocks to get started!"
-    },
-    "quickAnalysisCard": {
-      "title": "Quick Analysis",
-      "placeholder": "Enter Stock Symbol",
-      "button": "Analyze"
-    }
-  },
   "language": {
     "change": "Change Language",
     "zhTW": "繁體中文",
@@ -52,7 +24,6 @@
     "pageDescription": "In-depth analysis of market trends, investment strategies, and how to use website tools to gauge market sentiment.",
     "keywords": "market analysis, investment strategy, market sentiment, investment articles, financial analysis, tutorials",
     "heading": "Insights & Analysis",
-    "coverAlt": "Article Cover Image",
     "jsonLdName": "Insights & Analysis",
     "jsonLdDescription": "In-depth analysis of market trends, investment strategies, and how to use website tools to gauge market sentiment.",
     "noCategory": "Uncategorized",
@@ -61,7 +32,6 @@
   "articleDetail": {
     "loadingTitle": "Loading...",
     "loadingDescription": "Loading article content...",
-    "loadingText": "Loading...",
     "errorTitle": "Error",
     "errorDescription": "Failed to load article.",
     "errorText": "Failed to load article: ",
@@ -93,8 +63,7 @@
     "feature3": "💬 Get answers from AI chat service",
     "title": "🚀 Start Your Free Experience Now",
     "upgradeTitle": "🚀 Sign In to Upgrade to Pro Plan",
-    "upgradeDescription": "Sign in to your account to upgrade to {{planName}} plan and enjoy full features",
-    "loading": "Loading..."
+    "upgradeDescription": "Sign in to your account to upgrade to {{planName}} plan and enjoy full features"
   },
   "redemption": {
     "inputPlaceholder": "Enter redemption code",
@@ -112,23 +81,17 @@
       "fixedDiscount": "{{amount}} {{currency}} discount",
       "timeExtension": "Extend {{duration}} {{unit}}",
       "planUpgrade": "Upgrade to {{plan}}",
-      "benefits": "Special benefits",
-      "paymentMethodRequired": "Payment method required"
+      "benefits": "Special benefits"
     },
     "confirmation": {
       "title": "Confirm Redemption",
       "codeLabel": "Redemption Code",
       "benefitsTitle": "You will receive:",
       "valueLabel": "Estimated Value:",
-      "estimatedValue": "{{amount}} {{currency}}",
       "paymentMethod": {
         "title": "Payment Method Required",
         "description": "This promotion requires a valid payment method on file.",
         "acknowledge": "I understand a payment method is required"
-      },
-      "terms": {
-        "accept": "I agree to the",
-        "link": "terms and conditions"
       },
       "cancel": "Cancel",
       "confirm": "Confirm Redemption",
@@ -136,29 +99,22 @@
       "info": "This action cannot be undone once confirmed.",
       "benefits": {
         "discount": {
-          "title": "Discount Applied",
           "percentage": "{{percentage}}% off your subscription",
           "fixed": "{{amount}} {{currency}} off your subscription"
         },
         "extension": {
-          "title": "Subscription Extended",
           "description": "Your subscription will be extended by {{duration}} {{unit}}"
         },
         "upgrade": {
-          "title": "Plan Upgrade",
           "description": "Upgrade to {{plan}} for {{duration}} {{unit}}"
         },
         "general": {
-          "title": "Special Benefits",
-          "description": "You will receive special promotional benefits",
-          "highlight": "Premium Access"
+          "description": "You will receive special promotional benefits"
         }
       }
     },
     "history": {
-      "title": "Redemption History",
       "loading": "Loading history...",
-      "export": "Export",
       "retry": "Retry",
       "empty": {
         "title": "No Redemption History",
@@ -207,8 +163,6 @@
       }
     },
     "activePromotions": {
-      "title": "Active Promotions",
-      "count": "{{count}} active",
       "loading": "Loading promotions...",
       "retry": "Retry",
       "empty": {
@@ -307,27 +261,11 @@
         "percentage": "{{percentage}}% OFF",
         "fixed": "{{amount}} OFF"
       }
-    },
-    "checkout": {
-      "title": "Redemption Code",
-      "subtitle": "Have a promotional code? Enter it to get discounts",
-      "placeholder": "Enter redemption code",
-      "appliedTitle": "Redemption Code Applied",
-      "appliedMessage": "Save {{amount}}",
-      "originalPrice": "Original Price:",
-      "discount": "Discount:",
-      "finalPrice": "Total Amount:",
-      "paymentMethodRequired": "This redemption code requires a payment method to be applied during checkout."
     }
   },
   "userProfile": {
-    "title": "Profile",
-    "openMenuAria": "Open user menu",
     "goToAccountAria": "Go to account page",
     "avatarAlt": "{{username}}'s avatar",
-    "menuAria": "User menu",
-    "logout": "Logout",
-    "notLoggedIn": "Not Logged In",
     "loginRequired": "Login Required",
     "loginRequiredMessage": "Please log in to view your account information"
   },
@@ -335,7 +273,6 @@
     "loginRequired": "Login required to use customer service",
     "headerTitle": "Piggy Customer Service",
     "closeButton": "✖",
-    "welcomeMessage": "Hello~<br />Have questions about the website features?<br />Ask Piggy Customer Service!",
     "inputPlaceholder": "Enter message...",
     "sendButton": "Send",
     "quickReplyTitle": "Have questions about the website features?<br />Click on the FAQ below,<br > or chat with Piggy Customer Service",
@@ -369,7 +306,6 @@
     "aboutSite": "About Us",
     "legal": "Privacy Policy & Terms",
     "sponsor": "Sponsor Us",
-    "subscription": "Subscription",
     "copyright": "Copyright © {{year}} Sentiment Inside Out",
     "disclaimer1": "Data, analysis, tools, and descriptions provided on this website are for reference only. Investment decisions must be made independently, assuming all risks. Verify information with official sources. This website assumes no legal responsibility for any profits or losses incurred.",
     "disclaimer2": "Feel free to share links to information provided on this website. Reproduction of content requires prior consent. Contact us at: support@sentimentinsideout.com"
@@ -386,7 +322,6 @@
     "watchlistUpgradeRequired": "Watchlist feature requires upgrading to Pro plan"
   },
   "timeRangeSelector": {
-    "label": "Time Range",
     "month1": "Last 1 Month",
     "month3": "Last 3 Months",
     "month6": "Last 6 Months",
@@ -395,24 +330,15 @@
     "year3": "Last 3 Years",
     "year5": "Last 5 Years",
     "year10": "Last 10 Years",
-    "year20": "Last 20 Years",
-    "all": "All"
+    "year20": "Last 20 Years"
   },
   "common": {
-    "learnMore": "Learn More",
-    "collapse": "Collapse",
     "loading": "Loading...",
-    "processing": "Processing...",
     "error": "Error",
-    "success": "Success",
     "noData": "No data to display",
-    "notAvailable": "N/A",
     "invalidParams": "Invalid operation parameters",
     "close": "Close",
     "back": "Back",
-    "done": "Done",
-    "copied": "Copied",
-    "copyToClipboard": "Copy to clipboard",
     "scrollToTop": "Scroll to Top",
     "unknown": "Unknown",
     "previous": "Previous",
@@ -461,30 +387,16 @@
       "description": "A market psychology platform for long-term investors. Follow the SIO Fear & Greed Index, study price trends, and build steadier decisions with data."
     },
     "hero": {
-      "eyebrow": "Sentiment Inside Out",
       "title": "Understand the market's fear and greed sentiment.",
       "subtitle": "Use objective data to judge current market sentiment and overcome the human biases of fear and greed.",
       "primaryAuthenticated": "View market sentiment",
       "primaryGuest": "Sign in to view market sentiment",
       "secondary": "Try price trend analysis",
-      "delayNote": "Homepage snapshot is delayed through {{date}}.",
-      "frameworkNote": "Built from {{count}} market signals.",
-      "experienceNote": "{{count}} free stocks and ETFs to start with.",
-      "snapshotBadge": "Market snapshot",
-      "loading": "Refreshing homepage data...",
-      "snapshotLabel": "SIO score",
-      "snapshotDate": "Snapshot through {{date}}",
       "marketPreviewHeadline": {
         "brand": "Sentiment Inside Out",
         "index": "Fear & Greed Index"
       },
-      "metrics": {
-        "framework": "Signals",
-        "pro": "Pro plan",
-        "delay": "Data delay"
-      },
       "moments": {
-        "headline": "Sentiment Inside Out (SIO) Fear & Greed Index",
         "events": {
           "chinaDevaluation": {
             "title": "China Devaluation Shock",
@@ -528,82 +440,15 @@
           }
         }
       },
-      "delayValue": "{{count}} months",
       "scrollLabel": "Scroll to the SIO methodology section"
     },
     "announcement": {
       "badge": "Announcement"
     },
-    "positioning": {
-      "items": [
-        {
-          "title": "Read market mood in one place",
-          "description": "Instead of bouncing between separate indicators, start with one clear read of whether the market is leaning toward fear or greed."
-        },
-        {
-          "title": "See what is driving sentiment",
-          "description": "SIO is not based on one number alone. It tracks several signals so you can understand what is pushing market mood."
-        },
-        {
-          "title": "Move from emotion to process",
-          "description": "Use sentiment, price structure, and your own watchlist together so decisions feel steadier when markets get noisy."
-        }
-      ]
-    },
     "methodology": {
-      "eyebrow": "How SIO works",
-      "title": "SIO combines 8 market signals into one clearer view.",
-      "description": "Instead of relying on a single indicator, SIO tracks sentiment, volatility, hedging demand, credit stress, and positioning together.",
-      "frameworkEyebrow": "Signal",
-      "frameworkDescriptions": {
-        "aaiiSpread": "Shows how individual investors are feeling.",
-        "cboeRatio": "Shows how much downside protection traders are buying.",
-        "marketMomentum": "Shows whether the broader market trend is strengthening or weakening.",
-        "vixMA50": "Shows whether market stress is rising.",
-        "safeHaven": "Shows whether money is moving toward safety.",
-        "junkBond": "Shows whether investors are still comfortable taking risk.",
-        "cotIndex": "Shows whether speculative positioning is getting crowded.",
-        "naaimIndex": "Shows how active managers are positioned."
-      },
-      "signalLabels": {
-        "aaiiSpread": {
-          "title": "Investor mood",
-          "subtitle": "Shows whether individual investors are leaning bullish or cautious."
-        },
-        "cboeRatio": {
-          "title": "Hedging demand",
-          "subtitle": "Shows how much downside protection traders are buying."
-        },
-        "marketMomentum": {
-          "title": "Market trend",
-          "subtitle": "Shows whether the broader market trend is strengthening or weakening."
-        },
-        "vixMA50": {
-          "title": "Market stress",
-          "subtitle": "Shows whether market stress is rising."
-        },
-        "safeHaven": {
-          "title": "Flight to safety",
-          "subtitle": "Shows whether money is moving toward safer assets."
-        },
-        "junkBond": {
-          "title": "Risk appetite",
-          "subtitle": "Shows whether investors are still comfortable taking risk."
-        },
-        "cotIndex": {
-          "title": "Speculative positioning",
-          "subtitle": "Shows whether positioning is getting crowded."
-        },
-        "naaimIndex": {
-          "title": "Manager exposure",
-          "subtitle": "Shows how active managers are positioned."
-        }
-      },
       "historyPreview": {
         "title": "Extreme fear = market lows",
-        "badge": "2017-2023",
         "description": "When the market is most afraid, long-term investors need to be at their calmest.",
-        "chartLabel": "Preview of market sentiment history from 2017 to 2023",
         "empty": "This history preview is temporarily unavailable."
       },
       "pricePreview": {
@@ -613,77 +458,6 @@
         "currentSentiment": "Current sentiment",
         "symbol": "Symbol",
         "empty": "SPY analysis is temporarily unavailable."
-      },
-      "snapshot": {
-        "kicker": "Market snapshot",
-        "title": "A recent SIO reading",
-        "badge": "Delayed data",
-        "body": "As of {{date}}, the SIO score was {{score}}, which placed market sentiment in {{sentiment}} territory. Free users see delayed data. Pro members can follow the latest reading.",
-        "distributionTitle": "What shaped this reading",
-        "distributionSummary": "Out of {{total}} signals, {{extremeFear}} were in extreme fear, {{fear}} in fear, {{neutral}} in neutral, {{greed}} in greed, and {{extremeGreed}} in extreme greed."
-      },
-      "preview": {
-        "kicker": "Signals behind the score",
-        "title": "A few of the signals SIO tracks",
-        "description": "These examples help explain why sentiment changes. The full read is most useful when the signals are viewed together."
-      }
-    },
-    "proof": {
-      "eyebrow": "Past fear lows",
-      "title": "See how SIO behaved near major fear lows.",
-      "description": "These past low readings help show when market mood had already moved into an extreme fear zone.",
-      "scoreLabel": "SIO score {{score}}",
-      "cardBody": "One signal is never enough on its own. The value is seeing when several signals line up at the same time.",
-      "empty": "Historic low proof points are temporarily unavailable."
-    },
-    "journey": {
-      "eyebrow": "How to use it",
-      "title": "A simpler flow from market mood to your own watchlist.",
-      "description": "Start with the broader market, check the price structure of a ticker, then keep the names you care about in one place.",
-      "cards": {
-        "sentiment": {
-          "badge": "Step 1",
-          "title": "Read the market first",
-          "description": "Start with SIO to see whether the market is leaning toward fear, caution, or optimism.",
-          "cta": "View market sentiment"
-        },
-        "price": {
-          "badge": "Step 2",
-          "title": "Check the price structure",
-          "description": "Use price trend analysis to see where a stock or ETF sits before you act.",
-          "cta": "Analyze a ticker"
-        },
-        "watchlist": {
-          "badge": "Step 3",
-          "title": "Build your own list",
-          "description": "Save the names you want to follow so you can come back with the same process next time.",
-          "cta": "Open watchlist"
-        }
-      }
-    },
-    "tools": {
-      "eyebrow": "More tools",
-      "title": "Go deeper when one score is not enough.",
-      "description": "Use sentiment, price analysis, and your watchlist together to build a steadier investment process.",
-      "cards": {
-        "price": {
-          "badge": "Free",
-          "title": "Price Trend Analysis",
-          "description": "Check where a stock or ETF sits in its longer-term price structure before you act.",
-          "cta": "Analyze a ticker"
-        },
-        "watchlist": {
-          "badge": "Pro",
-          "title": "Watchlist",
-          "description": "Keep your own list of names and review them in one place instead of starting over each time.",
-          "cta": "Open watchlist"
-        },
-        "sentiment": {
-          "badge": "Sentiment",
-          "title": "Market Sentiment",
-          "description": "Explore the full market sentiment page, the underlying signals, and the historical context behind each reading.",
-          "cta": "Open sentiment page"
-        }
       }
     },
     "story": {
@@ -694,7 +468,6 @@
           "cta": "See past fear lows"
         },
         "price": {
-          "eyebrow": "Start with price position",
           "title": "Analyze extreme sentiment through price trends",
           "description": "No one can predict price moves, but understanding the sentiment implied by today's price can improve entry and exit decisions.",
           "cta": "Analyze other symbols"
@@ -723,14 +496,11 @@
     }
   },
   "indicatorItem": {
-    "fetchError": "Error fetching historical data for {{indicatorName}}:",
-    "percentileRankLabel": "{{indicatorName}} (Percentile Rank)",
     "spyPriceLabel": "SPY Price",
     "latestDataLabel": "Latest Metrics",
     "fearGreedScoreLabel": "Sentiment Score",
     "fearGreedTooltip": "For consistent measurement across indicators, the actual value is converted to a percentile based on historical rank, serving as the Sentiment Score (0-100). Higher scores indicate more greed; lower scores indicate more fear.",
     "marketSentimentLabel": "Market Sentiment",
-    "loading": "Loading...",
     "notAvailable": "N/A",
     "noData": "No data available, please try again later"
   },
@@ -771,14 +541,6 @@
     "pageDescription": "Daily track market fear and greed with our exclusive index. We aggregate key indicators like VIX, Put/Call Ratio, AAII survey, etc. to provide a comprehensive view of investor sentiment.",
     "keywords": "market sentiment, investor sentiment, fear greed index, VIX analysis, Put Call Ratio, stock market psychology, investment strategy, market indicators, sentiment tracking, Taiwan stock sentiment, US stock sentiment",
     "heading": "Market Sentiment Indicators Overview",
-    "meta": {
-      "title": "Market Sentiment Analysis",
-      "description": "Deep dive into real-time market sentiment through key indicators like VIX, Put/Call Ratio, and Fear & Greed Index. Gain insights into investor psychology to make better investment decisions and effectively track market fear and greed dynamics.",
-      "keywords": "market sentiment, investor sentiment, fear greed index, VIX analysis, Put Call Ratio, stock market psychology, investment strategy, market indicators, sentiment tracking, Taiwan stock sentiment, US stock sentiment"
-    },
-    "tabs": {
-      "compositeIndex": "SIO Fear & Greed Index"
-    },
     "composite": {
       "scoreLabel": "Score",
       "sentimentLabel": "Sentiment"
@@ -787,16 +549,9 @@
       "compositeIndexLabel": "SIO Fear & Greed Index",
       "spyPriceLabel": "SPY Price",
       "compositeIndexAxisLabel": "SIO Fear & Greed Index",
-      "spyPriceAxisLabel": "SPY Price",
-      "tooltipScore": "Sentiment Score",
-      "tooltipSPY": "SPY Price"
-    },
-    "indicatorDetail": {
-      "valueLabel": "Indicator Value",
-      "sentimentScoreLabel": "Sentiment Score"
+      "spyPriceAxisLabel": "SPY Price"
     },
     "gauge": {
-      "interactiveZones": "Interactive sentiment zones",
       "zone": "zone",
       "explainer": {
         "current": {
@@ -838,13 +593,6 @@
         "previousWeek": "Previous Week",
         "previousMonth": "30 Days Ago",
         "previousQuarter": "90 Days Ago"
-      },
-      "zoneDescription": {
-        "extremefear": "Extreme fear zone - market panic and overselling",
-        "fear": "Fear zone - market uncertainty and caution",
-        "neutral": "Neutral zone - balanced market sentiment",
-        "greed": "Greed zone - market optimism and risk-taking",
-        "extremegreed": "Extreme greed zone - market euphoria and overbuying"
       }
     },
     "indicators": {
@@ -852,8 +600,6 @@
       "snapshotTitle": "Which indicators are shaping this snapshot",
       "currentDescription": "The SIO Fear & Greed Index is built from multiple sentiment sub-indicators. This view helps you compare which signals are currently pushing market sentiment and where they sit now.",
       "snapshotDescription": "The SIO Fear & Greed Index is built from multiple sentiment sub-indicators. You are viewing the snapshot through {{date}}, showing which signals were shaping market sentiment at that point.",
-      "detailSummaryCurrent": "How {{indicator}} is affecting market sentiment right now",
-      "detailSummarySnapshot": "How {{indicator}} was affecting market sentiment through {{date}}",
       "mobileEyebrowCurrent": "Indicator detail",
       "mobileEyebrowSnapshot": "Snapshot through {{date}}",
       "trend": {
@@ -880,17 +626,6 @@
         }
       }
     },
-    "viewMode": {
-      "overview": "Current Sentiment",
-      "timeline": "Historical Trend",
-      "overviewAria": "Switch to latest sentiment view",
-      "timelineAria": "Switch to historical trend view"
-    },
-    "cta": {
-      "latestData": "Current",
-      "history": "Trend",
-      "composition": "Components"
-    },
     "error": {
       "fetchFailed": "Failed to fetch market sentiment data.",
       "invalidData": "Invalid data format"
@@ -906,10 +641,6 @@
     "dataLimitation": {
       "toastMessage": "💡 Latest data requires Pro. Free version data up to two months ago.",
       "upgradeToast": "🔒 This feature requires Pro plan. Upgrade for complete market sentiment analysis!",
-      "upgradeDataToast": "📊 Latest market sentiment data requires Pro plan. Upgrade now for real-time insights!",
-      "upgradeGaugeToast": "🎯 Sentiment gauge requires Pro plan. Upgrade to view current market sentiment index!",
-      "upgradeCompositionToast": "🔍 Complete indicator composition analysis requires Pro plan. Upgrade for deep insights!",
-      "bannerEyebrow": "Free plan is showing a historical snapshot",
       "bannerTitle": "Free plan can only view market sentiment data through {{date}}",
       "bannerBody": "The free plan still lets you explore the gauge, history, and indicator composition; the latest two months and newest changes require Pro.",
       "currentGaugeHeadline": "Current US market sentiment",
@@ -1115,18 +846,9 @@
     },
     "enhancedDescription": {
       "tabs": {
-        "indicators": "Components",
-        "tips": "Usage Tips",
-        "introduction": "Introduction",
-        "details": "Details",
         "faq": "FAQ"
       },
       "content": {
-        "indicators": {
-          "composite": {
-            "intro": "The SIO Fear & Greed Index consists of the following eight key indicators, each providing unique market insights:"
-          }
-        },
         "tips": {
           "basicUsage": "Basic Usage",
           "tip1": "When the indicator shows extreme fear (0-20), it's typically a good buying opportunity",
@@ -1134,53 +856,28 @@
           "tip3": "Observe multiple timeframes to avoid being misled by short-term fluctuations"
         },
         "faq": {
-          "category1": "Introduction & Interpretation",
-          "category2": "Strategy & Application",
-          "category3": "Logic & Methodology",
-          "category4": "Validation & Backtesting",
-
           "q1": "What is the SIO Market Sentiment Indicator?",
           "a1": "The SIO Market Sentiment Indicator is a tool designed to measure overall market sentiment. It analyzes multiple technical and fundamental indicators to assess the levels of fear and greed in the market.",
-          
           "q2": "How is this different from the 'CNN Fear & Greed Index' or the 'BofA Bull & Bear Indicator'?",
           "a2": "The SIO indicator is designed for long-term allocation, with logic that benchmarks against the institutional-grade BofA indicator. While the CNN index is sensitive, it focuses more on the short term and can struggle to identify structural bottoms in long cycles. Our goal with SIO is to create a professional tool that aids long-term decision-making, aiming to match the BofA Bull & Bear Indicator's ability to catch long-term market turning points.",
-          
           "q3": "What does the 0 to 100 score mean? How do I interpret it?",
           "a3": "The score represents the current market state's relative position in history. It ranges from 0 to 100: 0-20 is Extreme Fear, 21-40 is Fear, 41-60 is Neutral, 61-80 is Greed, and 81-100 is Extreme Greed. It's important to note that a high score doesn't mean an immediate crash; greedy sentiment can often persist for a long time.",
-          
           "q4": "How often is the data updated?",
           "a4": "The composite score updates whenever the individual indicators update, so basically, it updates every day.",
-          
           "q5": "How can you compare different indicators, like the 'VIX' and 'AAII Retail Sentiment', together?",
           "a5": "We mainly use the statistical Z-Score normalization method. Since different indicators have different units (e.g., VIX is volatility, AAII is a net ratio), the Z-Score allows us to convert all of them into a unified statistical measure.",
-          
           "q6": "For weekly data (like COT reports), how does the indicator handle 'publication delays' to avoid look-ahead bias?",
           "a6": "We strictly enforce 'Point-in-Time' calibration during calculation to avoid 'peeking into the future.' For example, the CFTC COT report comes out on Friday but covers data up to Tuesday. So, our system forces a lag in the calculation. This means when backtesting a historical Wednesday or Thursday, we restore the state where that week's data wasn't available yet, simulating the information gap in a real trading environment to ensure credibility.",
-          
           "q7": "Has the strategy of buying under 15 and selling over 96 gone through Out-of-Sample stress testing?",
           "a7": "Yes, the backtest uses rigorous 'Walk-Forward Validation.' I deliberately locked the model parameters using data from before 2019 and set 2020 to 2026 as the 'blind test' period. The results show that even through the extreme environments of the COVID-19 crash and the 2022 stock/bond double dip, the strategy still delivered better risk-adjusted returns than the broader market during the blind test, with a significantly lower max drawdown than the S&P 500.",
-          
           "q8": "Why do you suggest buying when it drops below 15? Past crashes went below 5, can't I just wait for 5?",
           "a8": "To avoid missing out on mid-term pullbacks, we suggest a 'batch entry' strategy. While historical disasters (like the 2008 Financial Crisis or 2020 Pandemic) do push the indicator below 5, those are extremely rare. Some mid-sized corrections might bottom out around 8-12 (like the 2011 Euro Debt Crisis or the 2025 Trade War). If you insist on waiting for < 5, you might miss the entry entirely. Therefore, the best strategy is a 'Two-Stage Entry': Stage 1 (< 15): Deploy 50% to ensure you catch the rebound. Stage 2 (< 5): If a systemic crash happens, invest the remaining 50%. Backtests prove that this 'half now, half later' approach strikes the best balance between risk and reward.",
-          
           "q9": "If the indicator shows 'Extreme Greed (96+)', should I sell everything or go short immediately?",
           "a9": "That's not recommended. When the indicator enters the >96 Extreme Greed zone, the market often stays greedy for a while. Selling everything might make you miss the main rally, and shorting is extremely risky. We suggest you stop chasing highs at this point and moderately take profits in batches.",
-          
           "q10": "Why is the composite score up at 90+ when none of the individual indicators have reached extreme greed?",
           "a10": "Because the model values 'breadth.' When retail investors, whales, the hedging market, and the bond market all turn optimistic *at the same time*, that consensus is actually rarer historically than just one indicator hitting an extreme. This high level of consistency pushes up the composite percentile ranking, alerting investors to potential structural risks."
         }
       }
-    },
-    "paywall": {
-      "title": "Unlock Complete Market Sentiment Analysis",
-      "subtitle": "Upgrade to Pro for real-time market insights and full features",
-      "historicalPerformance": "Historical Performance Preview",
-      "historicalPeriod": "Past Performance (Reference Only)",
-      "successfulPrediction": "Successful Low Point Prediction",
-      "currentDataRestricted": "Current data requires Pro plan",
-      "upgradeButton": "Upgrade to Pro",
-      "priceLabel": "Starting from NT$299/month",
-      "disclaimer": "Cancel anytime, no long-term commitment"
     },
     "restricted": {
       "gaugeTitle": "Real-time Sentiment Gauge",
@@ -1270,8 +967,7 @@
       "switchToSimple": "Simple Settings",
       "buttonStartAnalysis": "Start Analysis",
       "buttonAnalyzing": "Analyzing...",
-      "buttonProcessing": "Processing data...",
-      "buttonCompleteVerification": "Please complete verification below"
+      "buttonProcessing": "Processing data..."
     },
     "result": {
       "stockCode": "Symbol",
@@ -1301,10 +997,6 @@
         "minus1sd": "Fear",
         "plus1sd": "Greed",
         "plus2sd": "Extreme Greed"
-      },
-      "zoom": {
-        "resetButton": "Reset Zoom",
-        "instructions": "Scroll to zoom | Shift+Drag to pan"
       }
     },
     "prompt": {
@@ -1342,44 +1034,13 @@
         "point3": "It should not be used as the sole basis for buy/sell decisions. Please combine with other technical indicators and fundamental analysis."
       }
     },
-    "explanation": {
-      "mainTitle": "What is the LOHAS Five-Line Analysis?",
-      "shortDescription": "Analyze whether the current stock price is overly greedy or fearful. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
-      "readMorePrefix": "For detailed instructions, please see the article:",
-      "readMoreLinkText": "Analyze Price Trends and Sentiment with LOHAS Five-Line Analysis",
-      "sd": {
-        "title": "LOHAS Five-Line Analysis",
-        "l1": "The middle trend line is a long-term moving average, serving as the baseline for assessing the long-term price trend. Two standard deviations are added above and below this baseline.",
-        "l2": "The further the price moves from the middle trend line, the further it deviates from the long-term average, increasing the probability of reverting to the trend line.",
-        "l3": "When the price touches the uppermost band, it indicates a strong short-term overbought condition and extreme market greed, posing a risk of pullback.",
-        "l4": "When the price touches the lowermost band, it indicates a strong short-term oversold condition and extreme market fear, presenting an opportunity for a rebound."
-      },
-      "ulBand": {
-        "title": "LOHAS Channel",
-        "l1": "The LOHAS Channel is a more sensitive indicator used to help determine short-term overbought and oversold conditions.",
-        "l2": "When the price breaks above the upper LOHAS Channel, it may indicate short-term overheating.",
-        "l3": "When the price breaks below the lower LOHAS Channel, it may indicate short-term cooling."
-      },
-      "combined": {
-        "title": "Using Both Together",
-        "l1": "When the price touches the uppermost or lowermost band of the LOHAS Five-Line Analysis and simultaneously breaks the LOHAS Channel, it might signify a continuation of the trend. Consider waiting for the price to return within the LOHAS Channel before taking action.",
-        "l2": "It is recommended for use with index ETFs or large-cap stocks with clear trends, in conjunction with fundamental analysis. It should not be used as the sole basis for buy/sell decisions."
-      }
-    },
     "toast": {
       "invalidYears": "Invalid query period, please enter a number greater than 0.",
       "invalidYearsHotSearch": "Invalid query period in advanced mode, using default value for analysis.",
       "invalidYearsFreeStock": "Invalid query period in advanced mode, using default value for analysis.",
-      "turnstileRequired": "Please complete the verification first",
-      "turnstileError": "Verification failed, please try again",
-      "turnstileExpired": "Verification expired, please verify again",
       "invalidUrlYears": "Invalid query period read from URL."
     },
-    "announcement": {
-      "message": "📣 0050 (Yuanta Taiwan 50) has been corrected. Analysis results are now back to normal! 🥳 ｜ To prevent cyberattacks⚠️, most features now require login to use. Please rest assured, everything is still free! Thanks for your understanding😥"
-    },
     "hotSearches": {
-      "title": "Trending 🔥",
       "noData": "No data available"
     },
     "quickSelect": {
@@ -1390,75 +1051,27 @@
       }
     },
     "watchlistQuickAccess": {
-      "title": "Watchlist",
       "noData": "Your watchlist is empty",
       "addStocksHint": "Go to 'My Watchlist' to add stocks",
-      "loginRequired": "Please login to view your watchlist",
-      "upgradeRequired": "Upgrade to Pro plan to use watchlist feature"
+      "loginRequired": "Please login to view your watchlist"
     },
     "freeStockList": {
-      "title": "Free Analysis Stocks 💎",
-      "subtitle": "Click any stock symbol below for quick analysis",
-      "upgradeHint": "Upgrade to Pro plan to access all stock symbols",
       "regions": {
         "americas": "Americas",
         "europe": "Europe",
         "asiaPacific": "Asia Pacific",
         "global": "Global Markets"
-      },
-      "markets": {
-        "sp500": "US S&P 500",
-        "nasdaq": "US Nasdaq",
-        "usTotal": "US Total Market",
-        "canada": "Canada",
-        "brazil": "Brazil",
-        "germany": "Germany",
-        "taiwan": "Taiwan",
-        "japan": "Japan",
-        "china": "China",
-        "globalMarkets": "Global Markets",
-        "emergingMarkets": "Emerging Markets"
-      },
-      "descriptions": {
-        "sp500": "Tracks the 500 largest US public companies, the world's most important stock market benchmark.",
-        "nasdaq": "Tracks the 100 largest non-financial companies listed on Nasdaq, primarily tech stocks.",
-        "usTotal": "Covers the entire US stock market, including large, mid, and small-cap stocks for maximum diversification.",
-        "canada": "Invests in the Canadian market, with higher exposure to energy and financial sectors.",
-        "brazil": "Latin America's largest economy, highly correlated with commodity prices.",
-        "germany": "Europe's largest economy, renowned for industrial and automotive manufacturing.",
-        "taiwan": "EWT is the foreign investment benchmark for Taiwan stocks; 0050/006208 are domestic investor favorites.",
-        "japan": "The world's third-largest economy, strong in automotive, electronics, and precision industries.",
-        "china": "Direct investment in A-shares listed on Shanghai and Shenzhen exchanges.",
-        "globalMarkets": "One ETF investing in global developed and emerging markets, the ultimate diversification tool.",
-        "emergingMarkets": "Invests in emerging economies like China, Taiwan, India, Brazil with high growth potential but higher volatility."
-      },
-      "types": {
-        "index": "Index",
-        "usEtf": "US ETF",
-        "twEtf": "TW ETF"
       }
     },
-    "errors": {
-      "stockNotAllowed": "Free users can only query {{allowedStocks}} stocks. Upgrade to Pro plan to access all stocks."
-    }
+    "heading": "LOHAS Five-Line Analysis"
   },
   "watchlist": {
-    "loginPrompt": {
-      "message": "Log in to create and manage your personal stock watchlist."
-    },
     "pageTitle": "My Watchlist",
     "pageSubtitle": "Track your stocks and get a quick read on the market.",
     "pageDescription": "Track your stocks and get a quick read on the market.",
-    "keywords": "my watchlist, custom stocks, stock monitoring, market sentiment, price analysis",
     "jsonLd": {
       "name": "My Watchlist",
-      "description": "Quickly grasp stock sentiment and see long-term trends to avoid buying high and selling low.",
-      "url": "https://sentimentinsideout.com/watchlist",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://sentimentinsideout.com/watchlist?category={category}&stock={stock}",
-        "query-input": "required name=category,stock"
-      }
+      "description": "Quickly grasp stock sentiment and see long-term trends to avoid buying high and selling low."
     },
     "loadingRetry": "Loading, please wait... ({{count}}/{{max}})",
     "loadFailed": "Load failed, please refresh the page",
@@ -1466,8 +1079,6 @@
     "upgradeRequired": "This feature requires upgrading to Pro plan",
     "loadingMessage": "The watchlist analyzes multiple symbols at once. If you haven't viewed it for a while, it might take a moment. Thank you for your patience.",
     "editMode": {
-      "finish": "Finish Editing",
-      "start": "Edit Mode",
       "browse": "Browse",
       "edit": "Edit",
       "switchToBrowse": "Switch to browse mode",
@@ -1497,17 +1108,11 @@
     "category": {
       "createSuccess": "Category created successfully",
       "updateSuccess": "Category updated",
-      "deleteCategory": "Delete Category",
       "deleteConfirm": "Are you sure you want to delete this category? This action cannot be undone.",
       "delete": "Delete",
-      "deleteSuccess": "Category deleted",
-      "noCategory": "No categories yet",
-      "noCategoryMessage": "Add a category and start tracking your stocks!",
-      "emptyTitle": "Time to Add Stocks",
-      "emptyMessage": "Click the 'Add Stocks' button to start tracking!"
+      "deleteSuccess": "Category deleted"
     },
     "stock": {
-      "addTitle": "Add Stocks",
       "addSuccess": "{{symbol}} added to watchlist"
     },
     "stockCard": {
@@ -1595,52 +1200,6 @@
     "expand": "Read More",
     "collapse": "Collapse"
   },
-  "paywall": {
-    "title": "Less than $2 a day",
-    "feature1": "Unlock full features",
-    "feature2": "No ads",
-    "feature3": "Future priority updates",
-    "plan": {
-      "monthly": {
-        "title": "Monthly Plan",
-        "price": "$59",
-        "period": "/ month",
-        "description": "Auto-renewal every month"
-      },
-      "annual": {
-        "title": "Annual Plan",
-        "price": "$590",
-        "period": "/ year",
-        "description": "Annual plan, save 17%",
-        "badge": "2 months free"
-      }
-    },
-    "cta": {
-      "trial": "Start 7-day free trial"
-    },
-    "terms": "First-time subscribers get a 7-day free trial. After the trial period, your subscription will automatically renew based on your chosen plan. You can cancel at any time in your App Store account settings.",
-    "restore": "Restore Purchase"
-  },
-  "referral": {
-    "pageTitle": "Invite & Earn",
-    "title": "Invite Friends, Get Free Access!",
-    "description": "Share your code with friends. When they sign up, you both get 1 month of premium access for free!",
-    "yourCodeLabel": "Your Referral Code",
-    "rewardStatus": "You have earned %d free months from successful referrals. Thank you!",
-    "shareButton": "Share My Code",
-    "apply": {
-      "title": "Have a Referral Code?",
-      "description": "Enter the code below to claim your reward and get one month of free premium access.",
-      "placeholder": "Enter code here",
-      "submitButton": "Apply Code",
-      "skipButton": "I don't have a code",
-      "successTitle": "Success!",
-      "successMessage": "1 month of free premium access has been added to your account."
-    },
-    "shareSheet": {
-      "text": "Join me on Sentiment Inside Out! Sign up with my referral code to get 1 month of free premium access: %@"
-    }
-  },
   "featureUpgrade": {
     "stockAccess": {
       "title": "Upgrade to Pro to analyze any stock",
@@ -1667,7 +1226,6 @@
       "unlimitedStocks": "Unlimited Stock Analysis",
       "realTimeData": "Daily Market Sentiment",
       "watchlist": "Personal Watchlist",
-      "advancedAnalysis": "Advanced Analysis Tools",
       "currentSentiment": "Current Market Sentiment",
       "liveCharts": "Live Chart Updates",
       "alerts": "Market Alert Notifications",
@@ -1702,39 +1260,23 @@
       "watchlistDesc": "Personal stock tracking feature",
       "ads": "Ads",
       "adsDesc": "Whether ads are displayed",
-      "included": "Included Features",
       "unavailable": "Feature unavailable"
     },
     "userAccount": {
       "title": "My Account",
       "currentPlan": "Current Plan",
       "usageStats": "Usage Statistics",
-      "subscriptionHistory": "Subscription History",
       "paymentHistory": "Payment History",
-      "accountSettings": "Account Settings",
-      "email": "Email",
       "logout": "Logout",
       "viewAccount": "View Account",
       "planLoadError": "Unable to load plan information",
       "statsLoadError": "Unable to load usage statistics",
-      "userNotFound": "User data not found",
-      "emailVerified": "Verified",
-      "accountActions": "Account Actions",
-      "userInfo": "User Information",
-      "userId": "User ID",
-      "username": "Username",
-      "joinDate": "Join Date",
-      "privacyTitle": "Privacy Protection",
-      "privacyDescription": "We value your privacy and all data is encrypted and protected.",
-      "redemptionCode": "Redemption Codes",
-      "redemptionDescription": "Enter promotional codes to unlock special benefits and discounts for your subscription.",
       "cancelSubscription": "Cancel Subscription",
       "cancelConfirmTitle": "Confirm Subscription Cancellation",
       "cancelConfirmMessage": "Are you sure you want to cancel your subscription? Your subscription will stop renewing after {{endDate}}, but you can continue using all features until then.",
       "confirmCancel": "Confirm Cancellation",
       "keepSubscription": "Keep Subscription",
       "cancelledNotice": "Your subscription has been set to cancel and will stop renewing after {{endDate}}.",
-      "cancelError": "Failed to cancel subscription: {{error}}",
       "cancelSuccess": "Subscription cancelled successfully! You can continue using all features until the current period ends."
     },
     "billingPeriod": {
@@ -1743,13 +1285,7 @@
       "save": "Save"
     },
     "marketSentimentContext": {
-      "notification": "Upgrade to unlock the latest market sentiment data",
-      "eyebrow": "From Market Sentiment",
-      "title": "You're currently viewing market sentiment data delayed by two months",
-      "body": "Upgrade to Pro to view the latest Fear & Greed reading, the most recent two months of trend changes, and which indicators are driving sentiment right now.",
-      "feature1": "Latest market sentiment score and zone",
-      "feature2": "Recent 60-day trend and turning points",
-      "feature3": "Latest indicator composition and drivers"
+      "notification": "Upgrade to unlock the latest market sentiment data"
     },
     "subscriptionPlans": {
       "title": "Choose the plan that's right for you",
@@ -1791,7 +1327,8 @@
           "Watchlist Storage: 10 categories, 50 stocks per category",
           "Ad-free Experience"
         ]
-      }
+      },
+      "loadingPlans": "Loading plans..."
     },
     "usage": {
       "daily": "Daily Usage",
@@ -1808,12 +1345,8 @@
       "period": "Period"
     },
     "history": {
-      "title": "Subscription History",
-      "date": "Date",
       "action": "Action",
-      "plan": "Plan",
       "status": "Status",
-      "amount": "Amount",
       "actions": {
         "upgrade": "Upgrade",
         "downgrade": "Downgrade",
@@ -1838,21 +1371,10 @@
       "subtitle": "Compare features across all plans",
       "features": "Features"
     },
-    "statuses": {
-      "active": "Active",
-      "expired": "Expired",
-      "cancelled": "Cancelled"
-    },
     "autoRenewEnabled": "Auto-renewal enabled",
     "status": {
       "cancelledButActive": "Cancelled but Active",
       "expiresOn": "Expires on: {{date}}"
-    },
-    "reactivation": {
-      "success": "Subscription successfully reactivated!",
-      "error": "Failed to reactivate subscription, please try again later",
-      "requiresNewPayment": "According to ECPay policy, terminated recurring payments cannot be reactivated and require new payment method setup",
-      "extensionNotice": "Your remaining service time will be automatically extended to the new subscription, ensuring no loss of benefits"
     },
     "freeTrialDialog": {
       "title": "Free Trial Notice",
@@ -1866,10 +1388,6 @@
     }
   },
   "payment": {
-    "pageTitle": "Payment",
-    "pageDescription": "Secure and convenient payment process",
-    "keywords": "payment, ECPay, credit card, ATM, convenience store payment",
-    "heading": "Payment Information",
     "upgradeTitle": "Upgrade to {{planName}} Plan",
     "upgradeSubtitle": "Choose the payment method that works best for you and enjoy full features immediately",
     "backToPlans": "Back to Plans",
@@ -1879,38 +1397,15 @@
       "message": "The selected plan does not exist. Please choose again."
     },
     "flow": {
-      "title": "Payment Process",
-      "step1": "Select Plan",
-      "step2": "Payment Method",
-      "step3": "Confirm Payment",
-      "step4": "Complete Subscription",
-      "selectPlan": "Select Plan",
-      "selectPayment": "Select Payment Method",
-      "confirmPayment": "Confirm Payment",
-      "complete": "Complete"
+      "selectPayment": "Select Payment Method"
     },
     "methods": {
-      "title": "Payment Methods",
-      "creditCard": "Credit Card",
-      "creditCardDesc": "Supports Visa, MasterCard, JCB",
-      "atm": "ATM Transfer",
-      "atmDesc": "Virtual account transfer, complete within 3 days",
-      "cvs": "Convenience Store",
-      "cvsDesc": "7-Eleven, FamilyMart, Hi-Life, OK Mart",
-      "webatm": "Web ATM",
-      "webatmDesc": "Requires card reader and chip card"
+      "creditCard": "Credit Card"
     },
     "form": {
-      "planType": "Plan Type",
-      "billingCycle": "Billing Cycle",
-      "amount": "Payment Amount",
-      "paymentMethod": "Payment Method",
-      "agreeTerms": "I agree to the",
       "termsAndConditions": "Terms of Service and Privacy Policy",
-      "proceedPayment": "Proceed to Payment",
       "processing": "Processing...",
       "creating": "Creating order...",
-      "redirecting": "Redirecting to payment page...",
       "upgradeNow": "Upgrade Now",
       "confirmPlan": "Confirm Plan",
       "confirmTerms": "Confirm Terms",
@@ -1923,33 +1418,10 @@
       "creatingOrder": "Creating Order...",
       "proceedToPayment": "Proceed to Payment"
     },
-    "status": {
-      "title": "Payment Status",
-      "processing": "Payment Processing",
-      "processingDesc": "Your payment is being processed, please wait...",
-      "success": "Payment Successful",
-      "successDesc": "Congratulations! Your payment has been completed successfully",
-      "failed": "Payment Failed",
-      "failedDesc": "Sorry, your payment could not be completed",
-      "cancelled": "Payment Cancelled",
-      "cancelledDesc": "You have cancelled this payment",
-      "pending": "Payment Pending",
-      "pendingDesc": "Please complete payment to activate your subscription",
-      "expired": "Order Expired",
-      "expiredDesc": "This payment link has expired, please initiate payment again"
-    },
     "actions": {
-      "retry": "Retry Payment",
-      "cancel": "Cancel Payment",
-      "backToPlans": "Back to Plans",
-      "viewSubscription": "View Subscription",
-      "contactSupport": "Contact Support",
       "downloadInvoice": "Download Invoice"
     },
     "result": {
-      "title": "Payment Result",
-      "pageTitle": "Payment Result",
-      "pageDescription": "View your payment result and next steps",
       "loading": "Confirming payment status...",
       "polling": "Waiting for payment confirmation... ({{pollingCount}}/{{maxPollingAttempts}})",
       "queryError": "Unable to confirm payment status, please contact customer service.",
@@ -1975,17 +1447,11 @@
       "tryAgain": "Choose Plan Again",
       "success": {
         "title": "Payment Successful!",
-        "message": "Congratulations! Your subscription has been successfully activated.",
-        "activationMessage": "Your subscription has been activated and you can now enjoy all premium features.",
-        "invoiceMessage": "Your invoice will be sent to your registered email address within 24 hours."
+        "message": "Congratulations! Your subscription has been successfully activated."
       },
       "failure": {
         "title": "Payment Failed",
-        "message": "We're sorry, an error occurred during the payment process.",
-        "reason": "Failure Reason",
-        "checkCard": "Please check your credit card information",
-        "checkFunds": "Please ensure sufficient funds in your account",
-        "contactBank": "Please contact your bank if the problem persists"
+        "message": "We're sorry, an error occurred during the payment process."
       },
       "pending": {
         "title": "Payment Processing",
@@ -1994,21 +1460,7 @@
         "info": "Processing Information",
         "info1": "Payment has been submitted, waiting for bank confirmation",
         "info2": "Usually completed within 1-5 minutes",
-        "info3": "You can check your subscription status in your account later",
-        "instructions": "Payment Instructions",
-        "atmInstructions": "Please transfer to the virtual account within 3 days",
-        "cvsInstructions": "Please pay at the convenience store within 3 days",
-        "accountInfo": "Payment Information",
-        "virtualAccount": "Virtual Account",
-        "paymentCode": "Payment Code",
-        "expiryDate": "Expiry Date"
-      },
-      "actions": {
-        "viewSubscription": "View Subscription",
-        "contactSupport": "Contact Support",
-        "downloadInvoice": "Download Invoice",
-        "copyAccount": "Copy Account",
-        "copyCode": "Copy Code"
+        "info3": "You can check your subscription status in your account later"
       }
     },
     "history": {
@@ -2016,61 +1468,37 @@
       "noPayments": "No payment records",
       "orderId": "Order ID",
       "date": "Payment Date",
-      "amount": "Amount",
-      "status": "Status",
-      "method": "Payment Method",
-      "plan": "Plan",
-      "cycle": "Cycle",
-      "actions": "Actions",
-      "viewDetails": "View Details",
-      "downloadReceipt": "Download Receipt",
-      "loading": "Loading payment history...",
-      "loadError": "Failed to load payment history: {{message}}",
-      "planDescription": "{{planType}} - {{billingPeriod}}",
-      "planName": "{{planType}} Plan",
-      "cancellationDescription": "Cancelled {{planType}} subscription, ends on {{endDate}}",
-      "monthly": "Monthly",
-      "yearly": "Yearly",
-      "paymentDetails": "Payment Details",
-      "paymentId": "Payment ID",
-      "paymentDate": "Payment Date",
-      "paymentMethod": "Payment Method",
-      "planType": "Plan Type",
-      "billingCycle": "Billing Cycle",
-      "failureReason": "Failure Reason",
-      "close": "Close",
-      "retry": "Retry",
       "status": {
         "success": "Success",
         "failed": "Failed",
         "pending": "Processing",
         "refunded": "Refunded",
         "unknown": "Unknown"
-      }
+      },
+      "method": "Payment Method",
+      "plan": "Plan",
+      "cycle": "Cycle",
+      "viewDetails": "View Details",
+      "loadError": "Failed to load payment history: {{message}}",
+      "planDescription": "{{planType}} - {{billingPeriod}}",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "paymentId": "Payment ID",
+      "failureReason": "Failure Reason"
     },
     "errors": {
-      "invalidPlan": "Invalid plan selection",
       "invalidAmount": "Invalid payment amount",
-      "paymentMethodRequired": "Please select a payment method",
       "termsRequired": "Please agree to the terms of service",
       "createOrderFailed": "Failed to create order",
-      "paymentFailed": "Payment processing failed",
-      "networkError": "Network connection error, please try again later",
-      "serverError": "Server error, please contact support",
-      "sessionExpired": "Session expired, please log in again",
-      "insufficientFunds": "Insufficient funds",
-      "cardDeclined": "Credit card declined",
-      "invalidCard": "Invalid credit card information",
-      "expiredCard": "Credit card expired",
-      "securityCodeError": "Security code error",
-      "duplicatePayment": "Duplicate payment, please do not submit repeatedly"
+      "paymentFailed": "Payment processing failed"
     },
     "security": {
-      "title": "Payment Security",
-      "ssl": "SSL Encryption Protection",
-      "pci": "PCI DSS Compliant",
-      "secure": "Secure Payment Environment",
-      "privacy": "Privacy Data Protection"
+      "title": "Secure Payment Guarantee",
+      "notices": [
+        "Clicking 'Proceed to Payment' will redirect to ECPay payment page",
+        "Please complete payment within 5 minutes, orders will be automatically cancelled if expired",
+        "All transactions are protected with SSL encryption"
+      ]
     },
     "plan": {
       "proPlan": "Pro Plan",
@@ -2102,18 +1530,7 @@
         "Your payment information is securely processed by ECPay, we do not store credit card information",
         "We will not sell your personal data to third parties"
       ],
-      "agreement": "I have read and agree to the",
-      "serviceTermsLink": "Terms of Service",
-      "privacyPolicyLink": "Privacy Policy",
-      "and": "and"
-    },
-    "security": {
-      "title": "Secure Payment Guarantee",
-      "notices": [
-        "Clicking 'Proceed to Payment' will redirect to ECPay payment page",
-        "Please complete payment within 5 minutes, orders will be automatically cancelled if expired",
-        "All transactions are protected with SSL encryption"
-      ]
+      "agreement": "I have read and agree to the"
     },
     "orderSummary": {
       "title": "Order Summary",
@@ -2136,28 +1553,9 @@
   },
   "invoice": {
     "title": "Invoice Management",
-    "pageTitle": "Invoice Management",
-    "pageDescription": "Manage your payment invoices",
-    "list": {
-      "title": "Invoice List",
-      "noInvoices": "No invoice records",
-      "invoiceNumber": "Invoice Number",
-      "date": "Issue Date",
-      "amount": "Amount",
-      "status": "Status",
-      "actions": "Actions"
-    },
     "status": {
-      "pending": "Pending",
-      "issued": "Issued",
       "sent": "Sent",
-      "failed": "Failed",
       "cancelled": "Cancelled"
-    },
-    "actions": {
-      "download": "Download PDF",
-      "resend": "Resend",
-      "view": "View Details"
     },
     "details": {
       "title": "Invoice Details",
@@ -2170,92 +1568,13 @@
       "buyerInfo": "Buyer Information",
       "sellerInfo": "Seller Information",
       "items": "Item Details"
-    },
-    "messages": {
-      "downloadSuccess": "Invoice downloaded successfully",
-      "downloadFailed": "Invoice download failed",
-      "resendSuccess": "Invoice resent successfully",
-      "resendFailed": "Invoice resend failed"
     }
   },
   "refund": {
-    "title": "Refund Management",
-    "pageTitle": "Refund Management",
-    "pageDescription": "Request and manage refunds",
-    "request": {
-      "title": "Request Refund",
-      "selectPayment": "Select payment to refund",
-      "reason": "Refund Reason",
-      "reasonRequired": "Please select a refund reason",
-      "reasonOptions": {
-        "notSatisfied": "Service not satisfactory",
-        "technicalIssue": "Technical issue",
-        "billing": "Billing error",
-        "duplicate": "Duplicate payment",
-        "other": "Other reason"
-      },
-      "description": "Detailed Description",
-      "descriptionPlaceholder": "Please provide detailed reason for refund...",
-      "amount": "Refund Amount",
-      "fullRefund": "Full Refund",
-      "partialRefund": "Partial Refund",
-      "submit": "Submit Request",
-      "submitting": "Submitting..."
-    },
-    "list": {
-      "title": "Refund History",
-      "noRefunds": "No refund records",
-      "refundId": "Refund ID",
-      "paymentId": "Original Payment ID",
-      "date": "Request Date",
-      "amount": "Refund Amount",
-      "status": "Status",
-      "reason": "Refund Reason",
-      "actions": "Actions"
-    },
     "status": {
       "pending": "Under Review",
-      "approved": "Approved",
       "processing": "Processing",
-      "completed": "Completed",
-      "rejected": "Rejected",
       "cancelled": "Cancelled"
-    },
-    "actions": {
-      "viewDetails": "View Details",
-      "cancel": "Cancel Request",
-      "contact": "Contact Support"
-    },
-    "details": {
-      "title": "Refund Details",
-      "refundId": "Refund ID",
-      "originalPayment": "Original Payment Information",
-      "requestDate": "Request Date",
-      "processDate": "Process Date",
-      "completionDate": "Completion Date",
-      "amount": "Refund Amount",
-      "method": "Refund Method",
-      "reason": "Refund Reason",
-      "description": "Detailed Description",
-      "status": "Current Status",
-      "timeline": "Processing Timeline"
-    },
-    "messages": {
-      "submitSuccess": "Refund request submitted successfully",
-      "submitFailed": "Refund request submission failed",
-      "cancelSuccess": "Refund request cancelled successfully",
-      "cancelFailed": "Refund request cancellation failed",
-      "processingTime": "Refund processing time is 3-7 business days",
-      "creditCardRefund": "Credit card refunds will be returned to the original card",
-      "manualRefund": "Other payment methods will be processed manually by customer service"
-    },
-    "errors": {
-      "paymentNotFound": "Corresponding payment record not found",
-      "alreadyRefunded": "This payment has already been refunded",
-      "refundNotAllowed": "This payment is not eligible for refund",
-      "amountExceeded": "Refund amount exceeds original payment amount",
-      "reasonRequired": "Please select a refund reason",
-      "descriptionRequired": "Please provide detailed description"
     }
   },
   "admin": {
@@ -2355,7 +1674,6 @@
       "search": {
         "placeholder": "Enter user email address",
         "button": "Search",
-        "searching": "Searching...",
         "errors": {
           "emailRequired": "Please enter user email",
           "invalidEmail": "Please enter a valid email format",
@@ -2791,5 +2109,6 @@
       "client_error": "Client error occurred",
       "retry_exhausted": "Maximum retry attempts reached"
     }
-  }
+  },
+  "appName": "Sentiment Inside Out"
 }
