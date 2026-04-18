@@ -557,9 +557,9 @@
     "extremePessimism": "EX-Pessimism"
   },
   "marketSentiment": {
-    "pageTitle": "Daily Updated Fear & Greed Index | Market Sentiment Analysis",
+    "pageTitle": "Sentiment Inside Out (SIO) US Fear & Greed Index | US Market Sentiment Tracking",
     "pageSubtitle": "A single, unified market indicator composed of multiple factors.",
-    "pageDescription": "Daily track market fear and greed with our exclusive index. We aggregate key indicators like VIX, Put/Call Ratio, AAII survey, etc. to provide a comprehensive view of investor sentiment.",
+    "pageDescription": "Sentiment Inside Out (SIO) US Fear & Greed Index aggregates eight indicators including VIX, Put/Call Ratio, AAII survey, credit spreads, institutional positioning, and market momentum to quantify market sentiment on a 0-100 scale. Lower values signal fear (readings near 0 typically mark bear-market bottoms); higher values signal greed (readings near 100 that begin rolling over typically mark bull-market tops). Built for long-term investors who want a stable framework for reading sentiment extremes through market volatility.",
     "keywords": "market sentiment, investor sentiment, fear greed index, VIX analysis, Put Call Ratio, stock market psychology, investment strategy, market indicators, sentiment tracking, Taiwan stock sentiment, US stock sentiment",
     "heading": "Market Sentiment Indicators Overview",
     "composite": {
