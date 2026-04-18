@@ -276,7 +276,9 @@
     "inputPlaceholder": "Enter message...",
     "sendButton": "Send",
     "quickReplyTitle": "Have questions about the website features?<br />Click on the FAQ below,<br > or chat with Piggy Customer Service",
-    "sendMessageError": "Oops, the message seems lost. Please try again later!"
+    "sendMessageError": "Oops, the message seems lost. Please try again later!",
+    "typingIndicator": "Agent is replying",
+    "unreadBadge": "You have unread messages"
   },
   "dialog": {
     "close": "Close",

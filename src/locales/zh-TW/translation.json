@@ -292,7 +292,9 @@
     "inputPlaceholder": "輸入訊息...",
     "sendButton": "傳送",
     "quickReplyTitle": "對網站有疑問嗎？<br />點選下方常見問題，<br />或是直接與小豬客服對話",
-    "sendMessageError": "糟糕，訊息好像迷路了，請稍後再試一次！"
+    "sendMessageError": "糟糕，訊息好像迷路了，請稍後再試一次！",
+    "typingIndicator": "客服回覆中",
+    "unreadBadge": "有未讀訊息"
   },
   "dialog": {
     "close": "關閉",

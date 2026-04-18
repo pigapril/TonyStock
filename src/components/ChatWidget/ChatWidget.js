@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 import './ChatWidget.css';
 import { useAuth } from '../Auth/useAuth';
 import { useDialog } from '../../components/Common/Dialog/useDialog';
@@ -11,8 +12,14 @@ import csrfClient from '../../utils/csrfClient'; // **新增：引入共用的 a
 
 const ChatWidget = () => {
   const { t } = useTranslation();
+  const STORAGE_KEY = 'chatWidget.session.v1';
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(() => {
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      return raw ? (JSON.parse(raw).messages || []) : [];
+    } catch { return []; }
+  });
   const [input, setInput] = useState('');
   const chatWidgetRef = useRef(null);
   const chatBodyRef = useRef(null);
@@ -23,17 +30,33 @@ const ChatWidget = () => {
   const inputRef = useRef(null);
   const [categorizedFaqs, setCategorizedFaqs] = useState({});
   const [initialQuickRepliesLoaded, setInitialQuickRepliesLoaded] = useState(false);
+  const [isWaitingReply, setIsWaitingReply] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(() => {
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      return raw ? (JSON.parse(raw).unreadCount || 0) : 0;
+    } catch { return 0; }
+  });
+  const isOpenRef = useRef(isOpen);
+  useEffect(() => { isOpenRef.current = isOpen; }, [isOpen]);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, unreadCount }));
+    } catch {}
+  }, [messages, unreadCount]);
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
     if (!isOpen) {
         setInitialQuickRepliesLoaded(false);
+        setUnreadCount(0);
     }
   };
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
-    
+    if (!input.trim() || isWaitingReply) return;
+
     if (!user) {
       Analytics.auth.loginRequired({
         from: 'chat_widget'
@@ -48,6 +71,7 @@ const ChatWidget = () => {
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput('');
+    setIsWaitingReply(true);
 
     // API 金鑰請從環境變數中獲取
     const apiKey = process.env.REACT_APP_AKASHCHAT_API_KEY || '';
@@ -75,6 +99,9 @@ const ChatWidget = () => {
       if (data.reply) {
         const reply = {role: 'assistant', content: data.reply};
         setMessages(prev => [...prev, reply]);
+        if (!isOpenRef.current) {
+          setUnreadCount(prev => prev + 1);
+        }
         if (isMobile && inputRef.current) {
           inputRef.current.blur();
         }
@@ -85,6 +112,11 @@ const ChatWidget = () => {
       console.error("發送訊息錯誤：", error);
       const errorReply = { role: 'assistant', content: t('chatWidget.sendMessageError') };
       setMessages(prev => [...prev, errorReply]);
+      if (!isOpen) {
+        setUnreadCount(prev => prev + 1);
+      }
+    } finally {
+      setIsWaitingReply(false);
     }
   };
 
@@ -201,7 +233,18 @@ const ChatWidget = () => {
     if (chatBodyRef.current) {
       chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isWaitingReply]);
+
+  useEffect(() => {
+    if (!isOpen || !chatBodyRef.current) return;
+    const userMessages = chatBodyRef.current.querySelectorAll('.chat-message.user');
+    const lastUserMessage = userMessages[userMessages.length - 1];
+    if (lastUserMessage) {
+      lastUserMessage.scrollIntoView({ block: 'start' });
+    } else {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -219,6 +262,9 @@ const ChatWidget = () => {
       setCategorizedFaqs({});
       setInitialQuickRepliesLoaded(false);
       setIsOpen(false);
+      setIsWaitingReply(false);
+      setUnreadCount(0);
+      try { sessionStorage.removeItem(STORAGE_KEY); } catch {}
     };
 
     window.addEventListener('logoutSuccess', handleLogout);
@@ -283,13 +329,24 @@ const ChatWidget = () => {
                 else if (msg.role && msg.content) {
                   return (
                     <div key={msg.id || index} className={`chat-message ${msg.role}`}>
-                      {msg.content}
+                      {msg.role === 'assistant' ? (
+                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                      ) : (
+                        msg.content
+                      )}
                     </div>
                   );
                 }
                 return null;
               });
             })()}
+            {isWaitingReply && (
+              <div className="chat-message assistant typing-indicator" aria-label={t('chatWidget.typingIndicator')}>
+                <span className="typing-dot"></span>
+                <span className="typing-dot"></span>
+                <span className="typing-dot"></span>
+              </div>
+            )}
           </div>
           <div className="chat-input">
             <input
@@ -315,7 +372,11 @@ const ChatWidget = () => {
         </div>
       )}
       <button className="chat-toggle-button" onClick={toggleChat} aria-label={t('chatWidget.headerTitle')}>
-
+        {unreadCount > 0 && (
+          <span className="chat-unread-badge" aria-label={t('chatWidget.unreadBadge')}>
+            {unreadCount > 9 ? '9+' : unreadCount}
+          </span>
+        )}
       </button>
     </>
   );
