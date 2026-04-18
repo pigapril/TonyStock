@@ -114,7 +114,7 @@ describe('PaymentFlow integration', () => {
 
     await renderFlow({ billingPeriod: 'yearly' });
 
-    expect(screen.getByText('使用預設定價資料')).toBeInTheDocument();
+    expect(screen.getByText('顯示備用價格,請重新整理以取得最新資訊')).toBeInTheDocument();
     expect(screen.getByText('NT$ 2,990')).toBeInTheDocument();
   });
 });

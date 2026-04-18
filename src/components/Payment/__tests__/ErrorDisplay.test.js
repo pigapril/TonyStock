@@ -53,7 +53,7 @@ describe('ErrorDisplay', () => {
     expect(screen.getByText('付款失敗')).toBeInTheDocument();
     expect(screen.getByText('付款過程中發生問題，請稍後再試')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText('common.retry'));
+    fireEvent.click(screen.getByText('重試'));
     await waitFor(() => {
       expect(onRetry).toHaveBeenCalled();
     });
@@ -85,7 +85,7 @@ describe('ErrorDisplay', () => {
     );
 
     expect(document.querySelector('.fixed.inset-0.bg-gray-500')).toBeInTheDocument();
-    expect(screen.getByText('common.technicalDetails')).toBeInTheDocument();
+    expect(screen.getByText('技術細節')).toBeInTheDocument();
     expect(screen.getByText('PAYMENT_FAILED')).toBeInTheDocument();
 
     act(() => {
