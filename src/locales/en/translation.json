@@ -240,7 +240,8 @@
       "suspicious_activity": "Suspicious activity detected. Please contact support",
       "account_suspended": "Your account has been suspended and cannot redeem codes",
       "region_restricted": "This code is not available in your region",
-      "device_limit_exceeded": "This device has reached the redemption limit"
+      "device_limit_exceeded": "This device has reached the redemption limit",
+      "plan_not_eligible": "This code isn't eligible for your current plan"
     },
     "units": {
       "day": "day",
@@ -261,6 +262,13 @@
         "percentage": "{{percentage}}% OFF",
         "fixed": "{{amount}} OFF"
       }
+    },
+    "actions": {
+      "upgrade_to_plan": "Upgrade to {{plan}}",
+      "upgrade_plan": "Upgrade plan",
+      "view_history": "View history",
+      "retry_input": "Try another code",
+      "view_alternatives": "See other options"
     }
   },
   "userProfile": {
@@ -348,7 +356,18 @@
     "cancel": "Cancel",
     "dataLoadError": "Data Load Error",
     "refresh": "Refresh",
-    "locale": "en"
+    "locale": "en",
+    "errorLoading": "Failed to load",
+    "retry": "Retry",
+    "retrying": "Retrying…",
+    "retryIn": "Retry in {{seconds}}s",
+    "technicalDetails": "Technical details",
+    "errorCode": "Error code",
+    "timestamp": "Timestamp",
+    "context": "Context",
+    "originalMessage": "Original message",
+    "errorPrefix": "Error:",
+    "unknownError": "Unknown error"
   },
   "googleTrendsMarket": {
     "invalidData": "Invalid data format",
@@ -1134,7 +1153,10 @@
         "twFlagAlt": "Taiwan Flag",
         "usFlagAlt": "US Flag",
         "hkFlagAlt": "HK Flag",
-        "logoAlt": "{{symbol}} logo"
+        "logoAlt": "{{symbol}} logo",
+        "jpFlagAlt": "Japan market flag",
+        "cnFlagAlt": "China market flag",
+        "krFlagAlt": "Korea market flag"
       }
     },
     "newsDialog": {
@@ -1145,6 +1167,13 @@
       "placeholder": "Enter stock symbol",
       "loading": "Searching...",
       "noResults": "No matching stocks found"
+    },
+    "categoryManager": {
+      "title": "Manage categories",
+      "createCategory": "Create category",
+      "editCategory": "Edit category",
+      "deleteCategory": "Delete category",
+      "dragToReorder": "Drag to reorder"
     }
   },
   "errors": {
@@ -1330,7 +1359,8 @@
           "Ad-free Experience"
         ]
       },
-      "loadingPlans": "Loading plans..."
+      "loadingPlans": "Loading plans...",
+      "loadError": "Failed to load plans"
     },
     "usage": {
       "daily": "Daily Usage",
@@ -1387,7 +1417,9 @@
       "feature2": "Complete market sentiment analysis",
       "feature3": "Personalized portfolio management",
       "understood": "Got it"
-    }
+    },
+    "cancelError": "Failed to cancel subscription",
+    "unlimited": "Unlimited"
   },
   "payment": {
     "upgradeTitle": "Upgrade to {{planName}} Plan",
@@ -1475,7 +1507,8 @@
         "failed": "Failed",
         "pending": "Processing",
         "refunded": "Refunded",
-        "unknown": "Unknown"
+        "unknown": "Unknown",
+        "expired": "Expired"
       },
       "method": "Payment Method",
       "plan": "Plan",
@@ -1551,6 +1584,16 @@
       "applied": "Redemption code applied",
       "savings": "Save NT$ {{amount}}",
       "notApplicable": "This redemption code is not applicable to this plan"
+    },
+    "loading": {
+      "pricingData": "Loading pricing…"
+    },
+    "error": {
+      "pricingLoadFailed": "Failed to load pricing",
+      "retry": "Retry"
+    },
+    "warning": {
+      "usingFallbackPricing": "Showing fallback pricing — please refresh for latest"
     }
   },
   "invoice": {

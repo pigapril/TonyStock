@@ -365,7 +365,17 @@
     "next": "下一頁",
     "cancel": "取消",
     "dataLoadError": "資料載入發生錯誤",
-    "locale": "zh-TW"
+    "locale": "zh-TW",
+    "errorLoading": "載入失敗",
+    "retry": "重試",
+    "retrying": "重試中…",
+    "retryIn": "{{seconds}} 秒後重試",
+    "technicalDetails": "技術細節",
+    "errorCode": "錯誤代碼",
+    "timestamp": "時間",
+    "context": "內容",
+    "originalMessage": "原始訊息",
+    "errorPrefix": "錯誤:"
   },
   "googleTrendsMarket": {
     "invalidData": "無效的數據格式",
@@ -1153,7 +1163,10 @@
         "twFlagAlt": "台灣國旗",
         "usFlagAlt": "美國國旗",
         "hkFlagAlt": "香港國旗",
-        "logoAlt": "{{symbol}} 標誌"
+        "logoAlt": "{{symbol}} 標誌",
+        "jpFlagAlt": "日本國旗",
+        "cnFlagAlt": "中國國旗",
+        "krFlagAlt": "韓國國旗"
       }
     },
     "newsDialog": {
@@ -1164,6 +1177,13 @@
       "placeholder": "輸入股票代號",
       "loading": "搜尋中...",
       "noResults": "找不到符合的股票"
+    },
+    "categoryManager": {
+      "title": "管理分類",
+      "createCategory": "新增分類",
+      "editCategory": "編輯分類",
+      "deleteCategory": "刪除分類",
+      "dragToReorder": "拖曳以重新排序"
     }
   },
   "errors": {
@@ -1348,7 +1368,8 @@
           "無廣告體驗"
         ]
       },
-      "loadingPlans": "載入方案資料中..."
+      "loadingPlans": "載入方案資料中...",
+      "loadError": "方案載入失敗"
     },
     "usage": {
       "daily": "每日使用量",
@@ -1405,7 +1426,9 @@
       "feature2": "完整市場情緒分析",
       "feature3": "個人化投資組合管理",
       "understood": "我知道了"
-    }
+    },
+    "cancelError": "取消訂閱失敗",
+    "unlimited": "無上限"
   },
   "payment": {
     "upgradeTitle": "升級到 {{planName}} 方案",
@@ -1574,6 +1597,16 @@
       "applied": "兌換代碼已套用",
       "savings": "節省 NT$ {{amount}}",
       "notApplicable": "此兌換碼不適用於此方案"
+    },
+    "loading": {
+      "pricingData": "載入價格資訊…"
+    },
+    "error": {
+      "pricingLoadFailed": "價格資訊載入失敗",
+      "retry": "重試"
+    },
+    "warning": {
+      "usingFallbackPricing": "顯示備用價格,請重新整理以取得最新資訊"
     }
   },
   "invoice": {
