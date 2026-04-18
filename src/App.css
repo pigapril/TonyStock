@@ -880,31 +880,103 @@ body {
   position: relative;
 }
 
-/* 修改桌面版下拉選單樣式 */
-.desktop-dropdown-menu {
+/* 透明 hover bridge：補上 trigger 與 menu 之間的 6px 死區，避免滑鼠穿越時選單閃掉 */
+.desktop-nav-item.dropdown::after {
+  content: '';
   position: absolute;
   top: 100%;
-  padding: 8px 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  pointer-events: none;
+}
+
+.desktop-nav-item.dropdown:hover::after {
+  pointer-events: auto;
+}
+
+.desktop-nav-items .desktop-nav-trigger {
+  color: rgba(15, 23, 42, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 8px clamp(10px, 0.85vw, 15px);
+  border-radius: 999px;
+  cursor: default;
+  transition:
+    color 0.22s ease,
+    background-color 0.22s ease,
+    box-shadow 0.22s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.desktop-nav-items .desktop-nav-item.dropdown:hover .desktop-nav-trigger,
+.desktop-nav-items .desktop-nav-item.active .desktop-nav-trigger {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(247, 250, 252, 0.82));
+  color: #0f4c81;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.desktop-nav-items .desktop-nav-item.active .desktop-nav-trigger {
+  font-weight: 500;
+}
+
+.desktop-nav-items .desktop-nav-item.active .desktop-nav-trigger svg {
+  color: #3b82f6;
+}
+
+/* 桌面版下拉選單：用 opacity + visibility 過渡，滑鼠進出更柔順 */
+.desktop-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  padding: 6px 0;
   min-width: 160px;
   background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  border-radius: 4px;
+  box-shadow:
+    0 12px 32px rgba(15, 23, 42, 0.12),
+    0 2px 6px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 12px;
   z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.18s;
+}
+
+.desktop-nav-item.dropdown:hover .desktop-dropdown-menu,
+.desktop-nav-item.dropdown:focus-within .desktop-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0s;
 }
 
 .desktop-dropdown-menu a {
-  padding: 8px 16px !important;
+  padding: 9px 18px !important;
   display: block;
   width: 100%;
-  color: #333;
+  color: rgba(15, 23, 42, 0.82);
   text-decoration: none;
-  transition: all 0.2s ease;
+  font-size: 0.88rem;
+  letter-spacing: 0.01em;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  box-sizing: border-box;
 }
 
-.desktop-dropdown-menu a:hover {
+.desktop-dropdown-menu a:hover,
+.desktop-dropdown-menu a.active-nav-link {
   background-color: rgba(59, 130, 246, 0.08);
-  color: #3b82f6;
-  width: 80%;
+  color: #0f4c81;
 }
 
 /* 修正側邊欄中 dropdown 的置左效果 */

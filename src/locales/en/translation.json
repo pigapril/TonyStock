@@ -907,6 +907,35 @@
       "compositionDescription": "View latest data for all indicators, contribution analysis, and detailed insights",
       "upgradeButton": "Upgrade Now",
       "unlockButton": "Unlock Full Features"
+    },
+    "tw": {
+      "pageTitle": "Sentiment Inside Out (SIO) Taiwan Fear & Greed Index | TAIEX Sentiment Tracking",
+      "pageDescription": "The Sentiment Inside Out (SIO) Taiwan Fear & Greed Index aggregates nine TAIEX-specific signals — options-implied volatility, Put/Call Ratio, USD/TWD, margin maintenance ratio, foreign-institution futures positioning, market breadth, margin-to-short ratio, index momentum, and effective trading accounts — into a single 0-to-100 score. Lower readings signal extreme fear and potential bear-market bottoms; higher readings signal greed and late-cycle tops. Built for long-term investors tracking Taiwan stock sentiment.",
+      "keywords": "Taiwan stock sentiment, TAIEX fear greed index, TAIEX options volatility, Put Call Ratio, margin maintenance ratio, foreign institutional futures, margin-to-short ratio, Taiwan market indicators, TAIEX sentiment tracking",
+      "pageSubtitle": "Nine TAIEX signals, compressed into one objective sentiment read.",
+      "heading": "Taiwan Market Sentiment Analysis",
+      "faq": {
+        "q1": "What is the SIO Taiwan Sentiment Indicator?",
+        "a1": "The SIO Taiwan Sentiment Indicator measures the overall sentiment of the Taiwan stock market. It combines nine TAIEX-specific signals — options-implied volatility, foreign-institution futures positioning, margin maintenance ratio and more — into a single 0-to-100 score, helping long-term investors identify when Taiwan's market has entered an extreme zone.",
+        "q2": "How is this different from the 'CNN Fear & Greed Index' or the 'BofA Bull & Bear Indicator'?",
+        "a2": "Both CNN and BofA indicators are built for the US market, using VIX, Put/Call Ratio, AAII and other US-specific data that can't capture what moves Taiwan stocks — foreign-institution futures positioning, margin maintenance ratio, margin-to-short ratio and USD/TWD. The SIO Taiwan Fear & Greed Index is a TAIEX-customized version that aggregates nine Taiwan-native signals: options-implied volatility, retail and foreign positioning, FX pressure and market breadth. It keeps the same long-horizon allocation logic as the BofA Bull & Bear Indicator, but properly reflects Taiwan's capital flow and sentiment structure.",
+        "q3": "What does the 0 to 100 score mean? How do I interpret it?",
+        "a3": "The score represents Taiwan's sentiment in its historical context. 0-20 is Extreme Fear, 21-40 Fear, 41-60 Neutral, 61-80 Greed, 81-100 Extreme Greed. A high score doesn't mean an immediate reversal — TAIEX can stay elevated while foreign institutions keep buying. The signal worth watching is when multiple indicators approach extremes simultaneously.",
+        "q4": "How often is the data updated?",
+        "a4": "The composite score updates as its components update. Daily-frequency signals (options volatility, margin maintenance, index momentum) refresh every trading session; weekly data (foreign futures positioning, effective trading accounts) refreshes on its release schedule. In practice, the composite score moves every trading day.",
+        "q5": "How can indicators with completely different units — like options volatility and margin maintenance ratio — be combined?",
+        "a5": "All signals are normalized using Z-scores. Volatility is a percentage, margin maintenance is a ratio, foreign futures are contract counts — the Z-score converts each to its relative position against its own historical distribution, letting them be weighted and aggregated on a comparable scale.",
+        "q6": "How does the indicator avoid look-ahead bias for weekly or post-close data, like foreign futures positioning?",
+        "a6": "We enforce Point-in-Time calibration throughout the calculation. Foreign-institution futures data is released after market close; margin and short-interest balances are released the following day. During backtesting the system reconstructs the information state that was actually available at each moment, adding the corresponding lag, to prevent 'peeking into the future.'",
+        "q7": "Has the below-15 buy / above-96 trim strategy gone through out-of-sample stress testing?",
+        "a7": "Yes. We use Walk-Forward Validation: model parameters are locked to pre-2019 Taiwan data, with 2020 through 2026 as a blind test period. Across the 2020 pandemic crash, the 2022 rate-hike drawdown, and the 2024 TAIEX all-time highs, the strategy delivered better risk-adjusted returns than buy-and-hold TAIEX, with materially lower maximum drawdown.",
+        "q8": "At what score should I start entering? Is there one best entry point?",
+        "a8": "There isn't one best score. Historically, larger TAIEX corrections have tended to push the indicator below 15, but whether any given correction reaches that level — and how much further it might go — isn't predictable. Some pullbacks stabilize near 15; others grind all the way into single digits. How you stage entries should therefore depend on your own risk tolerance, time horizon and position size: a conservative investor may begin small tranches earlier (around 15-20), while a more aggressive one may wait for deeper readings. The point isn't to wait for a specific number; it's to decide in advance — based on the drawdown you can actually sit through — how you'll scale in, so that discipline rather than emotion drives each entry.",
+        "q9": "If the indicator hits Extreme Greed (96+), should I sell everything or short TAIEX immediately?",
+        "a9": "Not recommended. When the score enters the >96 zone while foreign institutions are still net buyers and margin has not yet overheated, TAIEX can stay strong for a while. Liquidating risks missing the main leg up, and shorting carries outsized downside. A more reasonable approach is to review your risk exposure and, based on your allocation plan, consider trimming in tranches.",
+        "q10": "Why is the composite score above 90 when no individual indicator has reached an extreme?",
+        "a10": "Because the model reads breadth, not just peaks. When retail margin, foreign futures longs, call-skewed options positioning, market breadth and momentum all tilt bullish at the same time, that cross-signal consensus is historically rarer in Taiwan than any single series hitting its own extreme. The simultaneous agreement pushes the composite percentile up — a warning that structural risk is accumulating."
+      }
     }
   },
   "pageContainer": {

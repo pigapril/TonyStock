@@ -142,6 +142,7 @@ function AppContent() {
   const useSideNavigation = isMobile || shouldUseSideNav;
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [sentimentDropdownOpen, setSentimentDropdownOpen] = React.useState(false);
 
   useEffect(() => {
     if (lang && i18n.options.supportedLngs.includes(lang)) {
@@ -306,16 +307,36 @@ function AppContent() {
                 <span>{t('nav.priceAnalysis')}</span>
               </NavLink>
             </li>
-            <li className="sidebar-item-3">
-              <NavLink
-                to={`/${lang}/market-sentiment`}
-                onClick={handleNavItemClick}
-                className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                aria-current={({ isActive }) => isActive ? "page" : undefined}
+            <li className="sidebar-item-3 sidebar-item dropdown">
+              <div
+                className="sidebar-dropdown-title"
+                onClick={() => setSentimentDropdownOpen(!sentimentDropdownOpen)}
               >
                 <FaHeartbeat />
                 <span>{t('nav.marketSentiment')}</span>
-              </NavLink>
+              </div>
+              {sentimentDropdownOpen && (
+                <ul className="dropdown-menu">
+                  <li>
+                    <NavLink
+                      to={`/${lang}/market-sentiment`}
+                      onClick={() => { handleNavItemClick(); setSentimentDropdownOpen(false); }}
+                      className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                    >
+                      <span>{lang === 'zh-TW' ? '🇺🇸 美股' : '🇺🇸 US Market'}</span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to={`/${lang}/tw-market-sentiment`}
+                      onClick={() => { handleNavItemClick(); setSentimentDropdownOpen(false); }}
+                      className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                    >
+                      <span>{lang === 'zh-TW' ? '🇹🇼 台股' : '🇹🇼 TW Market'}</span>
+                    </NavLink>
+                  </li>
+                </ul>
+              )}
             </li>
             {/*
             <li className="sidebar-item dropdown">
@@ -436,14 +457,26 @@ function AppContent() {
                     <FaChartLine />
                     <span>{t('nav.priceAnalysis')}</span>
                   </NavLink>
-                  <NavLink
-                    to={`/${lang}/market-sentiment`}
-                    className={({ isActive }) => isActive ? "active-nav-link" : ""}
-                    aria-current={({ isActive }) => isActive ? "page" : undefined}
-                  >
-                    <FaHeartbeat />
-                    <span>{t('nav.marketSentiment')}</span>
-                  </NavLink>
+                  <div className={`desktop-nav-item dropdown${location.pathname.includes('/market-sentiment') ? ' active' : ''}`}>
+                    <div className="desktop-nav-trigger">
+                      <FaHeartbeat />
+                      <span>{t('nav.marketSentiment')}</span>
+                    </div>
+                    <div className="desktop-dropdown-menu">
+                      <NavLink
+                        to={`/${lang}/market-sentiment`}
+                        className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                      >
+                        {lang === 'zh-TW' ? '🇺🇸 美股' : '🇺🇸 US Market'}
+                      </NavLink>
+                      <NavLink
+                        to={`/${lang}/tw-market-sentiment`}
+                        className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                      >
+                        {lang === 'zh-TW' ? '🇹🇼 台股' : '🇹🇼 TW Market'}
+                      </NavLink>
+                    </div>
+                  </div>
                   <NavLink
                     to={`/${lang}/watchlist`}
                     onClick={handleWatchlistClick}

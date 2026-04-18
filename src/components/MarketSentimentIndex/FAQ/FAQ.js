@@ -2,62 +2,27 @@ import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './FAQ.css';
 
-function FAQ({ activeIndicator = 'composite' }) {
+function FAQ({ activeIndicator = 'composite', faqKeyPrefix = 'marketSentiment.enhancedDescription.content.faq' }) {
   const { t } = useTranslation();
   const [openId, setOpenId] = useState('q1');
 
-  const items = useMemo(() => ([
-    {
-      id: 'q1',
-      question: t('marketSentiment.enhancedDescription.content.faq.q1'),
-      answer: t('marketSentiment.enhancedDescription.content.faq.a1')
-    },
-    {
-      id: 'q2',
-      question: t('marketSentiment.enhancedDescription.content.faq.q2'),
-      answer: t('marketSentiment.enhancedDescription.content.faq.a2')
-    },
-    {
-      id: 'q3',
-      question: t('marketSentiment.enhancedDescription.content.faq.q3'),
-      answer: t('marketSentiment.enhancedDescription.content.faq.a3')
-    },
-    {
-      id: 'q4',
-      question: t('marketSentiment.enhancedDescription.content.faq.q4'),
-      answer: t('marketSentiment.enhancedDescription.content.faq.a4')
-    },
-    {
-      id: 'q5',
-      question: t('marketSentiment.enhancedDescription.content.faq.q5'),
-      answer: t('marketSentiment.enhancedDescription.content.faq.a5')
-    },
-    {
-      id: 'q6',
-      question: t('marketSentiment.enhancedDescription.content.faq.q6'),
-      answer: t('marketSentiment.enhancedDescription.content.faq.a6')
-    },
-    {
-      id: 'q7',
-      question: t('marketSentiment.enhancedDescription.content.faq.q7'),
-      answer: t('marketSentiment.enhancedDescription.content.faq.a7')
-    },
-    {
-      id: 'q8',
-      question: t('marketSentiment.enhancedDescription.content.faq.q8'),
-      answer: t('marketSentiment.enhancedDescription.content.faq.a8')
-    },
-    {
-      id: 'q9',
-      question: t('marketSentiment.enhancedDescription.content.faq.q9'),
-      answer: t('marketSentiment.enhancedDescription.content.faq.a9')
-    },
-    {
-      id: 'q10',
-      question: t('marketSentiment.enhancedDescription.content.faq.q10'),
-      answer: t('marketSentiment.enhancedDescription.content.faq.a10')
-    }
-  ]), [t]);
+  // Fallback to US FAQ keys when market-specific keys are missing, so we never render
+  // a raw translation key if a TW key is ever removed.
+  const tq = (id) => t(`${faqKeyPrefix}.${id}`, {
+    defaultValue: t(`marketSentiment.enhancedDescription.content.faq.${id}`)
+  });
+
+  const items = useMemo(() => (
+    Array.from({ length: 10 }, (_, index) => {
+      const id = `q${index + 1}`;
+      return {
+        id,
+        question: tq(id),
+        answer: tq(`a${index + 1}`)
+      };
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  ), [t, faqKeyPrefix]);
 
   return (
     <div className="msiFaq">

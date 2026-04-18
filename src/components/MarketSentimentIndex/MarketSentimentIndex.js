@@ -285,6 +285,17 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   const { requestAdDisplay } = useAdContext();
   const currentLang = i18n.language;
   const pageRoutePath = `/${i18n.language}/${marketConfig.routePath}`;
+
+  // SEO keys with fallback to shared defaults (so missing TW translations degrade to US copy
+  // rather than rendering "marketSentiment.tw.pageTitle" literally).
+  const seoConfig = marketConfig.seo || {};
+  const seoTitle = t(seoConfig.pageTitleKey || 'marketSentiment.pageTitle', { defaultValue: t('marketSentiment.pageTitle') });
+  const seoDescription = t(seoConfig.pageDescriptionKey || 'marketSentiment.pageDescription', { defaultValue: t('marketSentiment.pageDescription') });
+  const seoKeywords = t(seoConfig.keywordsKey || 'marketSentiment.keywords', { defaultValue: t('marketSentiment.keywords') });
+  const seoSubtitle = t(seoConfig.pageSubtitleKey || 'marketSentiment.pageSubtitle', { defaultValue: t('marketSentiment.pageSubtitle') });
+  const seoHeading = t(seoConfig.headingKey || 'marketSentiment.heading', { defaultValue: t('marketSentiment.heading') });
+  const seoOgImage = seoConfig.ogImage || '/images/market-sentiment-og.png';
+  const faqKeyPrefix = seoConfig.faqKeyPrefix || 'marketSentiment.enhancedDescription.content.faq';
   const benchmarkSeriesLabel = marketConfig.benchmarkAxisLabel
     ? (marketConfig.benchmarkAxisLabel[currentLang] || marketConfig.benchmarkAxisLabel.en)
     : t('marketSentiment.chart.spyPriceLabel');
@@ -1011,14 +1022,14 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   const marketSentimentJsonLd = useMemo(() => {
     const pageSchema = {
       "@type": "WebPage",
-      "name": t('marketSentiment.pageTitle'),
-      "description": t('marketSentiment.pageDescription'),
+      "name": seoTitle,
+      "description": seoDescription,
       "url": `${window.location.origin}${pageRoutePath}`,
       "inLanguage": currentLang,
-      "keywords": t('marketSentiment.keywords'),
+      "keywords": seoKeywords,
       "mainEntity": {
         "@type": "Article",
-        "headline": t('marketSentiment.heading'),
+        "headline": seoHeading,
         "author": {
           "@type": "Organization",
           "name": "Sentiment Inside Out"
@@ -1031,9 +1042,15 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
             "url": `${window.location.origin}/logo.png`
           }
         },
-        "datePublished": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
-        "dateModified": sentimentData?.compositeScoreLastUpdate ? new Date(sentimentData.compositeScoreLastUpdate).toISOString() : new Date().toISOString(),
-        "image": `${window.location.origin}/images/market-sentiment-og.png`
+        // Use a stable fallback when live data is absent — rendering `new Date()` every render
+        // created a moving `datePublished`, which hurts freshness signals.
+        "datePublished": sentimentData?.compositeScoreLastUpdate
+          ? new Date(sentimentData.compositeScoreLastUpdate).toISOString()
+          : '2024-01-01T00:00:00Z',
+        "dateModified": sentimentData?.compositeScoreLastUpdate
+          ? new Date(sentimentData.compositeScoreLastUpdate).toISOString()
+          : '2024-01-01T00:00:00Z',
+        "image": `${window.location.origin}${seoOgImage}`
       },
       "potentialAction": {
         "@type": "SearchAction",
@@ -1048,8 +1065,12 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
         answer: `${t('marketSentiment.enhancedDescription.content.tips.tip1')} ${t('marketSentiment.enhancedDescription.content.tips.tip2')} ${t('marketSentiment.enhancedDescription.content.tips.tip3')}`
       },
       ...Array.from({ length: 10 }, (_, index) => ({
-        question: t(`marketSentiment.enhancedDescription.content.faq.q${index + 1}`),
-        answer: t(`marketSentiment.enhancedDescription.content.faq.a${index + 1}`)
+        question: t(`${faqKeyPrefix}.q${index + 1}`, {
+          defaultValue: t(`marketSentiment.enhancedDescription.content.faq.q${index + 1}`)
+        }),
+        answer: t(`${faqKeyPrefix}.a${index + 1}`, {
+          defaultValue: t(`marketSentiment.enhancedDescription.content.faq.a${index + 1}`)
+        })
       }))
     ];
 
@@ -1070,7 +1091,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
         }
       ]
     };
-  }, [currentLang, pageRoutePath, t, sentimentData?.compositeScoreLastUpdate]);
+  }, [currentLang, pageRoutePath, t, sentimentData?.compositeScoreLastUpdate, seoTitle, seoDescription, seoKeywords, seoHeading, seoOgImage, faqKeyPrefix]);
 
   const handleSliderChange = (newRange) => {
     setCurrentSliderRange(newRange);
@@ -1419,10 +1440,10 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
 
   const renderPageShell = (state = 'loading') => (
     <PageContainer
-      title={t('marketSentiment.pageTitle')}
-      description={t('marketSentiment.pageDescription')}
-      keywords={t('marketSentiment.keywords')}
-      ogImage="/images/market-sentiment-og.png"
+      title={seoTitle}
+      description={seoDescription}
+      keywords={seoKeywords}
+      ogImage={seoOgImage}
       ogUrl={`${window.location.origin}${pageRoutePath}`}
     >
       <div className={`market-sentiment-shell market-sentiment-shell--${state}`} aria-hidden={state === 'loading' ? 'true' : undefined}>
@@ -1481,10 +1502,10 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
 
   return (
     <PageContainer
-      title={t('marketSentiment.pageTitle')} // 更新：使用新的翻譯鍵
-      description={t('marketSentiment.pageDescription')} // 更新：使用新的翻譯鍵
-      keywords={t('marketSentiment.keywords')} // 更新：使用新的翻譯鍵
-      ogImage="/images/market-sentiment-og.png"
+      title={seoTitle}
+      description={seoDescription}
+      keywords={seoKeywords}
+      ogImage={seoOgImage}
       ogUrl={`${window.location.origin}${pageRoutePath}`}
       jsonLd={marketSentimentJsonLd}
     >
@@ -1499,7 +1520,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                     {marketConfig.titleIndex[currentLang] || marketConfig.titleIndex.en}
                   </span>
                 </h1>
-                <p className="panel-description">{t('marketSentiment.pageSubtitle')}</p>
+                <p className="panel-description">{seoSubtitle}</p>
               </div>
 
               <div
@@ -1819,6 +1840,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                 currentView="indicators"
                 indicatorsData={indicatorsData}
                 className="learn-layout"
+                faqKeyPrefix={faqKeyPrefix}
               />
             </Suspense>
           ) : null}

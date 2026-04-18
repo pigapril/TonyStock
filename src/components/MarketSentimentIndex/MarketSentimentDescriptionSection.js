@@ -5,7 +5,8 @@ import './MarketSentimentDescriptionSection.css';
 
 function MarketSentimentDescriptionSection({
   activeIndicator = 'composite',
-  className = ''
+  className = '',
+  faqKeyPrefix
 }) {
   const { t } = useTranslation();
 
@@ -18,7 +19,7 @@ function MarketSentimentDescriptionSection({
       </div>
 
       <div className="msiLearn__body">
-        <FAQ activeIndicator={activeIndicator} />
+        <FAQ activeIndicator={activeIndicator} faqKeyPrefix={faqKeyPrefix} />
       </div>
     </section>
   );

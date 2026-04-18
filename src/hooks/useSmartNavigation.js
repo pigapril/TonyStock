@@ -26,7 +26,8 @@ export const useSmartNavigation = (options = {}) => {
     if (!navRef.current) return;
 
     const navElement = navRef.current;
-    const navItems = navElement.querySelectorAll('.desktop-nav-items a, .desktop-nav-items .desktop-nav-item');
+    // 只取 .desktop-nav-items 的直接子層，避免把 dropdown menu 內部的連結誤判為換行的 nav item
+    const navItems = navElement.querySelectorAll('.desktop-nav-items > a, .desktop-nav-items > .desktop-nav-item');
     
     if (navItems.length === 0) return;
 

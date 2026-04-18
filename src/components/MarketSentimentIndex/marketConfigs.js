@@ -57,8 +57,17 @@ export const US_MARKET_SENTIMENT_CONFIG = {
   benchmarkAxisLabel: null,
   titleBrand: 'Sentiment Inside Out (SIO)',
   titleIndex: {
-    'zh-TW': '恐懼貪婪指標',
-    en: 'Fear & Greed Index'
+    'zh-TW': '美股恐懼貪婪指標',
+    en: 'US Fear & Greed Index'
+  },
+  seo: {
+    pageTitleKey: 'marketSentiment.pageTitle',
+    pageDescriptionKey: 'marketSentiment.pageDescription',
+    keywordsKey: 'marketSentiment.keywords',
+    pageSubtitleKey: 'marketSentiment.pageSubtitle',
+    headingKey: 'marketSentiment.heading',
+    ogImage: '/images/market-sentiment-og.png',
+    faqKeyPrefix: 'marketSentiment.enhancedDescription.content.faq'
   }
 };
 
@@ -73,7 +82,7 @@ export const TW_MARKET_SENTIMENT_CONFIG = {
   detailQueryParam: 'indicatorId',
   historyMode: 'range',
   detailIncludesRange: true,
-  showDescriptionSection: false,
+  showDescriptionSection: true,
   currentGaugeHeadlineZh: '當前台股市場情緒',
   currentGaugeHeadlineEn: 'Current Taiwan market sentiment',
   snapshotGaugeHeadlineFormatter: ({ currentLang, formattedRestrictionCutoffDate }) => (
@@ -89,6 +98,15 @@ export const TW_MARKET_SENTIMENT_CONFIG = {
   titleIndex: {
     'zh-TW': '台股恐懼貪婪指標',
     en: 'Taiwan Fear & Greed Index'
+  },
+  seo: {
+    pageTitleKey: 'marketSentiment.tw.pageTitle',
+    pageDescriptionKey: 'marketSentiment.tw.pageDescription',
+    keywordsKey: 'marketSentiment.tw.keywords',
+    pageSubtitleKey: 'marketSentiment.tw.pageSubtitle',
+    headingKey: 'marketSentiment.tw.heading',
+    ogImage: '/logo.png',
+    faqKeyPrefix: 'marketSentiment.tw.faq'
   },
   buildGaugeExplainerCopy: buildTwGaugeExplainerCopy
 };
