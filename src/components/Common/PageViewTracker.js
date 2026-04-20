@@ -13,11 +13,10 @@ export function PageViewTracker() {
 
     const dataLayer = ensureDataLayer();
     dataLayer.push({
-      event: 'pageview',
-      page: {
-        path: location.pathname,
-        title: document.title
-      }
+      event: 'page_view',
+      page_path: location.pathname,
+      page_location: window.location.href,
+      page_title: document.title
     });
   }, [location]);
 

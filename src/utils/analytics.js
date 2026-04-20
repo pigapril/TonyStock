@@ -175,7 +175,7 @@ export const Analytics = {
     changeTimeRange: (data) => {
       pushToDataLayer('sentiment_timerange_change', {
         time_range: data.timeRange,
-        indicator_name: data.currentIndicator
+        current_indicator: data.currentIndicator
       });
     },
 
@@ -183,7 +183,7 @@ export const Analytics = {
     switchViewMode: (data) => {
       pushToDataLayer('sentiment_view_mode_switch', {
         view_mode: data.viewMode,
-        indicator_name: data.currentIndicator
+        current_indicator: data.currentIndicator
       });
     },
 

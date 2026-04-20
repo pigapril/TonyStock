@@ -10,7 +10,7 @@ describe('PageViewTracker', () => {
     document.title = 'Sentiment Inside Out';
   });
 
-  it('queues a pageview even before GTM bootstraps dataLayer', () => {
+  it('queues a page_view even before GTM bootstraps dataLayer', () => {
     render(
       <MemoryRouter initialEntries={['/zh-TW/priceanalysis']}>
         <Routes>
@@ -21,11 +21,10 @@ describe('PageViewTracker', () => {
 
     expect(window.dataLayer).toEqual([
       {
-        event: 'pageview',
-        page: {
-          path: '/zh-TW/priceanalysis',
-          title: 'Sentiment Inside Out'
-        }
+        event: 'page_view',
+        page_path: '/zh-TW/priceanalysis',
+        page_location: window.location.href,
+        page_title: 'Sentiment Inside Out'
       }
     ]);
   });
