@@ -52,7 +52,7 @@ export const Analytics = {
     logout: (data) => {
       pushToDataLayer('auth_logout', {
         status: data.status,
-        source: data.source,
+        trigger_source: data.source,
         identity_service_revoked: data.identityServiceRevoked
       });
     },
@@ -140,9 +140,11 @@ export const Analytics = {
   ui: {
     dialog: {
       open: (data) => {
+        const { source, type, ...rest } = data || {};
         pushToDataLayer('dialog_open', {
-          dialog_type: data.type,
-          ...data
+          dialog_type: type,
+          ...(source && { trigger_source: source }),
+          ...rest
         });
       },
       close: (data) => {
@@ -151,11 +153,13 @@ export const Analytics = {
         });
       },
       action: (data) => {
+        const { source, type, action, feature, ...rest } = data || {};
         pushToDataLayer('dialog_action', {
-          dialog_type: data.type,
-          action: data.action,
-          feature: data.feature,
-          ...data
+          dialog_type: type,
+          action,
+          feature,
+          ...(source && { trigger_source: source }),
+          ...rest
         });
       }
     }
@@ -199,7 +203,7 @@ export const Analytics = {
     // 升級按鈕點擊追蹤
     upgradeClicked: (data) => {
       pushToDataLayer('sentiment_upgrade_clicked', {
-        source: data.source,
+        trigger_source: data.source,
         feature: data.feature,
         component: data.component || 'marketSentiment'
       });
