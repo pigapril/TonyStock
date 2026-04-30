@@ -4,6 +4,15 @@
     padding: 20px;
 }
 
+.google-trends-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
 .google-trends-chart-card {
     background-color: white;
     border-radius: 8px;

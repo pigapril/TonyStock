@@ -5,6 +5,12 @@
     padding: 20px;
 }
 
+.google-trends-market-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+}
+
 .google-trends-market-chart-card {
     background-color: white;
     border-radius: 8px;

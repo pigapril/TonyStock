@@ -69,13 +69,13 @@ const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {
                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                    dataKey="date" 
+                <XAxis
+                    dataKey="date"
                     tickFormatter={(tick) => {
                         const date = new Date(tick);
                         return `${date.getMonth() + 1}/${date.getDate()}`;
                     }}
-                    interval={1}
+                    interval={Math.max(0, Math.floor(formattedData.length / 10))}
                     angle={-30}
                     textAnchor="end"
                     height={60}

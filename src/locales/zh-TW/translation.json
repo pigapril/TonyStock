@@ -407,6 +407,13 @@
     "noResultsIcon": "🔍",
     "noResults": "找不到符合的股票"
   },
+  "googleTrendsTimeframe": {
+    "label": "時間範圍",
+    "oneMonth": "1 個月",
+    "threeMonths": "3 個月",
+    "sixMonths": "6 個月",
+    "oneYear": "1 年"
+  },
   "home": {
     "pageTitle": "Sentiment Inside Out｜市場情緒分析平台",
     "pageDescription": "Sentiment Inside Out 透過 SIO 恐懼貪婪指標、價格趨勢分析與追蹤清單，幫助長期投資者更穩定地理解市場情緒。",

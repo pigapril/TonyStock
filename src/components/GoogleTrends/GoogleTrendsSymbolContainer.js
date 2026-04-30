@@ -2,9 +2,12 @@ import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import GoogleTrendsSymbolSearch from './GoogleTrendsSymbolSearch';
 import GoogleTrendsSymbolChart from './GoogleTrendsSymbolChart';
+import TrendsTimeframeSelector from './TrendsTimeframeSelector';
 import { fetchGoogleTrendsData } from './googleTrends.service';
-import '../Loading/Loading.css';  // 確保引入載入動畫樣式
-import './GoogleTrendsSymbolContainer.css';  // 引入 Container 樣式
+import '../Loading/Loading.css';
+import './GoogleTrendsSymbolContainer.css';
+
+const DEFAULT_TIMEFRAME = '3m';
 
 const GoogleTrendsSymbolContainer = () => {
     const { t } = useTranslation();
@@ -12,17 +15,16 @@ const GoogleTrendsSymbolContainer = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [symbol, setSymbol] = useState('');
+    const [timeframe, setTimeframe] = useState(DEFAULT_TIMEFRAME);
 
-    const fetchData = useCallback(async (currentSymbol) => {
+    const fetchData = useCallback(async (currentSymbol, currentTimeframe) => {
         if (!currentSymbol) return;
-        
+
         setLoading(true);
         setError(null);
         try {
-            console.log('Fetching data for symbol:', currentSymbol);
-            const data = await fetchGoogleTrendsData(currentSymbol);
-            console.log('Received data:', data);
-            
+            const data = await fetchGoogleTrendsData(currentSymbol, currentTimeframe);
+
             if (data && data.data && Array.isArray(data.data)) {
                 setChartData(data.data);
             } else {
@@ -39,18 +41,28 @@ const GoogleTrendsSymbolContainer = () => {
 
     React.useEffect(() => {
         if (symbol) {
-            fetchData(symbol);
+            fetchData(symbol, timeframe);
         }
-    }, [fetchData, symbol]);
+    }, [fetchData, symbol, timeframe]);
 
     const handleSearch = useCallback((searchSymbol) => {
-        console.log('Search triggered with symbol:', searchSymbol);
         setSymbol(searchSymbol);
+    }, []);
+
+    const handleTimeframeChange = useCallback((nextTimeframe) => {
+        setTimeframe(nextTimeframe);
     }, []);
 
     return (
         <div className="google-trends-symbol-container">
-            <GoogleTrendsSymbolSearch onSearch={handleSearch} />
+            <div className="google-trends-controls">
+                <GoogleTrendsSymbolSearch onSearch={handleSearch} />
+                <TrendsTimeframeSelector
+                    value={timeframe}
+                    onChange={handleTimeframeChange}
+                    disabled={loading}
+                />
+            </div>
 
             {loading && (
                 <div className="loading-spinner">
@@ -76,4 +88,4 @@ const GoogleTrendsSymbolContainer = () => {
     );
 };
 
-export default GoogleTrendsSymbolContainer; 
+export default GoogleTrendsSymbolContainer;

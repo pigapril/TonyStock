@@ -3,11 +3,10 @@ import enhancedApiClient from '../../utils/enhancedApiClient'; // **新增：引
 // **移除：不再需要手動定義 API_BASE_URL**
 // const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export const fetchGoogleTrendsData = async (symbol) => {
+export const fetchGoogleTrendsData = async (symbol, timeframe) => {
     try {
-        // **修改：使用 apiClient.get，並用 params 物件傳遞查詢參數**
         const response = await enhancedApiClient.get('/api/googletrends/trends', {
-            params: { symbol }
+            params: { symbol, ...(timeframe ? { timeframe } : {}) }
         });
         return response.data;
     } catch (error) {
@@ -16,10 +15,11 @@ export const fetchGoogleTrendsData = async (symbol) => {
     }
 };
 
-export const fetchGoogleTrendsMarketData = async () => {
+export const fetchGoogleTrendsMarketData = async (timeframe) => {
     try {
-        // **修改：使用 apiClient.get 呼叫 API**
-        const response = await enhancedApiClient.get('/api/googletrends/market');
+        const response = await enhancedApiClient.get('/api/googletrends/market', {
+            params: { ...(timeframe ? { timeframe } : {}) }
+        });
         return response.data;
     } catch (error) {
         console.error('Error fetching Google Trends Market data:', error);

@@ -399,6 +399,13 @@
     "noResultsIcon": "🔍",
     "noResults": "No matching stocks found"
   },
+  "googleTrendsTimeframe": {
+    "label": "Time range",
+    "oneMonth": "1M",
+    "threeMonths": "3M",
+    "sixMonths": "6M",
+    "oneYear": "1Y"
+  },
   "home": {
     "pageTitle": "SIO Fear & Greed Index for Long-Term Investors",
     "pageDescription": "Sentiment Inside Out helps long-term investors understand market mood with the SIO Fear & Greed Index, price trend analysis, and watchlist tools.",

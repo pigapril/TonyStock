@@ -1,24 +1,26 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import GoogleTrendsSymbolChart from './GoogleTrendsSymbolChart';
+import TrendsTimeframeSelector from './TrendsTimeframeSelector';
 import { fetchGoogleTrendsMarketData } from './googleTrends.service';
 import '../Loading/Loading.css';
-import './GoogleTrendsMarketContainer.css'; // 可自行建立此 CSS 檔來定義樣式
+import './GoogleTrendsMarketContainer.css';
+
+const DEFAULT_TIMEFRAME = '3m';
 
 const GoogleTrendsMarketContainer = () => {
     const { t } = useTranslation();
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [timeframe, setTimeframe] = useState(DEFAULT_TIMEFRAME);
 
-    const fetchData = useCallback(async () => {
+    const fetchData = useCallback(async (currentTimeframe) => {
         setLoading(true);
         setError(null);
         try {
-            console.log('Fetching market data...');
-            const data = await fetchGoogleTrendsMarketData();
-            console.log('Received data:', data);
-            
+            const data = await fetchGoogleTrendsMarketData(currentTimeframe);
+
             if (data && data.data && Array.isArray(data.data)) {
                 setChartData(data.data);
             } else {
@@ -34,12 +36,23 @@ const GoogleTrendsMarketContainer = () => {
     }, [t]);
 
     useEffect(() => {
-        // 進入此頁面就呼叫 fetchData() 取得市場資料
-        fetchData();
-    }, [fetchData]);
+        fetchData(timeframe);
+    }, [fetchData, timeframe]);
+
+    const handleTimeframeChange = useCallback((nextTimeframe) => {
+        setTimeframe(nextTimeframe);
+    }, []);
 
     return (
         <div className="google-trends-market-container">
+            <div className="google-trends-market-controls">
+                <TrendsTimeframeSelector
+                    value={timeframe}
+                    onChange={handleTimeframeChange}
+                    disabled={loading}
+                />
+            </div>
+
             {loading && (
                 <div className="loading-spinner">
                     <div className="spinner"></div>
