@@ -245,17 +245,21 @@ class CSRFClient {
      * @returns {Promise} API回應
      */
     async fetchWithCSRF(url, options = {}) {
+        const method = (options.method || 'GET').toUpperCase();
+        const isStateChanging = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
+
         const requestId = requestTracker.startTracking(url, {
-            method: options.method || 'GET',
+            method,
             credentials: 'include',
             headers: options.headers || {}
         });
 
         try {
-            // 確保CSRF token已初始化（僅在已認證時）
-            if (!this.isTokenInitialized()) {
+            // 後端 CSRF middleware 只對狀態改變方法（POST/PUT/DELETE/PATCH）驗證
+            // GET / HEAD / OPTIONS 完全不需要 token，跳過初始化避免首次呼叫多一次 round-trip
+            if (isStateChanging && !this.isTokenInitialized()) {
                 console.log('🛡️ CSRFClient: CSRF token not initialized, attempting to initialize...');
-                
+
                 try {
                     await this.initializeCSRFToken();
                 } catch (error) {
