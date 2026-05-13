@@ -280,6 +280,75 @@
   outline: none;
 }
 
+/* 股票名稱搜尋 autocomplete */
+.price-analysis-view .stock-input-wrapper {
+  position: relative;
+  width: 180px;
+  max-width: 180px;
+}
+
+.price-analysis-view .stock-input-wrapper .form-control {
+  width: 100%;
+  max-width: 100%;
+}
+
+.price-analysis-view .stock-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid var(--color-border-default, #e2e8f0);
+  border-radius: var(--border-radius-small, 8px);
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.12);
+  /* 寬度跟輸入框一致，名稱過長由 .stock-suggestion-name 的 ellipsis 處理 */
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.price-analysis-view .stock-suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  min-width: 0;
+}
+
+.price-analysis-view .stock-suggestion-item:hover,
+.price-analysis-view .stock-suggestion-item.is-highlighted {
+  background: #f1f5f9;
+}
+
+.price-analysis-view .stock-suggestion-symbol {
+  font-weight: 600;
+  color: #1f2937;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.price-analysis-view .stock-suggestion-name {
+  color: #475569;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.price-analysis-view .stock-suggestion-market {
+  flex-shrink: 0;
+  font-size: 16px;
+  line-height: 1;
+  opacity: 0.85;
+}
+
 /* DatePicker 特定樣式 */
 .price-analysis-view .react-datepicker-wrapper {
   width: 180px;

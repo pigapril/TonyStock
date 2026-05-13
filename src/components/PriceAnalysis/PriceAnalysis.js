@@ -167,6 +167,27 @@ export function PriceAnalysis() {
   const [isAdvancedQuery, setIsAdvancedQuery] = useState(false);
   // 新增狀態來記錄分析期間的選擇
   const [analysisPeriod, setAnalysisPeriod] = useState('long'); // 預設為長期
+
+  // 市場代號 → 顯示徽章（旗幟 + 短碼）
+  const marketBadgeFor = useCallback((market) => {
+    const key = (market || '').toUpperCase();
+    switch (key) {
+      case 'TW': return { flag: '🇹🇼', label: 'TW' };
+      case 'HK': return { flag: '🇭🇰', label: 'HK' };
+      case 'US': return { flag: '🇺🇸', label: 'US' };
+      case 'JP': return { flag: '🇯🇵', label: 'JP' };
+      case 'CN': return { flag: '🇨🇳', label: 'CN' };
+      case 'KR': return { flag: '🇰🇷', label: 'KR' };
+      default: return key ? { flag: '', label: key } : null;
+    }
+  }, []);
+
+  // Autocomplete 下拉狀態：使用者輸入中文公司名稱時提供建議
+  const [stockSuggestions, setStockSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [highlightedSuggestion, setHighlightedSuggestion] = useState(-1);
+  const stockInputWrapperRef = useRef(null);
+  const suggestionItemRefs = useRef([]);
   const [isPending, startTransition] = useTransition(); // 添加 useTransition
   const chartRef = useRef(null); // 新增：圖表 ref 用於程式化控制 tooltip
   const ulbandChartRef = useRef(null); // ULBand 圖表 ref
@@ -475,18 +496,159 @@ export function PriceAnalysis() {
   }, 300);
   // --- End Debounced State Setters ---
 
+  // 取得股票名稱搜尋建議（debounced）
+  // 不顯示「搜尋中」狀態：避免讓使用者以為一定要等下拉才能繼續操作
+  // 舊結果在新結果回來前保留，避免閃爍與「下拉消失再出現」的視覺干擾
+  const fetchStockSuggestions = useCallback(async (rawValue) => {
+    const value = (rawValue || '').trim();
+    if (!value) {
+      setStockSuggestions([]);
+      setHighlightedSuggestion(-1);
+      return;
+    }
+    try {
+      const results = await watchlistService.searchStocks(value);
+      const limited = Array.isArray(results) ? results.slice(0, 10) : [];
+      setStockSuggestions(limited);
+      setHighlightedSuggestion(limited.length > 0 ? 0 : -1);
+    } catch (err) {
+      // 失敗時保留舊結果，不主動清空
+    }
+  }, []);
+
+  const debouncedFetchSuggestions = useDebouncedCallback(fetchStockSuggestions, 250);
+
   // 處理股票代碼的全形/半形轉換 (現在調用 debounced setter)
   const handleStockCodeChange = (e) => {
     const value = e.target.value;
-    // 更新 displayStockCode 以立即反映輸入
-    setDisplayStockCode(value.toUpperCase());
+    const hasNonAscii = /[^\x00-\x7F]/.test(value);
 
-    const convertedValue = value.replace(/[０-９Ａ-Ｚａ-ｚ]/g, (char) =>
-      String.fromCharCode(char.charCodeAt(0) - 0xFEE0)
-    );
-    // 調用 debounced 函數來更新實際的 stockCode 狀態
-    debouncedSetStockCode(convertedValue.toUpperCase());
+    // 含中文：保留原樣顯示，不做大寫轉換
+    if (hasNonAscii) {
+      setDisplayStockCode(value);
+      debouncedSetStockCode(value);
+    } else {
+      // 純 ASCII：維持原本的全形 → 半形 + 大寫轉換
+      setDisplayStockCode(value.toUpperCase());
+      const convertedValue = value.replace(/[０-９Ａ-Ｚａ-ｚ]/g, (char) =>
+        String.fromCharCode(char.charCodeAt(0) - 0xFEE0)
+      );
+      debouncedSetStockCode(convertedValue.toUpperCase());
+    }
+
+    // 統一觸發條件：去除空白後 ≥ 2 字元即顯示建議（中文、數字、英文一致行為）
+    const trimmed = value.trim();
+    if (trimmed.length >= 2) {
+      setShowSuggestions(true);
+      debouncedFetchSuggestions(trimmed);
+    } else {
+      setShowSuggestions(false);
+      setStockSuggestions([]);
+    }
   };
+
+  // runAnalysisForStock 宣告在後面，這裡用 ref 規避 TDZ；render 時會同步最新版本
+  const runAnalysisForStockRef = useRef(null);
+
+  // 點選建議：填入代號後立即啟動分析，與熱門搜尋 / 自選股 / 免費清單的點選行為一致
+  const handleSuggestionSelect = useCallback((suggestion) => {
+    if (!suggestion?.symbol) return;
+    const symbol = String(suggestion.symbol).toUpperCase();
+    setDisplayStockCode(symbol);
+    setStockCode(symbol);
+    debouncedSetStockCode.cancel?.();
+    debouncedFetchSuggestions.cancel?.();
+    setStockSuggestions([]);
+    setShowSuggestions(false);
+    setHighlightedSuggestion(-1);
+
+    // 與 handleSubmit 對齊：未登入彈登入對話框
+    if (!isAuthenticated) {
+      openDialog('auth', {
+        returnPath: location.pathname,
+        message: t('protectedRoute.loginRequired')
+      });
+      return;
+    }
+
+    // 與 handleSubmit 對齊：權限不足彈升級對話框
+    const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+    const userPlan = user?.plan || 'free';
+    const effectiveUserPlan = isTemporaryFreeMode ? 'pro' : userPlan;
+    if (!isStockAllowed(symbol, effectiveUserPlan)) {
+      openDialog('featureUpgrade', {
+        feature: 'stockAccess',
+        stockCode: symbol,
+        allowedStocks: getFreeStockList(),
+        upgradeUrl: `/${i18n.language}/subscription-plans`
+      });
+      return;
+    }
+
+    runAnalysisForStockRef.current?.(symbol, 'autocompleteSelect');
+  }, [
+    debouncedFetchSuggestions,
+    debouncedSetStockCode,
+    isAuthenticated,
+    openDialog,
+    location.pathname,
+    t,
+    user,
+    i18n.language
+  ]);
+
+  // 鍵盤導覽：方向鍵移動高亮、Enter 選取、Esc 關閉
+  const handleStockInputKeyDown = useCallback((e) => {
+    // IME composing 中的 Enter 應交給輸入法確認文字，不視為選建議
+    if (e.nativeEvent?.isComposing || e.keyCode === 229) {
+      return;
+    }
+
+    if (!showSuggestions || stockSuggestions.length === 0) {
+      if (e.key === 'Escape') setShowSuggestions(false);
+      return;
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setHighlightedSuggestion((prev) => (prev + 1) % stockSuggestions.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setHighlightedSuggestion((prev) =>
+        prev <= 0 ? stockSuggestions.length - 1 : prev - 1
+      );
+    } else if (e.key === 'Enter') {
+      if (highlightedSuggestion >= 0 && highlightedSuggestion < stockSuggestions.length) {
+        // 攔截 Enter 避免在選建議時直接送出 form
+        e.preventDefault();
+        handleSuggestionSelect(stockSuggestions[highlightedSuggestion]);
+      }
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      setShowSuggestions(false);
+    }
+  }, [highlightedSuggestion, showSuggestions, stockSuggestions, handleSuggestionSelect]);
+
+  // 高亮項變更時自動捲入視窗
+  useEffect(() => {
+    if (highlightedSuggestion < 0) return;
+    const node = suggestionItemRefs.current[highlightedSuggestion];
+    if (node && typeof node.scrollIntoView === 'function') {
+      node.scrollIntoView({ block: 'nearest' });
+    }
+  }, [highlightedSuggestion]);
+
+  // 點擊輸入框外部時關閉建議下拉
+  useEffect(() => {
+    if (!showSuggestions) return undefined;
+    const handleClickOutside = (event) => {
+      if (stockInputWrapperRef.current && !stockInputWrapperRef.current.contains(event.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showSuggestions]);
 
 
 
@@ -690,6 +852,9 @@ export function PriceAnalysis() {
     });
     fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, true);
   }, [backTestDate, beginAnalysisRequest, fetchStockData, isAdvancedQuery, queueAnalysisEvent, resolveAnalysisYears]);
+
+  // 同步最新的 runAnalysisForStock 至 ref，讓較早宣告的 handleSuggestionSelect 可以呼叫
+  runAnalysisForStockRef.current = runAnalysisForStock;
 
   const fetchWatchlistStocks = useCallback(async () => {
     if (loadingWatchlist || hasLoadedWatchlist) {
@@ -1271,16 +1436,76 @@ export function PriceAnalysis() {
                   <div className="input-group">
                     {/* 使用 t() 翻譯 label */}
                     <label>{t('priceAnalysis.form.stockCodeLabel')}</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      onChange={handleStockCodeChange}
-                      // 使用 t() 翻譯 placeholder
-                      placeholder={t('priceAnalysis.form.stockCodePlaceholder')}
-                      required
-                      // 保持 defaultValue 或 value 的邏輯不變 (如果需要)
-                      value={displayStockCode} // 改為受控組件
-                    />
+                    <div className="stock-input-wrapper" ref={stockInputWrapperRef}>
+                      <input
+                        type="text"
+                        className="form-control"
+                        onChange={handleStockCodeChange}
+                        onKeyDown={handleStockInputKeyDown}
+                        onFocus={() => {
+                          if (stockSuggestions.length > 0) setShowSuggestions(true);
+                        }}
+                        // 使用 t() 翻譯 placeholder
+                        placeholder={t('priceAnalysis.form.stockCodePlaceholder')}
+                        required
+                        autoComplete="off"
+                        role="combobox"
+                        aria-expanded={showSuggestions && stockSuggestions.length > 0}
+                        aria-controls="stock-suggestions-listbox"
+                        aria-activedescendant={
+                          highlightedSuggestion >= 0
+                            ? `stock-suggestion-${highlightedSuggestion}`
+                            : undefined
+                        }
+                        // 保持 defaultValue 或 value 的邏輯不變 (如果需要)
+                        value={displayStockCode} // 改為受控組件
+                      />
+                      {showSuggestions && stockSuggestions.length > 0 && (
+                        <ul
+                          id="stock-suggestions-listbox"
+                          className="stock-suggestions"
+                          role="listbox"
+                        >
+                          {stockSuggestions.map((s, idx) => (
+                            <li
+                              key={`${s.symbol}-${s.market || ''}`}
+                              id={`stock-suggestion-${idx}`}
+                              ref={(node) => {
+                                suggestionItemRefs.current[idx] = node;
+                              }}
+                              className={`stock-suggestion-item${
+                                idx === highlightedSuggestion ? ' is-highlighted' : ''
+                              }`}
+                              role="option"
+                              aria-selected={idx === highlightedSuggestion}
+                              onMouseEnter={() => setHighlightedSuggestion(idx)}
+                              onMouseDown={(e) => {
+                                // 用 mousedown 避免 input 先觸發 blur 關閉下拉
+                                e.preventDefault();
+                                handleSuggestionSelect(s);
+                              }}
+                            >
+                              <span className="stock-suggestion-symbol">{s.symbol}</span>
+                              <span className="stock-suggestion-name">{s.name}</span>
+                              {(() => {
+                                const badge = marketBadgeFor(s.market);
+                                if (!badge || !badge.flag) return null;
+                                return (
+                                  <span
+                                    className="stock-suggestion-market"
+                                    role="img"
+                                    aria-label={badge.label}
+                                    title={badge.label}
+                                  >
+                                    {badge.flag}
+                                  </span>
+                                );
+                              })()}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
                   </div>
 
                   {/* 簡易查詢欄位容器 */}
