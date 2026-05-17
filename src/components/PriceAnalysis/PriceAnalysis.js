@@ -507,7 +507,11 @@ export function PriceAnalysis() {
       return;
     }
     try {
-      const results = await watchlistService.searchStocks(value);
+      // 走乾淨的公開搜尋端點（不耦合 watchlist、不需登入、無 getUserWatchlist hydration）
+      const response = await enhancedApiClient.get('/api/stock-search', {
+        params: { keyword: value }
+      });
+      const results = response?.data?.data?.results ?? [];
       const limited = Array.isArray(results) ? results.slice(0, 10) : [];
       setStockSuggestions(limited);
       setHighlightedSuggestion(limited.length > 0 ? 0 : -1);
