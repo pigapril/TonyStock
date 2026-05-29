@@ -1272,7 +1272,8 @@
       "title": "Upgrade to Pro to analyze any stock",
       "subtitle": "Upgrade to Pro to analyze any stock",
       "description": "Free users can only query market ETFs and indices.",
-      "descriptionWithStock": "Want to analyze {{stockCode}}? Free users can only query market ETFs and indices."
+      "descriptionWithStock": "Want to analyze {{stockCode}}? Free users can only query market ETFs and indices.",
+      "freeListHint": "These major indices & ETFs are free to analyze right now:"
     },
     "currentData": {
       "title": "Unlock Real-Time Data",
@@ -1302,6 +1303,8 @@
     },
     "upgradeButton": "Upgrade to Pro",
     "laterButton": "Maybe Later",
+    "browseFreeButton": "Browse free stocks",
+    "browseFreeAriaLabel": "Browse free indices and ETFs",
     "upgradeAriaLabel": "Upgrade to Pro plan",
     "laterAriaLabel": "Maybe later",
     "trust": {

@@ -51,6 +51,44 @@ export function FeatureUpgradeDialog({
     const feature = dialogData.props?.feature || 'stockAccess';
     const stockCode = dialogData.props?.stockCode;
     const allowedStocks = dialogData.props?.allowedStocks || getFreeStockList();
+    const onBrowseFreeStocks = dialogData.props?.onBrowseFreeStocks;
+    const onPickFreeStock = dialogData.props?.onPickFreeStock;
+
+    // stockAccess 情境：挑出新用戶最容易認得的代表性免費標的做為可點 chips
+    const isStockAccess = feature === 'stockAccess';
+    const preferredFreeTickers = ['SPY', 'QQQ', 'VT', 'VOO', '^GSPC', '0050', '^TWII', '^N225'];
+    const allowedSet = new Set((allowedStocks || []).map((s) => String(s).toUpperCase()));
+    const freeChips = (() => {
+        if (!isStockAccess) return [];
+        const picked = preferredFreeTickers.filter((tk) => allowedSet.has(tk.toUpperCase()));
+        if (picked.length >= 4) return picked.slice(0, 8);
+        // 代表清單命中不足時，補上 allowedStocks 前幾檔
+        const extra = (allowedStocks || []).filter((tk) => !picked.includes(tk));
+        return [...picked, ...extra].slice(0, 8);
+    })();
+
+    const handleChipClick = (ticker) => {
+        Analytics.ui.dialog.action({
+            type: dialogData.type,
+            action: 'free_stock_chip_clicked',
+            feature,
+            ticker
+        });
+        onPickFreeStock?.(ticker);
+        closeHandler();
+    };
+
+    const handleBrowseFree = () => {
+        Analytics.ui.dialog.action({
+            type: dialogData.type,
+            action: 'browse_free_clicked',
+            feature
+        });
+        onBrowseFreeStocks?.();
+        closeHandler();
+    };
+
+    const showBrowseFree = isStockAccess && typeof onBrowseFreeStocks === 'function';
 
     // 根據功能類型決定內容
     const getContent = () => {
@@ -132,6 +170,27 @@ export function FeatureUpgradeDialog({
                     <p>{content.description}</p>
                 </div>
 
+                {/* 免費標的快捷區 (僅 stockAccess) */}
+                {isStockAccess && freeChips.length > 0 && (
+                    <div className="upgrade-free-stocks">
+                        <p className="upgrade-free-stocks-hint">
+                            {t('featureUpgrade.stockAccess.freeListHint', '免費方案可立即查詢這些主要指數與 ETF：')}
+                        </p>
+                        <div className="upgrade-free-chips">
+                            {freeChips.map((ticker) => (
+                                <button
+                                    key={ticker}
+                                    type="button"
+                                    className="upgrade-free-chip"
+                                    onClick={() => handleChipClick(ticker)}
+                                >
+                                    {ticker}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 {/* 功能列表 */}
                 <div className="upgrade-features">
                     {content.features.map((feature, index) => (
@@ -153,13 +212,23 @@ export function FeatureUpgradeDialog({
                         <span className="btn-icon">→</span>
                     </button>
                     
-                    <button 
-                        className="upgrade-secondary-btn" 
-                        onClick={handleLater}
-                        aria-label={t('featureUpgrade.laterAriaLabel', '稍後再說')}
-                    >
-                        {t('featureUpgrade.laterButton', '稍後再說')}
-                    </button>
+                    {showBrowseFree ? (
+                        <button
+                            className="upgrade-secondary-btn"
+                            onClick={handleBrowseFree}
+                            aria-label={t('featureUpgrade.browseFreeAriaLabel', '瀏覽免費可查的指數與 ETF')}
+                        >
+                            {t('featureUpgrade.browseFreeButton', '查詢其他免費標的')}
+                        </button>
+                    ) : (
+                        <button
+                            className="upgrade-secondary-btn"
+                            onClick={handleLater}
+                            aria-label={t('featureUpgrade.laterAriaLabel', '稍後再說')}
+                        >
+                            {t('featureUpgrade.laterButton', '稍後再說')}
+                        </button>
+                    )}
                 </div>
 
                 {/* 信任指標 */}

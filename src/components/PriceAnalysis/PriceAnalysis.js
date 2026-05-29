@@ -388,6 +388,8 @@ export function PriceAnalysis() {
 
   // 新增：快速選擇 Tab 狀態
   const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('hotSearches'); // 'hotSearches', 'freeStocks', 或 'watchlist'
+  // 用戶一旦手動切過 tab，就不再自動把免費用戶導回免費清單
+  const userManuallyChangedTabRef = useRef(false);
   const [isUserInitiated, setIsUserInitiated] = useState(false); // 追蹤是否為用戶主動操作
 
   // 新增：Watchlist 狀態（改為保留分類結構）
@@ -554,6 +556,36 @@ export function PriceAnalysis() {
   // runAnalysisForStock 宣告在後面，這裡用 ref 規避 TDZ；render 時會同步最新版本
   const runAnalysisForStockRef = useRef(null);
 
+  // 統一 stockAccess 升級對話框的 props：附帶「先查免費標的」與「直接查某檔免費標的」兩個引導
+  const buildStockAccessDialogProps = useCallback((stockCode) => ({
+    feature: 'stockAccess',
+    stockCode,
+    allowedStocks: getFreeStockList(),
+    upgradeUrl: `/${i18n.language}/subscription-plans`,
+    onBrowseFreeStocks: () => {
+      userManuallyChangedTabRef.current = true;
+      setActiveQuickSelectTab('freeStocks');
+    },
+    onPickFreeStock: (ticker) => {
+      runAnalysisForStockRef.current?.(
+        ticker,
+        'upgradeDialogFreeChip',
+        t('priceAnalysis.toast.invalidYearsFreeStock')
+      );
+    }
+  }), [i18n.language, t]);
+
+  // 免費用戶（且尚未手動切過 tab）預設停在「免費清單」tab，讓新用戶第一眼看到可查的標的
+  useEffect(() => {
+    if (!user) return;
+    if (userManuallyChangedTabRef.current) return;
+    const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+    const isFreeUser = !isTemporaryFreeMode && (user?.plan || 'free') !== 'pro';
+    if (isFreeUser) {
+      setActiveQuickSelectTab((prev) => (prev === 'hotSearches' ? 'freeStocks' : prev));
+    }
+  }, [user]);
+
   // 點選建議：填入代號後立即啟動分析，與熱門搜尋 / 自選股 / 免費清單的點選行為一致
   const handleSuggestionSelect = useCallback((suggestion) => {
     if (!suggestion?.symbol) return;
@@ -580,12 +612,7 @@ export function PriceAnalysis() {
     const userPlan = user?.plan || 'free';
     const effectiveUserPlan = isTemporaryFreeMode ? 'pro' : userPlan;
     if (!isStockAllowed(symbol, effectiveUserPlan)) {
-      openDialog('featureUpgrade', {
-        feature: 'stockAccess',
-        stockCode: symbol,
-        allowedStocks: getFreeStockList(),
-        upgradeUrl: `/${i18n.language}/subscription-plans`
-      });
+      openDialog('featureUpgrade', buildStockAccessDialogProps(symbol));
       return;
     }
 
@@ -598,7 +625,7 @@ export function PriceAnalysis() {
     location.pathname,
     t,
     user,
-    i18n.language
+    buildStockAccessDialogProps
   ]);
 
   // 鍵盤導覽：方向鍵移動高亮、Enter 選取、Esc 關閉
@@ -764,12 +791,7 @@ export function PriceAnalysis() {
         }
 
         // 2. 顯示升級對話框 (取代原本的錯誤 Toast)
-        openDialog('featureUpgrade', {
-          feature: 'stockAccess',
-          stockCode: stock,
-          allowedStocks: getFreeStockList(),
-          upgradeUrl: `/${i18n.language}/subscription-plans`
-        });
+        openDialog('featureUpgrade', buildStockAccessDialogProps(stock));
 
       // 3. 清除 Loading 狀態並退出，不執行 handleApiError
       setLoading(false);
@@ -791,7 +813,7 @@ export function PriceAnalysis() {
       // 注意：如果 transition 非常慢，Loading 可能會比數據出現早消失
       setLoading(false);
     }
-  }, [checkAuthStatus, i18n.language, openDialog, showToast, startTransition, t]); // 確保 t 在依賴項中
+  }, [checkAuthStatus, openDialog, showToast, startTransition, t, buildStockAccessDialogProps]); // 確保 t 在依賴項中
 
   const resolveAnalysisYears = useCallback((invalidYearsMessage) => {
     if (isAdvancedQuery) {
@@ -962,12 +984,7 @@ export function PriceAnalysis() {
 
     if (!isStockAllowed(displayStockCode, effectiveUserPlan)) {
       // 顯示功能升級對話框
-      openDialog('featureUpgrade', {
-        feature: 'stockAccess',
-        stockCode: displayStockCode,
-        allowedStocks: getFreeStockList(),
-        upgradeUrl: `/${i18n.language}/subscription-plans`
-      });
+      openDialog('featureUpgrade', buildStockAccessDialogProps(displayStockCode));
       return;
     }
 
@@ -1132,12 +1149,7 @@ export function PriceAnalysis() {
     const upperClickedCode = searchItem.keyword.toUpperCase();
     if (!isStockAllowed(upperClickedCode, effectiveUserPlan2)) {
       // 顯示功能升級對話框
-      openDialog('featureUpgrade', {
-        feature: 'stockAccess',
-        stockCode: upperClickedCode,
-        allowedStocks: getFreeStockList(),
-        upgradeUrl: `/${i18n.language}/subscription-plans`
-      });
+      openDialog('featureUpgrade', buildStockAccessDialogProps(upperClickedCode));
       return;
     }
 
@@ -1162,12 +1174,7 @@ export function PriceAnalysis() {
     const upperClickedCode = ticker.toUpperCase();
     if (!isStockAllowed(upperClickedCode, effectiveUserPlan3)) {
       // 理論上不應該發生，但為了安全起見
-      openDialog('featureUpgrade', {
-        feature: 'stockAccess',
-        stockCode: upperClickedCode,
-        allowedStocks: getFreeStockList(),
-        upgradeUrl: `/${i18n.language}/subscription-plans`
-      });
+      openDialog('featureUpgrade', buildStockAccessDialogProps(upperClickedCode));
       return;
     }
 
@@ -1176,6 +1183,7 @@ export function PriceAnalysis() {
 
   // 新增：處理 Watchlist Tab 點擊事件
   const handleWatchlistTabClick = () => {
+    userManuallyChangedTabRef.current = true;
     // 檢查登入狀態
     if (!isAuthenticated) {
       openDialog('auth', {
@@ -1594,13 +1602,13 @@ export function PriceAnalysis() {
                 <div className="quick-select-tabs">
                   <button
                     className={`quick-select-tab ${activeQuickSelectTab === 'hotSearches' ? 'active' : ''}`}
-                    onClick={() => setActiveQuickSelectTab('hotSearches')}
+                    onClick={() => { userManuallyChangedTabRef.current = true; setActiveQuickSelectTab('hotSearches'); }}
                   >
                     {t('priceAnalysis.quickSelect.tabs.hotSearches')}
                   </button>
                   <button
                     className={`quick-select-tab ${activeQuickSelectTab === 'freeStocks' ? 'active' : ''}`}
-                    onClick={() => setActiveQuickSelectTab('freeStocks')}
+                    onClick={() => { userManuallyChangedTabRef.current = true; setActiveQuickSelectTab('freeStocks'); }}
                   >
                     {t('priceAnalysis.quickSelect.tabs.freeStocks')}
                   </button>
@@ -1661,6 +1669,7 @@ export function PriceAnalysis() {
                     <div className="free-stocks-tab-content">
                       <FreeStockList
                         onStockSelect={handleFreeStockClick}
+                        defaultExpandedRegionKey={i18n.language?.startsWith('zh') ? 'asiaPacific' : 'americas'}
                         className="integrated-free-stock-list"
                       />
                     </div>

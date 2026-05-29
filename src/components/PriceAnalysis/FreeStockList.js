@@ -8,7 +8,7 @@ import './FreeStockList.css';
  * 按區域分類顯示所有可免費查詢的股票標的
  * 資料來源：API /api/public/free-stock-list/regions
  */
-const FreeStockList = ({ onStockSelect, className = '' }) => {
+const FreeStockList = ({ onStockSelect, className = '', defaultExpandedRegionKey = null }) => {
   const { t } = useTranslation();
   const [stocksByRegion, setStocksByRegion] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -73,11 +73,12 @@ const FreeStockList = ({ onStockSelect, className = '' }) => {
     if (stocksByRegion) {
       const initialCollapsedState = {};
       Object.keys(stocksByRegion).forEach(regionKey => {
-        initialCollapsedState[regionKey] = true; // 預設全部收合
+        // 預設全部收合；若指定了 defaultExpandedRegionKey 則該區域預設展開
+        initialCollapsedState[regionKey] = regionKey !== defaultExpandedRegionKey;
       });
       setCollapsedRegions(initialCollapsedState);
     }
-  }, [stocksByRegion]);
+  }, [stocksByRegion, defaultExpandedRegionKey]);
 
   // 處理股票點擊
   const handleStockClick = (ticker) => {

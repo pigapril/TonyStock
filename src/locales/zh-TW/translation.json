@@ -1281,7 +1281,8 @@
       "title": "升級至 Pro 解鎖全部股票",
       "subtitle": "升級至 Pro 方案，查詢任何股票",
       "description": "免費用戶僅能查詢市場型 ETF 和指數。",
-      "descriptionWithStock": "想要查詢 {{stockCode}}？免費用戶僅能查詢市場型 ETF 和指數。"
+      "descriptionWithStock": "想要查詢 {{stockCode}}？免費用戶僅能查詢市場型 ETF 和指數。",
+      "freeListHint": "免費方案可立即查詢這些主要指數與 ETF："
     },
     "currentData": {
       "title": "解鎖即時數據",
@@ -1311,6 +1312,8 @@
     },
     "upgradeButton": "升級至 Pro",
     "laterButton": "稍後再說",
+    "browseFreeButton": "查詢其他免費標的",
+    "browseFreeAriaLabel": "瀏覽免費可查的指數與 ETF",
     "upgradeAriaLabel": "升級至 Pro 方案",
     "laterAriaLabel": "稍後再說",
     "trust": {

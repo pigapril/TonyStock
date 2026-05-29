@@ -108,6 +108,71 @@
   margin: 0;
 }
 
+/* 免費標的快捷區 */
+.upgrade-free-stocks {
+  margin-bottom: 20px;
+}
+
+.upgrade-free-stocks-hint {
+  font-size: 13px;
+  color: var(--apple-gray);
+  margin: 0 0 10px 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.upgrade-free-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.upgrade-free-chip {
+  background: var(--apple-light-gray);
+  color: var(--apple-blue);
+  border: 1px solid rgba(0, 122, 255, 0.18);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: -0.2px;
+}
+
+.upgrade-free-chip:hover {
+  background: rgba(0, 122, 255, 0.1);
+  border-color: rgba(0, 122, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.upgrade-free-chip:active {
+  transform: translateY(0);
+}
+
+.upgrade-free-chip:focus {
+  outline: 2px solid var(--apple-blue);
+  outline-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .upgrade-free-chip {
+    background: #2C2C2E;
+    border-color: rgba(0, 122, 255, 0.4);
+  }
+
+  .upgrade-free-chip:hover {
+    background: rgba(0, 122, 255, 0.16);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .upgrade-free-chip {
+    transition: none;
+  }
+}
+
 /* 功能列表 */
 .upgrade-features {
   margin-bottom: 24px;
