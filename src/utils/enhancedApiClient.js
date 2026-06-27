@@ -92,10 +92,9 @@ class EnhancedApiClient {
      * @private
      */
     async _executeRequest(method, url, data, config) {
-        // Check network connectivity
-        if (!this.isOnline) {
-            throw new Error('No network connection available');
-        }
+        // 不再用 navigator.onLine 事前硬擋請求：該旗標在桌面瀏覽器常誤報離線
+        //（VPN、睡眠喚醒、虛擬網卡），一旦誤判會讓整站 API 全部失效。
+        // 改為照常送出；真正的網路失敗在下方 catch 依實際錯誤判斷與標記。
 
         // Use auth guard for authenticated requests
         return await authGuard.makeAuthenticatedRequest(async () => {
@@ -135,6 +134,14 @@ class EnhancedApiClient {
                     throw error;
                 }
 
+                // 依「請求實際失敗」判斷離線（取代不可靠的 navigator.onLine 事前硬擋）
+                if (this._isNetworkError(error)) {
+                    error.isNetworkError = true;
+                    if (!error.response) {
+                        error.message = 'No network connection available';
+                    }
+                }
+
                 console.error(`❌ Request failed: ${method.toUpperCase()} ${url} (${duration}ms)`, error);
                 
                 // Enhanced error context
@@ -163,6 +170,17 @@ class EnhancedApiClient {
         return axios.isCancel(error)
             || error?.code === 'ERR_CANCELED'
             || error?.name === 'CanceledError';
+    }
+
+    // 真正的網路層失敗：請求已送出但拿不到回應（無 error.response），
+    // 例如離線、DNS 失敗、連線中斷。與「伺服器回了 4xx/5xx」區分開。
+    _isNetworkError(error) {
+        if (this._isCanceledRequest(error) || error?.response) {
+            return false;
+        }
+        return error?.code === 'ERR_NETWORK'
+            || error?.message === 'Network Error'
+            || Boolean(error?.request);
     }
 
     /**
