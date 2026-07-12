@@ -33,5 +33,5 @@
 
 [[redirects]]
   from = "/*"
-  to = "/__spa__.html"
+  to = "/index.html"
   status = 200

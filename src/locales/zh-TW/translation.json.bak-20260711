@@ -1323,8 +1323,6 @@
     }
   },
   "subscription": {
-    "pageTitle": "訂閱方案",
-    "pageDescription": "比較 Sentiment Inside Out 的訂閱方案，升級解鎖完整市場情緒分析、無限制追蹤清單與無廣告體驗。",
     "upgradeRequired": {
       "title": "需要升級方案"
     },

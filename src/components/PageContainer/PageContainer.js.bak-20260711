@@ -34,13 +34,7 @@ const PageContainer = ({
   const pageTwitterImage = twitterImage || ogImage;
 
   const supportedLngs = i18n.options.supportedLngs || [];
-  // i18n.options.fallbackLng is the object { zh: [...], default: ['en'] }
-  // (see i18n.js), not a language string. Normalize it here so the
-  // <html lang>, og:locale and x-default logic below always get a string.
-  const rawFallbackLng = i18n.options.fallbackLng;
-  const fallbackLng = typeof rawFallbackLng === 'string'
-    ? rawFallbackLng
-    : (rawFallbackLng?.default?.[0] || 'en');
+  const fallbackLng = i18n.options.fallbackLng;
   const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
   const pathWithoutLang = location.pathname.startsWith(`/${lang}`)
@@ -103,7 +97,7 @@ const PageContainer = ({
           <link
             rel="alternate"
             hrefLang="x-default"
-            href={basePath === '/' ? `${origin}/` : `${origin}/${fallbackLng}${basePath}`}
+            href={`${origin}/${fallbackLng}${basePath === '/' ? '' : basePath}`}
           />
         )}
         

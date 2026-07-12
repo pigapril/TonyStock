@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../Auth/useAuth';
@@ -282,14 +281,6 @@ export const SubscriptionPlansPage = () => {
 
   return (
     <div className="subscription-plans-page">
-      {/* 不套用 PageContainer:它會多包一層 .page-container/.page-content
-          (max-width: 95%、padding: 20px),會改變這頁既有的版面，因此只用
-          Helmet 注入 title/description，不含 canonical/hreflang（此頁不在
-          sitemap 內，刻意不產生 SEO 殼）。 */}
-      <Helmet>
-        <title>{t('subscription.pageTitle')} | {t('pageContainer.defaultTitle')}</title>
-        <meta name="description" content={t('subscription.pageDescription')} />
-      </Helmet>
       <div className="subscription-plans-container">
         {/* Upgrade Notification - 顯示在頁面頂部 */}
         {upgradeNotification && (

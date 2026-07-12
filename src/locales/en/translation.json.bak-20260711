@@ -1314,8 +1314,6 @@
     }
   },
   "subscription": {
-    "pageTitle": "Subscription Plans",
-    "pageDescription": "Compare Sentiment Inside Out subscription plans and upgrade to unlock full market sentiment analysis, unlimited watchlist tracking, and an ad-free experience.",
     "upgradeRequired": {
       "title": "Upgrade Required"
     },
