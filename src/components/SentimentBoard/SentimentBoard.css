@@ -460,24 +460,112 @@
   border-bottom-color: #4f46e5;
 }
 
-.sentiment-board__delayNotice {
+/* --- 延遲 banner ---
+   視覺沿用 MarketSentimentIndex.css:2198 的 .market-sentiment-delay-banner。
+   同一件事（免費方案的資料延遲）在站內只該有一種長相。 */
+
+.board-delay-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
   margin: 0 0 24px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  background: #f4f6fb;
-  border: 1px solid #e4e9f2;
-  font-size: 0.8rem;
-  line-height: 1.6;
-  color: #64748b;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(96, 165, 250, 0.18) 0%, rgba(96, 165, 250, 0) 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(246, 248, 252, 0.98) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.06);
 }
 
-.sentiment-board__delayNotice a {
-  color: #4f46e5;
-  font-weight: 600;
+.board-delay-banner__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.board-delay-banner__title {
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.35;
+  color: #2563eb;
+}
+
+.board-delay-banner__body {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: #64748b;
+  max-width: 880px;
+}
+
+.board-delay-banner__button {
+  flex: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 16px;
+  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+  color: #fff;
+  font-size: 0.86rem;
+  font-weight: 700;
   text-decoration: none;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24);
   white-space: nowrap;
 }
 
-.sentiment-board__delayNotice a:hover {
-  text-decoration: underline;
+/* --- 逐卡的延遲標示 ---
+   淡底讓使用者掃一眼就看得出哪幾張是舊的，「延遲」標籤再說清楚是什麼。
+   只用底色會太隱晦，只用標籤則要逐張讀，兩個一起才是一眼。 */
+
+.indicator-card--delayed,
+.composite-card--delayed {
+  /* #fbfbfd 幾乎看不出來，等於沒做。這個色差在純白卡片旁邊剛好辨識得出，
+     又不會讓整片格線變成棋盤格。真正的訊號是「延遲」標籤，底色只是輔助。 */
+  background: #f7f8fc;
+}
+
+.composite-card--delayed {
+  background: linear-gradient(135deg, #f3f4f9 0%, #fafafc 100%);
+}
+
+/* 指標卡的日期在 flex footer 裡，要維持行內；composite 的日期是獨立段落，
+   用 inline-flex 會讓下方的連結跑到同一行。 */
+.indicator-card__date--delayed {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.composite-card__date--delayed {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.indicator-card__date--delayed b,
+.composite-card__date--delayed b {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: #7c6f2f;
+  background: rgba(234, 179, 8, 0.14);
+  border-radius: 999px;
+  padding: 2px 7px;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 640px) {
+  .board-delay-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    border-radius: 20px;
+  }
+}
+
+.divergence-card__asOf {
+  margin: 10px 0 0;
+  font-size: 0.68rem;
+  color: #b6c0cd;
+  font-variant-numeric: tabular-nums;
 }

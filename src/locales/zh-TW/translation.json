@@ -2285,8 +2285,11 @@
       "retail-sentiment-small-futures": "散戶小台淨部位"
     },
     "percentileCaption": "歷史百分位",
-    "delayNotice": "免費版顯示的 SIO 合成指標與百分位停在 {{date}}。第三方指標（CNN、BofA、AAII 等）維持即時。",
-    "delayNoticeCta": "升級 Pro 看最新"
+    "delayNoticeCta": "升級 Pro 看最新",
+    "delayBannerTitle": "免費版：SIO 計算的部分顯示至 {{date}}",
+    "delayBannerBody": "CNN、BofA、AAII 等第三方指標維持即時。合成指標與歷史百分位是 SIO 自己計算的，免費版停在兩個月前，下方標示「延遲」的卡片即為此類。",
+    "delayedTag": "延遲",
+    "asOf": "資料時點"
   },
   "sentimentIndicatorPages": {
     "currentReading": "最新讀數",

@@ -81,13 +81,19 @@ const SentimentBoard = () => {
         </header>
 
         {/* 免費方案看得到整個 dashboard，只是 SIO 自己算的部分停在兩個月前。
-            這件事必須明講，否則使用者會把舊值當成現況。 */}
+            視覺沿用 /market-sentiment 既有的 delay banner，同一件事在站內只有一種長相。 */}
         {board.delayed?.active && (
-          <p className="sentiment-board__delayNotice">
-            {t('sentimentBoard.delayNotice', { date: board.delayed.until })}
-            {' '}
-            <Link to={`/${lang}/subscription`}>{t('sentimentBoard.delayNoticeCta')}</Link>
-          </p>
+          <div className="board-delay-banner">
+            <div className="board-delay-banner__copy">
+              <h2 className="board-delay-banner__title">
+                {t('sentimentBoard.delayBannerTitle', { date: board.delayed.until })}
+              </h2>
+              <p className="board-delay-banner__body">{t('sentimentBoard.delayBannerBody')}</p>
+            </div>
+            <Link className="board-delay-banner__button" to={`/${lang}/subscription`}>
+              {t('sentimentBoard.delayNoticeCta')}
+            </Link>
+          </div>
         )}
 
         <section className="sentiment-board__composite" aria-label={t('sentimentBoard.compositeLabel')}>
@@ -134,6 +140,13 @@ const SentimentBoard = () => {
                       </span>
                     </div>
                     <DivergenceTrack points={points} />
+                    {/* 落差只有在兩側同一時點時才有意義。後端已經擋掉時點差太多的組合，
+                        這裡把時點寫出來，讓使用者知道這個比較是什麼時候的。 */}
+                    {item.asOf && (
+                      <p className="divergence-card__asOf">
+                        {t('sentimentBoard.asOf')} {item.asOf}
+                      </p>
+                    )}
                   </div>
                 );
               })}
@@ -268,13 +281,18 @@ const DivergenceTrack = ({ points }) => {
 };
 
 const CompositeCard = ({ label, data, href, t }) => (
-  <article className={`composite-card${data.locked ? ' composite-card--locked' : ''}`}>
+  <article className={`composite-card${data.delayed ? ' composite-card--delayed' : ''}`}>
     <p className="composite-card__label">{label}</p>
     <p className="composite-card__value">
       {data.locked ? <span className="composite-card__lock">{t('sentimentBoard.proOnly')}</span> : formatNumber(data.value)}
     </p>
     <Meter value={data.value} scale={data.scale} tone="sentiment" locked={data.locked} />
-    {data.date && <p className="composite-card__date">{data.date}</p>}
+    {data.date && (
+      <p className={`composite-card__date${data.delayed ? ' composite-card__date--delayed' : ''}`}>
+        {data.delayed && <b>{t('sentimentBoard.delayedTag')}</b>}
+        {data.date}
+      </p>
+    )}
     <Link className="composite-card__link" to={href}>{t('sentimentBoard.viewDetail')}</Link>
   </article>
 );
@@ -296,7 +314,7 @@ const IndicatorCard = ({ item, lang, t }) => {
       : null);
 
   return (
-  <article className={`indicator-card${item.locked ? ' indicator-card--locked' : ''}`}>
+  <article className={`indicator-card${item.delayed ? ' indicator-card--delayed' : ''}`}>
     <div className="indicator-card__head">
       <h3 className="indicator-card__label">
         {explainerSlug
@@ -321,8 +339,12 @@ const IndicatorCard = ({ item, lang, t }) => {
     {meter && <Meter {...meter} locked={item.locked} />}
 
     <footer className="indicator-card__foot">
-      {/* 資料時間一律顯示，即使值是鎖住的 —— 讓過期是看得見的，而不是隱形的。 */}
-      <span className="indicator-card__date">{item.date || t('sentimentBoard.noData')}</span>
+      {/* 資料時間一律顯示 —— 讓過期是看得見的，而不是隱形的。
+          延遲的卡片再加一個標籤，使用者不必回頭對照上方 banner 才知道哪張是舊的。 */}
+      <span className={`indicator-card__date${item.delayed ? ' indicator-card__date--delayed' : ''}`}>
+        {item.delayed && <b>{t('sentimentBoard.delayedTag')}</b>}
+        {item.date || t('sentimentBoard.noData')}
+      </span>
       {item.publisherUrl && (
         <a className="indicator-card__source" href={item.publisherUrl} target="_blank" rel="noopener noreferrer">
           {t('sentimentBoard.source')}

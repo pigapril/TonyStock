@@ -2272,8 +2272,11 @@
       "retail-sentiment-small-futures": "Retail Mini-Futures Net Position"
     },
     "percentileCaption": "historical percentile",
-    "delayNotice": "On the free plan, SIO's own composites and percentiles are shown as of {{date}}. Third-party indicators (CNN, BofA, AAII and others) stay current.",
-    "delayNoticeCta": "Upgrade to Pro for live data"
+    "delayNoticeCta": "Upgrade to Pro for live data",
+    "delayBannerTitle": "Free plan: SIO-calculated data shown up to {{date}}",
+    "delayBannerBody": "Third-party indicators (CNN, BofA, AAII and others) stay current. Composites and historical percentiles are SIO's own work and are held back two months on the free plan; cards marked “Delayed” below are those.",
+    "delayedTag": "Delayed",
+    "asOf": "As of"
   },
   "sentimentIndicatorPages": {
     "currentReading": "Latest reading",
