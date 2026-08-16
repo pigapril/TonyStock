@@ -214,67 +214,171 @@
   padding: 16px 18px;
 }
 
+.divergence-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
 .divergence-card__label {
-  margin: 0 0 10px;
+  margin: 0;
   font-size: 0.875rem;
   font-weight: 600;
   color: #334155;
 }
 
-/* 三欄網格而非 space-between：標籤長度不一時，靠 space-between 撐開會讓兩側參差。
-   align-items: end 讓兩個數字永遠對齊在同一條線上，不受標籤折行影響。 */
-.divergence-card__sides {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: end;
-  gap: 12px;
-}
-
-.divergence-card__side {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
-.divergence-card__side--right {
-  text-align: right;
-}
-
-.divergence-card__sideLabel {
-  font-size: 0.75rem;
-  line-height: 1.35;
-  color: #64748b;
-}
-
-.divergence-card__sideValue {
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1.1;
-  color: #0f172a;
-  font-variant-numeric: tabular-nums;
-}
-
 .divergence-card__gap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 0 2px 2px;
+  flex: none;
+  font-size: 0.68rem;
+  color: #94a3b8;
   white-space: nowrap;
 }
 
-.divergence-card__gapLabel {
-  font-size: 0.68rem;
-  color: #94a3b8;
-}
-
-.divergence-card__gapValue {
-  font-size: 0.95rem;
+.divergence-card__gap b {
+  margin-left: 3px;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #4f46e5;
   font-variant-numeric: tabular-nums;
 }
+
+/* --- 量尺 ---
+   色階沿用 MarketSentimentIndex.js:805-814 既有的語意：藍=悲觀、洋紅=樂觀。
+   同一個網站不該有兩套情緒配色。 */
+
+.meter {
+  margin-top: 10px;
+}
+
+.meter__track {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: #eef2f7;
+}
+
+.meter--sentiment .meter__track {
+  background: linear-gradient(90deg, #5b9bd5 0%, #a6aad2 50%, #d24a93 100%);
+}
+
+.meter--locked .meter__track {
+  background: repeating-linear-gradient(90deg, #e9edf3 0 6px, transparent 6px 12px);
+}
+
+.meter__marker {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2.5px solid #1e293b;
+  transform: translateY(-50%);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
+}
+
+.meter--neutral .meter__marker {
+  border-color: #4f46e5;
+}
+
+.meter__scale {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 5px;
+  font-size: 0.65rem;
+  color: #b6c0cd;
+  font-variant-numeric: tabular-nums;
+}
+
+.meter__note {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin: 5px 0 0;
+  font-size: 0.68rem;
+  color: #94a3b8;
+}
+
+.meter__note b {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- 分歧軌道：兩個點畫在同一條軌道上，中間色帶就是落差 --- */
+
+.divergence-track {
+  margin-top: 2px;
+}
+
+/* 值在點上方、名稱在點下方，兩者都掛在同一個 left%，使用者不必自己做左右對應。 */
+.divergence-track__row {
+  position: relative;
+  height: 18px;
+}
+
+.divergence-track__row--labels {
+  height: 16px;
+  margin-top: 5px;
+}
+
+.divergence-track__value,
+.divergence-track__label {
+  position: absolute;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.divergence-track__value {
+  bottom: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  font-variant-numeric: tabular-nums;
+}
+
+.divergence-track__label {
+  top: 0;
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+.divergence-track__rail {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: #eef2f7;
+}
+
+.divergence-track__band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(79, 70, 229, 0.22);
+  border-radius: 999px;
+}
+
+.divergence-track__dot {
+  position: absolute;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  margin-left: -5.5px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.2);
+}
+
+.divergence-track__dot--a { background: #5b9bd5; }
+.divergence-track__dot--b { background: #d24a93; }
 
 /* --- 其他 --- */
 
@@ -354,4 +458,26 @@
 .indicator-card__label a:hover {
   color: #4f46e5;
   border-bottom-color: #4f46e5;
+}
+
+.sentiment-board__delayNotice {
+  margin: 0 0 24px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #f4f6fb;
+  border: 1px solid #e4e9f2;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #64748b;
+}
+
+.sentiment-board__delayNotice a {
+  color: #4f46e5;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.sentiment-board__delayNotice a:hover {
+  text-decoration: underline;
 }

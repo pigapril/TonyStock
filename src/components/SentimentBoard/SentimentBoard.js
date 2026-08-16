@@ -80,6 +80,16 @@ const SentimentBoard = () => {
           <p className="sentiment-board__subtitle">{t('sentimentBoard.subheading')}</p>
         </header>
 
+        {/* 免費方案看得到整個 dashboard，只是 SIO 自己算的部分停在兩個月前。
+            這件事必須明講，否則使用者會把舊值當成現況。 */}
+        {board.delayed?.active && (
+          <p className="sentiment-board__delayNotice">
+            {t('sentimentBoard.delayNotice', { date: board.delayed.until })}
+            {' '}
+            <Link to={`/${lang}/subscription`}>{t('sentimentBoard.delayNoticeCta')}</Link>
+          </p>
+        )}
+
         <section className="sentiment-board__composite" aria-label={t('sentimentBoard.compositeLabel')}>
           <CompositeCard
             label={t('sentimentBoard.compositeUs')}
@@ -100,25 +110,33 @@ const SentimentBoard = () => {
             <h2 className="sentiment-board__sectionTitle">{t('sentimentBoard.divergenceTitle')}</h2>
             <p className="sentiment-board__sectionNote">{t('sentimentBoard.divergenceNote')}</p>
             <div className="sentiment-board__divergenceGrid">
-              {board.divergences.map((item) => (
-                <div key={item.key} className="divergence-card">
-                  <p className="divergence-card__label">{t(`sentimentBoard.divergences.${item.key}`)}</p>
-                  <div className="divergence-card__sides">
-                    <div className="divergence-card__side">
-                      <span className="divergence-card__sideLabel">{t(`sentimentBoard.sides.${item.left.key}`)}</span>
-                      <span className="divergence-card__sideValue">{formatNumber(item.left.value ?? item.left.percentile)}</span>
+              {board.divergences.map((item) => {
+                const points = [item.left, item.right].map((side) => {
+                  const value = side.value ?? side.percentile;
+                  return {
+                    key: side.key,
+                    value,
+                    label: sideLabel(t, side.key),
+                    pct: Math.min(100, Math.max(0, Number(value) || 0))
+                  };
+                });
+
+                return (
+                  <div key={item.key} className="divergence-card">
+                    <div className="divergence-card__head">
+                      <p className="divergence-card__label">
+                        {t(`sentimentBoard.divergences.${item.key}`, {
+                          defaultValue: points.map((p) => p.label).join(' / ')
+                        })}
+                      </p>
+                      <span className="divergence-card__gap">
+                        {t('sentimentBoard.gap')} <b>{formatNumber(item.gap)}</b>
+                      </span>
                     </div>
-                    <div className="divergence-card__gap">
-                      <span className="divergence-card__gapLabel">{t('sentimentBoard.gap')}</span>
-                      <span className="divergence-card__gapValue">{formatNumber(item.gap)}</span>
-                    </div>
-                    <div className="divergence-card__side divergence-card__side--right">
-                      <span className="divergence-card__sideLabel">{t(`sentimentBoard.sides.${item.right.key}`)}</span>
-                      <span className="divergence-card__sideValue">{formatNumber(item.right.value ?? item.right.percentile)}</span>
-                    </div>
+                    <DivergenceTrack points={points} />
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
         )}
@@ -154,12 +172,108 @@ const SentimentBoard = () => {
   );
 };
 
+/**
+ * 全站唯一的量尺。
+ *
+ * 這是這頁能不能被「看懂」的關鍵：各指標的單位天差地遠（0~10、0~100、
+ * 負二十萬到正二十萬、六百多萬戶），光看數字無法判斷高低，也無法互相比較。
+ * 把有原生刻度的指標都映射到同一條軌道上，位置本身就是資訊。
+ *
+ * 沒有天然上下界的指標（例如垃圾債利差）不給 scale，寧可只顯示數字 ——
+ * 硬湊一個刻度會讓使用者以為那是有意義的滿格。
+ *
+ * tone='sentiment' 用於恐懼到貪婪這種本身帶方向的刻度，軌道以漸層表達兩端；
+ * 其餘一律中性填色，避免把「高」暗示成「好」。
+ */
+const Meter = ({ value, scale, tone = 'neutral', locked = false, caption }) => {
+  if (!scale) return null;
+
+  const span = scale.max - scale.min;
+  const pct = locked || value === null || value === undefined || !span
+    ? null
+    : Math.min(100, Math.max(0, ((value - scale.min) / span) * 100));
+
+  return (
+    <div className={`meter meter--${tone}${locked ? ' meter--locked' : ''}`}>
+      <div className="meter__track">
+        {pct !== null && <span className="meter__marker" style={{ left: `${pct}%` }} />}
+      </div>
+      {caption
+        // 百分位軌道一定要標示，否則卡片上寫 -7.3、點卻落在 32 的位置，反而誤導。
+        // 標籤與數值放同一行，一句話同時解釋點位並給出數字。
+        ? (
+          <p className="meter__note">
+            {caption}
+            <b>{pct === null ? '—' : Math.round(value)}</b>
+          </p>
+        )
+        // 原生刻度自己就說明了一切，只標兩端，不再加字。
+        : (
+          <div className="meter__scale">
+            <span>{scale.min}</span>
+            <span>{scale.max}</span>
+          </div>
+        )}
+    </div>
+  );
+};
+
+/**
+ * 兩個值畫在同一條軌道上，中間的色帶就是落差。
+ *
+ * 標籤與數值直接掛在各自的點上（值在上、名稱在下），不另外列在兩側 ——
+ * 列在兩側時使用者得自己把「左邊那欄」對應到「軌道上某個點」，而軌道兩端
+ * 又是 0 和 100，兩種左右關係打架。掛在點上就沒有這個對應成本。
+ */
+const DivergenceTrack = ({ points }) => {
+  // 貼近兩端時把標籤往內收，否則會被卡片邊緣切掉。
+  const anchor = (pct) => ({
+    left: `${pct}%`,
+    transform: pct < 14 ? 'translateX(-14%)' : (pct > 86 ? 'translateX(-86%)' : 'translateX(-50%)')
+  });
+
+  const [a, b] = points;
+
+  return (
+    <div className="divergence-track">
+      <div className="divergence-track__row divergence-track__row--values">
+        {points.map((p) => (
+          <span key={p.key} className="divergence-track__value" style={anchor(p.pct)}>
+            {formatNumber(p.value)}
+          </span>
+        ))}
+      </div>
+
+      <div className="divergence-track__rail">
+        <span
+          className="divergence-track__band"
+          style={{ left: `${Math.min(a.pct, b.pct)}%`, width: `${Math.abs(a.pct - b.pct)}%` }}
+        />
+        {points.map((p, i) => (
+          <span
+            key={p.key}
+            className={`divergence-track__dot divergence-track__dot--${i === 0 ? 'a' : 'b'}`}
+            style={{ left: `${p.pct}%` }}
+          />
+        ))}
+      </div>
+
+      <div className="divergence-track__row divergence-track__row--labels">
+        {points.map((p) => (
+          <span key={p.key} className="divergence-track__label" style={anchor(p.pct)}>{p.label}</span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const CompositeCard = ({ label, data, href, t }) => (
   <article className={`composite-card${data.locked ? ' composite-card--locked' : ''}`}>
     <p className="composite-card__label">{label}</p>
     <p className="composite-card__value">
       {data.locked ? <span className="composite-card__lock">{t('sentimentBoard.proOnly')}</span> : formatNumber(data.value)}
     </p>
+    <Meter value={data.value} scale={data.scale} tone="sentiment" locked={data.locked} />
     {data.date && <p className="composite-card__date">{data.date}</p>}
     <Link className="composite-card__link" to={href}>{t('sentimentBoard.viewDetail')}</Link>
   </article>
@@ -169,6 +283,17 @@ const IndicatorCard = ({ item, lang, t }) => {
   const explainerSlug = EXPLAINER_BY_ITEM_ID[item.id];
   // 後端的 label 只當保底：新增指標時翻譯還沒補上，也不會變成空白卡片。
   const name = t(`sentimentBoard.indicatorNames.${item.id}`, { defaultValue: item.label });
+  const percentile = item.derived?.percentileRank;
+  const meter = item.scale
+    ? { value: item.value, scale: item.scale, tone: 'sentiment' }
+    : (percentile !== null && percentile !== undefined
+      ? {
+        value: percentile,
+        scale: { min: 0, max: 100 },
+        tone: 'neutral',
+        caption: t('sentimentBoard.percentileCaption')
+      }
+      : null);
 
   return (
   <article className={`indicator-card${item.locked ? ' indicator-card--locked' : ''}`}>
@@ -189,6 +314,12 @@ const IndicatorCard = ({ item, lang, t }) => {
 
     {item.rating && !item.locked && <p className="indicator-card__rating">{item.rating}</p>}
 
+    {/* 有原生刻度的（CNN 0~100、BofA 0~10）直接畫值；其餘指標沒有共同單位，
+        改用歷史百分位當共同尺度。百分位是 SIO 算的，所以只有 Pro 看得到值，
+        免費使用者看到的是空軌道加鎖 —— 讓「這裡有東西沒給你」是看得見的，
+        但不假造任何數字。 */}
+    {meter && <Meter {...meter} locked={item.locked} />}
+
     <footer className="indicator-card__foot">
       {/* 資料時間一律顯示，即使值是鎖住的 —— 讓過期是看得見的，而不是隱形的。 */}
       <span className="indicator-card__date">{item.date || t('sentimentBoard.noData')}</span>
@@ -202,9 +333,28 @@ const IndicatorCard = ({ item, lang, t }) => {
   );
 };
 
+/**
+ * 側別標籤。後端只給 key，翻譯若缺就退回把 key 轉成可讀字串
+ * （`institutional` → `Institutional`），絕不讓 `sentimentBoard.sides.xxx`
+ * 這種原始 key 出現在畫面上。後端改了 key 而翻譯還沒跟上時，這是最後一道防線。
+ */
+function sideLabel(t, key) {
+  const fallback = String(key || '')
+    .split('_').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  return t(`sentimentBoard.sides.${key}`, { defaultValue: fallback });
+}
+
+/**
+ * 小數位數依數量級決定，不再一律兩位。
+ * 六位數的戶數不需要小數，0.51 這種比率沒有小數就失去意義。
+ */
 function formatNumber(value) {
   if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
-  return Number(value).toLocaleString(undefined, { maximumFractionDigits: 2 });
+
+  const num = Number(value);
+  const magnitude = Math.abs(num);
+  const digits = magnitude >= 10000 ? 0 : (magnitude >= 100 ? 1 : 2);
+  return num.toLocaleString(undefined, { maximumFractionDigits: digits });
 }
 
 function formatDateTime(value) {

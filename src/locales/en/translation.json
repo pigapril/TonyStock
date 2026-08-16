@@ -2219,15 +2219,15 @@
     "error": "Could not load indicators. Please try again shortly.",
     "upsellCopy": "Each publisher's own reading is free. Upgrade to Pro for the SIO composite, standardized component values and contributions, and divergence analysis across indicators.",
     "upsellCta": "See plans",
-    "divergenceNote": "Retail surveys, professional positioning and different markets often read the same moment differently. The larger the gap, the wider the disagreement.",
+    "divergenceNote": "Retail surveys, institutional positioning and different markets often read the same moment differently. The larger the gap, the wider the disagreement. Retail comes from the AAII survey; institutional from NAAIM exposure, COT and the junk bond spread.",
     "divergences": {
-      "retail_vs_professional": "Retail sentiment vs professional positioning",
+      "retail_vs_institutional": "Retail sentiment vs institutional positioning",
       "cnn_vs_sio": "CNN Fear & Greed vs SIO US Fear & Greed",
       "us_vs_tw": "US sentiment vs Taiwan sentiment"
     },
     "sides": {
-      "retail": "Retail (AAII)",
-      "professional": "Professional (NAAIM / COT / junk bond spread)",
+      "retail": "Retail",
+      "institutional": "Institutions",
       "cnn": "CNN",
       "sio_us": "SIO",
       "us": "US",
@@ -2270,7 +2270,10 @@
       "tw-market-momentum": "Taiwan Market Momentum",
       "eta-deviation-189d": "Active Accounts Deviation (189d)",
       "retail-sentiment-small-futures": "Retail Mini-Futures Net Position"
-    }
+    },
+    "percentileCaption": "historical percentile",
+    "delayNotice": "On the free plan, SIO's own composites and percentiles are shown as of {{date}}. Third-party indicators (CNN, BofA, AAII and others) stay current.",
+    "delayNoticeCta": "Upgrade to Pro for live data"
   },
   "sentimentIndicatorPages": {
     "currentReading": "Latest reading",

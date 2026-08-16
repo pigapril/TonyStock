@@ -2232,15 +2232,15 @@
     "error": "指標載入失敗,請稍後再試。",
     "upsellCopy": "各機構的原始數值免費開放。升級 Pro 可看 SIO 綜合指標、各分項的標準化數值與貢獻度,以及指標之間的分歧分析。",
     "upsellCta": "查看方案",
-    "divergenceNote": "同一時間，散戶調查、專業部位與不同市場的判讀經常不一致。落差數字越大，代表兩邊的分歧越明顯。",
+    "divergenceNote": "同一時間，散戶調查、機構部位與不同市場的判讀經常不一致。落差數字越大，代表兩邊的分歧越明顯。散戶取自 AAII 調查；機構取自 NAAIM 曝險、COT 與垃圾債利差。",
     "divergences": {
-      "retail_vs_professional": "散戶情緒 vs 專業部位",
+      "retail_vs_institutional": "散戶情緒 vs 機構部位",
       "cnn_vs_sio": "CNN 恐懼貪婪 vs SIO 美股恐懼貪婪指標",
       "us_vs_tw": "美股情緒 vs 台股情緒"
     },
     "sides": {
-      "retail": "散戶（AAII）",
-      "professional": "專業（NAAIM / COT / 垃圾債利差）",
+      "retail": "散戶",
+      "institutional": "機構",
       "cnn": "CNN",
       "sio_us": "SIO",
       "us": "美股",
@@ -2283,7 +2283,10 @@
       "tw-market-momentum": "台股市場動能",
       "eta-deviation-189d": "有交易戶數偏離度",
       "retail-sentiment-small-futures": "散戶小台淨部位"
-    }
+    },
+    "percentileCaption": "歷史百分位",
+    "delayNotice": "免費版顯示的 SIO 合成指標與百分位停在 {{date}}。第三方指標（CNN、BofA、AAII 等）維持即時。",
+    "delayNoticeCta": "升級 Pro 看最新"
   },
   "sentimentIndicatorPages": {
     "currentReading": "最新讀數",
