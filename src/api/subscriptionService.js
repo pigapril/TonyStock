@@ -70,7 +70,8 @@ class SubscriptionService {
 
         return {
           type: user.plan || 'free',
-          startDate: new Date(),
+          // 沒有訂閱記錄時，方案起始日就是註冊日；拿不到就不顯示，不要用當下時間充數
+          startDate: user.createdAt ? new Date(user.createdAt) : null,
           endDate: user.plan === 'free' ? null : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
           status: 'active',
           autoRenew: user.plan !== 'free',
@@ -83,7 +84,7 @@ class SubscriptionService {
       console.log('📊 User not authenticated, returning free plan');
       return {
         type: 'free',
-        startDate: new Date(),
+        startDate: null,
         endDate: null,
         status: 'active',
         autoRenew: false,
@@ -95,7 +96,7 @@ class SubscriptionService {
       // 返回預設的免費方案，而不是拋出錯誤
       return {
         type: 'free',
-        startDate: new Date(),
+        startDate: null,
         endDate: null,
         status: 'active',
         autoRenew: false,

@@ -629,4 +629,280 @@
                href="https://sentimentinsideout.com/en/legal"/>
   </url>
 
+  <url>
+    <loc>https://sentimentinsideout.com/en/sentiment-indicators</loc>
+    <lastmod>2026-08-09T07:02:16Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/sentiment-indicators"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/sentiment-indicators"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh"
+               href="https://sentimentinsideout.com/zh/sentiment-indicators"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/sentiment-indicators"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/sentiment-indicators</loc>
+    <lastmod>2026-08-09T07:02:16Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/sentiment-indicators"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/sentiment-indicators"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh"
+               href="https://sentimentinsideout.com/zh/sentiment-indicators"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/sentiment-indicators"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh/sentiment-indicators</loc>
+    <lastmod>2026-08-09T07:02:16Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://sentimentinsideout.com/en/sentiment-indicators"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh-TW"
+               href="https://sentimentinsideout.com/zh-TW/sentiment-indicators"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="zh"
+               href="https://sentimentinsideout.com/zh/sentiment-indicators"/>
+    <xhtml:link
+               rel="alternate"
+               hreflang="x-default"
+               href="https://sentimentinsideout.com/en/sentiment-indicators"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/sentiment-indicators/bofa-bull-bear</loc>
+    <lastmod>2026-08-09T07:50:31Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/bofa-bull-bear"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/bofa-bull-bear"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/bofa-bull-bear"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/bofa-bull-bear"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/sentiment-indicators/bofa-bull-bear</loc>
+    <lastmod>2026-08-09T07:50:31Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/bofa-bull-bear"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/bofa-bull-bear"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/bofa-bull-bear"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/bofa-bull-bear"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh/sentiment-indicators/bofa-bull-bear</loc>
+    <lastmod>2026-08-09T07:50:31Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/bofa-bull-bear"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/bofa-bull-bear"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/bofa-bull-bear"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/bofa-bull-bear"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/sentiment-indicators/cnn-fear-greed</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/cnn-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/cnn-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/cnn-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/cnn-fear-greed"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/sentiment-indicators/cnn-fear-greed</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/cnn-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/cnn-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/cnn-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/cnn-fear-greed"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh/sentiment-indicators/cnn-fear-greed</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/cnn-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/cnn-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/cnn-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/cnn-fear-greed"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/sentiment-indicators/aaii-sentiment-survey</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/aaii-sentiment-survey"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/aaii-sentiment-survey"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/aaii-sentiment-survey"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/aaii-sentiment-survey"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/sentiment-indicators/aaii-sentiment-survey</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/aaii-sentiment-survey"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/aaii-sentiment-survey"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/aaii-sentiment-survey"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/aaii-sentiment-survey"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh/sentiment-indicators/aaii-sentiment-survey</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/aaii-sentiment-survey"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/aaii-sentiment-survey"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/aaii-sentiment-survey"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/aaii-sentiment-survey"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/sentiment-indicators/naaim-exposure-index</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/naaim-exposure-index"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/naaim-exposure-index"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/naaim-exposure-index"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/naaim-exposure-index"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/sentiment-indicators/naaim-exposure-index</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/naaim-exposure-index"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/naaim-exposure-index"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/naaim-exposure-index"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/naaim-exposure-index"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh/sentiment-indicators/naaim-exposure-index</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/naaim-exposure-index"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/naaim-exposure-index"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/naaim-exposure-index"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/naaim-exposure-index"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/sentiment-indicators/cboe-put-call-ratio</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/cboe-put-call-ratio"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/cboe-put-call-ratio"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/cboe-put-call-ratio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/cboe-put-call-ratio"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/sentiment-indicators/cboe-put-call-ratio</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/cboe-put-call-ratio"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/cboe-put-call-ratio"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/cboe-put-call-ratio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/cboe-put-call-ratio"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh/sentiment-indicators/cboe-put-call-ratio</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/cboe-put-call-ratio"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/cboe-put-call-ratio"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/cboe-put-call-ratio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/cboe-put-call-ratio"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/sentiment-indicators/cot-sp500-index</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/cot-sp500-index"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/cot-sp500-index"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/cot-sp500-index"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/cot-sp500-index"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/sentiment-indicators/cot-sp500-index</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/cot-sp500-index"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/cot-sp500-index"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/cot-sp500-index"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/cot-sp500-index"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh/sentiment-indicators/cot-sp500-index</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/cot-sp500-index"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/cot-sp500-index"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/cot-sp500-index"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/cot-sp500-index"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/sentiment-indicators/taiwan-fear-greed</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/taiwan-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/taiwan-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/taiwan-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/taiwan-fear-greed"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/sentiment-indicators/taiwan-fear-greed</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/taiwan-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/taiwan-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/taiwan-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/taiwan-fear-greed"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh/sentiment-indicators/taiwan-fear-greed</loc>
+    <lastmod>2026-08-09T12:24:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/taiwan-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/taiwan-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/taiwan-fear-greed"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/taiwan-fear-greed"/>
+  </url>
 </urlset>

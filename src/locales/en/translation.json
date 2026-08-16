@@ -20,14 +20,16 @@
     "en": "English"
   },
   "articles": {
-    "pageTitle": "Insights & Analysis",
-    "pageDescription": "In-depth analysis of market trends, investment strategies, and how to use website tools to gauge market sentiment.",
+    "pageTitle": "Guides and Market Sentiment Concepts",
+    "pageDescription": "How to use LOHAS Five-Line Analysis and the SIO Fear & Greed Index to time buys and sells, plus explanations of the major market sentiment indicators.",
     "keywords": "market analysis, investment strategy, market sentiment, investment articles, financial analysis, tutorials",
-    "heading": "Insights & Analysis",
-    "jsonLdName": "Insights & Analysis",
-    "jsonLdDescription": "In-depth analysis of market trends, investment strategies, and how to use website tools to gauge market sentiment.",
+    "heading": "Guides and Market Sentiment Concepts",
+    "jsonLdName": "Guides and Market Sentiment Concepts",
+    "jsonLdDescription": "How to use LOHAS Five-Line Analysis and the SIO Fear & Greed Index to time buys and sells, plus explanations of the major market sentiment indicators.",
     "noCategory": "Uncategorized",
-    "noDate": "No Date"
+    "noDate": "No Date",
+    "intro": "Guides to the site tools and explanations of how market sentiment works. To jump straight to current readings, open the indicator overview below.",
+    "boardLink": "Open the market sentiment overview"
   },
   "articleDetail": {
     "loadingTitle": "Loading...",
@@ -2196,5 +2198,397 @@
       "retry_exhausted": "Maximum retry attempts reached"
     }
   },
-  "appName": "Sentiment Inside Out"
+  "appName": "Sentiment Inside Out",
+  "sentimentBoard": {
+    "pageTitle": "Market Sentiment Indicators",
+    "pageDescription": "Every major market sentiment indicator on one page: CNN Fear & Greed, BofA Bull & Bear, AAII, NAAIM, TAIFEX volatility and more, each with its as-of date and original source.",
+    "keywords": "market sentiment indicators,stock sentiment tracker,fear greed index,bofa bull bear indicator,AAII sentiment survey,NAAIM exposure index,US stock sentiment,Taiwan stock sentiment",
+    "heading": "Market Sentiment Indicators",
+    "subheading": "Is the market greedy or fearful right now? Every major sentiment indicator for US and Taiwan stocks.",
+    "compositeLabel": "SIO composite",
+    "compositeUs": "SIO US Fear & Greed Index",
+    "compositeTw": "SIO Taiwan Fear & Greed Index",
+    "divergenceTitle": "Gaps between indicators",
+    "gap": "gap",
+    "viewDetail": "View full analysis",
+    "proOnly": "Pro only",
+    "source": "Source",
+    "noData": "No data",
+    "generatedAt": "Data on this page updated",
+    "loading": "Loading indicators…",
+    "error": "Could not load indicators. Please try again shortly.",
+    "upsellCopy": "Each publisher's own reading is free. Upgrade to Pro for the SIO composite, standardized component values and contributions, and divergence analysis across indicators.",
+    "upsellCta": "See plans",
+    "divergenceNote": "Retail surveys, professional positioning and different markets often read the same moment differently. The larger the gap, the wider the disagreement.",
+    "divergences": {
+      "retail_vs_professional": "Retail sentiment vs professional positioning",
+      "cnn_vs_sio": "CNN Fear & Greed vs SIO US Fear & Greed",
+      "us_vs_tw": "US sentiment vs Taiwan sentiment"
+    },
+    "sides": {
+      "retail": "Retail (AAII)",
+      "professional": "Professional (NAAIM / COT / junk bond spread)",
+      "cnn": "CNN",
+      "sio_us": "SIO",
+      "us": "US",
+      "tw": "Taiwan"
+    },
+    "groups": {
+      "external": {
+        "title": "Widely watched sentiment indicators",
+        "note": "Sentiment gauges published by other institutions. CNN Fear & Greed reacts quickly but runs short-term, often reaching extreme fear well before prices bottom. The BofA Bull & Bear Indicator updates weekly, and the underlying report is not public."
+      },
+      "us": {
+        "title": "US sentiment indicators",
+        "note": "AAII retail surveys, NAAIM manager exposure, options Put/Call and credit spreads are among the signals behind the SIO US Fear & Greed Index."
+      },
+      "tw": {
+        "title": "Taiwan sentiment indicators",
+        "note": "Taiwan index options volatility, foreign institutional futures positioning and margin maintenance ratios are among the signals behind the SIO Taiwan Fear & Greed Index. Taiwan's positioning structure differs from the US, so the two indices use separate indicator sets."
+      }
+    },
+    "indicatorNames": {
+      "cnn-fear-greed": "CNN Fear & Greed",
+      "bofa-bull-bear": "BofA Bull & Bear Indicator",
+      "aaii-bull-bear-spread": "AAII Bull-Bear Spread",
+      "naaim-exposure-index": "NAAIM Exposure Index",
+      "cboe-put-call-ratio-5-day-avg": "CBOE Put/Call Ratio (5-day avg)",
+      "vix-ma50": "VIX 50-Day Moving Average",
+      "market-momentum": "Market Momentum",
+      "safe-haven-demand": "Safe Haven Demand",
+      "junk-bond-spread": "Junk Bond Spread",
+      "s-p-500-cot-index": "S&P 500 COT Index",
+      "tw-vix": "Taiwan Index Options Volatility",
+      "pcr-ratio": "Taiwan Options Put/Call Ratio",
+      "usd-twd": "USD/TWD",
+      "fini-futures-net-oi": "Foreign Institutional Futures Net OI",
+      "us-10y-yield": "US 10-Year Treasury Yield",
+      "effective-trading-accounts": "Active Trading Accounts",
+      "margin-maintenance-ratio": "Margin Maintenance Ratio",
+      "margin-short-ratio": "Short-to-Margin Ratio",
+      "market-breadth-ma20": "Market Breadth (MA20)",
+      "tw-market-momentum": "Taiwan Market Momentum",
+      "eta-deviation-189d": "Active Accounts Deviation (189d)",
+      "retail-sentiment-small-futures": "Retail Mini-Futures Net Position"
+    }
+  },
+  "sentimentIndicatorPages": {
+    "currentReading": "Latest reading",
+    "sourceTitle": "Source",
+    "disclaimer": "This page collects publicly reported readings from third-party providers. It is for reference only and is not investment advice. Each indicator is defined and calculated by its publisher; we make no warranty as to its accuracy or timeliness.",
+    "bofaBullBear": {
+      "shortName": "BofA Bull & Bear",
+      "pageTitle": "What is the BofA Bull & Bear Indicator and how do you read it?",
+      "pageDescription": "A full guide to the BofA Bull & Bear Indicator: a 0-to-10 contrarian sentiment gauge where above 8 signals selling and below 2 signals buying, built from six flow and positioning inputs. Includes the latest reading, a historical chart and how to interpret it.",
+      "keywords": "bofa bull bear indicator,BofA Bull and Bear,BofA sentiment indicator,Hartnett,Flow Show,contrarian indicator,market sentiment indicator,stock sentiment tracker",
+      "heading": "What is the BofA Bull & Bear Indicator and how do you read it?",
+      "lede": "The BofA Bull & Bear Indicator is a weekly sentiment gauge from Bank of America, scoring investor positioning from 0 to 10. It is read contrarily: the higher the number, the more people are already betting the same way, which leaves less force behind any further move.",
+      "whatItIsTitle": "What is the BofA Bull & Bear Indicator?",
+      "whatItIs": "The gauge comes from the BofA Investment Strategy team led by chief strategist Michael Hartnett, and updates each week with The Flow Show, typically Thursday evening to Friday US time. It ignores price action and instead aggregates six measures of where money is flowing and how investors are positioned, converting each to a percentile before combining them into a 0-to-10 score. The underlying data covers global fund flows, BofA's own survey of fund managers, futures market positioning and global equity breadth.",
+      "howToReadTitle": "How do you read the BofA Bull & Bear Indicator?",
+      "howToRead": "It is a contrarian gauge, so extreme readings mean most participants are already on one side. BofA defines above 8.0 as extreme bullish and below 2.0 as extreme bearish.",
+      "bands": [
+        {
+          "range": "Above 8.0",
+          "meaning": "Extreme bullish. BofA treats this as a contrarian sell signal, indicating a crowded long position rather than a forecast of decline."
+        },
+        {
+          "range": "2.0 to 8.0",
+          "meaning": "Neutral range. The gauge carries no clear signal on its own and needs other context."
+        },
+        {
+          "range": "Below 2.0",
+          "meaning": "Extreme bearish. BofA treats this as a contrarian buy signal, usually seen after heavy outflows and capitulation."
+        }
+      ],
+      "componentsTitle": "Which six components make up the BofA Bull & Bear Indicator?",
+      "componentsIntro": "Each component is expressed as a percentile from 0% to 100%, then combined into the headline score. BofA publishes all six alongside the reading, so the breakdown shows what drove any given week.",
+      "components": [
+        {
+          "key": "hf_positioning",
+          "name": "Hedge Fund Positioning",
+          "note": "How much equity exposure hedge funds are carrying."
+        },
+        {
+          "key": "equity_flows",
+          "name": "Equity Flow",
+          "note": "Money moving into equity funds, measured by EPFR, a firm that tracks fund flows worldwide."
+        },
+        {
+          "key": "bond_flows",
+          "name": "Bond Flow",
+          "note": "Money moving into bond funds, used to gauge appetite for risk."
+        },
+        {
+          "key": "credit_mkt_technicals",
+          "name": "Credit Market Technicals",
+          "note": "Supply, demand and spread conditions in corporate credit."
+        },
+        {
+          "key": "equity_market_breadth",
+          "name": "Global Stock Index Breadth",
+          "note": "How many global markets are in an uptrend."
+        },
+        {
+          "key": "lo_positioning",
+          "name": "FMS Positioning",
+          "note": "Actual allocations reported in BofA's monthly survey of global fund managers."
+        }
+      ],
+      "historyTitle": "Historical range and extremes",
+      "history": "The series goes back to 2002. We have tracked it continuously since November 2023, over which it has ranged from 1.4 to 9.7. Readings above 8.0 are historically uncommon; the 9.7 print in August 2026 was the highest since 2021. Note that the gauge can sit in extreme territory for weeks or longer, so reaching an extreme and the market turning are two different events.",
+      "relationToSioTitle": "How it differs from the SIO Fear & Greed Index",
+      "relationToSio": "The BofA gauge carries two practical limitations. First, the underlying report is paid research that retail investors cannot access, so the number reaches the public only through financial media, and some weeks nobody reports it. Second, it updates once a week, so a mid-week move leaves the gauge stuck on last week's reading. The SIO Fear & Greed Index addresses both: it updates every trading day from public market data covering volatility, put/call ratios, credit spreads and momentum, with a complete series and no gaps. The two use different inputs, so gaps between them are normal, and those gaps usually say more than either number alone.",
+      "relationToSioCta": "View the SIO US Fear & Greed Index",
+      "source": "BofA Global Investment Strategy. Readings are published with The Flow Show."
+    },
+    "cnnFearGreed": {
+      "shortName": "CNN Fear & Greed",
+      "pageTitle": "What is the CNN Fear & Greed Index and how do you read it?",
+      "pageDescription": "A full guide to the CNN Fear & Greed Index: a 0-to-100 sentiment gauge where below 25 is extreme fear and above 75 is extreme greed, built from seven market inputs. Includes the latest reading, how to interpret it and its known limits.",
+      "keywords": "cnn fear and greed index,fear greed index,CNN Fear Greed,market sentiment index,extreme fear,extreme greed,stock sentiment tracker",
+      "heading": "What is the CNN Fear & Greed Index and how do you read it?",
+      "lede": "The CNN Fear & Greed Index is the most widely followed sentiment gauge for US stocks, describing on a 0-to-100 scale whether investors currently lean fearful or greedy. Lower means more panic, higher means more optimism.",
+      "whatItIsTitle": "What is the CNN Fear & Greed Index?",
+      "whatItIs": "CNN builds the index from seven market inputs: where prices sit relative to their moving average, the balance of new highs against new lows, volume in advancing versus declining stocks, the ratio of put to call options, the spread between junk and investment grade bonds, market volatility, and recent stock returns against bonds. Each is rescaled and averaged into a 0-to-100 score, updated every trading day.",
+      "howToReadTitle": "How do you read the CNN Fear & Greed Index?",
+      "howToRead": "CNN divides the range into five bands. Most people use it contrarily, watching for entries during extreme fear and for risk during extreme greed.",
+      "bands": [
+        {
+          "range": "0 to 24",
+          "meaning": "Extreme Fear. The market is in panic, usually alongside heavy selling."
+        },
+        {
+          "range": "25 to 44",
+          "meaning": "Fear. Investors are leaning defensive."
+        },
+        {
+          "range": "45 to 55",
+          "meaning": "Neutral. Buyers and sellers are evenly matched."
+        },
+        {
+          "range": "56 to 75",
+          "meaning": "Greed. Risk appetite is rising."
+        },
+        {
+          "range": "76 to 100",
+          "meaning": "Extreme Greed. Strong willingness to chase prices, which stretches valuations."
+        }
+      ],
+      "historyTitle": "Historical range of the CNN Fear & Greed Index",
+      "history": "The index runs from 0 to 100. Our complete daily record starts in 2021, over which it has reached a low of 2.9 (8 April 2025) and a high of 83.0 (19 December 2023). Extreme fear typically appears during fast declines, extreme greed after sustained rallies.",
+      "relationToSioTitle": "How it differs from the SIO Fear & Greed Index",
+      "relationToSio": "The CNN index leans short term. Most of its seven inputs look at changes over the past days to weeks, so during a decline it drops into extreme fear early, then pins to the floor while the market keeps falling, losing the ability to discriminate. The SIO Fear & Greed Index standardises each input against more than a decade of history, so even at extremes it still separates ordinary fear from genuinely rare fear. Reading both together keeps short-term signals in perspective.",
+      "relationToSioCta": "View the SIO US Fear & Greed Index",
+      "source": "CNN Business. Updated every trading day.",
+      "componentsTitle": "Which seven components make up the CNN Fear & Greed Index?",
+      "componentsIntro": "Each component is rescaled to 0-100 and averaged into the headline reading, so the breakdown shows what is driving the score today.",
+      "components": [
+        {
+          "key": "market_momentum_sp125",
+          "name": "Market Momentum",
+          "note": "Where the S&P 500 sits relative to its 125-day moving average."
+        },
+        {
+          "key": "stock_price_strength",
+          "name": "Stock Price Strength",
+          "note": "The balance of 52-week highs against 52-week lows."
+        },
+        {
+          "key": "stock_price_breadth",
+          "name": "Stock Price Breadth",
+          "note": "Volume in advancing stocks versus declining stocks."
+        },
+        {
+          "key": "put_call_options",
+          "name": "Put/Call Options",
+          "note": "Put volume against call volume, a read on hedging demand."
+        },
+        {
+          "key": "market_volatility_vix_50",
+          "name": "Market Volatility",
+          "note": "Where VIX sits relative to its 50-day moving average."
+        },
+        {
+          "key": "junk_bond_demand",
+          "name": "Junk Bond Demand",
+          "note": "The yield spread between junk and investment grade bonds; a narrowing spread means more appetite for risk."
+        },
+        {
+          "key": "safe_haven_demand",
+          "name": "Safe Haven Demand",
+          "note": "Recent stock returns against bond returns."
+        }
+      ]
+    },
+    "aaiiSurvey": {
+      "shortName": "AAII Sentiment Survey",
+      "pageTitle": "What is the AAII Sentiment Survey and how do you read it?",
+      "pageDescription": "A full guide to the AAII Sentiment Survey: a weekly poll of US individual investors on the next six months, with the Bull-Bear Spread as the headline number. Includes the latest reading, how to interpret it and its known limits.",
+      "keywords": "aaii sentiment survey,AAII bull bear spread,retail investor sentiment,individual investor sentiment,market sentiment indicator",
+      "heading": "What is the AAII Sentiment Survey and how do you read it?",
+      "lede": "The AAII Sentiment Survey is a weekly poll of US individual investors asking where they think the stock market goes over the next six months. The most quoted figure is the Bull-Bear Spread, the share who are bullish minus the share who are bearish.",
+      "whatItIsTitle": "What is the AAII Sentiment Survey?",
+      "whatItIs": "AAII is the American Association of Individual Investors, which has polled its members weekly since 1987 with a single question: will the market be up, down or flat over the next six months. The three shares sum to 100%, and bullish minus bearish gives the spread. It is one of the few sentiment gauges that asks people directly; most others infer mood from trading data.",
+      "howToReadTitle": "How do you read the AAII Bull-Bear Spread?",
+      "howToRead": "A positive spread means more bulls than bears. The long-run average sits around plus 6 to 7 points, so the sign alone says little; what matters is how far it sits from that norm. Most people read it contrarily.",
+      "bands": [
+        {
+          "range": "Above +20",
+          "meaning": "Retail investors are clearly optimistic. Historically seen after a rally has run for a while."
+        },
+        {
+          "range": "-10 to +20",
+          "meaning": "Close to the normal range, limited signal."
+        },
+        {
+          "range": "Below -20",
+          "meaning": "Retail investors are clearly pessimistic. Historically seen after sharp declines and read as a contrarian marker."
+        }
+      ],
+      "historyTitle": "Historical range of the AAII Bull-Bear Spread",
+      "history": "The survey has run since July 1987, making it the longest series we track with more than two thousand weekly readings. The spread spends most of its time between minus 20 and plus 20 points, with an all-time low of -54.0 (19 October 1990) and a high of +62.8 (26 June 2003). Readings beyond plus or minus 30 are comparatively rare and usually coincide with violent moves in the market.",
+      "relationToSioTitle": "How it differs from the SIO Fear & Greed Index",
+      "relationToSio": "AAII carries two built-in limits. It is a survey answered by self-selecting members, so the sample shifts each week and the raw number is noisy. It also asks what people think, and what people think often differs from what they trade. The SIO Fear & Greed Index treats AAII as one component, smoothed and standardised before being combined with seven other inputs, so no single survey dominates the reading.",
+      "relationToSioCta": "View the SIO US Fear & Greed Index",
+      "source": "American Association of Individual Investors (AAII). Updated weekly."
+    },
+    "naaimExposure": {
+      "shortName": "NAAIM Exposure Index",
+      "pageTitle": "What is the NAAIM Exposure Index and how do you read it?",
+      "pageDescription": "A full guide to the NAAIM Exposure Index: a weekly survey of US active investment managers reporting their actual equity exposure, ranging from -200 to +200. Includes the latest reading, how to interpret it and its known limits.",
+      "keywords": "naaim exposure index,NAAIM,active manager exposure,fund manager positioning,market sentiment indicator",
+      "heading": "What is the NAAIM Exposure Index and how do you read it?",
+      "lede": "The NAAIM Exposure Index surveys US active investment managers each week on how much equity exposure they are actually carrying. It reflects what professionals have done rather than what they say, which makes it a useful counterpart to survey-based gauges.",
+      "whatItIsTitle": "What is the NAAIM Exposure Index?",
+      "whatItIs": "NAAIM is the National Association of Active Investment Managers. Each Wednesday it asks members for their current equity exposure. A reading of 100 means fully long, 0 means flat, and negative values mean net short, with a theoretical range from -200 to +200. Because it asks about actual positions, it measures behaviour rather than opinion.",
+      "howToReadTitle": "How do you read the NAAIM Exposure Index?",
+      "howToRead": "This gauge follows positioning directly: higher means managers are more committed to equities. Extremes are usually read contrarily, since a fully invested manager has little dry powder left.",
+      "bands": [
+        {
+          "range": "Above 90",
+          "meaning": "Close to fully invested. Managers are heavily committed with limited room to add."
+        },
+        {
+          "range": "40 to 90",
+          "meaning": "The common range, limited signal."
+        },
+        {
+          "range": "Below 20",
+          "meaning": "Heavily reduced or flat. Historically seen during market panics."
+        }
+      ],
+      "historyTitle": "Historical range of the NAAIM Exposure Index",
+      "history": "Our record starts in July 2006. The index spends most of its time between 40 and 90, with a low of -3.6 (5 October 2011, meaning net short overall) and a high of 120.6 (13 December 2017, meaning leveraged long). Keep in mind it produces one number per week, so it lags when the market moves sharply mid-week.",
+      "relationToSioTitle": "How it differs from the SIO Fear & Greed Index",
+      "relationToSio": "The NAAIM sample covers a few dozen active managers, small enough that one firm changing its book can move the number visibly. It also updates only weekly, which leaves a lag when you are trying to read the market today. The SIO Fear & Greed Index updates every trading day and standardises NAAIM alongside seven other inputs, so swings in any single survey do not get amplified.",
+      "relationToSioCta": "View the SIO US Fear & Greed Index",
+      "source": "National Association of Active Investment Managers (NAAIM). Updated weekly."
+    },
+    "cboePutCall": {
+      "shortName": "CBOE Put/Call Ratio",
+      "pageTitle": "What is the CBOE Put/Call Ratio and how do you read it?",
+      "pageDescription": "A full guide to the CBOE Put/Call Ratio: the ratio of put to call option volume, where higher readings signal stronger demand for downside protection. Includes the latest reading, how to interpret it and its known limits.",
+      "keywords": "cboe put call ratio,put call ratio,PCR,options ratio,hedging demand,market sentiment indicator",
+      "heading": "What is the CBOE Put/Call Ratio and how do you read it?",
+      "lede": "The Put/Call Ratio divides put option volume by call option volume. Puts are typically bought for protection or to bet on declines while calls express upside views, so the ratio shows whether investors are protecting positions or chasing gains.",
+      "whatItIsTitle": "What is the CBOE Put/Call Ratio?",
+      "whatItIs": "CBOE is the Chicago Board Options Exchange, one of the largest options venues in the world. It publishes daily put and call volume, and dividing one by the other gives the ratio. A reading above 1 means more puts traded than calls that day, which typically happens when markets are tense. Because the daily figure swings hard, it is usually smoothed over several days before use.",
+      "howToReadTitle": "How do you read the CBOE Put/Call Ratio?",
+      "howToRead": "This is a contrarian gauge. A high ratio means heavy buying of protection and bearish positioning; a low ratio means the market is discounting risk. Extremes often cluster near turning points.",
+      "bands": [
+        {
+          "range": "Above 1.0",
+          "meaning": "Put volume exceeds call volume, showing clear demand for hedges and bearish sentiment."
+        },
+        {
+          "range": "0.7 to 1.0",
+          "meaning": "The common range."
+        },
+        {
+          "range": "Below 0.7",
+          "meaning": "Calls clearly outweigh puts, indicating low awareness of risk."
+        }
+      ],
+      "historyTitle": "Historical range of the CBOE Put/Call Ratio",
+      "history": "Our five-day average record starts in November 2006, ranging from a low of 0.37 (19 January 2021) to a high of 1.47 (28 December 2022). Note that the options market has changed substantially: the rise of very short-dated contracts has altered the composition of volume, so comparing today directly against readings from long ago deserves caution.",
+      "relationToSioTitle": "How it differs from the SIO Fear & Greed Index",
+      "relationToSio": "The daily ratio is noisy enough to swing from 0.6 to 1.2 within one week, which misleads if read raw. It also reflects only the options market, saying nothing about cash equities, bonds or fund flows. The SIO Fear & Greed Index smooths it and standardises it alongside seven other inputs, covering what options alone cannot see.",
+      "relationToSioCta": "View the SIO US Fear & Greed Index",
+      "source": "Chicago Board Options Exchange (CBOE). Updated every trading day."
+    },
+    "cotSp500": {
+      "shortName": "S&P 500 COT",
+      "pageTitle": "What is the COT report and S&P 500 speculative positioning?",
+      "pageDescription": "A full guide to the Commitments of Traders report: weekly US futures positioning data broken out by participant type, with S&P 500 speculative net positioning widely used as a sentiment gauge. Includes how to interpret it and its known limits.",
+      "keywords": "COT report,commitments of traders,speculative net positioning,S&P 500 futures,CFTC,market sentiment indicator",
+      "heading": "What is the COT report and S&P 500 speculative positioning?",
+      "lede": "The Commitments of Traders report is weekly positioning data from the US futures regulator, breaking the market down by participant type. The net long or short position held by speculative accounts is widely used to gauge sentiment.",
+      "whatItIsTitle": "What is the Commitments of Traders (COT) report?",
+      "whatItIs": "The report is published by the CFTC, the US Commodity Futures Trading Commission, which regulates futures markets. It comes out every Friday covering positions as of the preceding Tuesday, splitting participants into commercial hedgers, speculative money and small traders. The reading used here expresses speculative net positioning (leveraged funds plus asset managers) and hedger net positioning each as a share of total open interest, then takes the difference, producing a figure comparable across time.",
+      "howToReadTitle": "How do you read S&P 500 speculative positioning?",
+      "howToRead": "Hedgers are the counterparty to speculative money, so the two sit on opposite sides by construction and taking the difference amplifies the signal. A high reading means the two camps are far apart with speculators leaning long; a low reading means the reverse. Extremes are usually read contrarily.",
+      "bands": [
+        {
+          "range": "At historical highs",
+          "meaning": "Speculators are clearly long relative to hedgers, with the two camps far apart."
+        },
+        {
+          "range": "Middle range",
+          "meaning": "The common state, limited signal."
+        },
+        {
+          "range": "At historical lows",
+          "meaning": "Speculators are clearly short relative to hedgers."
+        }
+      ],
+      "historyTitle": "Historical range of COT positioning data",
+      "history": "Our record starts in June 2006. Three things are worth noting: the report carries a three-day lag, with Friday publication covering Tuesday positions; the CFTC revised contract classifications around 2021, so comparisons spanning that point need care; and asset managers are counted on the speculative side even though many such accounts run structurally long allocations, which is worth bearing in mind when reading extremes.",
+      "relationToSioTitle": "How it differs from the SIO Fear & Greed Index",
+      "relationToSio": "COT carries two limits. It publishes weekly, and its as-of date sits three days before publication, so what you see is always days old. It also covers only futures, saying nothing about cash equities or options. Because it is a spread between speculative and hedger positioning, extremes reflect both sides at once and are easy to misread in isolation. The SIO Fear & Greed Index updates every trading day and standardises COT alongside seven other inputs, so neither the lag nor the definitional quirks dominate the overall read.",
+      "relationToSioCta": "View the SIO US Fear & Greed Index",
+      "source": "U.S. Commodity Futures Trading Commission (CFTC). Published every Friday."
+    },
+    "taiwanFearGreed": {
+      "shortName": "Taiwan Fear & Greed",
+      "pageTitle": "What is the Taiwan Fear & Greed Index and how do you read it?",
+      "pageDescription": "A full guide to the Taiwan Fear & Greed Index: a 0-to-100 sentiment gauge for Taiwan equities built from local data including TAIFEX options volatility, put/call ratio, margin ratios and market breadth, updated every trading day.",
+      "keywords": "taiwan fear and greed index,taiwan stock sentiment,TAIEX sentiment,taiwan VIX,TAIFEX,margin ratio,taiwan market sentiment",
+      "heading": "What is the Taiwan Fear & Greed Index and how do you read it?",
+      "lede": "The Taiwan Fear & Greed Index describes on a 0-to-100 scale whether Taiwan equity investors currently lean fearful or greedy. It is calculated entirely from local market data covering options volatility, margin financing, foreign investor positioning and market breadth, updated every trading day.",
+      "whatItIsTitle": "What is the Taiwan Fear & Greed Index?",
+      "whatItIs": "Nearly every well-known sentiment gauge is built for US equities, which leaves Taiwan investors applying tools designed for a different market structure. Retail participation, the margin financing system and the weight of foreign institutional flows all differ from the US, so borrowing US readings directly invites misreads. This index uses Taiwan data instead: TAIFEX options volatility, the options put/call ratio, margin maintenance and short-to-margin ratios, market breadth, foreign futures positioning, the exchange rate and TAIEX momentum, each standardised against its own long history before being combined.",
+      "howToReadTitle": "How do you read the Taiwan Fear & Greed Index?",
+      "howToRead": "Lower means more panic, higher means more optimism. Because each input is standardised over a long window, an extreme reading means extreme relative to more than two decades of history rather than just the past few months.",
+      "bands": [
+        {
+          "range": "0 to 24",
+          "meaning": "Extreme fear. The market is in panic and margin balances typically contract sharply."
+        },
+        {
+          "range": "25 to 44",
+          "meaning": "Fear. Sentiment leans defensive."
+        },
+        {
+          "range": "45 to 55",
+          "meaning": "Neutral. Buyers and sellers are evenly matched."
+        },
+        {
+          "range": "56 to 75",
+          "meaning": "Greed. Risk appetite is rising."
+        },
+        {
+          "range": "76 to 100",
+          "meaning": "Extreme greed. Strong willingness to chase prices."
+        }
+      ],
+      "historyTitle": "Historical range of the Taiwan Fear & Greed Index",
+      "history": "The series goes back to July 2001 with more than six thousand daily readings, covering two decades of Taiwan bull and bear cycles and reaching both ends of the 0-to-100 range. Note that TAIFEX options volatility data begins only in November 2016, so readings before that rest on the remaining components, which is worth bearing in mind when interpreting early values.",
+      "relationToSioTitle": "How Taiwan sentiment differs from US sentiment",
+      "relationToSio": "Taiwan and US sentiment frequently move out of step. Taiwan is heavily shaped by foreign institutional flows, the exchange rate and the electronics cycle, none of which appear in US gauges. Watching both reveals whether money is de-risking globally or repositioning within a single market.",
+      "relationToSioCta": "View the Taiwan Fear & Greed Index",
+      "source": "Taiwan Stock Exchange and Taiwan Futures Exchange public data, calculated by Sentiment Inside Out. Updated every trading day."
+    },
+    "disclaimerOwn": "This index is calculated by Sentiment Inside Out from public market data. It is for reference only and is not investment advice. It describes the current state of market sentiment and does not forecast future moves."
+  }
 }

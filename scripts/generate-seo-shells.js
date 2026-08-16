@@ -30,6 +30,19 @@ const zhTW = require(path.join(ROOT, 'src/locales/zh-TW/translation.json'));
 // reuse the zh-TW strings, same as the runtime i18next fallback chain would.
 const STRINGS = { en, 'zh-TW': zhTW, zh: zhTW };
 
+
+// indicatorPages.js 是 ESM，這支腳本是 CommonJS，所以用最小的字串解析取出
+// slug / i18nKey / published，避免為了共用一份清單而引入編譯步驟。
+const INDICATOR_PAGES = (() => {
+  const src = fs.readFileSync(path.join(ROOT, 'src/components/SentimentBoard/indicatorPages.js'), 'utf8');
+  const body = src.slice(src.indexOf('INDICATOR_PAGES = ['), src.indexOf('];'));
+  return [...body.matchAll(/\{([^{}]*)\}/g)].map(([, entry]) => ({
+    slug: (entry.match(/slug:\s*'([^']+)'/) || [])[1],
+    i18nKey: (entry.match(/i18nKey:\s*'([^']+)'/) || [])[1],
+    published: /published:\s*true/.test(entry),
+  })).filter((page) => page.slug && page.i18nKey);
+})();
+
 const LANGS = ['en', 'zh-TW', 'zh'];
 
 // basePath '' = the language home page (self URL gets a trailing slash,
@@ -37,6 +50,13 @@ const LANGS = ['en', 'zh-TW', 'zh'];
 const ROUTES = [
   { basePath: '', metaKey: 'home' },
   { basePath: '/priceanalysis', metaKey: 'priceAnalysis' },
+  { basePath: '/sentiment-indicators', metaKey: 'sentimentBoard' },
+  // 指標常青解說頁。清單直接從 indicatorPages.js 推導，避免兩邊各自長歪；
+  // 只有 published: true 的會產生 shell。
+  ...INDICATOR_PAGES.filter((page) => page.published).map((page) => ({
+    basePath: `/sentiment-indicators/${page.slug}`,
+    metaKey: `sentimentIndicatorPages.${page.i18nKey}`,
+  })),
   { basePath: '/market-sentiment', metaKey: 'marketSentiment' },
   { basePath: '/watchlist', metaKey: 'watchlist' },
   { basePath: '/articles', metaKey: 'articles' },
@@ -55,6 +75,9 @@ const ARTICLES = [
   { lang: 'en', slug: 'using-market-sentiment-composite-index-to-time-buys-and-sells' },
   { lang: 'zh-TW', slug: '1.用樂活五線譜分析價格趨勢與情緒' },
   { lang: 'zh-TW', slug: '2.用市場情緒綜合指數判斷買賣時機' },
+  // 第 3 篇（Netflix 併購華納）刻意不列。2026-08 產品方向從個股分析轉向市場情緒，
+  // 那篇站內仍可讀，但不再投 SEO 資源進要放棄的方向。這是決定，不是遺漏，
+  // 請勿「順手補上」。sitemap.xml 同樣刻意不含它。
 ];
 
 function escapeAttr(str) {
@@ -150,7 +173,7 @@ function main() {
   // Per-language x per-route shells.
   for (const lang of LANGS) {
     for (const { basePath, metaKey } of ROUTES) {
-      const meta = STRINGS[lang][metaKey];
+      const meta = metaKey.split('.').reduce((node, part) => node[part], STRINGS[lang]);
       const ogTitle = meta.pageTitle;
       const title = `${ogTitle} | ${defaultTitle(lang)}`;
       const description = meta.pageDescription;

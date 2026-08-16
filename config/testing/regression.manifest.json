@@ -1,6 +1,7 @@
 {
   "tests": [
     "src/api/__tests__/apiClient.spec.js",
+    "src/api/__tests__/subscriptionService.userPlan.test.js",
     "src/services/__tests__/paymentService.test.js",
     "src/services/__tests__/subscriptionService.test.js",
     "src/services/__tests__/redemptionService.gate.test.js",

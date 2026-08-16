@@ -59,6 +59,8 @@ However, the CNN index has a drawback: it fluctuates frequently and sharply. If 
 
 > **While common, the CNN Fear & Greed Index is quite sensitive and arguably better suited for short-term trading.**
 
+Further reading: [How to read the CNN Fear & Greed Index](/en/sentiment-indicators/cnn-fear-greed) · [How to read the BofA Bull & Bear Indicator](/en/sentiment-indicators/bofa-bull-bear)
+
 ## SIO Fear & Greed Index: A Long-Term Fear & Greed Indicator
 
 In contrast to the CNN index, the [SIO Fear & Greed Index](https://sentimentinsideout.com/market-sentiment) (pictured below) was specifically designed to reflect *long-term* overall market fear and greed. This tool integrates multiple market sentiment indicators, adjusts them based on their individual characteristics to reduce noise, and calculates a composite score that intuitively shows the current overall market mood. Backtesting against the S&P 500 ETF (SPY) shows that during major lows when the Sentiment Index was near or below 5, these periods proved to be excellent long-term buying opportunities.
@@ -86,6 +88,8 @@ Extreme Values: Generally, a spread exceeding +/-20% indicates extreme sentiment
 
 AAII is considered a contrarian indicator: excessive retail optimism may signal an impending downturn, while excessive pessimism may signal an upcoming rally.
 
+Further reading: [A full guide to the AAII Sentiment Survey](/en/sentiment-indicators/aaii-sentiment-survey)
+
 ### 2. CBOE Put/Call Ratio (CBOE Put/Call Ratio 5-Day Avg)
 
 ![image-cboe](./image-cboe-en.png)
@@ -100,6 +104,8 @@ Lower Ratio: More calls traded than puts; sentiment leans optimistic as investor
 Extreme Values: Depends on the smoothing and specific options series, but on this site, the range is often between 0.4 (Extreme Greed) and 0.8 (Extreme Fear).
 
 The CBOE Put/Call Ratio is a contrarian indicator: a very high ratio might signal an impending bounce, while a very low ratio might signal an impending pullback.
+
+Further reading: [A full guide to the CBOE Put/Call Ratio](/en/sentiment-indicators/cboe-put-call-ratio)
 
 ### 3. Market Momentum
 ![image-momentum](./image-momentum-en.png)
@@ -183,6 +189,8 @@ Extreme Values: Typically ranges between 0 and 0.4, but has dipped below 0 durin
 
 The COT Index is a contrarian indicator: extreme speculator optimism (high reading) can signal a market top, while extreme pessimism (low reading) can signal a market bottom.
 
+Further reading: [A full guide to the COT report](/en/sentiment-indicators/cot-sp500-index)
+
 ### 8. NAAIM Exposure Index (NAAIM Exposure Index)
 
 ![image-naaim](./image-naaim-en.png)
@@ -199,6 +207,8 @@ Extreme Values: Typically ranges between 20 and 100, but has fallen below 20 dur
 The NAAIM Index is a contrarian indicator: very high exposure among managers can signal complacency near market tops, while very low exposure can signal excessive pessimism near market bottoms.
 
 > **Market sentiment might seem abstract, but it can indeed be measured and interpreted through data.**
+
+Further reading: [A full guide to the NAAIM Exposure Index](/en/sentiment-indicators/naaim-exposure-index)
 
 ## How to Interpret the SIO Fear & Greed Index?
 
@@ -226,3 +236,7 @@ The best approach is to scale in using a 'batch entry' strategy. According to my
 
 By effectively using the 'LOHAS Five-Line Analysis' and the 'SIO Fear & Greed Index' tools provided on the site, you can make decisions based on both price analysis and emotional readings. While these tools won't guarantee you'll catch every minor market turn, I'm confident they can significantly help you identify major opportunities, make sounder decisions, and conquer your own fear and greed!
 I hope this article helps you better understand and utilize the website's tools. Happy investing!
+
+---
+
+[See the latest reading for every market sentiment indicator](/en/sentiment-indicators)

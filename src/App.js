@@ -55,6 +55,8 @@ import DeferredTagManager from './components/Common/DeferredTagManager/DeferredT
 
 const MarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/MarketSentimentIndex'));
 const TwMarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/TwMarketSentimentIndex'));
+const SentimentBoard = lazy(() => import('./components/SentimentBoard/SentimentBoard'));
+const SentimentIndicatorPage = lazy(() => import('./components/SentimentBoard/SentimentIndicatorPage'));
 const About = lazy(() => import('./components/About/About').then((module) => ({ default: module.About })));
 const Legal = lazy(() => import('./components/Legal/Legal').then((module) => ({ default: module.Legal })));
 const WatchlistContainer = lazy(() => import('./components/Watchlist/WatchlistContainer').then((module) => ({ default: module.WatchlistContainer })));
@@ -319,6 +321,15 @@ function AppContent() {
                 <ul className="dropdown-menu">
                   <li>
                     <NavLink
+                      to={`/${lang}/sentiment-indicators`}
+                      onClick={() => { handleNavItemClick(); setSentimentDropdownOpen(false); }}
+                      className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                    >
+                      <span>{lang === 'zh-TW' ? '🌐 指標總覽' : '🌐 All Indicators'}</span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
                       to={`/${lang}/market-sentiment`}
                       onClick={() => { handleNavItemClick(); setSentimentDropdownOpen(false); }}
                       className={({ isActive }) => isActive ? "active-nav-link" : ""}
@@ -464,6 +475,12 @@ function AppContent() {
                     </div>
                     <div className="desktop-dropdown-menu">
                       <NavLink
+                        to={`/${lang}/sentiment-indicators`}
+                        className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                      >
+                        {lang === 'zh-TW' ? '🌐 指標總覽' : '🌐 All Indicators'}
+                      </NavLink>
+                      <NavLink
                         to={`/${lang}/market-sentiment`}
                         className={({ isActive }) => isActive ? "active-nav-link" : ""}
                       >
@@ -542,6 +559,14 @@ function AppContent() {
                   element={<PriceAnalysis />}
                 />
 
+                <Route
+                  path="sentiment-indicators"
+                  element={<SentimentBoard />}
+                />
+                <Route
+                  path="sentiment-indicators/:slug"
+                  element={<SentimentIndicatorPage />}
+                />
                 <Route
                   path="market-sentiment"
                   element={<MarketSentimentIndex />}

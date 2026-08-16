@@ -20,14 +20,16 @@
     "en": "English"
   },
   "articles": {
-    "pageTitle": "分析專欄",
-    "pageDescription": "深入分析市場趨勢和投資策略以及如何使用網站工具判斷市場情緒。",
+    "pageTitle": "工具教學與市場情緒觀念",
+    "pageDescription": "如何使用樂活五線譜與 SIO 恐懼貪婪指標判斷買賣時機，以及各種市場情緒指標的觀念說明。",
     "keywords": "市場分析,投資策略,市場情緒,投資文章,金融分析,教學",
-    "heading": "分析專欄",
-    "jsonLdName": "分析專欄",
-    "jsonLdDescription": "深入分析市場趨勢和投資策略以及如何使用網站工具判斷市場情緒。",
+    "heading": "工具教學與市場情緒觀念",
+    "jsonLdName": "工具教學與市場情緒觀念",
+    "jsonLdDescription": "如何使用樂活五線譜與 SIO 恐懼貪婪指標判斷買賣時機，以及各種市場情緒指標的觀念說明。",
     "noCategory": "未分類",
-    "noDate": "無日期"
+    "noDate": "無日期",
+    "intro": "這裡是網站工具的使用教學與市場情緒的觀念說明。想直接看各項指標現在的數字，可以從下方進入指標總覽。",
+    "boardLink": "查看市場情緒指標總覽"
   },
   "articleDetail": {
     "loadingTitle": "載入中...",
@@ -2209,5 +2211,397 @@
       "retry_exhausted": "已達到最大重試次數"
     }
   },
-  "appName": "市場情緒追蹤平台"
+  "appName": "市場情緒追蹤平台",
+  "sentimentBoard": {
+    "pageTitle": "市場情緒指標總覽",
+    "pageDescription": "一頁看完全球市場情緒指標:CNN 恐懼貪婪指數、BofA Bull & Bear、AAII 散戶調查、NAAIM 經理人曝險、台指選擇權波動率等,附資料時間與原始出處。",
+    "keywords": "市場情緒指標,恐懼貪婪指數,CNN Fear Greed,BofA Bull Bear,AAII,NAAIM,情緒追蹤,台股情緒,美股情緒",
+    "heading": "市場情緒指標總覽",
+    "subheading": "現在市場是貪婪還是恐懼？這裡收錄美股與台股的主要情緒指標。",
+    "compositeLabel": "SIO 綜合指標",
+    "compositeUs": "SIO 美股恐懼貪婪指標",
+    "compositeTw": "SIO 台股恐懼貪婪指標",
+    "divergenceTitle": "指標之間的落差",
+    "gap": "落差",
+    "viewDetail": "查看深度分析",
+    "proOnly": "Pro 專屬",
+    "source": "出處",
+    "noData": "暫無資料",
+    "generatedAt": "本頁資料更新於",
+    "loading": "載入指標中…",
+    "error": "指標載入失敗,請稍後再試。",
+    "upsellCopy": "各機構的原始數值免費開放。升級 Pro 可看 SIO 綜合指標、各分項的標準化數值與貢獻度,以及指標之間的分歧分析。",
+    "upsellCta": "查看方案",
+    "divergenceNote": "同一時間，散戶調查、專業部位與不同市場的判讀經常不一致。落差數字越大，代表兩邊的分歧越明顯。",
+    "divergences": {
+      "retail_vs_professional": "散戶情緒 vs 專業部位",
+      "cnn_vs_sio": "CNN 恐懼貪婪 vs SIO 美股恐懼貪婪指標",
+      "us_vs_tw": "美股情緒 vs 台股情緒"
+    },
+    "sides": {
+      "retail": "散戶（AAII）",
+      "professional": "專業（NAAIM / COT / 垃圾債利差）",
+      "cnn": "CNN",
+      "sio_us": "SIO",
+      "us": "美股",
+      "tw": "台股"
+    },
+    "groups": {
+      "external": {
+        "title": "市場常見情緒指標",
+        "note": "其他機構公開發布的指標。CNN 恐懼貪婪反應快但偏短期，常在股價落底前就已進入極端恐懼；BofA 牛熊指標每週更新一次，原始報告不對外公開。"
+      },
+      "us": {
+        "title": "美股情緒指標",
+        "note": "AAII 散戶調查、NAAIM 經理人曝險、選擇權 Put/Call、信用利差等訊號，構成 SIO 美股恐懼貪婪指標的計算基礎。"
+      },
+      "tw": {
+        "title": "台股情緒指標",
+        "note": "台指選擇權波動率、外資期貨部位、融資維持率等訊號，構成 SIO 台股恐懼貪婪指標的計算基礎。台股籌碼結構與美股不同，兩者採用各自獨立的指標組合。"
+      }
+    },
+    "indicatorNames": {
+      "cnn-fear-greed": "CNN 恐懼貪婪指數",
+      "bofa-bull-bear": "BofA 牛熊指標",
+      "aaii-bull-bear-spread": "AAII 散戶多空差",
+      "naaim-exposure-index": "NAAIM 經理人曝險",
+      "cboe-put-call-ratio-5-day-avg": "CBOE Put/Call 五日均",
+      "vix-ma50": "VIX 50 日均",
+      "market-momentum": "市場動能",
+      "safe-haven-demand": "避險需求",
+      "junk-bond-spread": "垃圾債利差",
+      "s-p-500-cot-index": "S&P 500 COT 指數",
+      "tw-vix": "台指選擇權波動率",
+      "pcr-ratio": "台指選擇權 Put/Call Ratio",
+      "usd-twd": "美元兌台幣",
+      "fini-futures-net-oi": "外資期貨淨未平倉",
+      "us-10y-yield": "美債 10 年期殖利率",
+      "effective-trading-accounts": "有交易戶數",
+      "margin-maintenance-ratio": "融資維持率",
+      "margin-short-ratio": "券資比",
+      "market-breadth-ma20": "市場廣度 MA20",
+      "tw-market-momentum": "台股市場動能",
+      "eta-deviation-189d": "有交易戶數偏離度",
+      "retail-sentiment-small-futures": "散戶小台淨部位"
+    }
+  },
+  "sentimentIndicatorPages": {
+    "currentReading": "最新讀數",
+    "sourceTitle": "資料來源",
+    "disclaimer": "本頁彙整第三方機構公開發布的指標讀數，僅供參考，不構成任何投資建議。指標的定義與計算方式由發布機構決定，本站不對其準確性或即時性負責。",
+    "bofaBullBear": {
+      "shortName": "美銀牛熊指標",
+      "pageTitle": "美銀牛熊指標 BofA Bull & Bear Indicator 是什麼？怎麼解讀？",
+      "pageDescription": "美銀牛熊指標（BofA Bull & Bear Indicator）的完整解讀：0 到 10 的反向情緒指標，8 以上為賣出訊號、2 以下為買進訊號，由六項資金流與部位資料合成。附最新讀數、歷史走勢圖與判讀方式。",
+      "keywords": "美銀牛熊指標,BofA Bull Bear Indicator,bofa bull bear indicator,美銀多空指標,Hartnett,Flow Show,反向指標,市場情緒指標,恐懼貪婪",
+      "heading": "美銀牛熊指標（BofA Bull & Bear Indicator）是什麼？怎麼解讀？",
+      "lede": "美銀牛熊指標是美國銀行（Bank of America）每週發布的情緒指標，用 0 到 10 衡量投資人站在多方還是空方。它的用法是反向的：讀數越高，代表押注同一個方向的人越多，後續能再推動行情的力量就越少。",
+      "whatItIsTitle": "什麼是美銀牛熊指標（BofA Bull & Bear Indicator）？",
+      "whatItIs": "這個指標由美銀投資策略團隊發布，首席策略師是 Michael Hartnett，每週隨《The Flow Show》週報更新，通常在美國時間週四晚間到週五之間出來。它不看行情漲跌，而是彙整六項「資金流向哪裡、部位站在哪一邊」的資料，各自換算成百分位後合成 0 到 10 的分數。原始資料包含全球基金的資金進出、美銀自家的基金經理人問卷、期貨市場的持倉，以及全球股市的廣度。",
+      "howToReadTitle": "怎麼解讀美銀牛熊指標？",
+      "howToRead": "它是反向指標，極端值代表大多數人已經站在同一邊。美銀定義 8.0 以上為極度偏多、2.0 以下為極度偏空。",
+      "bands": [
+        {
+          "range": "8.0 以上",
+          "meaning": "極度偏多。美銀將此視為反向賣出訊號，代表多方部位已經擁擠，並非預測行情會下跌。"
+        },
+        {
+          "range": "2.0 至 8.0",
+          "meaning": "中性區間。指標本身沒有明確訊號，需要搭配其他資訊判斷。"
+        },
+        {
+          "range": "2.0 以下",
+          "meaning": "極度偏空。美銀將此視為反向買進訊號，通常出現在恐慌與大量資金撤出之後。"
+        }
+      ],
+      "componentsTitle": "美銀牛熊指標由哪六個分項組成？",
+      "componentsIntro": "六個分項各自換算成 0% 到 100% 的百分位，再合成最終讀數。美銀會在週報裡把六項一起列出，所以看到分項就知道這一週的分數被什麼推動。",
+      "components": [
+        {
+          "key": "hf_positioning",
+          "name": "避險基金部位（Hedge Fund Positioning）",
+          "note": "避險基金在股票上押了多少。"
+        },
+        {
+          "key": "equity_flows",
+          "name": "股票資金流（Equity Flow）",
+          "note": "流進股票型基金的錢。資料來自 EPFR，一家追蹤全球基金資金進出的機構。"
+        },
+        {
+          "key": "bond_flows",
+          "name": "債券資金流（Bond Flow）",
+          "note": "流進債券型基金的錢，用來看投資人願不願意承擔風險。"
+        },
+        {
+          "key": "credit_mkt_technicals",
+          "name": "信用市場技術面（Credit Market Technicals）",
+          "note": "公司債市場的供需與利差狀況。"
+        },
+        {
+          "key": "equity_market_breadth",
+          "name": "全球股市廣度（Global Stock Index Breadth）",
+          "note": "全球有多少市場處在上升結構。"
+        },
+        {
+          "key": "lo_positioning",
+          "name": "經理人配置（FMS Positioning）",
+          "note": "美銀每月訪問全球基金經理人，問他們實際的資產配置。"
+        }
+      ],
+      "historyTitle": "美銀牛熊指標的歷史區間與極端值",
+      "history": "這個指標的序列可回溯至 2002 年。本站自 2023 年 11 月起持續記錄，期間最低 1.4、最高 9.7。讀數突破 8.0 的次數並不多，2026 年 8 月的 9.7 是 2021 年以來最高。要留意的是，指標進入極端區之後可能停留數週甚至更久，到達極端與行情反轉是兩件事。",
+      "relationToSioTitle": "美銀牛熊指標與 SIO 恐懼貪婪指標的差異",
+      "relationToSio": "美銀這支指標有兩個現實限制。第一，它的原始報告是付費研究，一般投資人拿不到，數字只能靠財經媒體轉述，有時候一整週都沒人報。第二，它每週才更新一次，行情在週間走完一段，指標還停在上週的位置。SIO 的恐懼貪婪指標補的正是這兩點：它每個交易日更新，資料全部來自公開市場，包含波動率、選擇權買賣權比、信用利差與動能等面向，序列完整沒有缺口。兩者的輸入不同，讀數出現落差很正常，而落差本身通常比單一數字更值得看。",
+      "relationToSioCta": "查看 SIO 美股恐懼貪婪指標",
+      "source": "BofA Global Investment Strategy。讀數隨《The Flow Show》週報發布。"
+    },
+    "cnnFearGreed": {
+      "shortName": "CNN 恐懼貪婪指數",
+      "pageTitle": "CNN 恐懼貪婪指數（Fear & Greed Index）是什麼？怎麼解讀？",
+      "pageDescription": "CNN 恐懼貪婪指數的完整解讀：0 到 100 的市場情緒指標，25 以下為極度恐懼、75 以上為極度貪婪，由七項市場資料合成。附最新讀數、判讀方式與它的已知限制。",
+      "keywords": "CNN 恐懼貪婪指數,Fear and Greed Index,CNN Fear Greed,恐懼貪婪指標,市場情緒指標,極度恐懼,極度貪婪",
+      "heading": "CNN 恐懼貪婪指數（Fear & Greed Index）是什麼？怎麼解讀？",
+      "lede": "CNN 恐懼貪婪指數是目前最多人看的市場情緒指標，用 0 到 100 描述美股投資人現在偏向恐懼還是貪婪。數字越低代表市場越恐慌，越高代表越樂觀。",
+      "whatItIsTitle": "什麼是 CNN 恐懼貪婪指數（Fear & Greed Index）？",
+      "whatItIs": "CNN 用七項市場資料合成這個指數，包含股價相對均線的位置、創新高與創新低的家數差、上漲下跌股票的成交量差、選擇權的買賣權比例、垃圾債與投資級債的利差、市場波動率，以及股票相對債券的近期報酬。每一項都換算成同一個尺度後平均，得到 0 到 100 的分數，每個交易日更新。",
+      "howToReadTitle": "怎麼解讀 CNN 恐懼貪婪指數？",
+      "howToRead": "CNN 把 0 到 100 分成五個區間。多數人把它當反向指標使用，也就是極度恐懼時留意買點、極度貪婪時留意風險。",
+      "bands": [
+        {
+          "range": "0 至 24",
+          "meaning": "極度恐懼（Extreme Fear）。市場處在恐慌狀態，常伴隨大量賣壓。"
+        },
+        {
+          "range": "25 至 44",
+          "meaning": "恐懼（Fear）。投資人偏向保守。"
+        },
+        {
+          "range": "45 至 55",
+          "meaning": "中性（Neutral）。多空力道相當。"
+        },
+        {
+          "range": "56 至 75",
+          "meaning": "貪婪（Greed）。市場風險偏好上升。"
+        },
+        {
+          "range": "76 至 100",
+          "meaning": "極度貪婪（Extreme Greed）。追價意願強，估值容易被推高。"
+        }
+      ],
+      "historyTitle": "CNN 恐懼貪婪指數的歷史區間",
+      "history": "這個指數的範圍是 0 到 100。本站收錄 2021 年起的完整日資料，期間最低到過 2.9（2025 年 4 月 8 日），最高到過 83.0（2023 年 12 月 19 日）。極度恐懼通常出現在市場快速下跌的期間，極度貪婪則常見於連續上漲之後。",
+      "relationToSioTitle": "CNN 恐懼貪婪指數與 SIO 恐懼貪婪指標的差異",
+      "relationToSio": "CNN 這個指數的成分偏向短期。它的七項資料多數看的是最近幾天到幾週的變化，所以在下跌途中很早就會落到極度恐懼，之後行情繼續跌、指數卻已經貼在底部，等於失去分辨力。SIO 的恐懼貪婪指標用較長的標準化窗口，把每一項放進十幾年的歷史分布裡比較，因此在極端狀態下仍然分得出「很恐懼」與「非常罕見的恐懼」。兩者一起看，可以避免被短期訊號帶著跑。",
+      "relationToSioCta": "查看 SIO 美股恐懼貪婪指標",
+      "source": "CNN Business。指數每個交易日更新。",
+      "componentsTitle": "CNN 恐懼貪婪指數由哪七個分項組成？",
+      "componentsIntro": "七個分項各自換算成 0 到 100 的分數後平均，得到最終讀數。看分項就知道今天的分數被什麼推動。",
+      "components": [
+        {
+          "key": "market_momentum_sp125",
+          "name": "市場動能（Market Momentum）",
+          "note": "S&P 500 相對 125 日均線的位置。"
+        },
+        {
+          "key": "stock_price_strength",
+          "name": "股價強度（Stock Price Strength）",
+          "note": "創 52 週新高與新低的家數差。"
+        },
+        {
+          "key": "stock_price_breadth",
+          "name": "股價廣度（Stock Price Breadth）",
+          "note": "上漲股與下跌股的成交量差。"
+        },
+        {
+          "key": "put_call_options",
+          "name": "選擇權買賣權比（Put/Call Options）",
+          "note": "賣權與買權的成交量比值，用來看避險需求。"
+        },
+        {
+          "key": "market_volatility_vix_50",
+          "name": "市場波動率（Market Volatility）",
+          "note": "VIX 相對其 50 日均線的位置。"
+        },
+        {
+          "key": "junk_bond_demand",
+          "name": "垃圾債需求（Junk Bond Demand）",
+          "note": "垃圾債與投資級債的殖利率差，差距縮小代表願意承擔風險。"
+        },
+        {
+          "key": "safe_haven_demand",
+          "name": "避險需求（Safe Haven Demand）",
+          "note": "股票相對債券的近期報酬差。"
+        }
+      ]
+    },
+    "aaiiSurvey": {
+      "shortName": "AAII 散戶調查",
+      "pageTitle": "AAII 散戶情緒調查（Sentiment Survey）是什麼？怎麼解讀？",
+      "pageDescription": "AAII 散戶情緒調查的完整解讀：每週訪問美國散戶投資人對未來六個月的看法，多空差（Bull-Bear Spread）是最常被引用的數字。附最新讀數、判讀方式與它的已知限制。",
+      "keywords": "AAII 散戶調查,AAII Sentiment Survey,多空差,Bull Bear Spread,散戶情緒,美國散戶投資人協會,市場情緒指標",
+      "heading": "AAII 散戶情緒調查（Sentiment Survey）是什麼？怎麼解讀？",
+      "lede": "AAII 散戶情緒調查是美國散戶投資人協會每週做的問卷，問會員對未來六個月股市的看法。最常被引用的數字是多空差，也就是看多比例減去看空比例。",
+      "whatItIsTitle": "什麼是 AAII 散戶情緒調查（AAII Sentiment Survey）？",
+      "whatItIs": "AAII 是美國散戶投資人協會（American Association of Individual Investors），從 1987 年開始每週對會員發問卷，只問一個問題：未來六個月股市會漲、會跌，還是持平。三個比例加起來是 100%，看多減看空就是多空差。這是少數直接問人怎麼想的情緒指標，其他多數指標都是從交易資料反推。",
+      "howToReadTitle": "怎麼解讀 AAII 多空差？",
+      "howToRead": "多空差為正代表看多的人比較多，為負代表看空的人比較多。長期平均大約在正 6 到 7 個百分點附近，所以單看正負意義不大，要看它偏離長期水準多遠。多數人把它當反向指標。",
+      "bands": [
+        {
+          "range": "高於 +20",
+          "meaning": "散戶明顯偏樂觀。歷史上出現在漲勢延續一段時間之後。"
+        },
+        {
+          "range": "-10 至 +20",
+          "meaning": "接近常態範圍，訊號有限。"
+        },
+        {
+          "range": "低於 -20",
+          "meaning": "散戶明顯偏悲觀。歷史上常出現在市場大跌之後，被視為反向的參考。"
+        }
+      ],
+      "historyTitle": "AAII 多空差的歷史區間",
+      "history": "這份調查從 1987 年 7 月開始，是本站收錄的指標中序列最長的一項，累積超過兩千筆週資料。多空差在多數時間落在正負 20 個百分點之間，史上最低為負 54.0（1990 年 10 月 19 日），最高為正 62.8（2003 年 6 月 26 日）。超過正負 30 的情況相對少見，通常伴隨行情的劇烈波動。",
+      "relationToSioTitle": "AAII 散戶調查與 SIO 恐懼貪婪指標的差異",
+      "relationToSio": "AAII 有兩個先天限制。它是問卷，回覆的人是自願參與的協會會員，樣本每週不同，數字本身的雜訊不小。而且它問的是「想法」，人怎麼想與怎麼下單常常有落差。SIO 的恐懼貪婪指標把 AAII 當成其中一項成分，經過平滑與標準化後再與其他七項合成，用意就是讓單一問卷的雜訊不會主導判斷。",
+      "relationToSioCta": "查看 SIO 美股恐懼貪婪指標",
+      "source": "American Association of Individual Investors（AAII）。調查每週更新。"
+    },
+    "naaimExposure": {
+      "shortName": "NAAIM 曝險指數",
+      "pageTitle": "NAAIM 曝險指數（Exposure Index）是什麼？怎麼解讀？",
+      "pageDescription": "NAAIM 曝險指數的完整解讀：每週調查美國主動型資產管理業者的實際股票持倉水位，範圍從負 200 到正 200。附最新讀數、判讀方式與它的已知限制。",
+      "keywords": "NAAIM 曝險指數,NAAIM Exposure Index,主動型基金持倉,經理人曝險,市場情緒指標,美股情緒",
+      "heading": "NAAIM 曝險指數（Exposure Index）是什麼？怎麼解讀？",
+      "lede": "NAAIM 曝險指數每週調查美國主動型資產管理業者，問他們目前實際在股票上放了多少部位。它反映的是專業經理人的下單結果，與問卷型的情緒指標形成對照。",
+      "whatItIsTitle": "什麼是 NAAIM 曝險指數（NAAIM Exposure Index）？",
+      "whatItIs": "NAAIM 是美國主動型投資經理人協會（National Association of Active Investment Managers），每週三對會員調查一次，問他們當下的股票曝險水位。數值 100 代表滿倉做多，0 代表空手，負值代表放空，理論範圍從負 200 到正 200。這項調查問的是實際部位，所以它衡量的是行為而非看法。",
+      "howToReadTitle": "怎麼解讀 NAAIM 曝險指數？",
+      "howToRead": "這是順著部位看的指標，數字越高代表專業經理人押注股市的程度越深。多數人把極端值當反向參考，因為滿倉之後可用來加碼的資金就少了。",
+      "bands": [
+        {
+          "range": "高於 90",
+          "meaning": "接近滿倉。經理人已經大幅押注股市，後續加碼空間有限。"
+        },
+        {
+          "range": "40 至 90",
+          "meaning": "常見區間，訊號有限。"
+        },
+        {
+          "range": "低於 20",
+          "meaning": "大幅減碼或空手。歷史上出現在市場恐慌期間。"
+        }
+      ],
+      "historyTitle": "NAAIM 曝險指數的歷史區間",
+      "history": "本站收錄的資料自 2006 年 7 月起。指數大部分時間落在 40 到 90 之間，期間最低到過負 3.6（2011 年 10 月 5 日，代表整體淨空），最高到過 120.6（2017 年 12 月 13 日，代表使用槓桿做多）。要留意它每週只有一個數字，行情在週中大幅波動時，這個指標會慢一拍。",
+      "relationToSioTitle": "NAAIM 曝險指數與 SIO 恐懼貪婪指標的差異",
+      "relationToSio": "NAAIM 的樣本是幾十家主動型管理業者，規模不大，單一機構調整部位就可能讓數字明顯移動。加上它每週才更新一次，用來判斷當下的市場狀態會有時間差。SIO 的恐懼貪婪指標每個交易日更新，並把 NAAIM 與另外七項資料一起標準化後合成，讓單一調查的波動不會被過度放大。",
+      "relationToSioCta": "查看 SIO 美股恐懼貪婪指標",
+      "source": "National Association of Active Investment Managers（NAAIM）。調查每週更新。"
+    },
+    "cboePutCall": {
+      "shortName": "CBOE Put/Call Ratio",
+      "pageTitle": "CBOE Put/Call Ratio（買賣權比）是什麼？怎麼解讀？",
+      "pageDescription": "CBOE Put/Call Ratio 的完整解讀：選擇權市場的賣權與買權成交量比值，數字越高代表避險需求越強。附最新讀數、判讀方式與它的已知限制。",
+      "keywords": "CBOE Put Call Ratio,買賣權比,PCR,選擇權比率,put call ratio,市場情緒指標,避險需求",
+      "heading": "CBOE Put/Call Ratio（買賣權比）是什麼？怎麼解讀？",
+      "lede": "Put/Call Ratio 是選擇權市場的賣權成交量除以買權成交量。賣權常被用來避險或看空，買權則多用來看多，所以這個比值可以看出投資人現在偏向保護部位還是追逐上漲。",
+      "whatItIsTitle": "什麼是 CBOE Put/Call Ratio（買賣權比）？",
+      "whatItIs": "CBOE 是芝加哥選擇權交易所，全球最大的選擇權市場之一。它每天公布賣權（put）與買權（call）的成交量，兩者相除就是 Put/Call Ratio。比值高於 1 代表當天賣權成交量比買權多，通常出現在市場緊張的時候。由於單日數字跳動很大，實務上多半會取數日平均後再看。",
+      "howToReadTitle": "怎麼解讀 CBOE Put/Call Ratio？",
+      "howToRead": "這是反向指標。比值偏高代表大量資金在買保護，情緒偏空；比值偏低代表市場輕忽風險。極端值往往出現在行情轉折附近。",
+      "bands": [
+        {
+          "range": "高於 1.0",
+          "meaning": "賣權成交量超過買權，避險需求明顯，情緒偏空。"
+        },
+        {
+          "range": "0.7 至 1.0",
+          "meaning": "常見區間。"
+        },
+        {
+          "range": "低於 0.7",
+          "meaning": "買權明顯多於賣權，市場對風險的警覺偏低。"
+        }
+      ],
+      "historyTitle": "CBOE Put/Call Ratio 的歷史區間",
+      "history": "本站收錄的五日均資料自 2006 年 11 月起，期間最低 0.37（2021 年 1 月 19 日），最高 1.47（2022 年 12 月 28 日）。要留意的是，選擇權市場的結構這些年變化很大，短天期合約的興起讓成交量組成與十年前不同，直接拿今天的數字對比很久以前的水準要小心。",
+      "relationToSioTitle": "CBOE Put/Call Ratio 與 SIO 恐懼貪婪指標的差異",
+      "relationToSio": "Put/Call Ratio 的單日數字雜訊很大，同一週內可以從 0.6 跳到 1.2，直接看容易被誤導。而且它只反映選擇權這一個市場，看不到現貨、債券或資金流的狀況。SIO 的恐懼貪婪指標把它平滑後與另外七項標準化合成，用其他面向補上選擇權看不到的部分。",
+      "relationToSioCta": "查看 SIO 美股恐懼貪婪指標",
+      "source": "Chicago Board Options Exchange（CBOE）。資料每個交易日更新。"
+    },
+    "cotSp500": {
+      "shortName": "S&P 500 COT",
+      "pageTitle": "COT 持倉報告與 S&P 500 投機淨部位是什麼？怎麼解讀？",
+      "pageDescription": "COT（Commitments of Traders）持倉報告的完整解讀：美國期貨主管機關每週公布的市場持倉分佈，S&P 500 投機淨部位常被當成情緒指標。附判讀方式與它的已知限制。",
+      "keywords": "COT 報告,Commitments of Traders,持倉報告,投機淨部位,S&P 500 期貨,CFTC,市場情緒指標",
+      "heading": "COT 持倉報告與 S&P 500 投機淨部位是什麼？怎麼解讀？",
+      "lede": "COT 報告是美國期貨主管機關每週公布的持倉統計，把期貨市場的部位依參與者類型拆開。其中投機性帳戶的淨多空部位，常被拿來衡量市場情緒。",
+      "whatItIsTitle": "什麼是 COT（Commitments of Traders）持倉報告？",
+      "whatItIs": "COT 由 CFTC 發布，CFTC 是美國商品期貨交易委員會，負責監理期貨市場。報告每週五公布，統計截至前一個週二的持倉，把參與者分成商業避險、投機性資金與小額交易者等類別。本站採用的算法是把投機性帳戶（槓桿資金與資產管理機構）的淨部位、以及避險帳戶的淨部位，各自換算成佔總未平倉量的比例後相減，得到一個可以跨時間比較的讀數。",
+      "howToReadTitle": "怎麼解讀 S&P 500 投機淨部位？",
+      "howToRead": "避險帳戶是投機資金的交易對手，兩者的部位方向天生相反，所以相減之後訊號會被放大。讀數偏高代表兩個陣營的對立程度深、投機端偏多；偏低則相反。多數人把極端值當反向參考。",
+      "bands": [
+        {
+          "range": "處在歷史高位",
+          "meaning": "投機端相對避險端明顯偏多，兩個陣營對立程度深。"
+        },
+        {
+          "range": "中間區間",
+          "meaning": "常見狀態，訊號有限。"
+        },
+        {
+          "range": "處在歷史低位",
+          "meaning": "投機端相對避險端明顯偏空。"
+        }
+      ],
+      "historyTitle": "COT 持倉資料的歷史區間",
+      "history": "本站收錄的資料自 2006 年 6 月起。有三點要留意：報告本身有三天時間差，週五公布的是週二的狀況；CFTC 在 2021 年前後調整過合約分類，跨越那個時點比較數字要留意口徑差異；另外「資產管理機構」被歸入投機端，但這類帳戶有不少是長期偏多的配置型資金，判讀極端值時值得把這一點納入考量。",
+      "relationToSioTitle": "S&P 500 COT 與 SIO 恐懼貪婪指標的差異",
+      "relationToSio": "COT 有兩個限制。它每週才公布一次，而且統計基準日比公布日早三天，等於你看到的永遠是幾天前的部位。它也只涵蓋期貨市場，看不到現貨與選擇權那一側。加上它是投機端與避險端的價差，極端值同時受兩邊影響，單獨判讀容易誤解。SIO 的恐懼貪婪指標每個交易日更新，並把 COT 與其他七項一起標準化合成，讓這項資料的時間差與口徑問題不會主導整體判斷。",
+      "relationToSioCta": "查看 SIO 美股恐懼貪婪指標",
+      "source": "U.S. Commodity Futures Trading Commission（CFTC）。報告每週五公布。"
+    },
+    "taiwanFearGreed": {
+      "shortName": "台股恐懼貪婪指標",
+      "pageTitle": "台股恐懼貪婪指標是什麼？怎麼解讀台灣股市情緒？",
+      "pageDescription": "台股恐懼貪婪指標的完整解讀：用 0 到 100 描述台灣股市的投資人情緒，由台指選擇權波動率、買賣權比、融資維持率、市場廣度等本地資料合成，每個交易日更新。",
+      "keywords": "台股恐懼貪婪指標,台灣股市情緒,台股情緒指標,台指選擇權波動率,融資維持率,券資比,台股 VIX,加權指數情緒",
+      "heading": "台股恐懼貪婪指標是什麼？怎麼解讀台灣股市情緒？",
+      "lede": "台股恐懼貪婪指標用 0 到 100 描述台灣股市現在偏向恐懼還是貪婪。它完全用台股本地的市場資料計算，包含選擇權波動率、融資融券、外資部位與市場廣度，每個交易日更新。",
+      "whatItIsTitle": "什麼是台股恐懼貪婪指標？",
+      "whatItIs": "國際上的情緒指標幾乎都以美股為對象，台股投資人拿來參考時，常會遇到市場結構不同而失準的問題。台股的散戶佔比、融資融券制度與外資影響力都與美股不同，直接套用美股指標容易誤判。這個指標改用台股自己的資料計算，涵蓋台指選擇權波動率、選擇權買賣權比、融資維持率、券資比、市場廣度、外資期貨部位、匯率與加權指數動能等面向，各自放進長期歷史分布標準化後合成。",
+      "howToReadTitle": "怎麼解讀台股恐懼貪婪指標？",
+      "howToRead": "數字越低代表市場越恐慌，越高代表越樂觀。它經過長期標準化，所以極端值代表的是相對於過去二十多年的極端，而非只跟最近幾個月比。",
+      "bands": [
+        {
+          "range": "0 至 24",
+          "meaning": "極度恐懼。台股處在恐慌狀態，融資餘額通常大幅下降。"
+        },
+        {
+          "range": "25 至 44",
+          "meaning": "恐懼。市場情緒偏保守。"
+        },
+        {
+          "range": "45 至 55",
+          "meaning": "中性。多空力道相當。"
+        },
+        {
+          "range": "56 至 75",
+          "meaning": "貪婪。風險偏好上升。"
+        },
+        {
+          "range": "76 至 100",
+          "meaning": "極度貪婪。追價意願強烈。"
+        }
+      ],
+      "historyTitle": "台股恐懼貪婪指標的歷史區間",
+      "history": "這個指標的序列回溯至 2001 年 7 月，累積超過六千筆日資料，涵蓋台股二十多年來的多次多空循環，期間走過接近 0 與接近 100 的兩端。要留意台指選擇權波動率的資料從 2016 年 11 月才開始，在那之前的讀數由其他成分支撐，判讀早期數值時可以把這一點納入考量。",
+      "relationToSioTitle": "台股情緒與美股情緒的差異",
+      "relationToSio": "台股與美股的情緒經常不同步。台股受外資進出、匯率與電子產業循環的影響很深，這些因素在美股指標裡完全看不到。兩邊同時觀察，可以看出資金是全球性地避險，還是只在單一市場調整。",
+      "relationToSioCta": "查看台股恐懼貪婪指標",
+      "source": "臺灣證券交易所、臺灣期貨交易所公開資料，由 Sentiment Inside Out 計算。每個交易日更新。"
+    },
+    "disclaimerOwn": "本指標由 Sentiment Inside Out 依公開市場資料計算，僅供參考，不構成任何投資建議。指標反映的是市場情緒狀態，不預測未來走勢。"
+  }
 }

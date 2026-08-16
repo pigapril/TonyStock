@@ -13,7 +13,9 @@ import '../../styles/StockCard.css';
 const StockAnalysisResult = memo(function StockAnalysisResult({ price, analysis }) {
     const { t } = useTranslation(); // 使用 hook
 
-    if (!analysis) {
+    // 沒有價格就無法判定情緒：null 會被比較運算子當成 0，落入 price <= tl_minus_2sd
+    // 而顯示「極度恐懼」——寧可顯示無資料，也不要給出假訊號。
+    if (!analysis || price == null) {
         return <span className="status-label">{t('watchlist.stockCard.analysis.loading')}</span>;
     }
 

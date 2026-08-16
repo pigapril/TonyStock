@@ -121,3 +121,27 @@
         font-size: 21px;
     }
 } 
+/* 列表頁導言與指標總覽入口 */
+.articles-intro {
+  margin: 0 0 18px;
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 62ch;
+}
+
+.articles-boardLink {
+  display: inline-block;
+  margin-bottom: 28px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.articles-boardLink:hover {
+  opacity: 0.92;
+}

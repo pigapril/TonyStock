@@ -81,7 +81,12 @@ When these situations occur, one strategy is to wait for the price to return *in
 
 ![image3](./image3-en.png)
 
-If you track multiple stocks and want to quickly check their current position on the LOHAS Five-Line scale, add them to your watchlist: [https://sentimentinsideout.com/watchlist](https://sentimentinsideout.com/watchlist). Stocks added to the list will automatically display their LOHAS Five-Line sentiment level, allowing for quick comparison. One way to use this is to track different sector ETFs, or compare growth (like QQQ) vs. value (like DIA), to observe how market sentiment flows between different areas.
+If you track multiple stocks and want to quickly check their current position on the LOHAS Five-Line scale, add them to your watchlist: [/en/watchlist](/en/watchlist). Stocks added to the list will automatically display their LOHAS Five-Line sentiment level, allowing for quick comparison. One way to use this is to track different sector ETFs, or compare growth (like QQQ) vs. value (like DIA), to observe how market sentiment flows between different areas.
 
 In the next article, we'll introduce other data points for analyzing US market investor sentiment.
 
+---
+
+Next: [Using the SIO Fear & Greed Index to time buys and sells](/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells)
+
+[See the latest reading for every market sentiment indicator](/en/sentiment-indicators)

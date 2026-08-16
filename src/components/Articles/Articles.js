@@ -72,6 +72,13 @@ export function Articles() {
                 jsonLd={articlesJsonLd}
             >
                 <h1>{t('articles.heading')}</h1>
+                <p className="articles-intro">{t('articles.intro')}</p>
+
+                {/* 導向指標總覽：文章是工具教學與觀念說明，想直接看數字的人從這裡走。 */}
+                <Link className="articles-boardLink" to={`/${currentLang}/sentiment-indicators`}>
+                    {t('articles.boardLink')}
+                </Link>
+
                 <ul className="articles-list">
                     {articles.filter(article => article.content).reverse().map(article => (
                         <li key={article.id} className="article-item">

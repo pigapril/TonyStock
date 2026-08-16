@@ -1,11 +1,21 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import PageContainer from '../PageContainer/PageContainer';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import './ArticleDetail.css';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+
+// 判斷 markdown 連結是否指向站內。相對路徑與本站絕對網址都算，
+// 回傳可交給 React Router 的路徑；外部連結回傳 null。
+const SITE_ORIGINS = ['https://sentimentinsideout.com', 'https://www.sentimentinsideout.com'];
+const toInternalPath = (href) => {
+    if (!href || href.startsWith('#') || href.startsWith('mailto:')) return null;
+    if (href.startsWith('/')) return href;
+    const origin = SITE_ORIGINS.find((site) => href.startsWith(site));
+    return origin ? href.slice(origin.length) || '/' : null;
+};
 
 // 新增一個通用的 ID 處理函數
 const generateId = (text) => {
@@ -253,6 +263,13 @@ export function ArticleDetail() {
                                         console.error("Error decoding or generating ID for anchor:", href, e);
                                         return <a {...props} />;
                                     }
+                                }
+                                // 站內連結走 React Router，維持 SPA 導航並留在同一分頁。
+                                // 原本一律 target="_blank" + 原生 <a>，會讓內部連結整頁重載又跳新分頁。
+                                const internalPath = toInternalPath(props.href);
+                                if (internalPath) {
+                                    const { href, ...rest } = props;
+                                    return <Link {...rest} to={internalPath} />;
                                 }
                                 return <a {...props} target="_blank" rel="noopener noreferrer"/>;
                             }

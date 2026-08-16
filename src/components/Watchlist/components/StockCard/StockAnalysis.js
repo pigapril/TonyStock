@@ -7,7 +7,9 @@ import '../../styles/StockAnalysis.css';
 export const StockAnalysis = memo(function StockAnalysis({ price, analysis }) {
     const { t } = useTranslation();
 
-    if (!analysis) {
+    // 同 StockAnalysisResult：價格缺席時 StockGauge 會把 null 當 0，
+    // 指針停在最左並塗成「極度悲觀」藍。無價格就不畫量表。
+    if (!analysis || price == null) {
         return <span className="analysis-loading">{t('watchlist.stockCard.analysis.loading')}</span>;
     }
 
