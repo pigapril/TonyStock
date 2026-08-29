@@ -53,7 +53,9 @@
 .price-analysis-view .chart-container {
   position: relative; /* 讓 ScrollToTopButton 相對於此定位 */
   width: 100%;
-  height: 450px;
+  /* 手機／平板用這個固定高度（桌機在 1024px 以上改由 flex-grow 撐滿）。
+     卡片的上下留白收緊後，把省下來的空間還給圖表。 */
+  height: 490px;
   max-width: 100%;
   overflow: visible;
   /* card 本身已有 padding-bottom，這裡再留 20px 會讓通道圖下方出現一大段空白 */
@@ -625,6 +627,23 @@
   /* 與圖表下軌顏色一致 - 深墨綠色 */
 }
 
+/* 這一頁的圖表需要垂直空間，所以把頁面上下多餘的留白收緊換給圖表。
+   全部限定在 .price-analysis-view 底下，不影響其他頁面。
+   負的 margin-top 是為了抵銷 .page-container 的上方 padding —— 那是全站共用的
+   元件樣式，這裡搆不到，也不該為了單一頁面去動它。 */
+.price-analysis-view {
+  margin-top: -14px;
+}
+
+.price-analysis-view .content-layout-container {
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
+.price-analysis-view .chart-card {
+  padding-bottom: 8px;
+}
+
 /* 五線譜（主圖）與樂活通道（輔助帶）上下並排，共用同一段時間軸。
    通道圖只需要傳達「帶內／出上緣／出下緣」，不必跟主圖等高，
    所以取七三分：主圖留給六條線與日期軸，通道帶壓縮成一條參考帶。 */
@@ -638,19 +657,69 @@
 
 .price-analysis-view .chart-stack__main {
   position: relative;
-  flex: 7 1 0;
+  flex: 65 1 0;
   min-height: 0;
 }
 
 .price-analysis-view .chart-stack__band {
   position: relative;
-  flex: 3 1 0;
+  flex: 35 1 0;
   min-height: 0;
   border-top: 1px solid #eceef2;
   padding-top: 4px;
 }
 
 /* 小標切在分隔線上（類似 fieldset legend），不浮在資料區上方 */
+/* 通道帶的 tooltip：留在圖內，位置由 JS 決定（擺在標線旁、離當下的點較遠的那一半） */
+.price-analysis-view .ulband-external-tooltip {
+  position: absolute;
+  top: 0;
+  z-index: 5;
+  /* 四個值排成兩欄，高度少一半，和主圖 tooltip 撞在一起的機會也跟著降低 */
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 1px 10px;
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid #dfe3e9;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
+  font-size: 0.68rem;
+  line-height: 1.35;
+  color: #2c3e50;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.price-analysis-view .ulband-external-tooltip__title {
+  grid-column: 1 / -1;
+  font-weight: 600;
+  margin-bottom: 1px;
+}
+
+.price-analysis-view .ulband-external-tooltip__row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.price-analysis-view .ulband-external-tooltip__row i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .price-analysis-view .ulband-external-tooltip {
+    font-size: 0.62rem;
+    padding: 5px 7px;
+  }
+}
+
 .price-analysis-view .chart-stack__band-label {
   position: absolute;
   top: -9px;
@@ -675,6 +744,7 @@
     top: -8px;
     left: 8px;
   }
+
 }
 
 /* 通道位置：header 的第四欄，字級與其他數值一致，只用顏色帶語意 */
@@ -994,9 +1064,9 @@
     flex-direction: row;
     align-items: stretch;
     /* 讓子元素等高 */
-    height: 78vh;
+    height: 84vh;
     /* 設定固定高度，讓內部可以滾動 */
-    max-height: 78vh;
+    max-height: 84vh;
     /* 確保不超過此高度 */
   }
 

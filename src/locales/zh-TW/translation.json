@@ -1135,9 +1135,9 @@
       }
     },
     "channel": {
-      "inside": "通道帶內",
-      "above": "突破通道上緣",
-      "below": "跌破通道下緣"
+      "inside": "正常範圍",
+      "above": "短期過熱",
+      "below": "短期過冷"
     },
     "combined": {
       "fearConfirmed": {

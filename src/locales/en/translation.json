@@ -1125,9 +1125,9 @@
     },
     "heading": "LOHAS Five-Line Analysis",
     "channel": {
-      "inside": "Inside channel",
-      "above": "Above channel ceiling",
-      "below": "Below channel floor"
+      "inside": "Normal range",
+      "above": "Short-term overheated",
+      "below": "Short-term oversold"
     },
     "combined": {
       "fearConfirmed": {

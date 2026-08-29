@@ -10,6 +10,62 @@ ensureHomeChartsRegistered();
 
 // follower：與五線譜上下並排時，通道圖只跟隨主圖的 x 範圍，自身不接受縮放/平移，
 // 這樣兩張圖的時間軸不會各走各的。單獨使用時（沒傳 follower）行為與原本相同。
+/**
+ * follower 模式的 tooltip：改用 HTML 畫，因為 canvas 版的預設排版在只有約
+ * 110px 高的通道帶裡一定會蓋住線。節點掛在 .chart-stack__band（position: relative）。
+ * 位置就留在圖內、只避開當下的點：橫向擺在標線旁邊，縱向擺在離該點較遠的那一半。
+ */
+function renderExternalTooltip(context) {
+    const { chart, tooltip } = context;
+    const parent = chart.canvas?.parentElement;
+    if (!parent) {
+        return;
+    }
+
+    let el = parent.querySelector('.ulband-external-tooltip');
+    if (!el) {
+        el = document.createElement('div');
+        el.className = 'ulband-external-tooltip';
+        parent.appendChild(el);
+    }
+
+    if (!tooltip || tooltip.opacity === 0) {
+        el.style.opacity = '0';
+        return;
+    }
+
+    const title = tooltip.title?.[0] || '';
+    const rows = (tooltip.body || []).map((item, index) => {
+        const color = tooltip.labelColors?.[index]?.borderColor || '#999';
+        return `<span class="ulband-external-tooltip__row">`
+            + `<i style="background:${color}"></i>${item.lines?.[0] || ''}</span>`;
+    }).join('');
+
+    el.innerHTML = `<span class="ulband-external-tooltip__title">${title}</span>${rows}`;
+    el.style.opacity = '1';
+
+    const area = chart.chartArea;
+    const width = el.offsetWidth || 160;
+    const height = el.offsetHeight || 60;
+    const GAP = 14;
+
+    // 橫向：擺在標線旁邊，放不下就換另一邊
+    let left = tooltip.caretX + GAP;
+    if (left + width > parent.clientWidth - 4) {
+        left = tooltip.caretX - GAP - width;
+    }
+    el.style.left = `${Math.min(Math.max(left, 4), Math.max(4, parent.clientWidth - width - 4))}px`;
+
+    // 縱向：點在上半就擺下半，反之亦然，這樣不會壓到當下的點
+    if (area) {
+        const middle = (area.top + area.bottom) / 2;
+        const top = tooltip.caretY < middle
+            ? area.bottom - height - 2
+            : area.top + 2;
+        el.style.top = `${Math.max(2, top)}px`;
+    }
+}
+
 const ULBandChart = ({ data, onChartReady, follower = false, xRange = null }) => {
     const { t } = useTranslation();
     const chartRef = useRef(null);
@@ -97,7 +153,12 @@ const ULBandChart = ({ data, onChartReady, follower = false, xRange = null }) =>
         plugins: {
             legend: { display: false },
             tooltip: {
-                enabled: true,
+                // follower 是高度約 110px 的輔助帶，畫在 canvas 上的 tooltip 幾乎和它
+                // 一樣高，一定會蓋住線。所以改用 external：內容一樣是 tooltip，
+                // 但用 HTML 畫在通道帶「上方」，不佔用帶內空間。
+                // external 要搭配 enabled:false，否則 canvas 版仍會照畫。
+                enabled: !follower,
+                ...(follower ? { external: renderExternalTooltip } : {}),
                 mode: 'index',
                 intersect: false,
                 usePointStyle: true,

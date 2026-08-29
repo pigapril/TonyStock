@@ -122,8 +122,15 @@ export function linkCharts(getCharts) {
         return;
       }
 
+      // 手機沒有 mousemove。通道帶在 follower 模式關掉了浮動 tooltip，
+      // 若不接 touchmove，手機使用者就完全看不到通道的數值。
+      const point = event.touches?.[0] || event;
+      if (point.clientX == null) {
+        return;
+      }
+
       const rect = source.canvas.getBoundingClientRect();
-      const px = event.clientX - rect.left;
+      const px = point.clientX - rect.left;
       if (px < source.chartArea.left || px > source.chartArea.right) {
         clearChart(source);
         clearChart(other);
@@ -146,11 +153,21 @@ export function linkCharts(getCharts) {
       clearChart(band);
     };
 
-    self.canvas.addEventListener('mousemove', onMove);
-    self.canvas.addEventListener('mouseleave', onLeave);
+    // 先把 canvas 抓在區域變數裡：解除監聽時圖表可能已經被銷毀，
+    // 那時 chart.canvas 已是 null，再去讀就會噴 removeEventListener of null。
+    const canvas = self.canvas;
+    canvas.addEventListener('mousemove', onMove);
+    canvas.addEventListener('mouseleave', onLeave);
+    // passive：只讀座標、不阻止捲動
+    canvas.addEventListener('touchstart', onMove, { passive: true });
+    canvas.addEventListener('touchmove', onMove, { passive: true });
+    canvas.addEventListener('touchend', onLeave, { passive: true });
     handlers.push(() => {
-      self.canvas.removeEventListener('mousemove', onMove);
-      self.canvas.removeEventListener('mouseleave', onLeave);
+      canvas.removeEventListener('mousemove', onMove);
+      canvas.removeEventListener('mouseleave', onLeave);
+      canvas.removeEventListener('touchstart', onMove);
+      canvas.removeEventListener('touchmove', onMove);
+      canvas.removeEventListener('touchend', onLeave);
     });
   };
 
