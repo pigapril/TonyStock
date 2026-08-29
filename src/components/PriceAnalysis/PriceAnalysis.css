@@ -56,13 +56,19 @@
   height: 450px;
   max-width: 100%;
   overflow: visible;
-  margin-bottom: 20px;
+  /* card 本身已有 padding-bottom，這裡再留 20px 會讓通道圖下方出現一大段空白 */
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .price-analysis-view .chart-content {
   position: relative;
   width: 100%;
-  height: 80%;
+  /* 原本寫死 80%，等於假設 header 固定約 90px；header 一變高圖就被擠出卡片。
+     改成吃容器剩餘高度，header 多一行也不會溢出。 */
+  flex: 1 1 auto;
+  min-height: 0;
   margin-top: 0px;
 }
 
@@ -619,12 +625,131 @@
   /* 與圖表下軌顏色一致 - 深墨綠色 */
 }
 
+/* 五線譜（主圖）與樂活通道（輔助帶）上下並排，共用同一段時間軸。
+   通道圖只需要傳達「帶內／出上緣／出下緣」，不必跟主圖等高，
+   所以取七三分：主圖留給六條線與日期軸，通道帶壓縮成一條參考帶。 */
+.price-analysis-view .chart-stack {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  gap: 6px;
+}
+
+.price-analysis-view .chart-stack__main {
+  position: relative;
+  flex: 7 1 0;
+  min-height: 0;
+}
+
+.price-analysis-view .chart-stack__band {
+  position: relative;
+  flex: 3 1 0;
+  min-height: 0;
+  border-top: 1px solid #eceef2;
+  padding-top: 4px;
+}
+
+/* 小標切在分隔線上（類似 fieldset legend），不浮在資料區上方 */
+.price-analysis-view .chart-stack__band-label {
+  position: absolute;
+  top: -9px;
+  left: 14px;
+  z-index: 2;
+  padding: 0 6px;
+  background: var(--color-bg-card, #ffffff);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #98a1ad;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .price-analysis-view .chart-stack {
+    gap: 4px;
+  }
+
+  .price-analysis-view .chart-stack__band-label {
+    font-size: 0.6rem;
+    top: -8px;
+    left: 8px;
+  }
+}
+
+/* 通道位置：header 的第四欄，字級與其他數值一致，只用顏色帶語意 */
+.price-analysis-view .channel-value {
+  font-size: 1.05em;
+  color: #5a6572;
+  white-space: nowrap;
+}
+
+.price-analysis-view .channel-value--below {
+  color: #0000FF;
+}
+
+.price-analysis-view .channel-value--above {
+  color: #D24A93;
+}
+
+/* 兩指標同時到極端時的說明。恐懼側帶歷史統計、貪婪側只描述現況，
+   差別來自 2026-08 的回測結果（貪婪側沒有穩定規律）。 */
+.price-analysis-view .combined-state-note {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border-left: 3px solid #c7cdd6;
+  background: #f7f8fa;
+  text-align: left;
+}
+
+.price-analysis-view .combined-state-note--fearConfirmed {
+  border-left-color: #0000FF;
+  background: rgba(0, 0, 255, 0.04);
+}
+
+.price-analysis-view .combined-state-note--greedConfirmed {
+  border-left-color: #D24A93;
+  background: rgba(210, 74, 147, 0.05);
+}
+
+.price-analysis-view .combined-state-note__title {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.price-analysis-view .combined-state-note__body {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: #5a6572;
+}
+
+@media (max-width: 768px) {
+  .price-analysis-view .combined-state-note {
+    margin-top: 8px;
+    padding: 8px 12px;
+  }
+
+  .price-analysis-view .combined-state-note__body {
+    font-size: 0.76rem;
+  }
+}
+
 /* 響應式設計調整 */
 @media (max-width: 768px) {
+  /* 加入「樂活通道」後變成四欄，375px 排成一列會被 overflow:hidden 切掉，
+     所以手機改成 2x2。 */
   .price-analysis-view .analysis-result {
-    align-items: flex-start;
-    gap: 2px;
-    padding: 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    justify-items: center;
+    gap: 4px 8px;
+    padding: 2px 0;
   }
 
   .price-analysis-view .analysis-item {
@@ -633,7 +758,7 @@
   }
 
   .price-analysis-view .analysis-value {
-    font-size: 1.2em;
+    font-size: 1.05em;
   }
 
   .price-analysis-view .description-container {

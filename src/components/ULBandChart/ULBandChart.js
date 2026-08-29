@@ -8,13 +8,15 @@ import { ensureHomeChartsRegistered } from '../../utils/homeChartRegistry';
 
 ensureHomeChartsRegistered();
 
-const ULBandChart = ({ data, onChartReady }) => {
+// follower：與五線譜上下並排時，通道圖只跟隨主圖的 x 範圍，自身不接受縮放/平移，
+// 這樣兩張圖的時間軸不會各走各的。單獨使用時（沒傳 follower）行為與原本相同。
+const ULBandChart = ({ data, onChartReady, follower = false, xRange = null }) => {
     const { t } = useTranslation();
     const chartRef = useRef(null);
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
-    
-    // 使用自定義 Hook 處理手機版觸控
-    useMobileTouchHandler(chartRef, isMobile, true);
+
+    // 使用自定義 Hook 處理手機版觸控（follower 模式不攔截觸控，交給主圖）
+    useMobileTouchHandler(chartRef, isMobile, !follower);
 
     // 當圖表準備好時，通知父組件
     useEffect(() => {
@@ -159,8 +161,13 @@ const ULBandChart = ({ data, onChartReady }) => {
                         const lastIndex = data.dates.length - 1;
                         const lastDate = data.dates[lastIndex];
                         
-                        // 為所有線條添加虛線
+                        // 為所有線條添加虛線。
+                        // follower 是高度只有 100px 出頭的輔助帶，四組端點標籤會互相疊住、
+                        // 右緣也放不下，所以只標價格線（index 2）。
                         chartData.datasets.forEach((dataset, index) => {
+                            if (follower && index !== 2) {
+                                return;
+                            }
                             if (dataset.data && dataset.data.length > 0) {
                                 const lastValue = dataset.data[lastIndex];
                                 
@@ -239,7 +246,13 @@ const ULBandChart = ({ data, onChartReady }) => {
                 grid: {
                     drawBorder: true
                 },
-                ...(xAxisMax && { max: xAxisMax }) // 動態設置 x 軸最大值
+                ...(xAxisMax && { max: xAxisMax }), // 動態設置 x 軸最大值
+                // 跟隨主圖的範圍。必須走 props 進到 options：只在 chart.options 上
+                // 直接改，任何一次 React 重繪都會用 props 重建 options 把它沖掉，
+                // 通道圖就會「跳回原狀」。
+                ...(xRange && Number.isFinite(xRange.min) && Number.isFinite(xRange.max)
+                    ? { min: xRange.min, max: xRange.max }
+                    : {})
             },
             y: {
                 position: 'right',
@@ -247,6 +260,9 @@ const ULBandChart = ({ data, onChartReady }) => {
                     drawBorder: true
                 },
                 ticks: {
+                    // 這裡的刻度不只是給人看的：右側 y 軸會佔掉固定寬度，
+                    // 主圖也有一個。把它藏起來會讓通道圖的繪圖區變寬、
+                    // 兩張圖的時間軸就對不齊了，所以一定要保留。
                     callback: function(value, index, ticks) {
                         // 獲取所有數據集的最後一個值
                         if (!data.dates || data.dates.length === 0) return value;
@@ -276,18 +292,21 @@ const ULBandChart = ({ data, onChartReady }) => {
             }
         },
         layout: {
-            padding: {
-                left: 10,
-                right: 15,
-                top: 20,
-                bottom: 25
-            }
+            // follower 模式是主圖下方的細長輔助帶，維持原本的內距會把線擠成一條、
+            // 下面留一大塊空白，所以壓縮上下留白。
+            padding: follower
+                ? { left: 10, right: 15, top: 6, bottom: 2 }
+                : { left: 10, right: 15, top: 20, bottom: 25 }
         },
         clip: false
     };
 
     // 在 options 定義完成後，添加 zoom 插件配置到 plugins
-    options.plugins.zoom = {
+    options.plugins.zoom = follower ? {
+        // follower 模式：完全交由主圖控制，避免兩張圖各自縮放後時間軸對不上
+        pan: { enabled: false },
+        zoom: { wheel: { enabled: false }, pinch: { enabled: false } }
+    } : {
         pan: {
             enabled: !isMobile, // 手機版禁用 pan（由透明層處理）
             mode: 'x',
@@ -320,9 +339,10 @@ const ULBandChart = ({ data, onChartReady }) => {
         }
     };
 
-    // 自動顯示最新數據點的 tooltip
+    // 自動顯示最新數據點的 tooltip。
+    // follower 模式下主圖已經有一組自動 tooltip，兩張同時彈會太吵，這裡不重複。
     useEffect(() => {
-        if (data && chartRef.current) {
+        if (data && chartRef.current && !follower) {
             // 使用 setTimeout 確保圖表已完全渲染
             const timer = setTimeout(() => {
                 const chart = chartRef.current;
@@ -363,7 +383,7 @@ const ULBandChart = ({ data, onChartReady }) => {
             
             return () => clearTimeout(timer);
         }
-    }, [data]);
+    }, [data, follower]);
 
     // 提前返回，但在所有 Hooks 之後
     if (!data) return null;

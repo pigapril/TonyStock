@@ -50,6 +50,46 @@ const getSentimentSuffix = (key) => {
   return parts[parts.length - 1]; // 返回最後一部分，例如 'pessimism'
 };
 
+// 樂活通道位置：用週線序列的最後一筆比對通道上下緣，與通道圖看到的畫面一致。
+// 沒有通道資料（例如未請求 ULBand）時回傳 null，呼叫端要能接受。
+export const getChannelState = (weeklyPrices, upperBand, lowerBand) => {
+  if (!Array.isArray(weeklyPrices) || !Array.isArray(upperBand) || !Array.isArray(lowerBand)) {
+    return null;
+  }
+  const lastIndex = Math.min(weeklyPrices.length, upperBand.length, lowerBand.length) - 1;
+  if (lastIndex < 0) return null;
+
+  // 先擋掉 null/undefined/空字串：Number(null) 是 0，會讓缺值的通道上緣
+  // 變成「價格突破 0」而誤報 above。
+  const toNumber = (value) => (
+    value === null || value === undefined || value === '' ? NaN : Number(value)
+  );
+  const price = toNumber(weeklyPrices[lastIndex]);
+  const upper = toNumber(upperBand[lastIndex]);
+  const lower = toNumber(lowerBand[lastIndex]);
+  if (!Number.isFinite(price) || !Number.isFinite(upper) || !Number.isFinite(lower)) {
+    return null;
+  }
+
+  if (price > upper) return 'above';
+  if (price < lower) return 'below';
+  return 'inside';
+};
+
+// 五線譜位階與樂活通道同向到達極端時，才算「兩者同步」。
+// 2026-08 回測：只有恐懼側這個組合在歷史上有統計意義，貪婪側沒有，
+// 所以兩側共用同一個判定、但文案分開（見 priceAnalysis.combined.*）。
+export const getCombinedStateKey = (sentimentKey, channelState) => {
+  const level = getSentimentSuffix(sentimentKey);
+  if (level === 'extremeFear') {
+    return channelState === 'below' ? 'fearConfirmed' : 'fearOnly';
+  }
+  if (level === 'extremeGreed') {
+    return channelState === 'above' ? 'greedConfirmed' : 'greedOnly';
+  }
+  return null;
+};
+
 const PRICE_CHART_LABEL_KEYS = [
   'priceAnalysis.chart.label.price',
   'priceAnalysis.chart.label.trendLine',
@@ -154,7 +194,17 @@ export function PriceAnalysis() {
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [displayedStockCode, setDisplayedStockCode] = useState('');
-  const [activeChart, setActiveChart] = useState('sd');
+  // 通道圖要跟隨的 x 範圍。一律「讀主圖當下的 scale」再存起來，
+  // 不自己另外算，這樣兩張圖不會各自漂移。
+  const [bandXRange, setBandXRange] = useState(null);
+
+  // 主圖縮放/平移完成後，把它「實際的」軸範圍抄給通道圖。
+  const syncBandRange = useCallback(() => {
+    const scale = chartRef.current?.scales?.x;
+    if (scale && Number.isFinite(scale.min) && Number.isFinite(scale.max)) {
+      setBandXRange({ min: scale.min, max: scale.max });
+    }
+  }, []);
   const [activeDescriptionTab, setActiveDescriptionTab] = useState('overview'); // 新增：說明標籤狀態
   const [ulbandData, setUlbandData] = useState(null);
   // 修改分析結果狀態，包含 key 和 value
@@ -224,6 +274,7 @@ export function PriceAnalysis() {
 
     return new Date(lastDate.getTime() + timeRange * spaceRatio);
   }, [chartData?.labels, isMobile]);
+
   const chartAnnotations = useMemo(() => {
     const annotations = {};
 
@@ -336,7 +387,8 @@ export function PriceAnalysis() {
       enabled: !isMobile,
       mode: 'x',
       modifierKey: undefined,
-      onPanStart: () => true
+      onPanStart: () => true,
+      onPanComplete: () => syncBandRange()
     },
     zoom: {
       wheel: {
@@ -353,7 +405,8 @@ export function PriceAnalysis() {
           return true;
         }
         return true;
-      }
+      },
+      onZoomComplete: () => syncBandRange()
     },
     limits: {
       x: {
@@ -361,7 +414,7 @@ export function PriceAnalysis() {
         max: 'original'
       }
     }
-  }), [isMobile]);
+  }), [isMobile, syncBandRange]);
 
   const hasAnalysisContent = Boolean(loading || chartData || ulbandData);
   const shouldLoadChartWorkspace = useDeferredFeature({
@@ -418,8 +471,9 @@ export function PriceAnalysis() {
     startTransition(() => {
       setChartData(null);
       setUlbandData(null);
-      setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
+      setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null, channelState: null });
       setDisplayedStockCode('');
+      setBandXRange(null); // 換標的時不要沿用上一檔的範圍
     });
   }, [startTransition]);
 
@@ -431,7 +485,7 @@ export function PriceAnalysis() {
       return undefined;
     }
 
-    if (activeChart === 'sd' && chartData && chartRef.current) {
+    if (chartData && chartRef.current) {
       tooltipTimerRef.current = window.setTimeout(() => {
         const chart = chartRef.current;
         if (!isChartAttached(chart) || !chart.data?.labels?.length) {
@@ -440,6 +494,19 @@ export function PriceAnalysis() {
 
         try {
           const lastIndex = chart.data.labels.length - 1;
+
+          if (isMobile && chart.scales?.x && typeof chart.zoomScale === 'function') {
+            const fullMin = chart.scales.x.min;
+            const fullMax = chart.scales.x.max;
+            if (Number.isFinite(fullMin) && Number.isFinite(fullMax) && fullMax > fullMin) {
+              // 手機螢幕窄，整段期間擠在一起看不出東西，預設收掉最舊的 30%。
+              // 用 zoomScale 保留 'original' 為完整範圍，使用者仍可縮回去。
+              const zoomedMin = fullMax - (fullMax - fullMin) * 0.7;
+              chart.zoomScale('x', { min: zoomedMin, max: fullMax }, 'default');
+            }
+          }
+          syncBandRange();
+
           const activeElements = chart.data.datasets.map((dataset, datasetIndex) => ({
             datasetIndex,
             index: lastIndex
@@ -482,7 +549,7 @@ export function PriceAnalysis() {
     }
 
     return clearPostAnalysisTimers;
-  }, [activeChart, chartData, clearPostAnalysisTimers, isMobile, isUserInitiated, loading, ulbandData]);
+  }, [chartData, clearPostAnalysisTimers, isMobile, isUserInitiated, loading, ulbandData]);
 
   useEffect(() => clearPostAnalysisTimers, [clearPostAnalysisTimers]);
 
@@ -694,18 +761,6 @@ export function PriceAnalysis() {
     }
   };
 
-  // 切換主圖表 (標準差 or ULBand)
-  const handleChartSwitch = (chartType) => {
-    Analytics.stockAnalysis.chartSwitch(chartType);
-    setActiveChart(chartType);
-    // 互動式說明：自動切換到對應的說明標籤
-    if (chartType === 'sd') {
-      setActiveDescriptionTab('sd');
-    } else if (chartType === 'ulband') {
-      setActiveDescriptionTab('ulband');
-    }
-  };
-
   // 處理說明標籤切換
   const handleDescriptionTabSwitch = (tabType) => {
     setActiveDescriptionTab(tabType);
@@ -767,11 +822,12 @@ export function PriceAnalysis() {
           setAnalysisResult({
             price: formatPrice(lastPrice),
             sentimentKey: sentimentKey,
-            sentimentValue: t(sentimentKey) // 保留欄位以兼容舊資料結構
+            sentimentValue: t(sentimentKey), // 保留欄位以兼容舊資料結構
+            channelState: getChannelState(weeklyPrices, upperBand, lowerBand)
           });
         } else {
           // 清空時也清空 key 和 value
-          setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
+          setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null, channelState: null });
         }
       }); // end startTransition
 
@@ -1348,6 +1404,7 @@ export function PriceAnalysis() {
   }, [t, currentLang]);
 
   // 優化 Line Chart Options
+  const hasBandBelow = Boolean(ulbandData);
   const lineChartOptions = useMemo(() => {
     const options = {
       responsive: true,
@@ -1361,6 +1418,9 @@ export function PriceAnalysis() {
             tooltipFormat: 'yyyy/MM/dd'
           },
           ticks: {
+            // 通道圖就疊在正下方且共用時間軸，兩個日期軸會重複又吃掉高度，
+            // 所以有通道圖時主圖只留刻度線、不畫文字。
+            display: !hasBandBelow,
             maxTicksLimit: isMobile ? 4 : 6,
             autoSkip: true,
             maxRotation: isMobile ? 45 : 0,
@@ -1409,7 +1469,7 @@ export function PriceAnalysis() {
       },
       interaction: { mode: 'index', intersect: false },
       hover: { mode: 'index', intersect: false },
-      layout: { padding: { left: 10, right: 15, top: 20, bottom: 25 } },
+      layout: { padding: { left: 10, right: 15, top: 20, bottom: hasBandBelow ? 4 : 25 } },
       clip: false
     };
 
@@ -1419,7 +1479,7 @@ export function PriceAnalysis() {
     }
 
     return options;
-  }, [chartAnnotations, chartData?.timeUnit, lineChartZoomOptions, tooltipLabelColorFormatter, tooltipLabelFormatter, tooltipYAlign, xAxisMax, yTickLabelFormatter]);
+  }, [chartAnnotations, chartData?.timeUnit, hasBandBelow, isMobile, lineChartZoomOptions, tooltipLabelColorFormatter, tooltipLabelFormatter, tooltipYAlign, xAxisMax, yTickLabelFormatter]);
 
   return (
     <PageContainer
@@ -1776,12 +1836,13 @@ export function PriceAnalysis() {
                   localizedChartData={localizedChartData}
                   lineChartOptions={lineChartOptions}
                   ulbandData={ulbandData}
-                  activeChart={activeChart}
-                  handleChartSwitch={handleChartSwitch}
+                  bandXRange={bandXRange}
+                  onAfterZoom={syncBandRange}
                   displayedStockCode={displayedStockCode}
                   analysisResult={analysisResult}
                   analysisSentimentText={analysisSentimentText}
                   getSentimentSuffix={getSentimentSuffix}
+                  combinedStateKey={getCombinedStateKey(analysisResult.sentimentKey, analysisResult.channelState)}
                   formatPrice={formatPrice}
                   t={t}
                 />

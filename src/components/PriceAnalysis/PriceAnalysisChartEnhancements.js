@@ -15,18 +15,16 @@ function PriceAnalysisChartEnhancements({
   ulbandChartRef,
   chartData,
   ulbandData,
-  activeChart
+  onAfterZoom
 }) {
-  useMobileTouchHandler(chartRef, isMobile, activeChart === 'sd');
+  // 兩張圖並排後，互動一律由主圖（五線譜）負責，通道圖只跟隨。
+  useMobileTouchHandler(chartRef, isMobile, true);
 
   useEffect(() => {
-    const activeChartInstance = activeChart === 'sd' ? chartRef.current : ulbandChartRef.current;
-    if (!isChartAttached(activeChartInstance)) {
-      return;
+    if (isChartAttached(chartRef.current)) {
+      chartRef.current.update?.('none');
     }
-
-    activeChartInstance.update?.('none');
-  }, [activeChart, chartRef, ulbandChartRef]);
+  }, [chartRef]);
 
   const zoomActions = useMemo(() => ({
     zoomIn(chart, labels) {
@@ -74,26 +72,35 @@ function PriceAnalysisChartEnhancements({
     }
   }), [isMobile]);
 
-  const getActiveLabels = () => (activeChart === 'sd' ? chartData?.labels : ulbandData?.dates);
-  const getActiveChartInstance = () => (activeChart === 'sd' ? chartRef.current : ulbandChartRef.current);
-  const hasZoomTarget = activeChart === 'sd' ? Boolean(chartData) : Boolean(ulbandData);
+  const getActiveLabels = () => chartData?.labels;
+  const getActiveChartInstance = () => chartRef.current;
+  const hasZoomTarget = Boolean(chartData);
+
+  // zoomScale()/resetZoom() 不會觸發 onZoomComplete，所以按鈕按完要主動通知父層，
+  // 由父層去讀主圖當下的範圍再套到通道圖。
+  const runZoom = (action) => {
+    action(getActiveChartInstance(), getActiveLabels());
+    // 同步呼叫：zoomScale()/resetZoom() 當下就更新了 scale，
+    // 而 requestAnimationFrame 在分頁不可見時不會執行，通道圖就永遠不同步。
+    onAfterZoom?.();
+  };
 
   return (
     <>
       <ScrollToTopButton show={isMobile && (chartData || ulbandData)} />
       {hasZoomTarget && (
         <div className="chart-zoom-buttons">
-          <button className="zoom-btn zoom-in" onClick={() => zoomActions.zoomIn(getActiveChartInstance(), getActiveLabels())} title="放大">
+          <button className="zoom-btn zoom-in" onClick={() => runZoom(zoomActions.zoomIn)} title="放大">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
-          <button className="zoom-btn zoom-out" onClick={() => zoomActions.zoomOut(getActiveChartInstance(), getActiveLabels())} title="縮小">
+          <button className="zoom-btn zoom-out" onClick={() => runZoom(zoomActions.zoomOut)} title="縮小">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
-          <button className="zoom-btn zoom-reset" onClick={() => zoomActions.reset(getActiveChartInstance())} title="重置">
+          <button className="zoom-btn zoom-reset" onClick={() => runZoom((c) => zoomActions.reset(c))} title="重置">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M13 8C13 10.7614 10.7614 13 8 13C5.23858 13 3 10.7614 3 8C3 5.23858 5.23858 3 8 3C9.12583 3 10.1647 3.37194 11 3.99963M11 3.99963V2M11 3.99963H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>

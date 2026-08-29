@@ -1,10 +1,12 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import ULBandChart from '../ULBandChart/ULBandChart';
 import { ensureHomeChartsRegistered } from '../../utils/homeChartRegistry';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
+import { ensureCrosshairRegistered, linkCharts } from '../../utils/linkedCrosshair';
 
 ensureHomeChartsRegistered();
+ensureCrosshairRegistered();
 
 function isChartAttached(chart) {
   const canvas = chart?.canvas;
@@ -27,12 +29,13 @@ function PriceAnalysisChartWorkspace({
   localizedChartData,
   lineChartOptions,
   ulbandData,
-  activeChart,
-  handleChartSwitch,
+  bandXRange,
+  onAfterZoom,
   displayedStockCode,
   analysisResult,
   analysisSentimentText,
   getSentimentSuffix,
+  combinedStateKey,
   formatPrice,
   t
 }) {
@@ -43,12 +46,69 @@ function PriceAnalysisChartWorkspace({
     triggerOnInteraction: true
   });
   const shouldRenderEnhancements = shouldLoadEnhancements && hasAnalysisContent;
+  const contentRef = useRef(null);
 
+  // 兩張圖是 flex 項目，初次掛載時高度還沒算出來（flex-basis 0），
+  // Chart.js 會先用一個接近 0 的尺寸建圖，畫面就被擠成一條。
+  // 掛載後補量一次，並讓通道圖套用主圖當下的 x 範圍。
   useEffect(() => {
-    if (!loading && activeChart === 'ulband' && isChartAttached(ulbandChartRef.current)) {
-      ulbandChartRef.current.update?.('none');
+    if (loading) {
+      return undefined;
     }
-  }, [activeChart, loading, ulbandChartRef]);
+
+    const resync = () => {
+      const main = chartRef.current;
+      const band = ulbandChartRef.current;
+
+      if (isChartAttached(main)) {
+        main.resize?.();
+      }
+      if (!isChartAttached(band)) {
+        return;
+      }
+
+      band.resize?.();
+      band.update('none');
+    };
+
+    // 載入過程中容器會有一段寬度為 0 的時間，Chart.js 在那時建圖就會把
+    // chartArea 定成接近 0，之後不會自己修正。用 ResizeObserver 等寬度真的
+    // 出現再重新量；rAF 與延遲補跑是給 observer 不可用時的保險。
+    const node = contentRef.current;
+    let observer;
+    if (node && typeof window.ResizeObserver === 'function') {
+      observer = new window.ResizeObserver(resync);
+      observer.observe(node);
+    }
+
+    const raf = window.requestAnimationFrame(resync);
+    const timer = window.setTimeout(resync, 400);
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+      observer?.disconnect();
+    };
+  // 依賴刻意不含 bandXRange：縮放後跟著重跑 resize() 會把剛做的縮放洗掉。
+  // 範圍同步已經由 xRange prop 負責，這個 effect 只管初次排版的尺寸。
+  }, [chartRef, loading, chartData, ulbandData, ulbandChartRef]);
+
+  // 兩張圖共用一條垂直標線：游標在任一張圖上移動時，另一張圖同步顯示同一個
+  // 時間點的價格。日線 vs 週線粒度不同，所以用時間值對應而不是 index。
+  useEffect(() => {
+    if (loading || !chartData || !ulbandData) {
+      return undefined;
+    }
+
+    let unlink;
+    const timer = window.setTimeout(() => {
+      unlink = linkCharts(() => [chartRef.current, ulbandChartRef.current]);
+    }, 450);
+
+    return () => {
+      window.clearTimeout(timer);
+      unlink?.();
+    };
+  }, [chartRef, loading, chartData, ulbandData, ulbandChartRef]);
 
   return (
     <div className="chart-card" ref={chartCardRef}>
@@ -84,34 +144,32 @@ function PriceAnalysisChartWorkspace({
                 <span className="analysis-value-skeleton analysis-value-skeleton--wide" />
               )}
             </div>
-          </div>
-        </div>
-
-        <div className="chart-content">
-          <div
-            className={`chart-tabs-row ${hasAnalysisContent ? '' : 'chart-tabs-row--skeleton'}`}
-            aria-hidden={!hasAnalysisContent}
-          >
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
-              <div className="chart-tabs">
-                <button
-                  className={`chart-tab ${activeChart === 'sd' ? 'active' : ''}`}
-                  onClick={() => handleChartSwitch('sd')}
-                  disabled={loading || !hasAnalysisContent}
-                >
-                  {t('priceAnalysis.chart.tabs.sd')}
-                </button>
-                <button
-                  className={`chart-tab ${activeChart === 'ulband' ? 'active' : ''}`}
-                  onClick={() => handleChartSwitch('ulband')}
-                  disabled={loading || !hasAnalysisContent}
-                >
-                  {t('priceAnalysis.chart.tabs.ulband')}
-                </button>
-              </div>
+            {/* 通道位置自成一欄，與情緒並列。掛在情緒值後面會讓兩個等重的資訊擠在一起。 */}
+            <div className="analysis-item">
+              <span className="analysis-label">{t('priceAnalysis.result.channelPosition')}</span>
+              {hasAnalysisContent && analysisResult.channelState ? (
+                <span className={`analysis-value channel-value channel-value--${analysisResult.channelState}`}>
+                  {t(`priceAnalysis.channel.${analysisResult.channelState}`)}
+                </span>
+              ) : (
+                <span className="analysis-value-skeleton analysis-value-skeleton--wide" />
+              )}
             </div>
           </div>
 
+          {hasAnalysisContent && combinedStateKey ? (
+            <div className={`combined-state-note combined-state-note--${combinedStateKey}`}>
+              <span className="combined-state-note__title">
+                {t(`priceAnalysis.combined.${combinedStateKey}.title`)}
+              </span>
+              <span className="combined-state-note__body">
+                {t(`priceAnalysis.combined.${combinedStateKey}.body`)}
+              </span>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="chart-content" ref={contentRef}>
           {loading && (
             <div className="chart-loading-indicator">
               <div className="loading-spinner">
@@ -121,8 +179,13 @@ function PriceAnalysisChartWorkspace({
             </div>
           )}
 
-          {!loading && activeChart === 'sd' && chartData && (
-            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+          {/* 五線譜與樂活通道上下並排，共用同一段時間軸。
+              兩者同時到達極端才是有統計基礎的訊號（見 combined-state-note），
+              分成兩個分頁會讓使用者得自己在腦中做交集。 */}
+          {!loading && (chartData || ulbandData) && (
+            <div className="chart-stack">
+              {/* 放在 stack 外層：回到頂端按鈕用 bottom:-35px 定位，掛在主圖裡會
+                  剛好壓在通道圖上。錨定 .chart-content 才會落在兩張圖的下方。 */}
               {shouldRenderEnhancements ? (
                 <Suspense fallback={null}>
                   <PriceAnalysisChartEnhancements
@@ -131,36 +194,32 @@ function PriceAnalysisChartWorkspace({
                     ulbandChartRef={ulbandChartRef}
                     chartData={chartData}
                     ulbandData={ulbandData}
-                    activeChart={activeChart}
+                    onAfterZoom={onAfterZoom}
                   />
                 </Suspense>
               ) : null}
-              <Line
-                ref={chartRef}
-                data={localizedChartData || chartData}
-                options={lineChartOptions}
-              />
-            </div>
-          )}
 
-          {!loading && activeChart === 'ulband' && ulbandData && (
-            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-              {shouldRenderEnhancements ? (
-                <Suspense fallback={null}>
-                  <PriceAnalysisChartEnhancements
-                    isMobile={isMobile}
-                    chartRef={chartRef}
-                    ulbandChartRef={ulbandChartRef}
-                    chartData={chartData}
-                    ulbandData={ulbandData}
-                    activeChart={activeChart}
+              {chartData && (
+                <div className="chart-stack__main">
+                  <Line
+                    ref={chartRef}
+                    data={localizedChartData || chartData}
+                    options={lineChartOptions}
                   />
-                </Suspense>
-              ) : null}
-              <MemoizedULBandChart
-                data={ulbandData}
-                onChartReady={(chart) => { ulbandChartRef.current = chart; }}
-              />
+                </div>
+              )}
+
+              {ulbandData && (
+                <div className="chart-stack__band">
+                  <span className="chart-stack__band-label">{t('priceAnalysis.chart.tabs.ulband')}</span>
+                  <MemoizedULBandChart
+                    data={ulbandData}
+                    follower
+                    xRange={bandXRange}
+                    onChartReady={(chart) => { ulbandChartRef.current = chart; }}
+                  />
+                </div>
+              )}
             </div>
           )}
 

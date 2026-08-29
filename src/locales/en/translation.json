@@ -1031,7 +1031,8 @@
     "result": {
       "stockCode": "Symbol",
       "stockPrice": "Price",
-      "marketSentiment": "Sentiment"
+      "marketSentiment": "Sentiment",
+      "channelPosition": "LOHAS Channel"
     },
     "sentiment": {
       "extremeGreed": "Extreme Greed",
@@ -1122,7 +1123,30 @@
         "global": "Global Markets"
       }
     },
-    "heading": "LOHAS Five-Line Analysis"
+    "heading": "LOHAS Five-Line Analysis",
+    "channel": {
+      "inside": "Inside channel",
+      "above": "Above channel ceiling",
+      "below": "Below channel floor"
+    },
+    "combined": {
+      "fearConfirmed": {
+        "title": "Five-Line and LOHAS Channel both at their floor",
+        "body": "Price sits below both the Five-Line floor and the LOHAS Channel floor. Across 92 tickers and 848,263 daily bars, this combination covered about 2.7% of trading days, and on market-cap ETFs and broad indices the following 60 trading days generally ran better than when only the Five-Line was at its floor. This describes past data, not a forecast, and is not investment advice."
+      },
+      "fearOnly": {
+        "title": "Only the Five-Line is at its floor",
+        "body": "Price is below the Five-Line floor, but the LOHAS Channel is still holding. In our testing, the Five-Line reaching its floor on its own was followed by noticeably weaker results than when both lined up."
+      },
+      "greedConfirmed": {
+        "title": "Five-Line and LOHAS Channel both at their ceiling",
+        "body": "Price sits above both the Five-Line ceiling and the LOHAS Channel ceiling. The same testing found no stable pattern on this side. When a market leans greedy it often gets greedier and the stretched state persists, so we make no statement about what follows."
+      },
+      "greedOnly": {
+        "title": "Only the Five-Line is at its ceiling",
+        "body": "Price is above the Five-Line ceiling, but the LOHAS Channel is still holding. The greed side has no stable historical pattern to begin with, so this state is not a timing signal either."
+      }
+    }
   },
   "watchlist": {
     "pageTitle": "My Watchlist",
