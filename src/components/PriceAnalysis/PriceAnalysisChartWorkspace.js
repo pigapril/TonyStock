@@ -4,6 +4,7 @@ import ULBandChart from '../ULBandChart/ULBandChart';
 import { ensureHomeChartsRegistered } from '../../utils/homeChartRegistry';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
 import { ensureCrosshairRegistered, linkCharts } from '../../utils/linkedCrosshair';
+import InfoPopover from './InfoPopover';
 
 ensureHomeChartsRegistered();
 ensureCrosshairRegistered();
@@ -135,7 +136,19 @@ function PriceAnalysisChartWorkspace({
               )}
             </div>
             <div className="analysis-item">
-              <span className="analysis-label">{t('priceAnalysis.result.marketSentiment')}</span>
+              <span className="analysis-label">
+                {t('priceAnalysis.result.marketSentiment')}
+                <InfoPopover
+                  label={t('priceAnalysis.description.sd.title')}
+                  title={t('priceAnalysis.description.sd.title')}
+                  points={[
+                    t('priceAnalysis.description.sd.point1'),
+                    t('priceAnalysis.description.sd.point2'),
+                    t('priceAnalysis.description.sd.point3'),
+                    t('priceAnalysis.description.sd.point4')
+                  ]}
+                />
+              </span>
               {hasAnalysisContent ? (
                 <span className={`analysis-value sentiment-${getSentimentSuffix(analysisResult.sentimentKey)}`}>
                   {analysisSentimentText}
@@ -146,7 +159,18 @@ function PriceAnalysisChartWorkspace({
             </div>
             {/* 通道位置自成一欄，與情緒並列。掛在情緒值後面會讓兩個等重的資訊擠在一起。 */}
             <div className="analysis-item">
-              <span className="analysis-label">{t('priceAnalysis.result.channelPosition')}</span>
+              <span className="analysis-label">
+                {t('priceAnalysis.result.channelPosition')}
+                <InfoPopover
+                  label={t('priceAnalysis.description.ulband.title')}
+                  title={t('priceAnalysis.description.ulband.title')}
+                  points={[
+                    t('priceAnalysis.description.ulband.point1'),
+                    t('priceAnalysis.description.ulband.point2'),
+                    t('priceAnalysis.description.ulband.point3')
+                  ]}
+                />
+              </span>
               {hasAnalysisContent && analysisResult.channelState ? (
                 <span className={`analysis-value channel-value channel-value--${analysisResult.channelState}`}>
                   {t(`priceAnalysis.channel.${analysisResult.channelState}`)}

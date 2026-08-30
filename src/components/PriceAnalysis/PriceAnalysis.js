@@ -24,7 +24,19 @@ import watchlistService from '../Watchlist/services/watchlistService'; // 新增
 
 const DeferredBacktestDatePicker = lazy(() => import('./DeferredBacktestDatePicker'));
 const PriceAnalysisChartWorkspace = lazy(() => import('./PriceAnalysisChartWorkspace'));
-const PriceAnalysisDescriptionTabs = lazy(() => import('./PriceAnalysisDescriptionTabs'));
+const PriceAnalysisDescription = lazy(() => import('./PriceAnalysisDescription'));
+const PriceAnalysisTour = lazy(() => import('./PriceAnalysisTour'));
+
+const TOUR_STORAGE_KEY = 'sio.priceAnalysis.tourSeen.v1';
+
+function hasSeenTour() {
+  try {
+    return window.localStorage.getItem(TOUR_STORAGE_KEY) === '1';
+  } catch (error) {
+    // 讀不到就當作看過，寧可少跑導覽也不要每次都跳
+    return true;
+  }
+}
 
 ensureChartZoomRegistered();
 
@@ -142,22 +154,11 @@ const renderChartWorkspaceFallback = () => (
   </div>
 );
 
-const renderDescriptionTabsFallback = () => (
+const renderDescriptionFallback = () => (
   <div className="bottom-description-section" aria-hidden="true">
-    <div className="description-tabs-container">
-      <div className="description-tabs">
-        <button className="description-tab active" type="button" disabled />
-        <button className="description-tab" type="button" disabled />
-        <button className="description-tab" type="button" disabled />
-        <button className="description-tab" type="button" disabled />
-      </div>
-      <div className="description-tab-content">
-        <div className="description-list">
-          <div className="analysis-value-skeleton analysis-value-skeleton--wide" />
-          <div className="analysis-value-skeleton analysis-value-skeleton--wide" />
-          <div className="analysis-value-skeleton analysis-value-skeleton--wide" />
-        </div>
-      </div>
+    <div className="description-card">
+      <div className="analysis-value-skeleton analysis-value-skeleton--wide" />
+      <div className="analysis-value-skeleton analysis-value-skeleton--wide" />
     </div>
   </div>
 );
@@ -196,6 +197,7 @@ export function PriceAnalysis() {
   const [displayedStockCode, setDisplayedStockCode] = useState('');
   // 通道圖要跟隨的 x 範圍。一律「讀主圖當下的 scale」再存起來，
   // 不自己另外算，這樣兩張圖不會各自漂移。
+  const [showTour, setShowTour] = useState(false);
   const [bandXRange, setBandXRange] = useState(null);
 
   // 主圖縮放/平移完成後，把它「實際的」軸範圍抄給通道圖。
@@ -205,7 +207,6 @@ export function PriceAnalysis() {
       setBandXRange({ min: scale.min, max: scale.max });
     }
   }, []);
-  const [activeDescriptionTab, setActiveDescriptionTab] = useState('overview'); // 新增：說明標籤狀態
   const [ulbandData, setUlbandData] = useState(null);
   // 修改分析結果狀態，包含 key 和 value
   const [analysisResult, setAnalysisResult] = useState({
@@ -759,11 +760,6 @@ export function PriceAnalysis() {
       // 調用 debounced 函數來更新狀態
       debouncedSetYears(value);
     }
-  };
-
-  // 處理說明標籤切換
-  const handleDescriptionTabSwitch = (tabType) => {
-    setActiveDescriptionTab(tabType);
   };
 
   // 資料抓取函式
@@ -1377,9 +1373,8 @@ export function PriceAnalysis() {
       {
         question: t('priceAnalysis.description.tips.title'),
         answer: [
-          t('priceAnalysis.description.tips.point1'),
-          t('priceAnalysis.description.tips.point2'),
-          t('priceAnalysis.description.tips.point3')
+          t('priceAnalysis.description.tips.usage'),
+          t('priceAnalysis.description.tips.limitation')
         ].join(' ')
       }
     ];
@@ -1480,6 +1475,15 @@ export function PriceAnalysis() {
 
     return options;
   }, [chartAnnotations, chartData?.timeUnit, hasBandBelow, isMobile, lineChartZoomOptions, tooltipLabelColorFormatter, tooltipLabelFormatter, tooltipYAlign, xAxisMax, yTickLabelFormatter]);
+
+  // 首次造訪才跑導覽，而且要等預設分析跑出來——第三步要指的就是那張圖。
+  useEffect(() => {
+    if (showTour || loading || !chartData || hasSeenTour()) {
+      return undefined;
+    }
+    const timer = window.setTimeout(() => setShowTour(true), 900);
+    return () => window.clearTimeout(timer);
+  }, [chartData, loading, showTour]);
 
   return (
     <PageContainer
@@ -1855,12 +1859,14 @@ export function PriceAnalysis() {
 
         {/* 底部說明區域 */}
         {shouldLoadDescriptionTabs ? (
-          <Suspense fallback={renderDescriptionTabsFallback()}>
-            <PriceAnalysisDescriptionTabs
-              activeDescriptionTab={activeDescriptionTab}
-              onSwitchTab={handleDescriptionTabSwitch}
-              t={t}
-            />
+          <Suspense fallback={renderDescriptionFallback()}>
+            <PriceAnalysisDescription t={t} />
+          </Suspense>
+        ) : null}
+
+        {showTour ? (
+          <Suspense fallback={null}>
+            <PriceAnalysisTour t={t} onFinish={() => setShowTour(false)} />
           </Suspense>
         ) : null}
       </div>
