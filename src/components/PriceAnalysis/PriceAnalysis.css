@@ -1991,20 +1991,15 @@
 }
 
 /* 熱門：直接攤在搜尋列下方，不用再點一次分頁才看得到 */
-/* 跟搜尋列同寬並置中，兩列才會對齊 */
+/* 最多 10 個。桌機用換行攤開——橫向捲動在桌機沒有捲軸也沒有橫向滾輪，
+   等於把右邊的項目鎖起來看不到。這一列可以比搜尋列寬，六個一行、最多兩行。 */
 .price-analysis-view .pa-hot-row {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   width: 100%;
-  max-width: 600px;
-  gap: 10px;
-  padding: 0 4px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.price-analysis-view .pa-hot-row::-webkit-scrollbar {
-  display: none;
+  gap: 8px 10px;
 }
 
 .price-analysis-view .pa-hot-row__label {
@@ -2018,7 +2013,9 @@
 .price-analysis-view .pa-hot-row__items {
   display: flex;
   align-items: center;
-  gap: 6px;
+  flex-wrap: wrap;
+  gap: 8px 6px;
+  min-width: 0;
 }
 
 .price-analysis-view .pa-hot-chip {
@@ -2135,6 +2132,23 @@
   .price-analysis-view .pa-searchbar .stock-suggestions {
     left: 0;
     right: 0;
+  }
+
+  /* 手機維持單行橫滑：垂直空間比較珍貴，而且手指滑得動。
+     裝 chip 的內層也要 nowrap，不然它會自己折成好幾行（實測 316px 高）。 */
+  .price-analysis-view .pa-hot-row,
+  .price-analysis-view .pa-hot-row__items {
+    flex-wrap: nowrap;
+  }
+
+  .price-analysis-view .pa-hot-row {
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .price-analysis-view .pa-hot-row::-webkit-scrollbar {
+    display: none;
   }
 }
 
