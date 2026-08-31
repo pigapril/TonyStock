@@ -14,6 +14,7 @@
     "src/components/PriceAnalysis/__tests__/PriceAnalysis.analysisFlow.test.js",
     "src/components/PriceAnalysis/__tests__/PriceAnalysis.watchlistQuickSelect.test.js",
     "src/components/PriceAnalysis/__tests__/PriceAnalysis.combinedState.test.js",
+    "src/utils/__tests__/linkedCrosshair.test.js",
     "src/components/MarketSentimentIndex/MarketSentimentGauge/__tests__/MarketSentimentGauge.test.js",
     "src/components/MarketSentimentIndex/__tests__/RestrictedMarketSentimentGauge.test.js",
     "src/components/MarketSentimentIndex/__tests__/RestrictedComponents.test.js",

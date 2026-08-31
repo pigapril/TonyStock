@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../../../i18n';
@@ -162,5 +162,95 @@ describe('PriceAnalysis analysis flow', () => {
         ))
       ).toBe(true);
     });
+  });
+
+  it('頂部查詢列不再有「開始分析」按鈕，設定直接攤在搜尋列右緣', async () => {
+    render(
+      <TestWrapper>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText(/請輸入股票代碼|e\.g\., SPY, AAPL/i)).toBeInTheDocument();
+    });
+
+    // 選建議、按 Enter、點清單都會直接分析，按鈕就沒有存在的理由了
+    expect(screen.queryByRole('button', { name: /開始分析|Start Analysis/i })).not.toBeInTheDocument();
+
+    // 桌機空間夠，期長與回測日期就直接放出來，不藏在收合面板後面
+    const period = screen.getByRole('combobox', { name: /分析期長|Analysis Period/i });
+    expect(period).toHaveValue('long');
+    expect([...period.options].map((option) => option.value))
+      .toEqual(['short', 'medium', 'long', 'custom']);
+    expect(screen.getByPlaceholderText(/預設今天|Default: Today/i)).toBeInTheDocument();
+  });
+
+  it('期長選「自訂」才長出年數輸入框，且不會白打一次 API', async () => {
+    render(
+      <TestWrapper>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    const period = await screen.findByRole('combobox', { name: /分析期長|Analysis Period/i });
+    await waitFor(() => {
+      expect(mockEnhancedApiClient.get.mock.calls.some(([url]) => url === '/api/integrated-analysis')).toBe(true);
+    });
+
+    const before = mockEnhancedApiClient.get.mock.calls
+      .filter(([url]) => url === '/api/integrated-analysis').length;
+
+    fireEvent.change(period, { target: { value: 'custom' } });
+
+    // 切到自訂只是預填目前期長，窗口沒變，不該再送一次
+    const yearsInput = await screen.findByPlaceholderText(/輸入年數|Enter years/i);
+    expect(yearsInput).toHaveValue('3.5');
+    expect(
+      mockEnhancedApiClient.get.mock.calls.filter(([url]) => url === '/api/integrated-analysis').length
+    ).toBe(before);
+  });
+
+  it('沒有熱門搜尋資料時整列不渲染，不留空框', async () => {
+    const { container } = render(
+      <TestWrapper>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText(/請輸入股票代碼|e\.g\., SPY, AAPL/i)).toBeInTheDocument();
+    });
+
+    expect(container.querySelector('.pa-hot-row')).not.toBeInTheDocument();
+  });
+
+  it('換分析期長就直接重跑，不必再按一次按鈕', async () => {
+    render(
+      <TestWrapper>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(
+        mockEnhancedApiClient.get.mock.calls.some(([url, config]) => (
+          url === '/api/integrated-analysis' && config?.params?.years === 3.5
+        ))
+      ).toBe(true);
+    });
+
+    fireEvent.change(
+      screen.getByRole('combobox', { name: /分析期長|Analysis Period/i }),
+      { target: { value: 'short' } }
+    );
+
+    await waitFor(() => {
+      expect(
+        mockEnhancedApiClient.get.mock.calls.some(([url, config]) => (
+          url === '/api/integrated-analysis' && config?.params?.years === 0.5
+        ))
+      ).toBe(true);
+    }, { timeout: 3000 });
   });
 });

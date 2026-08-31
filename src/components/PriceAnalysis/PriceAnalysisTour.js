@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-export const TOUR_STORAGE_KEY = 'sio.priceAnalysis.tourSeen.v1';
+// v2：版面改成頂部搜尋列後，導覽的目標與說法都換了，讓看過 v1 的人再看一次新版
+export const TOUR_STORAGE_KEY = 'sio.priceAnalysis.tourSeen.v2';
 
-// 依序聚焦：輸入框 → 開始分析 → 右邊結果
+// 依序聚焦：搜尋列 → 期長/進階 → 結果圖表
 const STEPS = [
-  { key: 'input', selector: '.stock-input-wrapper' },
-  { key: 'submit', selector: '.analysis-button' },
+  { key: 'search', selector: '.pa-searchbar' },
+  { key: 'period', selector: '.pa-searchbar__controls' },
   { key: 'result', selector: '.chart-card' }
 ];
 

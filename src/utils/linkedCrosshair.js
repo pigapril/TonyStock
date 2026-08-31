@@ -1,10 +1,10 @@
 import { Chart as ChartJS } from 'chart.js';
 
 /**
- * 讓上下並排的兩張圖共用一條垂直標線。
+ * 讓上下並排的圖共用一條垂直標線。
  *
- * 兩張圖的資料粒度不同（五線譜是日線、樂活通道是週線），所以不能用 index 對應，
- * 必須用「時間值」對應：把游標所在的時間換算成另一張圖的像素位置。
+ * 各圖的資料粒度不同（五線譜是日線、樂活通道是週線），所以不能用 index 對應，
+ * 必須用「時間值」對應：把游標所在的時間換算成其他圖的像素位置。
  *
  * 只有在 chart.$crosshairX 有值時才畫，對其他圖表沒有影響。
  */
@@ -101,8 +101,9 @@ function applyToTarget(target, time) {
 }
 
 /**
- * 綁定兩張圖的滑鼠連動。回傳解除綁定的函式。
- * getCharts 每次呼叫時重新取得圖表實例，避免抓到已被換掉的舊實例。
+ * 綁定同一時間軸上多張圖的滑鼠連動。回傳解除綁定的函式。
+ * getCharts 每次呼叫時重新取得圖表實例，避免抓到已被換掉的舊實例；
+ * 之後往下加新的面板時，只要把它的實例也放進這個陣列就會自動跟著連動。
  */
 export function linkCharts(getCharts) {
   const handlers = [];
@@ -115,9 +116,9 @@ export function linkCharts(getCharts) {
     }
 
     const onMove = (event) => {
-      const [main, band] = getCharts();
-      const source = selfIndex === 0 ? main : band;
-      const other = selfIndex === 0 ? band : main;
+      const all = getCharts();
+      const source = all[selfIndex];
+      const others = all.filter((chart, index) => index !== selfIndex);
       if (!isAttached(source) || !source.chartArea) {
         return;
       }
@@ -133,7 +134,7 @@ export function linkCharts(getCharts) {
       const px = point.clientX - rect.left;
       if (px < source.chartArea.left || px > source.chartArea.right) {
         clearChart(source);
-        clearChart(other);
+        others.forEach(clearChart);
         return;
       }
 
@@ -144,13 +145,11 @@ export function linkCharts(getCharts) {
 
       source.$crosshairX = px;
       source.render();
-      applyToTarget(other, time);
+      others.forEach((target) => applyToTarget(target, time));
     };
 
     const onLeave = () => {
-      const [main, band] = getCharts();
-      clearChart(main);
-      clearChart(band);
+      getCharts().forEach(clearChart);
     };
 
     // 先把 canvas 抓在區域變數裡：解除監聽時圖表可能已經被銷毀，
@@ -171,13 +170,10 @@ export function linkCharts(getCharts) {
     });
   };
 
-  bind(0);
-  bind(1);
+  getCharts().forEach((chart, index) => bind(index));
 
   return () => {
     handlers.forEach((off) => off());
-    const [main, band] = getCharts();
-    clearChart(main);
-    clearChart(band);
+    getCharts().forEach(clearChart);
   };
 }

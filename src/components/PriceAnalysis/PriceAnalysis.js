@@ -27,7 +27,11 @@ const PriceAnalysisChartWorkspace = lazy(() => import('./PriceAnalysisChartWorks
 const PriceAnalysisDescription = lazy(() => import('./PriceAnalysisDescription'));
 const PriceAnalysisTour = lazy(() => import('./PriceAnalysisTour'));
 
-const TOUR_STORAGE_KEY = 'sio.priceAnalysis.tourSeen.v1';
+const TOUR_STORAGE_KEY = 'sio.priceAnalysis.tourSeen.v2';
+
+// 期長預設值。下拉、初始化、實際送出的年數三個地方都吃這一份，避免各寫一次而走鐘。
+const PERIOD_YEARS = { short: '0.5', medium: '1.5', long: '3.5' };
+const YEARS_TO_PERIOD = { '0.5': 'short', '1.5': 'medium', '3.5': 'long' };
 
 function hasSeenTour() {
   try {
@@ -218,6 +222,9 @@ export function PriceAnalysis() {
   const [isAdvancedQuery, setIsAdvancedQuery] = useState(false);
   // 新增狀態來記錄分析期間的選擇
   const [analysisPeriod, setAnalysisPeriod] = useState('long'); // 預設為長期
+  // 上一次「送出分析時」的期長 + 回測日期組合。記在送出的當下而不是結果回來的
+  // 當下，載入中改設定才不會被吃掉。
+  const lastRunSignatureRef = useRef('long|');
 
   // 市場代號 → 顯示徽章（旗幟 + 短碼）
   const marketBadgeFor = useCallback((market) => {
@@ -438,10 +445,9 @@ export function PriceAnalysis() {
 
   // 新增：熱門搜尋狀態
   const [hotSearches, setHotSearches] = useState([]);
-  const [loadingHotSearches, setLoadingHotSearches] = useState(false);
 
   // 新增：快速選擇 Tab 狀態
-  const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('hotSearches'); // 'hotSearches', 'freeStocks', 或 'watchlist'
+  const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('freeStocks'); // 'freeStocks' 或 'watchlist'
   // 用戶一旦手動切過 tab，就不再自動把免費用戶導回免費清單
   const userManuallyChangedTabRef = useRef(false);
   const [isUserInitiated, setIsUserInitiated] = useState(false); // 追蹤是否為用戶主動操作
@@ -650,7 +656,7 @@ export function PriceAnalysis() {
     const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
     const isFreeUser = !isTemporaryFreeMode && (user?.plan || 'free') !== 'pro';
     if (isFreeUser) {
-      setActiveQuickSelectTab((prev) => (prev === 'hotSearches' ? 'freeStocks' : prev));
+      setActiveQuickSelectTab('freeStocks');
     }
   }, [user]);
 
@@ -760,6 +766,23 @@ export function PriceAnalysis() {
       // 調用 debounced 函數來更新狀態
       debouncedSetYears(value);
     }
+  };
+
+  // 期長下拉：短/中/長之外多一個「自訂」，選了才在旁邊長出年數輸入框。
+  // 自訂的年數要按 Enter 才送出（邊打邊送會每個字打一次 API），其餘選項即時重算。
+  const handlePeriodSelectChange = (e) => {
+    const value = e.target.value;
+    if (value === 'custom') {
+      debouncedSetYears.cancel?.();
+      // 預填目前期長的年數，並同步簽章：切到自訂的當下窗口沒變，
+      // 不該白打一次 API，等使用者改完年數按 Enter 再送。
+      setYears(PERIOD_YEARS[analysisPeriod]);
+      setIsAdvancedQuery(true);
+      lastRunSignatureRef.current = `custom|${backTestDate}`;
+      return;
+    }
+    setIsAdvancedQuery(false);
+    setAnalysisPeriod(value);
   };
 
   // 資料抓取函式
@@ -884,15 +907,7 @@ export function PriceAnalysis() {
       return 3.5;
     }
 
-    switch (analysisPeriod) {
-      case 'short':
-        return 0.5;
-      case 'medium':
-        return 1.5;
-      case 'long':
-      default:
-        return 3.5;
-    }
+    return parseFloat(PERIOD_YEARS[analysisPeriod] ?? PERIOD_YEARS.long);
   }, [analysisPeriod, isAdvancedQuery, showToast, years]);
 
   const queueAnalysisEvent = useCallback((payload) => {
@@ -916,8 +931,11 @@ export function PriceAnalysis() {
   const runAnalysisForStock = useCallback((nextStockCode, source, invalidYearsMessage) => {
     const upperClickedCode = nextStockCode.toUpperCase();
     const numYearsToFetch = resolveAnalysisYears(invalidYearsMessage);
-    const dateToFetch = isAdvancedQuery ? backTestDate : '';
+    // 回測日期現在是獨立設定（收合面板裡自成一欄），不再綁在「進階模式」下，
+    // 否則只設日期、沒改期長的使用者會發現日期被默默丟掉。
+    const dateToFetch = backTestDate;
 
+    lastRunSignatureRef.current = `${isAdvancedQuery ? 'custom' : analysisPeriod}|${backTestDate}`;
     setIsUserInitiated(true);
     setDisplayStockCode(upperClickedCode);
     setStockCode(upperClickedCode);
@@ -929,10 +947,41 @@ export function PriceAnalysis() {
       source
     });
     fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, true);
-  }, [backTestDate, beginAnalysisRequest, fetchStockData, isAdvancedQuery, queueAnalysisEvent, resolveAnalysisYears]);
+  }, [analysisPeriod, backTestDate, beginAnalysisRequest, fetchStockData, isAdvancedQuery, queueAnalysisEvent, resolveAnalysisYears]);
 
   // 同步最新的 runAnalysisForStock 至 ref，讓較早宣告的 handleSuggestionSelect 可以呼叫
   runAnalysisForStockRef.current = runAnalysisForStock;
+
+  // 期長與回測日期都是單值控制項，改了就直接重算——像 Google Finance 換 1D/5D
+  // 一樣，不需要再按一次「開始分析」。自訂年數不在簽章裡：那是逐字輸入，
+  // 要按 Enter 才送出。ref 記著上一次送出的組合，所以首次掛載不觸發。
+  const analysisSignature = `${isAdvancedQuery ? 'custom' : analysisPeriod}|${backTestDate}`;
+  useEffect(() => {
+    if (lastRunSignatureRef.current === analysisSignature) {
+      return undefined;
+    }
+
+    // 還沒有結果時先不動 ref：等第一份結果進來這個 effect 會再跑一次，那時才補送。
+    if (!displayedStockCode) {
+      return undefined;
+    }
+
+    // 與其他觸發路徑一致：未登入就彈登入框，而不是改了設定卻默默沒反應
+    if (!isAuthenticated) {
+      openDialog('auth', {
+        returnPath: location.pathname,
+        message: t('protectedRoute.loginRequired')
+      });
+      return undefined;
+    }
+
+    // 連續改設定時只跑最後一次，避免一路打 API
+    const timer = window.setTimeout(() => {
+      runAnalysisForStockRef.current?.(displayedStockCode, 'settingsChange');
+    }, 250);
+    return () => window.clearTimeout(timer);
+  }, [analysisSignature, displayedStockCode, isAuthenticated, openDialog, location.pathname, t]);
+
 
   const fetchWatchlistStocks = useCallback(async () => {
     if (loadingWatchlist || hasLoadedWatchlist) {
@@ -1073,21 +1122,16 @@ export function PriceAnalysis() {
     setStockCode(fetchStock);
     setDisplayStockCode(fetchStock); // <--- 新增：初始化 displayStockCode
     setBackTestDate(fetchDate);
-    if (['0.5', '1.5', '3.5'].includes(fetchYears)) {
+    if (YEARS_TO_PERIOD[fetchYears]) {
       setIsAdvancedQuery(false);
-      switch (fetchYears) {
-        case '0.5': setAnalysisPeriod('short'); break;
-        case '1.5': setAnalysisPeriod('medium'); break;
-        case '3.5': setAnalysisPeriod('long'); break;
-        default: break;
-      }
+      const initialPeriod = YEARS_TO_PERIOD[fetchYears];
+      setAnalysisPeriod(initialPeriod);
+      lastRunSignatureRef.current = `${initialPeriod}|${fetchDate}`;
       setYears(fetchYears);
     } else {
       setIsAdvancedQuery(true);
       setYears(fetchYears);
-    }
-    if (fetchDate) {
-      setIsAdvancedQuery(true);
+      lastRunSignatureRef.current = `custom|${fetchDate}`;
     }
 
     // 驗證執行分析所需的參數
@@ -1135,7 +1179,6 @@ export function PriceAnalysis() {
 
     // 新增：useEffect 鉤子以獲取熱門搜尋數據
     const fetchHotSearches = async () => {
-      setLoadingHotSearches(true);
       try {
         // 使用增強的 API 客戶端，自動處理認證和重試
         const response = await enhancedApiClient.get('/api/hot-searches', {
@@ -1158,8 +1201,6 @@ export function PriceAnalysis() {
         if (error.response?.status !== 403) {
           handleApiError(error, showToast, t);
         }
-      } finally {
-        setLoadingHotSearches(false);
       }
     };
 
@@ -1311,25 +1352,6 @@ export function PriceAnalysis() {
   };
 
   // 切換簡易/進階查詢模式
-  const toggleQueryMode = () => {
-    setIsAdvancedQuery(!isAdvancedQuery);
-    // 切換模式時，如果從進階切回簡易，可能需要重置年份為預設值或清空錯誤
-    if (!isAdvancedQuery) {
-      // 可以選擇是否將 years state 設回 analysisPeriod 對應的值
-      // switch (analysisPeriod) {
-      //     case 'short': setYears('0.5'); break;
-      //     case 'medium': setYears('1.5'); break;
-      //     case 'long': default: setYears('3.5'); break;
-      // }
-    } else {
-      // 從簡易切到進階時，將 analysisPeriod 對應的值填入 years 輸入框
-      switch (analysisPeriod) {
-        case 'short': setYears('0.5'); break;
-        case 'medium': setYears('1.5'); break;
-        case 'long': default: setYears('3.5'); break;
-      }
-    }
-  };
 
   // 定義用於結構化數據的 JSON-LD
   const priceAnalysisJsonLd = useMemo(() => {
@@ -1498,178 +1520,14 @@ export function PriceAnalysis() {
     >
 
       <div className="price-analysis-view">
-        <div className="content-layout-container"> {/* 新增：佈局容器 */}
+        <div className="content-layout-container">
           <div className="dashboard">
 
-            {/* 將 stock-analysis-card 和 hot-searches-section 包裹在 analysis-controls-wrapper 中 */}
-            <div className="analysis-controls-wrapper stock-analysis-card">
-              <div className="stock-analysis-card">
-                <div className="title-group">
-                  <h1 className="analysis-main-title">{t('priceAnalysis.heading')}</h1>
-                  <h4 className="analysis-subtitle">{t('priceAnalysis.form.title')}</h4>
-                </div>
-                <form onSubmit={handleSubmit}>
-                  <div className="input-group">
-                    {/* 使用 t() 翻譯 label */}
-                    <label>{t('priceAnalysis.form.stockCodeLabel')}</label>
-                    <div className="stock-input-wrapper" ref={stockInputWrapperRef}>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={handleStockCodeChange}
-                        onKeyDown={handleStockInputKeyDown}
-                        onFocus={() => {
-                          if (stockSuggestions.length > 0) setShowSuggestions(true);
-                        }}
-                        // 使用 t() 翻譯 placeholder
-                        placeholder={t('priceAnalysis.form.stockCodePlaceholder')}
-                        required
-                        autoComplete="off"
-                        role="combobox"
-                        aria-expanded={showSuggestions && stockSuggestions.length > 0}
-                        aria-controls="stock-suggestions-listbox"
-                        aria-activedescendant={
-                          highlightedSuggestion >= 0
-                            ? `stock-suggestion-${highlightedSuggestion}`
-                            : undefined
-                        }
-                        // 保持 defaultValue 或 value 的邏輯不變 (如果需要)
-                        value={displayStockCode} // 改為受控組件
-                      />
-                      {showSuggestions && stockSuggestions.length > 0 && (
-                        <ul
-                          id="stock-suggestions-listbox"
-                          className="stock-suggestions"
-                          role="listbox"
-                        >
-                          {stockSuggestions.map((s, idx) => (
-                            <li
-                              key={`${s.symbol}-${s.market || ''}`}
-                              id={`stock-suggestion-${idx}`}
-                              ref={(node) => {
-                                suggestionItemRefs.current[idx] = node;
-                              }}
-                              className={`stock-suggestion-item${
-                                idx === highlightedSuggestion ? ' is-highlighted' : ''
-                              }`}
-                              role="option"
-                              aria-selected={idx === highlightedSuggestion}
-                              onMouseEnter={() => setHighlightedSuggestion(idx)}
-                              onMouseDown={(e) => {
-                                // 用 mousedown 避免 input 先觸發 blur 關閉下拉
-                                e.preventDefault();
-                                handleSuggestionSelect(s);
-                              }}
-                            >
-                              <span className="stock-suggestion-symbol">{s.symbol}</span>
-                              <span className="stock-suggestion-name">{s.name}</span>
-                              {(() => {
-                                const badge = marketBadgeFor(s.market);
-                                if (!badge || !badge.flag) return null;
-                                return (
-                                  <span
-                                    className="stock-suggestion-market"
-                                    role="img"
-                                    aria-label={badge.label}
-                                    title={badge.label}
-                                  >
-                                    {badge.flag}
-                                  </span>
-                                );
-                              })()}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* 簡易查詢欄位容器 */}
-                  {!isAdvancedQuery && (
-                    <div className="input-group query-mode-inputs">
-                      {/* 使用 t() 翻譯 label */}
-                      <label>{t('priceAnalysis.form.analysisPeriodLabel')}</label>
-                      <select
-                        className="form-control"
-                        value={analysisPeriod}
-                        onChange={(e) => setAnalysisPeriod(e.target.value)}
-                      >
-                        {/* 使用 t() 翻譯 options */}
-                        <option value="short">{t('priceAnalysis.form.periodShort')}</option>
-                        <option value="medium">{t('priceAnalysis.form.periodMedium')}</option>
-                        <option value="long">{t('priceAnalysis.form.periodLong')}</option>
-                      </select>
-                    </div>
-                  )}
-
-                  {/* 進階查詢欄位容器 */}
-                  {isAdvancedQuery && (
-                    <div className="input-group query-mode-inputs advanced-query-mode-inputs">
-                      <div className="input-group">
-                        {/* 使用 t() 翻譯 label */}
-                        <label>{t('priceAnalysis.form.analysisPeriodLabel')}</label>
-                        <input
-                          type="text"
-                          inputMode="decimal"
-                          className="form-control"
-                          onChange={handleYearsChange}
-                          // 使用 t() 翻譯 placeholder
-                          placeholder={t('priceAnalysis.form.yearsPlaceholder')}
-                          required
-                          // 保持 defaultValue 或 value 的邏輯不變
-                          defaultValue={years} // 根據原始碼，這裡使用 defaultValue
-                        />
-                      </div>
-                      <div className="input-group">
-                        {/* 使用 t() 翻譯 label */}
-                        <label>{t('priceAnalysis.form.backTestDateLabel')}</label>
-                        <Suspense fallback={renderDeferredDatePickerFallback()}>
-                          <DeferredBacktestDatePicker
-                            backTestDate={backTestDate}
-                            setBackTestDate={setBackTestDate}
-                            placeholderText={t('priceAnalysis.form.backTestDatePlaceholder')}
-                          />
-                        </Suspense>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 按鈕組：切換模式按鈕和分析按鈕並排 */}
-                  <div className="button-group">
-                    <button
-                      type="button"
-                      className="btn-secondary query-mode-button"
-                      onClick={toggleQueryMode}
-                    >
-                      {/* 使用 t() 翻譯按鈕文字 */}
-                      {isAdvancedQuery ? t('priceAnalysis.form.switchToSimple') : t('priceAnalysis.form.switchToAdvanced')}
-                    </button>
-
-                    <button
-                      className={`btn-primary analysis-button ${loading ? 'btn-loading' : ''}`}
-                      type="submit"
-                      disabled={loading}
-                    >
-                      {/* 使用 t() 翻譯按鈕文字 */}
-                      {loading
-                        ? (isPending ? t('priceAnalysis.form.buttonProcessing') : t('priceAnalysis.form.buttonAnalyzing'))
-                        : t('priceAnalysis.form.buttonStartAnalysis')
-                      }
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-              {/* 快速選擇區塊 (熱門搜尋 + 免費股票清單 + 我的關注) */}
+            {/* 左側清單：窄欄、無外框、整欄延伸 */}
+            <aside className="pa-sidenav">
               <div className="quick-select-section">
                 {/* Tab 導航 */}
                 <div className="quick-select-tabs">
-                  <button
-                    className={`quick-select-tab ${activeQuickSelectTab === 'hotSearches' ? 'active' : ''}`}
-                    onClick={() => { userManuallyChangedTabRef.current = true; setActiveQuickSelectTab('hotSearches'); }}
-                  >
-                    {t('priceAnalysis.quickSelect.tabs.hotSearches')}
-                  </button>
                   <button
                     className={`quick-select-tab ${activeQuickSelectTab === 'freeStocks' ? 'active' : ''}`}
                     onClick={() => { userManuallyChangedTabRef.current = true; setActiveQuickSelectTab('freeStocks'); }}
@@ -1686,48 +1544,6 @@ export function PriceAnalysis() {
 
                 {/* Tab 內容 */}
                 <div className="quick-select-content">
-                  {activeQuickSelectTab === 'hotSearches' && (
-                    <div className="hot-searches-tab-content">
-                      {loadingHotSearches ? (
-                        <div className="quick-select-loading-state" aria-live="polite" aria-busy="true">
-                          <div className="quick-select-loading-header">
-                            <div className="quick-select-loading-title-skeleton quick-select-skeleton-block" />
-                            <div className="quick-select-loading-subtitle-skeleton quick-select-skeleton-block" />
-                          </div>
-                          <div className="quick-select-loading-list">
-                            {[0, 1, 2, 3].map((itemIndex) => (
-                              <div key={itemIndex} className="quick-select-loading-item">
-                                <div className="quick-select-loading-ticker-skeleton quick-select-skeleton-block" />
-                                <div className="quick-select-loading-name-skeleton quick-select-skeleton-block" />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ) : hotSearches.length > 0 ? (
-                        <div className="hot-search-list">
-                          {hotSearches.map((searchItem, index) => (
-                            <div
-                              key={index}
-                              className="hot-search-item"
-                              onClick={() => handleHotSearchClick(searchItem)}
-                              role="button"
-                              tabIndex={0}
-                              onKeyPress={(e) => e.key === 'Enter' && handleHotSearchClick(searchItem)}
-                            >
-                              <div className="hot-search-info">
-                                <span className="hot-search-ticker">{searchItem.keyword}</span>
-                                {searchItem.name && searchItem.name !== searchItem.keyword && (
-                                  <span className="hot-search-name">{searchItem.name}</span>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="no-data-text">{t('priceAnalysis.hotSearches.noData')}</p>
-                      )}
-                    </div>
-                  )}
 
                   {activeQuickSelectTab === 'freeStocks' && (
                     <div className="free-stocks-tab-content">
@@ -1824,45 +1640,184 @@ export function PriceAnalysis() {
                   )}
                 </div>
               </div>
-            </div> {/* 結束 analysis-controls-wrapper */}
+            </aside>
 
-            {/* 主圖表區塊 */}
-            {shouldRenderChartWorkspace ? (
-              <Suspense fallback={renderChartWorkspaceFallback()}>
-                <PriceAnalysisChartWorkspace
-                  isMobile={isMobile}
-                  loading={loading}
-                  isPending={isPending}
-                  chartRef={chartRef}
-                  ulbandChartRef={ulbandChartRef}
-                  chartCardRef={chartCardRef}
-                  chartData={chartData}
-                  localizedChartData={localizedChartData}
-                  lineChartOptions={lineChartOptions}
-                  ulbandData={ulbandData}
-                  bandXRange={bandXRange}
-                  onAfterZoom={syncBandRange}
-                  displayedStockCode={displayedStockCode}
-                  analysisResult={analysisResult}
-                  analysisSentimentText={analysisSentimentText}
-                  getSentimentSuffix={getSentimentSuffix}
-                  combinedStateKey={getCombinedStateKey(analysisResult.sentimentKey, analysisResult.channelState)}
-                  formatPrice={formatPrice}
-                  t={t}
-                />
-              </Suspense>
-            ) : renderChartWorkspaceFallback()}
+            <div className="pa-main">
+              {/* 頂部查詢列：搜尋獨佔一列，期長與進階做在 pill 內右側（直接影響結果的東西不往下放） */}
+              <div className="pa-topbar">
+                <form className="pa-searchbar" onSubmit={handleSubmit} role="search">
+                  <span className="pa-searchbar__icon" aria-hidden="true">🔍</span>
+
+                  <div className="stock-input-wrapper" ref={stockInputWrapperRef}>
+                    <input
+                      type="text"
+                      className="form-control"
+                      onChange={handleStockCodeChange}
+                      onKeyDown={handleStockInputKeyDown}
+                      onFocus={() => {
+                        if (stockSuggestions.length > 0) setShowSuggestions(true);
+                      }}
+                      // 使用 t() 翻譯 placeholder
+                      placeholder={t('priceAnalysis.form.stockCodePlaceholder')}
+                      required
+                      autoComplete="off"
+                      role="combobox"
+                      aria-expanded={showSuggestions && stockSuggestions.length > 0}
+                      aria-controls="stock-suggestions-listbox"
+                      aria-activedescendant={
+                        highlightedSuggestion >= 0
+                          ? `stock-suggestion-${highlightedSuggestion}`
+                          : undefined
+                      }
+                      // 保持 defaultValue 或 value 的邏輯不變 (如果需要)
+                      value={displayStockCode} // 改為受控組件
+                    />
+                    {showSuggestions && stockSuggestions.length > 0 && (
+                      <ul
+                        id="stock-suggestions-listbox"
+                        className="stock-suggestions"
+                        role="listbox"
+                      >
+                        {stockSuggestions.map((s, idx) => (
+                          <li
+                            key={`${s.symbol}-${s.market || ''}`}
+                            id={`stock-suggestion-${idx}`}
+                            ref={(node) => {
+                              suggestionItemRefs.current[idx] = node;
+                            }}
+                            className={`stock-suggestion-item${
+                              idx === highlightedSuggestion ? ' is-highlighted' : ''
+                            }`}
+                            role="option"
+                            aria-selected={idx === highlightedSuggestion}
+                            onMouseEnter={() => setHighlightedSuggestion(idx)}
+                            onMouseDown={(e) => {
+                              // 用 mousedown 避免 input 先觸發 blur 關閉下拉
+                              e.preventDefault();
+                              handleSuggestionSelect(s);
+                            }}
+                          >
+                            <span className="stock-suggestion-symbol">{s.symbol}</span>
+                            <span className="stock-suggestion-name">{s.name}</span>
+                            {(() => {
+                              const badge = marketBadgeFor(s.market);
+                              if (!badge || !badge.flag) return null;
+                              return (
+                                <span
+                                  className="stock-suggestion-market"
+                                  role="img"
+                                  aria-label={badge.label}
+                                  title={badge.label}
+                                >
+                                  {badge.flag}
+                                </span>
+                              );
+                            })()}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+
+                  <div className="pa-searchbar__controls">
+                    {loading ? <span className="pa-searchbar__spinner" aria-label={t('priceAnalysis.form.buttonAnalyzing')} /> : null}
+
+                    <select
+                      className="pa-period-select"
+                      aria-label={t('priceAnalysis.form.analysisPeriodLabel')}
+                      value={isAdvancedQuery ? 'custom' : analysisPeriod}
+                      onChange={handlePeriodSelectChange}
+                    >
+                      <option value="short">{t('priceAnalysis.form.periodShort')}</option>
+                      <option value="medium">{t('priceAnalysis.form.periodMedium')}</option>
+                      <option value="long">{t('priceAnalysis.form.periodLong')}</option>
+                      <option value="custom">{t('priceAnalysis.form.periodCustom')}</option>
+                    </select>
+
+                    {isAdvancedQuery ? (
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        className="pa-years-input"
+                        aria-label={t('priceAnalysis.form.yearsPlaceholder')}
+                        placeholder={t('priceAnalysis.form.yearsPlaceholder')}
+                        onChange={handleYearsChange}
+                        defaultValue={years}
+                      />
+                    ) : null}
+
+                    <Suspense fallback={renderDeferredDatePickerFallback()}>
+                      <DeferredBacktestDatePicker
+                        backTestDate={backTestDate}
+                        setBackTestDate={setBackTestDate}
+                        placeholderText={t('priceAnalysis.form.backTestDatePlaceholder')}
+                      />
+                    </Suspense>
+                  </div>
+                </form>
+
+                {/* 熱門：沒資料就整列不存在，不留空框 */}
+                {hotSearches.length > 0 ? (
+                  <div className="pa-hot-row">
+                    <span className="pa-hot-row__label">{t('priceAnalysis.quickSelect.tabs.hotSearches')}</span>
+                    <div className="pa-hot-row__items">
+                      {hotSearches.map((searchItem, index) => (
+                        <button
+                          type="button"
+                          key={`${searchItem.keyword}-${index}`}
+                          className="pa-hot-chip"
+                          onClick={() => handleHotSearchClick(searchItem)}
+                        >
+                          <span className="pa-hot-chip__ticker">{searchItem.keyword}</span>
+                          {searchItem.name && searchItem.name !== searchItem.keyword ? (
+                            <span className="pa-hot-chip__name">{searchItem.name}</span>
+                          ) : null}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+
+
+              {/* 主圖表區塊 */}
+              {shouldRenderChartWorkspace ? (
+                <Suspense fallback={renderChartWorkspaceFallback()}>
+                  <PriceAnalysisChartWorkspace
+                    isMobile={isMobile}
+                    loading={loading}
+                    isPending={isPending}
+                    chartRef={chartRef}
+                    ulbandChartRef={ulbandChartRef}
+                    chartCardRef={chartCardRef}
+                    chartData={chartData}
+                    localizedChartData={localizedChartData}
+                    lineChartOptions={lineChartOptions}
+                    ulbandData={ulbandData}
+                    bandXRange={bandXRange}
+                    onAfterZoom={syncBandRange}
+                    displayedStockCode={displayedStockCode}
+                    analysisResult={analysisResult}
+                    analysisSentimentText={analysisSentimentText}
+                    getSentimentSuffix={getSentimentSuffix}
+                    combinedStateKey={getCombinedStateKey(analysisResult.sentimentKey, analysisResult.channelState)}
+                    formatPrice={formatPrice}
+                    t={t}
+                  />
+                </Suspense>
+              ) : renderChartWorkspaceFallback()}
+
+              {/* 說明區塊：跟圖表同一欄，左欄整條讓給清單往下發展 */}
+              {shouldLoadDescriptionTabs ? (
+                <Suspense fallback={renderDescriptionFallback()}>
+                  <PriceAnalysisDescription t={t} />
+                </Suspense>
+              ) : null}
+            </div>
           </div>
 
 
         </div> {/* 結束 content-layout-container */}
-
-        {/* 底部說明區域 */}
-        {shouldLoadDescriptionTabs ? (
-          <Suspense fallback={renderDescriptionFallback()}>
-            <PriceAnalysisDescription t={t} />
-          </Suspense>
-        ) : null}
 
         {showTour ? (
           <Suspense fallback={null}>
