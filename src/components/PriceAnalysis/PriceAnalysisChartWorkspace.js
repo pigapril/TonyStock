@@ -112,6 +112,7 @@ function PriceAnalysisChartWorkspace({
   }, [chartRef, loading, chartData, ulbandData, ulbandChartRef]);
 
   return (
+    <>
     <div className="chart-card" ref={chartCardRef}>
       <div className="chart-container">
         <div
@@ -181,16 +182,6 @@ function PriceAnalysisChartWorkspace({
             </div>
           </div>
 
-          {hasAnalysisContent && combinedStateKey ? (
-            <div className={`combined-state-note combined-state-note--${combinedStateKey}`}>
-              <span className="combined-state-note__title">
-                {t(`priceAnalysis.combined.${combinedStateKey}.title`)}
-              </span>
-              <span className="combined-state-note__body">
-                {t(`priceAnalysis.combined.${combinedStateKey}.body`)}
-              </span>
-            </div>
-          ) : null}
         </div>
 
         <div className="chart-content" ref={contentRef}>
@@ -208,8 +199,7 @@ function PriceAnalysisChartWorkspace({
               分成兩個分頁會讓使用者得自己在腦中做交集。 */}
           {!loading && (chartData || ulbandData) && (
             <div className="chart-stack">
-              {/* 放在 stack 外層：回到頂端按鈕用 bottom:-35px 定位，掛在主圖裡會
-                  剛好壓在通道圖上。錨定 .chart-content 才會落在兩張圖的下方。 */}
+              {/* 放在 stack 外層：縮放按鈕是絕對定位，掛在主圖裡會被通道圖蓋掉 */}
               {shouldRenderEnhancements ? (
                 <Suspense fallback={null}>
                   <PriceAnalysisChartEnhancements
@@ -253,6 +243,21 @@ function PriceAnalysisChartWorkspace({
         </div>
       </div>
     </div>
+
+    {/* 狀態說明放在卡片外面：卡片在桌機是固定高度、手機是固定 490px，
+        把這段塞進 header 會直接從圖表身上扣高度——手機實測主圖從 229px
+        掉到 131px。放到卡片下方，圖表拿回完整高度，說明也不用收進點擊裡。 */}
+    {hasAnalysisContent && combinedStateKey ? (
+      <div className={`combined-state-note combined-state-note--${combinedStateKey}`}>
+        <span className="combined-state-note__title">
+          {t(`priceAnalysis.combined.${combinedStateKey}.title`)}
+        </span>
+        <span className="combined-state-note__body">
+          {t(`priceAnalysis.combined.${combinedStateKey}.body`)}
+        </span>
+      </div>
+    ) : null}
+    </>
   );
 }
 

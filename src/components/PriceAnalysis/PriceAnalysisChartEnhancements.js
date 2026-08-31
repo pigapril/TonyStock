@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo } from 'react';
-import ScrollToTopButton from '../Common/ScrollToTopButton/ScrollToTopButton';
 import { useMobileTouchHandler } from '../ULBandChart/useMobileTouchHandler';
 
 function isChartAttached(chart) {
@@ -87,7 +86,6 @@ function PriceAnalysisChartEnhancements({
 
   return (
     <>
-      <ScrollToTopButton show={isMobile && (chartData || ulbandData)} />
       {hasZoomTarget && (
         <div className="chart-zoom-buttons">
           <button className="zoom-btn zoom-in" onClick={() => runZoom(zoomActions.zoomIn)} title="放大">

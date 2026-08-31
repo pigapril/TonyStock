@@ -229,6 +229,20 @@ describe('PriceAnalysisChartWorkspace 渲染合併狀態', () => {
     />
   );
 
+  it('狀態說明放在圖表卡片外面，不佔圖表高度', () => {
+    // 塞進 .chart-header 會直接從圖表身上扣高度（手機實測主圖 229px → 131px），
+    // 所以它必須是卡片的兄弟，不是卡片的後代。
+    const { container } = renderWorkspace(
+      { price: 70, sentimentKey: 'priceAnalysis.sentiment.extremeFear', channelState: 'below' },
+      'fearConfirmed'
+    );
+
+    const note = container.querySelector('.combined-state-note');
+    expect(note).toBeInTheDocument();
+    expect(container.querySelector('.chart-card')).toBeInTheDocument();
+    expect(note.closest('.chart-card')).toBeNull();
+  });
+
   it('有通道狀態時在 header 顯示通道欄位，並帶上對應的修飾類別', () => {
     const { container } = renderWorkspace(
       { price: 70, sentimentKey: 'priceAnalysis.sentiment.extremeFear', channelState: 'below' },
