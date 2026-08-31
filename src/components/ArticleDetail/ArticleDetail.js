@@ -37,10 +37,12 @@ const articleMappings = {
         enSlug: 'using-market-sentiment-composite-index-to-time-buys-and-sells',
         enFilename: 'using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md'
     },
-    '3.Netflix 併購華納全解析：如何利用「預期差」與「倒金字塔」策略獲利': {
-        enSlug: 'netflix-acquires-warner-capitalizing-on-expectation-gap-strategy',
-        enFilename: 'Netflix Acquires Warner Capitalizing on Expectation Gap Strategy.en.ini.md'
-    },
+    // 2026-08-31 下架：檔案保留在 frontend/public/articles 底下，
+    // 要重新上架就把下面這段解除註解即可。
+    // '3.Netflix 併購華納全解析：如何利用「預期差」與「倒金字塔」策略獲利': {
+    //     enSlug: 'netflix-acquires-warner-capitalizing-on-expectation-gap-strategy',
+    //     enFilename: 'Netflix Acquires Warner Capitalizing on Expectation Gap Strategy.en.ini.md'
+    // },
     '4.樂活五線譜576萬筆台美股資料實測結果分析': {
         enSlug: 'lohas-five-line-analysis-tested-on-5-8-million-daily-bars',
         enFilename: 'LOHAS Five-Line Analysis Tested on 5.8 Million Daily Bars.en.ini.md'

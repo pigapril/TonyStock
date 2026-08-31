@@ -33,6 +33,21 @@ const TOUR_STORAGE_KEY = 'sio.priceAnalysis.tourSeen.v2';
 const PERIOD_YEARS = { short: '0.5', medium: '1.5', long: '3.5' };
 const YEARS_TO_PERIOD = { '0.5': 'short', '1.5': 'medium', '3.5': 'long' };
 
+/** 把使用者輸入的年數（可能是全形數字）轉成數值，無效回傳 null。 */
+const parseYears = (raw) => {
+  const value = parseFloat(String(raw ?? '')
+    .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
+    .replace(/[．。]/g, '.'));
+  return Number.isFinite(value) && value > 0 ? value : null;
+};
+
+/**
+ * 「選一下就完成」的設定組合：期長下拉（或自訂模式本身）＋ 回測日期。
+ * 刻意不含自訂年數——那是打字的欄位，由 Enter／移開游標送出，不靠猜使用者打完沒。
+ */
+const buildAutoKey = (isAdvanced, period, backTestDate) =>
+  `${isAdvanced ? 'custom' : period}|${backTestDate}`;
+
 function hasSeenTour() {
   try {
     return window.localStorage.getItem(TOUR_STORAGE_KEY) === '1';
@@ -222,9 +237,9 @@ export function PriceAnalysis() {
   const [isAdvancedQuery, setIsAdvancedQuery] = useState(false);
   // 新增狀態來記錄分析期間的選擇
   const [analysisPeriod, setAnalysisPeriod] = useState('long'); // 預設為長期
-  // 上一次「送出分析時」的期長 + 回測日期組合。記在送出的當下而不是結果回來的
-  // 當下，載入中改設定才不會被吃掉。
-  const lastRunSignatureRef = useRef('long|');
+  // 上一次送出時的設定。記在送出的當下而不是結果回來的當下，載入中改設定才不會被吃掉。
+  const lastRunKeyRef = useRef('long|');      // 期長／模式 ＋ 回測日期
+  const lastRunYearsRef = useRef(null);       // 上次送出的自訂年數（數值，非自訂時為 null）
 
   // 市場代號 → 顯示徽章（旗幟 + 短碼）
   const marketBadgeFor = useCallback((market) => {
@@ -566,10 +581,6 @@ export function PriceAnalysis() {
     setStockCode(value);
   }, 300);
 
-  // Debounce setYears with a 300ms delay
-  const debouncedSetYears = useDebouncedCallback((value) => {
-    setYears(value);
-  }, 300);
   // --- End Debounced State Setters ---
 
   // 取得股票名稱搜尋建議（debounced）
@@ -757,14 +768,21 @@ export function PriceAnalysis() {
 
 
 
-  // 處理查詢期間輸入 (現在調用 debounced setter)
+  // 自訂年數：即時更新狀態。這個值只在送出時被讀，不需要 debounce，
+  // 而且 debounce 會讓剛打完就按 Enter 的人送出到舊的值。
   const handleYearsChange = (e) => {
     const value = e.target.value;
     if (value === '' || /^[0-9０-９.．。]*$/.test(value)) {
-      // 直接更新 input value (如果需要立即反饋)
-      // e.target.value = value; // 可能不需要
-      // 調用 debounced 函數來更新狀態
-      debouncedSetYears(value);
+      setYears(value);
+    }
+  };
+
+  // 打完年數移開游標時，比照 Enter 送出一次；不然 pill 上顯示的數字會跟圖表對不起來。
+  const handleYearsBlur = () => {
+    const parsed = parseYears(years);
+    if (!isAdvancedQuery || !displayedStockCode || parsed === null) return;
+    if (parsed !== lastRunYearsRef.current) {
+      submitAnalysis();
     }
   };
 
@@ -773,12 +791,13 @@ export function PriceAnalysis() {
   const handlePeriodSelectChange = (e) => {
     const value = e.target.value;
     if (value === 'custom') {
-      debouncedSetYears.cancel?.();
       // 預填目前期長的年數，並同步簽章：切到自訂的當下窗口沒變，
       // 不該白打一次 API，等使用者改完年數按 Enter 再送。
       setYears(PERIOD_YEARS[analysisPeriod]);
       setIsAdvancedQuery(true);
-      lastRunSignatureRef.current = `custom|${backTestDate}`;
+      // 切到自訂的當下窗口沒變，兩個 ref 都對齊，才不會白打一次 API
+      lastRunKeyRef.current = buildAutoKey(true, analysisPeriod, backTestDate);
+      lastRunYearsRef.current = parseYears(PERIOD_YEARS[analysisPeriod]);
       return;
     }
     setIsAdvancedQuery(false);
@@ -892,12 +911,8 @@ export function PriceAnalysis() {
 
   const resolveAnalysisYears = useCallback((invalidYearsMessage) => {
     if (isAdvancedQuery) {
-      const convertedYears = years
-        .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
-        .replace(/[．。]/g, '.');
-      const parsedYears = parseFloat(convertedYears);
-
-      if (!isNaN(parsedYears) && parsedYears > 0) {
+      const parsedYears = parseYears(years);
+      if (parsedYears !== null) {
         return parsedYears;
       }
 
@@ -935,7 +950,8 @@ export function PriceAnalysis() {
     // 否則只設日期、沒改期長的使用者會發現日期被默默丟掉。
     const dateToFetch = backTestDate;
 
-    lastRunSignatureRef.current = `${isAdvancedQuery ? 'custom' : analysisPeriod}|${backTestDate}`;
+    lastRunKeyRef.current = buildAutoKey(isAdvancedQuery, analysisPeriod, backTestDate);
+    lastRunYearsRef.current = isAdvancedQuery ? parseYears(years) : null;
     setIsUserInitiated(true);
     setDisplayStockCode(upperClickedCode);
     setStockCode(upperClickedCode);
@@ -947,17 +963,17 @@ export function PriceAnalysis() {
       source
     });
     fetchStockData(upperClickedCode, numYearsToFetch, dateToFetch, true);
-  }, [analysisPeriod, backTestDate, beginAnalysisRequest, fetchStockData, isAdvancedQuery, queueAnalysisEvent, resolveAnalysisYears]);
+  }, [analysisPeriod, backTestDate, beginAnalysisRequest, fetchStockData, isAdvancedQuery, queueAnalysisEvent, resolveAnalysisYears, years]);
 
   // 同步最新的 runAnalysisForStock 至 ref，讓較早宣告的 handleSuggestionSelect 可以呼叫
   runAnalysisForStockRef.current = runAnalysisForStock;
 
-  // 期長與回測日期都是單值控制項，改了就直接重算——像 Google Finance 換 1D/5D
-  // 一樣，不需要再按一次「開始分析」。自訂年數不在簽章裡：那是逐字輸入，
-  // 要按 Enter 才送出。ref 記著上一次送出的組合，所以首次掛載不觸發。
-  const analysisSignature = `${isAdvancedQuery ? 'custom' : analysisPeriod}|${backTestDate}`;
+  // 期長下拉和回測日期是「選一下就完成」的控制項，改了直接重算，像 Google 搜尋
+  // 的工具列一樣。自訂年數是打字的欄位，交給 Enter（或移開游標）送出，不猜使用者
+  // 什麼時候打完。ref 記著上一次送出的組合，所以首次掛載不觸發。
+  const autoKey = buildAutoKey(isAdvancedQuery, analysisPeriod, backTestDate);
   useEffect(() => {
-    if (lastRunSignatureRef.current === analysisSignature) {
+    if (lastRunKeyRef.current === autoKey) {
       return undefined;
     }
 
@@ -980,7 +996,7 @@ export function PriceAnalysis() {
       runAnalysisForStockRef.current?.(displayedStockCode, 'settingsChange');
     }, 250);
     return () => window.clearTimeout(timer);
-  }, [analysisSignature, displayedStockCode, isAuthenticated, openDialog, location.pathname, t]);
+  }, [autoKey, displayedStockCode, isAuthenticated, openDialog, location.pathname, t]);
 
 
   const fetchWatchlistStocks = useCallback(async () => {
@@ -1066,10 +1082,8 @@ export function PriceAnalysis() {
   }, [chartData, fetchWatchlistStocks, isAuthenticated, loading, shouldPrefetchWatchlist, ulbandData, user]);
 
   // 表單送出
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // 新增：檢查登入狀態
+  // 送出的共同路徑：Enter、表單 submit、年數欄位移開游標都走這裡
+  const submitAnalysis = () => {
     if (!isAuthenticated) {
       openDialog('auth', {
         returnPath: location.pathname,
@@ -1078,32 +1092,26 @@ export function PriceAnalysis() {
       return;
     }
 
-    // 新增：檢查股票代碼限制
     const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
-    const userPlan = user?.plan || 'free'; // 從 auth context 獲取實際用戶計劃
+    const userPlan = user?.plan || 'free';
     const effectiveUserPlan = isTemporaryFreeMode ? 'pro' : userPlan;
 
     if (!isStockAllowed(displayStockCode, effectiveUserPlan)) {
-      // 顯示功能升級對話框
       openDialog('featureUpgrade', buildStockAccessDialogProps(displayStockCode));
       return;
     }
 
-    const stockToFetch = displayStockCode;
-
-    if (isAdvancedQuery) {
-      const convertedYears = years
-        .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xFEE0))
-        .replace(/[．。]/g, '.');
-      const numYears = parseFloat(convertedYears);
-
-      if (isNaN(numYears) || numYears <= 0) {
-        showToast(t('priceAnalysis.toast.invalidYears'), 'error');
-        return;
-      }
+    if (isAdvancedQuery && parseYears(years) === null) {
+      showToast(t('priceAnalysis.toast.invalidYears'), 'error');
+      return;
     }
 
-    runAnalysisForStock(stockToFetch, 'manual_price_analysis');
+    runAnalysisForStock(displayStockCode, 'manual_price_analysis');
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    submitAnalysis();
   };
 
   // 初始化資料 (componentDidMount 或 URL/location.state 變化時)
@@ -1126,12 +1134,14 @@ export function PriceAnalysis() {
       setIsAdvancedQuery(false);
       const initialPeriod = YEARS_TO_PERIOD[fetchYears];
       setAnalysisPeriod(initialPeriod);
-      lastRunSignatureRef.current = `${initialPeriod}|${fetchDate}`;
+      lastRunKeyRef.current = buildAutoKey(false, initialPeriod, fetchDate);
+      lastRunYearsRef.current = null;
       setYears(fetchYears);
     } else {
       setIsAdvancedQuery(true);
       setYears(fetchYears);
-      lastRunSignatureRef.current = `custom|${fetchDate}`;
+      lastRunKeyRef.current = buildAutoKey(true, null, fetchDate);
+      lastRunYearsRef.current = parseYears(fetchYears);
     }
 
     // 驗證執行分析所需的參數
@@ -1431,7 +1441,7 @@ export function PriceAnalysis() {
           type: 'time',
           time: {
             // unit 會在下方動態添加
-            displayFormats: { day: 'MM/dd', week: 'MM/dd', month: 'yyyy/MM', quarter: 'yyyy/[Q]Q', year: 'yyyy' },
+            displayFormats: { day: 'MM/dd', week: 'MM/dd', month: 'yyyy/MM', quarter: "yyyy/'Q'Q", year: 'yyyy' },
             tooltipFormat: 'yyyy/MM/dd'
           },
           ticks: {
@@ -1719,7 +1729,12 @@ export function PriceAnalysis() {
                     )}
                   </div>
 
-                  <div className="pa-searchbar__controls">
+                  {/* 表單沒有可見的送出按鈕時，瀏覽器只在「只有一個文字欄位」的情況下才
+                處理 Enter。這裡有股票代碼、回測日期（自訂時還多一個年數），所以要
+                補一顆看不見的 submit，Enter 才會跟 Google 搜尋一樣直接送出。 */}
+            <button type="submit" className="pa-hidden-submit" tabIndex={-1} aria-hidden="true" />
+
+            <div className="pa-searchbar__controls">
                     {loading ? <span className="pa-searchbar__spinner" aria-label={t('priceAnalysis.form.buttonAnalyzing')} /> : null}
 
                     <select
@@ -1742,7 +1757,8 @@ export function PriceAnalysis() {
                         aria-label={t('priceAnalysis.form.yearsPlaceholder')}
                         placeholder={t('priceAnalysis.form.yearsPlaceholder')}
                         onChange={handleYearsChange}
-                        defaultValue={years}
+                        onBlur={handleYearsBlur}
+                        value={years}
                       />
                     ) : null}
 

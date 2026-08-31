@@ -293,7 +293,7 @@ const ULBandChart = ({ data, onChartReady, follower = false, xRange = null }) =>
                         day: 'MM/dd',
                         week: 'MM/dd',
                         month: 'yyyy/MM',
-                        quarter: 'yyyy/[Q]Q',
+                        quarter: "yyyy/'Q'Q",
                         year: 'yyyy'
                     },
                     tooltipFormat: 'yyyy/MM/dd'

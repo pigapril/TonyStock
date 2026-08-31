@@ -116,6 +116,10 @@ const TestWrapper = ({ children }) => (
 describe('PriceAnalysis analysis flow', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // CRA 預設 resetMocks: true，jest.mock 工廠給的實作每個 test 前都會被清掉，
+    // 不重設的話 isStockAllowed 會回傳 undefined，手動送出的路徑會卡在方案檢查。
+    require('../../../utils/freeStockListUtils').isStockAllowed.mockReturnValue(true);
+    require('../../../utils/freeStockListUtils').getFreeStockList.mockReturnValue([]);
     mockEnhancedApiClient.get.mockImplementation((url, config = {}) => {
       if (url === '/api/hot-searches') {
         return Promise.resolve({
@@ -184,6 +188,79 @@ describe('PriceAnalysis analysis flow', () => {
     expect([...period.options].map((option) => option.value))
       .toEqual(['short', 'medium', 'long', 'custom']);
     expect(screen.getByPlaceholderText(/預設今天|Default: Today/i)).toBeInTheDocument();
+  });
+
+  it('自訂年數按 Enter 就送出（表單要有隱含送出，不能靠計時器猜）', async () => {
+    render(
+      <TestWrapper>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    const period = await screen.findByRole('combobox', { name: /分析期長|Analysis Period/i });
+    await waitFor(() => {
+      expect(mockEnhancedApiClient.get.mock.calls.some(([url]) => url === '/api/integrated-analysis')).toBe(true);
+    });
+
+    fireEvent.change(period, { target: { value: 'custom' } });
+    const yearsInput = await screen.findByPlaceholderText(/輸入年數|Enter years/i);
+    fireEvent.change(yearsInput, { target: { value: '7' } });
+
+    // 打完還沒送出之前，不該有任何 7 年的請求
+    expect(
+      mockEnhancedApiClient.get.mock.calls.some(([url, config]) => (
+        url === '/api/integrated-analysis' && config?.params?.years === 7
+      ))
+    ).toBe(false);
+
+    fireEvent.submit(yearsInput.closest('form'));
+
+    await waitFor(() => {
+      expect(
+        mockEnhancedApiClient.get.mock.calls.some(([url, config]) => (
+          url === '/api/integrated-analysis' && config?.params?.years === 7
+        ))
+      ).toBe(true);
+    });
+  });
+
+  it('年數欄位移開游標也會送出，pill 上的數字才不會跟圖表對不起來', async () => {
+    render(
+      <TestWrapper>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    const period = await screen.findByRole('combobox', { name: /分析期長|Analysis Period/i });
+    await waitFor(() => {
+      expect(mockEnhancedApiClient.get.mock.calls.some(([url]) => url === '/api/integrated-analysis')).toBe(true);
+    });
+
+    fireEvent.change(period, { target: { value: 'custom' } });
+    const yearsInput = await screen.findByPlaceholderText(/輸入年數|Enter years/i);
+    fireEvent.change(yearsInput, { target: { value: '5' } });
+    fireEvent.blur(yearsInput);
+
+    await waitFor(() => {
+      expect(
+        mockEnhancedApiClient.get.mock.calls.some(([url, config]) => (
+          url === '/api/integrated-analysis' && config?.params?.years === 5
+        ))
+      ).toBe(true);
+    });
+  });
+
+  it('表單有隱含送出用的 submit，Enter 才不會被瀏覽器忽略', async () => {
+    const { container } = render(
+      <TestWrapper>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    await screen.findByPlaceholderText(/請輸入股票代碼|e\.g\., SPY, AAPL/i);
+    const form = container.querySelector('form.pa-searchbar');
+    // 表單有兩個以上文字欄位時，沒有 submit 按鈕的話瀏覽器不會處理 Enter
+    expect(form.querySelector('button[type="submit"]')).toBeInTheDocument();
   });
 
   it('期長選「自訂」才長出年數輸入框，且不會白打一次 API', async () => {

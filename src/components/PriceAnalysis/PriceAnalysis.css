@@ -2106,3 +2106,18 @@
     right: 0;
   }
 }
+
+/* 隱含送出用的按鈕：不顯示、不進 tab 順序，只是讓瀏覽器願意處理 Enter。
+   表單沒有 submit 按鈕又有兩個以上文字欄位時，Enter 會被瀏覽器忽略。 */
+.price-analysis-view .pa-hidden-submit {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

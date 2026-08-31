@@ -48,6 +48,8 @@ In plain terms:
 | Extreme Greed, channel still normal | The run usually isn't over — three quarters of these periods close higher over three months |
 | Extreme Greed + Short-term overheated | Up 0.3% over a month, with odds close to a coin flip. Not a crash signal — a flat one |
 
+![Average gain over the next month for each of the four states, against the ordinary level](./image1-en.png)
+
 If you remember one thing: **when you see "Extreme Fear", there is no need to rush. Wait for the LOHAS Channel to turn "Short-term oversold" as well.**
 
 The rest of this article covers where those numbers come from, and what happened when we tested a few widely repeated claims.
@@ -73,6 +75,8 @@ The tool was designed for index ETFs, but does it work on single stocks? We spli
 | US single stocks | +0.8% | +1.8% | 303 / 470 |
 | Taiwan single stocks | **+2.2%** | +1.6% | 152 / 324 |
 | Other overseas stocks | +0.9% | +1.4% | 150 / 259 |
+
+![Gain in the month after Extreme Fear plus Short-term oversold, as a multiple of the ordinary level, by instrument type](./image3-en.png)
 
 The ticker counts here are lower than the group totals in "How we tested it", because some tickers never reached this state, or reached it too rarely to measure.
 
@@ -243,6 +247,8 @@ A signal that only works in one stretch of history is probably a coincidence. He
 | 2010s | +7.7% | +1.6% | +8.5% | +3.0% |
 | COVID and recovery (2020–2021) | +21.6% | +3.9% | +24.7% | +6.5% |
 | 2022 onward | +9.7% | +3.6% | +7.4% | +4.8% |
+
+![Three-month average gain after Extreme Fear plus Short-term oversold by period; only the 2008 financial crisis is negative](./image2-en.png)
 
 (Two cells are blank because the qualifying index ETFs either did not exist yet or had not accumulated enough history.)
 
