@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, useTransition, lazy, Suspense } from 'react';
 import './PriceAnalysis.css';
 import PageContainer from '../PageContainer/PageContainer';
+import { suggestionMatchesInput } from './suggestionMatch';
 import { Analytics } from '../../utils/analytics';
 import { handleApiError } from '../../utils/errorHandler';
 import { useMediaQuery } from 'react-responsive';
@@ -735,15 +736,18 @@ export function PriceAnalysis() {
       );
     } else if (e.key === 'Enter') {
       if (highlightedSuggestion >= 0 && highlightedSuggestion < stockSuggestions.length) {
-        // 攔截 Enter 避免在選建議時直接送出 form
-        e.preventDefault();
-        handleSuggestionSelect(stockSuggestions[highlightedSuggestion]);
+        const candidate = stockSuggestions[highlightedSuggestion];
+        // 只有在建議確實指向使用者打的字時才攔截；否則放行讓 form 送出原始輸入
+        if (suggestionMatchesInput(candidate, displayStockCode)) {
+          e.preventDefault();
+          handleSuggestionSelect(candidate);
+        }
       }
     } else if (e.key === 'Escape') {
       e.preventDefault();
       setShowSuggestions(false);
     }
-  }, [highlightedSuggestion, showSuggestions, stockSuggestions, handleSuggestionSelect]);
+  }, [displayStockCode, highlightedSuggestion, showSuggestions, stockSuggestions, handleSuggestionSelect]);
 
   // 高亮項變更時自動捲入視窗
   useEffect(() => {

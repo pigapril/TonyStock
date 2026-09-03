@@ -1271,6 +1271,7 @@
     "UNAUTHORIZED": "You are not authorized to perform this action.",
     "SENTIMENT_DATA_ERROR": "Failed to load market sentiment data.",
     "HISTORICAL_DATA_ERROR": "Failed to load historical stock data.",
+    "NO_HISTORICAL_DATA": "No historical price data is available for this symbol.",
     "DEFAULT_ERROR": "An unknown error occurred.",
     "GOOGLE_AUTH_FAILED": "Google login failed. Please try again later.",
     "GOOGLE_AUTH_CANCELLED": "Google login was cancelled.",

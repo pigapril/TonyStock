@@ -1281,6 +1281,7 @@
     "UNAUTHORIZED": "請先登入後再繼續",
     "SENTIMENT_DATA_ERROR": "無法取得市場情緒數據",
     "HISTORICAL_DATA_ERROR": "無法取得歷史數據",
+    "NO_HISTORICAL_DATA": "此標的沒有可用的歷史價格資料",
     "GOOGLE_AUTH_FAILED": "Google 登入失敗，請稍後再試",
     "GOOGLE_AUTH_CANCELLED": "已取消 Google 登入",
     "GOOGLE_AUTH_POPUP_BLOCKED": "請允許彈出視窗以完成登入",
