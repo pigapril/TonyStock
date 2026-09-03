@@ -1740,6 +1740,7 @@ export function PriceAnalysis() {
                     <select
                       className="pa-period-select"
                       aria-label={t('priceAnalysis.form.analysisPeriodLabel')}
+                      title={t('priceAnalysis.form.analysisPeriodHint')}
                       value={isAdvancedQuery ? 'custom' : analysisPeriod}
                       onChange={handlePeriodSelectChange}
                     >
@@ -1767,6 +1768,7 @@ export function PriceAnalysis() {
                         backTestDate={backTestDate}
                         setBackTestDate={setBackTestDate}
                         placeholderText={t('priceAnalysis.form.backTestDatePlaceholder')}
+                        title={t('priceAnalysis.form.backTestDateHint')}
                       />
                     </Suspense>
                   </div>

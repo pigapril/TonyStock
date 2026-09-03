@@ -512,3 +512,41 @@
         display: none;
     }
 }
+
+/* 今日通道變化標記。
+   卡片上的 status-label 已經表達「現在在哪一段」，這個徽章表達的是
+   「這是今天才變的」，所以刻意做得比 status-label 小而安靜——它是註腳，
+   不是主標。顏色沿用 status-label 的色系，讓兩者讀起來是同一套語彙。
+
+   只改排列方向，不動 overflow：這個區塊的 overflow: hidden 是長價格
+   ellipsis 的前提，改成 visible 會讓價格改成溢出而不是截斷。
+   徽章在 0.625rem 下約 72px，仍在 100px 的 max-width 內。 */
+.current-price-section {
+    flex-direction: column;
+    gap: 3px;
+}
+
+.signal-transition-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 5px;
+    border-radius: 8px;
+    border: 1px solid currentColor;
+    background: transparent;
+    font-size: clamp(0.5rem, 0.9vw, 0.625rem);
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.signal-transition-badge--upper {
+    color: #D24A93;   /* 對齊 status-extremeGreed */
+}
+
+.signal-transition-badge--lower {
+    color: #0000FF;   /* 對齊 status-extremeFear */
+}
+
+.signal-transition-badge--returned {
+    color: #708090;   /* 對齊 status-neutral */
+}

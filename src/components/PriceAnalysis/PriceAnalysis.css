@@ -1934,7 +1934,8 @@
 }
 
 .price-analysis-view .pa-searchbar__controls .react-datepicker__input-container input {
-  width: 116px;
+  /* 放得下「回測日期(預設今日)」這串 placeholder；選了日期之後顯示 yyyy/MM/dd 更短 */
+  width: 140px;
   height: 34px;
   padding: 0 10px;
   border: none;

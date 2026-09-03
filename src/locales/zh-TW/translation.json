@@ -1063,13 +1063,14 @@
       "periodLong": "長期 (3.5年)",
       "yearsPlaceholder": "輸入年數，如 3.5",
       "backTestDateLabel": "回測日期：",
-      "backTestDatePlaceholder": "預設今天",
+      "backTestDatePlaceholder": "回測日期(預設今日)",
       "switchToAdvanced": "進階設定",
       "switchToSimple": "簡易設定",
-      "buttonStartAnalysis": "開始分析",
       "buttonAnalyzing": "分析中...",
       "buttonProcessing": "處理數據中...",
-      "periodCustom": "自訂"
+      "periodCustom": "自訂",
+      "backTestDateHint": "回測日期：回測過去某一天的五線譜走勢",
+      "analysisPeriodHint": "分析期長：五線譜要用幾年的資料來算"
     },
     "result": {
       "stockCode": "股票代碼",
@@ -1103,7 +1104,7 @@
       }
     },
     "prompt": {
-      "enterSymbol": "請輸入條件並點擊「開始分析」。"
+      "enterSymbol": "在上面輸入股票代碼，或從左邊清單挑一檔。"
     },
     "hotSearches": {
       "noData": "暫無資料"
@@ -1242,6 +1243,12 @@
         "jpFlagAlt": "日本國旗",
         "cnFlagAlt": "中國國旗",
         "krFlagAlt": "韓國國旗"
+      },
+      "signal": {
+        "upper": "今日突破上緣",
+        "lower": "今日跌破下緣",
+        "returned": "今日回到通道內",
+        "ariaLabel": "{{symbol}} 今日的標準差通道位置有變化"
       }
     },
     "newsDialog": {

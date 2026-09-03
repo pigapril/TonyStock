@@ -3,6 +3,7 @@ import { Link, useParams, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../api/apiClient';
 import PageContainer from '../PageContainer/PageContainer';
+import { getDecimalPlaces } from '../../utils/priceUtils';
 import { findIndicatorPage } from './indicatorPages';
 import './SentimentIndicatorPage.css';
 
@@ -141,22 +142,27 @@ const SentimentIndicatorPage = () => {
 // 分項的即時值。CNN 給 score（0~100）加 rating，BofA 試算表給 0~1 的百分位。
 function formatComponent(live) {
   if (Number.isFinite(Number(live?.score))) {
-    return live.rating ? `${live.score} · ${live.rating}` : String(live.score);
+    const score = formatReading(live.score);
+    return live.rating ? `${score} · ${live.rating}` : score;
   }
+  // 0~1 的百分位照站內慣例四捨五入到整數再加 %。
   if (Number.isFinite(Number(live))) {
     return `${Math.round(Number(live) * 100)}%`;
   }
   if (Number.isFinite(Number(live?.value))) {
-    return live.rating ? `${live.value} · ${live.rating}` : String(live.value);
+    const value = formatReading(live.value);
+    return live.rating ? `${value} · ${live.rating}` : value;
   }
   return null;
 }
 
 // DB 存的是 float，直接印會露出 -7.299999999999997 這種浮點誤差。
+// 位數判準與 board、圖表軸標籤共用（見 utils/priceUtils 的 getDecimalPlaces），
+// 同一個指標在總覽頁和解說頁不該顯示成不同長度。
 function formatReading(value) {
   const parsed = Number(value);
   return Number.isFinite(parsed)
-    ? parsed.toLocaleString(undefined, { maximumFractionDigits: 2 })
+    ? parsed.toLocaleString(undefined, { maximumFractionDigits: getDecimalPlaces(parsed) })
     : '—';
 }
 

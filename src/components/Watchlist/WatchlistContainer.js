@@ -11,6 +11,7 @@ import { CategoryTabs } from './components/CategoryTabs';
 import { useToastManager } from './hooks/useToastManager';
 import { ErrorBoundary } from '../Common/ErrorBoundary/ErrorBoundary';
 import { useStocks } from './hooks/useStocks';
+import { Analytics } from '../../utils/analytics';
 import { InfoTool } from '../Common/InfoTool/InfoTool';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -303,7 +304,12 @@ export function WatchlistContainer() {
         }
     }, [isEditing, isEditModeReady]);
 
-    const handleNewsClick = (news) => {
+    const handleNewsClick = (news, stockSymbol) => {
+        Analytics.watchlist.newsClick({
+            stockSymbol,
+            newsSource: news?.source,
+            newsUrl: news?.url
+        });
         setSelectedNews(news);
     };
 

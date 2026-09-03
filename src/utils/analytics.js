@@ -251,6 +251,14 @@ export const Analytics = {
 
     reorderCategories: () => {
       pushToDataLayer('watchlist_reorder_categories', {});
+    },
+
+    newsClick: ({ stockSymbol, newsSource, newsUrl }) => {
+      pushToDataLayer('watchlist_news_click', {
+        stock_symbol: stockSymbol,
+        news_source: newsSource,
+        news_url: newsUrl
+      });
     }
   }
 };

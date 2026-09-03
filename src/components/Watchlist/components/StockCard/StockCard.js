@@ -9,6 +9,27 @@ import { formatPrice } from '../../../../utils/priceUtils'; // Import formatPric
 import { useAdContext } from '../../../../components/Common/InterstitialAdModal/AdContext'; // <--- 1. 導入 useAdContext
 import '../../styles/StockCard.css';
 
+// 今天才發生的通道變化。卡片上的情緒標籤已經表達了「現在在哪」，
+// 這裡標的是「這是新的」——一檔已經在極端區待五天的股票不該天天發亮。
+// entered_elevated 刻意不標：踏出 1σ 太常見，標了會變成背景雜訊。
+const SignalTransitionBadge = memo(function SignalTransitionBadge({ symbol, transition, direction }) {
+    const { t } = useTranslation();
+
+    let key = null;
+    if (transition === 'entered_extreme' && direction) key = direction;
+    else if (transition === 'returned_to_normal') key = 'returned';
+    if (!key) return null;
+
+    return (
+        <span
+            className={`signal-transition-badge signal-transition-badge--${key}`}
+            aria-label={t('watchlist.stockCard.signal.ariaLabel', { symbol })}
+        >
+            {t(`watchlist.stockCard.signal.${key}`)}
+        </span>
+    );
+});
+
 // New component for the analysis result - Moved outside StockCard for clarity
 const StockAnalysisResult = memo(function StockAnalysisResult({ price, analysis }) {
     const { t } = useTranslation(); // 使用 hook
@@ -89,6 +110,11 @@ export const StockCard = memo(function StockCard({
                 <span className="current-price">
                     ${formatPrice(stock.price)}
                 </span>
+                <SignalTransitionBadge
+                    symbol={stock.symbol}
+                    transition={stock.signalTransition}
+                    direction={stock.signalDirection}
+                />
             </div>
             <div className="stock-analysis-container-mobile">
                 <div className="stock-analysis-section">
@@ -107,6 +133,7 @@ export const StockCard = memo(function StockCard({
             <div className="stock-news-section">
                 <StockNews
                     news={stock.news}
+                    symbol={stock.symbol}
                     onNewsClick={onNewsClick}
                 />
             </div>

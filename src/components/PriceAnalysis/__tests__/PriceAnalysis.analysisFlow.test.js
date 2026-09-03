@@ -4,6 +4,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../../../i18n';
 import { PriceAnalysis } from '../PriceAnalysis';
+import zhTW from '../../../locales/zh-TW/translation.json';
+import en from '../../../locales/en/translation.json';
 
 const mockAuthState = {
   isAuthenticated: true,
@@ -187,7 +189,8 @@ describe('PriceAnalysis analysis flow', () => {
     expect(period).toHaveValue('long');
     expect([...period.options].map((option) => option.value))
       .toEqual(['short', 'medium', 'long', 'custom']);
-    expect(screen.getByPlaceholderText(/預設今天|Default: Today/i)).toBeInTheDocument();
+    // 欄位靠自己的字說明自己是什麼，不另外加標題（placeholder 就是欄位名稱）
+    expect(screen.getByPlaceholderText(/回測日期|Backtest date/i)).toBeInTheDocument();
   });
 
   it('自訂年數按 Enter 就送出（表單要有隱含送出，不能靠計時器猜）', async () => {
@@ -261,6 +264,14 @@ describe('PriceAnalysis analysis flow', () => {
     const form = container.querySelector('form.pa-searchbar');
     // 表單有兩個以上文字欄位時，沒有 submit 按鈕的話瀏覽器不會處理 Enter
     expect(form.querySelector('button[type="submit"]')).toBeInTheDocument();
+  });
+
+  it('空狀態的提示不會叫使用者去點已經不存在的按鈕', () => {
+    // 按鈕拿掉之後這句還留著「請輸入條件並點擊『開始分析』」，
+    // 等於叫人去找一個畫面上沒有的東西。
+    [zhTW, en].forEach((dict) => {
+      expect(dict.priceAnalysis.prompt.enterSymbol).not.toMatch(/開始分析|Start Analysis/i);
+    });
   });
 
   it('期長選「自訂」才長出年數輸入框，且不會白打一次 API', async () => {

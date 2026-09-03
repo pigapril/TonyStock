@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../api/apiClient';
 import PageContainer from '../PageContainer/PageContainer';
+import { getDecimalPlaces } from '../../utils/priceUtils';
 import { PUBLISHED_INDICATOR_PAGES } from './indicatorPages';
 import './SentimentBoard.css';
 
@@ -217,7 +218,7 @@ const Meter = ({ value, scale, tone = 'neutral', locked = false, caption }) => {
         ? (
           <p className="meter__note">
             {caption}
-            <b>{pct === null ? '—' : Math.round(value)}</b>
+            <b>{pct === null ? '—' : `${Math.round(value)}%`}</b>
           </p>
         )
         // 原生刻度自己就說明了一切，只標兩端，不再加字。
@@ -367,16 +368,18 @@ function sideLabel(t, key) {
 }
 
 /**
- * 小數位數依數量級決定，不再一律兩位。
- * 六位數的戶數不需要小數，0.51 這種比率沒有小數就失去意義。
+ * 小數位數沿用全站的 getDecimalPlaces（見 utils/priceUtils），與圖表軸標籤、
+ * 個股價格、/market-sentiment 的數值用同一套判準 —— 同一個指標在站內不同頁面
+ * 不該有兩種長相。
+ *
+ * 與 formatPrice 唯一的差別是保留千分位：這頁有六百多萬的有交易戶數和
+ * ±二十萬的期貨淨未平倉，沒有分位符號會讀不出量級。
  */
 function formatNumber(value) {
   if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
 
   const num = Number(value);
-  const magnitude = Math.abs(num);
-  const digits = magnitude >= 10000 ? 0 : (magnitude >= 100 ? 1 : 2);
-  return num.toLocaleString(undefined, { maximumFractionDigits: digits });
+  return num.toLocaleString(undefined, { maximumFractionDigits: getDecimalPlaces(num) });
 }
 
 function formatDateTime(value) {

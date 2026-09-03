@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import '../../styles/StockNews.css';
 
-export const StockNews = memo(function StockNews({ news, onNewsClick }) {
+export const StockNews = memo(function StockNews({ news, symbol, onNewsClick }) {
     const newsCount = news?.length || 0;
     const newsClass = newsCount === 1 ? 'single-news' : newsCount === 2 ? 'two-news' : 'three-news';
 
@@ -11,7 +11,7 @@ export const StockNews = memo(function StockNews({ news, onNewsClick }) {
                 <div
                     key={index}
                     className="stock-news-item"
-                    onClick={() => onNewsClick(newsItem)}
+                    onClick={() => onNewsClick(newsItem, symbol)}
                     title={newsItem.title}
                 >
                     {newsItem.title}

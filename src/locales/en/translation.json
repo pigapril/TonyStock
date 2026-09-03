@@ -1021,13 +1021,14 @@
       "periodLong": "Long-term (3.5Y)",
       "yearsPlaceholder": "Enter years, e.g., 3.5",
       "backTestDateLabel": "Backtest Date：",
-      "backTestDatePlaceholder": "Default: Today",
+      "backTestDatePlaceholder": "Backtest date (today)",
       "switchToAdvanced": "Advanced Settings",
       "switchToSimple": "Simple Settings",
-      "buttonStartAnalysis": "Start Analysis",
       "buttonAnalyzing": "Analyzing...",
       "buttonProcessing": "Processing data...",
-      "periodCustom": "Custom"
+      "periodCustom": "Custom",
+      "backTestDateHint": "Backtest date: see the Five-Line as it stood on a past day",
+      "analysisPeriodHint": "Analysis window — how many years the Five-Line is fitted over"
     },
     "result": {
       "stockCode": "Symbol",
@@ -1061,7 +1062,7 @@
       }
     },
     "prompt": {
-      "enterSymbol": "Please enter conditions and click 'Start Analysis'."
+      "enterSymbol": "Enter a ticker above, or pick one from the list."
     },
     "description": {
       "overview": {
@@ -1232,6 +1233,12 @@
         "jpFlagAlt": "Japan market flag",
         "cnFlagAlt": "China market flag",
         "krFlagAlt": "Korea market flag"
+      },
+      "signal": {
+        "upper": "Broke above band today",
+        "lower": "Broke below band today",
+        "returned": "Back inside band today",
+        "ariaLabel": "{{symbol}} changed its standard-deviation band position today"
       }
     },
     "newsDialog": {
