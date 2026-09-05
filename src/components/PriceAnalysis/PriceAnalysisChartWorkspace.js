@@ -34,9 +34,11 @@ function PriceAnalysisChartWorkspace({
   onAfterZoom,
   displayedStockCode,
   analysisResult,
+  displayedHorizonKey,
   analysisSentimentText,
   getSentimentSuffix,
   combinedStateKey,
+  signalLadder,
   formatPrice,
   t
 }) {
@@ -158,6 +160,44 @@ function PriceAnalysisChartWorkspace({
                 <span className="analysis-value-skeleton analysis-value-skeleton--wide" />
               )}
             </div>
+
+            {/* 另外兩個週期的位階。目前圖表這個週期的位階就是左邊的「市場情緒」，
+                再列一次是同一個數字講兩遍，所以只留沒被畫出來的那兩個。
+                自訂年數時三個都不是圖表週期，三個就都列。 */}
+            {hasAnalysisContent && analysisResult.alignment ? (
+              <div className="analysis-item analysis-item--horizons">
+                <span className="analysis-label">
+                  {t('priceAnalysis.result.horizons')}
+                  <InfoPopover
+                    label={t('priceAnalysis.description.horizons.title')}
+                    title={t('priceAnalysis.description.horizons.title')}
+                    points={[
+                      t('priceAnalysis.description.horizons.point1'),
+                      t('priceAnalysis.description.horizons.point2'),
+                      t('priceAnalysis.description.horizons.point3')
+                    ]}
+                  />
+                </span>
+                <span className="horizon-grid">
+                  {['short', 'medium', 'long']
+                    .filter((key) => key !== displayedHorizonKey)
+                    .map((key) => {
+                      const level = getSentimentSuffix(analysisResult.alignment[key]);
+                      const known = Boolean(analysisResult.alignment[key]);
+                      return (
+                        <span className="horizon-grid__cell" key={key}>
+                          <span className="horizon-grid__period">
+                            {t(`priceAnalysis.form.period${key.charAt(0).toUpperCase()}${key.slice(1)}`)}
+                          </span>
+                          <span className={`horizon-grid__value${known ? ` sentiment-${level}` : ' horizon-grid__value--unknown'}`}>
+                            {known ? t(`priceAnalysis.sentiment.${level}`) : '—'}
+                          </span>
+                        </span>
+                      );
+                    })}
+                </span>
+              </div>
+            ) : null}
             {/* 通道位置自成一欄，與情緒並列。掛在情緒值後面會讓兩個等重的資訊擠在一起。 */}
             <div className="analysis-item">
               <span className="analysis-label">
@@ -255,6 +295,31 @@ function PriceAnalysisChartWorkspace({
         <span className="combined-state-note__body">
           {t(`priceAnalysis.combined.${combinedStateKey}.body`)}
         </span>
+
+        {/* 條件清單。列出全部、而不是只顯示「已達成幾項」，是因為沒打勾的那幾項
+            才是使用者要的資訊：他能看到現在到哪、還差什麼，自己判斷要不要動作。
+            條件越多、出現越少（回測：一年 5.8 天 → 1.0 天），所以順序不能調。 */}
+        {signalLadder ? (
+          <div className="signal-ladder">
+            <span className="signal-ladder__heading">{t('priceAnalysis.ladder.heading')}</span>
+            <ul className="signal-ladder__list">
+              {signalLadder.steps.map((step) => {
+                const label = t(`priceAnalysis.ladder.${signalLadder.level}.${step.key}`);
+                return (
+                  <li
+                    key={step.key}
+                    className={`signal-ladder__item signal-ladder__item--${step.met ? 'met' : 'pending'}`}
+                    // 達成與否只靠顏色與 ✓/○ 表達，讀屏聽不出差別，所以整列給一個標籤
+                    aria-label={`${t(step.met ? 'priceAnalysis.ladder.met' : 'priceAnalysis.ladder.notMet')}：${label}`}
+                  >
+                    <span className="signal-ladder__mark" aria-hidden="true">{step.met ? '✓' : '○'}</span>
+                    {label}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ) : null}
       </div>
     ) : null}
     </>

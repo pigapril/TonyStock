@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef, useMemo, useTransition
 import './PriceAnalysis.css';
 import PageContainer from '../PageContainer/PageContainer';
 import { suggestionMatchesInput } from './suggestionMatch';
+import { classifySentiment, getHorizonAlignment, getSignalLadder } from './signalLadder';
 import { Analytics } from '../../utils/analytics';
 import { handleApiError } from '../../utils/errorHandler';
 import { useMediaQuery } from 'react-responsive';
@@ -41,6 +42,13 @@ const parseYears = (raw) => {
     .replace(/[．。]/g, '.'));
   return Number.isFinite(value) && value > 0 ? value : null;
 };
+
+// 三顆燈的順序與標籤：短→中→長，跟 signalLadder 的 HORIZON_YEARS 對應。
+const HORIZON_OPTIONS = [
+  { key: 'short', labelKey: 'priceAnalysis.form.periodShort' },
+  { key: 'medium', labelKey: 'priceAnalysis.form.periodMedium' },
+  { key: 'long', labelKey: 'priceAnalysis.form.periodLong' }
+];
 
 /**
  * 「選一下就完成」的設定組合：期長下拉（或自訂模式本身）＋ 回測日期。
@@ -790,10 +798,9 @@ export function PriceAnalysis() {
     }
   };
 
-  // 期長下拉：短/中/長之外多一個「自訂」，選了才在旁邊長出年數輸入框。
-  // 自訂的年數要按 Enter 才送出（邊打邊送會每個字打一次 API），其餘選項即時重算。
-  const handlePeriodSelectChange = (e) => {
-    const value = e.target.value;
+  // 期長是三顆燈＋一顆「自訂」，選了自訂才在旁邊長出年數輸入框。
+  // 自訂的年數要按 Enter 才送出（邊打邊送會每個字打一次 API），其餘即時重算。
+  const handlePeriodSelect = (value) => {
     if (value === 'custom') {
       // 預填目前期長的年數，並同步簽章：切到自訂的當下窗口沒變，
       // 不該白打一次 API，等使用者改完年數按 Enter 再送。
@@ -824,7 +831,7 @@ export function PriceAnalysis() {
       });
 
       const { data } = response.data;
-      const { dates, prices, sdAnalysis, weeklyDates, weeklyPrices, upperBand, lowerBand, ma20 } = data;
+      const { dates, prices, sdAnalysis, weeklyDates, weeklyPrices, upperBand, lowerBand, ma20, horizonSnapshots, marketExtreme } = data;
 
       // 使用 startTransition 包裹耗時的狀態更新
       startTransition(() => {
@@ -847,29 +854,22 @@ export function PriceAnalysis() {
         // 計算情緒分析
         if (prices && prices.length > 0 && sdAnalysis) {
           const lastPrice = prices[prices.length - 1];
-          const { tl_plus_2sd, tl_plus_sd, tl_minus_sd, tl_minus_2sd } = sdAnalysis;
-          const lastTlPlus2Sd = tl_plus_2sd[tl_plus_2sd.length - 1];
-          const lastTlMinus2Sd = tl_minus_2sd[tl_minus_2sd.length - 1];
-          const lastTlPlusSd = tl_plus_sd[tl_plus_sd.length - 1];
-          const lastTlMinusSd = tl_minus_sd[tl_minus_sd.length - 1];
-
-          // 決定 sentimentKey
-          let sentimentKey = 'priceAnalysis.sentiment.neutral'; // Default key
-          if (lastPrice >= lastTlPlus2Sd) sentimentKey = 'priceAnalysis.sentiment.extremeGreed';
-          else if (lastPrice > lastTlPlusSd) sentimentKey = 'priceAnalysis.sentiment.greed';
-          else if (lastPrice <= lastTlMinus2Sd) sentimentKey = 'priceAnalysis.sentiment.extremeFear';
-          else if (lastPrice < lastTlMinusSd) sentimentKey = 'priceAnalysis.sentiment.fear';
+          // 三個期長共用 classifySentiment，避免各自寫一份判定而漂移（見 signalLadder.js）
+          const sentimentKey = classifySentiment(lastPrice, sdAnalysis)
+            || 'priceAnalysis.sentiment.neutral';
 
           // 同時設定 key 和翻譯後的 value
           setAnalysisResult({
             price: formatPrice(lastPrice),
             sentimentKey: sentimentKey,
             sentimentValue: t(sentimentKey), // 保留欄位以兼容舊資料結構
-            channelState: getChannelState(weeklyPrices, upperBand, lowerBand)
+            channelState: getChannelState(weeklyPrices, upperBand, lowerBand),
+            alignment: getHorizonAlignment(lastPrice, horizonSnapshots),
+            marketExtreme: marketExtreme || null
           });
         } else {
           // 清空時也清空 key 和 value
-          setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null, channelState: null });
+          setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null, channelState: null, alignment: null, marketExtreme: null });
         }
       }); // end startTransition
 
@@ -1741,18 +1741,34 @@ export function PriceAnalysis() {
             <div className="pa-searchbar__controls">
                     {loading ? <span className="pa-searchbar__spinner" aria-label={t('priceAnalysis.form.buttonAnalyzing')} /> : null}
 
-                    <select
-                      className="pa-period-select"
+                    {/* 期長攤成一排，比下拉少一次點擊。三個週期各自的位階放在結果列的
+                        「其他週期情緒」，這裡只負責切換。 */}
+                    <div
+                      className="pa-horizon"
+                      role="group"
                       aria-label={t('priceAnalysis.form.analysisPeriodLabel')}
                       title={t('priceAnalysis.form.analysisPeriodHint')}
-                      value={isAdvancedQuery ? 'custom' : analysisPeriod}
-                      onChange={handlePeriodSelectChange}
                     >
-                      <option value="short">{t('priceAnalysis.form.periodShort')}</option>
-                      <option value="medium">{t('priceAnalysis.form.periodMedium')}</option>
-                      <option value="long">{t('priceAnalysis.form.periodLong')}</option>
-                      <option value="custom">{t('priceAnalysis.form.periodCustom')}</option>
-                    </select>
+                      {HORIZON_OPTIONS.map(({ key, labelKey }) => (
+                        <button
+                          type="button"
+                          key={key}
+                          className={`pa-horizon__btn${!isAdvancedQuery && analysisPeriod === key ? ' is-active' : ''}`}
+                          aria-pressed={!isAdvancedQuery && analysisPeriod === key}
+                          onClick={() => handlePeriodSelect(key)}
+                        >
+                          {t(labelKey)}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        className={`pa-horizon__btn${isAdvancedQuery ? ' is-active' : ''}`}
+                        aria-pressed={isAdvancedQuery}
+                        onClick={() => handlePeriodSelect('custom')}
+                      >
+                        {t('priceAnalysis.form.periodCustom')}
+                      </button>
+                    </div>
 
                     {isAdvancedQuery ? (
                       <input
@@ -1820,9 +1836,15 @@ export function PriceAnalysis() {
                     onAfterZoom={syncBandRange}
                     displayedStockCode={displayedStockCode}
                     analysisResult={analysisResult}
+                    displayedHorizonKey={isAdvancedQuery ? null : analysisPeriod}
                     analysisSentimentText={analysisSentimentText}
                     getSentimentSuffix={getSentimentSuffix}
                     combinedStateKey={getCombinedStateKey(analysisResult.sentimentKey, analysisResult.channelState)}
+                    signalLadder={getSignalLadder({
+                      sentimentKey: analysisResult.sentimentKey,
+                      alignment: analysisResult.alignment,
+                      marketExtreme: analysisResult.marketExtreme
+                    })}
                     formatPrice={formatPrice}
                     t={t}
                   />

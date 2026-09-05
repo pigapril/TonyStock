@@ -69,7 +69,12 @@ const SentimentIndicatorPage = () => {
         {reading && reading.value !== null && (
           <section className="indicator-page__current">
             <p className="indicator-page__currentLabel">{t('sentimentIndicatorPages.currentReading')}</p>
-            <p className="indicator-page__currentValue">{formatReading(reading.value)}</p>
+            <p className="indicator-page__currentValue">
+              {formatReading(reading.value)}
+              {/* 多數指標是無單位的分數（AAII 價差、CNN 0-100），但廣度是百分比，
+                  少了 % 會看不懂 31.2 是什麼。單位由註冊表宣告，不猜。 */}
+              {page.unit ? <span className="indicator-page__currentUnit">{page.unit}</span> : null}
+            </p>
             <p className="indicator-page__currentMeta">
               {reading.date}
               {reading.publisher ? ` · ${reading.publisher}` : ''}

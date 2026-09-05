@@ -115,6 +115,11 @@ const TestWrapper = ({ children }) => (
   </MemoryRouter>
 );
 
+// 期長從下拉選單改成一排按鈕。這些 helper 讓測試照使用者的方式操作（點按鈕），
+// 而不是設 select 的 value。
+const horizonButton = (label) => screen.getByRole('button', { name: new RegExp(label) });
+const clickHorizon = (label) => fireEvent.click(horizonButton(label));
+
 describe('PriceAnalysis analysis flow', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -184,11 +189,17 @@ describe('PriceAnalysis analysis flow', () => {
     // 選建議、按 Enter、點清單都會直接分析，按鈕就沒有存在的理由了
     expect(screen.queryByRole('button', { name: /開始分析|Start Analysis/i })).not.toBeInTheDocument();
 
-    // 桌機空間夠，期長與回測日期就直接放出來，不藏在收合面板後面
-    const period = screen.getByRole('combobox', { name: /分析期長|Analysis Period/i });
-    expect(period).toHaveValue('long');
-    expect([...period.options].map((option) => option.value))
-      .toEqual(['short', 'medium', 'long', 'custom']);
+    // 桌機空間夠，期長與回測日期就直接放出來，不藏在收合面板後面。
+    // 期長是三個週期＋自訂，四個都要在，而且預設按著 3.5 年那顆。
+    const group = screen.getByRole('group', { name: /分析期長|Analysis Period/i });
+    const buttons = [...group.querySelectorAll('button')];
+    expect(buttons).toHaveLength(4);
+    expect(buttons.filter((b) => b.getAttribute('aria-pressed') === 'true')).toHaveLength(1);
+    expect(buttons.find((b) => b.getAttribute('aria-pressed') === 'true').textContent)
+      .toMatch(/3\.5/);
+    // 三個週期各自的位階放在結果列的「其他週期情緒」，搜尋列只負責切換：
+    // 同一件事在兩個地方講，還會把輸入框的寬度吃掉。
+    expect(group.querySelectorAll('.pa-horizon__dot')).toHaveLength(0);
     // 欄位靠自己的字說明自己是什麼，不另外加標題（placeholder 就是欄位名稱）
     expect(screen.getByPlaceholderText(/回測日期|Backtest date/i)).toBeInTheDocument();
   });
@@ -200,12 +211,12 @@ describe('PriceAnalysis analysis flow', () => {
       </TestWrapper>
     );
 
-    const period = await screen.findByRole('combobox', { name: /分析期長|Analysis Period/i });
+    await screen.findByRole('group', { name: /分析期長|Analysis Period/i });
     await waitFor(() => {
       expect(mockEnhancedApiClient.get.mock.calls.some(([url]) => url === '/api/integrated-analysis')).toBe(true);
     });
 
-    fireEvent.change(period, { target: { value: 'custom' } });
+    clickHorizon('自訂|Custom');
     const yearsInput = await screen.findByPlaceholderText(/輸入年數|Enter years/i);
     fireEvent.change(yearsInput, { target: { value: '7' } });
 
@@ -234,12 +245,12 @@ describe('PriceAnalysis analysis flow', () => {
       </TestWrapper>
     );
 
-    const period = await screen.findByRole('combobox', { name: /分析期長|Analysis Period/i });
+    await screen.findByRole('group', { name: /分析期長|Analysis Period/i });
     await waitFor(() => {
       expect(mockEnhancedApiClient.get.mock.calls.some(([url]) => url === '/api/integrated-analysis')).toBe(true);
     });
 
-    fireEvent.change(period, { target: { value: 'custom' } });
+    clickHorizon('自訂|Custom');
     const yearsInput = await screen.findByPlaceholderText(/輸入年數|Enter years/i);
     fireEvent.change(yearsInput, { target: { value: '5' } });
     fireEvent.blur(yearsInput);
@@ -281,7 +292,7 @@ describe('PriceAnalysis analysis flow', () => {
       </TestWrapper>
     );
 
-    const period = await screen.findByRole('combobox', { name: /分析期長|Analysis Period/i });
+    await screen.findByRole('group', { name: /分析期長|Analysis Period/i });
     await waitFor(() => {
       expect(mockEnhancedApiClient.get.mock.calls.some(([url]) => url === '/api/integrated-analysis')).toBe(true);
     });
@@ -289,7 +300,7 @@ describe('PriceAnalysis analysis flow', () => {
     const before = mockEnhancedApiClient.get.mock.calls
       .filter(([url]) => url === '/api/integrated-analysis').length;
 
-    fireEvent.change(period, { target: { value: 'custom' } });
+    clickHorizon('自訂|Custom');
 
     // 切到自訂只是預填目前期長，窗口沒變，不該再送一次
     const yearsInput = await screen.findByPlaceholderText(/輸入年數|Enter years/i);
@@ -328,10 +339,7 @@ describe('PriceAnalysis analysis flow', () => {
       ).toBe(true);
     });
 
-    fireEvent.change(
-      screen.getByRole('combobox', { name: /分析期長|Analysis Period/i }),
-      { target: { value: 'short' } }
-    );
+    clickHorizon('0.5 年|0.5 years');
 
     await waitFor(() => {
       expect(

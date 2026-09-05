@@ -190,3 +190,11 @@
   font-variant-numeric: tabular-nums;
   text-transform: capitalize;
 }
+
+/* 讀數的單位：比數字小一號、灰一階，讓「31.2」仍是視覺主體 */
+.indicator-page__currentUnit {
+  margin-left: 2px;
+  font-size: 0.55em;
+  font-weight: 500;
+  color: var(--text-secondary, #6b7280);
+}

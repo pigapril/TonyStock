@@ -876,6 +876,36 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/cot-sp500-index"/>
   </url>
   <url>
+    <loc>https://sentimentinsideout.com/en/sentiment-indicators/market-fear-breadth</loc>
+    <lastmod>2026-09-05T06:14:28Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/market-fear-breadth"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/market-fear-breadth"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/market-fear-breadth"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/market-fear-breadth"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/sentiment-indicators/market-fear-breadth</loc>
+    <lastmod>2026-09-05T06:14:28Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/market-fear-breadth"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/market-fear-breadth"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/market-fear-breadth"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/market-fear-breadth"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh/sentiment-indicators/market-fear-breadth</loc>
+    <lastmod>2026-09-05T06:14:28Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/sentiment-indicators/market-fear-breadth"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/sentiment-indicators/market-fear-breadth"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://sentimentinsideout.com/zh/sentiment-indicators/market-fear-breadth"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/market-fear-breadth"/>
+  </url>
+  <url>
     <loc>https://sentimentinsideout.com/en/sentiment-indicators/taiwan-fear-greed</loc>
     <lastmod>2026-08-09T12:24:45Z</lastmod>
     <changefreq>weekly</changefreq>

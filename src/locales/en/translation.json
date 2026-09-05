@@ -1005,7 +1005,7 @@
   },
   "priceAnalysis": {
     "pageTitle": "LOHAS Five-Line",
-    "pageDescription": "Is the stock price too high or too low? Use our LOHAS Five-Line Analysis to gauge price trends and sentiment based on mean reversion and standard deviation, helping you find better entry and exit points.",
+    "pageDescription": "The LOHAS five-line chart fits a trend line to a stock and marks how far today’s price sits from it — from extreme fear to extreme greed. Pick a span of 0.5, 1.5 or 3.5 years. The LOHAS Channel then shows whether price has left the range it recently traded in.",
     "keywords": "LOHAS Five-Line Analysis, Price Trend Analysis, Stock Analysis, Market Sentiment, Mean Reversion, Overbought Oversold, LOHAS Channel, Standard Deviation",
     "jsonLd": {
       "name": "LOHAS Five-Line Analysis",
@@ -1016,9 +1016,9 @@
       "stockCodeLabel": "Stock Symbol：",
       "stockCodePlaceholder": "e.g., SPY, AAPL",
       "analysisPeriodLabel": "Analysis Period：",
-      "periodShort": "Short-term (0.5Y)",
-      "periodMedium": "Mid-term (1.5Y)",
-      "periodLong": "Long-term (3.5Y)",
+      "periodShort": "0.5 years",
+      "periodMedium": "1.5 years",
+      "periodLong": "3.5 years",
       "yearsPlaceholder": "Enter years, e.g., 3.5",
       "backTestDateLabel": "Backtest Date：",
       "backTestDatePlaceholder": "Backtest date (today)",
@@ -1027,14 +1027,15 @@
       "buttonAnalyzing": "Analyzing...",
       "buttonProcessing": "Processing data...",
       "periodCustom": "Custom",
-      "backTestDateHint": "Backtest date: see the Five-Line as it stood on a past day",
-      "analysisPeriodHint": "Analysis window — how many years the Five-Line is fitted over"
+      "backTestDateHint": "Backtest date: review the five-line analysis as of a past date",
+      "analysisPeriodHint": "Analysis span: how many years of data the five-line chart is calculated from"
     },
     "result": {
       "stockCode": "Symbol",
       "stockPrice": "Price",
       "marketSentiment": "Sentiment",
-      "channelPosition": "LOHAS Channel"
+      "channelPosition": "LOHAS Channel",
+      "horizons": "Other spans"
     },
     "sentiment": {
       "extremeGreed": "Extreme Greed",
@@ -1062,31 +1063,37 @@
       }
     },
     "prompt": {
-      "enterSymbol": "Enter a ticker above, or pick one from the list."
+      "enterSymbol": "Enter a symbol, or pick one from the list."
     },
     "description": {
       "overview": {
         "title": "What is the LOHAS Five-Line Analysis?",
-        "content": "Analyze whether the current stock price is overly greedy or fearful. Utilize the statistical properties of stock price mean reversion to track long-term trends and determine the price's position.",
+        "content": "The LOHAS five-line chart calculates a trend line from a period of prices, then measures how far the current price sits from that trend line — towards greed or towards fear.",
         "readMore": "For detailed instructions, please see the article"
       },
       "sd": {
         "title": "What do the five lines mean?",
-        "point1": "The middle line is a trend fitted to the last 3.5 years of prices. The two lines either side mark how far price usually strays from it; the outermost pair is already unusual territory.",
-        "point2": "The closer to the outer edge, the further price sits from its long-term trend. Testing shows this chart alone is not enough — it is worth reading alongside the LOHAS Channel.",
-        "point3": "Touching the top line is what shows as \"Extreme Greed\" above. It happens roughly one trading day in ten — less rare than most people assume.",
-        "point4": "Touching the bottom line shows as \"Extreme Fear\". On its own it says little; it matters when the LOHAS Channel turns \"Short-term oversold\" at the same time."
+        "point1": "The middle line is a trend fitted to the span you picked. The two lines either side mark how far price strays from that trend; the outermost pair marks the furthest.",
+        "point2": "The five-line chart measures price against its own trend line. The LOHAS Channel measures it against the price range of the last 20 weeks. The two use different baselines, so one often reaches its outer edge while the other has not.",
+        "point3": "Touching the top line means \"Extreme Greed\". Check whether the LOHAS Channel has also broken above its upper edge: when both have, price tends to weaken; when only the five-line chart has, it often runs a little further.",
+        "point4": "Touching the bottom line means \"Extreme Fear\". Check whether the LOHAS Channel has also broken below its lower edge: when both have, the odds of being up within a month move above 60%; when only the five-line chart has, 54% — lower than usual."
       },
       "ulband": {
         "title": "What is the LOHAS Channel, and how is it different?",
-        "point1": "The LOHAS Channel is built from the highs and lows of the last 20 weeks, so it reacts faster than the Five-Line and describes the short term.",
-        "point2": "Price above the upper band shows as \"Short-term overheated\" above.",
-        "point3": "Price below the lower band shows as \"Short-term oversold\" above."
+        "point1": "The LOHAS Channel builds its edges from the highs and lows of the last 20 weeks, showing whether price has left the range it has recently traded in.",
+        "point2": "Price above the upper edge has risen past the range it traded in over the last 20 weeks.",
+        "point3": "Price below the lower edge has fallen out of the range it traded in over the last 20 weeks."
       },
       "tips": {
         "title": "How should I combine LOHAS Five-Line Analysis with other indicators?",
         "usage": "It is recommended for use with index ETFs or large-cap stocks with clear trends, in conjunction with fundamental analysis.",
         "limitation": "It should not be used as the sole basis for buy/sell decisions. Please combine with other technical indicators and fundamental analysis."
+      },
+      "horizons": {
+        "title": "Why look at three spans?",
+        "point1": "The same stock reads differently depending on how much history you measure against: the 0.5-year chart may say extreme fear while the 3.5-year chart says greed.",
+        "point2": "When all three spans point the same way, the signal is stronger than one span alone. When they disagree, it usually means price has fallen hard lately but is still high on a longer view — or the other way round.",
+        "point3": "Across 890 US stocks and 895 Taiwan-listed stocks: when only the 3.5-year span was in extreme fear, the odds of being up a year later were 73%; when all three were, 78%."
       }
     },
     "toast": {
@@ -1120,26 +1127,26 @@
     },
     "heading": "LOHAS Five-Line Analysis",
     "channel": {
-      "inside": "Normal range",
-      "above": "Short-term overheated",
-      "below": "Short-term oversold"
+      "inside": "Inside the channel",
+      "above": "Above the upper edge",
+      "below": "Below the lower edge"
     },
     "combined": {
       "fearConfirmed": {
-        "title": "Extreme Fear + Short-term oversold",
-        "body": "Both land together on about 6 days a year, and it usually clears within a week. Across 37 index ETFs: the next month gained 3.3% on average (0.9% in ordinary times) and was up 7 times out of 10; three months averaged +7%. It rarely turns around straight away, though — price falls another 8% on average first."
+        "title": "Extreme Fear + Below the lower edge",
+        "body": "Backtested against history — US and Taiwan ETFs, market indices and individual stocks: the odds of being up within a month are 63%–69%, against just over half normally, and the average gain is three to four times a normal stretch. It does not always turn straight away — price falls a further 8% on average first."
       },
       "fearOnly": {
-        "title": "Extreme Fear, but the channel is still normal",
-        "body": "Only the sentiment is at Extreme Fear; the LOHAS Channel has not turned cold. This happens twice as often as the pair above, yet the next month gained just 0.6% on average — below the ordinary 0.9% — and was up only 54% of the time. The numbers change once the channel turns oversold too."
+        "title": "Extreme Fear, but still inside the channel",
+        "body": "The five-line chart is at extreme fear, but price is still inside the channel. Backtested against history, for index ETFs: the odds of being up within a month are only 54%, averaging 0.6% — lower than usual. Once price also breaks below the channel’s lower edge, the odds move above 60%."
       },
       "greedConfirmed": {
-        "title": "Extreme Greed + Short-term overheated",
-        "body": "About 16 days a year. Across 39 index ETFs: the next month gained only 0.3% on average against an ordinary 1.1%, and was up 54% of the time — close to a coin flip. Plain ETFs were weaker still: +3.7% over three months against an ordinary 4.4%."
+        "title": "Extreme Greed + Above the upper edge",
+        "body": "Backtested against history, 39 index ETFs: the odds of being up within a month are 54%, averaging just 0.3% — under a third of a normal stretch. Non-index ETFs are weaker still, averaging 3.7% over three months."
       },
       "greedOnly": {
-        "title": "Extreme Greed, but the channel is still normal",
-        "body": "Only the sentiment is at Extreme Greed; the LOHAS Channel has not turned hot. Prices usually keep running: the next month gained 1.6% on average and three months 4.8%, both above the ordinary 1.1% and 3.2%, and three months were up 75% of the time."
+        "title": "Extreme Greed, but still inside the channel",
+        "body": "The five-line chart is at extreme greed, but price is still inside the channel. Backtested against history, for index ETFs: price often runs a little further — 75% odds of being up within three months, averaging 1.6% over one month and 4.8% over three."
       }
     },
     "tour": {
@@ -1150,7 +1157,7 @@
       "done": "Get started",
       "result": {
         "title": "Read the results here",
-        "body": "The top chart is the Five-Line view for the long-term position; the strip below is the LOHAS Channel for short-term heat. The question marks next to each label open an explanation."
+        "body": "Above is the LOHAS five-line chart, showing how far the current price sits from the trend line; below is the LOHAS Channel, showing the price range of the last 20 weeks. The question mark beside each label opens its explanation."
       },
       "search": {
         "title": "Start with a ticker",
@@ -1158,7 +1165,16 @@
       },
       "period": {
         "title": "Change the window here",
-        "body": "The default is the 3.5-year long-term view; switching to short or mid recalculates immediately. A custom window and a backtest date sit in the same row."
+        "body": "It starts from 3.5 years of prices. You can also set a custom span, or review the analysis as of a past date."
+      }
+    },
+    "ladder": {
+      "heading": "When the conditions below hold at the same time, the odds of being up over the next year are higher",
+      "met": "Met",
+      "notMet": "Not met",
+      "extremeFear": {
+        "horizons": "All three spans — 0.5, 1.5 and 3.5 years — are in extreme fear",
+        "market": "The holdings that represent the whole market are in extreme fear too"
       }
     }
   },
@@ -1235,10 +1251,10 @@
         "krFlagAlt": "Korea market flag"
       },
       "signal": {
-        "upper": "Broke above band today",
-        "lower": "Broke below band today",
-        "returned": "Back inside band today",
-        "ariaLabel": "{{symbol}} changed its standard-deviation band position today"
+        "upper": "Turned extreme greed today",
+        "lower": "Turned extreme fear today",
+        "returned": "Left the extreme today",
+        "ariaLabel": "{{symbol}} changed its position on the LOHAS five-line chart today"
       }
     },
     "newsDialog": {
@@ -2640,6 +2656,38 @@
       "relationToSioCta": "View the Taiwan Fear & Greed Index",
       "source": "Taiwan Stock Exchange and Taiwan Futures Exchange public data, calculated by Sentiment Inside Out. Updated every trading day."
     },
-    "disclaimerOwn": "This index is calculated by Sentiment Inside Out from public market data. It is for reference only and is not investment advice. It describes the current state of market sentiment and does not forecast future moves."
+    "disclaimerOwn": "This index is calculated by Sentiment Inside Out from public market data. It is for reference only and is not investment advice. It describes the current state of market sentiment and does not forecast future moves.",
+    "marketFearBreadth": {
+      "shortName": "Market Fear Breadth",
+      "pageTitle": "What is market fear breadth? How many stocks are at extreme lows",
+      "pageDescription": "Market fear breadth tells you how many holdings are sitting at extreme fear at the same time. A single stock falling to extreme fear and the whole market falling to extreme fear are different things. Updated after each close for Taiwan and the US.",
+      "keywords": "market fear breadth,market breadth,how many stocks at lows,LOHAS five-line,extreme fear,Taiwan market sentiment,US market sentiment",
+      "heading": "What is market fear breadth? How many stocks are at extreme lows",
+      "lede": "One stock falling to extreme fear and the whole market falling to extreme fear are different things. Market fear breadth measures how many holdings in a fixed list are sitting at extreme fear right now.",
+      "whatItIsTitle": "What is market fear breadth?",
+      "whatItIs": "We run the LOHAS five-line analysis over a fixed list of holdings and count how many have fallen more than two standard deviations below their trend line — the position labelled \"extreme fear\" across the site. Dividing that count by the number we can evaluate that day gives the breadth. The US list is 28 ETFs covering major countries and sectors; Taiwan uses 38 large caps spanning industries.",
+      "howToReadTitle": "How to read it",
+      "howToRead": "When the number climbs noticeably, it means it is no longer one holding panicking — the whole market is.",
+      "bands": [
+        {
+          "range": "Near 0%",
+          "meaning": "Only isolated holdings are at an extreme. Market sentiment overall is normal."
+        },
+        {
+          "range": "Elevated (above 25% in the US, above 16% in Taiwan)",
+          "meaning": "Higher than 90% of days in this market’s history. The decline is broad — not just one holding."
+        },
+        {
+          "range": "Very high",
+          "meaning": "Usually the whole market falling together. Historically, when this has triggered, the year that followed was the strongest — though price typically fell further first."
+        }
+      ],
+      "historyTitle": "History of this number",
+      "history": "The US data starts in 1996 and Taiwan in 2000. Breadth running higher than 90% of days has happened about once a year on average, usually lasting only a few days.",
+      "relationToSioTitle": "Using it alongside a single stock",
+      "relationToSio": "On a stock’s LOHAS five-line page, when that stock is already at extreme fear, the status row also shows how broad the market’s fear is that day. You can see whether only this one holding has reached extreme fear, or the whole market with it.",
+      "relationToSioCta": "Open the LOHAS five-line analysis",
+      "source": "Calculated by Sentiment Inside Out from public market data. Updated every trading day for Taiwan and the US."
+    }
   }
 }

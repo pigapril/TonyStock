@@ -51,6 +51,18 @@ export const INDICATOR_PAGES = [
     published: true
   },
   {
+    // SIO 自算的市場恐懼廣度：固定池裡有多少比例的標的正處在極度恐懼。
+    // Board 上美股與台股各一格，這裡對到美股那格；台股的值在同一頁一起說明。
+    slug: 'market-fear-breadth',
+    boardItemId: 'market-fear-breadth-us',
+    i18nKey: 'marketFearBreadth',
+    // 這個指標的讀數是百分比；其他指標多半無單位，所以單位在這裡個別宣告。
+    unit: '%',
+    ctaPath: 'price-analysis',
+    ownIndicator: true,
+    published: true
+  },
+  {
     // SIO 自家的台股指標。當前值在 Board 的 composite 區塊而非 items 裡，
     // 所以這頁沒有 boardItemId，直接把讀者導到台股專頁。
     slug: 'taiwan-fear-greed',
