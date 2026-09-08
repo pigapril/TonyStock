@@ -8,7 +8,7 @@ import './FreeStockList.css';
  * 按區域分類顯示所有可免費查詢的股票標的
  * 資料來源：API /api/public/free-stock-list/regions
  */
-const FreeStockList = ({ onStockSelect, className = '', defaultExpandedRegionKey = null }) => {
+const FreeStockList = ({ onStockSelect, className = '' }) => {
   const { t } = useTranslation();
   const [stocksByRegion, setStocksByRegion] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -68,17 +68,17 @@ const FreeStockList = ({ onStockSelect, className = '', defaultExpandedRegionKey
     loadStockData();
   }, [t]);
 
-  // 新增：當股票資料載入完成時，預設全部收合
+  // 當股票資料載入完成時，預設全部收合：進來先看到完整的區域清單，
+  // 自己挑一個展開，而不是被預先打開的那一區佔掉整個左欄。
   useEffect(() => {
     if (stocksByRegion) {
       const initialCollapsedState = {};
       Object.keys(stocksByRegion).forEach(regionKey => {
-        // 預設全部收合；若指定了 defaultExpandedRegionKey 則該區域預設展開
-        initialCollapsedState[regionKey] = regionKey !== defaultExpandedRegionKey;
+        initialCollapsedState[regionKey] = true;
       });
       setCollapsedRegions(initialCollapsedState);
     }
-  }, [stocksByRegion, defaultExpandedRegionKey]);
+  }, [stocksByRegion]);
 
   // 處理股票點擊
   const handleStockClick = (ticker) => {

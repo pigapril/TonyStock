@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
-// v2：版面改成頂部搜尋列後，導覽的目標與說法都換了，讓看過 v1 的人再看一次新版
-export const TOUR_STORAGE_KEY = 'sio.priceAnalysis.tourSeen.v2';
+import { TOUR_STORAGE_KEY } from './tourStorageKey';
 
 // 依序聚焦：搜尋列 → 期長/進階 → 結果圖表
 const STEPS = [
@@ -39,6 +37,8 @@ function readRect(selector) {
 function PriceAnalysisTour({ t, onFinish }) {
   const [index, setIndex] = useState(0);
   const [rect, setRect] = useState(null);
+  // 目標重試過還是量不到（這一步的區塊這次沒 render）
+  const [missing, setMissing] = useState(false);
 
   const step = STEPS[index];
 
@@ -56,6 +56,22 @@ function PriceAnalysisTour({ t, onFinish }) {
 
     // 捲動位置與版面可能還會微調（圖表重繪、字體載入），短時間內多量幾次保險
     const timers = [60, 200, 450].map((delay) => window.setTimeout(measure, delay));
+
+    // 重試都過了還是量不到，代表這一步的目標這次根本沒 render。
+    // 不是每個區塊都一定在畫面上（例如只有極度恐懼／貪婪時才出現的那段），
+    // 這種時候直接跳下一步；最後一步則交給下面的置中 fallback。
+    setMissing(false);
+    timers.push(window.setTimeout(() => {
+      if (readRect(STEPS[index].selector)) {
+        return;
+      }
+      if (index < STEPS.length - 1) {
+        setIndex(index + 1);
+      } else {
+        setMissing(true);
+      }
+    }, 600));
+
     window.addEventListener('resize', measure);
     window.addEventListener('scroll', measure, true);
     return () => {
@@ -84,7 +100,8 @@ function PriceAnalysisTour({ t, onFinish }) {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [finish]);
 
-  if (!rect) {
+  // 還沒量到、也還沒確定量不到：等這一輪重試量完再畫，避免卡片先閃一下置中位置。
+  if (!rect && !missing) {
     return null;
   }
 
@@ -97,16 +114,20 @@ function PriceAnalysisTour({ t, onFinish }) {
   const vh = window.innerHeight;
   const clampLeft = (value) => Math.min(Math.max(value, CARD_GAP), Math.max(CARD_GAP, vw - CARD_WIDTH - CARD_GAP));
   const clampTop = (value) => Math.min(Math.max(value, CARD_GAP), Math.max(CARD_GAP, vh - CARD_HEIGHT - CARD_GAP));
-  const centeredLeft = clampLeft(rect.left + rect.width / 2 - CARD_WIDTH / 2);
 
   let cardTop;
   let cardLeft;
-  if (vh - (rect.top + rect.height) > CARD_HEIGHT + CARD_GAP) {
+  if (!rect) {
+    // 量不到就不畫聚光框，卡片擺中間。這裡曾經直接 return null，結果連「略過」
+    // 都跟著消失，使用者被關在一個沒有出口的半截導覽裡。
+    cardTop = clampTop(vh / 2 - CARD_HEIGHT / 2);
+    cardLeft = clampLeft(vw / 2 - CARD_WIDTH / 2);
+  } else if (vh - (rect.top + rect.height) > CARD_HEIGHT + CARD_GAP) {
     cardTop = rect.top + rect.height + CARD_GAP;
-    cardLeft = centeredLeft;
+    cardLeft = clampLeft(rect.left + rect.width / 2 - CARD_WIDTH / 2);
   } else if (rect.top > CARD_HEIGHT + CARD_GAP) {
     cardTop = rect.top - CARD_GAP - CARD_HEIGHT;
-    cardLeft = centeredLeft;
+    cardLeft = clampLeft(rect.left + rect.width / 2 - CARD_WIDTH / 2);
   } else if (rect.left > CARD_WIDTH + CARD_GAP) {
     cardTop = clampTop(rect.top + rect.height / 2 - CARD_HEIGHT / 2);
     cardLeft = rect.left - CARD_GAP - CARD_WIDTH;
@@ -118,15 +139,17 @@ function PriceAnalysisTour({ t, onFinish }) {
   return (
     <div className="pa-tour" role="dialog" aria-modal="true" aria-label={t('priceAnalysis.tour.ariaLabel')}>
       {/* 用超大 box-shadow 把目標以外的地方壓暗，形成聚光效果 */}
-      <div
-        className="pa-tour__spotlight"
-        style={{
-          top: `${rect.top}px`,
-          left: `${rect.left}px`,
-          width: `${rect.width}px`,
-          height: `${rect.height}px`
-        }}
-      />
+      {rect ? (
+        <div
+          className="pa-tour__spotlight"
+          style={{
+            top: `${rect.top}px`,
+            left: `${rect.left}px`,
+            width: `${rect.width}px`,
+            height: `${rect.height}px`
+          }}
+        />
+      ) : null}
 
       <div
         className="pa-tour__card"

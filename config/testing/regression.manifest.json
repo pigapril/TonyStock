@@ -19,6 +19,7 @@
     "src/components/PriceAnalysis/__tests__/PriceAnalysis.combinedState.test.js",
     "src/components/PriceAnalysis/__tests__/PriceAnalysis.signalLadderRender.test.js",
     "src/components/PriceAnalysis/__tests__/PriceAnalysis.watchlistQuickSelect.test.js",
+    "src/components/PriceAnalysis/__tests__/PriceAnalysisTour.missingTarget.test.js",
     "src/components/PriceAnalysis/__tests__/signalLadder.test.js",
     "src/components/PriceAnalysis/__tests__/suggestionMatchesInput.test.js",
     "src/components/Redemption/__tests__/RedemptionCodeInput.gate.test.js",

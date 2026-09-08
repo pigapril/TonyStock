@@ -802,7 +802,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
 
           const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
 
-          // 0% (頂部 - 極度樂觀): #D24A93 (rgb(210, 74, 147))
+          // 0% (頂部 - 極度貪婪): #D24A93 (rgb(210, 74, 147))
           gradient.addColorStop(0, 'rgba(210, 74, 147, 0.6)');
           // 25% (樂觀): #F0B8CE (rgb(240, 184, 206)), alpha 0.4
           gradient.addColorStop(0.25, 'rgba(240, 184, 206, 0.5)');
@@ -810,7 +810,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
           gradient.addColorStop(0.5, 'rgb(166, 170, 210, 0.4)');
           // 75% (悲觀):rgb(121, 91, 213) (rgb(91, 155, 213))
           gradient.addColorStop(0.75, 'rgba(91, 155, 213, 0.3)');
-          // 100% (底部 - 極度悲觀): #0000FF (rgb(0, 0, 255))
+          // 100% (底部 - 極度恐懼): #0000FF (rgb(0, 0, 255))
           gradient.addColorStop(1, 'rgba(0, 0, 255, 0)');
           return gradient;
         },

@@ -1027,8 +1027,8 @@
       "buttonAnalyzing": "Analyzing...",
       "buttonProcessing": "Processing data...",
       "periodCustom": "Custom",
-      "backTestDateHint": "Backtest date: review the five-line analysis as of a past date",
-      "analysisPeriodHint": "Analysis span: how many years of data the five-line chart is calculated from"
+      "backTestDateHint": "Review the five-line analysis as of a past date",
+      "analysisPeriodHint": "How many years of data the five-line chart is calculated from"
     },
     "result": {
       "stockCode": "Symbol",
@@ -1063,7 +1063,7 @@
       }
     },
     "prompt": {
-      "enterSymbol": "Enter a symbol, or pick one from the list."
+      "enterSymbol": "Enter a symbol, or choose one from the list."
     },
     "description": {
       "overview": {
@@ -1072,28 +1072,28 @@
         "readMore": "For detailed instructions, please see the article"
       },
       "sd": {
-        "title": "What do the five lines mean?",
-        "point1": "The middle line is a trend fitted to the span you picked. The two lines either side mark how far price strays from that trend; the outermost pair marks the furthest.",
-        "point2": "The five-line chart measures price against its own trend line. The LOHAS Channel measures it against the price range of the last 20 weeks. The two use different baselines, so one often reaches its outer edge while the other has not.",
-        "point3": "Touching the top line means \"Extreme Greed\". Check whether the LOHAS Channel has also broken above its upper edge: when both have, price tends to weaken; when only the five-line chart has, it often runs a little further.",
-        "point4": "Touching the bottom line means \"Extreme Fear\". Check whether the LOHAS Channel has also broken below its lower edge: when both have, the odds of being up within a month move above 60%; when only the five-line chart has, 54% — lower than usual."
+        "title": "How do I read a holding’s sentiment?",
+        "point1": "The middle line is a trend line calculated from the price, showing the long-term direction of the holding. Two standard-deviation lines either side mark how far price strays from that trend. The further price sits from the middle line, the more likely it is to revert towards it — which is what tells you whether the current price sits in greed or in fear.",
+        "point2": "The LOHAS Channel compares price against the range it has traded in over the last 20 weeks, as a second read on sentiment.",
+        "point3": "Touching the top line of the five-line chart means \"Extreme Greed\". Check whether the LOHAS Channel has also broken above its upper edge: when both have, price may be about to weaken; when only the five-line chart has, it has a chance of running a little further.",
+        "point4": "Touching the bottom line of the five-line chart means \"Extreme Fear\". Check whether the LOHAS Channel has also broken below its lower edge: when both have, backtested against history, the odds of being up after a year are 88%, against 74% for random entry."
       },
       "ulband": {
-        "title": "What is the LOHAS Channel, and how is it different?",
-        "point1": "The LOHAS Channel builds its edges from the highs and lows of the last 20 weeks, showing whether price has left the range it has recently traded in.",
-        "point2": "Price above the upper edge has risen past the range it traded in over the last 20 weeks.",
-        "point3": "Price below the lower edge has fallen out of the range it traded in over the last 20 weeks."
+        "title": "What is the LOHAS Channel?",
+        "point1": "The LOHAS Channel builds its edges from the highs and lows of the last 20 weeks, showing whether the current price has moved out of its recent range.",
+        "point2": "Price above the upper edge has risen past its price range of the last 20 weeks.",
+        "point3": "Price below the lower edge has fallen out of its price range of the last 20 weeks."
       },
       "tips": {
-        "title": "How should I combine LOHAS Five-Line Analysis with other indicators?",
+        "title": "What kind of holdings is the LOHAS five-line chart suited to?",
         "usage": "It is recommended for use with index ETFs or large-cap stocks with clear trends, in conjunction with fundamental analysis.",
-        "limitation": "It should not be used as the sole basis for buy/sell decisions. Please combine with other technical indicators and fundamental analysis."
+        "limitation": "It should not be used as the sole basis for a trade, and it carries higher risk when applied to individual stocks."
       },
       "horizons": {
-        "title": "Why look at three spans?",
-        "point1": "The same stock reads differently depending on how much history you measure against: the 0.5-year chart may say extreme fear while the 3.5-year chart says greed.",
-        "point2": "When all three spans point the same way, the signal is stronger than one span alone. When they disagree, it usually means price has fallen hard lately but is still high on a longer view — or the other way round.",
-        "point3": "Across 890 US stocks and 895 Taiwan-listed stocks: when only the 3.5-year span was in extreme fear, the odds of being up a year later were 73%; when all three were, 78%."
+        "title": "What is \"Other spans\"?",
+        "point1": "The same holding can read differently across spans. For example, the 0.5-year span may sit at extreme fear while the 3.5-year span shows greed — which reads as: it has fallen hard lately, but on a longer view it has not yet returned to a low.",
+        "point2": "When all three spans point the same way, the signal is stronger than any single span: short, medium and long term all show the same extreme.",
+        "point3": "Backtested across 890 US stocks and 895 Taiwan stocks: when only the 3.5-year span sat at extreme fear, the odds of being up a year later were 73%; when all three spans sat at extreme fear at once, the odds of being up a year later rose to 78%."
       }
     },
     "toast": {
@@ -1134,19 +1134,19 @@
     "combined": {
       "fearConfirmed": {
         "title": "Extreme Fear + Below the lower edge",
-        "body": "Backtested against history — US and Taiwan ETFs, market indices and individual stocks: the odds of being up within a month are 63%–69%, against just over half normally, and the average gain is three to four times a normal stretch. It does not always turn straight away — price falls a further 8% on average first."
+        "body": "Backtested against history, index ETFs: held for a year this makes 11.1 percentage points more than random entry, and 42 of the 43 show the same result. Held one month it makes only 1.0 point more, which is barely a difference. It does not always turn straight away either: price falls a further 10.0% at the deepest point."
       },
       "fearOnly": {
         "title": "Extreme Fear, but still inside the channel",
-        "body": "The five-line chart is at extreme fear, but price is still inside the channel. Backtested against history, for index ETFs: the odds of being up within a month are only 54%, averaging 0.6% — lower than usual. Once price also breaks below the channel’s lower edge, the odds move above 60%."
+        "body": "The five-line chart is at extreme fear, but price is still inside the channel. Backtested against history, index ETFs: this occurs on 16 days a year, three times as often as both charts reaching an extreme, yet loses to random entry over three and six months and makes only 1.3 points more over a year. Once price also breaks below the channel's lower edge, the numbers change."
       },
       "greedConfirmed": {
         "title": "Extreme Greed + Above the upper edge",
-        "body": "Backtested against history, 39 index ETFs: the odds of being up within a month are 54%, averaging just 0.3% — under a third of a normal stretch. Non-index ETFs are weaker still, averaging 3.7% over three months."
+        "body": "Backtested against history, index ETFs: do not rush to sell here. Wait for price to return inside the channel. Sell then and the month that follows dodges 1.7 percentage points more than a sale on any random day, with 40 of the 43 showing the same result; sell on the break itself and almost nothing is dodged, because price is usually still climbing that month."
       },
       "greedOnly": {
         "title": "Extreme Greed, but still inside the channel",
-        "body": "The five-line chart is at extreme greed, but price is still inside the channel. Backtested against history, for index ETFs: price often runs a little further — 75% odds of being up within three months, averaging 1.6% over one month and 4.8% over three."
+        "body": "The five-line chart is at extreme greed, but price is still inside the channel. Backtested against history, index ETFs: three months is 0.9 points ahead, but a year is 3.6 points behind, with only 8 of the 43 ahead. The run usually is not over; hold long enough and the rest catches up."
       }
     },
     "tour": {
@@ -1156,16 +1156,16 @@
       "next": "Next",
       "done": "Get started",
       "result": {
-        "title": "Read the results here",
+        "title": "Analysis results",
         "body": "Above is the LOHAS five-line chart, showing how far the current price sits from the trend line; below is the LOHAS Channel, showing the price range of the last 20 weeks. The question mark beside each label opens its explanation."
       },
       "search": {
-        "title": "Start with a ticker",
-        "body": "Enter a Taiwan stock number or a US ticker, such as 2330 or AAPL. Picking a suggestion or pressing Enter runs the analysis right away — no extra button."
+        "title": "Enter a stock code",
+        "body": "Enter a numeric code for Taiwan stocks or a ticker for US stocks, such as 2330 or AAPL. Pick one from the results, or just press Enter, and the analysis starts."
       },
       "period": {
-        "title": "Change the window here",
-        "body": "It starts from 3.5 years of prices. You can also set a custom span, or review the analysis as of a past date."
+        "title": "Adjust the analysis span here",
+        "body": "It starts from 3.5 years of prices, and you can switch to 0.5 or 1.5 years. \"Custom\" takes any other number of years, and you can also pick a past date to run the analysis as of that day."
       }
     },
     "ladder": {

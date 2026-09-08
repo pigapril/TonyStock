@@ -22,14 +22,13 @@ import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
 import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDialog
 import { isStockAllowed, getFreeStockList } from '../../utils/freeStockListUtils'; // 導入免費股票清單檢查函數
 import FreeStockList from './FreeStockList'; // 新增：引入免費股票清單組件
+import { TOUR_STORAGE_KEY } from './tourStorageKey';
 import watchlistService from '../Watchlist/services/watchlistService'; // 新增：引入 watchlist service
 
 const DeferredBacktestDatePicker = lazy(() => import('./DeferredBacktestDatePicker'));
 const PriceAnalysisChartWorkspace = lazy(() => import('./PriceAnalysisChartWorkspace'));
 const PriceAnalysisDescription = lazy(() => import('./PriceAnalysisDescription'));
 const PriceAnalysisTour = lazy(() => import('./PriceAnalysisTour'));
-
-const TOUR_STORAGE_KEY = 'sio.priceAnalysis.tourSeen.v2';
 
 // 期長預設值。下拉、初始化、實際送出的年數三個地方都吃這一份，避免各寫一次而走鐘。
 const PERIOD_YEARS = { short: '0.5', medium: '1.5', long: '3.5' };
@@ -163,14 +162,6 @@ const renderChartWorkspaceFallback = () => (
         </div>
       </div>
       <div className="chart-content">
-        <div className="chart-tabs-row chart-tabs-row--skeleton" aria-hidden="true">
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
-            <div className="chart-tabs">
-              <button className="chart-tab" type="button" disabled>SD</button>
-              <button className="chart-tab" type="button" disabled>UL</button>
-            </div>
-          </div>
-        </div>
         <div className="chart-loading-indicator chart-loading-indicator--deferred">
           <div className="loading-spinner">
             <div className="spinner"></div>
@@ -1563,7 +1554,6 @@ export function PriceAnalysis() {
                     <div className="free-stocks-tab-content">
                       <FreeStockList
                         onStockSelect={handleFreeStockClick}
-                        defaultExpandedRegionKey={i18n.language?.startsWith('zh') ? 'asiaPacific' : 'americas'}
                         className="integrated-free-stock-list"
                       />
                     </div>

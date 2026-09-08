@@ -5,7 +5,7 @@ import i18n from '../../../i18n';
 import { StockAnalysis } from '../components/StockCard/StockAnalysis';
 
 // 價格取不到時（報價 API 失敗、代碼對應不上），null 會被比較運算子當成 0：
-// price <= tl_minus_2sd 恆真 → 量表指針停在最左、塗成「極度悲觀」藍。
+// price <= tl_minus_2sd 恆真 → 量表指針停在最左、塗成「極度恐懼」藍。
 // 那是假訊號，比顯示「無資料」更糟。
 describe('StockAnalysis 缺少價格時不給假訊號', () => {
     const analysis = {

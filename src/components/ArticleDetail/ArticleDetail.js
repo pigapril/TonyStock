@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, Navigate } from 'react-router-dom';
 import PageContainer from '../PageContainer/PageContainer';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -43,10 +43,18 @@ const articleMappings = {
     //     enSlug: 'netflix-acquires-warner-capitalizing-on-expectation-gap-strategy',
     //     enFilename: 'Netflix Acquires Warner Capitalizing on Expectation Gap Strategy.en.ini.md'
     // },
-    '4.樂活五線譜576萬筆台美股資料實測結果分析': {
-        enSlug: 'lohas-five-line-analysis-tested-on-5-8-million-daily-bars',
-        enFilename: 'LOHAS Five-Line Analysis Tested on 5.8 Million Daily Bars.en.ini.md'
+    '4.樂活五線譜1155萬筆台美股資料實測結果分析': {
+        enSlug: 'lohas-five-line-analysis-tested-on-11-6-million-daily-bars',
+        enFilename: 'LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md'
     }
+};
+
+// 文章改名後舊網址仍在外面流通，這裡把舊 slug 導到現在的網址，避免已發出去的連結變成
+// 「找不到文章」。2026-09-08：第 4 篇的資料量從 576 萬更正為 1155 萬，連網址一起改。
+const renamedSlugs = {
+    '4.樂活五線譜576萬筆台美股資料實測結果分析': '4.樂活五線譜1155萬筆台美股資料實測結果分析',
+    'lohas-five-line-analysis-tested-on-5-8-million-daily-bars':
+        'lohas-five-line-analysis-tested-on-11-6-million-daily-bars'
 };
 
 // 建立反向映射 (英文 Slug -> 原始 Slug)
@@ -66,6 +74,8 @@ export function ArticleDetail() {
     const [error, setError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [meta, setMeta] = useState({});
+
+    const renamedTo = renamedSlugs[slugFromUrl];
 
     // 使用 useMemo 避免每次渲染都重新計算 originalSlug
     const originalSlug = useMemo(() => {
@@ -160,6 +170,10 @@ export function ArticleDetail() {
         // useEffect 的依賴項應包含 originalSlug 和 currentLang
     }, [originalSlug, currentLang, slugFromUrl]); // 加入 slugFromUrl 以確保 URL 變更時觸發
 
+    if (renamedTo) {
+        return <Navigate to={`/${currentLang}/articles/${renamedTo}`} replace />;
+    }
+
     // 自定義圖片渲染組件
     const ImageRenderer = ({ src, alt }) => {
         // 確保圖片路徑使用 article.basePath (基於 originalSlug)
@@ -233,6 +247,17 @@ export function ArticleDetail() {
                         remarkPlugins={[remarkGfm]}
                         components={{
                             img: ImageRenderer,
+                            // 補充說明用小字。react-markdown 沒有開 rehype-raw，文章裡寫 <small>
+                            // 會被原樣印出來，所以改成「註：」開頭的段落，在這裡套 class。
+                            p: ({ node, children, ...props }) => {
+                                const first = node?.children?.[0];
+                                const text = first?.type === 'text' ? first.value : '';
+                                const isNote = text.startsWith('註：') || text.startsWith('Note: ');
+                                // 開頭的重點摘要：這一段當標頭，緊接的清單當內容，CSS 把兩者接成一塊。
+                                const isSummary = text === '重點摘要' || text === 'In short';
+                                const cls = isNote ? 'article-note' : isSummary ? 'article-summary' : undefined;
+                                return <p className={cls} {...props}>{children}</p>;
+                            },
                             h2: ({node, ...props}) => {
                                 const titleText = Array.isArray(node.children) && node.children[0]?.value ? node.children[0].value : '';
                                 const id = generateId(titleText);

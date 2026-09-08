@@ -76,44 +76,6 @@
   margin: 0;
 }
 
-/* 圖表切換按鈕樣式 */
-.price-analysis-view .chart-tabs {
-  display: flex;
-  gap: 8px;
-  margin: 0;
-  background-color: var(--color-bg-page, #f5f5f7);
-  /* 與頁面背景一致或稍深 */
-  padding: 4px;
-  border-radius: var(--border-radius-medium, 8px);
-}
-
-.price-analysis-view .chart-tab {
-  padding: 8px 16px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  border-radius: var(--border-radius-small, 6px);
-  /* 內部按鈕圓角略小於容器 */
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text-secondary, #86868b);
-  transition: all 0.2s ease;
-  position: relative;
-  white-space: nowrap;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-}
-
-.price-analysis-view .chart-tab:hover {
-  color: #1d1d1f;
-}
-
-.price-analysis-view .chart-tab.active {
-  background-color: var(--color-bg-card, #ffffff);
-  color: var(--color-text-primary, #1d1d1f);
-  box-shadow: var(--shadow-xs, 0 1px 3px rgba(0, 0, 0, 0.1));
-  /* 更細微的陰影 */
-}
-
 /* 圖表縮放按鈕組 - 蘋果風格 */
 .price-analysis-view .chart-zoom-buttons {
   position: absolute;
@@ -381,11 +343,6 @@
     margin-bottom: 0px;
   }
 
-  .price-analysis-view .chart-tabs {
-    width: 100%;
-    justify-content: stretch;
-  }
-
   /* 手機版縮放按鈕 */
   .price-analysis-view .chart-zoom-buttons {
     top: 8px;
@@ -403,13 +360,6 @@
     height: 14px;
     background-color: #f5f5f7;
     padding: 3px;
-  }
-
-  .price-analysis-view .chart-tab {
-    flex: 1;
-    text-align: center;
-    padding: 8px 8px;
-    font-size: 13px;
   }
 
   .price-analysis-view .chart-card {
@@ -1050,19 +1000,38 @@
 /* 響應式設計調整 */
 @media (max-width: 768px) {
   /* 加入「樂活通道」後變成四欄，375px 排成一列會被 overflow:hidden 切掉，
-     所以手機改成 2x2。 */
+     所以手機改成 2x2。再加「其他週期情緒」變成五個，2x2 會剩一個落單，
+     而且那一格內部還有三個小格，被壓成半寬就擠成一團。
+     改成：代碼｜價格 → 市場情緒｜樂活通道 → 其他週期情緒獨佔一列。
+     前兩列各是「這是什麼」與「兩張圖現在各在哪」，第三列才展開三個週期。 */
   .price-analysis-view .analysis-result {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: start;
     justify-items: center;
-    gap: 4px 8px;
+    gap: 10px 8px;
     padding: 2px 0;
   }
 
   .price-analysis-view .analysis-item {
     width: 100%;
     max-width: none;
+  }
+
+  /* 用 order 把它推到最後：DOM 順序（市場情緒→其他週期→樂活通道）是桌機的閱讀順序，
+     手機不改 DOM，只換視覺位置。 */
+  .price-analysis-view .analysis-item--horizons {
+    order: 1;
+    grid-column: 1 / -1;
+    margin-top: 2px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  /* 獨佔一列之後就有空間了，把三個週期拉開一點 */
+  .price-analysis-view .analysis-item--horizons .horizon-grid {
+    gap: 0 22px;
+    justify-content: center;
   }
 
   .price-analysis-view .analysis-value {
@@ -1077,16 +1046,6 @@
   .price-analysis-view .chart-header--skeleton {
     min-height: 92px;
   }
-}
-
-.price-analysis-view .chart-tabs-row {
-  display: flex;
-  justify-content: center;
-  min-height: 46px;
-}
-
-.price-analysis-view .chart-tabs-row--skeleton .chart-tab {
-  pointer-events: none;
 }
 
 @keyframes price-analysis-skeleton-shimmer {
@@ -1196,6 +1155,10 @@
     flex-direction: column;
     flex: 0 0 250px;
     min-width: 0;
+    /* 右邊界交給分隔線，圓角只留左側，避免「圓角 + 直線」的收邊互相打架 */
+    border-radius: var(--border-radius-medium, 10px) 0 0 var(--border-radius-medium, 10px);
+    border-right: 1px solid var(--color-border-soft, #e5e5e5);
+    padding-right: 10px;
   }
 
   .price-analysis-view .content-layout-container .dashboard .pa-main {
@@ -2174,9 +2137,15 @@
   text-overflow: ellipsis;
 }
 
-/* 左欄：無外框、整欄延伸的清單 */
+/* 左欄：不做成有框卡片——那會跟右邊的圖表卡互相搶。改成整欄鋪一層比頁面稍深的
+   底色，讓清單自成一區、也看得出從哪裡開始到哪裡結束；桌機再補一條 hairline
+   當右邊界。項目原本的白底同時要拿掉，不然就是一堆白 pill 浮在灰底上。 */
 .price-analysis-view .pa-sidenav {
   width: 100%;
+  box-sizing: border-box;
+  background: var(--color-bg-subtle, #f0f0f0);
+  border-radius: var(--border-radius-medium, 10px);
+  padding: 4px 4px 8px;
 }
 
 .price-analysis-view .pa-sidenav .quick-select-section {
@@ -2189,6 +2158,34 @@
 
 .price-analysis-view .pa-sidenav .quick-select-content {
   padding-right: 4px;
+}
+
+/* 底色上來之後，項目改成透明、hover 才浮白，層級才分得出來 */
+.price-analysis-view .pa-sidenav .free-stock-item,
+.price-analysis-view .pa-sidenav .watchlist-stock-item {
+  background: transparent;
+  border-color: transparent;
+}
+
+/* sticky 的區域標題必須不透明才遮得住捲到它底下的項目，原本用純白；
+   底色換上來之後白色會變成浮在灰底上的白條，所以改成同一層底色。
+   展開態的藍色調是半透明的，疊一層當背景圖才不會透出後面的內容。 */
+.price-analysis-view .pa-sidenav .region-header,
+.price-analysis-view .pa-sidenav .watchlist-category-title {
+  background: var(--color-bg-subtle, #f0f0f0);
+}
+
+.price-analysis-view .pa-sidenav .region-header:not(.collapsed),
+.price-analysis-view .pa-sidenav .watchlist-category-title:not(.collapsed) {
+  background:
+    linear-gradient(rgba(0, 122, 255, 0.06), rgba(0, 122, 255, 0.06)),
+    var(--color-bg-subtle, #f0f0f0);
+}
+
+.price-analysis-view .pa-sidenav .free-stock-item:hover,
+.price-analysis-view .pa-sidenav .watchlist-stock-item:hover {
+  background: var(--color-bg-card, #ffffff);
+  border-color: var(--color-border-soft, #e5e5e5);
 }
 
 @media (max-width: 1023px) {
@@ -2246,10 +2243,25 @@
 
   .price-analysis-view .pa-searchbar__controls {
     flex: 1 1 100%;
+    /* 期長從下拉變成四顆按鈕之後，這一列在 375px 裝不下四顆＋回測日期，
+       原本會直接被切掉在畫面外（回測日期整個點不到）。改成允許換行。 */
+    flex-wrap: wrap;
     justify-content: flex-start;
+    row-gap: 8px;
     padding: 6px 0 2px;
     border-left: none;
     border-top: 1px solid var(--color-border-light, #eef0f2);
+  }
+
+  /* 四顆期長佔滿一整列、平均分配；回測日期落到下一列 */
+  .price-analysis-view .pa-horizon {
+    flex: 1 1 100%;
+  }
+
+  .price-analysis-view .pa-horizon__btn {
+    flex: 1 1 0;
+    justify-content: center;
+    padding: 0 4px;
   }
 
   .price-analysis-view .pa-searchbar .stock-suggestions {

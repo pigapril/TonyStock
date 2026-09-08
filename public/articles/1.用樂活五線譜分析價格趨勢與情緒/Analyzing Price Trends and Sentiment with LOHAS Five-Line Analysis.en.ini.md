@@ -58,20 +58,20 @@ The five lines of the LOHAS Five-Line Analysis are:
 
 *   Price between the Trend Line and the first line above (TL+SD) or below (TL-SD): This is the **Neutral** zone. Holding existing positions is often considered appropriate here.
 
-*   Price reaches the first line above (TL+SD): This signals **Optimism**. Consider selling a portion of your holdings.
-*   Price reaches the second line above (TL+2SD): This signals **Extreme Optimism**. A significant further rise is less likely. Consider selling more holdings.
-*   Price reaches the first line below (TL-SD): This signals **Pessimism**. Consider buying a portion.
-*   Price reaches the second line below (TL-2SD): This signals **Extreme Pessimism**. A significant further drop is less likely. Consider buying more.
+*   Price reaches the first line above (TL+SD): This signals **Greed**. Consider selling a portion of your holdings.
+*   Price reaches the second line above (TL+2SD): This signals **Extreme Greed**. A significant further rise is less likely. Consider selling more holdings.
+*   Price reaches the first line below (TL-SD): This signals **Fear**. Consider buying a portion.
+*   Price reaches the second line below (TL-2SD): This signals **Extreme Fear**. A significant further drop is less likely. Consider buying more.
 
 > **Use the LOHAS Five-Line Analysis tool to help overcome your own fear and greed, preventing selling at the bottom and buying at the top.**
 
 ## How to Use the Lohas Channel for Assistance?
 
-While LOHAS Five-Line provides a long-term perspective, short-term price movements can be sharp. Investors naturally want to avoid "catching a falling knife" or "selling too early only to watch the stock soar". This is where the "**Lohas Channel**" comes in as a complementary tool, helping to avoid premature buys or sells. It's calculated based on shorter-term volatility and is more sensitive to near-term overbought or oversold conditions.
+The LOHAS Five-Line chart shows how far price sits from its trend line, but price swings can be sharp. Investors naturally want to avoid "catching a falling knife" or "selling too early only to watch the stock soar". This is where the "**LOHAS Channel**" comes in as a complementary tool, helping to avoid premature buys or sells. It builds its edges from the highs and lows of the last 20 weeks, showing whether the current price has moved out of its recent range, as a second read on sentiment.
 
 ![image2](./image2-en.png)
 
-When the price reaches the Extreme Optimism or Extreme Pessimism levels on the LOHAS Five-Line chart, observe the Lohas Channel:
+When price reaches Extreme Greed or Extreme Fear on the LOHAS Five-Line chart, look at the LOHAS Channel:
 *   If the price breaks *above* the upper Lohas Channel line: While indicating short-term overheating, the trend *might* continue. Consider holding.
 *   If the price breaks *below* the lower Lohas Channel line: While indicating short-term overselling, the trend *might* continue. Consider waiting.
 

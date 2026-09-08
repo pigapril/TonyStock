@@ -25,9 +25,9 @@ const articleMappings = {
     //     enSlug: 'netflix-acquires-warner-capitalizing-on-expectation-gap-strategy',
     //     enFilename: 'Netflix Acquires Warner Capitalizing on Expectation Gap Strategy.en.ini.md'
     // },
-    '4.樂活五線譜576萬筆台美股資料實測結果分析': {
-        enSlug: 'lohas-five-line-analysis-tested-on-5-8-million-daily-bars',
-        enFilename: 'LOHAS Five-Line Analysis Tested on 5.8 Million Daily Bars.en.ini.md'
+    '4.樂活五線譜1155萬筆台美股資料實測結果分析': {
+        enSlug: 'lohas-five-line-analysis-tested-on-11-6-million-daily-bars',
+        enFilename: 'LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md'
     }
     // 未來新增的文章也加在這裡
 };
