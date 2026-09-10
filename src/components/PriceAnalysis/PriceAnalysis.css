@@ -1155,10 +1155,6 @@
     flex-direction: column;
     flex: 0 0 250px;
     min-width: 0;
-    /* 右邊界交給分隔線，圓角只留左側，避免「圓角 + 直線」的收邊互相打架 */
-    border-radius: var(--border-radius-medium, 10px) 0 0 var(--border-radius-medium, 10px);
-    border-right: 1px solid var(--color-border-soft, #e5e5e5);
-    padding-right: 10px;
   }
 
   .price-analysis-view .content-layout-container .dashboard .pa-main {
@@ -1374,57 +1370,52 @@
   overflow: visible;
 }
 
-/* Tab 導航樣式 - 固定在頂部 */
+/* Tab 導航樣式 - 分段控制項。原本是「藍色方塊底 + 底線 + 整條分隔線」三個訊號
+   同時在講同一件事，方塊底的直角在圓角面板裡特別突兀。改成一條淺色軌道加一顆
+   白色圓角滑塊，選中狀態只靠滑塊表達，四個角都收得掉。 */
 .price-analysis-view .quick-select-tabs {
   display: flex;
   flex-shrink: 0;
   /* 不收縮 */
-  background-color: rgba(0, 122, 255, 0.05);
-  border-bottom: 1px solid var(--color-border-light, #e9ecef);
+  gap: 2px;
+  margin: 2px 2px 6px;
+  padding: 3px;
+  background-color: var(--color-bg-page, #f5f5f7);
+  border-radius: var(--border-radius-medium, 10px);
 }
 
 .price-analysis-view .quick-select-tab {
   flex: 1;
-  padding: 12px 16px;
+  padding: 7px 10px;
   background: none;
   border: none;
+  border-radius: var(--border-radius-small, 6px);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: var(--color-text-secondary, #666);
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .price-analysis-view .quick-select-tab:hover {
-  background-color: rgba(0, 122, 255, 0.08);
   color: var(--color-text-primary, #333);
 }
 
 .price-analysis-view .quick-select-tab.active {
-  background-color: rgba(0, 122, 255, 0.1);
-  color: #007AFF;
+  background-color: var(--color-bg-card, #ffffff);
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.06));
+  color: var(--accent-color-blue, #007aff);
   font-weight: 600;
-}
-
-.price-analysis-view .quick-select-tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
 }
 
 /* Tab 內容區域 - 可滾動 */
 .price-analysis-view .quick-select-content {
   flex: 0 0 auto;
   overflow: visible;
-  padding: 16px;
+  padding: 8px 2px 6px 0;
   box-sizing: border-box;
   /* 確保 padding 包含在尺寸內 */
 }
@@ -1623,19 +1614,16 @@
   gap: 6px;
 }
 
-/* Watchlist 分類標題 - 置中 + 橫線樣式 + 可收合 + Sticky（與 FreeStockList 一致）*/
+/* Watchlist 分類標題 - 左對齊 + 橫線樣式 + 可收合 + Sticky（與 FreeStockList 一致）*/
 .price-analysis-view .watchlist-category-title {
   position: sticky;
   top: -10px;
   z-index: 10;
   margin: 0;
-  padding: 8px 12px 8px 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  padding: 8px 6px 4px;
+  font-size: 0.74rem;
+  font-weight: 700;
   color: var(--color-text-secondary, #666);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1666,29 +1654,23 @@
 
 .price-analysis-view .watchlist-category-title .category-title-text {
   flex: 1;
-  text-align: center;
+  text-align: left;
 }
 
-/* 計數徽章樣式 - Apple 風格 */
+/* 計數只是輔助資訊，做成安靜的數字 */
 .price-analysis-view .watchlist-category-title .category-count-badge {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  background: rgba(0, 122, 255, 0.1);
-  color: #007AFF;
-  font-size: 0.7rem;
-  font-weight: 600;
-  border-radius: 10px;
-  margin-left: 8px;
+  color: var(--color-text-tertiary, #999);
+  font-size: 0.72rem;
+  font-weight: 500;
+  margin-left: 6px;
   flex-shrink: 0;
 }
 
 .price-analysis-view .watchlist-category-title .collapse-icon {
   flex-shrink: 0;
-  color: var(--color-text-secondary, #666);
+  color: var(--color-text-tertiary, #999);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-left: 8px;
 }
@@ -1702,24 +1684,17 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.price-analysis-view .watchlist-category-group:has(.watchlist-stock-list) {
-  background: rgba(0, 122, 255, 0.02);
-  border-radius: 8px;
-  padding: 4px;
-  margin-bottom: 4px;
-}
-
 /* 標的項目略微縮排，強化層級感 */
 .price-analysis-view .watchlist-stock-list {
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 4px;
+  padding-right: 0;
 }
 
 /* Watchlist 股票列表 - 垂直排列 */
 .price-analysis-view .watchlist-stock-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -1729,7 +1704,7 @@
 .price-analysis-view .watchlist-stock-item {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  padding: 6px 10px;
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 6px;
@@ -1742,14 +1717,8 @@
 }
 
 .price-analysis-view .watchlist-stock-item:hover {
-  transform: translateY(-1px);
   border-color: #007AFF;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.15);
   background: rgba(0, 122, 255, 0.05);
-}
-
-.price-analysis-view .watchlist-stock-item:active {
-  transform: translateY(0);
 }
 
 .price-analysis-view .watchlist-stock-item:focus {
@@ -1763,24 +1732,24 @@
   align-items: center;
   width: 100%;
   min-width: 0;
-  gap: 8px;
+  gap: 6px;
 }
 
 /* Watchlist 股票代碼 */
 .price-analysis-view .watchlist-stock-ticker {
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 700;
   color: #007AFF;
   letter-spacing: 0.02em;
   font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
   flex-shrink: 0;
-  min-width: 60px;
+  min-width: 44px;
 }
 
 /* Watchlist 股票名稱 */
 .price-analysis-view .watchlist-stock-name {
-  font-size: 0.8rem;
-  color: #1d1d1f;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary, #666);
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
@@ -2137,15 +2106,16 @@
   text-overflow: ellipsis;
 }
 
-/* 左欄：不做成有框卡片——那會跟右邊的圖表卡互相搶。改成整欄鋪一層比頁面稍深的
-   底色，讓清單自成一區、也看得出從哪裡開始到哪裡結束；桌機再補一條 hairline
-   當右邊界。項目原本的白底同時要拿掉，不然就是一堆白 pill 浮在灰底上。 */
+/* 左欄用跟圖表卡同一套 surface：白底、同一級圓角、最輕的陰影。灰底試過會跟頁面
+   糊在一起，白底才把清單從背景拉出來，也跟右邊的卡片收在同一個系統裡。 */
 .price-analysis-view .pa-sidenav {
   width: 100%;
   box-sizing: border-box;
-  background: var(--color-bg-subtle, #f0f0f0);
-  border-radius: var(--border-radius-medium, 10px);
-  padding: 4px 4px 8px;
+  background: var(--color-bg-card, #ffffff);
+  border: 1px solid var(--color-border-light, #ebebeb);
+  border-radius: var(--border-radius-large, 14px);
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.03));
+  padding: 6px 8px 10px;
 }
 
 .price-analysis-view .pa-sidenav .quick-select-section {
@@ -2156,36 +2126,45 @@
   width: 100%;
 }
 
-.price-analysis-view .pa-sidenav .quick-select-content {
-  padding-right: 4px;
-}
 
-/* 底色上來之後，項目改成透明、hover 才浮白，層級才分得出來 */
+/* 面板是白的，項目本身透明，hover 才上淡藍並亮起左側標記 */
 .price-analysis-view .pa-sidenav .free-stock-item,
 .price-analysis-view .pa-sidenav .watchlist-stock-item {
   background: transparent;
   border-color: transparent;
+  border-left-width: 2px;
+  border-radius: 0 var(--border-radius-small, 6px) var(--border-radius-small, 6px) 0;
 }
 
-/* sticky 的區域標題必須不透明才遮得住捲到它底下的項目，原本用純白；
-   底色換上來之後白色會變成浮在灰底上的白條，所以改成同一層底色。
+/* sticky 的區域標題必須不透明才遮得住捲到它底下的項目，底色跟著面板走。
    展開態的藍色調是半透明的，疊一層當背景圖才不會透出後面的內容。 */
 .price-analysis-view .pa-sidenav .region-header,
 .price-analysis-view .pa-sidenav .watchlist-category-title {
-  background: var(--color-bg-subtle, #f0f0f0);
+  background: var(--color-bg-card, #ffffff);
 }
 
 .price-analysis-view .pa-sidenav .region-header:not(.collapsed),
 .price-analysis-view .pa-sidenav .watchlist-category-title:not(.collapsed) {
   background:
     linear-gradient(rgba(0, 122, 255, 0.06), rgba(0, 122, 255, 0.06)),
-    var(--color-bg-subtle, #f0f0f0);
+    var(--color-bg-card, #ffffff);
+}
+
+.price-analysis-view .pa-sidenav .region-header.collapsed:hover,
+.price-analysis-view .pa-sidenav .watchlist-category-title.collapsed:hover {
+  background: var(--color-bg-page, #f5f5f7);
 }
 
 .price-analysis-view .pa-sidenav .free-stock-item:hover,
 .price-analysis-view .pa-sidenav .watchlist-stock-item:hover {
-  background: var(--color-bg-card, #ffffff);
-  border-color: var(--color-border-soft, #e5e5e5);
+  background: rgba(0, 122, 255, 0.06);
+  border-color: transparent;
+  border-left-color: var(--accent-color-blue, #007aff);
+}
+
+.price-analysis-view .pa-sidenav .free-stock-item:hover .free-stock-name,
+.price-analysis-view .pa-sidenav .watchlist-stock-item:hover .watchlist-stock-name {
+  color: var(--color-text-primary, #1d1d1f);
 }
 
 @media (max-width: 1023px) {

@@ -36,9 +36,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 8px 12px 8px 8px;
+  padding: 8px 6px 4px;
   margin-bottom: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 6px;
@@ -67,7 +66,7 @@
 .region-header-content {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 8px;
   flex: 1;
 }
@@ -78,36 +77,27 @@
 }
 
 .region-title {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.74rem;
+  font-weight: 700;
   color: var(--color-text-secondary, #666);
   margin: 0;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  text-align: center;
 }
 
-/* 計數徽章樣式 - Apple 風格 */
+/* 計數只是輔助資訊，做成安靜的數字 */
 .region-count-badge {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  background: rgba(0, 122, 255, 0.1);
-  color: #007AFF;
-  font-size: 0.7rem;
-  font-weight: 600;
-  border-radius: 10px;
-  margin-left: 8px;
+  color: var(--color-text-tertiary, #999);
+  font-size: 0.72rem;
+  font-weight: 500;
+  margin-left: 6px;
   flex-shrink: 0;
 }
 
 /* 收合圖示樣式 */
 .collapse-icon {
   flex-shrink: 0;
-  color: var(--color-text-secondary, #666);
+  color: var(--color-text-tertiary, #999);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-left: 8px;
 }
@@ -121,31 +111,24 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.free-stock-region:has(.region-stocks) {
-  background: rgba(0, 122, 255, 0.02);
-  border-radius: 8px;
-  padding: 4px;
-  margin-bottom: 0;
-}
-
 /* 標的項目略微縮排，強化層級感 */
 .region-stocks {
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 4px;
+  padding-right: 0;
 }
 
 /* 區域內的股票列表 - 改為垂直排列 */
 .region-stocks {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
 }
 
 /* 免費股票項目 - 改為一列一個，增大字體 */
 .free-stock-item {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  padding: 6px 10px;
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 6px;
@@ -157,14 +140,8 @@
 }
 
 .free-stock-item:hover {
-  transform: translateY(-1px);
   border-color: #007AFF;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.15);
   background: rgba(0, 122, 255, 0.05);
-}
-
-.free-stock-item:active {
-  transform: translateY(0);
 }
 
 .free-stock-info {
@@ -173,21 +150,21 @@
   align-items: center;
   width: 100%;
   min-width: 0;
-  gap: 8px;
+  gap: 6px;
 }
 
 .free-stock-ticker {
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 700;
   color: #007AFF;
   font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
   flex-shrink: 0;
-  min-width: 60px;
+  min-width: 44px;
 }
 
 .free-stock-name {
-  font-size: 0.8rem;
-  color: #1d1d1f;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary, #666);
   line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -198,11 +175,9 @@
 
 /* 區域標籤 */
 .stock-region-badge {
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   color: var(--color-text-tertiary, #999);
-  background: rgba(0, 0, 0, 0.05);
-  padding: 2px 6px;
-  border-radius: 3px;
+  letter-spacing: 0.04em;
   margin-left: auto;
   flex-shrink: 0;
   font-weight: 500;

@@ -8,6 +8,7 @@
   --color-bg-card: #ffffff;
   --color-bg-elevated: #ffffff; /* 用於彈窗等更高層級的元素 */
   --color-bg-subtle: #f0f0f0; /* 細微背景，用於輕微區分區塊或 active 狀態 */
+  --color-bg-secondary: #f2f2f7; /* 次級背景，比 page 再深一階 */
 
   /* 文字顏色 */
   --color-text-primary: rgba(0, 0, 0, 0.85); /* 主要文字，接近黑色 */
@@ -30,6 +31,7 @@
   --color-border-default: #d1d1d6; /* 類似 iOS 輸入框 */
   --color-border-strong: #b7bcc6;
   --color-border-divider: #ebebeb; /* 分隔線 */
+  --color-border-light: var(--color-border-divider); /* 舊碼別名，避免落回 Bootstrap 灰 */
 
   /* 圓角 */
   --border-radius-small: 6px;
