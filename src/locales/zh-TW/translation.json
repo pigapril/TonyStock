@@ -1207,6 +1207,12 @@
       "switchToBrowse": "切換到瀏覽模式",
       "switchToEdit": "切換到編輯模式"
     },
+    "sort": {
+      "menuLabel": "排序",
+      "ariaNone": "依{{column}}排序",
+      "ariaAsc": "{{column}} 已遞增排序，點擊改為遞減",
+      "ariaDesc": "{{column}} 已遞減排序，點擊取消排序"
+    },
     "infoTooltip": "添加股票後，將自動根據股票長期(3.5年)趨勢，計算出當前價格的情緒位階，包括極度恐懼、恐懼、中性、貪婪、極度貪婪，點擊該股票可跳轉至樂活五線譜頁面查看詳情",
     "categoryTabs": {
       "manageCategoriesAria": "管理分類"

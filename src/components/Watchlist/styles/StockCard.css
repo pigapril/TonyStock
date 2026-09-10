@@ -446,22 +446,41 @@
     }
 }
 
-/* Header row styles */
+/* 欄位表頭。
+
+   標籤不做成色塊：列表本身已經是一排有陰影的白卡，卡與卡的間隔就在分欄，
+   再疊一層灰底等於兩套分隔線並存。留一條 1px 細線就足夠說明「下面這些是欄位」。
+   顏色從 #b6b3b3 換成 #64748b，一是對比度從 1.94:1 拉到 4.76:1（過 AA），
+   二是整個觀察清單其他地方用的都是這套 slate，暖灰放進來像是別處搬來的。
+
+   欄寬直接沿用 .stock-item 各段的 flex 值，padding 與 gap 也跟著一樣。
+   表頭原本自己一組寬度（代碼 min 100px、分析 max 25%、新聞 min 180px，
+   外加 -1.5% 的負邊界），跟卡片對不起來，標籤會飄。 */
 .stock-card-header-row-wrapper {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .stock-card-header-row {
     display: flex;
-    justify-content: space-between;
-    padding: 8px 16px;
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 0.9em;
-    color: #b6b3b3;
+    align-items: center;
+    gap: clamp(4px, 1vw, 8px);
     box-sizing: border-box;
     width: 100%;
-    border-radius: 8px;
+    padding: 0 clamp(4px, 1.5vw, 16px) 8px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* 卡片最右邊是刪除鈕，表頭沒有對應的標籤。不把這段寬度留出來，
+   五個標籤會整排往右移，吃掉刪除鈕的位置。 */
+.stock-card-header-row::after {
+    content: "";
+    flex: 0 0 auto;
+    width: clamp(32px, 5vw, 40px);
+    margin-left: auto;
 }
 
 .stock-card-header-row span {
@@ -471,12 +490,25 @@
     white-space: nowrap;
 }
 
+/* 五欄裡只有三欄能排序。全部一樣重的話，不能點的那兩欄看起來像壞掉的按鈕。 */
+.stock-analysis-title,
+.stock-news-title {
+    font-weight: 500;
+    opacity: 0.72;
+}
+
 .stock-header-title {
     flex: 1 1 20%;
-    min-width: 100px;
-    max-width: 18%;
-    margin-left: -1.5%;
-    margin-right: 1.5%;
+    min-width: 60px;
+    max-width: 25%;
+    text-align: left;
+}
+
+/* 卡片的代碼欄從內容框左緣就開始放 logo，排序按鈕自己有 4px 的左內距，
+   扣掉它標籤才跟 logo 對在同一條線上。 */
+.stock-header-title .sort-button {
+    justify-content: flex-start;
+    margin-left: -4px;
 }
 
 .current-price-title {
@@ -488,7 +520,7 @@
 .stock-analysis-title {
     flex: 1 1 30%;
     min-width: 150px;
-    max-width: 25%;
+    max-width: 35%;
 }
 
 .stock-sentiment-title {
@@ -500,12 +532,12 @@
 
 .stock-news-title {
     flex: 1 1 20%;
-    /* Adjusted to match stock-news-section */
-    min-width: 180px;
+    /* Matches stock-news-section */
+    min-width: 80px;
     max-width: 25%;
+    margin-left: clamp(8px, 2vw, 40px);
+    text-align: left;
 }
-
-/* No header for remove-button-section, so we leave a gap implicitly */
 
 @media (max-width: 640px) {
     .stock-card-header-row-wrapper {

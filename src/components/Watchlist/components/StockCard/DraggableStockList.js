@@ -13,7 +13,9 @@ export const DraggableStockList = ({
     categoryId,
     onRemoveStock,
     onReorder,
-    onNewsClick
+    onNewsClick,
+    sortState,
+    onSortChange
 }) => {
     const handleDragEnd = useCallback((result) => {
         // 如果沒有有效的拖放目標，不做任何事
@@ -49,7 +51,7 @@ export const DraggableStockList = ({
 
     return (
         <>
-            <StockListHeaderRow />
+            <StockListHeaderRow sortState={sortState} onSortChange={onSortChange} />
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId={`stocks-${categoryId}`}>
                     {(provided, snapshot) => (
@@ -102,7 +104,12 @@ DraggableStockList.propTypes = {
     categoryId: PropTypes.string.isRequired,
     onRemoveStock: PropTypes.func.isRequired,
     onReorder: PropTypes.func,
-    onNewsClick: PropTypes.func.isRequired
+    onNewsClick: PropTypes.func.isRequired,
+    sortState: PropTypes.shape({
+        key: PropTypes.string,
+        direction: PropTypes.string
+    }),
+    onSortChange: PropTypes.func.isRequired
 };
 
 export default DraggableStockList;

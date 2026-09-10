@@ -1197,6 +1197,12 @@
       "switchToBrowse": "Switch to browse mode",
       "switchToEdit": "Switch to edit mode"
     },
+    "sort": {
+      "menuLabel": "Sort",
+      "ariaNone": "Sort by {{column}}",
+      "ariaAsc": "{{column}} sorted ascending, click for descending",
+      "ariaDesc": "{{column}} sorted descending, click to clear sorting"
+    },
     "infoTooltip": "Add a stock, and we'll automatically determine its current price position within the LOHAS Five-Line sentiment bands (Extreme Fear to Extreme Greed) based on its 3.5-year trend. Click the stock for the full LOHAS Five-Line Analysis chart.",
     "categoryTabs": {
       "manageCategoriesAria": "Manage Categories"

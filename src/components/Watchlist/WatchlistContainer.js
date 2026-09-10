@@ -16,6 +16,8 @@ import { InfoTool } from '../Common/InfoTool/InfoTool';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { StaticStockList } from './components/StockCard/StaticStockList';
+import { SortMenu } from './components/SortMenu';
+import { sortStocks, SORTABLE_COLUMNS } from './utils/sortStocks';
 
 const loadDraggableStockList = () => import('./components/StockCard/DraggableStockList');
 const DraggableStockList = lazy(loadDraggableStockList);
@@ -23,6 +25,31 @@ const CategoryManagerDialog = lazy(() => import('./components/CategoryManagerDia
 const CreateCategoryDialog = lazy(() => import('./components/CreateCategoryDialog').then((module) => ({ default: module.CreateCategoryDialog })));
 const EditCategoryDialog = lazy(() => import('./components/EditCategoryDialog').then((module) => ({ default: module.EditCategoryDialog })));
 const NewsDialog = lazy(() => import('./NewsDialog'));
+
+// 欄位排序只是檢視，不寫進 DB 的 sortOrder，所以記在瀏覽器端、依分類各記一份。
+const SORT_STORAGE_PREFIX = 'watchlist:sort:';
+const NO_SORT = { key: null, direction: null };
+
+const readStoredSort = (categoryId) => {
+    if (!categoryId) {
+        return NO_SORT;
+    }
+
+    try {
+        const raw = window.localStorage.getItem(`${SORT_STORAGE_PREFIX}${categoryId}`);
+        if (!raw) {
+            return NO_SORT;
+        }
+        const parsed = JSON.parse(raw);
+        if (SORTABLE_COLUMNS.includes(parsed?.key) && ['asc', 'desc'].includes(parsed?.direction)) {
+            return { key: parsed.key, direction: parsed.direction };
+        }
+    } catch (error) {
+        // 隱私模式讀不到、或存進去的值壞了。當作沒排序，不要讓它擋住清單。
+    }
+
+    return NO_SORT;
+};
 
 // Watchlist 主元件
 export function WatchlistContainer() {
@@ -127,6 +154,7 @@ export function WatchlistContainer() {
         createCategory: false,
         editCategory: false
     });
+    const [sortState, setSortState] = useState(NO_SORT);
     const [isEditing, setIsEditing] = useState(false);
     const [isEditModeReady, setIsEditModeReady] = useState(false);
     const [isPreparingEditMode, setIsPreparingEditMode] = useState(false);
@@ -135,6 +163,31 @@ export function WatchlistContainer() {
     const handleTabChange = (categoryId) => {
         setActiveTab(categoryId);
     };
+
+    // 每個分類各自記住上次的排序
+    useEffect(() => {
+        setSortState(readStoredSort(activeTab));
+    }, [activeTab]);
+
+    const handleSortChange = useCallback((column, direction) => {
+        const next = direction ? { key: column, direction } : NO_SORT;
+        setSortState(next);
+
+        if (!activeTab) {
+            return;
+        }
+
+        try {
+            const storageKey = `${SORT_STORAGE_PREFIX}${activeTab}`;
+            if (next.key) {
+                window.localStorage.setItem(storageKey, JSON.stringify(next));
+            } else {
+                window.localStorage.removeItem(storageKey);
+            }
+        } catch (error) {
+            // 存不進去不影響當次排序
+        }
+    }, [activeTab]);
 
     // 統一的對話框控制函數
     const updateDialogState = useCallback((dialogName, isOpen) => {
@@ -357,6 +410,16 @@ export function WatchlistContainer() {
         [activeTab, categories]
     );
 
+    const sortedStocks = useMemo(
+        () => sortStocks(activeCategory?.stocks || [], sortState.key, sortState.direction),
+        [activeCategory, sortState]
+    );
+
+    // 拖曳寫的是永久的 sortOrder。在欄位排序後的畫面上拖，會把當下的顯示順序
+    // 存成手動順序，使用者把排序歸零才發現原本拖好的順序被蓋掉。
+    // 所以排序期間只關掉拖曳，刪除按鈕照留。
+    const canDrag = isEditing && !sortState.key;
+
     // 3. 使用 useMemo 來定義 JSON-LD，並加入 currentLang 作為依賴
     const watchlistJsonLd = useMemo(() => ({
         "@context": "https://schema.org",
@@ -466,6 +529,10 @@ export function WatchlistContainer() {
                                             />
 
                                             <div className="watchlist-list-toolbar">
+                                                <SortMenu
+                                                    sortState={sortState}
+                                                    onSortChange={handleSortChange}
+                                                />
                                                 <div className="category-operations">
                                                     <button
                                                         type="button"
@@ -499,22 +566,27 @@ export function WatchlistContainer() {
                                             </div>
                                         </div>
 
-                                        {isEditing ? (
+                                        {canDrag ? (
                                             <Suspense fallback={null}>
                                                 <DraggableStockList
-                                                    stocks={activeCategory.stocks}
+                                                    stocks={sortedStocks}
                                                     categoryId={activeCategory.id}
                                                     onRemoveStock={onRemoveStock}
                                                     onReorder={onReorderStocks}
                                                     onNewsClick={handleNewsClick}
+                                                    sortState={sortState}
+                                                    onSortChange={handleSortChange}
                                                 />
                                             </Suspense>
                                         ) : (
                                             <StaticStockList
-                                                stocks={activeCategory.stocks}
+                                                stocks={sortedStocks}
                                                 categoryId={activeCategory.id}
                                                 onRemoveStock={onRemoveStock}
                                                 onNewsClick={handleNewsClick}
+                                                sortState={sortState}
+                                                onSortChange={handleSortChange}
+                                                isEditing={isEditing}
                                             />
                                         )}
                                     </div>

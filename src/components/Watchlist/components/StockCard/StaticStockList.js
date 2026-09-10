@@ -7,7 +7,10 @@ export function StaticStockList({
     stocks,
     categoryId,
     onRemoveStock,
-    onNewsClick
+    onNewsClick,
+    sortState,
+    onSortChange,
+    isEditing = false
 }) {
     if (!stocks?.length) {
         return null;
@@ -15,7 +18,7 @@ export function StaticStockList({
 
     return (
         <>
-            <StockListHeaderRow />
+            <StockListHeaderRow sortState={sortState} onSortChange={onSortChange} />
             <div className="stock-list" data-testid="static-stock-list">
                 {stocks.map((stock, index) => (
                     <div
@@ -27,8 +30,8 @@ export function StaticStockList({
                             onRemove={() => onRemoveStock(categoryId, stock.id)}
                             onNewsClick={onNewsClick}
                             isFirstInCategory={index === 0}
-                            showRemoveButton={false}
-                            isEditing={false}
+                            showRemoveButton={isEditing}
+                            isEditing={isEditing}
                         />
                     </div>
                 ))}
@@ -46,5 +49,11 @@ StaticStockList.propTypes = {
     ).isRequired,
     categoryId: PropTypes.string.isRequired,
     onRemoveStock: PropTypes.func.isRequired,
-    onNewsClick: PropTypes.func.isRequired
+    onNewsClick: PropTypes.func.isRequired,
+    sortState: PropTypes.shape({
+        key: PropTypes.string,
+        direction: PropTypes.string
+    }),
+    onSortChange: PropTypes.func.isRequired,
+    isEditing: PropTypes.bool
 };

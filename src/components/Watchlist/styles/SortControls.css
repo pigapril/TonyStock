@@ -1,0 +1,127 @@
+/* 三態排序控制。方向不寫成文字，靠一組上下箭頭表達，亮起來的那一個就是目前的方向。
+
+   表頭本身是安靜的灰，所以未排序時箭頭要比標題文字更淡，排序中才用
+   品牌藍點亮。這樣一眼掃過去只會看到「現在按哪一欄排」，不會變成
+   三個一樣重的圖示在搶注意力。 */
+
+.sort-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 100%;
+    margin: 0;
+    padding: 2px 4px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.sort-button:hover {
+    background: rgba(15, 23, 42, 0.05);
+    color: #475569;
+}
+
+.sort-button:focus-visible {
+    outline: 2px solid rgba(29, 78, 216, 0.5);
+    outline-offset: 1px;
+}
+
+.sort-button[data-direction="asc"],
+.sort-button[data-direction="desc"] {
+    color: #1e293b;
+}
+
+.sort-button__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sort-button__arrows {
+    flex: 0 0 auto;
+    width: 7px;
+    height: 12px;
+}
+
+.sort-button__arrow {
+    fill: currentColor;
+    opacity: 0.3;
+    transition: opacity 0.15s ease, fill 0.15s ease;
+}
+
+.sort-button[data-direction="asc"] .sort-button__arrow--up,
+.sort-button[data-direction="desc"] .sort-button__arrow--down {
+    fill: #1d4ed8;
+    opacity: 1;
+}
+
+/* 手機入口。表頭在 640px 以下是隱藏的，所以這顆按鈕只在窄螢幕出現，
+   桌機不需要第二套排序入口。 */
+.watchlist-sort-menu {
+    position: relative;
+    display: none;
+    flex: 0 0 auto;
+    margin-right: 6px;
+}
+
+@media (max-width: 640px) {
+    .watchlist-sort-menu {
+        display: block;
+    }
+}
+
+.watchlist-sort-menu__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    border-radius: 999px;
+    background: rgba(241, 245, 249, 0.95);
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.watchlist-sort-menu__trigger svg {
+    width: 15px;
+    height: 15px;
+}
+
+.watchlist-sort-menu__trigger.is-active {
+    background: #ffffff;
+    border-color: rgba(191, 219, 254, 0.95);
+    color: #1d4ed8;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.watchlist-sort-menu__panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 148px;
+    padding: 6px;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+}
+
+.watchlist-sort-menu__panel .sort-button {
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: #334155;
+    font-size: 0.85rem;
+}
