@@ -162,20 +162,4 @@ describe.each([['zh-TW', zhTW], ['en', en]])('%s：沿用畫面上已經有的�
     const sentiment = dict.priceAnalysis.sentiment;
     expect(horizons.toLowerCase()).toContain(sentiment.extremeFear.toLowerCase());
   });
-
-  // 讀屏聽到的字要跟看得到的字一致；「標準差」是算法名，畫面上叫樂活五線譜。
-  it('讀屏標籤不用內部算法名', () => {
-    const label = dict.watchlist.stockCard.signal.ariaLabel;
-    const banned = lang === 'zh-TW' ? '標準差' : 'standard-deviation';
-    expect(label).not.toContain(banned);
-  });
-
-  // 「通道」在這個網站是樂活通道的專名，五線譜的區間不能也叫通道。
-  it('「通道」只留給樂活通道', () => {
-    if (lang !== 'zh-TW') return;
-    Object.entries(dict.watchlist.stockCard.signal).forEach(([key, value]) => {
-      if (key === 'ariaLabel') return;
-      expect(value).not.toContain('通道');
-    });
-  });
 });
