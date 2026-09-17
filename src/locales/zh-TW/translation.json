@@ -1265,12 +1265,6 @@
         "jpFlagAlt": "日本國旗",
         "cnFlagAlt": "中國國旗",
         "krFlagAlt": "韓國國旗"
-      },
-      "signal": {
-        "upper": "今日轉為極度貪婪",
-        "lower": "今日轉為極度恐懼",
-        "returned": "今日離開極端",
-        "ariaLabel": "{{symbol}} 今日在樂活五線譜的位置有變化"
       }
     },
     "newsDialog": {
@@ -2707,6 +2701,83 @@
       "relationToSio": "在個股的樂活五線譜頁面上，如果這檔股票已經是極度恐懼，狀態欄位也會告訴你當天整個市場的恐懼廣度是多少。可以觀察是只有單一標的達到極端恐慌，還是連同全市場都在恐慌",
       "relationToSioCta": "查看個股的樂活五線譜",
       "source": "由 Sentiment Inside Out 依公開市場資料計算。台美股每個交易日更新。"
+    }
+  },
+  "cardTrial": {
+    "title": "免費試用 30 天",
+    "planCard": {
+      "startTrial": "免費試用 30 天"
+    },
+    "disclosureTitle": "開始前請確認",
+    "disclosure": {
+      "length": "試用期 30 天，期間可使用全部 Pro 功能",
+      "verification": "綁定信用卡時會進行一筆 2 元的驗證，你不會被收取這筆費用",
+      "renewal": "試用期滿若未取消，將於 {{date}} 自動扣款 199 元，之後每月自動續費",
+      "renewalYearly": "試用期滿若未取消，將於 {{date}} 自動扣款 1990 元，之後每年自動續費",
+      "cancel": "隨時可於帳戶頁面取消，取消後試用期仍可使用到期滿"
+    },
+    "consent": "我已閱讀並同意以上內容與",
+    "consentLink": "服務條款和隱私政策",
+    "start": "同意並綁定信用卡",
+    "preparing": "正在準備，請稍候",
+    "cardTitle": "輸入信用卡資料",
+    "cardNote": "卡片資料由綠界處理，我們不會儲存你的卡號。",
+    "submit": "開始試用",
+    "submitting": "處理中",
+    "restart": "重新開始",
+    "errors": {
+      "expired": "這次綁卡已超過有效時間，請重新開始。",
+      "rateLimited": "嘗試次數過多，請稍後再試。",
+      "alreadySubscribed": "此帳號已有有效訂閱。",
+      "notEligible": "免費試用僅限首次訂閱的帳號。",
+      "sdk": "信用卡欄位載入失敗，請重新整理頁面。",
+      "generic": "目前無法綁定信用卡，請稍後再試。"
+    },
+    "result": {
+      "successTitle": "試用已開始",
+      "successBody": "信用卡綁定完成，Pro 功能已經開啟。",
+      "successCta": "開始使用",
+      "pendingTitle": "正在確認結果",
+      "pendingBody": "銀行的回覆還在路上，稍後可於帳戶頁面查看。",
+      "failedTitle": "綁定沒有完成",
+      "failedBody": "這張卡沒有綁定成功，你沒有被收取任何費用。",
+      "retryCta": "重新試一次",
+      "accountCta": "前往帳戶頁面"
+    }
+  },
+  "cardUpdate": {
+    "title": "更換付款卡片",
+    "disclosure": {
+      "verification": "綁定新卡時會進行一筆 2 元的驗證，你不會被收取這筆費用",
+      "futureCharges": "之後的扣款會改用新卡",
+      "chargeNow": "換卡成功後會立即扣款 {{amount}} 元",
+      "nextCharge": "扣款成功後，下次扣款日為 {{date}}"
+    },
+    "consent": "我已閱讀並同意以上內容與",
+    "consentLink": "服務條款和隱私政策",
+    "start": "同意並綁定新卡",
+    "startAndPay": "同意並綁定新卡，付款 {{amount}} 元",
+    "submit": "綁定新卡",
+    "errors": {
+      "notAvailable": "這個帳號目前沒有可以更換卡片的訂閱。",
+      "stateChanged": "付款狀態剛剛有變動，請重新整理頁面後再試一次。",
+      "chargePending": "上一筆扣款正在向銀行確認，確認完成前無法更換卡片。"
+    },
+    "method": {
+      "title": "付款方式",
+      "card": "•••• {{last4}}，有效期限 {{mm}}/{{yy}}",
+      "cardWithoutLast4": "有效期限 {{mm}}/{{yy}}",
+      "cardWithoutValidity": "•••• {{last4}}",
+      "update": "更換卡片",
+      "updateAndPay": "更換卡片並付款 {{amount}} 元",
+      "graceNotice": "這次扣款未成功，我們沒有向你收取任何費用。請於 {{date}} 前更換付款卡片。"
+    },
+    "result": {
+      "successTitle": "卡片已更新",
+      "successBody": "之後的扣款會改用這張卡。",
+      "chargingBody": "我們正在用新卡扣款，完成後會寄收據給你。",
+      "failedTitle": "卡片沒有更新",
+      "failedBody": "這張卡沒有綁定成功，你沒有被收取任何費用。"
     }
   }
 }

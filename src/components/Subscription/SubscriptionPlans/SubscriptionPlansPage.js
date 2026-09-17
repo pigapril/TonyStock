@@ -10,6 +10,7 @@ import { RedemptionCodeInput } from '../../Redemption/RedemptionCodeInput';
 import { Analytics } from '../../../utils/analytics';
 import { canAccessPaymentFeatures, getWhitelistDebugInfo } from '../../../utils/premiumWhitelist';
 import subscriptionService from '../../../api/subscriptionService';
+import { fetchCardTrialEligibility } from '../../../services/cardTrialService';
 import { Dialog } from '../../Common/Dialog/Dialog';
 import './SubscriptionPlansPage.css';
 
@@ -32,6 +33,32 @@ export const SubscriptionPlansPage = () => {
   const [availablePlans, setAvailablePlans] = useState([]);
   const [plansLoading, setPlansLoading] = useState(true);
   const [plansError, setPlansError] = useState(null);
+
+  // 綁卡試用的資格。預設 false，查詢失敗也維持 false：綁卡軌還沒在 production 驗證過，
+  // 不確定的時候要讓使用者走既有的定期定額流程，而不是試用。
+  const [cardTrialEligible, setCardTrialEligible] = useState(false);
+
+  // 臨時免費模式下沒有付款權限的人，按鈕原本是開公告對話框。那條路徑不接試用入口，
+  // 否則會繞過公告。
+  const canEnterPayment = !isTemporaryFreeMode || canUserAccessPayment;
+
+  useEffect(() => {
+    if (!user || !canEnterPayment) {
+      setCardTrialEligible(false);
+      return undefined;
+    }
+
+    let abandoned = false;
+    fetchCardTrialEligibility()
+      .then((result) => {
+        if (!abandoned) setCardTrialEligible(result?.eligible === true);
+      })
+      .catch(() => {
+        if (!abandoned) setCardTrialEligible(false);
+      });
+
+    return () => { abandoned = true; };
+  }, [user, canEnterPayment]);
 
   // 載入方案資料
   useEffect(() => {
@@ -355,6 +382,7 @@ export const SubscriptionPlansPage = () => {
               billingPeriod={billingPeriod}
               planAdjustment={planAdjustments[plan.id]}
               appliedRedemption={appliedRedemption}
+              cardTrialEligible={cardTrialEligible}
               onShowFreeTrialDialog={handleShowFreeTrialDialog}
             />
           ))}

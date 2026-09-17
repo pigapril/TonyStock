@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../Auth/useAuth';
 import { useSubscription } from '../SubscriptionContext';
 import { PlanInfo } from './components/PlanInfo';
+import { PaymentMethod } from './components/PaymentMethod';
 import { Button } from '../../Common/Button/Button';
 // import { UsageStats } from './components/UsageStats'; // Hidden per user request
 import PaymentHistory from '../../Payment/PaymentHistory';
@@ -133,6 +134,8 @@ export const UserAccountPage = () => {
             </h2>
             <PlanInfo plan={userPlan} loading={loading} />
           </section>
+
+          <PaymentMethod plan={userPlan} />
 
           {/* Usage Statistics Section - Hidden per user request */}
           {/* 

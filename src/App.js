@@ -74,6 +74,10 @@ const PaymentPage = lazy(() => import('./pages/PaymentPage'));
 const PaymentFlowPage = lazy(() => import('./pages/PaymentFlowPage'));
 const PaymentStatusPage = lazy(() => import('./pages/PaymentStatusPage'));
 const PaymentResult = lazy(() => import('./components/Payment/PaymentResult/PaymentResult').then((module) => ({ default: module.PaymentResult })));
+const CardTrialFlow = lazy(() => import('./components/Payment/CardTrial/CardTrialFlow'));
+const CardTrialResult = lazy(() => import('./components/Payment/CardTrial/CardTrialResult'));
+const CardUpdateFlow = lazy(() => import('./components/Payment/CardUpdate/CardUpdateFlow'));
+const CardUpdateResult = lazy(() => import('./components/Payment/CardUpdate/CardUpdateResult'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 const AdminDiagnostic = lazy(() => import('./pages/AdminDiagnostic'));
 const AnnouncementBar = lazy(() => import('./components/Common/AnnouncementBar/AnnouncementBar'));
@@ -617,6 +621,18 @@ function AppContent() {
                   </ProtectedRoute>
                 } />
                 <Route path="payment/result" element={<PaymentResult />} />
+                <Route path="payment/card-trial" element={
+                  <ProtectedRoute>
+                    <CardTrialFlow />
+                  </ProtectedRoute>
+                } />
+                <Route path="payment/card-trial/result" element={<CardTrialResult />} />
+                <Route path="payment/card-update" element={
+                  <ProtectedRoute>
+                    <CardUpdateFlow />
+                  </ProtectedRoute>
+                } />
+                <Route path="payment/card-update/result" element={<CardUpdateResult />} />
                 <Route
                   path="google-trends/symbol/:symbol"
                   element={

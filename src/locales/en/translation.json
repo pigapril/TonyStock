@@ -1255,12 +1255,6 @@
         "jpFlagAlt": "Japan market flag",
         "cnFlagAlt": "China market flag",
         "krFlagAlt": "Korea market flag"
-      },
-      "signal": {
-        "upper": "Turned extreme greed today",
-        "lower": "Turned extreme fear today",
-        "returned": "Left the extreme today",
-        "ariaLabel": "{{symbol}} changed its position on the LOHAS five-line chart today"
       }
     },
     "newsDialog": {
@@ -2694,6 +2688,83 @@
       "relationToSio": "On a stock’s LOHAS five-line page, when that stock is already at extreme fear, the status row also shows how broad the market’s fear is that day. You can see whether only this one holding has reached extreme fear, or the whole market with it.",
       "relationToSioCta": "Open the LOHAS five-line analysis",
       "source": "Calculated by Sentiment Inside Out from public market data. Updated every trading day for Taiwan and the US."
+    }
+  },
+  "cardTrial": {
+    "title": "30-day free trial",
+    "planCard": {
+      "startTrial": "Start a 30-day free trial"
+    },
+    "disclosureTitle": "Before you start",
+    "disclosure": {
+      "length": "The trial runs for 30 days, with every Pro feature available",
+      "verification": "Binding your card runs a NT$2 verification, and you will not be charged for it",
+      "renewal": "If you do not cancel, NT$199 will be charged automatically on {{date}}, and monthly after that",
+      "renewalYearly": "If you do not cancel, NT$1,990 will be charged automatically on {{date}}, and yearly after that",
+      "cancel": "You can cancel any time on your account page, and the trial stays available until it ends"
+    },
+    "consent": "I have read and agree to the above and to the",
+    "consentLink": "Terms of Service and Privacy Policy",
+    "start": "Agree and bind card",
+    "preparing": "Getting things ready",
+    "cardTitle": "Enter your card details",
+    "cardNote": "Card details are handled by ECPay. We never store your card number.",
+    "submit": "Start the trial",
+    "submitting": "Working on it",
+    "restart": "Start over",
+    "errors": {
+      "expired": "This card binding session has timed out. Please start over.",
+      "rateLimited": "Too many attempts. Please try again later.",
+      "alreadySubscribed": "This account already has an active subscription.",
+      "notEligible": "The free trial is only for accounts subscribing for the first time.",
+      "sdk": "The card fields failed to load. Please refresh the page.",
+      "generic": "Card binding is unavailable right now. Please try again later."
+    },
+    "result": {
+      "successTitle": "Your trial has started",
+      "successBody": "Your card is bound and Pro features are now open.",
+      "successCta": "Get started",
+      "pendingTitle": "Confirming the result",
+      "pendingBody": "The bank has not replied yet. You can check your account page shortly.",
+      "failedTitle": "Card binding did not complete",
+      "failedBody": "This card was not bound, and you were not charged anything.",
+      "retryCta": "Try again",
+      "accountCta": "Go to account page"
+    }
+  },
+  "cardUpdate": {
+    "title": "Update payment card",
+    "disclosure": {
+      "verification": "Binding your new card runs a NT$2 verification, and you will not be charged for it",
+      "futureCharges": "Future charges will use the new card",
+      "chargeNow": "Once the card is updated, NT${{amount}} will be charged right away",
+      "nextCharge": "After that charge succeeds, your next charge date is {{date}}"
+    },
+    "consent": "I have read and agree to the above and to the",
+    "consentLink": "Terms of Service and Privacy Policy",
+    "start": "Agree and bind new card",
+    "startAndPay": "Agree, bind new card, and pay NT${{amount}}",
+    "submit": "Bind new card",
+    "errors": {
+      "notAvailable": "This account has no subscription whose card can be updated.",
+      "stateChanged": "Your payment status just changed. Please refresh the page and try again.",
+      "chargePending": "Your last charge is still being confirmed with the bank. You can update your card once it is confirmed."
+    },
+    "method": {
+      "title": "Payment method",
+      "card": "•••• {{last4}}, expires {{mm}}/{{yy}}",
+      "cardWithoutLast4": "Expires {{mm}}/{{yy}}",
+      "cardWithoutValidity": "•••• {{last4}}",
+      "update": "Update card",
+      "updateAndPay": "Update card and pay NT${{amount}}",
+      "graceNotice": "This charge did not go through, and you were not charged anything. Please update your payment card by {{date}}."
+    },
+    "result": {
+      "successTitle": "Card updated",
+      "successBody": "Future charges will use this card.",
+      "chargingBody": "We are charging your new card now and will email you a receipt when it is done.",
+      "failedTitle": "Card not updated",
+      "failedBody": "This card was not bound, and you were not charged anything."
     }
   }
 }

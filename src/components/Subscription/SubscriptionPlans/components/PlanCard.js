@@ -19,6 +19,7 @@ export const PlanCard = ({
   billingPeriod = 'monthly',
   planAdjustment = null,
   appliedRedemption = null,
+  cardTrialEligible = false,
   onShowFreeTrialDialog = null
 }) => {
   const { t } = useTranslation();
@@ -265,6 +266,19 @@ export const PlanCard = ({
   };
 
 
+
+  // 有資格試用的人只給試用入口。資格由後端決定，但已經有訂閱的人一律不顯示，
+  // 不依賴那一支查詢：既有付費者看到的畫面不能因為這個功能而改變。
+  // 綁卡軌沒有接折扣系統，套用了優惠碼的人要走原本的付款頁，優惠才會生效。
+  const showCardTrialEntry = isPro && cardTrialEligible && !appliedRedemption && !isCurrentPlan && !isCancelledButActive;
+
+  const handleCardTrialSelect = () => {
+    Analytics.track('card_trial_entry_clicked', {
+      planId: plan.id,
+      billingPeriod
+    });
+    navigate(`/${lang}/payment/card-trial?period=${billingPeriod}`);
+  };
 
   const pricingData = getPricingDisplayData(plan, billingPeriod);
 
@@ -542,16 +556,29 @@ export const PlanCard = ({
       )}
 
       <div className="plan-card__action">
-        <AppleButton
-          variant={getButtonVariant()}
-          size="large"
-          onClick={handlePlanSelect}
-          disabled={isCurrentPlan || loading || (plan.displayPrice && !plan.showRealPrice)}
-          loading={loading}
-          className="plan-card__button"
-        >
-          {getButtonText()}
-        </AppleButton>
+        {showCardTrialEntry ? (
+          <AppleButton
+            variant="primary"
+            size="large"
+            onClick={handleCardTrialSelect}
+            disabled={loading || (plan.displayPrice && !plan.showRealPrice)}
+            loading={loading}
+            className="plan-card__button"
+          >
+            {t('cardTrial.planCard.startTrial')}
+          </AppleButton>
+        ) : (
+          <AppleButton
+            variant={getButtonVariant()}
+            size="large"
+            onClick={handlePlanSelect}
+            disabled={isCurrentPlan || loading || (plan.displayPrice && !plan.showRealPrice)}
+            loading={loading}
+            className="plan-card__button"
+          >
+            {getButtonText()}
+          </AppleButton>
+        )}
       </div>
 
     </div>

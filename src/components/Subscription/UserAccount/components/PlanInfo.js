@@ -10,6 +10,14 @@ import subscriptionService from '../../../../services/subscriptionService';
 import { Analytics } from '../../../../utils/analytics';
 import './PlanInfo.css';
 
+// 綁卡試用的扣款日是台北的日子，使用者瀏覽器不在台北時也不能差一天。
+const trialRenewalDateText = (date, lang) => new Intl.DateTimeFormat(lang === 'zh-TW' ? 'zh-TW' : 'en-US', {
+  timeZone: 'Asia/Taipei',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+}).format(date);
+
 export const PlanInfo = ({ plan, loading }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -121,6 +129,12 @@ export const PlanInfo = ({ plan, loading }) => {
   // ✅ 使用 isActive 而非 status 進行判斷（考慮時間因素）
   const isSubscriptionActive = plan?.isActive !== false && !plan?.isExpired;
 
+  const trialEnd = plan.trialEnd ? new Date(plan.trialEnd) : null;
+  const showsTrialRenewal = trialEnd !== null
+    && plan.billingRail === 'bound_card'
+    && !plan.cancelAtPeriodEnd
+    && trialEnd.getTime() > Date.now();
+
   return (
     <div className="plan-info">
       <div className="plan-info__main">
@@ -158,6 +172,15 @@ export const PlanInfo = ({ plan, loading }) => {
               <span className="plan-info__auto-renew-text">
                 {t('subscription.autoRenewEnabled')}
               </span>
+            </div>
+          )}
+
+          {showsTrialRenewal && (
+            <div className="plan-info__date">
+              {t(
+                plan.billingPeriod === 'yearly' ? 'cardTrial.disclosure.renewalYearly' : 'cardTrial.disclosure.renewal',
+                { date: trialRenewalDateText(trialEnd, lang) }
+              )}
             </div>
           )}
         </div>

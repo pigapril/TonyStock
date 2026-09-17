@@ -102,3 +102,37 @@ describe('subscriptionService.getUserPlan - free plan start date', () => {
     expect(plan.startDate).toEqual(new Date('2026-01-10T00:00:00.000Z'));
   });
 });
+
+describe('subscriptionService.getUserPlan - bound card fields', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('carries billingRail, billingPeriod, trialEnd and renewalAmount through to the plan', async () => {
+    enhancedApiClient.get.mockResolvedValue({
+      data: {
+        status: 'success',
+        data: {
+          subscription: {
+            id: 'sub-2',
+            planType: 'pro',
+            status: 'active',
+            billingRail: 'bound_card',
+            billingPeriod: 'yearly',
+            trialEnd: '2026-10-13T16:00:00.000Z',
+            renewalAmount: 1990
+          }
+        }
+      }
+    });
+
+    const plan = await subscriptionService.getUserPlan();
+
+    expect(plan).toEqual(expect.objectContaining({
+      billingRail: 'bound_card',
+      billingPeriod: 'yearly',
+      trialEnd: new Date('2026-10-13T16:00:00.000Z'),
+      renewalAmount: 1990
+    }));
+  });
+});

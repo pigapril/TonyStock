@@ -53,7 +53,11 @@ class SubscriptionService {
             daysUntilExpiry: subscription.daysUntilExpiry,
             // 添加額外的訂閱信息
             subscriptionId: subscription.id,
-            currentPeriodStart: subscription.currentPeriodStart ? new Date(subscription.currentPeriodStart) : null
+            currentPeriodStart: subscription.currentPeriodStart ? new Date(subscription.currentPeriodStart) : null,
+            billingRail: subscription.billingRail,
+            billingPeriod: subscription.billingPeriod,
+            trialEnd: subscription.trialEnd ? new Date(subscription.trialEnd) : null,
+            renewalAmount: subscription.renewalAmount
           };
         }
       } catch (subscriptionError) {
