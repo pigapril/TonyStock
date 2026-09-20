@@ -7,7 +7,7 @@ import { BINDING_PHASE, localeOf, useCardBinding } from './useCardBinding';
 import './CardTrial.css';
 
 // 送到後端落地的版本號，消保法舉證用。文案改動要一起改這個字串。
-export const CARD_TRIAL_TERMS_VERSION = 'card-trial-v2';
+export const CARD_TRIAL_TERMS_VERSION = 'card-trial-v3';
 
 const TRIAL_DAYS = 30;
 const DAY_MS = 24 * 60 * 60 * 1000;

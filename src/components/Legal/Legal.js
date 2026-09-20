@@ -14,10 +14,10 @@ export const Legal = () => {
     switch (currentLang) {
       case 'zh-TW':
       case 'zh':
-        return `${basePath}/zh-tw_T&C_20250914.md`;
+        return `${basePath}/zh-tw_T&C_20260920.md`;
       case 'en':
       default:
-        return `${basePath}/en_T&C_20250914.md`;
+        return `${basePath}/en_T&C_20260920.md`;
     }
   };
 
