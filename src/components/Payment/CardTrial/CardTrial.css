@@ -99,6 +99,28 @@
     margin: 12px 0;
 }
 
+/* 綠界表單在 iframe 中渲染；讓整個嵌入區使用卡片可用寬度，避免有效期限欄位被壓縮。 */
+#ECPayPayment,
+#ECPayPayment iframe {
+    display: block;
+    width: 100% !important;
+    min-width: 0;
+}
+
+#ECPayPayment iframe {
+    min-height: 310px;
+    border: 0;
+}
+
+.card-trial__failure-reason {
+    margin: 12px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid #fee2e2;
+    color: #7f1d1d;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
 .card-trial__error p {
     margin: 0 0 16px;
     color: #b91c1c;

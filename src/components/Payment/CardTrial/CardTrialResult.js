@@ -29,7 +29,7 @@ const CardTrialResult = () => {
                 const data = await fetchCardTrialResult(merchantTradeNo);
                 if (cancelled) return;
                 const status = data.status === 'succeeded' ? 'success' : data.status === 'failed' ? 'failed' : 'pending';
-                setResult({ merchantTradeNo, status });
+                setResult({ merchantTradeNo, status, failureReason: data.failureReason || null });
                 if (status === 'pending' && attempts < 5) timer = setTimeout(check, 2000);
             } catch {
                 if (!cancelled) setResult({ merchantTradeNo, status: 'pending' });
@@ -48,6 +48,11 @@ const CardTrialResult = () => {
             <section className="card-trial__disclosure">
                 <h1 className="card-trial__title">{t(`cardTrial.result.${view.title}`)}</h1>
                 <p>{t(`cardTrial.result.${view.body}`)}</p>
+                {view === RESULT_VIEWS.failed && result && result.failureReason && (
+                    <p className="card-trial__failure-reason">
+                        {t(`cardTrial.result.failureReasons.${result.failureReason}`)}
+                    </p>
+                )}
             </section>
             <button
                 type="button"

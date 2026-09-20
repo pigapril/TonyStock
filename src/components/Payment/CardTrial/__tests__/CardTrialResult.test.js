@@ -18,10 +18,11 @@ beforeEach(() => {
 });
 
 it('網址宣稱成功但後端拒絕時顯示失敗，查詢完成前不顯示成功', async () => {
-    fetchCardTrialResult.mockResolvedValue({ status: 'failed' });
+    fetchCardTrialResult.mockResolvedValue({ status: 'failed', failureReason: 'issuer_declined' });
     render(<CardTrialResult />);
     expect(screen.queryByText('cardTrial.result.successTitle')).not.toBeInTheDocument();
     expect(await screen.findByText('cardTrial.result.failedTitle')).toBeInTheDocument();
+    expect(screen.getByText('cardTrial.result.failureReasons.issuer_declined')).toBeInTheDocument();
     expect(fetchCardTrialResult).toHaveBeenCalledWith('BC1');
 });
 

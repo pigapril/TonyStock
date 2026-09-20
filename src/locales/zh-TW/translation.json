@@ -2721,7 +2721,7 @@
     "start": "同意並綁定信用卡",
     "preparing": "正在準備，請稍候",
     "cardTitle": "輸入信用卡資料",
-    "cardNote": "卡片資料由綠界處理，我們不會儲存你的卡號。",
+    "cardNote": "卡片資料由綠界科技處理，我們不會儲存你的卡號。",
     "submit": "開始試用",
     "submitting": "處理中",
     "retry": "重新試一次",
@@ -2742,6 +2742,15 @@
       "pendingBody": "銀行的回覆還在路上，稍後可於帳戶頁面查看。",
       "failedTitle": "綁定沒有完成",
       "failedBody": "卡片綁定失敗，未收取任何費用。",
+      "failureReasons": {
+        "issuer_declined": "這次驗證未獲發卡銀行核准。請確認卡片資訊，或改用另一張卡。",
+        "contact_issuer": "發卡銀行要求進一步確認，請聯絡發卡銀行後再試。",
+        "three_d_not_completed": "銀行的 3D 驗證沒有完成，請重新綁定後再試。",
+        "session_expired": "這次綁卡已逾時，請重新開始。",
+        "card_limit_reached": "這個帳號已達可綁定卡片上限，請先到帳戶頁面更新付款方式。",
+        "card_already_bound": "這張卡已經綁定在此帳號，請改用另一張卡。",
+        "verification_not_completed": "銀行沒有完成這次卡片驗證。請確認卡片資訊後再試，或改用另一張卡。"
+      },
       "retryCta": "重試一次",
       "accountCta": "前往帳戶頁面"
     }

@@ -120,7 +120,7 @@ describe('CardTrialFlow', () => {
         await waitFor(() => expect(startCardTrial).toHaveBeenCalledTimes(1));
 
         const [{ termsConsentedAt, termsVersion }] = startCardTrial.mock.calls[0];
-        expect(termsVersion).toBe('card-trial-v2');
+        expect(termsVersion).toBe('card-trial-v3');
         expect(Date.parse(termsConsentedAt)).toBeGreaterThanOrEqual(before);
     });
 

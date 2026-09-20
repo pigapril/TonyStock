@@ -2729,6 +2729,15 @@
       "pendingBody": "The bank has not replied yet. You can check your account page shortly.",
       "failedTitle": "Card binding did not complete",
       "failedBody": "Card binding failed. You were not charged.",
+      "failureReasons": {
+        "issuer_declined": "Your card issuer did not approve this verification. Check the card details or use a different card.",
+        "contact_issuer": "Your card issuer requires further confirmation. Contact them, then try again.",
+        "three_d_not_completed": "The bank's 3D verification was not completed. Start card binding again to retry.",
+        "session_expired": "This card binding session expired. Please start again.",
+        "card_limit_reached": "This account has reached its card binding limit. Update your payment method from your account page.",
+        "card_already_bound": "This card is already bound to this account. Use a different card.",
+        "verification_not_completed": "The bank did not complete this card verification. Check the card details or use a different card."
+      },
       "retryCta": "Try again",
       "accountCta": "Go to account page"
     }
