@@ -494,7 +494,7 @@
       "blocks": {
         "sentiment": {
           "title": "Be greedy when others are fearful",
-          "description": "This is not about calling the exact bottom. It is about using data to remind you that when sentiment falls into extreme fear, the better move is often to evaluate disciplined, staged entries instead of selling in panic.",
+          "description": "When sentiment falls into extreme fear, the better move is often to re-examine your risk allocation instead of selling in panic.",
           "cta": "See past fear lows"
         },
         "price": {
@@ -1014,7 +1014,7 @@
     "form": {
       "title": "Stock Price Sentiment",
       "stockCodeLabel": "Stock Symbol：",
-      "stockCodePlaceholder": "e.g., SPY, AAPL",
+      "stockCodePlaceholder": "e.g., Taiwan: 2330; US: AAPL",
       "analysisPeriodLabel": "Analysis Period：",
       "periodShort": "0.5 years",
       "periodMedium": "1.5 years",
@@ -2278,7 +2278,7 @@
     "generatedAt": "Data on this page updated",
     "loading": "Loading indicators…",
     "error": "Could not load indicators. Please try again shortly.",
-    "upsellCopy": "Each publisher's own reading is free. Upgrade to Pro for the SIO composite, standardized component values and contributions, and divergence analysis across indicators.",
+    "upsellCopy": "Each publisher's own reading is free. Upgrade to Pro for the SIO composite, how each indicator affects the score, and whether different market signals agree.",
     "upsellCta": "See plans",
     "divergenceNote": "Retail surveys, institutional positioning and different markets often read the same moment differently. The larger the gap, the wider the disagreement. Retail comes from the AAII survey; institutional from NAAIM exposure, COT and the junk bond spread.",
     "divergences": {
@@ -2711,9 +2711,10 @@
     "cardNote": "Card details are handled by ECPay. We never store your card number.",
     "submit": "Start the trial",
     "submitting": "Working on it",
-    "restart": "Start over",
+    "retry": "Try again",
+    "goToSubscription": "Go to subscription plans",
     "errors": {
-      "expired": "This card binding session has timed out. Please start over.",
+      "expired": "This card binding session has timed out. Please try again.",
       "rateLimited": "Too many attempts. Please try again later.",
       "alreadySubscribed": "This account already has an active subscription.",
       "notEligible": "The free trial is only for accounts subscribing for the first time.",
@@ -2727,7 +2728,7 @@
       "pendingTitle": "Confirming the result",
       "pendingBody": "The bank has not replied yet. You can check your account page shortly.",
       "failedTitle": "Card binding did not complete",
-      "failedBody": "This card was not bound, and you were not charged anything.",
+      "failedBody": "Card binding failed. You were not charged.",
       "retryCta": "Try again",
       "accountCta": "Go to account page"
     }
@@ -2761,8 +2762,7 @@
     },
     "result": {
       "successTitle": "Card updated",
-      "successBody": "Future charges will use this card.",
-      "chargingBody": "We are charging your new card now and will email you a receipt when it is done.",
+      "successBody": "Your new card is set up.",
       "failedTitle": "Card not updated",
       "failedBody": "This card was not bound, and you were not charged anything."
     }

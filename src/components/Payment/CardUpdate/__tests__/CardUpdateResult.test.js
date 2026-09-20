@@ -36,8 +36,8 @@ describe('CardUpdateResult', () => {
     });
 
     it.each([
-        ['status=success&charging=0', '卡片已更新', '之後的扣款會改用這張卡。'],
-        ['status=success&charging=1', '卡片已更新', '我們正在用新卡扣款，完成後會寄收據給你。'],
+        ['status=success&charging=0', '卡片已更新', '新卡已設定完成。'],
+        ['status=success&charging=1', '卡片已更新', '新卡已設定完成。'],
         ['status=failed&charging=0', '卡片沒有更新', '這張卡沒有綁定成功，你沒有被收取任何費用。'],
         ['status=pending&charging=0', ...PENDING],
         ['status=success', ...PENDING],

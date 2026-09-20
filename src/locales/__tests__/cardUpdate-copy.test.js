@@ -19,8 +19,7 @@ const APPROVED_ZH_TW = {
     'method.updateAndPay': '更換卡片並付款 {{amount}} 元',
     'method.graceNotice': '這次扣款未成功，我們沒有向你收取任何費用。請於 {{date}} 前更換付款卡片。',
     'result.successTitle': '卡片已更新',
-    'result.successBody': '之後的扣款會改用這張卡。',
-    'result.chargingBody': '我們正在用新卡扣款，完成後會寄收據給你。',
+    'result.successBody': '新卡已設定完成。',
     'result.failedTitle': '卡片沒有更新',
     'result.failedBody': '這張卡沒有綁定成功，你沒有被收取任何費用。'
 };

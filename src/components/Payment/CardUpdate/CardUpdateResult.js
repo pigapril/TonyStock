@@ -5,7 +5,7 @@ import '../CardTrial/CardTrial.css';
 
 const RESULT_VIEWS = {
     updated: { title: 'cardUpdate.result.successTitle', body: 'cardUpdate.result.successBody' },
-    charging: { title: 'cardUpdate.result.successTitle', body: 'cardUpdate.result.chargingBody' },
+    charging: { title: 'cardUpdate.result.successTitle', body: 'cardUpdate.result.successBody' },
     failed: { title: 'cardUpdate.result.failedTitle', body: 'cardUpdate.result.failedBody' },
     pending: { title: 'cardTrial.result.pendingTitle', body: 'cardTrial.result.pendingBody' }
 };

@@ -2724,9 +2724,10 @@
     "cardNote": "卡片資料由綠界處理，我們不會儲存你的卡號。",
     "submit": "開始試用",
     "submitting": "處理中",
-    "restart": "重新開始",
+    "retry": "重新試一次",
+    "goToSubscription": "前往訂閱頁面",
     "errors": {
-      "expired": "這次綁卡已超過有效時間，請重新開始。",
+      "expired": "這次綁卡已超過有效時間，請重新試一次。",
       "rateLimited": "嘗試次數過多，請稍後再試。",
       "alreadySubscribed": "此帳號已有有效訂閱。",
       "notEligible": "免費試用僅限首次訂閱的帳號。",
@@ -2740,8 +2741,8 @@
       "pendingTitle": "正在確認結果",
       "pendingBody": "銀行的回覆還在路上，稍後可於帳戶頁面查看。",
       "failedTitle": "綁定沒有完成",
-      "failedBody": "這張卡沒有綁定成功，你沒有被收取任何費用。",
-      "retryCta": "重新試一次",
+      "failedBody": "卡片綁定失敗，未收取任何費用。",
+      "retryCta": "重試一次",
       "accountCta": "前往帳戶頁面"
     }
   },
@@ -2774,8 +2775,7 @@
     },
     "result": {
       "successTitle": "卡片已更新",
-      "successBody": "之後的扣款會改用這張卡。",
-      "chargingBody": "我們正在用新卡扣款，完成後會寄收據給你。",
+      "successBody": "新卡已設定完成。",
       "failedTitle": "卡片沒有更新",
       "failedBody": "這張卡沒有綁定成功，你沒有被收取任何費用。"
     }
