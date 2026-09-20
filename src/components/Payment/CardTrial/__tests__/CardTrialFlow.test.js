@@ -16,6 +16,7 @@ let mockSearchParams = new URLSearchParams();
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: () => ({ lang: 'zh-TW' }),
+    useNavigate: () => jest.fn(),
     useSearchParams: () => [mockSearchParams]
 }));
 
@@ -152,7 +153,7 @@ describe('CardTrialFlow', () => {
         await userEvent.click(consentBox());
         await userEvent.click(startButton());
 
-        expect(await screen.findByText('這次綁卡已超過有效時間，請重新開始。')).toBeInTheDocument();
+        expect(await screen.findByText('這次綁卡已超過有效時間，請重新試一次。')).toBeInTheDocument();
         expect(screen.queryByText('目前無法綁定信用卡，請稍後再試。')).not.toBeInTheDocument();
     });
 
@@ -162,7 +163,7 @@ describe('CardTrialFlow', () => {
 
         await userEvent.click(consentBox());
         await userEvent.click(startButton());
-        await userEvent.click(await screen.findByRole('button', { name: '重新開始' }));
+        await userEvent.click(await screen.findByRole('button', { name: '重新試一次' }));
 
         expect(consentBox()).not.toBeChecked();
         expect(startButton()).toBeDisabled();
@@ -181,7 +182,7 @@ describe('CardTrialFlow', () => {
         await waitFor(() => expect(submit).toBeEnabled());
         await userEvent.click(submit);
 
-        expect(await screen.findByText('這次綁卡已超過有效時間，請重新開始。')).toBeInTheDocument();
+        expect(await screen.findByText('這次綁卡已超過有效時間，請重新試一次。')).toBeInTheDocument();
         expect(createBindCard).not.toHaveBeenCalled();
     });
 
@@ -202,7 +203,7 @@ describe('CardTrialFlow', () => {
             await userEvent.click(submit);
 
             await waitFor(() => expect(window.location.assign)
-                .toHaveBeenCalledWith('/zh-TW/payment/card-trial/result?status=pending'));
+                .toHaveBeenCalledWith('/zh-TW/payment/card-trial/result?status=pending&merchantTradeNo=BC-1'));
             expect(goToThreeDVerification).not.toHaveBeenCalled();
             expect(screen.queryByText('目前無法綁定信用卡，請稍後再試。')).not.toBeInTheDocument();
         } finally {

@@ -218,7 +218,7 @@ describe('CardUpdateFlow', () => {
         await afterStart();
 
         expect(await screen.findByText(STATE_CHANGED_MESSAGE)).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: '重新開始' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: '重新試一次' })).not.toBeInTheDocument();
         expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
         expect(screen.queryByRole('button', { name: '綁定新卡' })).not.toBeInTheDocument();
 
@@ -243,9 +243,9 @@ describe('CardUpdateFlow', () => {
         renderFlow();
         await consentAndStart('同意並綁定新卡');
 
-        expect(await screen.findByText('這次綁卡已超過有效時間，請重新開始。')).toBeInTheDocument();
+        expect(await screen.findByText('這次綁卡已超過有效時間，請重新試一次。')).toBeInTheDocument();
         expect(screen.queryByText(GENERIC_ERROR)).not.toBeInTheDocument();
-        expect(screen.getByRole('button', { name: '重新開始' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: '重新試一次' })).toBeInTheDocument();
     });
 
     it('沒有綁卡訂閱（method 為 null）時不給表單', async () => {
@@ -284,7 +284,7 @@ describe('CardUpdateFlow', () => {
 
         expect(await screen.findByText(CHARGE_PENDING_MESSAGE)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: '重新整理' })).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: '重新開始' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: '重新試一次' })).not.toBeInTheDocument();
     });
 
 });

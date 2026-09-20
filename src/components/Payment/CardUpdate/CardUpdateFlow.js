@@ -175,7 +175,7 @@ const CardUpdateFlow = () => {
                         </button>
                     ) : (
                         <button type="button" className="card-trial__primary" onClick={handleRestart}>
-                            {t('cardTrial.restart')}
+                            {t('cardTrial.retry')}
                         </button>
                     )}
                 </section>

@@ -65,14 +65,29 @@ export const loadBindCardSdk = () => {
     return pendingLoad;
 };
 
+// SDK 的 initialize 會把內部 UUID 產生函式覆寫成字串，第二次呼叫會拋錯。
+// 同一 SDK instance 共用初始化；重試綁卡只重新掛載表單。
+const initializations = new WeakMap();
+
+const initializeOnce = (ECPay) => {
+    if (!initializations.has(ECPay)) {
+        initializations.set(ECPay, new Promise((resolve, reject) => {
+            ECPay.initialize(sdkMode(), 1, (error) => (
+                error ? reject(failure('SDK_INIT_FAILED', String(error))) : resolve()
+            ));
+        }).catch((error) => {
+            // 初始化失敗的 SDK 也不能再次 initialize；下次從官方 script 建立新 instance。
+            document.querySelector(`script[src="${SDK_SCRIPTS[2]}"]`)?.remove();
+            pendingLoad = null;
+            throw error;
+        }));
+    }
+    return initializations.get(ECPay);
+};
+
 export const renderBindCardForm = async ({ token, language = 'zh-TW' }) => {
     const ECPay = await loadBindCardSdk();
-
-    await new Promise((resolve, reject) => {
-        ECPay.initialize(sdkMode(), 1, (error) => (
-            error ? reject(failure('SDK_INIT_FAILED', String(error))) : resolve()
-        ));
-    });
+    await initializeOnce(ECPay);
 
     await new Promise((resolve, reject) => {
         ECPay.addBindingCard(token, language, (error) => {

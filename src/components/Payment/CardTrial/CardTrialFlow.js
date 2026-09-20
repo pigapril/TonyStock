@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { startCardTrial, createBindCard } from '../../../services/cardTrialService';
 import { BIND_CARD_CONTAINER_ID } from '../../../utils/ecpayBindCardSdk';
@@ -24,8 +24,15 @@ const CARD_TRIAL_BINDING = {
         CARD_TRIAL_PREVIOUS_SUBSCRIBER: 'cardTrial.errors.notEligible'
     },
     logMessage: 'Card trial binding failed:',
-    pendingResultUrl: ({ locale }) => `/${locale}/payment/card-trial/result?status=pending`
+    pendingResultUrl: ({ locale, merchantTradeNo }) => `/${locale}/payment/card-trial/result?status=pending&merchantTradeNo=${encodeURIComponent(merchantTradeNo)}`
 };
+
+const RETRYABLE_ERROR_KEYS = new Set([
+    'cardTrial.errors.expired',
+    'cardTrial.errors.rateLimited',
+    'cardTrial.errors.sdk',
+    'cardTrial.errors.generic'
+]);
 
 // 網址上的 period 是使用者可以亂改的輸入，年繳以外一律當月繳。
 const billingPeriodOf = (period) => (period === 'yearly' ? 'yearly' : 'monthly');
@@ -47,6 +54,7 @@ const renewalDateText = (locale, now) => new Intl.DateTimeFormat(
 
 const CardTrialFlow = () => {
     const { t, i18n } = useTranslation();
+    const navigate = useNavigate();
     const { lang } = useParams();
     const [searchParams] = useSearchParams();
     const [now, setNow] = useState(Date.now);
@@ -138,9 +146,19 @@ const CardTrialFlow = () => {
             {phase === BINDING_PHASE.failed && (
                 <section className="card-trial__error" role="alert">
                     <p>{t(errorKey)}</p>
-                    <button type="button" className="card-trial__primary" onClick={handleRestart}>
-                        {t('cardTrial.restart')}
-                    </button>
+                    {RETRYABLE_ERROR_KEYS.has(errorKey) ? (
+                        <button type="button" className="card-trial__primary" onClick={handleRestart}>
+                            {t('cardTrial.retry')}
+                        </button>
+                    ) : (
+                        <button
+                            type="button"
+                            className="card-trial__primary"
+                            onClick={() => navigate('/' + (lang || i18n.language) + '/subscription-plans')}
+                        >
+                            {t('cardTrial.goToSubscription')}
+                        </button>
+                    )}
                 </section>
             )}
         </div>

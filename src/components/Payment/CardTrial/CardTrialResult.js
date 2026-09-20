@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './CardTrial.css';
+import { fetchCardTrialResult } from '../../../services/cardTrialService';
 
-// 綠界 3D 完成後由後端 303 導回，結果直接寫在 query 上，這一頁不再查一次。
+// query 只提供交易編號，成功與否必須由登入者該筆 binding 的後端終態確認。
 const RESULT_VIEWS = {
     success: { title: 'successTitle', body: 'successBody', cta: 'successCta', to: 'watchlist' },
     failed: { title: 'failedTitle', body: 'failedBody', cta: 'retryCta', to: 'payment/card-trial' },
@@ -16,7 +17,30 @@ const CardTrialResult = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
-    const view = RESULT_VIEWS[searchParams.get('status')] || RESULT_VIEWS.pending;
+    const merchantTradeNo = searchParams.get('merchantTradeNo');
+    const [result, setResult] = useState(null);
+    useEffect(() => {
+        let cancelled = false;
+        let timer;
+        let attempts = 0;
+        const check = async () => {
+            attempts += 1;
+            try {
+                const data = await fetchCardTrialResult(merchantTradeNo);
+                if (cancelled) return;
+                const status = data.status === 'succeeded' ? 'success' : data.status === 'failed' ? 'failed' : 'pending';
+                setResult({ merchantTradeNo, status });
+                if (status === 'pending' && attempts < 5) timer = setTimeout(check, 2000);
+            } catch {
+                if (!cancelled) setResult({ merchantTradeNo, status: 'pending' });
+            }
+        };
+        setResult(null);
+        if (merchantTradeNo) check();
+        return () => { cancelled = true; clearTimeout(timer); };
+    }, [merchantTradeNo]);
+
+    const view = RESULT_VIEWS[result && result.merchantTradeNo === merchantTradeNo ? result.status : 'pending'];
     const language = lang || i18n.language;
 
     return (

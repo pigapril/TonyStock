@@ -17,6 +17,10 @@ export const fetchCardTrialEligibility = () => apiClient
     .get('/api/payment/card-trial/eligibility')
     .then(unwrap);
 
+export const fetchCardTrialResult = (merchantTradeNo) => apiClient
+    .get(`/api/payment/card-trial/status/${encodeURIComponent(merchantTradeNo)}`)
+    .then(unwrap);
+
 export const startCardTrial = ({ termsConsentedAt, termsVersion, locale, billingPeriod }) => apiClient
     .post('/api/payment/card-trial/start', { termsConsentedAt, termsVersion, locale, billingPeriod })
     .then(unwrap);

@@ -104,7 +104,7 @@ export const useCardBinding = (flow, locale, sessionFields = NO_SESSION_FIELDS) 
             });
             // 綠界失敗時後端直接回錯誤。沒有網址是 RtnCode=1 但不需要 3D：交易已完成，結果由回呼帶來。
             if (threeDUrl) goToThreeDVerification(threeDUrl);
-            else window.location.assign(flow.pendingResultUrl({ locale, ...sessionFields }));
+            else window.location.assign(flow.pendingResultUrl({ locale, ...sessionFields, merchantTradeNo: binding.merchantTradeNo }));
         } catch (error) {
             fail(error);
         }
