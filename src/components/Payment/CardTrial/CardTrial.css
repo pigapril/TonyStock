@@ -112,6 +112,29 @@
     border: 0;
 }
 
+/*
+ * 綠界將有效期限與安全碼各包在 .ecpay-col-d-50，預設同列各占一半。
+ * 有效期限需要看清楚 MM / YY；將兩欄各自改為整列，安全碼自然排到下一行。
+ * 這些 class 是綠界公開的嵌入式綁卡 CSS 介面，而不是信用卡欄位本身的 DOM。
+ */
+#ECPayPayment .ecpay-select-input.ecpay-col-d-50:has(.ecpay-date),
+#ECPayPayment .ecpay-select-input.ecpay-col-d-50:has(.ecpay-cc-cvc) {
+    float: none !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+
+#ECPayPayment .ecpay-date {
+    box-sizing: border-box;
+    width: min(100%, 20rem) !important;
+    min-width: 11rem;
+}
+
+#ECPayPayment .ecpay-cc-cvc {
+    box-sizing: border-box;
+    width: min(100%, 12rem) !important;
+}
+
 .card-trial__failure-reason {
     margin: 12px 0 0;
     padding-top: 12px;
