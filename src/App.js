@@ -50,6 +50,7 @@ import authGuard from './utils/authGuard';
 import authPreloader from './utils/authPreloader';
 import { setupRobotsProtection } from './utils/robotsHandler';
 import { initializeFreeStockList } from './utils/freeStockListUtils';
+import { canSeeCardTrial } from './utils/cardTrialRollout';
 import BrandLogo from './components/Common/BrandLogo/BrandLogo';
 import DeferredTagManager from './components/Common/DeferredTagManager/DeferredTagManager';
 
@@ -623,7 +624,9 @@ function AppContent() {
                 <Route path="payment/result" element={<PaymentResult />} />
                 <Route path="payment/card-trial" element={
                   <ProtectedRoute>
-                    <CardTrialFlow />
+                    {canSeeCardTrial(user?.email)
+                      ? <CardTrialFlow />
+                      : <Navigate to={`/${lang}/subscription-plans`} replace />}
                   </ProtectedRoute>
                 } />
                 <Route path="payment/card-trial/result" element={<CardTrialResult />} />

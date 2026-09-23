@@ -9,6 +9,7 @@ import { BillingPeriodToggle } from '../shared/BillingPeriodToggle';
 import { RedemptionCodeInput } from '../../Redemption/RedemptionCodeInput';
 import { Analytics } from '../../../utils/analytics';
 import { canAccessPaymentFeatures, getWhitelistDebugInfo } from '../../../utils/premiumWhitelist';
+import { canSeeCardTrial } from '../../../utils/cardTrialRollout';
 import subscriptionService from '../../../api/subscriptionService';
 import { fetchCardTrialEligibility } from '../../../services/cardTrialService';
 import { Dialog } from '../../Common/Dialog/Dialog';
@@ -41,9 +42,10 @@ export const SubscriptionPlansPage = () => {
   // 臨時免費模式下沒有付款權限的人，按鈕原本是開公告對話框。那條路徑不接試用入口，
   // 否則會繞過公告。
   const canEnterPayment = !isTemporaryFreeMode || canUserAccessPayment;
+  const canEnterCardTrial = canSeeCardTrial(user?.email);
 
   useEffect(() => {
-    if (!user || !canEnterPayment) {
+    if (!user || !canEnterPayment || !canEnterCardTrial) {
       setCardTrialEligible(false);
       return undefined;
     }
@@ -58,7 +60,7 @@ export const SubscriptionPlansPage = () => {
       });
 
     return () => { abandoned = true; };
-  }, [user, canEnterPayment]);
+  }, [user, canEnterPayment, canEnterCardTrial]);
 
   // 載入方案資料
   useEffect(() => {
