@@ -74,7 +74,8 @@ jest.mock('../../../components/Watchlist/services/watchlistService', () => ({
 
 jest.mock('../../../utils/freeStockListUtils', () => ({
   isStockAllowed: jest.fn(() => true),
-  getFreeStockList: jest.fn(() => [])
+  getFreeStockList: jest.fn(() => []),
+  getStocksByRegion: jest.fn(() => Promise.resolve({}))
 }));
 
 const mockEnhancedApiClient = require('../../../utils/enhancedApiClient');
@@ -127,6 +128,7 @@ describe('PriceAnalysis analysis flow', () => {
     // 不重設的話 isStockAllowed 會回傳 undefined，手動送出的路徑會卡在方案檢查。
     require('../../../utils/freeStockListUtils').isStockAllowed.mockReturnValue(true);
     require('../../../utils/freeStockListUtils').getFreeStockList.mockReturnValue([]);
+    require('../../../utils/freeStockListUtils').getStocksByRegion.mockResolvedValue({});
     mockEnhancedApiClient.get.mockImplementation((url, config = {}) => {
       if (url === '/api/hot-searches') {
         return Promise.resolve({
@@ -160,7 +162,7 @@ describe('PriceAnalysis analysis flow', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(/請輸入股票代碼|e\.g\., SPY, AAPL/i)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/2330.*AAPL/i)).toBeInTheDocument();
     });
 
     expect(screen.queryByText(/請先完成驗證|Complete Verification/i)).not.toBeInTheDocument();
@@ -183,7 +185,7 @@ describe('PriceAnalysis analysis flow', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(/請輸入股票代碼|e\.g\., SPY, AAPL/i)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/2330.*AAPL/i)).toBeInTheDocument();
     });
 
     // 選建議、按 Enter、點清單都會直接分析，按鈕就沒有存在的理由了
@@ -271,7 +273,7 @@ describe('PriceAnalysis analysis flow', () => {
       </TestWrapper>
     );
 
-    await screen.findByPlaceholderText(/請輸入股票代碼|e\.g\., SPY, AAPL/i);
+    await screen.findByPlaceholderText(/2330.*AAPL/i);
     const form = container.querySelector('form.pa-searchbar');
     // 表單有兩個以上文字欄位時，沒有 submit 按鈕的話瀏覽器不會處理 Enter
     expect(form.querySelector('button[type="submit"]')).toBeInTheDocument();
@@ -318,7 +320,7 @@ describe('PriceAnalysis analysis flow', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(/請輸入股票代碼|e\.g\., SPY, AAPL/i)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/2330.*AAPL/i)).toBeInTheDocument();
     });
 
     expect(container.querySelector('.pa-hot-row')).not.toBeInTheDocument();
