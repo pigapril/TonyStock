@@ -10,6 +10,6 @@ describe('BrandLogo', () => {
     const image = screen.getByRole('img', { name: 'Sentiment Inside Out' });
     expect(image).toHaveAttribute('src', BRAND_LOGO_SRC);
     expect(image).toHaveAttribute('width', '188');
-    expect(image).toHaveAttribute('height', '38');
+    expect(image).toHaveAttribute('height', '32');
   });
 });

@@ -6,7 +6,7 @@ export function BrandLogo({
   alt,
   className = 'logo',
   width = 188,
-  height = 38
+  height = 32
 }) {
   return (
     <img

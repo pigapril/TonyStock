@@ -304,6 +304,13 @@ body {
   justify-content: center;
 }
 
+.auth-status-slot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 170px;
+}
+
 .content-area {
   flex-grow: 1;
   padding: 20px;
@@ -769,9 +776,10 @@ body {
 
 .top-nav-logo .logo {
   display: block;
-  width: auto;
+  width: 188px;
   max-width: 100%;
-  height: 38px;
+  height: auto;
+  aspect-ratio: 47 / 8;
   object-fit: contain;
 }
 
@@ -861,12 +869,16 @@ body {
     justify-self: end;
   }
 
-  .menu-toggle {
-    padding: 0;
+  .auth-status-slot {
+    min-width: 80px;
   }
 
-  .top-nav-logo .logo {
-    height: 32px;  /* 手機版縮小 logo */
+  .auth-skeleton .skeleton-text {
+    display: none;
+  }
+
+  .menu-toggle {
+    padding: 0;
   }
 }
 
