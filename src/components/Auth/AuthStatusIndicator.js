@@ -53,24 +53,24 @@ export function AuthStatusIndicator() {
         }
     }, [loading]);
 
-    // 如果正在載入且應該顯示骨架屏
-    if (showSkeleton && loading) {
-        return <AuthSkeleton />;
-    }
+    // 預留固定的導覽列空間，避免認證狀態切換時推動其他操作項目。
+    const statusContent = showSkeleton && loading
+        ? <AuthSkeleton />
+        : user
+            ? <UserProfile />
+            : (
+                <button
+                    className="btn-primary"
+                    onClick={() => openDialog('auth')}
+                >
+                    {t('userActions.login')}
+                </button>
+            );
 
-    // 如果有用戶，顯示用戶資料
-    if (user) {
-        return <UserProfile />;
-    }
-
-    // 如果沒有用戶，顯示登入按鈕
     return (
-        <button 
-            className="btn-primary" 
-            onClick={() => openDialog('auth')}
-        >
-            {t('userActions.login')}
-        </button>
+        <div className="auth-status-slot">
+            {statusContent}
+        </div>
     );
 }
 
