@@ -95,6 +95,8 @@ const RouteFallback = () => {
     fallbackClassName += ' route-loading-placeholder--priceanalysis';
   } else if (pathname.includes('/market-sentiment')) {
     fallbackClassName += ' route-loading-placeholder--market-sentiment';
+  } else if (pathname.includes('/watchlist') || pathname.includes('/sentiment-indicators/')) {
+    fallbackClassName += ' route-loading-placeholder--stable-page';
   }
 
   return <div className={fallbackClassName} aria-hidden="true" />;

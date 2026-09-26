@@ -4,6 +4,9 @@
   max-width: 760px;
   margin: 0 auto;
   padding: 28px 20px 72px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  min-height: 100svh;
   color: #1e293b;
 }
 

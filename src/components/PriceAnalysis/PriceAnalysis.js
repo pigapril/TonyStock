@@ -1784,27 +1784,29 @@ export function PriceAnalysis() {
                   </div>
                 </form>
 
-                {/* 熱門：沒資料就整列不存在，不留空框 */}
-                {hotSearches.length > 0 ? (
-                  <div className="pa-hot-row">
-                    <span className="pa-hot-row__label">{t('priceAnalysis.quickSelect.tabs.hotSearches')}</span>
-                    <div className="pa-hot-row__items">
-                      {hotSearches.map((searchItem, index) => (
-                        <button
-                          type="button"
-                          key={`${searchItem.keyword}-${index}`}
-                          className="pa-hot-chip"
-                          onClick={() => handleHotSearchClick(searchItem)}
-                        >
-                          <span className="pa-hot-chip__ticker">{searchItem.keyword}</span>
-                          {searchItem.name && searchItem.name !== searchItem.keyword ? (
-                            <span className="pa-hot-chip__name">{searchItem.name}</span>
-                          ) : null}
-                        </button>
-                      ))}
+                {/* API 回來前後維持相同高度，避免熱門項目把下方圖表推走。 */}
+                <div className="pa-hot-search-slot">
+                  {hotSearches.length > 0 ? (
+                    <div className="pa-hot-row">
+                      <span className="pa-hot-row__label">{t('priceAnalysis.quickSelect.tabs.hotSearches')}</span>
+                      <div className="pa-hot-row__items">
+                        {hotSearches.map((searchItem, index) => (
+                          <button
+                            type="button"
+                            key={`${searchItem.keyword}-${index}`}
+                            className="pa-hot-chip"
+                            onClick={() => handleHotSearchClick(searchItem)}
+                          >
+                            <span className="pa-hot-chip__ticker">{searchItem.keyword}</span>
+                            {searchItem.name && searchItem.name !== searchItem.keyword ? (
+                              <span className="pa-hot-chip__name">{searchItem.name}</span>
+                            ) : null}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ) : null}
+                  ) : null}
+                </div>
               </div>
 
 

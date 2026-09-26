@@ -312,7 +312,7 @@ describe('PriceAnalysis analysis flow', () => {
     ).toBe(before);
   });
 
-  it('沒有熱門搜尋資料時整列不渲染，不留空框', async () => {
+  it('沒有熱門搜尋資料時不顯示項目，但保留圖表上方的穩定高度', async () => {
     const { container } = render(
       <TestWrapper>
         <PriceAnalysis />
@@ -324,6 +324,30 @@ describe('PriceAnalysis analysis flow', () => {
     });
 
     expect(container.querySelector('.pa-hot-row')).not.toBeInTheDocument();
+    expect(container.querySelector('.pa-hot-search-slot')).toBeInTheDocument();
+  });
+
+  it('熱門搜尋資料回來後只填入預留區塊', async () => {
+    mockEnhancedApiClient.get.mockImplementation((url) => {
+      if (url === '/api/hot-searches') {
+        return Promise.resolve({
+          data: { data: { top_searches: [{ keyword: 'SPY', name: 'S&P 500 ETF' }] } }
+        });
+      }
+      if (url === '/api/integrated-analysis') {
+        return Promise.resolve(createIntegratedAnalysisPayload());
+      }
+      return Promise.resolve({ data: { data: [] } });
+    });
+
+    const { container } = render(
+      <TestWrapper>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    const hotChip = await screen.findByRole('button', { name: /SPY.*S&P 500 ETF/i });
+    expect(container.querySelector('.pa-hot-search-slot')).toContainElement(hotChip);
   });
 
   it('換分析期長就直接重跑，不必再按一次按鈕', async () => {

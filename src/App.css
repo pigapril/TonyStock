@@ -91,6 +91,11 @@ body {
   min-height: 40vh;
 }
 
+.route-loading-placeholder--stable-page {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
 .route-loading-placeholder--priceanalysis {
   min-height: 1380px;
 }
