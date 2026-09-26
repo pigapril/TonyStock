@@ -28,6 +28,7 @@ describe('PageContainer search metadata', () => {
         .toBe(`${window.location.origin}/en/`);
       expect(document.head.querySelector('link[rel="alternate"][hreflang="zh-TW"]')?.href)
         .toBe(`${window.location.origin}/zh-TW/`);
+      expect(document.head.querySelector('link[rel="alternate"][hreflang="zh"]')).toBeNull();
     });
 
     unmount();
@@ -41,8 +42,23 @@ describe('PageContainer search metadata', () => {
     });
 
     await waitFor(() => {
-      expect(document.head.querySelector('link[rel="canonical"]')?.href).toBe(canonical);
+      expect(document.head.querySelector('link[rel="canonical"]')?.href).toBe(`${canonical}/`);
       expect(document.head.querySelectorAll('link[rel="alternate"][hreflang]')).toHaveLength(0);
+    });
+
+    unmount();
+  });
+
+  it('uses the final trailing-slash URL for indicator metadata', async () => {
+    const { unmount } = renderPage('/en/sentiment-indicators/cnn-fear-greed', {
+      ogUrl: `${window.location.origin}/en/sentiment-indicators/cnn-fear-greed`
+    });
+
+    await waitFor(() => {
+      expect(document.head.querySelector('link[rel="canonical"]')?.href)
+        .toBe(`${window.location.origin}/en/sentiment-indicators/cnn-fear-greed/`);
+      expect(document.head.querySelector('link[rel="alternate"][hreflang="zh-TW"]')?.href)
+        .toBe(`${window.location.origin}/zh-TW/sentiment-indicators/cnn-fear-greed/`);
     });
 
     unmount();

@@ -1,23 +1,45 @@
 # 處理 niku-stock.netlify.app 的重定向
 https://niku-stock.netlify.app/* https://sentimentinsideout.com/:splat 301!
 
+# zh is the old alias of zh-TW; keep one canonical URL for identical content.
+# These rules are forced because the previous deploy generated static /zh/ shells.
+/zh /zh-TW/ 301!
+/zh/ /zh-TW/ 301!
+/zh/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis /zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92/ 301!
+/zh/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis/ /zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92/ 301!
+/zh/articles/using-market-sentiment-composite-index-to-time-buys-and-sells /zh-TW/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F/ 301!
+/zh/articles/using-market-sentiment-composite-index-to-time-buys-and-sells/ /zh-TW/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F/ 301!
+/zh/* /zh-TW/:splat 301!
+
+# Old article links sometimes combined a locale prefix with the other locale's slug.
+# Redirect to the actual translated article, rather than serving a soft-404 SPA shell.
+/en/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92 /en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis/ 301!
+/en/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92/ /en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis/ 301!
+/en/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F /en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells/ 301!
+/en/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F/ /en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells/ 301!
+/en/articles/4.%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C1155%E8%90%AC%E7%AD%86%E5%8F%B0%E7%BE%8E%E8%82%A1%E8%B3%87%E6%96%99%E5%AF%A6%E6%B8%AC%E7%B5%90%E6%9E%9C%E5%88%86%E6%9E%90 /en/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/ 301!
+/en/articles/4.%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C1155%E8%90%AC%E7%AD%86%E5%8F%B0%E7%BE%8E%E8%82%A1%E8%B3%87%E6%96%99%E5%AF%A6%E6%B8%AC%E7%B5%90%E6%9E%9C%E5%88%86%E6%9E%90/ /en/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/ 301!
+/zh-TW/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis /zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92/ 301!
+/zh-TW/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis/ /zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92/ 301!
+/zh-TW/articles/using-market-sentiment-composite-index-to-time-buys-and-sells /zh-TW/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F/ 301!
+/zh-TW/articles/using-market-sentiment-composite-index-to-time-buys-and-sells/ /zh-TW/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F/ 301!
+/zh-TW/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars /zh-TW/articles/4.%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C1155%E8%90%AC%E7%AD%86%E5%8F%B0%E7%BE%8E%E8%82%A1%E8%B3%87%E6%96%99%E5%AF%A6%E6%B8%AC%E7%B5%90%E6%9E%9C%E5%88%86%E6%9E%90/ 301!
+/zh-TW/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/ /zh-TW/articles/4.%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C1155%E8%90%AC%E7%AD%86%E5%8F%B0%E7%BE%8E%E8%82%A1%E8%B3%87%E6%96%99%E5%AF%A6%E6%B8%AC%E7%B5%90%E6%9E%9C%E5%88%86%E6%9E%90/ 301!
+
 # --- 新增：將舊的靜態頁面 URL 永久重定向到 zh-TW 版本 ---
-/about    /zh-TW/about    301
-/legal    /zh-TW/legal    301
-/priceanalysis  /zh-TW/priceanalysis  301
-/watchlist  /zh-TW/watchlist  301
-/market-sentiment  /zh-TW/market-sentiment  301
-/sponsor-us  /zh-TW/sponsor-us  301
-/about  /zh-TW/about  301
+/about    /zh-TW/about/    301
+/legal    /zh-TW/legal/    301
+/priceanalysis  /zh-TW/priceanalysis/  301
+/watchlist  /zh-TW/watchlist/  301
+/market-sentiment  /zh-TW/market-sentiment/  301
+/sponsor-us  /zh-TW/sponsor-us/  301
 
 
 # --- 將舊文章 URL 永久重定向到 zh-TW 版本 ---
-/articles/:slug /zh-TW/articles/:slug 301
+/articles/:slug /zh-TW/articles/:slug/ 301
 
 # --- 考慮是否需要將根路徑重定向到預設語言首頁 ---
 # /         /zh-TW/         301  # 如果您希望訪問 / 直接跳轉到 /zh-TW/
 
 # 重定向舊的 sitemap.sentimentinsideout.com 網址
-https://sitemap.sentimentinsideout.com/priceanalysis https://sentimentinsideout.com/en/priceanalysis 301
-
-
+https://sitemap.sentimentinsideout.com/priceanalysis https://sentimentinsideout.com/en/priceanalysis/ 301

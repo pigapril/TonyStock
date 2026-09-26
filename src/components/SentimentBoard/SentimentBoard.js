@@ -319,7 +319,7 @@ const IndicatorCard = ({ item, lang, t }) => {
     <div className="indicator-card__head">
       <h3 className="indicator-card__label">
         {explainerSlug
-          ? <Link to={`/${lang}/sentiment-indicators/${explainerSlug}`}>{name}</Link>
+          ? <Link to={`/${lang}/sentiment-indicators/${explainerSlug}/`}>{name}</Link>
           : name}
       </h3>
       {item.publisher && <span className="indicator-card__publisher">{item.publisher}</span>}
