@@ -14,7 +14,8 @@ const PageContainer = ({
   ogType = "website",
   twitterCard = "summary_large_image",
   twitterImage,
-  jsonLd
+  jsonLd,
+  includeHreflang = true
 }) => {
   const { t, i18n } = useTranslation();
   const { lang } = useParams();
@@ -85,10 +86,10 @@ const PageContainer = ({
         <link rel="canonical" href={pageOgUrl} />
         
         {/* Hreflang 標籤 */}
-        {supportedLngs
+        {includeHreflang && supportedLngs
           .filter(lng => lng !== 'cimode')
           .map(supportedLang => {
-            const alternateUrl = `${origin}/${supportedLang}${basePath === '/' ? '' : basePath}`;
+            const alternateUrl = `${origin}/${supportedLang}${basePath === '/' ? '/' : basePath}`;
             return (
               <link
                 key={supportedLang}
@@ -99,7 +100,7 @@ const PageContainer = ({
             );
         })}
 
-        {fallbackLng && supportedLngs.includes(fallbackLng) && (
+        {includeHreflang && fallbackLng && supportedLngs.includes(fallbackLng) && (
           <link
             rel="alternate"
             hrefLang="x-default"

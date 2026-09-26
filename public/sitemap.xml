@@ -29,7 +29,7 @@
     <xhtml:link
                rel="alternate"
                hreflang="x-default"
-               href="https://sentimentinsideout.com/en/"/>
+               href="https://sentimentinsideout.com/"/>
   </url>
   <url>
     <loc>https://sentimentinsideout.com/en/</loc>
@@ -51,7 +51,7 @@
     <xhtml:link
                rel="alternate"
                hreflang="x-default"
-               href="https://sentimentinsideout.com/en/"/>
+               href="https://sentimentinsideout.com/"/>
   </url>
 
   <!-- Price Analysis Page -->
@@ -240,80 +240,94 @@
 
   <!-- Article: 1. 用樂活五線譜分析價格趨勢與情緒 / Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis -->
   <url>
-    <loc>https://sentimentinsideout.com/zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92</loc>
+    <loc>https://sentimentinsideout.com/zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92/</loc>
     <lastmod>2025-05-04T10:00:00Z</lastmod> <!-- 更新日期 -->
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis"/> <!-- 更新英文 URL -->
+               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis/"/> <!-- 更新英文 URL -->
     <xhtml:link
                rel="alternate"
                hreflang="zh-TW"
-               href="https://sentimentinsideout.com/zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92"/>
+               href="https://sentimentinsideout.com/zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92/"/>
     <xhtml:link
                rel="alternate"
                hreflang="x-default"
-               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis"/>
+               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis/"/>
   </url>
   <url>
-    <loc>https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis</loc> <!-- 更新英文 URL -->
+    <loc>https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis/</loc> <!-- 更新英文 URL -->
     <lastmod>2025-05-04T10:00:00Z</lastmod> <!-- 更新日期 -->
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis"/> <!-- 更新英文 URL -->
+               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis/"/> <!-- 更新英文 URL -->
     <xhtml:link
                rel="alternate"
                hreflang="zh-TW"
-               href="https://sentimentinsideout.com/zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92"/>
+               href="https://sentimentinsideout.com/zh-TW/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92/"/>
     <xhtml:link
                rel="alternate"
                hreflang="x-default"
-               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis"/>
+               href="https://sentimentinsideout.com/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis/"/>
   </url>
 
   <!-- Article: 2. 用市場情緒綜合指數判斷買賣時機 / Using the Market Sentiment Composite Index to Time Buys and Sells -->
   <url>
-    <loc>https://sentimentinsideout.com/zh-TW/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F</loc>
+    <loc>https://sentimentinsideout.com/zh-TW/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F/</loc>
     <lastmod>2025-05-04T10:00:00Z</lastmod> <!-- 更新日期 -->
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells"/> <!-- 更新英文 URL -->
+               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells/"/> <!-- 更新英文 URL -->
     <xhtml:link
                rel="alternate"
                hreflang="zh-TW"
-               href="https://sentimentinsideout.com/zh-TW/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F"/>
+               href="https://sentimentinsideout.com/zh-TW/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F/"/>
     <xhtml:link
                rel="alternate"
                hreflang="x-default"
-               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells"/>
+               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells/"/>
   </url>
   <url>
-    <loc>https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells</loc> <!-- 更新英文 URL -->
+    <loc>https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells/</loc> <!-- 更新英文 URL -->
     <lastmod>2025-05-04T10:00:00Z</lastmod> <!-- 更新日期 -->
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells"/> <!-- 更新英文 URL -->
+               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells/"/> <!-- 更新英文 URL -->
     <xhtml:link
                rel="alternate"
                hreflang="zh-TW"
-               href="https://sentimentinsideout.com/zh-TW/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F"/>
+               href="https://sentimentinsideout.com/zh-TW/articles/2.%E7%94%A8%E5%B8%82%E5%A0%B4%E6%83%85%E7%B7%92%E7%B6%9C%E5%90%88%E6%8C%87%E6%95%B8%E5%88%A4%E6%96%B7%E8%B2%B7%E8%B3%A3%E6%99%82%E6%A9%9F/"/>
     <xhtml:link
                rel="alternate"
                hreflang="x-default"
-               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells"/>
+               href="https://sentimentinsideout.com/en/articles/using-market-sentiment-composite-index-to-time-buys-and-sells/"/>
   </url>
-  <!-- ... 其他文章 ... -->
+  <!-- Article: 4. 樂活五線譜 1155 萬筆資料實測 -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/articles/4.%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C1155%E8%90%AC%E7%AD%86%E5%8F%B0%E7%BE%8E%E8%82%A1%E8%B3%87%E6%96%99%E5%AF%A6%E6%B8%AC%E7%B5%90%E6%9E%9C%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/articles/4.%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C1155%E8%90%AC%E7%AD%86%E5%8F%B0%E7%BE%8E%E8%82%A1%E8%B3%87%E6%96%99%E5%AF%A6%E6%B8%AC%E7%B5%90%E6%9E%9C%E5%88%86%E6%9E%90/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/articles/4.%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C1155%E8%90%AC%E7%AD%86%E5%8F%B0%E7%BE%8E%E8%82%A1%E8%B3%87%E6%96%99%E5%AF%A6%E6%B8%AC%E7%B5%90%E6%9E%9C%E5%88%86%E6%9E%90/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/"/>
+  </url>
 
   <!-- Sponsor Us Page (假設只有 zh-TW 有此頁面) -->
   <url>
@@ -462,7 +476,7 @@
     <xhtml:link
                rel="alternate"
                hreflang="x-default"
-               href="https://sentimentinsideout.com/en/"/>
+               href="https://sentimentinsideout.com/"/>
   </url>
 
   <!-- Price Analysis Page (zh) -->

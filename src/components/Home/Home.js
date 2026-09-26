@@ -475,7 +475,7 @@ export const Home = () => {
       description={t('home.pageDescription')}
       keywords={t('home.keywords')}
       ogImage="/home-og-image.png"
-      ogUrl={`${window.location.origin}/${currentLang}`}
+      ogUrl={`${window.location.origin}/${currentLang}/`}
       jsonLd={homeJsonLd}
     >
       <div className="home-page">
@@ -601,7 +601,7 @@ export const Home = () => {
           <div className="ui-page-shell">
             <article className="home-storyBlock home-storyBlock--sentiment home-reveal">
               <div className="home-storyBlock__content">
-                <h3>{t('home.story.blocks.sentiment.title')}</h3>
+                <h2>{t('home.story.blocks.sentiment.title')}</h2>
                 <p>{t('home.story.blocks.sentiment.description')}</p>
                 <Link to={`/${currentLang}/market-sentiment`} className="home-toolCard__link">
                   {t('home.story.blocks.sentiment.cta')} <FaArrowRight aria-hidden="true" />
@@ -689,7 +689,7 @@ export const Home = () => {
               </div>
 
               <div className="home-storyBlock__content">
-                <h3>{renderPriceStoryTitle(t('home.story.blocks.price.title'), currentLang.startsWith('zh'))}</h3>
+                <h2>{renderPriceStoryTitle(t('home.story.blocks.price.title'), currentLang.startsWith('zh'))}</h2>
                 <p>{t('home.story.blocks.price.description')}</p>
                 <Link to={`/${currentLang}/priceanalysis`} className="home-toolCard__link">
                   {t('home.story.blocks.price.cta')} <FaArrowRight aria-hidden="true" />
@@ -699,7 +699,7 @@ export const Home = () => {
 
             <article className="home-storyBlock home-storyBlock--watchlist home-reveal">
               <div className="home-storyBlock__content">
-                <h3>{t('home.story.blocks.watchlist.title')}</h3>
+                <h2>{t('home.story.blocks.watchlist.title')}</h2>
                 <p>{t('home.story.blocks.watchlist.description')}</p>
                 <Link to={`/${currentLang}/watchlist`} className="home-toolCard__link">
                   {t('home.story.blocks.watchlist.cta')} <FaArrowRight aria-hidden="true" />

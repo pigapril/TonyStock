@@ -65,20 +65,55 @@ const ROUTES = [
   { basePath: '/legal', metaKey: 'legal' },
 ];
 
-// Article detail shells: sourced from what's actually in sitemap.xml today.
-// Only en + zh-TW slugs are confirmed real URLs. A `zh` article cluster is
+// Article detail shells: keep this list aligned with published article URLs in
+// sitemap.xml. Only en + zh-TW slugs are confirmed real URLs. A `zh` article cluster is
 // intentionally skipped: there is no zh-specific slug mapping anywhere in the
 // app (ArticleDetail.js only maps zh-TW original slugs <-> en slugs), so a
 // fabricated /zh/articles/<slug> URL would be a guess, not a fact.
-const ARTICLES = [
-  { lang: 'en', slug: 'analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis' },
-  { lang: 'en', slug: 'using-market-sentiment-composite-index-to-time-buys-and-sells' },
-  { lang: 'zh-TW', slug: '1.用樂活五線譜分析價格趨勢與情緒' },
-  { lang: 'zh-TW', slug: '2.用市場情緒綜合指數判斷買賣時機' },
+const ARTICLE_PAIRS = [
+  {
+    originalSlug: '1.用樂活五線譜分析價格趨勢與情緒',
+    enSlug: 'analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis',
+    enFile: 'Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis.en.ini.md',
+  },
+  {
+    originalSlug: '2.用市場情緒綜合指數判斷買賣時機',
+    enSlug: 'using-market-sentiment-composite-index-to-time-buys-and-sells',
+    enFile: 'using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md',
+  },
+  {
+    originalSlug: '4.樂活五線譜1155萬筆台美股資料實測結果分析',
+    enSlug: 'lohas-five-line-analysis-tested-on-11-6-million-daily-bars',
+    enFile: 'LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md',
+  },
   // 第 3 篇（Netflix 併購華納）刻意不列。2026-08 產品方向從個股分析轉向市場情緒，
   // 那篇站內仍可讀，但不再投 SEO 資源進要放棄的方向。這是決定，不是遺漏，
   // 請勿「順手補上」。sitemap.xml 同樣刻意不含它。
 ];
+
+const ARTICLES = ARTICLE_PAIRS.flatMap(({ originalSlug, enSlug, enFile }) => [
+  { lang: 'en', slug: enSlug, sourceFile: path.join(ROOT, 'public/articles', originalSlug, enFile) },
+  {
+    lang: 'zh-TW',
+    slug: originalSlug,
+    sourceFile: path.join(ROOT, 'public/articles', originalSlug, `${originalSlug.replace(/^\d+\./, '')}.zh-TW.ini.md`),
+  },
+]);
+
+function articleFrontmatter(sourceFile) {
+  const source = fs.readFileSync(sourceFile, 'utf8');
+  const frontmatter = source.match(/^---\s*\n([\s\S]*?)\n---(?:\s*\n|$)/);
+  if (!frontmatter) throw new Error(`Missing article frontmatter: ${sourceFile}`);
+  const fields = {};
+  for (const line of frontmatter[1].split('\n')) {
+    const match = line.match(/^([a-zA-Z]+):\s*(.*)$/);
+    if (match) fields[match[1].toLowerCase()] = match[2].trim();
+  }
+  if (!fields.title || !fields.description) {
+    throw new Error(`Missing article title or description: ${sourceFile}`);
+  }
+  return fields;
+}
 
 function escapeAttr(str) {
   return String(str)
@@ -197,15 +232,14 @@ function main() {
   }
 
   // Article detail shells: self-canonical only, no hreflang alternates.
-  for (const { lang, slug } of ARTICLES) {
+  for (const { lang, slug, sourceFile } of ARTICLES) {
     const decodedSlug = decodeURIComponent(slug);
-    // Single formula for the article title (no extra " | {defaultTitle}" suffix
-    // layered on top) — used as-is for both <title> and og:title/twitter:title.
-    const title = `${decodedSlug} | Sentiment Inside Out`;
-    const description = STRINGS[lang].articles.pageDescription;
-    const selfHref = `${SITE_ORIGIN}/${lang}/articles/${encodeURIComponent(decodedSlug)}`;
+    const meta = articleFrontmatter(sourceFile);
+    const title = `${meta.title} | ${defaultTitle(lang)}`;
+    const description = meta.description;
+    const selfHref = `${SITE_ORIGIN}/${lang}/articles/${encodeURIComponent(decodedSlug)}/`;
 
-    const html = renderShell(template, { lang, title, ogTitle: title, description, selfHref, hreflangLinks: [] });
+    const html = renderShell(template, { lang, title, ogTitle: meta.title, description, selfHref, hreflangLinks: [] });
     const outPath = path.join(BUILD_DIR, lang, 'articles', decodedSlug, 'index.html');
 
     writeFile(outPath, html);

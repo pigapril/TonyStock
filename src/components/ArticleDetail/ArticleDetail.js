@@ -209,23 +209,25 @@ export function ArticleDetail() {
     };
 
     if (loading) {
-        return <PageContainer title={t('articleDetail.loadingTitle')} description={t('articleDetail.loadingDescription')}><div>{t('common.loading')}</div></PageContainer>;
+        return <PageContainer title={t('articleDetail.loadingTitle')} description={t('articleDetail.loadingDescription')} includeHreflang={false}><div>{t('common.loading')}</div></PageContainer>;
     }
 
     if (error) {
-        return <PageContainer title={t('articleDetail.errorTitle')} description={t('articleDetail.errorDescription')}>
+        return <PageContainer title={t('articleDetail.errorTitle')} description={t('articleDetail.errorDescription')} includeHreflang={false}>
             <div>{t('articleDetail.errorText')}{error.message}</div>
         </PageContainer>;
     }
 
     if (!article) {
-        return <PageContainer title={t('articleDetail.notFoundTitle')} description={t('articleDetail.notFoundDescription')}>
+        return <PageContainer title={t('articleDetail.notFoundTitle')} description={t('articleDetail.notFoundDescription')} includeHreflang={false}>
             <div>{t('articleDetail.notFoundText')}</div>
         </PageContainer>;
     }
 
     // 確保 PageContainer 的 og:url 使用當前 URL
-    const pageOgUrl = typeof window !== 'undefined' ? window.location.href : '';
+    const pageOgUrl = typeof window !== 'undefined'
+        ? `${window.location.origin}${window.location.pathname}`
+        : '';
 
     return (
         <PageContainer
@@ -233,6 +235,7 @@ export function ArticleDetail() {
             description={meta.description || ''}
             // og:url 應反映當前頁面的實際 URL
             ogUrl={pageOgUrl}
+            includeHreflang={false}
         >
             <div className="article-detail-page">
                 <Helmet>
@@ -312,4 +315,4 @@ export function ArticleDetail() {
             </div>
         </PageContainer>
     );
-} 
+}
