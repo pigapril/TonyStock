@@ -124,10 +124,10 @@ export function ArticleDetail() {
                     try {
                         const yamlLines = frontmatterMatch[1].trim().split('\n');
                         yamlLines.forEach(line => {
-                            const parts = line.split(':').map(p => p.trim());
-                            // 保持原樣，允許值中包含冒號
-                            if (parts.length >= 2) {
-                                parsedFrontmatter[parts[0].toLowerCase()] = parts.slice(1).join(':').trim();
+                            const separator = line.indexOf(':');
+                            if (separator !== -1) {
+                                const key = line.slice(0, separator).trim().toLowerCase();
+                                parsedFrontmatter[key] = line.slice(separator + 1).trim();
                             }
                         });
                     } catch (e) {
@@ -280,13 +280,13 @@ export function ArticleDetail() {
                                         return (
                                             <a
                                                 {...props}
-                                                href={`#${id}`}
+                                                href={`${window.location.pathname}#${id}`}
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     const element = document.getElementById(id);
                                                     if (element) {
                                                         element.scrollIntoView({ behavior: 'smooth' });
-                                                        window.history.pushState(null, '', `#${id}`);
+                                                        window.history.pushState(null, '', `${window.location.pathname}#${id}`);
                                                     } else {
                                                         console.warn("Element not found with id:", id);
                                                     }
