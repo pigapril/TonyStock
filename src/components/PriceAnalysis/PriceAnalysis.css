@@ -2050,8 +2050,7 @@
    等於把右邊的項目鎖起來看不到。這一列可以比搜尋列寬，六個一行、最多兩行。 */
 .price-analysis-view .pa-hot-search-slot {
   width: 100%;
-  height: 80px;
-  overflow-y: auto;
+  min-height: 80px;
 }
 
 .price-analysis-view .pa-hot-row {
@@ -2257,6 +2256,7 @@
   /* 手機維持單行橫滑：垂直空間比較珍貴，而且手指滑得動。
      裝 chip 的內層也要 nowrap，不然它會自己折成好幾行（實測 316px 高）。 */
   .price-analysis-view .pa-hot-search-slot {
+    min-height: 38px;
     height: 38px;
     overflow: hidden;
   }
