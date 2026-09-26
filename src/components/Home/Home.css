@@ -420,10 +420,7 @@
 .home-skeleton {
   position: relative;
   overflow: hidden;
-  background:
-    linear-gradient(90deg, rgba(226, 232, 240, 0.88) 0%, rgba(248, 250, 252, 0.98) 45%, rgba(226, 232, 240, 0.88) 100%);
-  background-size: 240% 100%;
-  animation: homeSkeletonShimmer 1.45s ease-in-out infinite;
+  background: rgba(226, 232, 240, 0.88);
 }
 
 .home-skeleton::after {
@@ -433,16 +430,6 @@
   background: linear-gradient(120deg, transparent 24%, rgba(255, 255, 255, 0.42) 50%, transparent 76%);
   transform: translateX(-120%);
   animation: homeSkeletonSweep 1.45s linear infinite;
-}
-
-@keyframes homeSkeletonShimmer {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  100% {
-    background-position: 240% 50%;
-  }
 }
 
 @keyframes homeSkeletonSweep {
@@ -1021,7 +1008,7 @@
   max-width: 520px;
 }
 
-.home-storyBlock__content h3 {
+.home-storyBlock__content h2 {
   margin: 0;
   border-bottom: none;
   padding-bottom: 0;
@@ -1040,15 +1027,15 @@
   word-break: keep-all;
 }
 
-.home-storyBlock--sentiment .home-storyBlock__content h3 {
+.home-storyBlock--sentiment .home-storyBlock__content h2 {
   background-image: linear-gradient(135deg, #0f766e 0%, #0ea5e9 46%, #f59e0b 100%);
 }
 
-.home-storyBlock--price .home-storyBlock__content h3 {
+.home-storyBlock--price .home-storyBlock__content h2 {
   background-image: linear-gradient(135deg, #1d4ed8 0%, #7c3aed 48%, #d24a93 100%);
 }
 
-.home-storyBlock--watchlist .home-storyBlock__content h3 {
+.home-storyBlock--watchlist .home-storyBlock__content h2 {
   background-image: linear-gradient(135deg, #0369a1 0%, #0f766e 52%, #10b981 100%);
 }
 
@@ -1967,7 +1954,7 @@
     font-size: 0.88rem;
   }
 
-  .home-storyBlock__content h3 {
+  .home-storyBlock__content h2 {
     font-size: 1.8rem;
   }
 
