@@ -30,11 +30,16 @@ const PageContainer = ({
   const pageKeywords = keywords || defaultKeywords;
   
   const currentPathname = typeof window !== 'undefined' ? window.location.pathname : '';
-  const pageOgUrl = ogUrl || (typeof window !== 'undefined' ? window.location.origin + currentPathname : '');
+  const rawPageOgUrl = ogUrl || (typeof window !== 'undefined' ? window.location.origin + currentPathname : '');
+  // Netlify's pretty URLs 301 to the trailing-slash form. Match that final URL
+  // in both canonical and social tags, including after client-side navigation.
+  const pageOgUrl = rawPageOgUrl && !rawPageOgUrl.endsWith('/') ? `${rawPageOgUrl}/` : rawPageOgUrl;
 
   const pageTwitterImage = twitterImage || ogImage;
 
-  const supportedLngs = i18n.options.supportedLngs || [];
+  // `zh` is a legacy alias of `zh-TW`, not an independently translated page.
+  // Advertising it as an alternate makes two identical URLs compete as canonical.
+  const supportedLngs = (i18n.options.supportedLngs || []).filter(lng => lng !== 'zh');
   // i18n.options.fallbackLng is the object { zh: [...], default: ['en'] }
   // (see i18n.js), not a language string. Normalize it here so the
   // <html lang>, og:locale and x-default logic below always get a string.
@@ -89,7 +94,7 @@ const PageContainer = ({
         {includeHreflang && supportedLngs
           .filter(lng => lng !== 'cimode')
           .map(supportedLang => {
-            const alternateUrl = `${origin}/${supportedLang}${basePath === '/' ? '/' : basePath}`;
+            const alternateUrl = `${origin}/${supportedLang}${basePath === '/' ? '/' : `${basePath.replace(/\/$/, '')}/`}`;
             return (
               <link
                 key={supportedLang}
@@ -104,7 +109,7 @@ const PageContainer = ({
           <link
             rel="alternate"
             hrefLang="x-default"
-            href={basePath === '/' ? `${origin}/` : `${origin}/${fallbackLng}${basePath}`}
+            href={basePath === '/' ? `${origin}/` : `${origin}/${fallbackLng}${basePath.replace(/\/$/, '')}/`}
           />
         )}
         

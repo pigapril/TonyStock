@@ -24,11 +24,9 @@ const SITE_ORIGIN = (process.env.SITE_ORIGIN || 'https://sentimentinsideout.com'
 const en = require(path.join(ROOT, 'src/locales/en/translation.json'));
 const zhTW = require(path.join(ROOT, 'src/locales/zh-TW/translation.json'));
 
-// There is no src/locales/zh/translation.json in this repo, and i18n.js only
-// registers `en` and `zh-TW` resource bundles (zh falls back to zh-TW/en at
-// runtime). Rather than inventing an unused zh locale file, the zh shells
-// reuse the zh-TW strings, same as the runtime i18next fallback chain would.
-const STRINGS = { en, 'zh-TW': zhTW, zh: zhTW };
+// `zh` remains a legacy runtime alias, but only en and zh-TW have distinct
+// content. /zh/* redirects to /zh-TW/* and must not get self-canonical shells.
+const STRINGS = { en, 'zh-TW': zhTW };
 
 
 // indicatorPages.js 是 ESM，這支腳本是 CommonJS，所以用最小的字串解析取出
@@ -43,7 +41,7 @@ const INDICATOR_PAGES = (() => {
   })).filter((page) => page.slug && page.i18nKey);
 })();
 
-const LANGS = ['en', 'zh-TW', 'zh'];
+const LANGS = ['en', 'zh-TW'];
 
 // basePath '' = the language home page (self URL gets a trailing slash,
 // matching the existing sitemap.xml convention).
@@ -66,10 +64,7 @@ const ROUTES = [
 ];
 
 // Article detail shells: keep this list aligned with published article URLs in
-// sitemap.xml. Only en + zh-TW slugs are confirmed real URLs. A `zh` article cluster is
-// intentionally skipped: there is no zh-specific slug mapping anywhere in the
-// app (ArticleDetail.js only maps zh-TW original slugs <-> en slugs), so a
-// fabricated /zh/articles/<slug> URL would be a guess, not a fact.
+// sitemap.xml. Only en + zh-TW slugs are canonical URLs.
 const ARTICLE_PAIRS = [
   {
     originalSlug: '1.用樂活五線譜分析價格趨勢與情緒',
@@ -128,7 +123,7 @@ function ogLocale(lang) {
 }
 
 function selfUrl(lang, basePath) {
-  return basePath === '' ? `${SITE_ORIGIN}/${lang}/` : `${SITE_ORIGIN}/${lang}${basePath}`;
+  return basePath === '' ? `${SITE_ORIGIN}/${lang}/` : `${SITE_ORIGIN}/${lang}${basePath}/`;
 }
 
 function defaultTitle(lang) {
@@ -283,9 +278,8 @@ function checkSitemapCoverage() {
     const url = new URL(loc);
     const pathname = url.pathname;
 
-    // Skip non-lang-prefixed entries (e.g. the Google Search Console
-    // verification file) — they don't get an SEO shell.
-    if (!/^\/(en|zh-TW|zh)(\/|$)/.test(pathname)) continue;
+    // Skip non-lang-prefixed entries — they don't get an SEO shell.
+    if (!/^\/(en|zh-TW)(\/|$)/.test(pathname)) continue;
     checkedCount += 1;
 
     const decodedPathname = decodeURIComponent(pathname);
