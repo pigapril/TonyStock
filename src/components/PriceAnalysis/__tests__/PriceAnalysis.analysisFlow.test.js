@@ -1,9 +1,10 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../../../i18n';
 import { PriceAnalysis } from '../PriceAnalysis';
+import { HOT_SEARCH_CACHE_KEY } from '../hotSearchCache';
 import zhTW from '../../../locales/zh-TW/translation.json';
 import en from '../../../locales/en/translation.json';
 
@@ -124,6 +125,7 @@ const clickHorizon = (label) => fireEvent.click(horizonButton(label));
 describe('PriceAnalysis analysis flow', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    window.localStorage.removeItem(HOT_SEARCH_CACHE_KEY);
     // CRA 預設 resetMocks: true，jest.mock 工廠給的實作每個 test 前都會被清掉，
     // 不重設的話 isStockAllowed 會回傳 undefined，手動送出的路徑會卡在方案檢查。
     require('../../../utils/freeStockListUtils').isStockAllowed.mockReturnValue(true);
@@ -348,6 +350,61 @@ describe('PriceAnalysis analysis flow', () => {
 
     const hotChip = await screen.findByRole('button', { name: /SPY.*S&P 500 ETF/i });
     expect(container.querySelector('.pa-hot-search-slot')).toContainElement(hotChip);
+    expect(JSON.parse(window.localStorage.getItem(HOT_SEARCH_CACHE_KEY))).toEqual([
+      { keyword: 'SPY', name: 'S&P 500 ETF' }
+    ]);
+  });
+
+  it('先顯示上次榜單，API 回空清單時仍保留', async () => {
+    window.localStorage.setItem(HOT_SEARCH_CACHE_KEY, JSON.stringify([
+      { keyword: 'AAPL', name: 'Apple' }
+    ]));
+    let resolveHotSearches;
+    mockEnhancedApiClient.get.mockImplementation((url) => {
+      if (url === '/api/hot-searches') {
+        return new Promise((resolve) => { resolveHotSearches = resolve; });
+      }
+      if (url === '/api/integrated-analysis') {
+        return Promise.resolve(createIntegratedAnalysisPayload());
+      }
+      return Promise.resolve({ data: { data: [] } });
+    });
+
+    render(
+      <TestWrapper>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    expect(screen.getByRole('button', { name: /AAPL.*Apple/i })).toBeInTheDocument();
+    await act(async () => {
+      resolveHotSearches({ data: { data: { top_searches: [] } } });
+    });
+    expect(screen.getByRole('button', { name: /AAPL.*Apple/i })).toBeInTheDocument();
+  });
+
+  it('API 暫時失敗時不清掉上次榜單', async () => {
+    window.localStorage.setItem(HOT_SEARCH_CACHE_KEY, JSON.stringify([
+      { keyword: 'MSFT', name: 'Microsoft' }
+    ]));
+    const requestError = Object.assign(new Error('offline'), { response: { status: 403 } });
+    mockEnhancedApiClient.get.mockImplementation((url) => {
+      if (url === '/api/hot-searches') return Promise.reject(requestError);
+      if (url === '/api/integrated-analysis') return Promise.resolve(createIntegratedAnalysisPayload());
+      return Promise.resolve({ data: { data: [] } });
+    });
+
+    render(
+      <TestWrapper>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(mockEnhancedApiClient.get).toHaveBeenCalledWith('/api/hot-searches', expect.any(Object));
+    });
+    await act(async () => { await Promise.resolve(); });
+    expect(screen.getByRole('button', { name: /MSFT.*Microsoft/i })).toBeInTheDocument();
   });
 
   it('換分析期長就直接重跑，不必再按一次按鈕', async () => {

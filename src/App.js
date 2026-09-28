@@ -8,7 +8,7 @@ import { useDeferredFeature } from './hooks/useDeferredFeature';
 
 
 // 第三方庫
-import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaPiggyBank } from 'react-icons/fa';
+import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHome, FaPiggyBank, FaThLarge } from 'react-icons/fa';
 
 // 樣式引入
 import './App.css';
@@ -55,6 +55,7 @@ import BrandLogo from './components/Common/BrandLogo/BrandLogo';
 import DeferredTagManager from './components/Common/DeferredTagManager/DeferredTagManager';
 
 const MarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/MarketSentimentIndex'));
+const MomentumDashboardPage = lazy(() => import('./components/MomentumDashboard/MomentumDashboardPage'));
 const TwMarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/TwMarketSentimentIndex'));
 const SentimentBoard = lazy(() => import('./components/SentimentBoard/SentimentBoard'));
 const SentimentIndicatorPage = lazy(() => import('./components/SentimentBoard/SentimentIndicatorPage'));
@@ -95,6 +96,8 @@ const RouteFallback = () => {
     fallbackClassName += ' route-loading-placeholder--priceanalysis';
   } else if (pathname.includes('/market-sentiment')) {
     fallbackClassName += ' route-loading-placeholder--market-sentiment';
+  } else if (pathname.includes('/momentum')) {
+    fallbackClassName += ' route-loading-placeholder--stable-page';
   } else if (pathname.includes('/watchlist') || pathname.includes('/sentiment-indicators/')) {
     fallbackClassName += ' route-loading-placeholder--stable-page';
   }
@@ -297,6 +300,7 @@ function AppContent() {
             <li className="sidebar-item-1">
               <NavLink
                 to={`/${lang}/`}
+                end
                 onClick={handleNavItemClick}
                 className={({ isActive }) => isActive ? "active-nav-link" : ""}
                 aria-current={({ isActive }) => isActive ? "page" : undefined}
@@ -355,6 +359,16 @@ function AppContent() {
                   </li>
                 </ul>
               )}
+            </li>
+            <li className="sidebar-item-momentum">
+              <NavLink
+                to={`/${lang}/momentum`}
+                onClick={handleNavItemClick}
+                className={({ isActive }) => isActive ? "active-nav-link" : ""}
+              >
+                <FaThLarge />
+                <span>{t('nav.momentumDashboard')}</span>
+              </NavLink>
             </li>
             {/*
             <li className="sidebar-item dropdown">
@@ -502,6 +516,13 @@ function AppContent() {
                     </div>
                   </div>
                   <NavLink
+                    to={`/${lang}/momentum`}
+                    className={({ isActive }) => isActive ? "active-nav-link" : ""}
+                  >
+                    <FaThLarge />
+                    <span>{t('nav.momentumDashboard')}</span>
+                  </NavLink>
+                  <NavLink
                     to={`/${lang}/watchlist`}
                     onClick={handleWatchlistClick}
                     className={({ isActive }) => isActive ? "active-nav-link" : ""}
@@ -578,6 +599,7 @@ function AppContent() {
                   path="market-sentiment"
                   element={<MarketSentimentIndex />}
                 />
+                <Route path="momentum" element={<MomentumDashboardPage />} />
                 <Route
                   path="tw-market-sentiment"
                   element={<TwMarketSentimentIndex />}

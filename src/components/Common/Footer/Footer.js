@@ -24,6 +24,7 @@ export const Footer = () => {
             <ul>
               <li><Link to={`${langPrefix}/priceanalysis`}>{t('footer.priceAnalysis')}</Link></li>
               <li><Link to={`${langPrefix}/market-sentiment`}>{t('footer.marketSentiment')}</Link></li>
+              <li><Link to={`${langPrefix}/momentum`}>{t('nav.momentumDashboard')}</Link></li>
               {/*
               <li><Link to={`${langPrefix}/googletrends`}>{t('footer.googleTrendsSymbol')}</Link></li>
               <li><Link to={`${langPrefix}/googletrendsmarket`}>{t('footer.googleTrendsMarket')}</Link></li>
@@ -85,4 +86,4 @@ export const Footer = () => {
       </div>
     </footer>
   );
-}; 
+};

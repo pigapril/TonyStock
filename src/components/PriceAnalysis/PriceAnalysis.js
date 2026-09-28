@@ -23,6 +23,7 @@ import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDi
 import { isStockAllowed, getFreeStockList } from '../../utils/freeStockListUtils'; // 導入免費股票清單檢查函數
 import FreeStockList from './FreeStockList'; // 新增：引入免費股票清單組件
 import { TOUR_STORAGE_KEY } from './tourStorageKey';
+import { normalizeHotSearches, readHotSearchesCache, saveHotSearchesCache } from './hotSearchCache';
 import watchlistService from '../Watchlist/services/watchlistService'; // 新增：引入 watchlist service
 
 const DeferredBacktestDatePicker = lazy(() => import('./DeferredBacktestDatePicker'));
@@ -459,7 +460,7 @@ export function PriceAnalysis() {
 
 
   // 新增：熱門搜尋狀態
-  const [hotSearches, setHotSearches] = useState([]);
+  const [hotSearches, setHotSearches] = useState(readHotSearchesCache);
 
   // 新增：快速選擇 Tab 狀態
   const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('freeStocks'); // 'freeStocks' 或 'watchlist'
@@ -1193,14 +1194,16 @@ export function PriceAnalysis() {
         });
         // 假設 API 回應格式為 { data: { top_searches: [...] } }
         if (response.data && response.data.data && Array.isArray(response.data.data.top_searches)) {
-          setHotSearches(response.data.data.top_searches);
+          const latestSearches = normalizeHotSearches(response.data.data.top_searches);
+          if (latestSearches.length > 0) {
+            setHotSearches(latestSearches);
+            saveHotSearchesCache(latestSearches);
+          }
         } else {
-          setHotSearches([]);
           console.warn('Hot searches data is not in expected format:', response.data);
         }
       } catch (error) {
         console.error("Error fetching hot searches:", error); // 添加這行
-        setHotSearches([]);
 
         // 只在非 403 錯誤時顯示錯誤提示，避免認證問題時的重複提示
         if (error.response?.status !== 403) {
