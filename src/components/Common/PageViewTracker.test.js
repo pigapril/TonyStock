@@ -28,4 +28,10 @@ describe('PageViewTracker', () => {
       }
     ]);
   });
+
+  it('excludes transaction parameters from payment page views', () => {
+    render(<MemoryRouter initialEntries={['/zh-TW/payment/card-trial/result?merchantTradeNo=private&status=success']}><PageViewTracker /></MemoryRouter>);
+    expect(window.dataLayer[0].page_location).toBe(`${window.location.origin}/zh-TW/payment/card-trial/result`);
+    expect(JSON.stringify(window.dataLayer)).not.toContain('private');
+  });
 });

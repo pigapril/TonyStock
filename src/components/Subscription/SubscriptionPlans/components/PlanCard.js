@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PlanBadge } from '../../shared/PlanBadge';
@@ -7,6 +7,7 @@ import { useSubscription } from '../../SubscriptionContext';
 import { useDialog } from '../../../Common/Dialog/useDialog';
 import { useAuth } from '../../../Auth/useAuth';
 import { Analytics } from '../../../../utils/analytics';
+import { trackProductEvent } from '../../../../utils/productAnalytics';
 import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../utils/pricingUtils';
 import { canAccessPaymentFeatures } from '../../../../utils/premiumWhitelist';
 
@@ -272,10 +273,17 @@ export const PlanCard = ({
   // 綁卡軌沒有接折扣系統，套用了優惠碼的人要走原本的付款頁，優惠才會生效。
   const showCardTrialEntry = isPro && cardTrialEligible && !appliedRedemption && !isCurrentPlan && !isCancelledButActive;
 
+  const trackedTrialEntry = useRef(null);
+  useEffect(() => {
+    if (!showCardTrialEntry || trackedTrialEntry.current === billingPeriod) return;
+    trackedTrialEntry.current = billingPeriod;
+    trackProductEvent('card_trial_entry_viewed', { source: 'subscription_plans', billing_period: billingPeriod, trial_days: 30 });
+  }, [showCardTrialEntry, billingPeriod]);
+
   const handleCardTrialSelect = () => {
-    Analytics.track('card_trial_entry_clicked', {
-      planId: plan.id,
-      billingPeriod
+    trackProductEvent('card_trial_entry_clicked', {
+      source: 'subscription_plans', billing_period: billingPeriod, trial_days: 30,
+      planId: plan.id, billingPeriod
     });
     navigate(`/${lang}/payment/card-trial?period=${billingPeriod}`);
   };

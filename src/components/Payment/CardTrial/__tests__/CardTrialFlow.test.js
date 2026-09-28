@@ -3,6 +3,8 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nextProvider } from 'react-i18next';
 import CardTrialFlow from '../CardTrialFlow';
+import { trackProductEvent } from '../../../../utils/productAnalytics';
+jest.mock('../../../../utils/productAnalytics', () => ({ trackProductEvent: jest.fn() }));
 import { startCardTrial, createBindCard } from '../../../../services/cardTrialService';
 import {
     goToThreeDVerification,
@@ -83,6 +85,10 @@ describe('CardTrialFlow', () => {
 
         await waitFor(() => expect(startCardTrial).toHaveBeenCalledTimes(1));
         expect(startCardTrial.mock.calls[0][0].billingPeriod).toBe('yearly');
+        expect(trackProductEvent).toHaveBeenCalledWith('card_trial_view', expect.objectContaining({ billing_period: 'yearly', trial_days: 30 }));
+        expect(trackProductEvent).toHaveBeenCalledWith('card_trial_step', expect.objectContaining({ step: 'starting' }));
+        await waitFor(() => expect(trackProductEvent).toHaveBeenCalledWith('card_trial_step', expect.objectContaining({ step: 'binding' })));
+        expect(trackProductEvent).not.toHaveBeenCalledWith('card_trial_started', expect.anything());
     });
 
     it.each([[''], ['period=weekly'], ['period=YEARLY']])('period 沒帶或亂帶（"%s"）時當月繳', async (query) => {

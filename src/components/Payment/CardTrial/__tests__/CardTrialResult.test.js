@@ -1,6 +1,8 @@
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import CardTrialResult from '../CardTrialResult';
+import { trackVerifiedTrialResult } from '../../../../utils/productAnalytics';
+jest.mock('../../../../utils/productAnalytics', () => ({ trackVerifiedTrialResult: jest.fn(), trackProductEvent: jest.fn() }));
 import { fetchCardTrialResult } from '../../../../services/cardTrialService';
 
 let mockQuery;
@@ -24,6 +26,8 @@ it('網址宣稱成功但後端拒絕時顯示失敗，查詢完成前不顯示�
     expect(await screen.findByText('cardTrial.result.failedTitle')).toBeInTheDocument();
     expect(screen.getByText('cardTrial.result.failureReasons.issuer_declined')).toBeInTheDocument();
     expect(fetchCardTrialResult).toHaveBeenCalledWith('BC1');
+    expect(trackVerifiedTrialResult).toHaveBeenCalledWith('BC1', 'failed');
+    expect(trackVerifiedTrialResult).not.toHaveBeenCalledWith(expect.anything(), 'success');
 });
 
 it('只有後端確認 succeeded 才顯示成功，即使 query 是 failed', async () => {
@@ -31,6 +35,7 @@ it('只有後端確認 succeeded 才顯示成功，即使 query 是 failed', asy
     fetchCardTrialResult.mockResolvedValue({ status: 'succeeded' });
     render(<CardTrialResult />);
     expect(await screen.findByText('cardTrial.result.successTitle')).toBeInTheDocument();
+    expect(trackVerifiedTrialResult).toHaveBeenCalledWith('BC1', 'success');
 });
 
 it('缺少交易編號的舊 success 連結保留待確認，不猜測最近一筆交易', () => {
@@ -38,6 +43,7 @@ it('缺少交易編號的舊 success 連結保留待確認，不猜測最近一�
     render(<CardTrialResult />);
     expect(screen.getByText('cardTrial.result.pendingTitle')).toBeInTheDocument();
     expect(fetchCardTrialResult).not.toHaveBeenCalled();
+    expect(trackVerifiedTrialResult).not.toHaveBeenCalled();
 });
 
 it('查詢失敗保持待確認，不回退到 success query', async () => {

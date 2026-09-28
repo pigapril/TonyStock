@@ -1,13 +1,13 @@
-// 基礎資料層推送函數
+import { ensureDataLayer } from './deferredScripts';
+
+// GTM 延後載入時仍保留事件；追蹤失敗不能中斷產品或付款操作。
 const pushToDataLayer = (eventName, eventData) => {
-  if (window.dataLayer) {
-    window.dataLayer.push({
+  try {
+    ensureDataLayer().push({
       event: eventName,
       ...eventData
     });
-  } else {
-    console.warn('DataLayer not found');
-  }
+  } catch { /* Analytics is best effort. */ }
 };
 
 // 改為具名導出

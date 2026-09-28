@@ -3,6 +3,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './CardTrial.css';
 import { fetchCardTrialResult } from '../../../services/cardTrialService';
+import { trackProductEvent, trackVerifiedTrialResult } from '../../../utils/productAnalytics';
 
 // query 只提供交易編號，成功與否必須由登入者該筆 binding 的後端終態確認。
 const RESULT_VIEWS = {
@@ -29,10 +30,14 @@ const CardTrialResult = () => {
                 const data = await fetchCardTrialResult(merchantTradeNo);
                 if (cancelled) return;
                 const status = data.status === 'succeeded' ? 'success' : data.status === 'failed' ? 'failed' : 'pending';
+                trackVerifiedTrialResult(merchantTradeNo, status);
                 setResult({ merchantTradeNo, status, failureReason: data.failureReason || null });
                 if (status === 'pending' && attempts < 5) timer = setTimeout(check, 2000);
             } catch {
-                if (!cancelled) setResult({ merchantTradeNo, status: 'pending' });
+                if (!cancelled) {
+                    trackProductEvent('card_trial_result', { status: 'unavailable', trial_days: 30 });
+                    setResult({ merchantTradeNo, status: 'pending' });
+                }
             }
         };
         setResult(null);

@@ -15,7 +15,8 @@ export function PageViewTracker() {
     dataLayer.push({
       event: 'page_view',
       page_path: location.pathname,
-      page_location: window.location.href,
+      page_location: location.pathname.includes('/payment/')
+        ? window.location.origin + location.pathname : window.location.href,
       page_title: document.title
     });
   }, [location]);

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { startCardTrial, createBindCard } from '../../../services/cardTrialService';
 import { BIND_CARD_CONTAINER_ID } from '../../../utils/ecpayBindCardSdk';
 import { BINDING_PHASE, localeOf, useCardBinding } from './useCardBinding';
+import { trackProductEvent } from '../../../utils/productAnalytics';
 import './CardTrial.css';
 
 // 送到後端落地的版本號，消保法舉證用。文案改動要一起改這個字串。
@@ -73,6 +74,19 @@ const CardTrialFlow = () => {
         handleSubmit,
         handleRestart
     } = useCardBinding(CARD_TRIAL_BINDING, locale);
+
+    const lastTrackedPhase = useRef(null);
+    useEffect(() => {
+        const key = `${phase}:${errorKey || ''}:${billingPeriod}`;
+        if (lastTrackedPhase.current === key) return;
+        lastTrackedPhase.current = key;
+        trackProductEvent(phase === BINDING_PHASE.terms ? 'card_trial_view' : 'card_trial_step', {
+            billing_period: billingPeriod,
+            trial_days: TRIAL_DAYS,
+            step: phase,
+            error_type: phase === BINDING_PHASE.failed ? errorKey : null
+        });
+    }, [phase, errorKey, billingPeriod]);
 
     // 使用者可能停在這頁跨過台北午夜，揭露的扣款日要跟按下同意那一刻的日期一致。
     useEffect(() => {
