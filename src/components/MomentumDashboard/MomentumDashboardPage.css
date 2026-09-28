@@ -19,6 +19,21 @@
 .momentum-date { display: grid; gap: 5px; flex-shrink: 0; text-align: right; }
 .momentum-date span { font-size: 12px; color: var(--momentum-muted); }
 .momentum-date time { font-size: 14px; font-weight: 600; }
+.momentum-date a { color: var(--momentum-green); font-size: 12px; padding: 8px 0; text-underline-offset: 3px; }
+.momentum-access-note { margin: 0 0 16px; color: var(--momentum-muted); font-size: 12px; line-height: 1.8; }
+.momentum-upgrade { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 20px; padding: 24px; border: 1px solid var(--momentum-line); border-radius: 10px; background: #f2f6ef; }
+.momentum-upgrade__copy { flex: 1; min-width: 0; }
+.momentum-pro-badge { display: inline-block; padding: 4px 7px; background: #dce9da; color: var(--momentum-green); border-radius: 4px; font-size: 10px; font-weight: 750; letter-spacing: .08em; }
+.momentum-upgrade h3 { margin: 10px 0 6px; font-size: 18px; }
+.momentum-upgrade p { margin: 0; color: var(--momentum-muted); font-size: 13px; line-height: 1.8; }
+.momentum-locked-preview { list-style: none; padding: 0; margin: 14px 0 0; }
+.momentum-locked-preview li { display: flex; align-items: baseline; gap: 12px; padding: 7px 0; font-size: 12px; }
+.momentum-locked-preview strong { min-width: 48px; }
+.momentum-locked-preview li > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--momentum-muted); }
+.momentum-locked-preview small { flex-shrink: 0; margin-left: auto; font-size: 11px; color: var(--momentum-muted); }
+.momentum-upgrade-button { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; gap: 16px; min-height: 44px; padding: 0 18px; border-radius: 6px; background: var(--momentum-ink); color: #f6faf5; font-size: 13px; font-weight: 600; text-decoration: none; }
+.momentum-upgrade-button:hover { background: var(--momentum-green); }
+.momentum-page a:focus-visible { outline: 3px solid #54816a; outline-offset: 4px; }
 .momentum-controls { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-bottom: 20px; border-bottom: 1px solid var(--momentum-line); }
 .momentum-scopes { display: flex; flex-wrap: wrap; gap: 5px; }
 .momentum-scopes button { min-height: 44px; padding: 10px 16px; border: 0; border-radius: 6px; background: transparent; color: var(--momentum-muted); font-size: 14px; font-weight: 600; }
@@ -123,6 +138,7 @@
 .momentum-refresh-error { margin: 15px 0; padding: 12px 16px; background: #f8eee4; font-size: 13px; color: #855333; }
 .momentum-refresh-error button { border: 0; background: transparent; color: inherit; text-decoration: underline; }
 @media (max-width: 760px) {
+  .momentum-upgrade { flex-direction: column; align-items: stretch; gap: 18px; padding: 20px; }
   .momentum-map-context { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .momentum-reading-guide dl { grid-template-columns: 1fr; gap: 16px; padding: 16px; }
   .momentum-page { width: calc(100% - 32px); padding-top: 24px; }

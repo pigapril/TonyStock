@@ -13,6 +13,18 @@
     "adminBadge": "Admin"
   },
   "momentumDashboard": {
+    "access": {
+      "freeAsOf": "Free · Closing data as of",
+      "proAsOf": "Pro · Closing data as of",
+      "upgrade": "Upgrade to Pro",
+      "freeRanking": "Free ETF momentum ranking",
+      "freeDetail": "Free includes the full category map and details for {{count}} fixed ETFs. The ranking below compares only these free ETFs.",
+      "lockedLabel": "Pro assets",
+      "upgradeTitle": "Compare momentum across all {{count}} assets",
+      "upgradeBody": "This selection includes {{count}} more Pro assets. Upgrade to compare daily moves, momentum scores and 1-, 3- and 6-month returns.",
+      "proOnly": "Pro only",
+      "upgradeAction": "Unlock full rankings"
+    },
     "title": "Market momentum",
     "subtitle": "Explore recent gains, losses and strength across sectors and assets.",
     "asOf": "Market close",

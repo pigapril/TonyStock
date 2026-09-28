@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../api/apiClient';
+import { useAuth } from '../Auth/useAuth';
 import { trackProductEvent } from '../../utils/productAnalytics';
 import { isAvailableNumber, sortRowsByDailyMove, sortRowsByRank, summarizeGroups } from './momentumViewModel';
 import './MomentumDashboardPage.css';
@@ -22,11 +23,18 @@ function colorBand(value, metric) {
 }
 
 export default function MomentumDashboardPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { user, loading: authLoading } = useAuth();
+  const authKey = JSON.stringify([user?.id || user?.userId || null, user?.plan || 'free', Boolean(authLoading)]);
+  const upgradeUrl = `/${i18n.language}/subscription-plans`;
   const text = useCallback((key, options) => t(`momentumDashboard.${key}`, options), [t]);
   const groupLabel = (name) => text(`groups.${groupKey(name)}`, { defaultValue: name });
   const groupHint = (name) => universe === 'Structure' ? text(`groupHints.${groupKey(name)}`, { defaultValue: '' }) : '';
-  const [snapshot, setSnapshot] = useState(null);
+  const [responseState, setResponseState] = useState(null);
+  // Hide the previous account's data immediately, before the refetch effect runs.
+  const snapshot = responseState?.authKey === authKey ? responseState.value : null;
+  const isFree = snapshot?.access?.plan === 'free';
+  const requestVersion = useRef(0);
   const [universe, setUniverse] = useState('Industry');
   const [metric, setMetric] = useState('rank');
   const [sortOrder, setSortOrder] = useState('desc');
@@ -48,38 +56,47 @@ export default function MomentumDashboardPage() {
     action, universe, metric, sort_order: sortOrder, group_name: selectedGroup, ...fields
   });
 
-  const loadDashboard = useCallback(async (signal) => {
-    setLoading(true);
+  const loadDashboard = useCallback(async (signal, background = false) => {
+    if (authLoading) return;
+    const version = ++requestVersion.current;
+    if (!background) setLoading(true);
     setError(false);
     try {
-      const response = await apiClient.get('/api/public/momentum-dashboard', { signal });
-      if (!signal?.aborted) {
-        setSnapshot(response.data?.data || null);
+      const response = await apiClient.get('/api/public/momentum-dashboard?access=v2', { signal });
+      const value = response.data?.data || null;
+      // Refuse a legacy, publicly cached payload from a backend not yet upgraded.
+      if (value && value.access?.version !== 2) throw new Error('Unsupported momentum access contract');
+      if (!signal?.aborted && version === requestVersion.current) {
+        setResponseState({ authKey, value });
         trackProductEvent('momentum_load', { status: response.data?.data ? 'success' : 'empty' });
       }
     } catch (requestError) {
-      if (!signal?.aborted) {
+      if (!signal?.aborted && version === requestVersion.current) {
         setError(true);
         trackProductEvent('momentum_load', { status: 'failed' });
       }
     } finally {
-      if (!signal?.aborted) setLoading(false);
+      if (!signal?.aborted && version === requestVersion.current) setLoading(false);
     }
-  }, []);
+  }, [authKey, authLoading]);
 
   useEffect(() => {
+    setResponseState(null);
+    setSelectedSymbol(null);
     const controller = new AbortController();
     loadDashboard(controller.signal);
-    return () => controller.abort();
+    return () => { controller.abort(); requestVersion.current += 1; };
   }, [loadDashboard]);
 
   const rows = snapshot?.data?.[universe] || EMPTY_ROWS;
-  const uniqueAssetCount = useMemo(() => new Set(Object.values(snapshot?.data || {}).flat().map((row) => row.symbol.replace(/^BATS:/, ''))).size, [snapshot]);
+  const uniqueAssetCount = snapshot?.access?.totalCount || 0;
+  const lockedRows = snapshot?.locked?.[universe] || EMPTY_ROWS;
   const groups = useMemo(() => {
-    const summaries = summarizeGroups(rows);
+    const summaries = [...(snapshot?.groups?.[universe] || summarizeGroups(rows))];
     if (metric === 'rank') summaries.sort((a, b) => (b.averageRank ?? -1) - (a.averageRank ?? -1));
+    else summaries.sort((a, b) => (b.dailyMove ?? -Infinity) - (a.dailyMove ?? -Infinity));
     return summaries;
-  }, [rows, metric]);
+  }, [snapshot, universe, rows, metric]);
   const filteredRows = useMemo(() => {
     const term = query.trim().toLowerCase();
     const matching = rows.filter((row) => (!selectedGroup || row.group === selectedGroup)
@@ -87,13 +104,20 @@ export default function MomentumDashboardPage() {
     return metric === 'daily' ? sortRowsByDailyMove(matching, sortOrder) : sortRowsByRank(matching, sortOrder);
   }, [rows, selectedGroup, query, metric, sortOrder, text]);
 
+  const filteredLocked = useMemo(() => {
+    const term = query.trim().toLowerCase();
+    return lockedRows.filter((row) => (!selectedGroup || row.group === selectedGroup)
+      && (!term || `${row.symbol} ${row.name} ${row.group} ${text(`groups.${groupKey(row.group || 'Other')}`, { defaultValue: row.group })}`.toLowerCase().includes(term)));
+  }, [lockedRows, query, selectedGroup, text]);
+  const trackUpgrade = (source) => trackInteraction('upgrade_click', { source });
+
   useEffect(() => {
     if (!query.trim()) return undefined;
     const timer = setTimeout(() => trackProductEvent('momentum_search', {
-      universe, group_name: selectedGroup, result_count: filteredRows.length
+      universe, group_name: selectedGroup, result_count: filteredRows.length + filteredLocked.length
     }), 600);
     return () => clearTimeout(timer);
-  }, [query, universe, selectedGroup, filteredRows.length]);
+  }, [query, universe, selectedGroup, filteredRows.length, filteredLocked.length]);
 
   const changeScope = (key) => {
     if (universe !== key) trackInteraction('scope_change', { universe: key, group_name: null });
@@ -123,7 +147,21 @@ export default function MomentumDashboardPage() {
     setQuery('');
     setVisibleCount(PAGE_SIZE);
   };
-  const hasRows = rows.length > 0;
+  const hasRows = uniqueAssetCount > 0;
+
+  // First deploy may still be preparing the snapshot. Recover without requiring a reload.
+  useEffect(() => {
+    if (authLoading || loading || error || hasRows) return undefined;
+    const controller = new AbortController();
+    let inFlight = false;
+    const timer = setInterval(async () => {
+      if (inFlight || document.visibilityState === 'hidden') return;
+      inFlight = true;
+      try { await loadDashboard(controller.signal, true); }
+      finally { inFlight = false; }
+    }, 30000);
+    return () => { clearInterval(timer); controller.abort(); };
+  }, [authLoading, loading, error, hasRows, loadDashboard]);
 
   return (
     <div className="momentum-page">
@@ -132,7 +170,7 @@ export default function MomentumDashboardPage() {
           <h1>{text('title')}</h1>
           <p>{text('subtitle')}</p>
         </div>
-        {snapshot?.asOf && <div className="momentum-date"><span>{text('asOf')}</span><time dateTime={snapshot.asOf}>{snapshot.asOf}</time></div>}
+        {snapshot?.asOf && <div className="momentum-date"><span>{text(isFree ? 'access.freeAsOf' : 'access.proAsOf')}</span><time dateTime={snapshot.asOf}>{snapshot.asOf}</time>{isFree && <a href={upgradeUrl} onClick={() => trackUpgrade('header')}>{text('access.upgrade')}</a>}</div>}
       </header>
 
       <div className="momentum-controls">
@@ -145,7 +183,7 @@ export default function MomentumDashboardPage() {
         </div>
       </div>
 
-      {loading && !hasRows ? <div className="momentum-loading" role="status"><span>{text('loading')}</span><div aria-hidden="true">{Array.from({ length: 8 }, (_, i) => <i key={i} />)}</div></div>
+      {(loading || authLoading) && !hasRows ? <div className="momentum-loading" role="status"><span>{text('loading')}</span><div aria-hidden="true">{Array.from({ length: 8 }, (_, i) => <i key={i} />)}</div></div>
         : !hasRows ? <div className="momentum-state" role={error ? 'alert' : 'status'}>
           <h2>{text(error ? 'loadError' : 'noSnapshot')}</h2><p>{text('noSnapshotDetail')}</p>
           <button type="button" onClick={() => loadDashboard()}>{text('retry')}</button>
@@ -196,12 +234,13 @@ export default function MomentumDashboardPage() {
 
           <section className="momentum-assets" ref={assetsRef} tabIndex={-1} aria-labelledby="momentum-assets-title">
             <div className="momentum-assets-heading">
-              <div><h2 id="momentum-assets-title">{selectedGroup ? groupLabel(selectedGroup) : text('allAssets')}</h2><p aria-live="polite">{text(`${metric}Order${sortOrder === 'asc' ? 'Asc' : ''}`)}</p></div>
+              <div><h2 id="momentum-assets-title">{selectedGroup ? groupLabel(selectedGroup) : text(isFree ? 'access.freeRanking' : 'allAssets')}</h2><p aria-live="polite">{text(`${metric}Order${sortOrder === 'asc' ? 'Asc' : ''}`)}</p></div>
               <label className="momentum-search"><span className="sr-only">{text('searchLabel')}</span><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" /><path d="m15 15 5 5" /></svg><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setSelectedSymbol(null); setVisibleCount(PAGE_SIZE); }} placeholder={text('searchPlaceholder')} /></label>
             </div>
+            {isFree && <p className="momentum-access-note">{text('access.freeDetail', { count: snapshot.access.freeCount })}</p>}
             {selectedGroup && text(`groupDescriptions.${groupKey(selectedGroup)}`, { defaultValue: '' }) && <p className="momentum-group-description">{text(`groupDescriptions.${groupKey(selectedGroup)}`)}</p>}
             {selectedGroup && <button type="button" className="momentum-clear" onClick={() => selectGroup(selectedGroup)}>{text('showAll')} <span aria-hidden="true">×</span></button>}
-            <div className="momentum-list" aria-label={text('assetList')}>
+            {(filteredRows.length > 0 || !filteredLocked.length) && <div className="momentum-list" aria-label={text('assetList')}>
               <div className="momentum-list-head"><span>{text('asset')}</span>{['daily', 'rank'].map((key) => <button type="button" key={key} className="momentum-sort" aria-pressed={metric === key} aria-label={text('sortColumn', { column: text(`${key}Mode`), order: text(metric === key && sortOrder === 'desc' ? 'ascending' : 'descending') })} onClick={() => changeSort(key)}>
                 <span>{text(`${key}Mode`)}</span><span aria-hidden="true">{metric === key ? sortOrder === 'desc' ? '↓' : '↑' : '↕'}</span>
               </button>)}</div>
@@ -226,8 +265,17 @@ export default function MomentumDashboardPage() {
                   <a className="momentum-research-link" onClick={() => trackInteraction('research_click', { asset_symbol: row.symbol.replace(/^BATS:/, '') })} href={`https://finance.yahoo.com/quote/${encodeURIComponent(row.symbol.replace(/^BATS:/, ''))}/`} target="_blank" rel="noopener noreferrer">{text('researchLink')} <span aria-hidden="true">↗</span></a>
                 </div>}
               </React.Fragment>)}
-              {!filteredRows.length && <div className="momentum-no-matches" role="status"><p>{text('noMatches')}</p><button type="button" onClick={() => { setQuery(''); setSelectedGroup(null); }}>{text('clearFilters')}</button></div>}
-            </div>
+              {!filteredRows.length && !filteredLocked.length && <div className="momentum-no-matches" role="status"><p>{text('noMatches')}</p><button type="button" onClick={() => { setQuery(''); setSelectedGroup(null); }}>{text('clearFilters')}</button></div>}
+            </div>}
+            {isFree && filteredLocked.length > 0 && <aside className="momentum-upgrade" aria-label={text('access.lockedLabel')}>
+              <div className="momentum-upgrade__copy"><span className="momentum-pro-badge">PRO</span><h3>{text('access.upgradeTitle', { count: uniqueAssetCount })}</h3>
+                <p>{text('access.upgradeBody', { count: filteredLocked.length })}</p>
+                <ul className="momentum-locked-preview" aria-label={text('access.lockedLabel')}>{filteredLocked.slice(0, 3).map((row) => <li key={row.symbol}>
+                  <strong>{row.symbol.replace(/^BATS:/, '')}</strong><span>{text(`assetDescriptions.${row.symbol.replace(/^BATS:/, '')}`, { defaultValue: row.name })}</span><small>{text('access.proOnly')}</small>
+                </li>)}</ul>
+              </div>
+              <a className="momentum-upgrade-button" href={upgradeUrl} onClick={() => trackUpgrade(query ? 'search' : selectedGroup ? 'group' : 'ranking')}>{text('access.upgradeAction')} <span aria-hidden="true">→</span></a>
+            </aside>}
             {filteredRows.length > PAGE_SIZE && <button type="button" className="momentum-show-more" onClick={() => { trackInteraction(visibleCount < filteredRows.length ? 'show_more' : 'show_less'); setVisibleCount(visibleCount < filteredRows.length ? filteredRows.length : PAGE_SIZE); }}>{text(visibleCount < filteredRows.length ? 'showMore' : 'showLess', { count: filteredRows.length - PAGE_SIZE })}</button>}
           </section>
         </>}
