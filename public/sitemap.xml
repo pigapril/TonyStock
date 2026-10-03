@@ -281,6 +281,22 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/"/>
   </url>
 
+  <!-- Article: Market Momentum Dashboard guide -->
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/articles/5.%E5%B8%82%E5%A0%B4%E5%8B%95%E8%83%BD%E5%84%80%E8%A1%A8%E6%9D%BF%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</loc>
+    <lastmod>2026-09-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/articles/market-momentum-dashboard-guide/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/articles/5.%E5%B8%82%E5%A0%B4%E5%8B%95%E8%83%BD%E5%84%80%E8%A1%A8%E6%9D%BF%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/articles/market-momentum-dashboard-guide/"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/articles/market-momentum-dashboard-guide/</loc>
+    <lastmod>2026-09-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/articles/market-momentum-dashboard-guide/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/articles/5.%E5%B8%82%E5%A0%B4%E5%8B%95%E8%83%BD%E5%84%80%E8%A1%A8%E6%9D%BF%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/articles/market-momentum-dashboard-guide/"/>
+  </url>
+
   <!-- Sponsor Us Page (假設只有 zh-TW 有此頁面) -->
   <url>
     <loc>https://sentimentinsideout.com/zh-TW/sponsor-us/</loc>

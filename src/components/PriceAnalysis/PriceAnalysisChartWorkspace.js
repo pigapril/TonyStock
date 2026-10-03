@@ -1,10 +1,14 @@
-import React, { lazy, Suspense, useEffect, useRef } from 'react';
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import ULBandChart from '../ULBandChart/ULBandChart';
 import { ensureHomeChartsRegistered } from '../../utils/homeChartRegistry';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
 import { ensureCrosshairRegistered, linkCharts } from '../../utils/linkedCrosshair';
 import InfoPopover from './InfoPopover';
+import TechnicalIndicatorChart from './TechnicalIndicatorChart';
+import { useAuth } from '../Auth/useAuth';
+import { useDialog } from '../Common/Dialog/useDialog';
+import { useTranslation } from 'react-i18next';
 
 ensureHomeChartsRegistered();
 ensureCrosshairRegistered();
@@ -27,8 +31,10 @@ function PriceAnalysisChartWorkspace({
   ulbandChartRef,
   chartCardRef,
   chartData,
+  indicatorRanges,
   localizedChartData,
   lineChartOptions,
+  sharedPriceRange,
   ulbandData,
   bandXRange,
   onAfterZoom,
@@ -50,8 +56,29 @@ function PriceAnalysisChartWorkspace({
   });
   const shouldRenderEnhancements = shouldLoadEnhancements && hasAnalysisContent;
   const contentRef = useRef(null);
+  const indicatorChartRef = useRef(null);
+  const { user, loading: authLoading } = useAuth();
+  const { openDialog } = useDialog();
+  const { i18n } = useTranslation();
+  const canUseAdvancedIndicators = !authLoading && ['pro', 'premium'].includes(user?.plan);
+  const [activeIndicator, setActiveIndicator] = useState('ma');
 
-  // 兩張圖是 flex 項目，初次掛載時高度還沒算出來（flex-basis 0），
+  useEffect(() => {
+    if (!canUseAdvancedIndicators && activeIndicator !== 'ma') setActiveIndicator('ma');
+  }, [activeIndicator, canUseAdvancedIndicators]);
+
+  const handleIndicatorChange = (indicator) => {
+    if (indicator === 'ma' || canUseAdvancedIndicators) {
+      setActiveIndicator(indicator);
+      return;
+    }
+    openDialog('featureUpgrade', {
+      feature: 'technicalIndicators',
+      upgradeUrl: `/${i18n.language}/subscription-plans`
+    });
+  };
+
+  // 主圖與通道圖是 flex 項目，初次掛載時高度還沒算出來（flex-basis 0），
   // Chart.js 會先用一個接近 0 的尺寸建圖，畫面就被擠成一條。
   // 掛載後補量一次，並讓通道圖套用主圖當下的 x 範圍。
   useEffect(() => {
@@ -62,9 +89,13 @@ function PriceAnalysisChartWorkspace({
     const resync = () => {
       const main = chartRef.current;
       const band = ulbandChartRef.current;
+      const indicator = indicatorChartRef.current;
 
       if (isChartAttached(main)) {
         main.resize?.();
+      }
+      if (isChartAttached(indicator)) {
+        indicator.resize?.();
       }
       if (!isChartAttached(band)) {
         return;
@@ -95,23 +126,22 @@ function PriceAnalysisChartWorkspace({
   // 範圍同步已經由 xRange prop 負責，這個 effect 只管初次排版的尺寸。
   }, [chartRef, loading, chartData, ulbandData, ulbandChartRef]);
 
-  // 兩張圖共用一條垂直標線：游標在任一張圖上移動時，另一張圖同步顯示同一個
-  // 時間點的價格。日線 vs 週線粒度不同，所以用時間值對應而不是 index。
+  // 三張圖共用垂直標線。日線與週線粒度不同，所以用時間值對應而不是 index。
   useEffect(() => {
-    if (loading || !chartData || !ulbandData) {
+    if (loading || !chartData) {
       return undefined;
     }
 
     let unlink;
     const timer = window.setTimeout(() => {
-      unlink = linkCharts(() => [chartRef.current, ulbandChartRef.current]);
+      unlink = linkCharts(() => [chartRef.current, ulbandChartRef.current, indicatorChartRef.current]);
     }, 450);
 
     return () => {
       window.clearTimeout(timer);
       unlink?.();
     };
-  }, [chartRef, loading, chartData, ulbandData, ulbandChartRef]);
+  }, [chartRef, loading, chartData, ulbandData, ulbandChartRef, activeIndicator]);
 
   return (
     <>
@@ -245,6 +275,7 @@ function PriceAnalysisChartWorkspace({
                   <PriceAnalysisChartEnhancements
                     isMobile={isMobile}
                     chartRef={chartRef}
+                    chartCardRef={chartCardRef}
                     ulbandChartRef={ulbandChartRef}
                     chartData={chartData}
                     ulbandData={ulbandData}
@@ -255,23 +286,30 @@ function PriceAnalysisChartWorkspace({
 
               {chartData && (
                 <div className="chart-stack__main">
-                  <Line
-                    ref={chartRef}
-                    data={localizedChartData || chartData}
-                    options={lineChartOptions}
-                  />
+                  <h2 className="chart-stack__title">{t('priceAnalysis.chart.tabs.sd')}</h2>
+                  <div className="chart-stack__plot">
+                    <Line
+                      ref={chartRef}
+                      data={localizedChartData || chartData}
+                      options={lineChartOptions}
+                    />
+                  </div>
                 </div>
               )}
 
               {ulbandData && (
                 <div className="chart-stack__band">
-                  <span className="chart-stack__band-label">{t('priceAnalysis.chart.tabs.ulband')}</span>
-                  <MemoizedULBandChart
-                    data={ulbandData}
-                    follower
-                    xRange={bandXRange}
-                    onChartReady={(chart) => { ulbandChartRef.current = chart; }}
-                  />
+                  <h2 className="chart-stack__title">{t('priceAnalysis.chart.tabs.ulband')}</h2>
+                  <div className="chart-stack__plot">
+                    <MemoizedULBandChart
+                      data={ulbandData}
+                      follower
+                      hideXAxisLabels={Boolean(chartData)}
+                      yRange={sharedPriceRange}
+                      xRange={bandXRange}
+                      onChartReady={(chart) => { ulbandChartRef.current = chart; }}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -283,6 +321,23 @@ function PriceAnalysisChartWorkspace({
         </div>
       </div>
     </div>
+
+    {!loading && chartData?.labels?.length > 0 && chartData?.datasets?.[0]?.data?.length > 0 ? (
+      <TechnicalIndicatorChart
+        activeIndicator={activeIndicator}
+        onIndicatorChange={handleIndicatorChange}
+        canUseAdvanced={canUseAdvancedIndicators}
+        chartRef={indicatorChartRef}
+        dates={chartData.labels}
+        prices={chartData.datasets[0].data}
+        highs={indicatorRanges?.highs}
+        lows={indicatorRanges?.lows}
+        xRange={bandXRange}
+        timeUnit={chartData.timeUnit}
+        isMobile={isMobile}
+        t={t}
+      />
+    ) : null}
 
     {/* 狀態說明放在卡片外面：卡片在桌機是固定高度、手機是固定 490px，
         把這段塞進 header 會直接從圖表身上扣高度——手機實測主圖從 229px

@@ -81,16 +81,24 @@ const ARTICLE_PAIRS = [
     enSlug: 'lohas-five-line-analysis-tested-on-11-6-million-daily-bars',
     enFile: 'LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md',
   },
+  {
+    originalSlug: '5.市場動能儀表板使用指南',
+    enSlug: 'market-momentum-dashboard-guide',
+    enFile: 'Market Momentum Dashboard Guide.en.ini.md',
+    staticBody: true,
+  },
   // 第 3 篇（Netflix 併購華納）刻意不列。2026-08 產品方向從個股分析轉向市場情緒，
   // 那篇站內仍可讀，但不再投 SEO 資源進要放棄的方向。這是決定，不是遺漏，
   // 請勿「順手補上」。sitemap.xml 同樣刻意不含它。
 ];
 
-const ARTICLES = ARTICLE_PAIRS.flatMap(({ originalSlug, enSlug, enFile }) => [
-  { lang: 'en', slug: enSlug, sourceFile: path.join(ROOT, 'public/articles', originalSlug, enFile) },
+const ARTICLES = ARTICLE_PAIRS.flatMap(({ originalSlug, enSlug, enFile, staticBody }) => [
+  { lang: 'en', slug: enSlug, originalSlug, staticBody, sourceFile: path.join(ROOT, 'public/articles', originalSlug, enFile) },
   {
     lang: 'zh-TW',
     slug: originalSlug,
+    originalSlug,
+    staticBody,
     sourceFile: path.join(ROOT, 'public/articles', originalSlug, `${originalSlug.replace(/^\d+\./, '')}.zh-TW.ini.md`),
   },
 ]);
@@ -146,7 +154,7 @@ function stripPreviousInjection(html) {
 // `title` is the exact <title> text; `ogTitle` is used for og:title/twitter:title
 // (PageContainer.js renders these two differently: <title> gets the
 // " | {defaultTitle}" suffix, og/twitter title stays unsuffixed).
-function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref, hreflangLinks }) {
+function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref, hreflangLinks, articleMarkup, articleJsonLd, articleImage }) {
   const template = stripPreviousInjection(rawTemplate);
 
   let html = template.replace(/<html lang="[^"]*"/, `<html lang="${lang}"`);
@@ -157,6 +165,7 @@ function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref,
     `<meta data-rh="true" property="og:title" content="${escapeAttr(ogTitle)}" />`,
     `<meta data-rh="true" property="og:description" content="${escapeAttr(description)}" />`,
     `<meta data-rh="true" property="og:url" content="${escapeAttr(selfHref)}" />`,
+    ...(articleImage ? [`<meta data-rh="true" property="og:image" content="${escapeAttr(articleImage)}" />`] : []),
     `<meta data-rh="true" property="og:locale" content="${ogLocale(lang)}" />`,
     `<meta data-rh="true" name="twitter:card" content="summary_large_image" />`,
     `<meta data-rh="true" name="twitter:title" content="${escapeAttr(ogTitle)}" />`,
@@ -165,9 +174,32 @@ function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref,
     ...hreflangLinks.map(
       ({ hreflang, href }) => `<link data-rh="true" rel="alternate" hreflang="${hreflang}" href="${escapeAttr(href)}" />`
     ),
+    ...(articleJsonLd ? [`<script type="application/ld+json">${JSON.stringify(articleJsonLd).replace(/</g, '\\u003c')}</script>`] : []),
   ];
 
-  return html.replace('</head>', `${tags.join('\n    ')}\n  </head>`);
+  html = html.replace('</head>', `${tags.join('\n    ')}\n  </head>`);
+  return articleMarkup ? html.replace('<div id="root"></div>', `<div id="root">${articleMarkup}</div>`) : html;
+}
+
+async function renderStaticArticle(sourceFile, title, originalSlug) {
+  const React = require('react');
+  const { renderToStaticMarkup } = require('react-dom/server');
+  const [{ default: ReactMarkdown }, { default: remarkGfm }] = await Promise.all([
+    import('react-markdown'), import('remark-gfm'),
+  ]);
+  const markdown = fs.readFileSync(sourceFile, 'utf8').replace(/^---\s*\n[\s\S]*?\n---(?:\s*\n|$)/, '').trim();
+  const body = renderToStaticMarkup(React.createElement(ReactMarkdown, {
+    remarkPlugins: [remarkGfm],
+    components: {
+      img: ({ src, alt }) => React.createElement('img', {
+        src: src?.startsWith('./') ? `/articles/${encodeURIComponent(originalSlug)}/${src.slice(2)}` : src,
+        alt,
+        loading: 'lazy',
+      }),
+    },
+  }, markdown));
+  // createRoot replaces this content for interactive visitors. Text-only crawlers can read it directly.
+  return `<article class="article-detail-page" data-seo-article="true"><h1>${escapeAttr(title)}</h1>${body}</article>`;
 }
 
 function writeFile(filePath, contents) {
@@ -175,7 +207,7 @@ function writeFile(filePath, contents) {
   fs.writeFileSync(filePath, contents, 'utf8');
 }
 
-function main() {
+async function main() {
   const indexPath = path.join(BUILD_DIR, 'index.html');
   if (!fs.existsSync(indexPath)) {
     console.error('generate-seo-shells: build/index.html not found. Run `react-app-rewired build` first.');
@@ -227,14 +259,24 @@ function main() {
   }
 
   // Article detail shells: self-canonical only, no hreflang alternates.
-  for (const { lang, slug, sourceFile } of ARTICLES) {
+  for (const { lang, slug, originalSlug, sourceFile, staticBody } of ARTICLES) {
     const decodedSlug = decodeURIComponent(slug);
     const meta = articleFrontmatter(sourceFile);
     const title = `${meta.title} | ${defaultTitle(lang)}`;
     const description = meta.description;
     const selfHref = `${SITE_ORIGIN}/${lang}/articles/${encodeURIComponent(decodedSlug)}/`;
 
-    const html = renderShell(template, { lang, title, ogTitle: meta.title, description, selfHref, hreflangLinks: [] });
+    const articleImage = staticBody ? `${SITE_ORIGIN}/articles/${encodeURIComponent(originalSlug)}/image-cover.svg` : undefined;
+    const articleMarkup = staticBody ? await renderStaticArticle(sourceFile, meta.title, originalSlug) : undefined;
+    const articleJsonLd = staticBody ? {
+      '@context': 'https://schema.org', '@type': 'Article', headline: meta.title,
+      description, inLanguage: lang, datePublished: meta.date, dateModified: meta.date,
+      mainEntityOfPage: selfHref, image: articleImage,
+      author: { '@type': 'Organization', name: 'Sentiment Inside Out' },
+      publisher: { '@type': 'Organization', name: 'Sentiment Inside Out' },
+    } : undefined;
+    const html = renderShell(template, { lang, title, ogTitle: meta.title, description, selfHref,
+      hreflangLinks: [], articleMarkup, articleJsonLd, articleImage });
     const outPath = path.join(BUILD_DIR, lang, 'articles', decodedSlug, 'index.html');
 
     writeFile(outPath, html);
@@ -301,4 +343,4 @@ function checkSitemapCoverage() {
   console.log(`generate-seo-shells: sitemap coverage check passed (${checkedCount} URLs checked).`);
 }
 
-main();
+main().catch((error) => { console.error(error); process.exit(1); });

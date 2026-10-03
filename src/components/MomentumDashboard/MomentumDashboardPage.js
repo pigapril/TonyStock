@@ -4,15 +4,20 @@ import apiClient from '../../api/apiClient';
 import { useAuth } from '../Auth/useAuth';
 import { trackProductEvent } from '../../utils/productAnalytics';
 import { isAvailableNumber, sortRowsByDailyMove, sortRowsByRank, summarizeGroups } from './momentumViewModel';
+import { AssetTrendChart, GroupSparkline } from './MomentumTrendChart';
 import './MomentumDashboardPage.css';
 
 const UNIVERSES = ['Industry', 'Assets', 'Structure'];
 const EMPTY_ROWS = [];
 const PAGE_SIZE = 12;
 const score = (value) => isAvailableNumber(value) ? Number(value).toFixed(0) : '—';
-const percent = (value) => isAvailableNumber(value)
-  ? `${Number(value) > 0 ? '+' : ''}${(Number(value) * 100).toFixed(1)}%` : '—';
-const direction = (value) => !isAvailableNumber(value) || Number(value) === 0 ? 'flat' : Number(value) > 0 ? 'up' : 'down';
+const percent = (value) => {
+  if (!isAvailableNumber(value)) return '—';
+  const raw = Number(value) * 100;
+  const rounded = Math.abs(raw) < 0.05 ? 0 : raw;
+  return `${rounded > 0 ? '+' : ''}${rounded.toFixed(1)}%`;
+};
+const direction = (value) => !isAvailableNumber(value) || Math.abs(Number(value) * 100) < 0.05 ? 'flat' : Number(value) > 0 ? 'up' : 'down';
 const groupKey = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 function colorBand(value, metric) {
@@ -27,6 +32,7 @@ export default function MomentumDashboardPage() {
   const { user, loading: authLoading } = useAuth();
   const authKey = JSON.stringify([user?.id || user?.userId || null, user?.plan || 'free', Boolean(authLoading)]);
   const upgradeUrl = `/${i18n.language}/subscription-plans`;
+  const guideUrl = `/${i18n.language}/articles/${i18n.language === 'en' ? 'market-momentum-dashboard-guide' : '5.市場動能儀表板使用指南'}/`;
   const text = useCallback((key, options) => t(`momentumDashboard.${key}`, options), [t]);
   const groupLabel = (name) => text(`groups.${groupKey(name)}`, { defaultValue: name });
   const groupHint = (name) => universe === 'Structure' ? text(`groupHints.${groupKey(name)}`, { defaultValue: '' }) : '';
@@ -89,6 +95,7 @@ export default function MomentumDashboardPage() {
   }, [loadDashboard]);
 
   const rows = snapshot?.data?.[universe] || EMPTY_ROWS;
+  const groupTrends = snapshot?.groupTrends?.[universe] || {};
   const uniqueAssetCount = snapshot?.access?.totalCount || 0;
   const lockedRows = snapshot?.locked?.[universe] || EMPTY_ROWS;
   const groups = useMemo(() => {
@@ -206,17 +213,19 @@ export default function MomentumDashboardPage() {
                   <dl>
                     {['period', 'score', 'action'].map((key) => <div key={key}><dt>{text(`guide.${key}.title`)}</dt><dd>{text(`guide.${key}.body`)}</dd></div>)}
                   </dl>
+                  <a className="momentum-reading-guide__link" href={guideUrl}>{text('readGuide')} <span aria-hidden="true">↗</span></a>
                 </aside>
               </>}
             </div>
             <div className="momentum-map">
               {groups.map((group) => {
                 const value = metric === 'rank' ? group.averageRank : group.dailyMove;
+                const trend = groupTrends[group.name] || EMPTY_ROWS;
                 return <button type="button" key={group.name}
-                  className={`momentum-tile momentum-tile--${colorBand(value, metric)}`}
+                  className={`momentum-tile momentum-tile--${colorBand(value, metric)}${metric === 'rank' ? ' momentum-tile--rank' : ''}`}
                   style={metric === 'daily' && isAvailableNumber(value) ? { '--move-intensity': `${Math.min(80, 18 + Math.abs(Number(value)) * 2000)}%` } : undefined}
                   aria-pressed={selectedGroup === group.name}
-                  aria-label={text('groupButton', { group: groupLabel(group.name), value: metric === 'rank' ? score(value) : percent(value) })}
+                  aria-label={text(metric === 'rank' && trend.filter((point) => isAvailableNumber(point.score)).length > 1 ? 'groupButtonSparkline' : 'groupButton', { group: groupLabel(group.name), value: metric === 'rank' ? score(value) : percent(value) })}
                   onClick={() => {
                     selectGroup(group.name);
                     requestAnimationFrame(() => {
@@ -226,6 +235,7 @@ export default function MomentumDashboardPage() {
                   }}>
                   <span className="momentum-tile__name">{groupLabel(group.name)}{groupHint(group.name) && <small>{groupHint(group.name)}</small>}</span>
                   <span className="momentum-tile__value">{metric === 'rank' ? score(value) : percent(value)}{metric === 'rank' && isAvailableNumber(value) && <small>/100</small>}</span>
+                  {metric === 'rank' && <GroupSparkline points={trend} />}
                   <span className="momentum-tile__footer"><span>{text('assetCount', { count: group.count })}</span><span aria-hidden="true">{selectedGroup === group.name ? '✓' : '→'}</span></span>
                 </button>;
               })}
@@ -234,10 +244,12 @@ export default function MomentumDashboardPage() {
 
           <section className="momentum-assets" ref={assetsRef} tabIndex={-1} aria-labelledby="momentum-assets-title">
             <div className="momentum-assets-heading">
-              <div><h2 id="momentum-assets-title">{selectedGroup ? groupLabel(selectedGroup) : text(isFree ? 'access.freeRanking' : 'allAssets')}</h2><p aria-live="polite">{text(`${metric}Order${sortOrder === 'asc' ? 'Asc' : ''}`)}</p></div>
+              <div><h2 id="momentum-assets-title">{selectedGroup ? groupLabel(selectedGroup) : text(metric === 'daily' ? isFree ? 'access.freeDailyRanking' : 'dailyAssets' : isFree ? 'access.freeRanking' : 'allAssets')}</h2><p aria-live="polite">{text(`${metric}Order${sortOrder === 'asc' ? 'Asc' : ''}`)}</p></div>
               <label className="momentum-search"><span className="sr-only">{text('searchLabel')}</span><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" /><path d="m15 15 5 5" /></svg><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setSelectedSymbol(null); setVisibleCount(PAGE_SIZE); }} placeholder={text('searchPlaceholder')} /></label>
             </div>
-            {isFree && <p className="momentum-access-note">{text('access.freeDetail', { count: snapshot.access.freeCount })}</p>}
+            {isFree && <p className="momentum-access-note">{selectedGroup
+              ? text('access.groupDetail', { visible: rows.filter((row) => row.group === selectedGroup).length, total: groups.find((group) => group.name === selectedGroup)?.count || 0 })
+              : text('access.freeDetail', { count: snapshot.access.freeCount })}</p>}
             {selectedGroup && text(`groupDescriptions.${groupKey(selectedGroup)}`, { defaultValue: '' }) && <p className="momentum-group-description">{text(`groupDescriptions.${groupKey(selectedGroup)}`)}</p>}
             {selectedGroup && <button type="button" className="momentum-clear" onClick={() => selectGroup(selectedGroup)}>{text('showAll')} <span aria-hidden="true">×</span></button>}
             {(filteredRows.length > 0 || !filteredLocked.length) && <div className="momentum-list" aria-label={text('assetList')}>
@@ -252,15 +264,19 @@ export default function MomentumDashboardPage() {
                 </button>
                 {selectedSymbol === row.symbol && <div className="momentum-inline-detail" id={`momentum-detail-${row.symbol.replace(/[^a-z0-9]/gi, '-')}`}>
                   <div className="momentum-inline-detail__heading"><span>{row.name}</span><span>{text('currentPrice')} <strong>{isAvailableNumber(row.price) ? `$${Number(row.price).toFixed(2)}` : '—'}</strong></span></div>
-                  <dl>{[20, 60, 120].map((horizon, index) => <div key={horizon}>
-                    <dt>{text('months', { months: [1, 3, 6][index] })}<small>{text('tradingDays', { days: horizon })}</small></dt>
-                    {isAvailableNumber(row[`return${horizon}`]) || isAvailableNumber(row[`benchmarkReturn${horizon}`]) ? <>
-                      <dd className="momentum-period-return"><span>{text('assetReturn')}</span><strong className={`momentum-${direction(row[`return${horizon}`])}`}>{isAvailableNumber(row[`return${horizon}`]) ? percent(row[`return${horizon}`]) : text('unavailable')}</strong></dd>
-                      <dd className="momentum-period-return momentum-period-return--benchmark"><span>SPY</span><strong>{isAvailableNumber(row[`benchmarkReturn${horizon}`]) ? percent(row[`benchmarkReturn${horizon}`]) : text('unavailable')}</strong></dd>
-                    </> : <dd className="momentum-return-unavailable">{text('periodReturnUnavailable')}</dd>}
-                    {isAvailableNumber(row[`${horizon}R`]) && <dd className="momentum-relative-return">{text('periodScore', { score: score(row[`${horizon}R`]) })}</dd>}
-                  </div>)}</dl>
-                  <p className="momentum-inline-detail__date">{text('benchmarkExplanation')}</p>
+                  <table className="momentum-period-table">
+                    <caption>{text('periodComparison')}</caption>
+                    <thead><tr><th scope="col"><span className="sr-only">{text('comparisonItem')}</span></th>{[20, 60, 120].map((horizon) => <th key={horizon} scope="col">{text('tradingDays', { days: horizon })}</th>)}</tr></thead>
+                    <tbody>
+                      <tr><th scope="row">{row.symbol.replace(/^BATS:/, '')}</th>{[20, 60, 120].map((horizon) => <td key={horizon} className={`momentum-${direction(row[`return${horizon}`])}`}>{percent(row[`return${horizon}`])}</td>)}</tr>
+                      <tr><th scope="row">SPY</th>{[20, 60, 120].map((horizon) => <td key={horizon}>{percent(row[`benchmarkReturn${horizon}`])}</td>)}</tr>
+                      <tr className="momentum-period-table__score"><th scope="row">{text('periodComponentScore')}</th>{[20, 60, 120].map((horizon) => <td key={horizon}>{score(row[`${horizon}R`])}</td>)}</tr>
+                    </tbody>
+                  </table>
+                  {row.trend60?.length > 0 && <div className="momentum-asset-trend-section">
+                    <h4>{text('assetTrendTitle')}</h4>
+                    <AssetTrendChart points={row.trend60} label={text('assetTrendAria', { symbol: row.symbol.replace(/^BATS:/, ''), start: row.trend60[0][0], end: row.trend60[row.trend60.length - 1][0], asset: percent(row.trend60[row.trend60.length - 1][1]), benchmark: percent(row.trend60[row.trend60.length - 1][2]) })} assetName={row.symbol.replace(/^BATS:/, '')} benchmarkName="SPY" formatPercent={percent} />
+                  </div>}
                   <p className="momentum-inline-detail__date">{text('asOf')} {row.asOf || row.priceAsOf || snapshot.asOf}</p>
                   <a className="momentum-research-link" onClick={() => trackInteraction('research_click', { asset_symbol: row.symbol.replace(/^BATS:/, '') })} href={`https://finance.yahoo.com/quote/${encodeURIComponent(row.symbol.replace(/^BATS:/, ''))}/`} target="_blank" rel="noopener noreferrer">{text('researchLink')} <span aria-hidden="true">↗</span></a>
                 </div>}
@@ -280,7 +296,7 @@ export default function MomentumDashboardPage() {
           </section>
         </>}
 
-      <details className="momentum-method"><summary>{text('methodTitle')}</summary><p>{text('methodBody')}</p><p>{text('methodCaveat')}</p></details>
+      <details className="momentum-method"><summary>{text('methodTitle')}</summary><p>{text('methodBody')}</p><p>{text('methodTrend')}</p><p>{text('methodCaveat')}</p></details>
       {uniqueAssetCount > 0 && <details className="momentum-method momentum-coverage"><summary>{text('coverageTitle', { count: uniqueAssetCount })}</summary><p>{text('coverageBody')}</p><p>{text('coverageGroups')}</p></details>}
     </div>
   );

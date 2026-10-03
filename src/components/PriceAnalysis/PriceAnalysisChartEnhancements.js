@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useMobileTouchHandler } from '../ULBandChart/useMobileTouchHandler';
 
 function isChartAttached(chart) {
@@ -11,13 +11,47 @@ function isChartAttached(chart) {
 function PriceAnalysisChartEnhancements({
   isMobile,
   chartRef,
+  chartCardRef,
   ulbandChartRef,
   chartData,
   ulbandData,
   onAfterZoom
 }) {
+  const zoomButtonsRef = useRef(null);
+
   // 兩張圖並排後，互動一律由主圖（五線譜）負責，通道圖只跟隨。
   useMobileTouchHandler(chartRef, isMobile, true);
+
+  useEffect(() => {
+    const buttons = zoomButtonsRef.current;
+    const plot = chartCardRef.current?.querySelector('.chart-content');
+    if (!buttons || !plot) return undefined;
+
+    let frame = null;
+    const moveWithPlot = () => {
+      frame = null;
+      const plotRect = plot.getBoundingClientRect();
+      const inset = isMobile ? 31 : 35;
+      const restingTop = plotRect.top + inset;
+      const visibleTop = isMobile ? 72 : 84;
+      const lastTopInPlot = plotRect.bottom - buttons.offsetHeight - (isMobile ? 8 : 12);
+      const top = Math.min(Math.max(restingTop, visibleTop), lastTopInPlot);
+      buttons.style.transform = `translateY(${Math.max(0, Math.round(top - restingTop))}px)`;
+    };
+    const scheduleMove = () => {
+      if (frame === null) frame = window.requestAnimationFrame(moveWithPlot);
+    };
+
+    moveWithPlot();
+    window.addEventListener('scroll', scheduleMove, { passive: true });
+    window.addEventListener('resize', scheduleMove);
+    return () => {
+      window.removeEventListener('scroll', scheduleMove);
+      window.removeEventListener('resize', scheduleMove);
+      if (frame !== null) window.cancelAnimationFrame(frame);
+      buttons.style.transform = '';
+    };
+  }, [chartCardRef, chartData, isMobile]);
 
   useEffect(() => {
     if (isChartAttached(chartRef.current)) {
@@ -87,7 +121,7 @@ function PriceAnalysisChartEnhancements({
   return (
     <>
       {hasZoomTarget && (
-        <div className="chart-zoom-buttons">
+        <div className="chart-zoom-buttons" ref={zoomButtonsRef}>
           <button className="zoom-btn zoom-in" onClick={() => runZoom(zoomActions.zoomIn)} title="放大">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

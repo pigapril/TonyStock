@@ -11,8 +11,8 @@ ensureHomeChartsRegistered();
 // follower：與五線譜上下並排時，通道圖只跟隨主圖的 x 範圍，自身不接受縮放/平移，
 // 這樣兩張圖的時間軸不會各走各的。單獨使用時（沒傳 follower）行為與原本相同。
 /**
- * follower 模式的 tooltip：改用 HTML 畫，因為 canvas 版的預設排版在只有約
- * 110px 高的通道帶裡一定會蓋住線。節點掛在 .chart-stack__band（position: relative）。
+ * follower 模式的 tooltip：改用 HTML 畫，讓價格線在提示出現時仍清楚可見。
+ * 節點掛在 .chart-stack__band（position: relative）。
  * 位置就留在圖內、只避開當下的點：橫向擺在標線旁邊，縱向擺在離該點較遠的那一半。
  */
 function renderExternalTooltip(context) {
@@ -66,7 +66,7 @@ function renderExternalTooltip(context) {
     }
 }
 
-const ULBandChart = ({ data, onChartReady, follower = false, xRange = null }) => {
+const ULBandChart = ({ data, onChartReady, follower = false, hideXAxisLabels = false, xRange = null, yRange = null }) => {
     const { t } = useTranslation();
     const chartRef = useRef(null);
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
@@ -153,9 +153,7 @@ const ULBandChart = ({ data, onChartReady, follower = false, xRange = null }) =>
         plugins: {
             legend: { display: false },
             tooltip: {
-                // follower 是高度約 110px 的輔助帶，畫在 canvas 上的 tooltip 幾乎和它
-                // 一樣高，一定會蓋住線。所以改用 external：內容一樣是 tooltip，
-                // 但用 HTML 畫在通道帶「上方」，不佔用帶內空間。
+                // follower 的提示使用 external，讓價格線不被 canvas 提示遮住。
                 // external 要搭配 enabled:false，否則 canvas 版仍會照畫。
                 enabled: !follower,
                 ...(follower ? { external: renderExternalTooltip } : {}),
@@ -223,8 +221,7 @@ const ULBandChart = ({ data, onChartReady, follower = false, xRange = null }) =>
                         const lastDate = data.dates[lastIndex];
                         
                         // 為所有線條添加虛線。
-                        // follower 是高度只有 100px 出頭的輔助帶，四組端點標籤會互相疊住、
-                        // 右緣也放不下，所以只標價格線（index 2）。
+                // follower 的右緣保留給價格軸，所以只標價格線（index 2）。
                         chartData.datasets.forEach((dataset, index) => {
                             if (follower && index !== 2) {
                                 return;
@@ -269,7 +266,8 @@ const ULBandChart = ({ data, onChartReady, follower = false, xRange = null }) =>
                                         x: 'end',
                                         y: 'center'
                                     },
-                                    xAdjust: index === 2 ? 2 : 35, // 價格線（index=2）更靠右
+                                    // 跟隨主圖時把價格標籤留在繪圖區內，避免蓋住恢復顯示的 Y 軸刻度。
+                                    xAdjust: follower ? -76 : (index === 2 ? 2 : 35),
                                     yAdjust: 0
                                 };
                             }
@@ -299,6 +297,7 @@ const ULBandChart = ({ data, onChartReady, follower = false, xRange = null }) =>
                     tooltipFormat: 'yyyy/MM/dd'
                 },
                 ticks: {
+                    display: !hideXAxisLabels,
                     maxTicksLimit: 6,
                     autoSkip: true,
                     maxRotation: 0,
@@ -317,46 +316,20 @@ const ULBandChart = ({ data, onChartReady, follower = false, xRange = null }) =>
             },
             y: {
                 position: 'right',
+                ...(follower && yRange ? { min: yRange.min, max: yRange.max } : {}),
                 grid: {
                     drawBorder: true
                 },
                 ticks: {
-                    // 這裡的刻度不只是給人看的：右側 y 軸會佔掉固定寬度，
-                    // 主圖也有一個。把它藏起來會讓通道圖的繪圖區變寬、
-                    // 兩張圖的時間軸就對不齊了，所以一定要保留。
-                    callback: function(value, index, ticks) {
-                        // 獲取所有數據集的最後一個值
-                        if (!data.dates || data.dates.length === 0) return value;
-                        
-                        const lastIndex = data.dates.length - 1;
-                        const dataValues = [
-                            data.upperBand?.[lastIndex],
-                            data.ma20?.[lastIndex],
-                            data.prices?.[lastIndex],
-                            data.lowerBand?.[lastIndex]
-                        ].filter(v => v !== undefined && v !== null)
-                         .sort((a, b) => a - b); // 排序以找出最大最小值
-                        
-                        if (dataValues.length === 0) return value;
-                        
-                        const minDataValue = dataValues[0];
-                        const maxDataValue = dataValues[dataValues.length - 1];
-                        
-                        // 如果刻度值在數據值範圍之間，則隱藏
-                        if (value > minDataValue && value < maxDataValue) {
-                            return '';
-                        }
-                        
-                        return value;
-                    }
+                    callback: (value) => formatPrice(value)
                 }
             }
         },
         layout: {
-            // follower 模式是主圖下方的細長輔助帶，維持原本的內距會把線擠成一條、
-            // 下面留一大塊空白，所以壓縮上下留白。
+            // follower 與主圖共用價格範圍及高度，內距也一致，讓每元價格變化
+            // 在兩張圖上有相同的垂直距離。
             padding: follower
-                ? { left: 10, right: 15, top: 6, bottom: 2 }
+                ? { left: 10, right: 15, top: 20, bottom: 4 }
                 : { left: 10, right: 15, top: 20, bottom: 25 }
         },
         clip: false

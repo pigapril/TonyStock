@@ -3,7 +3,7 @@ import { Chart as ChartJS } from 'chart.js';
 /**
  * 讓上下並排的圖共用一條垂直標線。
  *
- * 各圖的資料粒度不同（五線譜是日線、樂活通道是週線），所以不能用 index 對應，
+ * 各圖的資料粒度可能不同（五線譜與技術指標是日線、樂活通道是週線），所以不能用 index 對應，
  * 必須用「時間值」對應：把游標所在的時間換算成其他圖的像素位置。
  *
  * 只有在 chart.$crosshairX 有值時才畫，對其他圖表沒有影響。
@@ -90,10 +90,11 @@ function applyToTarget(target, time) {
 
   const index = nearestIndex(target, time);
   if (index >= 0) {
-    const elements = target.data.datasets.map((dataset, datasetIndex) => ({
-      datasetIndex,
-      index
-    }));
+    const elements = target.data.datasets.flatMap((dataset, datasetIndex) => {
+      const value = dataset.data?.[index];
+      return value === null || value === undefined || !Number.isFinite(Number(value))
+        ? [] : [{ datasetIndex, index }];
+    });
     target.setActiveElements(elements);
     target.tooltip?.setActiveElements(elements, { x: px, y: target.chartArea.top });
   }

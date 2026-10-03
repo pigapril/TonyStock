@@ -18,15 +18,17 @@
       "proAsOf": "Pro · Closing data as of",
       "upgrade": "Upgrade to Pro",
       "freeRanking": "Free ETF momentum ranking",
+      "freeDailyRanking": "Free ETF daily change ranking",
       "freeDetail": "Free includes the full category map and details for {{count}} fixed ETFs. The ranking below compares only these free ETFs.",
+      "groupDetail": "{{total}} assets tracked in this group; Free shows details for {{visible}}.",
       "lockedLabel": "Pro assets",
       "upgradeTitle": "Compare momentum across all {{count}} assets",
-      "upgradeBody": "This selection includes {{count}} more Pro assets. Upgrade to compare daily moves, momentum scores and 1-, 3- and 6-month returns.",
+      "upgradeBody": "This selection includes {{count}} more Pro assets. Upgrade to compare daily moves, momentum scores and 20-, 60- and 120-session returns.",
       "proOnly": "Pro only",
       "upgradeAction": "Unlock full rankings"
     },
     "title": "Market momentum",
-    "subtitle": "Explore recent gains, losses and strength across sectors and assets.",
+    "subtitle": "Read market sentiment through price momentum: see which sectors and assets are strengthening or weakening.",
     "asOf": "Market close",
     "universeLabel": "Market universe",
     "tabs": {
@@ -45,18 +47,22 @@
     "refreshError": "Could not refresh. Showing the last available data.",
     "strengthMap": "Market momentum map",
     "dailyMap": "Latest daily change",
-    "rankLegend": "Combined relative strength over roughly 1, 3 and 6 months",
+    "rankLegend": "Momentum scores from weaker to stronger",
     "dailyLegend": "Daily change, down to up",
     "weaker": "Weaker",
     "stronger": "Stronger",
     "down": "Down",
     "up": "Up",
-    "rankCaption": "Combined 1, 3 & 6 month rankings · Higher scores mean stronger relative performance",
+    "rankCaption": "Momentum scores rise when an asset performs more strongly than others in this tab over 20, 60 and 120 sessions. Tiles show group averages; lines show 60-session score trends.",
     "dailyCaption": "Latest close · Median daily change within each group",
+    "groupButtonSparkline": "{{group}}, momentum score {{value}}, line shows the past 60 sessions. View assets",
+    "assetTrendTitle": "Cumulative return trend · 60 sessions",
+    "assetTrendAria": "Cumulative return for {{symbol}} from {{start}} to {{end}}: {{asset}}; SPY: {{benchmark}}.",
     "groupButton": "{{group}}, {{value}}, view assets",
-    "assetCount_one": "{{count}} asset",
-    "assetCount_other": "{{count}} assets",
+    "assetCount_one": "{{count}} tracked",
+    "assetCount_other": "{{count}} tracked",
     "allAssets": "Momentum rankings",
+    "dailyAssets": "Daily change rankings",
     "rankOrder": "Highest momentum scores first",
     "dailyOrder": "Largest daily gains first",
     "searchLabel": "Search assets",
@@ -73,6 +79,7 @@
     "showLess": "Show fewer",
     "methodTitle": "Data and methodology",
     "methodBody": "Daily data for assets in the watchlist, updated after the close. Daily changes use adjusted closing prices. Momentum ranks 20-, 60- and 120-session returns within the selected universe, weighted 20%, 40% and 40% on a 0–100 scale. Group scores average the scores of their assets.",
+    "methodTrend": "Group trends average the scores of assets in the current watchlist that had enough data on each date, with at least 80% group coverage. All group lines use the same 0–100 scale.",
     "methodCaveat": "Scores describe past relative performance. They do not predict future returns or constitute trading recommendations.",
     "groups": {
       "3-commodities": "Commodities",
@@ -86,24 +93,26 @@
       "broad": "Market size & broad indices"
     },
     "guideLabel": "How to read and use this page",
-    "guideTitle": "Understanding scores",
+    "guideTitle": "Understanding momentum scores",
+    "readGuide": "Read the full momentum guide",
     "guide": {
       "period": {
         "title": "Comparison period",
-        "body": "Return rankings over 20, 60 and 120 trading sessions (roughly 1, 3 and 6 months) are combined with weights of 20%, 40% and 40%."
+        "body": "Relative return rankings over 20, 60 and 120 trading sessions are combined with weights of 20%, 40% and 40%."
       },
       "score": {
-        "title": "What scores measure",
-        "body": "Higher scores mean stronger past performance within the selected list, which can also mean falling less than others. A score of 80 combines rankings across several periods; it is not an 80% gain or an 80% chance of profit. Tiles show the average score for each group."
+        "title": "What is a momentum score?",
+        "body": "Assets are compared within the same tab. Their 20-, 60- and 120-session ranking scores are weighted into one momentum score; a tile shows the group average. A score of 80 is neither an 80% gain nor a future profit probability."
       },
       "action": {
         "title": "Using the view",
-        "body": "Select a group, then expand an asset to compare its 1, 3 and 6 month performance. Follow its research link for more information and assess holdings, fees and risks against your investment plan. Scores and colors do not identify when to buy or sell."
+        "body": "Select a group, then expand an asset to compare its 20-, 60- and 120-session performance. Follow its research link for more information and assess holdings, fees and risks against your investment plan. Scores and colors do not identify when to buy or sell."
       }
     },
-    "months": "~{{months}} months",
     "researchLink": "Research this asset on Yahoo Finance",
-    "benchmarkExplanation": "SPY tracks the S&P 500. Compare its return with the asset over the same period.",
+    "periodComparison": "Performance by period",
+    "comparisonItem": "Comparison item",
+    "periodComponentScore": "Rank score",
     "coverageTitle": "Coverage · {{count}} assets",
     "coverageBody": "This curated watchlist consists mainly of US-listed ETFs, plus other listed products such as the DXYZ closed-end fund. It covers sectors, themes, stock markets, bonds, commodities and equity strategies, not the entire market. Some assets appear in multiple lists.",
     "coverageGroups": "Groups reflect research themes, not an official industry classification. Group scores depend on the assets included. ETFs can hold the same stocks, so adding more funds does not necessarily broaden coverage.",
@@ -133,7 +142,6 @@
       "IWO": "Russell 2000 small-cap growth stocks",
       "DXYZ": "Destiny Tech100 · closed-end fund"
     },
-    "assetReturn": "This asset",
     "unavailable": "Unavailable",
     "rankOrderAsc": "Lowest momentum scores first",
     "dailyOrderAsc": "Largest daily losses first",
@@ -699,7 +707,7 @@
   },
   "marketSentiment": {
     "pageTitle": "US Fear & Greed Index — 8-Indicator Market Sentiment Tracker",
-    "pageSubtitle": "A single, unified market indicator composed of multiple factors.",
+    "pageSubtitle": "Track whether overall US market sentiment leans toward fear or greed.",
     "pageDescription": "US Fear & Greed Index combining VIX, AAII, Put/Call Ratio, NAAIM and 4 more indicators into a 0–100 sentiment score. Built for long-term investors to spot extreme fear and greed in the US market.",
     "keywords": "market sentiment, investor sentiment, fear greed index, VIX analysis, Put Call Ratio, stock market psychology, investment strategy, market indicators, sentiment tracking, Taiwan stock sentiment, US stock sentiment",
     "heading": "Market Sentiment Indicators Overview",
@@ -1053,7 +1061,7 @@
       "pageTitle": "Sentiment Inside Out (SIO) Taiwan Fear & Greed Index | TAIEX Sentiment Tracking",
       "pageDescription": "The Sentiment Inside Out (SIO) Taiwan Fear & Greed Index aggregates nine TAIEX-specific signals — options-implied volatility, Put/Call Ratio, USD/TWD, margin maintenance ratio, foreign-institution futures positioning, market breadth, margin-to-short ratio, index momentum, and effective trading accounts — into a single 0-to-100 score. Lower readings signal extreme fear and potential bear-market bottoms; higher readings signal greed and late-cycle tops. Built for long-term investors tracking Taiwan stock sentiment.",
       "keywords": "Taiwan stock sentiment, TAIEX fear greed index, TAIEX options volatility, Put Call Ratio, margin maintenance ratio, foreign institutional futures, margin-to-short ratio, Taiwan market indicators, TAIEX sentiment tracking",
-      "pageSubtitle": "Nine TAIEX signals, compressed into one objective sentiment read.",
+      "pageSubtitle": "Track whether overall Taiwan market sentiment leans toward fear or greed.",
       "heading": "Taiwan Market Sentiment Analysis",
       "faq": {
         "q1": "What is the SIO Taiwan Sentiment Indicator?",
@@ -1194,6 +1202,22 @@
         "plus2sd": "Extreme Greed"
       }
     },
+    "indicators": {
+      "title": "Other indicators",
+      "choose": "Choose another indicator",
+      "lockedOption": "{{indicator}}, available with Pro",
+      "ma": "MA",
+      "signal": "Signal",
+      "histogram": "Histogram",
+      "insufficient": "Not enough data for this indicator. Choose a longer analysis period.",
+      "missingRange": "Daily highs and lows are unavailable, so KD cannot be calculated.",
+      "description": {
+        "rsi": "RSI (14 days) shows the strength of recent price moves on a 0–100 scale.",
+        "macd": "MACD compares 12- and 26-day exponential moving averages with a 9-day signal line; the first values need more history.",
+        "kd": "KD (9 days) compares closing prices with recent highs and lows using K and D lines.",
+        "ma": "Compare the closing price with its 5-, 10-, 20-, 60-, and 120-day moving averages."
+      }
+    },
     "prompt": {
       "enterSymbol": "Enter a symbol, or choose one from the list."
     },
@@ -1257,7 +1281,8 @@
         "global": "Global Markets"
       }
     },
-    "heading": "LOHAS Five-Line Analysis",
+    "heading": "LOHAS Five-Line",
+    "subtitle": "Use price trends to gauge sentiment around an asset.",
     "channel": {
       "inside": "Inside the channel",
       "above": "Above the upper edge",
@@ -1289,7 +1314,7 @@
       "done": "Get started",
       "result": {
         "title": "Analysis results",
-        "body": "Above is the LOHAS five-line chart, showing how far the current price sits from the trend line; below is the LOHAS Channel, showing the price range of the last 20 weeks. The question mark beside each label opens its explanation."
+        "body": "Read the LOHAS five-line chart, LOHAS Channel, then other indicators. Switch between RSI, MACD, KD and moving averages; the question mark beside each result label opens its explanation."
       },
       "search": {
         "title": "Enter a stock code",
@@ -1479,6 +1504,10 @@
       "title": "Unlock Complete Market Sentiment Data",
       "subtitle": "Upgrade to Pro for real-time market sentiment analysis",
       "description": "Free users can only access limited features. Upgrade for complete market sentiment indicators."
+    },
+    "technicalIndicators": {
+      "title": "Unlock more technical indicators",
+      "description": "MA is available on Free. Upgrade to Pro to use RSI, MACD, and KD."
     },
     "default": {
       "title": "Upgrade to Pro",
@@ -2821,6 +2850,13 @@
       "relationToSioCta": "Open the LOHAS five-line analysis",
       "source": "Calculated by Sentiment Inside Out from public market data. Updated every trading day for Taiwan and the US."
     }
+  },
+  "marketPulse": {
+    "title": "Global markets",
+    "latestSession": "Latest session",
+    "loading": "Loading market moves",
+    "unavailable": "Market moves are temporarily unavailable",
+    "itemLabel": "{{name}}, {{date}}, change {{percent}}"
   },
   "cardTrial": {
     "title": "30-day free trial",

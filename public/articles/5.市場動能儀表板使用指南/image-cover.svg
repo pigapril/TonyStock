@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title description">
+  <title id="title">Market momentum category map</title>
+  <desc id="description">An abstract grid of warm and cool category tiles representing relative momentum.</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1"><stop stop-color="#f9f7f0"/><stop offset="1" stop-color="#e8eee7"/></linearGradient>
+    <linearGradient id="strong" x2="1" y2="1"><stop stop-color="#2d7653"/><stop offset="1" stop-color="#194a36"/></linearGradient>
+    <linearGradient id="soft" x2="1" y2="1"><stop stop-color="#d7e9d2"/><stop offset="1" stop-color="#afd2b6"/></linearGradient>
+    <linearGradient id="warm" x2="1" y2="1"><stop stop-color="#f6e6d4"/><stop offset="1" stop-color="#eac7b8"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#17382c" flood-opacity=".11"/></filter>
+  </defs>
+  <rect width="1280" height="720" fill="url(#background)"/>
+  <circle cx="1056" cy="94" r="240" fill="#dceadf" opacity=".55"/>
+  <circle cx="156" cy="639" r="254" fill="#f0e7db" opacity=".55"/>
+  <g filter="url(#shadow)" transform="translate(135 130)">
+    <rect width="1010" height="465" rx="28" fill="#fff"/>
+    <rect x="36" y="35" width="230" height="17" rx="8" fill="#234b39" opacity=".82"/>
+    <rect x="36" y="67" width="350" height="10" rx="5" fill="#cbd8cc"/>
+    <rect x="36" y="112" width="466" height="137" rx="14" fill="url(#strong)"/>
+    <path d="M63 220 C127 197 142 214 185 184 S282 189 341 156 426 160 468 138" fill="none" stroke="#e8f6e6" stroke-opacity=".8" stroke-width="6" stroke-linecap="round"/>
+    <rect x="516" y="112" width="222" height="137" rx="14" fill="url(#soft)"/>
+    <path d="M543 215 C581 190 595 213 633 171 S684 181 711 153" fill="none" stroke="#4b8d68" stroke-opacity=".8" stroke-width="6" stroke-linecap="round"/>
+    <rect x="752" y="112" width="222" height="137" rx="14" fill="#edf1e7"/>
+    <path d="M778 209 C819 192 838 199 872 179 S933 184 948 174" fill="none" stroke="#8baa8d" stroke-opacity=".8" stroke-width="6" stroke-linecap="round"/>
+    <rect x="36" y="263" width="222" height="166" rx="14" fill="url(#soft)"/>
+    <rect x="272" y="263" width="222" height="166" rx="14" fill="#eef1e8"/>
+    <rect x="508" y="263" width="222" height="166" rx="14" fill="url(#warm)"/>
+    <rect x="744" y="263" width="230" height="166" rx="14" fill="#f0ddd2"/>
+    <g fill="none" stroke-width="6" stroke-linecap="round" opacity=".75">
+      <path d="M63 401 C100 361 126 379 164 334 S211 354 232 303" stroke="#4b8d68"/>
+      <path d="M299 400 C342 360 358 379 399 347 S453 361 469 330" stroke="#a5baa6"/>
+      <path d="M535 327 C574 350 594 323 628 373 S684 367 702 398" stroke="#c38d72"/>
+      <path d="M771 332 C805 365 843 335 872 382 S924 360 948 399" stroke="#b87a68"/>
+    </g>
+  </g>
+</svg>

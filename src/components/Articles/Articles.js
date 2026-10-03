@@ -85,7 +85,7 @@ export function Articles() {
                             <Link to={`/${currentLang}/articles/${article.slug}`}>
                                 <div className="article-cover">
                                     <img 
-                                        src={`/articles/${article.originalSlug}/image-cover.png`}
+                                        src={`/articles/${article.originalSlug}/image-cover.${article.originalSlug.startsWith('5.') ? 'svg' : 'png'}`}
                                         alt={article.title}
                                         loading="lazy"
                                     />
@@ -102,4 +102,4 @@ export function Articles() {
             </PageContainer>
         </div>
     );
-} 
+}

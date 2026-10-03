@@ -18,15 +18,17 @@
       "proAsOf": "Pro · 收盤資料截至",
       "upgrade": "升級 Pro",
       "freeRanking": "免費 ETF 動能排行",
+      "freeDailyRanking": "免費 ETF 單日漲跌排行",
       "freeDetail": "免費版提供完整分類版圖，以及固定 {{count}} 檔 ETF 的動能與漲跌明細。下方排行僅比較免費 ETF。",
+      "groupDetail": "此分類觀察 {{total}} 檔；免費版可看 {{visible}} 檔明細。",
       "lockedLabel": "Pro 專屬標的",
       "upgradeTitle": "掌握完整 {{count}} 檔動能排行",
-      "upgradeBody": "目前範圍另有 {{count}} 檔 Pro 標的，升級即可比較漲跌、動能分數與近 1、3、6 個月表現。",
+      "upgradeBody": "目前範圍另有 {{count}} 檔 Pro 標的，升級即可比較漲跌、動能分數與近 20、60、120 個交易日表現。",
       "proOnly": "Pro 專屬",
       "upgradeAction": "解鎖完整排行"
     },
     "title": "市場動能",
-    "subtitle": "從板塊到標的，掌握近期漲跌與強弱。",
+    "subtitle": "從價格動能看市場情緒：哪些板塊與標的正在走強，哪些正在轉弱。",
     "asOf": "收盤資料截至",
     "universeLabel": "觀察範圍",
     "tabs": {
@@ -45,17 +47,21 @@
     "refreshError": "更新失敗，目前顯示上次取得的行情。",
     "strengthMap": "市場動能版圖",
     "dailyMap": "最近一日漲跌",
-    "rankLegend": "近約 1、3、6 個月的綜合相對強弱",
+    "rankLegend": "動能分數由弱至強",
     "dailyLegend": "單日漲跌，由跌至漲",
     "weaker": "較弱",
     "stronger": "較強",
     "down": "下跌",
     "up": "上漲",
-    "rankCaption": "近 1、3、6 個月綜合排名 · 分數越高，相對表現越強",
+    "rankCaption": "與同一分頁的其他標的相比，近 20、60、120 個交易日表現越強，動能分數越高。色塊顯示分類平均；線條顯示近 60 個交易日的分數走勢。",
     "dailyCaption": "最新收盤 · 分類內標的的漲跌中位數",
+    "groupButtonSparkline": "{{group}}，動能分數 {{value}}，線條為近 60 個交易日走勢，查看標的",
+    "assetTrendTitle": "累積漲跌走勢 · 近 60 個交易日",
+    "assetTrendAria": "{{symbol}}自{{start}}至{{end}}的累積漲跌為{{asset}}，SPY為{{benchmark}}。",
     "groupButton": "{{group}}，{{value}}，查看標的",
-    "assetCount": "{{count}} 檔",
+    "assetCount": "觀察 {{count}} 檔",
     "allAssets": "動能強弱排行",
+    "dailyAssets": "單日漲跌排行",
     "rankOrder": "依動能分數由高至低排列",
     "dailyOrder": "依單日漲幅由高至低排列",
     "searchLabel": "搜尋標的",
@@ -72,6 +78,7 @@
     "showLess": "收合清單",
     "methodTitle": "資料與計算方式",
     "methodBody": "資料為觀察清單標的的日線行情，非盤中即時報價。單日漲跌以調整後收盤價計算。中期動能將近 20、60、120 個交易日的報酬，在所選清單內排名，再以 20%、40%、40% 加權為 0–100 分；分類分數為所含標的的平均分數。",
+    "methodTrend": "分類走勢以目前觀察清單逐日計算當時具備足夠行情的標的平均分數；有效標的至少須占分類的 80%。所有分類圖線共用 0–100 分刻度。",
     "methodCaveat": "分數描述過去的相對表現，並不代表未來報酬或買賣建議。",
     "groups": {
       "global-markets": "全球股市",
@@ -106,24 +113,26 @@
       "thematic": "主題投資"
     },
     "guideLabel": "如何閱讀與使用",
-    "guideTitle": "如何看分數",
+    "guideTitle": "動能分數怎麼看",
+    "readGuide": "閱讀市場動能完整指南",
     "guide": {
       "period": {
         "title": "比較期間",
-        "body": "把近 20、60、120 個交易日（約 1、3、6 個月）的報酬排名合併，權重為 20%、40%、40%。"
+        "body": "把近 20、60、120 個交易日的相對報酬排名合併，權重為 20%、40%、40%。"
       },
       "score": {
-        "title": "分數含義",
-        "body": "分數越高，過去表現在所選清單中相對越強；高分也可能只是跌得較少。例如 80 分是多個期間的排名加權結果，不是上漲 80%，也不是 80% 的獲利機率。 色塊顯示分類平均分數。"
+        "title": "動能分數是什麼",
+        "body": "同一分頁的標的互相比較，近 20、60、120 個交易日的排名分數加權成動能分數；分類色塊是其標的平均。80 分不是漲了 80%，也不代表未來獲利機率。"
       },
       "action": {
         "title": "使用方式",
-        "body": "點選分類，再展開標的，查看近 1、3、6 個月的表現。可由標的下方連結繼續查看基金資料，並評估持股、費用及風險是否符合自己的投資規劃。 分數與色彩不代表買賣時點。"
+        "body": "點選分類，再展開標的，查看近 20、60、120 個交易日的表現。可由標的下方連結繼續查看基金資料，並評估持股、費用及風險是否符合自己的投資規劃。分數與色彩不代表買賣時點。"
       }
     },
-    "months": "約 {{months}} 個月",
     "researchLink": "在 Yahoo Finance 查看標的資料",
-    "benchmarkExplanation": "SPY 追蹤標普 500 指數，可與標的同期漲跌直接比較。",
+    "periodComparison": "各期間表現",
+    "comparisonItem": "比較項目",
+    "periodComponentScore": "排名分數",
     "coverageTitle": "觀察範圍 · {{count}} 檔標的",
     "coverageBody": "這份觀察清單，以美國上市 ETF 為主，另含封閉式基金等上市商品，例如 DXYZ。涵蓋產業、主題、股市、債券、商品與股票策略，並非全部市場。部分標的會出現在不同清單中。",
     "coverageGroups": "分類依觀察主題整理，不是正式產業分類。分類分數會受到所選標的影響；不同 ETF 可能持有相同股票，檔數更多不一定代表涵蓋更多市場。",
@@ -153,15 +162,13 @@
       "IWO": "Russell 2000 小型成長股",
       "DXYZ": "Destiny Tech100 · 封閉式基金"
     },
-    "assetReturn": "本標的",
     "unavailable": "暫無資料",
     "rankOrderAsc": "依動能分數由低至高排列",
     "dailyOrderAsc": "依單日漲跌幅由低至高排列",
     "sortColumn": "{{column}}：點擊改為{{order}}",
     "ascending": "由低至高",
     "descending": "由高至低",
-    "periodReturnUnavailable": "此期間漲跌資料暫缺",
-    "periodScore": "動能分數 {{score}}"
+    "periodReturnUnavailable": "此期間漲跌資料暫缺"
   },
   "userActions": {
     "login": "登入"
@@ -729,7 +736,7 @@
   },
   "marketSentiment": {
     "pageTitle": "美股恐懼貪婪指數｜整合 8 項指標的市場情緒分析",
-    "pageSubtitle": "整合多項數據，客觀分析市場恐懼與貪婪程度",
+    "pageSubtitle": "追蹤美股市場整體情緒偏向恐懼還是貪婪。",
     "pageDescription": "整合 VIX、AAII、Put/Call、NAAIM 等 8 項指標的美股恐懼貪婪指數，將市場情緒量化為 0 到 100 分。協助長線投資人判斷美股是否進入極端恐慌或貪婪區域。",
     "keywords": "市場情緒,投資者情緒,恐懼貪婪指數,VIX分析,Put Call Ratio,股市心理學,投資策略,市場指標,情緒追蹤,台股情緒,美股情緒",
     "heading": "市場情緒分析",
@@ -1083,7 +1090,7 @@
       "pageTitle": "Sentiment Inside Out (SIO) 台股恐懼貪婪指標｜台股情緒追蹤",
       "pageDescription": "Sentiment Inside Out (SIO) 台股恐懼貪婪指標整合台指選擇權波動率、Put/Call Ratio、美元兌台幣、融資維持率、外資期貨淨未平倉、市場廣度、券資比、市場動能與有效交易戶數共九項台股指標，將市場情緒量化為 0 到 100 的分數。數值越低代表台股越偏向恐懼，越接近 0 通常代表已到達熊市末端；數值越高代表越偏向貪婪，接近 100 並開始回落時，通常代表已到達牛市末端。適合長期投資者觀察台股整體情緒是否進入極端區域。",
       "keywords": "台股情緒,台股恐懼貪婪指標,加權指數,台指選擇權波動率,Put Call Ratio,融資維持率,外資期貨,券資比,台股投資策略,台股市場指標",
-      "pageSubtitle": "整合台股九項訊號，客觀量化市場恐懼與貪婪程度",
+      "pageSubtitle": "追蹤台股市場整體情緒偏向恐懼還是貪婪。",
       "heading": "台股市場情緒分析",
       "faq": {
         "q1": "什麼是 SIO 台股情緒指標？",
@@ -1168,6 +1175,7 @@
   "priceAnalysis": {
     "pageTitle": "樂活五線譜｜股價趨勢與價格位階分析工具",
     "heading": "樂活五線譜",
+    "subtitle": "用價格趨勢判斷標的情緒。",
     "pageDescription": "樂活五線譜算出股價的趨勢線，標出現在的股價離它多遠：從極度恐懼到極度貪婪。期間可選 0.5、1.5 或 3.5 年。再看樂活通道，股價有沒有走出最近的價格區間。",
     "keywords": "樂活五線譜,價格趨勢分析,股價分析,市場情緒,均值回歸,超買超賣,樂活通道,標準差",
     "jsonLd": {
@@ -1196,6 +1204,22 @@
         "minus1sd": "恐懼",
         "plus1sd": "貪婪",
         "plus2sd": "極度貪婪"
+      }
+    },
+    "indicators": {
+      "title": "其他指標",
+      "choose": "選擇其他指標",
+      "lockedOption": "{{indicator}}，升級 Pro 後可使用",
+      "ma": "MA",
+      "signal": "訊號線",
+      "histogram": "柱狀差值",
+      "insufficient": "這段期間的資料不足，請選擇較長的分析期長。",
+      "missingRange": "目前沒有每日最高、最低價，無法計算 KD。",
+      "description": {
+        "rsi": "RSI（14 日）觀察近期漲跌力道；數值介於 0–100。",
+        "macd": "MACD 比較 12、26 日指數移動平均線，並顯示 9 日訊號線；前段需累積資料。",
+        "kd": "KD（9 日）比較收盤價與近期高低價，顯示 K、D 兩條線。",
+        "ma": "比較收盤價與 5、10、20、60、120 日移動平均線。"
       }
     },
     "sentiment": {
@@ -1319,7 +1343,7 @@
       "done": "開始使用",
       "result": {
         "title": "分析結果",
-        "body": "上方是樂活五線譜，呈現出當前股價離趨勢線多遠；下方是樂活通道，呈現出最近 20 週走過的價格區間。欄位名稱旁邊的問號可以隨時打開說明。"
+        "body": "依序看樂活五線譜、樂活通道與其他指標。其他指標可切換 RSI、MACD、KD 和移動平均線；欄位旁的問號可打開說明。"
       },
       "search": {
         "title": "輸入股票代碼",
@@ -1508,6 +1532,10 @@
       "title": "解鎖完整市場情緒數據",
       "subtitle": "升級至 Pro 方案，獲得即時市場情緒分析",
       "description": "免費用戶僅能查看部分功能，升級後可獲得完整的市場情緒指標。"
+    },
+    "technicalIndicators": {
+      "title": "解鎖更多技術指標",
+      "description": "免費版可使用 MA。升級 Pro，即可切換 RSI、MACD 與 KD。"
     },
     "default": {
       "title": "升級至 Pro",
@@ -2854,6 +2882,13 @@
       "relationToSioCta": "查看個股的樂活五線譜",
       "source": "由 Sentiment Inside Out 依公開市場資料計算。台美股每個交易日更新。"
     }
+  },
+  "marketPulse": {
+    "title": "全球市場",
+    "latestSession": "最近交易日",
+    "loading": "市場走勢載入中",
+    "unavailable": "市場走勢暫時無法取得",
+    "itemLabel": "{{name}}，{{date}}，漲跌 {{percent}}"
   },
   "cardTrial": {
     "title": "免費試用 30 天",

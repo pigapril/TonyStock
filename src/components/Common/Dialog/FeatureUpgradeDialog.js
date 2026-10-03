@@ -132,6 +132,13 @@ export function FeatureUpgradeDialog({
                         { icon: '📋', text: t('featureUpgrade.features.watchlist', '個人追蹤清單') }
                     ]
                 };
+            case 'technicalIndicators':
+                return {
+                    title: t('featureUpgrade.technicalIndicators.title'),
+                    description: t('featureUpgrade.technicalIndicators.description'),
+                    icon: '📈',
+                    features: []
+                };
             default:
                 return {
                     title: t('featureUpgrade.default.title', '升級至 Pro'),
@@ -192,14 +199,16 @@ export function FeatureUpgradeDialog({
                 )}
 
                 {/* 功能列表 */}
-                <div className="upgrade-features">
-                    {content.features.map((feature, index) => (
-                        <div key={index} className="feature-item">
-                            <span className="feature-icon">{feature.icon}</span>
-                            <span className="feature-text">{feature.text}</span>
-                        </div>
-                    ))}
-                </div>
+                {content.features.length > 0 && (
+                    <div className="upgrade-features">
+                        {content.features.map((feature, index) => (
+                            <div key={index} className="feature-item">
+                                <span className="feature-icon">{feature.icon}</span>
+                                <span className="feature-text">{feature.text}</span>
+                            </div>
+                        ))}
+                    </div>
+                )}
 
                 {/* 按鈕區域 */}
                 <div className="upgrade-actions">

@@ -27,7 +27,7 @@
   width: 100%;
   /* 手機／平板用這個固定高度（桌機在 1024px 以上改由 flex-grow 撐滿）。
      卡片的上下留白收緊後，把省下來的空間還給圖表。 */
-  height: 490px;
+  height: 590px;
   max-width: 100%;
   overflow: visible;
   /* card 本身已有 padding-bottom，這裡再留 20px 會讓通道圖下方出現一大段空白 */
@@ -79,19 +79,17 @@
 /* 圖表縮放按鈕組 - 蘋果風格 */
 .price-analysis-view .chart-zoom-buttons {
   position: absolute;
-  top: 12px;
+  top: 35px;
   left: 12px;
   z-index: 10;
   display: flex;
   flex-direction: column;
   gap: 1px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: #f3f6fa;
+  border: 1px solid #ced9e5;
   border-radius: 10px;
   padding: 4px;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12),
-              0 0 0 0.5px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 3px 12px rgba(35, 55, 82, 0.15);
 }
 
 .price-analysis-view .zoom-btn {
@@ -99,7 +97,7 @@
   height: 32px;
   border: none;
   background: transparent;
-  color: #1d1d1f;
+  color: #33465d;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -111,18 +109,23 @@
 }
 
 .price-analysis-view .zoom-btn:hover {
-  background: rgba(0, 0, 0, 0.06);
+  background: #e4ebf3;
 }
 
 .price-analysis-view .zoom-btn:active {
-  background: rgba(0, 0, 0, 0.12);
+  background: #d8e3ee;
   transform: scale(0.95);
+}
+
+.price-analysis-view .zoom-btn:focus-visible {
+  outline: 2px solid #3b6fd4;
+  outline-offset: -2px;
 }
 
 .price-analysis-view .zoom-btn svg {
   width: 16px;
   height: 16px;
-  color: #1d1d1f;
+  color: currentColor;
 }
 
 /* 分隔線 */
@@ -138,7 +141,7 @@
   left: 6px;
   right: 6px;
   height: 0.5px;
-  background: rgba(0, 0, 0, 0.1);
+  background: #d2dce6;
 }
 
 /* 表單樣式 */
@@ -345,7 +348,7 @@
 
   /* 手機版縮放按鈕 */
   .price-analysis-view .chart-zoom-buttons {
-    top: 8px;
+    top: 31px;
     left: 8px;
     padding: 3px;
   }
@@ -370,6 +373,10 @@
     min-width: 0;
     padding: 20px 10px 0px 10px;
     box-sizing: border-box;
+  }
+
+  .price-analysis-view .chart-container {
+    height: 640px;
   }
 
   .price-analysis-view .chart-placeholder {
@@ -729,32 +736,60 @@
   padding-bottom: 8px;
 }
 
-/* 五線譜（主圖）與樂活通道（輔助帶）上下並排，共用同一段時間軸。
-   通道圖只需要傳達「帶內／出上緣／出下緣」，不必跟主圖等高，
-   所以取七三分：主圖留給六條線與日期軸，通道帶壓縮成一條參考帶。 */
+/* 兩張圖都是價格軸；讓繪圖區等高，搭配共用的價格範圍，
+   同樣的價格變化才會有相同的縱向距離。 */
 .price-analysis-view .chart-stack {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 6px;
+  gap: 16px;
 }
 
 .price-analysis-view .chart-stack__main {
   position: relative;
-  flex: 65 1 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
   min-height: 0;
 }
 
 .price-analysis-view .chart-stack__band {
   position: relative;
-  flex: 35 1 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
   min-height: 0;
-  border-top: 1px solid #eceef2;
-  padding-top: 4px;
 }
 
-/* 小標切在分隔線上（類似 fieldset legend），不浮在資料區上方 */
+.price-analysis-view .chart-stack__band::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #e1e7ef;
+  pointer-events: none;
+}
+
+.price-analysis-view .chart-stack__title,
+.price-analysis-view .pa-indicator__title {
+  margin: 0;
+  padding: 0 0 4px;
+  border: 0;
+  color: var(--color-text-primary, #1d1d1f);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.price-analysis-view .chart-stack__plot {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
 /* 通道帶的 tooltip：留在圖內，位置由 JS 決定（擺在標線旁、離當下的點較遠的那一半） */
 .price-analysis-view .ulband-external-tooltip {
   position: absolute;
@@ -803,33 +838,6 @@
     font-size: 0.62rem;
     padding: 5px 7px;
   }
-}
-
-.price-analysis-view .chart-stack__band-label {
-  position: absolute;
-  top: -9px;
-  left: 14px;
-  z-index: 2;
-  padding: 0 6px;
-  background: var(--color-bg-card, #ffffff);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  color: #98a1ad;
-  pointer-events: none;
-}
-
-@media (max-width: 768px) {
-  .price-analysis-view .chart-stack {
-    gap: 4px;
-  }
-
-  .price-analysis-view .chart-stack__band-label {
-    font-size: 0.6rem;
-    top: -8px;
-    left: 8px;
-  }
-
 }
 
 /* 通道位置：header 的第四欄，字級與其他數值一致，只用顏色帶語意 */
@@ -1130,7 +1138,7 @@
 }
 
 /* 桌面版面配置 */
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
   .price-analysis-view .content-layout-container {
     flex-direction: row;
     /* 不再鎖整區高度：左欄要能一路往下長，右欄的說明也接在圖表下面。
@@ -1165,7 +1173,7 @@
   .price-analysis-view .content-layout-container .dashboard .chart-card {
     /* 圖表維持接近滿版的高度；說明區塊接在它下面，一起跟著頁面捲 */
     flex: none;
-    height: 78vh;
+    height: max(700px, 88vh);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -1175,14 +1183,6 @@
   .price-analysis-view .content-layout-container .dashboard .chart-card .chart-container {
     flex-grow: 1;
     min-height: 0;
-  }
-}
-
-/* 中大型螢幕優化 */
-@media (min-width: 1500px) {
-  .price-analysis-view .content-layout-container .dashboard .chart-card {
-    flex: none;
-    height: 70vh;
   }
 }
 
@@ -1860,12 +1860,179 @@
   gap: 12px;
 }
 
+.price-analysis-view .pa-workspace {
+  min-width: 0;
+  padding: 24px 28px 10px;
+  background: var(--color-bg-card, #fff);
+  border: 1px solid var(--color-border-light, #ebebeb);
+  border-radius: 18px;
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.03));
+}
+
 .price-analysis-view .pa-topbar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex: 0 0 auto;
+}
+
+.price-analysis-view .pa-intro {
+  min-width: 0;
+  max-width: 1040px;
+  margin: 0 auto 22px;
+  text-align: center;
+}
+
+.price-analysis-view .pa-intro h1 {
+  margin: 0 0 6px;
+  padding: 0;
+  border: 0;
+  color: var(--color-text-secondary, #5a6572);
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.price-analysis-view .pa-intro p {
+  margin: 0;
+  color: var(--color-text-primary, #1d1d1f);
+  font-size: clamp(23px, 1.8vw, 29px);
+  font-weight: 680;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.price-analysis-view .pa-workspace > .chart-card {
+  min-width: 0;
+  margin-top: 10px;
+  padding: 14px 0 8px;
+  background: transparent;
+  border-top: 1px solid #e1e7ef;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.price-analysis-view .pa-indicator {
+  min-width: 0;
+  padding: 22px 0 10px;
+  border-top: 1px solid var(--color-border-light, #edf0f2);
+}
+
+.price-analysis-view .pa-indicator__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.price-analysis-view .pa-indicator__description {
+  margin: 5px 0 0;
+  color: var(--color-text-secondary, #68717d);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.price-analysis-view .pa-indicator__switch {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  background: #f1f3f6;
+}
+
+.price-analysis-view .pa-indicator__option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 65px;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #596373;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.price-analysis-view .pa-indicator__option:hover {
+  color: #1d1d1f;
+}
+
+.price-analysis-view .pa-indicator__option.is-locked svg {
+  width: 9px;
+  height: 9px;
+  color: #8490a0;
+}
+
+.price-analysis-view .pa-indicator__option.is-active {
+  background: #fff;
+  color: #245dc7;
+  box-shadow: 0 1px 4px rgba(20, 40, 80, 0.12);
+}
+
+.price-analysis-view .pa-indicator__option:focus-visible {
+  outline: 2px solid #245dc7;
+  outline-offset: 2px;
+}
+
+.price-analysis-view .pa-indicator__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 16px;
+  min-height: 18px;
+  margin: 16px 0 6px 10px;
+}
+
+.price-analysis-view .pa-indicator__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #65707d;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.price-analysis-view .pa-indicator__legend-item i {
+  width: 10px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.price-analysis-view .pa-indicator__plot {
+  position: relative;
+  height: 190px;
+  min-width: 0;
+}
+
+.price-analysis-view .pa-indicator__empty {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  margin: 0;
+  color: var(--color-text-secondary, #68717d);
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (min-width: 769px) {
+  .price-analysis-view .pa-workspace .analysis-result {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px 28px;
+    padding: 10px 4px;
+    margin: 0 0 8px;
+  }
+
+  .price-analysis-view .pa-workspace .analysis-item {
+    justify-items: center;
+  }
 }
 
 .price-analysis-view .pa-searchbar {
@@ -1874,28 +2041,27 @@
   align-items: center;
   gap: 10px;
   width: 100%;
-  /* 比圖表窄一截，回測日期的月曆彈窗才有地方展開。期長從下拉攤成四顆按鈕之後，
-     右側固定佔掉約 400px，600px 會把輸入框壓到只剩一百多，放不下「2330」以外的東西。 */
   max-width: 820px;
   box-sizing: border-box;
   padding: 6px 8px 6px 16px;
-  background-color: var(--color-bg-card, #fff);
-  border: 1px solid var(--color-border-light, #e3e6ea);
+  background-color: #f8fafc;
+  border: 1px solid #d8e2ed;
   border-radius: 999px;
-  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.06));
-  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+  box-shadow: 0 2px 9px rgba(35, 55, 82, 0.08);
+  transition: background-color 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
 .price-analysis-view .pa-searchbar:focus-within {
+  background-color: #fff;
   border-color: var(--accent-color-blue, #3b6fd4);
-  box-shadow: 0 0 0 3px rgba(59, 111, 212, 0.14);
+  box-shadow: 0 0 0 3px rgba(59, 111, 212, 0.12), 0 3px 12px rgba(35, 55, 82, 0.1);
 }
 
 .price-analysis-view .pa-searchbar__icon {
   flex: 0 0 auto;
   font-size: 15px;
   line-height: 1;
-  opacity: 0.55;
+  opacity: 0.72;
 }
 
 /* 輸入框在 pill 裡不需要自己的邊框與底色 */
@@ -1939,7 +2105,7 @@
   align-items: center;
   gap: 6px;
   padding-left: 10px;
-  border-left: 1px solid var(--color-border-light, #e8eaed);
+  border-left: 1px solid #dce4ed;
 }
 
 /* 自訂年數：跟在下拉右邊的小輸入框，按 Enter 送出 */
@@ -1973,7 +2139,7 @@
   padding: 0 10px;
   border: none;
   border-radius: 999px;
-  background-color: var(--color-bg-muted, #f1f3f5);
+  background-color: #eaf0f6;
   font-size: 13px;
   font-weight: 600;
   color: var(--color-text-primary, #1f2933);
@@ -1981,7 +2147,7 @@
 }
 
 .price-analysis-view .pa-searchbar__controls .react-datepicker__input-container input:hover {
-  background-color: var(--color-border-light, #e5e8eb);
+  background-color: #dfe8f2;
 }
 
 .price-analysis-view .pa-searchbar__controls .react-datepicker__input-container input:focus {
@@ -1996,7 +2162,7 @@
   gap: 2px;
   padding: 2px;
   border-radius: 999px;
-  background-color: var(--color-bg-muted, #f1f3f5);
+  background-color: #eaf0f6;
 }
 
 .price-analysis-view .pa-horizon__btn {
@@ -2045,66 +2211,118 @@
   to { transform: rotate(360deg); }
 }
 
-/* 熱門：直接攤在搜尋列下方，不用再點一次分頁才看得到 */
-/* 最多 10 個。桌機用換行攤開——橫向捲動在桌機沒有捲軸也沒有橫向滾輪，
-   等於把右邊的項目鎖起來看不到。這一列可以比搜尋列寬，六個一行、最多兩行。 */
+/* 熱門標的與搜尋框共用中心軸，維持原本的膠囊入口。 */
 .price-analysis-view .pa-hot-search-slot {
   width: 100%;
-  min-height: 80px;
-}
-
-.price-analysis-view .pa-hot-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  gap: 8px 10px;
+  max-width: 1040px;
+  min-width: 0;
+  box-sizing: border-box;
+  margin: 16px auto 0;
 }
 
 .price-analysis-view .pa-hot-row__label {
-  flex: 0 0 auto;
-  color: var(--color-text-tertiary, #8a94a0);
+  display: block;
+  color: #69798c;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.02em;
+  margin-bottom: 6px;
+  text-align: center;
 }
 
 .price-analysis-view .pa-hot-row__items {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px 6px;
   min-width: 0;
+  overflow: hidden;
+}
+
+.price-analysis-view .pa-hot-row__items.is-scrolling {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+}
+
+.price-analysis-view .pa-hot-row__track,
+.price-analysis-view .pa-hot-row__group {
+  display: flex;
+  width: max-content;
+}
+
+.price-analysis-view .pa-hot-row__group {
+  flex: 0 0 auto;
+  gap: 8px;
+  padding-right: 8px;
+}
+
+.price-analysis-view .pa-hot-row__items:not(.is-scrolling) .pa-hot-row__track {
+  width: 100%;
+  justify-content: center;
+}
+
+.price-analysis-view .pa-hot-row__items.is-scrolling .pa-hot-row__track {
+  animation: pa-hot-row-scroll 70s linear infinite;
+}
+
+.price-analysis-view .pa-hot-row__items:hover .pa-hot-row__track,
+.price-analysis-view .pa-hot-row__items:focus-within .pa-hot-row__track {
+  animation-play-state: paused;
+}
+
+@keyframes pa-hot-row-scroll {
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .price-analysis-view .pa-hot-row__items.is-scrolling {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .price-analysis-view .pa-hot-row__items.is-scrolling .pa-hot-row__track {
+    animation: none;
+  }
+
+  .price-analysis-view .pa-hot-row__group[aria-hidden='true'] {
+    display: none;
+  }
 }
 
 .price-analysis-view .pa-hot-chip {
-  flex: 0 0 auto;
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 6px;
-  max-width: 200px;
-  padding: 5px 12px;
-  border: 1px solid var(--color-border-light, #e3e6ea);
+  min-width: 0;
+  box-sizing: border-box;
+  flex: 0 0 190px;
+  width: 190px;
+  padding: 6px 11px;
+  border: 1px solid #dce5ee;
   border-radius: 999px;
-  background-color: var(--color-bg-card, #fff);
+  background: #f7f9fc;
+  box-shadow: 0 1px 3px rgba(35, 55, 82, 0.04);
   cursor: pointer;
+  text-align: left;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .price-analysis-view .pa-hot-chip:hover {
   border-color: var(--accent-color-blue, #3b6fd4);
-  background-color: rgba(59, 111, 212, 0.06);
+  background-color: #edf3fb;
+}
+
+.price-analysis-view .pa-hot-chip:focus-visible {
+  outline: 2px solid var(--accent-color-blue, #3b6fd4);
+  outline-offset: -2px;
 }
 
 .price-analysis-view .pa-hot-chip__ticker {
-  color: var(--color-text-primary, #1f2933);
+  flex: 0 0 auto;
+  color: #293d54;
   font-size: 13px;
   font-weight: 600;
 }
 
 .price-analysis-view .pa-hot-chip__name {
-  color: var(--color-text-tertiary, #8a94a0);
+  min-width: 0;
+  color: #718095;
   font-size: 12px;
   white-space: nowrap;
   overflow: hidden;
@@ -2172,13 +2390,26 @@
   color: var(--color-text-primary, #1d1d1f);
 }
 
-@media (max-width: 1023px) {
-  /* 窄螢幕改成單欄，順序是：搜尋 → 熱門 → 圖表 → 換一檔看 → 說明。
+@media (max-width: 1199px) {
+  /* 窄螢幕改成單欄，順序是：頁首 → 搜尋 → 熱門標的 → 圖表 → 選股清單 → 說明。
      清單要插在圖表和說明中間，但它們原本不在同一個 flex 容器裡
      （說明在 .pa-main 內、清單是 .pa-main 的兄弟），所以讓 .pa-main
      用 display: contents 把子元素攤平到 .dashboard，才排得動。 */
   .price-analysis-view .pa-main {
     display: contents;
+  }
+
+  .price-analysis-view .pa-workspace {
+    display: contents;
+  }
+
+  .price-analysis-view .pa-workspace > .chart-card {
+    margin-top: 0;
+    padding: 10px 12px 8px;
+    background: var(--color-bg-card, #fff);
+    border: 0;
+    border-radius: var(--border-radius-large, 14px);
+    box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.03));
   }
 
   .price-analysis-view .content-layout-container .dashboard {
@@ -2190,30 +2421,86 @@
     width: 100%;
   }
 
-  .price-analysis-view .content-layout-container .dashboard .chart-card {
+  .price-analysis-view .pa-hot-search-slot {
     order: 2;
+  }
+
+  .price-analysis-view .pa-intro {
+    order: 0;
     width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px 6px;
+    margin: 0;
+    text-align: left;
+  }
+
+  .price-analysis-view .pa-intro h1,
+  .price-analysis-view .pa-intro p {
+    text-align: left;
+  }
+
+  .price-analysis-view .pa-intro h1 {
+    margin-bottom: 8px;
+    font-size: 15px;
+  }
+
+  .price-analysis-view .pa-intro p {
+    font-size: clamp(23px, 5.2vw, 27px);
+  }
+
+  .price-analysis-view .content-layout-container .dashboard .chart-card {
+    order: 3;
+    width: 100%;
+  }
+
+  .price-analysis-view .pa-indicator {
+    order: 4;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 14px 12px;
+    border: 0;
+    border-radius: var(--border-radius-large, 14px);
+    background: var(--color-bg-card, #fff);
+    box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.03));
   }
 
   /* 狀態說明講的是這次的結果，緊跟著圖表；接著才是換一檔用的清單；
      說明是查一次的參考資料，退到最後。 */
   .price-analysis-view .combined-state-note {
-    order: 3;
+    order: 5;
     width: 100%;
   }
 
   .price-analysis-view .pa-sidenav {
-    order: 4;
+    order: 6;
     width: 100%;
   }
 
   .price-analysis-view .bottom-description-section {
-    order: 5;
+    order: 7;
     width: 100%;
   }
 }
 
 @media (max-width: 768px) {
+  .price-analysis-view .pa-indicator__header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .price-analysis-view .pa-indicator__switch {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .price-analysis-view .pa-indicator__option {
+    flex: 1;
+  }
+
+  .price-analysis-view .pa-indicator__plot {
+    height: 170px;
+  }
+
   /* 手機：期長與進階自成一列，跟 Google 搜尋把「AI 模式」另起一行同一個道理 */
   .price-analysis-view .pa-searchbar {
     flex-wrap: wrap;
@@ -2253,27 +2540,13 @@
     right: 0;
   }
 
-  /* 手機維持單行橫滑：垂直空間比較珍貴，而且手指滑得動。
-     裝 chip 的內層也要 nowrap，不然它會自己折成好幾行（實測 316px 高）。 */
   .price-analysis-view .pa-hot-search-slot {
-    min-height: 38px;
-    height: 38px;
-    overflow: hidden;
+    margin-top: 0;
   }
 
-  .price-analysis-view .pa-hot-row,
-  .price-analysis-view .pa-hot-row__items {
-    flex-wrap: nowrap;
-  }
-
-  .price-analysis-view .pa-hot-row {
-    justify-content: flex-start;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .price-analysis-view .pa-hot-row::-webkit-scrollbar {
-    display: none;
+  .price-analysis-view .pa-hot-chip {
+    flex: 0 0 150px;
+    width: 150px;
   }
 }
 

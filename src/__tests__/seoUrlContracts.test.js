@@ -10,7 +10,7 @@ describe('SEO URL contracts', () => {
   const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 
   it('advertises only final, canonical URLs for the two distinct locales', () => {
-    expect(locs).toHaveLength(40);
+    expect(locs).toHaveLength(42);
     expect(locs.every((url) => url.startsWith(`${origin}/en/`) || url.startsWith(`${origin}/zh-TW/`)))
       .toBe(true);
     expect(locs.every((url) => url.endsWith('/'))).toBe(true);

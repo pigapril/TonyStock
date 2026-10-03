@@ -53,6 +53,7 @@ import { initializeFreeStockList } from './utils/freeStockListUtils';
 import { canSeeCardTrial } from './utils/cardTrialRollout';
 import BrandLogo from './components/Common/BrandLogo/BrandLogo';
 import DeferredTagManager from './components/Common/DeferredTagManager/DeferredTagManager';
+import MarketPulse from './components/MarketPulse/MarketPulse';
 
 const MarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/MarketSentimentIndex'));
 const MomentumDashboardPage = lazy(() => import('./components/MomentumDashboard/MomentumDashboardPage'));
@@ -134,6 +135,9 @@ function AppContent() {
   const isMobile = useMediaQuery({ query: '(max-width: 1300px)' });
   const location = useLocation();
   const isHomePage = location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
+  const showMarketPulse = [
+    'priceanalysis', 'market-sentiment', 'tw-market-sentiment', 'momentum', 'watchlist'
+  ].some((route) => location.pathname === `/${lang}/${route}` || location.pathname === `/${lang}/${route}/`);
   const [isTopNavScrolled, setIsTopNavScrolled] = React.useState(false);
   const shouldLoadAnnouncementBar = useDeferredFeature({ timeoutMs: 1500, useIdleCallback: true, triggerOnInteraction: true });
   const shouldLoadChatWidget = useDeferredFeature({ timeoutMs: 3200, useIdleCallback: true, triggerOnInteraction: true });
@@ -577,6 +581,7 @@ function AppContent() {
 
           {/* 內容路由 */}
           <div className={`content-area ${isHomePage ? 'content-area--home' : ''}`}>
+            {showMarketPulse && <MarketPulse />}
             <Suspense fallback={<RouteFallback />}>
               <Routes>
                 <Route path="/" element={<Home />} />

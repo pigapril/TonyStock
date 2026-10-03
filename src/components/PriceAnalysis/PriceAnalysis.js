@@ -213,6 +213,7 @@ export function PriceAnalysis() {
   const [years, setYears] = useState('');       // 初始值改為空
   const [backTestDate, setBackTestDate] = useState(''); // 初始值改為空
   const [chartData, setChartData] = useState(null);
+  const [indicatorRanges, setIndicatorRanges] = useState(null);
   const [loading, setLoading] = useState(false);
   const [displayedStockCode, setDisplayedStockCode] = useState('');
   // 通道圖要跟隨的 x 範圍。一律「讀主圖當下的 scale」再存起來，
@@ -352,37 +353,15 @@ export function PriceAnalysis() {
           x: 'end',
           y: 'center'
         },
-        xAdjust: index === 0 ? 2 : 35,
+        // 五條彩色線留在繪圖區內；黑色價格與相近的「貪婪」數值錯開，避免互相遮蓋。
+        xAdjust: index === 0 ? -76 : -26,
         yAdjust: 0
       };
     });
 
     return annotations;
   }, [chartData?.datasets, chartData?.labels, xAxisMax]);
-  const yTickLabelFormatter = useCallback((value) => {
-    if (!chartData?.datasets || !chartData?.labels?.length) {
-      return value;
-    }
-
-    const lastIndex = chartData.labels.length - 1;
-    const dataValues = chartData.datasets
-      .map((dataset) => dataset.data?.[lastIndex])
-      .filter((v) => v !== undefined && v !== null)
-      .sort((a, b) => a - b);
-
-    if (dataValues.length === 0) {
-      return value;
-    }
-
-    const minDataValue = dataValues[0];
-    const maxDataValue = dataValues[dataValues.length - 1];
-
-    if (value > minDataValue && value < maxDataValue) {
-      return '';
-    }
-
-    return formatPrice(value);
-  }, [chartData?.datasets, chartData?.labels]);
+  const yTickLabelFormatter = useCallback((value) => formatPrice(value), []);
   const tooltipLabelFormatter = useCallback((context) => `${context.dataset.label || ''}: ${formatPrice(context.parsed.y)}`, []);
   const tooltipLabelColorFormatter = useCallback((context) => ({
     backgroundColor: context.dataset.borderColor,
@@ -461,6 +440,30 @@ export function PriceAnalysis() {
 
   // 新增：熱門搜尋狀態
   const [hotSearches, setHotSearches] = useState(readHotSearchesCache);
+  const hotSearchViewportRef = useRef(null);
+  const hotSearchGroupRef = useRef(null);
+  const [shouldScrollHotSearches, setShouldScrollHotSearches] = useState(false);
+
+  useEffect(() => {
+    const viewport = hotSearchViewportRef.current;
+    const group = hotSearchGroupRef.current;
+    if (!viewport || !group) return undefined;
+
+    const updateOverflow = () => {
+      setShouldScrollHotSearches(group.scrollWidth > viewport.clientWidth + 2);
+    };
+    updateOverflow();
+
+    if (typeof window.ResizeObserver === 'function') {
+      const observer = new window.ResizeObserver(updateOverflow);
+      observer.observe(viewport);
+      observer.observe(group);
+      return () => observer.disconnect();
+    }
+
+    window.addEventListener('resize', updateOverflow);
+    return () => window.removeEventListener('resize', updateOverflow);
+  }, [hotSearches]);
 
   // 新增：快速選擇 Tab 狀態
   const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('freeStocks'); // 'freeStocks' 或 'watchlist'
@@ -493,6 +496,7 @@ export function PriceAnalysis() {
   const resetAnalysisOutputs = useCallback(() => {
     startTransition(() => {
       setChartData(null);
+      setIndicatorRanges(null);
       setUlbandData(null);
       setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null, channelState: null });
       setDisplayedStockCode('');
@@ -518,13 +522,15 @@ export function PriceAnalysis() {
         try {
           const lastIndex = chart.data.labels.length - 1;
 
-          if (isMobile && chart.scales?.x && typeof chart.zoomScale === 'function') {
+          const isLongPeriod = lastRunKeyRef.current.startsWith('long|');
+          if ((isMobile || isLongPeriod) && chart.scales?.x && typeof chart.zoomScale === 'function') {
             const fullMin = chart.scales.x.min;
             const fullMax = chart.scales.x.max;
             if (Number.isFinite(fullMin) && Number.isFinite(fullMax) && fullMax > fullMin) {
-              // 手機螢幕窄，整段期間擠在一起看不出東西，預設收掉最舊的 30%。
-              // 用 zoomScale 保留 'original' 為完整範圍，使用者仍可縮回去。
-              const zoomedMin = fullMax - (fullMax - fullMin) * 0.7;
+              // 3.5 年視圖預設放大兩級（每級保留 80%）；其他期長維持手機的 70%。
+              // 用 zoomScale 保留完整範圍，重置鍵仍可回到全期。
+              const zoomRatio = isLongPeriod ? 0.8 ** 2 : 0.7;
+              const zoomedMin = fullMax - (fullMax - fullMin) * zoomRatio;
               chart.zoomScale('x', { min: zoomedMin, max: fullMax }, 'default');
             }
           }
@@ -823,7 +829,7 @@ export function PriceAnalysis() {
       });
 
       const { data } = response.data;
-      const { dates, prices, sdAnalysis, weeklyDates, weeklyPrices, upperBand, lowerBand, ma20, horizonSnapshots, marketExtreme } = data;
+      const { dates, prices, highs, lows, sdAnalysis, weeklyDates, weeklyPrices, upperBand, lowerBand, ma20, horizonSnapshots, marketExtreme } = data;
 
       // 使用 startTransition 包裹耗時的狀態更新
       startTransition(() => {
@@ -840,6 +846,7 @@ export function PriceAnalysis() {
           ],
           timeUnit: getTimeUnit(dates)
         });
+        setIndicatorRanges({ highs, lows });
 
         setUlbandData({ dates: weeklyDates, prices: weeklyPrices, upperBand, lowerBand, ma20 });
 
@@ -891,6 +898,7 @@ export function PriceAnalysis() {
       // 錯誤時也用 transition 清空數據
       startTransition(() => {
         setChartData(null);
+        setIndicatorRanges(null);
         setUlbandData(null);
         // 清空時也清空 key 和 value
         setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
@@ -1176,6 +1184,7 @@ export function PriceAnalysis() {
       // 清除可能殘留的圖表數據 (除非正在手動載入)
       if (!loading) {
         setChartData(null);
+        setIndicatorRanges(null);
         setUlbandData(null);
         // 清空時也清空 key 和 value
         setAnalysisResult({ price: null, sentimentKey: null, sentimentValue: null });
@@ -1428,6 +1437,31 @@ export function PriceAnalysis() {
     };
   }, [t, currentLang]);
 
+  // 兩張價格圖用相同的縱軸範圍，避免相同的價格變動在上下圖被畫成不同高度。
+  const sharedPriceRange = useMemo(() => {
+    if (!chartData || !ulbandData) return null;
+    const series = [
+      ...chartData.datasets.map((dataset) => dataset.data),
+      ulbandData.prices,
+      ulbandData.upperBand,
+      ulbandData.lowerBand,
+      ulbandData.ma20
+    ];
+    let min = Infinity;
+    let max = -Infinity;
+    for (const values of series) {
+      if (!Array.isArray(values)) continue;
+      for (const value of values) {
+        if (!Number.isFinite(value)) continue;
+        min = Math.min(min, value);
+        max = Math.max(max, value);
+      }
+    }
+    if (!Number.isFinite(min) || !Number.isFinite(max)) return null;
+    const padding = Math.max((max - min) * 0.04, Math.abs(max) * 0.005, 0.01);
+    return { min: Math.max(0, min - padding), max: max + padding };
+  }, [chartData, ulbandData]);
+
   // 優化 Line Chart Options
   const hasBandBelow = Boolean(ulbandData);
   const lineChartOptions = useMemo(() => {
@@ -1456,6 +1490,7 @@ export function PriceAnalysis() {
         },
         y: {
           position: 'right',
+          ...(sharedPriceRange || {}),
           grid: { drawBorder: true },
           ticks: {
             callback: yTickLabelFormatter
@@ -1504,7 +1539,7 @@ export function PriceAnalysis() {
     }
 
     return options;
-  }, [chartAnnotations, chartData?.timeUnit, hasBandBelow, isMobile, lineChartZoomOptions, tooltipLabelColorFormatter, tooltipLabelFormatter, tooltipYAlign, xAxisMax, yTickLabelFormatter]);
+  }, [chartAnnotations, chartData?.timeUnit, hasBandBelow, isMobile, lineChartZoomOptions, sharedPriceRange, tooltipLabelColorFormatter, tooltipLabelFormatter, tooltipYAlign, xAxisMax, yTickLabelFormatter]);
 
   // 首次造訪才跑導覽，而且要等預設分析跑出來——第三步要指的就是那張圖。
   useEffect(() => {
@@ -1558,6 +1593,7 @@ export function PriceAnalysis() {
                       <FreeStockList
                         onStockSelect={handleFreeStockClick}
                         className="integrated-free-stock-list"
+                        defaultExpandedRegionKey="global"
                       />
                     </div>
                   )}
@@ -1647,10 +1683,16 @@ export function PriceAnalysis() {
                   )}
                 </div>
               </div>
+
             </aside>
 
             <div className="pa-main">
-              {/* 頂部查詢列：搜尋獨佔一列，期長與進階做在 pill 內右側（直接影響結果的東西不往下放） */}
+              <div className="pa-workspace">
+                <header className="pa-intro">
+                  <h1>{t('priceAnalysis.heading')}</h1>
+                  <p>{t('priceAnalysis.subtitle')}</p>
+                </header>
+              {/* 查詢列與結果留在右側工作區；寬螢幕時與頁首並排。 */}
               <div className="pa-topbar">
                 <form className="pa-searchbar" onSubmit={handleSubmit} role="search">
                   <span className="pa-searchbar__icon" aria-hidden="true">🔍</span>
@@ -1786,31 +1828,46 @@ export function PriceAnalysis() {
                     </Suspense>
                   </div>
                 </form>
-
-                {/* API 回來前後維持相同高度，避免熱門項目把下方圖表推走。 */}
-                <div className="pa-hot-search-slot">
-                  {hotSearches.length > 0 ? (
-                    <div className="pa-hot-row">
-                      <span className="pa-hot-row__label">{t('priceAnalysis.quickSelect.tabs.hotSearches')}</span>
-                      <div className="pa-hot-row__items">
-                        {hotSearches.map((searchItem, index) => (
-                          <button
-                            type="button"
-                            key={`${searchItem.keyword}-${index}`}
-                            className="pa-hot-chip"
-                            onClick={() => handleHotSearchClick(searchItem)}
-                          >
-                            <span className="pa-hot-chip__ticker">{searchItem.keyword}</span>
-                            {searchItem.name && searchItem.name !== searchItem.keyword ? (
-                              <span className="pa-hot-chip__name">{searchItem.name}</span>
-                            ) : null}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
               </div>
+
+              {hotSearches.length > 0 ? (
+                <div className="pa-hot-search-slot">
+                  <span className="pa-hot-row__label">{t('priceAnalysis.quickSelect.tabs.hotSearches')}</span>
+                  <div
+                    className={`pa-hot-row__items${shouldScrollHotSearches ? ' is-scrolling' : ''}`}
+                    ref={hotSearchViewportRef}
+                  >
+                    <div className="pa-hot-row__track">
+                      {(shouldScrollHotSearches ? [0, 1] : [0]).map((copyIndex) => (
+                        <div
+                          key={copyIndex}
+                          className="pa-hot-row__group"
+                          ref={copyIndex === 0 ? hotSearchGroupRef : null}
+                          aria-hidden={copyIndex === 1}
+                        >
+                          {hotSearches.map((searchItem, index) => (
+                            <button
+                              type="button"
+                              key={`${searchItem.keyword}-${index}`}
+                              className="pa-hot-chip"
+                              tabIndex={copyIndex === 1 ? -1 : 0}
+                              onClick={() => handleHotSearchClick(searchItem)}
+                              title={searchItem.name && searchItem.name !== searchItem.keyword
+                                ? `${searchItem.keyword} ${searchItem.name}`
+                                : searchItem.keyword}
+                            >
+                              <span className="pa-hot-chip__ticker">{searchItem.keyword}</span>
+                              {searchItem.name && searchItem.name !== searchItem.keyword ? (
+                                <span className="pa-hot-chip__name">{searchItem.name}</span>
+                              ) : null}
+                            </button>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : null}
 
 
               {/* 主圖表區塊 */}
@@ -1824,8 +1881,10 @@ export function PriceAnalysis() {
                     ulbandChartRef={ulbandChartRef}
                     chartCardRef={chartCardRef}
                     chartData={chartData}
+                    indicatorRanges={indicatorRanges}
                     localizedChartData={localizedChartData}
                     lineChartOptions={lineChartOptions}
+                    sharedPriceRange={sharedPriceRange}
                     ulbandData={ulbandData}
                     bandXRange={bandXRange}
                     onAfterZoom={syncBandRange}
@@ -1845,6 +1904,7 @@ export function PriceAnalysis() {
                   />
                 </Suspense>
               ) : renderChartWorkspaceFallback()}
+              </div>
 
               {/* 說明區塊：跟圖表同一欄，左欄整條讓給清單往下發展 */}
               {shouldLoadDescriptionTabs ? (

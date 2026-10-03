@@ -46,6 +46,10 @@ const articleMappings = {
     '4.樂活五線譜1155萬筆台美股資料實測結果分析': {
         enSlug: 'lohas-five-line-analysis-tested-on-11-6-million-daily-bars',
         enFilename: 'LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md'
+    },
+    '5.市場動能儀表板使用指南': {
+        enSlug: 'market-momentum-dashboard-guide',
+        enFilename: 'Market Momentum Dashboard Guide.en.ini.md'
     }
 };
 
@@ -233,6 +237,7 @@ export function ArticleDetail() {
         <PageContainer
             title={meta.title || article.title}
             description={meta.description || ''}
+            ogImage={article.originalSlug.startsWith('5.') ? `/articles/${article.originalSlug}/image-cover.svg` : undefined}
             // og:url 應反映當前頁面的實際 URL
             ogUrl={pageOgUrl}
             includeHreflang={false}

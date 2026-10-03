@@ -314,7 +314,7 @@ describe('PriceAnalysis analysis flow', () => {
     ).toBe(before);
   });
 
-  it('沒有熱門搜尋資料時不顯示項目，但保留圖表上方的穩定高度', async () => {
+  it('沒有熱門搜尋資料時整列不渲染，不留空框', async () => {
     const { container } = render(
       <TestWrapper>
         <PriceAnalysis />
@@ -325,8 +325,7 @@ describe('PriceAnalysis analysis flow', () => {
       expect(screen.getByPlaceholderText(/2330.*AAPL/i)).toBeInTheDocument();
     });
 
-    expect(container.querySelector('.pa-hot-row')).not.toBeInTheDocument();
-    expect(container.querySelector('.pa-hot-search-slot')).toBeInTheDocument();
+    expect(container.querySelector('.pa-hot-search-slot')).not.toBeInTheDocument();
   });
 
   it('熱門搜尋資料回來後只填入預留區塊', async () => {
