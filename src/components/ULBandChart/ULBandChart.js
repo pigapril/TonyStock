@@ -15,7 +15,7 @@ ensureHomeChartsRegistered();
  * 節點掛在 .chart-stack__band（position: relative）。
  * 位置就留在圖內、只避開當下的點：橫向擺在標線旁邊，縱向擺在離該點較遠的那一半。
  */
-function renderExternalTooltip(context) {
+function renderExternalTooltip(context, isMobile) {
     const { chart, tooltip } = context;
     const parent = chart.canvas?.parentElement;
     if (!parent) {
@@ -47,7 +47,7 @@ function renderExternalTooltip(context) {
     const area = chart.chartArea;
     const width = el.offsetWidth || 160;
     const height = el.offsetHeight || 60;
-    const GAP = 14;
+    const GAP = isMobile ? 28 : 14;
 
     // 橫向：擺在標線旁邊，放不下就換另一邊
     let left = tooltip.caretX + GAP;
@@ -156,7 +156,7 @@ const ULBandChart = ({ data, onChartReady, follower = false, hideXAxisLabels = f
                 // follower 的提示使用 external，讓價格線不被 canvas 提示遮住。
                 // external 要搭配 enabled:false，否則 canvas 版仍會照畫。
                 enabled: !follower,
-                ...(follower ? { external: renderExternalTooltip } : {}),
+                ...(follower ? { external: (context) => renderExternalTooltip(context, isMobile) } : {}),
                 mode: 'index',
                 intersect: false,
                 usePointStyle: true,
@@ -231,6 +231,7 @@ const ULBandChart = ({ data, onChartReady, follower = false, hideXAxisLabels = f
                                 
                                 annotations[`line-${index}`] = {
                                     type: 'line',
+                                    adjustScaleRange: false,
                                     yMin: lastValue,
                                     yMax: lastValue,
                                     xMin: lastDate,
@@ -243,6 +244,7 @@ const ULBandChart = ({ data, onChartReady, follower = false, hideXAxisLabels = f
                                 // 為所有線條添加標籤
                                 annotations[`label-${index}`] = {
                                     type: 'label',
+                                    adjustScaleRange: false,
                                     drawTime: 'afterDraw',
                                     xScaleID: 'x',
                                     yScaleID: 'y',
@@ -252,14 +254,14 @@ const ULBandChart = ({ data, onChartReady, follower = false, hideXAxisLabels = f
                                     color: '#fff',
                                     content: `${formatPrice(lastValue)}`,
                                     font: {
-                                        size: 12,
+                                        size: isMobile ? 11 : 12,
                                         weight: 'bold'
                                     },
                                     padding: {
                                         top: 2,
                                         bottom: 2,
-                                        left: 5,
-                                        right: 5
+                                        left: isMobile ? 4 : 5,
+                                        right: isMobile ? 4 : 5
                                     },
                                     borderRadius: 3,
                                     position: {
@@ -267,7 +269,7 @@ const ULBandChart = ({ data, onChartReady, follower = false, hideXAxisLabels = f
                                         y: 'center'
                                     },
                                     // 跟隨主圖時把價格標籤留在繪圖區內，避免蓋住恢復顯示的 Y 軸刻度。
-                                    xAdjust: follower ? -76 : (index === 2 ? 2 : 35),
+                                    xAdjust: follower ? (isMobile ? -48 : -76) : (index === 2 ? 2 : 35),
                                     yAdjust: 0
                                 };
                             }
@@ -321,6 +323,7 @@ const ULBandChart = ({ data, onChartReady, follower = false, hideXAxisLabels = f
                     drawBorder: true
                 },
                 ticks: {
+                    ...(isMobile ? { maxTicksLimit: 5, font: { size: 10 } } : {}),
                     callback: (value) => formatPrice(value)
                 }
             }

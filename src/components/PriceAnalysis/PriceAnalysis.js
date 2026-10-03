@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
 import { ensureChartZoomRegistered } from '../../utils/chartZoomRegistry';
+import { Tooltip } from 'chart.js';
 
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
@@ -30,6 +31,16 @@ const DeferredBacktestDatePicker = lazy(() => import('./DeferredBacktestDatePick
 const PriceAnalysisChartWorkspace = lazy(() => import('./PriceAnalysisChartWorkspace'));
 const PriceAnalysisDescription = lazy(() => import('./PriceAnalysisDescription'));
 const PriceAnalysisTour = lazy(() => import('./PriceAnalysisTour'));
+
+// 手機提示以價格線定位，並往較空的一側移動；上下位置仍由 tooltipYAlign 決定。
+Tooltip.positioners.priceAnalysisMobile = function(items, eventPosition) {
+  const pricePoint = items.find(({ datasetIndex, element }) => datasetIndex === 0 && element?.hasValue());
+  if (!pricePoint) return Tooltip.positioners.nearest.call(this, items, eventPosition);
+
+  const position = pricePoint.element.tooltipPosition();
+  const direction = position.x < this.chart.width / 2 ? 1 : -1;
+  return { x: position.x + direction * 44, y: position.y };
+};
 
 // 期長預設值。下拉、初始化、實際送出的年數三個地方都吃這一份，避免各寫一次而走鐘。
 const PERIOD_YEARS = { short: '0.5', medium: '1.5', long: '3.5' };
@@ -315,10 +326,14 @@ export function PriceAnalysis() {
         return;
       }
 
+      // 手機只保留最新價格的標籤與延伸虛線。
+      if (isMobile && index !== 0) return;
+
       const lastValue = dataset.data[lastIndex];
 
       annotations[`line-${index}`] = {
         type: 'line',
+        adjustScaleRange: false,
         yMin: lastValue,
         yMax: lastValue,
         xMin: lastDate,
@@ -330,6 +345,7 @@ export function PriceAnalysis() {
 
       annotations[`label-${index}`] = {
         type: 'label',
+        adjustScaleRange: false,
         drawTime: 'afterDraw',
         xScaleID: 'x',
         yScaleID: 'y',
@@ -339,14 +355,14 @@ export function PriceAnalysis() {
         color: '#fff',
         content: `${formatPrice(lastValue)}`,
         font: {
-          size: 12,
+          size: isMobile ? 11 : 12,
           weight: 'bold'
         },
         padding: {
           top: 2,
           bottom: 2,
-          left: 5,
-          right: 5
+          left: isMobile ? 4 : 5,
+          right: isMobile ? 4 : 5
         },
         borderRadius: 3,
         position: {
@@ -354,13 +370,13 @@ export function PriceAnalysis() {
           y: 'center'
         },
         // 五條彩色線留在繪圖區內；黑色價格與相近的「貪婪」數值錯開，避免互相遮蓋。
-        xAdjust: index === 0 ? -76 : -26,
+        xAdjust: index === 0 ? (isMobile ? -48 : -76) : -26,
         yAdjust: 0
       };
     });
 
     return annotations;
-  }, [chartData?.datasets, chartData?.labels, xAxisMax]);
+  }, [chartData?.datasets, chartData?.labels, isMobile, xAxisMax]);
   const yTickLabelFormatter = useCallback((value) => formatPrice(value), []);
   const tooltipLabelFormatter = useCallback((context) => `${context.dataset.label || ''}: ${formatPrice(context.parsed.y)}`, []);
   const tooltipLabelColorFormatter = useCallback((context) => ({
@@ -385,6 +401,13 @@ export function PriceAnalysis() {
 
     return priceY < chartMiddle ? 'top' : 'bottom';
   }, []);
+  const tooltipXAlign = useCallback((context) => {
+    if (!isMobile) return 'center';
+
+    const pricePoint = context.tooltip?.dataPoints?.find(point => point.datasetIndex === 0);
+    if (!pricePoint?.element) return 'center';
+    return pricePoint.element.x < context.chart.width / 2 ? 'left' : 'right';
+  }, [isMobile]);
   const lineChartZoomOptions = useMemo(() => ({
     pan: {
       enabled: !isMobile,
@@ -527,9 +550,9 @@ export function PriceAnalysis() {
             const fullMin = chart.scales.x.min;
             const fullMax = chart.scales.x.max;
             if (Number.isFinite(fullMin) && Number.isFinite(fullMax) && fullMax > fullMin) {
-              // 3.5 年視圖預設放大兩級（每級保留 80%）；其他期長維持手機的 70%。
+              // 3.5 年視圖桌機放大兩級、手機三級；較短期長的手機視圖保留 60%。
               // 用 zoomScale 保留完整範圍，重置鍵仍可回到全期。
-              const zoomRatio = isLongPeriod ? 0.8 ** 2 : 0.7;
+              const zoomRatio = isLongPeriod ? 0.8 ** (isMobile ? 3 : 2) : 0.6;
               const zoomedMin = fullMax - (fullMax - fullMin) * zoomRatio;
               chart.zoomScale('x', { min: zoomedMin, max: fullMax }, 'default');
             }
@@ -1437,34 +1460,42 @@ export function PriceAnalysis() {
     };
   }, [t, currentLang]);
 
-  // 兩張價格圖用相同的縱軸範圍，避免相同的價格變動在上下圖被畫成不同高度。
+  // 兩張價格圖依目前可見期間共用縱軸；縮放時間時，價格軸也跟著調整。
   const sharedPriceRange = useMemo(() => {
-    if (!chartData || !ulbandData) return null;
-    const series = [
-      ...chartData.datasets.map((dataset) => dataset.data),
-      ulbandData.prices,
-      ulbandData.upperBand,
-      ulbandData.lowerBand,
-      ulbandData.ma20
-    ];
+    if (!chartData && !ulbandData) return null;
+    const hasRange = Number.isFinite(bandXRange?.min) && Number.isFinite(bandXRange?.max);
     let min = Infinity;
     let max = -Infinity;
-    for (const values of series) {
-      if (!Array.isArray(values)) continue;
-      for (const value of values) {
-        if (!Number.isFinite(value)) continue;
-        min = Math.min(min, value);
-        max = Math.max(max, value);
+
+    const includeSeries = (dates, series) => {
+      if (!Array.isArray(dates)) return;
+      for (let index = 0; index < dates.length; index += 1) {
+        if (hasRange) {
+          const time = new Date(dates[index]).getTime();
+          if (!Number.isFinite(time) || time < bandXRange.min || time > bandXRange.max) continue;
+        }
+        for (const values of series) {
+          const value = values?.[index];
+          if (!Number.isFinite(value)) continue;
+          min = Math.min(min, value);
+          max = Math.max(max, value);
+        }
       }
-    }
+    };
+
+    if (chartData) includeSeries(chartData.labels, chartData.datasets.map((dataset) => dataset.data));
+    if (ulbandData) includeSeries(ulbandData.dates, [ulbandData.prices, ulbandData.upperBand, ulbandData.lowerBand, ulbandData.ma20]);
     if (!Number.isFinite(min) || !Number.isFinite(max)) return null;
-    const padding = Math.max((max - min) * 0.04, Math.abs(max) * 0.005, 0.01);
+    const padding = Math.max((max - min) * 0.08, Math.abs(max) * 0.003, 0.01);
     return { min: Math.max(0, min - padding), max: max + padding };
-  }, [chartData, ulbandData]);
+  }, [bandXRange, chartData, ulbandData]);
 
   // 優化 Line Chart Options
   const hasBandBelow = Boolean(ulbandData);
   const lineChartOptions = useMemo(() => {
+    const visibleXRange = Number.isFinite(bandXRange?.min) && Number.isFinite(bandXRange?.max)
+      ? { min: bandXRange.min, max: bandXRange.max }
+      : null;
     const options = {
       responsive: true,
       maintainAspectRatio: false,
@@ -1486,13 +1517,15 @@ export function PriceAnalysis() {
             minRotation: isMobile ? 45 : 0,
             font: { size: isMobile ? 10 : 12 }
           },
-          ...(xAxisMax && { max: xAxisMax }) // 動態設置 x 軸最大值
+          // Y 軸依可見資料重算時，仍需保留使用者剛調整的 X 軸範圍。
+          ...(visibleXRange || (xAxisMax && { max: xAxisMax }))
         },
         y: {
           position: 'right',
           ...(sharedPriceRange || {}),
           grid: { drawBorder: true },
           ticks: {
+            ...(isMobile ? { maxTicksLimit: 5, font: { size: 10 } } : {}),
             callback: yTickLabelFormatter
           }
         }
@@ -1504,16 +1537,18 @@ export function PriceAnalysis() {
           mode: 'index',
           intersect: false,
           usePointStyle: true,
-          position: 'nearest',
+          position: isMobile ? 'priceAnalysisMobile' : 'nearest',
           backgroundColor: '#ffffff',
           titleColor: '#000000',
           bodyColor: '#000000',
           borderColor: '#cccccc',
           borderWidth: 1,
           yAlign: tooltipYAlign,
-          xAlign: 'center',
-          caretSize: 6,
-          caretPadding: 35,
+          xAlign: tooltipXAlign,
+          // 手機提示改為斜向避開價格點，箭頭不再指向已偏移的位置。
+          caretSize: isMobile ? 0 : 6,
+          caretPadding: isMobile ? 64 : 35,
+          ...(isMobile ? { padding: 4, bodySpacing: 0, titleMarginBottom: 3 } : {}),
           displayColors: true,
           callbacks: {
             labelColor: tooltipLabelColorFormatter,
@@ -1539,7 +1574,7 @@ export function PriceAnalysis() {
     }
 
     return options;
-  }, [chartAnnotations, chartData?.timeUnit, hasBandBelow, isMobile, lineChartZoomOptions, sharedPriceRange, tooltipLabelColorFormatter, tooltipLabelFormatter, tooltipYAlign, xAxisMax, yTickLabelFormatter]);
+  }, [bandXRange, chartAnnotations, chartData?.timeUnit, hasBandBelow, isMobile, lineChartZoomOptions, sharedPriceRange, tooltipLabelColorFormatter, tooltipLabelFormatter, tooltipXAlign, tooltipYAlign, xAxisMax, yTickLabelFormatter]);
 
   // 首次造訪才跑導覽，而且要等預設分析跑出來——第三步要指的就是那張圖。
   useEffect(() => {

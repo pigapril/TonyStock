@@ -118,6 +118,32 @@ function TechnicalIndicatorChart({
       ? last + ((last - first) * (isMobile ? 0.15 : 0.1))
       : undefined;
     const hasRange = Number.isFinite(xRange?.min) && Number.isFinite(xRange?.max);
+    let visibleMin = Infinity;
+    let visibleMax = -Infinity;
+    if (hasRange && (activeIndicator === 'ma' || activeIndicator === 'macd')) {
+      dates.forEach((date, index) => {
+        const time = new Date(date).getTime();
+        if (!Number.isFinite(time) || time < xRange.min || time > xRange.max) return;
+        chartData.datasets.forEach((dataset) => {
+          const value = dataset.data?.[index];
+          if (!Number.isFinite(value)) return;
+          visibleMin = Math.min(visibleMin, value);
+          visibleMax = Math.max(visibleMax, value);
+        });
+      });
+    }
+    if (activeIndicator === 'macd' && Number.isFinite(visibleMin)) {
+      visibleMin = Math.min(visibleMin, 0);
+      visibleMax = Math.max(visibleMax, 0);
+    }
+    let visibleYRange = null;
+    if (Number.isFinite(visibleMin) && Number.isFinite(visibleMax)) {
+      const padding = Math.max((visibleMax - visibleMin) * 0.08, Math.abs(visibleMax) * 0.003, 0.01);
+      visibleYRange = {
+        min: activeIndicator === 'ma' ? Math.max(0, visibleMin - padding) : visibleMin - padding,
+        max: visibleMax + padding
+      };
+    }
     const annotations = activeIndicator === 'rsi' || activeIndicator === 'kd' ? {
       upper: { type: 'line', yMin: activeIndicator === 'kd' ? 80 : 70, yMax: activeIndicator === 'kd' ? 80 : 70, borderColor: '#d5dbe3', borderDash: [4, 4], borderWidth: 1 },
       lower: { type: 'line', yMin: activeIndicator === 'kd' ? 20 : 30, yMax: activeIndicator === 'kd' ? 20 : 30, borderColor: '#d5dbe3', borderDash: [4, 4], borderWidth: 1 }
@@ -162,6 +188,7 @@ function TechnicalIndicatorChart({
         y: {
           position: 'right',
           ...(activeIndicator === 'rsi' || activeIndicator === 'kd' ? { min: 0, max: 100 } : {}),
+          ...(visibleYRange || {}),
           ...(activeIndicator === 'macd' ? { beginAtZero: true } : {}),
           ticks: { maxTicksLimit: 5, font: { size: 11 } },
           grid: { color: '#edf0f4' }
@@ -169,7 +196,7 @@ function TechnicalIndicatorChart({
       },
       layout: { padding: { left: 10, right: 15, top: 5, bottom: 0 } }
     };
-  }, [activeIndicator, dates, isMobile, timeUnit, xRange]);
+  }, [activeIndicator, chartData, dates, isMobile, timeUnit, xRange]);
 
   const legend = activeIndicator === 'macd'
     ? [['MACD', COLORS.primary], [t('priceAnalysis.indicators.signal'), COLORS.secondary], [t('priceAnalysis.indicators.histogram'), COLORS.positive]]

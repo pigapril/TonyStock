@@ -31,12 +31,12 @@ function Sparkline({ points, direction }) {
     const low = Math.min(...prices);
     const range = Math.max(0.001, Math.max(...prices) - low);
     return valid.map(([time, price], index) => (
-      `${index ? 'L' : 'M'}${((time - first) / duration * 94 + 1).toFixed(1)},${(26 - (price - low) / range * 22).toFixed(1)}`
+      `${index ? 'L' : 'M'}${((time - first) / duration * 94 + 1).toFixed(1)},${(45 - (price - low) / range * 42).toFixed(1)}`
     )).join(' ');
   }, [points]);
 
   return (
-    <svg className={`market-pulse__sparkline market-pulse__sparkline--${direction}`} viewBox="0 0 96 30" aria-hidden="true">
+    <svg className={`market-pulse__sparkline market-pulse__sparkline--${direction}`} viewBox="0 0 96 48" preserveAspectRatio="none" aria-hidden="true">
       {path && <path d={path} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />}
     </svg>
   );
