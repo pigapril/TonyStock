@@ -695,6 +695,8 @@
     }
   },
   "indicatorItem": {
+    "updatedDateLabel": "更新日期",
+    "asOfLabel": "資料日期 {{date}}",
     "spyPriceLabel": "SPY 價格",
     "latestDataLabel": "最新數據",
     "fearGreedScoreLabel": "恐懼貪婪分數",

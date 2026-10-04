@@ -666,6 +666,8 @@
     }
   },
   "indicatorItem": {
+    "updatedDateLabel": "Updated date",
+    "asOfLabel": "As of {{date}}",
     "spyPriceLabel": "SPY Price",
     "latestDataLabel": "Latest Metrics",
     "fearGreedScoreLabel": "Sentiment Score",

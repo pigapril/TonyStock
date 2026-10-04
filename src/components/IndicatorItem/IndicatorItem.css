@@ -8,6 +8,17 @@
   min-height: 620px;
 }
 
+.indicator-item__updatedAt {
+  margin: 8px 0 16px;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.indicator-item__updatedAt time {
+  font-variant-numeric: tabular-nums;
+}
+
 .indicator-item__content,
 .indicator-item__loadingShell {
   animation: indicator-item-fade-in 220ms cubic-bezier(0.25, 1, 0.5, 1);

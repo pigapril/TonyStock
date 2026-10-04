@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { Line } from 'react-chartjs-2';
+import { Tooltip } from 'chart.js';
 import './IndicatorItem.css';
 import TimeRangeSelector from '../Common/TimeRangeSelector/TimeRangeSelector';
 import { filterDataByTimeRange } from '../../utils/timeUtils';
@@ -11,9 +12,11 @@ import { Toast } from '../Watchlist/components/Toast';
 import { formatPrice } from '../../utils/priceUtils';
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { ensureHomeChartsRegistered } from '../../utils/homeChartRegistry';
+import { buildIndicatorTimeline, dateKey, indicatorTooltipPosition } from './indicatorTimeline';
 
 const EARLIEST_HISTORY_DATE = new Date('2010-01-01');
 ensureHomeChartsRegistered();
+Tooltip.positioners.indicatorDate = indicatorTooltipPosition;
 
 const restrictedWindowMaskPlugin = {
   id: 'restrictedWindowMask',
@@ -218,6 +221,7 @@ function IndicatorItem({
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
+    setHistoricalData([]);
 
     enhancedApiClient
       .get(detailEndpoint, {
@@ -275,13 +279,15 @@ function IndicatorItem({
     [filteredSPYData]
   );
 
-  const latestAvailableTimestamp = useMemo(() => {
-    if (historicalData.length === 0) {
-      return 0;
-    }
+  const timeline = useMemo(() => buildIndicatorTimeline(
+    historicalData, historicalSPYData,
+    [...filteredData, ...filteredSPYData].map((row) => row.date)
+  ), [historicalData, historicalSPYData, filteredData, filteredSPYData]);
 
-    return historicalData[historicalData.length - 1].date.getTime();
-  }, [historicalData]);
+  const latestAvailableTimestamp = useMemo(() => {
+    return Math.max(0, ...historicalData.map((row) => row.date.getTime()).filter(Number.isFinite),
+      ...historicalSPYData.map((row) => new Date(row.date).getTime()).filter(Number.isFinite));
+  }, [historicalData, historicalSPYData]);
 
   const visibleRange = useMemo(() => {
     const domainEnd = isRestrictedPreview ? new Date() : (latestAvailableTimestamp ? new Date(latestAvailableTimestamp) : new Date());
@@ -373,7 +379,7 @@ function IndicatorItem({
       {
         label: indicatorName,
         yAxisID: 'left-axis',
-        data: filteredData.map((item) => ({
+        data: timeline.map((item) => ({
           x: item.date,
           y: item.value,
         })),
@@ -381,11 +387,12 @@ function IndicatorItem({
         fill: false,
         tension: 0.1,
         pointRadius: 0,
+        spanGaps: true,
       },
       {
         label: t('indicatorItem.fearGreedScoreLabel'),
         yAxisID: 'right-axis',
-        data: filteredData.map((item) => ({
+        data: timeline.map((item) => ({
           x: item.date,
           y: item.percentileRank,
         })),
@@ -393,11 +400,12 @@ function IndicatorItem({
         fill: false,
         tension: 0.1,
         pointRadius: 0,
+        spanGaps: true,
       },
       ...(hasBenchmarkSeries ? [{
         label: benchmarkSeriesLabel || benchmarkAxisLabel || t('indicatorItem.spyPriceLabel'),
         yAxisID: 'spy-axis',
-        data: filteredSPYData.map((item) => ({
+        data: timeline.map((item) => ({
           x: item.date,
           y: item.spyClose,
         })),
@@ -406,12 +414,14 @@ function IndicatorItem({
         fill: true,
         tension: 0.4,
         pointRadius: 0,
+        spanGaps: true,
       }] : []),
     ],
-  }), [benchmarkAxisLabel, benchmarkSeriesLabel, filteredData, filteredSPYData, hasBenchmarkSeries, indicatorName, t]);
+  }), [benchmarkAxisLabel, benchmarkSeriesLabel, timeline, hasBenchmarkSeries, indicatorName, t]);
 
   // 圖表選項
   const chartOptions = useMemo(() => ({
+    interaction: { mode: 'index', axis: 'x', intersect: false },
     scales: {
       x: {
         type: 'time',
@@ -488,30 +498,39 @@ function IndicatorItem({
       },
       tooltip: {
         mode: 'index',
+        axis: 'x',
         intersect: false,
+        position: 'indicatorDate',
+        animation: false,
+        displayColors: false,
         callbacks: {
-          label: function(tooltipItem) {
-            let label = tooltipItem.dataset.label || '';
-            if (label) {
-              label += ': ';
+          title: (items) => timeline[items[0]?.dataIndex]?.date || '',
+          label: () => '',
+          afterBody: function(items) {
+            const row = timeline[items[0]?.dataIndex];
+            if (!row) return [];
+            const lines = [];
+            const observation = row.latestIndicator;
+            const price = row.latestBenchmark;
+            const stamp = (source) => dateKey(source.date) === row.date ? ''
+              : ` (${t('indicatorItem.asOfLabel', { date: dateKey(source.date) })})`;
+            if (this.chart.isDatasetVisible(0)) {
+              lines.push(`${indicatorName}: ${observation ? formatPrice(observation.value) + stamp(observation) : t('indicatorItem.notAvailable')}`);
             }
-            if (tooltipItem.parsed.y !== null) {
-              if (tooltipItem.dataset.yAxisID === 'right-axis') {
-                // Percentile rank on right-axis, round and add %
-                label += Math.round(tooltipItem.parsed.y) + '%';
-              } else {
-                // Other axes (left-axis for indicator value, spy-axis for SPY price)
-                label += formatPrice(tooltipItem.parsed.y);
-              }
+            if (this.chart.isDatasetVisible(1)) {
+              lines.push(`${t('indicatorItem.fearGreedScoreLabel')}: ${observation?.percentileRank != null ? Math.round(observation.percentileRank) + '%' + stamp(observation) : t('indicatorItem.notAvailable')}`);
             }
-            return label;
+            if (hasBenchmarkSeries && this.chart.isDatasetVisible(2)) {
+              lines.push(`${benchmarkSeriesLabel || benchmarkAxisLabel || t('indicatorItem.spyPriceLabel')}: ${price ? formatPrice(price.spyClose) + stamp(price) : t('indicatorItem.notAvailable')}`);
+            }
+            return lines;
           }
         }
       },
     },
     responsive: true,
     maintainAspectRatio: false,
-  }), [benchmarkAxisLabel, benchmarkSeriesLabel, cutoffDateObject, hasBenchmarkSeries, indicatorName, isInsideModal, isRestrictedPreview, t, timeUnit, visibleRange.max, visibleRange.min]);
+  }), [benchmarkAxisLabel, benchmarkSeriesLabel, cutoffDateObject, hasBenchmarkSeries, indicatorName, isInsideModal, isRestrictedPreview, t, timeline, timeUnit, visibleRange.max, visibleRange.min]);
 
   useEffect(() => {
     if (!chartRestrictionOverlay) {
@@ -606,6 +625,12 @@ function IndicatorItem({
               <span className={`analysis-value sentiment-${rawSentiment}`}>{sentiment}</span>
             </div>
           </div>
+          <p className="indicator-item__updatedAt">
+            {t('indicatorItem.updatedDateLabel')}: {' '}
+            {dateKey(indicator.date)
+              ? <time dateTime={dateKey(indicator.date)}>{dateKey(indicator.date)}</time>
+              : t('indicatorItem.notAvailable')}
+          </p>
           <TimeRangeSelector
             selectedTimeRange={selectedTimeRange}
             handleTimeRangeChange={handleTimeRangeChange}
@@ -613,7 +638,7 @@ function IndicatorItem({
           <div ref={chartContainerRef} className="indicator-chart">
             {filteredData.length > 0 ? (
               <>
-                <Line ref={chartRef} data={chartData} options={chartOptions} />
+                <Line ref={chartRef} data={chartData} options={chartOptions} plugins={[restrictedWindowMaskPlugin]} />
                 {chartRestrictionOverlay && (
                   <div
                     className={`indicator-chart__restriction${chartRestrictionOverlay.compact ? ' is-compact' : ''}`}
