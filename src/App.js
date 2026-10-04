@@ -149,7 +149,8 @@ function AppContent() {
   const { 
     shouldUseSideNav, 
     navRef, 
-    triggerCheck 
+    triggerCheck,
+    resetNavigation
   } = useSmartNavigation({
     debounceMs: 150,
     threshold: 8
@@ -281,13 +282,14 @@ function AppContent() {
 
   // 監聽語言變化，觸發導航重新檢查
   React.useEffect(() => {
+    resetNavigation();
     if (triggerCheck) {
       const timer = setTimeout(() => {
         triggerCheck();
       }, 200);
       return () => clearTimeout(timer);
     }
-  }, [i18n.language, triggerCheck]);
+  }, [i18n.language, triggerCheck, resetNavigation]);
 
   // 移除動態檢測邏輯，因為現在使用覆蓋模式，不需要調整佈局
 
@@ -470,10 +472,12 @@ function AppContent() {
           <header
             className={[
               'top-nav',
+              useSideNavigation ? 'top-nav--side-navigation' : '',
               isHomePage ? 'top-nav--immersive' : 'top-nav--default',
               isTopNavScrolled ? 'top-nav--scrolled' : ''
             ].filter(Boolean).join(' ')}
             ref={navRef}
+            lang={lang}
           >
             <div className="top-nav__shell top-nav__inner">
               {/* Logo 區域 */}
@@ -553,16 +557,22 @@ function AppContent() {
                     <FaPiggyBank />
                     <span>{t('nav.subscription')}</span>
                   </NavLink>
-                  <a href="https://www.facebook.com/profile.php?id=61565751412240" target="_blank" rel="noopener noreferrer">
-                    <FaFacebook />
-                    <span>{t('nav.facebookLong')}</span>
-                  </a>
                 </div>
               )}
 
               {/* 使用者操作和選單按鈕 */}
               <div className="user-actions">
                 <LanguageSwitcher />
+                <a
+                  className="top-nav-social-link"
+                  href="https://www.facebook.com/profile.php?id=61565751412240"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t('nav.facebookLong')}
+                  title={t('nav.facebookLong')}
+                >
+                  <FaFacebook aria-hidden="true" />
+                </a>
                 <AuthStatusIndicator />
                 {/* 在使用側邊導航時顯示漢堡選單 */}
                 {useSideNavigation && (

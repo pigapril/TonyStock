@@ -38,7 +38,6 @@ export const useSmartNavigation = (options = {}) => {
     if (initialHeightRef.current === null) {
       initialHeightRef.current = currentHeight;
       setIsInitialized(true);
-      return;
     }
 
     // 檢查高度是否增加（表示可能有換行）
@@ -59,7 +58,9 @@ export const useSmartNavigation = (options = {}) => {
     }
 
     // 檢查導航容器是否溢出
-    const isOverflowing = navElement.scrollWidth > navElement.clientWidth;
+    const desktopNav = navElement.querySelector('.desktop-nav-items');
+    const isOverflowing = navElement.scrollWidth > navElement.clientWidth ||
+      (desktopNav && desktopNav.scrollWidth > desktopNav.clientWidth);
 
     const shouldSwitch = hasWrapped || hasLineBreak || isOverflowing;
     
