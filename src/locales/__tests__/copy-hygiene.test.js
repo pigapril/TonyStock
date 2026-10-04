@@ -1,5 +1,7 @@
 import zhTW from '../zh-TW/translation.json';
 import en from '../en/translation.json';
+import fs from 'fs';
+import path from 'path';
 
 // 這支測試釘的是 Tony 在 2026-09-05 逐條點名的文案問題。每一條都對應一次真實的
 // 回饋，不是憑空的風格潔癖——會漂回去的通常就是這幾種。
@@ -13,6 +15,21 @@ const collectStrings = (node, out = []) => {
   else if (node && typeof node === 'object') Object.values(node).forEach((v) => collectStrings(v, out));
   return out;
 };
+
+// 使用者沒有參與開發討論，也不需要讀過某篇「原文」才能使用工具。
+describe.each([['zh-TW', zhTW], ['en', en]])('%s：動能教學面向使用者', (lang, dict) => {
+  it('不將來源對照與本站設計決策搬進產品說明', () => {
+    const articleName = lang === 'zh-TW'
+      ? '市場動能儀表板使用指南.zh-TW.ini.md'
+      : 'Market Momentum Dashboard Guide.en.ini.md';
+    const article = fs.readFileSync(path.resolve(__dirname, '../../../public/articles/5.市場動能儀表板使用指南', articleName), 'utf8');
+    const text = `${collectStrings(dict.momentumDashboard).join(' ')} ${article}`;
+    const patterns = lang === 'zh-TW'
+      ? [/原文/, /本站/, /篩選條件的依據/, /建立觀察名單/]
+      : [/the source (article|specifies|calls|’s|')/i, /site[’']?s? (settings|condition)/i, /this site/i, /basis for the screening conditions/i, /build a watchlist/i];
+    patterns.forEach((pattern) => expect(text).not.toMatch(pattern));
+  });
+});
 
 const scopes = (dict) => ({
   priceAnalysis: dict.priceAnalysis,

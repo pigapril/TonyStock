@@ -63,4 +63,46 @@ describe('PageContainer search metadata', () => {
 
     unmount();
   });
+  it('provides a localized absolute share image and dimensions', async () => {
+    const { unmount } = renderPage('/zh-TW/tw-market-sentiment/');
+    await waitFor(() => {
+      expect(document.head.querySelector('meta[property="og:image"]')?.content)
+        .toBe(`${window.location.origin}/images/social/zh-TW/tw-market-sentiment.png`);
+      expect(document.head.querySelector('meta[name="twitter:image"]')?.content)
+        .toBe(document.head.querySelector('meta[property="og:image"]')?.content);
+      expect(document.head.querySelector('meta[property="og:image:width"]')?.content).toBe('1200');
+      expect(document.head.querySelector('meta[property="og:image:height"]')?.content).toBe('630');
+      expect(document.head.querySelector('meta[property="og:image:alt"]')?.content).toBe('Test');
+    });
+    unmount();
+  });
+
+  it('removes tracking and fragments from canonical URLs', async () => {
+    const { unmount } = renderPage('/en/momentum/?utm_source=share#rankings', {
+      ogUrl: `${window.location.origin}/en/momentum?utm_source=share#rankings`
+    });
+    await waitFor(() => {
+      expect(document.head.querySelector('link[rel="canonical"]')?.href)
+        .toBe(`${window.location.origin}/en/momentum/`);
+      expect(document.head.querySelector('meta[property="og:url"]')?.content)
+        .toBe(`${window.location.origin}/en/momentum/`);
+      expect(document.head.querySelector('meta[property="og:locale"]')?.content).toBe('en_US');
+    });
+    unmount();
+  });
+
+  it('keeps custom article images and noindex metadata', async () => {
+    const { unmount } = renderPage('/en/articles/test/', {
+      ogImage: '/images/social/en/article-1.png', ogType: 'article',
+      ogImageWidth: 1200, ogImageHeight: 630, robots: 'noindex, follow', includeHreflang: false
+    });
+    await waitFor(() => {
+      expect(document.head.querySelector('meta[property="og:image"]')?.content)
+        .toBe(`${window.location.origin}/images/social/en/article-1.png`);
+      expect(document.head.querySelector('meta[property="og:type"]')?.content).toBe('article');
+      expect(document.head.querySelector('meta[name="robots"]')?.content).toBe('noindex, follow');
+    });
+    unmount();
+  });
+
 });

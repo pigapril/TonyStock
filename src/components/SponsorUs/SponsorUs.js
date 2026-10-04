@@ -178,10 +178,10 @@ const SponsorUs = () => {
       title={t('sponsorUs.pageTitle')}
       description={t('sponsorUs.pageDescription')}
       keywords={t('sponsorUs.keywords')}
-      ogImage="/images/sponsor-og.png"
+
       ogType="website"
       twitterCard="summary_large_image"
-      twitterImage="/images/sponsor-og.png"
+
       jsonLd={sponsorUsJsonLd} // 傳遞更新後的 JSON-LD
     >
       <div className="sponsor-us-page">

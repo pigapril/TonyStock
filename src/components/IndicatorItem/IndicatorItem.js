@@ -501,6 +501,9 @@ function IndicatorItem({
         axis: 'x',
         intersect: false,
         position: 'indicatorDate',
+        caretSize: 0,
+        caretPadding: 0,
+        cornerRadius: 6,
         animation: false,
         displayColors: false,
         callbacks: {

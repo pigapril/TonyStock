@@ -1,3 +1,4 @@
+import NotFound from './components/NotFound/NotFound';
 // React 相關
 import React, { Suspense, lazy, useEffect } from 'react';
 import { Route, Routes, Navigate, useLocation, useParams, useNavigate, NavLink } from 'react-router-dom';
@@ -698,7 +699,7 @@ function AppContent() {
                 )}
 
                 {/* 可以添加一個捕獲無效相對路徑的路由 */}
-                <Route path="*" element={<Navigate to={`/${lang}/`} replace />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
           </div>
@@ -821,7 +822,7 @@ function App() {
               <Route path="/" element={<InitialRedirect />} />
               {/* --- 確保這裡使用正確定義的 LanguageWrapper --- */}
               <Route path="/:lang/*" element={<LanguageWrapper />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </AdProvider>
         </DialogProvider>

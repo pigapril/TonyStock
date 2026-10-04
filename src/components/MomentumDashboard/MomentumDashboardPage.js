@@ -1,15 +1,22 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import PageContainer from '../PageContainer/PageContainer';
+import { moveTabFocus } from './tabNavigation';
+import React, { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../api/apiClient';
 import { useAuth } from '../Auth/useAuth';
 import { trackProductEvent } from '../../utils/productAnalytics';
 import { isAvailableNumber, sortRowsByDailyMove, sortRowsByRank, summarizeGroups } from './momentumViewModel';
-import { AssetTrendChart, GroupSparkline } from './MomentumTrendChart';
+import { GroupSparkline } from './MomentumTrendChart';
+import MomentumDetailPanel from './MomentumDetailPanel';
+import useDetailNavigation from './useDetailNavigation';
+import MomentumScreenResults from './MomentumScreenResults';
+import { hasSeenMomentumTour, markMomentumTourSeen } from './tourStorage';
 import './MomentumDashboardPage.css';
 
 const UNIVERSES = ['Industry', 'Assets', 'Structure'];
 const EMPTY_ROWS = [];
 const PAGE_SIZE = 12;
+const MomentumDashboardTour = lazy(() => import('./MomentumDashboardTour'));
 const score = (value) => isAvailableNumber(value) ? Number(value).toFixed(0) : '—';
 const percent = (value) => {
   if (!isAvailableNumber(value)) return '—';
@@ -41,16 +48,28 @@ export default function MomentumDashboardPage() {
   const snapshot = responseState?.authKey === authKey ? responseState.value : null;
   const isFree = snapshot?.access?.plan === 'free';
   const requestVersion = useRef(0);
+  const [view, setView] = useState('market');
+  const detailRef = useRef(null);
+  const detailTrigger = useRef(null);
   const [universe, setUniverse] = useState('Industry');
   const [metric, setMetric] = useState('rank');
   const [sortOrder, setSortOrder] = useState('desc');
   const [query, setQuery] = useState('');
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [selectedSymbol, setSelectedSymbol] = useState(null);
+  const [isDesktop, setIsDesktop] = useState(() => Boolean(window.matchMedia?.('(min-width: 901px)')?.matches));
+  useEffect(() => {
+    const media = window.matchMedia?.('(min-width: 901px)');
+    if (!media) return undefined;
+    const update = () => setIsDesktop(media.matches);
+    update();
+    media.addEventListener?.('change', update);
+    return () => media.removeEventListener?.('change', update);
+  }, []);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [guideOpen, setGuideOpen] = useState(false);
+  const [showTour, setShowTour] = useState(false);
   const assetsRef = useRef(null);
   const viewed = useRef(false);
   useEffect(() => {
@@ -88,6 +107,7 @@ export default function MomentumDashboardPage() {
 
   useEffect(() => {
     setResponseState(null);
+    setView('market');
     setSelectedSymbol(null);
     const controller = new AbortController();
     loadDashboard(controller.signal);
@@ -154,7 +174,16 @@ export default function MomentumDashboardPage() {
     setQuery('');
     setVisibleCount(PAGE_SIZE);
   };
+  const selectedRow = filteredRows.find(row => row.symbol === selectedSymbol) || (isDesktop ? filteredRows[0] : undefined);
+  useDetailNavigation(selectedRow?.symbol, detailRef, detailTrigger, view === 'market', false);
   const hasRows = uniqueAssetCount > 0;
+  const finishTour = useCallback(() => { markMomentumTourSeen(); setShowTour(false); }, []);
+  useEffect(() => { setShowTour(false); }, [authKey]);
+  useEffect(() => {
+    if (view !== 'market' || showTour || loading || authLoading || !hasRows || hasSeenMomentumTour()) return undefined;
+    const timer = window.setTimeout(() => setShowTour(true), 900);
+    return () => window.clearTimeout(timer);
+  }, [view, showTour, loading, authLoading, hasRows]);
 
   // First deploy may still be preparing the snapshot. Recover without requiring a reload.
   useEffect(() => {
@@ -171,14 +200,26 @@ export default function MomentumDashboardPage() {
   }, [authLoading, loading, error, hasRows, loadDashboard]);
 
   return (
+    <PageContainer metadataOnly title={text('pageTitle')} description={text('pageDescription')}>
     <div className="momentum-page">
       <header className="momentum-header">
         <div>
           <h1>{text('title')}</h1>
           <p>{text('subtitle')}</p>
+          <button type="button" className="momentum-tour-trigger" disabled={!hasRows || authLoading || loading} onClick={() => { setView('market'); setSelectedSymbol(null); setShowTour(true); }}>{text('tour.start')}</button>
         </div>
         {snapshot?.asOf && <div className="momentum-date"><span>{text(isFree ? 'access.freeAsOf' : 'access.proAsOf')}</span><time dateTime={snapshot.asOf}>{snapshot.asOf}</time>{isFree && <a href={upgradeUrl} onClick={() => trackUpgrade('header')}>{text('access.upgrade')}</a>}</div>}
       </header>
+
+      <div className="momentum-primary-tabs" role="tablist" aria-label={text('navigation.label')}>
+        {['market', 'screen'].map(key => <button key={key} type="button" role="tab" disabled={key === 'screen' && !hasRows} id={`momentum-${key}-tab`} tabIndex={view === key ? 0 : -1} onKeyDown={moveTabFocus} aria-selected={view === key} aria-controls={`momentum-${key}-view`} onClick={() => { setView(key); if (showTour) finishTour(); }}>{text(`navigation.${key}`)}</button>)}
+      </div>
+      {hasRows && snapshot && <div id="momentum-screen-view" role="tabpanel" aria-labelledby="momentum-screen-tab" hidden={view !== 'screen'}>
+        <MomentumScreenResults key={authKey} initiallyOpen active={view === 'screen'} plan={snapshot.access.plan} asOf={snapshot.asOf} fundRows={snapshot.data.Industry} onShowRankings={() => {
+          setView('market'); setUniverse('Industry'); setMetric('rank'); setSelectedGroup(null); setSelectedSymbol(null); setQuery(''); setSortOrder('desc');
+        }} />
+      </div>}
+      <div id="momentum-market-view" role="tabpanel" aria-labelledby="momentum-market-tab" hidden={view !== 'market'} className={selectedRow ? 'momentum-market-view has-detail' : 'momentum-market-view'}>
 
       <div className="momentum-controls">
         <div className="momentum-scopes" role="group" aria-label={text('universeLabel')}>
@@ -204,18 +245,8 @@ export default function MomentumDashboardPage() {
               </div>
             </div>
             <div className="momentum-map-context">
-              <p className="momentum-map-caption">{text(metric === 'rank' ? 'rankCaption' : 'dailyCaption')}</p>
-              {metric === 'rank' && <>
-                <button type="button" className="momentum-guide-toggle" aria-expanded={guideOpen} aria-controls="momentum-reading-guide" onClick={() => { if (!guideOpen) trackInteraction('guide_open'); setGuideOpen((open) => !open); }}>
-                  <span aria-hidden="true">{guideOpen ? '▾' : '▸'}</span>{text('guideTitle')}
-                </button>
-                <aside id="momentum-reading-guide" className="momentum-reading-guide" aria-label={text('guideLabel')} hidden={!guideOpen}>
-                  <dl>
-                    {['period', 'score', 'action'].map((key) => <div key={key}><dt>{text(`guide.${key}.title`)}</dt><dd>{text(`guide.${key}.body`)}</dd></div>)}
-                  </dl>
-                  <a className="momentum-reading-guide__link" href={guideUrl}>{text('readGuide')} <span aria-hidden="true">↗</span></a>
-                </aside>
-              </>}
+              {metric === 'daily' && <p className="momentum-map-caption">{text('dailyCaption')}</p>}
+
             </div>
             <div className="momentum-map">
               {groups.map((group) => {
@@ -242,6 +273,7 @@ export default function MomentumDashboardPage() {
             </div>
           </section>
 
+          <div className={`momentum-workspace momentum-market-workspace${selectedRow ? ' has-detail' : ''}`}>
           <section className="momentum-assets" ref={assetsRef} tabIndex={-1} aria-labelledby="momentum-assets-title">
             <div className="momentum-assets-heading">
               <div><h2 id="momentum-assets-title">{selectedGroup ? groupLabel(selectedGroup) : text(metric === 'daily' ? isFree ? 'access.freeDailyRanking' : 'dailyAssets' : isFree ? 'access.freeRanking' : 'allAssets')}</h2><p aria-live="polite">{text(`${metric}Order${sortOrder === 'asc' ? 'Asc' : ''}`)}</p></div>
@@ -252,34 +284,18 @@ export default function MomentumDashboardPage() {
               : text('access.freeDetail', { count: snapshot.access.freeCount })}</p>}
             {selectedGroup && text(`groupDescriptions.${groupKey(selectedGroup)}`, { defaultValue: '' }) && <p className="momentum-group-description">{text(`groupDescriptions.${groupKey(selectedGroup)}`)}</p>}
             {selectedGroup && <button type="button" className="momentum-clear" onClick={() => selectGroup(selectedGroup)}>{text('showAll')} <span aria-hidden="true">×</span></button>}
+            <div className="momentum-assets-scroll">
             {(filteredRows.length > 0 || !filteredLocked.length) && <div className="momentum-list" aria-label={text('assetList')}>
               <div className="momentum-list-head"><span>{text('asset')}</span>{['daily', 'rank'].map((key) => <button type="button" key={key} className="momentum-sort" aria-pressed={metric === key} aria-label={text('sortColumn', { column: text(`${key}Mode`), order: text(metric === key && sortOrder === 'desc' ? 'ascending' : 'descending') })} onClick={() => changeSort(key)}>
-                <span>{text(`${key}Mode`)}</span><span aria-hidden="true">{metric === key ? sortOrder === 'desc' ? '↓' : '↑' : '↕'}</span>
+                <span>{text(key === 'rank' ? 'detail.scoreLabel' : 'dailyMode')}</span><span aria-hidden="true">{metric === key ? sortOrder === 'desc' ? '↓' : '↑' : '↕'}</span>
               </button>)}</div>
               {filteredRows.slice(0, visibleCount).map((row) => <React.Fragment key={row.symbol}>
-                <button type="button" className="momentum-row" aria-expanded={selectedSymbol === row.symbol} aria-controls={`momentum-detail-${row.symbol.replace(/[^a-z0-9]/gi, '-')}`} onClick={() => { if (selectedSymbol !== row.symbol) trackInteraction('asset_open', { asset_symbol: row.symbol.replace(/^BATS:/, '') }); setSelectedSymbol((current) => current === row.symbol ? null : row.symbol); }}>
+                <button type="button" className="momentum-row" aria-expanded={selectedRow?.symbol === row.symbol} aria-pressed={selectedRow?.symbol === row.symbol} onClick={(event) => { detailTrigger.current = event.currentTarget; if (selectedRow?.symbol !== row.symbol) trackInteraction('asset_open', { asset_symbol: row.symbol.replace(/^BATS:/, '') }); setSelectedSymbol((current) => !isDesktop && current === row.symbol ? null : row.symbol); }}>
                   <span className="momentum-row__identity"><strong>{row.symbol.replace(/^BATS:/, '')}</strong><small>{text(`assetDescriptions.${row.symbol.replace(/^BATS:/, '')}`, { defaultValue: row.name })}</small></span>
                   <span className={`momentum-row__daily momentum-${direction(row.change1dPct)}`}>{percent(row.change1dPct)}</span>
-                  <span className="momentum-row__rank"><span className="momentum-rail" aria-hidden="true"><i style={{ width: `${isAvailableNumber(row.Rank) ? Math.max(0, Math.min(100, Number(row.Rank))) : 0}%` }} /></span><strong>{score(row.Rank)}</strong><span className="momentum-expand" aria-hidden="true">{selectedSymbol === row.symbol ? '−' : '+'}</span></span>
+                  <span className="momentum-row__rank"><span className="momentum-rail" aria-hidden="true"><i style={{ width: `${isAvailableNumber(row.Rank) ? Math.max(0, Math.min(100, Number(row.Rank))) : 0}%` }} /></span><strong>{score(row.Rank)}</strong><span className="momentum-expand" aria-hidden="true">{'›'}</span></span>
                 </button>
-                {selectedSymbol === row.symbol && <div className="momentum-inline-detail" id={`momentum-detail-${row.symbol.replace(/[^a-z0-9]/gi, '-')}`}>
-                  <div className="momentum-inline-detail__heading"><span>{row.name}</span><span>{text('currentPrice')} <strong>{isAvailableNumber(row.price) ? `$${Number(row.price).toFixed(2)}` : '—'}</strong></span></div>
-                  <table className="momentum-period-table">
-                    <caption>{text('periodComparison')}</caption>
-                    <thead><tr><th scope="col"><span className="sr-only">{text('comparisonItem')}</span></th>{[20, 60, 120].map((horizon) => <th key={horizon} scope="col">{text('tradingDays', { days: horizon })}</th>)}</tr></thead>
-                    <tbody>
-                      <tr><th scope="row">{row.symbol.replace(/^BATS:/, '')}</th>{[20, 60, 120].map((horizon) => <td key={horizon} className={`momentum-${direction(row[`return${horizon}`])}`}>{percent(row[`return${horizon}`])}</td>)}</tr>
-                      <tr><th scope="row">SPY</th>{[20, 60, 120].map((horizon) => <td key={horizon}>{percent(row[`benchmarkReturn${horizon}`])}</td>)}</tr>
-                      <tr className="momentum-period-table__score"><th scope="row">{text('periodComponentScore')}</th>{[20, 60, 120].map((horizon) => <td key={horizon}>{score(row[`${horizon}R`])}</td>)}</tr>
-                    </tbody>
-                  </table>
-                  {row.trend60?.length > 0 && <div className="momentum-asset-trend-section">
-                    <h4>{text('assetTrendTitle')}</h4>
-                    <AssetTrendChart points={row.trend60} label={text('assetTrendAria', { symbol: row.symbol.replace(/^BATS:/, ''), start: row.trend60[0][0], end: row.trend60[row.trend60.length - 1][0], asset: percent(row.trend60[row.trend60.length - 1][1]), benchmark: percent(row.trend60[row.trend60.length - 1][2]) })} assetName={row.symbol.replace(/^BATS:/, '')} benchmarkName="SPY" formatPercent={percent} />
-                  </div>}
-                  <p className="momentum-inline-detail__date">{text('asOf')} {row.asOf || row.priceAsOf || snapshot.asOf}</p>
-                  <a className="momentum-research-link" onClick={() => trackInteraction('research_click', { asset_symbol: row.symbol.replace(/^BATS:/, '') })} href={`https://finance.yahoo.com/quote/${encodeURIComponent(row.symbol.replace(/^BATS:/, ''))}/`} target="_blank" rel="noopener noreferrer">{text('researchLink')} <span aria-hidden="true">↗</span></a>
-                </div>}
+
               </React.Fragment>)}
               {!filteredRows.length && !filteredLocked.length && <div className="momentum-no-matches" role="status"><p>{text('noMatches')}</p><button type="button" onClick={() => { setQuery(''); setSelectedGroup(null); }}>{text('clearFilters')}</button></div>}
             </div>}
@@ -293,11 +309,25 @@ export default function MomentumDashboardPage() {
               <a className="momentum-upgrade-button" href={upgradeUrl} onClick={() => trackUpgrade(query ? 'search' : selectedGroup ? 'group' : 'ranking')}>{text('access.upgradeAction')} <span aria-hidden="true">→</span></a>
             </aside>}
             {filteredRows.length > PAGE_SIZE && <button type="button" className="momentum-show-more" onClick={() => { trackInteraction(visibleCount < filteredRows.length ? 'show_more' : 'show_less'); setVisibleCount(visibleCount < filteredRows.length ? filteredRows.length : PAGE_SIZE); }}>{text(visibleCount < filteredRows.length ? 'showMore' : 'showLess', { count: filteredRows.length - PAGE_SIZE })}</button>}
+            </div>
           </section>
+          {selectedRow && <MomentumDetailPanel key={`${authKey}:${selectedRow.symbol}`} row={selectedRow} asOf={snapshot.asOf} isFund hideDesktopBack panelRef={detailRef} backLabel={text('detail.backToEtfs')} onBack={() => setSelectedSymbol(null)} onResearch={() => trackInteraction('research_click', { asset_symbol: selectedRow.symbol.replace(/^BATS:/, '') })} />}
+          </div>
+              {metric === 'rank' && <>
+                <aside id="momentum-reading-guide" className="momentum-reading-guide" aria-label={text('guideLabel')}>
+                  <dl>
+                    {['score', 'period', 'action'].map((key) => <div key={key}><dt>{text(`guide.${key}.title`)}</dt><dd>{text(`guide.${key}.body`)}</dd></div>)}
+                  </dl>
+                  <a className="momentum-reading-guide__link" href={guideUrl}>{text('readGuide')} <span aria-hidden="true">↗</span></a>
+                </aside>
+              </>}
         </>}
 
       <details className="momentum-method"><summary>{text('methodTitle')}</summary><p>{text('methodBody')}</p><p>{text('methodTrend')}</p><p>{text('methodCaveat')}</p></details>
       {uniqueAssetCount > 0 && <details className="momentum-method momentum-coverage"><summary>{text('coverageTitle', { count: uniqueAssetCount })}</summary><p>{text('coverageBody')}</p><p>{text('coverageGroups')}</p></details>}
+      </div>
+      {showTour && <Suspense fallback={null}><MomentumDashboardTour text={text} metric={metric} onFinish={finishTour} /></Suspense>}
     </div>
+    </PageContainer>
   );
 }

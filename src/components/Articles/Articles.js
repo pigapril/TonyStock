@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import PageContainer from '../PageContainer/PageContainer';
 import { getAllArticles } from '../../utils/articleUtils';
+import imageDimensions from '../../config/articleImageDimensions.json';
 import './Articles.css';
 import { useTranslation } from 'react-i18next';
 
@@ -67,7 +68,7 @@ export function Articles() {
                 title={t('articles.pageTitle')}
                 description={t('articles.pageDescription')}
                 keywords={t('articles.keywords')}
-                ogImage="/articles-og-image.png"
+
                 ogUrl={`${window.location.origin}/${currentLang}/articles`}
                 jsonLd={articlesJsonLd}
             >
@@ -82,10 +83,11 @@ export function Articles() {
                 <ul className="articles-list">
                     {articles.filter(article => article.content).reverse().map(article => (
                         <li key={article.id} className="article-item">
-                            <Link to={`/${currentLang}/articles/${article.slug}`}>
+                            <Link to={`/${currentLang}/articles/${article.slug}/`}>
                                 <div className="article-cover">
                                     <img 
                                         src={`/articles/${article.originalSlug}/image-cover.${article.originalSlug.startsWith('5.') ? 'svg' : 'png'}`}
+                                        {...imageDimensions[`/articles/${article.originalSlug}/image-cover.${article.originalSlug.startsWith('5.') ? 'svg' : 'png'}`]}
                                         alt={article.title}
                                         loading="lazy"
                                     />

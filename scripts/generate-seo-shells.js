@@ -18,7 +18,9 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const BUILD_DIR = path.join(ROOT, 'build');
+const BUILD_DIR = process.env.SEO_BUILD_DIR || path.join(ROOT, 'build');
+const { socialImagePath } = require('../src/utils/socialMetadata');
+const imageDimensions = require('../src/config/articleImageDimensions.json');
 const SITE_ORIGIN = (process.env.SITE_ORIGIN || 'https://sentimentinsideout.com').replace(/\/$/, '');
 
 const en = require(path.join(ROOT, 'src/locales/en/translation.json'));
@@ -56,6 +58,8 @@ const ROUTES = [
     metaKey: `sentimentIndicatorPages.${page.i18nKey}`,
   })),
   { basePath: '/market-sentiment', metaKey: 'marketSentiment' },
+  { basePath: '/tw-market-sentiment', metaKey: 'marketSentiment.tw' },
+  { basePath: '/momentum', metaKey: 'momentumDashboard' },
   { basePath: '/watchlist', metaKey: 'watchlist' },
   { basePath: '/articles', metaKey: 'articles' },
   { basePath: '/sponsor-us', metaKey: 'sponsorUs' },
@@ -85,20 +89,18 @@ const ARTICLE_PAIRS = [
     originalSlug: '5.市場動能儀表板使用指南',
     enSlug: 'market-momentum-dashboard-guide',
     enFile: 'Market Momentum Dashboard Guide.en.ini.md',
-    staticBody: true,
   },
   // 第 3 篇（Netflix 併購華納）刻意不列。2026-08 產品方向從個股分析轉向市場情緒，
   // 那篇站內仍可讀，但不再投 SEO 資源進要放棄的方向。這是決定，不是遺漏，
   // 請勿「順手補上」。sitemap.xml 同樣刻意不含它。
 ];
 
-const ARTICLES = ARTICLE_PAIRS.flatMap(({ originalSlug, enSlug, enFile, staticBody }) => [
-  { lang: 'en', slug: enSlug, originalSlug, staticBody, sourceFile: path.join(ROOT, 'public/articles', originalSlug, enFile) },
+const ARTICLES = ARTICLE_PAIRS.flatMap(({ originalSlug, enSlug, enFile }) => [
+  { lang: 'en', slug: enSlug, originalSlug, sourceFile: path.join(ROOT, 'public/articles', originalSlug, enFile) },
   {
     lang: 'zh-TW',
     slug: originalSlug,
     originalSlug,
-    staticBody,
     sourceFile: path.join(ROOT, 'public/articles', originalSlug, `${originalSlug.replace(/^\d+\./, '')}.zh-TW.ini.md`),
   },
 ]);
@@ -127,7 +129,7 @@ function escapeAttr(str) {
 }
 
 function ogLocale(lang) {
-  return lang.replace('-', '_');
+  return lang === 'en' ? 'en_US' : 'zh_TW';
 }
 
 function selfUrl(lang, basePath) {
@@ -154,19 +156,30 @@ function stripPreviousInjection(html) {
 // `title` is the exact <title> text; `ogTitle` is used for og:title/twitter:title
 // (PageContainer.js renders these two differently: <title> gets the
 // " | {defaultTitle}" suffix, og/twitter title stays unsuffixed).
-function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref, hreflangLinks, articleMarkup, articleJsonLd, articleImage }) {
+function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref, hreflangLinks, articleMarkup, articleJsonLd, articleImage, image, ogType = 'website' }) {
   const template = stripPreviousInjection(rawTemplate);
 
   let html = template.replace(/<html lang="[^"]*"/, `<html lang="${lang}"`);
   html = html.replace(/<title>[^<]*<\/title>/, `<title data-rh="true">${escapeAttr(title)}</title>`);
 
+  const shareImage = articleImage || `${SITE_ORIGIN}${image || socialImagePath('', lang)}`;
+  const imageFile = path.join(ROOT, 'public', new URL(shareImage).pathname);
+  if (!fs.existsSync(imageFile)) throw new Error(`Missing share image: ${shareImage}`);
   const tags = [
     `<meta data-rh="true" name="description" content="${escapeAttr(description)}" />`,
     `<meta data-rh="true" property="og:title" content="${escapeAttr(ogTitle)}" />`,
     `<meta data-rh="true" property="og:description" content="${escapeAttr(description)}" />`,
     `<meta data-rh="true" property="og:url" content="${escapeAttr(selfHref)}" />`,
-    ...(articleImage ? [`<meta data-rh="true" property="og:image" content="${escapeAttr(articleImage)}" />`] : []),
+    `<meta data-rh="true" property="og:type" content="${ogType}" />`,
+    `<meta data-rh="true" property="og:site_name" content="Sentiment Inside Out" />`,
+    `<meta data-rh="true" property="og:image" content="${escapeAttr(shareImage)}" />`,
+    `<meta data-rh="true" property="og:image:type" content="image/png" />`,
+    `<meta data-rh="true" property="og:image:width" content="1200" />`,
+    `<meta data-rh="true" property="og:image:height" content="630" />`,
+    `<meta data-rh="true" property="og:image:alt" content="${escapeAttr(ogTitle)}" />`,
     `<meta data-rh="true" property="og:locale" content="${ogLocale(lang)}" />`,
+    `<meta data-rh="true" name="twitter:image" content="${escapeAttr(shareImage)}" />`,
+    `<meta data-rh="true" name="twitter:image:alt" content="${escapeAttr(ogTitle)}" />`,
     `<meta data-rh="true" name="twitter:card" content="summary_large_image" />`,
     `<meta data-rh="true" name="twitter:title" content="${escapeAttr(ogTitle)}" />`,
     `<meta data-rh="true" name="twitter:description" content="${escapeAttr(description)}" />`,
@@ -174,7 +187,7 @@ function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref,
     ...hreflangLinks.map(
       ({ hreflang, href }) => `<link data-rh="true" rel="alternate" hreflang="${hreflang}" href="${escapeAttr(href)}" />`
     ),
-    ...(articleJsonLd ? [`<script type="application/ld+json">${JSON.stringify(articleJsonLd).replace(/</g, '\\u003c')}</script>`] : []),
+    ...(articleJsonLd ? [`<script data-rh="true" type="application/ld+json">${JSON.stringify(articleJsonLd).replace(/</g, '\\u003c')}</script>`] : []),
   ];
 
   html = html.replace('</head>', `${tags.join('\n    ')}\n  </head>`);
@@ -193,6 +206,7 @@ async function renderStaticArticle(sourceFile, title, originalSlug) {
     components: {
       img: ({ src, alt }) => React.createElement('img', {
         src: src?.startsWith('./') ? `/articles/${encodeURIComponent(originalSlug)}/${src.slice(2)}` : src,
+        ...imageDimensions[src?.startsWith('./') ? `/articles/${originalSlug}/${src.slice(2)}` : src],
         alt,
         loading: 'lazy',
       }),
@@ -247,7 +261,7 @@ async function main() {
         { hreflang: 'x-default', href: xDefaultHref },
       ];
 
-      const html = renderShell(template, { lang, title, ogTitle, description, selfHref, hreflangLinks });
+      const html = renderShell(template, { lang, title, ogTitle, description, selfHref, hreflangLinks, image: socialImagePath(basePath, lang) });
       const outPath =
         basePath === ''
           ? path.join(BUILD_DIR, lang, 'index.html')
@@ -258,25 +272,27 @@ async function main() {
     }
   }
 
-  // Article detail shells: self-canonical only, no hreflang alternates.
-  for (const { lang, slug, originalSlug, sourceFile, staticBody } of ARTICLES) {
+  // Published articles include readable content and the actual translated URLs.
+  for (const { lang, slug, originalSlug, sourceFile } of ARTICLES) {
     const decodedSlug = decodeURIComponent(slug);
     const meta = articleFrontmatter(sourceFile);
     const title = `${meta.title} | ${defaultTitle(lang)}`;
     const description = meta.description;
     const selfHref = `${SITE_ORIGIN}/${lang}/articles/${encodeURIComponent(decodedSlug)}/`;
 
-    const articleImage = staticBody ? `${SITE_ORIGIN}/articles/${encodeURIComponent(originalSlug)}/image-cover.svg` : undefined;
-    const articleMarkup = staticBody ? await renderStaticArticle(sourceFile, meta.title, originalSlug) : undefined;
-    const articleJsonLd = staticBody ? {
+    const articleImage = `${SITE_ORIGIN}${socialImagePath('', lang, originalSlug.split('.')[0])}`;
+    const articleMarkup = await renderStaticArticle(sourceFile, meta.title, originalSlug);
+    const articleJsonLd = {
       '@context': 'https://schema.org', '@type': 'Article', headline: meta.title,
-      description, inLanguage: lang, datePublished: meta.date, dateModified: meta.date,
+      description, inLanguage: lang, datePublished: meta.date, dateModified: meta.updated || meta.date,
       mainEntityOfPage: selfHref, image: articleImage,
       author: { '@type': 'Organization', name: 'Sentiment Inside Out' },
       publisher: { '@type': 'Organization', name: 'Sentiment Inside Out' },
-    } : undefined;
+    };
+    const translated = ARTICLE_PAIRS.find(pair => pair.originalSlug === originalSlug);
+    const alternates = LANGS.map(locale => ({ hreflang: locale, href: `${SITE_ORIGIN}/${locale}/articles/${encodeURIComponent(locale === 'en' ? translated.enSlug : originalSlug)}/` }));
     const html = renderShell(template, { lang, title, ogTitle: meta.title, description, selfHref,
-      hreflangLinks: [], articleMarkup, articleJsonLd, articleImage });
+      hreflangLinks: [...alternates, { hreflang: 'x-default', href: alternates[0].href }], articleMarkup, articleJsonLd, articleImage, ogType: 'article' });
     const outPath = path.join(BUILD_DIR, lang, 'articles', decodedSlug, 'index.html');
 
     writeFile(outPath, html);
@@ -300,6 +316,8 @@ async function main() {
     writeFile(indexPath, html);
     written.push(indexPath);
   }
+
+  fs.copyFileSync(path.join(ROOT, 'public/404.html'), path.join(BUILD_DIR, '404.html'));
 
   console.log(`generate-seo-shells: wrote ${written.length} files under build/.`);
 

@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { TOUR_STORAGE_KEY } from './tourStorageKey';
 
-// 依序聚焦：搜尋列 → 期長/進階 → 結果圖表
+// 依序聚焦：搜尋列 → 期長/回測 → 結果圖表 → 其他指標
 const STEPS = [
   { key: 'search', selector: '.pa-searchbar' },
   { key: 'period', selector: '.pa-searchbar__controls' },
-  { key: 'result', selector: '.chart-card' }
+  { key: 'result', selector: '.chart-card' },
+  { key: 'indicators', selector: '.pa-indicator' }
 ];
 
 const CARD_WIDTH = 300;
@@ -31,7 +32,7 @@ function readRect(selector) {
 }
 
 /**
- * 首次造訪的蓋板導覽：依序把輸入框、分析按鈕、結果區挖空highlight。
+ * 首次造訪的蓋板導覽：依序聚焦搜尋列、期長、結果圖表與其他指標。
  * 只跑一次（記在 localStorage），Escape 或「略過」可隨時離開。
  */
 function PriceAnalysisTour({ t, onFinish }) {

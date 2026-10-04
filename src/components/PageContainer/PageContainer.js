@@ -3,19 +3,25 @@ import './PageContainer.css';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useParams, useLocation } from 'react-router-dom';
+import { socialImagePath, canonicalUrl, normalizeLocale } from '../../utils/socialMetadata';
 
 const PageContainer = ({ 
   children, 
   title, 
   description,
   keywords,
-  ogImage = "/og-image.png",
+  ogImage,
+  ogImageAlt,
+  ogImageWidth,
+  ogImageHeight,
   ogUrl,
   ogType = "website",
   twitterCard = "summary_large_image",
   twitterImage,
   jsonLd,
-  includeHreflang = true
+  includeHreflang = true,
+  robots,
+  metadataOnly = false
 }) => {
   const { t, i18n } = useTranslation();
   const { lang } = useParams();
@@ -29,13 +35,13 @@ const PageContainer = ({
   const pageDescription = description || defaultDescription;
   const pageKeywords = keywords || defaultKeywords;
   
-  const currentPathname = typeof window !== 'undefined' ? window.location.pathname : '';
-  const rawPageOgUrl = ogUrl || (typeof window !== 'undefined' ? window.location.origin + currentPathname : '');
-  // Netlify's pretty URLs 301 to the trailing-slash form. Match that final URL
-  // in both canonical and social tags, including after client-side navigation.
-  const pageOgUrl = rawPageOgUrl && !rawPageOgUrl.endsWith('/') ? `${rawPageOgUrl}/` : rawPageOgUrl;
-
-  const pageTwitterImage = twitterImage || ogImage;
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://sentimentinsideout.com';
+  const pageOgUrl = canonicalUrl(ogUrl || location.pathname, origin);
+  const pageImage = new URL(ogImage || socialImagePath(location.pathname, lang), origin).href;
+  const pageTwitterImage = new URL(twitterImage || pageImage, origin).href;
+  const imageAlt = ogImageAlt || title || defaultTitle;
+  const imageWidth = ogImageWidth || (!ogImage ? 1200 : undefined);
+  const imageHeight = ogImageHeight || (!ogImage ? 630 : undefined);
 
   // `zh` is a legacy alias of `zh-TW`, not an independently translated page.
   // Advertising it as an alternate makes two identical URLs compete as canonical.
@@ -47,7 +53,6 @@ const PageContainer = ({
   const fallbackLng = typeof rawFallbackLng === 'string'
     ? rawFallbackLng
     : (rawFallbackLng?.default?.[0] || 'en');
-  const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
   const pathWithoutLang = location.pathname.startsWith(`/${lang}`)
     ? location.pathname.substring(`/${lang}`.length)
@@ -58,6 +63,7 @@ const PageContainer = ({
   const localizedJsonLd = jsonLd ? {
     ...jsonLd,
     ...(jsonLd.url && { url: pageOgUrl }),
+    ...(jsonLd.mainEntityOfPage && { mainEntityOfPage: pageOgUrl }),
     ...(jsonLd.potentialAction?.target && {
         potentialAction: {
             ...jsonLd.potentialAction,
@@ -66,8 +72,9 @@ const PageContainer = ({
     })
   } : null;
 
+  const Container = metadataOnly ? React.Fragment : 'div';
   return (
-    <div className="page-container">
+    <Container {...(!metadataOnly && { className: 'page-container' })}>
       <Helmet htmlAttributes={{ lang: lang || fallbackLng }}>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
@@ -76,16 +83,23 @@ const PageContainer = ({
         {/* Open Graph 標籤 */}
         <meta property="og:title" content={title || defaultTitle} />
         <meta property="og:description" content={pageDescription} />
-        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content="Sentiment Inside Out" />
+        <meta property="og:image" content={pageImage} />
+        <meta property="og:image:alt" content={imageAlt} />
+        {imageWidth && <meta property="og:image:width" content={imageWidth} />}
+        {imageHeight && <meta property="og:image:height" content={imageHeight} />}
+        {pageImage.endsWith('.png') && <meta property="og:image:type" content="image/png" />}
         <meta property="og:url" content={pageOgUrl} />
         <meta property="og:type" content={ogType} />
-        <meta property="og:locale" content={lang ? lang.replace('-', '_') : fallbackLng.replace('-', '_')} />
+        <meta property="og:locale" content={normalizeLocale(lang || fallbackLng) === 'en' ? 'en_US' : 'zh_TW'} />
         
         {/* Twitter Card 標籤 */}
         <meta name="twitter:card" content={twitterCard} />
         <meta name="twitter:title" content={title || defaultTitle} />
         <meta name="twitter:description" content={pageDescription} />
         <meta name="twitter:image" content={pageTwitterImage} />
+        <meta name="twitter:image:alt" content={imageAlt} />
+        {robots && <meta name="robots" content={robots} />}
         
         {/* Canonical 標籤：指定此頁面的首選 URL */}
         <link rel="canonical" href={pageOgUrl} />
@@ -120,10 +134,8 @@ const PageContainer = ({
           </script>
         )}
       </Helmet>
-      <div className="page-content">
-        {children}
-      </div>
-    </div>
+      {metadataOnly ? children : <div className="page-content">{children}</div>}
+    </Container>
   );
 };
 

@@ -1,5 +1,9 @@
 {
   "tests": [
+    "src/components/MomentumDashboard/MomentumDashboardPage.test.js",
+    "src/components/MomentumDashboard/MomentumDashboardTour.test.js",
+    "src/components/MomentumDashboard/MomentumScreenResults.test.js",
+    "src/components/MomentumDashboard/momentumViewModel.test.js",
     "src/api/__tests__/apiClient.spec.js",
     "src/api/__tests__/subscriptionService.userPlan.test.js",
     "src/components/AdminOnly/__tests__/AdminOnly.test.js",

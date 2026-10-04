@@ -13,13 +13,28 @@
     "adminBadge": "Admin"
   },
   "momentumDashboard": {
+    "navigation": {
+      "label": "Momentum tools",
+      "market": "Market overview",
+      "screen": "Stock screener"
+    },
+    "detail": {
+      "periodShort": "{{days}} days",
+      "scoreLabel": "Momentum score",
+      "label": "{{symbol}} details",
+      "overview": "Performance",
+      "holdings": "Constituents",
+      "fundTabs": "ETF details",
+      "backToEtfs": "Back to ETFs",
+      "backToFund": "Back to {{symbol}} constituents"
+    },
     "access": {
       "freeAsOf": "Free · Closing data as of",
       "proAsOf": "Pro · Closing data as of",
       "upgrade": "Upgrade to Pro",
       "freeRanking": "Free ETF momentum ranking",
       "freeDailyRanking": "Free ETF daily change ranking",
-      "freeDetail": "Free includes the full category map and details for {{count}} fixed ETFs. The ranking below compares only these free ETFs.",
+      "freeDetail": "Free includes the full category map and details for {{count}} fixed ETFs. Scores use the same complete lists as Pro; only free ETFs appear below.",
       "groupDetail": "{{total}} assets tracked in this group; Free shows details for {{visible}}.",
       "lockedLabel": "Pro assets",
       "upgradeTitle": "Compare momentum across all {{count}} assets",
@@ -28,7 +43,7 @@
       "upgradeAction": "Unlock full rankings"
     },
     "title": "Market momentum",
-    "subtitle": "Read market sentiment through price momentum: see which sectors and assets are strengthening or weakening.",
+    "subtitle": "Find stronger assets within stronger groups and follow market momentum.",
     "asOf": "Market close",
     "universeLabel": "Market universe",
     "tabs": {
@@ -53,7 +68,6 @@
     "stronger": "Stronger",
     "down": "Down",
     "up": "Up",
-    "rankCaption": "Momentum scores rise when an asset performs more strongly than others in this tab over 20, 60 and 120 sessions. Tiles show group averages; lines show 60-session score trends.",
     "dailyCaption": "Latest close · Median daily change within each group",
     "groupButtonSparkline": "{{group}}, momentum score {{value}}, line shows the past 60 sessions. View assets",
     "assetTrendTitle": "Cumulative return trend · 60 sessions",
@@ -78,8 +92,8 @@
     "showMore": "Show {{count}} more",
     "showLess": "Show fewer",
     "methodTitle": "Data and methodology",
-    "methodBody": "Daily data for assets in the watchlist, updated after the close. Daily changes use adjusted closing prices. Momentum ranks 20-, 60- and 120-session returns within the selected universe, weighted 20%, 40% and 40% on a 0–100 scale. Group scores average the scores of their assets.",
-    "methodTrend": "Group trends average the scores of assets in the current watchlist that had enough data on each date, with at least 80% group coverage. All group lines use the same 0–100 scale.",
+    "methodBody": "Daily data for assets in the watchlist, updated after the close. Period returns and daily changes use adjusted closing prices, reflecting dividend and split adjustments. Momentum ranks 20-, 60- and 120-session returns within each list, weighted 20%, 40% and 40%. Group scores average their assets.",
+    "methodTrend": "Group lines show average momentum scores. Asset relative strength lines divide adjusted prices by SPY prices, normalized to 100 at the start, with a 20-session simple moving average. Rankings use the latest SPY data date; assets missing that date are excluded. Stock scores use a shared pool of SPY constituents and available USD equity holdings from ETFs, with the same 20/60/120-session weights. RSI uses 14-session Wilder smoothing. Average daily turnover estimates close times volume over 20 sessions.",
     "methodCaveat": "Scores describe past relative performance. They do not predict future returns or constitute trading recommendations.",
     "groups": {
       "3-commodities": "Commodities",
@@ -93,24 +107,63 @@
       "broad": "Market size & broad indices"
     },
     "guideLabel": "How to read and use this page",
-    "guideTitle": "Understanding momentum scores",
     "readGuide": "Read the full momentum guide",
     "guide": {
       "period": {
-        "title": "Comparison period",
-        "body": "Relative return rankings over 20, 60 and 120 trading sessions are combined with weights of 20%, 40% and 40%."
+        "title": "Reading the tiles and lines",
+        "body": "Tiles show the average score of each group; dark green indicates stronger momentum. Lines show average scores over the past 60 trading days. A rising line means the group is gaining relative strength; a falling line means it is weakening."
       },
       "score": {
-        "title": "What is a momentum score?",
-        "body": "Assets are compared within the same tab. Their 20-, 60- and 120-session ranking scores are weighted into one momentum score; a tile shows the group average. A score of 80 is neither an 80% gain nor a future profit probability."
+        "title": "What the momentum score means",
+        "body": "Assets that have performed strongly may continue to lead over the medium term. Scores combine performance over 20, 60 and 120 trading days, roughly 1, 3 and 6 months. Assets that rose more, or fell less, score higher. Each list ranks its assets separately."
       },
       "action": {
-        "title": "Using the view",
-        "body": "Select a group, then expand an asset to compare its 20-, 60- and 120-session performance. Follow its research link for more information and assess holdings, fees and risks against your investment plan. Scores and colors do not identify when to buy or sell."
+        "title": "Find stronger assets",
+        "body": "Start with a stronger group, then review its highest-ranked assets. Select an asset row to compare returns and its lead over SPY across periods. The relative strength line shows whether it continues to outperform the broad market."
       }
     },
     "researchLink": "Research this asset on Yahoo Finance",
     "periodComparison": "Performance by period",
+    "benchmarkComparison": "Versus SPY",
+    "benchmarkAhead": "+{{value}} %",
+    "benchmarkBehind": "-{{value}} %",
+    "benchmarkEqual": "0.0 %",
+    "relativeTrendTitle": "Relative strength versus SPY · 60 sessions",
+    "relativeTrendLine": "Relative strength line",
+    "relativeTrendAverage": "20-session average",
+    "relativeTrendAria": "{{symbol}} relative strength versus SPY and its 20-session moving average.",
+    "relativeTrendHelp": "A rising line means the asset is outperforming SPY; a falling line means it is underperforming. A line above a rising 20-session average helps identify assets that continue to lead.",
+    "staleAsset": "Latest-session data is incomplete. This asset is temporarily excluded from momentum rankings.",
+    "rsiLabel": "RSI · 14 sessions",
+    "rsiHigh": "Warm · stronger recent gains",
+    "rsiLow": "Cool · stronger recent losses",
+    "rsiMiddle": "Between 30 and 70",
+    "indicatorMissing": "Insufficient data",
+    "rsiHelp": "RSI measures short-term price strength. During a pullback, compare it with momentum scores and the relative strength line.",
+    "liquidityLabel": "Average daily turnover · 20 sessions",
+    "liquidityHelp": "Estimated daily trading value. Higher turnover generally makes trading easier.",
+    "showHoldings": "View holdings and stock momentum",
+    "hideHoldings": "Hide holdings",
+    "holdingsError": "Could not load holdings.",
+    "loadingHoldings": "Loading holdings…",
+    "holdingsPending": "Holdings are being prepared. Check again once the update is complete.",
+    "holdingsUnavailable": "No equity holdings data is currently available for this asset.",
+    "fullHoldings": "Constituent momentum ranking",
+    "topHoldings": "Top holdings momentum · partial list",
+    "holdingsCoverage": "{{count}} equity holdings, {{weight}} of the fund",
+    "holdingsDate": "Holdings as of {{date}}",
+    "holdingsDateUnknown": "Source does not provide a holdings date",
+    "stockUniverse": "Momentum scores compared across {{count}} US stocks",
+    "holdingsScope": "Only USD-denominated equity holdings are listed.",
+    "stockSearch": "Search holdings",
+    "stockMinimumScore": "Minimum momentum score",
+    "stockMinimumVolume": "Minimum average turnover (USD millions)",
+    "stockProHelp": "Pro includes stock momentum, RSI, turnover and filters for stronger assets.",
+    "stockTable": "Holdings and stock momentum",
+    "holdingWeight": "Fund weight",
+    "stockReturnChart": "{{symbol}} cumulative returns compared with SPY",
+    "holdingsSource": "Holdings source: {{source}}",
+    "backToHoldings": "Back to holdings",
     "comparisonItem": "Comparison item",
     "periodComponentScore": "Rank score",
     "coverageTitle": "Coverage · {{count}} assets",
@@ -149,7 +202,99 @@
     "ascending": "low to high",
     "descending": "high to low",
     "periodReturnUnavailable": "Returns unavailable for this period",
-    "periodScore": "Momentum score {{score}}"
+    "periodScore": "Momentum score {{score}}",
+    "tour": {
+      "start": "Page tutorial",
+      "skip": "Skip",
+      "back": "Back",
+      "next": "Next",
+      "done": "Start exploring",
+      "screen": {
+        "title": "Explore markets or find stocks",
+        "body": "Market overview compares groups and ETFs. Stock screener finds candidates within strong sectors. Switch between the two at any time."
+      },
+      "scope": {
+        "title": "Choose a market to compare",
+        "body": "“Sectors & themes” compares sectors, “Major assets” compares stocks, bonds and commodities, and “Market structure” compares stock-selection approaches. Switch between recent momentum and daily change."
+      },
+      "map": {
+        "title": "Select a group to see its ETFs",
+        "body": "Tiles show each group’s average momentum score. Higher scores mean stronger performance over recent months. Select a group to see its ETFs below."
+      },
+      "mapDaily": {
+        "title": "Select a group to see its ETFs",
+        "body": "Daily change shows each group’s move in the latest trading session: green for gains and red for losses. Select a group to see its ETFs below."
+      },
+      "asset": {
+        "title": "Open an ETF to compare performance",
+        "body": "Select an ETF row to see its performance and charts. Open Constituents to explore its stocks, then return to the list to compare other assets."
+      }
+    },
+    "screen": {
+      "stocks": "Candidate stocks · {{count}}",
+      "matchedStocks": "{{count}} matching constituent stocks",
+      "sourceLabel": "Screening source",
+      "leadersResults": "leading",
+      "pullbackResults": "pullback",
+      "oversoldResults": "oversold",
+      "resultTypes": "Screening result types",
+      "title": "Momentum stock screener",
+      "scope": "U.S. stocks",
+      "intro": "Find stocks in strong sectors, or watch those pulling back to assess the next entry opportunity.",
+      "stage": "Screen stocks",
+      "leaders": "Strong candidates",
+      "pullback": "Pullback watch · RSI 40–60",
+      "apply": "Run screen",
+      "loading": "Screening candidates…",
+      "error": "Could not load screening results. Please retry.",
+      "pending": "Results will appear once the required screening data have been updated.",
+      "dateMismatch": "ETF prices are dated {{fundsDate}} and stock prices {{stocksDate}}. Screening will resume when both datasets share the same date.",
+      "summary": "Found {{stocks}} {{stage}} stocks across {{funds}} strong ETFs.",
+      "applied": "ETF and stock scores ≥ {{score}}",
+      "funds": "Source ETFs · {{count}}",
+      "fundReason": "Momentum {{score}} · Recent market outperformance",
+      "noHoldings": "Holdings data unavailable",
+      "partial": "Partial holdings list",
+      "full": "Full equity holdings list",
+      "noFunds": "No source ETFs have matching stocks.",
+      "empty": "No stocks currently meet all conditions.",
+      "score": "Momentum {{value}}",
+      "stockReason": "Recent market outperformance · Average daily turnover {{volume}}",
+      "from": "From",
+      "back": "Back to screening results",
+      "coverageWeight": "Covers {{weight}} of the ETF",
+      "coverage": "Checked {{examinedStocks}} stocks; {{missingStockData}} lack sufficient data. Among qualifying ETFs, {{partialFunds}} have partial holdings and {{unavailableFunds}} have no holdings data.",
+      "leadersHelp": "Find stocks that have recently outperformed the market.",
+      "pullbackHelp": "Assess an entry after a strong stock retreats.",
+      "oversold": "Oversold watch · RSI <30",
+      "oversoldHelp": "Find stocks with stronger recent selling pressure.",
+      "appliedVolume": "Stock average daily turnover ≥ USD {{volume}} million",
+      "noVolumeLimit": "No turnover minimum",
+      "drawdown": "{{value}}% below the highest close of the past 20 sessions",
+      "start": "Start screening",
+      "close": "Close screener",
+      "submit": "View results",
+      "leadersExplanation": "First find sector ETFs with stronger performance over recent months and continuing market outperformance, then select stocks within them that are also outperforming.",
+      "pullbackExplanation": "Among strong candidates, find stocks whose prices have retreated and whose recent gains and losses are more balanced. Watch whether they retain their lead before assessing an entry.",
+      "oversoldExplanation": "Among strong candidates, find stocks with stronger recent selling pressure. Their prices can keep falling; watch for the decline to stop before assessing an entry.",
+      "oversoldCaution": "Prices can keep falling while RSI is low. Watch for the decline to stop before assessing an entry.",
+      "emptyReasons": {
+        "fund_score": "No updated sector ETFs reach {{score}}. The highest score is {{highest}}.",
+        "fund_strength": "Some sector ETFs reach {{score}}, but recent outperformance of the market is not continuing.",
+        "stock_conditions": "Found {{funds}} strong ETFs, but none of their holdings currently meet the stock conditions.",
+        "data_incomplete": "Screening data is incomplete, so qualifying assets cannot yet be confirmed.",
+        "pullback": "There are {{leaders}} strong candidates, but none currently meet the pullback conditions.",
+        "oversold": "There are {{leaders}} strong candidates, but none currently meet the oversold watch conditions."
+      },
+      "incompleteNote": "Some assets have insufficient data. Only assets with complete data could be checked.",
+      "viewLeaders": "View strong candidates",
+      "viewRankings": "View ETF rankings",
+      "turnoverReminder": "Before placing an order, check turnover and the bid–ask spread.",
+      "unlockBody": "Unlock stock names, momentum scores and detailed charts.",
+      "unlockAction": "Upgrade to Pro"
+    },
+    "pageTitle": "Market Momentum Dashboard | ETF Rankings & Sector Trends",
+    "pageDescription": "Compare ETF momentum rankings, sector trends and performance across multiple periods. Find stronger assets within stronger groups."
   },
   "userActions": {
     "login": "Login"
@@ -1309,6 +1454,10 @@
       }
     },
     "tour": {
+      "indicators": {
+        "title": "Other indicators",
+        "body": "MA is shown by default, comparing price with 5, 10, 20, 60, and 120-day moving averages. Pro can switch to RSI, MACD, or KD to examine price momentum."
+      },
       "ariaLabel": "LOHAS Five-Line Analysis walkthrough",
       "skip": "Skip",
       "back": "Back",
@@ -1316,7 +1465,7 @@
       "done": "Get started",
       "result": {
         "title": "Analysis results",
-        "body": "Read the LOHAS five-line chart, LOHAS Channel, then other indicators. Switch between RSI, MACD, KD and moving averages; the question mark beside each result label opens its explanation."
+        "body": "The summary shows price, market sentiment, other spans, and channel position. Below it are the LOHAS five-line chart and LOHAS Channel. Compare the two charts to read price sentiment and channel position; the question marks beside the sentiment and channel labels explain how to interpret them."
       },
       "search": {
         "title": "Enter a stock code",
@@ -1324,7 +1473,7 @@
       },
       "period": {
         "title": "Adjust the analysis span here",
-        "body": "It starts from 3.5 years of prices, and you can switch to 0.5 or 1.5 years. \"Custom\" takes any other number of years, and you can also pick a past date to run the analysis as of that day."
+        "body": "The default span is 3.5 years; switch to 0.5 or 1.5 years. Choose Custom and enter a span, then press Enter or leave the field to update. Pick a backtest date to see the analysis as of that day."
       }
     },
     "ladder": {
@@ -2854,11 +3003,12 @@
     }
   },
   "marketPulse": {
+    "refreshNote": "Market data refreshes about every 5 minutes",
     "title": "Global markets",
     "latestSession": "Latest session",
     "loading": "Loading market moves",
     "unavailable": "Market moves are temporarily unavailable",
-    "itemLabel": "{{name}}, {{date}}, change {{percent}}"
+    "itemLabel": "{{name}}, index {{value}}, change {{percent}}"
   },
   "cardTrial": {
     "title": "30-day free trial",
@@ -2945,5 +3095,11 @@
       "failedTitle": "Card not updated",
       "failedBody": "This card was not bound, and you were not charged anything."
     }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "This address may have changed. Return home or browse the guides.",
+    "home": "Return home",
+    "articles": "Browse guides"
   }
 }

@@ -6,6 +6,8 @@ import remarkGfm from 'remark-gfm';
 import './ArticleDetail.css';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+import { socialImagePath } from '../../utils/socialMetadata';
+import imageDimensions from '../../config/articleImageDimensions.json';
 
 // 判斷 markdown 連結是否指向站內。相對路徑與本站絕對網址都算，
 // 回傳可交給 React Router 的路徑；外部連結回傳 null。
@@ -188,7 +190,8 @@ export function ArticleDetail() {
         return (
             <>
                 <img 
-                    src={imageSrc} 
+                    src={imageSrc}
+                    {...imageDimensions[imageSrc]}
                     alt={alt} 
                     loading="lazy"
                     className="article-image"
@@ -217,13 +220,13 @@ export function ArticleDetail() {
     }
 
     if (error) {
-        return <PageContainer title={t('articleDetail.errorTitle')} description={t('articleDetail.errorDescription')} includeHreflang={false}>
+        return <PageContainer title={t('articleDetail.errorTitle')} description={t('articleDetail.errorDescription')} includeHreflang={false} robots="noindex, follow">
             <div>{t('articleDetail.errorText')}{error.message}</div>
         </PageContainer>;
     }
 
     if (!article) {
-        return <PageContainer title={t('articleDetail.notFoundTitle')} description={t('articleDetail.notFoundDescription')} includeHreflang={false}>
+        return <PageContainer title={t('articleDetail.notFoundTitle')} description={t('articleDetail.notFoundDescription')} includeHreflang={false} robots="noindex, follow">
             <div>{t('articleDetail.notFoundText')}</div>
         </PageContainer>;
     }
@@ -237,7 +240,19 @@ export function ArticleDetail() {
         <PageContainer
             title={meta.title || article.title}
             description={meta.description || ''}
-            ogImage={article.originalSlug.startsWith('5.') ? `/articles/${article.originalSlug}/image-cover.svg` : undefined}
+            ogImage={socialImagePath('', currentLang, article.originalSlug.split('.')[0])}
+            ogImageWidth={1200}
+            ogImageHeight={630}
+            ogType="article"
+            jsonLd={{
+                '@context': 'https://schema.org', '@type': 'Article',
+                headline: article.title, description: meta.description, inLanguage: currentLang,
+                datePublished: meta.date, dateModified: meta.updated || meta.date,
+                url: pageOgUrl, mainEntityOfPage: pageOgUrl,
+                image: new URL(socialImagePath('', currentLang, article.originalSlug.split('.')[0]), window.location.origin).href,
+                author: { '@type': 'Organization', name: 'Sentiment Inside Out' },
+                publisher: { '@type': 'Organization', name: 'Sentiment Inside Out' }
+            }}
             // og:url 應反映當前頁面的實際 URL
             ogUrl={pageOgUrl}
             includeHreflang={false}
@@ -245,7 +260,10 @@ export function ArticleDetail() {
             <div className="article-detail-page">
                 <Helmet>
                     {meta.keywords && <meta name="keywords" content={meta.keywords} />}
-                    {/* og:locale 已在 PageContainer 中處理 */}
+                    {['en', 'zh-TW'].map(locale => <link key={locale} rel="alternate" hrefLang={locale}
+                        href={`${window.location.origin}/${locale}/articles/${encodeURIComponent(locale === 'en' ? articleMappings[article.originalSlug]?.enSlug || article.originalSlug : article.originalSlug)}/`} />)}
+                    <link rel="alternate" hrefLang="x-default"
+                        href={`${window.location.origin}/en/articles/${encodeURIComponent(articleMappings[article.originalSlug]?.enSlug || article.originalSlug)}/`} />
                 </Helmet>
                 <div className="article-header">
                     <h1>{article.title}</h1>

@@ -1,0 +1,27 @@
+{
+  "eventId": "inflationBearLow",
+  "score": 4.2328043,
+  "sentimentKey": "sentiment.extremeFear",
+  "date": "2022-10-03T00:00:00.000Z",
+  "titleKey": "home.hero.moments.events.inflationBearLow.title",
+  "descriptionKey": "home.hero.moments.events.inflationBearLow.description",
+  "sourceUrl": "https://api.sentimentinsideout.com/api/public/homepage?section=hero",
+  "captureViewport": {
+    "width": 1600,
+    "height": 840
+  },
+  "artworkCrop": {
+    "zh-TW": {
+      "left": 885,
+      "top": 150,
+      "width": 485,
+      "height": 561
+    },
+    "en": {
+      "left": 885,
+      "top": 158,
+      "width": 485,
+      "height": 560
+    }
+  }
+}

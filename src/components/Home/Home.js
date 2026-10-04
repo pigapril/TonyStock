@@ -474,7 +474,7 @@ export const Home = () => {
       title={t('home.pageTitle')}
       description={t('home.pageDescription')}
       keywords={t('home.keywords')}
-      ogImage="/home-og-image.png"
+
       ogUrl={`${window.location.origin}/${currentLang}/`}
       jsonLd={homeJsonLd}
     >

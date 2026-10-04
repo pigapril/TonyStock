@@ -590,4 +590,30 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/sentiment-indicators/taiwan-fear-greed/"/>
   </url>
 
+
+  <url>
+    <loc>https://sentimentinsideout.com/en/tw-market-sentiment/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/tw-market-sentiment/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/tw-market-sentiment/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/tw-market-sentiment/"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/tw-market-sentiment/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/tw-market-sentiment/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/tw-market-sentiment/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/tw-market-sentiment/"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/en/momentum/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/momentum/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/momentum/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/momentum/"/>
+  </url>
+  <url>
+    <loc>https://sentimentinsideout.com/zh-TW/momentum/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sentimentinsideout.com/en/momentum/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://sentimentinsideout.com/zh-TW/momentum/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sentimentinsideout.com/en/momentum/"/>
+  </url>
+
 </urlset>

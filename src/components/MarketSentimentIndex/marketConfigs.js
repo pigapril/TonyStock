@@ -66,7 +66,6 @@ export const US_MARKET_SENTIMENT_CONFIG = {
     keywordsKey: 'marketSentiment.keywords',
     pageSubtitleKey: 'marketSentiment.pageSubtitle',
     headingKey: 'marketSentiment.heading',
-    ogImage: '/images/market-sentiment-og.png',
     faqKeyPrefix: 'marketSentiment.enhancedDescription.content.faq'
   }
 };
@@ -105,7 +104,6 @@ export const TW_MARKET_SENTIMENT_CONFIG = {
     keywordsKey: 'marketSentiment.tw.keywords',
     pageSubtitleKey: 'marketSentiment.tw.pageSubtitle',
     headingKey: 'marketSentiment.tw.heading',
-    ogImage: '/logo.png',
     faqKeyPrefix: 'marketSentiment.tw.faq'
   },
   buildGaugeExplainerCopy: buildTwGaugeExplainerCopy

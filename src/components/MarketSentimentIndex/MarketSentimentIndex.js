@@ -1,3 +1,4 @@
+import { socialImagePath } from '../../utils/socialMetadata';
 import React, { useState, useEffect, useRef, useMemo, useCallback, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { handleApiError } from '../../utils/errorHandler';
@@ -294,7 +295,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   const seoKeywords = t(seoConfig.keywordsKey || 'marketSentiment.keywords', { defaultValue: t('marketSentiment.keywords') });
   const seoSubtitle = t(seoConfig.pageSubtitleKey || 'marketSentiment.pageSubtitle', { defaultValue: t('marketSentiment.pageSubtitle') });
   const seoHeading = t(seoConfig.headingKey || 'marketSentiment.heading', { defaultValue: t('marketSentiment.heading') });
-  const seoOgImage = seoConfig.ogImage || '/images/market-sentiment-og.png';
+  const seoOgImage = socialImagePath(pageRoutePath, currentLang);
   const faqKeyPrefix = seoConfig.faqKeyPrefix || 'marketSentiment.enhancedDescription.content.faq';
   const benchmarkSeriesLabel = marketConfig.benchmarkAxisLabel
     ? (marketConfig.benchmarkAxisLabel[currentLang] || marketConfig.benchmarkAxisLabel.en)
@@ -1444,6 +1445,8 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
       description={seoDescription}
       keywords={seoKeywords}
       ogImage={seoOgImage}
+      ogImageWidth={1200}
+      ogImageHeight={630}
       ogUrl={`${window.location.origin}${pageRoutePath}`}
     >
       <div className={`market-sentiment-shell market-sentiment-shell--${state}`} aria-hidden={state === 'loading' ? 'true' : undefined}>
@@ -1506,6 +1509,8 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
       description={seoDescription}
       keywords={seoKeywords}
       ogImage={seoOgImage}
+      ogImageWidth={1200}
+      ogImageHeight={630}
       ogUrl={`${window.location.origin}${pageRoutePath}`}
       jsonLd={marketSentimentJsonLd}
     >

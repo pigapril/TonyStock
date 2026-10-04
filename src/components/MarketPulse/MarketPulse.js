@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import apiClient from '../../api/apiClient';
 import './MarketPulse.css';
 
-const REFRESH_MS = 15 * 60 * 1000;
+const REFRESH_MS = 60 * 1000;
 const MARKETS = [
   { id: 'sp500', zh: 'S&P 500', en: 'S&P 500' },
   { id: 'nasdaq100', zh: 'NASDAQ 100', en: 'Nasdaq 100' },
@@ -109,11 +109,14 @@ export default function MarketPulse() {
     const change = Number.isFinite(data.changePercent) ? data.changePercent : null;
     const direction = change === null || Math.abs(change) < 0.005 ? 'flat' : change > 0 ? 'up' : 'down';
     const percent = change === null ? '—' : `${change > 0 ? '+' : ''}${change.toFixed(2)}%`;
-    const date = data.sessionDate?.slice(5).replace('-', '/') || '—';
+    const latestValue = data.points[data.points.length - 1]?.[1];
+    const value = Number.isFinite(latestValue)
+      ? latestValue.toLocaleString(isZh ? 'zh-TW' : 'en-US', { maximumFractionDigits: 0 })
+      : '—';
     return (
-      <div className="market-pulse__item" key={`${id}${duplicate ? '-copy' : ''}`} aria-label={t('marketPulse.itemLabel', { name, date, percent })}>
+      <div className="market-pulse__item" key={`${id}${duplicate ? '-copy' : ''}`} aria-label={t('marketPulse.itemLabel', { name, value, percent })}>
         <span className="market-pulse__name">{name}</span>
-        <span className="market-pulse__date">{date}</span>
+        <span className="market-pulse__value">{value}</span>
         <span className={`market-pulse__change market-pulse__change--${direction}`}>{percent}</span>
         <Sparkline points={data.points} direction={direction} />
       </div>
@@ -132,6 +135,7 @@ export default function MarketPulse() {
       ) : (
         <p className="market-pulse__empty">{unavailable ? t('marketPulse.unavailable') : t('marketPulse.loading')}</p>
       )}
+      <p className="market-pulse__refresh-note">{t('marketPulse.refreshNote')}</p>
     </section>
   );
 }

@@ -59,3 +59,23 @@ export function AssetTrendChart({ points, label, assetName, benchmarkName, forma
     <div className="momentum-trend-chart__dates" aria-hidden="true"><span>{shortDate(points[0][0])}</span><span>{shortDate(last[0])}</span></div>
   </div>;
 }
+
+export function RelativeStrengthChart({ points, label, lineLabel, averageLabel }) {
+  if (!points?.length) return null;
+  const available = points.flatMap((point) => [point[1], point[2]]).filter(Number.isFinite);
+  if (available.length < 4) return null;
+  const low = Math.min(...available);
+  const high = Math.max(...available);
+  const margin = Math.max(1, (high - low) * 0.12);
+  return <div className="momentum-asset-trend" role="img" aria-label={label}>
+    <div className="momentum-asset-trend__legend" aria-hidden="true">
+      <span><i className="momentum-asset-trend__key momentum-asset-trend__key--asset" />{lineLabel}</span>
+      <span><i className="momentum-asset-trend__key momentum-asset-trend__key--benchmark" />{averageLabel}</span>
+    </div>
+    <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path className="momentum-asset-trend__benchmark-line" d={pathFor(points, (point) => point[2], low - margin, high + margin)} />
+      <path className="momentum-asset-trend__asset-line" d={pathFor(points, (point) => point[1], low - margin, high + margin)} />
+    </svg>
+    <div className="momentum-trend-chart__dates" aria-hidden="true"><span>{shortDate(points[0][0])}</span><span>{shortDate(points[points.length - 1][0])}</span></div>
+  </div>;
+}

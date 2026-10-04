@@ -3,7 +3,11 @@ import { act, fireEvent, render, screen, waitFor, within } from '@testing-librar
 import apiClient from '../../api/apiClient';
 import { useAuth } from '../Auth/useAuth';
 import MomentumDashboardPage from './MomentumDashboardPage';
+import { TOUR_STORAGE_KEY } from './tourStorage';
 import { trackProductEvent } from '../../utils/productAnalytics';
+jest.mock('../PageContainer/PageContainer', () => ({children}) => <>{children}</>);
+jest.mock('./MomentumScreenResults', () => ({plan}) => <div data-testid="momentum-screen-results">{plan}</div>);
+jest.mock('./MomentumDashboardTour', () => ({onFinish}) => <div role="dialog"><button onClick={onFinish}>完成教學</button></div>);
 jest.mock('../../utils/productAnalytics', () => ({ trackProductEvent: jest.fn() }));
 
 jest.mock('../Auth/useAuth', () => ({ useAuth: jest.fn() }));
@@ -27,7 +31,67 @@ const response = (rows = industry) => ({ data: { data: { access: { version: 2, p
 const assetRows = () => screen.getAllByRole('button').filter((button) => button.classList.contains('momentum-row'));
 
 describe('MomentumDashboardPage', () => {
-  beforeEach(() => { jest.clearAllMocks(); useAuth.mockReturnValue({ user: null, loading: false }); apiClient.get.mockResolvedValue(response()); });
+  beforeEach(() => { window.localStorage.setItem(TOUR_STORAGE_KEY, '1'); jest.clearAllMocks(); useAuth.mockReturnValue({ user: null, loading: false }); apiClient.get.mockResolvedValue(response()); });
+
+  it('selects the first ETF on desktop and keeps the panel open while changing rows and filters', async () => {
+    const originalMedia = window.matchMedia;
+    window.matchMedia = query => ({matches: query === '(min-width: 901px)', addEventListener: jest.fn(), removeEventListener: jest.fn()});
+    try {
+      render(<MomentumDashboardPage />);
+      await screen.findByRole('complementary', {name:'XLK 明細'});
+      expect(assetRows()[0]).toHaveAttribute('aria-pressed', 'true');
+      expect(screen.getByRole('complementary', {name:'XLK 明細'})).not.toHaveFocus();
+      fireEvent.click(assetRows()[0]);
+      expect(screen.getByRole('complementary', {name:'XLK 明細'})).toBeVisible();
+      fireEvent.click(assetRows()[1]);
+      expect(screen.getByRole('complementary', {name:'XLE 明細'})).toBeVisible();
+      fireEvent.change(screen.getByRole('searchbox'), {target:{value:'科技'}});
+      expect(screen.getByRole('complementary', {name:'XLK 明細'})).toBeVisible();
+      expect(screen.getByRole('searchbox')).not.toHaveAttribute('aria-hidden', 'true');
+      fireEvent.change(screen.getByRole('searchbox'), {target:{value:'no-match'}});
+      expect(screen.queryByRole('complementary', {name:/明細/})).not.toBeInTheDocument();
+      fireEvent.change(screen.getByRole('searchbox'), {target:{value:''}});
+      expect(screen.getByRole('complementary', {name:'XLK 明細'})).toBeVisible();
+      fireEvent.click(screen.getByRole('button', {name:'主要資產'}));
+      expect(screen.getByRole('complementary', {name:'SPY 明細'})).toBeVisible();
+    } finally { window.matchMedia = originalMedia; }
+  });
+
+  it('allows returning users to replay the tutorial and remembers dismissal', async () => {
+    render(<MomentumDashboardPage />);await screen.findByText('XLK');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button',{name:'使用教學'}));await screen.findByRole('dialog');
+    fireEvent.click(screen.getByRole('button',{name:'完成教學'}));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(window.localStorage.getItem(TOUR_STORAGE_KEY)).toBe('1');
+    fireEvent.click(screen.getByRole('button',{name:'使用教學'}));await screen.findByRole('dialog');
+  });
+
+  it('remembers dismissal when users select a primary tab during the tutorial', async () => {
+    render(<MomentumDashboardPage />); await screen.findByText('XLK');
+    window.localStorage.removeItem(TOUR_STORAGE_KEY);
+    fireEvent.click(screen.getByRole('button', {name:'使用教學'})); await screen.findByRole('dialog');
+    fireEvent.click(screen.getByRole('tab', {name:'動能選股'}));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(window.localStorage.getItem(TOUR_STORAGE_KEY)).toBe('1');
+  });
+
+  it('starts the first-visit tutorial only after usable data has loaded', async () => {
+    jest.useFakeTimers();window.localStorage.removeItem(TOUR_STORAGE_KEY);
+    let resolve;apiClient.get.mockImplementationOnce(()=>new Promise(done=>{resolve=done;}));
+    const view=render(<MomentumDashboardPage />);
+    try {
+      await act(async()=>{jest.advanceTimersByTime(2000);});
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(screen.getByRole('button',{name:'使用教學'})).toBeDisabled();
+      await act(async()=>{resolve(response());});
+      await act(async()=>{jest.advanceTimersByTime(900);});
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      fireEvent.click(screen.getByRole('button',{name:'完成教學'}));
+      await act(async()=>{jest.advanceTimersByTime(2000);});
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    } finally {view.unmount();jest.clearAllTimers();jest.useRealTimers();}
+  });
 
   it('starts with momentum and switches both the map and ETF ordering to daily change', async () => {
     render(<MomentumDashboardPage />);
@@ -60,18 +124,57 @@ describe('MomentumDashboardPage', () => {
     expect(screen.getByText('依單日漲跌幅由低至高排列')).toBeVisible();
   });
 
-  it('filters by sector, expands details inline and clears the filter', async () => {
+  it('filters by sector, opens the shared detail panel and clears the filter', async () => {
     render(<MomentumDashboardPage />);
     fireEvent.click(await screen.findByRole('button', { name: '科技，81，查看標的' }));
     expect(screen.queryByText('XLE')).not.toBeInTheDocument();
     fireEvent.click(assetRows()[0]);
     expect(assetRows()[0]).toHaveAttribute('aria-expanded', 'true');
     expect(trackProductEvent).toHaveBeenCalledWith('momentum_interaction', expect.objectContaining({ action: 'asset_open', asset_symbol: 'XLK' }));
-    expect(assetRows()[0].nextElementSibling).toHaveTextContent('$140.00');
-    expect(screen.getByText('120 交易日')).toBeInTheDocument();
+    expect(screen.getByRole('complementary', { name: /明細/ })).toHaveTextContent('$140.00');
+    expect(screen.getByRole('columnheader', {name:'120 交易日'})).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /在 Yahoo Finance 查看標的資料/ })).toHaveAttribute('href', 'https://finance.yahoo.com/quote/XLK/');
     fireEvent.click(screen.getByRole('button', { name: /返回全部標的/ }));
     expect(screen.getByText('XLE')).toBeInTheDocument();
+  });
+
+  it('separates screening from browsing and preserves the ETF selection when returning', async () => {
+    render(<MomentumDashboardPage />); await screen.findByText('XLK');
+    fireEvent.click(assetRows()[0]);
+    const original = assetRows()[0];
+    fireEvent.click(screen.getByRole('tab', { name: '動能選股' }));
+    expect(screen.getByTestId('momentum-screen-results')).toBeVisible();
+    expect(screen.queryByRole('group', { name: '比較方式' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('complementary', { name: /明細/ })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: '市場總覽' }));
+    expect(original).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(screen.getByRole('button', { name: '← 返回 ETF 清單' }));
+    expect(screen.queryByRole('complementary', { name: /明細/ })).not.toBeInTheDocument();
+    expect(original).toHaveFocus();
+  });
+
+  it('restores the mobile list scroll position and supports keyboard tab navigation', async () => {
+    const originalMedia = window.matchMedia, originalScroll = window.scrollTo;
+    const originalIntoView = Element.prototype.scrollIntoView;
+    const originalY = window.scrollY;
+    window.matchMedia = query => ({ matches: query === '(max-width: 900px)' });
+    window.scrollTo = jest.fn(); Element.prototype.scrollIntoView = jest.fn();
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 420 });
+    try {
+      render(<MomentumDashboardPage />); await screen.findByText('XLK');
+      const trigger = assetRows()[0]; fireEvent.click(trigger);
+      expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({block:'start', behavior:'auto'});
+      fireEvent.click(screen.getByRole('button', {name:'← 返回 ETF 清單'}));
+      expect(window.scrollTo).toHaveBeenCalledWith({top:420, behavior:'auto'});
+      expect(trigger).toHaveFocus();
+      fireEvent.keyDown(screen.getByRole('tab', {name:'市場總覽'}), {key:'ArrowRight'});
+      expect(screen.getByRole('tab', {name:'動能選股'})).toHaveAttribute('aria-selected', 'true');
+      expect(screen.getByRole('tab', {name:'動能選股'})).toHaveFocus();
+    } finally {
+      window.matchMedia = originalMedia; window.scrollTo = originalScroll;
+      Element.prototype.scrollIntoView = originalIntoView;
+      Object.defineProperty(window, 'scrollY', {configurable:true, value:originalY});
+    }
   });
 
   it('supports Chinese group search and resets the search when changing scope', async () => {
@@ -89,14 +192,15 @@ describe('MomentumDashboardPage', () => {
     render(<MomentumDashboardPage />);
     await screen.findByText('XLK');
     fireEvent.click(assetRows()[0]);
-    const detail = assetRows()[0].nextElementSibling;
+    const detail = screen.getByRole('complementary', { name: /明細/ });
     expect(within(detail).getByText('+15.0%')).toBeVisible();
     expect(within(detail).getByText('+10.0%')).toBeVisible();
     expect(within(detail).getByText('-8.0%')).toBeVisible();
     expect(within(detail).getByText('-5.0%')).toBeVisible();
-    expect(detail).not.toHaveTextContent('個百分點');
-    expect(detail).toHaveTextContent('本標的+15.0%');
-    expect(detail).toHaveTextContent('動能分數 90');
+    expect(within(detail).getByText('+5.0 %')).toBeVisible();
+    expect(within(detail).getByText('-3.0 %')).toBeVisible();
+    expect(detail).toHaveTextContent('XLK+15.0%');
+    expect(detail).toHaveTextContent('排名分數908077');
     expect(detail).not.toHaveTextContent('標的漲跌');
   });
 
@@ -105,9 +209,61 @@ describe('MomentumDashboardPage', () => {
     render(<MomentumDashboardPage />);
     await screen.findByText('XLE');
     fireEvent.click(assetRows()[0]);
-    expect(assetRows()[0].nextElementSibling).not.toHaveTextContent('+10.0%');
-    expect(assetRows()[0].nextElementSibling).toHaveTextContent('此期間漲跌資料暫缺');
-    expect(assetRows()[0].nextElementSibling).not.toHaveTextContent('SPY —');
+    expect(screen.getByRole('complementary', { name: /明細/ })).not.toHaveTextContent('+10.0%');
+    expect(screen.getByRole('complementary', { name: /明細/ })).toHaveTextContent('XLE———');
+    expect(screen.getByRole('complementary', { name: /明細/ })).toHaveTextContent('與 SPY 比較———');
+  });
+
+  it('shows relative strength and its average separately from the cumulative return chart', async () => {
+    apiClient.get.mockResolvedValue(response([{ ...industry[0], relativeTrend60: [
+      ['2026-09-24', 100, 98], ['2026-09-25', 105, 99]
+    ] }]));
+    render(<MomentumDashboardPage />);
+    fireEvent.click(await screen.findByRole('button', { name: /XLK/ }));
+    expect(screen.getByRole('img', { name: /XLK相對 SPY/ })).toBeVisible();
+    expect(screen.getByText('20 日均線')).toBeVisible();
+    expect(screen.getByText(/線條在 20 日均線上方/)).toBeVisible();
+  });
+
+  it('shows RSI and liquidity, then filters constituents ranked across a broader stock pool', async () => {
+    const main = response([{ ...industry[0], rsi14: 64, averageDollarVolume20: 20000000 }]);
+    const holdings = { status: 'available', access: 'pro', completeness: 'top', coverageWeight: .5,
+      holdingsAsOf: null, asOf: '2026-09-25', universe: { scoredCount: 503 },
+      sourceName: 'Yahoo Finance', sourceUrl: 'https://finance.yahoo.com/quote/XLK/holdings/',
+      rows: [{ symbol: 'AAA', name: 'First Stock', weight: .3, Rank: 90, rsi14: 60, averageDollarVolume20: 20000000 },
+        { symbol: 'BBB', name: 'Second Stock', weight: .2, Rank: 60, rsi14: 40, averageDollarVolume20: 30000000 }] };
+    apiClient.get.mockImplementation((url) => Promise.resolve(url.includes('/constituents/') ? { data: { data: holdings } } : main));
+    render(<MomentumDashboardPage />);
+    fireEvent.click(await screen.findByRole('button', { name: /XLK/ }));
+    expect(screen.getByText('RSI · 14 日')).toBeVisible();
+    expect(screen.getByText('64.0')).toBeVisible();
+    fireEvent.click(screen.getByRole('tab', { name: '成分股' }));
+    expect(await screen.findByText('主要持股動能排行 · 部分名單')).toBeVisible();
+    expect(screen.getByText(/503 檔美股/)).toBeVisible();
+    expect(screen.getByText(/來源未提供持股日期/)).toBeVisible();
+    fireEvent.change(screen.getByLabelText('最低動能分數'), { target: { value: '80' } });
+    expect(screen.getByRole('button', { name: /AAA/ })).toBeVisible();
+    expect(screen.queryByRole('button', { name: /BBB/ })).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('最低平均成交額（百萬美元）'), { target: { value: '25' } });
+    expect(screen.getByRole('status')).toHaveTextContent('找不到符合的標的');
+    fireEvent.change(screen.getByLabelText('最低動能分數'), { target: { value: '' } });
+    fireEvent.click(screen.getByRole('button', { name: /BBB/ }));
+    expect(within(screen.getByRole('complementary', { name: 'BBB 明細' })).getAllByText('40.0').find(element => element.tagName === 'STRONG')).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: '← 返回 XLK 成分股' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: /BBB/ })).toHaveFocus());
+    expect(screen.getByLabelText('最低平均成交額（百萬美元）')).toHaveValue(25);
+
+  });
+
+  it('aborts a constituent request when its ETF detail is closed', async () => {
+    apiClient.get.mockImplementation((url) => url.includes('/constituents/') ? new Promise(() => {}) : Promise.resolve(response()));
+    render(<MomentumDashboardPage />);
+    const asset = await screen.findByRole('button', { name: /XLK/ });
+    fireEvent.click(asset);
+    fireEvent.click(screen.getByRole('tab', { name: '成分股' }));
+    const call = apiClient.get.mock.calls.find(([url]) => url.includes('/constituents/'));
+    fireEvent.click(asset);
+    expect(call[1].signal.aborted).toBe(true);
   });
 
   it('lets users expand and collapse a longer list', async () => {
@@ -168,24 +324,15 @@ describe('MomentumDashboardPage', () => {
     await waitFor(() => expect(screen.getByText('XLK')).toBeInTheDocument());
   });
 
-  it('keeps the comparison period visible and moves interpretation notes into optional help', async () => {
+  it('shows explanations immediately without a guide toggle or repeated caption', async () => {
     render(<MomentumDashboardPage />);
     await screen.findByText('XLK');
-    expect(screen.getByRole('button', { name: '近期動能強弱' })).toBeInTheDocument();
-    expect(screen.queryByText(/先比較分類，再查看個別標的/)).not.toBeInTheDocument();
-    expect(screen.getByText(/分數與色彩不代表買賣時點/)).not.toBeVisible();
-    expect(screen.getByText(/近 1、3、6 個月綜合排名/)).toBeVisible();
-    const guide = screen.getByRole('button', { name: '如何看分數' });
-    expect(guide).toHaveAttribute('aria-expanded', 'false');
-    fireEvent.click(guide);
-    expect(guide).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByText(/不是上漲 80%/)).toBeVisible();
-    expect(screen.queryByText(/熱錢/)).not.toBeInTheDocument();
-    expect(screen.getByText('使用方式')).toBeVisible();
-    expect(screen.getByText(/分數與色彩不代表買賣時點/)).toBeVisible();
-    fireEvent.click(guide);
-    expect(guide).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.getByText(/分數與色彩不代表買賣時點/)).not.toBeVisible();
+    expect(screen.getByText('動能分數是什麼')).toBeVisible();
+    expect(screen.getByText(/漲得較多、或跌得較少/)).toBeVisible();
+    expect(screen.getByText('色塊與線條怎麼看')).toBeVisible();
+    expect(screen.getByText('找出強勢標的')).toBeVisible();
+    expect(screen.queryByRole('button', { name: /動能分數怎麼看|如何看分數/ })).not.toBeInTheDocument();
+    expect(screen.queryByText(/與同一分頁的其他標的相比/)).not.toBeInTheDocument();
   });
 
   it('explains factor strategies and growth stocks where the user selects them', async () => {
@@ -293,3 +440,17 @@ describe('Momentum access experience', () => {
     expect(screen.queryByRole('link', { name: /解鎖完整排行/ })).not.toBeInTheDocument();
   });
 });
+
+ test('screener entry is available to both plans and resets during account changes', async () => {
+  useAuth.mockReturnValue({ user: { userId: 'member' }, loading: false });
+  apiClient.get.mockResolvedValue(response());
+  const view = render(<MomentumDashboardPage />);
+  expect(await screen.findByTestId('momentum-screen-results')).toHaveTextContent('pro');
+  const free = response(); free.data.data.access.plan = 'free';
+  apiClient.get.mockResolvedValue(free);
+  useAuth.mockReturnValue({ user: null, loading: false });
+  view.rerender(<MomentumDashboardPage />);
+  expect(screen.queryByTestId('momentum-screen-results')).not.toBeInTheDocument();
+  await screen.findByText('XLK');
+  expect(screen.getByTestId('momentum-screen-results')).toHaveTextContent('free');
+ });

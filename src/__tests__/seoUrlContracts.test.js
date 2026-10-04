@@ -10,7 +10,7 @@ describe('SEO URL contracts', () => {
   const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 
   it('advertises only final, canonical URLs for the two distinct locales', () => {
-    expect(locs).toHaveLength(42);
+    expect(locs).toHaveLength(46);
     expect(locs.every((url) => url.startsWith(`${origin}/en/`) || url.startsWith(`${origin}/zh-TW/`)))
       .toBe(true);
     expect(locs.every((url) => url.endsWith('/'))).toBe(true);
@@ -37,8 +37,8 @@ describe('SEO URL contracts', () => {
   it('redirects wrong-language article slugs directly to published pages', () => {
     const canonical = new Set(locs);
     const articleRules = redirects.split('\n')
-      .filter((line) => /^\/(?:en|zh-TW|zh)\/articles\//.test(line));
-    expect(articleRules).toHaveLength(16);
+      .filter((line) => /^\/(?:en|zh-TW|zh)\/articles\//.test(line) && line.endsWith('301!'));
+    expect(articleRules).toHaveLength(24);
 
     for (const rule of articleRules) {
       const [from, to, status] = rule.split(/\s+/);

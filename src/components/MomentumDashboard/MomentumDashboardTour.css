@@ -1,0 +1,13 @@
+.momentum-tour { position: fixed; inset: 0; z-index: 2000; pointer-events: none; }
+.momentum-tour__spotlight { position: fixed; border-radius: 8px; box-shadow: 0 0 0 9999px #10251bb3; }
+.momentum-tour__backdrop { position: fixed; inset: 0; background: #10251bb3; }
+.momentum-tour__card { position: fixed; box-sizing: border-box; padding: 20px; border: 1px solid var(--momentum-line); border-radius: 10px; background: #fcfdf9; box-shadow: 0 12px 32px #10251b33; pointer-events: auto; max-height: calc(100dvh - 28px); overflow-y: auto; }
+.momentum-tour__progress { color: var(--momentum-muted); font-size: 12px; }
+.momentum-tour__card h2 { margin: 8px 0; padding: 0; border: 0; color: var(--momentum-ink); font-size: 18px; }
+.momentum-tour__card p { margin: 0; color: var(--momentum-muted); font-size: 14px; line-height: 1.8; }
+.momentum-tour__actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 16px; }
+.momentum-tour__actions > div { display: flex; gap: 8px; }
+.momentum-tour__actions button { min-height: 44px; border: 0; border-radius: 6px; padding: 0 12px; background: transparent; color: var(--momentum-green); font-size: 14px; }
+.momentum-tour__actions .momentum-tour__next { background: var(--momentum-ink); color: #fcfdf9; }
+.momentum-tour__actions button:hover { background: #edf2e9; }
+.momentum-tour__actions .momentum-tour__next:hover { background: var(--momentum-green); }

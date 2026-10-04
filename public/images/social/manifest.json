@@ -1,0 +1,313 @@
+{
+  "logo": "/logo.png",
+  "colorSource": "src/components/Common/global-styles.css",
+  "palette": {
+    "background": "#f5f5f7",
+    "card": "#ffffff",
+    "primary": "#007aff",
+    "secondary": "#5856d6",
+    "border": "#ebebeb",
+    "ink": "rgba(0, 0, 0, 0.85)",
+    "muted": "rgba(0, 0, 0, 0.60)"
+  },
+  "cards": [
+    {
+      "name": "home",
+      "lang": "en",
+      "title": "Understand the market's fear and greed sentiment.",
+      "description": "Use objective data to judge current market sentiment and overcome the human biases of fear and greed.",
+      "titleKey": "home.hero.title",
+      "descriptionKey": "home.hero.subtitle",
+      "captureUrl": "https://sentimentinsideout.com/en/",
+      "heroSnapshot": {
+        "eventId": "inflationBearLow",
+        "score": 4.2328043,
+        "sentimentKey": "sentiment.extremeFear",
+        "date": "2022-10-03T00:00:00.000Z",
+        "titleKey": "home.hero.moments.events.inflationBearLow.title",
+        "descriptionKey": "home.hero.moments.events.inflationBearLow.description",
+        "sourceUrl": "https://api.sentimentinsideout.com/api/public/homepage?section=hero",
+        "captureViewport": {
+          "width": 1600,
+          "height": 840
+        },
+        "artworkCrop": {
+          "zh-TW": {
+            "left": 885,
+            "top": 150,
+            "width": 485,
+            "height": 561
+          },
+          "en": {
+            "left": 885,
+            "top": 158,
+            "width": 485,
+            "height": 560
+          }
+        }
+      },
+      "artwork": "images/social/sources/home-2022-bear-low-en.jpg"
+    },
+    {
+      "name": "priceanalysis",
+      "lang": "en",
+      "title": "LOHAS Five-Line",
+      "description": "Use price trends to gauge sentiment around an asset.",
+      "titleKey": "priceAnalysis.heading",
+      "descriptionKey": "priceAnalysis.subtitle",
+      "artwork": "articles/1.用樂活五線譜分析價格趨勢與情緒/image-cover.png"
+    },
+    {
+      "name": "sentiment-indicators",
+      "lang": "en",
+      "title": "Market Sentiment Indicators",
+      "description": "Every major market sentiment indicator on one page: CNN Fear & Greed, BofA Bull & Bear, AAII, NAAIM, TAIFEX volatility and more, each with its as-of date and original source.",
+      "titleKey": "sentimentBoard.heading",
+      "descriptionKey": "sentimentBoard.pageDescription"
+    },
+    {
+      "name": "market-sentiment",
+      "lang": "en",
+      "title": "US Fear & Greed Index — 8-Indicator Market Sentiment Tracker",
+      "description": "Track whether overall US market sentiment leans toward fear or greed.",
+      "titleKey": "marketSentiment.pageTitle",
+      "descriptionKey": "marketSentiment.pageSubtitle",
+      "artwork": "images/market-sentiment/sentiment-gauge-feature.png"
+    },
+    {
+      "name": "tw-market-sentiment",
+      "lang": "en",
+      "title": "Sentiment Inside Out (SIO) Taiwan Fear & Greed Index | TAIEX Sentiment Tracking",
+      "description": "Track whether overall Taiwan market sentiment leans toward fear or greed.",
+      "titleKey": "marketSentiment.tw.pageTitle",
+      "descriptionKey": "marketSentiment.tw.pageSubtitle"
+    },
+    {
+      "name": "momentum",
+      "lang": "en",
+      "title": "Market momentum",
+      "description": "Find stronger assets within stronger groups and follow market momentum.",
+      "titleKey": "momentumDashboard.title",
+      "descriptionKey": "momentumDashboard.subtitle",
+      "artwork": "articles/5.市場動能儀表板使用指南/image-cover.svg"
+    },
+    {
+      "name": "watchlist",
+      "lang": "en",
+      "title": "My Watchlist",
+      "description": "Track your stocks and get a quick read on the market.",
+      "titleKey": "watchlist.pageTitle",
+      "descriptionKey": "watchlist.pageSubtitle",
+      "artwork": "images/watchlist-preview-en.png"
+    },
+    {
+      "name": "articles",
+      "lang": "en",
+      "title": "Guides and Market Sentiment Concepts",
+      "description": "Guides to the site tools and explanations of how market sentiment works. To jump straight to current readings, open the indicator overview below.",
+      "titleKey": "articles.heading",
+      "descriptionKey": "articles.intro"
+    },
+    {
+      "name": "about",
+      "lang": "en",
+      "title": "About Sentiment Inside Out",
+      "description": "Learn about the philosophy of Sentiment Inside Out and how simple analysis tools can turn market sentiment into key investment indicators, helping investors overcome fear and greed.",
+      "titleKey": "about.heading",
+      "descriptionKey": "about.pageDescription"
+    },
+    {
+      "name": "sponsor-us",
+      "lang": "en",
+      "title": "Sponsor the Website, Help More People Together",
+      "description": "With your help, Sentiment Inside Out can continue operating, providing simple and practical investment tools to benefit more investors. Your sponsorship will support website maintenance and development.",
+      "titleKey": "sponsorUs.heading",
+      "descriptionKey": "sponsorUs.pageDescription"
+    },
+    {
+      "name": "article-1",
+      "lang": "en",
+      "title": "Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis",
+      "category": "Tool Tutorial",
+      "date": "2025-05-04",
+      "source": "articles/1.用樂活五線譜分析價格趨勢與情緒/Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis.en.ini.md",
+      "artwork": "articles/1.用樂活五線譜分析價格趨勢與情緒/image-cover.png"
+    },
+    {
+      "name": "article-2",
+      "lang": "en",
+      "title": "Using the SIO Fear & Greed Index to Time Buys and Sells",
+      "category": "Tool Tutorial",
+      "date": "2026-03-08",
+      "source": "articles/2.用市場情緒綜合指數判斷買賣時機/using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md",
+      "artwork": "articles/2.用市場情緒綜合指數判斷買賣時機/image-cover.png"
+    },
+    {
+      "name": "article-4",
+      "lang": "en",
+      "title": "Should You Buy When LOHAS Five-Line Shows \"Extreme Fear\"? 11.6 Million Daily Bars",
+      "category": "Tool Guides",
+      "date": "2026-08-30",
+      "source": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md",
+      "artwork": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/image-cover.png"
+    },
+    {
+      "name": "article-5",
+      "lang": "en",
+      "title": "Market Momentum Dashboard: Find Strong ETFs and Stocks",
+      "category": "Tool Guides",
+      "date": "2026-09-30",
+      "source": "articles/5.市場動能儀表板使用指南/Market Momentum Dashboard Guide.en.ini.md",
+      "artwork": "articles/5.市場動能儀表板使用指南/image-cover.svg"
+    },
+    {
+      "name": "home",
+      "lang": "zh-TW",
+      "title": "洞悉市場｜恐懼貪婪情緒",
+      "description": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點",
+      "titleKey": "home.hero.title",
+      "descriptionKey": "home.hero.subtitle",
+      "captureUrl": "https://sentimentinsideout.com/zh-TW/",
+      "heroSnapshot": {
+        "eventId": "inflationBearLow",
+        "score": 4.2328043,
+        "sentimentKey": "sentiment.extremeFear",
+        "date": "2022-10-03T00:00:00.000Z",
+        "titleKey": "home.hero.moments.events.inflationBearLow.title",
+        "descriptionKey": "home.hero.moments.events.inflationBearLow.description",
+        "sourceUrl": "https://api.sentimentinsideout.com/api/public/homepage?section=hero",
+        "captureViewport": {
+          "width": 1600,
+          "height": 840
+        },
+        "artworkCrop": {
+          "zh-TW": {
+            "left": 885,
+            "top": 150,
+            "width": 485,
+            "height": 561
+          },
+          "en": {
+            "left": 885,
+            "top": 158,
+            "width": 485,
+            "height": 560
+          }
+        }
+      },
+      "artwork": "images/social/sources/home-2022-bear-low-zh-TW.jpg"
+    },
+    {
+      "name": "priceanalysis",
+      "lang": "zh-TW",
+      "title": "樂活五線譜",
+      "description": "用價格趨勢判斷標的情緒。",
+      "titleKey": "priceAnalysis.heading",
+      "descriptionKey": "priceAnalysis.subtitle",
+      "artwork": "articles/1.用樂活五線譜分析價格趨勢與情緒/image-cover.png"
+    },
+    {
+      "name": "sentiment-indicators",
+      "lang": "zh-TW",
+      "title": "市場情緒指標總覽",
+      "description": "一頁看完全球市場情緒指標:CNN 恐懼貪婪指數、BofA Bull & Bear、AAII 散戶調查、NAAIM 經理人曝險、台指選擇權波動率等,附資料時間與原始出處。",
+      "titleKey": "sentimentBoard.heading",
+      "descriptionKey": "sentimentBoard.pageDescription"
+    },
+    {
+      "name": "market-sentiment",
+      "lang": "zh-TW",
+      "title": "美股恐懼貪婪指數｜整合 8 項指標的市場情緒分析",
+      "description": "追蹤美股市場整體情緒偏向恐懼還是貪婪。",
+      "titleKey": "marketSentiment.pageTitle",
+      "descriptionKey": "marketSentiment.pageSubtitle",
+      "artwork": "images/market-sentiment/sentiment-gauge-feature.png"
+    },
+    {
+      "name": "tw-market-sentiment",
+      "lang": "zh-TW",
+      "title": "Sentiment Inside Out (SIO) 台股恐懼貪婪指標｜台股情緒追蹤",
+      "description": "追蹤台股市場整體情緒偏向恐懼還是貪婪。",
+      "titleKey": "marketSentiment.tw.pageTitle",
+      "descriptionKey": "marketSentiment.tw.pageSubtitle"
+    },
+    {
+      "name": "momentum",
+      "lang": "zh-TW",
+      "title": "市場動能",
+      "description": "從強勢分類找到強勢標的，掌握市場動能的方向。",
+      "titleKey": "momentumDashboard.title",
+      "descriptionKey": "momentumDashboard.subtitle",
+      "artwork": "articles/5.市場動能儀表板使用指南/image-cover.svg"
+    },
+    {
+      "name": "watchlist",
+      "lang": "zh-TW",
+      "title": "我的追蹤清單",
+      "description": "追蹤你感興趣的股票，快速掌握多個標的價格情緒",
+      "titleKey": "watchlist.pageTitle",
+      "descriptionKey": "watchlist.pageSubtitle",
+      "artwork": "images/watchlist-preview.png"
+    },
+    {
+      "name": "articles",
+      "lang": "zh-TW",
+      "title": "工具教學與市場情緒觀念",
+      "description": "這裡是網站工具的使用教學與市場情緒的觀念說明。想直接看各項指標現在的數字，可以從下方進入指標總覽。",
+      "titleKey": "articles.heading",
+      "descriptionKey": "articles.intro"
+    },
+    {
+      "name": "about",
+      "lang": "zh-TW",
+      "title": "關於 Sentiment Inside Out",
+      "description": "了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化為重要的投資指標，幫助投資者克服恐懼與貪婪心態。",
+      "titleKey": "about.heading",
+      "descriptionKey": "about.pageDescription"
+    },
+    {
+      "name": "sponsor-us",
+      "lang": "zh-TW",
+      "title": "贊助網站，一起幫助更多人",
+      "description": "有你/妳的幫助，Sentiment Inside Out 將能持續運作、提供簡單實用的投資工具，造福更多投資人。您的贊助將支持網站維護和發展。",
+      "titleKey": "sponsorUs.heading",
+      "descriptionKey": "sponsorUs.pageDescription"
+    },
+    {
+      "name": "article-1",
+      "lang": "zh-TW",
+      "title": "用樂活五線譜分析價格趨勢與情緒",
+      "category": "工具教學",
+      "date": "2025-05-04",
+      "source": "articles/1.用樂活五線譜分析價格趨勢與情緒/用樂活五線譜分析價格趨勢與情緒.zh-TW.ini.md",
+      "artwork": "articles/1.用樂活五線譜分析價格趨勢與情緒/image-cover.png"
+    },
+    {
+      "name": "article-2",
+      "lang": "zh-TW",
+      "title": "用SIO恐懼貪婪指標判斷買賣時機",
+      "category": "工具教學",
+      "date": "2026-03-08",
+      "source": "articles/2.用市場情緒綜合指數判斷買賣時機/用市場情緒綜合指數判斷買賣時機.zh-TW.ini.md",
+      "artwork": "articles/2.用市場情緒綜合指數判斷買賣時機/image-cover.png"
+    },
+    {
+      "name": "article-4",
+      "lang": "zh-TW",
+      "title": "樂活五線譜看到「極度恐懼」該不該買？1155 萬筆日線的答案",
+      "category": "工具教學",
+      "date": "2026-08-30",
+      "source": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/樂活五線譜1155萬筆台美股資料實測結果分析.zh-TW.ini.md",
+      "artwork": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/image-cover.png"
+    },
+    {
+      "name": "article-5",
+      "lang": "zh-TW",
+      "title": "市場動能儀表板：從強勢板塊找到 ETF 與個股",
+      "category": "工具教學",
+      "date": "2026-09-30",
+      "source": "articles/5.市場動能儀表板使用指南/市場動能儀表板使用指南.zh-TW.ini.md",
+      "artwork": "articles/5.市場動能儀表板使用指南/image-cover.svg"
+    }
+  ]
+}

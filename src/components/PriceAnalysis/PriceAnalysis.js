@@ -1591,7 +1591,7 @@ export function PriceAnalysis() {
       title={t('priceAnalysis.pageTitle')}
       description={t('priceAnalysis.pageDescription')}
       keywords={t('priceAnalysis.keywords')}
-      ogImage="/images/price-analysis-og.png"
+
       ogUrl={`${window.location.origin}/${currentLang}/priceanalysis`}
       ogType="website"
       jsonLd={priceAnalysisJsonLd}

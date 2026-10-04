@@ -29,11 +29,11 @@ export const About = () => {
       title={t('about.pageTitle')}
       description={t('about.pageDescription')}
       keywords={t('about.keywords')}
-      ogImage="/images/about-og.png"
+
       ogType="website"
       ogTitle={t('about.ogTitle')}
       twitterCard="summary_large_image"
-      twitterImage="/images/about-og.png"
+
       jsonLd={aboutJsonLd}
     >
       <div className="about-page">
