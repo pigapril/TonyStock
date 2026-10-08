@@ -15,17 +15,17 @@ And one more practical question: the original author advises waiting for price t
 
 This time we ran 1,449 instruments and 11.56 million daily bars, with data going back to 1927.
 
-In short
+Key findings
 
 1. "Extreme Fear" on its own shows up about 16 days a year. Buy on those days and the three-month and six-month returns both lose to random entry. Wait for the LOHAS Channel to break below its lower edge as well and the count drops to about 5 days a year.
 2. After the break, price is usually still falling. Waiting for the return inside the channel wins in all six instrument groups across all four holding periods, with no exceptions.
-3. Only a full-year hold makes a clear difference. Index ETFs make 11.1 percentage points more than random entry over a year, and 1.0 over a month.
+3. In this index ETF sample, one-year returns exceeded random entry by 11.1 percentage points, versus 1.0 over a month. Results varied by era: the post-2022 one-year gap was only +0.9.
 4. The same rule holds when selling. After "Extreme Greed + above upper edge", waiting for price to return inside the channel dodged the decline that followed in all six groups.
 
 ## Contents
 
 1. [Why the two charts have to be read together](#why-the-two-charts-have-to-be-read-together)
-2. [Only one of the four combinations is worth buying](#only-one-of-the-four-combinations-is-worth-buying)
+2. [Four combinations: which stood out in the backtest](#four-combinations-which-stood-out-in-the-backtest)
 3. [When to buy](#when-to-buy)
 4. [When to sell](#when-to-sell)
 5. [Further check: the 2008 exception only shows up over short holds](#further-check-the-2008-exception-only-shows-up-over-short-holds)
@@ -67,7 +67,7 @@ That is a better result than we expected. If the two charts overlapped almost co
 
 So from here we look only at the ends: the days when the five-line chart reads "Extreme Fear" or "Extreme Greed", each split by whether the LOHAS Channel has broken out or is still inside. Two sentiment states against two channel states gives four combinations.
 
-## Only one of the four combinations is worth buying
+## Four combinations: which stood out in the backtest
 
 The example below uses index ETFs (0050, SPY, QQQ and similar).
 
@@ -80,13 +80,13 @@ The numbers in the table are what you make by buying on the day this combination
 | Extreme Greed, channel still normal | 9 | −0.2 | +0.9 | +0.3 | −3.6 |
 | Extreme Greed + above upper edge | 12 | −0.4 | −0.6 | −0.0 | −1.7 |
 
-Note: 1,449 instruments and 11,556,801 daily bars, 1927 to 2026. Each instrument is computed on its own before taking the median, so one or two big winners cannot carry the result. One caveat on the sample: a single crash trips the signal on many instruments at once, so while the bar count is large, the number of genuinely unrelated extreme events is only a few dozen. Section 5 cuts the data into five periods to test exactly that. Scripts and full results are in `research/lohas-horizons/` in the repo.
+Note: 1,449 instruments and 11,556,801 daily bars, 1927 to 2026. Each instrument is computed on its own before taking the median, so one or two big winners cannot carry the result. One caveat on the sample: a single crash trips the signal on many instruments at once, so while the bar count is large, the number of genuinely unrelated extreme events is only a few dozen. Section 5 cuts the data into five periods to test exactly that.
 
 ![The four combinations across four holding periods, in points above or below random entry](./image1.png)
 
 Only the first combination is positive over all four periods, and it only becomes clear after a full year, at 11.1 percentage points. Over one month it makes just 1.0 point more, which is close to nothing.
 
-The other three are not worth buying. "Extreme Fear, channel still normal" shows up three times as often, yet loses to random entry over three and six months. The two "Extreme Greed" rows are negative in five of their eight cells, giving up 3.6 and 1.7 points respectively over a year. Whether they are a place to sell is a different question, and section 4 handles it.
+The other three did not show the same clear one-year advantage in this index ETF sample. "Extreme Fear, channel still normal" shows up three times as often, yet loses to random entry over three and six months. The two "Extreme Greed" rows are negative in five of their eight cells, giving up 3.6 and 1.7 points respectively over a year. Whether they are a place to sell is a different question, and section 4 handles it.
 
 ## When to buy
 
@@ -109,7 +109,7 @@ Read the last column alongside them. The gain is a median and a few strong names
 
 ![Held one year after Extreme Fear plus below lower edge, points above random entry by instrument type](./image3.png)
 
-Index ETFs are the most reliable, with 42 of 43 doing the same. Taiwan stocks have the largest gain at 16.0 points, and 391 of 480 did the same. Market indices gain only 4.8, because an index is steadier and rarely falls that far. Other overseas stocks have just 47 of 78, so use the tool more cautiously on that group.
+Index ETFs had the most consistent results in this sample, with 42 of 43 doing the same. Taiwan stocks have the largest gain at 16.0 points, and 391 of 480 did the same. Market indices gain only 4.8, because an index is steadier and rarely falls that far. Other overseas stocks have just 47 of 78, so use the tool more cautiously on that group.
 
 Discount those counts a little. A single crash trips the signal across a whole group at once, and the 43 index ETFs fell together in 2008, so 42/43 says the result is stable across instruments rather than standing as 43 independent tests. To find out whether it survives different eras, section 5 cuts the data into five periods.
 
@@ -169,7 +169,7 @@ Note: 35,160 sell points across 1,441 instruments. Taken together, 1,360 of the 
 
 All six groups dodged something. Taiwan stocks dodged the most: selling at this moment avoided 3.7 percentage points more of a decline than selling on a random day. All 23 market indices did the same, but the size is only 1.7.
 
-Single stocks work better here than ETFs and indices. The three single-stock groups run 2.9 to 3.7, the three index and ETF groups only 1.7 to 2.1. That reverses what happens when buying, where index ETFs were the most reliable.
+Single stocks work better here than ETFs and indices. The three single-stock groups run 2.9 to 3.7, the three index and ETF groups only 1.7 to 2.1. That reverses what happens when buying, where index ETFs had the most consistent results.
 
 What it dodges is one month. In the month after selling, the odds of a fall are 61%, against 44% for a random sale. So selling at this moment does duck a real decline.
 
@@ -222,7 +222,7 @@ The financial crisis was an exception, but only over short holds. One month lost
 
 Stretch the window to a year and 2008 comes out ahead instead, by 8.5 points. All five periods are positive over a year, though After 2022 manages only +0.9, close to a tie.
 
-Hold briefly and it is unreliable. Hold long enough and it stands up in every era.
+The one-year difference was positive in these five periods, but varied sharply: the pandemic and rebound stood out, while the post-2022 period was close to break-even. Holding time matters, and so does the period you enter.
 
 ## Further check: do RSI, MACD or volume help?
 

@@ -102,32 +102,31 @@ export function FeatureUpgradeDialog({
                         : t('featureUpgrade.stockAccess.description'),
                     icon: '📈',
                     features: [
-                        { icon: '🚀', text: t('featureUpgrade.features.unlimitedStocks', '無限制股票查詢') },
-                        { icon: '📊', text: t('featureUpgrade.features.realTimeData', '即時市場數據') },
+                        { icon: '🚀', text: t('featureUpgrade.features.unlimitedStocks', '免費清單外的個股分析') },
+                        { icon: '📊', text: t('featureUpgrade.features.realTimeData', '最新台美股市場情緒') },
                         { icon: '📋', text: t('featureUpgrade.features.watchlist', '個人追蹤清單') }
                     ]
                 };
             case 'currentData':
                 return {
-                    title: t('featureUpgrade.currentData.title', '解鎖即時數據'),
+                    title: t('featureUpgrade.currentData.title', '解鎖最新市場情緒'),
                     subtitle: t('featureUpgrade.currentData.subtitle', '獲取最新的市場情緒數據'),
-                    description: t('featureUpgrade.currentData.description', '免費用戶僅能查看歷史數據，升級後可獲得即時市場洞察。'),
+                    description: t('featureUpgrade.currentData.description'),
                     icon: '⚡',
                     features: [
-                        { icon: '📊', text: t('featureUpgrade.features.realTimeData', '即時市場數據') },
-                        { icon: '🎯', text: t('featureUpgrade.features.currentSentiment', '當前市場情緒') },
-                        { icon: '📈', text: t('featureUpgrade.features.liveCharts', '即時圖表更新') },
-                        { icon: '🔔', text: t('featureUpgrade.features.alerts', '市場警報通知') }
+                        { icon: '📊', text: t('featureUpgrade.features.realTimeData', '最新台美股市場情緒') },
+                        { icon: '📈', text: t('featureUpgrade.features.liveCharts') },
+                        { icon: '🎯', text: t('featureUpgrade.features.indicatorDetails') }
                     ]
                 };
             case 'marketSentimentAccess':
                 return {
                     title: t('featureUpgrade.marketSentimentAccess.title', '解鎖完整市場情緒數據'),
-                    subtitle: t('featureUpgrade.marketSentimentAccess.subtitle', '升級至 Pro 方案，獲得即時市場情緒分析'),
+                    subtitle: t('featureUpgrade.marketSentimentAccess.subtitle'),
                     description: t('featureUpgrade.marketSentimentAccess.description', '免費用戶僅能查看部分功能，升級後可獲得完整的市場情緒指標。'),
                     icon: '📊',
                     features: [
-                        { icon: '📈', text: t('featureUpgrade.features.realTimeData', '即時市場數據') },
+                        { icon: '📈', text: t('featureUpgrade.features.realTimeData', '最新台美股市場情緒') },
                         { icon: '🎯', text: t('featureUpgrade.features.currentSentiment', '當前市場情緒') },
                         { icon: '📋', text: t('featureUpgrade.features.watchlist', '個人追蹤清單') }
                     ]
@@ -143,12 +142,12 @@ export function FeatureUpgradeDialog({
                 return {
                     title: t('featureUpgrade.default.title', '升級至 Pro'),
                     subtitle: t('featureUpgrade.default.subtitle', '解鎖完整功能'),
-                    description: t('featureUpgrade.default.description', '升級至 Pro 方案，享受完整的投資分析體驗。'),
+                    description: t('featureUpgrade.default.description'),
                     icon: '✨',
                     features: [
-                        { icon: '🚀', text: t('featureUpgrade.features.unlimitedAccess', '無限制存取') },
-                        { icon: '📊', text: t('featureUpgrade.features.advancedTools', '進階工具') },
-                        { icon: '🎯', text: t('featureUpgrade.features.premiumSupport', '優先支援') }
+                        { icon: '🚀', text: t('featureUpgrade.features.unlimitedStocks') },
+                        { icon: '📊', text: t('featureUpgrade.features.momentum') },
+                        { icon: '📋', text: t('featureUpgrade.features.watchlist') }
                     ]
                 };
         }

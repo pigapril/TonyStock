@@ -1,4 +1,31 @@
 {
+  "sentimentHistoryExamples": {
+    "shortcut": "See SIO’s historical fear cases",
+    "eyebrow": "SIO HISTORICAL CASES",
+    "heading": "2020 and 2022: SIO showed extreme fear near market bottoms",
+    "intro": "During the 2020 pandemic crash and the 2022 bear market, SIO reached very low scores near market bottoms. Compare sentiment with SPY to see the long-term entry opportunities that emerged during deep fear.",
+    "chooseCase": "Choose a historical case",
+    "scoreLabel": "SIO US Fear & Greed score (0–100)",
+    "priceLabel": "SPY historical price (USD)",
+    "chartDescription": "SIO scores and SPY closing prices from {{start}} to {{end}}. Both panels share the date axis. Orange markers show {{count}} historical sentiment lows.",
+    "markerLabel": "Orange marks: historical sentiment lows (marked in hindsight)",
+    "scoreValue": "Score {{score}}",
+    "nextHeading": "From historical lows to the latest sentiment",
+    "nextBody": "Compare the full history and eight signals in SIO. Pro adds the latest sentiment and recent changes.",
+    "cta": "Explore SIO US market sentiment",
+    "cases": {
+      "pandemic": {
+        "label": "2020 pandemic shock",
+        "title": "2020: extreme fear around the pandemic bottom",
+        "reading": "When SPY bottomed on March 23, 2020, SIO was already at about 1.5. It fell to 0.6 on April 7. Very low scores clustered around the crash bottom and early rebound, helping you identify long-term entry opportunities during market fear."
+      },
+      "tightening": {
+        "label": "2022 market correction",
+        "title": "2022: October’s low score came near the bear-market bottom",
+        "reading": "SIO fell to about 4.2 on October 3, 2022; SPY bottomed on October 12. Low scores also appeared in July and at year-end. If you are looking to build a position in stages, these readings help identify periods of extreme market fear."
+      }
+    }
+  },
   "nav": {
     "home": "Home",
     "priceAnalysis": "LOHAS Five-Line",
@@ -125,9 +152,9 @@
     "researchLink": "Research this asset on Yahoo Finance",
     "periodComparison": "Performance by period",
     "benchmarkComparison": "Versus SPY",
-    "benchmarkAhead": "+{{value}} %",
-    "benchmarkBehind": "-{{value}} %",
-    "benchmarkEqual": "0.0 %",
+    "benchmarkAhead": "+{{value}} pp",
+    "benchmarkBehind": "−{{value}} pp",
+    "benchmarkEqual": "0 pp",
     "relativeTrendTitle": "Relative strength versus SPY · 60 sessions",
     "relativeTrendLine": "Relative strength line",
     "relativeTrendAverage": "20-session average",
@@ -889,18 +916,18 @@
         },
         "snapshot": {
           "title": "How should you read this snapshot?",
-          "subtitle": "This snapshot through {{date}} carries an SIO score of {{score}}, putting sentiment in {{sentiment}} territory at that time. It does not describe today's market, but it still shows where risk appetite stood then.",
+          "subtitle": "As of {{date}}, SIO scored {{score}}, indicating {{sentiment}}.",
           "section1": {
-            "title": "1. This is a readable slice of market mood",
-            "body": "Even though it is not live, the snapshot still combines retail sentiment, hedging demand, volatility pressure, capital flows, and positioning into one composite reading. The {{score}} score is the condensed read of those conditions at that point in time."
+            "title": "1. Start with the overall sentiment",
+            "body": "The score combines retail sentiment, hedging demand, volatility and institutional positioning to show whether fear or greed dominates."
           },
           "section2": {
-            "title": "2. The key is whether sentiment had already become extreme",
-            "body": "If the snapshot sits very low, fear was likely spreading at that time. If it sits very high, sentiment was probably overheated. With this snapshot leaning {{sentiment}}, it becomes easier to see which side of the market was in control."
+            "title": "2. See which signals drive the score",
+            "body": "Open the indicators below to compare their scores and history. Similar composite scores can come from different combinations of signals."
           },
           "section3": {
-            "title": "3. To judge the market now, you still need live data",
-            "body": "This snapshot helps you understand the framework and the historical position, but it cannot tell you whether the market still looks the same today."
+            "title": "3. Compare prices and what followed",
+            "body": "Review extreme sentiment on the historical chart and see how prices changed afterward. Pro lets you apply the same approach to the latest data."
           }
         }
       },
@@ -916,7 +943,7 @@
       "currentTitle": "Which indicators are driving sentiment",
       "snapshotTitle": "Which indicators are shaping this snapshot",
       "currentDescription": "The SIO Fear & Greed Index is built from multiple sentiment sub-indicators. This view helps you compare which signals are currently pushing market sentiment and where they sit now.",
-      "snapshotDescription": "The SIO Fear & Greed Index is built from multiple sentiment sub-indicators. You are viewing the snapshot through {{date}}, showing which signals were shaping market sentiment at that point.",
+      "snapshotDescription": "Compare the sentiment signals behind the composite score.",
       "mobileEyebrowCurrent": "Indicator detail",
       "mobileEyebrowSnapshot": "Snapshot through {{date}}",
       "trend": {
@@ -958,8 +985,8 @@
     "dataLimitation": {
       "toastMessage": "💡 Latest data requires Pro. Free version data up to two months ago.",
       "upgradeToast": "🔒 This feature requires Pro plan. Upgrade for complete market sentiment analysis!",
-      "bannerTitle": "Free plan can only view market sentiment data through {{date}}",
-      "bannerBody": "The free plan still lets you explore the gauge, history, and indicator composition; the latest two months and newest changes require Pro.",
+      "bannerTitle": "Free data through {{date}}",
+      "bannerBody": "Upgrade to Pro for the latest sentiment, recent trends and changes in each indicator.",
       "currentGaugeHeadline": "Current US market sentiment",
       "snapshotGaugeHeadline": "US market sentiment on {{date}}",
       "upgradeForLatest": "Upgrade for latest data",
@@ -967,14 +994,14 @@
       "overlayMinimalLabel": "Unlock latest data",
       "historicalSnapshotLabel": "Historical comparison through {{date}}",
       "currentCardNote": "Upgrade to follow current sentiment and the latest 60-day moves.",
-      "historyRangeNote": "Free users can switch every range, but charts stop at {{date}}. The shaded area on the right covers the latest two months available on Pro.",
-      "historyShortRangeNote": "Most of this short range falls inside the latest two months. The free plan only shows data through {{date}}; the rest requires Pro.",
+      "historyRangeNote": "Browse all historical ranges. Pro includes the most recent two months.",
+      "historyShortRangeNote": "Most of this period falls within Pro’s latest-data window. Choose a longer range to explore the history.",
       "overlayEyebrow": "Latest window",
       "overlayTitle": "Upgrade to view latest trend",
       "overlayCompactTitle": "Upgrade to view latest trend",
       "overlayBody": "Free plan data currently stops at {{date}}. Upgrade to see today's sentiment and the latest changes.",
       "compositionEyebrow": "Snapshot note",
-      "compositionBody": "The indicator cards and detail view below currently reflect the snapshot through {{date}}."
+      "compositionBody": "Compare individual scores to see which signals shape the composite."
     },
     "descriptions": {
       "composite": {
@@ -992,7 +1019,7 @@
       },
       "aaiiSpread": {
         "shortDescription": "The AAII Investor Sentiment Survey weekly asks members their outlook for the stock market over the next six months (bullish, bearish, neutral). The Bull-Bear Spread (bullish percentage minus bearish percentage) is a common measure of retail investor sentiment.",
-        "detailDescription": "This indicator looks directly at whether retail investors are leaning bullish or bearish. When everyday investors become overwhelmingly optimistic, it usually means a lot of good news has already been priced in. When bearish responses dominate, fear has often spread broadly through the market. It works as a sentiment gauge because retail positioning is one of the clearest expressions of crowd emotion, and extreme readings often show up near turning points.",
+        "detailDescription": "The weekly survey asks members about stocks over the next six months. A higher bull-minus-bear spread signals greater optimism. Compare it with historical extremes to spot crowded sentiment.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1002,7 +1029,7 @@
       },
       "cboeRatio": {
         "shortDescription": "The CBOE Put/Call Ratio is an important indicator of market speculation sentiment. It calculates the ratio of traded put option contracts to call option contracts.",
-        "detailDescription": "This indicator shows whether the market has recently been loading up on protective puts or aggressively buying calls. A higher put/call ratio usually means investors are hedging and worrying about downside, while a lower ratio suggests they are leaning into upside bets. It is useful for reading sentiment because options markets often reveal fear and greed earlier than cash markets, and the 5-day average smooths out one-day noise.",
+        "detailDescription": "The five-day average compares put volume with call volume. Higher ratios usually signal more hedging or bearish demand; lower ratios lean optimistic. Options trading structure can also affect the ratio, so compare it with other signals.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1012,7 +1039,7 @@
       },
       "marketMomentum": {
         "shortDescription": "The Market Momentum indicator measures the S&P 500 index's position relative to its 125-day moving average (approximately the half-year line). It reflects the strength of the market's medium-term trend.",
-        "detailDescription": "This indicator uses price versus its long-term moving average to judge whether the market has run too far too fast in either direction. When price sits far above trend for a long stretch, chasing behavior is usually strong and the market may be overheating. When price is deeply below trend, pessimism is often already heavy. It works as a sentiment read because emotion eventually shows up in price extension: the more stretched momentum becomes, the more one-sided the crowd usually is.",
+        "detailDescription": "Compare the S&P 500 with its 125-day average. Far above it, gains and buying pressure are stronger; far below it, losses and fear are more pronounced. Watch how far price has stretched from its trend.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1022,7 +1049,7 @@
       },
       "marginShortRatio": {
         "shortDescription": "The margin short ratio compares margin lending and short-selling activity to show shifts in leverage and bearish positioning.",
-        "detailDescription": "When the margin short ratio rises, it usually means short positioning is increasing relative to margin buying, which points to a more defensive or bearish crowd. When it falls, downside pressure eases and risk appetite is generally stronger. It works as a sentiment read because changes in lending and shorting behavior often show how traders are leaning before price fully reflects it.",
+        "detailDescription": "The ratio compares short-selling balances with margin-financing balances. A rise means short positions make up a larger share; a fall means a smaller share. Check both balances to see what drove the change.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1032,7 +1059,7 @@
       },
       "twMarketMomentum": {
         "shortDescription": "Taiwan market momentum measures the Taiwan weighted index's position relative to its medium-term trend and reflects chasing pressure in local equities.",
-        "detailDescription": "This indicator looks at how far Taiwan's market sits above or below its trend line to judge whether prices have become stretched. When the index stays well above trend, buyers are chasing and sentiment is typically optimistic. When the index is far below trend, pessimism is more dominant and the market is usually in defense mode. It works as a sentiment read because market mood eventually shows up as price extension away from trend.",
+        "detailDescription": "Compare the TAIEX with its medium-term average. Well above it, buying pressure is stronger; well below it, the market leans defensive. Use the distance to assess how far the trend has stretched.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1042,7 +1069,7 @@
       },
       "etaDeviation189d": {
         "shortDescription": "Effective trading accounts measures actively trading Taiwan accounts versus their 189-day trend, highlighting shifts in participation.",
-        "detailDescription": "This indicator compares the current count of actively trading accounts to its 189-day trend, so it reveals whether participation is unusually heated or cooled relative to the longer trajectory. When the reading sits well above trend, more accounts are being drawn in and sentiment is generally risk-on. When it sits well below trend, participation is thinning and risk appetite is fading. It works as a sentiment read because expansion or contraction in the crowd's participation versus trend often leads broader shifts in attention and risk appetite.",
+        "detailDescription": "Compare active trading accounts with their 189-day trend. Above it, participation is stronger; below it, trading is quieter. Read it alongside prices to see whether a move is attracting more accounts.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1052,7 +1079,7 @@
       },
       "twVix": {
         "shortDescription": "The Taiwan VIX is the TAIFEX implied volatility index on TAIEX options and reads the cost of hedging Taiwan equities.",
-        "detailDescription": "TW VIX essentially measures how much investors are willing to pay for downside protection, which ties directly to fear. When TW VIX rises, expected volatility and hedging demand are increasing and the market is tense. When it falls, hedging demand cools and risk appetite rebuilds. It works as a sentiment read because changes in the cost of protection typically reveal trader anxiety earlier than price itself.",
+        "detailDescription": "TAIEX options prices reflect expected volatility over the next 30 days. Rising readings signal expectations of larger swings and greater hedging pressure; falling readings indicate calmer conditions.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1062,7 +1089,7 @@
       },
       "twPcr": {
         "shortDescription": "The TAIEX options Put/Call ratio compares put activity (or open interest) to call activity, revealing the hedging-versus-speculation balance.",
-        "detailDescription": "PCR puts put demand and call demand on the same scale. When PCR is elevated, hedging dominates and fear is widespread — which historically clusters near durable lows. When PCR is depressed, call demand dominates and speculation is heating up, which often maps to overheated conditions. It works as a sentiment read because options positioning reflects the direction in which traders are actually willing to commit capital.",
+        "detailDescription": "Compare TAIEX option puts with calls. High ratios lean toward hedging or bearish positioning; low ratios indicate stronger call demand. At extremes, check whether price is stabilizing or weakening.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1072,7 +1099,7 @@
       },
       "usdTwd": {
         "shortDescription": "The USD/TWD exchange rate tracks capital-flow pressure in and out of Taiwan and links to foreign-investor risk appetite for Taiwan equities.",
-        "detailDescription": "When the TWD weakens (USD/TWD rises), foreign capital is typically flowing out and hedging demand is rising — a headwind for Taiwan equities. When the TWD strengthens (USD/TWD falls), capital is returning and global risk appetite for Taiwan assets is generally improving. It works as a sentiment read because FX reflects both international risk posture and the allocation preference toward Taiwan assets, and often leads equity sentiment.",
+        "detailDescription": "A rising USD/TWD means a weaker Taiwan dollar and potentially more foreign-flow and currency pressure on Taiwan stocks. A falling rate means a stronger Taiwan dollar. Rates and the US dollar also matter; compare with foreign positioning.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1082,7 +1109,7 @@
       },
       "marginMaintenanceRatio": {
         "shortDescription": "The margin maintenance ratio tracks the financial health of Taiwan margin accounts and is the primary read on retail leverage stress.",
-        "detailDescription": "A higher margin maintenance ratio means margin positions are safer and further from forced-liquidation thresholds, while a falling ratio means margin losses are widening and forced-selling pressure is rising. During sharp drawdowns this ratio often reveals that retail leverage has reached its breaking point faster than the index does. It works as a sentiment read because the safety buffer of margin traders directly reflects the willingness and capacity of Taiwan retail to carry risk.",
+        "detailDescription": "Track the value of margin-financed holdings relative to borrowing. Falling ratios increase margin-call and forced-selling pressure; rising ratios ease it. This is especially useful during sharp declines.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1092,7 +1119,7 @@
       },
       "finiFutures": {
         "shortDescription": "Foreign-institution net futures open interest tracks the net long/short TAIEX futures position held by foreign institutions, reflecting their directional bet on the Taiwan market.",
-        "detailDescription": "Foreign institutions are one of the most influential capital groups in Taiwan, and their net long or short TAIEX futures position reveals hedging or offensive intent more directly than cash-market flows. When net longs expand to historically elevated levels, sentiment is generally optimistic and the setup often coincides with interim tops. When net shorts deepen, foreign money is defensive and pessimism is usually already priced in. It works as a sentiment read because futures positioning represents actual capital carrying directional risk.",
+        "detailDescription": "Subtract foreign investors’ TAIEX futures shorts from their longs. More net longs mean more bullish positioning; more net shorts mean more bearish or hedged positioning. Compare with cash-market flows and currency moves.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1102,7 +1129,7 @@
       },
       "marketBreadth": {
         "shortDescription": "Market breadth compares the number of advancing versus declining Taiwan stocks to measure how widely a rally or decline is participating.",
-        "detailDescription": "When the index rallies it does not mean every stock is rallying, and breadth tells you exactly that. Strong breadth means advancing names are widespread and the rally is broad — a hallmark of greed. Weakening breadth means even a rising index is being carried by a handful of heavyweights, which quietly warns of internal exhaustion. It works as a sentiment read because breadth reflects whether the broader crowd is aligned with the trend, not just the headline index.",
+        "detailDescription": "See whether gains are spreading across stocks. If the index rises while breadth weakens, a few heavyweights may be carrying it. When both strengthen, more stocks are taking part.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1112,7 +1139,7 @@
       },
       "vixMA50": {
         "shortDescription": "The VIX Index (Volatility Index), often referred to as the 'Fear Gauge,' measures the market's expectation of 30-day forward-looking volatility of the S&P 500 Index. Here, the 50-day moving average of the VIX is calculated to observe long-term trends in market sentiment.",
-        "detailDescription": "VIX is essentially a measure of how much investors are willing to pay for protection, which ties closely to fear. Here we use the 50-day average instead of one-day spikes, so the signal is better for medium-term sentiment pressure rather than short-lived headlines. When VIX MA50 rises, the market is staying tense, defensive, and concerned about broader risk. When it falls, panic is cooling and risk appetite is beginning to recover.",
+        "detailDescription": "The 50-day VIX average tracks persistent fear pressure while smoothing one-day spikes. A rising average signals sustained tension; a falling average indicates cooling volatility expectations.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1122,7 +1149,7 @@
       },
       "safeHaven": {
         "shortDescription": "The Safe Haven Demand indicator compares the difference between the total return of stocks (risk asset) and US Treasury bonds (safe-haven asset)over the past 20 trading days. It reflects the extent of fund flows into safe-haven assets.",
-        "detailDescription": "This indicator compares whether money has recently preferred equities or safe-haven assets like Treasuries. When safe havens clearly outperform, the market is usually pulling back from risk and leaning defensive. When equities outperform, investors are more willing to take risk and sentiment is more optimistic. It works because flows themselves reflect risk appetite: where money is moving often tells you whether the market is in offense or defense mode.",
+        "detailDescription": "Compare SPY and US Treasury ETF IEF returns over the past 20 trading days. Stocks leading bonds usually suggest stronger risk appetite; bonds leading stocks suggest a more defensive market.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1131,8 +1158,8 @@
         ]
       },
       "junkBond": {
-        "shortDescription": "The yield spread between junk bonds (high-yield corporate bonds) and investment-grade corporate bonds reflects the market's attitude towards credit risk. Junk bonds are riskier and typically have higher yields.",
-        "detailDescription": "The junk bond spread shows whether investors are willing to hold lower-quality corporate debt. When spreads widen, investors are demanding more compensation for credit risk, which usually means fear is rising. When spreads tighten, investors are becoming more comfortable with risk and sentiment is often leaning toward greed. It works as a sentiment indicator because credit markets reflect willingness to take risk very directly, not just price direction.",
+        "shortDescription": "Credit spreads show the risk premium demanded for corporate debt. This measure compares the option-adjusted spreads (OAS) of high-yield and investment-grade bonds over US Treasuries.",
+        "detailDescription": "Compare high-yield and investment-grade corporate credit spreads. A widening gap signals demand for more risk compensation; a narrowing gap suggests greater willingness to take credit risk. A smaller gap does not mean high-yield bond yields are below investment-grade yields.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1142,7 +1169,7 @@
       },
       "cotIndex": {
         "shortDescription": "The COT Index (Commitments of Traders Index), based on the weekly report from the CFTC, measures the net position (longs minus shorts) of large speculators (often considered more informed traders) in the S&P 500 futures market relative to historical levels.",
-        "detailDescription": "This indicator looks at whether speculative futures positions are tilted long or short, which effectively shows where leveraged money is standing. When speculators become heavily long, the market consensus may already be very optimistic. When positioning turns heavily short, pessimism is building. It works as a sentiment gauge because large speculative players are not just expressing opinions, they are backing them with positions, and crowded positioning often signals crowded trades.",
+        "detailDescription": "Weekly CFTC reports track changes in speculative and hedging positions in S&P 500 futures. More bullish speculative positioning leans optimistic; more bearish positioning leans defensive. Historical extremes can reveal crowded trades.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1152,7 +1179,7 @@
       },
       "naaimIndex": {
         "shortDescription": "The NAAIM Exposure Index (National Association of Active Investment Managers Exposure Index) surveys its members (active investment managers) weekly on their current equity market exposure level (0% = no stocks, 100% = fully invested, >100% = leveraged).",
-        "detailDescription": "This indicator shows how much equity exposure active investment managers are actually carrying. When exposure is very high, professional investors are broadly confident and optimism is already widespread. When exposure falls sharply, professional money is pulling risk back. It works as a sentiment measure because real portfolio exposure is more revealing than commentary: whether managers are willing to put actual capital to work tells you a lot about market confidence.",
+        "detailDescription": "The weekly survey summarizes active managers’ reported equity exposure. Near 100% means near-full allocation, above 100% may involve leverage, and sharp reductions signal less equity risk. Use it to track managers’ participation in the market.",
         "sections": [
           {
             "title": "Interpretation Method",
@@ -1197,7 +1224,7 @@
       }
     },
     "restricted": {
-      "gaugeTitle": "Real-time Sentiment Gauge",
+      "gaugeTitle": "Latest Market Sentiment Gauge",
       "gaugeDescription": "Upgrade to Pro to view current market sentiment index and detailed analysis",
       "compositionTitle": "Unlock Complete Indicator Analysis",
       "compositionDescription": "View latest data for all indicators, contribution analysis, and detailed insights",
@@ -1254,8 +1281,10 @@
     "pageTitle": "Legal Notice & Privacy Policy",
     "pageDescription": "Sentiment Inside Out website's terms of service, privacy policy, disclaimers, and user rights information",
     "keywords": "privacy policy, terms of service, legal notice, user rights, data protection, disclaimer",
-    "lastUpdated": "Last Updated: September 14, 2025",
-    "effectiveDate": "Effective Date: September 14, 2025"
+    "lastUpdated": "Last Updated: October 8, 2026",
+    "effectiveDate": "Effective Date: September 14, 2025",
+    "documentLoading": "Loading terms…",
+    "documentError": "Unable to load the terms. Refresh the page and try again."
   },
   "sponsorUs": {
     "pageTitle": "Sponsor Us",
@@ -1379,7 +1408,7 @@
         "point1": "The middle line is a trend line calculated from the price, showing the long-term direction of the holding. Two standard-deviation lines either side mark how far price strays from that trend. The further price sits from the middle line, the more likely it is to revert towards it — which is what tells you whether the current price sits in greed or in fear.",
         "point2": "The LOHAS Channel compares price against the range it has traded in over the last 20 weeks, as a second read on sentiment.",
         "point3": "Touching the top line of the five-line chart means \"Extreme Greed\". Check whether the LOHAS Channel has also broken above its upper edge: when both have, price may be about to weaken; when only the five-line chart has, it has a chance of running a little further.",
-        "point4": "Touching the bottom line of the five-line chart means \"Extreme Fear\". Check whether the LOHAS Channel has also broken below its lower edge: when both have, backtested against history, the odds of being up after a year are 88%, against 74% for random entry."
+        "point4": "At Extreme Fear, check whether price is also below the LOHAS Channel. Across 43 index ETFs in this backtest, the median share of entries ending higher after one year was 88% when both conditions held, versus 74% for random entry."
       },
       "ulband": {
         "title": "What is the LOHAS Channel?",
@@ -1396,7 +1425,7 @@
         "title": "What is \"Other spans\"?",
         "point1": "The same holding can read differently across spans. For example, the 0.5-year span may sit at extreme fear while the 3.5-year span shows greed — which reads as: it has fallen hard lately, but on a longer view it has not yet returned to a low.",
         "point2": "When all three spans point the same way, the signal is stronger than any single span: short, medium and long term all show the same extreme.",
-        "point3": "Backtested across 890 US stocks and 895 Taiwan stocks: when only the 3.5-year span sat at extreme fear, the odds of being up a year later were 73%; when all three spans sat at extreme fear at once, the odds of being up a year later rose to 78%."
+        "point3": "When all three horizons show Extreme Fear, check whether price is also below the channel and whether the broad market shows fear too. Together, these conditions help distinguish an isolated correction from a widespread decline."
       }
     },
     "toast": {
@@ -1438,19 +1467,19 @@
     "combined": {
       "fearConfirmed": {
         "title": "Extreme Fear + Below the lower edge",
-        "body": "Backtested against history, index ETFs: held for a year this makes 11.1 percentage points more than random entry, and 42 of the 43 show the same result. Held one month it makes only 1.0 point more, which is barely a difference. It does not always turn straight away either: price falls a further 10.0% at the deepest point."
+        "body": "Price is below both the five-line chart and the channel: a fear combination worth watching. Backtested across 43 index ETFs, one-year returns exceeded random entry by 11.1 percentage points. Prices could still fall along the way."
       },
       "fearOnly": {
         "title": "Extreme Fear, but still inside the channel",
-        "body": "The five-line chart is at extreme fear, but price is still inside the channel. Backtested against history, index ETFs: this occurs on 16 days a year, three times as often as both charts reaching an extreme, yet loses to random entry over three and six months and makes only 1.3 points more over a year. Once price also breaks below the channel's lower edge, the numbers change."
+        "body": "The five-line chart shows Extreme Fear while price remains inside the channel. Watch whether it breaks the lower edge next. Backtested across 43 index ETFs, this state alone added just 1.3 percentage points over random entry after one year."
       },
       "greedConfirmed": {
         "title": "Extreme Greed + Above the upper edge",
-        "body": "Backtested against history, index ETFs: do not rush to sell here. Wait for price to return inside the channel. Sell then and the month that follows dodges 1.7 percentage points more than a sale on any random day, with 40 of the 43 showing the same result; sell on the break itself and almost nothing is dodged, because price is usually still climbing that month."
+        "body": "Extreme Greed coincides with a break above the channel. Watch for price to return inside. Backtested across 43 index ETFs, selling on that return avoided 1.7 percentage points more of the following month’s decline than random selling."
       },
       "greedOnly": {
         "title": "Extreme Greed, but still inside the channel",
-        "body": "The five-line chart is at extreme greed, but price is still inside the channel. Backtested against history, index ETFs: three months is 0.9 points ahead, but a year is 3.6 points behind, with only 8 of the 43 ahead. The run usually is not over; hold long enough and the rest catches up."
+        "body": "The five-line chart shows Extreme Greed while price stays inside the channel. The trend may continue, but holding time matters: backtested across 43 index ETFs, one-year returns trailed random entry by 3.6 percentage points."
       }
     },
     "tour": {
@@ -1477,7 +1506,7 @@
       }
     },
     "ladder": {
-      "heading": "When the conditions below hold at the same time, the odds of being up over the next year are higher",
+      "heading": "Fear conditions that stood out in historical backtests",
       "met": "Met",
       "notMet": "Not met",
       "extremeFear": {
@@ -1647,14 +1676,14 @@
       "freeListHint": "These major indices & ETFs are free to analyze right now:"
     },
     "currentData": {
-      "title": "Unlock Real-Time Data",
-      "subtitle": "Get the latest market sentiment insights",
-      "description": "Free users can only view historical data. Upgrade for real-time market insights."
+      "title": "Unlock the latest market sentiment",
+      "subtitle": "Follow the latest sentiment and recent changes",
+      "description": "Where does sentiment stand now? Pro reveals the latest US and Taiwan sentiment, the past two months of trends and the signals behind them."
     },
     "marketSentimentAccess": {
       "title": "Unlock Complete Market Sentiment Data",
-      "subtitle": "Upgrade to Pro for real-time market sentiment analysis",
-      "description": "Free users can only access limited features. Upgrade for complete market sentiment indicators."
+      "subtitle": "See the latest US and Taiwan sentiment and all indicators",
+      "description": "Go from the composite score to individual signals. Pro provides the latest data to compare US and Taiwan sentiment with its history."
     },
     "technicalIndicators": {
       "title": "Unlock more technical indicators",
@@ -1663,18 +1692,18 @@
     "default": {
       "title": "Upgrade to Pro",
       "subtitle": "Unlock Complete Features",
-      "description": "Upgrade to Pro plan for the complete investment analysis experience."
+      "description": "Bring the latest sentiment, stock analysis and your watchlist together to follow the investments that matter to you."
     },
     "features": {
-      "unlimitedStocks": "Unlimited Stock Analysis",
-      "realTimeData": "Daily Market Sentiment",
+      "unlimitedStocks": "Stock analysis beyond the free list",
+      "realTimeData": "Latest US and Taiwan market sentiment",
       "watchlist": "Personal Watchlist",
       "currentSentiment": "Current Market Sentiment",
-      "liveCharts": "Live Chart Updates",
-      "alerts": "Market Alert Notifications",
+      "liveCharts": "Sentiment trends over the past two months",
       "unlimitedAccess": "Unlimited Access",
-      "advancedTools": "Advanced Tools",
-      "premiumSupport": "Priority Support"
+      "advancedTools": "RSI, MACD and KD indicators",
+      "indicatorDetails": "Full indicator scores and history",
+      "momentum": "Full momentum rankings and stock-screening results"
     },
     "upgradeButton": "Upgrade to Pro",
     "laterButton": "Maybe Later",
@@ -1690,7 +1719,7 @@
   },
   "subscription": {
     "pageTitle": "Subscription Plans",
-    "pageDescription": "Compare Sentiment Inside Out subscription plans and upgrade to unlock full market sentiment analysis, unlimited watchlist tracking, and an ad-free experience.",
+    "pageDescription": "Compare Free and Pro: explore index ETFs and historical sentiment for free. Pro adds the latest US and Taiwan sentiment, stock analysis, momentum screening and watchlists.",
     "upgradeRequired": {
       "title": "Upgrade Required"
     },
@@ -1736,7 +1765,7 @@
     },
     "subscriptionPlans": {
       "title": "Choose the plan that's right for you",
-      "subtitle": "Upgrade to unlock more features and unlimited usage",
+      "subtitle": "Explore with Free. Follow markets and stocks with Pro.",
       "popular": "Most Popular",
       "upgrade": "Upgrade",
       "downgrade": "Downgrade",
@@ -1752,12 +1781,13 @@
       "freePlan": {
         "name": "Free Plan",
         "price": "Free",
-        "description": "Perfect for beginners entering the stock market who prefer passive investing",
+        "description": "Start with index ETFs and historical sentiment",
         "features": [
-          "Lohas Spectrum: Market indices and ETFs only",
-          "Market Sentiment: Historical data (2+ months old only)",
+          "Lohas Spectrum: major indices and free ETFs, with MA",
+          "Market Sentiment: historical data delayed by two months",
           "Watchlist Feature: View multiple stock sentiment levels",
-          "Ad-free Experience"
+          "Ad-free Experience",
+          "Market Momentum: group comparisons, selected ETFs and screening counts"
         ]
       },
       "proPlan": {
@@ -1766,12 +1796,14 @@
         "priceYearly": "NT$2,990",
         "period": "/month",
         "periodYearly": "/year",
-        "description": "Complete features for professional investors",
+        "description": "Follow the latest sentiment and your investment list",
         "features": [
-          "Lohas Spectrum: Unlimited usage",
-          "Market Sentiment: Unlimited usage",
-          "Watchlist Feature: View multiple stock sentiment levels",
-          "Watchlist Storage: 10 categories, 50 stocks per category",
+          "Lohas Spectrum: analyze stocks beyond the free list",
+          "Market Sentiment: latest US and Taiwan scores and full history",
+          "Market Momentum: full ETF rankings, constituents and screening results",
+          "RSI, MACD and KD: compare price momentum",
+          "Watchlist Feature: compare sentiment levels across holdings",
+          "10 watchlist categories, up to 50 holdings each",
           "Ad-free Experience"
         ]
       },
@@ -2645,9 +2677,9 @@
       "retail-sentiment-small-futures": "Retail Mini-Futures Net Position"
     },
     "percentileCaption": "historical percentile",
-    "delayNoticeCta": "Upgrade to Pro for live data",
+    "delayNoticeCta": "Upgrade to Pro for the latest data",
     "delayBannerTitle": "Free plan: SIO-calculated data shown up to {{date}}",
-    "delayBannerBody": "Third-party indicators (CNN, BofA, AAII and others) stay current. Composites and historical percentiles are SIO's own work and are held back two months on the free plan; cards marked “Delayed” below are those.",
+    "delayBannerBody": "CNN, BofA, AAII and other third-party indicators show their latest published readings. SIO composites and historical percentiles are delayed by two months on Free and marked “Delayed”.",
     "delayedTag": "Delayed",
     "asOf": "As of"
   },
@@ -2717,7 +2749,7 @@
       "historyTitle": "Historical range and extremes",
       "history": "The series goes back to 2002. We have tracked it continuously since November 2023, over which it has ranged from 1.4 to 9.7. Readings above 8.0 are historically uncommon; the 9.7 print in August 2026 was the highest since 2021. Note that the gauge can sit in extreme territory for weeks or longer, so reaching an extreme and the market turning are two different events.",
       "relationToSioTitle": "How it differs from the SIO Fear & Greed Index",
-      "relationToSio": "The BofA gauge carries two practical limitations. First, the underlying report is paid research that retail investors cannot access, so the number reaches the public only through financial media, and some weeks nobody reports it. Second, it updates once a week, so a mid-week move leaves the gauge stuck on last week's reading. The SIO Fear & Greed Index addresses both: it updates every trading day from public market data covering volatility, put/call ratios, credit spreads and momentum, with a complete series and no gaps. The two use different inputs, so gaps between them are normal, and those gaps usually say more than either number alone.",
+      "relationToSio": "The BofA Bull & Bear Indicator updates weekly and tracks extremes in flows and positioning. SIO combines eight sentiment signals every trading day, so you can follow rising fear between BofA reports. Compare today’s score with readings around the 2020 and 2022 market bottoms to gauge whether pessimism is approaching historical fear extremes—a reference for building a position in stages.",
       "relationToSioCta": "View the SIO US Fear & Greed Index",
       "source": "BofA Global Investment Strategy. Readings are published with The Flow Show."
     },
@@ -2941,24 +2973,24 @@
       "howToRead": "Lower means more panic, higher means more optimism. Because each input is standardised over a long window, an extreme reading means extreme relative to more than two decades of history rather than just the past few months.",
       "bands": [
         {
-          "range": "0 to 24",
-          "meaning": "Extreme fear. The market is in panic and margin balances typically contract sharply."
+          "range": "0–20",
+          "meaning": "Extreme Fear. The market leans defensive."
         },
         {
-          "range": "25 to 44",
-          "meaning": "Fear. Sentiment leans defensive."
+          "range": "Above 20 to 40",
+          "meaning": "Fear. Risk appetite is low."
         },
         {
-          "range": "45 to 55",
-          "meaning": "Neutral. Buyers and sellers are evenly matched."
+          "range": "Above 40 to 60",
+          "meaning": "Neutral. Sentiment is not strongly tilted either way."
         },
         {
-          "range": "56 to 75",
-          "meaning": "Greed. Risk appetite is rising."
+          "range": "Above 60 to 80",
+          "meaning": "Greed. Risk appetite is elevated."
         },
         {
-          "range": "76 to 100",
-          "meaning": "Extreme greed. Strong willingness to chase prices."
+          "range": "Above 80 to 100",
+          "meaning": "Extreme Greed. Sentiment is running hot."
         }
       ],
       "historyTitle": "Historical range of the Taiwan Fear & Greed Index",
@@ -2987,7 +3019,7 @@
         },
         {
           "range": "Elevated (above 25% in the US, above 16% in Taiwan)",
-          "meaning": "Higher than 90% of days in this market’s history. The decline is broad — not just one holding."
+          "meaning": "Higher than on roughly nine out of ten historical days, indicating fear has spread across more assets. This is a historical rank, not a 90% share of assets."
         },
         {
           "range": "Very high",
@@ -2995,7 +3027,7 @@
         }
       ],
       "historyTitle": "History of this number",
-      "history": "The US data starts in 1996 and Taiwan in 2000. Breadth running higher than 90% of days has happened about once a year on average, usually lasting only a few days.",
+      "history": "US history starts in 1996 and Taiwan history in 2000. The 90th historical percentile means breadth is higher than on roughly nine out of ten observed days—not that 90% of assets are at Extreme Fear. Extreme readings can persist.",
       "relationToSioTitle": "Using it alongside a single stock",
       "relationToSio": "On a stock’s LOHAS five-line page, when that stock is already at extreme fear, the status row also shows how broad the market’s fear is that day. You can see whether only this one holding has reached extreme fear, or the whole market with it.",
       "relationToSioCta": "Open the LOHAS five-line analysis",
@@ -3009,6 +3041,29 @@
     "loading": "Loading market moves",
     "unavailable": "Market moves are temporarily unavailable",
     "itemLabel": "{{name}}, index {{value}}, change {{percent}}"
+  },
+  "freeTrial": {
+    "title": "30-day free trial",
+    "planCard": {
+      "startTrial": "Start a 30-day free trial"
+    },
+    "disclosureTitle": "Before you start",
+    "disclosure": {
+      "length": "Use all Pro features for 30 days",
+      "noCard": "No credit card is needed, and starting the trial is free",
+      "expiry": "After 30 days, your plan returns to Free. Subscribe if you want to keep Pro. You will not be charged automatically"
+    },
+    "start": "Start free trial",
+    "starting": "Starting your trial",
+    "successTitle": "Your trial has started",
+    "successBody": "Pro features are available for 30 days. You will not be charged when the trial ends.",
+    "successCta": "Get started",
+    "accountExpiry": "Your plan returns to Free after the trial. You will not be charged automatically.",
+    "goToSubscription": "Back to plans",
+    "errors": {
+      "notEligible": "The free trial is only for first-time subscribers.",
+      "generic": "The trial could not be started. Please try again later."
+    }
   },
   "cardTrial": {
     "title": "30-day free trial",
@@ -3101,5 +3156,67 @@
     "description": "This address may have changed. Return home or browse the guides.",
     "home": "Return home",
     "articles": "Browse guides"
+  },
+  "announcement": {
+    "title": "📢 Announcement",
+    "close": "Close announcement",
+    "confirm": "Got it"
+  },
+  "paymentStatus": {
+    "missingOrder": "Order information is missing",
+    "incomplete": "Payment was not completed",
+    "queryFailed": "Unable to check payment status",
+    "queryError": "An error occurred while checking payment status",
+    "genericFailure": "There was a problem with the payment. Please try again later.",
+    "processingTitle": "Processing payment…",
+    "processingBody": "Checking your payment status. Please wait.",
+    "orderLabel": "Order number:",
+    "elapsedLabel": "Elapsed time:",
+    "retryLabel": "Retry count:",
+    "processingTime": "Payment processing usually takes 1–3 minutes",
+    "keepOpen": "Keep this page open while we check",
+    "autoCheck": "We will keep checking for a response",
+    "manualCheck": "Check again",
+    "successTitle": "Payment successful!",
+    "successBody": "Pro is ready. Explore the latest sentiment, stock analysis and your watchlist.",
+    "subscriptionTitle": "Subscription details",
+    "planLabel": "Plan:",
+    "planName": "{{plan}} plan",
+    "billingLabel": "Billing cycle:",
+    "monthly": "Monthly",
+    "yearly": "Annual",
+    "startLabel": "Start date:",
+    "endLabel": "End date:",
+    "amountLabel": "Amount paid:",
+    "accountDetails": "View account details",
+    "startUsing": "Start exploring",
+    "availableTitle": "Explore Pro:",
+    "availableSentiment": "See the latest market sentiment",
+    "availableAnalysis": "Analyze stocks with advanced indicators",
+    "availableWatchlist": "Track your investment list",
+    "availableMomentum": "View full momentum rankings and screening results",
+    "failedTitle": "Payment failed",
+    "orderTitle": "Order details:",
+    "orderStatusLabel": "Order status:",
+    "paymentStatusLabel": "Payment status:",
+    "possibleReasons": "Possible reasons:",
+    "cardReason": "Insufficient credit or an expired card",
+    "bankReason": "The bank declined the transaction",
+    "networkReason": "The network connection was interrupted",
+    "detailsReason": "Incorrect payment details",
+    "retryPayment": "Try payment again",
+    "backToPlans": "Back to plans",
+    "cancelledTitle": "Payment cancelled",
+    "cancelledBody": "You cancelled the payment. Select a plan again when you are ready.",
+    "choosePlan": "Choose a plan",
+    "home": "Back to home",
+    "timeoutTitle": "Status check timed out",
+    "timeoutBody": "We have not confirmed the payment status. Check again later or contact support.",
+    "ifPaid": "If you have already paid:",
+    "stillProcessing": "Payment may still be processing. Check again later.",
+    "accountHint": "Check your subscription status on your account page.",
+    "supportHint": "For help, send your order number to support@sentimentinsideout.com.",
+    "retryCheck": "Check again",
+    "viewAccount": "View account"
   }
 }

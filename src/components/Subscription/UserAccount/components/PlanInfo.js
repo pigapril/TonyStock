@@ -134,6 +134,10 @@ export const PlanInfo = ({ plan, loading }) => {
     && plan.billingRail === 'bound_card'
     && !plan.cancelAtPeriodEnd
     && trialEnd.getTime() > Date.now();
+  const showsNoCardTrial = trialEnd !== null
+    && plan.billingRail === 'ecpay_period'
+    && plan.autoRenew === false
+    && trialEnd.getTime() > Date.now();
 
   return (
     <div className="plan-info">
@@ -182,6 +186,9 @@ export const PlanInfo = ({ plan, loading }) => {
                 { date: trialRenewalDateText(trialEnd, lang) }
               )}
             </div>
+          )}
+          {showsNoCardTrial && (
+            <div className="plan-info__date">{t('freeTrial.accountExpiry')}</div>
           )}
         </div>
         

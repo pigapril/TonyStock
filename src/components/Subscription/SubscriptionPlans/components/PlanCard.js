@@ -20,7 +20,7 @@ export const PlanCard = ({
   billingPeriod = 'monthly',
   planAdjustment = null,
   appliedRedemption = null,
-  cardTrialEligible = false,
+  freeTrialEligible = false,
   onShowFreeTrialDialog = null
 }) => {
   const { t } = useTranslation();
@@ -268,24 +268,22 @@ export const PlanCard = ({
 
 
 
-  // 有資格試用的人只給試用入口。資格由後端決定，但已經有訂閱的人一律不顯示，
-  // 不依賴那一支查詢：既有付費者看到的畫面不能因為這個功能而改變。
-  // 綁卡軌沒有接折扣系統，套用了優惠碼的人要走原本的付款頁，優惠才會生效。
-  const showCardTrialEntry = isPro && cardTrialEligible && !appliedRedemption && !isCurrentPlan && !isCancelledButActive;
+  // 優惠碼走原付款頁，避免使用者以為折扣會套在免費試用上。
+  const showFreeTrialEntry = isPro && freeTrialEligible && !appliedRedemption && !isCurrentPlan && !isCancelledButActive;
 
   const trackedTrialEntry = useRef(null);
   useEffect(() => {
-    if (!showCardTrialEntry || trackedTrialEntry.current === billingPeriod) return;
+    if (!showFreeTrialEntry || trackedTrialEntry.current === billingPeriod) return;
     trackedTrialEntry.current = billingPeriod;
-    trackProductEvent('card_trial_entry_viewed', { source: 'subscription_plans', billing_period: billingPeriod, trial_days: 30 });
-  }, [showCardTrialEntry, billingPeriod]);
+    trackProductEvent('free_trial_entry_viewed', { source: 'subscription_plans', billing_period: billingPeriod, trial_days: 30 });
+  }, [showFreeTrialEntry, billingPeriod]);
 
-  const handleCardTrialSelect = () => {
-    trackProductEvent('card_trial_entry_clicked', {
+  const handleFreeTrialSelect = () => {
+    trackProductEvent('free_trial_entry_clicked', {
       source: 'subscription_plans', billing_period: billingPeriod, trial_days: 30,
       planId: plan.id, billingPeriod
     });
-    navigate(`/${lang}/payment/card-trial?period=${billingPeriod}`);
+    navigate(`/${lang}/payment/free-trial`);
   };
 
   const pricingData = getPricingDisplayData(plan, billingPeriod);
@@ -564,16 +562,16 @@ export const PlanCard = ({
       )}
 
       <div className="plan-card__action">
-        {showCardTrialEntry ? (
+        {showFreeTrialEntry ? (
           <AppleButton
             variant="primary"
             size="large"
-            onClick={handleCardTrialSelect}
+            onClick={handleFreeTrialSelect}
             disabled={loading || (plan.displayPrice && !plan.showRealPrice)}
             loading={loading}
             className="plan-card__button"
           >
-            {t('cardTrial.planCard.startTrial')}
+            {t('freeTrial.planCard.startTrial')}
           </AppleButton>
         ) : (
           <AppleButton

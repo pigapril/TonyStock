@@ -133,9 +133,10 @@ describe('合併狀態的文案', () => {
 
   it.each([['zh-TW', zhTW], ['en', en]])('%s：兩個都到位的狀態要說明代價，不只講好處', (_lang, dict) => {
     // 恐懼側最強的一格容易被讀成「進場保證」，回測其實顯示期間還會再往下探，
-    // 這句拿掉就等於只報喜。10.0% 是那個代價本身，先前寫成 /8%/ 其實是被上漲機率
-    // 的 88% 矇過去的，沒有真的驗到代價。
-    expect(dict.priceAnalysis.combined.fearConfirmed.body).toMatch(/10\.0%/);
+    // 精簡狀態卡後仍要明說續跌風險；完整下探數字留在回測文章。
+    const body = dict.priceAnalysis.combined.fearConfirmed.body;
+    expect(body).toMatch(/仍可能續跌|could still fall/);
+    expect(body).toMatch(/43.*ETF/);
   });
 
   it.each([['zh-TW', zhTW], ['en', en]])('%s：主打數字必須是 1–3 個月，不是一年', (_lang, dict) => {

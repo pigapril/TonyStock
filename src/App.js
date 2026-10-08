@@ -52,6 +52,7 @@ import authPreloader from './utils/authPreloader';
 import { setupRobotsProtection } from './utils/robotsHandler';
 import { initializeFreeStockList } from './utils/freeStockListUtils';
 import { canSeeCardTrial } from './utils/cardTrialRollout';
+import { canSeeFreeTrial } from './utils/freeTrialRollout';
 import BrandLogo from './components/Common/BrandLogo/BrandLogo';
 import DeferredTagManager from './components/Common/DeferredTagManager/DeferredTagManager';
 import MarketPulse from './components/MarketPulse/MarketPulse';
@@ -79,6 +80,7 @@ const PaymentFlowPage = lazy(() => import('./pages/PaymentFlowPage'));
 const PaymentStatusPage = lazy(() => import('./pages/PaymentStatusPage'));
 const PaymentResult = lazy(() => import('./components/Payment/PaymentResult/PaymentResult').then((module) => ({ default: module.PaymentResult })));
 const CardTrialFlow = lazy(() => import('./components/Payment/CardTrial/CardTrialFlow'));
+const FreeTrialFlow = lazy(() => import('./components/Payment/FreeTrial/FreeTrialFlow'));
 const CardTrialResult = lazy(() => import('./components/Payment/CardTrial/CardTrialResult'));
 const CardUpdateFlow = lazy(() => import('./components/Payment/CardUpdate/CardUpdateFlow'));
 const CardUpdateResult = lazy(() => import('./components/Payment/CardUpdate/CardUpdateResult'));
@@ -664,8 +666,15 @@ function AppContent() {
                 <Route path="payment/result" element={<PaymentResult />} />
                 <Route path="payment/card-trial" element={
                   <ProtectedRoute>
-                    {canSeeCardTrial(user?.email)
+                    {process.env.REACT_APP_BIND_CARD_TRIAL_ENABLED === 'true' && canSeeCardTrial(user?.email)
                       ? <CardTrialFlow />
+                      : <Navigate to={`/${lang}/subscription-plans`} replace />}
+                  </ProtectedRoute>
+                } />
+                <Route path="payment/free-trial" element={
+                  <ProtectedRoute>
+                    {canSeeFreeTrial(user?.email)
+                      ? <FreeTrialFlow />
                       : <Navigate to={`/${lang}/subscription-plans`} replace />}
                   </ProtectedRoute>
                 } />

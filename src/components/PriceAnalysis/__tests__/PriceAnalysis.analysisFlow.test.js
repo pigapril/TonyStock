@@ -314,7 +314,8 @@ describe('PriceAnalysis analysis flow', () => {
     ).toBe(before);
   });
 
-  it('沒有熱門搜尋資料時整列不渲染，不留空框', async () => {
+  /* eslint-disable testing-library/no-node-access, testing-library/no-container -- 驗證熱門搜尋填入原有預留節點，而不是新增版面區塊。 */
+  it('沒有熱門搜尋資料時預留高度，但不顯示標籤或空的入口', async () => {
     const { container } = render(
       <TestWrapper>
         <PriceAnalysis />
@@ -325,15 +326,16 @@ describe('PriceAnalysis analysis flow', () => {
       expect(screen.getByPlaceholderText(/2330.*AAPL/i)).toBeInTheDocument();
     });
 
-    expect(container.querySelector('.pa-hot-search-slot')).not.toBeInTheDocument();
+    const slot = container.querySelector('.pa-hot-search-slot');
+    expect(slot).toBeEmptyDOMElement();
+    expect(slot).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('熱門搜尋資料回來後只填入預留區塊', async () => {
+    let resolveHotSearches;
     mockEnhancedApiClient.get.mockImplementation((url) => {
       if (url === '/api/hot-searches') {
-        return Promise.resolve({
-          data: { data: { top_searches: [{ keyword: 'SPY', name: 'S&P 500 ETF' }] } }
-        });
+        return new Promise((resolve) => { resolveHotSearches = resolve; });
       }
       if (url === '/api/integrated-analysis') {
         return Promise.resolve(createIntegratedAnalysisPayload());
@@ -347,12 +349,22 @@ describe('PriceAnalysis analysis flow', () => {
       </TestWrapper>
     );
 
+    const reservedSlot = container.querySelector('.pa-hot-search-slot');
+    expect(reservedSlot).toBeEmptyDOMElement();
+    await waitFor(() => expect(resolveHotSearches).toBeDefined());
+    await act(async () => resolveHotSearches({
+      data: { data: { top_searches: [{ keyword: 'SPY', name: 'S&P 500 ETF' }] } }
+    }));
     const hotChip = await screen.findByRole('button', { name: /SPY.*S&P 500 ETF/i });
+    expect(container.querySelector('.pa-hot-search-slot')).toBe(reservedSlot);
+    expect(reservedSlot).toHaveAttribute('aria-hidden', 'false');
     expect(container.querySelector('.pa-hot-search-slot')).toContainElement(hotChip);
     expect(JSON.parse(window.localStorage.getItem(HOT_SEARCH_CACHE_KEY))).toEqual([
       { keyword: 'SPY', name: 'S&P 500 ETF' }
     ]);
   });
+
+  /* eslint-enable testing-library/no-node-access, testing-library/no-container */
 
   it('先顯示上次榜單，API 回空清單時仍保留', async () => {
     window.localStorage.setItem(HOT_SEARCH_CACHE_KEY, JSON.stringify([

@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, Navigate } from 'react-router-dom';
+import { Link, useLocation, useParams, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../api/apiClient';
 import PageContainer from '../PageContainer/PageContainer';
 import { getDecimalPlaces } from '../../utils/priceUtils';
 import { findIndicatorPage } from './indicatorPages';
 import './SentimentIndicatorPage.css';
+import SentimentHistoryExamples from './SentimentHistoryExamples';
 
 /**
  * 單一指標的常青解說頁。
  *
  * 解說內容（什麼是、怎麼解讀、歷史區間、與 SIO 的關係）寫死在 i18n，長期不變；
  * 當前值向 API 取，所以這頁同時是解說也是即時查詢。
- * 取不到資料時只是少一張卡，解說照常顯示：常青內容不該依賴 API。
+ * 讀值區塊從首屏就保留位置；載入失敗也不移除，避免把正在閱讀的正文推移。
+ * 解說照常顯示：常青內容不該依賴 API。
  *
  * 各段標題刻意帶指標全名（含中文名），讓 h2 本身就是搜尋得到的問句。
  */
 const SentimentIndicatorPage = () => {
   const { t } = useTranslation();
   const { lang, slug } = useParams();
+  const { pathname, search } = useLocation();
   const page = findIndicatorPage(slug);
-  const [reading, setReading] = useState(null);
+  const [readingState, setReadingState] = useState(null);
+  // 路由切換後舊回應不屬於新指標，不能在新頁的載入期間顯示。
+  const reading = readingState?.pageId === page?.boardItemId ? readingState?.item : null;
+  const loadingReading = Boolean(page?.boardItemId && readingState?.pageId !== page.boardItemId);
+  const hasReading = reading?.value !== null && reading?.value !== undefined;
 
   useEffect(() => {
     if (!page) return undefined;
@@ -31,9 +38,11 @@ const SentimentIndicatorPage = () => {
         .then((res) => {
           if (cancelled) return;
           const items = (res.data?.data?.groups || []).flatMap((group) => group.items);
-          setReading(items.find((item) => item.id === page.boardItemId) || null);
+          setReadingState({ pageId: page.boardItemId, item: items.find((item) => item.id === page.boardItemId) || null });
         })
-        .catch(() => { /* 解說內容不依賴 API */ });
+        .catch(() => {
+          if (!cancelled) setReadingState({ pageId: page.boardItemId, item: null });
+        });
     }
 
 
@@ -64,20 +73,26 @@ const SentimentIndicatorPage = () => {
         <header className="indicator-page__header">
           <h1 className="indicator-page__title">{t(`${key}.heading`)}</h1>
           <p className="indicator-page__lede">{t(`${key}.lede`)}</p>
+          {page.slug === 'bofa-bull-bear' && (
+            <a className="indicator-page__example-shortcut" href={`${pathname}${search}#sio-history-examples`}>
+              {t('sentimentHistoryExamples.shortcut')} <span aria-hidden="true">↓</span>
+            </a>
+          )}
         </header>
 
-        {reading && reading.value !== null && (
-          <section className="indicator-page__current">
+        {page.boardItemId && (
+          <section className="indicator-page__current" aria-busy={loadingReading}>
             <p className="indicator-page__currentLabel">{t('sentimentIndicatorPages.currentReading')}</p>
             <p className="indicator-page__currentValue">
-              {formatReading(reading.value)}
+              {hasReading ? formatReading(reading.value) : '—'}
               {/* 多數指標是無單位的分數（AAII 價差、CNN 0-100），但廣度是百分比，
                   少了 % 會看不懂 31.2 是什麼。單位由註冊表宣告，不猜。 */}
-              {page.unit ? <span className="indicator-page__currentUnit">{page.unit}</span> : null}
+              {hasReading && page.unit ? <span className="indicator-page__currentUnit">{page.unit}</span> : null}
             </p>
-            <p className="indicator-page__currentMeta">
-              {reading.date}
-              {reading.publisher ? ` · ${reading.publisher}` : ''}
+            <p className="indicator-page__currentMeta" title={hasReading ? [reading.date, reading.publisher].filter(Boolean).join(' · ') : undefined}>
+              {loadingReading ? t('common.loading') : hasReading ? (
+                <>{reading.date}{reading.publisher ? ` · ${reading.publisher}` : ''}</>
+              ) : t('sentimentBoard.noData')}
             </p>
           </section>
         )}
@@ -101,6 +116,8 @@ const SentimentIndicatorPage = () => {
           </Section>
         )}
 
+        {page.slug === 'bofa-bull-bear' && <SentimentHistoryExamples lang={lang} />}
+
         {Array.isArray(components) && components.length > 0 && (
           <Section title={t(`${key}.componentsTitle`)}>
             <p>{t(`${key}.componentsIntro`)}</p>
@@ -108,12 +125,14 @@ const SentimentIndicatorPage = () => {
               {components.map((component) => {
                 // 有即時值就一起顯示。CNN 給的是標準化分數加級距，
                 // BofA 那份試算表給的是 0~1 的百分位，所以兩種都要能呈現。
-                const live = component.key && reading?.components?.[component.key];
+                const live = component.key ? formatComponent(reading?.components?.[component.key]) : null;
                 return (
                   <li key={component.key || component.name}>
                     <b>{component.name}</b>
                     <span>{component.note}</span>
-                    {live && <span className="indicator-page__componentLive">{formatComponent(live)}</span>}
+                    {component.key && (
+                      <span className="indicator-page__componentLive" title={live || undefined}>{live ?? '—'}</span>
+                    )}
                   </li>
                 );
               })}
@@ -146,6 +165,7 @@ const SentimentIndicatorPage = () => {
 
 // 分項的即時值。CNN 給 score（0~100）加 rating，BofA 試算表給 0~1 的百分位。
 function formatComponent(live) {
+  if (live === null || live === undefined) return null;
   if (Number.isFinite(Number(live?.score))) {
     const score = formatReading(live.score);
     return live.rating ? `${score} · ${live.rating}` : score;

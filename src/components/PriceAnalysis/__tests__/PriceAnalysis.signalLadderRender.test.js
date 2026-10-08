@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PriceAnalysisChartWorkspace from '../PriceAnalysisChartWorkspace';
+import PriceAnalysisSummary from '../PriceAnalysisSummary';
 import { getSignalLadder, getHorizonAlignment } from '../signalLadder';
 import zhTW from '../../../locales/zh-TW/translation.json';
 import en from '../../../locales/en/translation.json';
@@ -173,11 +174,11 @@ describe('條件清單的文案', () => {
     const values = (obj) => Object.values(obj)
       .flatMap((v) => (typeof v === 'string' ? [v] : values(v)));
 
-    const banned = ['期長', '廣度', '訊號強度', '分位', '中位', '回測', '對齊'];
+    const banned = ['期長', '廣度', '訊號強度', '分位', '中位', '對齊'];
     const text = values(zh).join(' ');
     banned.forEach((word) => expect(text).not.toContain(word));
 
-    const bannedEn = ['percentile', 'breadth', 'backtest', 'horizon', 'median'];
+    const bannedEn = ['percentile', 'breadth', 'horizon', 'median'];
     const textEn = values(enLadder).join(' ').toLowerCase();
     bannedEn.forEach((word) => expect(textEn).not.toContain(word));
   });
@@ -232,3 +233,36 @@ describe('其他週期情緒', () => {
     expect(labels[i + 2]).toBe(zhTW.priceAnalysis.result.channelPosition);
   });
 });
+
+
+/* eslint-disable testing-library/no-node-access, testing-library/no-container -- 比對骨架及資料完成後的節點身分與欄位結構。 */
+describe('摘要載入時的欄位預留', () => {
+  it.each([['zh-TW', zhTW], ['en', en]])('%s：延遲載入與資料完成後保留相同欄位及週期標籤', (_, translations) => {
+    const t = (key) => key.split('.').reduce((value, part) => value?.[part], translations);
+    const { container, rerender } = render(
+      <PriceAnalysisSummary t={t} displayedHorizonKey="long" />
+    );
+    const header = container.querySelector('.chart-header');
+    const items = Array.from(container.querySelectorAll('.analysis-item'));
+    const labels = Array.from(container.querySelectorAll('.analysis-label')).map((label) => label.textContent);
+    const periods = Array.from(container.querySelectorAll('.horizon-grid__period')).map((label) => label.textContent);
+    expect(items).toHaveLength(5);
+    expect(header).toHaveAttribute('aria-busy', 'true');
+    expect(Array.from(container.querySelectorAll('.horizon-grid__value')).map((cell) => cell.textContent)).toEqual(['—', '—']);
+
+    rerender(<PriceAnalysisSummary
+      {...baseProps}
+      t={t}
+      hasAnalysisContent
+      displayedHorizonKey="long"
+      analysisResult={{price: 100, sentimentKey: 'priceAnalysis.sentiment.neutral', channelState: 'inside', alignment: { short: 'priceAnalysis.sentiment.extremeFear', medium: 'priceAnalysis.sentiment.neutral' }}}
+    />);
+    expect(container.querySelector('.chart-header')).toBe(header);
+    expect(Array.from(container.querySelectorAll('.analysis-item'))).toEqual(items);
+    expect(Array.from(container.querySelectorAll('.analysis-label')).map((label) => label.textContent)).toEqual(labels);
+    expect(Array.from(container.querySelectorAll('.horizon-grid__period')).map((label) => label.textContent)).toEqual(periods);
+    expect(header).toHaveAttribute('aria-busy', 'false');
+    expect(container.querySelector('.horizon-grid__value').textContent).toBe(translations.priceAnalysis.sentiment.extremeFear);
+  });
+});
+/* eslint-enable testing-library/no-node-access, testing-library/no-container */

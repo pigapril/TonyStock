@@ -19,33 +19,17 @@ Following up on our previous article, [Analyzing Price Trends and Sentiment with
    - [VIX Volatility Index](#4-vix-volatility-index-vix-ma50)
    - [Safe Haven Demand](#5-safe-haven-demand)
    - [Junk Bond Spread](#6-junk-bond-spread)
-   - [S&P 500 COT Index](#7-sp-500-futures-speculative-net-position-index-sp-500-cot-index)
+   - [S&P 500 COT Index](#7-sp-500-cot-index-sp-500-cot-index)
    - [NAAIM Exposure Index](#8-naaim-exposure-index-naaim-exposure-index)
 5. [How to Interpret the SIO Fear & Greed Index?](#how-to-interpret-the-sio-fear--greed-index)
 
 ## Why You Need to Know Current Market Sentiment
 
-Let’s start with a more fundamental question: why should investors care about market sentiment at all? The reason is simple. Major turning points in the market usually do not happen when opinions are still divided. They tend to happen when everyone starts believing the same thing.
+Wanting to sell during a plunge or fearing that you will miss a rally are problems I face too. SIO combines retail views, options, institutional positions and credit-market data, giving you a consistent reference when the market gets noisy.
 
-### The Risk of Crowded Trades
+A bearish retail survey differs from a market where futures positions and credit spreads also turn defensive. **Start with the composite score, then open the individual signals to see where fear is concentrated and whether it is spreading.**
 
-The market is often most dangerous not when everyone is losing money, but when everyone is in agreement. When sentiment indicators reach "extreme bullish" territory, it usually means the people who wanted to buy have already bought. There may not be much money left on the sidelines to keep pushing prices higher. That is what we call a crowded trade. Sentiment indicators help you see whether too many people are already standing on the same side of the boat.
-
-### The Contrarian Value of Sentiment
-
-There is a classic saying on Wall Street: "Bull markets are born on pessimism, grow on skepticism, mature on optimism, and die on euphoria."
-
-When people are so fearful that they want to shut off their screens and stop looking at the market, that is often when professional investors quietly begin accumulating bargains.
-
-When even your neighbors are bragging about how much money they made, that is often when it makes sense to think about taking profits.
-
-Sentiment indicators are not meant to help you follow the crowd. They are meant to help you observe the crowd and, when conditions are extreme, do the opposite.
-
-### Avoid Letting Instinct Control Your Decisions
-
-Human nature is wired to seek gain and avoid pain. That may be useful in the wild, but it can be destructive in financial markets. When the market is flashing red and falling hard, your brain tells you to sell. When prices are surging, greed pushes you to add more.
-
-The role of sentiment indicators is to pull you out of that emotional reflex. They give you an objective data point that says: the market’s psychology may already be out of balance, so slow down and think clearly.
+When SPY bottomed on March 23, 2020, SIO was already at about 1.5. On October 3, 2022, SIO fell to about 4.2, again near SPY’s October low. **Periods of deep market fear can offer long-term investors opportunities to build positions.** Compare sentiment scores with prices in the [SIO historical cases on the BofA indicator page](/en/sentiment-indicators/bofa-bull-bear#sio-history-examples).
 
 ## Pros and Cons of Common Sentiment Indicators
 
@@ -163,14 +147,16 @@ Safe Haven Demand is a contrarian indicator: very high demand (large negative va
 
 ![image-junkbond](./image-junkbond-en.png)
 
-Intro: The Junk Bond Spread measures investor risk appetite by comparing the yield difference between high-yield corporate bonds (junk bonds) and investment-grade corporate bonds.
+Intro: The Junk Bond Spread measures investor risk appetite by comparing the credit spreads of high-yield corporate bonds (junk bonds) and investment-grade corporate bonds.
 
 Calculation & Interpretation:
-Uses data from the Federal Reserve (FRED). Calculates the yield on junk bonds minus the yield on investment-grade bonds. This spread represents the extra compensation investors demand for holding riskier junk debt.
+Uses FRED data to compare the option-adjusted spreads (OAS) of high-yield and investment-grade corporate bonds over US Treasuries. The gap reflects the extra compensation demanded for greater credit risk.
 
 Higher Spread: Investors are worried about risk and demand a larger premium for holding junk bonds. Sentiment is fearful.
-Lower Spread: Investors are more comfortable with risk and accept a smaller premium. Sentiment is optimistic/greedy.
+Lower Spread: The credit-spread gap narrows as investors accept less compensation for risk. This does not mean high-yield bond yields are below investment-grade yields.
 Extreme Values: Often ranges between 2% and 4%, but has spiked above 6% during periods of extreme market stress.
+
+Data definitions: [FRED high-yield OAS](https://fred.stlouisfed.org/series/BAMLH0A0HYM2) · [investment-grade OAS](https://fred.stlouisfed.org/series/BAMLC0A0CM).
 
 The Junk Bond Spread is a contrarian indicator: a very wide spread often occurs near market bottoms, while a very narrow spread can signal complacency near market tops.
 
@@ -234,8 +220,9 @@ The best approach is to scale in using a 'batch entry' strategy. According to my
 
 > **Looking back at historical data, periods of Extreme Fear have consistently proven to be excellent buying opportunities for long-term investors.**
 
-By effectively using the 'LOHAS Five-Line Analysis' and the 'SIO Fear & Greed Index' tools provided on the site, you can make decisions based on both price analysis and emotional readings. While these tools won't guarantee you'll catch every minor market turn, I'm confident they can significantly help you identify major opportunities, make sounder decisions, and conquer your own fear and greed!
-I hope this article helps you better understand and utilize the website's tools. Happy investing!
+Open [SIO US Market Sentiment](/en/market-sentiment), check the composite score, then compare the historical chart and individual signals. Pick a date you want to investigate and use [LOHAS Five-Line Analysis](/en/priceanalysis) to review SPY’s price level at that time.
+
+**Free lets you explore history through two months ago. To apply the same approach today, Pro provides the latest US and Taiwan sentiment and recent changes.**
 
 ---
 

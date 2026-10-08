@@ -33,7 +33,8 @@ describe.each([['zh-TW', zhTW], ['en', en]])('%s：動能教學面向使用者',
 
 const scopes = (dict) => ({
   priceAnalysis: dict.priceAnalysis,
-  marketFearBreadth: dict.sentimentIndicatorPages.marketFearBreadth
+  marketFearBreadth: dict.sentimentIndicatorPages.marketFearBreadth,
+  sentimentHistoryExamples: dict.sentimentHistoryExamples
 });
 
 describe.each([['zh-TW', zhTW], ['en', en]])('%s 文案體檢', (lang, dict) => {

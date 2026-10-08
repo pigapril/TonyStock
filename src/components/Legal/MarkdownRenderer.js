@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useTranslation } from 'react-i18next';
 
 const MarkdownRenderer = ({ filePath, className = '' }) => {
+  const { t } = useTranslation();
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -47,7 +49,7 @@ const MarkdownRenderer = ({ filePath, className = '' }) => {
   if (loading) {
     return (
       <div className={`markdown-loading ${className}`}>
-        <div className="loading-spinner">載入中...</div>
+        <div className="loading-spinner">{t('legal.documentLoading')}</div>
       </div>
     );
   }
@@ -55,7 +57,7 @@ const MarkdownRenderer = ({ filePath, className = '' }) => {
   if (error) {
     return (
       <div className={`markdown-error ${className}`}>
-        <p>載入文件時發生錯誤: {error}</p>
+        <p>{t('legal.documentError')}</p>
       </div>
     );
   }

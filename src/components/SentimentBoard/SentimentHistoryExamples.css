@@ -1,0 +1,46 @@
+.sentiment-examples {
+  scroll-margin-top: 110px;
+  margin: 34px 0 0;
+  padding: 26px 0;
+  border-top: 1px solid #cbd5e1;
+  border-bottom: 1px solid #cbd5e1;
+}
+.indicator-page__example-shortcut { display: inline-flex; gap: 9px; align-items: center; margin-top: 15px; color: #4338ca; background: #eef2ff; border: 1px solid #c7d2fe; padding: 9px 12px; border-radius: 7px; font-size: .875rem; font-weight: 600; line-height: 1.5; text-decoration: none; }
+.indicator-page__example-shortcut:hover { background: #e0e7ff; }
+.indicator-page__example-shortcut:focus-visible { outline: 3px solid #a5b4fc; outline-offset: 3px; }
+.sentiment-examples__eyebrow { margin: 0 0 7px; color: #6366f1; font-size: .76rem; font-weight: 700; letter-spacing: .06em; }
+.sentiment-examples h2 { margin: 0 0 12px; color: #0f172a; font-size: clamp(1.25rem, 3vw, 1.6rem); line-height: 1.4; letter-spacing: -.02em; }
+.sentiment-examples__intro, .sentiment-examples__reading { margin: 0 0 18px; color: #475569; line-height: 1.8; }
+.sentiment-examples__choices { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0; }
+.sentiment-examples__choices button { padding: 9px 13px; border: 1px solid #cbd5e1; background: #f8fafc; color: #475569; border-radius: 7px; font: inherit; font-size: .875rem; cursor: pointer; }
+.sentiment-examples__choices button[aria-pressed="true"] { color: #3730a3; background: #eef2ff; border-color: #6366f1; font-weight: 600; }
+.sentiment-examples__choices button:hover { border-color: #6366f1; }
+.sentiment-examples__choices button:focus-visible, .sentiment-examples__cta:focus-visible { outline: 3px solid #a5b4fc; outline-offset: 3px; }
+.sentiment-examples__case-title { margin: 0 0 14px; font-size: 1rem; color: #334155; line-height: 1.5; }
+.sentiment-examples__figure { margin: 0 0 20px; }
+.sentiment-examples__chart { display: block; width: 100%; height: auto; aspect-ratio: 700 / 365; overflow: visible; }
+.sentiment-examples__axis-heading { fill: #334155; font-size: 14px; font-weight: 600; }
+.sentiment-examples__axis-label { fill: #64748b; font-size: 12px; }
+.sentiment-examples__fear-band { fill: #eef2ff; }
+.sentiment-examples__grid { stroke: #e2e8f0; stroke-width: 1; }
+.sentiment-examples__score-line, .sentiment-examples__price-line { fill: none; stroke-linejoin: round; stroke-linecap: round; stroke-width: 2; }
+.sentiment-examples__score-line { stroke: #7c3aed; }
+.sentiment-examples__price-line { stroke: #475569; }
+.sentiment-examples__marker-guide { stroke: #f97316; stroke-dasharray: 3 5; stroke-width: 1; }
+.sentiment-examples__marker { stroke: #f97316; fill: #fff7ed; stroke-width: 2; }
+.sentiment-examples__price-marker { fill: #f97316; stroke: #fff7ed; stroke-width: 1.5; }
+.sentiment-examples figcaption { color: #64748b; font-size: .78rem; line-height: 1.7; }
+.sentiment-examples__marker-key { display: inline-block; width: 8px; height: 8px; border: 2px solid #f97316; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.sentiment-examples__dates { display: block; margin-top: 3px; }
+.sentiment-examples__next { display: flex; align-items: center; justify-content: space-between; gap: 18px; background: #eef2ff; padding: 18px 20px; border-radius: 10px; }
+.sentiment-examples__next h3 { margin: 0 0 5px; font-size: .95rem; line-height: 1.5; color: #1e293b; }
+.sentiment-examples__next p { margin: 0; font-size: .85rem; line-height: 1.7; color: #475569; }
+.sentiment-examples__cta { display: inline-flex; flex: 0 0 auto; padding: 11px 14px; color: #f8fafc; background: #4338ca; border-radius: 7px; font-size: .875rem; font-weight: 600; text-decoration: none; line-height: 1.5; }
+.sentiment-examples__cta:hover { background: #3730a3; }
+@media (max-width: 640px) {
+  .sentiment-examples__next { flex-direction: column; align-items: stretch; padding: 16px; }
+  .sentiment-examples__cta { justify-content: center; }
+  .sentiment-examples__chart { min-height: 190px; }
+  .sentiment-examples__axis-heading { font-size: 28px; }
+  .sentiment-examples__axis-label { font-size: 28px; }
+}

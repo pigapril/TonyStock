@@ -53,6 +53,7 @@
   margin: 0;
   font-size: 0.8rem;
   color: #64748b;
+  line-height: 1.5;
 }
 
 .indicator-page__currentValue {
@@ -68,6 +69,11 @@
   margin: 6px 0 0;
   font-size: 0.8rem;
   color: #94a3b8;
+  line-height: 1.5;
+  /* 載入文字、日期與來源共用一列高度，來源太長也不推移正文。 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .indicator-page__section {
@@ -182,7 +188,10 @@
 
 /* 分項的即時讀數 */
 .indicator-page__componentLive {
-  display: inline-block;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
   margin-top: 6px;
   padding: 3px 10px;
   border-radius: 999px;
@@ -192,6 +201,10 @@
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   text-transform: capitalize;
+  line-height: 1.6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* 讀數的單位：比數字小一號、灰一階，讓「31.2」仍是視覺主體 */

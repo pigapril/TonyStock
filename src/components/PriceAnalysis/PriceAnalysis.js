@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, useTransition, lazy, Suspense } from 'react';
 import './PriceAnalysis.css';
+import PriceAnalysisSummary from './PriceAnalysisSummary';
 import PageContainer from '../PageContainer/PageContainer';
 import { suggestionMatchesInput } from './suggestionMatch';
 import { classifySentiment, getHorizonAlignment, getSignalLadder } from './signalLadder';
@@ -154,25 +155,10 @@ const renderDeferredDatePickerFallback = () => (
   <div className="price-analysis-date-picker-skeleton" aria-hidden="true" />
 );
 
-const renderChartWorkspaceFallback = () => (
+const renderChartWorkspaceFallback = (t, displayedHorizonKey) => (
   <div className="chart-card">
     <div className="chart-container">
-      <div className="chart-header chart-header--skeleton" aria-hidden="true">
-        <div className="analysis-result analysis-result--skeleton">
-          <div className="analysis-item">
-            <span className="analysis-label" />
-            <span className="analysis-value-skeleton" />
-          </div>
-          <div className="analysis-item">
-            <span className="analysis-label" />
-            <span className="analysis-value-skeleton" />
-          </div>
-          <div className="analysis-item">
-            <span className="analysis-label" />
-            <span className="analysis-value-skeleton analysis-value-skeleton--wide" />
-          </div>
-        </div>
-      </div>
+      <PriceAnalysisSummary t={t} displayedHorizonKey={displayedHorizonKey} />
       <div className="chart-content">
         <div className="chart-loading-indicator chart-loading-indicator--deferred">
           <div className="loading-spinner">
@@ -1756,6 +1742,7 @@ export function PriceAnalysis() {
                       // 保持 defaultValue 或 value 的邏輯不變 (如果需要)
                       value={displayStockCode} // 改為受控組件
                     />
+                    {loading ? <span className="pa-searchbar__spinner" aria-label={t('priceAnalysis.form.buttonAnalyzing')} /> : null}
                     {showSuggestions && stockSuggestions.length > 0 && (
                       <ul
                         id="stock-suggestions-listbox"
@@ -1809,8 +1796,6 @@ export function PriceAnalysis() {
             <button type="submit" className="pa-hidden-submit" tabIndex={-1} aria-hidden="true" />
 
             <div className="pa-searchbar__controls">
-                    {loading ? <span className="pa-searchbar__spinner" aria-label={t('priceAnalysis.form.buttonAnalyzing')} /> : null}
-
                     {/* 期長攤成一排，比下拉少一次點擊。三個週期各自的位階放在結果列的
                         「其他週期情緒」，這裡只負責切換。 */}
                     <div
@@ -1865,49 +1850,51 @@ export function PriceAnalysis() {
                 </form>
               </div>
 
-              {hotSearches.length > 0 ? (
-                <div className="pa-hot-search-slot">
-                  <span className="pa-hot-row__label">{t('priceAnalysis.quickSelect.tabs.hotSearches')}</span>
-                  <div
-                    className={`pa-hot-row__items${shouldScrollHotSearches ? ' is-scrolling' : ''}`}
-                    ref={hotSearchViewportRef}
-                  >
-                    <div className="pa-hot-row__track">
-                      {(shouldScrollHotSearches ? [0, 1] : [0]).map((copyIndex) => (
-                        <div
-                          key={copyIndex}
-                          className="pa-hot-row__group"
-                          ref={copyIndex === 0 ? hotSearchGroupRef : null}
-                          aria-hidden={copyIndex === 1}
-                        >
-                          {hotSearches.map((searchItem, index) => (
-                            <button
-                              type="button"
-                              key={`${searchItem.keyword}-${index}`}
-                              className="pa-hot-chip"
-                              tabIndex={copyIndex === 1 ? -1 : 0}
-                              onClick={() => handleHotSearchClick(searchItem)}
-                              title={searchItem.name && searchItem.name !== searchItem.keyword
-                                ? `${searchItem.keyword} ${searchItem.name}`
-                                : searchItem.keyword}
-                            >
-                              <span className="pa-hot-chip__ticker">{searchItem.keyword}</span>
-                              {searchItem.name && searchItem.name !== searchItem.keyword ? (
-                                <span className="pa-hot-chip__name">{searchItem.name}</span>
-                              ) : null}
-                            </button>
-                          ))}
-                        </div>
-                      ))}
+              <div className="pa-hot-search-slot" aria-hidden={hotSearches.length === 0}>
+                {hotSearches.length > 0 ? (
+                  <>
+                    <span className="pa-hot-row__label">{t('priceAnalysis.quickSelect.tabs.hotSearches')}</span>
+                    <div
+                      className={`pa-hot-row__items${shouldScrollHotSearches ? ' is-scrolling' : ''}`}
+                      ref={hotSearchViewportRef}
+                    >
+                      <div className="pa-hot-row__track">
+                        {(shouldScrollHotSearches ? [0, 1] : [0]).map((copyIndex) => (
+                          <div
+                            key={copyIndex}
+                            className="pa-hot-row__group"
+                            ref={copyIndex === 0 ? hotSearchGroupRef : null}
+                            aria-hidden={copyIndex === 1}
+                          >
+                            {hotSearches.map((searchItem, index) => (
+                              <button
+                                type="button"
+                                key={`${searchItem.keyword}-${index}`}
+                                className="pa-hot-chip"
+                                tabIndex={copyIndex === 1 ? -1 : 0}
+                                onClick={() => handleHotSearchClick(searchItem)}
+                                title={searchItem.name && searchItem.name !== searchItem.keyword
+                                  ? `${searchItem.keyword} ${searchItem.name}`
+                                  : searchItem.keyword}
+                              >
+                                <span className="pa-hot-chip__ticker">{searchItem.keyword}</span>
+                                {searchItem.name && searchItem.name !== searchItem.keyword ? (
+                                  <span className="pa-hot-chip__name">{searchItem.name}</span>
+                                ) : null}
+                              </button>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ) : null}
+                  </>
+                ) : null}
+              </div>
 
 
               {/* 主圖表區塊 */}
               {shouldRenderChartWorkspace ? (
-                <Suspense fallback={renderChartWorkspaceFallback()}>
+                <Suspense fallback={renderChartWorkspaceFallback(t, isAdvancedQuery ? null : analysisPeriod)}>
                   <PriceAnalysisChartWorkspace
                     isMobile={isMobile}
                     loading={loading}
@@ -1938,7 +1925,7 @@ export function PriceAnalysis() {
                     t={t}
                   />
                 </Suspense>
-              ) : renderChartWorkspaceFallback()}
+              ) : renderChartWorkspaceFallback(t, isAdvancedQuery ? null : analysisPeriod)}
               </div>
 
               {/* 說明區塊：跟圖表同一欄，左欄整條讓給清單往下發展 */}

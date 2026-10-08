@@ -14,10 +14,10 @@ export const Legal = () => {
     switch (currentLang) {
       case 'zh-TW':
       case 'zh':
-        return `${basePath}/zh-tw_T&C_20260920.md`;
+        return `${basePath}/zh-tw_T&C_20261008.md`;
       case 'en':
       default:
-        return `${basePath}/en_T&C_20260920.md`;
+        return `${basePath}/en_T&C_20261008.md`;
     }
   };
 
@@ -42,8 +42,7 @@ export const Legal = () => {
 
         <div className="legal-intro">
           <p className="legal-last-updated">
-            {t('legal.lastUpdated')}<br />
-            {t('legal.effectiveDate')}
+            {t('legal.lastUpdated')}
           </p>
         </div>
 

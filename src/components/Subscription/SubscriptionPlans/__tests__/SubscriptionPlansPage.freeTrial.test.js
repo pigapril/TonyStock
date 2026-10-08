@@ -1,8 +1,8 @@
 /**
- * 方案頁上的綁卡試用入口。
+ * 方案頁上的免綁卡試用入口。
  *
  * 紅線是「既有付費者與不合資格的人看到的東西完全不變」。有資格的人只看得到試用入口，
- * 套用了優惠碼的人例外：綁卡軌沒有接折扣，他們走原本的付款頁。
+ * 套用了優惠碼的人例外：他們走原本的付款頁使用折扣。
  *
  * 證明方式不是逐項比對文字，而是把不合資格、查詢失敗、查詢還沒回來這三種情況下的
  * 按鈕區塊 HTML 直接拿來互比：只要有一個分支漏掉，HTML 就會不一樣。
@@ -19,7 +19,7 @@ const mockNavigate = jest.fn();
 const mockFetchEligibility = jest.fn();
 const mockAuthState = { user: { id: 'user-1', email: 'pigapril@gmail.com' } };
 const mockSubscriptionState = { userPlan: null, subscriptionHistory: [], loading: false };
-const originalRollout = process.env.REACT_APP_CARD_TRIAL_ROLLOUT;
+const originalRollout = process.env.REACT_APP_FREE_TRIAL_ROLLOUT;
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -56,8 +56,8 @@ jest.mock('../../../Redemption/RedemptionCodeInput', () => ({
     )
 }));
 
-jest.mock('../../../../services/cardTrialService', () => ({
-    fetchCardTrialEligibility: (...args) => mockFetchEligibility(...args)
+jest.mock('../../../../services/freeTrialService', () => ({
+    fetchFreeTrialEligibility: (...args) => mockFetchEligibility(...args)
 }));
 
 // CRA 的 jest 設定是 resetMocks: true，jest.fn() 的 mockResolvedValue 會在每條測試前被清空，
@@ -110,14 +110,14 @@ const proAction = async () => {
     return actions[actions.length - 1];
 };
 
-describe('方案頁的綁卡試用入口', () => {
+describe('方案頁的免綁卡試用入口', () => {
     beforeAll(async () => {
         await i18n.changeLanguage('zh-TW');
     });
 
     beforeEach(() => {
         jest.clearAllMocks();
-        process.env.REACT_APP_CARD_TRIAL_ROLLOUT = 'allowlist';
+        process.env.REACT_APP_FREE_TRIAL_ROLLOUT = 'allowlist';
         mockAuthState.user = { id: 'user-1', email: 'pigapril@gmail.com' };
         mockSubscriptionState.userPlan = null;
         mockSubscriptionState.subscriptionHistory = [];
@@ -126,8 +126,8 @@ describe('方案頁的綁卡試用入口', () => {
     });
 
     afterAll(() => {
-        if (originalRollout === undefined) delete process.env.REACT_APP_CARD_TRIAL_ROLLOUT;
-        else process.env.REACT_APP_CARD_TRIAL_ROLLOUT = originalRollout;
+        if (originalRollout === undefined) delete process.env.REACT_APP_FREE_TRIAL_ROLLOUT;
+        else process.env.REACT_APP_FREE_TRIAL_ROLLOUT = originalRollout;
     });
 
     it('未列入名單時不查試用資格，只顯示原本付費入口', async () => {
@@ -152,7 +152,7 @@ describe('方案頁的綁卡試用入口', () => {
         expect(await screen.findByRole('button', { name: EXISTING_PRO_CTA })).toBeInTheDocument();
         expect(mockFetchEligibility).not.toHaveBeenCalled();
 
-        process.env.REACT_APP_CARD_TRIAL_ROLLOUT = 'all';
+        process.env.REACT_APP_FREE_TRIAL_ROLLOUT = 'all';
         rerender(
             <HelmetProvider>
                 <I18nextProvider i18n={i18n}>
@@ -170,22 +170,22 @@ describe('方案頁的綁卡試用入口', () => {
         expect(screen.queryByRole('button', { name: EXISTING_PRO_CTA })).not.toBeInTheDocument();
     });
 
-    it('試用按鈕導向綁卡頁並帶上月繳', async () => {
+    it('試用按鈕導向免綁卡試用頁', async () => {
         renderPage();
 
         await userEvent.click(await screen.findByRole('button', { name: TRIAL_CTA }));
 
-        expect(mockNavigate).toHaveBeenCalledWith('/zh-TW/payment/card-trial?period=monthly');
+        expect(mockNavigate).toHaveBeenCalledWith('/zh-TW/payment/free-trial');
     });
 
-    it('切到年繳後試用導向帶 period=yearly', async () => {
+    it('切到年繳後仍導向同一個試用頁', async () => {
         renderPage();
 
         const trial = await screen.findByRole('button', { name: TRIAL_CTA });
         await userEvent.click(screen.getByRole('button', { name: /年繳/ }));
         await userEvent.click(trial);
 
-        expect(mockNavigate).toHaveBeenCalledWith('/zh-TW/payment/card-trial?period=yearly');
+        expect(mockNavigate).toHaveBeenCalledWith('/zh-TW/payment/free-trial');
     });
 
     it('已套用優惠碼時顯示既有按鈕、導向既有付款頁並帶優惠碼，看不到試用', async () => {
@@ -213,7 +213,7 @@ describe('方案頁的綁卡試用入口', () => {
         expect(mockNavigate).toHaveBeenCalledWith('/zh-TW/payment?plan=pro&period=monthly');
     });
 
-    // 綁卡軌掛掉不可以連帶讓方案頁賣不出東西，所以失敗時當作沒資格。
+    // 試用資格 API 失敗時仍可透過既有入口訂閱。
     it('查詢失敗時 fail closed，畫面與不合資格時一模一樣', async () => {
         mockFetchEligibility.mockResolvedValue({ eligible: false, reason: 'previous_subscriber' });
         const { unmount } = renderPage();

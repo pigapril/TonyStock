@@ -197,8 +197,8 @@ describe('MomentumDashboardPage', () => {
     expect(within(detail).getByText('+10.0%')).toBeVisible();
     expect(within(detail).getByText('-8.0%')).toBeVisible();
     expect(within(detail).getByText('-5.0%')).toBeVisible();
-    expect(within(detail).getByText('+5.0 %')).toBeVisible();
-    expect(within(detail).getByText('-3.0 %')).toBeVisible();
+    expect(within(detail).getByText('+5.0 個百分點')).toBeVisible();
+    expect(within(detail).getByText('−3.0 個百分點')).toBeVisible();
     expect(detail).toHaveTextContent('XLK+15.0%');
     expect(detail).toHaveTextContent('排名分數908077');
     expect(detail).not.toHaveTextContent('標的漲跌');

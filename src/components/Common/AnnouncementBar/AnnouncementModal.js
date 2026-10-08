@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './AnnouncementModal.css';
 
 /**
@@ -6,6 +7,7 @@ import './AnnouncementModal.css';
  * 用於在移動設備上顯示完整的公告內容
  */
 const AnnouncementModal = ({ isOpen, onClose, message }) => {
+  const { t } = useTranslation();
   // 處理 ESC 鍵關閉
   useEffect(() => {
     const handleEscape = (e) => {
@@ -100,13 +102,13 @@ const AnnouncementModal = ({ isOpen, onClose, message }) => {
       <div className="announcement-modal">
         <div className="announcement-modal-header">
           <h3 id="announcement-modal-title" className="announcement-modal-title">
-            📢 公告內容
+            {t('announcement.title')}
           </h3>
           <button
             className="announcement-modal-close"
             onClick={onClose}
-            aria-label="關閉公告"
-            title="關閉公告"
+            aria-label={t('announcement.close')}
+            title={t('announcement.close')}
           >
             ×
           </button>
@@ -123,7 +125,7 @@ const AnnouncementModal = ({ isOpen, onClose, message }) => {
             className="announcement-modal-btn"
             onClick={onClose}
           >
-            知道了
+            {t('announcement.confirm')}
           </button>
         </div>
       </div>

@@ -2,19 +2,19 @@ const buildTwGaugeExplainerCopy = ({ currentLang, currentCompositeScore, current
   if (currentLang === 'zh-TW') {
     return {
       title: '關於台股恐懼貪婪指標',
-      subtitle: `目前綜合分數為 ${currentCompositeScore ?? '-'}，整體偏向「${currentCompositeSentimentLabel}」。這個分數把 9 項台股市場情緒訊號壓縮成 0 到 100 的單一讀數。`,
+      subtitle: `本次綜合分數為 ${currentCompositeScore ?? '-'}，整體偏向「${currentCompositeSentimentLabel}」。九項台股訊號合成 0 到 100 分，讓你先看整體情緒，再找出背後的變化。`,
       sections: [
         {
           title: '1. 整合台股多面向情緒訊號',
-          body: '指標把台指選擇權波動率、Put/Call Ratio、美元兌台幣匯率、融資維持率、外資期貨淨未平倉、市場廣度、券資比、市場動能與有效交易戶數放進同一個框架，涵蓋避險、槓桿、資金流向、價格延伸與市場參與度。讓你看到台股情緒的整體傾向。'
+          body: '從選擇權、融資融券、外資期貨部位到匯率、動能與市場參與度，合併觀察台股的風險偏好。不同訊號可能各走各的，綜合分數讓你先掌握整體傾向。'
         },
         {
-          title: '2. 看極端，而不是看一天的波動',
-          body: '分數落到極低區域，代表避險需求、放空力道與資金退潮同時升溫，恐懼正在擴散；落到極高區域，代表追價、槓桿與市場廣度同步放大，市場已經偏熱。真正值得注意的，是多項訊號開始往極端位置靠近的時候。'
+          title: '2. 留意情緒是否走到極端',
+          body: '低分代表合成後偏向恐懼，高分代表偏向貪婪。遇到極端讀數，打開各項指標，確認哪些訊號推動分數，再對照加權指數走勢。'
         },
         {
-          title: '3. 用跨訊號共識對抗情緒慣性',
-          body: '大跌想出場、狂漲怕錯過是人性，但單一指標很容易誤判。把散戶情緒、機構部位、匯率壓力與價格動能放在一起看，你會得到一個不受日常新聞影響的客觀參考，讓判斷留在紀律之內。'
+          title: '3. 用數據檢查追高與殺低的衝動',
+          body: '大跌時想出場、急漲時怕錯過，都可以先回到數據。比較情緒分數、指標組成與歷史位置，再決定是否調整原本的配置。'
         }
       ]
     };
@@ -22,19 +22,19 @@ const buildTwGaugeExplainerCopy = ({ currentLang, currentCompositeScore, current
 
   return {
     title: 'About the Taiwan Fear & Greed Index',
-    subtitle: `The composite score is currently ${currentCompositeScore ?? '-'}, leaning ${currentCompositeSentimentLabel}. It compresses nine Taiwan market signals into a single 0-to-100 read.`,
+    subtitle: `The composite score is ${currentCompositeScore ?? '-'}, leaning ${currentCompositeSentimentLabel}. Nine Taiwan signals form a 0-to-100 score. Start with the overall sentiment, then explore what changed.`,
     sections: [
       {
         title: '1. Read Taiwan sentiment across nine signals',
-        body: 'The index combines TAIEX options volatility, the Put/Call ratio, USD/TWD, margin maintenance ratio, foreign-institution futures positioning, market breadth, margin-to-short ratio, index momentum and effective trading accounts. Together they cover hedging demand, leverage, capital flow, price extension and participation — so what you see is the aggregate posture of the Taiwan market, not any single series.'
+        body: 'Options, margin financing, short positions, foreign futures positions, currency, momentum and participation give you several views of risk appetite. Signals can diverge; the composite shows their aggregate direction.'
       },
       {
-        title: '2. Focus on extremes, not daily wiggles',
-        body: 'When the score is deep in the low zone, hedging, short pressure and outflows are rising together and fear is spreading. When it reaches the high zone, chasing behavior, leverage and breadth have expanded in sync and the market is getting hot. The useful moment is when multiple signals start moving toward those extremes at the same time.'
+        title: '2. Watch for sentiment extremes',
+        body: 'Low scores lean toward fear; high scores lean toward greed. At extremes, open the individual indicators to see what drove the score, then compare with the TAIEX price trend.'
       },
       {
-        title: '3. Use the cross-signal consensus to fight instinct',
-        body: 'Selling into weakness and chasing into strength are natural, but single indicators are easy to misread. Putting retail positioning, institutional flow, FX pressure and price momentum on one scale gives you a reference that is not driven by a single-day headline, helping you stay on a rule-based read of the market.'
+        title: '3. Check the urge to chase or panic-sell',
+        body: 'When a sell-off makes you want to exit, or a rally makes you fear missing out, return to the data. Compare the score, its components and historical readings before changing your allocation.'
       }
     ]
   };

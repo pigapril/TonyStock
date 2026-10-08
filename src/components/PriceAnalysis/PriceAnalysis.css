@@ -56,6 +56,7 @@
 
 /* 圖表標題和標籤樣式 */
 .price-analysis-view .chart-header {
+  min-height: 104px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,10 +64,6 @@
   margin-top: -15px;
   margin-bottom: -10px;
   flex-direction: column;
-}
-
-.price-analysis-view .chart-header--skeleton {
-  min-height: 104px;
 }
 
 .price-analysis-view .chart-title {
@@ -420,14 +417,11 @@
   width: 100%;
 }
 
-.price-analysis-view .analysis-result--skeleton .analysis-item {
-  min-height: 54px;
-}
-
 .price-analysis-view .analysis-value-skeleton {
   display: block;
   width: 84px;
-  height: 18px;
+  height: 1.4em;
+  font-size: 1.3em;
   border-radius: 999px;
   background: linear-gradient(90deg, rgba(218, 223, 230, 0.65) 0%, rgba(240, 243, 247, 0.95) 50%, rgba(218, 223, 230, 0.65) 100%);
   background-size: 200% 100%;
@@ -440,6 +434,7 @@
 
 .price-analysis-view .analysis-item {
   display: grid;
+  min-height: 54px;
   grid-template-rows: 1fr auto;
   gap: 6px;
   min-width: 100px;
@@ -457,6 +452,7 @@
 }
 
 .price-analysis-view .analysis-value {
+  line-height: 1.4;
   font-size: 1.3em;
   font-weight: 600;
   color: #2c3e50;
@@ -847,6 +843,10 @@
   white-space: nowrap;
 }
 
+.price-analysis-view .analysis-value-skeleton--channel {
+  font-size: 1.05em;
+}
+
 .price-analysis-view .channel-value--below {
   color: #0000FF;
 }
@@ -1042,7 +1042,8 @@
     justify-content: center;
   }
 
-  .price-analysis-view .analysis-value {
+  .price-analysis-view .analysis-value,
+  .price-analysis-view .analysis-value-skeleton {
     font-size: 1.05em;
   }
 
@@ -1051,7 +1052,7 @@
     padding-top: 25px;
   }
 
-  .price-analysis-view .chart-header--skeleton {
+  .price-analysis-view .chart-header {
     min-height: 92px;
   }
 }
@@ -2078,7 +2079,7 @@
 
 .price-analysis-view .pa-searchbar .stock-input-wrapper .form-control {
   height: 40px;
-  padding: 0;
+  padding: 0 28px 0 0;
   border: none;
   background: transparent;
   box-shadow: none;
@@ -2128,6 +2129,13 @@
 }
 
 /* 回測日期直接放在搜尋列上，不再藏在收合面板裡 */
+.price-analysis-view .pa-searchbar__controls .price-analysis-date-picker-skeleton {
+  flex: 0 0 auto;
+  width: 140px;
+  height: 34px;
+  border-radius: 999px;
+}
+
 .price-analysis-view .pa-searchbar__controls .react-datepicker-wrapper {
   width: auto;
 }
@@ -2199,6 +2207,10 @@
 
 /* 讀取中的細環，取代原本佔一整列的「開始分析」按鈕 */
 .price-analysis-view .pa-searchbar__spinner {
+  /* 不參與 flex 換行，載入結束時搜尋列維持原高度。 */
+  position: absolute;
+  top: 10px;
+  right: 4px;
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -2213,6 +2225,8 @@
 
 /* 熱門標的與搜尋框共用中心軸，維持原本的膠囊入口。 */
 .price-analysis-view .pa-hot-search-slot {
+  /* 載入熱門標的前即保留標籤與單行膠囊的高度，不讓下方圖表跳動。 */
+  min-height: 57px;
   width: 100%;
   max-width: 1040px;
   min-width: 0;

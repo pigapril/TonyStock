@@ -16,7 +16,14 @@
 .market-pulse__value {
   color: #788696;
   font-size: 11px;
+  line-height: 16px;
   font-variant-numeric: tabular-nums;
+}
+
+.market-pulse__viewport,
+.market-pulse__empty {
+  /* 三行行情（17 + 16 + 20）與上下 padding（4）的固定預留高度。 */
+  min-height: 57px;
 }
 
 .market-pulse__viewport {
@@ -79,6 +86,7 @@
   overflow: hidden;
   color: #33445a;
   font-size: 12px;
+  line-height: 17px;
   font-weight: 600;
   text-overflow: ellipsis;
 }
@@ -86,6 +94,7 @@
 .market-pulse__change {
   align-self: end;
   font-size: 14px;
+  line-height: 20px;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
 }
@@ -123,6 +132,9 @@
 }
 
 .market-pulse__empty {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
   margin: 0;
   padding-left: 14px;
   color: #788696;

@@ -1,5 +1,9 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render as rtlRender, screen, fireEvent, waitFor } from '@testing-library/react';
+import { createInstance } from 'i18next';
+import { I18nextProvider } from 'react-i18next';
+import zhTW from '../../../locales/zh-TW/translation.json';
+import en from '../../../locales/en/translation.json';
 import PaymentStatus from '../PaymentStatus';
 import paymentService from '../../../services/paymentService';
 
@@ -30,11 +34,21 @@ jest.mock('../../../utils/logger', () => ({
 }));
 
 const mockPaymentService = paymentService;
+const testI18n = createInstance();
+testI18n.init({
+  lng: 'zh-TW',
+  fallbackLng: 'zh-TW',
+  resources: { 'zh-TW': { translation: zhTW }, en: { translation: en } },
+  initImmediate: false,
+  interpolation: { escapeValue: false }
+});
+const render = ui => rtlRender(<I18nextProvider i18n={testI18n}>{ui}</I18nextProvider>);
 
 describe('PaymentStatus', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
     mockSearchParams = new URLSearchParams();
+    await testI18n.changeLanguage('zh-TW');
   });
 
   it('shows a failed state immediately when orderId is missing', async () => {
@@ -73,7 +87,7 @@ describe('PaymentStatus', () => {
     expect(screen.getByText('查看帳戶資訊')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: '查看帳戶資訊' }));
-    expect(mockNavigate).toHaveBeenCalledWith('/account');
+    expect(mockNavigate).toHaveBeenCalledWith('/zh-TW/user-account');
   });
 
   it('polls by order id for UUID-based return URLs', async () => {
@@ -136,11 +150,47 @@ describe('PaymentStatus', () => {
     expect(screen.getByText('付款驗證失敗')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: '重新付款' }));
-    expect(mockNavigate).toHaveBeenCalledWith('/subscription', {
+    expect(mockNavigate).toHaveBeenCalledWith('/zh-TW/subscription-plans', {
       state: {
         retryPayment: true,
         previousOrderId: 'TN123456789'
       }
     });
+  });
+
+  it('shows English timeout guidance and the real support address without declaring payment failure', async () => {
+    await testI18n.changeLanguage('en');
+    mockSearchParams = new URLSearchParams('orderId=TN123456789');
+    mockPaymentService.pollPaymentStatusByMerchantTradeNo.mockResolvedValue({
+      success: false,
+      status: 'timeout'
+    });
+
+    const { container } = render(<PaymentStatus />);
+
+    expect(await screen.findByText('Status check timed out')).toBeInTheDocument();
+    expect(screen.getByText(/support@sentimentinsideout\.com/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'View account' })).toBeInTheDocument();
+    expect(container.textContent).not.toMatch(/[\u3400-\u9fff]/);
+    expect(screen.queryByText('Payment failed')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'View account' }));
+    expect(mockNavigate).toHaveBeenCalledWith('/en/user-account');
+  });
+
+  it('localizes a missing order and a Chinese-only provider error on the English page', async () => {
+    await testI18n.changeLanguage('en');
+    const view = render(<PaymentStatus />);
+    expect(await screen.findByText('Order information is missing')).toBeInTheDocument();
+    view.unmount();
+
+    mockSearchParams = new URLSearchParams('orderId=TN123456789');
+    mockPaymentService.pollPaymentStatusByMerchantTradeNo.mockResolvedValue({
+      success: false,
+      status: 'failed',
+      error: '付款驗證失敗'
+    });
+    const { container } = render(<PaymentStatus />);
+    expect(await screen.findByText('There was a problem with the payment. Please try again later.')).toBeInTheDocument();
+    expect(container.textContent).not.toMatch(/[\u3400-\u9fff]/);
   });
 });
