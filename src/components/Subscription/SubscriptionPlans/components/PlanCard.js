@@ -38,6 +38,15 @@ export const PlanCard = ({
 
   const isFree = plan.id === 'free';
   const isPro = plan.id === 'pro';
+  const trialEnd = userPlan?.trialEnd ? new Date(userPlan.trialEnd) : null;
+  const isActiveProTrial = isPro && userPlan?.type === 'pro'
+    && userPlan.isActive !== false && !userPlan.isExpired
+    && trialEnd && !Number.isNaN(trialEnd.getTime()) && trialEnd.getTime() > Date.now();
+  const trialEndText = isActiveProTrial
+    ? new Intl.DateTimeFormat(lang?.startsWith('en') ? 'en-US' : 'zh-TW', {
+      timeZone: 'Asia/Taipei', year: 'numeric', month: 'numeric', day: 'numeric'
+    }).format(trialEnd)
+    : null;
 
   // 智能判斷當前方案狀態
   const isCurrentPlan = (() => {
@@ -99,7 +108,7 @@ export const PlanCard = ({
       return;
     }
 
-    if (isCurrentPlan || loading) {
+    if (isCurrentPlan || isActiveProTrial || loading) {
       return;
     }
 
@@ -258,7 +267,8 @@ export const PlanCard = ({
 
 
   // 優惠碼走原付款頁，避免使用者以為折扣會套在免費試用上。
-  const showFreeTrialEntry = isPro && freeTrialEligible && !appliedRedemption && !isCurrentPlan && !isCancelledButActive;
+  const showFreeTrialEntry = isPro && currentPlan !== 'pro' && freeTrialEligible && !appliedRedemption
+    && !isCurrentPlan && !isCancelledButActive && !isActiveProTrial;
 
   const trackedTrialEntry = useRef(null);
   useEffect(() => {
@@ -335,6 +345,8 @@ export const PlanCard = ({
       }
       return t('subscription.subscriptionPlans.loginRequired');
     }
+
+    if (isActiveProTrial) return t('freeTrial.planCard.trialActive');
 
     // 活躍的當前方案
     if (isCurrentPlan) return t('subscription.subscriptionPlans.current');
@@ -567,12 +579,17 @@ export const PlanCard = ({
             variant={getButtonVariant()}
             size="large"
             onClick={handlePlanSelect}
-            disabled={isCurrentPlan || loading || (plan.displayPrice && !plan.showRealPrice)}
+            disabled={isCurrentPlan || isActiveProTrial || loading || (plan.displayPrice && !plan.showRealPrice)}
             loading={loading}
             className="plan-card__button"
           >
             {getButtonText()}
           </AppleButton>
+        )}
+        {isActiveProTrial && (
+          <p className="plan-card__trial-note">
+            {t('freeTrial.planCard.subscribeAfterTrial', { date: trialEndText })}
+          </p>
         )}
       </div>
 

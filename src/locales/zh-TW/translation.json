@@ -3084,7 +3084,9 @@
       "later": "稍後再說"
     },
     "planCard": {
-      "startTrial": "免費試用 30 天"
+      "startTrial": "免費試用 30 天",
+      "trialActive": "Pro 試用中",
+      "subscribeAfterTrial": "試用至 {{date}}，結束後可選擇訂閱"
     },
     "disclosureTitle": "開始前請確認",
     "disclosure": {

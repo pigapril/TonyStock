@@ -3052,7 +3052,9 @@
       "later": "Maybe later"
     },
     "planCard": {
-      "startTrial": "Start a 30-day free trial"
+      "startTrial": "Start a 30-day free trial",
+      "trialActive": "Pro trial active",
+      "subscribeAfterTrial": "Trial ends {{date}}. You can subscribe afterward."
     },
     "disclosureTitle": "Before you start",
     "disclosure": {

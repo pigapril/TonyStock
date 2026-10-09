@@ -225,6 +225,39 @@ describe('方案頁的免綁卡試用入口', () => {
         expect(screen.queryByText(TRIAL_CTA)).not.toBeInTheDocument();
     });
 
+    it('Pro 試用期間顯示到期日，無法從方案頁提前付款', async () => {
+        mockSubscriptionState.userPlan = {
+            type: 'pro', status: 'active', autoRenew: false,
+            isActive: true, isExpired: false,
+            trialEnd: new Date('2030-11-07T17:00:00.000Z')
+        };
+        renderPage();
+
+        const button = await screen.findByRole('button', { name: 'Pro 試用中' });
+        expect(button).toBeDisabled();
+        expect(screen.getByText('試用至 2030/11/8，結束後可選擇訂閱')).toBeInTheDocument();
+        expect(screen.queryByText(TRIAL_CTA)).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'mock-apply-redemption' }));
+        expect(screen.getByRole('button', { name: 'Pro 試用中' })).toBeDisabled();
+        expect(mockNavigate).not.toHaveBeenCalled();
+    });
+
+    it('試用結束後恢復付費訂閱入口', async () => {
+        mockFetchEligibility.mockResolvedValue({ eligible: false, reason: 'previous_subscriber' });
+        mockSubscriptionState.userPlan = {
+            type: 'pro', status: 'active', autoRenew: false,
+            isActive: false, isExpired: true,
+            trialEnd: new Date('2020-11-08T00:00:00.000Z')
+        };
+        renderPage();
+
+        const button = await screen.findByRole('button', { name: EXISTING_PRO_CTA });
+        expect(button).toBeEnabled();
+        await userEvent.click(button);
+        expect(mockNavigate).toHaveBeenCalledWith('/zh-TW/payment?plan=pro&period=monthly');
+    });
+
     it('未登入時根本不去問資格', async () => {
         mockAuthState.user = null;
         renderPage();
