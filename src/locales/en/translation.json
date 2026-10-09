@@ -1974,12 +1974,19 @@
       "paymentFailed": "Payment processing failed"
     },
     "security": {
-      "title": "Secure Payment Guarantee",
+      "title": "Secure payment via ECPay",
       "notices": [
-        "Clicking 'Proceed to Payment' will redirect to ECPay payment page",
-        "Please complete payment within 5 minutes, orders will be automatically cancelled if expired",
-        "All transactions are protected with SSL encryption"
-      ]
+        "You will be redirected to payment.ecpay.com.tw to enter your card details and complete payment.",
+        "All charges are in TWD (New Taiwan Dollar). Your card issuer may apply currency conversion or international transaction fees.",
+        "Card acceptance is subject to ECPay and your card issuer."
+      ],
+      "cards": "Card payment",
+      "renewal": "Renews automatically at TWD {{amount}} every {{period}} until cancelled. Manage or cancel your subscription in your account before the next renewal.",
+      "monthly": "month",
+      "yearly": "year",
+      "cancel": "Manage subscription",
+      "policy": "Terms & refund policy",
+      "support": "Contact support"
     },
     "plan": {
       "proPlan": "Pro Plan",

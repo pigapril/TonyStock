@@ -15,6 +15,7 @@ import paymentService from '../services/paymentService';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
 import { Button } from '../components/Common/Button/Button';
 import { Badge } from '../components/Common/Badge/Badge';
+import PaymentTrustNotice from '../components/Payment/PaymentTrustNotice';
 import './PaymentPage.css';
 
 const PaymentPage = () => {
@@ -526,7 +527,7 @@ const PaymentPage = () => {
                     <h3 className="payment-page__plan-name">{t('payment.plan.proPlan')}</h3>
                     <div className="payment-page__plan-price">
                         <span className="payment-page__plan-amount">
-                            NT$ {currentPlan?.price?.toLocaleString()}
+                            TWD {currentPlan?.price?.toLocaleString()}
                         </span>
                         <span className="payment-page__plan-period">
                             / {billingPeriod === 'monthly' ? t('payment.plan.pricing.monthly') : t('payment.plan.pricing.yearly')}
@@ -537,16 +538,16 @@ const PaymentPage = () => {
                     {appliedRedemption && appliedRedemption.benefits && currentPlan?.originalPrice && (
                         <div className="payment-page__plan-discount">
                             <div className="payment-page__original-price">
-                                {t('payment.plan.pricing.originalPrice')}：NT$ {currentPlan.originalPrice.toLocaleString()}
+                                {t('payment.plan.pricing.originalPrice')}：TWD {currentPlan.originalPrice.toLocaleString()}
                             </div>
                             <div className="payment-page__discount-badge">
                                 {appliedRedemption.benefits.discountType === 'PERCENTAGE_DISCOUNT' || appliedRedemption.benefits.discountType === 'percentage'
-                                    ? `${appliedRedemption.benefits.savingsPercentage || appliedRedemption.benefits.discountPercentage}% 折扣`
-                                    : `折扣 NT$ ${(appliedRedemption.benefits.estimatedValue || appliedRedemption.benefits.discountAmount || appliedRedemption.benefits.amount || 0).toLocaleString()}`
+                                    ? `${appliedRedemption.benefits.savingsPercentage || appliedRedemption.benefits.discountPercentage}% ${t('payment.orderSummary.discount')}`
+                                    : `${t('payment.orderSummary.discount')} TWD ${(appliedRedemption.benefits.estimatedValue || appliedRedemption.benefits.discountAmount || appliedRedemption.benefits.amount || 0).toLocaleString()}`
                                 }
                             </div>
                             <div className="payment-page__redemption-code">
-                                優惠碼：{appliedRedemption.code}
+                                {t('redemption.confirmation.codeLabel')}：{appliedRedemption.code}
                             </div>
                         </div>
                     )}
@@ -555,12 +556,12 @@ const PaymentPage = () => {
                     {!appliedRedemption && appliedDiscount && currentPlan?.originalPrice && (
                         <div className="payment-page__plan-discount">
                             <div className="payment-page__original-price">
-                                {t('payment.plan.pricing.originalPrice')}：NT$ {currentPlan.originalPrice.toLocaleString()}
+                                {t('payment.plan.pricing.originalPrice')}：TWD {currentPlan.originalPrice.toLocaleString()}
                             </div>
                             <div className="payment-page__discount-badge">
                                 {appliedDiscount.type === 'percentage'
-                                    ? `${appliedDiscount.value}% 折扣`
-                                    : `折扣 NT$ ${appliedDiscount.value.toLocaleString()}`
+                                    ? `${appliedDiscount.value}% ${t('payment.orderSummary.discount')}`
+                                    : `${t('payment.orderSummary.discount')} TWD ${appliedDiscount.value.toLocaleString()}`
                                 }
                             </div>
                         </div>
@@ -598,6 +599,7 @@ const PaymentPage = () => {
                 </div>
             </div>
 
+            <PaymentTrustNotice amount={orderData?.amount ?? finalPrice} billingPeriod={billingPeriod} lang={lang || 'zh-TW'} />
             <div className="payment-page__actions">
                 <Button
                     className="payment-page__button"
@@ -659,6 +661,7 @@ const PaymentPage = () => {
                 </label>
             </div>
 
+            <PaymentTrustNotice amount={orderData?.amount ?? finalPrice} billingPeriod={billingPeriod} lang={lang || 'zh-TW'} />
             <div className="payment-page__actions">
                 <Button
                     className="payment-page__button"
@@ -704,14 +707,14 @@ const PaymentPage = () => {
                             <>
                                 <div className="payment-page__order-row">
                                     <span>{t('payment.plan.pricing.originalPrice')}</span>
-                                    <span>NT$ {currentPlan.originalPrice.toLocaleString()}</span>
+                                    <span>TWD {currentPlan.originalPrice.toLocaleString()}</span>
                                 </div>
                                 <div className="payment-page__order-row payment-page__order-discount">
                                     <span>{t('payment.orderSummary.discount')} ({appliedRedemption.code})</span>
                                     <span className="payment-page__discount-amount">
                                         -{appliedRedemption.benefits.discountType === 'PERCENTAGE_DISCOUNT' || appliedRedemption.benefits.discountType === 'percentage'
                                             ? `${appliedRedemption.benefits.savingsPercentage || appliedRedemption.benefits.discountPercentage}%`
-                                            : `NT$ ${(appliedRedemption.benefits.estimatedValue || appliedRedemption.benefits.discountAmount || appliedRedemption.benefits.amount || 0).toLocaleString()}`
+                                            : `TWD ${(appliedRedemption.benefits.estimatedValue || appliedRedemption.benefits.discountAmount || appliedRedemption.benefits.amount || 0).toLocaleString()}`
                                         }
                                     </span>
                                 </div>
@@ -723,14 +726,14 @@ const PaymentPage = () => {
                             <>
                                 <div className="payment-page__order-row">
                                     <span>{t('payment.plan.pricing.originalPrice')}</span>
-                                    <span>NT$ {currentPlan.originalPrice.toLocaleString()}</span>
+                                    <span>TWD {currentPlan.originalPrice.toLocaleString()}</span>
                                 </div>
                                 <div className="payment-page__order-row payment-page__order-discount">
                                     <span>{t('payment.orderSummary.discount')}</span>
                                     <span className="payment-page__discount-amount">
                                         -{appliedDiscount.type === 'percentage'
                                             ? `${appliedDiscount.value}%`
-                                            : `NT$ ${appliedDiscount.value.toLocaleString()}`
+                                            : `TWD ${appliedDiscount.value.toLocaleString()}`
                                         }
                                     </span>
                                 </div>
@@ -738,28 +741,13 @@ const PaymentPage = () => {
                         )}
                         <div className="payment-page__order-row payment-page__order-total">
                             <span>{t('payment.plan.pricing.totalAmount')}</span>
-                            <span>NT$ {finalPrice?.toLocaleString()}</span>
+                            <span>TWD {Number(orderData.amount).toLocaleString()}</span>
                         </div>
                     </div>
                 )}
             </div>
 
-            <div className="payment-page__security-notice ui-surface-card ui-surface-card--prominent">
-                <div className="payment-page__security-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </div>
-                <div className="payment-page__security-text">
-                    <h4>{t('payment.security.title')}</h4>
-                    <ul>
-                        {t('payment.security.notices', { returnObjects: true }).map((notice, index) => (
-                            <li key={index}>{notice}</li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-
+            <PaymentTrustNotice amount={orderData?.amount ?? finalPrice} billingPeriod={billingPeriod} lang={lang || 'zh-TW'} />
             <div className="payment-page__actions">
                 <Button
                     className="payment-page__button"

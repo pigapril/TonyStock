@@ -153,11 +153,16 @@
   align-items: flex-start;
 }
 
-/* Plan Section */
-.payment-page__plan-section {
+/* Keep every checkout step on the same content column. */
+.payment-page__plan-section,
+.payment-page__terms-section,
+.payment-page__confirmation-section {
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
+  min-width: 0;
 }
+
+/* Plan Section */
 
 .payment-page__plan-card {
   padding: 32px;
@@ -261,11 +266,6 @@
 }
 
 /* Terms Section */
-.payment-page__terms-section {
-  width: 100%;
-  max-width: 600px;
-}
-
 .payment-page__terms-content {
   padding: 32px;
   margin-bottom: 32px;
@@ -356,11 +356,6 @@
 }
 
 /* Confirmation Section */
-.payment-page__confirmation-section {
-  width: 100%;
-  max-width: 500px;
-}
-
 .payment-page__order-summary {
   padding: 32px;
   margin-bottom: 24px;
@@ -895,4 +890,43 @@ er Summary Discount Styles */
   padding-top: 12px;
   margin-top: 8px;
   font-weight: 600;
+}
+
+/* Keep payment brand artwork in its original colors and proportions. */
+.payment-page__card-brands {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.payment-page__card-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 82px;
+  height: 48px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.payment-page__card-brand img {
+  display: block;
+  object-fit: contain;
+}
+
+.payment-page__renewal-notice {
+  margin: 16px 0 12px;
+  line-height: 1.6;
+}
+
+.payment-page__support-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
+
+.payment-page__security-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
