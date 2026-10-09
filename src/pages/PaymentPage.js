@@ -41,6 +41,11 @@ const PaymentPage = () => {
     const [originalAmount, setOriginalAmount] = useState(null);
     const [finalAmount, setFinalAmount] = useState(null);
 
+    // Reset the viewport after the new checkout step has rendered.
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [currentStep]);
+
     // 確保用戶已登入並檢查折扣信息
     useEffect(() => {
         if (!user) {
