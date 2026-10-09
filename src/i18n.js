@@ -1,10 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-// import Backend from 'i18next-http-backend'; // 不再需要
-
-// 直接 import json 檔案
-import en from './locales/en/translation.json';
-import zhTW from './locales/zh-TW/translation.json';
+// Only shared/home copy is bundled initially; feature sections load with routes.
+import en from './locales/resources/en/common.json';
+import zhTW from './locales/resources/zh-TW/common.json';
 
 // Dev-only: record every key passed to t() so we can verify "unused" claims
 // from static analysis against real runtime behavior. Reset from the crawler
@@ -15,7 +13,6 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
 
 // 初始化 i18n，直接用 resources
 i18n
-  // .use(Backend) // 不再需要
   .use(initReactI18next)
   .init({
     fallbackLng: {

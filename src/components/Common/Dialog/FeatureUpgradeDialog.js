@@ -1,3 +1,4 @@
+import './FeatureUpgradeDialog.css';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dialog } from './Dialog';

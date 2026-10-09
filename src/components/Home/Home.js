@@ -13,7 +13,7 @@ import homepageService from '../../services/homepageService';
 import MarketSentimentGauge from '../MarketSentimentIndex/MarketSentimentGauge';
 import { selectHistoricalLowPoints } from '../MarketSentimentIndex/historicalLowPointUtils';
 import { formatPrice } from '../../utils/priceUtils';
-import { useDeferredFeature } from '../../hooks/useDeferredFeature';
+import { useNearViewport } from '../../hooks/useNearViewport';
 import { canSeeFreeTrial } from '../../utils/freeTrialRollout';
 import { fetchFreeTrialEligibility } from '../../services/freeTrialService';
 import { trackProductEvent } from '../../utils/productAnalytics';
@@ -188,8 +188,8 @@ export const Home = () => {
   const [isPriceLoading, setIsPriceLoading] = useState(true);
   const [activeExtremeIndex, setActiveExtremeIndex] = useState(0);
   const [, startTransition] = useTransition();
-  const shouldLoadSecondaryContent = useDeferredFeature({ timeoutMs: 1600, useIdleCallback: true, triggerOnInteraction: true });
-  const shouldLoadPreviewCharts = useDeferredFeature({ timeoutMs: 2400, useIdleCallback: true, triggerOnInteraction: true });
+  const [historySectionRef, shouldLoadHistory] = useNearViewport();
+  const [priceSectionRef, shouldLoadPrice] = useNearViewport();
 
   useEffect(() => {
     if (!isAuthenticated || !trialAccountKey || !canSeeFreeTrial(user?.email)) {
@@ -236,45 +236,30 @@ export const Home = () => {
   }, [startTransition]);
 
   useEffect(() => {
-    if (isHeroLoading || !shouldLoadSecondaryContent) {
-      return undefined;
-    }
-
+    if (isHeroLoading || !shouldLoadHistory) return undefined;
     let isMounted = true;
-
-    const loadNarrativeData = async () => {
-      const data = await homepageService.getHomepageNarrativeData();
-
-      if (!isMounted) {
-        return;
-      }
-
+    homepageService.getHomepageNarrativeData().then(data => {
+      if (!isMounted) return;
       startTransition(() => {
-        setHomepageData((currentData) => mergeHomepageData(currentData, data));
+        setHomepageData(currentData => mergeHomepageData(currentData, data));
         setIsNarrativeLoading(false);
       });
-    };
+    });
+    return () => { isMounted = false; };
+  }, [isHeroLoading, shouldLoadHistory, startTransition]);
 
-    const loadPriceData = async () => {
-      const data = await homepageService.getHomepagePriceData();
-
-      if (!isMounted) {
-        return;
-      }
-
+  useEffect(() => {
+    if (isHeroLoading || !shouldLoadPrice) return undefined;
+    let isMounted = true;
+    homepageService.getHomepagePriceData().then(data => {
+      if (!isMounted) return;
       startTransition(() => {
-        setHomepageData((currentData) => mergeHomepageData(currentData, data));
+        setHomepageData(currentData => mergeHomepageData(currentData, data));
         setIsPriceLoading(false);
       });
-    };
-
-    loadNarrativeData();
-    loadPriceData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [isHeroLoading, shouldLoadSecondaryContent, startTransition]);
+    });
+    return () => { isMounted = false; };
+  }, [isHeroLoading, shouldLoadPrice, startTransition]);
 
   useEffect(() => {
     const revealNodes = document.querySelectorAll('.home-reveal');
@@ -505,7 +490,7 @@ export const Home = () => {
       jsonLd={homeJsonLd}
     >
       <div className="home-page">
-        <section className="home-hero">
+        <section className="home-hero" lang={currentLang}>
           <div className="home-hero__backdrop" aria-hidden="true">
             <img
               src={`${process.env.PUBLIC_URL}/home-hero-sio.svg`}
@@ -628,7 +613,7 @@ export const Home = () => {
 
         <section id="home-methodology" className="ui-section home-narrative">
           <div className="ui-page-shell">
-            <article className="home-storyBlock home-storyBlock--sentiment home-reveal">
+            <article ref={historySectionRef} className="home-storyBlock home-storyBlock--sentiment home-reveal">
               <div className="home-storyBlock__content">
                 <h2>{t('home.story.blocks.sentiment.title')}</h2>
                 <p>{t('home.story.blocks.sentiment.description')}</p>
@@ -651,7 +636,7 @@ export const Home = () => {
 
                     {historyPreview.length > 1 ? (
                       <div className="home-historyPreview__chartShell">
-                        {shouldLoadPreviewCharts ? (
+                        {shouldLoadHistory ? (
                           <Suspense fallback={<div className="home-historyPreview__loadingChart" aria-hidden="true" />}>
                             <SharedSentimentHistoryChart
                               className="home-historyPreview__chart"
@@ -674,7 +659,7 @@ export const Home = () => {
               </div>
             </article>
 
-            <article className="home-storyBlock home-storyBlock--price home-reveal">
+            <article ref={priceSectionRef} className="home-storyBlock home-storyBlock--price home-reveal">
               <div className="home-storyMedia home-storyMedia--price ui-surface-card">
                 {isPriceLoading ? (
                   priceLoadingState
@@ -702,7 +687,7 @@ export const Home = () => {
                     </div>
                     {pricePreviewSeries.length > 1 ? (
                       <div className="home-pricePreview__chartShell">
-                        {shouldLoadPreviewCharts ? (
+                        {shouldLoadPrice ? (
                           <Suspense fallback={<div className="home-pricePreview__loadingChart" aria-hidden="true" />}>
                             <HomePricePreviewChart className="home-pricePreview__chart" series={pricePreviewSeries} />
                           </Suspense>

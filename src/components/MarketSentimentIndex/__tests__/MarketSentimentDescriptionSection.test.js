@@ -2,7 +2,15 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../../../i18n';
+import marketEn from '../../../locales/resources/en/market.json';
+import marketZhTW from '../../../locales/resources/zh-TW/market.json';
 import MarketSentimentDescriptionSection from '../MarketSentimentDescriptionSection';
+
+// market chunk is loaded lazily in production; inject it for tests.
+beforeAll(() => {
+  i18n.addResourceBundle('en', 'translation', marketEn, true, true);
+  i18n.addResourceBundle('zh-TW', 'translation', marketZhTW, true, true);
+});
 
 const renderWithI18n = (component) => render(
   <I18nextProvider i18n={i18n}>

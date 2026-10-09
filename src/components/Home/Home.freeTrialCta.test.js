@@ -1,10 +1,11 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Home } from './Home';
 import { useAuth } from '../Auth/useAuth';
 import { fetchFreeTrialEligibility } from '../../services/freeTrialService';
 import { trackProductEvent } from '../../utils/productAnalytics';
+import homepageService from '../../services/homepageService';
 
 jest.mock('../Auth/useAuth', () => ({ useAuth: jest.fn() }));
 jest.mock('../Common/Dialog/useDialog', () => ({ useDialog: () => ({ openDialog: jest.fn() }) }));
@@ -12,9 +13,12 @@ jest.mock('../../services/freeTrialService', () => ({ fetchFreeTrialEligibility:
 jest.mock('../../utils/productAnalytics', () => ({ trackProductEvent: jest.fn() }));
 jest.mock('../../services/homepageService', () => ({
   __esModule: true,
-  default: { getHomepageHeroData: jest.fn().mockResolvedValue({}) }
+  default: {
+    getHomepageHeroData: jest.fn().mockResolvedValue({}),
+    getHomepageNarrativeData: jest.fn().mockResolvedValue({}),
+    getHomepagePriceData: jest.fn().mockResolvedValue({})
+  }
 }));
-jest.mock('../../hooks/useDeferredFeature', () => ({ useDeferredFeature: () => false }));
 jest.mock('react-responsive', () => ({ useMediaQuery: () => false }));
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -35,13 +39,19 @@ jest.mock('../MarketSentimentIndex/MarketSentimentGauge', () => ({
   default: () => <div />
 }));
 
+let viewportObservers;
 beforeEach(() => {
+  viewportObservers = [];
   global.IntersectionObserver = class {
-    observe() {}
+    constructor(callback) { this.callback = callback; viewportObservers.push(this); }
+    observe(target) { this.target = target; }
     unobserve() {}
     disconnect() {}
   };
   jest.clearAllMocks();
+  homepageService.getHomepageHeroData.mockResolvedValue({});
+  homepageService.getHomepageNarrativeData.mockResolvedValue({});
+  homepageService.getHomepagePriceData.mockResolvedValue({});
 });
 
 const renderHome = () => render(<MemoryRouter><Home /></MemoryRouter>);
@@ -77,4 +87,21 @@ test('訪客不查詢試用資格', () => {
 
   expect(screen.getByRole('button', { name: '登入查看市場情緒' })).toBeInTheDocument();
   expect(fetchFreeTrialEligibility).not.toHaveBeenCalled();
+});
+
+
+test('首頁資料隨各區塊接近畫面才載入，另一區塊不會提前載入或重複請求', async () => {
+  useAuth.mockReturnValue({ isAuthenticated: false, user: null });
+  renderHome();
+  await waitFor(() => expect(homepageService.getHomepageHeroData).toHaveBeenCalled());
+  expect(homepageService.getHomepageNarrativeData).not.toHaveBeenCalled();
+  expect(homepageService.getHomepagePriceData).not.toHaveBeenCalled();
+  const history = viewportObservers.find(observer => observer.target?.classList.contains('home-storyBlock--sentiment'));
+  const price = viewportObservers.find(observer => observer.target?.classList.contains('home-storyBlock--price'));
+  act(() => history.callback([{ isIntersecting: true }]));
+  await waitFor(() => expect(homepageService.getHomepageNarrativeData).toHaveBeenCalledTimes(1));
+  expect(homepageService.getHomepagePriceData).not.toHaveBeenCalled();
+  act(() => price.callback([{ isIntersecting: true }]));
+  await waitFor(() => expect(homepageService.getHomepagePriceData).toHaveBeenCalledTimes(1));
+  expect(homepageService.getHomepageNarrativeData).toHaveBeenCalledTimes(1);
 });

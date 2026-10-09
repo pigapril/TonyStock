@@ -18,6 +18,7 @@ function scheduleIdle(callback, timeoutMs) {
 
 export function useDeferredFeature({
   timeoutMs = 0,
+  minDelayMs = 0,
   useIdleCallback = false,
   triggerOnInteraction = false,
   interactionEvents = DEFAULT_INTERACTION_EVENTS
@@ -42,7 +43,12 @@ export function useDeferredFeature({
       cleanups.forEach((cleanup) => cleanup());
     };
 
-    if (useIdleCallback) {
+    if (useIdleCallback && minDelayMs > 0) {
+      const timer = window.setTimeout(() => {
+        if (!cleanedUp) cleanups.push(scheduleIdle(markReady, Math.max(timeoutMs, 1_000)));
+      }, minDelayMs);
+      cleanups.push(() => window.clearTimeout(timer));
+    } else if (useIdleCallback) {
       cleanups.push(scheduleIdle(markReady, Math.max(timeoutMs, 1_000)));
     } else {
       const timer = window.setTimeout(markReady, timeoutMs);
@@ -62,7 +68,7 @@ export function useDeferredFeature({
       cleanedUp = true;
       cleanups.forEach((cleanup) => cleanup());
     };
-  }, [interactionEvents, isReady, timeoutMs, triggerOnInteraction, useIdleCallback]);
+  }, [interactionEvents, isReady, minDelayMs, timeoutMs, triggerOnInteraction, useIdleCallback]);
 
   return isReady;
 }

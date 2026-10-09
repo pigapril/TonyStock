@@ -15,6 +15,7 @@ export function getTagManagerDeferConfig(pathname = '') {
   if (isLocalizedRoot) {
     return {
       timeoutMs: 10000,
+      minDelayMs: 3500,
       useIdleCallback: true,
       triggerOnInteraction: false,
       interactionEvents: DEFAULT_INTERACTION_EVENTS

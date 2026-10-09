@@ -15,16 +15,12 @@ import { FaChartLine, FaChartBar, FaHeartbeat, FaBars, FaFacebook, FaList, FaHom
 import './App.css';
 import './components/Auth/styles/SignInDialog.css';
 import './components/NewFeatureBadge/NewFeatureBadge.css';
-import "react-datepicker/dist/react-datepicker.css";
 import './components/Common/global-styles.css';
 import './components/Common/ui-recipes.css';
-import './components/Common/Dialog/FeatureUpgradeDialog.css';
 
 
 // 自定義組件
 import { Home } from './components/Home/Home';
-import { AuthDialog } from './components/Auth/AuthDialog';
-import { GlobalFeatureUpgradeDialog } from './components/Common/Dialog/GlobalFeatureUpgradeDialog';
 import { AuthStatusIndicator } from './components/Auth/AuthStatusIndicator';
 import { PageViewTracker } from './components/Common/PageViewTracker';
 import { Footer } from './components/Common/Footer/Footer';
@@ -55,7 +51,11 @@ import { canSeeCardTrial } from './utils/cardTrialRollout';
 import { canSeeFreeTrial } from './utils/freeTrialRollout';
 import BrandLogo from './components/Common/BrandLogo/BrandLogo';
 import DeferredTagManager from './components/Common/DeferredTagManager/DeferredTagManager';
+import RouteLocaleGate from './components/Common/RouteLocaleGate/RouteLocaleGate';
 import MarketPulse from './components/MarketPulse/MarketPulse';
+
+const AuthDialog = lazy(() => import('./components/Auth/AuthDialog').then(module => ({ default: module.AuthDialog })));
+const GlobalFeatureUpgradeDialog = lazy(() => import('./components/Common/Dialog/GlobalFeatureUpgradeDialog').then(module => ({ default: module.GlobalFeatureUpgradeDialog })));
 
 const MarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/MarketSentimentIndex'));
 const MomentumDashboardPage = lazy(() => import('./components/MomentumDashboard/MomentumDashboardPage'));
@@ -124,7 +124,7 @@ function AppContent() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { userPlan } = useSubscription();
-  const { openDialog } = useDialog();
+  const { openDialog, dialog } = useDialog();
   const { showToast, toast, hideToast } = useToastManager();
   
 
@@ -142,9 +142,9 @@ function AppContent() {
     'priceanalysis', 'market-sentiment', 'tw-market-sentiment', 'momentum', 'watchlist'
   ].some((route) => location.pathname === `/${lang}/${route}` || location.pathname === `/${lang}/${route}/`);
   const [isTopNavScrolled, setIsTopNavScrolled] = React.useState(false);
-  const shouldLoadAnnouncementBar = useDeferredFeature({ timeoutMs: 1500, useIdleCallback: true, triggerOnInteraction: true });
-  const shouldLoadChatWidget = useDeferredFeature({ timeoutMs: 3200, useIdleCallback: true, triggerOnInteraction: true });
-  const shouldLoadAdSense = useDeferredFeature({ timeoutMs: 4500, useIdleCallback: true, triggerOnInteraction: true });
+  const shouldLoadAnnouncementBar = useDeferredFeature({ timeoutMs: 1500, minDelayMs: 1500, useIdleCallback: true, triggerOnInteraction: true });
+  const shouldLoadChatWidget = useDeferredFeature({ timeoutMs: 3200, minDelayMs: 3200, useIdleCallback: true, triggerOnInteraction: true });
+  const shouldLoadAdSense = useDeferredFeature({ timeoutMs: 4500, minDelayMs: 4500, useIdleCallback: true, triggerOnInteraction: true });
 
 
   // 智能導航系統
@@ -596,6 +596,7 @@ function AppContent() {
           <div className={`content-area ${isHomePage ? 'content-area--home' : ''}`}>
             {showMarketPulse && <MarketPulse />}
             <Suspense fallback={<RouteFallback />}>
+              <RouteLocaleGate lang={lang} pathname={location.pathname} fallback={<RouteFallback />}>
               <Routes>
                 <Route path="/" element={<Home />} />
 
@@ -720,6 +721,7 @@ function AppContent() {
                 {/* 可以添加一個捕獲無效相對路徑的路由 */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              </RouteLocaleGate>
             </Suspense>
           </div>
         </main>
@@ -735,8 +737,10 @@ function AppContent() {
         {/* 將 Footer 移到這裡 */}
         <Footer />
       </div>
-      <AuthDialog />
-      <GlobalFeatureUpgradeDialog />
+      <Suspense fallback={null}>
+        {dialog.isOpen && dialog.type === 'auth' ? <AuthDialog /> : null}
+        {dialog.isOpen && dialog.type === 'featureUpgrade' ? <GlobalFeatureUpgradeDialog /> : null}
+      </Suspense>
       {/* 條件式 AdSense 載入 */}
       <Suspense fallback={null}>
         {shouldLoadAdSense ? (
@@ -778,10 +782,8 @@ function LanguageWrapper() {
         return; // 停止後續處理，等待重定向生效
       }
 
-      // 如果大小寫正確，則設置 i18n 語言
-      if (i18n.language !== standardLang) {
-        i18n.changeLanguage(standardLang);
-      }
+      // Shared shell copy is bundled; feature pages wait inside RouteLocaleGate.
+      if (i18n.language !== standardLang) i18n.changeLanguage(standardLang);
     }
     // AppContent 中的 useEffect 會處理無效 lang (完全不匹配 supportedLngs) 的情況
     // 但這裡也可以加上處理，如果 standardLang 未找到

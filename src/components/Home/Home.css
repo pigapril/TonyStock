@@ -33,7 +33,7 @@
   position: relative;
   overflow: hidden;
   min-height: 100vh;
-  padding: calc(var(--top-nav-height, 68px) + 88px) 0 40px;
+  padding: calc(var(--top-nav-height, 68px) + 32px) 0 40px;
 }
 
 .home-hero__backdrop {
@@ -113,6 +113,34 @@
 .home-hero__titleSegment--noBreak {
   white-space: nowrap;
   word-break: keep-all;
+}
+
+.home-hero:lang(en) h1 {
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+@media (min-width: 1201px) {
+  .home-hero:lang(en) .home-hero__inner {
+    width: min(1480px, calc(100% - 64px));
+    grid-template-columns: minmax(0, 1fr) clamp(320px, 28vw, 400px);
+    column-gap: 32px;
+  }
+
+  .home-hero:lang(en) .home-hero__content {
+    max-width: none;
+  }
+
+  .home-hero:lang(en) h1 {
+    font-size: clamp(2.25rem, 2.8vw, 3.25rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .home-hero:lang(en) h1 {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
 }
 
 .home-hero__subtitle {
@@ -682,7 +710,7 @@
   }
 
   .home-hero__visual {
-    margin-top: -96px;
+    margin-top: -48px;
   }
 
   .home-hero__actions {
@@ -701,7 +729,7 @@
 
 @media (min-width: 1201px) and (max-height: 900px) {
   .home-hero {
-    padding: calc(var(--top-nav-height, 68px) + 72px) 0 32px;
+    padding: calc(var(--top-nav-height, 68px) + 24px) 0 32px;
   }
 
   .home-hero__inner {
@@ -1671,14 +1699,14 @@
 @media (min-width: 1800px) {
   .home-hero {
     min-height: min(100vh, 1080px);
-    padding: calc(var(--top-nav-height, 68px) + 112px) 0 18px;
+    padding: calc(var(--top-nav-height, 68px) + 48px) 0 18px;
   }
 
   .home-hero__inner {
     grid-template-columns: minmax(0, 1.08fr) minmax(520px, 0.8fr);
     gap: 72px 208px;
     align-items: center;
-    padding-top: 44px;
+    padding-top: 8px;
   }
 
   .home-hero__content {
@@ -1741,7 +1769,7 @@
 @media (max-width: 768px) {
   .home-hero {
     min-height: auto;
-    padding: calc(var(--top-nav-height-mobile, 56px) + 56px) 0 32px;
+    padding: calc(var(--top-nav-height-mobile, 56px) + 8px) 0 32px;
   }
 
   .home-hero h1 {
