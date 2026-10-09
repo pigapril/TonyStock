@@ -4,10 +4,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { Home } from './Home';
 import { useAuth } from '../Auth/useAuth';
 import { fetchFreeTrialEligibility } from '../../services/freeTrialService';
+import { trackProductEvent } from '../../utils/productAnalytics';
 
 jest.mock('../Auth/useAuth', () => ({ useAuth: jest.fn() }));
 jest.mock('../Common/Dialog/useDialog', () => ({ useDialog: () => ({ openDialog: jest.fn() }) }));
 jest.mock('../../services/freeTrialService', () => ({ fetchFreeTrialEligibility: jest.fn() }));
+jest.mock('../../utils/productAnalytics', () => ({ trackProductEvent: jest.fn() }));
 jest.mock('../../services/homepageService', () => ({
   __esModule: true,
   default: { getHomepageHeroData: jest.fn().mockResolvedValue({}) }
@@ -52,6 +54,10 @@ test('符合試用資格的登入用戶可從首頁前往訂閱頁', async () =>
 
   const trialLink = await screen.findByRole('link', { name: '免費試用30天 Pro 方案' });
   expect(trialLink.getAttribute('href')).toBe('/zh-TW/subscription-plans');
+  trialLink.click();
+  expect(trackProductEvent).toHaveBeenCalledWith('free_trial_home_clicked', {
+    source: 'home', trial_days: 30
+  });
 });
 
 test('無試用資格的登入用戶保留市場情緒入口', async () => {

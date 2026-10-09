@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FreeTrialFlow from './FreeTrialFlow';
+import { trackProductEvent } from '../../../utils/productAnalytics';
 
 const mockStartFreeTrial = jest.fn();
 const mockRefreshUserPlan = jest.fn();
@@ -47,6 +48,9 @@ describe('免綁卡試用頁', () => {
     expect(mockCheckAuthStatus).toHaveBeenCalledTimes(1);
     expect(mockRefreshUserPlan).toHaveBeenCalledTimes(1);
     expect(mockRefreshSubscriptionHistory).toHaveBeenCalledTimes(1);
+    expect(trackProductEvent).toHaveBeenCalledWith('free_trial_page_viewed', expect.any(Object));
+    expect(trackProductEvent).toHaveBeenCalledWith('free_trial_start_clicked', expect.any(Object));
+    expect(trackProductEvent).toHaveBeenCalledWith('free_trial_started', expect.any(Object));
   });
 
   it('資格已用過時顯示明確訊息', async () => {
@@ -54,5 +58,9 @@ describe('免綁卡試用頁', () => {
     render(<FreeTrialFlow />);
     await userEvent.click(screen.getByRole('button', { name: 'freeTrial.start' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('freeTrial.errors.notEligible');
+    expect(trackProductEvent).toHaveBeenCalledWith('free_trial_start_failed', expect.objectContaining({
+      error_type: 'not_eligible'
+    }));
+    expect(trackProductEvent).not.toHaveBeenCalledWith('free_trial_started', expect.any(Object));
   });
 });

@@ -16,6 +16,7 @@ import { formatPrice } from '../../utils/priceUtils';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
 import { canSeeFreeTrial } from '../../utils/freeTrialRollout';
 import { fetchFreeTrialEligibility } from '../../services/freeTrialService';
+import { trackProductEvent } from '../../utils/productAnalytics';
 
 const HomePricePreviewChart = lazy(() => import('./HomePricePreviewChart').then((module) => ({ default: module.HomePricePreviewChart })));
 const SharedSentimentHistoryChart = lazy(() => import('../MarketSentimentIndex/SharedSentimentHistoryChart').then((module) => ({ default: module.SharedSentimentHistoryChart })));
@@ -569,6 +570,9 @@ export const Home = () => {
                 {isAuthenticated ? (
                   <Link
                     to={showFreeTrialAction ? `/${currentLang}/subscription-plans` : `/${currentLang}/market-sentiment`}
+                    onClick={showFreeTrialAction ? () => trackProductEvent('free_trial_home_clicked', {
+                      source: 'home', trial_days: 30
+                    }) : undefined}
                     className={`${BUTTON_LINK_CLASS('primary')} home-hero__action home-hero__action--primary${showFreeTrialAction ? ' home-hero__action--trial' : ''}`}
                   >
                     <span className="ui-button__content">

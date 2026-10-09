@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../Auth/useAuth';
@@ -16,18 +16,30 @@ const FreeTrialFlow = () => {
   const [phase, setPhase] = useState('ready');
   const [error, setError] = useState(null);
   const language = lang || i18n.language;
+  const trackedPageView = useRef(false);
+
+  useEffect(() => {
+    if (trackedPageView.current) return;
+    trackedPageView.current = true;
+    trackProductEvent('free_trial_page_viewed', { source: 'free_trial_page', trial_days: 30 });
+  }, []);
 
   const handleStart = async () => {
     if (phase !== 'ready') return;
+    trackProductEvent('free_trial_start_clicked', { source: 'free_trial_page', trial_days: 30 });
     setPhase('starting');
     setError(null);
     try {
-      const result = await startFreeTrial();
-      trackProductEvent('free_trial_started', { trial_days: 30, subscription_id: result.subscriptionId });
+      await startFreeTrial();
+      trackProductEvent('free_trial_started', { source: 'free_trial_page', trial_days: 30 });
       setPhase('success');
       await Promise.allSettled([checkAuthStatus(), refreshUserPlan(), refreshSubscriptionHistory()]);
     } catch (requestError) {
       const status = requestError.response?.status;
+      trackProductEvent('free_trial_start_failed', {
+        source: 'free_trial_page', trial_days: 30,
+        error_type: status === 409 ? 'not_eligible' : 'request_failed'
+      });
       setError(status === 409 ? 'freeTrial.errors.notEligible' : 'freeTrial.errors.generic');
       setPhase('failed');
     }
