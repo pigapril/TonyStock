@@ -7,12 +7,14 @@ import { getRouteLocaleGroups } from '../../../locales/resourceGroups';
 // A new language/path cannot render the previous request's ready state.
 export default function RouteLocaleGate({ lang, pathname, fallback = null, children }) {
   const { i18n, t } = useTranslation();
-  const key = `${lang}:${getRouteLocaleGroups(pathname).join(',')}`;
+  const groups = getRouteLocaleGroups(pathname);
+  const key = `${lang}:${groups.join(',')}`;
   const [state, setState] = useState({ key: null, status: 'loading' });
   const [retry, setRetry] = useState(0);
 
   useEffect(() => {
     let active = true;
+    if (groups.length === 0 && i18n.language === lang) return undefined;
     loadRouteLocales(i18n, lang, pathname).then(async () => {
       if (!active) return;
       if (i18n.language !== lang) await i18n.changeLanguage(lang);
@@ -21,7 +23,11 @@ export default function RouteLocaleGate({ lang, pathname, fallback = null, child
       if (active) setState({ key, status: 'error' });
     });
     return () => { active = false; };
-  }, [i18n, key, lang, pathname, retry]);
+  }, [i18n, key, lang, pathname, retry, groups.length]);
+
+  // Shared copy is available synchronously. Never paint the short route
+  // placeholder before the much taller homepage when no download is needed.
+  if (groups.length === 0 && i18n.language === lang) return children;
 
   if (state.key === key && state.status === 'error') {
     return <div className="loading-container" role="alert">

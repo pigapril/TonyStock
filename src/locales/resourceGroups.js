@@ -20,4 +20,9 @@ function getRouteLocaleGroups(pathname = '') {
   return [];
 }
 
-module.exports = { RESOURCE_GROUPS, getRouteLocaleGroups };
+function getInitialLanguage(pathname = '') {
+  const language = pathname.split('/')[1]?.toLowerCase();
+  return language === 'zh-tw' ? 'zh-TW' : language === 'zh' ? 'zh' : 'en';
+}
+
+module.exports = { RESOURCE_GROUPS, getRouteLocaleGroups, getInitialLanguage };

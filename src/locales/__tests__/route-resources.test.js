@@ -71,3 +71,11 @@ test('a failed chunk request can be retried without duplicating successful resou
   expect(instance.t('momentumDashboard.title')).toBe('ready');
   expect(loader).toHaveBeenCalledTimes(2);
 });
+
+test.each([
+  ['/zh-TW/', 'zh-TW'], ['/ZH-tw/momentum', 'zh-TW'], ['/zh/', 'zh'],
+  ['/en/', 'en'], ['/', 'en'], ['/unsupported/', 'en']
+])('initial language is resolved from %s before the first render', (pathname, language) => {
+  const { getInitialLanguage } = require('../resourceGroups');
+  expect(getInitialLanguage(pathname)).toBe(language);
+});

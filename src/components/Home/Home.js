@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '../Common/Badge/Badge';
 import { Button } from '../Common/Button/Button';
 import homepageService from '../../services/homepageService';
-import MarketSentimentGauge from '../MarketSentimentIndex/MarketSentimentGauge';
+import HomeHeroPreview from './HomeHeroPreview';
 import { selectHistoricalLowPoints } from '../MarketSentimentIndex/historicalLowPointUtils';
 import { formatPrice } from '../../utils/priceUtils';
 import { useNearViewport } from '../../hooks/useNearViewport';
@@ -67,39 +67,6 @@ function formatDate(value, locale) {
     month: 'short',
     day: 'numeric'
   }).format(date);
-}
-
-function formatHeroMomentDate(value, locale) {
-  if (!value) {
-    return { monthDay: 'N/A', year: '' };
-  }
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return { monthDay: 'N/A', year: '' };
-  }
-
-  if (locale === 'zh-TW') {
-    return {
-      monthDay: `${date.getMonth() + 1}月${date.getDate()}日`,
-      year: String(date.getFullYear())
-    };
-  }
-
-  const parts = new Intl.DateTimeFormat(locale, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  }).formatToParts(date);
-
-  return {
-    monthDay: [
-      parts.find(({ type }) => type === 'month')?.value || '',
-      parts.find(({ type }) => type === 'day')?.value || ''
-    ].filter(Boolean).join(' '),
-    year: parts.find(({ type }) => type === 'year')?.value || ''
-  };
 }
 
 function renderTitleWithBreaks(title) {
@@ -171,12 +138,6 @@ export const Home = () => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
   const locale = currentLang === 'zh' ? 'zh-TW' : currentLang;
-  const heroGaugeHeadlineBase = (
-    <>
-      <span className="home-marketPreviewShell__headlineLine">{t('home.hero.marketPreviewHeadline.brand')}</span>
-      <span className="home-marketPreviewShell__headlineLine">{t('home.hero.marketPreviewHeadline.index')}</span>
-    </>
-  );
   const isMobileHistoryPreview = useMediaQuery({ query: '(max-width: 768px)' });
   const { openDialog } = useDialog();
   const { isAuthenticated, user } = useAuth();
@@ -312,47 +273,6 @@ export const Home = () => {
   const pricePreview = homepageData?.pricePreview || {};
   const featuredMoments = sentimentData.featuredMoments || [];
   const activeHeroMoment = featuredMoments[activeExtremeIndex] || null;
-  const activeHeroDate = activeHeroMoment?.date || sentimentData.restrictionCutoffDate || sentimentData.lastUpdated || null;
-  const activeHeroDateParts = formatHeroMomentDate(activeHeroDate, locale);
-  const activeHeroMomentTitle = activeHeroMoment
-    ? t(`home.hero.moments.events.${activeHeroMoment.eventId}.title`, {
-        defaultValue: activeHeroMoment.title || ''
-      })
-    : '';
-  const activeHeroMomentDescription = activeHeroMoment
-    ? t(`home.hero.moments.events.${activeHeroMoment.eventId}.description`, {
-        defaultValue: activeHeroMoment.description || ''
-      })
-    : '';
-  const heroGaugeHeadline = (
-    <div className="home-marketPreviewShell__headlineContent">
-      <div className="home-marketPreviewShell__headlineTitle">
-        {heroGaugeHeadlineBase}
-      </div>
-      {activeHeroMoment && (
-        <div className="home-marketPreviewShell__headlineMeta">
-          <span className="home-marketPreviewShell__headlineEyebrow">
-            {currentLang === 'zh-TW' ? '歷史上的極端情緒' : 'Historic extreme sentiment'}
-          </span>
-          <span className="home-marketPreviewShell__headlineDate">
-            <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--year">
-              {activeHeroDateParts.year || '----'}
-            </span>
-            <span className="home-marketMomentPanel__dateDivider" aria-hidden="true" />
-            <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--day">
-              {activeHeroDateParts.monthDay}
-            </span>
-          </span>
-        </div>
-      )}
-    </div>
-  );
-  const heroGaugeData = {
-    totalScore: activeHeroMoment?.score === null || activeHeroMoment?.score === undefined
-      ? (sentimentData.score === null || sentimentData.score === undefined ? 0 : Number(sentimentData.score))
-      : Number(activeHeroMoment.score),
-    compositeScoreLastUpdate: activeHeroDate
-  };
   const announcementMessage = currentLang.startsWith('zh')
     ? homepageData?.announcement?.message_zh || homepageData?.announcement?.message
     : homepageData?.announcement?.message_en || homepageData?.announcement?.message;
@@ -510,45 +430,11 @@ export const Home = () => {
               </div>
 
               <div className="home-hero__visual">
-                {isHeroLoading ? (
-                  <div className="home-marketPreviewShell home-marketPreviewShell--loading ui-surface-card" aria-hidden="true">
-                    <div className="home-hero__loadingGauge" />
-                    <div className="home-hero__loadingGaugeFoot">
-                      <HomeSkeletonLine className="home-hero__loadingBadge" />
-                      <HomeSkeletonLine className="home-hero__loadingBadge home-hero__loadingBadge--short" />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="home-marketPreviewShell">
-                    <MarketSentimentGauge
-                      className="home-marketPreviewShell__gauge"
-                      sentimentData={heroGaugeData}
-                      isDataLoaded={!isHeroLoading}
-                      showAnalysisResult={false}
-                      showLastUpdate={false}
-                      headlineText={heroGaugeHeadline}
-                      frameFooterContent={activeHeroMoment ? (
-                        <div className="home-marketMomentPanel">
-                          <div
-                            key={activeHeroMoment?.eventId || String(activeHeroDate || 'fallback')}
-                            className="home-marketMomentPanel__content"
-                          >
-                            <div className="home-marketMomentPanel__body">
-                              <div className="home-marketMomentPanel__copy">
-                                <strong className="home-marketMomentPanel__title">
-                                  {activeHeroMomentTitle}
-                                </strong>
-                                <p className="home-marketMomentPanel__description">
-                                  {activeHeroMomentDescription}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ) : null}
-                    />
-                  </div>
-                )}
+                <HomeHeroPreview
+                  isLoading={isHeroLoading}
+                  sentimentData={sentimentData}
+                  activeMoment={activeHeroMoment}
+                />
               </div>
 
               <div className="home-hero__actions">

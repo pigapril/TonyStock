@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 // Only shared/home copy is bundled initially; feature sections load with routes.
 import en from './locales/resources/en/common.json';
 import zhTW from './locales/resources/zh-TW/common.json';
+import { getInitialLanguage } from './locales/resourceGroups';
 
 // Dev-only: record every key passed to t() so we can verify "unused" claims
 // from static analysis against real runtime behavior. Reset from the crawler
@@ -15,6 +16,9 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
 i18n
   .use(initReactI18next)
   .init({
+    // Both shared language bundles are already present. Resolve deep links
+    // before the first render rather than repainting English as Chinese.
+    lng: getInitialLanguage(typeof window === 'undefined' ? '' : window.location.pathname),
     fallbackLng: {
       'zh': ['zh-TW', 'en'],
       'default': ['en']

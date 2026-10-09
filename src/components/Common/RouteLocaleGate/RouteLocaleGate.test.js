@@ -10,8 +10,24 @@ const deferred = () => { let resolve; let reject; const promise = new Promise((y
 const view = (lang, pathname) => <RouteLocaleGate lang={lang} pathname={pathname} fallback={<div>waiting</div>}><div>page</div></RouteLocaleGate>;
 
 beforeEach(() => {
+  jest.clearAllMocks();
   mockI18n.language = 'en';
   mockI18n.changeLanguage.mockImplementation(async lang => { mockI18n.language = lang; });
+});
+
+test.each(['/en/', '/en/articles'])('bundled copy renders synchronously without a placeholder for %s', pathname => {
+  loadRouteLocales.mockReturnValue(new Promise(() => {}));
+  render(view('en', pathname));
+  expect(screen.getByText('page')).toBeInTheDocument();
+  expect(screen.queryByText('waiting')).not.toBeInTheDocument();
+  expect(loadRouteLocales).not.toHaveBeenCalled();
+});
+
+test('Chinese homepage also renders immediately when its language is active', () => {
+  mockI18n.language = 'zh-TW';
+  render(view('zh-TW', '/zh-TW/'));
+  expect(screen.getByText('page')).toBeInTheDocument();
+  expect(loadRouteLocales).not.toHaveBeenCalled();
 });
 
 test('deep-linked page mounts only after its translations and language are ready', async () => {
