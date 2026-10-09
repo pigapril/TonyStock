@@ -371,13 +371,10 @@
     "jsonLdDescription": "Learn about the philosophy of the Sentiment Inside Out website, and how to use simple analysis tools to transform current market sentiment into important investment indicators, helping investors overcome their irrationality and avoid emotionally-driven decisions like chasing highs or selling lows."
   },
   "authDialog": {
-    "previewAlt": "LOHAS Five-Line Analysis Preview",
-    "feature1": "📈 Analyze stock price trends and sentiment",
-    "feature2": "📊 View historical market sentiment data",
-    "feature3": "💬 Get answers from AI chat service",
-    "title": "🚀 Start Your Free Experience Now",
-    "upgradeTitle": "🚀 Sign In to Upgrade to Pro Plan",
-    "upgradeDescription": "Sign in to your account to upgrade to {{planName}} plan and enjoy full features"
+    "title": "Start tracking market sentiment here",
+    "benefit1": "Explore the sentiment reflected in market indexes",
+    "benefit2": "Get help from our AI assistant",
+    "benefit3": "Use selected basic tools"
   },
   "redemption": {
     "inputPlaceholder": "Enter redemption code",
@@ -732,6 +729,7 @@
       "title": "Understand the market's fear and greed sentiment.",
       "subtitle": "Use objective data to judge current market sentiment and overcome the human biases of fear and greed.",
       "primaryAuthenticated": "View market sentiment",
+      "primaryFreeTrial": "Try Pro free for 30 days",
       "primaryGuest": "Sign in to view market sentiment",
       "secondary": "Try price trend analysis",
       "marketPreviewHeadline": {
@@ -3044,6 +3042,15 @@
   },
   "freeTrial": {
     "title": "30-day free trial",
+    "promotion": {
+      "badge": "PRO",
+      "title": "See the full picture.",
+      "description": "Market sentiment, stock analysis, watchlists, and an ad-free experience are all yours.",
+      "visualOffer": "30 days of Pro free",
+      "detail": "No credit card and no automatic charges.",
+      "cta": "View plans",
+      "later": "Maybe later"
+    },
     "planCard": {
       "startTrial": "Start a 30-day free trial"
     },

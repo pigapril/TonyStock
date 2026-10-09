@@ -19,7 +19,6 @@ const mockNavigate = jest.fn();
 const mockFetchEligibility = jest.fn();
 const mockAuthState = { user: { id: 'user-1', email: 'pigapril@gmail.com' } };
 const mockSubscriptionState = { userPlan: null, subscriptionHistory: [], loading: false };
-const originalRollout = process.env.REACT_APP_FREE_TRIAL_ROLLOUT;
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -117,7 +116,6 @@ describe('方案頁的免綁卡試用入口', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        process.env.REACT_APP_FREE_TRIAL_ROLLOUT = 'allowlist';
         mockAuthState.user = { id: 'user-1', email: 'pigapril@gmail.com' };
         mockSubscriptionState.userPlan = null;
         mockSubscriptionState.subscriptionHistory = [];
@@ -125,41 +123,16 @@ describe('方案頁的免綁卡試用入口', () => {
         mockFetchEligibility.mockResolvedValue({ eligible: true, reason: null });
     });
 
-    afterAll(() => {
-        if (originalRollout === undefined) delete process.env.REACT_APP_FREE_TRIAL_ROLLOUT;
-        else process.env.REACT_APP_FREE_TRIAL_ROLLOUT = originalRollout;
-    });
-
-    it('未列入名單時不查試用資格，只顯示原本付費入口', async () => {
+    it('一般已登入帳號也能看到試用入口', async () => {
         mockAuthState.user = { id: 'user-2', email: 'b@example.com' };
         renderPage();
-
-        expect(await screen.findByRole('button', { name: EXISTING_PRO_CTA })).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: TRIAL_CTA })).not.toBeInTheDocument();
-        expect(mockFetchEligibility).not.toHaveBeenCalled();
+        expect(await screen.findByRole('button', { name: TRIAL_CTA })).toBeInTheDocument();
+        expect(mockFetchEligibility).toHaveBeenCalledTimes(1);
     });
 
     it('第二個指定帳號可見試用，Email 大小寫不影響比對', async () => {
         mockAuthState.user = { id: 'user-2', email: 'HUANG41487@gmail.com' };
         renderPage();
-        expect(await screen.findByRole('button', { name: TRIAL_CTA })).toBeInTheDocument();
-    });
-
-    it('明確設定 all 才向其他帳號開放', async () => {
-        mockAuthState.user = { id: 'user-2', email: 'b@example.com' };
-        const { rerender } = renderPage();
-
-        expect(await screen.findByRole('button', { name: EXISTING_PRO_CTA })).toBeInTheDocument();
-        expect(mockFetchEligibility).not.toHaveBeenCalled();
-
-        process.env.REACT_APP_FREE_TRIAL_ROLLOUT = 'all';
-        rerender(
-            <HelmetProvider>
-                <I18nextProvider i18n={i18n}>
-                    <SubscriptionPlansPage />
-                </I18nextProvider>
-            </HelmetProvider>
-        );
         expect(await screen.findByRole('button', { name: TRIAL_CTA })).toBeInTheDocument();
     });
 

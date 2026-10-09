@@ -4,18 +4,14 @@ import { Dialog } from '../Common/Dialog/Dialog';
 import { useRef, useEffect } from 'react';
 import { Analytics } from '../../utils/analytics';
 import { useTranslation } from 'react-i18next';
+import { FiActivity, FiBarChart2, FiMessageCircle } from 'react-icons/fi';
+import './styles/AuthDialog.css';
 
 export function AuthDialog() {
-    const { t, i18n } = useTranslation();
-    const currentLang = i18n.language;
+    const { t } = useTranslation();
     const { dialog, closeDialog } = useDialog();
     const { loading, renderGoogleButton, user, ensureGoogleIdentityLoaded } = useAuth();
     const buttonRef = useRef(null);
-
-    const getImagePath = (baseName, extension = 'png') => {
-        const langSuffix = currentLang !== 'zh-TW' ? '-en' : '';
-        return `/images/${baseName}${langSuffix}.${extension}`;
-    };
 
     useEffect(() => {
         const handleLoginSuccess = () => {
@@ -75,31 +71,24 @@ export function AuthDialog() {
 
     if (dialog.type !== 'auth') return null;
 
-    const defaultDescription = (
-        <div className="auth-dialog-description">
-            <img 
-                src={getImagePath('home-feature1')}
-                alt={t('authDialog.previewAlt')}
-                className="auth-dialog-preview-image"
-                width="1200"
-                height="675"
-            />
-            <ul className="feature-list">
-                <li>{t('authDialog.feature1')}</li>
-                <li>{t('authDialog.feature2')}</li>
-                <li>{t('authDialog.feature3')}</li>
-            </ul>
-        </div>
-    );
-
     return (
         <Dialog
             open={dialog.isOpen}
             onClose={handleClose}
             title={dialog.props?.customTitle || t('authDialog.title')}
             titleClassName="auth-dialog-title"
+            className="auth-entry-dialog"
+            maxWidth="lg"
         >
-            <div className="auth-dialog-content">
+            <div className="auth-entry-dialog__content">
+                {dialog.props?.customDescription && (
+                    <p className="auth-entry-dialog__intro">{dialog.props.customDescription}</p>
+                )}
+                <ul className="auth-entry-dialog__benefits">
+                    <li><span className="auth-entry-dialog__icon" aria-hidden="true"><FiActivity /></span><span>{t('authDialog.benefit1')}</span></li>
+                    <li><span className="auth-entry-dialog__icon" aria-hidden="true"><FiMessageCircle /></span><span>{t('authDialog.benefit2')}</span></li>
+                    <li><span className="auth-entry-dialog__icon" aria-hidden="true"><FiBarChart2 /></span><span>{t('authDialog.benefit3')}</span></li>
+                </ul>
                 {loading && (
                     <div className="signin-dialog__loading">
                         <div className="signin-dialog__loading__spinner"></div>
@@ -108,10 +97,8 @@ export function AuthDialog() {
                 )}
                 <div
                     ref={buttonRef}
-                    className={`google-button-container ${loading ? 'google-button-container--hidden' : ''}`}
+                    className={`google-button-container auth-entry-dialog__google ${loading ? 'google-button-container--hidden' : ''}`}
                 />
-
-                {dialog.props?.customDescription || defaultDescription}
             </div>
         </Dialog>
     );

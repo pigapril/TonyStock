@@ -38,13 +38,10 @@ export const SubscriptionPlansPage = () => {
   // 資格查詢失敗時維持既有付款入口。
   const [freeTrialEligible, setFreeTrialEligible] = useState(false);
 
-  // 臨時免費模式下沒有付款權限的人，按鈕原本是開公告對話框。那條路徑不接試用入口，
-  // 否則會繞過公告。
-  const canEnterPayment = !isTemporaryFreeMode || canUserAccessPayment;
   const canEnterFreeTrial = canSeeFreeTrial(user?.email);
 
   useEffect(() => {
-    if (!user || !canEnterPayment || !canEnterFreeTrial) {
+    if (!user || !canEnterFreeTrial) {
       setFreeTrialEligible(false);
       return undefined;
     }
@@ -59,7 +56,7 @@ export const SubscriptionPlansPage = () => {
       });
 
     return () => { abandoned = true; };
-  }, [user, canEnterPayment, canEnterFreeTrial]);
+  }, [user, canEnterFreeTrial]);
 
   // 載入方案資料
   useEffect(() => {

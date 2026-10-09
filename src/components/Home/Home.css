@@ -23,6 +23,12 @@
   white-space: nowrap;
 }
 
+.home-hero__actions .home-hero__action--trial .ui-button__content {
+  white-space: normal;
+  text-align: center;
+  line-height: 1.3;
+}
+
 .home-hero {
   position: relative;
   overflow: hidden;

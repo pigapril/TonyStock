@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useRef, useCallback, useEffect } from 'react';
 import { InterstitialAdModal } from './InterstitialAdModal'; // 引入 Modal
 import { useSubscription } from '../../Subscription/SubscriptionContext';
+import FreeTrialPromotion from '../../Payment/FreeTrial/FreeTrialPromotion';
 
 // 1. 建立 Context
 const AdContext = createContext();
@@ -9,6 +10,7 @@ const AdContext = createContext();
 export const AdProvider = ({ children }) => {
   const { userPlan } = useSubscription();
   const [showInterstitialAd, setShowInterstitialAd] = useState(false);
+  const [showTrialPromotion, setShowTrialPromotion] = useState(false);
   const [isAdCooldownActive, setIsAdCooldownActive] = useState(false);
   const [clickCounts, setClickCounts] = useState({}); // 儲存不同來源的點擊次數 { source1: count, source2: count }
   const cooldownTimeoutRef = useRef(null);
@@ -20,7 +22,7 @@ export const AdProvider = ({ children }) => {
   // 請求顯示廣告的函數
   const requestAdDisplay = useCallback((triggerSource, threshold, ignoreCooldown = false) => {
     // Pro 用戶不顯示插頁廣告
-    if (isProUser) {
+    if (isProUser || showTrialPromotion) {
       console.log(`🚫 Interstitial ad blocked for Pro user. Source: ${triggerSource}`);
       return;
     }
@@ -69,7 +71,7 @@ export const AdProvider = ({ children }) => {
     } else if (!thresholdMet) {
       console.log(`Threshold not met for ${triggerSource}. Current count: ${newCount}`);
     }
-  }, [clickCounts, isAdCooldownActive, COOLDOWN_DURATION, isProUser]); // 依賴項
+  }, [clickCounts, isAdCooldownActive, COOLDOWN_DURATION, isProUser, showTrialPromotion]); // 依賴項
 
   // 關閉廣告的函數
   const closeAd = useCallback(() => {
@@ -99,6 +101,7 @@ export const AdProvider = ({ children }) => {
   return (
     <AdContext.Provider value={value}>
       {children}
+      <FreeTrialPromotion adOpen={showInterstitialAd} onOpenChange={setShowTrialPromotion} />
       {/* 只有非 Pro 用戶才渲染 Modal */}
       {!isProUser && showInterstitialAd && <InterstitialAdModal onClose={closeAd} />}
     </AdContext.Provider>
@@ -112,4 +115,4 @@ export const useAdContext = () => {
     throw new Error('useAdContext must be used within an AdProvider');
   }
   return context;
-}; 
+};

@@ -13,3 +13,7 @@ export const fetchFreeTrialEligibility = () => apiClient
 export const startFreeTrial = () => apiClient
   .post('/api/subscription/free-trial/start')
   .then(unwrap);
+
+export const claimFreeTrialPromotion = () => apiClient
+  .post('/api/subscription/free-trial/promotion-impression')
+  .then(unwrap);

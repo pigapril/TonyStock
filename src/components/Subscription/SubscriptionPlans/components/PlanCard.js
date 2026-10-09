@@ -114,18 +114,7 @@ export const PlanCard = ({
         // 觸發登入對話框
         console.log('User needs to login first - opening auth dialog');
         openDialog('auth', {
-          source: 'subscription_plan_select',
-          customTitle: t('authDialog.upgradeTitle'),
-          customDescription: (
-            <div className="auth-dialog-description">
-              <p>{t('authDialog.upgradeDescription', { planName: plan.name })}</p>
-              <ul className="feature-list">
-                <li>{t('authDialog.feature1')}</li>
-                <li>{t('authDialog.feature2')}</li>
-                <li>{t('authDialog.feature3')}</li>
-              </ul>
-            </div>
-          )
+          source: 'subscription_plan_select'
         });
         
         Analytics.auth.loginRequired({
@@ -567,7 +556,7 @@ export const PlanCard = ({
             variant="primary"
             size="large"
             onClick={handleFreeTrialSelect}
-            disabled={loading || (plan.displayPrice && !plan.showRealPrice)}
+            disabled={loading}
             loading={loading}
             className="plan-card__button"
           >

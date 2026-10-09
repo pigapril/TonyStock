@@ -390,13 +390,10 @@
     "jsonLdDescription": "了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化爲重要的投資指標，幫助大家克服自身的恐懼與貪婪心態。"
   },
   "authDialog": {
-    "previewAlt": "樂活五線譜分析預覽",
-    "feature1": "📈 分析股價趨勢與情緒",
-    "feature2": "📊 查看市場情緒歷史資料",
-    "feature3": "💬 由AI客服回答問題",
-    "title": "🚀 立即開始免費體驗",
-    "upgradeTitle": "🚀 登入以升級至 Pro 方案",
-    "upgradeDescription": "登入您的帳戶以升級至 {{planName}} 方案，享受完整功能"
+    "title": "追蹤市場情緒，從這裡開始",
+    "benefit1": "查詢市場指數所隱含的情緒",
+    "benefit2": "AI 客服協助回答疑問",
+    "benefit3": "部分基本工具使用"
   },
   "redemption": {
     "inputPlaceholder": "輸入兌換代碼",
@@ -759,6 +756,7 @@
       "title": "洞悉市場｜恐懼貪婪情緒",
       "subtitle": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點",
       "primaryAuthenticated": "查看市場情緒",
+      "primaryFreeTrial": "免費試用30天 Pro 方案",
       "primaryGuest": "登入查看市場情緒",
       "secondary": "試試價格趨勢分析",
       "marketPreviewHeadline": {
@@ -3076,6 +3074,15 @@
   },
   "freeTrial": {
     "title": "免費試用 30 天",
+    "promotion": {
+      "badge": "PRO",
+      "title": "看見市場全貌。",
+      "description": "台美股情緒、個股分析、追蹤清單與無廣告體驗，全部開放。",
+      "visualOffer": "Pro 30 天免費體驗",
+      "detail": "免綁信用卡，不會自動扣款。",
+      "cta": "前往方案頁",
+      "later": "稍後再說"
+    },
     "planCard": {
       "startTrial": "免費試用 30 天"
     },

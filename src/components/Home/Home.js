@@ -14,6 +14,8 @@ import MarketSentimentGauge from '../MarketSentimentIndex/MarketSentimentGauge';
 import { selectHistoricalLowPoints } from '../MarketSentimentIndex/historicalLowPointUtils';
 import { formatPrice } from '../../utils/priceUtils';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
+import { canSeeFreeTrial } from '../../utils/freeTrialRollout';
+import { fetchFreeTrialEligibility } from '../../services/freeTrialService';
 
 const HomePricePreviewChart = lazy(() => import('./HomePricePreviewChart').then((module) => ({ default: module.HomePricePreviewChart })));
 const SharedSentimentHistoryChart = lazy(() => import('../MarketSentimentIndex/SharedSentimentHistoryChart').then((module) => ({ default: module.SharedSentimentHistoryChart })));
@@ -176,7 +178,9 @@ export const Home = () => {
   );
   const isMobileHistoryPreview = useMediaQuery({ query: '(max-width: 768px)' });
   const { openDialog } = useDialog();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const trialAccountKey = user?.id || user?.userId || user?.email;
+  const [eligibleTrialAccount, setEligibleTrialAccount] = useState(null);
   const [homepageData, setHomepageData] = useState(null);
   const [isHeroLoading, setIsHeroLoading] = useState(true);
   const [isNarrativeLoading, setIsNarrativeLoading] = useState(true);
@@ -185,6 +189,27 @@ export const Home = () => {
   const [, startTransition] = useTransition();
   const shouldLoadSecondaryContent = useDeferredFeature({ timeoutMs: 1600, useIdleCallback: true, triggerOnInteraction: true });
   const shouldLoadPreviewCharts = useDeferredFeature({ timeoutMs: 2400, useIdleCallback: true, triggerOnInteraction: true });
+
+  useEffect(() => {
+    if (!isAuthenticated || !trialAccountKey || !canSeeFreeTrial(user?.email)) {
+      setEligibleTrialAccount(null);
+      return undefined;
+    }
+
+    let abandoned = false;
+    setEligibleTrialAccount(null);
+    fetchFreeTrialEligibility()
+      .then((result) => {
+        if (!abandoned) setEligibleTrialAccount(result?.eligible === true ? trialAccountKey : null);
+      })
+      .catch(() => {
+        if (!abandoned) setEligibleTrialAccount(null);
+      });
+
+    return () => { abandoned = true; };
+  }, [isAuthenticated, trialAccountKey, user?.email]);
+
+  const showFreeTrialAction = Boolean(isAuthenticated && trialAccountKey && eligibleTrialAccount === trialAccountKey);
 
   useEffect(() => {
     let isMounted = true;
@@ -543,11 +568,11 @@ export const Home = () => {
               <div className="home-hero__actions">
                 {isAuthenticated ? (
                   <Link
-                    to={`/${currentLang}/market-sentiment`}
-                    className={`${BUTTON_LINK_CLASS('primary')} home-hero__action home-hero__action--primary`}
+                    to={showFreeTrialAction ? `/${currentLang}/subscription-plans` : `/${currentLang}/market-sentiment`}
+                    className={`${BUTTON_LINK_CLASS('primary')} home-hero__action home-hero__action--primary${showFreeTrialAction ? ' home-hero__action--trial' : ''}`}
                   >
                     <span className="ui-button__content">
-                      <span>{t('home.hero.primaryAuthenticated')}</span>
+                      <span>{t(showFreeTrialAction ? 'home.hero.primaryFreeTrial' : 'home.hero.primaryAuthenticated')}</span>
                     </span>
                   </Link>
                 ) : (
