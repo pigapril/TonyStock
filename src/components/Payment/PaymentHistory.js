@@ -45,6 +45,16 @@ const PaymentHistory = ({ userId }) => {
         return planType.charAt(0).toUpperCase() + planType.slice(1).toLowerCase();
     };
 
+    const getDescription = payment => t('payment.history.planDescription', {
+        planType: getPlanNameText(payment.planType),
+        billingPeriod: t(payment.billingPeriod === 'yearly' ? 'payment.history.yearly' : 'payment.history.monthly')
+    });
+
+    const getPaymentMethodText = method => {
+        if (!method || /^(Credit(?:_CreditCard)?|Credit Card|信用卡)$/i.test(method)) return t('payment.methods.creditCard');
+        return t('common.unknown');
+    };
+
     useEffect(() => {
         if (userId) {
             loadPaymentHistory();
@@ -81,17 +91,10 @@ const PaymentHistory = ({ userId }) => {
                 amount: payment.amount || 0,
                 currency: payment.currency || 'TWD',
                 status: payment.status || payment.paymentStatus,
-                displayText: payment.displayText, // 使用後端提供的顯示文字
-                statusKey: payment.statusKey, // 使用後端提供的翻譯鍵值
-                paymentMethod: payment.paymentMethod || t('payment.methods.creditCard'),
+                paymentMethod: payment.paymentMethod || 'Credit',
                 planType: payment.planType || 'pro',
                 billingPeriod: payment.billingPeriod || 'monthly',
                 paymentDate: payment.paymentDate || payment.createdAt || payment.paidAt,
-                // Always use frontend translation, ignore backend description to ensure proper i18n
-                description: t('payment.history.planDescription', {
-                    planType: getPlanNameText(payment.planType || 'pro'),
-                    billingPeriod: payment.billingPeriod === 'yearly' ? t('payment.history.yearly') : t('payment.history.monthly')
-                }),
                 invoiceUrl: payment.invoiceUrl,
                 failureReason: payment.failureReason || payment.errorMessage,
                 // 保留原始狀態信息用於調試
@@ -112,7 +115,7 @@ const PaymentHistory = ({ userId }) => {
                 userId,
                 error: error.message
             });
-            setError(t('payment.history.loadError', { message: error.message || t('common.unknownError') }));
+            setError(true);
         } finally {
             setLoading(false);
         }
@@ -147,34 +150,10 @@ const PaymentHistory = ({ userId }) => {
      * Get payment status text with smart display logic
      */
     const getStatusText = (payment) => {
-        // 優先使用後端提供的顯示文字
-        if (payment.displayText) {
-            // 直接使用後端提供的顯示文字，因為後端已經處理了國際化
-            return payment.displayText;
-        }
-
-        // 回退到原有邏輯（向後兼容）
-        const status = payment.status;
-        
-        // 針對不同狀態提供更友好的顯示文字，使用正確的付款歷史翻譯鍵值
-        if (status === 'expired') {
-            return t('payment.history.status.expired', '訂單已過期');
-        }
-        
-        if (status === 'failed') {
-            return t('payment.history.status.failed', '付款失敗');
-        }
-        
-        if (status === 'pending') {
-            return t('payment.history.status.pending', '處理中');
-        }
-        
-        if (status === 'success' || status === 'paid') {
-            return t('payment.history.status.success', '付款成功');
-        }
-        
-        const statusKey = `payment.history.status.${status}`;
-        return t(statusKey, { defaultValue: t('payment.history.status.unknown', '未知狀態') });
+        const statuses = { paid: 'success', processing: 'pending' };
+        const status = statuses[payment.status] || payment.status;
+        const knownStatuses = ['success', 'failed', 'pending', 'refunded', 'expired'];
+        return t(`payment.history.status.${knownStatuses.includes(status) ? status : 'unknown'}`);
     };
 
     /**
@@ -260,7 +239,7 @@ const PaymentHistory = ({ userId }) => {
                 </svg>
                 <div className="payment-history__error-content">
                     <h3 className="payment-history__error-title">{t('common.error')}</h3>
-                    <p className="payment-history__error-message">{error}</p>
+                    <p className="payment-history__error-message">{t('payment.history.loadFailure')}</p>
                     <button 
                         className="payment-history__retry-button"
                         onClick={loadPaymentHistory}
@@ -318,7 +297,7 @@ const PaymentHistory = ({ userId }) => {
                         <div className="payment-card__header">
                             <div className="payment-card__main-info">
                                 <div className="payment-card__description">
-                                    <h3 className="payment-card__title">{payment.description}</h3>
+                                    <h3 className="payment-card__title">{getDescription(payment)}</h3>
                                     <p className="payment-card__order-id">{t('payment.history.orderId')}: {payment.orderId}</p>
                                 </div>
                                 <div className="payment-card__amount">
@@ -360,7 +339,7 @@ const PaymentHistory = ({ userId }) => {
                         <div className="payment-card__details">
                             <div className="payment-card__detail-item">
                                 <span className="payment-card__detail-label">{t('payment.history.method')}</span>
-                                <span className="payment-card__detail-value">{payment.paymentMethod}</span>
+                                <span className="payment-card__detail-value">{getPaymentMethodText(payment.paymentMethod)}</span>
                             </div>
                             <div className="payment-card__detail-item">
                                 <span className="payment-card__detail-label">{t('payment.history.plan')}</span>
@@ -474,7 +453,7 @@ const PaymentHistory = ({ userId }) => {
                                 <div className="payment-details-modal__amount">
                                     {formatAmount(selectedPayment.amount, selectedPayment.currency)}
                                 </div>
-                                <p className="payment-details-modal__description">{selectedPayment.description}</p>
+                                <p className="payment-details-modal__description">{getDescription(selectedPayment)}</p>
                             </div>
 
                             <div className="payment-details-modal__details">
@@ -496,7 +475,7 @@ const PaymentHistory = ({ userId }) => {
                                     </div>
                                     <div className="payment-details-modal__detail-item">
                                         <span className="payment-details-modal__detail-label">{t('payment.history.method')}</span>
-                                        <span className="payment-details-modal__detail-value">{selectedPayment.paymentMethod}</span>
+                                        <span className="payment-details-modal__detail-value">{getPaymentMethodText(selectedPayment.paymentMethod)}</span>
                                     </div>
                                 </div>
 
@@ -517,7 +496,7 @@ const PaymentHistory = ({ userId }) => {
                                     <div className="payment-details-modal__detail-item payment-details-modal__detail-item--full">
                                         <span className="payment-details-modal__detail-label">{t('payment.history.failureReason')}</span>
                                         <span className="payment-details-modal__detail-value payment-details-modal__detail-value--error">
-                                            {selectedPayment.failureReason}
+                                            {t('payment.history.failureMessage')}
                                         </span>
                                     </div>
                                 )}

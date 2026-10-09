@@ -163,7 +163,7 @@ const renderChartWorkspaceFallback = (t, displayedHorizonKey) => (
         <div className="chart-loading-indicator chart-loading-indicator--deferred">
           <div className="loading-spinner">
             <div className="spinner"></div>
-            <span>Preparing chart…</span>
+            <span>{t('priceAnalysis.chart.preparing')}</span>
           </div>
         </div>
       </div>

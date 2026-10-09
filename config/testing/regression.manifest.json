@@ -1,5 +1,7 @@
 {
   "tests": [
+    "src/__tests__/siteLocalization.test.js",
+    "src/__tests__/socialSeoBuild.test.js",
     "src/components/MomentumDashboard/MomentumDashboardPage.test.js",
     "src/components/MomentumDashboard/MomentumDashboardTour.test.js",
     "src/components/MomentumDashboard/MomentumScreenResults.test.js",
@@ -14,6 +16,7 @@
     "src/components/MarketSentimentIndex/__tests__/RestrictedComponents.test.js",
     "src/components/MarketSentimentIndex/__tests__/RestrictedMarketSentimentGauge.test.js",
     "src/components/Payment/CardTrial/__tests__/CardTrialFlow.test.js",
+    "src/components/Payment/FreeTrial/FreeTrialFlow.test.js",
     "src/components/Payment/CardUpdate/__tests__/CardUpdateFlow.test.js",
     "src/components/Payment/CardUpdate/__tests__/CardUpdateResult.test.js",
     "src/components/Payment/CardUpdate/__tests__/cardUpdate.source.test.js",

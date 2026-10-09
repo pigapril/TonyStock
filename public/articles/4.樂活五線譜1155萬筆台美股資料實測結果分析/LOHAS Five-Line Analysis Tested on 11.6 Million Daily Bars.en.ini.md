@@ -82,7 +82,7 @@ The numbers in the table are what you make by buying on the day this combination
 
 Note: 1,449 instruments and 11,556,801 daily bars, 1927 to 2026. Each instrument is computed on its own before taking the median, so one or two big winners cannot carry the result. One caveat on the sample: a single crash trips the signal on many instruments at once, so while the bar count is large, the number of genuinely unrelated extreme events is only a few dozen. Section 5 cuts the data into five periods to test exactly that.
 
-![The four combinations across four holding periods, in points above or below random entry](./image1.png)
+![The four combinations across four holding periods, in points above or below random entry](./image1-en.png)
 
 Only the first combination is positive over all four periods, and it only becomes clear after a full year, at 11.1 percentage points. Over one month it makes just 1.0 point more, which is close to nothing.
 
@@ -107,7 +107,7 @@ Read the last column alongside them. The gain is a median and a few strong names
 | Taiwan stocks | +0.7 | +1.1 | +5.8 | **+16.0** | 391/480 |
 | Other overseas stocks | +2.4 | +3.0 | +2.9 | +4.1 | 47/78 |
 
-![Held one year after Extreme Fear plus below lower edge, points above random entry by instrument type](./image3.png)
+![Held one year after Extreme Fear plus below lower edge, points above random entry by instrument type](./image3-en.png)
 
 Index ETFs had the most consistent results in this sample, with 42 of 43 doing the same. Taiwan stocks have the largest gain at 16.0 points, and 391 of 480 did the same. Market indices gain only 4.8, because an index is steadier and rarely falls that far. Other overseas stocks have just 47 of 78, so use the tool more cautiously on that group.
 
@@ -138,7 +138,7 @@ Only a one-year hold beats random entry clearly in all six groups. Index ETFs ma
 
 The odds of being up say the same thing. Buy on the signal and index ETFs are up 88% of the time a year later, against 74% for random entry. Hold only three months and the signal is up 57% of the time, losing to random entry's 67%.
 
-![Only a one-year hold puts index ETFs ahead of random entry on the odds of being up](./image4.png)
+![Only a one-year hold puts index ETFs ahead of random entry on the odds of being up](./image4-en.png)
 
 ### The cost, stated plainly
 
@@ -216,7 +216,7 @@ The numbers in the table are what you make by buying during that period, above r
 
 Note: the 1990s and the 2003–2007 bull run are left out. Only 1 and 3 qualifying index ETFs existed in those stretches, so the figures would mean nothing.
 
-![Points above random entry after Extreme Fear plus below lower edge by period, three months against one year](./image2.png)
+![Points above random entry after Extreme Fear plus below lower edge by period, three months against one year](./image2-en.png)
 
 The financial crisis was an exception, but only over short holds. One month lost 6.0 points and three months lost 11.5. That decline was deep and long, and three months was not enough for price to come back.
 

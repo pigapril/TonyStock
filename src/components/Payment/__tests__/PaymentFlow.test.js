@@ -114,6 +114,7 @@ describe('PaymentFlow', () => {
         billingPeriod: 'monthly',
         paymentMethod: 'Credit',
         redemptionCode: undefined,
+        language: 'zh-TW',
         originalAmount: 299,
         finalAmount: 299
       });
@@ -137,7 +138,7 @@ describe('PaymentFlow', () => {
     fireEvent.click(screen.getByRole('checkbox'));
     fireEvent.click(screen.getByRole('button', { name: '創建訂單' }));
 
-    expect(await screen.findByText('創建訂單時發生錯誤，請稍後再試')).toBeInTheDocument();
+    expect(await screen.findByText('建立訂單失敗')).toBeInTheDocument();
     expect(onError).toHaveBeenCalledWith(requestError);
   });
 });

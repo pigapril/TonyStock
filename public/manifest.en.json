@@ -20,9 +20,10 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "/en/",
   "display": "standalone",
   "theme_color": "#1a1530",
   "background_color": "#f6f3ff",
-  "lang": "en"
+  "lang": "en",
+  "id": "/"
 }

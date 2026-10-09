@@ -82,7 +82,7 @@ export const PlanInfo = ({ plan, loading }) => {
         context: 'user_account'
       });
       // 這裡可以添加錯誤提示
-      alert(t('subscription.cancelError', { error: error.message }));
+      alert(t('subscription.cancelError'));
     } finally {
       setCancelLoading(false);
     }

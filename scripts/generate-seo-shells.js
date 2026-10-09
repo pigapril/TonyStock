@@ -166,6 +166,7 @@ function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref,
   const imageFile = path.join(ROOT, 'public', new URL(shareImage).pathname);
   if (!fs.existsSync(imageFile)) throw new Error(`Missing share image: ${shareImage}`);
   const tags = [
+    `<link data-rh="true" rel="manifest" href="/manifest.${lang}.json" />`,
     `<meta data-rh="true" name="description" content="${escapeAttr(description)}" />`,
     `<meta data-rh="true" property="og:title" content="${escapeAttr(ogTitle)}" />`,
     `<meta data-rh="true" property="og:description" content="${escapeAttr(description)}" />`,

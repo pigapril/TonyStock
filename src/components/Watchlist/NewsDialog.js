@@ -3,12 +3,12 @@ import { Dialog } from '../Common/Dialog/Dialog';
 import { useTranslation } from 'react-i18next';
 
 function NewsDialog({ news, open, onClose }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     if (!news) return null;
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString('zh-TW', {
+        return date.toLocaleDateString(i18n.language.startsWith('zh') ? 'zh-TW' : 'en-US', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',

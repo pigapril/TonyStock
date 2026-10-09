@@ -1,7 +1,7 @@
 {
   "short_name": "Sentiment Inside Out",
   "name": "Sentiment Inside Out",
-  "description": "Track market sentiment and understand fear and greed in investing.",
+  "description": "市場情緒追蹤平台 - 幫助投資人掌握市場情緒",
   "icons": [
     {
       "src": "android-chrome-192x192.png",
@@ -20,9 +20,10 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "/zh-TW/",
   "display": "standalone",
   "theme_color": "#1a1530",
   "background_color": "#f6f3ff",
-  "lang": "en"
+  "lang": "zh-TW",
+  "id": "/"
 }

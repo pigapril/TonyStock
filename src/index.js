@@ -5,7 +5,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
-import './i18n';
+import i18n from './i18n';
 
 // 設定 console 日誌級別
 import './utils/consoleConfig';
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'development') {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>{i18n.t('common.loading')}</div>}>
       <Router>
         <HelmetProvider>
           <App />

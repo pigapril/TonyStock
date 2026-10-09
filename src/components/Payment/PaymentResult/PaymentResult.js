@@ -168,7 +168,7 @@ export const PaymentResult = () => {
                         <p>{t('payment.result.loading', '正在確認付款狀態...')}</p>
                         {pollingCount > 0 && (
                             <p className="polling-info">
-                                {t('payment.result.polling', `正在等待付款確認... (${pollingCount}/${maxPollingAttempts})`)}
+                                {t('payment.result.polling', { pollingCount, maxPollingAttempts })}
                             </p>
                         )}
                     </div>
@@ -324,7 +324,7 @@ export const PaymentResult = () => {
                         </h1>
                         
                         <p className="result-message">
-                            {paymentInfo?.rtnMsg || t('payment.result.failure.message', '很抱歉，付款過程中發生錯誤。')}
+                            {t('payment.result.failure.message')}
                         </p>
 
                         {paymentInfo?.merchantTradeNo && (

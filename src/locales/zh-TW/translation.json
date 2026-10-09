@@ -542,21 +542,21 @@
       "previewFailed": "無法預覽優惠",
       "redemptionFailed": "兌換失敗",
       "invalid_code": "無效的兌換代碼",
-      "code_not_found": "找不到此兌換代碼，請檢查代碼是否正確",
+      "code_not_found": "找不到兌換代碼，請確認輸入後重試。",
       "code_expired": "此代碼已於 {{expiryDate}} 過期",
       "code_not_active": "此代碼將於 {{activationDate}} 啟用",
-      "code_exhausted": "此代碼已達使用上限，來晚了！",
-      "code_inactive": "此兌換代碼已被停用",
+      "code_exhausted": "此代碼已達使用上限。",
+      "code_inactive": "此兌換代碼未啟用。",
       "already_redeemed": "您已於 {{redemptionDate}} 兌換過此代碼",
-      "user_limit_exceeded": "您已經使用過此代碼了",
+      "user_limit_exceeded": "您已達此代碼的使用上限。",
       "eligibility_failed": "您不符合此代碼的使用條件",
       "captcha_required": "需要完成驗證碼驗證",
-      "plan_not_eligible": "此兌換代碼僅適用於 {{eligiblePlans}} 方案用戶",
+      "plan_not_eligible": "此代碼僅適用於以下方案：{{eligiblePlans}}。",
       "eligibility_new_customers_only": "此代碼僅限新客戶使用",
-      "not_new_customer": "此代碼僅限新客戶使用",
+      "not_new_customer": "此代碼僅限新用戶使用。",
       "eligibility_plan_restriction": "此代碼僅限 {{eligiblePlans}} 方案用戶使用",
       "eligibility_first_time_only": "此代碼僅限首次兌換用戶使用",
-      "not_first_time_user": "此代碼僅限首次兌換用戶使用",
+      "not_first_time_user": "此代碼僅限首次兌換的用戶使用。",
       "payment_method_required": "使用此代碼需要先綁定付款方式",
       "stacking_violation": "此代碼無法與您目前的優惠疊加使用",
       "stacking_conflict_with": "此代碼與您的 {{conflictingPromotions}} 優惠衝突",
@@ -575,7 +575,8 @@
       "suspicious_activity": "檢測到異常活動，請聯繫客服",
       "account_suspended": "您的帳戶已被暫停，無法兌換代碼",
       "region_restricted": "此代碼在您的地區不可用",
-      "device_limit_exceeded": "此設備的兌換次數已達上限"
+      "device_limit_exceeded": "此設備的兌換次數已達上限",
+      "plan_not_eligible_generic": "此代碼不適用於您目前的方案。"
     },
     "actions": {
       "upgrade_plan": "升級方案",
@@ -1378,7 +1379,11 @@
         "minus1sd": "恐懼",
         "plus1sd": "貪婪",
         "plus2sd": "極度貪婪"
-      }
+      },
+      "preparing": "正在準備圖表…",
+      "zoomIn": "放大",
+      "zoomOut": "縮小",
+      "resetZoom": "重置"
     },
     "indicators": {
       "title": "其他指標",
@@ -1784,7 +1789,8 @@
     "billingPeriod": {
       "monthly": "月繳",
       "yearly": "年繳",
-      "save": "省下"
+      "save": "省下",
+      "perYear": "/年"
     },
     "marketSentimentContext": {
       "notification": "升級以解鎖最新市場情緒數據"
@@ -1905,7 +1911,17 @@
       "message": "您選擇的方案不存在，請重新選擇。"
     },
     "flow": {
-      "selectPayment": "選擇付款方式"
+      "selectPayment": "選擇付款方式",
+      "billingMonthly": "每月",
+      "billingYearly": "每年",
+      "planSummary": "{{plan}}（{{period}}）",
+      "noticesTitle": "付款注意事項",
+      "notices": [
+        "點擊「前往付款」將跳轉到綠界支付頁面",
+        "請在 30 分鐘內完成付款，逾時訂單將自動取消",
+        "付款完成後將自動返回本網站"
+      ],
+      "redemptionCode": "兌換代碼"
     },
     "methods": {
       "creditCard": "信用卡"
@@ -1952,13 +1968,18 @@
       "monthly": "月付",
       "yearly": "年付",
       "paymentId": "付款 ID",
-      "failureReason": "失敗原因"
+      "failureReason": "失敗原因",
+      "loadFailure": "無法載入付款紀錄，請重試。",
+      "failureMessage": "付款未完成，請確認訂閱狀態或聯繫客服。"
     },
     "errors": {
       "invalidAmount": "無效的付款金額",
       "termsRequired": "請同意服務條款",
       "createOrderFailed": "建立訂單失敗",
-      "paymentFailed": "付款處理失敗"
+      "paymentFailed": "付款處理失敗",
+      "paymentMethodRequired": "此兌換代碼需要綁定付款方式。請繼續完成付款流程以套用優惠。",
+      "incompleteOrder": "訂單資料不完整，請重試。",
+      "redirectFailed": "無法開啟付款頁面，請重試。"
     },
     "security": {
       "title": "由綠界 ECPay 處理安全付款",

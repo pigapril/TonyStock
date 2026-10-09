@@ -1,6 +1,7 @@
 import NotFound from './components/NotFound/NotFound';
 // React 相關
 import React, { Suspense, lazy, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Route, Routes, Navigate, useLocation, useParams, useNavigate, NavLink } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
@@ -299,6 +300,9 @@ function AppContent() {
 
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+      <Helmet>
+        <link rel="manifest" href={`/manifest.${lang?.startsWith('zh') ? 'zh-TW' : 'en'}.json`} />
+      </Helmet>
       <PageViewTracker />
       <DeferredTagManager />
       <div className="App-inner">

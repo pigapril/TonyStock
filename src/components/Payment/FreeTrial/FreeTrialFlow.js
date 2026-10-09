@@ -30,7 +30,7 @@ const FreeTrialFlow = () => {
     setPhase('starting');
     setError(null);
     try {
-      await startFreeTrial();
+      await startFreeTrial(language);
       trackProductEvent('free_trial_started', { source: 'free_trial_page', trial_days: 30 });
       setPhase('success');
       await Promise.allSettled([checkAuthStatus(), refreshUserPlan(), refreshSubscriptionHistory()]);

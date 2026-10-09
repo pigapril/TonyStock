@@ -45,8 +45,11 @@ const PaymentFlow = ({
 
     // 獲取方案資訊
     const currentPlan = planPricing?.[planType]?.[billingPeriod];
+    const monthlyPrice = planPricing?.[planType]?.monthly?.price;
+    const yearlySavings = billingPeriod === 'yearly' && monthlyPrice > 0
+        ? Math.round((1 - currentPlan?.price / (monthlyPrice * 12)) * 100) : 0;
     // 固定使用信用卡定期定額，不需要選擇付款方式
-    const paymentMethods = [{ value: 'Credit', label: '信用卡定期定額' }];
+    const paymentMethods = [{ value: 'Credit', label: t('payment.orderSummary.creditCardRecurring') }];
 
     // 載入定價資料
     useEffect(() => {
@@ -155,9 +158,9 @@ const PaymentFlow = ({
         
         // Handle payment method requirement
         if (error.errorCode === 'PAYMENT_METHOD_REQUIRED') {
-            setError('此兌換代碼需要綁定付款方式。請繼續完成付款流程以套用優惠。');
+            setError('payment.errors.paymentMethodRequired');
         } else {
-            setError(`兌換失敗：${error.error || '請稍後再試'}`);
+            setError('redemption.errors.redemptionFailed');
         }
     };
 
@@ -219,7 +222,7 @@ const PaymentFlow = ({
      */
     const handleCreateOrder = async () => {
         if (!agreedToTerms) {
-            setError('請先同意服務條款和隱私政策');
+            setError('payment.errors.termsRequired');
             return;
         }
 
@@ -242,6 +245,7 @@ const PaymentFlow = ({
                 billingPeriod,
                 paymentMethod,
                 redemptionCode: appliedRedemption?.code,
+                language: lang,
                 originalAmount: originalAmount,
                 finalAmount: finalAmount || currentPlan?.price
             });
@@ -256,7 +260,7 @@ const PaymentFlow = ({
 
         } catch (error) {
             systemLogger.error('Failed to create order:', error);
-            setError('創建訂單時發生錯誤，請稍後再試');
+            setError('payment.errors.createOrderFailed');
             
             if (onError) {
                 onError(error);
@@ -271,7 +275,7 @@ const PaymentFlow = ({
      */
     const handleSubmitPayment = () => {
         if (!orderData) {
-            setError('訂單資料不完整');
+            setError('payment.errors.incompleteOrder');
             return;
         }
 
@@ -285,7 +289,7 @@ const PaymentFlow = ({
 
         } catch (error) {
             systemLogger.error('Failed to submit payment:', error);
-            setError('跳轉到付款頁面時發生錯誤');
+            setError('payment.errors.redirectFailed');
             
             if (onError) {
                 onError(error);
@@ -385,10 +389,10 @@ const PaymentFlow = ({
                     </div>
                     
                     <div className="text-gray-600 mb-4">
-                        每{currentPlan?.period}
-                        {currentPlan?.discount && (
+                        {t(billingPeriod === 'yearly' ? 'payment.flow.billingYearly' : 'payment.flow.billingMonthly')}
+                        {yearlySavings > 0 && (
                             <span className="ml-2 text-green-600 text-sm">
-                                ({currentPlan.discount})
+                                ({t('subscription.billingPeriod.save')} {yearlySavings}%)
                             </span>
                         )}
                     </div>
@@ -567,7 +571,7 @@ const PaymentFlow = ({
                 <span className="text-sm text-gray-700">
                     {t('payment.terms.agreement')}
                     <a href={`/${lang}/legal`} target="_blank" className="text-blue-600 hover:underline mx-1">
-                        服務條款和隱私政策
+                        {t('payment.form.termsAndConditions')}
                     </a>
                 </span>
             </label>
@@ -605,15 +609,15 @@ const PaymentFlow = ({
                 <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                     <div className="space-y-3">
                         <div className="flex justify-between">
-                            <span className="text-gray-600">訂單編號：</span>
+                            <span className="text-gray-600">{t('payment.orderSummary.orderId')}:</span>
                             <span className="font-mono text-sm">{orderData.orderId}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="text-gray-600">方案：</span>
-                            <span>Pro 方案 ({currentPlan?.period}付)</span>
+                            <span className="text-gray-600">{t('payment.orderSummary.plan')}:</span>
+                            <span>{t('payment.flow.planSummary', { plan: t('payment.plan.proPlan'), period: t(billingPeriod === 'yearly' ? 'payment.orderSummary.yearlyPlan' : 'payment.orderSummary.monthlyPlan') })}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="text-gray-600">付款方式：</span>
+                            <span className="text-gray-600">{t('payment.orderSummary.paymentMethod')}:</span>
                             <span>{paymentMethods.find(m => m.value === paymentMethod)?.label}</span>
                         </div>
                         
@@ -621,24 +625,24 @@ const PaymentFlow = ({
                         {appliedRedemption && (
                             <>
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">兌換代碼：</span>
+                                    <span className="text-gray-600">{t('payment.flow.redemptionCode')}:</span>
                                     <span className="font-mono text-sm">{appliedRedemption.code}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">原價：</span>
+                                    <span className="text-gray-600">{t('payment.plan.pricing.originalPrice')}:</span>
                                     <span className="line-through text-gray-500">
                                         NT$ {originalAmount?.toLocaleString()}
                                     </span>
                                 </div>
                                 <div className="flex justify-between text-green-600">
-                                    <span>折扣：</span>
+                                    <span>{t('payment.orderSummary.discount')}:</span>
                                     <span>-NT$ {(originalAmount - finalAmount)?.toLocaleString()}</span>
                                 </div>
                             </>
                         )}
                         
                         <div className="flex justify-between text-lg font-semibold border-t pt-3">
-                            <span>總金額：</span>
+                            <span>{t('payment.plan.pricing.totalAmount')}:</span>
                             <span className={appliedRedemption ? "text-green-600" : "text-blue-600"}>
                                 NT$ {orderData.amount?.toLocaleString()}
                             </span>
@@ -653,11 +657,9 @@ const PaymentFlow = ({
                         <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
                     <div className="text-sm text-yellow-800">
-                        <p className="font-medium mb-1">付款注意事項：</p>
+                        <p className="font-medium mb-1">{t('payment.flow.noticesTitle')}:</p>
                         <ul className="space-y-1">
-                            <li>• 點擊「前往付款」將跳轉到綠界支付頁面</li>
-                            <li>• 請在 30 分鐘內完成付款，逾時訂單將自動取消</li>
-                            <li>• 付款完成後將自動返回本網站</li>
+                            {t('payment.flow.notices', { returnObjects: true }).map((notice, index) => <li key={index}>{notice}</li>)}
                         </ul>
                     </div>
                 </div>
@@ -668,13 +670,13 @@ const PaymentFlow = ({
                     onClick={handleCancel}
                     className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
                 >
-                    取消訂單
+                    {t('payment.form.cancelOrder')}
                 </button>
                 <button
                     onClick={handleSubmitPayment}
                     className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                 >
-                    前往付款
+                    {t('payment.form.proceedToPayment')}
                 </button>
             </div>
         </div>
@@ -753,7 +755,7 @@ const PaymentFlow = ({
                                 <svg className="w-5 h-5 text-red-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                                 </svg>
-                                <span className="text-red-800 text-sm">{error}</span>
+                                <span className="text-red-800 text-sm">{t(error)}</span>
                             </div>
                         </div>
                     </div>

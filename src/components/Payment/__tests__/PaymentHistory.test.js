@@ -110,7 +110,7 @@ describe('PaymentHistory', () => {
 
     renderHistory();
 
-    expect(await screen.findByText(/payments unavailable/)).toBeInTheDocument();
+    expect(await screen.findByText('無法載入付款紀錄，請重試。')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button'));
 

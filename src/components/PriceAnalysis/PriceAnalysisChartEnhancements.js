@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMobileTouchHandler } from '../ULBandChart/useMobileTouchHandler';
 
 function isChartAttached(chart) {
@@ -17,6 +18,7 @@ function PriceAnalysisChartEnhancements({
   ulbandData,
   onAfterZoom
 }) {
+  const { t } = useTranslation();
   const zoomButtonsRef = useRef(null);
 
   // 兩張圖並排後，互動一律由主圖（五線譜）負責，通道圖只跟隨。
@@ -122,17 +124,17 @@ function PriceAnalysisChartEnhancements({
     <>
       {hasZoomTarget && (
         <div className="chart-zoom-buttons" ref={zoomButtonsRef}>
-          <button className="zoom-btn zoom-in" onClick={() => runZoom(zoomActions.zoomIn)} title="放大">
+          <button className="zoom-btn zoom-in" onClick={() => runZoom(zoomActions.zoomIn)} title={t('priceAnalysis.chart.zoomIn')} aria-label={t('priceAnalysis.chart.zoomIn')}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
-          <button className="zoom-btn zoom-out" onClick={() => runZoom(zoomActions.zoomOut)} title="縮小">
+          <button className="zoom-btn zoom-out" onClick={() => runZoom(zoomActions.zoomOut)} title={t('priceAnalysis.chart.zoomOut')} aria-label={t('priceAnalysis.chart.zoomOut')}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
-          <button className="zoom-btn zoom-reset" onClick={() => runZoom((c) => zoomActions.reset(c))} title="重置">
+          <button className="zoom-btn zoom-reset" onClick={() => runZoom((c) => zoomActions.reset(c))} title={t('priceAnalysis.chart.resetZoom')} aria-label={t('priceAnalysis.chart.resetZoom')}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M13 8C13 10.7614 10.7614 13 8 13C5.23858 13 3 10.7614 3 8C3 5.23858 5.23858 3 8 3C9.12583 3 10.1647 3.37194 11 3.99963M11 3.99963V2M11 3.99963H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>

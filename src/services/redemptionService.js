@@ -595,16 +595,14 @@ class RedemptionService {
                     // 嘗試從多個位置獲取方案名稱
                     let eligiblePlanNames = null;
                     
-                    if (primaryError?.details?.eligiblePlanNames) {
+                    const eligiblePlans = primaryError?.details?.eligiblePlans || details.eligiblePlans;
+                    if (Array.isArray(eligiblePlans) && eligiblePlans.length) {
+                        const planNames = { free: t('subscription.plans.free'), pro: t('subscription.plans.pro'), ultra: 'Ultra' };
+                        eligiblePlanNames = eligiblePlans.map(plan => planNames[plan] || plan).join(', ');
+                    } else if (primaryError?.details?.eligiblePlanNames) {
                         eligiblePlanNames = primaryError.details.eligiblePlanNames;
                     } else if (details.eligiblePlanNames) {
                         eligiblePlanNames = details.eligiblePlanNames;
-                    } else if (primaryError?.details?.eligiblePlans) {
-                        // 如果沒有友好名稱，使用原始方案名稱
-                        const planNames = { 'free': '免費', 'pro': 'Pro', 'ultra': 'Ultra' };
-                        eligiblePlanNames = primaryError.details.eligiblePlans
-                            .map(plan => planNames[plan] || plan)
-                            .join(' 或 ');
                     }
                     
                     if (eligiblePlanNames) {
@@ -612,7 +610,7 @@ class RedemptionService {
                             eligiblePlans: eligiblePlanNames 
                         });
                     }
-                    break;
+                    return t('redemption.errors.plan_not_eligible_generic');
                     
                 case 'CODE_EXPIRED':
                     // 檢查多個可能的位置
@@ -656,11 +654,6 @@ class RedemptionService {
         // 如果找到翻譯，使用翻譯
         if (translationKey !== translatedMessage) {
             return translatedMessage;
-        }
-        
-        // 嘗試使用後端返回的錯誤信息
-        if (error.error && error.error !== '無效的兌換代碼') {
-            return error.error;
         }
         
         // 最後的備用信息

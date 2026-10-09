@@ -466,7 +466,7 @@ export const PlanCard = ({
               </div>
               {billingPeriod === 'yearly' && (
                 <div className="plan-card__original-price">
-                  {formatPriceDisplay(pricingData.originalPrice)}/年
+                  {formatPriceDisplay(pricingData.originalPrice)}{t('subscription.billingPeriod.perYear')}
                 </div>
               )}
             </div>

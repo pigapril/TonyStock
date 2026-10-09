@@ -6,18 +6,19 @@ import { useDialog } from '../../components/Common/Dialog/useDialog';
 import { Analytics } from '../../utils/analytics';
 import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
-import i18n from '../../i18n';
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import csrfClient from '../../utils/csrfClient'; // **新增：引入共用的 apiClient**
 
-const ChatWidget = () => {
+const ChatWidgetSession = ({ language, isOpen, setIsOpen }) => {
   const { t } = useTranslation();
-  const STORAGE_KEY = 'chatWidget.session.v1';
-  const [isOpen, setIsOpen] = useState(false);
+  const STORAGE_KEY = `chatWidget.session.v2.${language}`;
   const [messages, setMessages] = useState(() => {
     try {
       const raw = sessionStorage.getItem(STORAGE_KEY);
-      return raw ? (JSON.parse(raw).messages || []) : [];
+      if (raw) return JSON.parse(raw).messages || [];
+      // Preserve historical conversation text, but reload old system FAQ in the selected language.
+      const legacy = sessionStorage.getItem('chatWidget.session.v1');
+      return legacy ? (JSON.parse(legacy).messages || []).filter(message => message.type !== 'quick-replies') : [];
     } catch { return []; }
   });
   const [input, setInput] = useState('');
@@ -78,7 +79,7 @@ const ChatWidget = () => {
     // **移除：不再需要手動讀取後端 URL**
     // const backendUrl = process.env.REACT_APP_API_BASE_URL || '';
 
-    const currentLanguage = i18n.language || 'zh-TW';
+    const currentLanguage = language;
 
     try {
       // **修改：使用 apiClient.post 取代 fetch**
@@ -167,11 +168,11 @@ const ChatWidget = () => {
 
   useEffect(() => {
     const fetchFaqAndSetInitialMessage = async () => {
-      if (!isOpen || messages.length > 0 || initialQuickRepliesLoaded) {
+      if (!isOpen || messages.some(message => message.type === 'quick-replies') || initialQuickRepliesLoaded) {
         return;
       }
 
-      const currentLanguage = i18n.language || 'zh-TW';
+      const currentLanguage = language;
       // **移除：不再需要手動讀取後端 URL**
       // const backendUrl = process.env.REACT_APP_API_BASE_URL || '';
       try {
@@ -203,7 +204,7 @@ const ChatWidget = () => {
               data: data.faq[catName]
             }))
           };
-          setMessages([quickReplyMessage]);
+          setMessages(prev => [quickReplyMessage, ...prev]);
           setInitialQuickRepliesLoaded(true);
         } else {
           console.error("Invalid FAQ data structure received:", data);
@@ -214,7 +215,7 @@ const ChatWidget = () => {
     };
 
     fetchFaqAndSetInitialMessage();
-  }, [isOpen, i18n.language, initialQuickRepliesLoaded, t]);
+  }, [isOpen, language, initialQuickRepliesLoaded, t]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -264,7 +265,9 @@ const ChatWidget = () => {
       setIsOpen(false);
       setIsWaitingReply(false);
       setUnreadCount(0);
-      try { sessionStorage.removeItem(STORAGE_KEY); } catch {}
+      try {
+        ['chatWidget.session.v1', 'chatWidget.session.v2.en', 'chatWidget.session.v2.zh-TW'].forEach(key => sessionStorage.removeItem(key));
+      } catch {}
     };
 
     window.addEventListener('logoutSuccess', handleLogout);
@@ -279,7 +282,7 @@ const ChatWidget = () => {
         <div className={`chat-widget ${!isOpen ? 'closed' : ''} ${isMobile ? 'mobile-fullscreen' : ''}`} ref={chatWidgetRef}>
           <div className="chat-header">
             {t('chatWidget.headerTitle')}
-            <button className="close-button" onClick={toggleChat}>{t('chatWidget.closeButton', '關閉')}</button>
+            <button className="close-button" onClick={toggleChat} aria-label={t('common.close')}>{t('chatWidget.closeButton', '關閉')}</button>
           </div>
           <div className="chat-body" ref={chatBodyRef}>
             {(() => {
@@ -380,6 +383,13 @@ const ChatWidget = () => {
       </button>
     </>
   );
+};
+
+const ChatWidget = () => {
+  const { i18n } = useTranslation();
+  const language = i18n.language.startsWith('zh') ? 'zh-TW' : 'en';
+  const [isOpen, setIsOpen] = useState(false);
+  return <ChatWidgetSession key={language} language={language} isOpen={isOpen} setIsOpen={setIsOpen} />;
 };
 
 export default ChatWidget;

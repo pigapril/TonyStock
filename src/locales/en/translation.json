@@ -525,9 +525,9 @@
       "invalid_code": "Invalid redemption code",
       "code_expired": "This code expired on {{expiryDate}}",
       "code_not_active": "This code will be active on {{activationDate}}",
-      "code_exhausted": "This code has reached its usage limit ({{maxUses}} uses)",
+      "code_exhausted": "This code has reached its usage limit.",
       "already_redeemed": "You already redeemed this code on {{redemptionDate}}",
-      "user_limit_exceeded": "You have reached the usage limit for this code ({{maxUsesPerUser}} uses)",
+      "user_limit_exceeded": "You have reached the usage limit for this code.",
       "eligibility_failed": "You are not eligible for this code",
       "captcha_required": "CAPTCHA verification required",
       "eligibility_new_customers_only": "This code is for new customers only",
@@ -552,7 +552,12 @@
       "account_suspended": "Your account has been suspended and cannot redeem codes",
       "region_restricted": "This code is not available in your region",
       "device_limit_exceeded": "This device has reached the redemption limit",
-      "plan_not_eligible": "This code isn't eligible for your current plan"
+      "plan_not_eligible": "This code is only available for these plans: {{eligiblePlans}}.",
+      "code_not_found": "Redemption code not found. Check the code and try again.",
+      "code_inactive": "This redemption code is inactive.",
+      "not_new_customer": "This code is for new customers only.",
+      "not_first_time_user": "This code is for first-time redemption users only.",
+      "plan_not_eligible_generic": "This code isn't eligible for your current plan."
     },
     "units": {
       "day": "day",
@@ -575,7 +580,7 @@
       }
     },
     "actions": {
-      "upgrade_to_plan": "Upgrade to {{plan}}",
+      "upgrade_to_plan": "Upgrade to {{planName}}",
       "upgrade_plan": "Upgrade plan",
       "view_history": "View history",
       "retry_input": "Try another code",
@@ -1374,7 +1379,11 @@
         "minus1sd": "Fear",
         "plus1sd": "Greed",
         "plus2sd": "Extreme Greed"
-      }
+      },
+      "preparing": "Preparing chart…",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "resetZoom": "Reset zoom"
     },
     "indicators": {
       "title": "Other indicators",
@@ -1756,7 +1765,8 @@
     "billingPeriod": {
       "monthly": "Monthly",
       "yearly": "Yearly",
-      "save": "Save"
+      "save": "Save",
+      "perYear": "/year"
     },
     "marketSentimentContext": {
       "notification": "Upgrade to unlock the latest market sentiment data"
@@ -1877,7 +1887,17 @@
       "message": "The selected plan does not exist. Please choose again."
     },
     "flow": {
-      "selectPayment": "Select Payment Method"
+      "selectPayment": "Select Payment Method",
+      "billingMonthly": "Billed monthly",
+      "billingYearly": "Billed annually",
+      "planSummary": "{{plan}} ({{period}})",
+      "noticesTitle": "Payment notes",
+      "notices": [
+        "Selecting “Proceed to Payment” opens the ECPay payment page.",
+        "Complete payment within 30 minutes; the order will expire after that.",
+        "You will return to this website after payment."
+      ],
+      "redemptionCode": "Redemption code"
     },
     "methods": {
       "creditCard": "Credit Card"
@@ -1965,13 +1985,18 @@
       "monthly": "Monthly",
       "yearly": "Yearly",
       "paymentId": "Payment ID",
-      "failureReason": "Failure Reason"
+      "failureReason": "Failure Reason",
+      "loadFailure": "Unable to load payment history. Please try again.",
+      "failureMessage": "The payment was not completed. Check your subscription status or contact support."
     },
     "errors": {
       "invalidAmount": "Invalid payment amount",
       "termsRequired": "Please agree to the terms of service",
       "createOrderFailed": "Failed to create order",
-      "paymentFailed": "Payment processing failed"
+      "paymentFailed": "Payment processing failed",
+      "paymentMethodRequired": "This code requires a payment method. Continue checkout to apply the offer.",
+      "incompleteOrder": "Order information is incomplete. Please try again.",
+      "redirectFailed": "Unable to open the payment page. Please try again."
     },
     "security": {
       "title": "Secure payment via ECPay",

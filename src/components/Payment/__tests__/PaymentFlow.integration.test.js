@@ -102,6 +102,7 @@ describe('PaymentFlow integration', () => {
         planType: 'pro',
         billingPeriod: 'monthly',
         paymentMethod: 'Credit',
+        language: 'zh-TW',
         redemptionCode: 'SAVE50',
         originalAmount: 299,
         finalAmount: 249

@@ -37,6 +37,21 @@ test('every indexable URL has usable PNG metadata in its first HTML response', (
   }
 });
 
+test('localized HTML shells use matching install metadata and English article charts', () => {
+  for (const lang of ['en', 'zh-TW']) {
+    const html = fs.readFileSync(path.join(output, lang, 'index.html'), 'utf8');
+    expect(html).toContain(`rel="manifest" href="/manifest.${lang}.json"`);
+    const manifest = JSON.parse(fs.readFileSync(path.join(root, 'public', `manifest.${lang}.json`), 'utf8'));
+    expect(manifest.lang).toBe(lang);
+    expect(manifest.start_url).toBe(`/${lang}/`);
+    expect(manifest.id).toBe('/');
+    if (lang === 'en') expect(manifest.description).not.toMatch(/[\u3400-\u9fff]/);
+  }
+  const article = fs.readFileSync(path.join(output, 'en/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/index.html'), 'utf8');
+  for (const n of [1, 2, 3, 4]) expect(article).toContain(`image${n}-en.png`);
+  expect(article).not.toMatch(/image[1-4]\.png/);
+});
+
 test('articles contain readable text, crawlable links and translated metadata without JavaScript', () => {
   const html = fs.readFileSync(path.join(output, 'en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis/index.html'), 'utf8');
   expect(html).toContain('data-seo-article="true"');

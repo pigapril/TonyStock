@@ -45,7 +45,7 @@ describe.each([['en', 'monthly'], ['en', 'yearly'], ['zh-TW', 'monthly'], ['zh-T
     expect(scrollTo).toHaveBeenCalledTimes(1);
     fireEvent.click(screen.getByRole('button', { name: i18n.t('payment.form.createOrder') }));
     await screen.findByRole('button', { name: i18n.t('payment.form.proceedToPayment') });
-    expect(scrollTo).toHaveBeenCalledTimes(2);
+    await waitFor(() => expect(scrollTo).toHaveBeenCalledTimes(2));
     expect(scrollTo).toHaveBeenLastCalledWith(0, 0);
     expect(paymentService.createOrder).toHaveBeenCalledWith(expect.objectContaining({ language: lang, billingPeriod: period }));
     expect(container.querySelector('.payment-page__order-total')).toHaveTextContent('TWD 179');

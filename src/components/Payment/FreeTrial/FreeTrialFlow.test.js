@@ -45,6 +45,7 @@ describe('免綁卡試用頁', () => {
 
     await waitFor(() => expect(screen.getByText('freeTrial.successBody')).toBeInTheDocument());
     expect(mockStartFreeTrial).toHaveBeenCalledTimes(1);
+    expect(mockStartFreeTrial).toHaveBeenCalledWith('zh-TW');
     expect(mockCheckAuthStatus).toHaveBeenCalledTimes(1);
     expect(mockRefreshUserPlan).toHaveBeenCalledTimes(1);
     expect(mockRefreshSubscriptionHistory).toHaveBeenCalledTimes(1);

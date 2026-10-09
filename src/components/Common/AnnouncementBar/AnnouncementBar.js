@@ -7,7 +7,7 @@ import AnnouncementDevTools from './AnnouncementDevTools';
 import announcementCooldownManager from '../../../utils/announcementCooldown';
 
 const AnnouncementBar = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [config, setConfig] = useState(null);
   const [showBar, setShowBar] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -27,9 +27,9 @@ const AnnouncementBar = () => {
     
     let selectedMessage = '';
     
-    // Priority: language-specific message > fallback to other language > legacy message field
+    // Only show English announcements when an English message is available.
     if (isEnglish) {
-      selectedMessage = config.message_en || config.message_zh || config.message || '';
+      selectedMessage = config.message_en || '';
     } else {
       selectedMessage = config.message_zh || config.message || config.message_en || '';
     }
@@ -271,7 +271,7 @@ const AnnouncementBar = () => {
   };
 
   // 如果正在載入、沒有配置或不應該顯示，則不渲染
-  if (loading || !config || !showBar) {
+  if (loading || !config || !showBar || !getLocalizedMessage) {
     return null;
   }
 
@@ -315,8 +315,8 @@ const AnnouncementBar = () => {
         <button
           className="announcement-close"
           onClick={handleClose}
-          aria-label="關閉公告"
-          title="關閉公告"
+          aria-label={t('announcement.close')}
+          title={t('announcement.close')}
         >
           ×
         </button>
