@@ -31,9 +31,13 @@
     left: 18px;
     width: calc(43% - 36px);
     border-radius: 18px;
-    background: url('../../../assets/images/auth-sentiment-history.png') center / cover no-repeat;
+    background: #f9fbfa url('../../../assets/images/auth-sentiment-history-zh-TW.webp') center / contain no-repeat;
     box-shadow: 0 12px 32px rgba(24, 45, 70, 0.14);
     pointer-events: none;
+}
+
+.auth-entry-dialog--en::after {
+    background-image: url('../../../assets/images/auth-sentiment-history-en.webp');
 }
 
 .auth-entry-dialog .auth-dialog-title {

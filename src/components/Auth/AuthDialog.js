@@ -8,7 +8,8 @@ import { FiActivity, FiBarChart2, FiMessageCircle } from 'react-icons/fi';
 import './styles/AuthDialog.css';
 
 export function AuthDialog() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const imageLanguage = (i18n.resolvedLanguage || i18n.language || 'en').startsWith('zh') ? 'zh-TW' : 'en';
     const { dialog, closeDialog } = useDialog();
     const { loading, renderGoogleButton, user, ensureGoogleIdentityLoaded } = useAuth();
     const buttonRef = useRef(null);
@@ -77,7 +78,7 @@ export function AuthDialog() {
             onClose={handleClose}
             title={dialog.props?.customTitle || t('authDialog.title')}
             titleClassName="auth-dialog-title"
-            className="auth-entry-dialog"
+            className={`auth-entry-dialog auth-entry-dialog--${imageLanguage}`}
             maxWidth="lg"
         >
             <div className="auth-entry-dialog__content">

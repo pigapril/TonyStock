@@ -9,6 +9,7 @@
     "src/api/__tests__/apiClient.spec.js",
     "src/api/__tests__/subscriptionService.userPlan.test.js",
     "src/components/AdminOnly/__tests__/AdminOnly.test.js",
+    "src/components/Auth/AuthDialog.test.js",
     "src/components/Common/EmotionTag/EmotionTag.test.js",
     "src/components/Common/ProtectedRoute/ProtectedRoute.test.js",
     "src/components/MarketSentimentIndex/MarketSentimentGauge/__tests__/MarketSentimentGauge.test.js",
