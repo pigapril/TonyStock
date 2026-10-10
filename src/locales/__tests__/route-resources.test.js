@@ -79,3 +79,32 @@ test.each([
   const { getInitialLanguage } = require('../resourceGroups');
   expect(getInitialLanguage(pathname)).toBe(language);
 });
+
+test.each([
+  ['/', 'zh-TW', 'zh-TW'], ['/', 'zh-HK', 'zh-TW'], ['/', 'ZH-cn', 'zh-TW'],
+  ['/', 'en-US', 'en'], ['/', 'ja-JP', 'en'], ['/', '', 'en'],
+  ['/en/', 'zh-TW', 'en'], ['/zh-TW/', 'en-US', 'zh-TW'], ['/zh/', 'en-US', 'zh']
+])('initial language for %s with browser preference %s is %s', (pathname, browserLanguage, language) => {
+  const { getInitialLanguage } = require('../resourceGroups');
+  expect(getInitialLanguage(pathname, browserLanguage)).toBe(language);
+});
+
+test.each([
+  ['/', 'zh-TW', 'zh-TW'], ['/', 'ja-JP', 'en'], ['/en/', 'zh-TW', 'en']
+])('i18n initializes synchronously for %s with browser language %s', (pathname, browserLanguage, language) => {
+  const originalUrl = window.location.href;
+  const originalLanguage = Object.getOwnPropertyDescriptor(navigator, 'language');
+  let instance;
+  try {
+    window.history.replaceState(null, '', pathname);
+    Object.defineProperty(navigator, 'language', { configurable: true, value: browserLanguage });
+    jest.isolateModules(() => { instance = require('../../i18n').default; });
+    expect(instance.isInitialized).toBe(true);
+    expect(instance.language).toBe(language);
+    expect(instance.hasResourceBundle(language, 'translation')).toBe(true);
+  } finally {
+    window.history.replaceState(null, '', originalUrl);
+    if (originalLanguage) Object.defineProperty(navigator, 'language', originalLanguage);
+    else delete navigator.language;
+  }
+});

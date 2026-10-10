@@ -2,6 +2,7 @@ import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import RouteLocaleGate from './RouteLocaleGate';
 import { loadRouteLocales } from '../../../locales/loadRouteLocales';
+import { getInitialLanguage } from '../../../locales/resourceGroups';
 
 jest.mock('../../../locales/loadRouteLocales', () => ({ loadRouteLocales: jest.fn() }));
 const mockI18n = { language: 'en', changeLanguage: jest.fn(async lang => { mockI18n.language = lang; }) };
@@ -27,6 +28,16 @@ test('Chinese homepage also renders immediately when its language is active', ()
   mockI18n.language = 'zh-TW';
   render(view('zh-TW', '/zh-TW/'));
   expect(screen.getByText('page')).toBeInTheDocument();
+  expect(loadRouteLocales).not.toHaveBeenCalled();
+});
+
+test.each(['zh-TW', 'zh-HK', 'en-US', 'ja-JP'])('root entry with browser language %s paints the homepage without a short placeholder', browserLanguage => {
+  mockI18n.language = getInitialLanguage('/', browserLanguage);
+  const redirectLanguage = getInitialLanguage('/', browserLanguage);
+  loadRouteLocales.mockReturnValue(new Promise(() => {}));
+  render(view(redirectLanguage, `/${redirectLanguage}/`));
+  expect(screen.getByText('page')).toBeInTheDocument();
+  expect(screen.queryByText('waiting')).not.toBeInTheDocument();
   expect(loadRouteLocales).not.toHaveBeenCalled();
 });
 

@@ -7,6 +7,7 @@ import { useMediaQuery } from 'react-responsive';
 import { useTranslation } from 'react-i18next';
 import { useSmartNavigation } from './hooks/useSmartNavigation';
 import { useDeferredFeature } from './hooks/useDeferredFeature';
+import { getInitialLanguage } from './locales/resourceGroups';
 
 
 // 第三方庫
@@ -810,21 +811,11 @@ function LanguageWrapper() {
 // --- 確保 InitialRedirect 的定義存在 ---
 function InitialRedirect() {
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
 
   useEffect(() => {
-    const userLang = navigator.language || navigator.userLanguage;
-    let targetLang = i18n.options.fallbackLng;
-
-    if (userLang.startsWith('en') && i18n.options.supportedLngs.includes('en')) {
-      targetLang = 'en';
-    }
-    else if (userLang.toLowerCase().startsWith('zh') && i18n.options.supportedLngs.includes('zh-TW')) {
-      targetLang = 'zh-TW';
-    }
-
+    const targetLang = getInitialLanguage('/', navigator.language || navigator.userLanguage || '');
     navigate(`/${targetLang}`, { replace: true });
-  }, [navigate, i18n]);
+  }, [navigate]);
 
   return null;
 }

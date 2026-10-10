@@ -18,7 +18,10 @@ i18n
   .init({
     // Both shared language bundles are already present. Resolve deep links
     // before the first render rather than repainting English as Chinese.
-    lng: getInitialLanguage(typeof window === 'undefined' ? '' : window.location.pathname),
+    lng: getInitialLanguage(
+      typeof window === 'undefined' ? '' : window.location.pathname,
+      typeof navigator === 'undefined' ? '' : navigator.language || navigator.userLanguage || ''
+    ),
     fallbackLng: {
       'zh': ['zh-TW', 'en'],
       'default': ['en']

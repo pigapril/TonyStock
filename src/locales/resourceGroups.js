@@ -20,7 +20,12 @@ function getRouteLocaleGroups(pathname = '') {
   return [];
 }
 
-function getInitialLanguage(pathname = '') {
+function getInitialLanguage(pathname = '', browserLanguage = '') {
+  // Resolve the root redirect before the first render. Explicit language URLs
+  // always take precedence over the browser preference.
+  if (pathname === '' || pathname === '/') {
+    return browserLanguage.toLowerCase().startsWith('zh') ? 'zh-TW' : 'en';
+  }
   const language = pathname.split('/')[1]?.toLowerCase();
   return language === 'zh-tw' ? 'zh-TW' : language === 'zh' ? 'zh' : 'en';
 }
