@@ -152,9 +152,9 @@ function AppContent() {
   const { 
     shouldUseSideNav, 
     navRef, 
-    triggerCheck,
     resetNavigation
   } = useSmartNavigation({
+    enabled: !isMobile,
     debounceMs: 150,
     threshold: 8
   });
@@ -286,13 +286,7 @@ function AppContent() {
   // 監聽語言變化，觸發導航重新檢查
   React.useEffect(() => {
     resetNavigation();
-    if (triggerCheck) {
-      const timer = setTimeout(() => {
-        triggerCheck();
-      }, 200);
-      return () => clearTimeout(timer);
-    }
-  }, [i18n.language, triggerCheck, resetNavigation]);
+  }, [i18n.language, resetNavigation]);
 
   // 移除動態檢測邏輯，因為現在使用覆蓋模式，不需要調整佈局
 

@@ -9,6 +9,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
  */
 export const useSmartNavigation = (options = {}) => {
   const {
+    enabled = true,
     debounceMs = 100,
     threshold = 5
   } = options;
@@ -18,12 +19,14 @@ export const useSmartNavigation = (options = {}) => {
   const navRef = useRef(null);
   const resizeTimeoutRef = useRef(null);
   const initialHeightRef = useRef(null);
+  const frameRef = useRef(null);
+  const previousWidthRef = useRef(null);
 
   /**
    * 檢測導航項目是否換行
    */
   const checkNavWrapping = useCallback(() => {
-    if (!navRef.current) return;
+    if (!enabled || !navRef.current) return;
 
     const navElement = navRef.current;
     // 只取 .desktop-nav-items 的直接子層，避免把 dropdown menu 內部的連結誤判為換行的 nav item
@@ -78,20 +81,30 @@ export const useSmartNavigation = (options = {}) => {
       }
       return prev;
     });
-  }, [threshold]);
+  }, [enabled, threshold]);
 
   /**
    * 防抖的檢查函數
    */
+  const cancelCheck = useCallback(() => {
+    clearTimeout(resizeTimeoutRef.current);
+    if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    frameRef.current = null;
+  }, []);
+
   const debouncedCheck = useCallback(() => {
-    if (resizeTimeoutRef.current) {
-      clearTimeout(resizeTimeoutRef.current);
-    }
-    
+    cancelCheck();
+    if (!enabled) return;
     resizeTimeoutRef.current = setTimeout(() => {
-      checkNavWrapping();
+      // Let the current render reach a frame before reading layout dimensions.
+      frameRef.current = requestAnimationFrame(() => {
+        frameRef.current = requestAnimationFrame(() => {
+          frameRef.current = null;
+          checkNavWrapping();
+        });
+      });
     }, debounceMs);
-  }, [checkNavWrapping, debounceMs]);
+  }, [cancelCheck, enabled, checkNavWrapping, debounceMs]);
 
   /**
    * 重置導航狀態（當窗口大小顯著改變時）
@@ -101,11 +114,8 @@ export const useSmartNavigation = (options = {}) => {
     setShouldUseSideNav(false);
     setIsInitialized(false);
     
-    // 延遲重新檢測，確保 DOM 已更新
-    setTimeout(() => {
-      checkNavWrapping();
-    }, 50);
-  }, [checkNavWrapping]);
+    debouncedCheck();
+  }, [debouncedCheck]);
 
   /**
    * 手動觸發檢查（用於內容動態變化時）
@@ -114,50 +124,35 @@ export const useSmartNavigation = (options = {}) => {
     debouncedCheck();
   }, [debouncedCheck]);
 
-  // 監聽窗口大小變化
   useEffect(() => {
+    initialHeightRef.current = null;
+    setShouldUseSideNav(false);
+    setIsInitialized(false);
+    if (!enabled) return undefined;
+
+    previousWidthRef.current = window.innerWidth;
     const handleResize = () => {
-      // 如果窗口寬度變化超過 100px，重置導航狀態
-      const currentWidth = window.innerWidth;
-      if (!window.lastWidth) {
-        window.lastWidth = currentWidth;
-      }
-      
-      const widthChange = Math.abs(currentWidth - window.lastWidth);
-      if (widthChange > 100) {
+      const width = window.innerWidth;
+      if (Math.abs(width - previousWidthRef.current) > 100) {
+        previousWidthRef.current = width;
         resetNavigation();
-        window.lastWidth = currentWidth;
       } else {
         debouncedCheck();
       }
     };
 
     window.addEventListener('resize', handleResize);
-    
-    // 初始檢查
-    const initialCheck = setTimeout(() => {
-      checkNavWrapping();
-    }, 100);
-
+    // Subscribe to future font loads without reading fonts.ready, which can
+    // synchronously flush pending layout during the initial React commit.
+    const fonts = document.fonts;
+    fonts?.addEventListener?.('loadingdone', debouncedCheck);
+    debouncedCheck();
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (resizeTimeoutRef.current) {
-        clearTimeout(resizeTimeoutRef.current);
-      }
-      clearTimeout(initialCheck);
+      fonts?.removeEventListener?.('loadingdone', debouncedCheck);
+      cancelCheck();
     };
-  }, [debouncedCheck, resetNavigation, checkNavWrapping]);
-
-  // 監聽字體加載完成
-  useEffect(() => {
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => {
-        setTimeout(() => {
-          triggerCheck();
-        }, 100);
-      });
-    }
-  }, [triggerCheck]);
+  }, [enabled, debouncedCheck, resetNavigation, cancelCheck]);
 
   return {
     shouldUseSideNav,
