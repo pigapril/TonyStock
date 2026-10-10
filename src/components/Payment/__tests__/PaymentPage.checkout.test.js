@@ -4,6 +4,7 @@ import { createInstance } from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 import en from '../../../locales/resources/en/common.json';
 import zhTW from '../../../locales/resources/zh-TW/common.json';
+import { Analytics } from '../../../utils/analytics';
 import PaymentPage from '../../../pages/PaymentPage';
 import paymentService from '../../../services/paymentService';
 
@@ -48,6 +49,8 @@ describe.each([['en', 'monthly'], ['en', 'yearly'], ['zh-TW', 'monthly'], ['zh-T
     await waitFor(() => expect(scrollTo).toHaveBeenCalledTimes(2));
     expect(scrollTo).toHaveBeenLastCalledWith(0, 0);
     expect(paymentService.createOrder).toHaveBeenCalledWith(expect.objectContaining({ language: lang, billingPeriod: period }));
+    expect(window.dataLayer.filter(entry => entry.event === 'begin_checkout').slice(-1)[0]).toMatchObject({ ecommerce: { currency: 'TWD', value: 179 } });
+    expect(Analytics.track).not.toHaveBeenCalledWith('payment_success', expect.anything());
     expect(container.querySelector('.payment-page__order-total')).toHaveTextContent('TWD 179');
     expect(container.querySelector('.payment-page__renewal-notice')).toHaveTextContent('TWD 179');
     expect(screen.getAllByAltText('Mastercard')).toHaveLength(1);

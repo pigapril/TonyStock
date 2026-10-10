@@ -51,6 +51,20 @@ describe('PaymentStatus', () => {
     await testI18n.changeLanguage('zh-TW');
   });
 
+  it('tracks a confirmed UUID order using the shared merchant transaction id', async () => {
+    delete window.dataLayer;
+    sessionStorage.clear();
+    mockSearchParams = new URLSearchParams('orderId=123e4567-e89b-42d3-a456-426614174000');
+    mockPaymentService.pollPaymentStatus.mockResolvedValue({
+      success: true, status: 'completed', data: {
+        orderStatus: 'paid', order: { status: 'paid', merchantTradeNo: 'uuid-verified', amount: '179', planType: 'pro', billingPeriod: 'yearly' }
+      }
+    });
+    render(<PaymentStatus />);
+    await waitFor(() => expect(window.dataLayer?.filter(entry => entry.event === 'purchase')).toHaveLength(1));
+    expect(window.dataLayer.find(entry => entry.event === 'purchase').ecommerce).toMatchObject({ transaction_id: 'uuid-verified', value: 179 });
+  });
+
   it('shows a failed state immediately when orderId is missing', async () => {
     render(<PaymentStatus />);
 

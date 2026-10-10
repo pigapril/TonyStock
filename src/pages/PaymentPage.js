@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../components/Auth/useAuth';
 import { useSubscription } from '../components/Subscription/SubscriptionContext';
 import { Analytics } from '../utils/analytics';
+import { trackSubscriptionCheckout } from '../utils/subscriptionAnalytics';
 import subscriptionService from '../api/subscriptionService';
 import paymentService from '../services/paymentService';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
@@ -144,26 +145,6 @@ const PaymentPage = () => {
             hasDiscount: !!appliedDiscount
         });
     }, [user, navigate, lang, planType, billingPeriod, userPlan, t, searchParams]);
-
-    const handleSuccess = (subscription) => {
-        setLoading(false);
-
-        Analytics.track('payment_success', {
-            userId: user?.id,
-            planType,
-            billingPeriod,
-            subscriptionId: subscription.id
-        });
-
-        navigate(`/${lang}/payment/status`, {
-            state: {
-                success: true,
-                subscription,
-                planType,
-                billingPeriod
-            }
-        });
-    };
 
     const handleError = (error) => {
         setLoading(false);
@@ -384,6 +365,7 @@ const PaymentPage = () => {
 
             const result = await paymentService.createOrder(orderPayload);
 
+            trackSubscriptionCheckout({ ...result, planType, billingPeriod });
             setOrderData(result);
             setCurrentStep(3); // 跳轉到確認頁面
 

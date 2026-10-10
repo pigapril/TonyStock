@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { trackSubscriptionPurchase } from '../../../utils/subscriptionAnalytics';
 import apiClient from '../../../api/apiClient';
 import './PaymentResult.css';
 
@@ -22,6 +23,9 @@ export const PaymentResult = () => {
             const result = response.data;
             
             if (result.success) {
+                // A pending server callback is not a terminal result; keep polling.
+                if (result.data.orderStatus === 'pending') return false;
+                trackSubscriptionPurchase(result.data);
                 // 付款狀態確認成功
                 setPaymentInfo({
                     merchantTradeNo,
@@ -120,6 +124,7 @@ export const PaymentResult = () => {
                     source: 'callback'
                 });
                 setLoading(false);
+
             }
             // 如果沒有任何參數，顯示錯誤
             else {
@@ -134,6 +139,32 @@ export const PaymentResult = () => {
 
         initializePaymentResult();
     }, [location.search, navigate, t]);
+
+    // Verify the callback independently from its display parameters; retry if the
+    // server callback has not settled yet. Stop on unmount or a different order.
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const merchantTradeNo = params.get('MerchantTradeNo') || params.get('merchantTradeNo');
+        if (!merchantTradeNo || !params.get('RtnCode') || params.get('source') === 'client') return;
+        let cancelled = false;
+        let timer;
+        let attempts = 0;
+        const verify = async () => {
+            attempts += 1;
+            try {
+                const response = await apiClient.get(`/api/payment/status/${merchantTradeNo}`);
+                if (cancelled) return;
+                if (response.data.success) {
+                    const data = response.data.data;
+                    trackSubscriptionPurchase(data);
+                    if (data.isSuccess === true || ['paid', 'failed', 'cancelled', 'expired'].includes(data.orderStatus)) return;
+                }
+            } catch { /* Retry transient errors without counting a conversion. */ }
+            if (!cancelled && attempts < maxPollingAttempts) timer = setTimeout(verify, 1000);
+        };
+        verify();
+        return () => { cancelled = true; clearTimeout(timer); };
+    }, [location.search]);
 
     // 付款成功後自動導向到用戶帳戶頁面
     useEffect(() => {

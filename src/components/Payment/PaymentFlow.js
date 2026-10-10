@@ -9,6 +9,7 @@
  * 5. 跳轉到綠界支付
  */
 
+import { trackSubscriptionCheckout } from '../../utils/subscriptionAnalytics';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -250,6 +251,7 @@ const PaymentFlow = ({
                 finalAmount: finalAmount || currentPlan?.price
             });
 
+            trackSubscriptionCheckout({ ...result, planType, billingPeriod });
             setOrderData(result);
             setCurrentStep(4); // 跳轉到確認頁面
 

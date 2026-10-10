@@ -11,6 +11,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { trackSubscriptionPurchase } from '../../utils/subscriptionAnalytics';
 import paymentService from '../../services/paymentService';
 import { systemLogger } from '../../utils/logger';
 import LoadingSpinner from '../Common/LoadingSpinner';
@@ -87,6 +88,7 @@ const PaymentStatus = () => {
 
             if (result.success) {
                 if (result.status === 'completed') {
+                    trackSubscriptionPurchase(result.data);
                     setStatus('success');
                     setPaymentData(result.data);
                     
