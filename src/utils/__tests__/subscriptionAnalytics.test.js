@@ -1,7 +1,12 @@
 import { trackSubscriptionCheckout, trackSubscriptionPurchase } from '../subscriptionAnalytics';
 
 const paid = id => ({ merchantTradeNo: id, isSuccess: true, amount: '179', planType: 'pro', billingPeriod: 'monthly' });
-beforeEach(() => { delete window.dataLayer; sessionStorage.clear(); });
+beforeEach(() => {
+  delete window.dataLayer;
+  sessionStorage.clear();
+  window.history.replaceState({}, '', '/');
+});
+afterEach(() => jest.restoreAllMocks());
 const events = () => (window.dataLayer || []).filter(entry => entry.event);
 
 it('uses authoritative discounted amounts and GA4 ecommerce fields', () => {
@@ -58,4 +63,23 @@ it('cannot interrupt payment and permits retries after a failed push', () => {
   window.dataLayer = [];
   trackSubscriptionPurchase(paid('retry-1'));
   expect(events()).toHaveLength(1);
+});
+
+it.each([
+  ['/en/payment/result', 'en'],
+  ['/zh-TW/payment/result', 'zh-TW'],
+  ['/en-US/payment/result', null],
+  ['/ko/payment/result', null],
+  ['/payment/result', null]
+])('records site_locale from %s for checkout and purchase', (pathname, locale) => {
+  window.history.replaceState({}, '', `${pathname}?MerchantTradeNo=PRIVATE#PRIVATE`);
+  jest.spyOn(document, 'referrer', 'get').mockReturnValue('https://example.test/return?token=PRIVATE#PRIVATE');
+  const order = paid(`locale-${pathname}`);
+  trackSubscriptionCheckout(order);
+  trackSubscriptionPurchase(order);
+  expect(events()).toHaveLength(2);
+  events().forEach(event => {
+    expect(event).toMatchObject({ site_locale: locale, page_path: pathname, page_referrer: 'https://example.test/return' });
+  });
+  expect(JSON.stringify(events())).not.toContain('PRIVATE');
 });

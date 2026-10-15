@@ -1,4 +1,5 @@
 import { ensureDataLayer } from './deferredScripts';
+import { getAnalyticsPageContext } from './analyticsPageContext';
 
 // Use only order metadata; never include account data, card data or URL queries.
 const seenEvents = new Set();
@@ -12,9 +13,7 @@ function sendOnce(event, transactionId, ecommerce, billingPeriod) {
     dataLayer.push({ ecommerce: null });
     dataLayer.push({
       event, ecommerce, billing_period: billingPeriod || null,
-      page_path: window.location.pathname,
-      page_location: window.location.origin + window.location.pathname,
-      page_referrer: document.referrer ? new URL(document.referrer).origin + new URL(document.referrer).pathname : ''
+      ...getAnalyticsPageContext()
     });
     seenEvents.add(key);
     try { sessionStorage.setItem(key, '1'); } catch { /* In-memory deduplication remains. */ }

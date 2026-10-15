@@ -5,12 +5,14 @@ import PageContainer from '../PageContainer/PageContainer';
 import { suggestionMatchesInput } from './suggestionMatch';
 import { classifySentiment, getHorizonAlignment, getSignalLadder } from './signalLadder';
 import { Analytics } from '../../utils/analytics';
+import { trackProductEvent } from '../../utils/productAnalytics';
+import { buildAnalysisReturnPath, withAnalysisReturnPath } from '../../utils/trialNavigation';
 import { handleApiError } from '../../utils/errorHandler';
 import { useMediaQuery } from 'react-responsive';
 import { formatPrice } from '../../utils/priceUtils';
 import { Toast } from '../Watchlist/components/Toast';
 import { useToastManager } from '../Watchlist/hooks/useToastManager';
-import { useSearchParams, useLocation } from 'react-router-dom'; // 引入 useLocation
+import { useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { useAdContext } from '../../components/Common/InterstitialAdModal/AdContext'; // 導入 useAdContext
 import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebouncedCallback
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
@@ -202,6 +204,7 @@ export function PriceAnalysis() {
   const { requestAdDisplay } = useAdContext(); // 從 Context 獲取函數
   const { isAuthenticated, user, checkAuthStatus } = useAuth(); // 新增：獲取認證狀態和用戶資訊
   const { openDialog } = useDialog(); // 新增：獲取對話框功能
+  const navigate = useNavigate();
 
   // 從 URL 參數或預設值初始化狀態
   // 這裡保留所有原本在 App.js 中標準差分析需要的狀態
@@ -239,6 +242,12 @@ export function PriceAnalysis() {
   // 上一次送出時的設定。記在送出的當下而不是結果回來的當下，載入中改設定才不會被吃掉。
   const lastRunKeyRef = useRef('long|');      // 期長／模式 ＋ 回測日期
   const lastRunYearsRef = useRef(null);       // 上次送出的自訂年數（數值，非自訂時為 null）
+  const resumedAnalysisRef = useRef(null);
+  const analysisContextRef = useRef(null);
+  analysisContextRef.current = {
+    years: isAdvancedQuery ? (parseYears(years) || 3.5) : PERIOD_YEARS[analysisPeriod],
+    backTestDate
+  };
 
   // 市場代號 → 顯示徽章（旗幟 + 短碼）
   const marketBadgeFor = useCallback((market) => {
@@ -657,12 +666,23 @@ export function PriceAnalysis() {
   // runAnalysisForStock 宣告在後面，這裡用 ref 規避 TDZ；render 時會同步最新版本
   const runAnalysisForStockRef = useRef(null);
 
+  const analysisReturnPath = useCallback((stockCode) => buildAnalysisReturnPath(i18n.language, {
+    ...analysisContextRef.current, stockCode
+  }), [i18n.language]);
+
+  const openAnalysisLogin = useCallback((stockCode, message) => {
+    const returnPath = analysisReturnPath(stockCode);
+    // Keep the intended stock in the URL while authentication updates the page.
+    navigate(returnPath, { replace: true, state: { resumeAfterLogin: true } });
+    openDialog('auth', { returnPath, message });
+  }, [analysisReturnPath, navigate, openDialog]);
+
   // 統一 stockAccess 升級對話框的 props：附帶「先查免費標的」與「直接查某檔免費標的」兩個引導
   const buildStockAccessDialogProps = useCallback((stockCode) => ({
     feature: 'stockAccess',
     stockCode,
     allowedStocks: getFreeStockList(),
-    upgradeUrl: `/${i18n.language}/subscription-plans`,
+    upgradeUrl: withAnalysisReturnPath(`/${i18n.language}/subscription-plans`, analysisReturnPath(stockCode)),
     onBrowseFreeStocks: () => {
       userManuallyChangedTabRef.current = true;
       setActiveQuickSelectTab('freeStocks');
@@ -674,7 +694,7 @@ export function PriceAnalysis() {
         t('priceAnalysis.toast.invalidYearsFreeStock')
       );
     }
-  }), [i18n.language, t]);
+  }), [i18n.language, t, analysisReturnPath]);
 
   // 免費用戶（且尚未手動切過 tab）預設停在「免費清單」tab，讓新用戶第一眼看到可查的標的
   useEffect(() => {
@@ -701,10 +721,7 @@ export function PriceAnalysis() {
 
     // 與 handleSubmit 對齊：未登入彈登入對話框
     if (!isAuthenticated) {
-      openDialog('auth', {
-        returnPath: location.pathname,
-        message: t('protectedRoute.loginRequired')
-      });
+      openAnalysisLogin(symbol, t('protectedRoute.loginRequired'));
       return;
     }
 
@@ -723,7 +740,7 @@ export function PriceAnalysis() {
     debouncedSetStockCode,
     isAuthenticated,
     openDialog,
-    location.pathname,
+    openAnalysisLogin,
     t,
     user,
     buildStockAccessDialogProps
@@ -883,6 +900,9 @@ export function PriceAnalysis() {
 
       // 這個更新通常很快，可以在 transition 外部
       setDisplayedStockCode(stock);
+      if (prices?.length > 0 && sdAnalysis) {
+        trackProductEvent('price_analysis_completed', { source: 'price_analysis' });
+      }
 
     } catch (error) {
       // ✅ 新增：403 錯誤攔截 (後端 SSOT 判定無權限)
@@ -1098,10 +1118,7 @@ export function PriceAnalysis() {
   // 送出的共同路徑：Enter、表單 submit、年數欄位移開游標都走這裡
   const submitAnalysis = () => {
     if (!isAuthenticated) {
-      openDialog('auth', {
-        returnPath: location.pathname,
-        message: t('protectedRoute.loginRequired')
-      });
+      openAnalysisLogin(displayStockCode, t('protectedRoute.loginRequired'));
       return;
     }
 
@@ -1133,6 +1150,10 @@ export function PriceAnalysis() {
     const urlStockCode = searchParams.get('stockCode');
     const urlYears = searchParams.get('years');
     const urlBackTestDate = searchParams.get('backTestDate');
+    const shouldResume = location.state?.resumeAfterTrial || location.state?.resumeAfterLogin;
+    const resumeKey = shouldResume ? `${location.key}:${urlStockCode}:${urlYears}:${urlBackTestDate}` : null;
+    // Auth refreshes can rerun this effect; resume each navigation only once.
+    if (resumeKey && resumedAnalysisRef.current === resumeKey) return;
 
     // 確定要使用的股票代碼、年份和日期 (從 URL 或預設值)
     let fetchStock = urlStockCode || 'SPY';
@@ -1167,6 +1188,23 @@ export function PriceAnalysis() {
       // 如果參數有效，檢查是否來自 Watchlist 或 股票代碼是 SPY
       if (isFromWatchlist || fetchStock.toUpperCase() === 'SPY') {
         shouldAutoFetch = true;
+      }
+      if (shouldResume) {
+        shouldAutoFetch = false;
+        if (isAuthenticated) {
+          resumedAnalysisRef.current = resumeKey;
+          const effectivePlan = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true' ? 'pro' : (user?.plan || 'free');
+          if (isStockAllowed(fetchStock.toUpperCase(), effectivePlan)) {
+            shouldAutoFetch = true;
+          } else {
+            openDialog('featureUpgrade', {
+              ...buildStockAccessDialogProps(fetchStock),
+              upgradeUrl: withAnalysisReturnPath(`/${i18n.language}/subscription-plans`, buildAnalysisReturnPath(i18n.language, {
+                stockCode: fetchStock, years: fetchYears, backTestDate: fetchDate
+              }))
+            });
+          }
+        }
       }
     }
 
@@ -1254,10 +1292,7 @@ export function PriceAnalysis() {
   const handleHotSearchClick = (searchItem) => { // 參數名稱改為 searchItem 以清晰表示它是一個物件
     // 新增：檢查登入狀態
     if (!isAuthenticated) {
-      openDialog('auth', {
-        returnPath: location.pathname,
-        message: t('protectedRoute.loginRequired')
-      });
+      openAnalysisLogin(searchItem.keyword, t('protectedRoute.loginRequired'));
       return;
     }
 
@@ -1279,10 +1314,7 @@ export function PriceAnalysis() {
   const handleFreeStockClick = (ticker) => {
     // 新增：檢查登入狀態
     if (!isAuthenticated) {
-      openDialog('auth', {
-        returnPath: location.pathname,
-        message: t('protectedRoute.loginRequired')
-      });
+      openAnalysisLogin(ticker, t('protectedRoute.loginRequired'));
       return;
     }
 

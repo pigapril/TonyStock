@@ -1766,7 +1766,9 @@
       "monthly": "Monthly",
       "yearly": "Yearly",
       "save": "Save",
-      "perYear": "/year"
+      "perYear": "/year",
+      "perMonth": "/month",
+      "currencyNote": "Billed in New Taiwan dollars (TWD)."
     },
     "marketSentimentContext": {
       "notification": "Upgrade to unlock the latest market sentiment data"
@@ -3104,7 +3106,9 @@
     "errors": {
       "notEligible": "The free trial is only for first-time subscribers.",
       "generic": "The trial could not be started. Please try again later."
-    }
+    },
+    "resumeAnalysis": "Continue your analysis",
+    "analyzeStock": "Analyze a stock"
   },
   "cardTrial": {
     "title": "30-day free trial",

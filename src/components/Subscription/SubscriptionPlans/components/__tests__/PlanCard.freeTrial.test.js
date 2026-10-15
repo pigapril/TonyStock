@@ -10,17 +10,25 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { PlanCard } from '../PlanCard';
 
 const mockNavigate = jest.fn();
+let mockLocation = { search: '' };
+let mockLanguage = 'zh-TW';
 
 jest.mock('react-i18next', () => ({
     // 元件有 returnObjects: true 的用法，回字串會讓 .map 掛掉。
     useTranslation: () => ({
-        t: (key, options) => (options && options.returnObjects ? [] : key)
+        i18n: { language: mockLanguage },
+        t: (key, options) => {
+            if (key === 'subscription.billingPeriod.perMonth') return mockLanguage === 'en' ? '/month' : '/月';
+            if (key === 'subscription.billingPeriod.perYear') return mockLanguage === 'en' ? '/year' : '/年';
+            return options && options.returnObjects ? [] : key;
+        }
     })
 }));
 
 jest.mock('react-router-dom', () => ({
     useNavigate: () => mockNavigate,
-    useParams: () => ({ lang: 'zh-TW' })
+    useParams: () => ({ lang: mockLanguage }),
+    useLocation: () => mockLocation
 }));
 
 let mockSubscription = { userPlan: null, subscriptionHistory: [], loading: false };
@@ -48,7 +56,7 @@ jest.mock('../../../../../utils/premiumWhitelist', () => ({
 const PRO_PLAN = {
     id: 'pro',
     name: 'Pro',
-    pricing: { monthly: 199, yearly: 1990 },
+    price: { monthly: 199, yearly: 1990 },
     features: []
 };
 
@@ -62,6 +70,8 @@ const existingButton = () => screen.queryByText('payment.form.upgradeNow');
 describe('PlanCard 的免綁卡試用入口', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        mockLocation = { search: '' };
+        mockLanguage = 'zh-TW';
         mockSubscription = { userPlan: null, subscriptionHistory: [], loading: false };
     });
 
@@ -108,6 +118,36 @@ describe('PlanCard 的免綁卡試用入口', () => {
 
         renderCard({ freeTrialEligible: true, currentPlan: 'pro' });
 
+        expect(trialButton()).toBeNull();
+    });
+
+    it('原股票查詢會從方案頁帶到試用頁', () => {
+        const query = `?${new URLSearchParams({ returnTo: '/en/priceanalysis?stockCode=AAPL&years=7' })}`;
+        mockLanguage = 'en';
+        mockLocation.search = query;
+        renderCard({ freeTrialEligible: true });
+        fireEvent.click(trialButton());
+        expect(mockNavigate).toHaveBeenCalledWith(`/en/payment/free-trial${query}`);
+    });
+
+    it.each([['monthly', 'NT$199', '/month'], ['yearly', 'NT$1,990', '/year']])('英文 %s 明確顯示新台幣與英文週期', (billingPeriod, amount, period) => {
+        mockLanguage = 'en';
+        renderCard({ billingPeriod });
+        expect(screen.getByText(amount)).toBeInTheDocument();
+        expect(screen.getByText(period, { selector: '.plan-card__price-period' })).toBeInTheDocument();
+        expect(screen.getByText('subscription.billingPeriod.currencyNote')).toBeInTheDocument();
+    });
+
+    it('試用未到期仍禁止訂閱，保留剩餘試用天數', () => {
+        mockSubscription.userPlan = {
+            type: 'pro', isActive: true, autoRenew: false,
+            trialEnd: new Date(Date.now() + 86400000).toISOString()
+        };
+        renderCard({ currentPlan: 'pro', freeTrialEligible: true });
+        const button = screen.getByRole('button', { name: 'freeTrial.planCard.trialActive' });
+        expect(button).toBeDisabled();
+        fireEvent.click(button);
+        expect(mockNavigate).not.toHaveBeenCalled();
         expect(trialButton()).toBeNull();
     });
 

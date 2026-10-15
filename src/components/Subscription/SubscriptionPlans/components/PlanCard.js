@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { PlanBadge } from '../../shared/PlanBadge';
 import { AppleButton } from '../../shared/AppleButton';
 import { useSubscription } from '../../SubscriptionContext';
@@ -10,6 +10,7 @@ import { Analytics } from '../../../../utils/analytics';
 import { trackProductEvent } from '../../../../utils/productAnalytics';
 import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../utils/pricingUtils';
 import { canAccessPaymentFeatures } from '../../../../utils/premiumWhitelist';
+import { getAnalysisReturnPath, withAnalysisReturnPath } from '../../../../utils/trialNavigation';
 
 import './PlanCard.css';
 
@@ -23,8 +24,10 @@ export const PlanCard = ({
   freeTrialEligible = false,
   onShowFreeTrialDialog = null
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { lang } = useParams();
+  const location = useLocation();
+  const language = lang || i18n.language;
   const { userPlan, subscriptionHistory, loading } = useSubscription();
   const { openDialog } = useDialog();
   const { user } = useAuth();
@@ -282,7 +285,7 @@ export const PlanCard = ({
       source: 'subscription_plans', billing_period: billingPeriod, trial_days: 30,
       planId: plan.id, billingPeriod
     });
-    navigate(`/${lang}/payment/free-trial`);
+    navigate(withAnalysisReturnPath(`/${language}/payment/free-trial`, getAnalysisReturnPath(location.search, language)));
   };
 
   const pricingData = getPricingDisplayData(plan, billingPeriod);
@@ -295,7 +298,7 @@ export const PlanCard = ({
       return billingPeriod === 'yearly' ? plan.displayPrice.yearly : plan.displayPrice.monthly;
     }
     
-    return formatPrice(price);
+    return formatPrice(price, plan.currency || 'TWD', language);
   };
 
   // Get adjusted pricing if redemption code is applied
@@ -434,7 +437,7 @@ export const PlanCard = ({
             </span>
             {!isFree && !(plan.displayPrice && !plan.showRealPrice) && (
               <span className="plan-card__price-period">
-                {adjustedPricing.period}
+                {adjustedPricing.periodKey ? t(adjustedPricing.periodKey) : ''}
               </span>
             )}
           </div>
@@ -451,7 +454,7 @@ export const PlanCard = ({
                     percentage: adjustedPricing.redemptionDiscount.value
                   })
                   : t('redemption.pricing.discountBadge.fixed', {
-                    amount: formatPrice(adjustedPricing.redemptionDiscount.value)
+                    amount: formatPrice(adjustedPricing.redemptionDiscount.value, plan.currency || 'TWD', language)
                   })
                 }
               </div>
@@ -472,6 +475,10 @@ export const PlanCard = ({
             </div>
           )}
         </div>
+
+        {!isFree && !(plan.displayPrice && !plan.showRealPrice) && (!plan.currency || plan.currency === 'TWD') && (
+          <p className="plan-card__currency-note">{t('subscription.billingPeriod.currencyNote')}</p>
+        )}
 
         {/* Applied Redemption Indicator */}
         {appliedRedemption && (

@@ -1,4 +1,3 @@
-import { Analytics } from '../../utils/analytics';
 import { handleApiError } from '../../utils/errorHandler';
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import apiClient from '../../api/apiClient'; // 導入共用的 apiClient
@@ -87,8 +86,7 @@ class AuthService {
             // 登出不需要 CSRF token，直接使用 apiClient
             const response = await apiClient.post('/api/auth/logout');
 
-            Analytics.auth.logout({ status: 'success' });
-
+            // AuthContext records the outcome after applying the client auth state.
             return response.data.data;
         } catch (error) {
             // 統一錯誤處理
@@ -126,11 +124,7 @@ class AuthService {
                 timestamp: new Date().toISOString()
             });
 
-            Analytics.auth.login({
-                method: 'google',
-                status: 'success'
-            });
-
+            // Keep login analytics in AuthContext to avoid counting this request twice.
             return data.data;
         } catch (error) {
             console.error('Verify token error:', {
@@ -140,11 +134,6 @@ class AuthService {
                 timestamp: new Date().toISOString()
             });
 
-            Analytics.auth.login({
-                method: 'google',
-                status: 'error',
-                error: error.message
-            });
             const handledError = handleApiError(error);
             throw handledError;
         }

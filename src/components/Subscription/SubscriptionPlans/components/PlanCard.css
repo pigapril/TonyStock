@@ -289,6 +289,13 @@
   text-align: center;
 }
 
+.plan-card__currency-note {
+  margin: 10px 0 0;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 /* Desktop spacing optimization */
 @media (min-width: 769px) {
   .plan-card__features {

@@ -60,6 +60,13 @@
     "src/utils/__tests__/chartDateFormats.test.js",
     "src/utils/__tests__/linkedCrosshair.test.js",
     "src/utils/announcementCooldown.test.js",
-    "src/utils/enhancedApiClient.test.js"
+    "src/utils/enhancedApiClient.test.js",
+    "src/components/Auth/AuthContext.analytics.test.js",
+    "src/components/Common/Dialog/GlobalFeatureUpgradeDialog.test.js",
+    "src/components/Payment/__tests__/PaymentResult.analytics.test.js",
+    "src/utils/__tests__/pricingUtils.test.js",
+    "src/utils/__tests__/trialNavigation.test.js",
+    "src/utils/__tests__/productAnalytics.test.js",
+    "src/utils/__tests__/subscriptionAnalytics.test.js"
   ]
 }

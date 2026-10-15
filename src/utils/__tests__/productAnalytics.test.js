@@ -4,7 +4,10 @@ import { trackProductEvent, trackVerifiedTrialResult } from '../productAnalytics
 beforeEach(() => {
   delete window.dataLayer;
   sessionStorage.clear();
+  window.history.replaceState({}, '', '/');
 });
+
+afterEach(() => jest.restoreAllMocks());
 
 it('queues events before GTM is loaded', () => {
   Analytics.track('momentum_view', { source: 'test' });
@@ -47,4 +50,40 @@ it('cannot interrupt a product or payment operation if the tracking sink throws'
   window.dataLayer = { push: () => { throw new Error('blocked'); } };
   expect(() => Analytics.track('card_trial_entry_clicked')).not.toThrow();
   expect(() => trackProductEvent('card_trial_step', { step: 'starting' })).not.toThrow();
+});
+
+it('retries a confirmed trial result after a failed queue push', () => {
+  window.dataLayer = { push: () => { throw new Error('blocked'); } };
+  trackVerifiedTrialResult('retry-trial', 'success');
+  expect(sessionStorage.getItem('sio:trial-result:retry-trial:success')).toBeNull();
+
+  window.dataLayer = [];
+  trackVerifiedTrialResult('retry-trial', 'success');
+  trackVerifiedTrialResult('retry-trial', 'success');
+  expect(window.dataLayer).toHaveLength(1);
+  expect(window.dataLayer[0].event).toBe('card_trial_started');
+});
+
+it.each([
+  ['/en/price-analysis', 'en'],
+  ['/zh-TW', 'zh-TW'],
+  ['/en-US/price-analysis', null],
+  ['/ko/price-analysis', null],
+  ['/price-analysis', null]
+])('derives site_locale from %s without forwarding query strings', (pathname, locale) => {
+  window.history.replaceState({}, '', `${pathname}?token=PRIVATE#PRIVATE`);
+  jest.spyOn(document, 'referrer', 'get').mockReturnValue('https://example.test/en?token=PRIVATE#PRIVATE');
+  trackProductEvent('price_analysis_completed', { source: 'price_analysis', site_locale: 'untrusted' });
+  expect(window.dataLayer[0]).toMatchObject({
+    site_locale: locale,
+    page_path: pathname,
+    page_referrer: 'https://example.test/en'
+  });
+  expect(JSON.stringify(window.dataLayer)).not.toMatch(/PRIVATE|untrusted/);
+});
+
+it('does not lose an event when the referrer cannot be parsed', () => {
+  jest.spyOn(document, 'referrer', 'get').mockReturnValue('invalid-referrer');
+  expect(trackProductEvent('free_trial_analysis_clicked', { source: 'free_trial_success' })).toBe(true);
+  expect(window.dataLayer[0].page_referrer).toBe('');
 });

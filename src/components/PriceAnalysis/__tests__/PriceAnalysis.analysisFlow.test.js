@@ -7,6 +7,7 @@ import { PriceAnalysis } from '../PriceAnalysis';
 import { HOT_SEARCH_CACHE_KEY } from '../hotSearchCache';
 import zhTW from '../../../locales/zh-TW/translation.json';
 import en from '../../../locales/en/translation.json';
+import { trackProductEvent } from '../../../utils/productAnalytics';
 
 const mockAuthState = {
   isAuthenticated: true,
@@ -49,6 +50,8 @@ jest.mock('../../ULBandChart/ULBandChart', () => ({
 jest.mock('../../../utils/enhancedApiClient', () => ({
   get: jest.fn()
 }));
+
+jest.mock('../../../utils/productAnalytics', () => ({ trackProductEvent: jest.fn() }));
 
 jest.mock('../../../components/Auth/useAuth', () => ({
   useAuth: () => mockAuthState
@@ -109,8 +112,8 @@ const createIntegratedAnalysisPayload = (stockCode = 'SPY') => ({
   }
 });
 
-const TestWrapper = ({ children }) => (
-  <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+const TestWrapper = ({ children, initialEntries }) => (
+  <MemoryRouter initialEntries={initialEntries} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
     <I18nextProvider i18n={i18n}>
       {children}
     </I18nextProvider>
@@ -125,6 +128,9 @@ const clickHorizon = (label) => fireEvent.click(horizonButton(label));
 describe('PriceAnalysis analysis flow', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockAuthState.isAuthenticated = true;
+    mockAuthState.user = { id: 'user-1', plan: 'pro' };
+    mockAuthState.checkAuthStatus.mockResolvedValue(undefined);
     window.localStorage.removeItem(HOT_SEARCH_CACHE_KEY);
     // CRA 預設 resetMocks: true，jest.mock 工廠給的實作每個 test 前都會被清掉，
     // 不重設的話 isStockAllowed 會回傳 undefined，手動送出的路徑會卡在方案檢查。
@@ -442,5 +448,160 @@ describe('PriceAnalysis analysis flow', () => {
         ))
       ).toBe(true);
     }, { timeout: 3000 });
+  });
+
+  it('試用返回非 SPY 股票時保留年數與日期，權限重新整理也不重複查詢', async () => {
+    const initialEntries = [{
+      pathname: '/zh-TW/priceanalysis',
+      search: '?stockCode=AAPL&years=7&backTestDate=2026-09-01',
+      state: { resumeAfterTrial: true }
+    }];
+    const tree = () => <TestWrapper initialEntries={initialEntries}><PriceAnalysis /></TestWrapper>;
+    const { rerender } = render(tree());
+
+    await waitFor(() => expect(mockEnhancedApiClient.get).toHaveBeenCalledWith(
+      '/api/integrated-analysis',
+      expect.objectContaining({ params: { stockCode: 'AAPL', years: 7, backTestDate: '2026-09-01' } })
+    ));
+    await waitFor(() => expect(trackProductEvent).toHaveBeenCalledWith(
+      'price_analysis_completed', expect.any(Object)
+    ));
+    expect(screen.getByPlaceholderText(/2330.*AAPL/i)).toHaveValue('AAPL');
+    expect(screen.getByPlaceholderText(/輸入年數|Enter years/i)).toHaveValue('7');
+
+    mockAuthState.user = { id: 'user-1', plan: 'pro', refreshed: true };
+    rerender(tree());
+    await act(async () => { await Promise.resolve(); });
+
+    expect(mockEnhancedApiClient.get.mock.calls.filter(([url]) => url === '/api/integrated-analysis'))
+      .toHaveLength(1);
+    expect(trackProductEvent.mock.calls.filter(([event]) => event === 'price_analysis_completed'))
+      .toHaveLength(1);
+  });
+
+  it('偽造試用返回狀態不能讓免費使用者查詢受限股票', async () => {
+    mockAuthState.user = { id: 'user-1', plan: 'free' };
+    require('../../../utils/freeStockListUtils').isStockAllowed.mockImplementation((symbol, plan) => plan === 'pro');
+    render(
+      <TestWrapper initialEntries={[{
+        pathname: '/zh-TW/priceanalysis',
+        search: '?stockCode=AAPL&years=7&backTestDate=2026-09-01',
+        state: { resumeAfterTrial: true }
+      }]}><PriceAnalysis /></TestWrapper>
+    );
+
+    await waitFor(() => expect(mockDialogApi.openDialog).toHaveBeenCalledWith(
+      'featureUpgrade', expect.objectContaining({ stockCode: 'AAPL' })
+    ));
+    expect(mockEnhancedApiClient.get.mock.calls.filter(([url]) => url === '/api/integrated-analysis'))
+      .toHaveLength(0);
+    expect(trackProductEvent).not.toHaveBeenCalledWith('price_analysis_completed', expect.any(Object));
+    const [, props] = mockDialogApi.openDialog.mock.calls.find(([type]) => type === 'featureUpgrade');
+    const returnPath = new URL(props.upgradeUrl, 'https://local.invalid').searchParams.get('returnTo');
+    const returnUrl = new URL(returnPath, 'https://local.invalid');
+    expect(Object.fromEntries(returnUrl.searchParams)).toEqual({
+      stockCode: 'AAPL', years: '7', backTestDate: '2026-09-01'
+    });
+  });
+
+  it.each(['manual', 'hotSearch'])('從 %s 觸發升級時保留剛選的股票與目前查詢設定', async (source) => {
+    mockAuthState.user = { id: 'user-1', plan: 'free' };
+    require('../../../utils/freeStockListUtils').isStockAllowed.mockReturnValue(false);
+    window.localStorage.setItem(HOT_SEARCH_CACHE_KEY, JSON.stringify([{ keyword: 'AAPL', name: 'Apple' }]));
+    render(
+      <TestWrapper initialEntries={['/zh-TW/priceanalysis?stockCode=MSFT&years=3.5&backTestDate=2026-09-01']}>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+    await screen.findByRole('group', { name: /分析期長|Analysis Period/i });
+    clickHorizon('自訂|Custom');
+    const yearsInput = await screen.findByPlaceholderText(/輸入年數|Enter years/i);
+    fireEvent.change(yearsInput, { target: { value: '7' } });
+
+    if (source === 'manual') {
+      const stockInput = screen.getByPlaceholderText(/2330.*AAPL/i);
+      fireEvent.change(stockInput, { target: { value: 'AAPL' } });
+      fireEvent.submit(stockInput.closest('form'));
+    } else {
+      fireEvent.click(screen.getByRole('button', { name: /AAPL.*Apple/i }));
+    }
+
+    await waitFor(() => expect(mockDialogApi.openDialog).toHaveBeenCalledWith(
+      'featureUpgrade', expect.objectContaining({ stockCode: 'AAPL' })
+    ));
+    const [, props] = mockDialogApi.openDialog.mock.calls.find(([type]) => type === 'featureUpgrade');
+    const returnPath = new URL(props.upgradeUrl, 'https://local.invalid').searchParams.get('returnTo');
+    const returnUrl = new URL(returnPath, 'https://local.invalid');
+    expect(returnUrl.pathname).toMatch(/^\/(zh-TW|en)\/priceanalysis$/);
+    expect(Object.fromEntries(returnUrl.searchParams)).toEqual({
+      stockCode: 'AAPL', years: '7', backTestDate: '2026-09-01'
+    });
+    expect(mockEnhancedApiClient.get.mock.calls.filter(([url]) => url === '/api/integrated-analysis'))
+      .toHaveLength(0);
+  });
+
+  it('訪客登入後延續剛輸入的股票、年數與日期', async () => {
+    mockAuthState.isAuthenticated = false;
+    mockAuthState.user = null;
+    const initialEntries = ['/zh-TW/priceanalysis?stockCode=MSFT&years=7&backTestDate=2026-09-01'];
+    const tree = () => <TestWrapper initialEntries={initialEntries}><PriceAnalysis /></TestWrapper>;
+    const { rerender } = render(tree());
+    const stockInput = await screen.findByPlaceholderText(/2330.*AAPL/i);
+    fireEvent.change(stockInput, { target: { value: 'AAPL' } });
+    fireEvent.submit(stockInput.closest('form'));
+
+    await waitFor(() => expect(mockDialogApi.openDialog).toHaveBeenCalledWith('auth', expect.any(Object)));
+    const [, props] = mockDialogApi.openDialog.mock.calls.find(([type]) => type === 'auth');
+    expect(Object.fromEntries(new URL(props.returnPath, 'https://local.invalid').searchParams)).toEqual({
+      stockCode: 'AAPL', years: '7', backTestDate: '2026-09-01'
+    });
+    expect(mockEnhancedApiClient.get.mock.calls.filter(([url]) => url === '/api/integrated-analysis'))
+      .toHaveLength(0);
+
+    mockAuthState.isAuthenticated = true;
+    mockAuthState.user = { id: 'user-1', plan: 'pro' };
+    rerender(tree());
+
+    await waitFor(() => expect(mockEnhancedApiClient.get).toHaveBeenCalledWith(
+      '/api/integrated-analysis',
+      expect.objectContaining({ params: { stockCode: 'AAPL', years: 7, backTestDate: '2026-09-01' } })
+    ));
+    expect(screen.getByPlaceholderText(/2330.*AAPL/i)).toHaveValue('AAPL');
+    expect(mockEnhancedApiClient.get.mock.calls.filter(([url]) => url === '/api/integrated-analysis'))
+      .toHaveLength(1);
+  });
+
+  it.each(['success', 'failed', 'empty'])('只有成功的分析資料才送完成事件：%s', async (outcome) => {
+    let finishAnalysis;
+    let failAnalysis;
+    mockEnhancedApiClient.get.mockImplementation((url) => {
+      if (url === '/api/integrated-analysis') return new Promise((resolve, reject) => {
+        finishAnalysis = resolve;
+        failAnalysis = reject;
+      });
+      return Promise.resolve({ data: { data: { top_searches: [] } } });
+    });
+    render(
+      <TestWrapper initialEntries={[{
+        pathname: '/zh-TW/priceanalysis',
+        search: '?stockCode=AAPL&years=7',
+        state: { resumeAfterTrial: true }
+      }]}><PriceAnalysis /></TestWrapper>
+    );
+    await waitFor(() => expect(finishAnalysis).toBeDefined());
+    expect(trackProductEvent).not.toHaveBeenCalledWith('price_analysis_completed', expect.any(Object));
+
+    await act(async () => {
+      if (outcome === 'failed') {
+        failAnalysis(Object.assign(new Error('offline'), { response: { status: 403 } }));
+      } else {
+        const payload = createIntegratedAnalysisPayload('AAPL');
+        if (outcome === 'empty') payload.data.data.prices = [];
+        finishAnalysis(payload);
+      }
+    });
+
+    const completed = trackProductEvent.mock.calls.filter(([event]) => event === 'price_analysis_completed');
+    expect(completed).toHaveLength(outcome === 'success' ? 1 : 0);
   });
 });

@@ -65,18 +65,20 @@ export const getTotalSavings = (monthlyPrice, yearlyPrice) => {
  * Format price with currency
  * @param {number} price - Price amount
  * @param {string} currency - Currency code (default: 'TWD')
+ * @param {string} locale - Display locale (default: 'zh-TW')
  * @returns {string} Formatted price string
  */
-export const formatPrice = (price, currency = 'TWD') => {
-  if (price === 0) {
-    return '免費';
-  }
-  
-  return new Intl.NumberFormat('zh-TW', {
+export const formatPrice = (price, currency = 'TWD', locale = 'zh-TW') => {
+  const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currency,
     minimumFractionDigits: 0
-  }).format(price);
+  });
+
+  // Intl uses a bare "$" for TWD in zh-TW; keep the billed currency explicit.
+  return formatter.formatToParts(price)
+    .map((part) => part.type === 'currency' && currency.toUpperCase() === 'TWD' ? 'NT$' : part.value)
+    .join('');
 };
 
 /**
@@ -89,7 +91,7 @@ export const getPricingDisplayData = (plan, billingPeriod) => {
   if (!plan || !plan.price) {
     return {
       displayPrice: 0,
-      period: '',
+      periodKey: '',
       discountPercentage: 0,
       originalPrice: 0,
       showDiscount: false
@@ -104,7 +106,7 @@ export const getPricingDisplayData = (plan, billingPeriod) => {
     
     return {
       displayPrice: yearly,
-      period: '/年',
+      periodKey: 'subscription.billingPeriod.perYear',
       discountPercentage,
       originalPrice: monthly * 12,
       monthlyEquivalent,
@@ -114,7 +116,7 @@ export const getPricingDisplayData = (plan, billingPeriod) => {
   
   return {
     displayPrice: monthly,
-    period: '/月',
+    periodKey: 'subscription.billingPeriod.perMonth',
     discountPercentage: 0,
     originalPrice: 0,
     showDiscount: false

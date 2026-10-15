@@ -1,21 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../Auth/useAuth';
 import { useSubscription } from '../../Subscription/SubscriptionContext';
 import { startFreeTrial } from '../../../services/freeTrialService';
 import { trackProductEvent } from '../../../utils/productAnalytics';
+import { getAnalysisReturnPath, withAnalysisReturnPath } from '../../../utils/trialNavigation';
 import '../CardTrial/CardTrial.css';
 
 const FreeTrialFlow = () => {
   const { t, i18n } = useTranslation();
   const { lang } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { checkAuthStatus } = useAuth();
   const { refreshUserPlan, refreshSubscriptionHistory } = useSubscription();
   const [phase, setPhase] = useState('ready');
   const [error, setError] = useState(null);
   const language = lang || i18n.language;
+  const returnPath = getAnalysisReturnPath(location.search, language);
   const trackedPageView = useRef(false);
 
   useEffect(() => {
@@ -32,8 +35,8 @@ const FreeTrialFlow = () => {
     try {
       await startFreeTrial(language);
       trackProductEvent('free_trial_started', { source: 'free_trial_page', trial_days: 30 });
-      setPhase('success');
       await Promise.allSettled([checkAuthStatus(), refreshUserPlan(), refreshSubscriptionHistory()]);
+      setPhase('success');
     } catch (requestError) {
       const status = requestError.response?.status;
       trackProductEvent('free_trial_start_failed', {
@@ -52,8 +55,11 @@ const FreeTrialFlow = () => {
         <section className="card-trial__disclosure" role="status">
           <h2>{t('freeTrial.successTitle')}</h2>
           <p>{t('freeTrial.successBody')}</p>
-          <button type="button" className="card-trial__primary" onClick={() => navigate(`/${language}`)}>
-            {t('freeTrial.successCta')}
+          <button type="button" className="card-trial__primary" onClick={() => {
+            trackProductEvent('free_trial_analysis_clicked', { source: 'free_trial_page' });
+            navigate(returnPath || `/${language}/priceanalysis`, { state: { resumeAfterTrial: true } });
+          }}>
+            {t(returnPath ? 'freeTrial.resumeAnalysis' : 'freeTrial.analyzeStock')}
           </button>
         </section>
       ) : (
@@ -76,7 +82,7 @@ const FreeTrialFlow = () => {
             {phase === 'starting' ? t('freeTrial.starting') : t('freeTrial.start')}
           </button>
           {phase === 'failed' && (
-            <button type="button" className="card-trial__primary" onClick={() => navigate(`/${language}/subscription-plans`)}>
+            <button type="button" className="card-trial__primary" onClick={() => navigate(withAnalysisReturnPath(`/${language}/subscription-plans`, returnPath))}>
               {t('freeTrial.goToSubscription')}
             </button>
           )}

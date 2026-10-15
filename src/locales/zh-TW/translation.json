@@ -1790,7 +1790,9 @@
       "monthly": "月繳",
       "yearly": "年繳",
       "save": "省下",
-      "perYear": "/年"
+      "perYear": "/年",
+      "perMonth": "/月",
+      "currencyNote": "以新台幣（TWD）計價與扣款。"
     },
     "marketSentimentContext": {
       "notification": "升級以解鎖最新市場情緒數據"
@@ -3132,7 +3134,9 @@
     "errors": {
       "notEligible": "免費試用僅限首次訂閱的帳號。",
       "generic": "目前無法開始試用，請稍後再試。"
-    }
+    },
+    "resumeAnalysis": "繼續原本的分析",
+    "analyzeStock": "開始分析股票"
   },
   "cardTrial": {
     "title": "免費試用 30 天",
