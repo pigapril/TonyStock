@@ -8,7 +8,7 @@ import { isAvailableNumber } from './momentumViewModel';
 
 const DEFAULTS = { minGroupScore: '0', minScore: '80', minTurnoverMillion: '', stage: 'leaders' };
 
-export default function MomentumScreenResults({ asOf, onShowRankings, fundRows = [], active = true, initiallyOpen = false, plan = 'free' }) {
+export default function MomentumScreenResults({ asOf, onShowRankings, onUpgrade, showTrialCta = false, trialCtaLabel, fundRows = [], active = true, initiallyOpen = false, plan = 'free' }) {
   const { t, i18n } = useTranslation();
   const text = (key, options) => t(`momentumDashboard.${key}`, options);
   const [draft, setDraft] = useState(DEFAULTS);
@@ -163,7 +163,7 @@ export default function MomentumScreenResults({ asOf, onShowRankings, fundRows =
                 </div>
               </div>}
               <div className="momentum-screen-locked-copy"><p><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="10" width="14" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg><span>{text('screen.unlockBody')}</span></p>
-                <a className="momentum-upgrade-button" href={`/${i18n.language}/subscription-plans`}>{text('screen.unlockAction')}</a>
+                <button type="button" className="momentum-upgrade-button" onClick={() => onUpgrade?.('screen_results')}>{showTrialCta ? trialCtaLabel : text('screen.unlockAction')}</button>
               </div>
             </div> : <>
             <div className={`momentum-workspace${selectedRow ? ' has-detail' : ''}`}>
@@ -198,7 +198,7 @@ export default function MomentumScreenResults({ asOf, onShowRankings, fundRows =
             </div>
             </div>
             </div>
-            {selectedRow && <MomentumDetailPanel key={selectedRow.symbol} row={selectedRow} asOf={data.asOf} isFund={resultTab === 'funds'} sourceLabel={resultTab === 'funds' ? text('screen.sourceLabel') : undefined} hideDesktopBack panelRef={detailRef} backLabel={text('screen.back')} onBack={() => {
+            {selectedRow && <MomentumDetailPanel key={selectedRow.symbol} row={selectedRow} asOf={data.asOf} isFund={resultTab === 'funds'} sourceLabel={resultTab === 'funds' ? text('screen.sourceLabel') : undefined} hideDesktopBack panelRef={detailRef} backLabel={text('screen.back')} onUpgrade={onUpgrade} showTrialCta={showTrialCta} trialCtaLabel={trialCtaLabel} onBack={() => {
               setDetailOpen(false);
               if (window.matchMedia?.('(max-width: 900px)')?.matches) requestAnimationFrame(() => {
                 const rect = selectedButton.current?.getBoundingClientRect();

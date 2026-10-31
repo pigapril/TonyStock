@@ -24,6 +24,7 @@ function DeferredHistoryWorkspace({
   historyOverlayMode,
   historyOverlayPosition,
   historyOverlayCardRef,
+  showFreeTrialCta,
   handleRestrictedFeatureClick,
   historicalData,
   sliderMinMax,
@@ -92,7 +93,9 @@ function DeferredHistoryWorkspace({
                   className="history-restriction-overlay__button"
                   onClick={() => handleRestrictedFeatureClick('currentData', 'marketSentimentHistoryOverlay')}
                 >
-                  {t('marketSentiment.dataLimitation.unlockLatestCta')}
+                  {showFreeTrialCta
+                    ? t('marketSentiment.dataLimitation.freeTrialForLatest')
+                    : t('marketSentiment.dataLimitation.unlockLatestCta')}
                 </button>
               </div>
             )}

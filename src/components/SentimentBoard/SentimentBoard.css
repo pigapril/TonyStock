@@ -402,14 +402,23 @@
 }
 
 .sentiment-board__upsellLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
   background: #fff;
   color: #4338ca;
+  font: inherit;
   font-weight: 600;
   font-size: 0.9rem;
+  line-height: 1.35;
   padding: 10px 20px;
   border-radius: 999px;
   text-decoration: none;
-  white-space: nowrap;
+  text-align: center;
+  text-wrap: balance;
+  max-width: 100%;
+  cursor: pointer;
 }
 
 .sentiment-board__generatedAt {
@@ -501,17 +510,25 @@
 }
 
 .board-delay-banner__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex: none;
   border: 0;
   border-radius: 999px;
   padding: 11px 16px;
   background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
   color: #fff;
+  font-family: inherit;
   font-size: 0.86rem;
   font-weight: 700;
+  line-height: 1.35;
   text-decoration: none;
   box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24);
-  white-space: nowrap;
+  text-align: center;
+  text-wrap: balance;
+  max-width: 100%;
+  cursor: pointer;
 }
 
 /* --- 逐卡的延遲標示 ---

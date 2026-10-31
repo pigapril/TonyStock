@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../api/apiClient';
+import { fetchFreeTrialEligibility } from '../../services/freeTrialService';
+import { canSeeFreeTrial } from '../../utils/freeTrialRollout';
 import PageContainer from '../PageContainer/PageContainer';
+import { useAuth } from '../Auth/useAuth';
+import { useDialog } from '../Common/Dialog/useDialog';
 import { getDecimalPlaces } from '../../utils/priceUtils';
 import { PUBLISHED_INDICATOR_PAGES } from './indicatorPages';
 import './SentimentBoard.css';
@@ -23,8 +27,85 @@ const EXPLAINER_BY_ITEM_ID = Object.fromEntries(
 const SentimentBoard = () => {
   const { t } = useTranslation();
   const { lang } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { dialog, openDialog } = useDialog();
   const [board, setBoard] = useState(null);
   const [status, setStatus] = useState('loading');
+  const [trialEligibility, setTrialEligibility] = useState({ accountKey: null, eligible: false, checked: false });
+  const pendingTrialAfterLogin = useRef(false);
+  const language = lang || 'zh-TW';
+  const accountKey = user?.id || user?.userId || user?.email || null;
+
+  const goToPlans = useCallback(() => navigate(`/${language}/subscription-plans`), [language, navigate]);
+
+  useEffect(() => {
+    if (!user || !accountKey) {
+      setTrialEligibility({ accountKey: null, eligible: false, checked: false });
+      return undefined;
+    }
+
+    if (!canSeeFreeTrial(user.email)) {
+      setTrialEligibility({ accountKey, eligible: false, checked: true });
+      if (pendingTrialAfterLogin.current) {
+        pendingTrialAfterLogin.current = false;
+        goToPlans();
+      }
+      return undefined;
+    }
+
+    let abandoned = false;
+    setTrialEligibility({ accountKey: null, eligible: false, checked: false });
+    fetchFreeTrialEligibility()
+      .then((result) => {
+        if (abandoned) return;
+        const eligible = result?.eligible === true;
+        setTrialEligibility({ accountKey, eligible, checked: true });
+        if (pendingTrialAfterLogin.current) {
+          pendingTrialAfterLogin.current = false;
+          navigate(eligible ? `/${language}/payment/free-trial` : `/${language}/subscription-plans`);
+        }
+      })
+      .catch(() => {
+        if (abandoned) return;
+        setTrialEligibility({ accountKey, eligible: false, checked: true });
+        if (pendingTrialAfterLogin.current) {
+          pendingTrialAfterLogin.current = false;
+          goToPlans();
+        }
+      });
+
+    return () => { abandoned = true; };
+  }, [accountKey, goToPlans, language, navigate, user?.email]);
+
+  useEffect(() => {
+    if (!user && pendingTrialAfterLogin.current && (!dialog?.isOpen || dialog.type !== 'auth')) {
+      pendingTrialAfterLogin.current = false;
+    }
+  }, [dialog?.isOpen, dialog?.type, user]);
+
+  const handleTrialCta = () => {
+    if (!user) {
+      pendingTrialAfterLogin.current = true;
+      openDialog('auth', {
+        customTitle: t('home.hero.trialLoginTitle'),
+        customDescription: t('home.hero.trialLoginPrompt'),
+        source: 'sentiment_board_trial_cta'
+      });
+      return;
+    }
+
+    if (!canSeeFreeTrial(user.email)) {
+      goToPlans();
+      return;
+    }
+
+    if (trialEligibility.accountKey === accountKey && trialEligibility.eligible) {
+      navigate(`/${language}/payment/free-trial`);
+    } else {
+      goToPlans();
+    }
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -72,6 +153,7 @@ const SentimentBoard = () => {
   }
 
   const isPro = board.userPlan === 'pro';
+  const showTrialCta = !user || !trialEligibility.checked || (trialEligibility.accountKey === accountKey && trialEligibility.eligible);
 
   return (
     <PageContainer {...seo}>
@@ -91,9 +173,9 @@ const SentimentBoard = () => {
               </h2>
               <p className="board-delay-banner__body">{t('sentimentBoard.delayBannerBody')}</p>
             </div>
-            <Link className="board-delay-banner__button" to={`/${lang}/subscription`}>
-              {t('sentimentBoard.delayNoticeCta')}
-            </Link>
+            <button type="button" className="board-delay-banner__button" onClick={handleTrialCta}>
+              {showTrialCta ? t('freeTrial.ctaShort') : t('sentimentBoard.delayNoticeCta')}
+            </button>
           </div>
         )}
 
@@ -172,9 +254,9 @@ const SentimentBoard = () => {
         {!isPro && (
           <aside className="sentiment-board__upsell">
             <p>{t('sentimentBoard.upsellCopy')}</p>
-            <Link className="sentiment-board__upsellLink" to={`/${lang}/subscription`}>
-              {t('sentimentBoard.upsellCta')}
-            </Link>
+            <button type="button" className="sentiment-board__upsellLink" onClick={handleTrialCta}>
+              {showTrialCta ? t('freeTrial.ctaShort') : t('sentimentBoard.upsellCta')}
+            </button>
           </aside>
         )}
 

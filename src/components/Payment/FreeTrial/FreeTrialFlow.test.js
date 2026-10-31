@@ -51,6 +51,9 @@ describe('免綁卡試用頁', () => {
     await userEvent.click(screen.getByRole('button', { name: 'freeTrial.start' }));
 
     await waitFor(() => expect(screen.getByText('freeTrial.successBody')).toBeInTheDocument());
+    const celebration = document.querySelector('.card-trial__successCelebration');
+    expect(celebration).toHaveAttribute('aria-hidden', 'true');
+    expect(celebration.querySelectorAll('.card-trial__successSpark')).toHaveLength(6);
     expect(mockStartFreeTrial).toHaveBeenCalledTimes(1);
     expect(mockStartFreeTrial).toHaveBeenCalledWith('zh-TW');
     expect(mockCheckAuthStatus).toHaveBeenCalledTimes(1);

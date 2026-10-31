@@ -30,6 +30,130 @@
     margin: 0 0 12px;
 }
 
+.card-trial__successCelebration {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 56px;
+    margin: 0 auto 14px;
+    pointer-events: none;
+}
+
+.card-trial__successCheck {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(22, 138, 96, 0.18);
+    border-radius: 50%;
+    color: #168a60;
+    background: #ecf8f1;
+    font-size: 1.35rem;
+    font-weight: 700;
+    animation: card-trial-success-check 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.card-trial__successSpark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: var(--spark-color, #c39232);
+    font-size: var(--spark-size, 12px);
+    line-height: 1;
+    opacity: 0;
+    animation: card-trial-success-spark 760ms cubic-bezier(0.16, 1, 0.3, 1) var(--spark-delay, 0ms) both;
+}
+
+.card-trial__successSpark--one {
+    --spark-x: -34px;
+    --spark-y: -22px;
+    --spark-color: #c39232;
+    --spark-size: 14px;
+    --spark-delay: 0ms;
+}
+
+.card-trial__successSpark--two {
+    --spark-x: 30px;
+    --spark-y: -27px;
+    --spark-color: #4c78a8;
+    --spark-size: 11px;
+    --spark-delay: 45ms;
+}
+
+.card-trial__successSpark--three {
+    --spark-x: -40px;
+    --spark-y: 5px;
+    --spark-color: #3b9a87;
+    --spark-size: 10px;
+    --spark-delay: 80ms;
+}
+
+.card-trial__successSpark--four {
+    --spark-x: 39px;
+    --spark-y: 7px;
+    --spark-color: #c39232;
+    --spark-size: 13px;
+    --spark-delay: 20ms;
+}
+
+.card-trial__successSpark--five {
+    --spark-x: -22px;
+    --spark-y: 30px;
+    --spark-color: #4c78a8;
+    --spark-size: 11px;
+    --spark-delay: 95ms;
+}
+
+.card-trial__successSpark--six {
+    --spark-x: 23px;
+    --spark-y: 31px;
+    --spark-color: #3b9a87;
+    --spark-size: 12px;
+    --spark-delay: 60ms;
+}
+
+@keyframes card-trial-success-check {
+    from {
+        opacity: 0;
+        transform: scale(0.72);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes card-trial-success-spark {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) scale(0.3) rotate(-16deg);
+    }
+
+    18% {
+        opacity: 0.9;
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(var(--spark-x), var(--spark-y)) scale(0.6) rotate(38deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card-trial__successCheck,
+    .card-trial__successSpark {
+        animation: none;
+    }
+
+    .card-trial__successSpark {
+        opacity: 0.68;
+        transform: translate(var(--spark-x), var(--spark-y)) scale(0.75);
+    }
+}
+
 .card-trial__disclosure ul {
     list-style: none;
     margin: 0;

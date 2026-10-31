@@ -5,6 +5,10 @@ import { useAuth } from '../Auth/useAuth';
 import MomentumDashboardPage from './MomentumDashboardPage';
 import { TOUR_STORAGE_KEY } from './tourStorage';
 import { trackProductEvent } from '../../utils/productAnalytics';
+const mockNavigate = jest.fn();
+const mockOpenDialog = jest.fn();
+const mockDialog = { isOpen: false, type: null };
+const mockFetchTrialEligibility = jest.fn();
 jest.mock('../PageContainer/PageContainer', () => ({children}) => <>{children}</>);
 jest.mock('./MomentumScreenResults', () => ({plan}) => <div data-testid="momentum-screen-results">{plan}</div>);
 jest.mock('./MomentumDashboardTour', () => ({onFinish}) => <div role="dialog"><button onClick={onFinish}>完成教學</button></div>);
@@ -12,6 +16,10 @@ jest.mock('../../utils/productAnalytics', () => ({ trackProductEvent: jest.fn() 
 
 jest.mock('../Auth/useAuth', () => ({ useAuth: jest.fn() }));
 jest.mock('../../api/apiClient', () => ({ get: jest.fn() }));
+jest.mock('../Common/Dialog/useDialog', () => ({ useDialog: () => ({ dialog: mockDialog, openDialog: mockOpenDialog }) }));
+jest.mock('../../services/freeTrialService', () => ({ fetchFreeTrialEligibility: (...args) => mockFetchTrialEligibility(...args) }));
+jest.mock('../../utils/freeTrialRollout', () => ({ canSeeFreeTrial: (email) => Boolean(email) }));
+jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: () => mockNavigate }));
 jest.mock('react-i18next', () => {
   const copy = require('../../locales/zh-TW/translation.json');
   const t = (key, options = {}) => {
@@ -31,7 +39,7 @@ const response = (rows = industry) => ({ data: { data: { access: { version: 2, p
 const assetRows = () => screen.getAllByRole('button').filter((button) => button.classList.contains('momentum-row'));
 
 describe('MomentumDashboardPage', () => {
-  beforeEach(() => { window.localStorage.setItem(TOUR_STORAGE_KEY, '1'); jest.clearAllMocks(); useAuth.mockReturnValue({ user: null, loading: false }); apiClient.get.mockResolvedValue(response()); });
+  beforeEach(() => { window.localStorage.setItem(TOUR_STORAGE_KEY, '1'); jest.clearAllMocks(); useAuth.mockReturnValue({ user: null, loading: false }); mockFetchTrialEligibility.mockResolvedValue({ eligible: true }); apiClient.get.mockResolvedValue(response()); });
 
   it('selects the first ETF on desktop and keeps the panel open while changing rows and filters', async () => {
     const originalMedia = window.matchMedia;
@@ -386,10 +394,10 @@ describe('Momentum access experience', () => {
     expect(screen.getByRole('heading', { name: '免費 ETF 動能排行' })).toBeVisible();
     expect(screen.getByText(/固定 12 檔 ETF/)).toBeVisible();
     expect(screen.getByRole('button', { name: '科技，75，查看標的' })).toBeVisible();
-    const upgrade = screen.getByRole('link', { name: /解鎖完整排行/ });
-    expect(upgrade).toHaveAttribute('href', '/zh-TW/subscription-plans');
-    upgrade.addEventListener('click', (event) => event.preventDefault());
+    const upgrade = document.querySelector('.momentum-upgrade .momentum-upgrade-button');
+    expect(upgrade).toHaveTextContent('免綁卡試用 Pro');
     fireEvent.click(upgrade);
+    expect(mockOpenDialog).toHaveBeenCalledWith('auth', expect.objectContaining({ source: 'momentum_trial_cta' }));
     expect(trackProductEvent).toHaveBeenCalledWith('momentum_interaction', expect.objectContaining({ action: 'upgrade_click', source: 'ranking' }));
     expect(screen.getByText('觀察範圍 · 200 檔標的')).toBeInTheDocument();
   });
@@ -402,7 +410,7 @@ describe('Momentum access experience', () => {
     expect(screen.queryAllByRole('button').filter((button) => button.classList.contains('momentum-row'))).toHaveLength(0);
     expect(screen.getByText('Pro 專屬')).toBeVisible();
     expect(screen.queryByText('行情更新中')).not.toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /解鎖完整排行/ })).toBeVisible();
+    expect(within(screen.getByRole('complementary', { name: 'Pro 專屬標的' })).getByRole('button', { name: /免綁卡試用 Pro/ })).toBeVisible();
   });
 
   it('removes the prior account snapshot immediately on logout and ignores its late request', async () => {

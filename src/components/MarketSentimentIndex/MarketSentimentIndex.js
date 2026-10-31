@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { handleApiError } from '../../utils/errorHandler';
 import { Analytics } from '../../utils/analytics';
 import { useAuth } from '../Auth/useAuth';
+import { useDialog } from '../Common/Dialog/useDialog';
+import { fetchFreeTrialEligibility } from '../../services/freeTrialService';
+import { canSeeFreeTrial } from '../../utils/freeTrialRollout';
 import './MarketSentimentIndex.css';
 
 import MarketSentimentGauge from './MarketSentimentGauge';
@@ -273,7 +276,13 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { showToast, toast, hideToast } = useToastManager();
-  const { user, checkAuthStatus } = useAuth();
+  const { user, loading: authLoading, checkAuthStatus } = useAuth();
+  const { dialog, openDialog } = useDialog();
+  const isAuthenticated = Boolean(user);
+  const trialAccountKey = user?.id || user?.userId || user?.email;
+  const pendingTrialAfterLoginRef = useRef(null);
+  const [eligibleTrialAccount, setEligibleTrialAccount] = useState(null);
+  const [checkedTrialAccount, setCheckedTrialAccount] = useState(null);
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [upgradeDialog, setUpgradeDialog] = useState({ isOpen: false, type: null, context: {} });
@@ -315,6 +324,9 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   const effectiveUserPlan = isTemporaryFreeMode ? 'pro' : userPlan;
   const isProUser = effectiveUserPlan === 'pro';
   const isRestrictedPreview = Boolean(sentimentData?.isRestricted);
+  const showFreeTrialCta = !authLoading && (
+    !user || !checkedTrialAccount || Boolean(trialAccountKey && eligibleTrialAccount === trialAccountKey)
+  );
 
   // 新增滑桿相關狀態
   const [sliderMinMax, setSliderMinMax] = useState([0, 0]); // [minTimestamp, maxTimestamp]
@@ -886,8 +898,67 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
       source
     };
 
-    navigate(`/${i18n.language}/subscription-plans`, { state });
-  }, [formattedRestrictionCutoffDate, navigate, pageRoutePath, t]);
+    navigate(`/${currentLang}/subscription-plans`, { state });
+  }, [currentLang, formattedRestrictionCutoffDate, navigate, pageRoutePath, t]);
+
+  useEffect(() => {
+    if (!isAuthenticated || !trialAccountKey || !isRestrictedPreview) {
+      setEligibleTrialAccount(null);
+      setCheckedTrialAccount(null);
+      return undefined;
+    }
+
+    if (!canSeeFreeTrial(user?.email)) {
+      setEligibleTrialAccount(null);
+      setCheckedTrialAccount(trialAccountKey);
+      if (pendingTrialAfterLoginRef.current) {
+        const pending = pendingTrialAfterLoginRef.current;
+        pendingTrialAfterLoginRef.current = null;
+        navigateToSubscriptionPlans(pending.feature, pending.source);
+      }
+      return undefined;
+    }
+
+    let abandoned = false;
+    setEligibleTrialAccount(null);
+    setCheckedTrialAccount(null);
+    fetchFreeTrialEligibility()
+      .then((result) => {
+        if (abandoned) return;
+
+        const eligible = result?.eligible === true;
+        setEligibleTrialAccount(eligible ? trialAccountKey : null);
+        setCheckedTrialAccount(trialAccountKey);
+        if (pendingTrialAfterLoginRef.current) {
+          const pending = pendingTrialAfterLoginRef.current;
+          pendingTrialAfterLoginRef.current = null;
+          if (eligible) {
+            navigate(`/${currentLang}/payment/free-trial`);
+          } else {
+            navigateToSubscriptionPlans(pending.feature, pending.source);
+          }
+        }
+      })
+      .catch(() => {
+        if (abandoned) return;
+
+        setEligibleTrialAccount(null);
+        setCheckedTrialAccount(trialAccountKey);
+        if (pendingTrialAfterLoginRef.current) {
+          const pending = pendingTrialAfterLoginRef.current;
+          pendingTrialAfterLoginRef.current = null;
+          navigateToSubscriptionPlans(pending.feature, pending.source);
+        }
+      });
+
+    return () => { abandoned = true; };
+  }, [currentLang, isAuthenticated, isRestrictedPreview, navigate, navigateToSubscriptionPlans, trialAccountKey, user?.email]);
+
+  useEffect(() => {
+    if (!isAuthenticated && pendingTrialAfterLoginRef.current && (!dialog?.isOpen || dialog.type !== 'auth')) {
+      pendingTrialAfterLoginRef.current = false;
+    }
+  }, [dialog?.isOpen, dialog?.type, isAuthenticated]);
 
   const handleRestrictedFeatureClick = useCallback((feature, source = 'marketSentimentIndex') => {
     Analytics.marketSentiment.restrictedFeatureClicked({
@@ -895,8 +966,26 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
       userPlan: effectiveUserPlan
     });
 
+    if (!isAuthenticated) {
+      pendingTrialAfterLoginRef.current = { feature, source };
+      openDialog('auth', {
+        customTitle: t('home.hero.trialLoginTitle'),
+        customDescription: t('home.hero.trialLoginPrompt')
+      });
+      return;
+    }
+
+    if (trialAccountKey && eligibleTrialAccount === trialAccountKey) {
+      navigate(`/${currentLang}/payment/free-trial`);
+      return;
+    }
+
     navigateToSubscriptionPlans(feature, source);
-  }, [effectiveUserPlan, navigateToSubscriptionPlans]);
+  }, [checkedTrialAccount, currentLang, effectiveUserPlan, eligibleTrialAccount, isAuthenticated, navigate, navigateToSubscriptionPlans, openDialog, t, trialAccountKey]);
+
+  const handleDelayBannerClick = useCallback(() => {
+    handleRestrictedFeatureClick('currentData', 'marketSentimentDelayBanner');
+  }, [handleRestrictedFeatureClick]);
 
   // 新的升級對話框處理函數
   const handleUpgradeDialogClose = useCallback(() => {
@@ -1568,9 +1657,11 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                   <button
                     type="button"
                     className="market-sentiment-delay-banner__button"
-                    onClick={() => handleRestrictedFeatureClick('currentData', 'marketSentimentDelayBanner')}
+                    onClick={handleDelayBannerClick}
                   >
-                    {t('marketSentiment.dataLimitation.upgradeForLatest')}
+                    {t(showFreeTrialCta
+                      ? 'marketSentiment.dataLimitation.freeTrialForLatest'
+                      : 'marketSentiment.dataLimitation.upgradeForLatest')}
                   </button>
                 </div>
               )}
@@ -1616,6 +1707,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                       historyOverlayMode={historyOverlayMode}
                       historyOverlayPosition={historyOverlayPosition}
                       historyOverlayCardRef={historyOverlayCardRef}
+                      showFreeTrialCta={showFreeTrialCta}
                       handleRestrictedFeatureClick={handleRestrictedFeatureClick}
                       historicalData={historicalData}
                       sliderMinMax={sliderMinMax}

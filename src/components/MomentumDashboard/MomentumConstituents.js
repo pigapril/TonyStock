@@ -18,7 +18,7 @@ export function MomentumAssetIndicators({ row }) {
   </div>;
 }
 
-export default function MomentumConstituents({ symbol, onSelectStock }) {
+export default function MomentumConstituents({ symbol, onSelectStock, onUpgrade, showTrialCta = false, trialCtaLabel }) {
   const { t, i18n } = useTranslation();
   const text = (key, options) => t(`momentumDashboard.${key}`, options);
   const [data, setData] = useState(null);
@@ -63,7 +63,7 @@ export default function MomentumConstituents({ symbol, onSelectStock }) {
                   <label>{text('stockMinimumVolume')}<input type="number" min="0" value={minimumVolume} onChange={(event) => setFilter(setMinimumVolume, event.target.value)} /></label>
                 </>}
               </div>
-              {!pro && <p className="momentum-relative-note">{text('stockProHelp')} <a href={`/${i18n.language}/subscription-plans`}>{text('access.upgrade')}</a></p>}
+              {!pro && <p className="momentum-relative-note">{text('stockProHelp')} <button type="button" className="momentum-inline-upgrade" onClick={() => onUpgrade?.('holdings')}>{showTrialCta ? trialCtaLabel : text('access.upgrade')}</button></p>}
               <div className={`momentum-holdings-list${pro ? ' is-pro' : ''}`} aria-label={text('stockTable')}>
                 <div className="momentum-holdings-head"><span>{text('asset')}</span><span>{text('holdingWeight')}</span>{pro && <><span>{text('rankMode')}</span><span>RSI</span><span>{text('liquidityLabel')}</span><span /></>}</div>
                 {rows.slice(0, limit).map(row => {

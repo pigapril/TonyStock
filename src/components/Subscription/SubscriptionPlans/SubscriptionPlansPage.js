@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Auth/useAuth';
 import { useSubscription } from '../SubscriptionContext';
+import { useDialog } from '../../Common/Dialog/useDialog';
 import { PlanCard } from './components/PlanCard';
 import { BillingPeriodToggle } from '../shared/BillingPeriodToggle';
 import { RedemptionCodeInput } from '../../Redemption/RedemptionCodeInput';
@@ -12,14 +13,18 @@ import { canAccessPaymentFeatures, getWhitelistDebugInfo } from '../../../utils/
 import { canSeeFreeTrial } from '../../../utils/freeTrialRollout';
 import subscriptionService from '../../../api/subscriptionService';
 import { fetchFreeTrialEligibility } from '../../../services/freeTrialService';
+import { getAnalysisReturnPath, withAnalysisReturnPath } from '../../../utils/trialNavigation';
 import { Dialog } from '../../Common/Dialog/Dialog';
 import './SubscriptionPlansPage.css';
 
 export const SubscriptionPlansPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const { userPlan } = useSubscription();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { dialog, openDialog } = useDialog();
+  const pendingTrialAfterLogin = useRef(false);
   const [upgradeNotification, setUpgradeNotification] = useState(null);
   const [billingPeriod, setBillingPeriod] = useState('monthly');
   const [appliedRedemption, setAppliedRedemption] = useState(null);
@@ -37,26 +42,61 @@ export const SubscriptionPlansPage = () => {
 
   // 資格查詢失敗時維持既有付款入口。
   const [freeTrialEligible, setFreeTrialEligible] = useState(false);
+  const [freeTrialEligibilityReady, setFreeTrialEligibilityReady] = useState(false);
+  const [freeTrialEligibilityAccountKey, setFreeTrialEligibilityAccountKey] = useState(null);
 
   const canEnterFreeTrial = canSeeFreeTrial(user?.email);
+  const language = i18n.language?.startsWith('en') ? 'en' : 'zh-TW';
+  const trialAccountKey = user?.id || user?.userId || user?.email || null;
 
   useEffect(() => {
     if (!user || !canEnterFreeTrial) {
       setFreeTrialEligible(false);
+      setFreeTrialEligibilityReady(true);
+      setFreeTrialEligibilityAccountKey(null);
       return undefined;
     }
 
     let abandoned = false;
+    setFreeTrialEligible(false);
+    setFreeTrialEligibilityReady(false);
+    setFreeTrialEligibilityAccountKey(null);
     fetchFreeTrialEligibility()
       .then((result) => {
-        if (!abandoned) setFreeTrialEligible(result?.eligible === true);
+        if (!abandoned) {
+          setFreeTrialEligible(result?.eligible === true);
+          setFreeTrialEligibilityAccountKey(trialAccountKey);
+          setFreeTrialEligibilityReady(true);
+        }
       })
       .catch(() => {
-        if (!abandoned) setFreeTrialEligible(false);
+        if (!abandoned) {
+          setFreeTrialEligible(false);
+          setFreeTrialEligibilityAccountKey(trialAccountKey);
+          setFreeTrialEligibilityReady(true);
+        }
       });
 
     return () => { abandoned = true; };
-  }, [user, canEnterFreeTrial]);
+  }, [user, canEnterFreeTrial, trialAccountKey]);
+
+  useEffect(() => {
+    if (!pendingTrialAfterLogin.current) return;
+    if (!user) {
+      if (!dialog?.isOpen || dialog.type !== 'auth') pendingTrialAfterLogin.current = false;
+      return;
+    }
+    if (!freeTrialEligibilityReady || freeTrialEligibilityAccountKey !== trialAccountKey) return;
+
+    pendingTrialAfterLogin.current = false;
+    if (freeTrialEligible) {
+      const trialUrl = withAnalysisReturnPath(
+        `/${language}/payment/free-trial`,
+        getAnalysisReturnPath(location.search, language)
+      );
+      navigate(trialUrl);
+    }
+  }, [dialog, freeTrialEligibilityAccountKey, freeTrialEligibilityReady, freeTrialEligible, language, location.search, navigate, trialAccountKey, user]);
 
   // 載入方案資料
   useEffect(() => {
@@ -136,6 +176,15 @@ export const SubscriptionPlansPage = () => {
       isWhitelisted: canUserAccessPayment,
       isTemporaryFreeMode,
       whitelistCount: whitelistInfo.whitelistCount
+    });
+  };
+
+  const handleTrialLoginRequired = () => {
+    pendingTrialAfterLogin.current = true;
+    openDialog('auth', {
+      source: 'subscription_plan_trial',
+      customTitle: t('home.hero.trialLoginTitle'),
+      customDescription: t('home.hero.trialLoginPrompt')
     });
   };
 
@@ -382,6 +431,7 @@ export const SubscriptionPlansPage = () => {
               appliedRedemption={appliedRedemption}
               freeTrialEligible={freeTrialEligible}
               onShowFreeTrialDialog={handleShowFreeTrialDialog}
+              onTrialLoginRequired={handleTrialLoginRequired}
             />
           ))}
         </section>

@@ -11,7 +11,9 @@ export function FeatureUpgradeDialog({
     type, 
     context = {}, 
     onClose, 
-    onUpgrade 
+    onUpgrade,
+    primaryCtaLabel = null,
+    isTrialCta = false
 }) {
     const { t } = useTranslation();
     
@@ -31,7 +33,7 @@ export function FeatureUpgradeDialog({
         const upgradeUrl = context?.upgradeUrl || '/subscription-plans';
         Analytics.ui.dialog.action({ 
             type: dialogData.type, 
-            action: 'upgrade_clicked',
+            action: isTrialCta ? 'trial_clicked' : 'upgrade_clicked',
             feature: context?.feature,
             upgradeUrl 
         });
@@ -215,9 +217,9 @@ export function FeatureUpgradeDialog({
                     <button 
                         className="upgrade-primary-btn" 
                         onClick={upgradeHandler}
-                        aria-label={t('featureUpgrade.upgradeAriaLabel', '升級至 Pro 方案')}
+                        aria-label={primaryCtaLabel || t('featureUpgrade.upgradeAriaLabel', '升級至 Pro 方案')}
                     >
-                        <span className="btn-text">{t('featureUpgrade.upgradeButton', '升級至 Pro')}</span>
+                        <span className="btn-text">{primaryCtaLabel || t('featureUpgrade.upgradeButton', '升級至 Pro')}</span>
                         <span className="btn-icon">→</span>
                     </button>
                     

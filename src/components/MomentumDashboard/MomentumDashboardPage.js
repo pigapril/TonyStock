@@ -2,8 +2,12 @@ import PageContainer from '../PageContainer/PageContainer';
 import { moveTabFocus } from './tabNavigation';
 import React, { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import apiClient from '../../api/apiClient';
 import { useAuth } from '../Auth/useAuth';
+import { useDialog } from '../Common/Dialog/useDialog';
+import { fetchFreeTrialEligibility } from '../../services/freeTrialService';
+import { canSeeFreeTrial } from '../../utils/freeTrialRollout';
 import { trackProductEvent } from '../../utils/productAnalytics';
 import { isAvailableNumber, sortRowsByDailyMove, sortRowsByRank, summarizeGroups } from './momentumViewModel';
 import { GroupSparkline } from './MomentumTrendChart';
@@ -37,8 +41,15 @@ function colorBand(value, metric) {
 export default function MomentumDashboardPage() {
   const { t, i18n } = useTranslation();
   const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+  const { dialog, openDialog } = useDialog();
   const authKey = JSON.stringify([user?.id || user?.userId || null, user?.plan || 'free', Boolean(authLoading)]);
-  const upgradeUrl = `/${i18n.language}/subscription-plans`;
+  const trialAccountKey = user?.id || user?.userId || user?.email || null;
+  const [eligibleTrialAccount, setEligibleTrialAccount] = useState(null);
+  const [checkedTrialAccount, setCheckedTrialAccount] = useState(null);
+  const pendingTrialAfterLogin = useRef(null);
+  const language = i18n.language?.startsWith('en') ? 'en' : 'zh-TW';
+  const plansPath = `/${language}/subscription-plans`;
   const guideUrl = `/${i18n.language}/articles/${i18n.language === 'en' ? 'market-momentum-dashboard-guide' : '5.市場動能儀表板使用指南'}/`;
   const text = useCallback((key, options) => t(`momentumDashboard.${key}`, options), [t]);
   const groupLabel = (name) => text(`groups.${groupKey(name)}`, { defaultValue: name });
@@ -136,7 +147,63 @@ export default function MomentumDashboardPage() {
     return lockedRows.filter((row) => (!selectedGroup || row.group === selectedGroup)
       && (!term || `${row.symbol} ${row.name} ${row.group} ${text(`groups.${groupKey(row.group || 'Other')}`, { defaultValue: row.group })}`.toLowerCase().includes(term)));
   }, [lockedRows, query, selectedGroup, text]);
+  useEffect(() => {
+    if (authLoading) return undefined;
+    if (!user || !trialAccountKey) {
+      setEligibleTrialAccount(null);
+      setCheckedTrialAccount(null);
+      return undefined;
+    }
+
+    let abandoned = false;
+    setEligibleTrialAccount(null);
+    setCheckedTrialAccount(null);
+    const finish = (eligible) => {
+      setEligibleTrialAccount(eligible ? trialAccountKey : null);
+      setCheckedTrialAccount(trialAccountKey);
+      if (pendingTrialAfterLogin.current) {
+        pendingTrialAfterLogin.current = null;
+        navigate(eligible ? `/${language}/payment/free-trial` : plansPath);
+      }
+    };
+
+    if (!canSeeFreeTrial(user.email)) {
+      finish(false);
+      return undefined;
+    }
+
+    fetchFreeTrialEligibility()
+      .then((result) => { if (!abandoned) finish(result?.eligible === true); })
+      .catch(() => { if (!abandoned) finish(false); });
+
+    return () => { abandoned = true; };
+  }, [authLoading, language, navigate, plansPath, trialAccountKey, user]);
+
+  useEffect(() => {
+    if (!user && pendingTrialAfterLogin.current && (!dialog?.isOpen || dialog.type !== 'auth')) {
+      pendingTrialAfterLogin.current = null;
+    }
+  }, [dialog?.isOpen, dialog?.type, user]);
+
+  const showTrialCta = !user || !checkedTrialAccount || eligibleTrialAccount === trialAccountKey;
+  const trialCtaLabel = t('freeTrial.ctaShort');
   const trackUpgrade = (source) => trackInteraction('upgrade_click', { source });
+  const handleUpgradeCta = (source) => {
+    trackUpgrade(source);
+    if (!user) {
+      pendingTrialAfterLogin.current = source;
+      openDialog('auth', {
+        customTitle: t('home.hero.trialLoginTitle'),
+        customDescription: t('home.hero.trialLoginPrompt'),
+        source: 'momentum_trial_cta'
+      });
+      return;
+    }
+
+    navigate(eligibleTrialAccount === trialAccountKey && checkedTrialAccount === trialAccountKey
+      ? `/${language}/payment/free-trial`
+      : plansPath);
+  };
 
   useEffect(() => {
     if (!query.trim()) return undefined;
@@ -208,14 +275,14 @@ export default function MomentumDashboardPage() {
           <p>{text('subtitle')}</p>
           <button type="button" className="momentum-tour-trigger" disabled={!hasRows || authLoading || loading} onClick={() => { setView('market'); setSelectedSymbol(null); setShowTour(true); }}>{text('tour.start')}</button>
         </div>
-        {snapshot?.asOf && <div className="momentum-date"><span>{text(isFree ? 'access.freeAsOf' : 'access.proAsOf')}</span><time dateTime={snapshot.asOf}>{snapshot.asOf}</time>{isFree && <a href={upgradeUrl} onClick={() => trackUpgrade('header')}>{text('access.upgrade')}</a>}</div>}
+        {snapshot?.asOf && <div className="momentum-date"><span>{text(isFree ? 'access.freeAsOf' : 'access.proAsOf')}</span><time dateTime={snapshot.asOf}>{snapshot.asOf}</time>{isFree && <button type="button" className="momentum-date__upgrade" onClick={() => handleUpgradeCta('header')}>{showTrialCta ? trialCtaLabel : text('access.upgrade')}</button>}</div>}
       </header>
 
       <div className="momentum-primary-tabs" role="tablist" aria-label={text('navigation.label')}>
         {['market', 'screen'].map(key => <button key={key} type="button" role="tab" disabled={key === 'screen' && !hasRows} id={`momentum-${key}-tab`} tabIndex={view === key ? 0 : -1} onKeyDown={moveTabFocus} aria-selected={view === key} aria-controls={`momentum-${key}-view`} onClick={() => { setView(key); if (showTour) finishTour(); }}>{text(`navigation.${key}`)}</button>)}
       </div>
       {hasRows && snapshot && <div id="momentum-screen-view" role="tabpanel" aria-labelledby="momentum-screen-tab" hidden={view !== 'screen'}>
-        <MomentumScreenResults key={authKey} initiallyOpen active={view === 'screen'} plan={snapshot.access.plan} asOf={snapshot.asOf} fundRows={snapshot.data.Industry} onShowRankings={() => {
+        <MomentumScreenResults key={authKey} initiallyOpen active={view === 'screen'} plan={snapshot.access.plan} asOf={snapshot.asOf} fundRows={snapshot.data.Industry} showTrialCta={showTrialCta} trialCtaLabel={trialCtaLabel} onUpgrade={handleUpgradeCta} onShowRankings={() => {
           setView('market'); setUniverse('Industry'); setMetric('rank'); setSelectedGroup(null); setSelectedSymbol(null); setQuery(''); setSortOrder('desc');
         }} />
       </div>}
@@ -306,12 +373,12 @@ export default function MomentumDashboardPage() {
                   <strong>{row.symbol.replace(/^BATS:/, '')}</strong><span>{text(`assetDescriptions.${row.symbol.replace(/^BATS:/, '')}`, { defaultValue: row.name })}</span><small>{text('access.proOnly')}</small>
                 </li>)}</ul>
               </div>
-              <a className="momentum-upgrade-button" href={upgradeUrl} onClick={() => trackUpgrade(query ? 'search' : selectedGroup ? 'group' : 'ranking')}>{text('access.upgradeAction')} <span aria-hidden="true">→</span></a>
+              <button type="button" className="momentum-upgrade-button" onClick={() => handleUpgradeCta(query ? 'search' : selectedGroup ? 'group' : 'ranking')}>{showTrialCta ? trialCtaLabel : text('access.upgradeAction')} <span aria-hidden="true">→</span></button>
             </aside>}
             {filteredRows.length > PAGE_SIZE && <button type="button" className="momentum-show-more" onClick={() => { trackInteraction(visibleCount < filteredRows.length ? 'show_more' : 'show_less'); setVisibleCount(visibleCount < filteredRows.length ? filteredRows.length : PAGE_SIZE); }}>{text(visibleCount < filteredRows.length ? 'showMore' : 'showLess', { count: filteredRows.length - PAGE_SIZE })}</button>}
             </div>
           </section>
-          {selectedRow && <MomentumDetailPanel key={`${authKey}:${selectedRow.symbol}`} row={selectedRow} asOf={snapshot.asOf} isFund hideDesktopBack panelRef={detailRef} backLabel={text('detail.backToEtfs')} onBack={() => setSelectedSymbol(null)} onResearch={() => trackInteraction('research_click', { asset_symbol: selectedRow.symbol.replace(/^BATS:/, '') })} />}
+          {selectedRow && <MomentumDetailPanel key={`${authKey}:${selectedRow.symbol}`} row={selectedRow} asOf={snapshot.asOf} isFund hideDesktopBack panelRef={detailRef} backLabel={text('detail.backToEtfs')} onBack={() => setSelectedSymbol(null)} onUpgrade={handleUpgradeCta} showTrialCta={showTrialCta} trialCtaLabel={trialCtaLabel} onResearch={() => trackInteraction('research_click', { asset_symbol: selectedRow.symbol.replace(/^BATS:/, '') })} />}
           </div>
               {metric === 'rank' && <>
                 <aside id="momentum-reading-guide" className="momentum-reading-guide" aria-label={text('guideLabel')}>

@@ -734,9 +734,9 @@
       "title": "Understand the market's fear and greed sentiment.",
       "subtitle": "Use objective data to judge current market sentiment and overcome the human biases of fear and greed.",
       "primaryAuthenticated": "View market sentiment",
-      "primaryFreeTrial": "Try Pro free for 30 days",
-      "primaryGuest": "Sign in to view market sentiment",
-      "secondary": "Try price trend analysis",
+      "primaryFreeTrial": "Try Pro free for 30 days\nNo card needed",
+      "primaryGuest": "Try Pro free for 30 days\nNo card needed",
+      "secondary": "Analyze stock trends\nfor free",
       "marketPreviewHeadline": {
         "brand": "Sentiment Inside Out",
         "index": "Fear & Greed Index"
@@ -785,7 +785,9 @@
           }
         }
       },
-      "scrollLabel": "Scroll to the SIO methodology section"
+      "scrollLabel": "Scroll to the SIO methodology section",
+      "trialLoginTitle": "Sign in to start your Pro trial",
+      "trialLoginPrompt": "Sign in to check your eligibility and start a 30-day Pro trial."
     },
     "announcement": {
       "badge": "Announcement"
@@ -992,6 +994,7 @@
       "bannerBody": "Upgrade to Pro for the latest sentiment, recent trends and changes in each indicator.",
       "currentGaugeHeadline": "Current US market sentiment",
       "snapshotGaugeHeadline": "US market sentiment on {{date}}",
+      "freeTrialForLatest": "Try Pro free",
       "upgradeForLatest": "Upgrade for latest data",
       "unlockLatestCta": "Unlock latest data",
       "overlayMinimalLabel": "Unlock latest data",
@@ -3076,13 +3079,14 @@
   },
   "freeTrial": {
     "title": "30-day free trial",
+    "ctaShort": "Try Pro free",
     "promotion": {
       "badge": "PRO",
       "title": "See the full picture.",
       "description": "Market sentiment, stock analysis, watchlists, and an ad-free experience are all yours.",
       "visualOffer": "30 days of Pro free",
       "detail": "No credit card and no automatic charges.",
-      "cta": "View plans",
+      "cta": "Start free trial",
       "later": "Maybe later"
     },
     "planCard": {

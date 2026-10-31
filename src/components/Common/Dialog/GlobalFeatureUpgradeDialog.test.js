@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDialog } from './useDialog';
@@ -8,10 +8,13 @@ import { GlobalFeatureUpgradeDialog } from './GlobalFeatureUpgradeDialog';
 jest.mock('react-router-dom', () => ({ useNavigate: jest.fn() }));
 jest.mock('react-i18next', () => ({ useTranslation: jest.fn() }));
 jest.mock('./useDialog', () => ({ useDialog: jest.fn() }));
+jest.mock('../../Auth/useAuth', () => ({ useAuth: () => mockAuth }));
+jest.mock('../../../services/freeTrialService', () => ({ fetchFreeTrialEligibility: (...args) => mockFetchEligibility(...args) }));
+jest.mock('../../../utils/freeTrialRollout', () => ({ canSeeFreeTrial: (email) => Boolean(email) }));
 jest.mock('./FeatureUpgradeDialog', () => ({
-    FeatureUpgradeDialog: ({ context, onClose, onUpgrade }) => (
+    FeatureUpgradeDialog: ({ context, onClose, onUpgrade, primaryCtaLabel }) => (
         <div data-testid="upgrade-dialog" data-feature={context.feature}>
-            <button onClick={onUpgrade}>Upgrade</button>
+            <button onClick={onUpgrade}>{primaryCtaLabel || 'Upgrade'}</button>
             <button onClick={onClose}>Close</button>
             <button onClick={context.onBrowseFreeStocks}>Browse free stocks</button>
         </div>
@@ -20,6 +23,8 @@ jest.mock('./FeatureUpgradeDialog', () => ({
 
 const navigate = jest.fn();
 const closeDialog = jest.fn();
+const mockAuth = { user: null };
+const mockFetchEligibility = jest.fn();
 const plansUrl = (returnPath) => `/en/subscription-plans?${new URLSearchParams({ returnTo: returnPath })}`;
 let dialog;
 
@@ -28,7 +33,20 @@ beforeEach(() => {
     dialog = { type: 'featureUpgrade', isOpen: true, props: { feature: 'stockAccess' } };
     useDialog.mockImplementation(() => ({ dialog, closeDialog }));
     useNavigate.mockReturnValue(navigate);
-    useTranslation.mockReturnValue({ i18n: { language: 'en' } });
+    useTranslation.mockReturnValue({ t: (key) => key, i18n: { language: 'en' } });
+    mockAuth.user = null;
+    mockFetchEligibility.mockResolvedValue({ eligible: false });
+});
+
+it('shows the trial CTA and opens the trial flow for eligible subscribers', async () => {
+    mockAuth.user = { id: 'eligible', email: 'eligible@example.com' };
+    mockFetchEligibility.mockResolvedValue({ eligible: true });
+    render(<GlobalFeatureUpgradeDialog />);
+
+    const trialButton = await screen.findByRole('button', { name: 'freeTrial.ctaShort' });
+    fireEvent.click(trialButton);
+
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith('/en/payment/free-trial'));
 });
 
 it('uses SPA navigation and preserves the stock, years and backtest date', () => {

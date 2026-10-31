@@ -46,10 +46,10 @@ describe('免費試用宣傳插頁', () => {
     expect(mockClaim).toHaveBeenCalledTimes(1);
   });
 
-  it('CTA 導向訂閱頁', async () => {
+  it('CTA 直接導向試用流程', async () => {
     render(<FreeTrialPromotion />);
     await userEvent.click(await screen.findByText('freeTrial.promotion.cta'));
-    expect(mockNavigate).toHaveBeenCalledWith('/zh-TW/subscription-plans');
+    expect(mockNavigate).toHaveBeenCalledWith('/zh-TW/payment/free-trial');
   });
 
   it('Pro 帳號不領取展示次數，也不顯示插頁', async () => {

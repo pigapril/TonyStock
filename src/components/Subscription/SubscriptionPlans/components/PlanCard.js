@@ -22,7 +22,8 @@ export const PlanCard = ({
   planAdjustment = null,
   appliedRedemption = null,
   freeTrialEligible = false,
-  onShowFreeTrialDialog = null
+  onShowFreeTrialDialog = null,
+  onTrialLoginRequired = null
 }) => {
   const { t, i18n } = useTranslation();
   const { lang } = useParams();
@@ -123,6 +124,11 @@ export const PlanCard = ({
       });
 
       if (!isCurrentUser) {
+        if (isPro && !appliedRedemption && onTrialLoginRequired) {
+          onTrialLoginRequired();
+          return;
+        }
+
         // 觸發登入對話框
         console.log('User needs to login first - opening auth dialog');
         openDialog('auth', {
@@ -344,6 +350,7 @@ export const PlanCard = ({
         return t('subscription.subscriptionPlans.loginToStart');
       }
       if (isPro) {
+        if (!appliedRedemption && onTrialLoginRequired) return t('freeTrial.ctaShort');
         return t('subscription.subscriptionPlans.loginToUpgrade');
       }
       return t('subscription.subscriptionPlans.loginRequired');

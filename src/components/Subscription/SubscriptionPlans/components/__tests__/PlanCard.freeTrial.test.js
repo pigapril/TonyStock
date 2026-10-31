@@ -94,6 +94,16 @@ describe('PlanCard 的免綁卡試用入口', () => {
         expect(existingButton()).toBeNull();
     });
 
+    it('訪客的 Pro 主按鈕改為試用入口並交由方案頁開啟登入流程', () => {
+        const onTrialLoginRequired = jest.fn();
+        renderCard({ isCurrentUser: false, onTrialLoginRequired });
+
+        fireEvent.click(screen.getByText('freeTrial.ctaShort'));
+
+        expect(onTrialLoginRequired).toHaveBeenCalledTimes(1);
+        expect(mockNavigate).not.toHaveBeenCalled();
+    });
+
     it('合資格但已套用優惠碼時看不到試用入口，按鈕是既有的訂閱按鈕', () => {
         renderCard({ freeTrialEligible: true, appliedRedemption: { code: 'SAVE10' } });
 

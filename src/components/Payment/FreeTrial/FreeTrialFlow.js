@@ -53,6 +53,15 @@ const FreeTrialFlow = () => {
       <h1 className="card-trial__title">{t('freeTrial.title')}</h1>
       {phase === 'success' ? (
         <section className="card-trial__disclosure" role="status">
+          <div className="card-trial__successCelebration" aria-hidden="true">
+            <span className="card-trial__successCheck">✓</span>
+            <span className="card-trial__successSpark card-trial__successSpark--one">✦</span>
+            <span className="card-trial__successSpark card-trial__successSpark--two">✧</span>
+            <span className="card-trial__successSpark card-trial__successSpark--three">✦</span>
+            <span className="card-trial__successSpark card-trial__successSpark--four">✧</span>
+            <span className="card-trial__successSpark card-trial__successSpark--five">✦</span>
+            <span className="card-trial__successSpark card-trial__successSpark--six">✧</span>
+          </div>
           <h2>{t('freeTrial.successTitle')}</h2>
           <p>{t('freeTrial.successBody')}</p>
           <button type="button" className="card-trial__primary" onClick={() => {

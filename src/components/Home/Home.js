@@ -1,5 +1,5 @@
-import React, { Suspense, lazy, useEffect, useMemo, useState, useTransition } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Suspense, lazy, useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowRight, FaChevronDown } from 'react-icons/fa';
 import { useMediaQuery } from 'react-responsive';
 import './Home.css';
@@ -136,12 +136,14 @@ function HomeSkeletonLine({ className = '' }) {
 
 export const Home = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const currentLang = i18n.language;
   const locale = currentLang === 'zh' ? 'zh-TW' : currentLang;
   const isMobileHistoryPreview = useMediaQuery({ query: '(max-width: 768px)' });
-  const { openDialog } = useDialog();
+  const { openDialog, dialog } = useDialog();
   const { isAuthenticated, user } = useAuth();
   const trialAccountKey = user?.id || user?.userId || user?.email;
+  const pendingTrialAfterLoginRef = useRef(false);
   const [eligibleTrialAccount, setEligibleTrialAccount] = useState(null);
   const [homepageData, setHomepageData] = useState(null);
   const [isHeroLoading, setIsHeroLoading] = useState(true);
@@ -153,8 +155,26 @@ export const Home = () => {
   const [priceSectionRef, shouldLoadPrice] = useNearViewport();
 
   useEffect(() => {
-    if (!isAuthenticated || !trialAccountKey || !canSeeFreeTrial(user?.email)) {
+    if (!isAuthenticated) {
       setEligibleTrialAccount(null);
+      return undefined;
+    }
+
+    if (!trialAccountKey) {
+      setEligibleTrialAccount(null);
+      if (pendingTrialAfterLoginRef.current) {
+        pendingTrialAfterLoginRef.current = false;
+        navigate(`/${currentLang}/subscription-plans`);
+      }
+      return undefined;
+    }
+
+    if (!canSeeFreeTrial(user?.email)) {
+      setEligibleTrialAccount(null);
+      if (pendingTrialAfterLoginRef.current) {
+        pendingTrialAfterLoginRef.current = false;
+        navigate(`/${currentLang}/subscription-plans`);
+      }
       return undefined;
     }
 
@@ -162,14 +182,33 @@ export const Home = () => {
     setEligibleTrialAccount(null);
     fetchFreeTrialEligibility()
       .then((result) => {
-        if (!abandoned) setEligibleTrialAccount(result?.eligible === true ? trialAccountKey : null);
+        if (abandoned) return;
+
+        const eligible = result?.eligible === true;
+        setEligibleTrialAccount(eligible ? trialAccountKey : null);
+        if (pendingTrialAfterLoginRef.current) {
+          pendingTrialAfterLoginRef.current = false;
+          navigate(eligible ? `/${currentLang}/payment/free-trial` : `/${currentLang}/subscription-plans`);
+        }
       })
       .catch(() => {
-        if (!abandoned) setEligibleTrialAccount(null);
+        if (abandoned) return;
+
+        setEligibleTrialAccount(null);
+        if (pendingTrialAfterLoginRef.current) {
+          pendingTrialAfterLoginRef.current = false;
+          navigate(`/${currentLang}/subscription-plans`);
+        }
       });
 
     return () => { abandoned = true; };
-  }, [isAuthenticated, trialAccountKey, user?.email]);
+  }, [isAuthenticated, trialAccountKey, user?.email, currentLang, navigate]);
+
+  useEffect(() => {
+    if (!isAuthenticated && pendingTrialAfterLoginRef.current && (!dialog?.isOpen || dialog.type !== 'auth')) {
+      pendingTrialAfterLoginRef.current = false;
+    }
+  }, [dialog?.isOpen, dialog?.type, isAuthenticated]);
 
   const showFreeTrialAction = Boolean(isAuthenticated && trialAccountKey && eligibleTrialAccount === trialAccountKey);
 
@@ -357,8 +396,11 @@ export const Home = () => {
       }))
   ), [currentLang, historyPreview]);
   const handlePrimaryAction = () => {
+    pendingTrialAfterLoginRef.current = true;
+    trackProductEvent('free_trial_home_clicked', { source: 'home', trial_days: 30 });
     openDialog('auth', {
-      returnPath: `/${currentLang}/market-sentiment`
+      customTitle: t('home.hero.trialLoginTitle'),
+      customDescription: t('home.hero.trialLoginPrompt')
     });
   };
 
@@ -440,7 +482,7 @@ export const Home = () => {
               <div className="home-hero__actions">
                 {isAuthenticated ? (
                   <Link
-                    to={showFreeTrialAction ? `/${currentLang}/subscription-plans` : `/${currentLang}/market-sentiment`}
+                    to={showFreeTrialAction ? `/${currentLang}/payment/free-trial` : `/${currentLang}/market-sentiment`}
                     onClick={showFreeTrialAction ? () => trackProductEvent('free_trial_home_clicked', {
                       source: 'home', trial_days: 30
                     }) : undefined}
@@ -454,7 +496,7 @@ export const Home = () => {
                   <Button
                     size="large"
                     onClick={handlePrimaryAction}
-                    className="home-hero__authButton home-hero__action home-hero__action--primary"
+                    className="home-hero__authButton home-hero__action home-hero__action--primary home-hero__action--trial"
                   >
                     <span>{t('home.hero.primaryGuest')}</span>
                   </Button>

@@ -100,7 +100,7 @@ test('free screening shows counts and placeholder shapes with no candidate ident
  apiClient.get.mockResolvedValue(response({status:'available',access:'free',asOf:date,criteria:result.criteria,counts:{funds:1,stocks:5}}));
  render(<MomentumScreenResults plan="free" asOf={date} onSelectFund={jest.fn()} />); startScreen();
  await screen.findByText(/從 1 檔強勢 ETF 中，找到 5 檔強勢候選個股/);
- expect(screen.getByRole('link',{name:'升級 Pro'})).toHaveAttribute('href','/zh-TW/subscription-plans');
+ expect(screen.getByRole('button',{name:'升級 Pro'})).toBeInTheDocument();
  expect(document.querySelectorAll('.momentum-screen-placeholder-row')).toHaveLength(3);
  expect(document.querySelector('.momentum-screen-placeholder')).toHaveTextContent('');
  expect(document.querySelector('.momentum-screen-placeholder.momentum-workspace.has-detail .momentum-screen-list')).toBeInTheDocument();
@@ -127,7 +127,7 @@ test('closing the panel aborts pending work and reopening does not run it again'
 
 test('free UI refuses to render paid rows even from a mismatched response', async () => {
  render(<MomentumScreenResults plan="free" asOf={date} onSelectFund={jest.fn()} />); startScreen();
- await screen.findByRole('link',{name:'升級 Pro'});
+ await screen.findByRole('button',{name:'升級 Pro'});
  expect(screen.queryByText('Nvidia')).not.toBeInTheDocument();
 });
 

@@ -757,9 +757,9 @@
       "title": "洞悉市場｜恐懼貪婪情緒",
       "subtitle": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點",
       "primaryAuthenticated": "查看市場情緒",
-      "primaryFreeTrial": "免費試用30天 Pro 方案",
-      "primaryGuest": "登入查看市場情緒",
-      "secondary": "試試價格趨勢分析",
+      "primaryFreeTrial": "免綁卡免費試用 Pro 30 天",
+      "primaryGuest": "免綁卡免費試用 Pro 30 天",
+      "secondary": "免費分析個股趨勢",
       "marketPreviewHeadline": {
         "brand": "Sentiment Inside Out",
         "index": "恐懼貪婪指標"
@@ -808,7 +808,9 @@
           }
         }
       },
-      "scrollLabel": "捲動到 SIO 方法論區塊"
+      "scrollLabel": "捲動到 SIO 方法論區塊",
+      "trialLoginTitle": "登入以開始 Pro 試用",
+      "trialLoginPrompt": "登入後，符合資格即可開始 Pro 30 天免費試用。"
     },
     "announcement": {
       "badge": "公告"
@@ -1017,6 +1019,7 @@
       "bannerBody": "升級 Pro，查看最新市場情緒、近期走勢與各項指標變化。",
       "currentGaugeHeadline": "當前美股市場情緒",
       "snapshotGaugeHeadline": "{{date}} 的美股市場情緒",
+      "freeTrialForLatest": "免綁卡試用 Pro",
       "upgradeForLatest": "升級查看最新資料",
       "unlockLatestCta": "解鎖最新數據",
       "overlayMinimalLabel": "解鎖最新數據",
@@ -3104,13 +3107,14 @@
   },
   "freeTrial": {
     "title": "免費試用 30 天",
+    "ctaShort": "免綁卡試用 Pro",
     "promotion": {
       "badge": "PRO",
       "title": "看見市場全貌。",
       "description": "台美股情緒、個股分析、追蹤清單與無廣告體驗，全部開放。",
       "visualOffer": "Pro 30 天免費體驗",
       "detail": "免綁信用卡，不會自動扣款。",
-      "cta": "前往方案頁",
+      "cta": "開始免費試用",
       "later": "稍後再說"
     },
     "planCard": {

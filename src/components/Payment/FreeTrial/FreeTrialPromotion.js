@@ -6,6 +6,7 @@ import { useSubscription } from '../../Subscription/SubscriptionContext';
 import { Dialog } from '../../Common/Dialog/Dialog';
 import { claimFreeTrialPromotion } from '../../../services/freeTrialService';
 import { trackProductEvent } from '../../../utils/productAnalytics';
+import { getAnalysisReturnPath, withAnalysisReturnPath } from '../../../utils/trialNavigation';
 import './FreeTrialPromotion.css';
 
 const excludedPage = (pathname) => /\/(subscription-plans|user-account|payment|admin)(\/|$)/.test(pathname);
@@ -65,12 +66,12 @@ export default function FreeTrialPromotion({ adOpen = false, onOpenChange = () =
     if (!isLocalPreview) trackProductEvent('free_trial_promotion_dismissed', { trial_days: 30 });
   };
 
-  const goToPlans = () => {
+  const startTrial = () => {
     setOpen(false);
     setClaimedAccount(null);
     if (!isLocalPreview) trackProductEvent('free_trial_promotion_clicked', { trial_days: 30 });
     const lang = location.pathname.split('/')[1] || i18n.language || 'zh-TW';
-    navigate(`/${lang}/subscription-plans`);
+    navigate(withAnalysisReturnPath(`/${lang}/payment/free-trial`, getAnalysisReturnPath(location.search, lang)));
   };
 
   return (
@@ -94,7 +95,7 @@ export default function FreeTrialPromotion({ adOpen = false, onOpenChange = () =
         <strong>{t('freeTrial.promotion.detail')}</strong>
       </div>
       <div className="free-trial-promotion__actions">
-        <button type="button" className="free-trial-promotion__cta" onClick={goToPlans}>
+        <button type="button" className="free-trial-promotion__cta" onClick={startTrial}>
           {t('freeTrial.promotion.cta')}
         </button>
         <button type="button" className="free-trial-promotion__later" onClick={close}>

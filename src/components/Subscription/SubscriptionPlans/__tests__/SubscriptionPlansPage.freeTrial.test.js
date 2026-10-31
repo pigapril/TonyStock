@@ -130,6 +130,23 @@ describe('方案頁的免綁卡試用入口', () => {
         expect(mockFetchEligibility).toHaveBeenCalledTimes(1);
     });
 
+    it('訪客從 Pro 卡試用入口登入後，符合資格會直接進入試用流程', async () => {
+        mockAuthState.user = null;
+        const view = renderPage();
+
+        await userEvent.click(await screen.findByRole('button', { name: '免綁卡試用 Pro' }));
+        mockAuthState.user = { id: 'new-user', email: 'new@example.com' };
+        view.rerender(
+            <HelmetProvider>
+                <I18nextProvider i18n={i18n}>
+                    <SubscriptionPlansPage />
+                </I18nextProvider>
+            </HelmetProvider>
+        );
+
+        await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/zh-TW/payment/free-trial'));
+    });
+
     it('第二個指定帳號可見試用，Email 大小寫不影響比對', async () => {
         mockAuthState.user = { id: 'user-2', email: 'HUANG41487@gmail.com' };
         renderPage();

@@ -47,7 +47,7 @@ export function MomentumAssetDetails({ row, asOf, onResearch }) {
   </div>;
 }
 
-export default function MomentumDetailPanel({ row, asOf, isFund = false, onBack, backLabel, panelRef, onResearch, hideDesktopBack = false, sourceLabel }) {
+export default function MomentumDetailPanel({ row, asOf, isFund = false, onBack, backLabel, panelRef, onResearch, onUpgrade, showTrialCta = false, trialCtaLabel, hideDesktopBack = false, sourceLabel }) {
   const { t } = useTranslation();
   const text = (key, options) => t(`momentumDashboard.${key}`, options);
   const panelId = useId();
@@ -96,7 +96,7 @@ export default function MomentumDetailPanel({ row, asOf, isFund = false, onBack,
       <MomentumAssetDetails row={row} asOf={asOf} onResearch={onResearch} />
     </div>
     {isFund && holdingsVisited && <div hidden={Boolean(stock) || tab !== 'holdings'} role="tabpanel" id={`momentum-${panelId}-holdings`} aria-labelledby={`momentum-${panelId}-holdings-tab`}>
-      <MomentumConstituents symbol={row.symbol} onSelectStock={selectStock} />
+      <MomentumConstituents symbol={row.symbol} onSelectStock={selectStock} onUpgrade={onUpgrade} showTrialCta={showTrialCta} trialCtaLabel={trialCtaLabel} />
     </div>}
     {stock && <MomentumAssetDetails row={stock} asOf={asOf} />}
     {!isFund && row.funds?.length > 0 && <ul className="momentum-screen-sources">{row.funds.map(fund => <li key={fund.symbol}>{fund.symbol} · {text('holdingWeight')} {percent(fund.weight)} · {text(fund.completeness === 'full' ? 'screen.full' : 'screen.partial')} · {fund.holdingsAsOf ? text('holdingsDate', { date: fund.holdingsAsOf }) : text('holdingsDateUnknown')} · {text('screen.coverageWeight', { weight: percent(fund.coverageWeight) })}</li>)}</ul>}
