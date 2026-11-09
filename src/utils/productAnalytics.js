@@ -3,7 +3,8 @@ import { getAnalyticsPageContext } from './analyticsPageContext';
 
 // Only allow product metadata. Never forward search text, user data, payment IDs or tokens.
 const FIELDS = ['action', 'universe', 'metric', 'sort_order', 'group_name', 'asset_symbol',
-  'result_count', 'source', 'billing_period', 'step', 'error_type', 'status', 'trial_days', 'planId', 'billingPeriod'];
+  'result_count', 'source', 'billing_period', 'step', 'error_type', 'status', 'trial_days', 'planId', 'billingPeriod',
+  'placement', 'trigger_source'];
 
 export function trackProductEvent(event, data = {}) {
   try {

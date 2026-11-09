@@ -201,7 +201,7 @@ export function PriceAnalysis() {
   const location = useLocation(); // <--- 獲取 location 物件
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const { showToast, toast, hideToast } = useToastManager();
-  const { requestAdDisplay } = useAdContext(); // 從 Context 獲取函數
+  const { requestAdDisplay, requestTrialPromotion } = useAdContext(); // 從 Context 獲取函數
   const { isAuthenticated, user, checkAuthStatus } = useAuth(); // 新增：獲取認證狀態和用戶資訊
   const { openDialog } = useDialog(); // 新增：獲取對話框功能
   const navigate = useNavigate();
@@ -902,6 +902,9 @@ export function PriceAnalysis() {
       setDisplayedStockCode(stock);
       if (prices?.length > 0 && sdAnalysis) {
         trackProductEvent('price_analysis_completed', { source: 'price_analysis' });
+        if (isManualSearch) {
+          requestTrialPromotion('price_analysis_completed', location.pathname);
+        }
       }
 
     } catch (error) {
@@ -940,7 +943,7 @@ export function PriceAnalysis() {
       // 注意：如果 transition 非常慢，Loading 可能會比數據出現早消失
       setLoading(false);
     }
-  }, [checkAuthStatus, openDialog, showToast, startTransition, t, buildStockAccessDialogProps]); // 確保 t 在依賴項中
+  }, [checkAuthStatus, openDialog, showToast, startTransition, t, buildStockAccessDialogProps, requestTrialPromotion, location.pathname]); // 確保 t 在依賴項中
 
   const resolveAnalysisYears = useCallback((invalidYearsMessage) => {
     if (isAdvancedQuery) {

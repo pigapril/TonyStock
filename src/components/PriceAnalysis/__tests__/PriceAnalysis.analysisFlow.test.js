@@ -20,7 +20,8 @@ const mockDialogApi = {
 };
 
 const mockAdContext = {
-  requestAdDisplay: jest.fn()
+  requestAdDisplay: jest.fn(),
+  requestTrialPromotion: jest.fn()
 };
 
 const mockToastApi = {
@@ -183,6 +184,28 @@ describe('PriceAnalysis analysis flow', () => {
         ))
       ).toBe(true);
     });
+  });
+
+  it('只在使用者主動分析成功後請求試用插頁，不在首次自動查詢時觸發', async () => {
+    render(
+      <TestWrapper initialEntries={['/zh-TW/priceanalysis?stockCode=SPY&years=3.5']}>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    await waitFor(() => expect(trackProductEvent).toHaveBeenCalledWith(
+      'price_analysis_completed', expect.any(Object)
+    ));
+    expect(mockAdContext.requestTrialPromotion).not.toHaveBeenCalled();
+
+    const stockInput = screen.getByPlaceholderText(/2330.*AAPL/i);
+    fireEvent.change(stockInput, { target: { value: 'AAPL' } });
+    fireEvent.submit(stockInput.closest('form'));
+
+    await waitFor(() => expect(mockAdContext.requestTrialPromotion).toHaveBeenCalledWith(
+      'price_analysis_completed',
+      '/zh-TW/priceanalysis'
+    ));
   });
 
   it('頂部查詢列不再有「開始分析」按鈕，設定直接攤在搜尋列右緣', async () => {
