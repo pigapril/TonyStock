@@ -17,6 +17,7 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { StaticStockList } from './components/StockCard/StaticStockList';
 import { SortMenu } from './components/SortMenu';
+import { PriceSentimentNotificationSettings } from './PriceSentimentNotificationSettings';
 import { sortStocks, SORTABLE_COLUMNS } from './utils/sortStocks';
 
 const loadDraggableStockList = () => import('./components/StockCard/DraggableStockList');
@@ -483,6 +484,11 @@ export function WatchlistContainer() {
                             <p className="watchlist-subtitle">{t('watchlist.pageSubtitle')}</p>
                         </div>
                     </div>
+                    {isAuthenticated ? (
+                        <div className="watchlist-header-actions">
+                            <PriceSentimentNotificationSettings />
+                        </div>
+                    ) : null}
                 </div>
                 {error && (
                     <div className="error-message">

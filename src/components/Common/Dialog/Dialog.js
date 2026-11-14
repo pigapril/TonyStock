@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useId, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { IoClose } from 'react-icons/io5';
 import { useTranslation } from 'react-i18next';
 import './Dialog.css';
@@ -56,7 +57,9 @@ export function Dialog({
 
     if (!open && !isClosing) return null;
 
-    return (
+    if (typeof document === "undefined") return null;
+
+  return createPortal(
         <div
             className={[
                 'dialog-overlay',
@@ -105,6 +108,8 @@ export function Dialog({
                     {children}
                 </div>
             </div>
-        </div>
-    );
+        </div>,
+  
+    document.body
+  );
 } 

@@ -1619,6 +1619,39 @@
       "editCategory": "Edit category",
       "deleteCategory": "Delete category",
       "dragToReorder": "Drag to reorder"
+    },
+    "priceSentimentNotifications": {
+      "eyebrow": "PRO NOTIFICATIONS",
+      "triggerButton": "Alert settings",
+      "title": "Price sentiment email alerts",
+      "description": "Automatically monitor the stocks in your Watchlist and receive a daily summary when their long-term price sentiment enters a state you selected.",
+      "proBadge": "PRO",
+      "loadError": "Notification settings could not be loaded. Please try again.",
+      "loading": "Loading notification settings…",
+      "proRequired": "Upgrade to Pro to receive daily price sentiment alerts for your Watchlist.",
+      "upgrade": "View Pro plans",
+      "enableTitle": "Enable price sentiment alerts",
+      "enableDescription": "Monitor every stock in your Watchlist. No per-stock setup is needed.",
+      "conditionsTitle": "Notify me when sentiment enters",
+      "conditionsHint": "Choose the price sentiment states you want to receive. Extreme Fear and Extreme Greed are selected by default.",
+      "sentiments": {
+        "extremeFear": "Extreme Fear",
+        "fear": "Fear",
+        "neutral": "Neutral",
+        "greed": "Greed",
+        "extremeGreed": "Extreme Greed"
+      },
+      "selectAtLeastOne": "Select at least one sentiment state before enabling notifications.",
+      "schedule": "Scan and delivery",
+      "scheduleValue": "Scans start daily at 07:00 Taipei time; email is sent when the scan completes",
+      "period": "Analysis period",
+      "periodValue": "Long term (3.5 years)",
+      "recipient": "Send to",
+      "triggerNote": "An email is sent when a stock enters a selected state. No daily repeats while it remains there; it can alert again after leaving and re-entering the state.",
+      "saved": "Notification settings saved.",
+      "saveError": "Could not save notification settings. Please try again.",
+      "saving": "Saving…",
+      "save": "Save settings"
     }
   },
   "errors": {

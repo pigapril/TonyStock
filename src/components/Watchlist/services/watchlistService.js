@@ -186,6 +186,29 @@ class WatchlistService {
         }
     }
 
+    async getPriceSentimentNotificationSettings() {
+        try {
+            const response = await csrfClient.fetchWithCSRF('/api/watchlist/price-analysis-notification-settings', {
+                method: 'GET'
+            });
+            return await this._handleApiResponse(response);
+        } catch (error) {
+            this._handleApiError(error, 'getPriceSentimentNotificationSettings');
+        }
+    }
+
+    async updatePriceSentimentNotificationSettings(settings) {
+        try {
+            const response = await csrfClient.put('/api/watchlist/price-analysis-notification-settings', {
+                enabled: Boolean(settings?.enabled),
+                selectedSentiments: Array.isArray(settings?.selectedSentiments) ? settings.selectedSentiments : []
+            });
+            return await this._handleApiResponse(response);
+        } catch (error) {
+            this._handleApiError(error, 'updatePriceSentimentNotificationSettings');
+        }
+    }
+
     async searchStocks(keyword) {
         try {
             if (!keyword || keyword.trim() === '') {

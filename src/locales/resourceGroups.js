@@ -6,7 +6,7 @@ const RESOURCE_GROUPS = {
   indicators: ['sentimentIndicatorPages'],
   account: ['redemption'],
   market: ['marketSentiment.descriptions', 'marketSentiment.enhancedDescription', 'marketSentiment.tw'],
-  price: ['priceAnalysis.description', 'priceAnalysis.tour']
+  price: ['priceAnalysis.description', 'priceAnalysis.tour', 'watchlist.priceSentimentNotifications']
 };
 
 function getRouteLocaleGroups(pathname = '') {

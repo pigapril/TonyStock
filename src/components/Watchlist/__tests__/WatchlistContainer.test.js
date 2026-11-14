@@ -65,7 +65,19 @@ jest.mock('../hooks/useStocks', () => ({
 
 jest.mock('../services/watchlistService', () => ({
   __esModule: true,
-  default: {}
+  default: {
+    getPriceSentimentNotificationSettings: jest.fn().mockResolvedValue({
+      enabled: false,
+      selectedSentiments: ['extremeFear', 'extremeGreed'],
+      canUseFeature: true,
+      registeredEmail: 'member@example.com'
+    }),
+    updatePriceSentimentNotificationSettings: jest.fn().mockResolvedValue({
+      enabled: false,
+      selectedSentiments: ['extremeFear', 'extremeGreed'],
+      canUseFeature: true
+    })
+  }
 }));
 
 jest.mock('../SearchBox', () => ({

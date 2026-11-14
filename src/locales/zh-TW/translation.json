@@ -1644,6 +1644,39 @@
       "editCategory": "編輯分類",
       "deleteCategory": "刪除分類",
       "dragToReorder": "拖曳以重新排序"
+    },
+    "priceSentimentNotifications": {
+      "eyebrow": "PRO 專屬通知",
+      "triggerButton": "設定通知",
+      "title": "價格情緒 Email 通知",
+      "description": "自動監控追蹤清單中的股票，當長期價格情緒進入你選擇的狀態時，於每日掃描後寄送摘要。",
+      "proBadge": "PRO",
+      "loadError": "目前無法載入通知設定，請稍後再試。",
+      "loading": "正在載入通知設定…",
+      "proRequired": "升級至 Pro，即可接收追蹤清單中股票的每日價格情緒通知。",
+      "upgrade": "查看 Pro 方案",
+      "enableTitle": "啟用價格情緒通知",
+      "enableDescription": "自動監控追蹤清單中的所有股票，不需逐檔設定。",
+      "conditionsTitle": "通知情緒",
+      "conditionsHint": "選擇希望收到通知的價格位階。預設為極度恐懼與極度貪婪。",
+      "sentiments": {
+        "extremeFear": "極度恐懼",
+        "fear": "恐懼",
+        "neutral": "中性",
+        "greed": "貪婪",
+        "extremeGreed": "極度貪婪"
+      },
+      "selectAtLeastOne": "啟用通知時，請至少選擇一種情緒狀態。",
+      "schedule": "掃描與寄送",
+      "scheduleValue": "每日台北時間 07:00 開始掃描，完成後寄送",
+      "period": "分析週期",
+      "periodValue": "長期（3.5 年）",
+      "recipient": "寄送至",
+      "triggerNote": "只有進入所選情緒狀態時才會通知。同一股票持續停留在相同狀態不會每日重複寄送；離開後再次進入時才會再次通知。",
+      "saved": "通知設定已儲存。",
+      "saveError": "儲存通知設定失敗，請稍後再試。",
+      "saving": "儲存中…",
+      "save": "儲存設定"
     }
   },
   "errors": {
