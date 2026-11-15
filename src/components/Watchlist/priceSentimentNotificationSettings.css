@@ -197,6 +197,20 @@
     background: #f1f5f9;
 }
 
+.price-sentiment-alert-dialog__master--enabled {
+    border-color: rgba(156, 116, 73, 0.4);
+    background: rgba(156, 116, 73, 0.06);
+}
+
+.price-sentiment-alert-dialog__master--enabled:hover {
+    border-color: rgba(156, 116, 73, 0.6);
+    background: rgba(156, 116, 73, 0.1);
+}
+
+.price-sentiment-alert-dialog__master--enabled .price-sentiment-alert-dialog__master-copy strong {
+    color: var(--primary-color, #9c7449);
+}
+
 .price-sentiment-alert-dialog__master-copy {
     display: flex;
     flex-direction: column;

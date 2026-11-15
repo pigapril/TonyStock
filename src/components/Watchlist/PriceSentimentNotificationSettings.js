@@ -148,10 +148,10 @@ export function PriceSentimentNotificationSettings() {
                     </div>
                 ) : (
                     <div className="price-sentiment-alert-dialog__settings">
-                        <label htmlFor="price-sentiment-master-toggle" className="price-sentiment-alert-dialog__master">
+                        <label htmlFor="price-sentiment-master-toggle" className={`price-sentiment-alert-dialog__master${draft.enabled ? ' price-sentiment-alert-dialog__master--enabled' : ''}`}>
                             <span className="price-sentiment-alert-dialog__master-copy">
-                                <strong>{t('watchlist.priceSentimentNotifications.enableTitle')}</strong>
-                                <small>{t('watchlist.priceSentimentNotifications.enableDescription')}</small>
+                                <strong>{t(`watchlist.priceSentimentNotifications.${draft.enabled ? 'enabledTitle' : 'disabledTitle'}`)}</strong>
+                                <small>{t(`watchlist.priceSentimentNotifications.${draft.enabled ? 'enabledDescription' : 'disabledDescription'}`)}</small>
                             </span>
                             <span className="price-sentiment-alert-dialog__switch">
                                 <input

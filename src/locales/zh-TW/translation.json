@@ -1657,6 +1657,10 @@
       "upgrade": "查看 Pro 方案",
       "enableTitle": "啟用價格情緒通知",
       "enableDescription": "自動監控追蹤清單中的所有股票，不需逐檔設定。",
+      "enabledTitle": "通知已啟用",
+      "enabledDescription": "自動監控追蹤清單中的所有股票，不需逐檔設定。",
+      "disabledTitle": "通知尚未啟用",
+      "disabledDescription": "啟用後，自動監控追蹤清單中的所有股票，不需逐檔設定。",
       "conditionsTitle": "通知情緒",
       "conditionsHint": "選擇希望收到通知的價格位階。預設為極度恐懼與極度貪婪。",
       "sentiments": {

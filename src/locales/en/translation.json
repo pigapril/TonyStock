@@ -1632,6 +1632,10 @@
       "upgrade": "View Pro plans",
       "enableTitle": "Enable price sentiment alerts",
       "enableDescription": "Monitor every stock in your Watchlist. No per-stock setup is needed.",
+      "enabledTitle": "Alerts enabled",
+      "enabledDescription": "Monitoring every stock in your Watchlist automatically.",
+      "disabledTitle": "Alerts not enabled",
+      "disabledDescription": "Enable to automatically monitor every stock in your Watchlist.",
       "conditionsTitle": "Notify me when sentiment enters",
       "conditionsHint": "Choose the price sentiment states you want to receive. Extreme Fear and Extreme Greed are selected by default.",
       "sentiments": {
