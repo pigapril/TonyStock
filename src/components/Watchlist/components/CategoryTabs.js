@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FaFolder } from 'react-icons/fa';
+import { FaFolder, FaLock } from 'react-icons/fa';
 import '../styles/CategoryTabs.css';
 import { useTranslation } from 'react-i18next';
 
@@ -8,7 +8,8 @@ export const CategoryTabs = ({
     categories,
     activeTab,
     onTabChange,
-    onManageCategories
+    onManageCategories,
+    manageLocked = false
 }) => {
     const { t } = useTranslation();
 
@@ -18,9 +19,12 @@ export const CategoryTabs = ({
                 onClick={onManageCategories}
                 className="category-tab folder-tab"
                 aria-label={t('watchlist.categoryTabs.manageCategoriesAria')}
+                title={manageLocked ? t('watchlist.upgradeRequired') : t('watchlist.categoryTabs.manageCategoriesAria')}
+                data-locked={manageLocked ? 'true' : undefined}
                 data-testid="manage-categories-button"
             >
                 <FaFolder />
+                {manageLocked ? <FaLock className="category-tab__lock" aria-hidden="true" /> : null}
             </button>
             {categories.map((category) => (
                 <button
@@ -44,5 +48,6 @@ CategoryTabs.propTypes = {
     ).isRequired,
     activeTab: PropTypes.string,
     onTabChange: PropTypes.func.isRequired,
-    onManageCategories: PropTypes.func.isRequired
+    onManageCategories: PropTypes.func.isRequired,
+    manageLocked: PropTypes.bool
 }; 

@@ -1,5 +1,7 @@
 import React, { Suspense, lazy, useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
+import { useNavigate } from 'react-router-dom';
+import { FaLock, FaSearch } from 'react-icons/fa';
 
 import './styles/Watchlist.css';
 
@@ -56,10 +58,21 @@ const readStoredSort = (categoryId) => {
 export function WatchlistContainer() {
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language; // 取得當前語言
+    const navigate = useNavigate();
     const { user, isAuthenticated, checkAuthStatus } = useAuth();
+    const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+    const isProUser = isTemporaryFreeMode || ['pro', 'premium'].includes(user?.plan);
     const { toast, showToast, hideToast } = useToastManager();
 
+    const handleUpgrade = useCallback(() => {
+        navigate(`/${currentLang}/subscription-plans`, {
+            state: { reason: 'watchlist_upgrade_required' }
+        });
+    }, [currentLang, navigate]);
+
     const [error, setError] = useState(null);
+    const [freePreviewCategories, setFreePreviewCategories] = useState([]);
+    const [freePreviewLoading, setFreePreviewLoading] = useState(false);
 
     // 使用 useCategories hook
     const {
@@ -87,7 +100,7 @@ export function WatchlistContainer() {
     } = useStocks(watchlistService, showToast, handleStockOperationSuccess);  // 添加成功回調
 
     // 合併 loading 狀態 - UX 優化：只在分類載入時顯示全頁 Loading，股票操作使用局部狀態或靜默更新
-    const isLoading = categoriesLoading;
+    const isLoading = isProUser ? categoriesLoading : freePreviewLoading;
 
     // 實作樂觀更新的股票排序
     const onReorderStocks = useCallback(async (categoryId, orders) => {
@@ -161,6 +174,32 @@ export function WatchlistContainer() {
     const [isPreparingEditMode, setIsPreparingEditMode] = useState(false);
     const [selectedNews, setSelectedNews] = useState(null);
 
+    // Free 與 Pro 共用同一套分類／股票卡片 UI；Free 只換成平台精選資料，
+    // 不再另外維護一套 ReadOnlyWatchlistList 版型。
+    const displayCategories = useMemo(() => {
+        if (isProUser) return categories;
+
+        return (freePreviewCategories || []).map((category) => ({
+            ...category,
+            name: t('watchlist.freePreviewCategory', { defaultValue: category.name }),
+            stocks: (category.stocks || []).map((stock, index) => {
+                const symbol = String(stock.symbol || stock.stockSymbol || stock.stockCode || '').trim().toUpperCase();
+                const hasPrice = stock.price !== undefined && stock.price !== null && stock.price !== ''
+                    && Number.isFinite(Number(stock.price));
+
+                return {
+                    ...stock,
+                    id: stock.id || `${category.id}-${symbol || index}`,
+                    symbol,
+                    name: stock.name || stock.stockName || symbol,
+                    nameEn: stock.nameEn || stock.name || stock.stockName || symbol,
+                    price: hasPrice ? Number(stock.price) : null,
+                    news: Array.isArray(stock.news) ? stock.news : []
+                };
+            }).filter((stock) => stock.symbol)
+        }));
+    }, [categories, freePreviewCategories, isProUser, t]);
+
     const handleTabChange = (categoryId) => {
         setActiveTab(categoryId);
     };
@@ -208,24 +247,27 @@ export function WatchlistContainer() {
 
     // ✅ 新增：主動權限檢查 (Pre-emptive Check)
     // 如果前端狀態已經更新為 free，直接導走
-    useEffect(() => {
-        // 检查临时免费模式
-        const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
-
-        if (isAuthenticated && user?.plan === 'free' && !isTemporaryFreeMode) {
-            // 顯示提示後導轉到訂閱頁面
-            showToast(t('watchlist.upgradeRequired'), 'info');
-            setTimeout(() => {
-                window.location.href = `/${i18n.language}/subscription-plans`;
-            }, 1500);
-        }
-    }, [user, isAuthenticated, i18n.language, showToast, t]);
-
     // 檢查用戶是否已登入並載入資料
     useEffect(() => {
         if (!isAuthenticated) {
             showToast(t('watchlist.loginRequiredMessage'), 'warning');
             return;
+        }
+
+        if (!isProUser) {
+            let cancelled = false;
+            setFreePreviewLoading(true);
+            watchlistService.getFreePreview()
+                .then((categories) => {
+                    if (!cancelled) setFreePreviewCategories(categories || []);
+                })
+                .catch((loadError) => {
+                    if (!cancelled) setError(loadError.message || t('watchlist.loadFailed'));
+                })
+                .finally(() => {
+                    if (!cancelled) setFreePreviewLoading(false);
+                });
+            return () => { cancelled = true; };
         }
 
         let retryCount = 0;
@@ -266,15 +308,16 @@ export function WatchlistContainer() {
         };
 
         initializeCategories();
-    }, [isAuthenticated, loadCategories, showToast, t, checkAuthStatus, i18n.language]);
+    }, [isAuthenticated, isProUser, loadCategories, showToast, t, checkAuthStatus, i18n.language]);
 
-    // 當分類載入完成且無作用中標籤時，設定預設標籤
+    // 使用目前方案可見的分類設定預設標籤，避免 Free 有資料卻沒有 active category。
     useEffect(() => {
-        if (categories?.length > 0 && !activeTab) {
-            const firstCategory = categories[0];
-            setActiveTab(firstCategory.id);
+        if (displayCategories.length > 0 && !displayCategories.some((category) => category.id === activeTab)) {
+            setActiveTab(displayCategories[0].id);
+        } else if (displayCategories.length === 0 && activeTab) {
+            setActiveTab(null);
         }
-    }, [categories, activeTab]);
+    }, [displayCategories, activeTab]);
 
     // 監聽登出事件，重置狀態
     useEffect(() => {
@@ -407,8 +450,8 @@ export function WatchlistContainer() {
     };
 
     const activeCategory = useMemo(
-        () => categories.find((category) => category.id === activeTab) || null,
-        [activeTab, categories]
+        () => displayCategories.find((category) => category.id === activeTab) || null,
+        [activeTab, displayCategories]
     );
 
     const sortedStocks = useMemo(
@@ -486,7 +529,15 @@ export function WatchlistContainer() {
                     </div>
                     {isAuthenticated ? (
                         <div className="watchlist-header-actions">
-                            <PriceSentimentNotificationSettings />
+                            {isProUser ? (
+                                <PriceSentimentNotificationSettings />
+                            ) : (
+                                <button type="button" className="watchlist-locked-action" onClick={handleUpgrade}>
+                                    <FaLock aria-hidden="true" />
+                                    <span>{t('watchlist.priceSentimentNotifications.triggerButton')}</span>
+                                    <span className="watchlist-locked-action__badge">PRO</span>
+                                </button>
+                            )}
                         </div>
                     ) : null}
                 </div>
@@ -510,29 +561,49 @@ export function WatchlistContainer() {
                     </div>
                 ) : (
                     <>
-                        {categories.length === 0 ? (
+                        {isProUser && displayCategories.length === 0 ? (
                             <div className="empty-state">
                             </div>
-                        ) : (
+                        ) : displayCategories.length > 0 ? (
                             <div className="watchlist-content">
                                 <CategoryTabs
-                                    categories={categories}
+                                    categories={displayCategories}
                                     activeTab={activeTab}
                                     onTabChange={handleTabChange}
-                                    onManageCategories={() => updateDialogState('categoryManager', true)}
+                                    onManageCategories={isProUser
+                                        ? () => updateDialogState('categoryManager', true)
+                                        : handleUpgrade}
+                                    manageLocked={!isProUser}
                                 />
+
+                                {!isProUser ? (
+                                    <div className="watchlist-free-plan-note">
+                                        <span>{t('watchlist.freePreviewDescription')}</span>
+                                        <button type="button" onClick={handleUpgrade}>
+                                            {t('watchlist.freeUpgradeCta', { defaultValue: '解鎖個人追蹤清單' })}
+                                        </button>
+                                    </div>
+                                ) : null}
 
                                 {activeCategory ? (
                                     <div
                                         key={activeCategory.id}
-                                        className={`category-content active ${isEditing ? 'editing' : ''}`}
+                                        className={`category-content active ${isProUser && isEditing ? 'editing' : ''}`}
                                     >
                                         <div className="watchlist-controls-row">
-                                            <SearchBox
-                                                onSelect={onAddStock}
-                                                watchlistService={watchlistService}
-                                                categoryId={activeCategory.id}
-                                            />
+                                            {isProUser ? (
+                                                <SearchBox
+                                                    onSelect={onAddStock}
+                                                    watchlistService={watchlistService}
+                                                    categoryId={activeCategory.id}
+                                                />
+                                            ) : (
+                                                <button type="button" className="watchlist-locked-search" onClick={handleUpgrade}>
+                                                    <FaSearch aria-hidden="true" />
+                                                    <span>{t('watchlist.searchBox.placeholder')}</span>
+                                                    <FaLock className="watchlist-locked-search__lock" aria-hidden="true" />
+                                                </button>
+                                            )}
 
                                             <div className="watchlist-list-toolbar">
                                                 <SortMenu
@@ -540,39 +611,38 @@ export function WatchlistContainer() {
                                                     onSortChange={handleSortChange}
                                                 />
                                                 <div className="category-operations">
+                                                    {isProUser ? (
+                                                        <button
+                                                            type="button"
+                                                            className={`edit-mode-button ${!isEditing ? 'active' : ''}`}
+                                                            onClick={() => switchEditMode(false)}
+                                                            aria-label={t('watchlist.editMode.switchToBrowse')}
+                                                            title={t('watchlist.editMode.switchToBrowse')}
+                                                            aria-pressed={!isEditing}
+                                                            data-testid="watchlist-browse-mode-button"
+                                                            disabled={isPreparingEditMode}
+                                                        >
+                                                            <span className="edit-mode-button__label">{t('watchlist.editMode.browse')}</span>
+                                                        </button>
+                                                    ) : null}
                                                     <button
                                                         type="button"
-                                                        className={`edit-mode-button ${!isEditing ? 'active' : ''}`}
-                                                        onClick={() => switchEditMode(false)}
-                                                        aria-label={t('watchlist.editMode.switchToBrowse')}
-                                                        title={t('watchlist.editMode.switchToBrowse')}
-                                                        aria-pressed={!isEditing}
-                                                        data-testid="watchlist-browse-mode-button"
-                                                        disabled={isPreparingEditMode}
-                                                    >
-                                                        <span className="edit-mode-button__label">
-                                                            {t('watchlist.editMode.browse')}
-                                                        </span>
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        className={`edit-mode-button ${isEditing ? 'active' : ''}`}
-                                                        onClick={() => switchEditMode(true)}
+                                                        className={`edit-mode-button ${isProUser && isEditing ? 'active' : ''} ${!isProUser ? 'is-locked' : ''}`}
+                                                        onClick={isProUser ? () => switchEditMode(true) : handleUpgrade}
                                                         aria-label={t('watchlist.editMode.switchToEdit')}
                                                         title={t('watchlist.editMode.switchToEdit')}
-                                                        aria-pressed={isEditing}
+                                                        aria-pressed={isProUser ? isEditing : undefined}
                                                         data-testid="watchlist-edit-mode-button"
                                                         disabled={isPreparingEditMode}
                                                     >
-                                                        <span className="edit-mode-button__label">
-                                                            {t('watchlist.editMode.edit')}
-                                                        </span>
+                                                        {!isProUser ? <FaLock aria-hidden="true" /> : null}
+                                                        <span className="edit-mode-button__label">{t('watchlist.editMode.edit')}</span>
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {canDrag ? (
+                                        {isProUser && canDrag ? (
                                             <Suspense fallback={null}>
                                                 <DraggableStockList
                                                     stocks={sortedStocks}
@@ -588,17 +658,17 @@ export function WatchlistContainer() {
                                             <StaticStockList
                                                 stocks={sortedStocks}
                                                 categoryId={activeCategory.id}
-                                                onRemoveStock={onRemoveStock}
+                                                onRemoveStock={isProUser ? onRemoveStock : () => handleUpgrade()}
                                                 onNewsClick={handleNewsClick}
                                                 sortState={sortState}
                                                 onSortChange={handleSortChange}
-                                                isEditing={isEditing}
+                                                isEditing={isProUser && isEditing}
                                             />
                                         )}
                                     </div>
                                 ) : null}
                             </div>
-                        )}
+                        ) : null}
                     </>
                 )}
 

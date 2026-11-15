@@ -7,6 +7,8 @@ import { WatchlistContainer } from '../WatchlistContainer';
 
 const mockNavigate = jest.fn();
 const mockRequestAdDisplay = jest.fn();
+const mockShowToast = jest.fn();
+const mockHideToast = jest.fn();
 const mockAuthState = {
   user: { id: 'user-1', plan: 'pro' },
   isAuthenticated: true,
@@ -50,8 +52,8 @@ jest.mock('../../Common/InterstitialAdModal/AdContext', () => ({
 jest.mock('../hooks/useToastManager', () => ({
   useToastManager: () => ({
     toast: null,
-    showToast: jest.fn(),
-    hideToast: jest.fn()
+    showToast: mockShowToast,
+    hideToast: mockHideToast
   })
 }));
 
@@ -76,9 +78,16 @@ jest.mock('../services/watchlistService', () => ({
       enabled: false,
       selectedSentiments: ['extremeFear', 'extremeGreed'],
       canUseFeature: true
-    })
+    }),
+    getFreePreview: jest.fn().mockResolvedValue([{
+      id: 'platform-featured',
+      name: '平台精選',
+      stocks: [{ id: 'featured-1', symbol: '0050', name: '元大台灣50' }]
+    }])
   }
 }));
+
+const mockWatchlistService = require('../services/watchlistService').default;
 
 jest.mock('../SearchBox', () => ({
   SearchBox: () => <div data-testid="watchlist-search-box" />
@@ -151,6 +160,12 @@ const categories = [
 describe('WatchlistContainer', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    delete process.env.REACT_APP_TEMPORARY_FREE_MODE;
+    mockWatchlistService.getFreePreview.mockResolvedValue([{
+      id: 'platform-featured',
+      name: '平台精選',
+      stocks: [{ id: 'featured-1', symbol: '0050', name: '元大台灣50' }]
+    }]);
     mockAuthState.isAuthenticated = true;
     mockAuthState.user = { id: 'user-1', plan: 'pro' };
     mockCategoriesApi.categories = categories;
@@ -210,6 +225,46 @@ describe('WatchlistContainer', () => {
 
     expect(screen.getByTestId('static-stock-list')).toBeInTheDocument();
     expect(screen.queryByTestId('draggable-stock-list')).not.toBeInTheDocument();
+  });
+
+  it('renders Free preview with the shared Pro watchlist layout and locks management actions', async () => {
+    mockAuthState.user = { id: 'user-1', plan: 'free' };
+
+    render(
+      <TestWrapper>
+        <WatchlistContainer />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('static-stock-list')).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('0050')).toBeInTheDocument();
+    expect(screen.getByTestId('manage-categories-button')).toHaveAttribute('data-locked', 'true');
+    expect(screen.getByRole('button', { name: /Enter stock symbol|輸入股票代號/i })).toBeInTheDocument();
+    expect(screen.queryByTestId('watchlist-search-box')).not.toBeInTheDocument();
+    expect(screen.getByTestId('watchlist-edit-mode-button')).toHaveClass('is-locked');
+    expect(screen.queryByTestId('watchlist-browse-mode-button')).not.toBeInTheDocument();
+  });
+
+  it('routes Free management actions to the Pro plans page', async () => {
+    mockAuthState.user = { id: 'user-1', plan: 'free' };
+
+    render(
+      <TestWrapper>
+        <WatchlistContainer />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('watchlist-edit-mode-button')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByTestId('watchlist-edit-mode-button'));
+    expect(mockNavigate).toHaveBeenCalledWith('/en/subscription-plans', {
+      state: { reason: 'watchlist_upgrade_required' }
+    });
   });
 
   it('mounts deferred dialogs only when opened', async () => {

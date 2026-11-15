@@ -155,6 +155,24 @@ class WatchlistService {
         }
     }
 
+    async refreshCategoriesLite() {
+        this._invalidateCategoriesCache();
+        return this.getCategoriesLite();
+    }
+
+    async getFreePreview() {
+        try {
+            const response = await csrfClient.fetchWithCSRF('/api/watchlist/free-preview', {
+                method: 'GET'
+            });
+            const responseData = await this._handleApiResponse(response);
+            if (Array.isArray(responseData)) return responseData;
+            return Array.isArray(responseData?.categories) ? responseData.categories : [];
+        } catch (error) {
+            this._handleApiError(error, 'getFreePreview');
+        }
+    }
+
     async createCategory(name) {
         try {
             const response = await csrfClient.post('/api/watchlist/categories', { name });

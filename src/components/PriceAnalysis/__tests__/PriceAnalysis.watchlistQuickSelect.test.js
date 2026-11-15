@@ -16,7 +16,8 @@ const mockDialogApi = {
 };
 
 const mockAdContext = {
-  requestAdDisplay: jest.fn()
+  requestAdDisplay: jest.fn(),
+  requestTrialPromotion: jest.fn()
 };
 
 const mockToastApi = {
@@ -71,7 +72,8 @@ jest.mock('../../../components/Watchlist/hooks/useToastManager', () => ({
 jest.mock('../../../components/Watchlist/services/watchlistService', () => ({
   __esModule: true,
   default: {
-    getCategoriesLite: jest.fn()
+    getCategoriesLite: jest.fn(),
+    getFreePreview: jest.fn()
   }
 }));
 
@@ -123,6 +125,7 @@ const TestWrapper = ({ children }) => (
 describe('PriceAnalysis watchlist quick select', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockAuthState.user = { id: 'user-1', plan: 'pro' };
     mockWatchlistService.getCategoriesLite.mockResolvedValue([
       {
         id: 'cat-1',
@@ -130,6 +133,15 @@ describe('PriceAnalysis watchlist quick select', () => {
         stocks: [{ stockCode: 'SPY', name: 'SPY ETF' }]
       }
     ]);
+    mockWatchlistService.getFreePreview.mockResolvedValue([{
+      id: 'platform-featured',
+      name: '平台精選',
+      stocks: [
+        { symbol: '0050', name: '元大台灣50', nameEn: 'Yuanta Taiwan 50' },
+        { symbol: 'SPY', name: 'SPDR S&P 500 ETF Trust', nameEn: 'SPDR S&P 500 ETF Trust' },
+        { symbol: 'QQQ', name: 'Invesco QQQ Trust', nameEn: 'Invesco QQQ Trust' }
+      ]
+    }]);
     mockEnhancedApiClient.get.mockImplementation((url) => {
       if (url === '/api/hot-searches') {
         return Promise.resolve({
@@ -162,10 +174,8 @@ describe('PriceAnalysis watchlist quick select', () => {
 
     fireEvent.click(await screen.findByRole('button', { name: /watchlist|關注/i }));
 
-    await waitFor(() => {
-      expect(screen.getByText('Core')).toBeInTheDocument();
-      expect(screen.getByText('SPY')).toBeInTheDocument();
-    });
+    expect(await screen.findByText('Core')).toBeInTheDocument();
+    expect(screen.getAllByText('SPY').length).toBeGreaterThan(0);
   });
 
   it('prefetches watchlist data in the background before the tab is opened', async () => {
@@ -180,5 +190,33 @@ describe('PriceAnalysis watchlist quick select', () => {
     });
 
     expect(screen.queryByText('Core')).not.toBeInTheDocument();
+  });
+
+  it('allows Free users to open the curated three-stock preview and select a stock', async () => {
+    mockAuthState.user = { id: 'user-1', plan: 'free' };
+
+    render(
+      <TestWrapper>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: /watchlist|關注/i }));
+
+    const featuredCategory = await screen.findByRole('button', { name: /平台精選/ });
+    await waitFor(() => {
+      expect(featuredCategory).toHaveClass('collapsed');
+    });
+    fireEvent.click(featuredCategory);
+
+    expect(await screen.findByText('0050')).toBeInTheDocument();
+    expect(screen.getAllByText('SPY').length).toBeGreaterThan(0);
+    expect(screen.getByText('QQQ')).toBeInTheDocument();
+
+    expect(mockWatchlistService.getFreePreview).toHaveBeenCalled();
+    expect(mockWatchlistService.getCategoriesLite).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByText('0050'));
+    expect(screen.getByRole('combobox')).toHaveValue('0050');
   });
 });

@@ -118,7 +118,7 @@ describe('ProtectedRoute', () => {
         expect(mockOpenDialog).not.toHaveBeenCalled();
     });
 
-    it('redirects watchlist visitors without access to the localized subscription page', () => {
+    it('allows authenticated Free users to enter the read-only Watchlist page', () => {
         mockLocation = { pathname: '/zh-TW/watchlist' };
         mockUseAuth.mockReturnValue({
             user: { id: 'user-2', email: 'member@example.com' },
@@ -132,13 +132,8 @@ describe('ProtectedRoute', () => {
             </ProtectedRoute>
         );
 
-        const navigate = screen.getByTestId('navigate');
-        expect(navigate).toHaveAttribute('data-to', '/zh-TW/subscription-plans');
-        expect(JSON.parse(navigate.getAttribute('data-state'))).toEqual({
-            from: '/zh-TW/watchlist',
-            reason: 'watchlist_upgrade_required',
-            message: 'protectedRoute.watchlistUpgradeRequired'
-        });
+        expect(screen.getByTestId('protected-content')).toBeInTheDocument();
+        expect(screen.queryByTestId('navigate')).not.toBeInTheDocument();
     });
 
     it('allows watchlist access in temporary free mode', () => {

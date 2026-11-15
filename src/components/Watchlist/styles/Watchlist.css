@@ -339,6 +339,108 @@
     width: 100%;
 }
 
+/* Free 與 Pro 共用清單版型；鎖定狀態只改變可用性提示，不另造一套頁面。 */
+.watchlist-free-plan-note {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: -6px 0 14px;
+    padding: 10px 13px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.watchlist-free-plan-note button {
+    flex: 0 0 auto;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: #2563eb;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.watchlist-free-plan-note button:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.watchlist-locked-search {
+    grid-column: 2;
+    display: flex;
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    background: #f8fafc;
+    color: #64748b;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+}
+
+.watchlist-locked-search__lock {
+    margin-left: auto;
+    color: #94a3b8;
+    font-size: 0.75rem;
+}
+
+.category-operations .edit-mode-button.is-locked {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #64748b;
+}
+
+.category-operations .edit-mode-button.is-locked svg {
+    font-size: 0.7rem;
+}
+
+.category-tab[data-locked="true"] {
+    gap: 7px;
+}
+
+.category-tab__lock {
+    font-size: 0.65rem;
+    color: #94a3b8;
+}
+
+.watchlist-locked-action {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    background: #fff;
+    color: #475569;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.watchlist-locked-action__badge {
+    padding: 2px 6px;
+    border-radius: 5px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 0.65rem;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+}
+
 .watchlist-controls-row {
     display: grid;
     grid-template-columns: 1fr minmax(320px, 350px) 1fr;
@@ -574,6 +676,18 @@
 
     .watchlist-controls-row > .watchlist-search-area {
         grid-column: auto;
+    }
+
+    .watchlist-controls-row > .watchlist-locked-search {
+        grid-column: auto;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .watchlist-free-plan-note {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
     }
 
     .watchlist-list-toolbar {

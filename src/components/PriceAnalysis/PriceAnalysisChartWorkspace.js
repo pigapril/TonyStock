@@ -46,6 +46,8 @@ function PriceAnalysisChartWorkspace({
   combinedStateKey,
   signalLadder,
   formatPrice,
+  onAddToWatchlist,
+  isOpeningAddToWatchlist,
   t
 }) {
   const hasAnalysisContent = Boolean(loading || chartData || ulbandData);
@@ -155,6 +157,8 @@ function PriceAnalysisChartWorkspace({
           analysisSentimentText={analysisSentimentText}
           getSentimentSuffix={getSentimentSuffix}
           formatPrice={formatPrice}
+          onAddToWatchlist={onAddToWatchlist}
+          isOpeningAddToWatchlist={isOpeningAddToWatchlist}
           t={t}
         />
 

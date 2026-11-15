@@ -14,7 +14,7 @@ const CACHE_KEY_REGIONS = 'freeStockList_regions';
 const CACHE_KEY_TICKERS = 'freeStockList_tickers';
 const CACHE_KEY_TIMESTAMP = 'freeStockList_timestamp';
 const CACHE_KEY_VERSION = 'freeStockList_version';
-const CURRENT_CACHE_VERSION = '1.0'; // 當資料結構改變時更新此版本號
+const CURRENT_CACHE_VERSION = '1.1'; // Clear legacy caches that may contain the removed hard-coded fallback list.
 
 /**
  * 從 localStorage 載入快取
@@ -116,14 +116,7 @@ export const getStocksByRegion = async () => {
     }
   } catch (error) {
     console.error('Failed to fetch stocks by region:', error);
-    
-    // 如果有舊快取，返回舊快取
-    if (cachedStocksByRegion) {
-      console.warn('Using cached data due to API error');
-      return cachedStocksByRegion;
-    }
-    
-    // 返回預設的空結構
+    clearCache();
     return {
       americas: { title: '美洲市場', icon: '🌎', stocks: [] },
       europe: { title: '歐洲市場', icon: '🇪🇺', stocks: [] },
@@ -161,15 +154,8 @@ export const getFreeStockTickers = async () => {
     }
   } catch (error) {
     console.error('Failed to fetch free stock tickers:', error);
-    
-    // 如果有舊快取，返回舊快取
-    if (cachedTickers) {
-      console.warn('Using cached tickers due to API error');
-      return cachedTickers;
-    }
-    
-    // 返回預設的基本清單
-    return ['0050', 'SPY', 'VOO', 'QQQ', 'VTI'];
+    clearCache();
+    return [];
   }
 };
 
@@ -195,9 +181,8 @@ export const isStockAllowed = (stockCode, userPlan = 'free') => {
     }
   }
   
-  // 如果沒有任何快取資料，返回基本的免費股票清單檢查
-  const basicFreeStocks = ['0050', 'SPY', 'VOO', 'QQQ', 'VTI'];
-  return basicFreeStocks.includes(stockCode.toUpperCase());
+  // Fail closed until the server-managed allow-list has loaded successfully.
+  return false;
 };
 
 /**
@@ -237,8 +222,8 @@ export const getFreeStockList = () => {
     }
   }
   
-  // 如果沒有任何快取資料，返回基本的免費股票清單
-  return ['0050', 'SPY', 'VOO', 'QQQ', 'VTI'];
+  // Fail closed until the server-managed allow-list has loaded successfully.
+  return [];
 };
 
 /**

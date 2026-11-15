@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaRegBookmark } from 'react-icons/fa';
 import InfoPopover from './InfoPopover';
 
 // 延遲載入圖表與資料請求共用同一份摘要，避免完成後新增欄位推動圖表。
@@ -10,6 +11,8 @@ export default function PriceAnalysisSummary({
   analysisSentimentText,
   getSentimentSuffix = () => 'neutral',
   formatPrice = (value) => value,
+  onAddToWatchlist,
+  isOpeningAddToWatchlist = false,
   t
 }) {
   return (
@@ -114,6 +117,21 @@ export default function PriceAnalysisSummary({
             <span className="analysis-value-skeleton analysis-value-skeleton--wide analysis-value-skeleton--channel" />
           )}
         </div>
+        {hasAnalysisContent && onAddToWatchlist ? (
+          <div className="analysis-item analysis-item--watchlist-action">
+            <button
+              type="button"
+              className="pa-add-to-watchlist-button"
+              onClick={() => onAddToWatchlist(displayedStockCode)}
+              disabled={!displayedStockCode || isOpeningAddToWatchlist}
+            >
+              <FaRegBookmark aria-hidden="true" />
+              {isOpeningAddToWatchlist
+                ? t('priceAnalysis.addToWatchlist.loading', { defaultValue: '載入分類中…' })
+                : t('priceAnalysis.addToWatchlist.button', { defaultValue: '加入追蹤清單' })}
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );

@@ -29,6 +29,7 @@ import FreeStockList from './FreeStockList'; // 新增：引入免費股票清�
 import { TOUR_STORAGE_KEY } from './tourStorageKey';
 import { normalizeHotSearches, readHotSearchesCache, saveHotSearchesCache } from './hotSearchCache';
 import watchlistService from '../Watchlist/services/watchlistService'; // 新增：引入 watchlist service
+import AddToWatchlistDialog from './AddToWatchlistDialog';
 
 const DeferredBacktestDatePicker = lazy(() => import('./DeferredBacktestDatePicker'));
 const PriceAnalysisChartWorkspace = lazy(() => import('./PriceAnalysisChartWorkspace'));
@@ -493,6 +494,10 @@ export function PriceAnalysis() {
   const [watchlistCategories, setWatchlistCategories] = useState([]);
   const [loadingWatchlist, setLoadingWatchlist] = useState(false);
   const [hasLoadedWatchlist, setHasLoadedWatchlist] = useState(false);
+  const [addToWatchlistOpen, setAddToWatchlistOpen] = useState(false);
+  const [addToWatchlistCategories, setAddToWatchlistCategories] = useState([]);
+  const [isLoadingAddToWatchlist, setIsLoadingAddToWatchlist] = useState(false);
+  const [isAddingToWatchlist, setIsAddingToWatchlist] = useState(false);
   const [collapsedCategories, setCollapsedCategories] = useState({}); // 新增：記錄哪些分類被收合
   const clearPostAnalysisTimers = useCallback(() => {
     if (tooltipTimerRef.current) {
@@ -672,10 +677,111 @@ export function PriceAnalysis() {
 
   const openAnalysisLogin = useCallback((stockCode, message) => {
     const returnPath = analysisReturnPath(stockCode);
-    // Keep the intended stock in the URL while authentication updates the page.
+    // Replace the current analysis entry rather than adding a duplicate history
+    // entry; the selected stock remains in the URL for the post-login resume.
     navigate(returnPath, { replace: true, state: { resumeAfterLogin: true } });
     openDialog('auth', { returnPath, message });
   }, [analysisReturnPath, navigate, openDialog]);
+
+  const handleOpenAddToWatchlist = useCallback(async (stockCode) => {
+    const symbol = String(stockCode || '').trim().toUpperCase();
+    if (!symbol) return;
+
+    if (!isAuthenticated) {
+      openAnalysisLogin(symbol, t('protectedRoute.loginRequired'));
+      return;
+    }
+
+    const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
+    const isProUser = isTemporaryFreeMode || ['pro', 'premium'].includes(user?.plan);
+    if (!isProUser) {
+      openDialog('featureUpgrade', {
+        feature: 'watchlist',
+        stockCode: symbol,
+        upgradeUrl: withAnalysisReturnPath(`/${currentLang}/subscription-plans`, analysisReturnPath(symbol))
+      });
+      return;
+    }
+
+    setIsLoadingAddToWatchlist(true);
+    try {
+      const categories = await watchlistService.refreshCategoriesLite();
+      setAddToWatchlistCategories((categories || []).map((category) => ({
+        ...category,
+        stocks: Array.isArray(category.stocks) ? category.stocks.map((stock) => ({
+          ...stock,
+          symbol: stock.symbol || stock.stockSymbol || stock.stockCode
+        })) : []
+      })));
+      setAddToWatchlistOpen(true);
+    } catch (error) {
+      showToast(error.message || t('priceAnalysis.addToWatchlist.loadError', { defaultValue: '無法載入追蹤清單分類，請稍後再試。' }), 'error');
+    } finally {
+      setIsLoadingAddToWatchlist(false);
+    }
+  }, [analysisReturnPath, currentLang, isAuthenticated, openAnalysisLogin, openDialog, showToast, t, user?.plan]);
+
+  const handleAddToWatchlist = useCallback(async ({ categoryId, newCategoryName }) => {
+    const symbol = String(displayedStockCode || '').trim().toUpperCase();
+    if (!symbol || isAddingToWatchlist) return;
+
+    setIsAddingToWatchlist(true);
+    try {
+      let targetCategoryId = categoryId;
+      let currentCategories = addToWatchlistCategories;
+      if (newCategoryName) {
+        const created = await watchlistService.createCategory(newCategoryName);
+        targetCategoryId = created?.category?.id || created?.id || null;
+        const refreshedAfterCreate = await watchlistService.refreshCategoriesLite();
+        const createdCategory = refreshedAfterCreate.find((category) =>
+          (targetCategoryId && category.id === targetCategoryId) || category.name === newCategoryName
+        );
+        targetCategoryId = createdCategory?.id || targetCategoryId;
+        currentCategories = refreshedAfterCreate.map((category) => ({
+          ...category,
+          stocks: Array.isArray(category.stocks) ? category.stocks.map((stock) => ({
+            ...stock,
+            symbol: stock.symbol || stock.stockSymbol || stock.stockCode
+          })) : []
+        }));
+        setAddToWatchlistCategories(currentCategories);
+      }
+
+      if (!targetCategoryId) {
+        throw new Error(t('priceAnalysis.addToWatchlist.categoryError', { defaultValue: '找不到要加入的分類，請重新操作。' }));
+      }
+
+      const existingCategory = currentCategories.find((category) => category.id === targetCategoryId);
+      const alreadyAdded = (existingCategory?.stocks || []).some((stock) =>
+        String(stock.symbol || stock.stockSymbol || stock.stockCode || '').toUpperCase() === symbol
+      );
+      if (alreadyAdded) {
+        showToast(t('priceAnalysis.addToWatchlist.duplicate', { defaultValue: '這檔股票已在所選分類中。' }), 'info');
+        setAddToWatchlistOpen(false);
+        return;
+      }
+
+      try {
+        await watchlistService.addStock(targetCategoryId, symbol);
+      } catch (addError) {
+        // 後端可能已完成 DB commit，只在補報價或刷新快取時失敗；先回查，避免再次新增。
+        const latestCategories = await watchlistService.refreshCategoriesLite();
+        const persisted = latestCategories.some((category) => category.id === targetCategoryId &&
+          (category.stocks || []).some((stock) =>
+            String(stock.symbol || stock.stockSymbol || stock.stockCode || '').toUpperCase() === symbol
+          ));
+        if (!persisted) throw addError;
+      }
+
+      await watchlistService.refreshCategoriesLite();
+      showToast(t('priceAnalysis.addToWatchlist.success', { defaultValue: '已加入追蹤清單。' }), 'success');
+      setAddToWatchlistOpen(false);
+    } catch (error) {
+      showToast(error.message || t('priceAnalysis.addToWatchlist.addError', { defaultValue: '加入追蹤清單失敗，請稍後再試。' }), 'error');
+    } finally {
+      setIsAddingToWatchlist(false);
+    }
+  }, [addToWatchlistCategories, displayedStockCode, isAddingToWatchlist, showToast, t]);
 
   // 統一 stockAccess 升級對話框的 props：附帶「先查免費標的」與「直接查某檔免費標的」兩個引導
   const buildStockAccessDialogProps = useCallback((stockCode) => ({
@@ -1048,17 +1154,13 @@ export function PriceAnalysis() {
 
     const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
     const userPlan = user?.plan || 'free';
-    const isPro = isTemporaryFreeMode || userPlan === 'pro';
-
-    if (!isPro) {
-      setWatchlistCategories([]);
-      setHasLoadedWatchlist(false);
-      return;
-    }
+    const isPro = isTemporaryFreeMode || ['pro', 'premium'].includes(userPlan);
 
     setLoadingWatchlist(true);
     try {
-      const categories = await watchlistService.getCategoriesLite();
+      const categories = isPro
+        ? await watchlistService.getCategoriesLite()
+        : await watchlistService.getFreePreview();
 
       const validCategories = [];
       if (Array.isArray(categories)) {
@@ -1103,14 +1205,6 @@ export function PriceAnalysis() {
     }
 
     if (!isAuthenticated || !user) {
-      return;
-    }
-
-    const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
-    const userPlan = user?.plan || 'free';
-    const isPro = isTemporaryFreeMode || userPlan === 'pro';
-
-    if (!isPro) {
       return;
     }
 
@@ -1347,20 +1441,7 @@ export function PriceAnalysis() {
       return;
     }
 
-    // 檢查是否為 Pro 用戶
-    const isTemporaryFreeMode = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true';
-    const userPlan = user?.plan || 'free';
-    const isPro = isTemporaryFreeMode || userPlan === 'pro';
-
-    if (!isPro) {
-      openDialog('featureUpgrade', {
-        feature: 'watchlist',
-        upgradeUrl: `/${i18n.language}/subscription-plans`
-      });
-      return;
-    }
-
-    // Pro 用戶可以切換到 watchlist tab
+    // Free users see the platform-curated preview; Pro users see their personal list.
     setActiveQuickSelectTab('watchlist');
 
     if (!hasLoadedWatchlist && !loadingWatchlist) {
@@ -1957,6 +2038,8 @@ export function PriceAnalysis() {
                       marketExtreme: analysisResult.marketExtreme
                     })}
                     formatPrice={formatPrice}
+                    onAddToWatchlist={handleOpenAddToWatchlist}
+                    isOpeningAddToWatchlist={isLoadingAddToWatchlist}
                     t={t}
                   />
                 </Suspense>
@@ -1971,6 +2054,18 @@ export function PriceAnalysis() {
               ) : null}
             </div>
           </div>
+
+          <AddToWatchlistDialog
+            open={addToWatchlistOpen}
+            categories={addToWatchlistCategories}
+            stockCode={displayedStockCode}
+            stockPriceText={analysisResult?.price != null ? `$${formatPrice(analysisResult.price)}` : null}
+            sentimentText={analysisSentimentText}
+            sentimentTone={getSentimentSuffix(analysisResult.sentimentKey)}
+            saving={isAddingToWatchlist}
+            onClose={() => setAddToWatchlistOpen(false)}
+            onSubmit={handleAddToWatchlist}
+          />
 
 
         </div> {/* 結束 content-layout-container */}
