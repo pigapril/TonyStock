@@ -16,7 +16,7 @@ const meta = (html, name) => html.match(new RegExp(`(?:name|property)="${name}" 
 
 beforeAll(() => {
   output = fs.mkdtempSync(path.join(os.tmpdir(), 'sio-social-seo-'));
-  fs.writeFileSync(path.join(output, 'index.html'), '<!doctype html><html lang="en"><head><title>Template</title></head><body><div id="root"></div></body></html>');
+  fs.writeFileSync(path.join(output, 'index.html'), '<!doctype html><html lang="en"><head><title>Template</title><link rel="preload" as="image" href="/logo.avif" fetchpriority="high" type="image/avif" /></head><body><div id="root"></div></body></html>');
   generate();
 }, 35000);
 afterAll(() => fs.rmSync(output, { recursive: true, force: true }));
@@ -69,8 +69,18 @@ test('localized HTML shells use matching install metadata and English article ch
   expect(localizedHome).toContain(`hreflang="x-default" href="${origin}/"`);
   const rootHome = fs.readFileSync(path.join(output, 'index.html'), 'utf8');
   expect(rootHome).toContain(`hreflang="x-default" href="${origin}/"`);
+  expect(rootHome).toContain('rel="preload" as="image" href="/home-hero-sio.svg" fetchpriority="high" type="image/svg+xml"');
   const translatedPriceAnalysis = fs.readFileSync(path.join(output, 'zh-TW/priceanalysis/index.html'), 'utf8');
   expect(translatedPriceAnalysis).toContain(`hreflang="x-default" href="${origin}/en/priceanalysis/`);
+  expect(translatedPriceAnalysis).toContain('rel="preload" as="image" href="/logo.avif" fetchpriority="high" type="image/avif"');
+  expect(translatedPriceAnalysis).not.toContain('/home-hero-sio.svg');
+  for (const lang of ['en', 'zh-TW', 'zh-CN', 'ko-KR']) {
+    const homepage = fs.readFileSync(path.join(output, lang, 'index.html'), 'utf8');
+    const priceAnalysis = fs.readFileSync(path.join(output, lang, 'priceanalysis/index.html'), 'utf8');
+    expect(homepage).toContain('rel="preload" as="image" href="/home-hero-sio.svg" fetchpriority="high" type="image/svg+xml"');
+    expect(priceAnalysis).toContain('rel="preload" as="image" href="/logo.avif" fetchpriority="high" type="image/avif"');
+    expect(priceAnalysis).not.toContain('/home-hero-sio.svg');
+  }
   const article = fs.readFileSync(path.join(output, 'en/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/index.html'), 'utf8');
   for (const n of [1, 2, 3, 4]) expect(article).toContain(`image${n}-en.png`);
   expect(article).not.toMatch(/image[1-4]\.png/);

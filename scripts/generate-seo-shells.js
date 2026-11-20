@@ -138,7 +138,7 @@ function stripPreviousInjection(html) {
 // `title` is the exact <title> text; `ogTitle` is used for og:title/twitter:title
 // (PageContainer.js renders these two differently: <title> gets the
 // " | {defaultTitle}" suffix, og/twitter title stays unsuffixed).
-function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref, hreflangLinks, articleMarkup, articleJsonLd, articleImage, image, ogType = 'website' }) {
+function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref, hreflangLinks, articleMarkup, articleJsonLd, articleImage, image, preloadHomeHero = false, ogType = 'website' }) {
   const template = stripPreviousInjection(rawTemplate);
   const cleanDescription = normalizeMetaDescription(description);
 
@@ -150,6 +150,7 @@ function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref,
   if (!fs.existsSync(imageFile)) throw new Error(`Missing share image: ${shareImage}`);
   const tags = [
     `<link data-rh="true" rel="manifest" href="/manifest.${lang}.json" />`,
+    ...(preloadHomeHero ? ['<link rel="preload" as="image" href="/home-hero-sio.svg" fetchpriority="high" type="image/svg+xml" />'] : []),
     `<meta data-rh="true" name="description" content="${escapeAttr(cleanDescription)}" />`,
     `<meta data-rh="true" property="og:title" content="${escapeAttr(ogTitle)}" />`,
     `<meta data-rh="true" property="og:description" content="${escapeAttr(cleanDescription)}" />`,
@@ -257,7 +258,7 @@ async function main() {
         { hreflang: 'x-default', href: xDefaultHref },
       ];
 
-      const html = renderShell(template, { lang, title, ogTitle, description, selfHref, hreflangLinks, image: socialImagePath(basePath, lang) });
+      const html = renderShell(template, { lang, title, ogTitle, description, selfHref, hreflangLinks, image: socialImagePath(basePath, lang), preloadHomeHero: basePath === '' });
       const outPath =
         basePath === ''
           ? path.join(BUILD_DIR, lang, 'index.html')
@@ -312,7 +313,7 @@ async function main() {
       { hreflang: 'x-default', href: `${SITE_ORIGIN}/` },
     ];
 
-    const html = renderShell(template, { lang: DEFAULT_LOCALE, title, ogTitle, description, selfHref, hreflangLinks });
+    const html = renderShell(template, { lang: DEFAULT_LOCALE, title, ogTitle, description, selfHref, hreflangLinks, preloadHomeHero: true });
     writeFile(indexPath, html);
     written.push(indexPath);
   }
