@@ -6,8 +6,8 @@ let observers;
 const originalObserver = global.IntersectionObserver;
 beforeEach(() => {
   observers = [];
-  global.IntersectionObserver = jest.fn(callback => {
-    const observer = { callback, observe: jest.fn(), disconnect: jest.fn() };
+  global.IntersectionObserver = jest.fn((callback, options) => {
+    const observer = { callback, options, observe: jest.fn(), disconnect: jest.fn() };
     observers.push(observer);
     return observer;
   });
@@ -20,6 +20,8 @@ const Section = ({ name }) => {
 
 test('sections stay unloaded until approached, and load independently only once', () => {
   const { unmount } = render(<><Section name="history" /><Section name="price" /></>);
+  expect(observers[0].options).toEqual({ rootMargin: '150px 0px', threshold: 0 });
+  expect(observers[1].options).toEqual({ rootMargin: '150px 0px', threshold: 0 });
   expect(screen.getByTestId('history')).toHaveTextContent('waiting');
   expect(screen.getByTestId('price')).toHaveTextContent('waiting');
   act(() => observers[0].callback([{ isIntersecting: false }]));

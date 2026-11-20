@@ -15,7 +15,7 @@ export function useNearViewport() {
         setIsNear(true);
         observer.disconnect();
       }
-    }, { rootMargin: '300px', threshold: 0 });
+    }, { rootMargin: '150px 0px', threshold: 0 });
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);

@@ -57,11 +57,11 @@ import BrandLogo from './components/Common/BrandLogo/BrandLogo';
 import DeferredTagManager from './components/Common/DeferredTagManager/DeferredTagManager';
 import RouteLocaleGate from './components/Common/RouteLocaleGate/RouteLocaleGate';
 import MarketPulse from './components/MarketPulse/MarketPulse';
+import { Home } from './components/Home/Home';
 
 const AuthDialog = lazy(() => import('./components/Auth/AuthDialog').then(module => ({ default: module.AuthDialog })));
 const GlobalFeatureUpgradeDialog = lazy(() => import('./components/Common/Dialog/GlobalFeatureUpgradeDialog').then(module => ({ default: module.GlobalFeatureUpgradeDialog })));
 
-const Home = lazy(() => import('./components/Home/Home').then(module => ({ default: module.Home })));
 const MarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/MarketSentimentIndex'));
 const MomentumDashboardPage = lazy(() => import('./components/MomentumDashboard/MomentumDashboardPage'));
 const TwMarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/TwMarketSentimentIndex'));
