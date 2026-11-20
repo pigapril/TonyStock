@@ -7,10 +7,19 @@ import {
   socialImagePath,
   canonicalUrl,
   normalizeLocale,
+  SITE_ORIGIN,
   SITE_NAME,
   buildSeoTitle,
   normalizeMetaDescription,
 } from '../../utils/socialMetadata';
+
+const normalizeSiteUrl = (rawUrl, origin) => {
+  const parsedUrl = new URL(rawUrl, origin);
+  const url = new URL(parsedUrl.pathname, origin);
+  url.search = parsedUrl.search;
+  url.hash = parsedUrl.hash;
+  return url.href;
+};
 
 const PageContainer = ({ 
   children, 
@@ -42,7 +51,9 @@ const PageContainer = ({
   const pageDescription = normalizeMetaDescription(description, defaultDescription);
   const pageKeywords = keywords || defaultKeywords;
   
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://sentimentinsideout.com';
+  // SEO URLs must stay on the primary domain. Using window.location.origin
+  // here makes hydrated metadata point at Netlify Deploy Preview URLs.
+  const origin = SITE_ORIGIN;
   const pageOgUrl = canonicalUrl(ogUrl || location.pathname, origin);
   const pageImage = new URL(ogImage || socialImagePath(location.pathname, lang), origin).href;
   const pageTwitterImage = new URL(twitterImage || pageImage, origin).href;
@@ -74,7 +85,7 @@ const PageContainer = ({
     ...(jsonLd.potentialAction?.target && {
         potentialAction: {
             ...jsonLd.potentialAction,
-            target: jsonLd.potentialAction.target.replace('https://sentimentinsideout.com', `${window.location.origin}/${lang}`)
+            target: normalizeSiteUrl(jsonLd.potentialAction.target, origin)
         }
     })
   } : null;

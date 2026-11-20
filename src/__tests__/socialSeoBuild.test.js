@@ -65,6 +65,12 @@ test('localized HTML shells use matching install metadata and English article ch
     expect(manifest.id).toBe('/');
     if (lang === 'en') expect(manifest.description).not.toMatch(/[\u3400-\u9fff]/);
   }
+  const localizedHome = fs.readFileSync(path.join(output, 'zh-TW/index.html'), 'utf8');
+  expect(localizedHome).toContain(`hreflang="x-default" href="${origin}/"`);
+  const rootHome = fs.readFileSync(path.join(output, 'index.html'), 'utf8');
+  expect(rootHome).toContain(`hreflang="x-default" href="${origin}/"`);
+  const translatedPriceAnalysis = fs.readFileSync(path.join(output, 'zh-TW/priceanalysis/index.html'), 'utf8');
+  expect(translatedPriceAnalysis).toContain(`hreflang="x-default" href="${origin}/en/priceanalysis/`);
   const article = fs.readFileSync(path.join(output, 'en/articles/lohas-five-line-analysis-tested-on-11-6-million-daily-bars/index.html'), 'utf8');
   for (const n of [1, 2, 3, 4]) expect(article).toContain(`image${n}-en.png`);
   expect(article).not.toMatch(/image[1-4]\.png/);

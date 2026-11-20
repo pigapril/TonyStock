@@ -6,7 +6,7 @@ import remarkGfm from 'remark-gfm';
 import './ArticleDetail.css';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { socialImagePath, SITE_NAME } from '../../utils/socialMetadata';
+import { socialImagePath, canonicalUrl, SITE_ORIGIN, SITE_NAME } from '../../utils/socialMetadata';
 import imageDimensions from '../../config/articleImageDimensions.json';
 import articleCatalog from '../../config/articleCatalog';
 
@@ -210,7 +210,7 @@ export function ArticleDetail() {
 
     // 確保 PageContainer 的 og:url 使用當前 URL
     const pageOgUrl = typeof window !== 'undefined'
-        ? `${window.location.origin}${window.location.pathname}`
+        ? canonicalUrl(window.location.pathname, SITE_ORIGIN)
         : '';
 
     return (
@@ -226,7 +226,7 @@ export function ArticleDetail() {
                 headline: article.title, description: meta.description, inLanguage: currentLang,
                 datePublished: meta.date, dateModified: meta.updated || meta.date,
                 url: pageOgUrl, mainEntityOfPage: pageOgUrl,
-                image: new URL(socialImagePath('', currentLang, article.originalSlug.split('.')[0]), window.location.origin).href,
+                image: new URL(socialImagePath('', currentLang, article.originalSlug.split('.')[0]), SITE_ORIGIN).href,
                 author: { '@type': 'Organization', name: SITE_NAME },
                 publisher: { '@type': 'Organization', name: SITE_NAME }
             }}
@@ -239,9 +239,9 @@ export function ArticleDetail() {
                     {meta.keywords && <meta name="keywords" content={meta.keywords} />}
                     {/* Only real editions in the shared article catalog are advertised. */}
                     {Object.entries(articleConfig.locales).map(([locale, edition]) => <link key={locale} rel="alternate" hrefLang={locale}
-                        href={`${window.location.origin}/${locale}/articles/${encodeURIComponent(edition.slug)}/`} />)}
+                        href={`${SITE_ORIGIN}/${locale}/articles/${encodeURIComponent(edition.slug)}/`} />)}
                     <link rel="alternate" hrefLang="x-default"
-                        href={`${window.location.origin}/en/articles/${encodeURIComponent(articleConfig.locales.en.slug)}/`} />
+                        href={`${SITE_ORIGIN}/en/articles/${encodeURIComponent(articleConfig.locales.en.slug)}/`} />
                 </Helmet>
                 <div className="article-header">
                     <h1>{article.title}</h1>

@@ -23,13 +23,14 @@ const ARTICLE_CATALOG = require('../src/config/articleCatalog');
 const ROOT = path.resolve(__dirname, '..');
 const BUILD_DIR = process.env.SEO_BUILD_DIR || path.join(ROOT, 'build');
 const {
+  SITE_ORIGIN: DEFAULT_SITE_ORIGIN,
   SITE_NAME,
   socialImagePath,
   buildSeoTitle,
   normalizeMetaDescription,
 } = require('../src/utils/socialMetadata');
 const imageDimensions = require('../src/config/articleImageDimensions.json');
-const SITE_ORIGIN = (process.env.SITE_ORIGIN || 'https://sentimentinsideout.com').replace(/\/$/, '');
+const SITE_ORIGIN = (process.env.SITE_ORIGIN || DEFAULT_SITE_ORIGIN).replace(/\/$/, '');
 
 const STRINGS = Object.fromEntries(LOCALE_CODES.map(locale => [
   locale,

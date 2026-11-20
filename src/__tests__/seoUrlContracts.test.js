@@ -19,6 +19,13 @@ describe('SEO URL contracts', () => {
     expect(locs).not.toContain(`${origin}/en/sponsor-us/`);
     expect(locs).toContain(`${origin}/zh-TW/sponsor-us/`);
     expect(locs.some(url => /\/(?:en|zh-TW|zh-CN|ko-KR)\/watchlist\/$/.test(url))).toBe(false);
+    const homeBlocks = [...sitemap.matchAll(/<url>[\s\S]*?<\/url>/g)]
+      .map(([block]) => block)
+      .filter(block => /<loc>https:\/\/sentimentinsideout\.com\/(?:en|zh-TW|zh-CN|ko-KR)\/<\/loc>/.test(block));
+    expect(homeBlocks).toHaveLength(4);
+    homeBlocks.forEach(block => {
+      expect(block).toContain(`hreflang="x-default" href="${origin}/"`);
+    });
     const sponsor = [...sitemap.matchAll(/<url>[\s\S]*?<\/url>/g)]
       .map(([block]) => block)
       .find(block => block.includes(`<loc>${origin}/zh-TW/sponsor-us/</loc>`));

@@ -5,6 +5,7 @@ import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import i18n from '../../i18n';
+import { SITE_ORIGIN } from '../../utils/socialMetadata';
 import PageContainer from './PageContainer';
 
 const renderPage = (url, props = {}) => render(
@@ -47,9 +48,11 @@ describe('PageContainer search metadata', () => {
 
     await waitFor(() => {
       expect(document.head.querySelector('link[rel="alternate"][hreflang="en"]')?.href)
-        .toBe(`${window.location.origin}/en/`);
+        .toBe(`${SITE_ORIGIN}/en/`);
       expect(document.head.querySelector('link[rel="alternate"][hreflang="zh-TW"]')?.href)
-        .toBe(`${window.location.origin}/zh-TW/`);
+        .toBe(`${SITE_ORIGIN}/zh-TW/`);
+      expect(document.head.querySelector('link[rel="alternate"][hreflang="x-default"]')?.href)
+        .toBe(`${SITE_ORIGIN}/`);
       expect(document.head.querySelector('link[rel="alternate"][hreflang="zh"]')).toBeNull();
     });
 
@@ -64,7 +67,7 @@ describe('PageContainer search metadata', () => {
     });
 
     await waitFor(() => {
-      expect(document.head.querySelector('link[rel="canonical"]')?.href).toBe(`${canonical}/`);
+      expect(document.head.querySelector('link[rel="canonical"]')?.href).toBe(`${SITE_ORIGIN}/en/articles/english-article/`);
       expect(document.head.querySelectorAll('link[rel="alternate"][hreflang]')).toHaveLength(0);
     });
 
@@ -78,18 +81,42 @@ describe('PageContainer search metadata', () => {
 
     await waitFor(() => {
       expect(document.head.querySelector('link[rel="canonical"]')?.href)
-        .toBe(`${window.location.origin}/en/sentiment-indicators/cnn-fear-greed/`);
+        .toBe(`${SITE_ORIGIN}/en/sentiment-indicators/cnn-fear-greed/`);
       expect(document.head.querySelector('link[rel="alternate"][hreflang="zh-TW"]')?.href)
-        .toBe(`${window.location.origin}/zh-TW/sentiment-indicators/cnn-fear-greed/`);
+        .toBe(`${SITE_ORIGIN}/zh-TW/sentiment-indicators/cnn-fear-greed/`);
+      expect(document.head.querySelector('link[rel="alternate"][hreflang="x-default"]')?.href)
+        .toBe(`${SITE_ORIGIN}/en/sentiment-indicators/cnn-fear-greed/`);
     });
 
     unmount();
   });
+
+  it('keeps structured-data action targets on the primary domain without duplicating the locale', async () => {
+    const { unmount } = renderPage('/en/priceanalysis/', {
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: 'https://deploy-preview-123--niku-stock.netlify.app/en/priceanalysis?stockCode={stockCode}'
+        }
+      }
+    });
+
+    await waitFor(() => {
+      const jsonLd = JSON.parse(document.head.querySelector('script[type="application/ld+json"]')?.textContent);
+      expect(jsonLd.potentialAction.target)
+        .toBe(`${SITE_ORIGIN}/en/priceanalysis?stockCode={stockCode}`);
+    });
+
+    unmount();
+  });
+
   it('provides a localized absolute share image and dimensions', async () => {
     const { unmount } = renderPage('/zh-TW/tw-market-sentiment/');
     await waitFor(() => {
       expect(document.head.querySelector('meta[property="og:image"]')?.content)
-        .toBe(`${window.location.origin}/images/social/zh-TW/tw-market-sentiment.png`);
+        .toBe(`${SITE_ORIGIN}/images/social/zh-TW/tw-market-sentiment.png`);
       expect(document.head.querySelector('meta[name="twitter:image"]')?.content)
         .toBe(document.head.querySelector('meta[property="og:image"]')?.content);
       expect(document.head.querySelector('meta[property="og:image:width"]')?.content).toBe('1200');
@@ -105,9 +132,9 @@ describe('PageContainer search metadata', () => {
     });
     await waitFor(() => {
       expect(document.head.querySelector('link[rel="canonical"]')?.href)
-        .toBe(`${window.location.origin}/en/momentum/`);
+        .toBe(`${SITE_ORIGIN}/en/momentum/`);
       expect(document.head.querySelector('meta[property="og:url"]')?.content)
-        .toBe(`${window.location.origin}/en/momentum/`);
+        .toBe(`${SITE_ORIGIN}/en/momentum/`);
       expect(document.head.querySelector('meta[property="og:locale"]')?.content).toBe('en_US');
     });
     unmount();
@@ -120,7 +147,7 @@ describe('PageContainer search metadata', () => {
     });
     await waitFor(() => {
       expect(document.head.querySelector('meta[property="og:image"]')?.content)
-        .toBe(`${window.location.origin}/images/social/en/article-1.png`);
+        .toBe(`${SITE_ORIGIN}/images/social/en/article-1.png`);
       expect(document.head.querySelector('meta[property="og:type"]')?.content).toBe('article');
       expect(document.head.querySelector('meta[name="robots"]')?.content).toBe('noindex, follow');
     });

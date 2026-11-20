@@ -1,5 +1,7 @@
 const {
+  SITE_ORIGIN,
   SITE_NAME,
+  canonicalUrl,
   buildSeoTitle,
   normalizeMetaDescription,
 } = require('../socialMetadata');
@@ -22,6 +24,11 @@ describe('shared SEO metadata helpers', () => {
     expect(buildSeoTitle('', 'Sentiment Inside Out - Market Sentiment Analysis'))
       .toBe('Sentiment Inside Out - Market Sentiment Analysis');
     expect(buildSeoTitle('   ')).toBe(SITE_NAME);
+  });
+
+  test('keeps canonical URLs on the primary domain when the current URL is a deploy preview', () => {
+    expect(canonicalUrl('https://deploy-preview-123--niku-stock.netlify.app/en/priceanalysis?utm_source=test#chart'))
+      .toBe(`${SITE_ORIGIN}/en/priceanalysis/`);
   });
 
   test('normalizes whitespace without imposing a character limit', () => {

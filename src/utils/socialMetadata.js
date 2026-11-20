@@ -1,6 +1,7 @@
 // Shared by React and the build-time HTML generator.
 const images = require('../config/socialImages.json');
 const { getCanonicalLocale, stripLocalePrefix } = require('../locales/localeConfig');
+const SITE_ORIGIN = (process.env.REACT_APP_SITE_ORIGIN || 'https://sentimentinsideout.com').replace(/\/$/, '');
 const SITE_NAME = 'Sentiment Inside Out';
 const normalizeLocale = (lang) => getCanonicalLocale(lang);
 
@@ -33,15 +34,17 @@ function socialImagePath(pathname, lang, articleNumber) {
   return `/images/social/${locale}/${image}.png`;
 }
 
-function canonicalUrl(rawUrl, origin) {
-  const url = new URL(rawUrl, origin);
-  url.search = '';
-  url.hash = '';
+function canonicalUrl(rawUrl, origin = SITE_ORIGIN) {
+  // Keep canonical URLs on the primary domain even when the app is rendered
+  // on a Netlify Deploy Preview or another non-indexable host.
+  const parsedUrl = new URL(rawUrl, origin);
+  const url = new URL(parsedUrl.pathname, origin);
   url.pathname = `${url.pathname.replace(/\/$/, '')}/`;
   return url.href;
 }
 
 module.exports = {
+  SITE_ORIGIN,
   SITE_NAME,
   socialImagePath,
   canonicalUrl,
