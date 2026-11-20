@@ -1961,6 +1961,38 @@
   line-height: 1.25;
 }
 
+.price-analysis-view .pa-tour-launch {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 10px;
+  padding: 5px 11px;
+  border: 1px solid var(--color-border-light, #e1e7ef);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-secondary, #64748b);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.price-analysis-view .pa-tour-launch:hover:not(:disabled) {
+  border-color: var(--accent-color-blue, #3b6fd4);
+  background: rgba(59, 111, 212, 0.05);
+  color: var(--accent-color-blue, #3b6fd4);
+}
+
+.price-analysis-view .pa-tour-launch:focus-visible {
+  outline: 2px solid var(--accent-color-blue, #3b6fd4);
+  outline-offset: 2px;
+}
+
+.price-analysis-view .pa-tour-launch:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .price-analysis-view .pa-workspace > .chart-card {
   min-width: 0;
   margin-top: 10px;
@@ -2208,6 +2240,35 @@
   font-weight: 600;
   color: var(--color-text-primary, #1f2933);
   cursor: pointer;
+}
+
+.price-analysis-view .pa-searchbar__controls .pa-date-picker-trigger {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  width: 140px;
+  height: 34px;
+  padding: 0 10px;
+  overflow: hidden;
+  border: none;
+  border-radius: 999px;
+  background-color: #eaf0f6;
+  color: var(--color-text-primary, #1f2933);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.price-analysis-view .pa-searchbar__controls .pa-date-picker-trigger:hover {
+  background-color: #dfe8f2;
+}
+
+.price-analysis-view .pa-searchbar__controls .pa-date-picker-trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 111, 212, 0.25);
 }
 
 .price-analysis-view .pa-searchbar__controls .react-datepicker__input-container input:hover {

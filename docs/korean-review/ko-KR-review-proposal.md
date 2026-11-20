@@ -6,12 +6,12 @@ Generated: 2026-11-19T11:20:35.343Z
 
 | Item | Count / result |
 |---|---:|
-| zh-TW direct object string keys | 2521 |
+| zh-TW direct object string keys | 2522 |
 | Additional nested array string leaves | 157 |
-| Total translatable source string leaves | 2678 |
-| zh-CN source string leaves | 2678; missing 0; extra 0 |
+| Total translatable source string leaves | 2679 |
+| zh-CN source string leaves | 2679; missing 0; extra 0 |
 | EN source string leaves | 2685; missing English fallback 0 |
-| Korean proposed strings | 2678 |
+| Korean proposed strings | 2679 |
 | Korean missing strings | 0 |
 | Korean placeholder mismatches | 0 |
 | English placeholder mismatches | 0 |
@@ -12725,6 +12725,18 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 - **英文對照：** The five-line chart shows Extreme Greed while price stays inside the channel. The trend may continue, but holding time matters: backtested across 43 index ETFs, one-year returns trailed random entry by 3.6 percentage points.
 - **英文 fallback：** direct — priceAnalysis.combined.greedOnly.body: The five-line chart shows Extreme Greed while price stays inside the channel. The trend may continue, but holding time matters: backtested across 43 index ETFs, one-year returns trailed random entry by 3.6 percentage points.
 - **韓文候選：** 5선 분석은 극도의 탐욕 상태지만 주가는 아직 LOHAS 채널 안에 있습니다. 상승세가 이어질 수도 있지만 보유 기간에 유의하세요. 이번 지수형 ETF 43종 백테스트에서는 1년간 보유한 결과가 무작위 진입보다 3.6%포인트 낮았습니다.
+- **候選來源：** docs/i18n/ko-KR-review/ko-KR.translation-review.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### priceAnalysis.tour.start
+
+- **審核狀態：** authored_pending_native_language_review_not_released
+- **繁中原文：** 使用教學
+- **簡中對照：** 使用指南
+- **英文對照：** Page guide
+- **英文 fallback：** direct — priceAnalysis.tour.start: Page guide
+- **韓文候選：** 사용 안내
 - **候選來源：** docs/i18n/ko-KR-review/ko-KR.translation-review.json
 - **替代候選：** 無
 - **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）

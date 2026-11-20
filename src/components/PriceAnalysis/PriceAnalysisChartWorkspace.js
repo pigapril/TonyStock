@@ -1,7 +1,8 @@
 import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Line } from 'react-chartjs-2';
+import { Tooltip } from 'chart.js';
 import ULBandChart from '../ULBandChart/ULBandChart';
-import { ensureHomeChartsRegistered } from '../../utils/homeChartRegistry';
+import { ensureChartZoomRegistered } from '../../utils/chartZoomRegistry';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
 import { ensureCrosshairRegistered, linkCharts } from '../../utils/linkedCrosshair';
 import PriceAnalysisSummary from './PriceAnalysisSummary';
@@ -10,8 +11,18 @@ import { useAuth } from '../Auth/useAuth';
 import { useDialog } from '../Common/Dialog/useDialog';
 import { useTranslation } from 'react-i18next';
 
-ensureHomeChartsRegistered();
+ensureChartZoomRegistered();
 ensureCrosshairRegistered();
+
+// 手機提示以價格線定位，並往較空的一側移動；上下位置仍由 tooltipYAlign 決定。
+Tooltip.positioners.priceAnalysisMobile = function(items, eventPosition) {
+  const pricePoint = items.find(({ datasetIndex, element }) => datasetIndex === 0 && element?.hasValue());
+  if (!pricePoint) return Tooltip.positioners.nearest.call(this, items, eventPosition);
+
+  const position = pricePoint.element.tooltipPosition();
+  const direction = position.x < this.chart.width / 2 ? 1 : -1;
+  return { x: position.x + direction * 44, y: position.y };
+};
 
 function isChartAttached(chart) {
   const canvas = chart?.canvas;

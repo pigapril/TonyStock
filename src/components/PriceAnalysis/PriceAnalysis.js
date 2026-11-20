@@ -18,15 +18,12 @@ import { useDebouncedCallback } from 'use-debounce'; // <--- 引入 useDebounced
 import { useTranslation } from 'react-i18next'; // 1. Import useTranslation
 import '../Common/global-styles.css';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
-import { ensureChartZoomRegistered } from '../../utils/chartZoomRegistry';
-import { Tooltip } from 'chart.js';
 
 import enhancedApiClient from '../../utils/enhancedApiClient';
 import { useAuth } from '../Auth/useAuth'; // 新增：引入 useAuth
 import { useDialog } from '../Common/Dialog/useDialog'; // 新增：引入 useDialog
 import { isStockAllowed, getFreeStockList } from '../../utils/freeStockListUtils'; // 導入免費股票清單檢查函數
 import FreeStockList from './FreeStockList'; // 新增：引入免費股票清單組件
-import { TOUR_STORAGE_KEY } from './tourStorageKey';
 import { normalizeHotSearches, readHotSearchesCache, saveHotSearchesCache } from './hotSearchCache';
 import watchlistService from '../Watchlist/services/watchlistService'; // 新增：引入 watchlist service
 import AddToWatchlistDialog from './AddToWatchlistDialog';
@@ -36,15 +33,24 @@ const PriceAnalysisChartWorkspace = lazy(() => import('./PriceAnalysisChartWorks
 const PriceAnalysisDescription = lazy(() => import('./PriceAnalysisDescription'));
 const PriceAnalysisTour = lazy(() => import('./PriceAnalysisTour'));
 
-// 手機提示以價格線定位，並往較空的一側移動；上下位置仍由 tooltipYAlign 決定。
-Tooltip.positioners.priceAnalysisMobile = function(items, eventPosition) {
-  const pricePoint = items.find(({ datasetIndex, element }) => datasetIndex === 0 && element?.hasValue());
-  if (!pricePoint) return Tooltip.positioners.nearest.call(this, items, eventPosition);
+function BacktestDatePickerTrigger({ backTestDate, placeholderText, title, onClick }) {
+  const label = backTestDate
+    ? backTestDate.slice(0, 10).replace(/-/g, '/')
+    : placeholderText;
 
-  const position = pricePoint.element.tooltipPosition();
-  const direction = position.x < this.chart.width / 2 ? 1 : -1;
-  return { x: position.x + direction * 44, y: position.y };
-};
+  return (
+    <button
+      type="button"
+      className="pa-date-picker-trigger"
+      onClick={onClick}
+      title={title}
+      aria-label={placeholderText}
+      aria-haspopup="dialog"
+    >
+      {label}
+    </button>
+  );
+}
 
 // 期長預設值。下拉、初始化、實際送出的年數三個地方都吃這一份，避免各寫一次而走鐘。
 const PERIOD_YEARS = { short: '0.5', medium: '1.5', long: '3.5' };
@@ -71,17 +77,6 @@ const HORIZON_OPTIONS = [
  */
 const buildAutoKey = (isAdvanced, period, backTestDate) =>
   `${isAdvanced ? 'custom' : period}|${backTestDate}`;
-
-function hasSeenTour() {
-  try {
-    return window.localStorage.getItem(TOUR_STORAGE_KEY) === '1';
-  } catch (error) {
-    // 讀不到就當作看過，寧可少跑導覽也不要每次都跳
-    return true;
-  }
-}
-
-ensureChartZoomRegistered();
 
 // 輔助函數：決定 X 軸顯示的 timeUnit
 function getTimeUnit(dates) {
@@ -220,6 +215,7 @@ export function PriceAnalysis() {
   // 通道圖要跟隨的 x 範圍。一律「讀主圖當下的 scale」再存起來，
   // 不自己另外算，這樣兩張圖不會各自漂移。
   const [showTour, setShowTour] = useState(false);
+  const [shouldLoadBacktestDatePicker, setShouldLoadBacktestDatePicker] = useState(false);
   const [bandXRange, setBandXRange] = useState(null);
 
   // 主圖縮放/平移完成後，把它「實際的」軸範圍抄給通道圖。
@@ -438,13 +434,7 @@ export function PriceAnalysis() {
     }
   }), [isMobile, syncBandRange]);
 
-  const hasAnalysisContent = Boolean(loading || chartData || ulbandData);
-  const shouldLoadChartWorkspace = useDeferredFeature({
-    timeoutMs: 1200,
-    useIdleCallback: true,
-    triggerOnInteraction: true
-  });
-  const shouldRenderChartWorkspace = shouldLoadChartWorkspace || hasAnalysisContent;
+  const hasChartData = Boolean(chartData || ulbandData);
   const shouldLoadDescriptionTabs = useDeferredFeature({
     timeoutMs: 1500,
     useIdleCallback: true,
@@ -1678,15 +1668,6 @@ export function PriceAnalysis() {
     return options;
   }, [bandXRange, chartAnnotations, chartData?.timeUnit, hasBandBelow, isMobile, lineChartZoomOptions, sharedPriceRange, tooltipLabelColorFormatter, tooltipLabelFormatter, tooltipXAlign, tooltipYAlign, xAxisMax, yTickLabelFormatter]);
 
-  // 首次造訪才跑導覽，而且要等預設分析跑出來——第三步要指的就是那張圖。
-  useEffect(() => {
-    if (showTour || loading || !chartData || hasSeenTour()) {
-      return undefined;
-    }
-    const timer = window.setTimeout(() => setShowTour(true), 900);
-    return () => window.clearTimeout(timer);
-  }, [chartData, loading, showTour]);
-
   return (
     <PageContainer
       // 使用 t() 翻譯 PageContainer props
@@ -1828,6 +1809,15 @@ export function PriceAnalysis() {
                 <header className="pa-intro">
                   <h1>{t('priceAnalysis.heading')}</h1>
                   <p>{t('priceAnalysis.subtitle')}</p>
+                  <button
+                    type="button"
+                    className="pa-tour-launch"
+                    onClick={() => setShowTour(true)}
+                    disabled={!chartData || loading}
+                    aria-haspopup="dialog"
+                  >
+                    {t('priceAnalysis.tour.start')}
+                  </button>
                 </header>
               {/* 查詢列與結果留在右側工作區；寬螢幕時與頁首並排。 */}
               <div className="pa-topbar">
@@ -1954,14 +1944,24 @@ export function PriceAnalysis() {
                       />
                     ) : null}
 
-                    <Suspense fallback={renderDeferredDatePickerFallback()}>
-                      <DeferredBacktestDatePicker
+                    {shouldLoadBacktestDatePicker ? (
+                      <Suspense fallback={renderDeferredDatePickerFallback()}>
+                        <DeferredBacktestDatePicker
+                          backTestDate={backTestDate}
+                          setBackTestDate={setBackTestDate}
+                          placeholderText={t('priceAnalysis.form.backTestDatePlaceholder')}
+                          title={t('priceAnalysis.form.backTestDateHint')}
+                          autoFocus
+                        />
+                      </Suspense>
+                    ) : (
+                      <BacktestDatePickerTrigger
                         backTestDate={backTestDate}
-                        setBackTestDate={setBackTestDate}
                         placeholderText={t('priceAnalysis.form.backTestDatePlaceholder')}
                         title={t('priceAnalysis.form.backTestDateHint')}
+                        onClick={() => setShouldLoadBacktestDatePicker(true)}
                       />
-                    </Suspense>
+                    )}
                   </div>
                 </form>
               </div>
@@ -2009,7 +2009,7 @@ export function PriceAnalysis() {
 
 
               {/* 主圖表區塊 */}
-              {shouldRenderChartWorkspace ? (
+              {hasChartData ? (
                 <Suspense fallback={renderChartWorkspaceFallback(t, isAdvancedQuery ? null : analysisPeriod)}>
                   <PriceAnalysisChartWorkspace
                     isMobile={isMobile}
@@ -2043,7 +2043,18 @@ export function PriceAnalysis() {
                     t={t}
                   />
                 </Suspense>
-              ) : renderChartWorkspaceFallback(t, isAdvancedQuery ? null : analysisPeriod)}
+              ) : loading ? (
+                renderChartWorkspaceFallback(t, isAdvancedQuery ? null : analysisPeriod)
+              ) : (
+                <div className="chart-card">
+                  <div className="chart-container">
+                    <PriceAnalysisSummary t={t} displayedHorizonKey={isAdvancedQuery ? null : analysisPeriod} />
+                    <div className="chart-content">
+                      <div className="chart-placeholder">{t('priceAnalysis.prompt.enterSymbol')}</div>
+                    </div>
+                  </div>
+                </div>
+              )}
               </div>
 
               {/* 說明區塊：跟圖表同一欄，左欄整條讓給清單往下發展 */}

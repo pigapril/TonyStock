@@ -233,8 +233,12 @@ describe('PriceAnalysis analysis flow', () => {
     // 三個週期各自的位階放在結果列的「其他週期情緒」，搜尋列只負責切換：
     // 同一件事在兩個地方講，還會把輸入框的寬度吃掉。
     expect(group.querySelectorAll('.pa-horizon__dot')).toHaveLength(0);
-    // 欄位靠自己的字說明自己是什麼，不另外加標題（placeholder 就是欄位名稱）
-    expect(screen.getByPlaceholderText(/回測日期|Backtest date/i)).toBeInTheDocument();
+    // 初始以輕量按鈕代替日期元件；只有使用者點擊時才載入 DatePicker。
+    const datePickerTrigger = screen.getByRole('button', { name: /回測日期|Backtest date/i });
+    expect(datePickerTrigger).toBeInTheDocument();
+    fireEvent.click(datePickerTrigger);
+    expect(await screen.findByPlaceholderText(/回測日期|Backtest date/i)).toBeInTheDocument();
+    expect(document.querySelector('.react-datepicker-popper')).toBeInTheDocument();
   });
 
   it('自訂年數按 Enter 就送出（表單要有隱含送出，不能靠計時器猜）', async () => {

@@ -52,26 +52,36 @@ function TechnicalIndicatorChart({
   isMobile,
   t
 }) {
-  const series = useMemo(() => ({
-    rsi: calculateRsi(prices),
-    macd: calculateMacd(prices),
-    kd: calculateKd(prices, highs, lows),
-    ma5: calculateSma(prices, 5),
-    ma10: calculateSma(prices, 10),
-    ma20: calculateSma(prices, 20),
-    ma60: calculateSma(prices, 60),
-    ma120: calculateSma(prices, 120)
-  }), [prices, highs, lows]);
+  // 只計算目前顯示的指標。免費用戶預設只看 MA，不應在背景先算 Pro 專屬指標。
+  const series = useMemo(() => {
+    if (activeIndicator === 'rsi') {
+      return { rsi: calculateRsi(prices) };
+    }
+    if (activeIndicator === 'macd') {
+      return { macd: calculateMacd(prices) };
+    }
+    if (activeIndicator === 'kd') {
+      return { kd: calculateKd(prices, highs, lows) };
+    }
+    return {
+      ma5: calculateSma(prices, 5),
+      ma10: calculateSma(prices, 10),
+      ma20: calculateSma(prices, 20),
+      ma60: calculateSma(prices, 60),
+      ma120: calculateSma(prices, 120)
+    };
+  }, [activeIndicator, prices, highs, lows]);
   const missingKdRange = activeIndicator === 'kd'
     && (!Array.isArray(highs) || !Array.isArray(lows)
       || highs.length !== prices.length || lows.length !== prices.length);
-  const readySeries = {
-    rsi: series.rsi,
-    macd: series.macd.signal,
-    kd: series.kd.d,
-    ma: series.ma5
-  };
-  const hasIndicatorData = readySeries[activeIndicator]?.some((value) => value !== null);
+  const readySeries = activeIndicator === 'macd'
+    ? series.macd.signal
+    : activeIndicator === 'kd'
+      ? series.kd.d
+      : activeIndicator === 'ma'
+        ? series.ma5
+        : series.rsi;
+  const hasIndicatorData = readySeries?.some((value) => value !== null);
 
   const chartData = useMemo(() => {
     let datasets;

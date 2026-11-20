@@ -32,8 +32,8 @@ function readRect(selector) {
 }
 
 /**
- * 首次造訪的蓋板導覽：依序聚焦搜尋列、期長、結果圖表與其他指標。
- * 只跑一次（記在 localStorage），Escape 或「略過」可隨時離開。
+ * 使用者主動開啟的蓋板導覽：依序聚焦搜尋列、期長、結果圖表與其他指標。
+ * 完成或略過時記錄版本，Escape 也可隨時離開。
  */
 function PriceAnalysisTour({ t, onFinish }) {
   const [index, setIndex] = useState(0);

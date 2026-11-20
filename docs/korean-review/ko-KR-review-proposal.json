@@ -1,26 +1,26 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-20T12:42:53.735Z",
+    "generatedAt": "2026-11-20T15:33:12.466Z",
     "summary": {
       "sourceLocale": "zh-TW",
       "sourcePath": "src/locales/zh-TW/translation.json",
       "targetLocale": "ko-KR",
       "targetStatus": "runtime_locale_configured_deployment_not_part_of_this_change",
       "approvalStatus": "original_2422_reviewed_new_256_indicator_strings_pending_native_review",
-      "sourceKeyCount": 2678,
-      "directObjectStringKeyCount": 2521,
+      "sourceKeyCount": 2679,
+      "directObjectStringKeyCount": 2522,
       "nestedArrayStringLeafCount": 157,
       "zhCN": {
-        "keyCount": 2678,
+        "keyCount": 2679,
         "missing": 0,
         "extra": 0
       },
       "en": {
-        "keyCount": 2685,
+        "keyCount": 2686,
         "missingFallback": 0
       },
       "korean": {
-        "proposed": 2678,
+        "proposed": 2679,
         "missing": 0,
         "placeholderMismatches": 0,
         "englishPlaceholderMismatches": 0,
@@ -47,7 +47,8 @@
       "ETF / tickers / technical identifiers": "Preserve original identifiers and symbols"
     },
     "placeholders": "Names and case must match the source. All entries are machine checked below.",
-    "financialContentPolicy": "No currency conversion, no inferred formulas/causality, and no change to stated conditions or legal effect."
+    "financialContentPolicy": "No currency conversion, no inferred formulas/causality, and no change to stated conditions or legal effect.",
+    "approvalStatus": "original_2422_reviewed_new_256_indicator_strings_and_1_price_analysis_ui_label_pending_native_review"
   },
   "entries": [
     {
@@ -31480,6 +31481,35 @@
       },
       "approvalStatus": "reviewed_by_delegated_editor_not_released",
       "legacy171Reconciliation": "unverified_historical_membership_and_status"
+    },
+    {
+      "key": "priceAnalysis.tour.start",
+      "source": {
+        "zhTW": "使用教學",
+        "zhCN": "使用指南",
+        "en": "Page guide"
+      },
+      "korean": "사용 안내",
+      "candidateSource": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "alternatives": [],
+      "englishFallback": {
+        "status": "direct",
+        "key": "priceAnalysis.tour.start",
+        "values": [
+          {
+            "key": "priceAnalysis.tour.start",
+            "value": "Page guide"
+          }
+        ]
+      },
+      "placeholders": {
+        "source": [],
+        "proposed": [],
+        "match": true,
+        "englishFallbackMatch": true
+      },
+      "approvalStatus": "authored_pending_native_language_review_not_released",
+      "legacy171Reconciliation": "not_applicable_new_source_key_added_2026-11-20"
     },
     {
       "key": "priceAnalysis.tour.indicators.title",
