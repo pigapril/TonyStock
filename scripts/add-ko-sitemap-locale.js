@@ -25,7 +25,13 @@ function alternatesOf(body) {
 
 function renderUrl(record, alternateLinks) {
   const metadata = record.body.replace(/\s*<xhtml:link\b[\s\S]*?\/\s*>/g, '').trim();
-  return `  <url>\n    ${metadata.replace(/\n/g, '\n    ')}\n${alternateLinks.map(({ lang, href }) => (
+  // Preserve existing metadata indentation. Re-indenting every line on each
+  // postbuild run made the sitemap grow by four spaces per build.
+  const metadataLines = metadata.split(/\r?\n/);
+  const indentedMetadata = metadataLines.map((line, index) => (
+    index === 0 ? `    ${line.trimStart()}` : line
+  )).join('\n');
+  return `  <url>\n${indentedMetadata}\n${alternateLinks.map(({ lang, href }) => (
     `    <xhtml:link rel="alternate" hreflang="${lang}" href="${href}"/>`
   )).join('\n')}\n  </url>`;
 }

@@ -117,13 +117,38 @@ it('does not reserve a current-reading card on a page with no live reading', () 
   expect(apiClient.get).not.toHaveBeenCalled();
 });
 
-it.each(['bofa-bull-bear', 'cnn-fear-greed'])('only adds the SIO history entry to the BofA article (%s)', slug => {
+it.each(['bofa-bull-bear', 'cnn-fear-greed'])('only adds the SIO history entry to the BofA article (%s)', async slug => {
   apiClient.get.mockReturnValue(new Promise(() => {}));
   renderPage(slug);
-  const example = screen.queryByRole('region', { name: '2020 and 2022: SIO showed extreme fear near market bottoms' });
   const shortcut = screen.queryByRole('link', { name: 'See SIO’s historical fear cases' });
-  expect(Boolean(example)).toBe(slug === 'bofa-bull-bear');
+  if (slug === 'bofa-bull-bear') {
+    await screen.findByRole('region', { name: '2020 and 2022: SIO showed extreme fear near market bottoms' });
+  } else {
+    expect(screen.queryByRole('region', { name: '2020 and 2022: SIO showed extreme fear near market bottoms' })).not.toBeInTheDocument();
+  }
   expect(Boolean(shortcut)).toBe(slug === 'bofa-bull-bear');
+});
+
+it('uses only the plan-aware sentiment board endpoint for a newly added indicator', async () => {
+  apiClient.get.mockResolvedValue(response({ id: 'vix-ma50', value: 18.2, date: '2026-09-19', publisher: 'CBOE', delayed: true }));
+  const { container } = renderPage('vix-ma50');
+
+  expect(await screen.findByText('18.2')).toBeInTheDocument();
+  expect(screen.getByText(/Delayed/)).toBeInTheDocument();
+  expect(screen.getByText(require('../../../locales/en/translation.json').sentimentIndicatorPages.vixMa50.howToRead)).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'How should you read it?' })).toBeInTheDocument();
+  expect(container.querySelector('.indicator-page__bands')).not.toBeInTheDocument();
+  expect(apiClient.get.mock.calls.map(([url]) => url)).toEqual(['/api/sentiment-board']);
+  expect(apiClient.get.mock.calls.some(([url]) => /indicator-history|tw-indicator-history/.test(url))).toBe(false);
+});
+
+it('converts decimal return spreads into percentage display units without changing the API value', async () => {
+  apiClient.get.mockResolvedValue(response({ id: 'safe-haven-demand', value: 0.025, date: '2026-11-19' }));
+  renderPage('safe-haven-demand');
+
+  expect(await screen.findByText('2.5')).toBeInTheDocument();
+  expect(screen.getByText('%')).toBeInTheDocument();
+  expect(apiClient.get.mock.calls.map(([url]) => url)).toEqual(['/api/sentiment-board']);
 });
 
 it.each(['en', 'zh-TW'].flatMap(language => ['', '/', '?source=history', '/?source=history'].map(suffix => [language, suffix])))('keeps the history shortcut on the exact current article URL (%s, %s)', (language, suffix) => {

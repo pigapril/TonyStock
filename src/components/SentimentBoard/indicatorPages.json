@@ -1,0 +1,213 @@
+[
+  {
+    "slug": "bofa-bull-bear",
+    "boardItemId": "bofa-bull-bear",
+    "i18nKey": "bofaBullBear",
+    "group": "external",
+    "ctaPath": "market-sentiment",
+    "published": true
+  },
+  {
+    "slug": "cnn-fear-greed",
+    "boardItemId": "cnn-fear-greed",
+    "i18nKey": "cnnFearGreed",
+    "group": "external",
+    "ctaPath": "market-sentiment",
+    "published": true
+  },
+  {
+    "slug": "aaii-sentiment-survey",
+    "boardItemId": "aaii-bull-bear-spread",
+    "i18nKey": "aaiiSurvey",
+    "group": "us",
+    "ctaPath": "market-sentiment",
+    "published": true
+  },
+  {
+    "slug": "naaim-exposure-index",
+    "boardItemId": "naaim-exposure-index",
+    "i18nKey": "naaimExposure",
+    "group": "us",
+    "ctaPath": "market-sentiment",
+    "published": true
+  },
+  {
+    "slug": "cboe-put-call-ratio",
+    "boardItemId": "cboe-put-call-ratio-5-day-avg",
+    "i18nKey": "cboePutCall",
+    "group": "us",
+    "ctaPath": "market-sentiment",
+    "published": true
+  },
+  {
+    "slug": "vix-ma50",
+    "boardItemId": "vix-ma50",
+    "i18nKey": "vixMa50",
+    "group": "us",
+    "ctaPath": "market-sentiment",
+    "published": true
+  },
+  {
+    "slug": "market-momentum",
+    "boardItemId": "market-momentum",
+    "i18nKey": "marketMomentum",
+    "group": "us",
+    "ctaPath": "market-sentiment",
+    "published": true,
+    "unit": "%"
+  },
+  {
+    "slug": "safe-haven-demand",
+    "boardItemId": "safe-haven-demand",
+    "i18nKey": "safeHavenDemand",
+    "group": "us",
+    "ctaPath": "market-sentiment",
+    "published": true,
+    "unit": "%",
+    "displayMultiplier": 100
+  },
+  {
+    "slug": "junk-bond-spread",
+    "boardItemId": "junk-bond-spread",
+    "i18nKey": "junkBondSpread",
+    "group": "us",
+    "ctaPath": "market-sentiment",
+    "published": true,
+    "unit": "%"
+  },
+  {
+    "slug": "cot-sp500-index",
+    "boardItemId": "s-p-500-cot-index",
+    "i18nKey": "cotSp500",
+    "group": "us",
+    "ctaPath": "market-sentiment",
+    "published": true
+  },
+  {
+    "slug": "tw-vix",
+    "boardItemId": "tw-vix",
+    "i18nKey": "twVix",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true
+  },
+  {
+    "slug": "pcr-ratio",
+    "boardItemId": "pcr-ratio",
+    "i18nKey": "pcrRatio",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true,
+    "unit": "%"
+  },
+  {
+    "slug": "usd-twd",
+    "boardItemId": "usd-twd",
+    "i18nKey": "usdTwd",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true,
+    "unit": "TWD/USD"
+  },
+  {
+    "slug": "fini-futures-net-oi",
+    "boardItemId": "fini-futures-net-oi",
+    "i18nKey": "finiFuturesNetOi",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true
+  },
+  {
+    "slug": "us-10y-yield",
+    "boardItemId": "us-10y-yield",
+    "i18nKey": "us10yYield",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true,
+    "compositeRole": "reference",
+    "unit": "%"
+  },
+  {
+    "slug": "effective-trading-accounts",
+    "boardItemId": "effective-trading-accounts",
+    "i18nKey": "effectiveTradingAccounts",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true,
+    "compositeRole": "reference"
+  },
+  {
+    "slug": "margin-maintenance-ratio",
+    "boardItemId": "margin-maintenance-ratio",
+    "i18nKey": "marginMaintenanceRatio",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true,
+    "unit": "%"
+  },
+  {
+    "slug": "margin-short-ratio",
+    "boardItemId": "margin-short-ratio",
+    "i18nKey": "marginShortRatio",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true,
+    "unit": "%"
+  },
+  {
+    "slug": "market-breadth-ma20",
+    "boardItemId": "market-breadth-ma20",
+    "i18nKey": "marketBreadthMa20",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true,
+    "unit": "%"
+  },
+  {
+    "slug": "tw-market-momentum",
+    "boardItemId": "tw-market-momentum",
+    "i18nKey": "twMarketMomentum",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true,
+    "unit": "%"
+  },
+  {
+    "slug": "eta-deviation-189d",
+    "boardItemId": "eta-deviation-189d",
+    "i18nKey": "etaDeviation189d",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true,
+    "unit": "%",
+    "displayMultiplier": 100
+  },
+  {
+    "slug": "retail-sentiment-small-futures",
+    "boardItemId": "retail-sentiment-small-futures",
+    "i18nKey": "retailSentimentSmallFutures",
+    "group": "tw",
+    "ctaPath": "tw-market-sentiment",
+    "published": true,
+    "compositeRole": "reference"
+  },
+  {
+    "slug": "market-fear-breadth",
+    "boardItemId": "market-fear-breadth-us",
+    "i18nKey": "marketFearBreadth",
+    "group": "sio",
+    "unit": "%",
+    "ctaPath": "priceanalysis",
+    "ownIndicator": true,
+    "published": true
+  },
+  {
+    "slug": "taiwan-fear-greed",
+    "boardItemId": null,
+    "i18nKey": "taiwanFearGreed",
+    "group": "sio",
+    "ctaPath": "tw-market-sentiment",
+    "ownIndicator": true,
+    "published": true
+  }
+]

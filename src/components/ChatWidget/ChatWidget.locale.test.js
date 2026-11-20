@@ -11,10 +11,13 @@ jest.mock('react-i18next', () => ({
 jest.mock('../Auth/useAuth', () => ({ useAuth: () => ({ user: { id: 'test-user' } }) }));
 jest.mock('../../components/Common/Dialog/useDialog', () => ({ useDialog: () => ({ openDialog: jest.fn() }) }));
 jest.mock('react-responsive', () => ({ useMediaQuery: () => false }));
-jest.mock('react-markdown', () => ({
-  __esModule: true,
-  default: ({ children }) => require('react').createElement('div', null, children),
-}));
+jest.mock('react-markdown', () => {
+  global.__chatWidgetMarkdownModuleLoaded = true;
+  return {
+    __esModule: true,
+    default: ({ children }) => require('react').createElement('div', null, children),
+  };
+});
 jest.mock('../../utils/csrfClient', () => ({
   __esModule: true,
   default: {
@@ -39,6 +42,21 @@ describe('ChatWidget locale routing', () => {
 
   it('uses the selected language rather than a fallback-resolved language', () => {
     expect(resolveChatWidgetLanguage({ language: 'ko-KR', resolvedLanguage: 'en' })).toBe('ko-KR');
+  });
+
+  it('loads the Markdown renderer only after the chat is opened', async () => {
+    delete global.__chatWidgetMarkdownModuleLoaded;
+    global.__chatWidgetTestI18n = { language: 'en' };
+    global.__chatWidgetFetchWithCSRF = jest.fn().mockResolvedValue({
+      json: async () => ({ faq: { General: { 'How does this work?': 'Open the chat to ask a question.' } } }),
+    });
+
+    const { unmount } = render(<ChatWidget />);
+    expect(global.__chatWidgetMarkdownModuleLoaded).toBeUndefined();
+
+    fireEvent.click(screen.getByRole('button', { name: 'chatWidget.headerTitle' }));
+    await waitFor(() => expect(global.__chatWidgetMarkdownModuleLoaded).toBe(true));
+    unmount();
   });
 
   test.each(['zh-CN', 'ko-KR'])('sends %s to both FAQ and chat endpoints', async (locale) => {

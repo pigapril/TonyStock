@@ -10,9 +10,6 @@ const check = process.argv.includes('--check');
 const source = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
 const proposal = JSON.parse(fs.readFileSync(proposalPath, 'utf8'));
 const entries = proposal.entries;
-if (!Array.isArray(entries) || entries.length !== 2422) {
-  throw new Error(`Expected 2,422 reviewed Korean entries; received ${entries?.length ?? 'none'}.`);
-}
 
 function tokensFor(key) {
   return String(key).match(/[^.[\]]+|\[(\d+)\]/g)?.map(token =>
@@ -73,8 +70,11 @@ for (const entry of entries) {
 }
 
 const sourceKeys = stringLeaves(source).sort();
+if (!Array.isArray(entries) || entries.length !== sourceKeys.length) {
+  throw new Error(`Expected ${sourceKeys.length} Korean proposal entries; received ${entries?.length ?? 'none'}.`);
+}
 const targetKeys = stringLeaves(target).sort();
-if (sourceKeys.length !== 2422 || targetKeys.length !== sourceKeys.length ||
+if (targetKeys.length !== sourceKeys.length ||
     sourceKeys.some((key, index) => key !== targetKeys[index])) {
   throw new Error(`Korean resource coverage mismatch: source=${sourceKeys.length}, target=${targetKeys.length}.`);
 }

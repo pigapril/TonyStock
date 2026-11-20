@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Link, useLocation, useParams, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../api/apiClient';
@@ -7,7 +7,10 @@ import { getDecimalPlaces } from '../../utils/priceUtils';
 import { getIntlLocale } from '../../locales/localeConfig';
 import { findIndicatorPage } from './indicatorPages';
 import './SentimentIndicatorPage.css';
-import SentimentHistoryExamples from './SentimentHistoryExamples';
+
+// The historical case-study chart is unique to BofA; do not ship its SVG code,
+// chart data or styles with the other 23 explainer pages.
+const SentimentHistoryExamples = lazy(() => import('./SentimentHistoryExamples'));
 
 /**
  * 單一指標的常青解說頁。
@@ -85,14 +88,20 @@ const SentimentIndicatorPage = () => {
           <section className="indicator-page__current" aria-busy={loadingReading}>
             <p className="indicator-page__currentLabel">{t('sentimentIndicatorPages.currentReading')}</p>
             <p className="indicator-page__currentValue">
-              {hasReading ? formatReading(reading.value, lang) : '—'}
+              {hasReading ? formatReading(
+                Number(reading.value) * (Number.isFinite(page.displayMultiplier) ? page.displayMultiplier : 1),
+                lang
+              ) : '—'}
               {/* 多數指標是無單位的分數（AAII 價差、CNN 0-100），但廣度是百分比，
                   少了 % 會看不懂 31.2 是什麼。單位由註冊表宣告，不猜。 */}
               {hasReading && page.unit ? <span className="indicator-page__currentUnit">{page.unit}</span> : null}
             </p>
             <p className="indicator-page__currentMeta" title={hasReading ? [reading.date, reading.publisher].filter(Boolean).join(' · ') : undefined}>
               {loadingReading ? t('common.loading') : hasReading ? (
-                <>{reading.date}{reading.publisher ? ` · ${reading.publisher}` : ''}</>
+                <>
+                  {reading.delayed && <>{t('sentimentBoard.delayedTag')} · </>}
+                  {reading.date}{reading.publisher ? ` · ${reading.publisher}` : ''}
+                </>
               ) : t('sentimentBoard.noData')}
             </p>
           </section>
@@ -102,10 +111,9 @@ const SentimentIndicatorPage = () => {
           <p>{t(`${key}.whatItIs`)}</p>
         </Section>
 
-        {Array.isArray(bands) && bands.length > 0 && (
-          <Section title={t(`${key}.howToReadTitle`)}>
-            <p>{t(`${key}.howToRead`)}</p>
-
+        <Section title={t(`${key}.howToReadTitle`)}>
+          <p>{t(`${key}.howToRead`)}</p>
+          {Array.isArray(bands) && bands.length > 0 && (
             <ul className="indicator-page__bands">
               {bands.map((band) => (
                 <li key={band.range} className="indicator-page__band">
@@ -114,10 +122,14 @@ const SentimentIndicatorPage = () => {
                 </li>
               ))}
             </ul>
-          </Section>
-        )}
+          )}
+        </Section>
 
-        {page.slug === 'bofa-bull-bear' && <SentimentHistoryExamples lang={lang} />}
+        {page.slug === 'bofa-bull-bear' && (
+          <Suspense fallback={<div id="sio-history-examples" aria-hidden="true" />}>
+            <SentimentHistoryExamples lang={lang} />
+          </Suspense>
+        )}
 
         {Array.isArray(components) && components.length > 0 && (
           <Section title={t(`${key}.componentsTitle`)}>

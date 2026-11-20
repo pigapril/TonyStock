@@ -38,17 +38,9 @@ const STRINGS = Object.fromEntries(LOCALE_CODES.map(locale => [
 ]));
 
 
-// indicatorPages.js 是 ESM，這支腳本是 CommonJS，所以用最小的字串解析取出
-// slug / i18nKey / published，避免為了共用一份清單而引入編譯步驟。
-const INDICATOR_PAGES = (() => {
-  const src = fs.readFileSync(path.join(ROOT, 'src/components/SentimentBoard/indicatorPages.js'), 'utf8');
-  const body = src.slice(src.indexOf('INDICATOR_PAGES = ['), src.indexOf('];'));
-  return [...body.matchAll(/\{([^{}]*)\}/g)].map(([, entry]) => ({
-    slug: (entry.match(/slug:\s*'([^']+)'/) || [])[1],
-    i18nKey: (entry.match(/i18nKey:\s*'([^']+)'/) || [])[1],
-    published: /published:\s*true/.test(entry),
-  })).filter((page) => page.slug && page.i18nKey);
-})();
+// JSON is the shared source of truth for client routes, locale chunk routing
+// and static SEO shells. Avoid parsing ESM source with brittle regular expressions.
+const INDICATOR_PAGES = require('../src/components/SentimentBoard/indicatorPages.json');
 
 const LANGS = LOCALE_CODES;
 
@@ -62,7 +54,7 @@ const ROUTES = [
   { basePath: '', metaKey: 'home' },
   { basePath: '/priceanalysis', metaKey: 'priceAnalysis' },
   { basePath: '/sentiment-indicators', metaKey: 'sentimentBoard' },
-  // 指標常青解說頁。清單直接從 indicatorPages.js 推導，避免兩邊各自長歪；
+  // 指標常青解說頁。清單直接從 indicatorPages.json 推導，避免兩邊各自長歪；
   // 只有 published: true 的會產生 shell。
   ...INDICATOR_PAGES.filter((page) => page.published).map((page) => ({
     basePath: `/sentiment-indicators/${page.slug}`,

@@ -101,7 +101,7 @@ test('all Korean sitemap descriptions stay within Naver’s recommended 80 chara
     .map(match => match[1])
     .filter(url => new URL(url).pathname.startsWith('/ko-KR/'));
 
-  expect(urls).toHaveLength(21);
+  expect(urls).toHaveLength(37);
   const descriptions = urls.map(url => {
     const pathname = decodeURIComponent(new URL(url).pathname);
     const html = fs.readFileSync(path.join(output, pathname, 'index.html'), 'utf8');

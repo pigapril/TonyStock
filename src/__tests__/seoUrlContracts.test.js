@@ -11,7 +11,7 @@ describe('SEO URL contracts', () => {
   const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 
   it('advertises only final, canonical URLs for the four distinct UI locales', () => {
-    expect(locs).toHaveLength(85);
+    expect(locs).toHaveLength(149);
     expect(locs.every((url) => ['en', 'zh-TW', 'zh-CN', 'ko-KR'].some(locale => url.startsWith(`${origin}/${locale}/`))))
       .toBe(true);
     expect(locs.every((url) => url.endsWith('/'))).toBe(true);
@@ -41,7 +41,7 @@ describe('SEO URL contracts', () => {
     const indicatorBlocks = [...sitemap.matchAll(/<url>[\s\S]*?<\/url>/g)]
       .map(([block]) => block)
       .filter((block) => /<loc>[^<]*\/sentiment-indicators\/[^<]+<\/loc>/.test(block));
-    expect(indicatorBlocks).toHaveLength(32);
+    expect(indicatorBlocks).toHaveLength(96);
     const canonical = new Set(locs);
 
     for (const block of indicatorBlocks) {

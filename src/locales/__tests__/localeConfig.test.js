@@ -30,7 +30,10 @@ test('the locale registry is the source of truth for supported locale resources'
     expect(typeof commonLocaleLoaders[locale]).toBe('function');
     expect(routeLocaleLoaders[locale]).toBeDefined();
     expect(Object.keys(routeLocaleLoaders[locale])).toEqual(
-      expect.arrayContaining(['admin', 'momentum', 'indicators', 'account', 'market', 'price'])
+      expect.arrayContaining([
+        'admin', 'momentum', 'indicatorsExternal', 'indicatorsUs', 'indicatorsTw',
+        'indicatorsSio', 'indicatorsBofa', 'account', 'market', 'price'
+      ])
     );
   }
 });
@@ -116,7 +119,8 @@ test('Korean translation covers every source leaf with matching placeholders', (
   );
   const sourceKeys = leaves(source).sort();
   const koreanKeys = leaves(korean).sort();
-  expect(proposal.entries).toHaveLength(2422);
+  expect(proposal.entries).toHaveLength(sourceKeys.length);
+  expect(new Set(proposal.entries.map(entry => entry.key)).size).toBe(sourceKeys.length);
   expect(koreanKeys).toEqual(sourceKeys);
   expect(proposal.entries.every(entry => typeof entry.korean === 'string')).toBe(true);
 });

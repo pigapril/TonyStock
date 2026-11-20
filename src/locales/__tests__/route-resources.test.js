@@ -27,7 +27,9 @@ test.each(LOCALE_CODES)('all split resources reconstruct the exact original %s c
   expect(common.priceAnalysis.sentiment).toEqual(original(lang).priceAnalysis.sentiment);
   expect(common).not.toHaveProperty('admin');
   expect(common).not.toHaveProperty('momentumDashboard');
-  expect(common).not.toHaveProperty('sentimentIndicatorPages');
+  expect(common.sentimentIndicatorPages.currentReading).toBe(original(lang).sentimentIndicatorPages.currentReading);
+  expect(common.sentimentIndicatorPages).not.toHaveProperty('bofaBullBear');
+  expect(common).not.toHaveProperty('sentimentHistoryExamples');
 });
 
 test.each(LOCALE_CODES)('every enabled locale prefix resolves the same feature route groups: %s', locale => {
@@ -40,7 +42,12 @@ test.each(LOCALE_CODES)('every enabled locale prefix resolves the same feature r
 test.each([
   ['/zh-TW/', []], ['/zh-CN/', []], ['/en/articles/a/', []], ['/zh-TW/momentum/', ['momentum']],
   ['/zh-CN/momentum/', ['momentum']],
-  ['/en/sentiment-indicators/vix', ['indicators', 'market']],
+  ['/en/sentiment-indicators', []], ['/en/sentiment-indicators/', []],
+  ['/en/sentiment-indicators/vix-ma50', ['indicatorsUs']],
+  ['/en/sentiment-indicators/cnn-fear-greed', ['indicatorsExternal']],
+  ['/en/sentiment-indicators/bofa-bull-bear', ['indicatorsExternal', 'indicatorsBofa']],
+  ['/zh-TW/sentiment-indicators/market-fear-breadth', ['indicatorsSio']],
+  ['/en/sentiment-indicators/unknown', []],
   ['/zh-TW/tw-market-sentiment/', ['market']], ['/en/priceanalysis', ['price']],
   ['/zh-TW/watchlist', ['price']], ['/en/payment/card-trial/result', ['account']],
   ['/zh-TW/subscription-plans', ['account']], ['/en/user-account', ['account']],

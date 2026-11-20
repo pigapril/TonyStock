@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ReactMarkdown from 'react-markdown';
 import './ChatWidget.css';
 import { useAuth } from '../Auth/useAuth';
 import { useDialog } from '../../components/Common/Dialog/useDialog';
@@ -32,6 +31,7 @@ const ChatWidgetSession = ({ language, isOpen, setIsOpen }) => {
   const [categorizedFaqs, setCategorizedFaqs] = useState({});
   const [initialQuickRepliesLoaded, setInitialQuickRepliesLoaded] = useState(false);
   const [isWaitingReply, setIsWaitingReply] = useState(false);
+  const [MarkdownRenderer, setMarkdownRenderer] = useState(null);
   const [unreadCount, setUnreadCount] = useState(() => {
     try {
       const raw = sessionStorage.getItem(STORAGE_KEY);
@@ -40,6 +40,21 @@ const ChatWidgetSession = ({ language, isOpen, setIsOpen }) => {
   });
   const isOpenRef = useRef(isOpen);
   useEffect(() => { isOpenRef.current = isOpen; }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen || MarkdownRenderer) return undefined;
+
+    let active = true;
+    import('react-markdown')
+      .then((module) => {
+        if (active) setMarkdownRenderer(() => module.default);
+      })
+      .catch((error) => {
+        console.error('Failed to load chat Markdown renderer:', error);
+      });
+
+    return () => { active = false; };
+  }, [isOpen, MarkdownRenderer]);
 
   useEffect(() => {
     try {
@@ -334,7 +349,7 @@ const ChatWidgetSession = ({ language, isOpen, setIsOpen }) => {
                   return (
                     <div key={msg.id || index} className={`chat-message ${msg.role}`}>
                       {msg.role === 'assistant' ? (
-                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        MarkdownRenderer ? <MarkdownRenderer>{msg.content}</MarkdownRenderer> : msg.content
                       ) : (
                         msg.content
                       )}

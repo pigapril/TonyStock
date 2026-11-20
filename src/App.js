@@ -25,7 +25,6 @@ import './components/Common/ui-recipes.css';
 
 
 // 自定義組件
-import { Home } from './components/Home/Home';
 import { AuthStatusIndicator } from './components/Auth/AuthStatusIndicator';
 import { PageViewTracker } from './components/Common/PageViewTracker';
 import { Footer } from './components/Common/Footer/Footer';
@@ -62,6 +61,7 @@ import MarketPulse from './components/MarketPulse/MarketPulse';
 const AuthDialog = lazy(() => import('./components/Auth/AuthDialog').then(module => ({ default: module.AuthDialog })));
 const GlobalFeatureUpgradeDialog = lazy(() => import('./components/Common/Dialog/GlobalFeatureUpgradeDialog').then(module => ({ default: module.GlobalFeatureUpgradeDialog })));
 
+const Home = lazy(() => import('./components/Home/Home').then(module => ({ default: module.Home })));
 const MarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/MarketSentimentIndex'));
 const MomentumDashboardPage = lazy(() => import('./components/MomentumDashboard/MomentumDashboardPage'));
 const TwMarketSentimentIndex = lazy(() => import('./components/MarketSentimentIndex/TwMarketSentimentIndex'));
