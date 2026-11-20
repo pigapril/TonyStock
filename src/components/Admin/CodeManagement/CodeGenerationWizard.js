@@ -16,9 +16,10 @@ import LoadingSpinner from '../../Common/LoadingSpinner';
 import ErrorDisplay from '../../Common/ErrorDisplay';
 import AdminRedemptionService from '../../../services/adminRedemptionService';
 import { systemLogger } from '../../../utils/logger';
+import { getIntlLocale } from '../../../locales/localeConfig';
 
 const CodeGenerationWizard = ({ onClose, onSuccess }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     
     // Wizard state
     const [currentStep, setCurrentStep] = useState(1);
@@ -243,7 +244,7 @@ const CodeGenerationWizard = ({ onClose, onSuccess }) => {
                 value: getConfigurationValue(),
                 usageLimits: `${formData.maxUsesPerUser} per user, ${formData.maxTotalUses} total`,
                 eligibility: getEligibilityDescription(),
-                expiration: new Date(formData.expiresAt).toLocaleDateString(),
+                expiration: new Date(formData.expiresAt).toLocaleDateString(getIntlLocale(i18n.language)),
                 stacking: formData.allowStacking ? 
                     (formData.stackingGroup ? `Group: ${formData.stackingGroup}` : 'Allowed') : 
                     'Not allowed'
@@ -259,7 +260,7 @@ const CodeGenerationWizard = ({ onClose, onSuccess }) => {
         };
         
         setPreviewData(preview);
-    }, [formData]);
+    }, [formData, i18n.language]);
 
     /**
      * Get configuration value description
@@ -482,7 +483,7 @@ const CodeGenerationWizard = ({ onClose, onSuccess }) => {
                                 </div>
                                 <div className="summary-item">
                                     <label>{t('admin.wizard.success.expires')}</label>
-                                    <span>{new Date(formData.expiresAt).toLocaleDateString()}</span>
+                                    <span>{new Date(formData.expiresAt).toLocaleDateString(getIntlLocale(i18n.language))}</span>
                                 </div>
                             </div>
                         </div>

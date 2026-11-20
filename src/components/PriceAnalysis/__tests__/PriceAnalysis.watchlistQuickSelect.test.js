@@ -172,7 +172,7 @@ describe('PriceAnalysis watchlist quick select', () => {
       </TestWrapper>
     );
 
-    fireEvent.click(await screen.findByRole('button', { name: /watchlist|關注/i }));
+    fireEvent.click(await screen.findByRole('button', { name: /^(Watchlist|追蹤清單|自選列表)/i }));
 
     expect(await screen.findByText('Core')).toBeInTheDocument();
     expect(screen.getAllByText('SPY').length).toBeGreaterThan(0);
@@ -201,7 +201,7 @@ describe('PriceAnalysis watchlist quick select', () => {
       </TestWrapper>
     );
 
-    fireEvent.click(await screen.findByRole('button', { name: /watchlist|關注/i }));
+    fireEvent.click(await screen.findByRole('button', { name: /^(Watchlist|追蹤清單|自選列表)/i }));
 
     const featuredCategory = await screen.findByRole('button', { name: /平台精選/ });
     await waitFor(() => {

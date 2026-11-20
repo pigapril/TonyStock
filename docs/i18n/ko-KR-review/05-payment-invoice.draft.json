@@ -1,0 +1,229 @@
+{
+  "payment": {
+    "upgradeTitle": "{{planName}} 요금제로 업그레이드",
+    "upgradeSubtitle": "나에게 맞는 결제 방법을 선택하고 모든 기능을 이용하세요.",
+    "backToPlans": "요금제 선택으로 돌아가기",
+    "loginRequired": "결제를 계속하려면 먼저 로그인해 주세요.",
+    "invalidPlan": {
+      "title": "유효하지 않은 요금제",
+      "message": "선택한 요금제가 존재하지 않습니다. 다시 선택해 주세요."
+    },
+    "flow": {
+      "selectPayment": "결제 방법 선택",
+      "billingMonthly": "매월",
+      "billingYearly": "매년",
+      "planSummary": "{{plan}}({{period}})",
+      "noticesTitle": "결제 안내",
+      "notices": [
+        "'결제 페이지로 이동'을 클릭하면 ECPay 결제 페이지로 이동합니다.",
+        "30분 이내에 결제를 완료해 주세요. 시간이 지나면 주문이 자동 취소됩니다.",
+        "결제가 완료되면 이 웹사이트로 자동으로 돌아옵니다."
+      ],
+      "redemptionCode": "쿠폰 코드"
+    },
+    "methods": {
+      "creditCard": "신용카드"
+    },
+    "form": {
+      "termsAndConditions": "이용약관 및 개인정보 처리방침",
+      "processing": "처리 중...",
+      "creating": "주문을 생성하는 중...",
+      "upgradeNow": "결제하고 지금 업그레이드",
+      "confirmPlan": "요금제 확인",
+      "confirmTerms": "약관 확인",
+      "confirmPayment": "결제 확인",
+      "cancel": "취소",
+      "cancelOrder": "주문 취소",
+      "previous": "이전",
+      "next": "다음",
+      "createOrder": "주문 생성",
+      "creatingOrder": "주문을 생성하는 중...",
+      "proceedToPayment": "결제 페이지로 이동"
+    },
+    "actions": {
+      "downloadInvoice": "인보이스 다운로드"
+    },
+    "history": {
+      "title": "결제 내역",
+      "noPayments": "결제 내역이 없습니다.",
+      "orderId": "주문 번호",
+      "date": "결제일",
+      "status": {
+        "success": "결제 완료",
+        "failed": "결제 실패",
+        "pending": "처리 중",
+        "processing": "처리 중",
+        "expired": "주문 만료",
+        "refunded": "환불 완료",
+        "unknown": "알 수 없음"
+      },
+      "method": "결제 방법",
+      "plan": "요금제",
+      "cycle": "결제 주기",
+      "viewDetails": "세부 정보 보기",
+      "loadError": "결제 내역을 불러오지 못했습니다: {{message}}",
+      "planDescription": "{{planType}} - {{billingPeriod}}",
+      "monthly": "월간",
+      "yearly": "연간",
+      "paymentId": "결제 ID",
+      "failureReason": "실패 사유",
+      "loadFailure": "결제 내역을 불러오지 못했습니다. 다시 시도해 주세요.",
+      "failureMessage": "결제가 완료되지 않았습니다. 구독 상태를 확인하거나 고객 지원에 문의해 주세요."
+    },
+    "errors": {
+      "invalidAmount": "결제 금액이 올바르지 않습니다.",
+      "termsRequired": "이용약관에 동의해 주세요.",
+      "createOrderFailed": "주문을 생성하지 못했습니다.",
+      "paymentFailed": "결제 처리에 실패했습니다.",
+      "paymentMethodRequired": "이 쿠폰 코드를 사용하려면 결제 수단을 등록해야 합니다. 혜택을 적용하려면 결제 절차를 계속 진행해 주세요.",
+      "incompleteOrder": "주문 정보가 완전하지 않습니다. 다시 시도해 주세요.",
+      "redirectFailed": "결제 페이지를 열 수 없습니다. 다시 시도해 주세요."
+    },
+    "security": {
+      "title": "ECPay에서 안전하게 처리하는 결제",
+      "notices": [
+        "payment.ecpay.com.tw로 이동하여 신용카드 정보를 입력하고 결제를 완료하게 됩니다.",
+        "모든 결제는 TWD(대만 달러)로 청구됩니다. 카드 발급 은행에 따라 환전 수수료 또는 해외 거래 수수료가 부과될 수 있습니다.",
+        "신용카드 사용 가능 여부는 ECPay와 카드 발급 은행의 심사 결과에 따라 결정됩니다."
+      ],
+      "cards": "신용카드 결제",
+      "renewal": "구독은 취소할 때까지 자동 갱신되며, {{period}}마다 TWD {{amount}}가 청구됩니다. 다음 갱신일 전에 회원 계정에서 구독을 관리하거나 취소할 수 있습니다.",
+      "monthly": "월",
+      "yearly": "년",
+      "cancel": "구독 관리",
+      "policy": "이용약관 및 환불 정책",
+      "support": "고객 지원 문의"
+    },
+    "result": {
+      "loading": "결제 상태를 확인하는 중...",
+      "polling": "결제 확인을 기다리는 중... ({{pollingCount}}/{{maxPollingAttempts}})",
+      "queryError": "결제 상태를 확인할 수 없습니다. 고객 지원에 문의해 주세요.",
+      "noParams": "결제 정보 매개변수가 없습니다.",
+      "details": "결제 세부 정보",
+      "orderNumber": "주문 번호",
+      "amount": "결제 금액",
+      "date": "결제 시간",
+      "method": "결제 방법",
+      "nextSteps": "다음 작업을 진행할 수 있습니다.",
+      "step1": "지금 Pro 기능 사용 시작",
+      "step2": "구독 상태 확인",
+      "step3": "계정 설정 관리",
+      "goToAccount": "내 계정 보기",
+      "backToHome": "홈으로 돌아가기",
+      "autoRedirect": "{{countdown}}초 후 계정 페이지로 자동 이동합니다...",
+      "checkAccount": "내 계정 확인",
+      "errorCode": "오류 코드",
+      "suggestions": "다음 사항을 확인해 주세요:",
+      "suggestion1": "신용카드 정보가 올바른지 확인해 주세요.",
+      "suggestion2": "신용카드 한도가 충분한지 확인해 주세요.",
+      "suggestion3": "잠시 후 다시 시도하거나 고객 지원에 문의해 주세요.",
+      "tryAgain": "요금제 다시 선택",
+      "success": {
+        "title": "결제가 완료되었습니다!",
+        "message": "축하합니다! 구독이 성공적으로 활성화되었습니다."
+      },
+      "failure": {
+        "title": "결제 실패",
+        "message": "죄송합니다. 결제 중 오류가 발생했습니다."
+      },
+      "pending": {
+        "title": "결제 처리 중",
+        "message": "결제가 처리 중입니다. 잠시 후 구독 상태를 확인해 주세요.",
+        "defaultMessage": "결제가 처리 중입니다. 잠시 후 구독 상태를 확인해 주세요.",
+        "info": "처리 안내",
+        "info1": "결제 요청이 제출되었으며 은행의 확인을 기다리고 있습니다.",
+        "info2": "일반적으로 1~5분 이내에 완료됩니다.",
+        "info3": "잠시 후 계정에서 구독 상태를 확인할 수 있습니다."
+      },
+      "clientReturn": {
+        "message": "결제 페이지에서 돌아왔습니다. 결제 상태를 확인하는 중입니다..."
+      }
+    },
+    "plan": {
+      "proPlan": "Pro 요금제",
+      "features": {
+        "title": "포함된 기능",
+        "marketSentiment": "최신 시장 심리 분석",
+        "advancedAnalysis": "전체 주가 추세 분석 도구",
+        "unlimitedWatchlist": "전체 관심 종목 기능",
+        "prioritySupport": "우선 고객 지원"
+      },
+      "pricing": {
+        "monthly": "월",
+        "yearly": "년",
+        "originalPrice": "정가",
+        "totalAmount": "총 금액"
+      }
+    },
+    "terms": {
+      "title": "이용약관 및 개인정보 처리방침",
+      "serviceTermsTitle": "이용약관 요약",
+      "privacyPolicyTitle": "개인정보 처리방침 요약",
+      "serviceTerms": [
+        "구독 서비스는 결제가 완료되면 즉시 시작됩니다.",
+        "월간 요금제는 매월, 연간 요금제는 매년 자동 갱신됩니다.",
+        "언제든지 구독을 취소할 수 있으며, 취소 후 현재 결제 기간이 끝나면 서비스가 종료됩니다."
+      ],
+      "privacyPolicy": [
+        "서비스 제공에 필요한 개인정보만 수집합니다.",
+        "결제 정보는 ECPay에서 안전하게 처리하며, 당사는 신용카드 정보를 저장하지 않습니다.",
+        "개인정보를 제3자에게 판매하지 않습니다."
+      ],
+      "agreement": "내용을 읽었으며 이에 동의합니다."
+    },
+    "orderSummary": {
+      "title": "주문 요약",
+      "orderId": "주문 번호",
+      "plan": "요금제",
+      "paymentMethod": "결제 방법",
+      "creditCardRecurring": "신용카드 정기 결제",
+      "discount": "할인",
+      "monthlyPlan": "월간",
+      "yearlyPlan": "연간"
+    },
+    "redemption": {
+      "title": "쿠폰 코드",
+      "description": "프로모션 코드가 있으신가요? 코드를 입력하면 할인 혜택을 받을 수 있습니다.",
+      "placeholder": "쿠폰 코드 입력",
+      "applied": "쿠폰 코드가 적용되었습니다.",
+      "savings": "NT$ {{amount}} 절약",
+      "notApplicable": "이 쿠폰은 선택한 요금제에서 사용할 수 없습니다."
+    },
+    "loading": {
+      "pricingData": "가격 정보를 불러오는 중…"
+    },
+    "error": {
+      "pricingLoadFailed": "가격 정보를 불러오지 못했습니다.",
+      "retry": "다시 시도"
+    },
+    "warning": {
+      "usingFallbackPricing": "대체 가격을 표시하고 있습니다. 최신 정보를 확인하려면 페이지를 새로고침해 주세요."
+    }
+  },
+  "invoice": {
+    "title": "인보이스 관리",
+    "status": {
+      "sent": "발송됨",
+      "cancelled": "취소됨"
+    },
+    "details": {
+      "title": "인보이스 세부 정보",
+      "invoiceNumber": "인보이스 번호",
+      "issueDate": "발행일",
+      "dueDate": "만기일",
+      "amount": "공급가액",
+      "taxAmount": "세액",
+      "totalAmount": "합계",
+      "buyerInfo": "구매자 정보",
+      "sellerInfo": "판매자 정보",
+      "items": "항목 내역"
+    }
+  },
+  "refund": {
+    "status": {
+      "pending": "검토 중",
+      "processing": "처리 중",
+      "cancelled": "취소됨"
+    }
+  }
+}

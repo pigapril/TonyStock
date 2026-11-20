@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { getCanonicalLocale } from '../../locales/localeConfig';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { Dialog } from '../Common/Dialog/Dialog';
 import watchlistService from './services/watchlistService';
@@ -57,7 +58,7 @@ export function PriceSentimentNotificationSettings() {
         || options.filter(key => draft.selectedSentiments.includes(key)).join(',')
             !== options.filter(key => settings.selectedSentiments?.includes(key)).join(',')
     );
-    const upgradePath = `/${String(i18n.language || 'zh-TW').startsWith('zh') ? 'zh-TW' : 'en'}/subscription-plans`;
+    const upgradePath = `/${getCanonicalLocale(i18n.language)}/subscription-plans`;
 
     const toggle = key => {
         setSaved(false);

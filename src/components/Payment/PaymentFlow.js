@@ -15,6 +15,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import paymentService from '../../services/paymentService';
 import { systemLogger } from '../../utils/logger';
+import { getIntlLocale, getPaymentServiceLocale } from '../../locales/localeConfig';
 import LoadingSpinner from '../Common/LoadingSpinner';
 import { RedemptionCodeInput } from '../Redemption/RedemptionCodeInput';
 
@@ -25,8 +26,10 @@ const PaymentFlow = ({
     onError,
     onCancel 
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { lang } = useParams();
+    const displayLocale = getIntlLocale(lang || i18n.language);
+    const formatAmount = (amount) => amount == null ? '' : Number(amount).toLocaleString(displayLocale);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [currentStep, setCurrentStep] = useState(1);
@@ -246,7 +249,8 @@ const PaymentFlow = ({
                 billingPeriod,
                 paymentMethod,
                 redemptionCode: appliedRedemption?.code,
-                language: lang,
+                language: getPaymentServiceLocale(lang),
+                returnLocale: lang || i18n.language,
                 originalAmount: originalAmount,
                 finalAmount: finalAmount || currentPlan?.price
             });
@@ -374,10 +378,10 @@ const PaymentFlow = ({
                         {appliedRedemption ? (
                             <div>
                                 <div className="text-lg text-gray-500 line-through">
-                                    NT$ {originalAmount?.toLocaleString()}
+                                    NT$ {formatAmount(originalAmount)}
                                 </div>
                                 <div className="text-3xl font-bold text-green-600">
-                                    NT$ {finalAmount?.toLocaleString()}
+                                    NT$ {formatAmount(finalAmount)}
                                 </div>
                                 <div className="text-sm text-green-600 font-medium">
                                     {t('payment.redemption.applied')}
@@ -385,7 +389,7 @@ const PaymentFlow = ({
                             </div>
                         ) : (
                             <div className="text-3xl font-bold text-blue-600">
-                                NT$ {currentPlan?.price?.toLocaleString()}
+                                NT$ {formatAmount(currentPlan?.price)}
                             </div>
                         )}
                     </div>
@@ -459,7 +463,7 @@ const PaymentFlow = ({
                                     {t('payment.redemption.applied')}
                                 </div>
                                 <div className="text-xs text-green-600">
-                                    {t('payment.redemption.savings', { amount: (originalAmount - finalAmount)?.toLocaleString() })}
+                                    {t('payment.redemption.savings', { amount: formatAmount(originalAmount - finalAmount) })}
                                 </div>
                             </div>
                         </div>
@@ -633,12 +637,12 @@ const PaymentFlow = ({
                                 <div className="flex justify-between">
                                     <span className="text-gray-600">{t('payment.plan.pricing.originalPrice')}:</span>
                                     <span className="line-through text-gray-500">
-                                        NT$ {originalAmount?.toLocaleString()}
+                                        NT$ {formatAmount(originalAmount)}
                                     </span>
                                 </div>
                                 <div className="flex justify-between text-green-600">
                                     <span>{t('payment.orderSummary.discount')}:</span>
-                                    <span>-NT$ {(originalAmount - finalAmount)?.toLocaleString()}</span>
+                                    <span>-NT$ {formatAmount(originalAmount - finalAmount)}</span>
                                 </div>
                             </>
                         )}
@@ -646,7 +650,7 @@ const PaymentFlow = ({
                         <div className="flex justify-between text-lg font-semibold border-t pt-3">
                             <span>{t('payment.plan.pricing.totalAmount')}:</span>
                             <span className={appliedRedemption ? "text-green-600" : "text-blue-600"}>
-                                NT$ {orderData.amount?.toLocaleString()}
+                                NT$ {formatAmount(orderData.amount)}
                             </span>
                         </div>
                     </div>

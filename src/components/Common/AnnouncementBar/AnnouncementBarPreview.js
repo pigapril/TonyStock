@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import './AnnouncementBar.css';
 import AnnouncementModal from './AnnouncementModal';
 
@@ -7,6 +8,8 @@ import AnnouncementModal from './AnnouncementModal';
  * 用於管理介面的預覽功能，接收 props 而不是從 API 獲取
  */
 const AnnouncementBarPreview = ({ message, isVisible, onClose, autoHide = false, autoHideDelay = 8000 }) => {
+  const { i18n } = useTranslation();
+  const isKorean = i18n.language === 'ko-KR';
   const [showBar, setShowBar] = useState(isVisible);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -194,8 +197,8 @@ const AnnouncementBarPreview = ({ message, isVisible, onClose, autoHide = false,
         <button 
           className="announcement-close" 
           onClick={handleClose}
-          aria-label="關閉公告"
-          title="關閉公告"
+          aria-label={isKorean ? '공지 닫기' : '關閉公告'}
+          title={isKorean ? '공지 닫기' : '關閉公告'}
         >
           ×
         </button>

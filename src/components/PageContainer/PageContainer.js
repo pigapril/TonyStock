@@ -3,7 +3,14 @@ import './PageContainer.css';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useParams, useLocation } from 'react-router-dom';
-import { socialImagePath, canonicalUrl, normalizeLocale } from '../../utils/socialMetadata';
+import {
+  socialImagePath,
+  canonicalUrl,
+  normalizeLocale,
+  SITE_NAME,
+  buildSeoTitle,
+  normalizeMetaDescription,
+} from '../../utils/socialMetadata';
 
 const PageContainer = ({ 
   children, 
@@ -31,8 +38,8 @@ const PageContainer = ({
   const defaultDescription = t('pageContainer.defaultDescription');
   const defaultKeywords = t('pageContainer.defaultKeywords');
 
-  const pageTitle = title ? `${title} | ${t('pageContainer.defaultTitle')}` : defaultTitle;
-  const pageDescription = description || defaultDescription;
+  const pageTitle = buildSeoTitle(title, defaultTitle);
+  const pageDescription = normalizeMetaDescription(description, defaultDescription);
   const pageKeywords = keywords || defaultKeywords;
   
   const origin = typeof window !== 'undefined' ? window.location.origin : 'https://sentimentinsideout.com';
@@ -83,7 +90,7 @@ const PageContainer = ({
         {/* Open Graph 標籤 */}
         <meta property="og:title" content={title || defaultTitle} />
         <meta property="og:description" content={pageDescription} />
-        <meta property="og:site_name" content="Sentiment Inside Out" />
+        <meta property="og:site_name" content={SITE_NAME} />
         <meta property="og:image" content={pageImage} />
         <meta property="og:image:alt" content={imageAlt} />
         {imageWidth && <meta property="og:image:width" content={imageWidth} />}
@@ -91,7 +98,11 @@ const PageContainer = ({
         {pageImage.endsWith('.png') && <meta property="og:image:type" content="image/png" />}
         <meta property="og:url" content={pageOgUrl} />
         <meta property="og:type" content={ogType} />
-        <meta property="og:locale" content={normalizeLocale(lang || fallbackLng) === 'en' ? 'en_US' : 'zh_TW'} />
+        <meta property="og:locale" content={normalizeLocale(lang || fallbackLng) === 'en'
+          ? 'en_US'
+          : (normalizeLocale(lang || fallbackLng) === 'zh-CN'
+            ? 'zh_CN'
+            : (normalizeLocale(lang || fallbackLng) === 'ko-KR' ? 'ko_KR' : 'zh_TW'))} />
         
         {/* Twitter Card 標籤 */}
         <meta name="twitter:card" content={twitterCard} />

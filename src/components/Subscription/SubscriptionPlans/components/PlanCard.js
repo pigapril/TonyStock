@@ -11,8 +11,32 @@ import { trackProductEvent } from '../../../../utils/productAnalytics';
 import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../utils/pricingUtils';
 import { canAccessPaymentFeatures } from '../../../../utils/premiumWhitelist';
 import { getAnalysisReturnPath, withAnalysisReturnPath } from '../../../../utils/trialNavigation';
+import { getIntlLocale } from '../../../../locales/localeConfig';
 
 import './PlanCard.css';
+
+// These IDs describe the stable order of the Free plan's feature list. Access
+// rules are keyed by meaning, so translated display copy never drives logic.
+const FREE_PLAN_FEATURE_IDS = [
+  'lohasSpectrum',
+  'marketSentiment',
+  'watchlist',
+  'adFree',
+  'marketMomentum'
+];
+
+const FREE_PLAN_FEATURE_ACCESS = {
+  lohasSpectrum: 'limited',
+  marketSentiment: 'limited',
+  watchlist: 'disabled',
+  adFree: 'disabled'
+};
+
+export const getPlanFeatureAccess = (planId, featureIndex) => {
+  if (planId !== 'free') return 'included';
+  const featureId = FREE_PLAN_FEATURE_IDS[featureIndex];
+  return FREE_PLAN_FEATURE_ACCESS[featureId] || 'included';
+};
 
 export const PlanCard = ({
   plan,
@@ -47,7 +71,7 @@ export const PlanCard = ({
     && userPlan.isActive !== false && !userPlan.isExpired
     && trialEnd && !Number.isNaN(trialEnd.getTime()) && trialEnd.getTime() > Date.now();
   const trialEndText = isActiveProTrial
-    ? new Intl.DateTimeFormat(lang?.startsWith('en') ? 'en-US' : 'zh-TW', {
+    ? new Intl.DateTimeFormat(getIntlLocale(lang), {
       timeZone: 'Asia/Taipei', year: 'numeric', month: 'numeric', day: 'numeric'
     }).format(trialEnd)
     : null;
@@ -515,21 +539,9 @@ export const PlanCard = ({
       <div className="plan-card__features">
         <ul className="plan-card__features-list">
           {t(`subscription.subscriptionPlans.${plan.id}Plan.features`, { returnObjects: true }).map((feature, index) => {
-            // 檢查是否為免費方案中被禁用的功能
-            const isDisabledFeature = plan.id === 'free' && (
-              feature.includes('追蹤清單功能') ||
-              feature.includes('無廣告體驗') ||
-              feature.includes('Watchlist Feature') ||
-              feature.includes('Ad-free Experience')
-            );
-
-            // 檢查是否為免費方案中受限制的功能（樂活五線譜和市場情緒分析）
-            const isLimitedFeature = plan.id === 'free' && (
-              feature.includes('樂活五線譜') ||
-              feature.includes('市場情緒分析') ||
-              feature.includes('Lohas Spectrum') ||
-              feature.includes('Market Sentiment')
-            );
+            const featureAccess = getPlanFeatureAccess(plan.id, index);
+            const isDisabledFeature = featureAccess === 'disabled';
+            const isLimitedFeature = featureAccess === 'limited';
 
             // 決定圖示和樣式
             let icon = '✓';
@@ -569,7 +581,7 @@ export const PlanCard = ({
             </div>
             <div className="plan-card__status-subtitle">
               {t('subscription.status.expiresOn', {
-                date: new Date(userPlan?.endDate).toLocaleDateString()
+                date: new Date(userPlan?.endDate).toLocaleDateString(getIntlLocale(language))
               })}
             </div>
           </div>

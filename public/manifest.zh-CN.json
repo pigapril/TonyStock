@@ -1,0 +1,29 @@
+{
+  "short_name": "Sentiment Inside Out",
+  "name": "Sentiment Inside Out",
+  "description": "市场情绪分析平台 - 帮助投资者了解市场情绪",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "maskable-icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/zh-CN/",
+  "display": "standalone",
+  "theme_color": "#1a1530",
+  "background_color": "#f6f3ff",
+  "lang": "zh-CN",
+  "id": "/"
+}

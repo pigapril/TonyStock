@@ -18,11 +18,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const { DEFAULT_LOCALE } = require('../src/locales/localeConfig');
 
 const ROOT = path.resolve(__dirname, '..');
 const SRC_DIR = path.join(ROOT, 'src');
-const EN_FILE = path.join(SRC_DIR, 'locales/en/translation.json');
-const ZH_FILE = path.join(SRC_DIR, 'locales/zh-TW/translation.json');
 const EXTRA_DIRS = ['legacy-tests', 'scripts', 'config'].map(d => path.join(ROOT, d)).filter(fs.existsSync);
 const EXT = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']);
 
@@ -51,7 +50,8 @@ function flatten(obj, prefix, out) {
     else out.push(key);
   }
 }
-const en = JSON.parse(fs.readFileSync(EN_FILE, 'utf8'));
+const sourceLocaleFile = path.join(SRC_DIR, `locales/${DEFAULT_LOCALE}/translation.json`);
+const en = JSON.parse(fs.readFileSync(sourceLocaleFile, 'utf8'));
 const leafKeys = [];
 flatten(en, '', leafKeys);
 

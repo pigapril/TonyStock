@@ -14,10 +14,11 @@ import {
 import i18n from '../../../../i18n';
 
 let mockSearchParams = new URLSearchParams();
+let mockLang = 'zh-TW';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    useParams: () => ({ lang: 'zh-TW' }),
+    useParams: () => ({ lang: mockLang }),
     useNavigate: () => jest.fn(),
     useSearchParams: () => [mockSearchParams]
 }));
@@ -46,6 +47,7 @@ const renderFlow = () => render(
 
 beforeEach(() => {
     mockSearchParams = new URLSearchParams();
+    mockLang = 'zh-TW';
 });
 
 const consentBox = () => screen.getByRole('checkbox');
@@ -62,6 +64,25 @@ describe('CardTrialFlow', () => {
         renderBindCardForm.mockResolvedValue();
         requestBindCardPayToken.mockResolvedValue('pay-token');
         createBindCard.mockResolvedValue({ threeDUrl: 'https://ecpg.ecpay.com.tw/3d/abc' });
+    });
+
+    it('韓文介面使用英文金流服務語言，並保留 ko-KR 返回網址', async () => {
+        mockLang = 'ko-KR';
+        await i18n.changeLanguage('ko-KR');
+        renderFlow();
+
+        await userEvent.click(consentBox());
+        await userEvent.click(screen.getByRole('button', { name: '동의하고 카드 등록' }));
+
+        await waitFor(() => expect(startCardTrial).toHaveBeenCalledTimes(1));
+        expect(startCardTrial.mock.calls[0][0]).toEqual(expect.objectContaining({
+            locale: 'en',
+            returnLocale: 'ko-KR',
+            billingPeriod: 'monthly'
+        }));
+
+        mockLang = 'zh-TW';
+        await i18n.changeLanguage('zh-TW');
     });
 
     it('四項揭露在使用者做任何事之前就看得到', () => {
@@ -145,7 +166,8 @@ describe('CardTrialFlow', () => {
 
         await waitFor(() => expect(createBindCard).toHaveBeenCalledWith({
             merchantTradeNo: 'BC-1',
-            bindCardPayToken: 'pay-token'
+            bindCardPayToken: 'pay-token',
+            returnLocale: 'zh-TW'
         }));
         expect(goToThreeDVerification).toHaveBeenCalledWith('https://ecpg.ecpay.com.tw/3d/abc');
     });

@@ -1,0 +1,3368 @@
+{
+  "sentimentHistoryExamples": {
+    "shortcut": "看看 SIO 的历史恐慌案例",
+    "eyebrow": "SIO 历史案例",
+    "heading": "2020、2022：市场低点附近，SIO 已亮出极度恐惧",
+    "intro": "2020 疫情崩盘、2022 加息熊市，SIO 的极低分都出现在市场底部附近。把情绪分数与 SPY 走势放在一起，就能看见恐慌最深时的长期布局机会。",
+    "chooseCase": "选择历史案例",
+    "scoreLabel": "SIO 美股恐惧贪婪分数（0–100）",
+    "priceLabel": "SPY 历史价格（美元）",
+    "chartDescription": "{{start}} 至 {{end}} 的 SIO 分数与 SPY 收盘价，上下两图共用日期轴，橘色标记显示 {{count}} 个历史恐惧低点。",
+    "markerLabel": "橘点：历史情绪低点（事后标记）",
+    "scoreValue": "{{score}} 分",
+    "nextHeading": "看懂历史低点，接着跟踪最新情绪",
+    "nextBody": "前往 SIO 查看完整历史走势和八项信号；升级 Pro，跟踪最新市场情绪及近期变化。",
+    "cta": "查看 SIO 美股市场情绪",
+    "cases": {
+      "pandemic": {
+        "label": "2020 疫情冲击",
+        "title": "2020：疫情底部附近的极端恐惧",
+        "reading": "2020 年 3 月 23 日，SPY 触底时，SIO 已降至约 1.5 分；4 月 7 日更降至 0.6 分。极低分集中在崩盘底部与反弹初期，帮你辨认恐慌中的长期布局机会。"
+      },
+      "tightening": {
+        "label": "2022 市场修正",
+        "title": "2022：10 月低分，接近熊市价格低点",
+        "reading": "2022 年 10 月 3 日，SIO 降至约 4.2 分，SPY 在 10 月 12 日触底。7 月与年底也曾出现低分；若你正在等待分批布局，这些读数能帮你辨认市场已进入极度恐惧的阶段。"
+      }
+    }
+  },
+  "nav": {
+    "home": "首页",
+    "priceAnalysis": "乐活五线谱",
+    "marketSentiment": "市场情绪分析",
+    "momentumDashboard": "市场动能",
+    "watchlist": "我的自选列表",
+    "articles": "分析专栏",
+    "subscription": "订阅计划",
+    "facebook": "Facebook",
+    "facebookLong": "Facebook 主页",
+    "admin": "管理后台",
+    "adminBadge": "管理",
+    "indicatorOverview": "指标总览",
+    "usMarket": "美国市场",
+    "twMarket": "台湾股市"
+  },
+  "momentumDashboard": {
+    "navigation": {
+      "label": "市场动能功能",
+      "market": "市场总览",
+      "screen": "动能选股"
+    },
+    "detail": {
+      "periodShort": "{{days}} 日",
+      "scoreLabel": "动能分数",
+      "label": "{{symbol}} 明细",
+      "overview": "表现概况",
+      "holdings": "成分股",
+      "fundTabs": "ETF 明细",
+      "backToEtfs": "返回 ETF 列表",
+      "backToFund": "返回 {{symbol}} 成分股"
+    },
+    "access": {
+      "freeAsOf": "免费版 · 收盘数据截至",
+      "proAsOf": "Pro · 收盘数据截至",
+      "upgrade": "升级 Pro",
+      "freeRanking": "免费 ETF 动能排行",
+      "freeDailyRanking": "免费 ETF 单日涨跌排行",
+      "freeDetail": "免费版提供完整分类版图，以及固定 {{count}} 只 ETF 的明细。分数与 Pro 采用相同的完整列表计算，下方仅显示免费 ETF。",
+      "groupDetail": "此分类观察 {{total}} 只；免费版可看 {{visible}} 只明细。",
+      "lockedLabel": "Pro 专属标的",
+      "upgradeTitle": "掌握完整 {{count}} 只动能排行",
+      "upgradeBody": "目前范围另有 {{count}} 只 Pro 标的，升级即可比较涨跌、动能分数与近 20、60、120 个交易日表现。",
+      "proOnly": "Pro 专属",
+      "upgradeAction": "解锁完整排行"
+    },
+    "title": "市场动能",
+    "subtitle": "从动能较强的分类中筛选标的，掌握市场动能方向。",
+    "asOf": "收盘数据截至",
+    "universeLabel": "观察范围",
+    "tabs": {
+      "Industry": "行业与主题",
+      "Assets": "主要资产",
+      "Structure": "市场结构"
+    },
+    "displayMetric": "比较方式",
+    "rankMode": "近期动能强弱",
+    "dailyMode": "单日涨跌",
+    "loading": "正在加载市场行情…",
+    "loadError": "行情暂时无法加载",
+    "noSnapshot": "行情更新中",
+    "noSnapshotDetail": "请稍后再试，即可查看最近收盘的市场动能。",
+    "retry": "重新加载",
+    "refreshError": "更新失败，目前显示上次获取的行情。",
+    "strengthMap": "市场动能版图",
+    "dailyMap": "最近一日涨跌",
+    "rankLegend": "动能分数由弱至强",
+    "dailyLegend": "单日涨跌，由跌至涨",
+    "weaker": "较弱",
+    "stronger": "较强",
+    "down": "下跌",
+    "up": "上涨",
+    "dailyCaption": "最新收盘 · 分类内标的的涨跌中位数",
+    "groupButtonSparkline": "{{group}}，动能分数 {{value}}，线条为近 60 个交易日走势，查看标的",
+    "assetTrendTitle": "累积涨跌走势 · 近 60 个交易日",
+    "assetTrendAria": "{{symbol}}自{{start}}至{{end}}的累积涨跌为{{asset}}，SPY为{{benchmark}}。",
+    "groupButton": "{{group}}，{{value}}，查看标的",
+    "assetCount": "观察 {{count}} 只",
+    "allAssets": "动能强弱排行",
+    "dailyAssets": "单日涨跌排行",
+    "rankOrder": "依动能分数由高至低排列",
+    "dailyOrder": "依单日涨幅由高至低排列",
+    "searchLabel": "搜索标的",
+    "searchPlaceholder": "搜索代码、名称或分类",
+    "showAll": "返回全部标的",
+    "assetList": "标的排行列表",
+    "asset": "标的",
+    "currentPrice": "最近收盘",
+    "tradingDays": "{{days}} 交易日",
+    "relativeRank": "相对排名",
+    "noMatches": "找不到符合的标的",
+    "clearFilters": "清除搜索与筛选",
+    "showMore": "展开其余 {{count}} 只",
+    "showLess": "收起列表",
+    "methodTitle": "数据与计算方式",
+    "methodBody": "数据为观察列表中各标的的日线行情，并非盘中实时行情。各周期收益和单日涨跌均按调整后收盘价计算，已考虑分红和拆股因素。动能分数根据近 20、60、120 个交易日的收益在所选列表中排名，再按 20%、40%、40% 加权；分类分数为该分类内所有标的的平均分。",
+    "methodTrend": "分类趋势线显示平均动能分数。标的的相对强度线以调整后价格除以 SPY 同期价格，并将起点设为 100，再配合 20 个交易日的简单移动平均线。排名统一按 SPY 最新数据日期计算，缺少该日数据的标的不计分。个股观察池由 SPY 成分股和已获取的 ETF 美元计价股票持仓组成，并使用相同的 20／60／120 日权重计分。RSI 采用 14 日 Wilder 平滑法；日均成交额按近 20 日收盘价乘以成交量估算。",
+    "methodCaveat": "分数描述过去的相对表现，并不代表未来收益或买卖建议。",
+    "groups": {
+      "global-markets": "全球股市",
+      "u-s-market": "美国股市",
+      "developed-markets": "发达市场",
+      "emerging-markets": "新兴市场",
+      "china-market": "中国市场",
+      "real-estate": "房地产",
+      "high-dividends": "高股息",
+      "premium-income": "收益型策略",
+      "broad-market": "综合债券",
+      "treasury-bonds": "美国国债",
+      "corporation-bonds": "公司债",
+      "em-bonds": "新兴市场债",
+      "3-commodities": "大宗商品",
+      "4-bitcoin": "比特币",
+      "broad": "市值与大盘",
+      "equal-weighted-sectors": "等权重板块",
+      "market-cap-weighted-sectors": "市值加权板块",
+      "factors": "选股策略（因子）",
+      "growth": "成长股",
+      "communication-service": "通讯服务",
+      "consumer-discretionary": "非必需消费",
+      "consumer-staples": "必需消费",
+      "energy": "能源",
+      "finance": "金融",
+      "healthcare": "医疗保健",
+      "industrials": "工业",
+      "materials": "原材料",
+      "technology": "科技",
+      "utilities": "公用事业",
+      "thematic": "主题投资"
+    },
+    "guideLabel": "如何阅读与使用",
+    "readGuide": "阅读市场动能完整指南",
+    "guide": {
+      "period": {
+        "title": "色块与线条怎么看",
+        "body": "色块显示分类内标的的平均分数，深绿色代表较强。线条显示近 60 个交易日的平均分数走势，往上代表这个分类正在走强，往下代表转弱。"
+      },
+      "score": {
+        "title": "动能分数是什么",
+        "body": "过去表现较强的资产，中期可能继续领先。动能分数综合近 20、60、120 个交易日（约 1、3、6 个月）的表现，涨得较多、或跌得较少的标的，分数较高。三份列表各自排名。"
+      },
+      "action": {
+        "title": "找出强势标的",
+        "body": "先找动能较强的分类，再查看其中排名靠前的标的。点击标的，比较各周期收益及其相对 SPY 的领先幅度；再通过相对强度线观察是否持续跑赢大盘。"
+      }
+    },
+    "researchLink": "在 Yahoo Finance 查看标的数据",
+    "periodComparison": "各期间表现",
+    "benchmarkComparison": "与 SPY 比较",
+    "benchmarkAhead": "+{{value}} 个百分点",
+    "benchmarkBehind": "−{{value}} 个百分点",
+    "benchmarkEqual": "0 个百分点",
+    "relativeTrendTitle": "相对 SPY 强弱走势 · 近 60 个交易日",
+    "relativeTrendLine": "相对强度线",
+    "relativeTrendAverage": "20 日均线",
+    "relativeTrendAria": "{{symbol}}相对 SPY 的强弱走势与 20 个交易日均线。",
+    "relativeTrendHelp": "线条往上，代表标的表现优于 SPY；往下，代表落后。线条在 20 日均线上方、且均线向上，可用来找出持续领先的标的。",
+    "staleAsset": "最新交易日数据尚未齐全，暂不列入动能排名。",
+    "rsiLabel": "RSI · 14 日",
+    "rsiHigh": "偏热 · 近期上涨力度较强",
+    "rsiLow": "偏冷 · 近期下跌力度较强",
+    "rsiMiddle": "介于 30–70",
+    "indicatorMissing": "数据不足",
+    "rsiHelp": "RSI 看短期涨跌力度。强势标的回调时，可搭配动能分数与相对强度线观察。",
+    "liquidityLabel": "平均每日成交额 · 20 日",
+    "liquidityHelp": "估算每日交易规模，成交额越大通常越容易买卖。",
+    "showHoldings": "查看成分股与个股动能",
+    "hideHoldings": "收起成分股",
+    "holdingsError": "成分股数据暂时无法加载。",
+    "loadingHoldings": "加载成分股…",
+    "holdingsPending": "成分股数据正在生成，完成后即可查看。",
+    "holdingsUnavailable": "此标的目前没有可用的股票持仓数据。",
+    "fullHoldings": "成分股动能排行",
+    "topHoldings": "主要持仓动能排行 · 部分名单",
+    "holdingsCoverage": "股票持仓 {{count}} 只，占基金 {{weight}}",
+    "holdingsDate": "持仓截至 {{date}}",
+    "holdingsDateUnknown": "来源未提供持仓日期",
+    "stockUniverse": "动能分数与 {{count}} 只美股比较",
+    "holdingsScope": "仅列出美元计价的股票持仓。",
+    "stockSearch": "搜索成分股",
+    "stockMinimumScore": "最低动能分数",
+    "stockMinimumVolume": "最低平均成交额（百万美元）",
+    "stockProHelp": "Pro 可查看个股动能、RSI 与成交额，并筛选强势标的。",
+    "stockTable": "成分股与个股动能",
+    "holdingWeight": "持仓占比",
+    "stockReturnChart": "{{symbol}}与 SPY 的累积收益比较",
+    "holdingsSource": "持仓来源：{{source}}",
+    "backToHoldings": "返回成分股列表",
+    "comparisonItem": "比较项目",
+    "periodComponentScore": "排名分数",
+    "coverageTitle": "观察范围 · {{count}} 只标的",
+    "coverageBody": "这份观察列表以美国上市 ETF 为主，也包含封闭式基金等上市产品，例如 DXYZ。涵盖行业、主题、股市、债券、大宗商品与股票策略，并非覆盖全部市场。部分标的可能出现在多个列表中。",
+    "coverageGroups": "分类按观察主题整理，并非正式行业分类。分类分数会受到所选标的影响；不同 ETF 可能持有相同股票，因此标的数量更多不一定代表覆盖的市场更广。",
+    "groupHints": {
+      "broad": "大型、中小型与集中持仓",
+      "equal-weighted-sectors": "同一板块内股票等权重",
+      "market-cap-weighted-sectors": "较大公司占比较高",
+      "factors": "动量、质量、低波动等",
+      "growth": "按企业成长特征选股"
+    },
+    "groupDescriptions": {
+      "factors": "「因子」是选股所依据的特征。这组包含动量策略（SPMO）、高市场敏感度（SPHB）、质量（SPHQ）、低波动（SPLV）及高股息低波动（SPHD）；色块呈现这些不同策略的平均分数。",
+      "growth": "这组投资具有成长特征的股票，依各基金指数规则筛选，例如营收或获利成长。包含大型与小型股；「成长股」是选股类型，并不保证股价会上涨。",
+      "broad": "比较全市场、大中小型股及集中持仓组合。这组也包含七大科技股（MAGS）等集中型 ETF，各只 ETF 的分散程度不同。",
+      "equal-weighted-sectors": "在同一行业板块内，指数会在再平衡时为每只股票分配相同权重；此后权重会随股价变化。",
+      "market-cap-weighted-sectors": "在同一行业板块内，通常市值越大的公司权重越高，并按各指数规则调整。"
+    },
+    "assetDescriptions": {
+      "SPMO": "动量选股 · 追随近期相对强势股票",
+      "SPHB": "高 Beta · 对市场涨跌较敏感",
+      "SPHQ": "质量选股 · 评估财务质量",
+      "SPLV": "低波动 · 选择过去波动较低的股票",
+      "SPHD": "高股息＋低波动",
+      "IWY": "超大型成长股",
+      "IVW": "标普 500 成长股",
+      "IWF": "Russell 1000 成长股",
+      "IWO": "Russell 2000 小型成长股",
+      "DXYZ": "Destiny Tech100 · 封闭式基金"
+    },
+    "unavailable": "暂无数据",
+    "rankOrderAsc": "依动能分数由低至高排列",
+    "dailyOrderAsc": "依单日涨跌幅由低至高排列",
+    "sortColumn": "{{column}}：点击改为{{order}}",
+    "ascending": "由低至高",
+    "descending": "由高至低",
+    "periodReturnUnavailable": "此期间涨跌数据暂缺",
+    "tour": {
+      "start": "使用指南",
+      "skip": "跳过",
+      "back": "上一步",
+      "next": "下一步",
+      "done": "开始使用",
+      "screen": {
+        "title": "看市场，或直接找个股",
+        "body": "「市场总览」比较分类与 ETF；「动能选股」从强势板块中筛选个股。两种方式可随时切换。"
+      },
+      "scope": {
+        "title": "选择要比较的市场",
+        "body": "「行业与主题」用于比较行业板块，「主要资产」用于比较股票、债券与商品，「市场结构」用于比较不同选股方式。也可以切换查看近期动能或单日涨跌。"
+      },
+      "map": {
+        "title": "点击分类，查看 ETF",
+        "body": "色块显示分类的平均动能分数，分数越高代表近几个月的表现越靠前。点击分类，下方会列出其中的 ETF。"
+      },
+      "mapDaily": {
+        "title": "点击分类，查看 ETF",
+        "body": "单日涨跌模式显示各分类最近一个交易日的涨跌，绿色代表上涨，红色代表下跌。点击分类，下方会列出其中的 ETF。"
+      },
+      "asset": {
+        "title": "展开 ETF，比较表现",
+        "body": "点击 ETF 所在行，可查看其表现与走势。切换到「成分股」可查看其中的股票；返回列表后可继续比较其他标的。"
+      }
+    },
+    "screen": {
+      "stocks": "候选个股 · {{count}} 只",
+      "matchedStocks": "{{count}} 只成分股入选",
+      "sourceLabel": "筛选来源",
+      "leadersResults": "强势候选",
+      "pullbackResults": "回调观察",
+      "oversoldResults": "超卖观察",
+      "resultTypes": "筛选结果类型",
+      "title": "动能选股",
+      "scope": "美股个股",
+      "intro": "从强势板块中筛选个股，或观察其中回调的股票，评估下一次布局机会。",
+      "stage": "筛选个股",
+      "leaders": "强势候选",
+      "pullback": "回调观察 · RSI 40–60",
+      "apply": "重新筛选",
+      "loading": "正在筛选候选标的…",
+      "error": "筛选结果暂时无法加载，请重试。",
+      "pending": "筛选所需数据更新完成后，会显示结果。",
+      "dateMismatch": "ETF 行情为 {{fundsDate}}、个股行情为 {{stocksDate}}。两份数据更新至同一天后再进行筛选。",
+      "summary": "从 {{funds}} 只强势 ETF 中，找到 {{stocks}} 只{{stage}}个股。",
+      "applied": "ETF 与个股 ≥ {{score}} 分",
+      "funds": "来源 ETF · {{count}} 只",
+      "fundReason": "动能 {{score}} 分 · 近期表现领先大盘",
+      "noHoldings": "尚无成分股数据",
+      "partial": "部分持仓名单",
+      "full": "完整股票持仓名单",
+      "noFunds": "目前没有可列出的来源 ETF。",
+      "empty": "目前没有个股符合全部条件。",
+      "score": "动能 {{value}} 分",
+      "stockReason": "近期表现领先大盘 · 平均每日成交额 {{volume}}",
+      "from": "来自",
+      "back": "返回筛选结果",
+      "coverageWeight": "涵盖 ETF 的 {{weight}}",
+      "coverage": "已检查 {{examinedStocks}} 只个股；{{missingStockData}} 只数据不足。入选 ETF 中，{{partialFunds}} 只仅有部分持仓、{{unavailableFunds}} 只尚无持仓数据。",
+      "leadersHelp": "找出近期表现领先大盘的股票。",
+      "pullbackHelp": "等强势股回落，再评估入场。",
+      "oversold": "超卖观察 · RSI <30",
+      "oversoldHelp": "找出近期下跌力度较强的股票。",
+      "appliedVolume": "个股平均每日成交额 ≥ {{volume}} 百万美元",
+      "noVolumeLimit": "成交额不限",
+      "drawdown": "距近 20 日最高收盘价回落 {{value}}%",
+      "start": "开始筛选",
+      "close": "收起筛选",
+      "submit": "查看筛选结果",
+      "leadersExplanation": "先找出近几个月表现较强、近期持续领先大盘的板块 ETF，再从它们的成分股中挑出同样表现领先的股票。",
+      "pullbackExplanation": "从强势候选中挑出价格已回落、近期涨跌力度较平衡的股票，观察是否仍能保持领先，再评估布局机会。",
+      "oversoldExplanation": "从强势候选中挑出近期下跌力度较强的股票。这些股票仍可能继续下跌，先观察是否止跌，再评估入场。",
+      "oversoldCaution": "RSI 偏低时，股价仍可能继续下跌。先观察是否止跌，再评估入场。",
+      "emptyReasons": {
+        "fund_score": "目前已更新的板块 ETF 尚未达到 {{score}} 分，最高为 {{highest}} 分。",
+        "fund_strength": "目前有板块 ETF 达到 {{score}} 分，但近期表现尚未持续领先大盘。",
+        "stock_conditions": "已找到 {{funds}} 只强势 ETF，但目前其成分股中没有符合条件的个股。",
+        "data_incomplete": "筛选数据不足，暂时无法确认符合条件的标的。",
+        "pullback": "目前有 {{leaders}} 只强势候选，尚无符合回调条件的股票。",
+        "oversold": "目前有 {{leaders}} 只强势候选，尚无符合超卖观察条件的股票。"
+      },
+      "incompleteNote": "部分标的数据不足，目前仅能检查数据完整的标的。",
+      "viewLeaders": "查看强势候选",
+      "viewRankings": "查看 ETF 排行",
+      "turnoverReminder": "下单前，留意成交额与买卖价差。",
+      "unlockBody": "解锁股票名称、动能分数与走势明细。",
+      "unlockAction": "升级 Pro"
+    },
+    "pageTitle": "市场动能仪表盘｜ETF 排名与板块趋势",
+    "pageDescription": "比较 ETF 动能排名、板块趋势及多个周期的表现，从表现较强的板块中寻找相对强势的标的，掌握市场动能方向。"
+  },
+  "userActions": {
+    "login": "登录"
+  },
+  "language": {
+    "change": "切换语言",
+    "zhTW": "繁体中文",
+    "en": "English"
+  },
+  "articles": {
+    "pageTitle": "工具使用指南与市场情绪解读",
+    "pageDescription": "如何使用乐活五线谱与 SIO 恐惧贪婪指标判断买卖时机，以及各种市场情绪指标的观念说明。",
+    "keywords": "市场分析,投资策略,市场情绪,投资文章,金融分析,教学",
+    "heading": "工具使用指南与市场情绪解读",
+    "jsonLdName": "工具使用指南与市场情绪解读",
+    "jsonLdDescription": "如何使用乐活五线谱与 SIO 恐惧贪婪指标判断买卖时机，以及各种市场情绪指标的观念说明。",
+    "noCategory": "未分类",
+    "noDate": "无日期",
+    "intro": "这里是网站工具的使用教学与市场情绪的观念说明。想直接看各项指标现在的数字，可以从下方进入指标总览。",
+    "boardLink": "查看市场情绪指标总览"
+  },
+  "articleDetail": {
+    "loadingTitle": "加载中...",
+    "loadingDescription": "加载文章内容中...",
+    "errorTitle": "错误",
+    "errorDescription": "加载文章失败",
+    "errorText": "加载文章失败：",
+    "notFoundTitle": "找不到文章",
+    "notFoundDescription": "找不到该文章",
+    "notFoundText": "找不到该文章。"
+  },
+  "about": {
+    "pageTitle": "关于本站",
+    "pageDescription": "了解 Sentiment Inside Out 网站的理念，以及如何使用简单的分析工具，将市场当前的情绪转化为重要的投资指标，帮助投资者克服恐惧与贪婪心态。",
+    "keywords": "市场情绪,投资心理,恐惧与贪婪,投资指标,情绪分析,投资策略",
+    "ogTitle": "关于 Sentiment Inside Out - 市场情绪分析平台",
+    "heading": "关于 Sentiment Inside Out",
+    "imageAlt": "关于 Sentiment Inside Out",
+    "section1Title": "行情=资金＋心理",
+    "section1Text": "这是【一个投机者的告白】作者科斯托兰尼的名言。资金=基本面=总体经济，心理=投资者情绪＝人性。我相信循环来自于人的不理性，造就了经济和股市的波峰与谷底。",
+    "section2Title": "恐惧与贪婪",
+    "section2Text": "经济数据和公司财报变化需要以月、季来看待，但资本市场却可以在短时间内大幅上下波动，可见情绪对价格的影响不亚于基本面，有人担心贵了所以卖出；有人害怕错过所以买入。身为市场参与者，应该要了解市场当前是处于恐惧或是贪婪。",
+    "section3Title": "克服自己的人性",
+    "section3Text": "我认为股价除了反应基本面，也有同样的比重在反应市场的情绪，创立网站的初衷就是要用简单的图表和数据，将市场当前的情绪转化为重要的投资指标，帮助大家克服自身的不理性，避免跟着情绪追涨杀跌。",
+    "contactTitle": "联系我",
+    "jsonLdName": "关于 Sentiment Inside Out",
+    "jsonLdDescription": "了解 Sentiment Inside Out 网站的理念，以及如何使用简单的分析工具，将市场当前的情绪转化为重要的投资指标，帮助大家克服自身的恐惧与贪婪心态。"
+  },
+  "authDialog": {
+    "title": "从这里开始了解市场情绪",
+    "benefit1": "查看市场指数所反映的情绪",
+    "benefit2": "通过 AI 客服解答疑问",
+    "benefit3": "使用部分基础工具"
+  },
+  "redemption": {
+    "inputPlaceholder": "输入兑换代码",
+    "validate": "验证",
+    "validating": "验证中...",
+    "apply": "应用优惠码",
+    "applied": "已应用",
+    "redeem": "兑换",
+    "redeeming": "兑换中...",
+    "processing": "处理中...",
+    "loadingPreview": "加载预览中...",
+    "preview": {
+      "title": "代码优惠",
+      "percentageDiscount": "{{percentage}}% 折扣",
+      "fixedDiscount": "{{amount}} {{currency}} 折扣",
+      "timeExtension": "延长 {{duration}} {{unit}}",
+      "planUpgrade": "升级至 {{plan}}",
+      "benefits": "特殊优惠"
+    },
+    "confirmation": {
+      "title": "确认兑换",
+      "codeLabel": "兑换代码",
+      "benefitsTitle": "您将获得：",
+      "valueLabel": "预估价值：",
+      "paymentMethod": {
+        "title": "需要付款方式",
+        "description": "此优惠需要您绑定有效的付款方式。",
+        "acknowledge": "我了解需要绑定付款方式"
+      },
+      "cancel": "取消",
+      "confirm": "确认兑换",
+      "processing": "处理中...",
+      "info": "确认后此操作无法撤销。",
+      "benefits": {
+        "discount": {
+          "percentage": "订阅享 {{percentage}}% 折扣",
+          "fixed": "订阅减免 {{amount}} {{currency}}"
+        },
+        "extension": {
+          "description": "您的订阅将延长 {{duration}} {{unit}}"
+        },
+        "upgrade": {
+          "description": "升级至 {{plan}} 套餐 {{duration}} {{unit}}"
+        },
+        "general": {
+          "description": "您将获得特殊优惠优惠"
+        }
+      }
+    },
+    "history": {
+      "loading": "加载记录中...",
+      "retry": "重试",
+      "empty": {
+        "title": "无兑换记录",
+        "description": "您尚未兑换任何代码。在上方输入代码开始使用！"
+      },
+      "summary": "显示 {{showing}} / {{total}} 笔兑换记录",
+      "table": {
+        "date": "日期",
+        "code": "代码",
+        "type": "类型",
+        "benefit": "优惠",
+        "status": "状态"
+      },
+      "types": {
+        "discount": "折扣",
+        "extension": "延长",
+        "upgrade": "升级"
+      },
+      "status": {
+        "applied": "已应用",
+        "pending": "处理中",
+        "failed": "失败",
+        "reversed": "已撤销"
+      },
+      "benefits": {
+        "discount": "{{amount}} {{currency}} 折扣",
+        "discountGeneral": "订阅折扣",
+        "extension": "延长 {{duration}} {{unit}}",
+        "upgrade": "升级至 {{plan}}",
+        "general": "特殊优惠"
+      },
+      "filters": {
+        "allStatuses": "所有状态",
+        "allTypes": "所有类型",
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "apply": "应用筛选",
+        "clear": "清除筛选"
+      },
+      "pagination": {
+        "previous": "上一页",
+        "next": "下一页"
+      },
+      "errors": {
+        "loadFailed": "加载兑换记录失败"
+      }
+    },
+    "activePromotions": {
+      "loading": "加载优惠中...",
+      "retry": "重试",
+      "empty": {
+        "title": "无有效优惠",
+        "description": "您当前没有任何有效的优惠。"
+      },
+      "codeLabel": "代码：",
+      "timeRemaining": {
+        "days": "剩余 {{days}} 天 {{hours}} 小时",
+        "hours": "剩余 {{hours}} 小时 {{minutes}} 分钟",
+        "minutes": "剩余 {{minutes}} 分钟"
+      },
+      "expired": "已过期",
+      "expiringWarning": "此优惠即将到期！",
+      "renewNow": "立即续费",
+      "expiredMessage": "此优惠已过期",
+      "renewSubscription": "续费订阅",
+      "benefits": {
+        "discount": {
+          "title": "折扣优惠",
+          "percentage": "订阅享 {{percentage}}% 折扣",
+          "fixed": "订阅减免 {{amount}} {{currency}}"
+        },
+        "extension": {
+          "title": "订阅延长",
+          "description": "您的订阅已延长 {{duration}} {{unit}}"
+        },
+        "upgrade": {
+          "title": "套餐升级",
+          "description": "您可使用 {{plan}} 套餐功能"
+        },
+        "general": {
+          "title": "特殊优惠",
+          "description": "您拥有有效的优惠"
+        }
+      },
+      "errors": {
+        "loadFailed": "加载有效优惠失败"
+      }
+    },
+    "success": {
+      "redeemed": "代码兑换成功！"
+    },
+    "errors": {
+      "unknown": "发生未知错误",
+      "validationFailed": "代码验证失败",
+      "previewFailed": "无法预览优惠",
+      "redemptionFailed": "兑换失败",
+      "invalid_code": "无效的兑换代码",
+      "code_not_found": "找不到兑换代码，请确认输入后重试。",
+      "code_expired": "此代码已于 {{expiryDate}} 过期",
+      "code_not_active": "此代码将于 {{activationDate}} 启用",
+      "code_exhausted": "此代码已达使用上限。",
+      "code_inactive": "此兑换代码未启用。",
+      "already_redeemed": "您已于 {{redemptionDate}} 兑换过此代码",
+      "user_limit_exceeded": "您已达此代码的使用上限。",
+      "eligibility_failed": "您不符合此代码的使用条件",
+      "captcha_required": "需要完成验证码验证",
+      "plan_not_eligible": "此代码仅适用于以下套餐：{{eligiblePlans}}。",
+      "eligibility_new_customers_only": "此代码仅限新客户使用",
+      "not_new_customer": "此代码仅限新用户使用。",
+      "eligibility_plan_restriction": "此代码仅限 {{eligiblePlans}} 套餐用户使用",
+      "eligibility_first_time_only": "此代码仅限首次兑换用户使用",
+      "not_first_time_user": "此代码仅限首次兑换的用户使用。",
+      "payment_method_required": "使用此代码需要先绑定付款方式",
+      "stacking_violation": "此代码无法与您当前的优惠叠加使用",
+      "stacking_conflict_with": "此代码与您的 {{conflictingPromotions}} 优惠冲突",
+      "confirmation_required": "需要确认",
+      "rate_limited": "尝试次数过多，请于 {{retryAfter}} 秒后再试",
+      "rate_limited_ip": "此IP位址尝试次数过多，请稍后再试",
+      "rate_limited_user": "您的尝试次数过多，请稍后再试",
+      "transaction_failed": "交易失败，请重试",
+      "network_error": "网络连接错误，请检查网络连接",
+      "server_error": "服务器错误，请稍后再试",
+      "timeout": "请求超时，请重试",
+      "maintenance": "系统维护中，请稍后再试",
+      "code_format_invalid": "代码格式不正确",
+      "code_too_short": "代码长度不足",
+      "code_too_long": "代码长度过长",
+      "suspicious_activity": "检测到异常活动，请联系客服",
+      "account_suspended": "您的账户已被暂停，无法兑换代码",
+      "region_restricted": "此代码在您的地区不可用",
+      "device_limit_exceeded": "此设备的兑换次数已达上限",
+      "plan_not_eligible_generic": "此代码不适用于您当前的套餐。"
+    },
+    "actions": {
+      "upgrade_plan": "升级套餐",
+      "upgrade_to_plan": "升级到 {{planName}} 套餐",
+      "bind_payment": "绑定付款方式",
+      "view_history": "查看兑换记录",
+      "contact_support": "联系客服",
+      "try_another": "尝试其他代码",
+      "view_alternatives": "查看其他优惠",
+      "check_spelling": "检查拼写",
+      "retry_input": "重新输入"
+    },
+    "units": {
+      "day": "天",
+      "days": "天",
+      "month": "个月",
+      "months": "个月",
+      "year": "年",
+      "years": "年"
+    },
+    "pricing": {
+      "title": "有优惠代码吗？",
+      "subtitle": "输入优惠码，立即查看可享受的套餐折扣。",
+      "placeholder": "在此输入代码",
+      "appliedTitle": "优惠代码已应用！",
+      "appliedMessage": "您的优惠已应用至订阅",
+      "appliedIndicator": "优惠已应用",
+      "discountBadge": {
+        "percentage": "{{percentage}}% 折扣",
+        "fixed": "折扣 {{amount}}"
+      }
+    }
+  },
+  "userProfile": {
+    "goToAccountAria": "前往账户页面",
+    "avatarAlt": "{{username}} 的头像",
+    "loginRequired": "需要登录",
+    "loginRequiredMessage": "请先登录以查看账户信息"
+  },
+  "chatWidget": {
+    "loginRequired": "登录后即可使用客服功能",
+    "headerTitle": "小猪客服",
+    "closeButton": "✖",
+    "inputPlaceholder": "输入消息...",
+    "sendButton": "发送",
+    "quickReplyTitle": "对网站功能有疑问吗？<br />点击下方常见问题，<br />或直接与小猪客服对话",
+    "sendMessageError": "消息发送失败，请稍后重试！",
+    "typingIndicator": "客服正在回复",
+    "unreadBadge": "有未读消息"
+  },
+  "dialog": {
+    "close": "关闭",
+    "closeAriaLabel": "关闭对话框"
+  },
+  "errorBoundary": {
+    "title": "很抱歉，发生了一些问题",
+    "defaultMessage": "发生未知错误",
+    "retryButton": "重试"
+  },
+  "signInButton": {
+    "loading": "加载中...",
+    "googleAriaLabel": "使用 Google 账号登录"
+  },
+  "footer": {
+    "analysisTools": "分析工具",
+    "priceAnalysis": "乐活五线谱",
+    "marketSentiment": "市场情绪分析",
+    "googleTrendsSymbol": "Google 搜索热度 - 个股",
+    "googleTrendsMarket": "Google 搜索热度 - 整体市场",
+    "watchlist": "自选列表",
+    "otherResources": "其他资源",
+    "articles": "分析专栏",
+    "keyCharts": "关键图表",
+    "facebook": "Facebook 主页",
+    "aboutUs": "关于我",
+    "aboutSite": "关于本站",
+    "legal": "隐私政策与服务条款",
+    "sponsor": "赞助我们",
+    "copyright": "Copyright © {{year}} Sentiment Inside Out",
+    "disclaimer1": "本网站提供的数据、信息、分析结果、工具和说明仅供参考。所有投资决策均应由用户自行判断并承担风险；实际信息请以官方公布的数据为准。本网站不对投资盈亏承担法律责任。",
+    "disclaimer2": "欢迎分享本网站提供的信息链接。如需转载本网站内容，请事先获得本网站同意。联系邮箱：support@sentimentinsideout.com"
+  },
+  "infoTool": {
+    "moreInfoAriaLabel": "更多信息"
+  },
+  "interstitialAd": {
+    "closeButton": "关闭广告"
+  },
+  "protectedRoute": {
+    "loading": "加载中...",
+    "loginRequired": "请先登录以继续",
+    "watchlistUpgradeRequired": "自选列表功能需要升级至 Pro 套餐"
+  },
+  "timeRangeSelector": {
+    "month1": "最近1个月",
+    "month3": "最近3个月",
+    "month6": "最近6个月",
+    "year1": "最近1年",
+    "year2": "最近2年",
+    "year3": "最近3年",
+    "year5": "最近5年",
+    "year10": "最近10年",
+    "year20": "最近20年"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "noData": "暂无可显示的数据",
+    "invalidParams": "无效的操作参数",
+    "close": "关闭",
+    "back": "返回",
+    "scrollToTop": "回到顶部",
+    "unknown": "未知",
+    "unknownError": "未知错误",
+    "refresh": "刷新",
+    "previous": "上一页",
+    "next": "下一页",
+    "cancel": "取消",
+    "dataLoadError": "数据加载失败",
+    "locale": "zh-CN",
+    "errorLoading": "加载失败",
+    "retry": "重试",
+    "retrying": "正在重试…",
+    "retryIn": "{{seconds}} 秒后重试",
+    "technicalDetails": "技术详情",
+    "errorCode": "错误代码",
+    "timestamp": "时间",
+    "context": "上下文",
+    "originalMessage": "原始消息",
+    "errorPrefix": "错误："
+  },
+  "googleTrendsMarket": {
+    "invalidData": "无效的数据格式",
+    "fetchError": "获取数据时发生错误",
+    "chartDescription": "本图表比较了多个市场关键字的 Google 搜索热度与 S&P500 (SPY) 股价走势。",
+    "pageTitle": "Google 搜索热度 - 整体市场",
+    "pageDescription": "使用关键金融词汇的 Google 搜索热度与 S&P 500 指数比较，跟踪整体市场情绪。",
+    "heading": "Google 整体市场搜索热度分析"
+  },
+  "googleTrendsSymbol": {
+    "invalidData": "无效的数据格式",
+    "fetchError": "获取数据时发生错误",
+    "chartDescription": "本图表比较了 {symbol} 的 Google 搜索热度与股价走势。\n搜索热度反映了市场对该标的的关注度，\n股价显示了实际价格变化。",
+    "prompt": "请在上方搜索框输入股票代码以查看数据",
+    "pageTitle": "Google 搜索热度 - 单一标的",
+    "pageDescription": "分析个别股票代码的 Google 搜索热度与股价之间的关系。",
+    "heading": "Google 个股搜索热度分析"
+  },
+  "googleTrendsChart": {
+    "tooltipDate": "日期",
+    "yAxisPrice": "股价 ($)",
+    "yAxisTrend": "Google 搜索热度 (0-100)",
+    "priceLineName": "{symbol}股价"
+  },
+  "googleTrendsSearch": {
+    "placeholder": "输入股票代码",
+    "searching": "搜索中...",
+    "errorIcon": "⚠️",
+    "noResultsIcon": "🔍",
+    "noResults": "找不到符合的股票"
+  },
+  "googleTrendsTimeframe": {
+    "label": "时间范围",
+    "oneMonth": "1 个月",
+    "threeMonths": "3 个月",
+    "sixMonths": "6 个月",
+    "oneYear": "1 年"
+  },
+  "home": {
+    "pageTitle": "Sentiment Inside Out｜市场情绪分析平台",
+    "pageDescription": "Sentiment Inside Out 提供 SIO 恐惧与贪婪指数、乐活五线谱和自选列表，帮助长期投资者观察市场情绪、分析标的价格趋势。",
+    "keywords": "恐惧与贪婪指数,市场情绪,长期投资,价格趋势分析,自选列表,投资心理,投资工具",
+    "jsonLd": {
+      "name": "Sentiment Inside Out",
+      "description": "Sentiment Inside Out 提供市场情绪指标、乐活五线谱和自选列表，帮助长期投资者观察整体市场情绪、分析单个标的的价格趋势。"
+    },
+    "hero": {
+      "title": "洞悉市场｜看懂恐惧与贪婪",
+      "subtitle": "用客观数据判断当前股市情绪，克服恐惧与贪婪的人性弱点。",
+      "primaryAuthenticated": "查看市场情绪",
+      "primaryFreeTrial": "无需绑定信用卡，免费试用 Pro 30 天",
+      "primaryGuest": "无需绑定信用卡，免费试用 Pro 30 天",
+      "secondary": "免费分析股价趋势",
+      "marketPreviewHeadline": {
+        "brand": "Sentiment Inside Out",
+        "index": "恐惧与贪婪指数"
+      },
+      "moments": {
+        "events": {
+          "chinaDevaluation": {
+            "title": "人民币汇率震荡",
+            "description": "人民币快速贬值引发全球市场震荡。"
+          },
+          "early2016Low": {
+            "title": "油价暴跌",
+            "description": "油价暴跌与经济前景担忧拖累市场。"
+          },
+          "tradeWarSelloff": {
+            "title": "贸易战抛售潮",
+            "description": "关税升级与紧缩压力引发年底抛售。"
+          },
+          "prePandemicPeak": {
+            "title": "疫情前市场高点",
+            "description": "疫情大规模扩散前，市场情绪仍然偏向乐观。"
+          },
+          "pandemicPanic": {
+            "title": "疫情恐慌性暴跌",
+            "description": "疫情导致经济活动停摆的冲击迅速蔓延。"
+          },
+          "liquidityPeak": {
+            "title": "2021 年流动性高点",
+            "description": "宽松的流动性环境与成长股热潮推动市场上涨。"
+          },
+          "inflationShock": {
+            "title": "通胀与加息冲击",
+            "description": "通胀升温、利率上升，市场重新评估风险，情绪也随之转弱。"
+          },
+          "aiRally": {
+            "title": "AI 热潮",
+            "description": "AI 题材带动市场风险偏好回升，情绪转向乐观。"
+          },
+          "inflationBearLow": {
+            "title": "2022 年熊市低点",
+            "description": "加息、通胀与经济衰退担忧持续升温。"
+          },
+          "trumpTradeWar2025": {
+            "title": "2025 年特朗普贸易战冲击",
+            "description": "特朗普贸易战相关消息再次扰动市场。"
+          }
+        }
+      },
+      "scrollLabel": "前往下方的功能介绍",
+      "trialLoginTitle": "登录后开始 Pro 试用",
+      "trialLoginPrompt": "登录后即可确认是否符合资格，并开始 Pro 30 天免费试用。",
+      "historyMomentLabel": "历史市场事件"
+    },
+    "announcement": {
+      "badge": "公告"
+    },
+    "methodology": {
+      "historyPreview": {
+        "kicker": "历史走势",
+        "title": "回顾市场极度恐惧的历史时刻",
+        "description": "市场越是恐惧，长期投资者越需要保持冷静。",
+        "empty": "暂时无法加载历史走势。"
+      },
+      "pricePreview": {
+        "title": "快速查看标的所处的价格情绪区间",
+        "description": "通过市场指数所处的位置，判断当前市场情绪更接近恐惧还是贪婪。",
+        "currentPrice": "最新价格",
+        "currentSentiment": "价格情绪",
+        "symbol": "股票代码",
+        "empty": "暂时无法加载 SPY 分析。"
+      }
+    },
+    "story": {
+      "blocks": {
+        "sentiment": {
+          "eyebrow": "回顾市场极度恐慌的时刻",
+          "title": "市场恐慌时，更要保持理性",
+          "description": "市场进入极度恐惧时，可以重新审视投资组合的风险配置，避免因恐慌而卖出。",
+          "cta": "查看历史恐慌低点"
+        },
+        "price": {
+          "title": "从趋势线看懂股价位置",
+          "description": "股价走势难以准确预测；观察当前价格相对于趋势线的位置，可以为买卖决策提供参考。",
+          "cta": "分析其他标的"
+        },
+        "watchlist": {
+          "title": "创建个人自选列表",
+          "description": "集中查看自选标的当前的价格位置。",
+          "cta": "查看自选列表",
+          "items": {
+            "spy": "美国大盘 ETF",
+            "qqq": "美国科技股 ETF",
+            "voo": "标普 500 指数 ETF",
+            "aapl": "苹果",
+            "nvda": "英伟达",
+            "msft": "微软"
+          },
+          "tags": {
+            "extremeGreed": "极度贪婪",
+            "greed": "贪婪",
+            "neutral": "中性",
+            "fear": "恐惧",
+            "extremeFear": "极度恐惧"
+          }
+        }
+      }
+    }
+  },
+  "indicatorItem": {
+    "updatedDateLabel": "更新日期",
+    "asOfLabel": "数据日期 {{date}}",
+    "spyPriceLabel": "SPY 价格",
+    "latestDataLabel": "最新数据",
+    "fearGreedScoreLabel": "恐惧贪婪分数",
+    "fearGreedTooltip": "为便于统一衡量不同指标，我们会根据各指标的历史分布，将实际数值转换为 0～100 的恐惧贪婪分数。分数越高，代表市场越偏向贪婪；分数越低，代表市场越偏向恐惧。",
+    "marketSentimentLabel": "市场情绪",
+    "notAvailable": "N/A",
+    "noData": "暂无数据，请稍后重试"
+  },
+  "indicators": {
+    "aaiiSpread": "AAII 投资者情绪调查",
+    "cboeRatio": "CBOE 看跌/看涨期权比率",
+    "marketMomentum": "S&P500 市场动能",
+    "vixMA50": "VIX 恐慌指数",
+    "safeHaven": "债券避险需求",
+    "junkBond": "高收益债利差",
+    "cotIndex": "期货投机净持仓指数",
+    "naaimIndex": "NAAIM 基金经理风险敞口指数",
+    "marginShortRatio": "券资比",
+    "twMarketMomentum": "台湾股市市场动能",
+    "etaDeviation189d": "有效交易户数",
+    "twVix": "台湾股指期权波动率",
+    "twPcr": "期权 Put/Call Ratio",
+    "usdTwd": "美元兑新台币汇率",
+    "marginMaintenanceRatio": "融资维持率",
+    "finiFutures": "外资期货净未平仓",
+    "marketBreadth": "市场广度"
+  },
+  "sentiment": {
+    "extremeFear": "极度恐惧",
+    "fear": "恐惧",
+    "neutral": "中性",
+    "greed": "贪婪",
+    "extremeGreed": "极度贪婪",
+    "notAvailable": "N/A",
+    "extremeOptimism": "极度乐观",
+    "optimism": "乐观",
+    "pessimism": "悲观",
+    "extremePessimism": "极度悲观"
+  },
+  "marketSentiment": {
+    "pageTitle": "美股恐惧贪婪指数｜整合 8 项指标的市场情绪分析",
+    "pageSubtitle": "跟踪美股市场整体情绪偏向恐惧还是贪婪。",
+    "pageDescription": "整合 VIX、AAII、Put/Call、NAAIM 等 8 项指标的美股恐惧贪婪指数，将市场情绪量化为 0～100 分，帮助长期投资者判断美股是否进入极度恐惧或极度贪婪区域。",
+    "keywords": "市场情绪,投资者情绪,恐惧贪婪指数,VIX分析,Put Call Ratio,股市心理学,投资策略,市场指标,情绪跟踪,台湾股市情绪,美股情绪",
+    "heading": "市场情绪分析",
+    "composite": {
+      "scoreLabel": "指数",
+      "sentimentLabel": "情绪"
+    },
+    "chart": {
+      "compositeIndexLabel": "SIO 恐惧贪婪指标",
+      "spyPriceLabel": "SPY 价格",
+      "compositeIndexAxisLabel": "SIO 恐惧贪婪指标",
+      "spyPriceAxisLabel": "SPY 价格"
+    },
+    "gauge": {
+      "zone": "区域",
+      "explainer": {
+        "current": {
+          "title": "关于 SIO 恐惧贪婪指标",
+          "subtitle": "帮助投资者抽离主观情绪，客观判断市场风险偏好。",
+          "section1": {
+            "title": "1. 整合多项指标",
+            "body": "SIO 将散户情绪、期权避险需求、波动率、股票与国债的相对表现、信用利差，以及期货与主动基金经理的持仓整合成 0 到 100 分。你现在看到的 {{score}} 分，是这些信号依设置权重合成后的情绪读数。"
+          },
+          "section2": {
+            "title": "2. 辨识极端，而非追逐短线",
+            "body": "当分数落到极低区域，通常代表恐惧正在扩散；当分数升到极高区域，则代表市场可能已经过热。重点是观察市场是否正在朝更极端的位置靠近。"
+          },
+          "section3": {
+            "title": "3. 用纪律读市场，对抗恐惧贪婪的本性",
+            "body": "当市场大跌时，人会本能地想逃；当市场狂涨时，又容易被 FOMO 推着追高。SIO 的作用，是替你的判断加上一个客观、跨指标的参考框架。"
+          }
+        },
+        "snapshot": {
+          "title": "如何解读这次市场快照？",
+          "subtitle": "截至 {{date}}，SIO 为 {{score}} 分，市场情绪偏向「{{sentiment}}」。",
+          "section1": {
+            "title": "1. 先看整体情绪",
+            "body": "综合分数整合散户情绪、避险需求、波动率与机构持仓，快速看出市场偏向恐惧还是贪婪。"
+          },
+          "section2": {
+            "title": "2. 再看哪些信号推动分数",
+            "body": "打开下方指标，对照各项分数与历史位置。综合分数相近，背后的信号组合也可能不同。"
+          },
+          "section3": {
+            "title": "3. 对照价格与后续走势",
+            "body": "沿历史图回看极端情绪，观察价格之后如何变化；Pro 可把同样的判读用在最新数据。"
+          }
+        }
+      },
+      "comparison": {
+        "ariaLabel": "综合指标历史比较",
+        "previousDay": "前一天",
+        "previousWeek": "上一周",
+        "previousMonth": "30天前",
+        "previousQuarter": "90天前"
+      }
+    },
+    "indicators": {
+      "currentTitle": "哪些指标在推动情绪",
+      "snapshotTitle": "哪些指标正在塑造这次市场快照",
+      "currentDescription": "SIO 恐惧贪婪指标由多个情绪子指标组成。这里显示目前是哪些指标正在推动市场情绪，以及它们各自偏向哪一侧。",
+      "snapshotDescription": "比较各项情绪信号，了解综合分数的组成。",
+      "mobileEyebrowCurrent": "指标详情",
+      "mobileEyebrowSnapshot": "截至 {{date}} 的市场快照",
+      "trend": {
+        "up": "近一个月上升",
+        "flat": "近一个月持平",
+        "down": "近一个月下降"
+      },
+      "summary": {
+        "currentEyebrow": "目前指标分布",
+        "snapshotEyebrow": "截至 {{date}} 的指标分布",
+        "currentLine": "{{total}} 项指标中，{{extremeFear}} 项极度恐惧、{{fear}} 项恐惧、{{neutral}} 项中性、{{greed}} 项贪婪、{{extremeGreed}} 项极度贪婪。",
+        "snapshotLine": "截至 {{date}}，{{total}} 项指标中，{{extremeFear}} 项极度恐惧、{{fear}} 项恐惧、{{neutral}} 项中性、{{greed}} 项贪婪、{{extremeGreed}} 项极度贪婪。",
+        "currentInsight": {
+          "fearDominant": "目前偏向恐惧的指标明显较多，整体风险偏好仍偏保守。",
+          "greedDominant": "目前偏向贪婪的指标明显较多，整体风险偏好正在升温。",
+          "balanced": "目前中性指标占比较高，市场情绪仍偏向拉锯与观望。",
+          "mixed": "目前指标分布仍分散，市场尚未形成非常一致的情绪方向。"
+        },
+        "snapshotInsight": {
+          "fearDominant": "这份快照中，偏向恐惧的指标明显较多，显示当时市场风险偏好较保守。",
+          "greedDominant": "这份快照中，偏向贪婪的指标明显较多，显示当时市场风险偏好较积极。",
+          "balanced": "这份快照中，中性指标占比较高，显示当时市场情绪仍偏拉锯。",
+          "mixed": "这份快照中，指标分布仍分散，显示当时市场没有非常一致的情绪方向。"
+        }
+      }
+    },
+    "error": {
+      "fetchFailed": "未能获取市场情绪数据。",
+      "invalidData": "无效的数据格式"
+    },
+    "lastUpdateLabel": "最后更新时间",
+    "tutorial": {
+      "title": "历史数据预览",
+      "historicalMessage": "你正在查看过去十年的市场情绪趋势，这些历史数据可以帮助你识别市场的低点和高点。",
+      "upgradeMessage": "数据更新至两个月前。升级至 Pro 套餐即可获得最新的市场情绪数据。",
+      "gotIt": "我知道了",
+      "upgradeCTA": "升级 Pro"
+    },
+    "dataLimitation": {
+      "toastMessage": "💡 免费版历史数据显示至两个月前。升级 Pro 套餐可查看最新数据！",
+      "upgradeToast": "🔒 此功能需要 Pro 套餐。升级即可获得完整的市场情绪分析！",
+      "bannerTitle": "免费版数据截至 {{date}}",
+      "bannerBody": "升级 Pro，查看最新市场情绪、近期走势与各项指标变化。",
+      "currentGaugeHeadline": "当前美股市场情绪",
+      "snapshotGaugeHeadline": "{{date}} 的美股市场情绪",
+      "freeTrialForLatest": "免绑信用卡试用 Pro",
+      "upgradeForLatest": "升级查看最新数据",
+      "unlockLatestCta": "解锁最新数据",
+      "overlayMinimalLabel": "解锁最新数据",
+      "historicalSnapshotLabel": "截至 {{date}} 的历史比较",
+      "currentCardNote": "升级后可直接跟踪现在的市场情绪与最近 60 天变化。",
+      "historyRangeNote": "可切换所有历史区间；最近两个月由 Pro 提供。",
+      "historyShortRangeNote": "这段期间多属 Pro 的最新数据区，可切换较长区间回看历史。",
+      "overlayEyebrow": "最新数据区",
+      "overlayTitle": "升级查看最新走势",
+      "overlayCompactTitle": "升级查看最新走势",
+      "overlayBody": "免费版数据目前停在 {{date}}。升级后可看到现在的情绪位置与最新变化。",
+      "compositionEyebrow": "快照说明",
+      "compositionBody": "逐项比较情绪分数，找出影响综合读数的信号。"
+    },
+    "descriptions": {
+      "composite": {
+        "shortDescription": "Sentiment Inside Out 恐惧贪婪指标（简称 SIO）将市场情绪量化为 0～100 分，用于判断当前市场参与者的心理偏向恐惧还是贪婪，类似于 CNN 恐惧贪婪指数和 BofA 牛熊指标。它能帮助投资者在非理性的股市波动中保持冷静，避免跟风追涨杀跌。",
+        "sections": [
+          {
+            "title": "解读 SIO 恐惧贪婪指标",
+            "content": "SIO 恐惧贪婪指标综合多项美股市场数据，以 0～100 分表示市场情绪。分数越低，代表市场越恐惧；历史上，极度看空往往伴随市场触底信号。分数越高，代表市场越贪婪；看多情绪过度累积时，市场往往更容易出现回调或波动加剧。与 CNN 恐惧贪婪指数相比，SIO 纳入的指标更全面，其中包括俗称「美国散户指标」的 AAII 投资者调查，因此能更全面地呈现长期市场情绪与价格之间的关系。"
+          },
+          {
+            "title": "历史数据回顾",
+            "content": "回顾历史，Sentiment Inside Out 恐惧贪婪指标 (简称:SIO 恐惧贪婪指标)过往每次达到 10 分附近时为熊市底部(包含 2009 年金融海啸、2020 年新冠疫情、2022 年俄乌战争)，每次出现 10 分附近时，代表美股短线低点可能接近；回顾历史，这些时段后的市场修复力度通常较强。"
+          }
+        ]
+      },
+      "aaiiSpread": {
+        "shortDescription": "AAII 投资者情绪调查每周询问会员对未来六个月市场走势的看法（看涨、看跌、中立）。看涨比例减去看跌比例（Bull-Bear Spread）是衡量散户情绪的常用指标。",
+        "detailDescription": "每周调查会员对未来六个月股市的看法。看多减看空的差额越高，散户越乐观；看差额是否接近历史两端，可观察情绪有没有过度集中。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "极高的 Bull-Bear Spread（远高于历史平均）通常表示市场过度乐观，可能是潜在的卖出信号。反之，极低的 Spread（远低于历史平均，甚至为负值）表示市场过度悲观，可能是潜在的买入机会。"
+          }
+        ]
+      },
+      "cboeRatio": {
+        "shortDescription": "CBOE 看跌/看涨期权比率（Put/Call Ratio）是衡量市场投机情绪的重要指标。它计算的是交易所交易的看跌期权（Put）合约数量与看涨期权（Call）合约数量的比率。",
+        "detailDescription": "比较看跌期权与看涨期权成交量的 5 日平均比值。比值升高，通常代表避险或看空需求增加；下降则偏向乐观。期权交易结构也会影响比值，适合搭配其他信号看。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "高 Put/Call Ratio（通常大于 1）表示投资者购买了更多的看跌期权进行避险或看空，市场情绪偏向恐惧。低 Put/Call Ratio（通常小于 0.7）表示投资者购买了更多的看涨期权进行投机或看多，市场情绪偏向贪婪。使用 5 日平均值可以平滑数据，更好地观察趋势。"
+          }
+        ]
+      },
+      "marketMomentum": {
+        "shortDescription": "市场动能指标衡量 S&P 500 指数相对于其 125 日移动平均线（约半年线）的位置。它反映了市场的中期趋势强度。",
+        "detailDescription": "比较 S&P 500 与 125 日均线的距离。远高于均线时，涨势与追价力度较强；远低于均线时，跌势与恐惧较明显。留意价格是否已偏离原本的趋势。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "当 S&P 500 指数远高于其 125 日均线时，表示市场处于强劲的上升趋势，动能强，市场情绪偏向贪婪。当指数远低于均线时，表示市场处于下降趋势，动能弱，市场情绪偏向恐惧。"
+          }
+        ]
+      },
+      "marginShortRatio": {
+        "shortDescription": "券资比衡量融资与融券的相对比例，用来观察市场杠杆与做空情绪的变化。",
+        "detailDescription": "券资比是融券余额相对融资余额的比例。升高时，放空持仓的占比增加；下降时，占比减少。两边余额都可能改变，解读时可一起看融资与融券的变化。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "券资比偏高通常代表市场空方力度较强、情绪偏保守；券资比偏低则表示市场多方较强、风险偏好较高。"
+          }
+        ]
+      },
+      "twMarketMomentum": {
+        "shortDescription": "台湾股市市场动能衡量加权指数相对于中期均线的位置，反映台湾股市趋势与追价力度。",
+        "detailDescription": "比较加权指数与中期均线的距离。指数明显高于均线时，追价力度较强；明显低于均线时，市场偏向防守。可用来观察台湾股市涨跌是否已走到极端。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "当台湾股市明显高于中期均线时，市场通常偏贪婪；当台湾股市明显低于均线时，市场通常偏恐惧。"
+          }
+        ]
+      },
+      "etaDeviation189d": {
+        "shortDescription": "有效交易户数衡量台湾市场中实际有交易的账户数，这里观察的是相对 189 日趋势的偏离程度。",
+        "detailDescription": "比较有效交易户数与 189 日趋势。高于趋势，代表参与热度升温；低于趋势，代表交易较冷清。搭配价格看，可以分辨行情是否吸引更多账户入场。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "当实际户数高于 189 日趋势，代表市场参与热度升温、偏贪婪；低于趋势则代表参与热度降温、偏恐惧。"
+          }
+        ]
+      },
+      "twVix": {
+        "shortDescription": "台湾股指期权波动率（台湾 VIX）衡量期交所对 30 天 TAIEX 期权隐含波动度的综合指数，是台湾股市避险成本的直接读数。",
+        "detailDescription": "从台湾股指期权价格观察市场对未来 30 天波动的预期。升高时，市场预期震荡加剧、避险压力增加；回落时，紧张程度降温。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "TW VIX 上升代表恐惧升温、避险需求增加；TW VIX 下降代表风险偏好回升、市场情绪偏向贪婪。"
+          }
+        ]
+      },
+      "twPcr": {
+        "shortDescription": "台湾股指期权 Put/Call Ratio 比较看跌期权与看涨期权的成交（或未平仓）比例，用来观察期权市场的避险与投机结构。",
+        "detailDescription": "比较台湾股指看跌期权与看涨期权的比例。偏高时，避险或看空持仓较多；偏低时，看涨期权需求较旺。极端读数值得留意，再对照价格是否开始止稳或转弱。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "PCR 偏高（避险需求极端）通常代表恐慌已极、接近反弹；PCR 偏低（投机需求旺）通常代表市场偏乐观、风险偏好高。"
+          }
+        ]
+      },
+      "usdTwd": {
+        "shortDescription": "美元兑新台币汇率反映资金进出台湾市场的压力，与外资对台湾股市的风险偏好有密切关联。",
+        "detailDescription": "USD/TWD 上升代表新台币贬值，台湾股市可能承受较大的外资与汇率压力；下降代表新台币升值。汇率也受利率与美元走势影响，搭配外资持仓看更完整。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "USD/TWD 走高代表新台币贬、资金外流，情绪偏恐惧；USD/TWD 走低代表新台币升、资金回流，情绪偏贪婪。"
+          }
+        ]
+      },
+      "marginMaintenanceRatio": {
+        "shortDescription": "融资维持率反映融资户整体的账户健康度，是观察台湾股市杠杆持仓压力与追缴风险的核心指标。",
+        "detailDescription": "观察融资户持仓价值相对借款的安全边际。比例下降时，追缴与被迫卖出的压力增加；回升时，杠杆持仓压力减轻。急跌时尤其值得留意。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "融资维持率偏高代表融资户安全、风险承受度高，情绪偏贪婪；偏低代表追缴压力升温，情绪偏恐惧。"
+          }
+        ]
+      },
+      "finiFutures": {
+        "shortDescription": "外资期货净未平仓观察外资在台湾股指期货的多空持仓净额，反映外资对后市的方向性押注。",
+        "detailDescription": "把外资台湾股指期货多单减去空单。净多增加代表持仓更偏多，净空增加代表更偏空或避险；搭配现货买卖与汇率，可观察外资如何调整风险。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "外资期货净多持仓过高，常代表市场顶部风险升温（反向情绪信号）；净空持仓过深，则常代表恐惧已经反映完毕。"
+          }
+        ]
+      },
+      "marketBreadth": {
+        "shortDescription": "市场广度衡量台湾股市近期上涨家数相对于下跌家数的比例，用来观察涨势或跌势的参与度是否广泛。",
+        "detailDescription": "看上涨是否扩散到多数股票。指数上涨、广度却走弱时，行情可能集中在少数权值股；指数与广度一起走强，代表有更多股票参与涨势。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "市场广度走高代表涨势广、情绪偏贪婪；市场广度走低代表上涨集中、参与度不足，情绪偏恐惧。"
+          }
+        ]
+      },
+      "vixMA50": {
+        "shortDescription": "VIX 指数（波动率指数），常被称为「恐慌指数」，衡量市场对未来 30 天 S&P 500 指数波动性的预期。此处计算 VIX  50 日移动平均线来观察恐慌情绪的长期变化趋势。",
+        "detailDescription": "用 VIX 的 50 日均线观察持续性的恐慌压力，减少单日尖峰的干扰。均线上升代表市场持续紧张；回落代表波动预期逐步降温。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "当 VIX 50 日移动平均线上升，表示市场恐慌情绪上升，避险需求增加。当 VIX 50 日移动平均线下降时，表示市场相对平静，投资者风险偏好升高，市场情绪偏向贪婪。"
+          }
+        ]
+      },
+      "safeHaven": {
+        "shortDescription": "避险需求指标比较过去 20 个交易日中，股票（风险资产）的总回报与美国国债（避险资产）的总回报两者之间的差异。它反映了资金流向避险资产的程度。",
+        "detailDescription": "比较近 20 个交易日 SPY 与美国国债 IEF 的收益。股票跑赢国债，市场通常较愿意承担风险；国债跑赢股票，通常较偏向避险。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "当国债回报显著优于股票回报时（指标数值低），表示投资者纷纷涌入避险资产，市场情绪偏向恐惧。当股票回报显著优于国债回报时（指标数值高），表示投资者风险偏好高，资金流向风险资产，市场情绪偏向贪婪。"
+          }
+        ]
+      },
+      "junkBond": {
+        "shortDescription": "高收益债与投资级公司债的信用利差，反映市场要求的风险补偿。此处比较两类债券各自相对美国国债的期权调整利差（OAS）。",
+        "detailDescription": "比较高收益债与投资级公司债的信用利差。差距扩大，代表投资者要求更多风险补偿；收窄则代表较愿意承担信用风险。它缩小不等于高收益债的收益率低于投资级债。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "当利差扩大（指标值高）时，表示投资者要求更高的风险补偿才愿意持有高收益债券，这通常发生在市场担忧经济前景或流动性收紧时，市场情绪偏向恐惧。当利差缩小（指标值低）时，表示投资者对风险容忍度提高，愿意接受较低的风险补偿，市场情绪偏向贪婪。"
+          }
+        ]
+      },
+      "cotIndex": {
+        "shortDescription": "COT 指数（Commitments of Traders Index）基于美国商品期货交易委员会（CFTC）每周公布的持仓报告，衡量大型投机者（通常被认为是掌握更多信息的交易者）在 S&P 500 期货市场的净持仓（多单减空单）相对于历史水平的位置。",
+        "detailDescription": "根据 CFTC 每周持仓报告，观察 S&P 500 期货投机与避险持仓的相对变化。投机持仓越偏多，情绪越乐观；越偏空，情绪越保守。历史极端位置可提醒你留意交易是否过度集中。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "COT 指数接近 100% 表示大型投机者的净多单处于历史极高水平，市场可能过度看多，情绪偏向极度贪婪。指数接近 0% 表示净空单处于历史极高水平（或净多单极低），市场可能过度看空，情绪偏向极度恐惧。"
+          }
+        ]
+      },
+      "naaimIndex": {
+        "shortDescription": "NAAIM 风险敞口指数（National Association of Active Investment Managers Exposure Index）每周调查其会员（主动投资经理）当前的股票市场风险敞口水平（0% 表示完全没有持仓，100% 表示完全持仓，可超过 100% 表示使用杠杆）。",
+        "detailDescription": "每周汇整主动投资经理回报的股票风险敞口。接近 100% 代表接近满仓，超过 100% 可能使用杠杆；大幅降低则代表缩减股票风险。可用来观察专业基金经理是否积极参与行情。",
+        "sections": [
+          {
+            "title": "解读方式",
+            "content": "极高的风险敞口指数（如接近或超过 100%）表示基金经理普遍看好市场并积极持有股票，市场情绪偏向贪婪。极低的风险敞口指数（如接近 0% 或为负值，表示持有空头仓位）表示基金经理普遍看空市场并减持仓票，市场情绪偏向恐惧。"
+          }
+        ]
+      }
+    },
+    "enhancedDescription": {
+      "tabs": {
+        "faq": "常见问题"
+      },
+      "content": {
+        "tips": {
+          "basicUsage": "如何解读 SIO 指标？",
+          "tip1": "Sentiment Inside Out 恐惧贪婪指标（简称 SIO）将市场情绪量化为 0～100 分，用于判断当前市场参与者的心理偏向恐惧还是贪婪，类似于 CNN 恐惧贪婪指数和 BofA 牛熊指标。它能帮助投资者在非理性的股市波动中保持冷静，避免跟风追涨杀跌。",
+          "tip2": "不预测股价，只量化情绪。低分代表「过度恐慌」，高分代表「过度贪婪」。",
+          "tip3": "当指标低于 15，数值越低代表股市处于熊市；接近 0 时，通常代表已到达熊市末端，市场恐惧情绪已相当极端。当指标高于 96，数值越高代表股市处于牛市；当接近 100 且开始回落时，通常代表已到达牛市末端，风险偏好开始收缩。市场情绪不是对称的，乐观贪婪的情绪可以持续很长一段时间"
+        },
+        "faq": {
+          "q1": "什么是 SIO 市场情绪指标？",
+          "a1": "SIO 市场情绪指标是衡量市场整体情绪的工具，通过分析多个技术和基本面指标来评估市场的恐惧和贪婪程度。",
+          "q2": "这和常见的「CNN 恐惧与贪婪指数」或「BofA 牛熊指标」有什么不同？",
+          "a2": "SIO 指标是为长期配置设计，逻辑对标机构级的 BofA 指标。CNN 恐惧贪婪指数主要侧重短期，虽然反应灵敏，但较难判断长期周期的结构性底部。SIO 恐惧贪婪指标的设计初衷是打造一个能辅助长期决策的工具，希望能提供如同 BofA Bull & Bear Indicator 一样能抓到长期市场转折点的指标。",
+          "q3": "分数 0 到 100 代表什么？如何解读？",
+          "a3": "指标数值代表当前市场状态在历史中的相对位置，范围从0到100，0-20表示极度恐惧，21-40表示恐惧，41-60表示中性，61-80表示贪婪，81-100表示极度贪婪。要注意的是高分不代表立即崩盘，贪婪情绪通常可以持续很长一段时间",
+          "q4": "多久更新一次数据？",
+          "a4": "综合分数会根据个别指标的更新而更新，因此基本上每天都会更新。",
+          "q5": "不同指标，例如「VIX 指数」和「AAII 散户指标」为什么可以放在一起比较？",
+          "a5": "各项指标的单位不同，不能直接把原始数值相加。SIO 先依各指标自身的历史数据计算 Z-score，调整指标方向后，再依设置权重合成；综合值再转换成 0 到 100 的历史百分位分数。如此呈现的是各信号相对自身历史位置整合后的结果。",
+          "q6": "针对每周发布的数据（如 COT 报告），指标如何处理「发布延迟」以避免前视偏误？",
+          "a6": "指标计算过程中，严格执行「Point-in-Time」数据校正。避免发生「偷看未来」的错误。例如，CFTC COT 报告虽于周五发布，但数据只截至周二。因此系统在运算时强制加入滞后天数。因此回测历史上的周三、周四时，会还原当下无法获取该周数据的状态，模拟真实交易环境下的信息落差，确保可信度。",
+          "q7": "关于15分以下、96分以上分批买卖策略，是否经过样本外 (Out-of-Sample) 的压力测试？",
+          "a7": "有的，回测中采用严谨的「滚动式前进验证 (Walk-Forward Validation)」。 我刻意将模型参数固定在 2019 年以前的数据进行训练，并将 2020 年至 2026 年设置为「盲测期」。回测结果显示，即使经历了 COVID-19 熔断与 2022 年股债双杀的极端市场环境，该策略在盲测期间仍有优于大盘的风险调整后回报，且最大回撤显著低于 S&P 500 指数。",
+          "q8": "为什么建议在 15 分以下就开始买？过去大崩盘都杀到 5 分以下，我不能等 5 分再入场吗？",
+          "a8": "为了避免错失中期回调的机会，可以采用「分批布局」策略。 虽然历史级别的灾难（如 2008 年金融海啸、2020 年疫情）确实会让指标杀到 5 分以下，但这种情况极为罕见。部分中型修正可能在指标来到 8~12 分 附近就止跌反弹（例如 2011 年欧债危机或 2025 贸易战）。如果坚持只在 < 5 分才出手，可能会错过入场机会。因此，最佳的策略是采用「两阶段入场」：第一阶段（低于 15 分）：建立 50% 的基础仓位，确保不错过反弹行情。第二阶段（低于 5 分）：若市场发生系统性崩盘，再将剩余 50% 资金投入。回测证明，这种「先进一半，保留一半」的做法，能在风险与回报之间实现最佳平衡。",
+          "q9": "如果指标出现「极度贪婪 (96+)」，我应该马上清仓或放空吗？",
+          "a9": "不建议，当指标进入 >96 的极度贪婪区时，市场常常会持续贪婪一段时间。清仓可能会错失主升段，放空风险极高。建议这时候留意风险暴露是否过高，并视个人资产配置考量是否调整持仓比例",
+          "q10": "为什么单一指标都没达到极度贪婪，综合分数却已经高达 90 分以上？",
+          "a10": "综合分数不是计算有多少项指标同时进入极度贪婪。SIO 会先将各项指标转为相对自身历史分布的标准化分数，调整指标方向并依权重合成，再依综合值在历史数据中的相对位置换算为 0 到 100 分。因此，即使个别指标都未达各自的极端区间，综合分数仍可能超过 90；这不代表八项指标都已形成一致方向。"
+        }
+      }
+    },
+    "restricted": {
+      "gaugeTitle": "最新市场情绪仪表盘",
+      "gaugeDescription": "升级至 Pro 套餐以查看当前市场情绪指数与详细分析",
+      "compositionTitle": "解锁完整指标分析",
+      "compositionDescription": "查看所有指标的最新数据、贡献度分析与详细解读",
+      "upgradeButton": "立即升级",
+      "unlockButton": "解锁完整功能"
+    },
+    "tw": {
+      "pageTitle": "Sentiment Inside Out (SIO) 台湾股市恐惧贪婪指标｜台湾股市情绪跟踪",
+      "pageDescription": "Sentiment Inside Out (SIO) 台湾股市恐惧贪婪指标整合台湾股指期权波动率、Put/Call Ratio、美元兑新台币、融资维持率、外资期货净未平仓、市场广度、券资比、市场动能与有效交易户数共九项台湾股市指标，将市场情绪量化为 0 到 100 的分数。数值越低代表台湾股市越偏向恐惧，越接近 0 通常代表已到达熊市末端；数值越高代表越偏向贪婪，接近 100 并开始回落时，通常代表已到达牛市末端。适合长期投资者观察台湾股市整体情绪是否进入极端区域。",
+      "keywords": "台湾股市情绪,台湾股市恐惧贪婪指标,加权指数,台湾股指期权波动率,Put Call Ratio,融资维持率,外资期货,券资比,台湾股市投资策略,台湾股市市场指标",
+      "pageSubtitle": "跟踪台湾股市市场整体情绪偏向恐惧还是贪婪。",
+      "heading": "台湾股市市场情绪分析",
+      "faq": {
+        "q1": "什么是 SIO 台湾股市情绪指标？",
+        "a1": "SIO 台湾股市情绪指标是衡量台湾股市整体情绪的工具，整合台湾股指期权波动率、外资期货净未平仓、融资维持率等九项台湾股市特有信号，将市场的恐惧与贪婪程度量化为 0 到 100 的单一分数，协助长期投资者判断台湾股市是否进入情绪极端区域。",
+        "q2": "这和常见的「CNN 恐惧与贪婪指数」或「BofA 牛熊指标」有什么不同？",
+        "a2": "CNN 和 BofA 指标都是为美股设计的，采用 VIX、Put/Call Ratio、AAII 等美股专属数据，无法反映台湾股市独有的市场结构，例如外资期货净未平仓、融资维持率、券资比和美元兑新台币汇率。SIO 台湾股市恐惧贪婪指标专为台湾股市设计，整合台湾股指期权波动率、散户与外资持仓、汇率和市场广度等九项本地信号，并沿用 BofA Bull & Bear Indicator 的长期配置逻辑，以反映台湾股市的资金流向和情绪结构。",
+        "q3": "分数 0 到 100 代表什么？如何解读？",
+        "a3": "分数代表当前台湾股市情绪在历史上的相对位置。0-20 为极度恐惧，21-40 为恐惧，41-60 为中性，61-80 为贪婪，81-100 为极度贪婪。需要注意的是，高分不代表立即反转，台湾股市在外资持续买超与融资扩张期可以维持贪婪一段时间；真正值得留意的，是多项信号同步接近极端的时刻。",
+        "q4": "多久更新一次数据？",
+        "a4": "综合分数会随个别指标的更新而重新计算。台湾股指期权、融资维持率、加权指数动能等日频指标每交易日更新；外资期货净未平仓、有效交易户数等周频数据则依公告时程更新，整体指标基本上每日都会变动。",
+        "q5": "为什么台湾股指期权波动率和融资维持率这类单位完全不同的指标可以一起比较？",
+        "a5": "所有指标都通过统计学的 Z-Score 方法进行标准化。由于波动率是百分比、融资维持率是比率、外资期货是口数，Z-Score 将它们转换为相对于各自历史分布的相对位置，才能在同一尺度下加权整合为综合情绪分数。",
+        "q6": "外资期货或券资比这类周频／公告型数据，如何避免前视偏误 (Look-Ahead Bias)？",
+        "a6": "指标计算严格执行 Point-in-Time 校正。例如期交所的外资期货未平仓数据于盘后公告，融资融券余额次日公告，系统在回测时会还原当时尚未获取该笔数据的状态，加入对应的时间滞后，模拟真实决策环境下的信息落差，避免「偷看未来」。",
+        "q7": "低分分批布局、高分分批减码的策略，有做样本外回测吗？",
+        "a7": "有。回测采用滚动式前进验证 (Walk-Forward Validation)，模型参数以 2019 年以前台湾股市数据训练，2020 年至 2026 年为盲测期。即使经历 2020 疫情急跌、2022 加息修正与 2024 台湾股市历史新高的震荡，策略在盲测期的风险调整后收益仍优于买入并持有加权指数，且最大回撤显著较低。",
+        "q8": "应该在指标几分以下开始布局？有单一的最佳入场分数吗？",
+        "a8": "没有单一的最佳分数。历史上台湾股市较大型的修正通常会让指标跌破 15 分，但每次是否都会下探到 15 以下、以及会跌到多低，并没有规律——有些修正在 15 分附近就止跌反弹，有些则会一路杀到个位数。因此分批入场的节奏应依个人的风险承受能力、投资期限与资金规模决定：保守型投资者可以较早开始小额分批（例如 15~20 分启动），积极型可以等待更低的分数再出手。关键不是等到特定数字，而是事先依自身可承受的回撤幅度，设计好分批与加仓规则，让纪律而非情绪主导每次入场决定。",
+        "q9": "如果指标进入极度贪婪 (96+)，我应该立即清仓或放空台湾股市吗？",
+        "a9": "不建议。台湾股市进入 >96 的极度贪婪区时，在外资持续买超、融资未见过热的背景下，仍可能续强一段时间，贸然清仓容易错过主升段、放空则风险极高。较合理的做法是检视自己的风险暴露是否过高，并依个人资产配置考量是否分批减码。",
+        "q10": "为什么单一指标都没到极端，综合分数却已经超过 90？",
+        "a10": "因为模型看的是广度而非单点极值。当散户融资、外资期货多单、看涨期权偏多、市场广度与动能同时转向乐观时，即使个别指标还没到历史极值，这种跨信号的乐观共识在台湾股市历史上反而更少见。高度一致会推升综合百分位，提醒投资者注意潜在的结构性风险。"
+      }
+    }
+  },
+  "pageContainer": {
+    "defaultTitle": "Sentiment Inside Out - 市场情绪分析",
+    "defaultDescription": "了解市场情绪，克服投资中的恐惧与贪婪。",
+    "defaultKeywords": "市场情绪,情绪指标,投资策略,台湾股市分析,投资心理"
+  },
+  "sponsorSuccess": {
+    "pageTitle": "赞助成功",
+    "pageDescription": "感谢您的赞助！您的支持是我们持续改进服务的动力。",
+    "heading": "感谢您的支持！",
+    "messageLine1": "由衷感谢您对 Sentiment Inside Out 的支持！",
+    "messageLine2": "您的这笔捐助，将协助网站维持营运，也给我更多持续提供服务和内容的动力，",
+    "messageLine3": "更重要的是让更多人的投资路能够顺遂。",
+    "messageLine4": "我们非常感激您的信任与鼓励，",
+    "messageLine5": "也诚挚祝福您投资顺利、生活美好！",
+    "signature": "— Sentiment Inside Out 敬上"
+  },
+  "legal": {
+    "pageTitle": "隐私权政策与服务条款",
+    "pageDescription": "Sentiment Inside Out 网站的服务条款、隐私政策、免责声明及用户权利说明",
+    "keywords": "隐私政策,服务条款,法律声明,用户权利,个人信息保护,免责声明",
+    "lastUpdated": "最后更新日期：2026年10月8日",
+    "effectiveDate": "生效日期：2025年9月14日",
+    "documentLoading": "加载条款中…",
+    "documentError": "无法加载条款，请刷新页面后再试。"
+  },
+  "sponsorUs": {
+    "pageTitle": "赞助我们",
+    "pageDescription": "您的支持能帮助 Sentiment Inside Out 持续运营，并为更多投资者提供简单实用的投资工具。赞助款将用于网站维护和后续开发。",
+    "keywords": "赞助网站,支持投资工具,投资分析平台,市场情绪分析",
+    "heading": "赞助网站，一起帮助更多人",
+    "intro1": "Sentiment Inside Out 网站建设、投资工具与内容创作，以及网络安全防护等，都需要资金支持。",
+    "intro2": "背后其实只有一个人在维护。",
+    "intro3": "我希望借由分享这些免费、简单的工具，",
+    "intro4": "帮助更多人在投资上获得超越大盘的回报。",
+    "intro5": "但要维持网站的运作，",
+    "intro6": "每一天都要付出一定的费用和时间，",
+    "intro7": "长期下来其实也是不小的负担。",
+    "intro8": "因此我想诚挚地邀请你/妳，",
+    "intro9": "一起和我帮助更多人，",
+    "intro10": "让这个网站能继续营运下去;",
+    "intro11": "或者就当作是请我喝个咖啡、吃个饭，",
+    "intro12": "我也会非常感激。",
+    "intro13": "不论有无赞助，",
+    "intro14": "都祝福你/妳投资顺利、一切都更好！",
+    "methodsHeading": "请选择以下赞助方式",
+    "methodCreditCard": "信用卡",
+    "methodWireTransfer": "银行转帐",
+    "methodMobilePayment": "行动支付",
+    "methodMobilePaymentDescription": "请开启以下任一款 App 扫描 QR Code",
+    "methodDescriptionHtml": "请<a href=\"{{link}}\" target=\"_blank\" rel=\"noopener noreferrer\">点击链接</a>或扫描 QR Code。",
+    "copySuccessAlert": "已复制账号：{{text}}"
+  },
+  "ulBandChart": {
+    "upperBandLabel": "上缘",
+    "ma20Label": "MA20",
+    "priceLabel": "价格",
+    "lowerBandLabel": "下缘"
+  },
+  "priceAnalysis": {
+    "pageTitle": "乐活五线谱｜股价趋势与价格位置分析工具",
+    "heading": "乐活五线谱",
+    "subtitle": "用价格趋势判断标的情绪。",
+    "pageDescription": "乐活五线谱算出股价的趋势线，标出现在的股价离它多远：从极度恐惧到极度贪婪。期间可选 0.5、1.5 或 3.5 年。再看乐活通道，股价有没有走出最近的价格区间。",
+    "keywords": "乐活五线谱,价格趋势分析,股价分析,市场情绪,均值回归,超买超卖,乐活通道,标准差",
+    "jsonLd": {
+      "name": "乐活五线谱",
+      "description": "乐活五线谱用过去 3.5 年的股价拉出一条趋势线，上下各加两条线，画出股价偏离趋势的常见范围，形成五条参考线。股价越靠近最外缘，代表离长期趋势越远：碰到最上缘显示「极度贪婪」，碰到最下缘显示「极度恐惧」。搭配反应较快的乐活通道一起看，可以判断短期是过热还是过冷。这个工具适合用来判读个股或指数 ETF 目前位于长期趋势的哪个位置，作为参考，而非单独作为买卖决策依据。"
+    },
+    "toast": {
+      "invalidYears": "请输入有效的查询期间（年），且必须大于零。",
+      "invalidYearsHotSearch": "高级模式下的查询期间无效，已使用默认值进行分析。",
+      "invalidYearsFreeStock": "高级模式下的查询期间无效，已使用默认值进行分析。",
+      "invalidUrlYears": "从 URL 读取的查询期间无效。"
+    },
+    "chart": {
+      "tabs": {
+        "sd": "乐活五线谱",
+        "ulband": "乐活通道"
+      },
+      "loading": {
+        "fetching": "Loading...",
+        "generating": "图表生成中..."
+      },
+      "label": {
+        "price": "价格",
+        "trendLine": "趋势线",
+        "minus2sd": "极度恐惧",
+        "minus1sd": "恐惧",
+        "plus1sd": "贪婪",
+        "plus2sd": "极度贪婪"
+      },
+      "preparing": "正在准备图表…",
+      "zoomIn": "放大",
+      "zoomOut": "缩小",
+      "resetZoom": "重置"
+    },
+    "indicators": {
+      "title": "其他指标",
+      "choose": "选择其他指标",
+      "lockedOption": "{{indicator}}，升级 Pro 后可使用",
+      "ma": "MA",
+      "signal": "信号线",
+      "histogram": "柱状差值",
+      "insufficient": "这段期间的数据不足，请选择较长的分析周期。",
+      "missingRange": "目前没有每日最高、最低价，无法计算 KD。",
+      "description": {
+        "rsi": "RSI（14 日）观察近期涨跌力度；数值介于 0–100。",
+        "macd": "MACD 比较 12、26 日指数移动平均线，并显示 9 日信号线；前段需累积数据。",
+        "kd": "KD（9 日）比较收盘价与近期高低价，显示 K、D 两条线。",
+        "ma": "比较收盘价与 5、10、20、60、120 日移动平均线。"
+      }
+    },
+    "sentiment": {
+      "extremeGreed": "极度贪婪",
+      "greed": "贪婪",
+      "neutral": "中性",
+      "fear": "恐惧",
+      "extremeFear": "极度恐惧"
+    },
+    "form": {
+      "title": "股价趋势与情绪分析",
+      "stockCodeLabel": "输入股票代码：",
+      "stockCodePlaceholder": "例如: 台湾股市代码 2330; 美股代码 AAPL",
+      "analysisPeriodLabel": "选择分析周期：",
+      "periodShort": "0.5 年",
+      "periodMedium": "1.5 年",
+      "periodLong": "3.5 年",
+      "yearsPlaceholder": "输入年数，如 3.5",
+      "backTestDateLabel": "回测日期：",
+      "backTestDatePlaceholder": "回测日期(默认今日)",
+      "switchToAdvanced": "高级设置",
+      "switchToSimple": "简单设置",
+      "buttonAnalyzing": "分析中...",
+      "buttonProcessing": "处理数据中...",
+      "periodCustom": "自定义",
+      "backTestDateHint": "回看过去指定日期的五线谱分析结果",
+      "analysisPeriodHint": "要采用几年的数据来计算五线谱"
+    },
+    "result": {
+      "stockCode": "股票代码",
+      "stockPrice": "股票价格",
+      "marketSentiment": "市场情绪",
+      "channelPosition": "乐活通道",
+      "horizons": "其他周期情绪"
+    },
+    "description": {
+      "overview": {
+        "title": "什么是乐活五线谱？",
+        "content": "乐活五线谱将一段期间的股价计算出一条趋势线，再分析当前的股价离这条趋势线多远，判断是偏向贪婪还是恐惧。",
+        "readMore": "详细使用方式请参考文章"
+      },
+      "sd": {
+        "title": "如何判断标的情绪？",
+        "point1": "上图中间的线是根据股价计算出的趋势线，代表股价的长期走势。趋势线上下各有两条标准差线，用来表示股价相对趋势线的偏离范围。股价离趋势线越远，越可能向趋势线均值回归。可借此判断当前价格处于贪婪还是恐惧区间。",
+        "point2": "乐活通道比的是最近 20 周走过的价格区间，用来辅助判断情绪。",
+        "point3": "碰到五线谱最上缘表示「极度贪婪」。搭配乐活通道是否也突破上缘：两张图都突破，股价可能将转弱；若只有五线谱突破，则有机会再涨一段。",
+        "point4": "五线谱到「极度恐惧」时，再看乐活通道是否也跌破下缘。本次回测的 43 只指数型 ETF 中，两项条件同时成立后持有一年，上涨比例的中位数为 88%；随机入场为 74%。"
+      },
+      "ulband": {
+        "title": "乐活通道是什么？",
+        "point1": "乐活通道先将每周最高价与最低价分别计算 20 周移动平均，再依两者的相对差距向外延伸，形成上下缘。用来观察周收盘价是否超出近期通道范围。",
+        "point2": "股价站上通道上缘，表示它已经涨过最近 20 周的价格区间。",
+        "point3": "股价跌破通道下缘，表示它已经跌出最近 20 周的价格区间。"
+      },
+      "tips": {
+        "title": "乐活五线谱适合用在哪些标的？",
+        "usage": "建议使用在指数型ETF或具有趋势性的大型股票，搭配基本面分析。",
+        "limitation": "不应该单独作为买卖依据，且使用在个股分析的风险较高。"
+      },
+      "horizons": {
+        "title": "其他周期情绪是什么？",
+        "point1": "同一只标的采用不同周期，会呈现不同的情绪结果。例如，极短期 0.5 年期间可能处于极度恐惧，但拉长到 3.5 年却显示为贪婪。可以理解为近期跌幅较大，但从长期来看还没有回到情绪低位。",
+        "point2": "当三个周期指向同方向时，信号会比单一个周期强，代表市场短、中、长期都有一致的极端情绪。",
+        "point3": "三个周期都处于极度恐惧时，接着看乐活通道是否也跌破下缘，以及大盘是否同样恐慌。多个条件一起看，更容易分辨单一标的修正与全面下跌。"
+      }
+    },
+    "prompt": {
+      "enterSymbol": "输入股票代码，或从列表中选择。"
+    },
+    "hotSearches": {
+      "noData": "暂无数据"
+    },
+    "quickSelect": {
+      "tabs": {
+        "hotSearches": "热门分析 🔥",
+        "freeStocks": "指数ETF 💎",
+        "watchlist": "自选列表 📋"
+      }
+    },
+    "watchlistQuickAccess": {
+      "noData": "你的自选列表是空的",
+      "addStocksHint": "前往「我的自选列表」新增股票",
+      "loginRequired": "请先登录以查看你的自选列表"
+    },
+    "freeStockList": {
+      "regions": {
+        "americas": "美洲市场",
+        "europe": "欧洲市场",
+        "asiaPacific": "亚太市场",
+        "global": "全球市场"
+      }
+    },
+    "channel": {
+      "inside": "通道内",
+      "above": "突破上缘",
+      "below": "跌破下缘"
+    },
+    "combined": {
+      "fearConfirmed": {
+        "title": "极度恐惧 ＋ 跌破下缘",
+        "body": "五线谱与乐活通道都到下缘外，是值得留意的恐惧组合。本次 43 只指数型 ETF 回测中，持有一年比随机入场多 11.1 个百分点；期间仍可能续跌。"
+      },
+      "fearOnly": {
+        "title": "极度恐惧，但还在通道内",
+        "body": "五线谱已到极度恐惧，股价仍在乐活通道内。接着观察是否跌破通道下缘；本次 43 只指数型 ETF 回测中，单看这个状态持有一年仅比随机入场多 1.3 个百分点。"
+      },
+      "greedConfirmed": {
+        "title": "极度贪婪 ＋ 突破上缘",
+        "body": "五线谱到极度贪婪，股价也突破乐活通道上缘。留意何时回到通道内：本次 43 只指数型 ETF 回测中，在回到通道内时卖出，之后一个月较随机卖出多避开 1.7 个百分点的跌幅。"
+      },
+      "greedOnly": {
+        "title": "极度贪婪，但还在通道内",
+        "body": "五线谱已到极度贪婪，股价仍在乐活通道内。涨势可能延续，但要留意持有时间：本次 43 只指数型 ETF 回测中，持有一年比随机入场少 3.6 个百分点。"
+      }
+    },
+    "tour": {
+      "indicators": {
+        "title": "其他指标",
+        "body": "这里默认显示 MA，可对照股价与 5、10、20、60、120 日移动平均线。Pro 可切换 RSI、MACD、KD，观察涨跌力度。"
+      },
+      "ariaLabel": "乐活五线谱使用导览",
+      "skip": "略过",
+      "back": "上一步",
+      "next": "下一步",
+      "done": "开始使用",
+      "result": {
+        "title": "分析结果",
+        "body": "上方列出股价、市场情绪、其他周期情绪与通道位置，下方依序是乐活五线谱与乐活通道。对照两张图，查看价格情绪与通道位置；情绪与通道输入框旁的问号可开启判读说明。"
+      },
+      "search": {
+        "title": "输入股票代码",
+        "body": "台湾股市输入数字代码、美股输入英文代码，例如 2330 或 AAPL。从搜索结果中选择，或直接按 Enter，就会开始分析。"
+      },
+      "period": {
+        "title": "调整分析周期",
+        "body": "默认分析 3.5 年，可切换 0.5 年或 1.5 年。选「自定义」输入年数后，按 Enter 或离开输入框即可更新；选择回测日期，可查看当时的分析结果。"
+      }
+    },
+    "ladder": {
+      "heading": "历史回测中，更值得留意的恐惧组合",
+      "met": "已达成",
+      "notMet": "尚未达成",
+      "extremeFear": {
+        "horizons": "0.5 年、1.5 年、3.5 年三种期间都处于极度恐惧",
+        "market": "整个大盘代表性标的跌到极度恐惧"
+      }
+    },
+    "addToWatchlist": {
+      "button": "加入自选列表",
+      "loading": "加载分类中…",
+      "title": "加入自选列表",
+      "description": "将 {{stockCode}} 加入自选列表，并选择要放入的分类。",
+      "newCategoryDescription": "创建分类后，这只股票会直接加入其中。",
+      "stockContext": "目前分析的股票",
+      "categoryLabel": "选择分类",
+      "categoryTotal": "{{count}} 个分类",
+      "stockCount": "{{count}} 只股票",
+      "alreadyAdded": "已加入",
+      "noCategories": "当前还没有分类，建立一个新分类即可开始关注。",
+      "createNew": "创建新分类",
+      "newCategoryLabel": "新分类名称",
+      "newCategoryPlaceholder": "例如：长期投资",
+      "newCategoryHint": "最多 26 个字符。创建后，股票会直接加入这个分类。",
+      "chooseExisting": "返回选择既有分类",
+      "confirm": "加入自选列表",
+      "saving": "加入中…",
+      "loadError": "无法加载自选列表分类，请稍后再试。",
+      "categoryError": "找不到要加入的分类，请重新操作。",
+      "duplicate": "这只股票已在所选分类中。",
+      "success": "已加入自选列表。",
+      "addError": "加入自选列表失败，请稍后再试。"
+    }
+  },
+  "watchlist": {
+    "pageTitle": "我的自选列表",
+    "pageSubtitle": "关注你感兴趣的股票，快速掌握多个标的价格情绪",
+    "pageDescription": "关注你感兴趣的股票，快速掌握多个标的价格情绪。",
+    "jsonLd": {
+      "name": "我的自选列表",
+      "description": "关注感兴趣的股票，掌握它们在长期价格趋势中的情绪位置。你可以在同一页面查看多只股票当前的价格位置，避免追高或在低点卖出。"
+    },
+    "loadingRetry": "加载中，请稍候... ({{count}}/{{max}})",
+    "loadFailed": "加载失败，请刷新页面",
+    "loginRequiredMessage": "请先登录后再使用此功能",
+    "upgradeRequired": "此功能需要升级至 Pro 套餐",
+    "loadingMessage": "自选列表一次分析多个标的，若长时间未查看会需要稍微等候，谢谢你的耐心",
+    "editMode": {
+      "browse": "浏览",
+      "edit": "编辑",
+      "switchToBrowse": "切换到浏览模式",
+      "switchToEdit": "切换到编辑模式"
+    },
+    "sort": {
+      "menuLabel": "排序",
+      "ariaNone": "依{{column}}排序",
+      "ariaAsc": "{{column}} 已递增排序，点击改为递减",
+      "ariaDesc": "{{column}} 已递减排序，点击取消排序"
+    },
+    "infoTooltip": "添加股票后，系统会根据股票长期（3.5 年）趋势计算当前价格对应的情绪位置，包括极度恐惧、恐惧、中性、贪婪和极度贪婪。点击该股票即可跳转至乐活五线谱页面查看详情。",
+    "categoryTabs": {
+      "manageCategoriesAria": "管理分类"
+    },
+    "createCategoryDialog": {
+      "title": "新增分类",
+      "placeholder": "请输入分类名称",
+      "confirmButton": "确认",
+      "cancelButton": "取消"
+    },
+    "editCategoryDialog": {
+      "title": "编辑分类",
+      "placeholder": "请输入分类名称",
+      "confirmButton": "确认",
+      "cancelButton": "取消"
+    },
+    "categoryDialogErrors": {
+      "emptyName": "分类名称不能为空",
+      "nameTooLongGeneric": "名称太长啦，缩短一点！",
+      "nameTooLongChars": "分类名称不能超过 {{maxLength}} 个字符"
+    },
+    "category": {
+      "createSuccess": "分类创建成功",
+      "updateSuccess": "分类已更新",
+      "deleteConfirm": "确定要删除此分类吗？此操作无法复原。",
+      "delete": "删除",
+      "deleteSuccess": "分类已删除"
+    },
+    "stock": {
+      "addSuccess": "已添加 {{symbol}} 到自选列表"
+    },
+    "stockCard": {
+      "removeButton": {
+        "ariaLabel": "取消关注 {{symbol}}",
+        "title": "取消关注"
+      },
+      "analysis": {
+        "loading": "分析中"
+      },
+      "header": {
+        "symbol": "股票代码",
+        "price": "当前价格",
+        "analysis": "价格分析",
+        "sentiment": "当前情绪",
+        "news": "新闻",
+        "twFlagAlt": "台湾国旗",
+        "usFlagAlt": "美国国旗",
+        "hkFlagAlt": "香港国旗",
+        "logoAlt": "{{symbol}} 标志",
+        "jpFlagAlt": "日本国旗",
+        "cnFlagAlt": "中国国旗",
+        "krFlagAlt": "韩国国旗"
+      }
+    },
+    "newsDialog": {
+      "title": "新闻详情",
+      "readFullStory": "阅读完整新闻 →"
+    },
+    "searchBox": {
+      "placeholder": "输入股票代码",
+      "loading": "搜索中...",
+      "noResults": "找不到符合的股票"
+    },
+    "categoryManager": {
+      "title": "管理分类",
+      "createCategory": "新增分类",
+      "editCategory": "编辑分类",
+      "deleteCategory": "删除分类",
+      "dragToReorder": "拖曳以重新排序"
+    },
+    "priceSentimentNotifications": {
+      "eyebrow": "PRO 专属通知",
+      "triggerButton": "设置通知",
+      "title": "价格情绪 Email 通知",
+      "description": "自动监控自选列表中的股票。当长期价格情绪达到你选择的状态时，系统会在每日扫描后发送摘要。",
+      "proBadge": "PRO",
+      "loadError": "目前无法加载通知设置，请稍后再试。",
+      "loading": "正在加载通知设置…",
+      "proRequired": "升级至 Pro，即可接收自选列表中股票的每日价格情绪通知。",
+      "upgrade": "查看 Pro 套餐",
+      "enableTitle": "启用价格情绪通知",
+      "enableDescription": "启用后会自动监控自选列表中的所有股票，无需逐只单独设置。",
+      "enabledTitle": "通知已启用",
+      "enabledDescription": "自动监控自选列表中的所有股票，无需逐只单独设置。",
+      "disabledTitle": "通知尚未启用",
+      "disabledDescription": "启用后会自动监控自选列表中的所有股票，无需逐只单独设置。",
+      "conditionsTitle": "通知情绪",
+      "conditionsHint": "选择希望接收通知的价格位置，默认选择极度恐惧和极度贪婪。",
+      "sentiments": {
+        "extremeFear": "极度恐惧",
+        "fear": "恐惧",
+        "neutral": "中性",
+        "greed": "贪婪",
+        "extremeGreed": "极度贪婪"
+      },
+      "selectAtLeastOne": "启用通知时，请至少选择一种情绪状态。",
+      "schedule": "扫描与寄送",
+      "scheduleValue": "每日台北时间 07:00 开始扫描，完成后寄送",
+      "period": "分析周期",
+      "periodValue": "长期（3.5 年）",
+      "recipient": "寄送至",
+      "triggerNote": "只有进入所选情绪状态时才会通知。同一股票持续停留在相同状态不会每日重复寄送；离开后再次进入时才会再次通知。",
+      "saved": "通知设置已保存。",
+      "saveError": "保存通知设置失败，请稍后再试。",
+      "saving": "保存中…",
+      "save": "保存设置"
+    },
+    "freeUpgradeCta": "解锁个人自选列表",
+    "freePreviewCategory": "平台精选",
+    "freePreviewDescription": "以下为平台精选标的，可直接查看行情与价格情绪。升级 Pro 即可建立及管理个人自选列表。"
+  },
+  "errors": {
+    "STOCK_NOT_FOUND": "找不到指定的股票代码",
+    "STOCK_ACCESS_DENIED": "免费用户仅能分析平台湾股指定列表中的标的，升级至 Pro 套餐即可分析所有标的。",
+    "GENERAL_ERROR": "发生一般性错误",
+    "VALIDATION_ERROR": "输入验证失败",
+    "NOT_FOUND": "找不到请求的资源",
+    "NETWORK_ERROR": "网络连接失败，请检查您的网络连接",
+    "TIMEOUT_ERROR": "请求超时，请稍后再试",
+    "AUTH_ERROR": "登录失败，请稍后再试",
+    "SESSION_EXPIRED": "登录阶段已过期，请重新登录",
+    "UNAUTHORIZED": "请先登录后再继续",
+    "SENTIMENT_DATA_ERROR": "无法获取市场情绪数据",
+    "HISTORICAL_DATA_ERROR": "无法获取历史数据",
+    "NO_HISTORICAL_DATA": "此标的没有可用的历史价格数据",
+    "GOOGLE_AUTH_FAILED": "Google 登录失败，请稍后再试",
+    "GOOGLE_AUTH_CANCELLED": "已取消 Google 登录",
+    "GOOGLE_AUTH_POPUP_BLOCKED": "请允许弹出视窗以完成登录",
+    "GOOGLE_AUTH_NETWORK_ERROR": "Google 登录网络连接异常",
+    "GOOGLE_AUTH_SERVER_ERROR": "Google 登录服务器错误",
+    "BUTTON_DISABLED": "按钮暂时无法使用",
+    "BUTTON_NETWORK_ERROR": "网络连接异常，请重试",
+    "BUTTON_TIMEOUT": "操作超时，请重试",
+    "STOCK_LIMIT_EXCEEDED": "已达到股票数量上限",
+    "CATEGORY_NOT_FOUND": "找不到指定的分类",
+    "CATEGORY_UNAUTHORIZED": "无权访问此分类",
+    "RATE_LIMIT_EXCEEDED": "请求过于频繁，请稍等片刻后再试",
+    "CANNOT_MODIFY_DEFAULT": "无法修改默认分类",
+    "CANNOT_DELETE_DEFAULT": "无法删除默认分类",
+    "CANNOT_DELETE_LAST": "无法删除最后一个分类",
+    "DUPLICATE_CATEGORY_NAME": "分类名称已存在",
+    "DUPLICATE_STOCK": "此股票已在自选列表中",
+    "CATEGORY_LIMIT_EXCEEDED": "已达到分类数量上限",
+    "INVALID_STOCK_SYMBOL": "无效的股票代码",
+    "API_ERROR": "与服务器通讯时发生错误",
+    "UNKNOWN_ERROR": "发生未知错误，若问题持续发生请联系客服",
+    "TURNSTILE_REQUIRED": "请先完成安全验证",
+    "TURNSTILE_ERROR": "安全验证失败，请重试",
+    "TURNSTILE_EXPIRED": "安全验证已过期，请重新验证",
+    "TURNSTILE_SERVICE_UNAVAILABLE": "Turnstile 验证服务目前无法使用，请稍后再试。",
+    "GET_WATCHLIST_FAILED": "无法加载您的自选列表数据",
+    "USER_NOT_FOUND": "找不到用户账号",
+    "CREATE_CATEGORY_FAILED": "创建新分类失败",
+    "CATEGORY_NOT_FOUND_OR_UNAUTHORIZED": "找不到分类或您没有权限",
+    "DUPLICATE_STOCK_IN_CATEGORY": "此股票已存在于此分类中",
+    "ADD_STOCK_FAILED": "将股票加入分类失败",
+    "STOCK_NOT_FOUND_IN_CATEGORY": "在此分类中找不到此股票",
+    "REMOVE_STOCK_FAILED": "从分类中移除股票失败",
+    "UPDATE_CATEGORY_FAILED": "更新分类名称失败",
+    "CANNOT_DELETE_LAST_CATEGORY": "无法删除最后一个分类",
+    "DELETE_CATEGORY_FAILED": "删除分类失败"
+  },
+  "expandableDescription": {
+    "expand": "了解更多",
+    "collapse": "收起"
+  },
+  "featureUpgrade": {
+    "stockAccess": {
+      "title": "升级至 Pro 解锁全部股票",
+      "subtitle": "升级至 Pro 套餐，查询任何股票",
+      "description": "免费用户仅能查询市场型 ETF 和指数。",
+      "descriptionWithStock": "想要查询 {{stockCode}}？免费用户仅能查询市场型 ETF 和指数。",
+      "freeListHint": "免费套餐可立即查询这些主要指数与 ETF："
+    },
+    "currentData": {
+      "title": "解锁最新市场情绪",
+      "subtitle": "掌握最新情绪与近期变化",
+      "description": "市场已经变了，情绪走到哪里？升级 Pro，查看台湾股市与美股的最新情绪，对照最近两个月的走势与各项信号。"
+    },
+    "marketSentimentAccess": {
+      "title": "解锁完整市场情绪数据",
+      "subtitle": "查看台湾股市与美股的最新情绪及完整指标",
+      "description": "从综合分数看到个别信号。Pro 提供最新数据，让你比较台湾股市与美股的情绪和历史位置。"
+    },
+    "technicalIndicators": {
+      "title": "解锁更多技术指标",
+      "description": "免费版可使用 MA。升级 Pro，即可切换 RSI、MACD 与 KD。"
+    },
+    "default": {
+      "title": "升级至 Pro",
+      "subtitle": "解锁完整功能",
+      "description": "整合最新市场情绪、个股分析与自选列表，持续跟踪关注标的。"
+    },
+    "features": {
+      "unlimitedStocks": "免费列表外的个股分析",
+      "realTimeData": "台湾股市与美股的最新市场情绪",
+      "watchlist": "个人自选列表",
+      "currentSentiment": "当前市场情绪",
+      "liveCharts": "最近两个月的情绪走势",
+      "unlimitedAccess": "无限制访问",
+      "advancedTools": "RSI、MACD、KD 高级指标",
+      "indicatorDetails": "完整指标分数与历史变化",
+      "momentum": "完整动能排行与个股筛选结果"
+    },
+    "upgradeButton": "升级至 Pro",
+    "laterButton": "稍后再说",
+    "browseFreeButton": "查询其他免费标的",
+    "browseFreeAriaLabel": "浏览免费可查的指数与 ETF",
+    "upgradeAriaLabel": "升级至 Pro 套餐",
+    "laterAriaLabel": "稍后再说",
+    "trust": {
+      "secure": "安全付款",
+      "instant": "即时启用",
+      "cancel": "随时取消"
+    }
+  },
+  "subscription": {
+    "pageTitle": "订阅套餐",
+    "pageDescription": "比较 Free 与 Pro：免费探索指数 ETF 和历史情绪；Pro 解锁台湾股市与美股的最新情绪、个股分析、动能筛选与自选列表。",
+    "upgradeRequired": {
+      "title": "需要升级套餐"
+    },
+    "plans": {
+      "free": "免费套餐",
+      "pro": "专业套餐"
+    },
+    "features": {
+      "lohasSpectrum": "乐活五线谱",
+      "lohasSpectrumDesc": "股票技术分析工具",
+      "marketSentiment": "市场情绪分析",
+      "marketSentimentDesc": "市场情绪指标分析",
+      "watchlist": "自选列表",
+      "watchlistDesc": "个性化自选列表管理功能",
+      "ads": "广告",
+      "adsDesc": "是否显示广告",
+      "unavailable": "功能不可用"
+    },
+    "userAccount": {
+      "title": "我的账号",
+      "currentPlan": "目前套餐",
+      "usageStats": "使用统计",
+      "paymentHistory": "付款记录",
+      "logout": "退出登录",
+      "viewAccount": "查看账户",
+      "planLoadError": "无法加载套餐信息",
+      "statsLoadError": "无法加载使用统计",
+      "cancelSubscription": "取消订阅",
+      "cancelConfirmTitle": "确认取消订阅",
+      "cancelConfirmMessage": "您确定要取消订阅吗？您的订阅将在 {{endDate}} 到期后停止续约，在此之前您仍可以使用所有功能。",
+      "confirmCancel": "确认取消",
+      "keepSubscription": "维持订阅",
+      "cancelledNotice": "您的订阅已设置为取消，将在 {{endDate}} 到期后停止续约。",
+      "cancelSuccess": "订阅取消成功！您可以继续使用所有功能直到当前周期结束。"
+    },
+    "billingPeriod": {
+      "monthly": "月缴",
+      "yearly": "年缴",
+      "save": "省下",
+      "perYear": "/年",
+      "perMonth": "/月",
+      "currencyNote": "所有价格均以新台币（TWD）计价和扣款。"
+    },
+    "marketSentimentContext": {
+      "notification": "升级以解锁最新市场情绪数据"
+    },
+    "subscriptionPlans": {
+      "title": "选择适合您的套餐",
+      "subtitle": "免费探索工具，Pro 持续跟踪市场与个股",
+      "popular": "最受欢迎",
+      "upgrade": "升级",
+      "downgrade": "降级",
+      "current": "目前使用",
+      "manageSubscription": "管理订阅",
+      "resumeSubscription": "恢复订阅",
+      "resubscribe": "重新订阅",
+      "upgradeToFullPlan": "升级为付费套餐",
+      "loginToStart": "登录开始使用",
+      "loginToUpgrade": "登录升级",
+      "loginRequired": "请先登录",
+      "comingSoon": "即将推出",
+      "freePlan": {
+        "name": "免费套餐",
+        "price": "免费",
+        "description": "先用指数 ETF 与历史情绪指标熟悉工具使用",
+        "features": [
+          "乐活五线谱：主要指数与免费 ETF，含 MA 指标",
+          "市场情绪分析：两个月前的历史数据",
+          "自选列表功能：同时查看多个标的的情绪位置",
+          "无广告体验",
+          "市场动能：板块比较、精选 ETF 与筛选结果数"
+        ]
+      },
+      "proPlan": {
+        "name": "专业套餐",
+        "price": "NT$299",
+        "priceYearly": "NT$2,990",
+        "period": "/月",
+        "periodYearly": "/年",
+        "description": "掌握最新市场情绪，查看自选列表中的股票",
+        "features": [
+          "乐活五线谱：分析免费列表外的个股，搭配额外指标 (RSI、MACD、KD)",
+          "市场情绪分析：台湾股市和美股的最新分数与完整历史",
+          "市场动能：完整 ETF 排行、成分股与筛选结果",
+          "RSI、MACD、KD：切换观察涨跌力度",
+          "自选列表功能：同时比较多个标的的情绪位置",
+          "自选列表可存放10个分类，每个分类50个标的",
+          "无广告体验"
+        ]
+      },
+      "loadingPlans": "加载套餐数据中...",
+      "loadError": "套餐加载失败"
+    },
+    "usage": {
+      "daily": "每日使用量",
+      "monthly": "每月使用量",
+      "unlimited": "无限制",
+      "used": "已使用",
+      "remaining": "剩余",
+      "resetTime": "重置时间",
+      "nextReset": "下次重置",
+      "resetNow": "即将重置",
+      "resetInHours": "{{hours}} 小时后重置",
+      "resetInDays": "{{days}} 天后重置",
+      "totalUsed": "总使用量",
+      "period": "周期"
+    },
+    "history": {
+      "action": "操作",
+      "status": "状态",
+      "actions": {
+        "upgrade": "升级",
+        "downgrade": "降级",
+        "renewal": "续约",
+        "cancellation": "取消"
+      },
+      "statuses": {
+        "completed": "已完成",
+        "pending": "处理中",
+        "failed": "失败"
+      },
+      "noHistory": "暂无订阅记录",
+      "noHistoryDescription": "您的订阅记录将会显示在这里",
+      "totalEntries": "总记录数",
+      "memberSince": "会员起始日期",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "renewalDate": "续约日期"
+    },
+    "comparison": {
+      "title": "功能比较",
+      "subtitle": "详细比较各套餐功能差异",
+      "features": "功能"
+    },
+    "autoRenewEnabled": "自动续约已启用",
+    "status": {
+      "cancelledButActive": "已取消但仍有效",
+      "expiresOn": "到期日：{{date}}"
+    },
+    "freeTrialDialog": {
+      "title": "免费试用通知",
+      "heading": "目前所有功能免费开放！",
+      "message": "我们正在进行功能测试，目前所有 Pro 功能都免费开放给所有用户使用。未来我们将会开始收费，敬请期待！",
+      "featuresTitle": "目前免费开放的功能：",
+      "feature1": "无限制股票查询",
+      "feature2": "完整市场情绪分析",
+      "feature3": "个性化投资组合管理",
+      "understood": "我知道了"
+    },
+    "cancelError": "取消订阅失败",
+    "unlimited": "无上限"
+  },
+  "payment": {
+    "upgradeTitle": "升级到 {{planName}} 套餐",
+    "upgradeSubtitle": "选择合适的支付方式，立即解锁完整功能。",
+    "backToPlans": "返回套餐选择",
+    "loginRequired": "请先登录以继续付款流程",
+    "invalidPlan": {
+      "title": "无效的套餐",
+      "message": "您选择的套餐不存在，请重新选择。"
+    },
+    "flow": {
+      "selectPayment": "选择付款方式",
+      "billingMonthly": "每月",
+      "billingYearly": "每年",
+      "planSummary": "{{plan}}（{{period}}）",
+      "noticesTitle": "付款注意事项",
+      "notices": [
+        "点击「前往付款」将跳转到绿界支付页面",
+        "请在 30 分钟内完成付款，超时订单将自动取消",
+        "付款完成后将自动返回本网站"
+      ],
+      "redemptionCode": "兑换代码"
+    },
+    "methods": {
+      "creditCard": "信用卡"
+    },
+    "form": {
+      "termsAndConditions": "服务条款与隐私权政策",
+      "processing": "处理中...",
+      "creating": "创建订单中...",
+      "upgradeNow": "立即付款升级",
+      "confirmPlan": "确认套餐",
+      "confirmTerms": "确认条款",
+      "confirmPayment": "确认付款",
+      "cancel": "取消",
+      "cancelOrder": "取消订单",
+      "previous": "上一步",
+      "next": "下一步",
+      "createOrder": "创建订单",
+      "creatingOrder": "创建订单中...",
+      "proceedToPayment": "前往付款"
+    },
+    "actions": {
+      "downloadInvoice": "下载发票"
+    },
+    "history": {
+      "title": "付款记录",
+      "noPayments": "暂无付款记录",
+      "orderId": "订单编号",
+      "date": "付款日期",
+      "status": {
+        "success": "付款成功",
+        "failed": "付款失败",
+        "pending": "处理中",
+        "processing": "处理中",
+        "expired": "订单已过期",
+        "refunded": "已退款",
+        "unknown": "未知"
+      },
+      "method": "付款方式",
+      "plan": "套餐",
+      "cycle": "周期",
+      "viewDetails": "查看详情",
+      "loadError": "加载付款历史失败：{{message}}",
+      "planDescription": "{{planType}} - {{billingPeriod}}",
+      "monthly": "月付",
+      "yearly": "年付",
+      "paymentId": "付款 ID",
+      "failureReason": "失败原因",
+      "loadFailure": "无法加载付款纪录，请重试。",
+      "failureMessage": "付款未完成，请确认订阅状态或联系客服。"
+    },
+    "errors": {
+      "invalidAmount": "无效的付款金额",
+      "termsRequired": "请同意服务条款",
+      "createOrderFailed": "创建订单失败",
+      "paymentFailed": "付款处理失败",
+      "paymentMethodRequired": "此兑换代码需要绑定付款方式。请继续完成付款流程以应用优惠。",
+      "incompleteOrder": "订单数据不完整，请重试。",
+      "redirectFailed": "无法开启付款页面，请重试。"
+    },
+    "security": {
+      "title": "由绿界 ECPay 处理安全付款",
+      "notices": [
+        "你将前往 payment.ecpay.com.tw，输入信用卡信息并完成付款。",
+        "所有款项均以新台币（TWD）扣款；发卡行可能会收取货币转换费或跨境交易手续费。",
+        "信用卡是否可使用，以绿界与发卡行的审核结果为准。"
+      ],
+      "cards": "信用卡付款",
+      "renewal": "订阅将自动续费，按{{period}}扣款 TWD {{amount}}（新台币），直至取消为止。你可以在下次续费前前往账户管理或取消订阅。",
+      "monthly": "月",
+      "yearly": "年",
+      "cancel": "管理订阅",
+      "policy": "服务条款与退款政策",
+      "support": "联系客服"
+    },
+    "result": {
+      "loading": "正在确认付款状态...",
+      "polling": "正在等待付款确认... ({{pollingCount}}/{{maxPollingAttempts}})",
+      "queryError": "无法确认付款状态，请联系客服。",
+      "noParams": "缺少付款信息参数。",
+      "details": "付款详情",
+      "orderNumber": "订单编号",
+      "amount": "付款金额",
+      "date": "付款时间",
+      "method": "付款方式",
+      "nextSteps": "接下来您可以",
+      "step1": "立即开始使用 Pro 功能",
+      "step2": "查看您的订阅状态",
+      "step3": "管理您的账户设置",
+      "goToAccount": "查看我的账户",
+      "backToHome": "返回首页",
+      "autoRedirect": "{{countdown}}秒后将自动跳转到您的账户页面...",
+      "checkAccount": "查看我的账户",
+      "errorCode": "错误代码",
+      "suggestions": "建议您",
+      "suggestion1": "检查信用卡信息是否正确",
+      "suggestion2": "确认信用卡额度是否足够",
+      "suggestion3": "稍后再试或联系客服",
+      "tryAgain": "重新选择套餐",
+      "success": {
+        "title": "付款成功！",
+        "message": "恭喜！您的订阅已成功启用。"
+      },
+      "failure": {
+        "title": "付款失败",
+        "message": "很抱歉，付款过程中发生错误。"
+      },
+      "pending": {
+        "title": "付款处理中",
+        "message": "付款正在处理中，请稍后查看您的订阅状态。",
+        "defaultMessage": "您的付款正在处理中，请稍后查看订阅状态。",
+        "info": "处理说明",
+        "info1": "付款已提交，正在等待银行确认",
+        "info2": "通常在 1-5 分钟内完成",
+        "info3": "您可以稍后查看账户中的订阅状态"
+      },
+      "clientReturn": {
+        "message": "您已从付款页面返回。正在确认付款状态..."
+      }
+    },
+    "plan": {
+      "proPlan": "Pro 套餐",
+      "features": {
+        "title": "包含功能",
+        "marketSentiment": "最新市场情绪分析",
+        "advancedAnalysis": "完整股票价格趋势分析工具",
+        "unlimitedWatchlist": "完整自选列表功能",
+        "prioritySupport": "优先客户支持"
+      },
+      "pricing": {
+        "monthly": "月",
+        "yearly": "年",
+        "originalPrice": "原价",
+        "totalAmount": "总金额"
+      }
+    },
+    "terms": {
+      "title": "服务条款与隐私政策",
+      "serviceTermsTitle": "服务条款重点",
+      "privacyPolicyTitle": "隐私政策重点",
+      "serviceTerms": [
+        "订阅服务将于付款完成后立即生效",
+        "月付套餐每月自动续费，年付套餐每年自动续费",
+        "您可以随时取消订阅，取消后将在当前周期结束时停止服务"
+      ],
+      "privacyPolicy": [
+        "我们仅收集提供服务所必需的个人信息",
+        "您的付款信息由绿界支付安全处理，我们不会保存信用卡信息",
+        "我们不会将您的个人信息出售给第三方"
+      ],
+      "agreement": "我已阅读并同意"
+    },
+    "orderSummary": {
+      "title": "订单摘要",
+      "orderId": "订单编号",
+      "plan": "套餐",
+      "paymentMethod": "付款方式",
+      "creditCardRecurring": "信用卡自动续费",
+      "discount": "折扣",
+      "monthlyPlan": "月付",
+      "yearlyPlan": "年付"
+    },
+    "redemption": {
+      "title": "兑换代码",
+      "description": "有促销代码吗？输入代码以获得折扣优惠",
+      "placeholder": "输入兑换代码",
+      "applied": "兑换代码已应用",
+      "savings": "节省 NT$ {{amount}}",
+      "notApplicable": "此兑换码不适用于此套餐"
+    },
+    "loading": {
+      "pricingData": "加载价格信息…"
+    },
+    "error": {
+      "pricingLoadFailed": "价格信息加载失败",
+      "retry": "重试"
+    },
+    "warning": {
+      "usingFallbackPricing": "显示备用价格,请刷新以获取最新信息"
+    }
+  },
+  "invoice": {
+    "title": "发票管理",
+    "status": {
+      "sent": "已寄送",
+      "cancelled": "已作废"
+    },
+    "details": {
+      "title": "发票详情",
+      "invoiceNumber": "发票号码",
+      "issueDate": "开立日期",
+      "dueDate": "到期日期",
+      "amount": "发票金额",
+      "taxAmount": "税额",
+      "totalAmount": "总金额",
+      "buyerInfo": "买方信息",
+      "sellerInfo": "卖方信息",
+      "items": "项目明细"
+    }
+  },
+  "refund": {
+    "status": {
+      "pending": "审核中",
+      "processing": "处理中",
+      "cancelled": "已取消"
+    }
+  },
+  "admin": {
+    "title": "管理后台",
+    "description": "管理兑换代码、分析数据和系统设置",
+    "accessDenied": {
+      "title": "访问被拒",
+      "message": "您没有权限访问管理后台。如果您认为这是错误，请联系管理员。",
+      "goBack": "返回"
+    },
+    "permissions": {
+      "checking": "检查权限中...",
+      "retry": "重试"
+    },
+    "status": {
+      "authenticated": "已验证"
+    },
+    "tabs": {
+      "codeManagement": "代码管理",
+      "analytics": "分析数据",
+      "userManagement": "用户管理",
+      "announcementManagement": "公告管理",
+      "paymentRetryManagement": "付款重试管理"
+    },
+    "paymentRetry": {
+      "title": "付款重试管理",
+      "description": "监控和管理订阅付款重试操作",
+      "sections": {
+        "overview": "系统概览",
+        "stats": "统计数据",
+        "pending": "待处理重试",
+        "job": "任务控制"
+      },
+      "overview": {
+        "title": "系统健康状态",
+        "healthy": "系统正常",
+        "unhealthy": "系统异常",
+        "service": "服务",
+        "initialized": "已初始化",
+        "lastCheck": "最后检查",
+        "yes": "是",
+        "no": "否",
+        "loading": "加载健康状态中...",
+        "viewStats": "查看统计",
+        "checkPending": "检查待处理重试"
+      },
+      "stats": {
+        "title": "重试统计",
+        "totalRetries": "总重试次数",
+        "successful": "成功",
+        "failed": "失败",
+        "pending": "待处理",
+        "noData": "无统计数据"
+      },
+      "pending": {
+        "title": "待处理重试",
+        "merchantTradeNo": "商店交易编号",
+        "errorType": "错误类型",
+        "retryCount": "重试次数",
+        "retryAt": "重试时间",
+        "actions": "操作",
+        "executeNow": "立即执行",
+        "noData": "无待处理重试"
+      },
+      "job": {
+        "title": "重试任务控制",
+        "status": "任务状态",
+        "lastRun": "最后执行",
+        "nextRun": "下次执行",
+        "never": "从未",
+        "notScheduled": "未排程",
+        "triggerJob": "触发重试任务",
+        "refreshStatus": "刷新状态",
+        "running": "运行中",
+        "stopped": "已停止",
+        "idle": "闲置"
+      },
+      "confirmations": {
+        "executeRetry": "您确定要手动执行 %{merchantTradeNo} 的重试吗？",
+        "triggerJob": "您确定要手动触发重试任务吗？"
+      },
+      "messages": {
+        "retryExecuted": "重试执行成功：%{message}",
+        "jobTriggered": "重试任务触发成功：%{message}",
+        "success": "成功",
+        "loadHealthError": "加载系统健康状态失败",
+        "loadStatsError": "加载统计数据失败：%{error}",
+        "loadPendingError": "加载待处理重试失败：%{error}",
+        "loadJobStatusError": "加载任务状态失败：%{error}",
+        "executeRetryError": "执行重试失败：%{error}",
+        "runJobError": "执行任务失败：%{error}"
+      }
+    },
+    "userManagement": {
+      "title": "用户升级管理",
+      "description": "搜索用户并升级为 Pro 会员",
+      "search": {
+        "placeholder": "输入用户 Email 地址",
+        "button": "搜索",
+        "errors": {
+          "emailRequired": "请输入用户 Email",
+          "invalidEmail": "请输入有效的 Email 格式",
+          "searchFailed": "搜索用户失败",
+          "networkError": "搜索用户时发生错误"
+        }
+      },
+      "userInfo": {
+        "email": "Email",
+        "registeredAt": "注册时间",
+        "lastLogin": "最后登录",
+        "subscriptionStatus": "订阅状态",
+        "noSubscription": "无订阅",
+        "noLastLogin": "从未登录"
+      },
+      "plans": {
+        "free": "免费会员",
+        "pro": "Pro 会员",
+        "ultra": "Ultra 会员"
+      },
+      "subscriptionStatus": {
+        "active": "有效",
+        "cancelled": "已取消",
+        "expired": "已过期",
+        "suspended": "已暂停",
+        "until": "至"
+      },
+      "upgrade": {
+        "title": "升级设置",
+        "duration": "升级期间",
+        "reason": "升级原因",
+        "reasonPlaceholder": "选填：升级原因说明",
+        "button": "升级为 Pro",
+        "buttonUpgrading": "升级中...",
+        "buttonAlreadyPro": "已是 Pro 会员",
+        "units": {
+          "days": "天",
+          "months": "月"
+        },
+        "success": "成功将用户 {{email}} 升级为 Pro 会员，期限 {{duration}} {{unit}}",
+        "errors": {
+          "noUserSelected": "请先选择要升级的用户",
+          "invalidDuration": "请输入有效的升级期间",
+          "upgradeFailed": "升级用户失败",
+          "networkError": "升级用户时发生错误"
+        }
+      },
+      "noResults": {
+        "title": "找不到该 Email 的用户",
+        "icon": "👤"
+      }
+    },
+    "actions": {
+      "manageCodes": "管理代码",
+      "viewAnalytics": "检视分析"
+    },
+    "codes": {
+      "title": "兑换代码管理",
+      "description": "管理和监控兑换代码、活动和使用分析",
+      "loading": "加载代码中...",
+      "generateNew": "生成新代码",
+      "autoRefresh": "自动刷新",
+      "refresh": "刷新",
+      "filters": "筛选器",
+      "clearFilters": "清除筛选",
+      "applyFilters": "应用筛选",
+      "codeType": "代码类型",
+      "allTypes": "所有类型",
+      "status": "状态",
+      "allStatuses": "所有状态",
+      "campaignName": "活动名称",
+      "searchCampaign": "搜索活动...",
+      "prefix": "前缀",
+      "searchPrefix": "搜索前缀...",
+      "createdAfter": "创建时间晚于",
+      "createdBefore": "创建时间早于",
+      "selectedCount": "已选择 {{count}} 个代码",
+      "bulkOperations": "批量操作",
+      "deactivateSelected": "停用选中项目",
+      "selectAll": "全选",
+      "exportJson": "导出 JSON",
+      "exportCsv": "导出 CSV",
+      "types": {
+        "percentage_discount": "百分比折扣",
+        "fixed_amount_discount": "固定金额折扣",
+        "time_extension": "时间延长",
+        "percentageDiscount": "百分比折扣",
+        "fixedAmountDiscount": "固定金额折扣",
+        "timeExtension": "时间延长"
+      },
+      "statuses": {
+        "active": "启用",
+        "inactive": "停用",
+        "expired": "已过期",
+        "exhausted": "已用完",
+        "scheduled": "已排程"
+      },
+      "table": {
+        "code": "代码",
+        "type": "类型",
+        "campaign": "活动",
+        "status": "状态",
+        "usage": "使用情况",
+        "expires": "过期时间",
+        "created": "创建时间",
+        "actions": "操作"
+      },
+      "view": "检视",
+      "activate": "启用",
+      "deactivate": "停用",
+      "viewDetails": "检视详情",
+      "pagination": {
+        "showing": "显示 {{start}}-{{end}} 共 {{total}} 项",
+        "previous": "上一页",
+        "next": "下一页"
+      }
+    },
+    "analytics": {
+      "title": "兑换分析",
+      "description": "监控兑换效能、诈骗检测和活动分析",
+      "loading": "加载分析中...",
+      "timeRange": "时间范围",
+      "autoRefresh": "自动刷新",
+      "refresh": "刷新",
+      "exportJson": "导出 JSON",
+      "exportCsv": "导出 CSV",
+      "totalCodes": "总代码数",
+      "activeCodes": "启用代码数",
+      "totalRedemptions": "总兑换次数",
+      "conversionRate": "转换率",
+      "timeRanges": {
+        "7days": "过去 7 天",
+        "30days": "过去 30 天",
+        "90days": "过去 90 天",
+        "1year": "过去一年"
+      },
+      "metrics": {
+        "overview": "概览",
+        "conversion": "转换",
+        "fraud": "诈骗检测",
+        "campaigns": "活动",
+        "totalCodes": "总代码数",
+        "totalRedemptions": "总兑换次数",
+        "conversionRate": "转换率",
+        "successRate": "成功率"
+      },
+      "charts": {
+        "redemptionTrends": "兑换趋势",
+        "codeTypeDistribution": "代码类型分布",
+        "campaignPerformance": "活动效能",
+        "fraudPatterns": "诈骗模式"
+      },
+      "fraudAlerts": {
+        "title": "诈骗警报",
+        "highVelocity": "检测到高频兑换",
+        "highFailureRate": "检测到高失败率",
+        "severity": {
+          "high": "高",
+          "medium": "中",
+          "low": "低"
+        },
+        "types": {
+          "velocity": "高频率",
+          "failure_rate": "高失败率",
+          "ip_clustering": "IP 聚集",
+          "pattern_detection": "模式检测"
+        }
+      },
+      "overview": {
+        "codeBreakdown": "代码分解",
+        "topCampaigns": "热门活动"
+      },
+      "conversion": {
+        "overallRate": "整体转换率",
+        "successRate": "成功率"
+      },
+      "fraud": {
+        "recentAlerts": "最近诈骗警报",
+        "noAlerts": "未检测到诈骗警报"
+      },
+      "campaigns": {
+        "name": "活动名称",
+        "codes": "代码数",
+        "usage": "使用量",
+        "rate": "使用率"
+      }
+    },
+    "wizard": {
+      "title": "代码生成精灵",
+      "previous": "上一步",
+      "next": "下一步",
+      "generate": "生成代码",
+      "steps": {
+        "basicConfig": "基本配置",
+        "basicConfigDesc": "配置代码类型和折扣/延长设置",
+        "usageLimits": "使用限制和资格",
+        "usageLimitsDesc": "设置使用限制和资格要求",
+        "advanced": "高级选项",
+        "advancedDesc": "配置堆叠、过期和启用设置",
+        "review": "检视和生成",
+        "reviewDesc": "检视配置并生成代码"
+      },
+      "templates": {
+        "title": "快速范本",
+        "newCustomer": "新客户折扣",
+        "timeExtension": "时间延长",
+        "bulkDiscount": "批量折扣"
+      },
+      "codeType": "代码类型",
+      "discountPercentage": "折扣百分比 (%)",
+      "discountAmount": "折扣金额",
+      "currency": "货币",
+      "extensionDuration": "延长期间",
+      "extensionUnit": "延长单位",
+      "targetPlan": "目标套餐",
+      "maxTotalUses": "最大总使用次数",
+      "maxUsesPerUser": "每用户最大使用次数",
+      "eligibilityType": "资格类型",
+      "eligiblePlans": "符合资格的套餐",
+      "requiresPaymentMethod": "需要付款方式",
+      "allowStacking": "允许堆叠",
+      "stackingGroup": "堆叠群组",
+      "stackingGroupPlaceholder": "输入堆叠群组名称",
+      "expiresAt": "过期时间",
+      "activatesAt": "启用时间（可选）",
+      "campaignName": "活动名称",
+      "campaignNamePlaceholder": "输入活动名称",
+      "count": "代码数量",
+      "prefix": "前缀（批量生成用）",
+      "prefixPlaceholder": "例如：SUMMER2024",
+      "codeLength": "代码长度",
+      "internalNotes": "内部备注",
+      "internalNotesPlaceholder": "管理员参考的内部备注",
+      "units": {
+        "day": "天",
+        "month": "月",
+        "year": "年"
+      },
+      "plans": {
+        "free": "免费套餐",
+        "pro": "专业套餐"
+      },
+      "eligibility": {
+        "allUsers": "所有用户",
+        "newCustomers": "仅新客户",
+        "specificPlans": "特定套餐",
+        "firstTime": "首次用户"
+      },
+      "validation": {
+        "codeTypeRequired": "代码类型为必填项",
+        "invalidPercentage": "百分比必须在 1-100 之间",
+        "invalidAmount": "金额必须大于 0",
+        "invalidDuration": "期间必须大于 0",
+        "unitRequired": "单位为必填项",
+        "invalidTotalUses": "总使用次数必须大于 0",
+        "invalidUserUses": "用户使用次数必须大于 0",
+        "userUsesExceedsTotal": "用户使用次数不能超过总使用次数",
+        "plansRequired": "至少必须选择一个套餐",
+        "expirationRequired": "过期日期为必填项",
+        "expirationInPast": "过期日期不能是过去的时间",
+        "activationAfterExpiration": "启用日期不能晚于过期日期",
+        "stackingGroupTooShort": "堆叠群组名称至少需要 3 个字符",
+        "campaignNameRequired": "活动名称至少需要 3 个字符",
+        "prefixRequiredForBulk": "批量生成需要前缀",
+        "invalidCount": "数量必须在 1-10000 之间",
+        "invalidCodeLength": "代码长度必须在 8-32 之间"
+      },
+      "preview": {
+        "title": "配置预览",
+        "configuration": "配置",
+        "generation": "生成",
+        "type": "类型",
+        "value": "值",
+        "usage": "使用限制",
+        "eligibility": "资格",
+        "expiration": "过期",
+        "method": "方法",
+        "count": "数量",
+        "prefix": "前缀",
+        "campaign": "活动",
+        "sampleCodes": "范例代码"
+      },
+      "success": {
+        "title": "生成成功",
+        "message": "成功生成 {{count}} 个兑换代码",
+        "summary": "生成摘要",
+        "campaign": "活动",
+        "type": "类型",
+        "generated": "已生成",
+        "expires": "过期",
+        "codes": "生成的代码",
+        "copy": "复制",
+        "done": "完成"
+      }
+    },
+    "codeDetails": {
+      "title": "代码详情",
+      "basicInfo": "基本信息",
+      "configuration": "配置",
+      "usageStats": "使用统计",
+      "metadata": "元数据",
+      "usageLimits": "使用限制",
+      "stacking": "叠加设置",
+      "paymentRequired": "需要付款方式",
+      "edit": "编辑",
+      "save": "保存",
+      "cancel": "取消",
+      "close": "关闭",
+      "code": "代码",
+      "type": "类型",
+      "value": "值",
+      "status": "状态",
+      "prefix": "前缀",
+      "created": "创建时间",
+      "campaignName": "活动名称",
+      "isActive": "是否启用",
+      "expiresAt": "过期时间",
+      "activatesAt": "启用时间",
+      "maxTotalUses": "最大总使用次数",
+      "maxUsesPerUser": "每用户最大使用次数",
+      "eligibilityType": "资格类型",
+      "eligiblePlans": "符合资格的套餐",
+      "requiresPaymentMethod": "需要付款方式",
+      "allowStacking": "允许堆叠",
+      "stackingGroup": "堆叠群组",
+      "stackingGroupPlaceholder": "输入堆叠群组",
+      "internalNotes": "内部备注",
+      "internalNotesPlaceholder": "输入内部备注",
+      "timesUsed": "使用次数",
+      "remaining": "剩余",
+      "usageRate": "使用率",
+      "uniqueUsers": "独特用户",
+      "discount": "折扣",
+      "extension": "延长",
+      "unknown": "未知",
+      "eligibilityLabel": "资格",
+      "eligibility": {
+        "allUsers": "所有用户",
+        "newCustomers": "仅新客户",
+        "specificPlans": "用户套餐：{{plans}}",
+        "specificPlansOption": "特定套餐",
+        "firstTime": "首次用户"
+      },
+      "plans": {
+        "free": "免费",
+        "pro": "专业"
+      },
+      "yes": "是",
+      "no": "否",
+      "allowed": "允许",
+      "notAllowed": "不允许",
+      "group": "群组",
+      "validation": {
+        "expirationRequired": "过期日期为必填项",
+        "expirationInPast": "过期日期不能是过去的时间",
+        "activationAfterExpiration": "启用日期不能晚于过期日期",
+        "invalidTotalUses": "总使用次数必须大于 0",
+        "invalidUserUses": "用户使用次数必须大于 0",
+        "userUsesExceedsTotal": "用户使用次数不能超过总使用次数",
+        "plansRequired": "至少必须选择一个套餐",
+        "campaignNameRequired": "活动名称至少需要 3 个字符"
+      }
+    },
+    "bulkOps": {
+      "title": "批量操作",
+      "selectOperation": "选择操作",
+      "options": "选项",
+      "affectedCodes": "受影响的代码",
+      "totalCodes": "总代码数",
+      "byStatus": "按状态",
+      "byType": "按类型",
+      "cancel": "取消",
+      "continue": "继续",
+      "back": "返回",
+      "operations": {
+        "activate": "启用代码",
+        "deactivate": "停用代码",
+        "update": "更新代码"
+      },
+      "descriptions": {
+        "activate": "立即启用选中的代码或排程启用",
+        "deactivate": "停用选中的代码并说明原因",
+        "update": "更新选中代码的配置",
+        "updateGeneric": "更新选中代码的配置输入框",
+        "scheduleActivate": "排程于 {{date}} 启用"
+      },
+      "activationDate": "启用日期（可选）",
+      "activationDateHelp": "留空表示立即启用",
+      "reason": "原因",
+      "reasonPlaceholder": "输入停用原因",
+      "fields": {
+        "expiresAt": "过期日期",
+        "maxTotalUses": "最大总使用次数",
+        "maxUsesPerUser": "每用户最大使用次数",
+        "campaignName": "活动名称",
+        "internalNotes": "内部备注"
+      },
+      "validation": {
+        "reasonRequired": "原因至少需要 5 个字符",
+        "activationInPast": "启用日期不能是过去的时间",
+        "expirationInPast": "过期日期不能是过去的时间",
+        "invalidTotalUses": "总使用次数必须大于 0",
+        "invalidUserUses": "用户使用次数必须大于 0",
+        "userUsesExceedsTotal": "用户使用次数不能超过总使用次数",
+        "noUpdatesProvided": "至少必须更新一个输入框"
+      },
+      "confirm": {
+        "title": "确认批量操作",
+        "description": "请在继续之前检视操作详情",
+        "operation": "操作",
+        "affectedCodes": "受影响的代码",
+        "codes": "个代码",
+        "warning": "警告",
+        "warningText": "此操作无法撤销。请确认您要继续。",
+        "execute": "执行操作"
+      },
+      "processing": {
+        "title": "处理操作中",
+        "description": "请等待操作处理完成...",
+        "progress": "正在处理第 {{current}} 个，共 {{total}} 个代码"
+      },
+      "results": {
+        "title": "操作结果",
+        "successful": "成功",
+        "failed": "失败",
+        "total": "总计",
+        "failedOperations": "失败的操作",
+        "done": "完成"
+      }
+    },
+    "errors": {
+      "unknown": "发生未知错误",
+      "client_error": "发生客户端错误",
+      "retry_exhausted": "已达到最大重试次数"
+    }
+  },
+  "appName": "市场情绪跟踪平台",
+  "sentimentBoard": {
+    "pageTitle": "市场情绪指标总览",
+    "pageDescription": "一页看完全球市场情绪指标:CNN 恐惧贪婪指数、BofA Bull & Bear、AAII 散户调查、NAAIM 基金经理风险敞口、台湾股指期权波动率等,附数据时间与原始出处。",
+    "keywords": "市场情绪指标,恐惧贪婪指数,CNN Fear Greed,BofA Bull Bear,AAII,NAAIM,情绪跟踪,台湾股市情绪,美股情绪",
+    "heading": "市场情绪指标总览",
+    "subheading": "现在市场是贪婪还是恐惧？这里收录美股与台湾股市的主要情绪指标。",
+    "compositeLabel": "SIO 综合指标",
+    "compositeUs": "SIO 美股恐惧贪婪指标",
+    "compositeTw": "SIO 台湾股市恐惧贪婪指标",
+    "divergenceTitle": "指标之间的落差",
+    "gap": "落差",
+    "viewDetail": "查看深度分析",
+    "proOnly": "Pro 专属",
+    "source": "出处",
+    "noData": "暂无数据",
+    "generatedAt": "本页数据更新于",
+    "loading": "加载指标中…",
+    "error": "指标加载失败,请稍后再试。",
+    "upsellCopy": "各机构的原始数值免费开放。升级 Pro 可看 SIO 综合指标、各项指标如何影响分数，以及不同市场信号是否一致。",
+    "upsellCta": "查看套餐",
+    "divergenceNote": "同一时间，散户调查、机构持仓与不同市场的判读经常不一致。落差数字越大，代表两边的分歧越明显。散户取自 AAII 调查；机构取自 NAAIM 风险敞口、COT 与高收益债利差。",
+    "divergences": {
+      "retail_vs_institutional": "散户情绪 vs 机构持仓",
+      "cnn_vs_sio": "CNN 恐惧贪婪 vs SIO 美股恐惧贪婪指标",
+      "us_vs_tw": "美股情绪 vs 台湾股市情绪"
+    },
+    "sides": {
+      "retail": "散户",
+      "institutional": "机构",
+      "cnn": "CNN",
+      "sio_us": "SIO",
+      "us": "美股",
+      "tw": "台湾股市"
+    },
+    "groups": {
+      "external": {
+        "title": "市场常见情绪指标",
+        "note": "其他机构公开发布的指标。CNN 恐惧贪婪反应快但偏短期，常在股价触底前就已进入极端恐惧；BofA 牛熊指标每周更新一次，原始报告不对外公开。"
+      },
+      "us": {
+        "title": "美股情绪指标",
+        "note": "AAII 散户调查、NAAIM 基金经理风险敞口、期权 Put/Call、信用利差等信号，构成 SIO 美股恐惧贪婪指标的计算基础。"
+      },
+      "tw": {
+        "title": "台湾股市情绪指标",
+        "note": "台湾股指期权波动率、外资期货持仓、融资维持率等信号，构成 SIO 台湾股市恐惧贪婪指标的计算基础。台湾股市筹码结构与美股不同，两者采用各自独立的指标组合。"
+      }
+    },
+    "indicatorNames": {
+      "cnn-fear-greed": "CNN 恐惧贪婪指数",
+      "bofa-bull-bear": "BofA 牛熊指标",
+      "aaii-bull-bear-spread": "AAII 散户多空差",
+      "naaim-exposure-index": "NAAIM 基金经理风险敞口",
+      "cboe-put-call-ratio-5-day-avg": "CBOE Put/Call 五日均",
+      "vix-ma50": "VIX 50 日均",
+      "market-momentum": "市场动能",
+      "safe-haven-demand": "避险需求",
+      "junk-bond-spread": "高收益债利差",
+      "s-p-500-cot-index": "S&P 500 COT 指数",
+      "tw-vix": "台湾股指期权波动率",
+      "pcr-ratio": "台湾股指期权 Put/Call Ratio",
+      "usd-twd": "美元兑新台币",
+      "fini-futures-net-oi": "外资期货净未平仓",
+      "us-10y-yield": "美债 10 年期收益率",
+      "effective-trading-accounts": "有交易户数",
+      "margin-maintenance-ratio": "融资维持率",
+      "margin-short-ratio": "券资比",
+      "market-breadth-ma20": "市场广度 MA20",
+      "tw-market-momentum": "台湾股市市场动能",
+      "eta-deviation-189d": "有交易户数偏离度",
+      "retail-sentiment-small-futures": "散户小台净持仓"
+    },
+    "percentileCaption": "历史百分位",
+    "delayNoticeCta": "升级 Pro 查看最新数据",
+    "delayBannerTitle": "免费版：SIO 计算的部分显示至 {{date}}",
+    "delayBannerBody": "CNN、BofA、AAII 等第三方指标显示最新公开读数。SIO 计算的合成指标与历史百分位，免费版截至两个月前，卡片会标示「延迟」。",
+    "delayedTag": "延迟",
+    "asOf": "数据时点"
+  },
+  "sentimentIndicatorPages": {
+    "currentReading": "最新读数",
+    "sourceTitle": "数据来源",
+    "disclaimer": "本页汇整第三方机构公开发布的指标读数，仅供参考，不构成任何投资建议。指标的定义与计算方式由发布机构决定，本站不对其准确性或即时性负责。",
+    "bofaBullBear": {
+      "shortName": "美银牛熊指标",
+      "pageTitle": "美银牛熊指标 BofA Bull & Bear Indicator 是什么？怎么解读？",
+      "pageDescription": "美银牛熊指标（BofA Bull & Bear Indicator）的完整解读：0 到 10 的反向情绪指标，8 以上为卖出信号、2 以下为买入信号，由六项资金流与持仓数据合成。附最新读数、历史走势图与判读方式。",
+      "keywords": "美银牛熊指标,BofA Bull Bear Indicator,bofa bull bear indicator,美银多空指标,Hartnett,Flow Show,反向指标,市场情绪指标,恐惧贪婪",
+      "heading": "美银牛熊指标（BofA Bull & Bear Indicator）是什么？怎么解读？",
+      "lede": "美银牛熊指标是美国银行（Bank of America）每周发布的情绪指标，用 0 到 10 衡量投资者站在多方还是空方。它的用法是反向的：读数越高，代表押注同一个方向的人越多，后续能再推动行情的力量就越少。",
+      "whatItIsTitle": "什么是美银牛熊指标（BofA Bull & Bear Indicator）？",
+      "whatItIs": "这个指标由美银投资策略团队发布，首席策略师是 Michael Hartnett，每周随《The Flow Show》周报更新，通常在美国时间周四晚间到周五之间出来。它不看行情涨跌，而是汇整六项「资金流向哪里、持仓站在哪一边」的数据，各自换算成百分位后合成 0 到 10 的分数。原始数据包含全球基金的资金进出、美银自家的基金经理问卷、期货市场的持仓，以及全球股市的广度。",
+      "howToReadTitle": "怎么解读美银牛熊指标？",
+      "howToRead": "它是反向指标，极端值代表大多数人已经站在同一边。美银定义 8.0 以上为极度偏多、2.0 以下为极度偏空。",
+      "bands": [
+        {
+          "range": "8.0 以上",
+          "meaning": "极度偏多。美银将此视为反向卖出信号，代表多方持仓已经拥挤，并非预测行情会下跌。"
+        },
+        {
+          "range": "2.0 至 8.0",
+          "meaning": "中性区间。指标本身没有明确信号，需要搭配其他信息判断。"
+        },
+        {
+          "range": "2.0 以下",
+          "meaning": "极度偏空。美银将此视为反向买入信号，通常出现在恐慌与大量资金撤出之后。"
+        }
+      ],
+      "componentsTitle": "美银牛熊指标由哪六个分项组成？",
+      "componentsIntro": "六个分项各自换算成 0% 到 100% 的百分位，再合成最终读数。美银会在周报里把六项一起列出，所以看到分项就知道这一周的分数被什么推动。",
+      "components": [
+        {
+          "key": "hf_positioning",
+          "name": "避险基金持仓（Hedge Fund Positioning）",
+          "note": "避险基金在股票上押了多少。"
+        },
+        {
+          "key": "equity_flows",
+          "name": "股票资金流（Equity Flow）",
+          "note": "流进股票型基金的钱。数据来自 EPFR，一家跟踪全球基金资金进出的机构。"
+        },
+        {
+          "key": "bond_flows",
+          "name": "债券资金流（Bond Flow）",
+          "note": "流进债券型基金的钱，用来看投资者愿不愿意承担风险。"
+        },
+        {
+          "key": "credit_mkt_technicals",
+          "name": "信用市场技术面（Credit Market Technicals）",
+          "note": "公司债市场的供需与利差状况。"
+        },
+        {
+          "key": "equity_market_breadth",
+          "name": "全球股市广度（Global Stock Index Breadth）",
+          "note": "全球有多少市场处在上升结构。"
+        },
+        {
+          "key": "lo_positioning",
+          "name": "基金经理配置（FMS Positioning）",
+          "note": "美银每月访问全球基金经理，问他们实际的资产配置。"
+        }
+      ],
+      "historyTitle": "美银牛熊指标的历史区间与极端值",
+      "history": "这个指标的序列可回溯至 2002 年。本站自 2023 年 11 月起持续记录，期间最低 1.4、最高 9.7。读数突破 8.0 的次数并不多，2026 年 8 月的 9.7 是 2021 年以来最高。要留意的是，指标进入极端区之后可能停留数周甚至更久，到达极端与行情反转是两件事。",
+      "relationToSioTitle": "美银牛熊指标与 SIO 恐惧贪婪指标的差异",
+      "relationToSio": "美银牛熊指标每周更新，适合观察资金与持仓是否走向极端。SIO 每个交易日整合八项情绪信号，让你在两次美银报告之间持续跟踪恐惧是否升温。再对照 2020、2022 年市场低点附近的分数，就能判断眼前的悲观程度是否已接近历史恐慌区，为分批布局找到参考。",
+      "relationToSioCta": "查看 SIO 美股恐惧贪婪指标",
+      "source": "BofA Global Investment Strategy。读数随《The Flow Show》周报发布。"
+    },
+    "cnnFearGreed": {
+      "shortName": "CNN 恐惧贪婪指数",
+      "pageTitle": "CNN 恐惧贪婪指数（Fear & Greed Index）是什么？怎么解读？",
+      "pageDescription": "CNN 恐惧贪婪指数的完整解读：0 到 100 的市场情绪指标，25 以下为极度恐惧、75 以上为极度贪婪，由七项市场数据合成。附最新读数、判读方式与它的已知限制。",
+      "keywords": "CNN 恐惧贪婪指数,Fear and Greed Index,CNN Fear Greed,恐惧贪婪指标,市场情绪指标,极度恐惧,极度贪婪",
+      "heading": "CNN 恐惧贪婪指数（Fear & Greed Index）是什么？怎么解读？",
+      "lede": "CNN 恐惧贪婪指数是目前最多人看的市场情绪指标，用 0 到 100 描述美股投资者现在偏向恐惧还是贪婪。数字越低代表市场越恐慌，越高代表越乐观。",
+      "whatItIsTitle": "什么是 CNN 恐惧贪婪指数（Fear & Greed Index）？",
+      "whatItIs": "CNN 用七项市场数据合成这个指数，包含股价相对均线的位置、创新高与创新低的家数差、上涨下跌股票的成交量差、看跌/看涨期权成交量比率、高收益债与投资级债的利差、市场波动率，以及股票相对债券的近期收益。每一项都换算成同一个尺度后平均，得到 0 到 100 的分数，每个交易日更新。",
+      "howToReadTitle": "怎么解读 CNN 恐惧贪婪指数？",
+      "howToRead": "CNN 把 0 到 100 分成五个区间。多数人把它当反向指标使用，也就是极度恐惧时留意买点、极度贪婪时留意风险。",
+      "bands": [
+        {
+          "range": "0 至 24",
+          "meaning": "极度恐惧（Extreme Fear）。市场处在恐慌状态，常伴随大量卖压。"
+        },
+        {
+          "range": "25 至 44",
+          "meaning": "恐惧（Fear）。投资者偏向保守。"
+        },
+        {
+          "range": "45 至 55",
+          "meaning": "中性（Neutral）。多空力度相当。"
+        },
+        {
+          "range": "56 至 75",
+          "meaning": "贪婪（Greed）。市场风险偏好上升。"
+        },
+        {
+          "range": "76 至 100",
+          "meaning": "极度贪婪（Extreme Greed）。追价意愿强，估值容易被推高。"
+        }
+      ],
+      "historyTitle": "CNN 恐惧贪婪指数的历史区间",
+      "history": "这个指数的范围是 0 到 100。本站收录 2021 年起的完整日数据，期间最低到过 2.9（2025 年 4 月 8 日），最高到过 83.0（2023 年 12 月 19 日）。极度恐惧通常出现在市场快速下跌的期间，极度贪婪则常见于连续上涨之后。",
+      "relationToSioTitle": "CNN 恐惧贪婪指数与 SIO 恐惧贪婪指标的差异",
+      "relationToSio": "CNN 这个指数的成分偏向短期。它的七项数据多数看的是最近几天到几周的变化，所以在下跌途中很早就会落到极度恐惧，之后行情继续跌、指数却已经贴在底部，等于失去分辨力。SIO 的恐惧贪婪指标用较长的标准化窗口，把每一项放进十几年的历史分布里比较，因此在极端状态下仍然分得出「很恐惧」与「非常罕见的恐惧」。两者一起看，可以避免被短期信号带着跑。",
+      "relationToSioCta": "查看 SIO 美股恐惧贪婪指标",
+      "source": "CNN Business。指数每个交易日更新。",
+      "componentsTitle": "CNN 恐惧贪婪指数由哪七个分项组成？",
+      "componentsIntro": "七个分项各自换算成 0 到 100 的分数后平均，得到最终读数。看分项就知道今天的分数被什么推动。",
+      "components": [
+        {
+          "key": "market_momentum_sp125",
+          "name": "市场动能（Market Momentum）",
+          "note": "S&P 500 相对 125 日均线的位置。"
+        },
+        {
+          "key": "stock_price_strength",
+          "name": "股价强度（Stock Price Strength）",
+          "note": "创 52 周新高与新低的家数差。"
+        },
+        {
+          "key": "stock_price_breadth",
+          "name": "股价广度（Stock Price Breadth）",
+          "note": "上涨股与下跌股的成交量差。"
+        },
+        {
+          "key": "put_call_options",
+          "name": "看跌/看涨期权比率（Put/Call Options）",
+          "note": "看跌期权与看涨期权的成交量比值，用来看避险需求。"
+        },
+        {
+          "key": "market_volatility_vix_50",
+          "name": "市场波动率（Market Volatility）",
+          "note": "VIX 相对其 50 日均线的位置。"
+        },
+        {
+          "key": "junk_bond_demand",
+          "name": "高收益债需求（Junk Bond Demand）",
+          "note": "高收益债与投资级债的收益率差，差距缩小代表愿意承担风险。"
+        },
+        {
+          "key": "safe_haven_demand",
+          "name": "避险需求（Safe Haven Demand）",
+          "note": "股票相对债券的近期收益差。"
+        }
+      ]
+    },
+    "aaiiSurvey": {
+      "shortName": "AAII 散户调查",
+      "pageTitle": "AAII 散户情绪调查（Sentiment Survey）是什么？怎么解读？",
+      "pageDescription": "AAII 散户情绪调查的完整解读：每周访问美国散户投资者对未来六个月的看法，多空差（Bull-Bear Spread）是最常被引用的数字。附最新读数、判读方式与它的已知限制。",
+      "keywords": "AAII 散户调查,AAII Sentiment Survey,多空差,Bull Bear Spread,散户情绪,美国散户投资者协会,市场情绪指标",
+      "heading": "AAII 散户情绪调查（Sentiment Survey）是什么？怎么解读？",
+      "lede": "AAII 散户情绪调查是美国散户投资者协会每周做的问卷，问会员对未来六个月股市的看法。最常被引用的数字是多空差，也就是看多比例减去看空比例。",
+      "whatItIsTitle": "什么是 AAII 散户情绪调查（AAII Sentiment Survey）？",
+      "whatItIs": "AAII 是美国散户投资者协会（American Association of Individual Investors），从 1987 年开始每周向会员发放问卷，只问一个问题：未来六个月股市会涨、会跌，还是持平。三个比例加起来是 100%，看多减看空就是多空差。这是少数直接问人怎么想的情绪指标，其他多数指标都是从交易数据反推。",
+      "howToReadTitle": "怎么解读 AAII 多空差？",
+      "howToRead": "多空差为正代表看多的人比较多，为负代表看空的人比较多。长期平均大约在正 6 到 7 个百分点附近，所以单看正负意义不大，要看它偏离长期水准多远。多数人把它当反向指标。",
+      "bands": [
+        {
+          "range": "高于 +20",
+          "meaning": "散户明显偏乐观。历史上出现在涨势延续一段时间之后。"
+        },
+        {
+          "range": "-10 至 +20",
+          "meaning": "接近常态范围，信号有限。"
+        },
+        {
+          "range": "低于 -20",
+          "meaning": "散户明显偏悲观。历史上常出现在市场大跌之后，被视为反向的参考。"
+        }
+      ],
+      "historyTitle": "AAII 多空差的历史区间",
+      "history": "这份调查从 1987 年 7 月开始，是本站收录的指标中序列最长的一项，累积超过两千笔周数据。多空差在多数时间落在正负 20 个百分点之间，史上最低为负 54.0（1990 年 10 月 19 日），最高为正 62.8（2003 年 6 月 26 日）。超过正负 30 的情况相对少见，通常伴随行情的剧烈波动。",
+      "relationToSioTitle": "AAII 散户调查与 SIO 恐惧贪婪指标的差异",
+      "relationToSio": "AAII 有两个先天限制。它是问卷，回复的人是自愿参与的协会会员，样本每周不同，数字本身的杂讯不小。而且它问的是「想法」，人怎么想与怎么下单常常有落差。SIO 的恐惧贪婪指标把 AAII 当成其中一项成分，经过平滑与标准化后再与其他七项合成，用意就是让单一问卷的杂讯不会主导判断。",
+      "relationToSioCta": "查看 SIO 美股恐惧贪婪指标",
+      "source": "American Association of Individual Investors（AAII）。调查每周更新。"
+    },
+    "naaimExposure": {
+      "shortName": "NAAIM 风险敞口指数",
+      "pageTitle": "NAAIM 风险敞口指数（Exposure Index）是什么？怎么解读？",
+      "pageDescription": "NAAIM 风险敞口指数的完整解读：每周调查美国主动型资产管理业者的实际股票持仓水位，范围从负 200 到正 200。附最新读数、判读方式与它的已知限制。",
+      "keywords": "NAAIM 风险敞口指数,NAAIM Exposure Index,主动型基金持仓,基金经理风险敞口,市场情绪指标,美股情绪",
+      "heading": "NAAIM 风险敞口指数（Exposure Index）是什么？怎么解读？",
+      "lede": "NAAIM 风险敞口指数每周调查美国主动型资产管理业者，问他们目前实际在股票上放了多少持仓。它反映的是专业基金经理的下单结果，与问卷型的情绪指标形成对照。",
+      "whatItIsTitle": "什么是 NAAIM 风险敞口指数（NAAIM Exposure Index）？",
+      "whatItIs": "NAAIM 是美国主动投资经理协会（National Association of Active Investment Managers），每周三对会员调查一次，问他们当下的股票风险敞口水位。数值 100 代表满仓做多，0 代表空仓，负值代表放空，理论范围从负 200 到正 200。这项调查问的是实际持仓，所以它衡量的是行为而非看法。",
+      "howToReadTitle": "怎么解读 NAAIM 风险敞口指数？",
+      "howToRead": "这是顺着持仓看的指标，数字越高代表专业基金经理押注股市的程度越深。多数人把极端值当反向参考，因为满仓之后可用来加仓的资金就少了。",
+      "bands": [
+        {
+          "range": "高于 90",
+          "meaning": "接近满仓。基金经理已经大幅押注股市，后续加仓空间有限。"
+        },
+        {
+          "range": "40 至 90",
+          "meaning": "常见区间，信号有限。"
+        },
+        {
+          "range": "低于 20",
+          "meaning": "大幅减码或空仓。历史上出现在市场恐慌期间。"
+        }
+      ],
+      "historyTitle": "NAAIM 风险敞口指数的历史区间",
+      "history": "本站收录的数据自 2006 年 7 月起。指数大部分时间落在 40 到 90 之间，期间最低到过负 3.6（2011 年 10 月 5 日，代表整体净空），最高到过 120.6（2017 年 12 月 13 日，代表使用杠杆做多）。要留意它每周只有一个数字，行情在周中大幅波动时，这个指标会慢一拍。",
+      "relationToSioTitle": "NAAIM 风险敞口指数与 SIO 恐惧贪婪指标的差异",
+      "relationToSio": "NAAIM 的样本是几十家主动型管理业者，规模不大，单一机构调整持仓就可能让数字明显移动。加上它每周才更新一次，用来判断当下的市场状态会有时间差。SIO 的恐惧贪婪指标每个交易日更新，并把 NAAIM 与另外七项数据一起标准化后合成，让单一调查的波动不会被过度放大。",
+      "relationToSioCta": "查看 SIO 美股恐惧贪婪指标",
+      "source": "National Association of Active Investment Managers（NAAIM）。调查每周更新。"
+    },
+    "cboePutCall": {
+      "shortName": "CBOE Put/Call Ratio",
+      "pageTitle": "CBOE Put/Call Ratio（看跌/看涨期权比率）是什么？怎么解读？",
+      "pageDescription": "CBOE Put/Call Ratio 的完整解读：期权市场的看跌期权与看涨期权成交量比值，数字越高代表避险需求越强。附最新读数、判读方式与它的已知限制。",
+      "keywords": "CBOE Put Call Ratio,看跌/看涨期权比率,PCR,期权比率,put call ratio,市场情绪指标,避险需求",
+      "heading": "CBOE Put/Call Ratio（看跌/看涨期权比率）是什么？怎么解读？",
+      "lede": "Put/Call Ratio 是期权市场的看跌期权成交量除以看涨期权成交量。看跌期权常被用来避险或看空，看涨期权则多用来看多，所以这个比值可以看出投资者现在偏向保护持仓还是追逐上涨。",
+      "whatItIsTitle": "什么是 CBOE Put/Call Ratio（看跌/看涨期权比率）？",
+      "whatItIs": "CBOE 是芝加哥期权交易所，全球最大的期权市场之一。它每天公布看跌期权（put）与看涨期权（call）的成交量，两者相除就是 Put/Call Ratio。比值高于 1 代表当天看跌期权成交量比看涨期权多，通常出现在市场紧张的时候。由于单日数字跳动很大，实务上多半会取数日平均后再看。",
+      "howToReadTitle": "怎么解读 CBOE Put/Call Ratio？",
+      "howToRead": "这是反向指标。比值偏高代表大量资金在买保护，情绪偏空；比值偏低代表市场轻忽风险。极端值往往出现在行情转折附近。",
+      "bands": [
+        {
+          "range": "高于 1.0",
+          "meaning": "看跌期权成交量超过看涨期权，避险需求明显，情绪偏空。"
+        },
+        {
+          "range": "0.7 至 1.0",
+          "meaning": "常见区间。"
+        },
+        {
+          "range": "低于 0.7",
+          "meaning": "看涨期权明显多于看跌期权，市场对风险的警觉偏低。"
+        }
+      ],
+      "historyTitle": "CBOE Put/Call Ratio 的历史区间",
+      "history": "本站收录的五日均数据自 2006 年 11 月起，期间最低 0.37（2021 年 1 月 19 日），最高 1.47（2022 年 12 月 28 日）。要留意的是，期权市场的结构这些年变化很大，短天期合约的兴起让成交量组成与十年前不同，直接拿今天的数字对比很久以前的水准要小心。",
+      "relationToSioTitle": "CBOE Put/Call Ratio 与 SIO 恐惧贪婪指标的差异",
+      "relationToSio": "Put/Call Ratio 的单日数字杂讯很大，同一周内可以从 0.6 跳到 1.2，直接看容易被误导。而且它只反映期权这一个市场，看不到现货、债券或资金流的状况。SIO 的恐惧贪婪指标把它平滑后与另外七项标准化合成，用其他面向补上期权看不到的部分。",
+      "relationToSioCta": "查看 SIO 美股恐惧贪婪指标",
+      "source": "Chicago Board Options Exchange（CBOE）。数据每个交易日更新。"
+    },
+    "cotSp500": {
+      "shortName": "S&P 500 COT",
+      "pageTitle": "COT 持仓报告与 S&P 500 投机净持仓是什么？怎么解读？",
+      "pageDescription": "COT（Commitments of Traders）持仓报告的完整解读：美国期货主管机关每周公布的市场持仓分布，S&P 500 投机净持仓常被当成情绪指标。附判读方式与它的已知限制。",
+      "keywords": "COT 报告,Commitments of Traders,持仓报告,投机净持仓,S&P 500 期货,CFTC,市场情绪指标",
+      "heading": "COT 持仓报告与 S&P 500 投机净持仓是什么？怎么解读？",
+      "lede": "COT 报告是美国期货主管机关每周公布的持仓统计，把期货市场的持仓依参与者类型拆开。其中投机性账户的净多空持仓，常被拿来衡量市场情绪。",
+      "whatItIsTitle": "什么是 COT（Commitments of Traders）持仓报告？",
+      "whatItIs": "COT 由 CFTC 发布，CFTC 是美国商品期货交易委员会，负责监理期货市场。报告每周五公布，统计截至前一个周二的持仓，把参与者分成商业避险、投机性资金与小额交易者等类别。本站采用的算法是把投机性账户（杠杆资金与资产管理机构）的净持仓、以及避险账户的净持仓，各自换算成占总未平仓量的比例后相减，得到一个可以跨时间比较的读数。",
+      "howToReadTitle": "怎么解读 S&P 500 投机净持仓？",
+      "howToRead": "避险账户是投机资金的交易对手，两者的持仓方向天生相反，所以相减之后信号会被放大。读数偏高代表两个阵营的对立程度深、投机端偏多；偏低则相反。多数人把极端值当反向参考。",
+      "bands": [
+        {
+          "range": "处在历史高位",
+          "meaning": "投机端相对避险端明显偏多，两个阵营对立程度深。"
+        },
+        {
+          "range": "中间区间",
+          "meaning": "常见状态，信号有限。"
+        },
+        {
+          "range": "处在历史低位",
+          "meaning": "投机端相对避险端明显偏空。"
+        }
+      ],
+      "historyTitle": "COT 持仓数据的历史区间",
+      "history": "本站收录的数据自 2006 年 6 月起。有三点要留意：报告本身有三天时间差，周五公布的是周二的状况；CFTC 在 2021 年前后调整过合约分类，跨越那个时点比较数字要留意口径差异；另外「资产管理机构」被归入投机端，但这类账户有不少是长期偏多的配置型资金，判读极端值时值得把这一点纳入考量。",
+      "relationToSioTitle": "S&P 500 COT 与 SIO 恐惧贪婪指标的差异",
+      "relationToSio": "COT 有两个限制。它每周才公布一次，而且统计基准日比公布日早三天，等于你看到的永远是几天前的持仓。它也只涵盖期货市场，看不到现货与期权那一侧。加上它是投机端与避险端的价差，极端值同时受两边影响，单独判读容易误解。SIO 的恐惧贪婪指标每个交易日更新，并把 COT 与其他七项一起标准化合成，让这项数据的时间差与口径问题不会主导整体判断。",
+      "relationToSioCta": "查看 SIO 美股恐惧贪婪指标",
+      "source": "U.S. Commodity Futures Trading Commission（CFTC）。报告每周五公布。"
+    },
+    "taiwanFearGreed": {
+      "shortName": "台湾股市恐惧贪婪指标",
+      "pageTitle": "台湾股市恐惧贪婪指标是什么？怎么解读台湾股市情绪？",
+      "pageDescription": "台湾股市恐惧贪婪指标的完整解读：用 0 到 100 描述台湾股市的投资者情绪，由台湾股指期权波动率、看跌/看涨期权比率、融资维持率、市场广度等本地数据合成，每个交易日更新。",
+      "keywords": "台湾股市恐惧贪婪指标,台湾股市情绪,台湾股市情绪指标,台湾股指期权波动率,融资维持率,券资比,台湾股市 VIX,加权指数情绪",
+      "heading": "台湾股市恐惧贪婪指标是什么？怎么解读台湾股市情绪？",
+      "lede": "台湾股市恐惧贪婪指标用 0 到 100 描述台湾股市现在偏向恐惧还是贪婪。它完全用台湾股市本地的市场数据计算，包含期权波动率、融资融券、外资持仓与市场广度，每个交易日更新。",
+      "whatItIsTitle": "什么是台湾股市恐惧贪婪指标？",
+      "whatItIs": "国际上的情绪指标几乎都以美股为对象，台湾股市投资者拿来参考时，常会遇到市场结构不同而失准的问题。台湾股市的散户占比、融资融券制度与外资影响力都与美股不同，直接应用美股指标容易误判。这个指标改用台湾股市自己的数据计算，涵盖台湾股指期权波动率、看跌/看涨期权比率、融资维持率、券资比、市场广度、外资期货持仓、汇率与加权指数动能等面向，各自放进长期历史分布标准化后合成。",
+      "howToReadTitle": "怎么解读台湾股市恐惧贪婪指标？",
+      "howToRead": "数字越低代表市场越恐慌，越高代表越乐观。它经过长期标准化，所以极端值代表的是相对于过去二十多年的极端，而非只跟最近几个月比。",
+      "bands": [
+        {
+          "range": "0–20",
+          "meaning": "极度恐惧。市场整体偏向防守。"
+        },
+        {
+          "range": "大于 20 至 40",
+          "meaning": "恐惧。风险偏好偏低。"
+        },
+        {
+          "range": "大于 40 至 60",
+          "meaning": "中性。情绪未明显偏向两端。"
+        },
+        {
+          "range": "大于 60 至 80",
+          "meaning": "贪婪。风险偏好上升。"
+        },
+        {
+          "range": "大于 80 至 100",
+          "meaning": "极度贪婪。市场情绪偏热。"
+        }
+      ],
+      "historyTitle": "台湾股市恐惧贪婪指标的历史区间",
+      "history": "这个指标的序列回溯至 2001 年 7 月，累积超过六千笔日数据，涵盖台湾股市二十多年来的多次多空循环，期间走过接近 0 与接近 100 的两端。要留意台湾股指期权波动率的数据从 2016 年 11 月才开始，在那之前的读数由其他成分支撑，判读早期数值时可以把这一点纳入考量。",
+      "relationToSioTitle": "台湾股市情绪与美股情绪的差异",
+      "relationToSio": "台湾股市与美股的情绪经常不同步。台湾股市深受外资流向、汇率和电子行业周期影响，这些因素在美股指标中无法体现。对照两个市场，可以判断资金是在全球范围内避险，还是只在单一市场调整。",
+      "relationToSioCta": "查看台湾股市恐惧贪婪指标",
+      "source": "台湾证券交易所、台湾期货交易所公开数据，由 Sentiment Inside Out 计算。每个交易日更新。"
+    },
+    "disclaimerOwn": "本指标由 Sentiment Inside Out 依公开市场数据计算，仅供参考，不构成任何投资建议。指标反映的是市场情绪状态，不预测未来走势。",
+    "marketFearBreadth": {
+      "shortName": "市场恐惧广度",
+      "pageTitle": "市场恐惧广度是什么？怎么看有多少股票同时在低点",
+      "pageDescription": "市场恐惧广度告诉你现在有多少比例的标的同时跌到极度恐惧。单只股票跌到极度恐惧，和整个市场一起跌到极度恐惧，是两回事。台湾股市和美股的数据每天收盘后更新。",
+      "keywords": "市场恐惧广度,市场广度,有多少股票在低点,乐活五线谱,极度恐惧,台湾股市市场情绪,美股市场情绪",
+      "heading": "市场恐惧广度是什么？怎么看有多少股票同时在低点",
+      "lede": "一只股票跌到极度恐惧，和整个市场一起跌到极度恐惧，是两回事。市场恐惧广度算的是：固定一批标的里，现在有多少比例同时处在极度恐惧。",
+      "whatItIsTitle": "什么是市场恐惧广度？",
+      "whatItIs": "我们对固定的一组标的逐一计算乐活五线谱，统计有多少只标的的股价已跌至趋势线下方两个标准差以外，也就是网站标示为「极度恐惧」的位置。将这个数量除以当日可计算的标的数量，就是恐惧广度。美股使用 28 只覆盖主要国家和行业板块的 ETF；台湾股市则使用 38 只覆盖多个行业的大盘股。",
+      "howToReadTitle": "怎么解读这个数字？",
+      "howToRead": "当数值明显升高的时候代表：不只是单一标的在恐慌，而是整个市场都陷入恐慌。",
+      "bands": [
+        {
+          "range": "接近 0%",
+          "meaning": "只有零星标的在极端位置，市场整体情绪正常。"
+        },
+        {
+          "range": "偏高（美股超过 25%、台湾股市超过 16%）",
+          "meaning": "高于约九成的历史观察日，代表恐惧已扩散到更多标的。这是历史排名，不是 90% 的标的占比。"
+        },
+        {
+          "range": "非常高",
+          "meaning": "多半是整个市场一起在跌。历史上如果触发这样的情况，未来一年的表现最好，但过程通常还会再往下探一段。"
+        }
+      ],
+      "historyTitle": "这个数字的历史",
+      "history": "美股数据从 1996 年算起，台湾股市从 2000 年算起。「历史第 90 百分位」代表恐惧广度高于约九成的历史观察日，不是九成标的都陷入极度恐惧；极端读数可能连续出现。",
+      "relationToSioTitle": "怎么跟个股分析一起用",
+      "relationToSio": "在个股的乐活五线谱页面上，如果这只股票已经是极度恐惧，状态输入框也会告诉你当天整个市场的恐惧广度是多少。可以观察是只有单一标的达到极端恐慌，还是连同全市场都在恐慌",
+      "relationToSioCta": "查看个股的乐活五线谱",
+      "source": "由 Sentiment Inside Out 依公开市场数据计算。台湾股市和美股的数据每个交易日更新。"
+    }
+  },
+  "marketPulse": {
+    "refreshNote": "行情约每 5 分钟更新",
+    "title": "全球市场",
+    "latestSession": "最近交易日",
+    "loading": "市场走势加载中",
+    "unavailable": "市场走势暂时无法获取",
+    "itemLabel": "{{name}}，指数 {{value}}，涨跌 {{percent}}"
+  },
+  "freeTrial": {
+    "title": "免费试用 30 天",
+    "ctaShort": "免绑信用卡试用 Pro",
+    "promotion": {
+      "badge": "PRO",
+      "title": "看见市场全貌。",
+      "description": "美国与台湾市场情绪、个股分析、自选列表功能和无广告体验，全部开放使用。",
+      "visualOffer": "Pro 30 天免费体验",
+      "detail": "免绑信用卡，不会自动扣款。",
+      "cta": "开始免费试用",
+      "later": "稍后再说"
+    },
+    "planCard": {
+      "startTrial": "免费试用 30 天",
+      "trialActive": "Pro 试用中",
+      "subscribeAfterTrial": "试用至 {{date}}，结束后可选择订阅"
+    },
+    "disclosureTitle": "开始前请确认",
+    "disclosure": {
+      "length": "试用期 30 天，期间可使用全部 Pro 功能",
+      "noCard": "不需绑定信用卡，开始试用不会产生费用",
+      "expiry": "试用到期后会自动回到 Free 套餐；若想继续使用 Pro，请自行订阅。不会自动扣款"
+    },
+    "start": "开始免费试用",
+    "starting": "正在开启试用",
+    "successTitle": "试用已开始",
+    "successBody": "Pro 功能已开启 30 天。试用结束后不会自动扣款。",
+    "successCta": "开始使用",
+    "accountExpiry": "试用到期后会回到 Free 套餐，不会自动扣款。",
+    "goToSubscription": "返回套餐页",
+    "errors": {
+      "notEligible": "免费试用仅限首次订阅的账号。",
+      "generic": "目前无法开始试用，请稍后再试。"
+    },
+    "resumeAnalysis": "继续原本的分析",
+    "analyzeStock": "开始分析股票"
+  },
+  "cardTrial": {
+    "title": "免费试用 30 天",
+    "planCard": {
+      "startTrial": "免费试用 30 天"
+    },
+    "disclosureTitle": "开始前请确认",
+    "disclosure": {
+      "length": "试用期 30 天，期间可使用全部 Pro 功能",
+      "verification": "绑定信用卡时会进行一笔 NT$2 的验证，你不会被收取这笔费用。",
+      "renewal": "如果在试用期结束前未取消，系统将于 {{date}} 自动扣款 NT$199，之后每月自动续费。",
+      "renewalYearly": "如果在试用期结束前未取消，系统将于 {{date}} 自动扣款 NT$1,990，之后每年自动续费。",
+      "cancel": "随时可于账户页面取消，取消后试用期仍可使用到期满"
+    },
+    "consent": "我已阅读并同意以上内容与",
+    "consentLink": "服务条款和隐私政策",
+    "start": "同意并绑定信用卡",
+    "preparing": "正在准备，请稍候",
+    "cardTitle": "输入信用卡信息",
+    "cardNote": "银行卡信息由绿界科技处理，我们不会保存你的卡号。",
+    "submit": "开始试用",
+    "submitting": "处理中",
+    "retry": "重新试一次",
+    "goToSubscription": "前往订阅页面",
+    "errors": {
+      "expired": "银行卡绑定请求已过期，请重试。",
+      "rateLimited": "尝试次数过多，请稍后再试。",
+      "alreadySubscribed": "此账号已有有效订阅。",
+      "notEligible": "免费试用仅限首次订阅的账号。",
+      "sdk": "信用卡输入框加载失败，请刷新页面。",
+      "generic": "目前无法绑定信用卡，请稍后再试。"
+    },
+    "result": {
+      "successTitle": "试用已开始",
+      "successBody": "信用卡绑定完成，Pro 功能已经开启。",
+      "successCta": "开始使用",
+      "pendingTitle": "正在确认结果",
+      "pendingBody": "银行尚未返回验证结果，稍后可于账户页面查看。",
+      "failedTitle": "绑定没有完成",
+      "failedBody": "卡片绑定失败，未收取任何费用。",
+      "failureReasons": {
+        "issuer_declined": "本次验证未获发卡行批准。请确认卡片信息，或改用另一张卡。",
+        "contact_issuer": "发卡行要求进一步确认，请联系发卡行后再试。",
+        "three_d_not_completed": "银行的 3D 验证没有完成，请重新绑定后再试。",
+        "session_expired": "银行卡绑定已超时，请重新操作。",
+        "card_limit_reached": "这个账号已达可绑定卡片上限，请先到账户页面更新付款方式。",
+        "card_already_bound": "这张卡已经绑定在此账号，请改用另一张卡。",
+        "verification_not_completed": "银行未能完成本次银行卡验证。请确认卡片信息后重试，或改用另一张卡。"
+      },
+      "retryCta": "重试一次",
+      "accountCta": "前往账户页面"
+    }
+  },
+  "cardUpdate": {
+    "title": "更换付款卡片",
+    "disclosure": {
+      "verification": "绑定新卡时会进行一笔 NT$2 的验证，你不会被收取这笔费用。",
+      "futureCharges": "之后的扣款会改用新卡",
+      "chargeNow": "更换银行卡成功后，将立即扣款 NT$ {{amount}}。",
+      "nextCharge": "扣款成功后，下次扣款日为 {{date}}"
+    },
+    "consent": "我已阅读并同意以上内容与",
+    "consentLink": "服务条款和隐私政策",
+    "start": "同意并绑定新卡",
+    "startAndPay": "同意并绑定新卡，支付 NT$ {{amount}}",
+    "submit": "绑定新卡",
+    "errors": {
+      "notAvailable": "这个账号目前没有可以更换卡片的订阅。",
+      "stateChanged": "付款状态刚刚有变动，请刷新页面后再试一次。",
+      "chargePending": "上一笔扣款正在向银行确认，确认完成前无法更换卡片。"
+    },
+    "method": {
+      "title": "付款方式",
+      "card": "•••• {{last4}}，有效期限 {{mm}}/{{yy}}",
+      "cardWithoutLast4": "有效期限 {{mm}}/{{yy}}",
+      "cardWithoutValidity": "•••• {{last4}}",
+      "update": "更换卡片",
+      "updateAndPay": "更换银行卡并支付 NT$ {{amount}}",
+      "graceNotice": "本次扣款未成功，我们没有向你收取任何费用。请于 {{date}} 前更换付款卡片。"
+    },
+    "result": {
+      "successTitle": "卡片已更新",
+      "successBody": "新卡已设置完成。",
+      "failedTitle": "卡片没有更新",
+      "failedBody": "这张卡没有绑定成功，你没有被收取任何费用。"
+    }
+  },
+  "notFound": {
+    "title": "找不到该页面",
+    "description": "网址可能已更改，请返回首页或查看使用指南。",
+    "home": "返回首页",
+    "articles": "浏览使用指南"
+  },
+  "announcement": {
+    "title": "📢 公告",
+    "close": "关闭公告",
+    "confirm": "知道了"
+  },
+  "paymentStatus": {
+    "missingOrder": "缺少订单信息",
+    "incomplete": "付款未完成",
+    "queryFailed": "付款状态查询失败",
+    "queryError": "付款状态查询时发生错误",
+    "genericFailure": "付款过程中发生问题，请稍后再试",
+    "processingTitle": "付款处理中...",
+    "processingBody": "正在确认您的付款状态，请稍候片刻",
+    "orderLabel": "订单编号：",
+    "elapsedLabel": "处理时间：",
+    "retryLabel": "重试次数：",
+    "processingTime": "付款处理通常需要 1-3 分钟",
+    "keepOpen": "请勿关闭此页面或刷新",
+    "autoCheck": "如果长时间无回应，系统会自动重试",
+    "manualCheck": "手动重新检查",
+    "successTitle": "付款成功！",
+    "successBody": "恭喜您成功升级到 Pro 套餐，现在可以享受完整功能了！",
+    "subscriptionTitle": "订阅信息",
+    "planLabel": "套餐类型：",
+    "planName": "{{plan}} 套餐",
+    "billingLabel": "计费周期：",
+    "monthly": "月付",
+    "yearly": "年付",
+    "startLabel": "开始日期：",
+    "endLabel": "到期日期：",
+    "amountLabel": "付款金额：",
+    "accountDetails": "查看账户信息",
+    "startUsing": "开始使用",
+    "availableTitle": "现在您可以：",
+    "availableSentiment": "使用市场情绪分析功能",
+    "availableAnalysis": "访问高级股票分析工具",
+    "availableWatchlist": "查看自选列表中的股票",
+    "availableMomentum": "查看完整动能排行与筛选结果",
+    "failedTitle": "付款失败",
+    "orderTitle": "订单信息：",
+    "orderStatusLabel": "订单状态：",
+    "paymentStatusLabel": "付款状态：",
+    "possibleReasons": "可能的原因：",
+    "cardReason": "信用卡余额不足或已过期",
+    "bankReason": "银行拒绝交易",
+    "networkReason": "网络连接中断",
+    "detailsReason": "付款信息输入错误",
+    "retryPayment": "重新付款",
+    "backToPlans": "返回套餐选择",
+    "cancelledTitle": "付款已取消",
+    "cancelledBody": "您已取消付款流程，如需升级套餐请重新选择",
+    "choosePlan": "重新选择套餐",
+    "home": "返回首页",
+    "timeoutTitle": "查询超时",
+    "timeoutBody": "付款状态查询超时，请稍后再检查或联系客服",
+    "ifPaid": "如果您已完成付款：",
+    "stillProcessing": "付款可能仍在处理中，请稍后再检查",
+    "accountHint": "您可以在账户页面查看订阅状态",
+    "supportHint": "如有问题请联系客服：support@sentimentinsideout.com",
+    "retryCheck": "重新检查",
+    "viewAccount": "查看账户"
+  }
+}

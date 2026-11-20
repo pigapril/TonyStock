@@ -1,0 +1,2088 @@
+[
+  {
+    "key": "nav.home",
+    "sourceZhTW": "首頁",
+    "existingKo": "홈",
+    "recommendedKo": "홈",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.priceAnalysis",
+    "sourceZhTW": "樂活五線譜",
+    "existingKo": "LOHAS 5선 분석",
+    "recommendedKo": "LOHAS 5선 분석",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.marketSentiment",
+    "sourceZhTW": "市場情緒分析",
+    "existingKo": "시장 심리 분석",
+    "recommendedKo": "시장 심리 분석",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.momentumDashboard",
+    "sourceZhTW": "市場動能",
+    "existingKo": "시장 모멘텀",
+    "recommendedKo": "시장 모멘텀",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.watchlist",
+    "sourceZhTW": "我的追蹤清單",
+    "existingKo": "관심 종목",
+    "recommendedKo": "관심 종목",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.articles",
+    "sourceZhTW": "分析專欄",
+    "existingKo": "시장 분석 칼럼",
+    "recommendedKo": "시장 분석 칼럼",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.subscription",
+    "sourceZhTW": "訂閱方案",
+    "existingKo": "구독 요금제",
+    "recommendedKo": "구독 요금제",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.facebook",
+    "sourceZhTW": "Facebook",
+    "existingKo": "Facebook",
+    "recommendedKo": "Facebook",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.facebookLong",
+    "sourceZhTW": "Facebook 粉絲專頁",
+    "existingKo": "Facebook 페이지",
+    "recommendedKo": "Facebook 페이지",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.admin",
+    "sourceZhTW": "管理後台",
+    "existingKo": "관리자 페이지",
+    "recommendedKo": "관리자 페이지",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.adminBadge",
+    "sourceZhTW": "管理",
+    "existingKo": "관리자",
+    "recommendedKo": "관리자",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.indicatorOverview",
+    "sourceZhTW": "指標總覽",
+    "existingKo": "전체 지표",
+    "recommendedKo": "전체 지표",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.usMarket",
+    "sourceZhTW": "美股",
+    "existingKo": "미국 시장",
+    "recommendedKo": "미국 시장",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "nav.twMarket",
+    "sourceZhTW": "台股",
+    "existingKo": "대만 시장",
+    "recommendedKo": "대만 시장",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "userActions.login",
+    "sourceZhTW": "登入",
+    "existingKo": "로그인",
+    "recommendedKo": "로그인",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "language.change",
+    "sourceZhTW": "更改語言",
+    "existingKo": "언어 변경",
+    "recommendedKo": "언어 변경",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "language.zhTW",
+    "sourceZhTW": "繁體中文",
+    "existingKo": "번체 중국어",
+    "recommendedKo": "번체 중국어",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "language.en",
+    "sourceZhTW": "English",
+    "existingKo": "영어",
+    "recommendedKo": "영어",
+    "issue": null,
+    "context": "src/App.js / navigation and language switcher",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articles.pageTitle",
+    "sourceZhTW": "工具教學與市場情緒觀念",
+    "existingKo": "도구 사용 가이드와 시장 심리 이해",
+    "recommendedKo": "도구 사용 가이드와 시장 심리 이해",
+    "issue": null,
+    "context": "src/components/Articles/Articles.js / page metadata, article list, intro and CTA",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articles.pageDescription",
+    "sourceZhTW": "如何使用樂活五線譜與 SIO 恐懼貪婪指標判斷買賣時機，以及各種市場情緒指標的觀念說明。",
+    "existingKo": "LOHAS 5선 분석과 SIO 공포·탐욕 지수로 매수·매도 시점을 판단하는 방법과 주요 시장 심리 지표에 대한 설명을 제공합니다.",
+    "recommendedKo": "LOHAS 5선 분석과 SIO 공포·탐욕 지수로 매수·매도 시점을 판단하는 방법과 주요 시장 심리 지표에 대한 설명을 제공합니다.",
+    "issue": null,
+    "context": "src/components/Articles/Articles.js / page metadata, article list, intro and CTA",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articles.keywords",
+    "sourceZhTW": "市場分析,投資策略,市場情緒,投資文章,金融分析,教學",
+    "existingKo": "시장 분석, 투자 전략, 시장 심리, 투자 칼럼, 금융 분석, 가이드",
+    "recommendedKo": "시장 분석, 투자 전략, 시장 심리, 투자 칼럼, 금융 분석, 가이드",
+    "issue": null,
+    "context": "src/components/Articles/Articles.js / page metadata, article list, intro and CTA",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articles.heading",
+    "sourceZhTW": "工具教學與市場情緒觀念",
+    "existingKo": "도구 사용 가이드와 시장 심리 이해",
+    "recommendedKo": "도구 사용 가이드와 시장 심리 이해",
+    "issue": null,
+    "context": "src/components/Articles/Articles.js / page metadata, article list, intro and CTA",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articles.jsonLdName",
+    "sourceZhTW": "工具教學與市場情緒觀念",
+    "existingKo": "도구 사용 가이드와 시장 심리 이해",
+    "recommendedKo": "도구 사용 가이드와 시장 심리 이해",
+    "issue": null,
+    "context": "src/components/Articles/Articles.js / page metadata, article list, intro and CTA",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articles.jsonLdDescription",
+    "sourceZhTW": "如何使用樂活五線譜與 SIO 恐懼貪婪指標判斷買賣時機，以及各種市場情緒指標的觀念說明。",
+    "existingKo": "LOHAS 5선 분석과 SIO 공포·탐욕 지수로 매수·매도 시점을 판단하는 방법과 주요 시장 심리 지표에 대한 설명을 제공합니다.",
+    "recommendedKo": "LOHAS 5선 분석과 SIO 공포·탐욕 지수로 매수·매도 시점을 판단하는 방법과 주요 시장 심리 지표에 대한 설명을 제공합니다.",
+    "issue": null,
+    "context": "src/components/Articles/Articles.js / page metadata, article list, intro and CTA",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articles.noCategory",
+    "sourceZhTW": "未分類",
+    "existingKo": "분류 없음",
+    "recommendedKo": "분류 없음",
+    "issue": null,
+    "context": "src/components/Articles/Articles.js / page metadata, article list, intro and CTA",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articles.noDate",
+    "sourceZhTW": "無日期",
+    "existingKo": "날짜 정보 없음",
+    "recommendedKo": "날짜 정보 없음",
+    "issue": null,
+    "context": "src/components/Articles/Articles.js / page metadata, article list, intro and CTA",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articles.intro",
+    "sourceZhTW": "這裡是網站工具的使用教學與市場情緒的觀念說明。想直接看各項指標現在的數字，可以從下方進入指標總覽。",
+    "existingKo": "이곳에서는 사이트 도구의 사용 방법과 시장 심리에 관한 개념을 설명합니다. 각 지표의 최신 수치를 바로 확인하려면 아래에서 전체 지표를 선택하세요.",
+    "recommendedKo": "이곳에서는 사이트 도구의 사용 방법과 시장 심리에 관한 개념을 설명합니다. 각 지표의 최신 수치를 바로 확인하려면 아래에서 전체 지표를 선택하세요.",
+    "issue": null,
+    "context": "src/components/Articles/Articles.js / page metadata, article list, intro and CTA",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articles.boardLink",
+    "sourceZhTW": "查看市場情緒指標總覽",
+    "existingKo": "시장 심리 지표 전체 보기",
+    "recommendedKo": "시장 심리 지표 전체 보기",
+    "issue": null,
+    "context": "src/components/Articles/Articles.js / page metadata, article list, intro and CTA",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articleDetail.loadingTitle",
+    "sourceZhTW": "載入中...",
+    "existingKo": "불러오는 중...",
+    "recommendedKo": "불러오는 중...",
+    "issue": null,
+    "context": "src/components/ArticleDetail/ArticleDetail.js / loading, error and not-found page metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articleDetail.loadingDescription",
+    "sourceZhTW": "載入文章內容中...",
+    "existingKo": "게시글 내용을 불러오는 중입니다...",
+    "recommendedKo": "게시글 내용을 불러오는 중입니다...",
+    "issue": null,
+    "context": "src/components/ArticleDetail/ArticleDetail.js / loading, error and not-found page metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articleDetail.errorTitle",
+    "sourceZhTW": "錯誤",
+    "existingKo": "오류",
+    "recommendedKo": "오류",
+    "issue": null,
+    "context": "src/components/ArticleDetail/ArticleDetail.js / loading, error and not-found page metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articleDetail.errorDescription",
+    "sourceZhTW": "載入文章失敗",
+    "existingKo": "게시글을 불러오지 못했습니다.",
+    "recommendedKo": "게시글을 불러오지 못했습니다.",
+    "issue": null,
+    "context": "src/components/ArticleDetail/ArticleDetail.js / loading, error and not-found page metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articleDetail.errorText",
+    "sourceZhTW": "載入文章失敗：",
+    "existingKo": "게시글을 불러오지 못했습니다:",
+    "recommendedKo": "게시글을 불러오지 못했습니다:",
+    "issue": null,
+    "context": "src/components/ArticleDetail/ArticleDetail.js / loading, error and not-found page metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articleDetail.notFoundTitle",
+    "sourceZhTW": "找不到文章",
+    "existingKo": "게시글을 찾을 수 없습니다.",
+    "recommendedKo": "게시글을 찾을 수 없습니다.",
+    "issue": null,
+    "context": "src/components/ArticleDetail/ArticleDetail.js / loading, error and not-found page metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articleDetail.notFoundDescription",
+    "sourceZhTW": "找不到該文章",
+    "existingKo": "요청한 게시글을 찾을 수 없습니다.",
+    "recommendedKo": "요청한 게시글을 찾을 수 없습니다.",
+    "issue": null,
+    "context": "src/components/ArticleDetail/ArticleDetail.js / loading, error and not-found page metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "articleDetail.notFoundText",
+    "sourceZhTW": "找不到該文章。",
+    "existingKo": "요청한 게시글을 찾을 수 없습니다.",
+    "recommendedKo": "요청한 게시글을 찾을 수 없습니다.",
+    "issue": null,
+    "context": "src/components/ArticleDetail/ArticleDetail.js / loading, error and not-found page metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.pageTitle",
+    "sourceZhTW": "關於本站",
+    "existingKo": "사이트 소개",
+    "recommendedKo": "사이트 소개",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.pageDescription",
+    "sourceZhTW": "了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化為重要的投資指標，幫助投資者克服恐懼與貪婪心態。",
+    "existingKo": "Sentiment Inside Out의 운영 철학을 소개하고, 간단한 분석 도구로 현재의 시장 심리를 중요한 투자 지표로 읽는 방법과 투자자의 공포·탐욕을 살피는 방법을 설명합니다.",
+    "recommendedKo": "Sentiment Inside Out의 운영 철학과 간단한 분석 도구를 소개합니다. 현재 시장 심리를 중요한 투자 지표로 해석해 투자자가 공포와 탐욕을 극복하도록 돕는 방법을 설명합니다.",
+    "issue": "기존 문구는 “克服恐懼與貪婪心態”를 “공포·탐욕을 살피는 방법”으로 약화해 목적을 바꿉니다. 원문의 극복한다는 의미를 복원합니다.",
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.keywords",
+    "sourceZhTW": "市場情緒,投資心理,恐懼與貪婪,投資指標,情緒分析,投資策略",
+    "existingKo": "시장 심리, 투자 심리, 공포와 탐욕, 투자 지표, 심리 분석, 투자 전략",
+    "recommendedKo": "시장 심리, 투자 심리, 공포와 탐욕, 투자 지표, 심리 분석, 투자 전략",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.ogTitle",
+    "sourceZhTW": "關於 Sentiment Inside Out - 市場情緒分析平台",
+    "existingKo": "Sentiment Inside Out 소개 - 시장 심리 분석 플랫폼",
+    "recommendedKo": "Sentiment Inside Out 소개 - 시장 심리 분석 플랫폼",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.heading",
+    "sourceZhTW": "關於 Sentiment Inside Out",
+    "existingKo": "Sentiment Inside Out 소개",
+    "recommendedKo": "Sentiment Inside Out 소개",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.imageAlt",
+    "sourceZhTW": "關於 Sentiment Inside Out",
+    "existingKo": "Sentiment Inside Out 소개",
+    "recommendedKo": "Sentiment Inside Out 소개",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.section1Title",
+    "sourceZhTW": "行情=資金＋心理",
+    "existingKo": "시장 흐름 = 자금 + 심리",
+    "recommendedKo": "시장 = 자금 + 심리",
+    "issue": "“行情”을 “시장 흐름”으로 옮겨 등식의 핵심 개념이 흐려집니다. 저자의 공식처럼 제시된 짧은 등식이므로 구조를 살립니다.",
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.section1Text",
+    "sourceZhTW": "這是【一個投機者的告白】作者科斯托蘭尼的名言。資金=基本面=總體經濟，心理=投資人情緒＝人性。我相信循環來自於人的不理性，造就了經濟和股市的波峰與谷底。",
+    "existingKo": "이는 《어느 투기꾼의 고백》의 저자 앙드레 코스톨라니의 명언입니다. 자금은 펀더멘털과 거시경제를, 심리는 투자자의 감정과 인간 본성을 가리킵니다. 저는 시장의 순환이 인간의 비합리성에서 비롯되고, 그 비합리성이 경제와 주식시장의 고점과 저점을 만든다고 생각합니다.",
+    "recommendedKo": "이는 《한 투기자의 고백》의 저자 앙드레 코스톨라니의 명언입니다. 자금은 펀더멘털이자 거시경제를, 심리는 투자자 감정이자 인간 본성을 뜻합니다. 저는 시장의 순환이 인간의 비합리성에서 비롯되며, 이것이 경제와 주식시장의 고점과 저점을 만든다고 생각합니다.",
+    "issue": "기존 번역은 책 제목을 “어느 투기꾼의 고백”으로 옮겨 다소 비하적으로 들릴 수 있고, 원문의 등식(자금=기본면=총체경제, 심리=투자자 감정=인성)을 설명형 문장으로 바꾸며 대응 관계를 약화합니다. 한국어 정식 출간명이 확인되지 않아 제목은 직역안으로 제시합니다.",
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval",
+    "alternatives": [
+      {
+        "text": "《어느 투기자의 고백》",
+        "note": "“투기꾼”보다 중립적인 직역입니다. 실제 한국어 출간명이 확인되면 해당 서명을 우선해야 합니다."
+      }
+    ]
+  },
+  {
+    "key": "about.section2Title",
+    "sourceZhTW": "恐懼與貪婪",
+    "existingKo": "공포와 탐욕",
+    "recommendedKo": "공포와 탐욕",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.section2Text",
+    "sourceZhTW": "經濟數據和公司財報變化需要以月、季來看待，但資本市場卻可以在短時間內大幅上下波動，可見情緒對價格的影響不亞於基本面，有人擔心貴了所以賣出；有人害怕錯過所以買進。身為市場參與者，應該要了解市場當前是處於恐懼或是貪婪。",
+    "existingKo": "경제 지표와 기업 실적은 월간 또는 분기 단위로 확인해야 하지만, 자본시장은 짧은 시간에도 큰 폭으로 오르내릴 수 있습니다. 이는 시장 심리가 펀더멘털만큼이나 가격에 영향을 미친다는 점을 보여줍니다. 가격이 비싸졌다고 판단해 매도하는 사람도 있고, 기회를 놓칠까 봐 매수하는 사람도 있습니다. 시장 참여자는 현재 시장이 공포와 탐욕 중 어느 쪽으로 기울어 있는지 파악해야 합니다.",
+    "recommendedKo": "경제 지표와 기업 실적은 월간 또는 분기 단위로 확인해야 하지만, 자본시장은 짧은 시간에도 큰 폭으로 오르내릴 수 있습니다. 이는 시장 심리가 펀더멘털만큼이나 가격에 영향을 미친다는 점을 보여줍니다. 가격이 비싸졌다고 판단해 매도하는 사람도 있고, 기회를 놓칠까 봐 매수하는 사람도 있습니다. 시장 참여자는 현재 시장이 공포와 탐욕 중 어느 쪽으로 기울어 있는지 파악해야 합니다.",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.section3Title",
+    "sourceZhTW": "克服自己的人性",
+    "existingKo": "인간 본성을 이겨내기",
+    "recommendedKo": "인간 본성을 이겨내기",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.section3Text",
+    "sourceZhTW": "我認為股價除了反應基本面，也有同樣的比重在反應市場的情緒，創立網站的初衷就是要用簡單的圖表和數據，將市場當前的情緒轉化爲重要的投資指標，幫助大家克服自身的不理性，避免跟著情緒追高殺低。",
+    "existingKo": "주가에는 펀더멘털뿐 아니라 시장 심리도 그만큼 반영된다고 생각합니다. 이 사이트를 만든 목적은 간단한 차트와 데이터로 현재의 시장 심리를 중요한 투자 지표로 보여주는 데 있습니다. 이를 통해 투자자가 자신의 비합리적인 판단을 경계하고, 감정에 휩쓸려 고점에서 추격 매수하거나 저점에서 투매하는 일을 피하도록 돕고자 합니다.",
+    "recommendedKo": "주가에는 펀더멘털뿐 아니라 시장 심리도 그만큼 반영된다고 생각합니다. 이 사이트를 만든 목적은 간단한 차트와 데이터로 현재의 시장 심리를 중요한 투자 지표로 보여주는 데 있습니다. 이를 통해 투자자가 자신의 비합리적인 판단을 경계하고, 감정에 휩쓸려 고점에서 추격 매수하거나 저점에서 투매하는 일을 피하도록 돕고자 합니다.",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.contactTitle",
+    "sourceZhTW": "聯絡我",
+    "existingKo": "문의하기",
+    "recommendedKo": "문의하기",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.jsonLdName",
+    "sourceZhTW": "關於 Sentiment Inside Out",
+    "existingKo": "Sentiment Inside Out 소개",
+    "recommendedKo": "Sentiment Inside Out 소개",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "about.jsonLdDescription",
+    "sourceZhTW": "了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化爲重要的投資指標，幫助大家克服自身的恐懼與貪婪心態。",
+    "existingKo": "Sentiment Inside Out의 운영 철학을 소개하고, 간단한 분석 도구로 현재의 시장 심리를 중요한 투자 지표로 읽는 방법과 투자자의 공포·탐욕을 살피는 방법을 설명합니다.",
+    "recommendedKo": "Sentiment Inside Out의 운영 철학을 소개하고, 간단한 분석 도구로 현재의 시장 심리를 중요한 투자 지표로 읽는 방법과 투자자의 공포·탐욕을 살피는 방법을 설명합니다.",
+    "issue": null,
+    "context": "src/components/About/About.js / page metadata, image alt, about-story headings and paragraphs",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "userProfile.goToAccountAria",
+    "sourceZhTW": "前往帳戶頁面",
+    "existingKo": "계정 페이지로 이동",
+    "recommendedKo": "계정 페이지로 이동",
+    "issue": null,
+    "context": "src/components/Auth/UserProfile.js; src/components/Subscription/UserAccount/UserAccountPage.js / account UI and accessibility",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "userProfile.avatarAlt",
+    "sourceZhTW": "{{username}} 的頭像",
+    "existingKo": "{{username}} 프로필 사진",
+    "recommendedKo": "{{username}} 프로필 사진",
+    "issue": null,
+    "context": "src/components/Auth/UserProfile.js; src/components/Subscription/UserAccount/UserAccountPage.js / account UI and accessibility",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "userProfile.loginRequired",
+    "sourceZhTW": "需要登入",
+    "existingKo": "로그인이 필요합니다.",
+    "recommendedKo": "로그인이 필요합니다.",
+    "issue": null,
+    "context": "src/components/Auth/UserProfile.js; src/components/Subscription/UserAccount/UserAccountPage.js / account UI and accessibility",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "userProfile.loginRequiredMessage",
+    "sourceZhTW": "請先登入以查看您的帳戶資訊",
+    "existingKo": "계정 정보를 확인하려면 먼저 로그인해 주세요.",
+    "recommendedKo": "계정 정보를 확인하려면 먼저 로그인해 주세요.",
+    "issue": null,
+    "context": "src/components/Auth/UserProfile.js; src/components/Subscription/UserAccount/UserAccountPage.js / account UI and accessibility",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "dialog.close",
+    "sourceZhTW": "關閉",
+    "existingKo": "닫기",
+    "recommendedKo": "닫기",
+    "issue": null,
+    "context": "src/components/Common/Dialog; src/components/Auth / button labels and accessibility",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "dialog.closeAriaLabel",
+    "sourceZhTW": "關閉對話框",
+    "existingKo": "대화상자 닫기",
+    "recommendedKo": "대화상자 닫기",
+    "issue": null,
+    "context": "src/components/Common/Dialog; src/components/Auth / button labels and accessibility",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "signInButton.loading",
+    "sourceZhTW": "載入中...",
+    "existingKo": "불러오는 중...",
+    "recommendedKo": "불러오는 중...",
+    "issue": null,
+    "context": "src/components/Common/Dialog; src/components/Auth / button labels and accessibility",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "signInButton.googleAriaLabel",
+    "sourceZhTW": "使用 Google 登入",
+    "existingKo": "Google 계정으로 로그인",
+    "recommendedKo": "Google 계정으로 로그인",
+    "issue": null,
+    "context": "src/components/Common/Dialog; src/components/Auth / button labels and accessibility",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.analysisTools",
+    "sourceZhTW": "分析工具",
+    "existingKo": "분석 도구",
+    "recommendedKo": "분석 도구",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.priceAnalysis",
+    "sourceZhTW": "樂活五線譜",
+    "existingKo": "LOHAS 5선 분석",
+    "recommendedKo": "LOHAS 5선 분석",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.marketSentiment",
+    "sourceZhTW": "市場情緒分析",
+    "existingKo": "시장 심리 분석",
+    "recommendedKo": "시장 심리 분석",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.googleTrendsSymbol",
+    "sourceZhTW": "Google 搜尋熱度-單一標的",
+    "existingKo": "Google 검색 관심도 - 개별 종목",
+    "recommendedKo": "Google 검색 관심도 - 개별 종목",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.googleTrendsMarket",
+    "sourceZhTW": "Google 搜尋熱度-整體市場",
+    "existingKo": "Google 검색 관심도 - 전체 시장",
+    "recommendedKo": "Google 검색 관심도 - 전체 시장",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.watchlist",
+    "sourceZhTW": "我的追蹤清單",
+    "existingKo": "관심 종목",
+    "recommendedKo": "관심 종목",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.otherResources",
+    "sourceZhTW": "其他資源",
+    "existingKo": "기타 자료",
+    "recommendedKo": "기타 자료",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.articles",
+    "sourceZhTW": "分析專欄",
+    "existingKo": "시장 분석 칼럼",
+    "recommendedKo": "시장 분석 칼럼",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.keyCharts",
+    "sourceZhTW": "關鍵圖表",
+    "existingKo": "주요 차트",
+    "recommendedKo": "주요 차트",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.facebook",
+    "sourceZhTW": "Facebook 粉絲專頁",
+    "existingKo": "Facebook 페이지",
+    "recommendedKo": "Facebook 페이지",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.aboutUs",
+    "sourceZhTW": "關於我",
+    "existingKo": "운영자 소개",
+    "recommendedKo": "운영자 소개",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.aboutSite",
+    "sourceZhTW": "關於本站",
+    "existingKo": "사이트 소개",
+    "recommendedKo": "사이트 소개",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.legal",
+    "sourceZhTW": "隱私權政策與服務條款",
+    "existingKo": "개인정보 처리방침 및 이용약관",
+    "recommendedKo": "개인정보 처리방침 및 이용약관",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.sponsor",
+    "sourceZhTW": "贊助我們",
+    "existingKo": "후원하기",
+    "recommendedKo": "후원하기",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.copyright",
+    "sourceZhTW": "Copyright © {{year}} Sentiment Inside Out",
+    "existingKo": "Copyright © {{year}} Sentiment Inside Out",
+    "recommendedKo": "Copyright © {{year}} Sentiment Inside Out",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.disclaimer1",
+    "sourceZhTW": "本網站提供之數據、資料、分析結果、工具和說明內容僅供參考，任何投資行為須自行判斷並承擔風險，實際資訊需以官方公佈資料為準。本網站不負擔盈虧之法律責任。",
+    "existingKo": "본 사이트에서 제공하는 데이터, 자료, 분석 결과, 도구 및 설명은 참고용입니다. 투자 여부는 이용자가 직접 판단하고 그에 따른 위험을 부담해야 하며, 실제 정보는 공식 발표 자료를 기준으로 확인하시기 바랍니다. 본 사이트는 투자 손익에 관한 법적 책임을 지지 않습니다.",
+    "recommendedKo": "본 사이트에서 제공하는 데이터, 자료, 분석 결과, 도구 및 설명은 참고용입니다. 투자 여부는 이용자가 직접 판단하고 그에 따른 위험을 부담해야 하며, 실제 정보는 공식 발표 자료를 기준으로 확인하시기 바랍니다. 본 사이트는 투자 손익에 관한 법적 책임을 지지 않습니다.",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "high",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "footer.disclaimer2",
+    "sourceZhTW": "歡迎分享本網站提供之資訊連結，如需轉載內容務必經由本網站同意。聯絡信箱：support@sentimentinsideout.com",
+    "existingKo": "본 사이트의 정보 링크는 자유롭게 공유하실 수 있습니다. 콘텐츠를 재게시하려면 반드시 본 사이트의 사전 동의를 받아야 합니다. 문의: support@sentimentinsideout.com",
+    "recommendedKo": "본 사이트의 정보 링크는 자유롭게 공유하실 수 있습니다. 콘텐츠를 재게시하려면 반드시 본 사이트의 사전 동의를 받아야 합니다. 문의: support@sentimentinsideout.com",
+    "issue": null,
+    "context": "src/components/Common/Footer/Footer.js / footer navigation, copyright and legal disclaimers",
+    "semanticRisk": "high",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "infoTool.moreInfoAriaLabel",
+    "sourceZhTW": "更多資訊",
+    "existingKo": "추가 정보",
+    "recommendedKo": "추가 정보",
+    "issue": null,
+    "context": "src/components/Common/InfoTool/InfoTool.js / aria-label",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "interstitialAd.closeButton",
+    "sourceZhTW": "關閉廣告",
+    "existingKo": "광고 닫기",
+    "recommendedKo": "광고 닫기",
+    "issue": null,
+    "context": "src/components/Common/InterstitialAdModal/InterstitialAdModal.js / close button",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "protectedRoute.loading",
+    "sourceZhTW": "載入中...",
+    "existingKo": "불러오는 중...",
+    "recommendedKo": "불러오는 중...",
+    "issue": null,
+    "context": "src/components/Common/ProtectedRoute/ProtectedRoute.js; src/api/apiClient.js / access gate and upgrade message",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "protectedRoute.loginRequired",
+    "sourceZhTW": "請先登入以繼續",
+    "existingKo": "계속하려면 먼저 로그인해 주세요.",
+    "recommendedKo": "계속하려면 먼저 로그인해 주세요.",
+    "issue": null,
+    "context": "src/components/Common/ProtectedRoute/ProtectedRoute.js; src/api/apiClient.js / access gate and upgrade message",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "protectedRoute.watchlistUpgradeRequired",
+    "sourceZhTW": "追蹤清單功能需要升級到 Pro 方案",
+    "existingKo": "관심 종목 기능을 이용하려면 Pro로 업그레이드해야 합니다.",
+    "recommendedKo": "관심 종목 기능을 이용하려면 Pro로 업그레이드해야 합니다.",
+    "issue": null,
+    "context": "src/components/Common/ProtectedRoute/ProtectedRoute.js; src/api/apiClient.js / access gate and upgrade message",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.pageTitle",
+    "sourceZhTW": "Sentiment Inside Out｜市場情緒分析平台",
+    "existingKo": "Sentiment Inside Out | 시장 심리 분석 플랫폼",
+    "recommendedKo": "Sentiment Inside Out | 시장 심리 분석 플랫폼",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.pageDescription",
+    "sourceZhTW": "Sentiment Inside Out 提供 SIO 恐懼貪婪指標、樂活五線譜與追蹤清單，協助長期投資人觀察市場情緒、分析標的價格趨勢。",
+    "existingKo": "Sentiment Inside Out은 SIO 공포·탐욕 지수, LOHAS 5선 분석과 관심 종목 기능을 제공하여 장기 투자자가 시장 심리와 종목별 가격 흐름을 살펴볼 수 있도록 돕습니다.",
+    "recommendedKo": "Sentiment Inside Out은 SIO 공포·탐욕 지수, LOHAS 5선 분석과 관심 종목 기능을 제공하여 장기 투자자가 시장 심리와 종목별 가격 흐름을 살펴볼 수 있도록 돕습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.keywords",
+    "sourceZhTW": "恐懼貪婪指數,市場情緒,長期投資,價格趨勢分析,追蹤清單,投資心理,投資工具",
+    "existingKo": "공포·탐욕 지수, 시장 심리, 장기 투자, 가격 추세 분석, 관심 종목, 투자 심리, 투자 도구",
+    "recommendedKo": "공포·탐욕 지수, 시장 심리, 장기 투자, 가격 추세 분석, 관심 종목, 투자 심리, 투자 도구",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.jsonLd.name",
+    "sourceZhTW": "Sentiment Inside Out",
+    "existingKo": "Sentiment Inside Out",
+    "recommendedKo": "Sentiment Inside Out",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.jsonLd.description",
+    "sourceZhTW": "Sentiment Inside Out 提供市場情緒指標、樂活五線譜與追蹤清單，協助長期投資人觀察整體市場情緒、分析個別標的的價格趨勢。",
+    "existingKo": "Sentiment Inside Out은 시장 심리 지표, LOHAS 5선 분석과 관심 종목 기능을 제공하여 장기 투자자가 전체 시장 심리와 개별 종목의 가격 흐름을 살펴볼 수 있도록 돕습니다.",
+    "recommendedKo": "Sentiment Inside Out은 시장 심리 지표, LOHAS 5선 분석과 관심 종목 기능을 제공하여 장기 투자자가 전체 시장 심리와 개별 종목의 가격 흐름을 살펴볼 수 있도록 돕습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.title",
+    "sourceZhTW": "洞悉市場｜看懂恐懼與貪婪",
+    "existingKo": "시장을 읽고 공포와 탐욕을 이해하세요",
+    "recommendedKo": "시장을 읽고 공포와 탐욕을 이해하세요",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.subtitle",
+    "sourceZhTW": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點",
+    "existingKo": "객관적인 데이터로 현재 주식시장의 심리를 파악하고 공포와 탐욕이라는 인간의 약점을 극복하세요.",
+    "recommendedKo": "객관적인 데이터로 현재 주식시장의 심리를 파악하고 공포와 탐욕이라는 인간의 약점을 극복하세요.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.primaryAuthenticated",
+    "sourceZhTW": "查看市場情緒",
+    "existingKo": "시장 심리 보기",
+    "recommendedKo": "시장 심리 보기",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.primaryFreeTrial",
+    "sourceZhTW": "免綁卡免費試用 Pro 30 天",
+    "existingKo": "카드 등록 없이 Pro 30일 무료 체험",
+    "recommendedKo": "카드 등록 없이 Pro 30일 무료 체험",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.primaryGuest",
+    "sourceZhTW": "免綁卡免費試用 Pro 30 天",
+    "existingKo": "카드 등록 없이 Pro 30일 무료 체험",
+    "recommendedKo": "카드 등록 없이 Pro 30일 무료 체험",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.secondary",
+    "sourceZhTW": "免費分析股價趨勢",
+    "existingKo": "무료 주가 추세 분석",
+    "recommendedKo": "무료 주가 추세 분석",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.marketPreviewHeadline.brand",
+    "sourceZhTW": "Sentiment Inside Out",
+    "existingKo": "Sentiment Inside Out",
+    "recommendedKo": "Sentiment Inside Out",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.marketPreviewHeadline.index",
+    "sourceZhTW": "恐懼貪婪指標",
+    "existingKo": "공포·탐욕 지수",
+    "recommendedKo": "공포·탐욕 지수",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.chinaDevaluation.title",
+    "sourceZhTW": "人民幣匯率震盪",
+    "existingKo": "위안화 환율 급변",
+    "recommendedKo": "위안화 환율 급변",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.chinaDevaluation.description",
+    "sourceZhTW": "人民幣急貶引發全球市場震盪。",
+    "existingKo": "위안화 가치가 급격히 하락하며 글로벌 시장이 흔들렸습니다.",
+    "recommendedKo": "위안화 가치가 급격히 하락하며 글로벌 시장이 흔들렸습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.early2016Low.title",
+    "sourceZhTW": "油價暴跌",
+    "existingKo": "유가 급락",
+    "recommendedKo": "유가 급락",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.early2016Low.description",
+    "sourceZhTW": "油價暴跌與景氣疑慮拖累市場。",
+    "existingKo": "유가 급락과 경기 둔화 우려가 시장에 부담을 주었습니다.",
+    "recommendedKo": "유가 급락과 경기 둔화 우려가 시장에 부담을 주었습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.tradeWarSelloff.title",
+    "sourceZhTW": "貿易戰拋售",
+    "existingKo": "무역 전쟁에 따른 매도세",
+    "recommendedKo": "무역 전쟁에 따른 매도세",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.tradeWarSelloff.description",
+    "sourceZhTW": "關稅升溫與緊縮壓力引發年底拋售。",
+    "existingKo": "관세 갈등 심화와 긴축 압력이 연말 매도세를 촉발했습니다.",
+    "recommendedKo": "관세 갈등 심화와 긴축 압력이 연말 매도세를 촉발했습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.prePandemicPeak.title",
+    "sourceZhTW": "疫情前市場高點",
+    "existingKo": "팬데믹 이전 시장 고점",
+    "recommendedKo": "팬데믹 이전 시장 고점",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.prePandemicPeak.description",
+    "sourceZhTW": "疫情大規模擴散前，市場情緒仍偏樂觀。",
+    "existingKo": "팬데믹이 본격적으로 확산되기 전까지 시장 심리는 낙관적인 편이었습니다.",
+    "recommendedKo": "팬데믹이 본격적으로 확산되기 전까지 시장 심리는 낙관적인 편이었습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.pandemicPanic.title",
+    "sourceZhTW": "疫情恐慌崩跌",
+    "existingKo": "팬데믹 공포에 따른 급락",
+    "recommendedKo": "팬데믹 공포에 따른 급락",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.pandemicPanic.description",
+    "sourceZhTW": "疫情停擺衝擊快速擴散。",
+    "existingKo": "팬데믹으로 인한 경제 활동 중단의 충격이 빠르게 확산되었습니다.",
+    "recommendedKo": "팬데믹으로 인한 경제 활동 중단의 충격이 빠르게 확산되었습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.liquidityPeak.title",
+    "sourceZhTW": "2021 流動性高點",
+    "existingKo": "2021년 유동성 정점",
+    "recommendedKo": "2021년 유동성 정점",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.liquidityPeak.description",
+    "sourceZhTW": "寬鬆流動性與成長股熱潮推升市場。",
+    "existingKo": "완화적인 유동성과 성장주 열풍이 시장을 끌어올렸습니다.",
+    "recommendedKo": "완화적인 유동성과 성장주 열풍이 시장을 끌어올렸습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.inflationShock.title",
+    "sourceZhTW": "通膨與升息衝擊",
+    "existingKo": "인플레이션과 금리 인상 충격",
+    "recommendedKo": "인플레이션과 금리 인상 충격",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.inflationShock.description",
+    "sourceZhTW": "通膨升溫、利率上升，市場重新評估風險，情緒也隨之轉弱。",
+    "existingKo": "인플레이션이 심화되고 금리가 오르면서 시장은 위험을 다시 평가했고, 심리도 약해졌습니다.",
+    "recommendedKo": "인플레이션이 심화되고 금리가 오르면서 시장은 위험을 다시 평가했고, 심리도 약해졌습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.aiRally.title",
+    "sourceZhTW": "AI 題材熱潮",
+    "existingKo": "AI 테마 열풍",
+    "recommendedKo": "AI 테마 열풍",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.aiRally.description",
+    "sourceZhTW": "AI 題材帶動市場風險偏好回升，情緒轉向樂觀。",
+    "existingKo": "AI 테마가 시장의 위험 선호를 끌어올리며 심리가 낙관적으로 바뀌었습니다.",
+    "recommendedKo": "AI 테마가 시장의 위험 선호를 끌어올리며 심리가 낙관적으로 바뀌었습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.inflationBearLow.title",
+    "sourceZhTW": "2022 熊市低點",
+    "existingKo": "2022년 약세장 저점",
+    "recommendedKo": "2022년 약세장 저점",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.inflationBearLow.description",
+    "sourceZhTW": "升息、通膨與衰退擔憂持續升高。",
+    "existingKo": "금리 인상과 인플레이션, 경기 침체에 대한 우려가 계속 커졌습니다.",
+    "recommendedKo": "금리 인상과 인플레이션, 경기 침체에 대한 우려가 계속 커졌습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.trumpTradeWar2025.title",
+    "sourceZhTW": "2025 川普貿易戰衝擊",
+    "existingKo": "2025년 트럼프 무역 전쟁 충격",
+    "recommendedKo": "2025년 트럼프 무역 전쟁 충격",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.moments.events.trumpTradeWar2025.description",
+    "sourceZhTW": "川普貿易戰消息再度擾動市場。",
+    "existingKo": "트럼프의 무역 전쟁 관련 소식이 다시 시장을 흔들었습니다.",
+    "recommendedKo": "트럼프의 무역 전쟁 관련 소식이 다시 시장을 흔들었습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.scrollLabel",
+    "sourceZhTW": "前往下方的功能介紹",
+    "existingKo": "아래에서 주요 기능 살펴보기",
+    "recommendedKo": "아래에서 주요 기능 살펴보기",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.trialLoginTitle",
+    "sourceZhTW": "登入後開始 Pro 試用",
+    "existingKo": "로그인하고 Pro 체험 시작하기",
+    "recommendedKo": "로그인하고 Pro 체험 시작하기",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.trialLoginPrompt",
+    "sourceZhTW": "登入後，符合資格即可開始 Pro 30 天免費試用。",
+    "existingKo": "로그인한 후 자격 요건을 충족하면 Pro 30일 무료 체험을 시작할 수 있습니다.",
+    "recommendedKo": "로그인한 후 자격 요건을 충족하면 Pro 30일 무료 체험을 시작할 수 있습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.hero.historyMomentLabel",
+    "sourceZhTW": "歷史市場事件",
+    "existingKo": "과거 시장 이벤트",
+    "recommendedKo": "과거 시장 이벤트",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.announcement.badge",
+    "sourceZhTW": "公告",
+    "existingKo": "공지",
+    "recommendedKo": "공지",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.methodology.historyPreview.kicker",
+    "sourceZhTW": "歷史走勢",
+    "existingKo": "과거 시장 흐름",
+    "recommendedKo": "과거 시장 흐름",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.methodology.historyPreview.title",
+    "sourceZhTW": "回看歷史上的極度恐懼",
+    "existingKo": "과거 극도의 공포가 나타난 시점 돌아보기",
+    "recommendedKo": "과거 극도의 공포가 나타난 시점 돌아보기",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.methodology.historyPreview.description",
+    "sourceZhTW": "當市場最害怕的時候，往往也是長期投資人最該冷靜的時候。",
+    "existingKo": "시장이 가장 두려움에 빠졌을 때가 장기 투자자에게는 오히려 냉정함이 필요한 순간일 수 있습니다.",
+    "recommendedKo": "시장이 가장 두려움에 빠졌을 때가 장기 투자자에게는 오히려 냉정함이 필요한 순간일 수 있습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.methodology.historyPreview.empty",
+    "sourceZhTW": "暫時無法載入歷史走勢。",
+    "existingKo": "현재 과거 시장 흐름을 불러올 수 없습니다.",
+    "recommendedKo": "현재 과거 시장 흐름을 불러올 수 없습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.methodology.pricePreview.title",
+    "sourceZhTW": "快速查看標的價格情緒位階",
+    "existingKo": "종목의 현재 가격 심리 구간 빠르게 확인",
+    "recommendedKo": "종목의 현재 가격 심리 구간을 빠르게 확인하세요",
+    "issue": "현재 문구는 조사와 서술어가 빠져 제목으로도 다소 번역투의 압축형입니다. UI 제목으로 자연스럽게 읽히도록 문장을 완성합니다.",
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.methodology.pricePreview.description",
+    "sourceZhTW": "由市場指數的位階判斷當前情緒接近恐懼還是貪婪",
+    "existingKo": "시장 지수에서 현재 가격이 어느 구간에 있는지 살펴보고 시장 심리가 공포와 탐욕 중 어디에 가까운지 확인하세요.",
+    "recommendedKo": "시장 지수에서 현재 가격이 어느 구간에 있는지 살펴보고 시장 심리가 공포와 탐욕 중 어디에 가까운지 확인하세요.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.methodology.pricePreview.currentPrice",
+    "sourceZhTW": "最新價格",
+    "existingKo": "최신 가격",
+    "recommendedKo": "최신 가격",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.methodology.pricePreview.currentSentiment",
+    "sourceZhTW": "價格情緒",
+    "existingKo": "가격 심리",
+    "recommendedKo": "가격 심리",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.methodology.pricePreview.symbol",
+    "sourceZhTW": "標的代號",
+    "existingKo": "종목 코드",
+    "recommendedKo": "종목 코드",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.methodology.pricePreview.empty",
+    "sourceZhTW": "SPY 分析暫時無法載入。",
+    "existingKo": "현재 SPY 분석을 불러올 수 없습니다.",
+    "recommendedKo": "현재 SPY 분석을 불러올 수 없습니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.sentiment.eyebrow",
+    "sourceZhTW": "回看市場恐慌時刻",
+    "existingKo": "시장 공포가 극심했던 순간 돌아보기",
+    "recommendedKo": "시장 공포가 극심했던 순간 돌아보기",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.sentiment.title",
+    "sourceZhTW": "市場恐慌時，更要保持理性",
+    "existingKo": "시장이 공포에 빠질수록 더 냉정해야 합니다.",
+    "recommendedKo": "시장이 공포에 빠질수록 더 냉정해야 합니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.sentiment.description",
+    "sourceZhTW": "市場進入極度恐懼時，可以重新檢視投資組合的風險配置，避免只因恐慌而賣出。",
+    "existingKo": "시장이 극도의 공포에 진입하면 투자 포트폴리오의 위험 배분을 다시 살펴보세요. 공포만으로 매도하는 일을 피하는 데 도움이 됩니다.",
+    "recommendedKo": "시장이 극도의 공포에 진입하면 투자 포트폴리오의 위험 배분을 다시 살펴보세요. 공포만으로 매도하는 일을 피하는 데 도움이 됩니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.sentiment.cta",
+    "sourceZhTW": "查看歷史恐慌低點",
+    "existingKo": "과거 공포 저점 보기",
+    "recommendedKo": "과거 공포 저점 보기",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.price.title",
+    "sourceZhTW": "從趨勢線｜看懂股價位階",
+    "existingKo": "추세선으로 주가의 현재 위치 읽기",
+    "recommendedKo": "추세선으로 주가의 현재 위치 읽기",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.price.description",
+    "sourceZhTW": "股價走勢難以準確預測；觀察目前價格相對趨勢線的位置，能為買賣判斷提供參考。",
+    "existingKo": "주가 흐름을 정확히 예측하기는 어렵습니다. 현재 가격이 추세선에 비해 어느 위치에 있는지 살펴보면 매매 판단에 참고가 됩니다.",
+    "recommendedKo": "주가 흐름을 정확히 예측하기는 어렵습니다. 현재 가격이 추세선에 비해 어느 위치에 있는지 살펴보면 매매 판단에 참고가 됩니다.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.price.cta",
+    "sourceZhTW": "分析其他標的",
+    "existingKo": "다른 종목 분석하기",
+    "recommendedKo": "다른 종목 분석하기",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.title",
+    "sourceZhTW": "建立個人追蹤清單",
+    "existingKo": "나만의 관심 종목 목록 만들기",
+    "recommendedKo": "나만의 관심 종목 목록 만들기",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.description",
+    "sourceZhTW": "集中查看關注標的目前的價格位置。",
+    "existingKo": "관심 있는 종목들의 현재 가격 위치를 한곳에서 확인하세요.",
+    "recommendedKo": "관심 있는 종목들의 현재 가격 위치를 한곳에서 확인하세요.",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.cta",
+    "sourceZhTW": "查看追蹤清單",
+    "existingKo": "관심 종목 보기",
+    "recommendedKo": "관심 종목 보기",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.items.spy",
+    "sourceZhTW": "美國大盤 ETF",
+    "existingKo": "미국 대표 시장 ETF",
+    "recommendedKo": "미국 대표 시장 ETF",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.items.qqq",
+    "sourceZhTW": "美國科技 ETF",
+    "existingKo": "미국 기술주 ETF",
+    "recommendedKo": "미국 기술주 ETF",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.items.voo",
+    "sourceZhTW": "S&P 500 ETF",
+    "existingKo": "S&P 500 ETF",
+    "recommendedKo": "S&P 500 ETF",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.items.aapl",
+    "sourceZhTW": "蘋果",
+    "existingKo": "Apple",
+    "recommendedKo": "Apple",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.items.nvda",
+    "sourceZhTW": "輝達",
+    "existingKo": "NVIDIA",
+    "recommendedKo": "NVIDIA",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.items.msft",
+    "sourceZhTW": "微軟",
+    "existingKo": "Microsoft",
+    "recommendedKo": "Microsoft",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.tags.extremeGreed",
+    "sourceZhTW": "極度貪婪",
+    "existingKo": "극도의 탐욕",
+    "recommendedKo": "극도의 탐욕",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.tags.greed",
+    "sourceZhTW": "貪婪",
+    "existingKo": "탐욕",
+    "recommendedKo": "탐욕",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.tags.neutral",
+    "sourceZhTW": "中性",
+    "existingKo": "중립",
+    "recommendedKo": "중립",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.tags.fear",
+    "sourceZhTW": "恐懼",
+    "existingKo": "공포",
+    "recommendedKo": "공포",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "home.story.blocks.watchlist.tags.extremeFear",
+    "sourceZhTW": "極度恐懼",
+    "existingKo": "극도의 공포",
+    "recommendedKo": "극도의 공포",
+    "issue": null,
+    "context": "src/components/Home/Home.js; HomeHeroPreview.js / SEO metadata, hero CTA, historical-event preview and feature story",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "pageContainer.defaultTitle",
+    "sourceZhTW": "Sentiment Inside Out - 市場情緒分析",
+    "existingKo": "Sentiment Inside Out - 시장 심리 분석",
+    "recommendedKo": "Sentiment Inside Out - 시장 심리 분석",
+    "issue": null,
+    "context": "src/components/PageContainer/PageContainer.js / default SEO metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "pageContainer.defaultDescription",
+    "sourceZhTW": "掌握市場情緒，克服投資上的恐懼和貪婪心態。",
+    "existingKo": "시장 심리를 파악하고 투자 과정에서 나타나는 공포와 탐욕에 휘둘리지 않도록 도와드립니다.",
+    "recommendedKo": "시장 심리를 파악하고 투자 과정에서 나타나는 공포와 탐욕에 휘둘리지 않도록 도와드립니다.",
+    "issue": null,
+    "context": "src/components/PageContainer/PageContainer.js / default SEO metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "pageContainer.defaultKeywords",
+    "sourceZhTW": "市場情緒,情緒指標,投資策略,台股分析,情緒追蹤",
+    "existingKo": "시장 심리, 심리 지표, 투자 전략, 대만 주식 분석, 심리 추적",
+    "recommendedKo": "시장 심리, 심리 지표, 투자 전략, 대만 주식 분석, 심리 추적",
+    "issue": null,
+    "context": "src/components/PageContainer/PageContainer.js / default SEO metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorSuccess.pageTitle",
+    "sourceZhTW": "捐款贊助成功",
+    "existingKo": "후원이 완료되었습니다",
+    "recommendedKo": "후원이 완료되었습니다",
+    "issue": null,
+    "context": "src/components/SponsorSuccess/SponsorSuccess.js / donation confirmation and SEO metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorSuccess.pageDescription",
+    "sourceZhTW": "感謝您的款項，您的支持是我們前進的動力！",
+    "existingKo": "후원해 주셔서 감사합니다. 보내 주신 응원이 저희에게 큰 힘이 됩니다!",
+    "recommendedKo": "후원해 주셔서 감사합니다. 보내 주신 응원이 저희에게 큰 힘이 됩니다!",
+    "issue": null,
+    "context": "src/components/SponsorSuccess/SponsorSuccess.js / donation confirmation and SEO metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorSuccess.heading",
+    "sourceZhTW": "感謝您滿滿的愛心！",
+    "existingKo": "따뜻한 응원에 진심으로 감사드립니다!",
+    "recommendedKo": "따뜻한 응원에 진심으로 감사드립니다!",
+    "issue": null,
+    "context": "src/components/SponsorSuccess/SponsorSuccess.js / donation confirmation and SEO metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorSuccess.messageLine1",
+    "sourceZhTW": "由衷感謝您對 Sentiment Inside Out 的支持！",
+    "existingKo": "Sentiment Inside Out을 후원해 주셔서 진심으로 감사합니다.",
+    "recommendedKo": "Sentiment Inside Out을 후원해 주셔서 진심으로 감사합니다.",
+    "issue": null,
+    "context": "src/components/SponsorSuccess/SponsorSuccess.js / donation confirmation and SEO metadata",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorSuccess.messageLine2",
+    "sourceZhTW": "您的這筆捐助，將協助網站維持營運，也給我更多持續提供服務和內容的動力，",
+    "existingKo": "보내 주신 후원금은 사이트 운영을 유지하는 데 도움이 되며, 앞으로도 서비스와 콘텐츠를 제공할 수 있는 힘이 됩니다.",
+    "recommendedKo": "보내 주신 후원금은 사이트 운영에 도움이 되며, 앞으로도 서비스와 콘텐츠를 제공할 수 있는 힘이 됩니다.",
+    "issue": "“사이트 운영을 유지하는 데”는 의미가 중복되는 표현입니다. 후원금이 사이트 운영을 돕는다는 의미로 간결하게 다듬습니다.",
+    "context": "src/components/SponsorSuccess/SponsorSuccess.js / donation confirmation and SEO metadata",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorSuccess.messageLine3",
+    "sourceZhTW": "更重要的是讓更多人的投資路能夠順遂。",
+    "existingKo": "무엇보다 더 많은 분이 성공적인 투자 여정을 이어가는 데 보탬이 됩니다.",
+    "recommendedKo": "무엇보다 더 많은 분이 투자 여정을 순조롭게 이어 가는 데 보탬이 됩니다.",
+    "issue": "“성공적인 투자 여정”은 원문의 “투자 여정이 순조롭도록”보다 성공을 단정하는 의미가 강합니다.",
+    "context": "src/components/SponsorSuccess/SponsorSuccess.js / donation confirmation and SEO metadata",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorSuccess.messageLine4",
+    "sourceZhTW": "我們非常感激您的信任與鼓勵，",
+    "existingKo": "보내 주신 신뢰와 격려에 깊이 감사드립니다.",
+    "recommendedKo": "보내 주신 신뢰와 격려에 깊이 감사드립니다.",
+    "issue": null,
+    "context": "src/components/SponsorSuccess/SponsorSuccess.js / donation confirmation and SEO metadata",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorSuccess.messageLine5",
+    "sourceZhTW": "也誠摯祝福您投資順利、生活美好！",
+    "existingKo": "투자에서도 일상에서도 좋은 일만 가득하시기를 바랍니다!",
+    "recommendedKo": "투자에서도 일상에서도 좋은 일만 가득하시기를 바랍니다!",
+    "issue": null,
+    "context": "src/components/SponsorSuccess/SponsorSuccess.js / donation confirmation and SEO metadata",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorSuccess.signature",
+    "sourceZhTW": "— Sentiment Inside Out 敬上",
+    "existingKo": "— Sentiment Inside Out 드림",
+    "recommendedKo": "— Sentiment Inside Out 드림",
+    "issue": null,
+    "context": "src/components/SponsorSuccess/SponsorSuccess.js / donation confirmation and SEO metadata",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "legal.pageTitle",
+    "sourceZhTW": "隱私權政策與服務條款",
+    "existingKo": "개인정보 처리방침 및 이용약관",
+    "recommendedKo": "개인정보 처리방침 및 이용약관",
+    "issue": null,
+    "context": "src/components/Legal/Legal.js; MarkdownRenderer.js / legal metadata, update date and document loading",
+    "semanticRisk": "high",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "legal.pageDescription",
+    "sourceZhTW": "Sentiment Inside Out 網站的服務條款、隱私政策、免責聲明及用戶權利說明",
+    "existingKo": "Sentiment Inside Out 사이트의 이용약관, 개인정보 처리방침, 면책 조항 및 사용자 권리에 관한 안내입니다.",
+    "recommendedKo": "Sentiment Inside Out 사이트의 이용약관, 개인정보 처리방침, 면책 조항 및 사용자 권리에 관한 안내입니다.",
+    "issue": null,
+    "context": "src/components/Legal/Legal.js; MarkdownRenderer.js / legal metadata, update date and document loading",
+    "semanticRisk": "high",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "legal.keywords",
+    "sourceZhTW": "隱私政策,服務條款,法律聲明,用戶權利,資料保護,免責聲明",
+    "existingKo": "개인정보 처리방침, 이용약관, 법적 고지, 사용자 권리, 데이터 보호, 면책 조항",
+    "recommendedKo": "개인정보 처리방침, 이용약관, 법적 고지, 사용자 권리, 데이터 보호, 면책 조항",
+    "issue": null,
+    "context": "src/components/Legal/Legal.js; MarkdownRenderer.js / legal metadata, update date and document loading",
+    "semanticRisk": "high",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "legal.lastUpdated",
+    "sourceZhTW": "最後更新日期：2026年10月8日",
+    "existingKo": "최종 업데이트: 2026년 10월 8일",
+    "recommendedKo": "최종 업데이트: 2026년 10월 8일",
+    "issue": null,
+    "context": "src/components/Legal/Legal.js; MarkdownRenderer.js / legal metadata, update date and document loading",
+    "semanticRisk": "high",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "legal.effectiveDate",
+    "sourceZhTW": "生效日期：2025年9月14日",
+    "existingKo": "시행일: 2025년 9월 14일",
+    "recommendedKo": "시행일: 2025년 9월 14일",
+    "issue": null,
+    "context": "src/components/Legal/Legal.js; MarkdownRenderer.js / legal metadata, update date and document loading",
+    "semanticRisk": "high",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "legal.documentLoading",
+    "sourceZhTW": "載入條款中…",
+    "existingKo": "약관을 불러오는 중…",
+    "recommendedKo": "약관을 불러오는 중…",
+    "issue": null,
+    "context": "src/components/Legal/Legal.js; MarkdownRenderer.js / legal metadata, update date and document loading",
+    "semanticRisk": "high",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "legal.documentError",
+    "sourceZhTW": "無法載入條款，請重新整理頁面後再試。",
+    "existingKo": "약관을 불러오지 못했습니다. 페이지를 새로고침한 후 다시 시도해 주세요.",
+    "recommendedKo": "약관을 불러오지 못했습니다. 페이지를 새로고침한 후 다시 시도해 주세요.",
+    "issue": null,
+    "context": "src/components/Legal/Legal.js; MarkdownRenderer.js / legal metadata, update date and document loading",
+    "semanticRisk": "high",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.pageTitle",
+    "sourceZhTW": "贊助我們",
+    "existingKo": "사이트 후원",
+    "recommendedKo": "사이트 후원",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.pageDescription",
+    "sourceZhTW": "有你/妳的幫助，Sentiment Inside Out 將能持續運作、提供簡單實用的投資工具，造福更多投資人。您的贊助將支持網站維護和發展。",
+    "existingKo": "여러분의 도움으로 Sentiment Inside Out은 계속 운영되며 더 많은 투자자에게 간단하고 실용적인 투자 도구를 제공할 수 있습니다. 후원금은 사이트 유지·보수와 발전에 사용됩니다.",
+    "recommendedKo": "여러분의 도움으로 Sentiment Inside Out은 계속 운영되며 더 많은 투자자에게 간단하고 실용적인 투자 도구를 제공할 수 있습니다. 후원금은 사이트 유지·보수와 발전에 사용됩니다.",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.keywords",
+    "sourceZhTW": "贊助網站,支持投資工具,投資分析平台,市場情緒分析",
+    "existingKo": "사이트 후원, 투자 도구 지원, 투자 분석 플랫폼, 시장 심리 분석",
+    "recommendedKo": "사이트 후원, 투자 도구 지원, 투자 분석 플랫폼, 시장 심리 분석",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.heading",
+    "sourceZhTW": "贊助網站，一起幫助更多人",
+    "existingKo": "사이트를 후원하고 더 많은 분에게 도움을 주세요",
+    "recommendedKo": "사이트를 후원하고 더 많은 분에게 도움을 주세요",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro1",
+    "sourceZhTW": "Sentiment Inside Out 網站的建置、投資工具和內容創作、防範網路攻擊...等等，",
+    "existingKo": "Sentiment Inside Out 사이트 구축과 투자 도구 개발, 콘텐츠 제작, 사이버 공격 방어 등 모든 일을",
+    "recommendedKo": "Sentiment Inside Out 사이트 구축과 투자 도구 개발, 콘텐츠 제작, 사이버 공격 방어 등 모든 일을",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro2",
+    "sourceZhTW": "背後其實只有一個人在維護。",
+    "existingKo": "사실상 한 사람이 맡아 관리하고 있습니다.",
+    "recommendedKo": "사실상 한 사람이 맡아 관리하고 있습니다.",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro3",
+    "sourceZhTW": "我希望藉由分享這些免費、簡單的工具，",
+    "existingKo": "무료로 사용할 수 있는 간단한 도구를 공유해",
+    "recommendedKo": "무료로 사용할 수 있는 간단한 도구를 공유해",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro4",
+    "sourceZhTW": "幫助更多人在投資上獲得超越大盤的回報。",
+    "existingKo": "더 많은 분이 투자에서 시장 수익률을 넘어서는 성과를 얻도록 돕고 싶습니다.",
+    "recommendedKo": "더 많은 분이 투자에서 시장 수익률을 넘어서는 성과를 얻도록 돕고 싶습니다.",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro5",
+    "sourceZhTW": "但要維持網站的運作，",
+    "existingKo": "하지만 사이트를 계속 운영하려면",
+    "recommendedKo": "하지만 사이트를 계속 운영하려면",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro6",
+    "sourceZhTW": "每一天都要付出一定的費用和時間，",
+    "existingKo": "매일 일정한 비용과 시간이 필요하며,",
+    "recommendedKo": "매일 일정한 비용과 시간이 필요하며,",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro7",
+    "sourceZhTW": "長期下來其實也是不小的負擔。",
+    "existingKo": "장기적으로 보면 적지 않은 부담이 됩니다.",
+    "recommendedKo": "장기적으로 보면 적지 않은 부담이 됩니다.",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro8",
+    "sourceZhTW": "因此我想誠摯地邀請你/妳，",
+    "existingKo": "그래서 여러분께 진심으로 부탁드립니다.",
+    "recommendedKo": "그래서 여러분께 진심으로 부탁드립니다.",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro9",
+    "sourceZhTW": "一起和我幫助更多人，",
+    "existingKo": "저와 함께 더 많은 투자자를 도와주시고,",
+    "recommendedKo": "저와 함께 더 많은 투자자를 도와주시고,",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro10",
+    "sourceZhTW": "讓這個網站能繼續營運下去;",
+    "existingKo": "이 사이트가 계속 운영될 수 있도록 힘을 보태 주세요.",
+    "recommendedKo": "이 사이트가 계속 운영될 수 있도록 힘을 보태 주세요.",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro11",
+    "sourceZhTW": "或者就當作是請我喝個咖啡、吃個飯，",
+    "existingKo": "커피 한 잔이나 식사 한 끼를 사 주신다는 마음으로 후원해 주셔도",
+    "recommendedKo": "커피 한 잔이나 식사 한 끼를 사 주신다는 마음으로 후원해 주셔도",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro12",
+    "sourceZhTW": "我也會非常感激。",
+    "existingKo": "정말 감사하겠습니다.",
+    "recommendedKo": "정말 감사하겠습니다.",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro13",
+    "sourceZhTW": "不論有無贊助，",
+    "existingKo": "후원 여부와 관계없이",
+    "recommendedKo": "후원 여부와 관계없이",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.intro14",
+    "sourceZhTW": "都祝福你/妳投資順利、一切都更好！",
+    "existingKo": "투자도 순조롭고 모든 일이 잘 풀리기를 바랍니다!",
+    "recommendedKo": "투자도 순조롭고 모든 일이 잘 풀리기를 바랍니다!",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "medium",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.methodsHeading",
+    "sourceZhTW": "請選擇以下贊助方式",
+    "existingKo": "아래에서 후원 방법을 선택해 주세요",
+    "recommendedKo": "아래에서 후원 방법을 선택해 주세요",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.methodCreditCard",
+    "sourceZhTW": "信用卡",
+    "existingKo": "신용카드",
+    "recommendedKo": "신용카드",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.methodWireTransfer",
+    "sourceZhTW": "銀行轉帳",
+    "existingKo": "은행 송금",
+    "recommendedKo": "은행 송금",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.methodMobilePayment",
+    "sourceZhTW": "行動支付",
+    "existingKo": "모바일 결제",
+    "recommendedKo": "모바일 결제",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.methodMobilePaymentDescription",
+    "sourceZhTW": "請開啟以下任一款 App 掃描 QR Code",
+    "existingKo": "아래 앱 중 하나를 열어 QR 코드를 스캔해 주세요.",
+    "recommendedKo": "아래 앱 중 하나를 열어 QR 코드를 스캔해 주세요.",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.methodDescriptionHtml",
+    "sourceZhTW": "請<a href=\"{{link}}\" target=\"_blank\" rel=\"noopener noreferrer\">點擊連結</a>或掃描 QR Code。",
+    "existingKo": "<a href=\"{{link}}\" target=\"_blank\" rel=\"noopener noreferrer\">링크를 클릭</a>하거나 QR 코드를 스캔해 주세요.",
+    "recommendedKo": "<a href=\"{{link}}\" target=\"_blank\" rel=\"noopener noreferrer\">링크를 클릭</a>하거나 QR 코드를 스캔해 주세요.",
+    "issue": "HTML 링크 구조와 {{link}} 동적 URL을 dangerouslySetInnerHTML로 렌더링합니다. 현재 태그·속성·플레이스홀더는 보존되어 번역 수정은 필요하지 않지만, 실제 한국어 화면에서 링크 문맥을 확인해야 합니다.",
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "high",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "sponsorUs.copySuccessAlert",
+    "sourceZhTW": "已複製帳號：{{text}}",
+    "existingKo": "계정 정보가 복사되었습니다: {{text}}",
+    "recommendedKo": "계정 정보가 복사되었습니다: {{text}}",
+    "issue": null,
+    "context": "src/components/SponsorUs/SponsorUs.js / sponsor page, segmented story, payment methods and dynamic HTML",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "expandableDescription.expand",
+    "sourceZhTW": "了解更多",
+    "existingKo": "더 보기",
+    "recommendedKo": "더 보기",
+    "issue": null,
+    "context": "src/components/Common/ExpandableDescription/ExpandableDescription.js / expand and collapse buttons",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "expandableDescription.collapse",
+    "sourceZhTW": "收合",
+    "existingKo": "접기",
+    "recommendedKo": "접기",
+    "issue": null,
+    "context": "src/components/Common/ExpandableDescription/ExpandableDescription.js / expand and collapse buttons",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "appName",
+    "sourceZhTW": "市場情緒追蹤平台",
+    "existingKo": "시장 심리 분석 플랫폼",
+    "recommendedKo": "시장 심리 분석 플랫폼",
+    "issue": null,
+    "context": "src/App.js / BrandLogo alt text",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "notFound.title",
+    "sourceZhTW": "找不到這個頁面",
+    "existingKo": "페이지를 찾을 수 없습니다.",
+    "recommendedKo": "페이지를 찾을 수 없습니다.",
+    "issue": null,
+    "context": "src/components/NotFound/NotFound.js / page title, description and recovery links",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "notFound.description",
+    "sourceZhTW": "網址可能已變更，請返回首頁或瀏覽工具教學。",
+    "existingKo": "주소가 변경되었을 수 있습니다. 홈으로 돌아가거나 도구 사용 가이드를 확인해 주세요.",
+    "recommendedKo": "주소가 변경되었을 수 있습니다. 홈으로 돌아가거나 도구 사용 가이드를 확인해 주세요.",
+    "issue": null,
+    "context": "src/components/NotFound/NotFound.js / page title, description and recovery links",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "notFound.home",
+    "sourceZhTW": "返回首頁",
+    "existingKo": "홈으로 돌아가기",
+    "recommendedKo": "홈으로 돌아가기",
+    "issue": null,
+    "context": "src/components/NotFound/NotFound.js / page title, description and recovery links",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "notFound.articles",
+    "sourceZhTW": "瀏覽工具教學",
+    "existingKo": "도구 가이드 보기",
+    "recommendedKo": "도구 가이드 보기",
+    "issue": null,
+    "context": "src/components/NotFound/NotFound.js / page title, description and recovery links",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "announcement.title",
+    "sourceZhTW": "📢 公告內容",
+    "existingKo": "📢 공지 사항",
+    "recommendedKo": "📢 공지 사항",
+    "issue": null,
+    "context": "src/components/Common/AnnouncementBar/AnnouncementModal.js; AnnouncementBar.js / modal title, close aria/title and confirmation",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "announcement.close",
+    "sourceZhTW": "關閉公告",
+    "existingKo": "공지 닫기",
+    "recommendedKo": "공지 닫기",
+    "issue": null,
+    "context": "src/components/Common/AnnouncementBar/AnnouncementModal.js; AnnouncementBar.js / modal title, close aria/title and confirmation",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "announcement.confirm",
+    "sourceZhTW": "知道了",
+    "existingKo": "확인했습니다",
+    "recommendedKo": "확인했습니다",
+    "issue": null,
+    "context": "src/components/Common/AnnouncementBar/AnnouncementModal.js; AnnouncementBar.js / modal title, close aria/title and confirmation",
+    "semanticRisk": "none",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "ulBandChart.upperBandLabel",
+    "sourceZhTW": "上緣",
+    "existingKo": "상단 밴드",
+    "recommendedKo": "상단 밴드",
+    "issue": null,
+    "context": "src/components/ULBandChart/ULBandChart.js / Chart.js dataset labels and tooltip legend",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "ulBandChart.ma20Label",
+    "sourceZhTW": "MA20",
+    "existingKo": "MA20",
+    "recommendedKo": "MA20",
+    "issue": null,
+    "context": "src/components/ULBandChart/ULBandChart.js / Chart.js dataset labels and tooltip legend",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "ulBandChart.priceLabel",
+    "sourceZhTW": "價格",
+    "existingKo": "가격",
+    "recommendedKo": "가격",
+    "issue": null,
+    "context": "src/components/ULBandChart/ULBandChart.js / Chart.js dataset labels and tooltip legend",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  },
+  {
+    "key": "ulBandChart.lowerBandLabel",
+    "sourceZhTW": "下緣",
+    "existingKo": "하단 밴드",
+    "recommendedKo": "하단 밴드",
+    "issue": null,
+    "context": "src/components/ULBandChart/ULBandChart.js / Chart.js dataset labels and tooltip legend",
+    "semanticRisk": "low",
+    "status": "pending_user_approval"
+  }
+]

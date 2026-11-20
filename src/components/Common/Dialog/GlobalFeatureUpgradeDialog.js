@@ -7,6 +7,10 @@ import { useAuth } from '../../Auth/useAuth';
 import { fetchFreeTrialEligibility } from '../../../services/freeTrialService';
 import { canSeeFreeTrial } from '../../../utils/freeTrialRollout';
 import { getAnalysisReturnPath, withAnalysisReturnPath } from '../../../utils/trialNavigation';
+import { DEFAULT_LOCALE, LOCALE_CODES } from '../../../locales/localeConfig';
+
+const localePattern = LOCALE_CODES.map(locale => locale.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+const subscriptionPlansPath = new RegExp(`^/(${localePattern})/subscription-plans$`);
 
 // 全局對話框組件，監聽 DialogContext 並轉換為 props 模式
 export function GlobalFeatureUpgradeDialog() {
@@ -61,13 +65,13 @@ export function GlobalFeatureUpgradeDialog() {
     };
 
     const handleUpgrade = () => {
-        const language = i18n.language?.startsWith('en') ? 'en' : 'zh-TW';
+        const language = LOCALE_CODES.includes(i18n.language) ? i18n.language : DEFAULT_LOCALE;
         const destination = `/${language}/subscription-plans`;
         let returnPath = null;
         try {
             const upgradeUrl = new URL(dialog.props?.upgradeUrl || destination, window.location.origin);
             if (upgradeUrl.origin === window.location.origin
-                && /^\/(en|zh-TW)\/subscription-plans$/.test(upgradeUrl.pathname)) {
+                && subscriptionPlansPath.test(upgradeUrl.pathname)) {
                 returnPath = getAnalysisReturnPath(upgradeUrl.search, language);
             }
         } catch { /* Invalid context falls back to the local plans page. */ }

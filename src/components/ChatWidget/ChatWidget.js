@@ -187,11 +187,12 @@ const ChatWidgetSession = ({ language, isOpen, setIsOpen }) => {
           setCategorizedFaqs(data.faq);
           const topLevelCategories = Object.keys(data.faq);
           const filteredCategories = topLevelCategories.filter(categoryName => {
-            const isFeedbackZh = categoryName === '其他建議與回饋';
-            const isFeedbackEn = categoryName === 'Feedback & Suggestions';
-            const isSponsorEn = categoryName === 'Sponsor Us';
-            const shouldHideSponsor = currentLanguage !== 'zh-TW' && isSponsorEn;
-            return !isFeedbackZh && !isFeedbackEn && !shouldHideSponsor;
+            const isFeedbackCategory = [
+              '其他建議與回饋', '其他建议与反馈', '기타 의견 및 피드백', 'Feedback & Suggestions'
+            ].includes(categoryName);
+            const isSponsorCategory = ['網站贊助', '网站赞助', '후원하기', 'Sponsor Us'].includes(categoryName);
+            const shouldHideSponsor = currentLanguage !== 'zh-TW' && isSponsorCategory;
+            return !isFeedbackCategory && !shouldHideSponsor;
           });
           const quickReplyMessage = {
             role: 'system',
@@ -266,7 +267,7 @@ const ChatWidgetSession = ({ language, isOpen, setIsOpen }) => {
       setIsWaitingReply(false);
       setUnreadCount(0);
       try {
-        ['chatWidget.session.v1', 'chatWidget.session.v2.en', 'chatWidget.session.v2.zh-TW'].forEach(key => sessionStorage.removeItem(key));
+        ['chatWidget.session.v1', 'chatWidget.session.v2.en', 'chatWidget.session.v2.zh-TW', 'chatWidget.session.v2.zh-CN', 'chatWidget.session.v2.ko-KR'].forEach(key => sessionStorage.removeItem(key));
       } catch {}
     };
 
@@ -385,9 +386,20 @@ const ChatWidgetSession = ({ language, isOpen, setIsOpen }) => {
   );
 };
 
+export const resolveChatWidgetLanguage = (i18n) => {
+  const rawLanguage = (i18n?.language || i18n?.resolvedLanguage || 'zh-TW').toLowerCase();
+  return rawLanguage.startsWith('ko')
+    ? 'ko-KR'
+    : rawLanguage.startsWith('zh-cn') || rawLanguage.startsWith('zh-hans')
+      ? 'zh-CN'
+      : rawLanguage === 'zh' || rawLanguage.startsWith('zh-tw') || rawLanguage.startsWith('zh-hant')
+        ? 'zh-TW'
+        : 'en';
+};
+
 const ChatWidget = () => {
   const { i18n } = useTranslation();
-  const language = i18n.language.startsWith('zh') ? 'zh-TW' : 'en';
+  const language = resolveChatWidgetLanguage(i18n);
   const [isOpen, setIsOpen] = useState(false);
   return <ChatWidgetSession key={language} language={language} isOpen={isOpen} setIsOpen={setIsOpen} />;
 };

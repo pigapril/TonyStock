@@ -16,9 +16,10 @@ import LoadingSpinner from '../../Common/LoadingSpinner';
 import ErrorDisplay from '../../Common/ErrorDisplay';
 import AdminRedemptionService from '../../../services/adminRedemptionService';
 import { systemLogger } from '../../../utils/logger';
+import { getIntlLocale } from '../../../locales/localeConfig';
 
 const CodeDetailsModal = ({ code, onClose, onUpdate }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     // State management
     const [loading, setLoading] = useState(false);
@@ -188,8 +189,8 @@ const CodeDetailsModal = ({ code, onClose, onUpdate }) => {
      */
     const formatDate = useCallback((date) => {
         if (!date) return '-';
-        return new Date(date).toLocaleString();
-    }, []);
+        return new Date(date).toLocaleString(getIntlLocale(i18n.language));
+    }, [i18n.language]);
 
     /**
      * Get status badge class

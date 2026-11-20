@@ -20,6 +20,28 @@ const renderPage = (url, props = {}) => render(
 );
 
 describe('PageContainer search metadata', () => {
+  it('uses the shared title format and avoids appending the brand twice', async () => {
+    const { unmount } = renderPage('/en/');
+
+    await waitFor(() => {
+      expect(document.title).toBe('Test | Sentiment Inside Out');
+    });
+
+    unmount();
+  });
+
+  it('does not append the brand when the localized title already contains it', async () => {
+    const { unmount } = renderPage('/zh-CN/', {
+      title: 'Sentiment Inside Out｜市场情绪分析平台'
+    });
+
+    await waitFor(() => {
+      expect(document.title).toBe('Sentiment Inside Out｜市场情绪分析平台');
+    });
+
+    unmount();
+  });
+
   it('uses sitemap-style trailing slashes for localized home alternates', async () => {
     const { unmount } = renderPage('/en/');
 

@@ -550,14 +550,14 @@ class RedemptionService {
             // 嘗試從 i18next 實例獲取
             if (typeof window !== 'undefined' && window.i18n?.language) {
                 const lang = window.i18n.language;
-                return (lang === 'zh-TW' || lang === 'zh') ? 'zh-TW' : 'en';
+                return lang === 'zh-CN' ? 'zh-CN' : (lang === 'zh-TW' || lang === 'zh') ? 'zh-TW' : 'en';
             }
             
             // 嘗試從 localStorage 獲取
             if (typeof localStorage !== 'undefined') {
                 const lang = localStorage.getItem('i18nextLng');
                 if (lang) {
-                    return (lang === 'zh-TW' || lang === 'zh') ? 'zh-TW' : 'en';
+                    return lang === 'zh-CN' ? 'zh-CN' : (lang === 'zh-TW' || lang === 'zh') ? 'zh-TW' : 'en';
                 }
             }
             
@@ -566,6 +566,8 @@ class RedemptionService {
                 const pathLang = window.location.pathname.split('/')[1];
                 if (pathLang === 'zh-TW' || pathLang === 'zh') {
                     return 'zh-TW';
+                } else if (pathLang === 'zh-CN') {
+                    return 'zh-CN';
                 } else if (pathLang === 'en') {
                     return 'en';
                 }

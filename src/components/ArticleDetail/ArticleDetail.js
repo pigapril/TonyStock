@@ -6,8 +6,9 @@ import remarkGfm from 'remark-gfm';
 import './ArticleDetail.css';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { socialImagePath } from '../../utils/socialMetadata';
+import { socialImagePath, SITE_NAME } from '../../utils/socialMetadata';
 import imageDimensions from '../../config/articleImageDimensions.json';
+import articleCatalog from '../../config/articleCatalog';
 
 // 判斷 markdown 連結是否指向站內。相對路徑與本站絕對網址都算，
 // 回傳可交給 React Router 的路徑；外部連結回傳 null。
@@ -24,52 +25,29 @@ const generateId = (text) => {
     return text
         .toLowerCase()
         .replace(/[()]/g, '')  // 移除括號
-        .replace(/[\/]/g, '')  // 移除斜線
+        .replace(/[/]/g, '')  // 移除斜線
         .replace(/\s+/g, '-')  // 空格轉換為連字符
-        .replace(/[^a-z0-9\u4E00-\u9FFF-]/g, ''); // 只保留英文、數字、中文和連字符
+        .replace(/[^a-z0-9\u1100-\u11FF\uAC00-\uD7AF\u4E00-\u9FFF-]/g, ''); // 保留英文、數字、漢字與韓文
 };
 
-// 從 articleUtils.js 引入或複製 articleMappings
-const articleMappings = {
-    '1.用樂活五線譜分析價格趨勢與情緒': {
-        enSlug: 'analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis',
-        enFilename: 'Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis.en.ini.md'
-    },
-    '2.用市場情緒綜合指數判斷買賣時機': {
-        enSlug: 'using-market-sentiment-composite-index-to-time-buys-and-sells',
-        enFilename: 'using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md'
-    },
-    // 2026-08-31 下架：檔案保留在 frontend/public/articles 底下，
-    // 要重新上架就把下面這段解除註解即可。
-    // '3.Netflix 併購華納全解析：如何利用「預期差」與「倒金字塔」策略獲利': {
-    //     enSlug: 'netflix-acquires-warner-capitalizing-on-expectation-gap-strategy',
-    //     enFilename: 'Netflix Acquires Warner Capitalizing on Expectation Gap Strategy.en.ini.md'
-    // },
-    '4.樂活五線譜1155萬筆台美股資料實測結果分析': {
-        enSlug: 'lohas-five-line-analysis-tested-on-11-6-million-daily-bars',
-        enFilename: 'LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md'
-    },
-    '5.市場動能儀表板使用指南': {
-        enSlug: 'market-momentum-dashboard-guide',
-        enFilename: 'Market Momentum Dashboard Guide.en.ini.md'
-    }
-};
+const articleByOriginalSlug = Object.fromEntries(
+    articleCatalog.map(article => [article.originalSlug, article])
+);
+const articleSlugLookup = Object.fromEntries(
+    articleCatalog.flatMap(article => Object.entries(article.locales).map(([locale, edition]) => [
+        edition.slug,
+        { originalSlug: article.originalSlug, locale },
+    ]))
+);
 
 // 文章改名後舊網址仍在外面流通，這裡把舊 slug 導到現在的網址，避免已發出去的連結變成
-// 「找不到文章」。2026-09-08：第 4 篇的資料量從 576 萬更正為 1155 萬，連網址一起改。
+// 「找不到文章」。第 4 篇的樣本量統一為 1,156 萬筆；保留先前 576 萬與 1,155 萬網址的轉址。
 const renamedSlugs = {
-    '4.樂活五線譜576萬筆台美股資料實測結果分析': '4.樂活五線譜1155萬筆台美股資料實測結果分析',
+    '4.樂活五線譜576萬筆台美股資料實測結果分析': 'lohas-five-line-analysis-tested-on-11-6-million-daily-bars',
+    '4.樂活五線譜1155萬筆台美股資料實測結果分析': 'lohas-five-line-analysis-tested-on-11-6-million-daily-bars',
     'lohas-five-line-analysis-tested-on-5-8-million-daily-bars':
         'lohas-five-line-analysis-tested-on-11-6-million-daily-bars'
 };
-
-// 建立反向映射 (英文 Slug -> 原始 Slug)
-const englishSlugToOriginalMap = Object.entries(articleMappings).reduce((acc, [original, mapping]) => {
-    if (mapping.enSlug) {
-        acc[mapping.enSlug] = original;
-    }
-    return acc;
-}, {});
 
 export function ArticleDetail() {
     const { t, i18n } = useTranslation();
@@ -84,35 +62,21 @@ export function ArticleDetail() {
     const renamedTo = renamedSlugs[slugFromUrl];
 
     // 使用 useMemo 避免每次渲染都重新計算 originalSlug
-    const originalSlug = useMemo(() => {
-        if (currentLang === 'en' && englishSlugToOriginalMap[slugFromUrl]) {
-            return englishSlugToOriginalMap[slugFromUrl];
-        }
-        // 如果不是英文，或者在英文模式下找不到對應的原始 slug (例如直接訪問了中文 slug 的英文 URL)，
-        // 則假定 URL 中的 slug 就是原始 slug
-        return slugFromUrl;
-    }, [slugFromUrl, currentLang]);
+    const originalSlug = useMemo(
+        () => articleSlugLookup[slugFromUrl]?.originalSlug || slugFromUrl,
+        [slugFromUrl]
+    );
+    const articleConfig = articleByOriginalSlug[originalSlug];
+    const articleEdition = articleConfig?.locales[currentLang];
+    const expectedSlug = articleEdition?.slug;
 
     useEffect(() => {
+        if (!articleEdition) return undefined;
         const fetchArticle = async () => {
             setLoading(true);
             setError(null);
             try {
-                // 使用 originalSlug 來查找映射和構建路徑
-                const mapping = articleMappings[originalSlug];
-                let fileName;
-
-                // 根據語言和映射決定檔案名稱
-                if (currentLang === 'en' && mapping?.enFilename) {
-                    fileName = mapping.enFilename;
-                } else {
-                    // 中文或其他語言
-                    const articleName = originalSlug.replace(/^\d+\./, '');
-                    fileName = `${articleName}.${currentLang}.ini.md`;
-                }
-
-                // 使用 originalSlug 構建檔案路徑
-                const filePath = `/articles/${originalSlug}/${fileName}`;
+                const filePath = `/articles/${originalSlug}/${articleEdition.filename}`;
 
                 const response = await fetch(filePath);
                 if (!response.ok) {
@@ -164,8 +128,8 @@ export function ArticleDetail() {
         };
 
         // 檢查 originalSlug 是否有效 (如果需要)
-        // 例如，如果 originalSlug 不在 articleMappings 中，可能表示 URL 無效
-        if (!articleMappings[originalSlug]) {
+        // 例如，如果 originalSlug 不在已發布文章目錄中，可能表示 URL 無效
+                if (!articleConfig) {
              console.warn(`Invalid original slug derived: ${originalSlug} from URL slug: ${slugFromUrl}`);
              // 可以選擇設置錯誤狀態或導向 404
              setError(new Error(`Article not found for slug: ${slugFromUrl}`));
@@ -174,10 +138,23 @@ export function ArticleDetail() {
             fetchArticle();
         }
         // useEffect 的依賴項應包含 originalSlug 和 currentLang
-    }, [originalSlug, currentLang, slugFromUrl]); // 加入 slugFromUrl 以確保 URL 變更時觸發
+    }, [originalSlug, currentLang, slugFromUrl, articleEdition, articleConfig]);
 
     if (renamedTo) {
-        return <Navigate to={`/${currentLang}/articles/${renamedTo}`} replace />;
+        const renamedArticle = Object.values(articleByOriginalSlug).find(article => (
+            article.locales.en.slug === renamedTo
+        ));
+        const targetSlug = renamedArticle?.locales[currentLang]?.slug || renamedTo;
+        return <Navigate to={`/${currentLang}/articles/${encodeURIComponent(targetSlug)}/`} replace />;
+    }
+
+    if (articleEdition && expectedSlug !== slugFromUrl) {
+        return <Navigate to={`/${currentLang}/articles/${encodeURIComponent(expectedSlug)}/`} replace />;
+    }
+
+    if (!articleEdition && currentLang !== 'en') {
+        const englishSlug = articleConfig?.locales.en.slug || slugFromUrl;
+        return <Navigate to={`/en/articles/${encodeURIComponent(englishSlug)}/`} replace />;
     }
 
     // 自定義圖片渲染組件
@@ -250,8 +227,8 @@ export function ArticleDetail() {
                 datePublished: meta.date, dateModified: meta.updated || meta.date,
                 url: pageOgUrl, mainEntityOfPage: pageOgUrl,
                 image: new URL(socialImagePath('', currentLang, article.originalSlug.split('.')[0]), window.location.origin).href,
-                author: { '@type': 'Organization', name: 'Sentiment Inside Out' },
-                publisher: { '@type': 'Organization', name: 'Sentiment Inside Out' }
+                author: { '@type': 'Organization', name: SITE_NAME },
+                publisher: { '@type': 'Organization', name: SITE_NAME }
             }}
             // og:url 應反映當前頁面的實際 URL
             ogUrl={pageOgUrl}
@@ -260,10 +237,11 @@ export function ArticleDetail() {
             <div className="article-detail-page">
                 <Helmet>
                     {meta.keywords && <meta name="keywords" content={meta.keywords} />}
-                    {['en', 'zh-TW'].map(locale => <link key={locale} rel="alternate" hrefLang={locale}
-                        href={`${window.location.origin}/${locale}/articles/${encodeURIComponent(locale === 'en' ? articleMappings[article.originalSlug]?.enSlug || article.originalSlug : article.originalSlug)}/`} />)}
+                    {/* Only real editions in the shared article catalog are advertised. */}
+                    {Object.entries(articleConfig.locales).map(([locale, edition]) => <link key={locale} rel="alternate" hrefLang={locale}
+                        href={`${window.location.origin}/${locale}/articles/${encodeURIComponent(edition.slug)}/`} />)}
                     <link rel="alternate" hrefLang="x-default"
-                        href={`${window.location.origin}/en/articles/${encodeURIComponent(articleMappings[article.originalSlug]?.enSlug || article.originalSlug)}/`} />
+                        href={`${window.location.origin}/en/articles/${encodeURIComponent(articleConfig.locales.en.slug)}/`} />
                 </Helmet>
                 <div className="article-header">
                     <h1>{article.title}</h1>

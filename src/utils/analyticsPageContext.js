@@ -1,5 +1,7 @@
 // Page language is distinct from the browser language reported by GA4.
 // Never include payment return parameters, fragments or referrer credentials.
+import { LOCALE_CODES, LEGACY_LOCALE_ALIASES } from '../locales/localeConfig';
+
 export function getAnalyticsPageContext() {
   const pagePath = window.location.pathname;
   const firstSegment = pagePath.split('/')[1];
@@ -15,6 +17,8 @@ export function getAnalyticsPageContext() {
     page_path: pagePath,
     page_location: window.location.origin + pagePath,
     page_referrer: pageReferrer,
-    site_locale: ['en', 'zh-TW'].includes(firstSegment) ? firstSegment : null
+    site_locale: LOCALE_CODES.includes(firstSegment)
+      ? firstSegment
+      : LEGACY_LOCALE_ALIASES[firstSegment] || null
   };
 }

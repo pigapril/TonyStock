@@ -1,30 +1,15 @@
 import { getRouteLocaleGroups } from './resourceGroups';
-
-const loaders = {
-  en: {
-    admin: () => import('./resources/en/admin.json'),
-    momentum: () => import('./resources/en/momentum.json'),
-    indicators: () => import('./resources/en/indicators.json'),
-    account: () => import('./resources/en/account.json'),
-    market: () => import('./resources/en/market.json'),
-    price: () => import('./resources/en/price.json')
-  },
-  'zh-TW': {
-    admin: () => import('./resources/zh-TW/admin.json'),
-    momentum: () => import('./resources/zh-TW/momentum.json'),
-    indicators: () => import('./resources/zh-TW/indicators.json'),
-    account: () => import('./resources/zh-TW/account.json'),
-    market: () => import('./resources/zh-TW/market.json'),
-    price: () => import('./resources/zh-TW/price.json')
-  }
-};
+import { getLocaleResourceChain } from './localeConfig';
+import { routeLocaleLoaders } from './localeResources.generated';
 
 // Cache only successfully loaded resources; failed requests can be retried.
-export function createRouteLocaleLoader(instance, resourceLoaders = loaders) {
+export function createRouteLocaleLoader(
+  instance,
+  resourceLoaders = routeLocaleLoaders,
+  getResourceChain = getLocaleResourceChain
+) {
   const requests = new Map();
   const loaded = new Set();
-  const languagesFor = lang => lang.toLowerCase().startsWith('zh') ? ['zh-TW', 'en'] : ['en'];
-
   const load = (lang, group) => {
     const key = `${lang}/${group}`;
     if (loaded.has(key)) return Promise.resolve();
@@ -38,7 +23,7 @@ export function createRouteLocaleLoader(instance, resourceLoaders = loaders) {
     return request;
   };
 
-  return (lang, pathname) => Promise.all(languagesFor(lang).flatMap(language =>
+  return (lang, pathname) => Promise.all(getResourceChain(lang).flatMap(language =>
     getRouteLocaleGroups(pathname).map(group => load(language, group))
   ));
 }

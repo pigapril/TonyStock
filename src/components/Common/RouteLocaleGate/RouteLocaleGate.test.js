@@ -1,9 +1,11 @@
 import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import RouteLocaleGate from './RouteLocaleGate';
+import { loadCommonLocales } from '../../../locales/loadCommonLocales';
 import { loadRouteLocales } from '../../../locales/loadRouteLocales';
 import { getInitialLanguage } from '../../../locales/resourceGroups';
 
+jest.mock('../../../locales/loadCommonLocales', () => ({ loadCommonLocales: jest.fn() }));
 jest.mock('../../../locales/loadRouteLocales', () => ({ loadRouteLocales: jest.fn() }));
 const mockI18n = { language: 'en', changeLanguage: jest.fn(async lang => { mockI18n.language = lang; }) };
 jest.mock('react-i18next', () => ({ useTranslation: () => ({ i18n: mockI18n, t: key => key }) }));
@@ -12,6 +14,7 @@ const view = (lang, pathname) => <RouteLocaleGate lang={lang} pathname={pathname
 
 beforeEach(() => {
   jest.clearAllMocks();
+  loadCommonLocales.mockResolvedValue([]);
   mockI18n.language = 'en';
   mockI18n.changeLanguage.mockImplementation(async lang => { mockI18n.language = lang; });
 });
@@ -31,7 +34,7 @@ test('Chinese homepage also renders immediately when its language is active', ()
   expect(loadRouteLocales).not.toHaveBeenCalled();
 });
 
-test.each(['zh-TW', 'zh-HK', 'en-US', 'ja-JP'])('root entry with browser language %s paints the homepage without a short placeholder', browserLanguage => {
+test.each(['zh-TW', 'zh-HK', 'ko-KR', 'en-US', 'ja-JP'])('root entry with browser language %s paints the homepage without a short placeholder', browserLanguage => {
   mockI18n.language = getInitialLanguage('/', browserLanguage);
   const redirectLanguage = getInitialLanguage('/', browserLanguage);
   loadRouteLocales.mockReturnValue(new Promise(() => {}));
@@ -49,6 +52,7 @@ test('deep-linked page mounts only after its translations and language are ready
   await act(async () => pending.resolve());
   expect(screen.getByText('page')).toBeInTheDocument();
   expect(mockI18n.language).toBe('zh-TW');
+  expect(loadCommonLocales).toHaveBeenCalledWith(mockI18n, 'zh-TW');
 });
 
 test('a stale route request cannot switch language or release a newer route', async () => {

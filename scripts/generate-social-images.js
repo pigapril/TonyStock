@@ -4,11 +4,16 @@
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
+const { DEFAULT_LOCALE, LOCALE_CODES, getLocaleConfig, getLocaleResourceChain } = require('../src/locales/localeConfig');
+const { resolveRequiredKeyFromChain } = require('../src/locales/localeKeyResolution');
+const ARTICLE_CATALOG = require('../src/config/articleCatalog');
 const ROOT = path.resolve(__dirname, '..');
 const heroSnapshot = require('../src/config/socialHeroSnapshot.json');
 const escape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
-const strings = Object.fromEntries(['en', 'zh-TW'].map(lang => [lang, require(`../src/locales/${lang}/translation.json`)]));
-const readKey = (lang, key) => key.split('.').reduce((node, part) => node[part], strings[lang]);
+const strings = Object.fromEntries(LOCALE_CODES.map(lang => [lang, require(`../src/locales/${lang}/translation.json`)]));
+const readKey = (lang, key) => resolveRequiredKeyFromChain(
+  lang, key, strings, getLocaleResourceChain
+).value;
 
 // Copy is sourced from existing page headings/subtitles, never rewritten for cards.
 const pages = {
@@ -23,13 +28,6 @@ const pages = {
   about: ['about.heading', 'about.pageDescription'],
   'sponsor-us': ['sponsorUs.heading', 'sponsorUs.pageDescription']
 };
-const articles = [
-  ['1.用樂活五線譜分析價格趨勢與情緒', 'Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis.en.ini.md'],
-  ['2.用市場情緒綜合指數判斷買賣時機', 'using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md'],
-  ['4.樂活五線譜1155萬筆台美股資料實測結果分析', 'LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md'],
-  ['5.市場動能儀表板使用指南', 'Market Momentum Dashboard Guide.en.ini.md']
-];
-
 function frontmatter(source) {
   const fields = {};
   const block = source.match(/^---\s*\n([\s\S]*?)\n---/);
@@ -66,7 +64,7 @@ function textMarkup(lines, x, y, size, color, weight = 400) {
 
 async function render(record, palette, logo) {
   const { name, lang, title, description = '', artwork, category = '', date = '' } = record;
-  const width = name === 'home' ? 600 : artwork ? 650 : 1040;
+  const width = name === 'home' && artwork ? 600 : artwork ? 650 : 1040;
   // Match Home's renderTitleWithBreaks for the existing full-width separator.
   const displayTitle = name === 'home' ? title.replace(/｜/g, '\n') : title;
   let titleSize = 54;
@@ -87,7 +85,9 @@ async function render(record, palette, logo) {
     const input = sharp(path.join(ROOT, 'public', artwork));
     if (name === 'home') {
       // Retain the sharing-card layout; only the right-hand artwork uses the real hero.
-      const image = await input.extract(heroSnapshot.artworkCrop[lang]).resize(420, 420, {
+      const crop = heroSnapshot.artworkCrop[lang];
+      if (!crop) throw new Error(`Missing homepage hero crop for locale: ${lang}`);
+      const image = await input.extract(crop).resize(420, 420, {
         fit: 'contain', background: palette.background
       }).png().toBuffer();
       graphic = `<image x="716" y="120" width="420" height="420" href="data:image/png;base64,${image.toString('base64')}"/>`;
@@ -134,26 +134,43 @@ async function render(record, palette, logo) {
   };
   const dimensions = {};
   const records = [];
-  for (const [slug] of articles) {
-    const dir = path.join(ROOT, 'public/articles', slug);
+  for (const { originalSlug } of ARTICLE_CATALOG) {
+    const dir = path.join(ROOT, 'public/articles', originalSlug);
     for (const file of fs.readdirSync(dir).filter(name => /\.(png|webp|jpg|svg)$/i.test(name))) {
       const { width, height } = await sharp(path.join(dir, file)).metadata();
-      dimensions[`/articles/${slug}/${file}`] = { width, height };
+      dimensions[`/articles/${originalSlug}/${file}`] = { width, height };
     }
   }
   fs.writeFileSync(path.join(ROOT, 'src/config/articleImageDimensions.json'), JSON.stringify(dimensions, null, 2) + '\n');
-  for (const lang of ['en','zh-TW']) {
+  for (const lang of LOCALE_CODES) {
     for (const [name, [titleKey, descriptionKey, asset]] of Object.entries(pages)) {
+      // Only English and Traditional Chinese have localized in-product
+      // artwork. Other locales use text-led cards rather than embedding
+      // screenshots whose UI copy belongs to a different language.
+      if (lang === 'zh-CN' && name === 'sponsor-us') continue;
+      if (lang === 'ko-KR' && name === 'sponsor-us') continue;
+      const useArtwork = lang === 'en' || lang === 'zh-TW';
+      const artworkPath = useArtwork
+        ? asset?.replace('{locale}', getLocaleConfig(lang)?.socialAssetSuffix ?? (lang === DEFAULT_LOCALE ? '-en' : `-${lang}`)).replace('{lang}', lang)
+        : undefined;
       records.push({ name, lang, title: readKey(lang, titleKey), description: readKey(lang, descriptionKey),
-        titleKey, descriptionKey, ...(name === 'home' && { captureUrl: `https://sentimentinsideout.com/${lang}/`, heroSnapshot }), artwork: asset?.replace('{locale}', lang === 'en' ? '-en' : '').replace('{lang}', lang) });
+        titleKey, descriptionKey,
+        ...(name === 'home' && useArtwork && { captureUrl: `https://sentimentinsideout.com/${lang}/`, heroSnapshot }),
+        ...(artworkPath && { artwork: artworkPath }) });
     }
-    for (const [slug, enFile] of articles) {
-      const filename = lang === 'en' ? enFile : `${slug.replace(/^\d+\./, '')}.zh-TW.ini.md`;
-      const source = `articles/${slug}/${filename}`;
+  }
+  // Only complete editions in the article catalog produce share cards. Build
+  // therefore fails early if an advertised locale is missing its Markdown.
+  for (const { id, originalSlug, locales } of ARTICLE_CATALOG) {
+    for (const lang of LOCALE_CODES) {
+      const edition = locales[lang];
+      if (!edition) continue;
+      const source = `articles/${originalSlug}/${edition.filename}`;
       const meta = frontmatter(fs.readFileSync(path.join(ROOT, 'public', source), 'utf8'));
-      records.push({ name: `article-${slug.split('.')[0]}`, lang, title: meta.title,
+      const useLocalizedArtwork = lang === 'en' || lang === 'zh-TW';
+      records.push({ name: `article-${id}`, lang, title: meta.title,
         category: meta.category, date: meta.date, source,
-        artwork: `articles/${slug}/image-cover.${slug.startsWith('5.')?'svg':'png'}` });
+        ...(useLocalizedArtwork && { artwork: `articles/${originalSlug}/image-cover.${originalSlug.startsWith('5.') ? 'svg' : 'png'}` }) });
     }
   }
   for (const record of records) await render(record, palette, logo);

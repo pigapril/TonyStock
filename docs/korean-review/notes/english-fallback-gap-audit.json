@@ -1,0 +1,318 @@
+{
+  "historicalMissingFallbackKeys": 29,
+  "items": [
+    {
+      "key": "momentumDashboard.groups.global-markets",
+      "zhTW": "全球股市",
+      "en": "Global markets",
+      "korean": "글로벌 주식시장",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.u-s-market",
+      "zhTW": "美國股市",
+      "en": "US market",
+      "korean": "미국 주식시장",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.developed-markets",
+      "zhTW": "已開發市場",
+      "en": "Developed markets",
+      "korean": "선진국 시장",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.emerging-markets",
+      "zhTW": "新興市場",
+      "en": "Emerging markets",
+      "korean": "신흥국 시장",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.china-market",
+      "zhTW": "中國市場",
+      "en": "China market",
+      "korean": "중국 시장",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.real-estate",
+      "zhTW": "不動產",
+      "en": "Real estate",
+      "korean": "부동산",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.high-dividends",
+      "zhTW": "高股息",
+      "en": "High dividends",
+      "korean": "고배당",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.premium-income",
+      "zhTW": "收益型策略",
+      "en": "Premium income",
+      "korean": "인컴 전략",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.treasury-bonds",
+      "zhTW": "美國公債",
+      "en": "US Treasury bonds",
+      "korean": "미국 국채",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.equal-weighted-sectors",
+      "zhTW": "等權重板塊",
+      "en": "Equal-weighted sectors",
+      "korean": "동일가중 섹터",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.market-cap-weighted-sectors",
+      "zhTW": "市值加權板塊",
+      "en": "Market-cap-weighted sectors",
+      "korean": "시가총액 가중 섹터",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.consumer-discretionary",
+      "zhTW": "非必需消費",
+      "en": "Consumer discretionary",
+      "korean": "경기소비재",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.consumer-staples",
+      "zhTW": "必需消費",
+      "en": "Consumer staples",
+      "korean": "필수소비재",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.energy",
+      "zhTW": "能源",
+      "en": "Energy",
+      "korean": "에너지",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.finance",
+      "zhTW": "金融",
+      "en": "Financials",
+      "korean": "금융",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.healthcare",
+      "zhTW": "醫療保健",
+      "en": "Healthcare",
+      "korean": "헬스케어",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.industrials",
+      "zhTW": "工業",
+      "en": "Industrials",
+      "korean": "산업재",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.materials",
+      "zhTW": "原材料",
+      "en": "Materials",
+      "korean": "소재",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.technology",
+      "zhTW": "科技",
+      "en": "Technology",
+      "korean": "정보기술",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.utilities",
+      "zhTW": "公用事業",
+      "en": "Utilities",
+      "korean": "유틸리티",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "momentumDashboard.groups.thematic",
+      "zhTW": "主題投資",
+      "en": "Thematic investing",
+      "korean": "테마 투자",
+      "provenance": "docs/i18n/ko-KR-review/ko-KR.translation-review.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "redemption.actions.bind_payment",
+      "zhTW": "綁定付款方式",
+      "en": "Add a payment method",
+      "korean": "결제 수단 등록",
+      "provenance": "docs/i18n/ko-KR-review/02-redemption-subscription.draft.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "redemption.actions.contact_support",
+      "zhTW": "聯繫客服",
+      "en": "Contact support",
+      "korean": "고객 지원 문의",
+      "provenance": "docs/i18n/ko-KR-review/02-redemption-subscription.draft.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "redemption.actions.try_another",
+      "zhTW": "嘗試其他代碼",
+      "en": "Try another code",
+      "korean": "다른 코드 입력",
+      "provenance": "docs/i18n/ko-KR-review/02-redemption-subscription.draft.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "redemption.actions.check_spelling",
+      "zhTW": "檢查拼寫",
+      "en": "Check the code spelling",
+      "korean": "코드 철자 확인",
+      "provenance": "docs/i18n/ko-KR-review/02-redemption-subscription.draft.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "home.methodology.historyPreview.kicker",
+      "zhTW": "歷史走勢",
+      "en": "Historical performance",
+      "korean": "과거 시장 흐름",
+      "provenance": "docs/i18n/ko-KR-review/03-core-google-home.draft.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "home.story.blocks.sentiment.eyebrow",
+      "zhTW": "回看市場恐慌時刻",
+      "en": "Looking back at moments of market panic",
+      "korean": "시장 공포가 극심했던 순간 돌아보기",
+      "provenance": "docs/i18n/ko-KR-review/03-core-google-home.draft.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "payment.history.status.processing",
+      "zhTW": "處理中",
+      "en": "Processing",
+      "korean": "처리 중",
+      "provenance": "docs/i18n/ko-KR-review/05-payment-invoice.draft.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    },
+    {
+      "key": "payment.result.clientReturn.message",
+      "zhTW": "您已從付款頁面返回。正在確認付款狀態...",
+      "en": "You have returned from the payment page. We are checking your payment status…",
+      "korean": "결제 페이지에서 돌아왔습니다. 결제 상태를 확인하는 중입니다...",
+      "provenance": "docs/i18n/ko-KR-review/05-payment-invoice.draft.json",
+      "approvalStatus": "pending_user_approval",
+      "note": "Earlier audit found no same-path English fallback; the current English resource now contains a direct value."
+    }
+  ],
+  "currentMissingAfterFix": 0,
+  "englishExtraKeys": 8,
+  "englishExtra": [
+    {
+      "key": "momentumDashboard.assetCount_one",
+      "en": "{{count}} tracked",
+      "purpose": "English plural variant or English-only runtime fallback key; not a new zh-TW translation key.",
+      "approvalStatus": "not_a_Korean_source_key"
+    },
+    {
+      "key": "momentumDashboard.assetCount_other",
+      "en": "{{count}} tracked",
+      "purpose": "English plural variant or English-only runtime fallback key; not a new zh-TW translation key.",
+      "approvalStatus": "not_a_Korean_source_key"
+    },
+    {
+      "key": "momentumDashboard.periodScore",
+      "en": "Momentum score {{score}}",
+      "purpose": "English plural variant or English-only runtime fallback key; not a new zh-TW translation key.",
+      "approvalStatus": "not_a_Korean_source_key"
+    },
+    {
+      "key": "priceAnalysis.addToWatchlist.categoryTotal_one",
+      "en": "{{count}} category",
+      "purpose": "English plural variant or English-only runtime fallback key; not a new zh-TW translation key.",
+      "approvalStatus": "not_a_Korean_source_key"
+    },
+    {
+      "key": "priceAnalysis.addToWatchlist.categoryTotal_other",
+      "en": "{{count}} categories",
+      "purpose": "English plural variant or English-only runtime fallback key; not a new zh-TW translation key.",
+      "approvalStatus": "not_a_Korean_source_key"
+    },
+    {
+      "key": "priceAnalysis.addToWatchlist.stockCount_one",
+      "en": "{{count}} stock",
+      "purpose": "English plural variant or English-only runtime fallback key; not a new zh-TW translation key.",
+      "approvalStatus": "not_a_Korean_source_key"
+    },
+    {
+      "key": "priceAnalysis.addToWatchlist.stockCount_other",
+      "en": "{{count}} stocks",
+      "purpose": "English plural variant or English-only runtime fallback key; not a new zh-TW translation key.",
+      "approvalStatus": "not_a_Korean_source_key"
+    },
+    {
+      "key": "errors.DEFAULT_ERROR",
+      "en": "An unknown error occurred.",
+      "purpose": "English plural variant or English-only runtime fallback key; not a new zh-TW translation key.",
+      "approvalStatus": "not_a_Korean_source_key"
+    }
+  ]
+}

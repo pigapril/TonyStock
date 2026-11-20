@@ -5,7 +5,7 @@ date: 2026-03-08
 description: Gain a deeper understanding of market sentiment and use our unique SIO Fear & Greed Index to grasp long-term market fear and greed, serving as a key indicator for timing buy and sell decisions.
 keywords: Market Sentiment, Sentiment Index, Fear Greed, Investment Indicator, Market Timing, Stock Market Analysis, VIX Index, Safe Haven Demand, Junk Bond Spread, S&P 500 COT Index, NAAIM Exposure Index, AAII Sentiment Survey, CBOE Put Call Ratio, Market Momentum, SIO Fear & Greed Index, CNN Fear & Greed Index
 ---
-Following up on our previous article, [Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis](https://sentimentinsideout.com/articles/1.%E7%94%A8%E6%A8%82%E6%B4%BB%E4%BA%94%E7%B7%9A%E8%AD%9C%E5%88%86%E6%9E%90%E5%83%B9%E6%A0%BC%E8%B6%A8%E5%8B%A2%E8%88%87%E6%83%85%E7%B7%92), we now know how to use the LOHAS tool to identify price trends and deviations. But beyond individual stock prices, how else can we determine if the *overall market* is in a state of extreme sentiment? This article will introduce several important data points and show how to use the SIO Fear & Greed Index to help time buy and sell decisions.
+Following up on our previous article, [Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis](/en/articles/analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis/), we now know how to use the LOHAS tool to identify price trends and deviations. But beyond individual stock prices, how else can we determine if the *overall market* is in a state of extreme sentiment? This article will introduce several important data points and show how to use the SIO Fear & Greed Index to help time buy and sell decisions.
 
 ## Table of Contents
 
@@ -47,7 +47,7 @@ Further reading: [How to read the CNN Fear & Greed Index](/en/sentiment-indicato
 
 ## SIO Fear & Greed Index: A Long-Term Fear & Greed Indicator
 
-In contrast to the CNN index, the [SIO Fear & Greed Index](https://sentimentinsideout.com/market-sentiment) (pictured below) was specifically designed to reflect *long-term* overall market fear and greed. This tool integrates multiple market sentiment indicators, adjusts them based on their individual characteristics to reduce noise, and calculates a composite score that intuitively shows the current overall market mood. Backtesting against the S&P 500 ETF (SPY) shows that during major lows when the Sentiment Index was near or below 5, these periods proved to be excellent long-term buying opportunities.
+In contrast to the CNN index, the [SIO Fear & Greed Index](/en/market-sentiment/) (pictured below) was specifically designed to reflect *long-term* overall market fear and greed. This tool integrates multiple market sentiment indicators, adjusts them based on their individual characteristics to reduce noise, and calculates a composite score that intuitively shows the current overall market mood. Backtesting against the S&P 500 ETF (SPY) shows that during major lows when the Sentiment Index was near or below 5, these periods proved to be excellent long-term buying opportunities.
 
 ![image2](./image2-en.png)
 

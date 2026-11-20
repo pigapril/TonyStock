@@ -153,10 +153,11 @@ describe('CardUpdateFlow', () => {
 
         await waitFor(() => expect(startCardUpdate).toHaveBeenCalledTimes(1));
         const [payload] = startCardUpdate.mock.calls[0];
-        expect(Object.keys(payload).sort()).toEqual(['disclosedGrace', 'locale', 'termsConsentedAt', 'termsVersion']);
+        expect(Object.keys(payload).sort()).toEqual(['disclosedGrace', 'locale', 'returnLocale', 'termsConsentedAt', 'termsVersion']);
         expect(payload.disclosedGrace).toBe(false);
         expect(payload.termsVersion).toBe('card-update-v1');
         expect(payload.locale).toBe('zh-TW');
+        expect(payload.returnLocale).toBe('zh-TW');
         expect(Date.parse(payload.termsConsentedAt)).toBeGreaterThanOrEqual(before);
     });
 
@@ -173,7 +174,8 @@ describe('CardUpdateFlow', () => {
         await waitFor(() => expect(createCardUpdateBind).toHaveBeenCalledWith({
             merchantTradeNo: 'CU-1',
             bindCardPayToken: 'pay-token',
-            disclosedGrace: false
+            disclosedGrace: false,
+            returnLocale: 'zh-TW'
         }));
         expect(goToThreeDVerification).toHaveBeenCalledWith('https://ecpg.ecpay.com.tw/3d/abc');
     });
@@ -188,7 +190,8 @@ describe('CardUpdateFlow', () => {
         await waitFor(() => expect(createCardUpdateBind).toHaveBeenCalledWith({
             merchantTradeNo: 'CU-1',
             bindCardPayToken: 'pay-token',
-            disclosedGrace: true
+            disclosedGrace: true,
+            returnLocale: 'zh-TW'
         }));
         expect(startCardUpdate.mock.calls[0][0].disclosedGrace).toBe(true);
     });

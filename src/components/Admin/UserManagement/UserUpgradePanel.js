@@ -13,9 +13,10 @@ import { useTranslation } from 'react-i18next';
 import LoadingSpinner from '../../Common/LoadingSpinner';
 import apiClient from '../../../api/apiClient';
 import './UserUpgradePanel.css';
+import { getIntlLocale } from '../../../locales/localeConfig';
 
 const UserUpgradePanel = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     
     // State management
     const [searchEmail, setSearchEmail] = useState('');
@@ -156,7 +157,7 @@ const UserUpgradePanel = () => {
      */
     const formatDate = (dateString) => {
         if (!dateString) return t('admin.userManagement.userInfo.noLastLogin');
-        return new Date(dateString).toLocaleString();
+        return new Date(dateString).toLocaleString(getIntlLocale(i18n.language));
     };
 
     /**
@@ -174,7 +175,7 @@ const UserUpgradePanel = () => {
         
         const status = t(`admin.userManagement.subscriptionStatus.${subscription.status}`) || subscription.status;
         const endDate = subscription.currentPeriodEnd ? 
-            new Date(subscription.currentPeriodEnd).toLocaleDateString() : '';
+            new Date(subscription.currentPeriodEnd).toLocaleDateString(getIntlLocale(i18n.language)) : '';
         
         return `${status}${endDate ? ` (${t('admin.userManagement.subscriptionStatus.until')} ${endDate})` : ''}`;
     };

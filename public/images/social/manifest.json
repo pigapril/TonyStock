@@ -125,45 +125,9 @@
       "descriptionKey": "sponsorUs.pageDescription"
     },
     {
-      "name": "article-1",
-      "lang": "en",
-      "title": "Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis",
-      "category": "Tool Tutorial",
-      "date": "2025-05-04",
-      "source": "articles/1.用樂活五線譜分析價格趨勢與情緒/Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis.en.ini.md",
-      "artwork": "articles/1.用樂活五線譜分析價格趨勢與情緒/image-cover.png"
-    },
-    {
-      "name": "article-2",
-      "lang": "en",
-      "title": "Using the SIO Fear & Greed Index to Time Buys and Sells",
-      "category": "Tool Tutorial",
-      "date": "2026-03-08",
-      "source": "articles/2.用市場情緒綜合指數判斷買賣時機/using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md",
-      "artwork": "articles/2.用市場情緒綜合指數判斷買賣時機/image-cover.png"
-    },
-    {
-      "name": "article-4",
-      "lang": "en",
-      "title": "Should You Buy When LOHAS Five-Line Shows \"Extreme Fear\"? 11.6 Million Daily Bars",
-      "category": "Tool Guides",
-      "date": "2026-08-30",
-      "source": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md",
-      "artwork": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/image-cover.png"
-    },
-    {
-      "name": "article-5",
-      "lang": "en",
-      "title": "Market Momentum Dashboard: Find Strong ETFs and Stocks",
-      "category": "Tool Guides",
-      "date": "2026-09-30",
-      "source": "articles/5.市場動能儀表板使用指南/Market Momentum Dashboard Guide.en.ini.md",
-      "artwork": "articles/5.市場動能儀表板使用指南/image-cover.svg"
-    },
-    {
       "name": "home",
       "lang": "zh-TW",
-      "title": "洞悉市場｜恐懼貪婪情緒",
+      "title": "洞悉市場｜看懂恐懼與貪婪",
       "description": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點",
       "titleKey": "home.hero.title",
       "descriptionKey": "home.hero.subtitle",
@@ -274,6 +238,159 @@
       "descriptionKey": "sponsorUs.pageDescription"
     },
     {
+      "name": "home",
+      "lang": "zh-CN",
+      "title": "洞悉市场｜看懂恐惧与贪婪",
+      "description": "用客观数据判断当前股市情绪，克服恐惧与贪婪的人性弱点。",
+      "titleKey": "home.hero.title",
+      "descriptionKey": "home.hero.subtitle"
+    },
+    {
+      "name": "priceanalysis",
+      "lang": "zh-CN",
+      "title": "乐活五线谱",
+      "description": "用价格趋势判断标的情绪。",
+      "titleKey": "priceAnalysis.heading",
+      "descriptionKey": "priceAnalysis.subtitle"
+    },
+    {
+      "name": "sentiment-indicators",
+      "lang": "zh-CN",
+      "title": "市场情绪指标总览",
+      "description": "一页看完全球市场情绪指标:CNN 恐惧贪婪指数、BofA Bull & Bear、AAII 散户调查、NAAIM 基金经理风险敞口、台湾股指期权波动率等,附数据时间与原始出处。",
+      "titleKey": "sentimentBoard.heading",
+      "descriptionKey": "sentimentBoard.pageDescription"
+    },
+    {
+      "name": "market-sentiment",
+      "lang": "zh-CN",
+      "title": "美股恐惧贪婪指数｜整合 8 项指标的市场情绪分析",
+      "description": "跟踪美股市场整体情绪偏向恐惧还是贪婪。",
+      "titleKey": "marketSentiment.pageTitle",
+      "descriptionKey": "marketSentiment.pageSubtitle"
+    },
+    {
+      "name": "tw-market-sentiment",
+      "lang": "zh-CN",
+      "title": "Sentiment Inside Out (SIO) 台湾股市恐惧贪婪指标｜台湾股市情绪跟踪",
+      "description": "跟踪台湾股市市场整体情绪偏向恐惧还是贪婪。",
+      "titleKey": "marketSentiment.tw.pageTitle",
+      "descriptionKey": "marketSentiment.tw.pageSubtitle"
+    },
+    {
+      "name": "momentum",
+      "lang": "zh-CN",
+      "title": "市场动能",
+      "description": "从动能较强的分类中筛选标的，掌握市场动能方向。",
+      "titleKey": "momentumDashboard.title",
+      "descriptionKey": "momentumDashboard.subtitle"
+    },
+    {
+      "name": "watchlist",
+      "lang": "zh-CN",
+      "title": "我的自选列表",
+      "description": "关注你感兴趣的股票，快速掌握多个标的价格情绪",
+      "titleKey": "watchlist.pageTitle",
+      "descriptionKey": "watchlist.pageSubtitle"
+    },
+    {
+      "name": "articles",
+      "lang": "zh-CN",
+      "title": "工具使用指南与市场情绪解读",
+      "description": "这里是网站工具的使用教学与市场情绪的观念说明。想直接看各项指标现在的数字，可以从下方进入指标总览。",
+      "titleKey": "articles.heading",
+      "descriptionKey": "articles.intro"
+    },
+    {
+      "name": "about",
+      "lang": "zh-CN",
+      "title": "关于 Sentiment Inside Out",
+      "description": "了解 Sentiment Inside Out 网站的理念，以及如何使用简单的分析工具，将市场当前的情绪转化为重要的投资指标，帮助投资者克服恐惧与贪婪心态。",
+      "titleKey": "about.heading",
+      "descriptionKey": "about.pageDescription"
+    },
+    {
+      "name": "home",
+      "lang": "ko-KR",
+      "title": "시장을 읽고 공포와 탐욕을 이해하세요",
+      "description": "객관적인 데이터로 현재 주식시장의 심리를 파악하고 공포와 탐욕이라는 인간의 약점을 극복하세요.",
+      "titleKey": "home.hero.title",
+      "descriptionKey": "home.hero.subtitle"
+    },
+    {
+      "name": "priceanalysis",
+      "lang": "ko-KR",
+      "title": "LOHAS 5선 분석",
+      "description": "가격 추세로 종목 심리를 판단합니다.",
+      "titleKey": "priceAnalysis.heading",
+      "descriptionKey": "priceAnalysis.subtitle"
+    },
+    {
+      "name": "sentiment-indicators",
+      "lang": "ko-KR",
+      "title": "시장 심리 지표 전체 보기",
+      "description": "CNN·BofA·AAII·NAAIM 등 주요 시장 심리 지표의 최신 수치와 산출 방식, 원본 출처를 확인하세요.",
+      "titleKey": "sentimentBoard.heading",
+      "descriptionKey": "sentimentBoard.pageDescription"
+    },
+    {
+      "name": "market-sentiment",
+      "lang": "ko-KR",
+      "title": "미국 주식 공포·탐욕 지수 | 8개 지표를 종합한 시장 심리 분석",
+      "description": "미국 주식시장의 전반적인 심리가 공포와 탐욕 중 어느 쪽에 기울어 있는지 추적합니다.",
+      "titleKey": "marketSentiment.pageTitle",
+      "descriptionKey": "marketSentiment.pageSubtitle"
+    },
+    {
+      "name": "tw-market-sentiment",
+      "lang": "ko-KR",
+      "title": "Sentiment Inside Out (SIO) 대만 주식 공포·탐욕 지수 | 대만 주식시장 심리 추적",
+      "description": "대만 주식시장의 전반적인 심리가 공포와 탐욕 중 어느 쪽에 기울어 있는지 추적합니다.",
+      "titleKey": "marketSentiment.tw.pageTitle",
+      "descriptionKey": "marketSentiment.tw.pageSubtitle"
+    },
+    {
+      "name": "momentum",
+      "lang": "ko-KR",
+      "title": "시장 모멘텀",
+      "description": "강세를 보이는 분류에서 유망 종목을 찾아 시장 모멘텀의 방향을 파악하세요.",
+      "titleKey": "momentumDashboard.title",
+      "descriptionKey": "momentumDashboard.subtitle"
+    },
+    {
+      "name": "watchlist",
+      "lang": "ko-KR",
+      "title": "내 관심 종목",
+      "description": "관심 있는 종목을 추적하고 여러 종목의 가격 심리 수준을 빠르게 확인하세요.",
+      "titleKey": "watchlist.pageTitle",
+      "descriptionKey": "watchlist.pageSubtitle"
+    },
+    {
+      "name": "articles",
+      "lang": "ko-KR",
+      "title": "도구 사용 가이드와 시장 심리 이해",
+      "description": "이곳에서는 사이트 도구의 사용 방법과 시장 심리에 관한 개념을 설명합니다. 각 지표의 최신 수치를 바로 확인하려면 아래에서 전체 지표를 선택하세요.",
+      "titleKey": "articles.heading",
+      "descriptionKey": "articles.intro"
+    },
+    {
+      "name": "about",
+      "lang": "ko-KR",
+      "title": "Sentiment Inside Out 소개",
+      "description": "Sentiment Inside Out의 운영 철학과 시장 심리 지표를 투자 판단에 참고하는 방법을 소개합니다.",
+      "titleKey": "about.heading",
+      "descriptionKey": "about.pageDescription"
+    },
+    {
+      "name": "article-1",
+      "lang": "en",
+      "title": "Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis",
+      "category": "Tool Tutorial",
+      "date": "2025-05-04",
+      "source": "articles/1.用樂活五線譜分析價格趨勢與情緒/Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis.en.ini.md",
+      "artwork": "articles/1.用樂活五線譜分析價格趨勢與情緒/image-cover.png"
+    },
+    {
       "name": "article-1",
       "lang": "zh-TW",
       "title": "用樂活五線譜分析價格趨勢與情緒",
@@ -281,6 +398,31 @@
       "date": "2025-05-04",
       "source": "articles/1.用樂活五線譜分析價格趨勢與情緒/用樂活五線譜分析價格趨勢與情緒.zh-TW.ini.md",
       "artwork": "articles/1.用樂活五線譜分析價格趨勢與情緒/image-cover.png"
+    },
+    {
+      "name": "article-1",
+      "lang": "zh-CN",
+      "title": "用乐活五线谱分析价格趋势与情绪",
+      "category": "工具教学",
+      "date": "2025-05-04",
+      "source": "articles/1.用樂活五線譜分析價格趨勢與情緒/article-1.zh-CN.ini.md"
+    },
+    {
+      "name": "article-1",
+      "lang": "ko-KR",
+      "title": "LOHAS 5선 차트로 가격 추세와 시장 심리 분석하기",
+      "category": "도구 사용 가이드",
+      "date": "2025-05-04",
+      "source": "articles/1.用樂活五線譜分析價格趨勢與情緒/article-1.ko-KR.ini.md"
+    },
+    {
+      "name": "article-2",
+      "lang": "en",
+      "title": "Using the SIO Fear & Greed Index to Time Buys and Sells",
+      "category": "Tool Tutorial",
+      "date": "2026-03-08",
+      "source": "articles/2.用市場情緒綜合指數判斷買賣時機/using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md",
+      "artwork": "articles/2.用市場情緒綜合指數判斷買賣時機/image-cover.png"
     },
     {
       "name": "article-2",
@@ -292,13 +434,63 @@
       "artwork": "articles/2.用市場情緒綜合指數判斷買賣時機/image-cover.png"
     },
     {
+      "name": "article-2",
+      "lang": "zh-CN",
+      "title": "如何用 SIO 恐惧贪婪指数判断买卖时机",
+      "category": "工具教学",
+      "date": "2026-03-08",
+      "source": "articles/2.用市場情緒綜合指數判斷買賣時機/article-2.zh-CN.ini.md"
+    },
+    {
+      "name": "article-2",
+      "lang": "ko-KR",
+      "title": "SIO 공포·탐욕 지수로 매수·매도 시점 판단하기",
+      "category": "도구 사용 가이드",
+      "date": "2026-03-08",
+      "source": "articles/2.用市場情緒綜合指數判斷買賣時機/article-2.ko-KR.ini.md"
+    },
+    {
+      "name": "article-4",
+      "lang": "en",
+      "title": "Should You Buy When LOHAS Five-Line Shows \"Extreme Fear\"? 11.6 Million Daily Bars",
+      "category": "Tool Guides",
+      "date": "2026-08-30",
+      "source": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md",
+      "artwork": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/image-cover.png"
+    },
+    {
       "name": "article-4",
       "lang": "zh-TW",
-      "title": "樂活五線譜看到「極度恐懼」該不該買？1155 萬筆日線的答案",
+      "title": "樂活五線譜看到「極度恐懼」該不該買？1,156 萬筆日線的答案",
       "category": "工具教學",
       "date": "2026-08-30",
       "source": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/樂活五線譜1155萬筆台美股資料實測結果分析.zh-TW.ini.md",
       "artwork": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/image-cover.png"
+    },
+    {
+      "name": "article-4",
+      "lang": "zh-CN",
+      "title": "乐活五线谱出现「极度恐惧」时该不该买？1,156 万笔日线数据给出答案",
+      "category": "工具教学",
+      "date": "2026-08-30",
+      "source": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/article-4.zh-CN.ini.md"
+    },
+    {
+      "name": "article-4",
+      "lang": "ko-KR",
+      "title": "LOHAS 5선 차트의 ‘극도의 공포’는 매수 기회일까? 1,156만 건의 일봉 데이터 분석",
+      "category": "도구 사용 가이드",
+      "date": "2026-08-30",
+      "source": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/article-4.ko-KR.ini.md"
+    },
+    {
+      "name": "article-5",
+      "lang": "en",
+      "title": "Market Momentum Dashboard: Find Strong ETFs and Stocks",
+      "category": "Tool Guides",
+      "date": "2026-09-30",
+      "source": "articles/5.市場動能儀表板使用指南/Market Momentum Dashboard Guide.en.ini.md",
+      "artwork": "articles/5.市場動能儀表板使用指南/image-cover.svg"
     },
     {
       "name": "article-5",
@@ -308,6 +500,22 @@
       "date": "2026-09-30",
       "source": "articles/5.市場動能儀表板使用指南/市場動能儀表板使用指南.zh-TW.ini.md",
       "artwork": "articles/5.市場動能儀表板使用指南/image-cover.svg"
+    },
+    {
+      "name": "article-5",
+      "lang": "zh-CN",
+      "title": "市场动能仪表板使用指南：从强势板块筛选 ETF 和个股",
+      "category": "工具教学",
+      "date": "2026-09-30",
+      "source": "articles/5.市場動能儀表板使用指南/article-5.zh-CN.ini.md"
+    },
+    {
+      "name": "article-5",
+      "lang": "ko-KR",
+      "title": "시장 모멘텀 대시보드 사용 가이드: 강세 ETF와 주식 찾기",
+      "category": "도구 사용 가이드",
+      "date": "2026-09-30",
+      "source": "articles/5.市場動能儀表板使用指南/article-5.ko-KR.ini.md"
     }
   ]
 }

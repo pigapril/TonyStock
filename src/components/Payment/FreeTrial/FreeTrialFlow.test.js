@@ -10,6 +10,7 @@ const mockRefreshSubscriptionHistory = jest.fn();
 const mockCheckAuthStatus = jest.fn();
 const mockNavigate = jest.fn();
 let mockLocation = { search: '' };
+let mockLang = 'zh-TW';
 
 jest.mock('../../../services/freeTrialService', () => ({
   startFreeTrial: (...args) => mockStartFreeTrial(...args)
@@ -26,10 +27,10 @@ jest.mock('../../Auth/useAuth', () => ({
 jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
   useLocation: () => mockLocation,
-  useParams: () => ({ lang: 'zh-TW' })
+  useParams: () => ({ lang: mockLang })
 }));
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (key) => key, i18n: { language: 'zh-TW' } })
+  useTranslation: () => ({ t: (key) => key, i18n: { language: mockLang } })
 }));
 jest.mock('../../../utils/productAnalytics', () => ({ trackProductEvent: jest.fn() }));
 
@@ -37,6 +38,7 @@ describe('免綁卡試用頁', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockLocation = { search: '' };
+    mockLang = 'zh-TW';
     mockStartFreeTrial.mockResolvedValue({ subscriptionId: 'trial_1' });
     mockCheckAuthStatus.mockResolvedValue(undefined);
     mockRefreshUserPlan.mockResolvedValue(undefined);
@@ -55,13 +57,23 @@ describe('免綁卡試用頁', () => {
     expect(celebration).toHaveAttribute('aria-hidden', 'true');
     expect(celebration.querySelectorAll('.card-trial__successSpark')).toHaveLength(6);
     expect(mockStartFreeTrial).toHaveBeenCalledTimes(1);
-    expect(mockStartFreeTrial).toHaveBeenCalledWith('zh-TW');
+    expect(mockStartFreeTrial).toHaveBeenCalledWith('zh-TW', 'zh-TW');
     expect(mockCheckAuthStatus).toHaveBeenCalledTimes(1);
     expect(mockRefreshUserPlan).toHaveBeenCalledTimes(1);
     expect(mockRefreshSubscriptionHistory).toHaveBeenCalledTimes(1);
     expect(trackProductEvent).toHaveBeenCalledWith('free_trial_page_viewed', expect.any(Object));
     expect(trackProductEvent).toHaveBeenCalledWith('free_trial_start_clicked', expect.any(Object));
     expect(trackProductEvent).toHaveBeenCalledWith('free_trial_started', expect.any(Object));
+  });
+
+  it('简中介面啟用免卡試用時，後端通知語系使用英文，導頁仍保留簡中', async () => {
+    mockLang = 'zh-CN';
+    render(<FreeTrialFlow />);
+    await userEvent.click(screen.getByRole('button', { name: 'freeTrial.start' }));
+    await waitFor(() => expect(screen.getByText('freeTrial.successBody')).toBeInTheDocument());
+    expect(mockStartFreeTrial).toHaveBeenCalledWith('en', 'zh-CN');
+    await userEvent.click(screen.getByRole('button', { name: 'freeTrial.analyzeStock' }));
+    expect(mockNavigate).toHaveBeenCalledWith('/zh-CN/priceanalysis', { state: { resumeAfterTrial: true } });
   });
 
   it('資格已用過時顯示明確訊息', async () => {

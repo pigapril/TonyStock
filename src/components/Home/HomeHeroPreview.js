@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import MarketSentimentGauge from '../MarketSentimentIndex/MarketSentimentGauge';
+import { getIntlLocale } from '../../locales/localeConfig';
 function formatHeroMomentDate(value, locale) {
   if (!value) {
     return { monthDay: 'N/A', year: '' };
@@ -12,7 +13,7 @@ function formatHeroMomentDate(value, locale) {
     return { monthDay: 'N/A', year: '' };
   }
 
-  if (locale === 'zh-TW') {
+  if (locale === 'zh-TW' || locale === 'zh-CN') {
     return {
       monthDay: `${date.getMonth() + 1}月${date.getDate()}日`,
       year: String(date.getFullYear())
@@ -41,7 +42,7 @@ function formatHeroMomentDate(value, locale) {
 export default function HomeHeroPreview({ isLoading, sentimentData, activeMoment }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
-  const locale = lang === 'zh' ? 'zh-TW' : lang;
+  const locale = getIntlLocale(lang);
   const translatedEvents = t('home.hero.moments.events', { returnObjects: true });
   const events = typeof translatedEvents === 'object' && translatedEvents !== null
     ? { ...translatedEvents } : {};
@@ -61,7 +62,7 @@ export default function HomeHeroPreview({ isLoading, sentimentData, activeMoment
     <div className="home-marketPreviewShell__headlineMeta" aria-hidden={!activeMoment}
       style={{ visibility: activeMoment ? 'visible' : 'hidden' }}>
       <span className="home-marketPreviewShell__headlineEyebrow">
-        {lang.startsWith('zh') ? '歷史上的極端情緒' : 'Historic extreme sentiment'}
+        {t('home.hero.historyMomentLabel')}
       </span>
       <span className="home-marketPreviewShell__headlineDate">
         <span className="home-marketMomentPanel__dateSegment home-marketMomentPanel__dateSegment--year">{dateParts.year || '----'}</span>

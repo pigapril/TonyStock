@@ -15,6 +15,7 @@ import subscriptionService from '../../../api/subscriptionService';
 import { fetchFreeTrialEligibility } from '../../../services/freeTrialService';
 import { getAnalysisReturnPath, withAnalysisReturnPath } from '../../../utils/trialNavigation';
 import { Dialog } from '../../Common/Dialog/Dialog';
+import { buildSeoTitle, normalizeMetaDescription } from '../../../utils/socialMetadata';
 import './SubscriptionPlansPage.css';
 
 export const SubscriptionPlansPage = () => {
@@ -46,7 +47,8 @@ export const SubscriptionPlansPage = () => {
   const [freeTrialEligibilityAccountKey, setFreeTrialEligibilityAccountKey] = useState(null);
 
   const canEnterFreeTrial = canSeeFreeTrial(user?.email);
-  const language = i18n.language?.startsWith('en') ? 'en' : 'zh-TW';
+  // This value is used for client-side navigation, not an API locale.
+  const language = i18n.language;
   const trialAccountKey = user?.id || user?.userId || user?.email || null;
 
   useEffect(() => {
@@ -361,8 +363,8 @@ export const SubscriptionPlansPage = () => {
           Helmet 注入 title/description，不含 canonical/hreflang（此頁不在
           sitemap 內，刻意不產生 SEO 殼）。 */}
       <Helmet>
-        <title>{t('subscription.pageTitle')} | {t('pageContainer.defaultTitle')}</title>
-        <meta name="description" content={t('subscription.pageDescription')} />
+        <title>{buildSeoTitle(t('subscription.pageTitle'), t('pageContainer.defaultTitle'))}</title>
+        <meta name="description" content={normalizeMetaDescription(t('subscription.pageDescription'))} />
       </Helmet>
       <div className="subscription-plans-container">
         {/* Upgrade Notification - 顯示在頁面頂部 */}

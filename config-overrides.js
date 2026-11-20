@@ -49,7 +49,7 @@ class AsyncCssHtmlPlugin {
   }
 }
 
-module.exports = override(
+const webpack = override(
   (config, env) => {
     config.resolve = config.resolve || {};
     config.resolve.alias = {
@@ -70,3 +70,18 @@ module.exports = override(
     return config;
   }
 );
+
+module.exports = {
+  webpack,
+  jest: (config) => {
+    // Axios 1.7+ exposes an ESM entry point. Let babel transform only Axios
+    // JavaScript while preserving CRA's default treatment of all other JS and
+    // CSS modules. A broad `node_modules/(?!axios/)` rule also excludes package
+    // CSS files from CRA's stylesheet transformer and breaks react-datepicker.
+    config.transformIgnorePatterns = [
+      '[/\\\\]node_modules[/\\\\](?!axios[/\\\\]).+\\.(js|jsx|mjs|cjs|ts|tsx)$',
+      '^.+\\.module\\.(css|sass|scss)$'
+    ];
+    return config;
+  }
+};

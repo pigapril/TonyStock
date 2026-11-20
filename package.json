@@ -47,9 +47,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "prebuild": "npm install --legacy-peer-deps && npm install @babel/plugin-proposal-private-property-in-object --save",
     "build": "node scripts/generate-locale-resources.js && SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false ESLINT_NO_DEV_ERRORS=true react-app-rewired build",
-    "postbuild": "node scripts/generate-seo-shells.js",
+    "postbuild": "node scripts/verify-article-locales.js && node scripts/add-ko-sitemap-locale.js && node scripts/generate-seo-shells.js",
     "build:staging": "node scripts/generate-locale-resources.js && REACT_APP_ENVIRONMENT=staging SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false ESLINT_NO_DEV_ERRORS=true react-app-rewired build",
     "build:original": "node scripts/generate-locale-resources.js && SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false react-scripts build",
     "perf:budget": "node ./scripts/check-performance-budget.js",
@@ -58,7 +57,8 @@
     "test": "react-app-rewired test",
     "test:ci": "node ./scripts/run-ci-tests.js",
     "eject": "react-scripts eject",
-    "locales:check": "node scripts/generate-locale-resources.js --check"
+    "locales:check": "node scripts/generate-locale-resources.js --check",
+    "articles:check": "node scripts/verify-article-locales.js"
   },
   "eslintConfig": {
     "extends": [

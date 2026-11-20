@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dialog } from '../Common/Dialog/Dialog';
 import { useTranslation } from 'react-i18next';
+import { getIntlLocale } from '../../locales/localeConfig';
 
 function NewsDialog({ news, open, onClose }) {
     const { t, i18n } = useTranslation();
@@ -8,7 +9,7 @@ function NewsDialog({ news, open, onClose }) {
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString(i18n.language.startsWith('zh') ? 'zh-TW' : 'en-US', {
+        return date.toLocaleDateString(getIntlLocale(i18n.language), {
             year: 'numeric',
             month: 'long',
             day: 'numeric',

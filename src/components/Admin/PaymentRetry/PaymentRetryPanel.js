@@ -14,9 +14,10 @@ import { useTranslation } from 'react-i18next';
 import LoadingSpinner from '../../Common/LoadingSpinner';
 import paymentRetryService from '../../../services/paymentRetryService';
 import './PaymentRetryPanel.css';
+import { getIntlLocale } from '../../../locales/localeConfig';
 
 const PaymentRetryPanel = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [activeSection, setActiveSection] = useState('overview');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -193,7 +194,7 @@ const PaymentRetryPanel = () => {
                         </div>
                         <div className="health-item">
                             <label>{t('admin.paymentRetry.overview.lastCheck')}:</label>
-                            <span>{healthStatus.data?.timestamp ? new Date(healthStatus.data.timestamp).toLocaleString() : 'N/A'}</span>
+                            <span>{healthStatus.data?.timestamp ? new Date(healthStatus.data.timestamp).toLocaleString(getIntlLocale(i18n.language)) : 'N/A'}</span>
                         </div>
                     </div>
                 </div>
@@ -271,7 +272,7 @@ const PaymentRetryPanel = () => {
                                     <td>{retry.merchantTradeNo}</td>
                                     <td>{retry.errorType}</td>
                                     <td>{retry.retryCount}</td>
-                                    <td>{new Date(retry.retryAt).toLocaleString()}</td>
+                                    <td>{new Date(retry.retryAt).toLocaleString(getIntlLocale(i18n.language))}</td>
                                     <td>
                                         <button
                                             className="btn btn-sm btn-primary"
@@ -309,11 +310,11 @@ const PaymentRetryPanel = () => {
                             </div>
                             <div className="status-item">
                                 <label>{t('admin.paymentRetry.job.lastRun')}:</label>
-                                <span>{jobStatus.lastRun ? new Date(jobStatus.lastRun).toLocaleString() : t('admin.paymentRetry.job.never')}</span>
+                                <span>{jobStatus.lastRun ? new Date(jobStatus.lastRun).toLocaleString(getIntlLocale(i18n.language)) : t('admin.paymentRetry.job.never')}</span>
                             </div>
                             <div className="status-item">
                                 <label>{t('admin.paymentRetry.job.nextRun')}:</label>
-                                <span>{jobStatus.nextRun ? new Date(jobStatus.nextRun).toLocaleString() : t('admin.paymentRetry.job.notScheduled')}</span>
+                                <span>{jobStatus.nextRun ? new Date(jobStatus.nextRun).toLocaleString(getIntlLocale(i18n.language)) : t('admin.paymentRetry.job.notScheduled')}</span>
                             </div>
                         </div>
                     )}

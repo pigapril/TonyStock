@@ -4,6 +4,7 @@ import { createInstance } from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 import en from '../../../locales/resources/en/common.json';
 import zhTW from '../../../locales/resources/zh-TW/common.json';
+import zhCN from '../../../locales/resources/zh-CN/common.json';
 import { Analytics } from '../../../utils/analytics';
 import PaymentPage from '../../../pages/PaymentPage';
 import paymentService from '../../../services/paymentService';
@@ -23,7 +24,11 @@ jest.mock('../../../utils/analytics', () => ({ Analytics: { track: jest.fn() } }
 jest.mock('../../../api/subscriptionService', () => ({ getAvailablePlans: () => [{ id: 'pro', name: 'Pro' }] }));
 jest.mock('../../../services/paymentService', () => ({ getPlanPricingFromAPI: jest.fn(), createOrder: jest.fn() }));
 
-describe.each([['en', 'monthly'], ['en', 'yearly'], ['zh-TW', 'monthly'], ['zh-TW', 'yearly']])('checkout flow %s %s', (lang, period) => {
+describe.each([
+  ['en', 'monthly', 'en'], ['en', 'yearly', 'en'],
+  ['zh-TW', 'monthly', 'zh-TW'], ['zh-TW', 'yearly', 'zh-TW'],
+  ['zh-CN', 'monthly', 'en'], ['zh-CN', 'yearly', 'en']
+])('checkout flow %s %s', (lang, period, paymentServiceLanguage) => {
   afterEach(() => jest.restoreAllMocks());
 
   it('preserves locale, scrolls to each next step and shows the authoritative order amount', async () => {
@@ -34,7 +39,11 @@ describe.each([['en', 'monthly'], ['en', 'yearly'], ['zh-TW', 'monthly'], ['zh-T
     paymentService.getPlanPricingFromAPI.mockResolvedValue({ pro: { monthly: { price: 199 }, yearly: { price: 1990 } } });
     paymentService.createOrder.mockResolvedValue({ orderId: 'order-test', amount: 179, currency: 'TWD', formData: {}, paymentUrl: 'https://example.test' });
     const i18n = createInstance();
-    i18n.init({ lng: lang, resources: { en: { translation: en }, 'zh-TW': { translation: zhTW } }, initImmediate: false, interpolation: { escapeValue: false } });
+    i18n.init({ lng: lang, resources: {
+      en: { translation: en },
+      'zh-TW': { translation: zhTW },
+      'zh-CN': { translation: zhCN }
+    }, initImmediate: false, interpolation: { escapeValue: false } });
     const { container } = render(<I18nextProvider i18n={i18n}><PaymentPage /></I18nextProvider>);
     await waitFor(() => expect(container.querySelector('.payment-page__loading')).not.toBeInTheDocument());
     expect(screen.getAllByAltText('Mastercard')).toHaveLength(1);
@@ -48,7 +57,7 @@ describe.each([['en', 'monthly'], ['en', 'yearly'], ['zh-TW', 'monthly'], ['zh-T
     await screen.findByRole('button', { name: i18n.t('payment.form.proceedToPayment') });
     await waitFor(() => expect(scrollTo).toHaveBeenCalledTimes(2));
     expect(scrollTo).toHaveBeenLastCalledWith(0, 0);
-    expect(paymentService.createOrder).toHaveBeenCalledWith(expect.objectContaining({ language: lang, billingPeriod: period }));
+    expect(paymentService.createOrder).toHaveBeenCalledWith(expect.objectContaining({ language: paymentServiceLanguage, billingPeriod: period }));
     expect(window.dataLayer.filter(entry => entry.event === 'begin_checkout').slice(-1)[0]).toMatchObject({ ecommerce: { currency: 'TWD', value: 179 } });
     expect(Analytics.track).not.toHaveBeenCalledWith('payment_success', expect.anything());
     expect(container.querySelector('.payment-page__order-total')).toHaveTextContent('TWD 179');

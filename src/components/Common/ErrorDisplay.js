@@ -10,6 +10,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import paymentErrorHandler from '../../utils/paymentErrorHandler';
+import { getIntlLocale } from '../../locales/localeConfig';
 
 // Simple SVG icons to replace heroicons
 const ExclamationTriangleIcon = ({ className }) => (
@@ -59,7 +60,7 @@ const ErrorDisplay = ({
     className = '',
     ...props
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [isRetrying, setIsRetrying] = useState(false);
     const [retryCountdown, setRetryCountdown] = useState(0);
     const [showDetailedInfo, setShowDetailedInfo] = useState(false);
@@ -245,7 +246,7 @@ const ErrorDisplay = ({
                     </summary>
                     <div className="mt-2 space-y-1">
                         <div><strong>{t('common.errorCode')}:</strong> {error.code}</div>
-                        <div><strong>{t('common.timestamp')}:</strong> {new Date(error.timestamp).toLocaleString()}</div>
+                        <div><strong>{t('common.timestamp')}:</strong> {new Date(error.timestamp).toLocaleString(getIntlLocale(i18n.language))}</div>
                         <div><strong>{t('common.context')}:</strong> {error.context}</div>
                         {error.originalMessage && (
                             <div><strong>{t('common.originalMessage')}:</strong> {error.originalMessage}</div>

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { createCardUpdateBind, fetchPaymentMethod, startCardUpdate } from '../../../services/cardUpdateService';
 import { BIND_CARD_CONTAINER_ID } from '../../../utils/ecpayBindCardSdk';
 import { BINDING_PHASE, localeOf, useCardBinding } from '../CardTrial/useCardBinding';
+import { getIntlLocale } from '../../../locales/localeConfig';
 import '../CardTrial/CardTrial.css';
 
 // 送到後端落地的版本號，消保法舉證用。文案改動要一起改這個字串。
@@ -21,8 +22,8 @@ const CARD_UPDATE_BINDING = {
         CARD_UPDATE_CHARGE_PENDING: CHARGE_PENDING_KEY
     },
     logMessage: 'Card update binding failed:',
-    pendingResultUrl: ({ locale, disclosedGrace }) => (
-        `/${locale}/payment/card-update/result?status=pending&charging=${disclosedGrace ? 1 : 0}`
+    pendingResultUrl: ({ returnLocale, locale, disclosedGrace }) => (
+        `/${returnLocale || locale}/payment/card-update/result?status=pending&charging=${disclosedGrace ? 1 : 0}`
     )
 };
 
@@ -30,13 +31,15 @@ const METHOD_LOADING = { status: 'loading' };
 
 // production VM 是 Etc/UTC，不指定時區會差一天。
 const taipeiDateText = (locale, date) => new Intl.DateTimeFormat(
-    locale === 'en' ? 'en-US' : 'zh-TW',
+    getIntlLocale(locale),
     { timeZone: 'Asia/Taipei', year: 'numeric', month: 'long', day: 'numeric' }
 ).format(new Date(date));
 
-// zh-TW 的句子自帶「元」、不加千分位；en 的句子自帶 NT$。
+// Chinese copy supplies its own currency unit. Other locales use native number grouping.
 const amountText = (locale, amount) => (
-    locale === 'en' ? new Intl.NumberFormat('en-US').format(amount) : String(amount)
+    ['zh-TW', 'zh-CN'].includes(locale)
+        ? String(amount)
+        : new Intl.NumberFormat(getIntlLocale(locale)).format(amount)
 );
 
 const CardUpdateFlow = () => {
@@ -57,7 +60,7 @@ const CardUpdateFlow = () => {
         handleStart,
         handleSubmit,
         handleRestart
-    } = useCardBinding(CARD_UPDATE_BINDING, locale, { disclosedGrace });
+    } = useCardBinding(CARD_UPDATE_BINDING, locale, { disclosedGrace, returnLocale: language });
 
     // 寬限期要多揭露立即扣款的金額與日期。查不到付款方式時不能退回平常版本，
     // 否則寬限期的人會在沒看到扣款揭露的情況下被扣款。
@@ -92,7 +95,7 @@ const CardUpdateFlow = () => {
     }
 
     const { method } = load;
-    const amount = amountText(locale, method.amountDue);
+    const amount = amountText(language, method.amountDue);
 
     // 上一筆扣款還在向綠界確認：這時換卡不會被扣款，確認失敗後又會要求換卡，所以先不給表單。
     if (method.chargePending) {
@@ -118,7 +121,7 @@ const CardUpdateFlow = () => {
                             <li>{t('cardUpdate.disclosure.futureCharges')}</li>
                             {disclosedGrace && <li>{t('cardUpdate.disclosure.chargeNow', { amount })}</li>}
                             {disclosedGrace && (
-                                <li>{t('cardUpdate.disclosure.nextCharge', { date: taipeiDateText(locale, method.nextChargeAt) })}</li>
+                                <li>{t('cardUpdate.disclosure.nextCharge', { date: taipeiDateText(language, method.nextChargeAt) })}</li>
                             )}
                         </ul>
                     </section>
@@ -140,7 +143,7 @@ const CardUpdateFlow = () => {
                     <button
                         type="button"
                         className="card-trial__primary"
-                        onClick={() => handleStart({ termsVersion: CARD_UPDATE_TERMS_VERSION, locale })}
+                        onClick={() => handleStart({ termsVersion: CARD_UPDATE_TERMS_VERSION, locale, returnLocale: language })}
                         disabled={!agreed}
                     >
                         {disclosedGrace ? t('cardUpdate.startAndPay', { amount }) : t('cardUpdate.start')}

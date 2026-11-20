@@ -31,7 +31,8 @@ export const RedemptionConfirmationModal = ({
     requiresPaymentMethod = false,
     requiresTermsAcceptance = true
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isKorean = i18n.language === 'ko-KR';
     const { lang } = useParams();
     const { formatters, formatBenefitPreview } = useRedemptionFormatting();
     const { user } = useAuth();
@@ -235,14 +236,14 @@ export const RedemptionConfirmationModal = ({
                                 disabled={isProcessing || isRedeeming}
                             />
                             <span className="redemption-confirmation-checkbox-text">
-                                我已閱讀並同意
+                                {isKorean ? '읽고 동의했습니다' : '我已閱讀並同意'}
                                 <a 
                                     href={`/${lang}/legal`} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="redemption-confirmation-terms-link"
                                 >
-                                    服務條款和隱私政策
+                                    {isKorean ? '서비스 이용약관 및 개인정보 처리방침' : '服務條款和隱私政策'}
                                 </a>
                             </span>
                         </label>

@@ -25,6 +25,8 @@ import { generateHistoryLegendLabels } from './historyChartPlugins';
 import { US_MARKET_SENTIMENT_CONFIG } from './marketConfigs';
 import { adaptDetailPayload, adaptHistoryPayload, adaptSummaryPayload } from './sentimentAdapters';
 import { selectHistoricalLowPoints } from './historicalLowPointUtils';
+import { getIntlLocale } from '../../locales/localeConfig';
+import { getMarketSentimentUiCopy, resolveMarketLocaleText } from './marketLocaleCopy';
 
 const MarketSentimentDescriptionSection = lazy(() => import('./MarketSentimentDescriptionSection'));
 const DeferredHistoryWorkspace = lazy(() => import('./DeferredHistoryWorkspace'));
@@ -46,7 +48,7 @@ const HeroReferenceStrip = React.memo(function HeroReferenceStrip({
       <span className="panel-reference-label">
         {isRestrictedPreview
           ? t('marketSentiment.dataLimitation.historicalSnapshotLabel', { date: formattedRestrictionCutoffDate })
-          : (currentLang === 'zh-TW' ? '近期參考' : 'Recent Reference')}
+          : getMarketSentimentUiCopy('recentReference', currentLang)}
       </span>
       <div className="panel-comparison-strip">
         {comparisonSnapshots.previousDay && (
@@ -307,8 +309,9 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   const seoOgImage = socialImagePath(pageRoutePath, currentLang);
   const faqKeyPrefix = seoConfig.faqKeyPrefix || 'marketSentiment.enhancedDescription.content.faq';
   const benchmarkSeriesLabel = marketConfig.benchmarkAxisLabel
-    ? (marketConfig.benchmarkAxisLabel[currentLang] || marketConfig.benchmarkAxisLabel.en)
+    ? resolveMarketLocaleText(marketConfig.benchmarkAxisLabel, currentLang)
     : t('marketSentiment.chart.spyPriceLabel');
+  const historicalFearLowLabel = getMarketSentimentUiCopy('historicalFearLows', currentLang);
   const isVisibleIndicator = useCallback((indicator) => {
     if (!indicator) {
       return false;
@@ -324,8 +327,15 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   const effectiveUserPlan = isTemporaryFreeMode ? 'pro' : userPlan;
   const isProUser = effectiveUserPlan === 'pro';
   const isRestrictedPreview = Boolean(sentimentData?.isRestricted);
+  // Show the free-trial CTA to signed-in users only after eligibility has been
+  // confirmed for this exact account. While the check is pending, showing
+  // "Try Pro free" would promise a destination that still routes to plans.
   const showFreeTrialCta = !authLoading && (
-    !user || !checkedTrialAccount || Boolean(trialAccountKey && eligibleTrialAccount === trialAccountKey)
+    !user || Boolean(
+      trialAccountKey
+      && checkedTrialAccount === trialAccountKey
+      && eligibleTrialAccount === trialAccountKey
+    )
   );
 
   // 新增滑桿相關狀態
@@ -375,14 +385,6 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
       setIsMobileIndicatorSheetOpen(false);
     }
   }, [isMobileViewport]);
-
-  useEffect(() => {
-    if (isMobileViewport || !selectedIndicatorKey || isIndicatorWorkspaceActivated) {
-      return;
-    }
-
-    setIsIndicatorWorkspaceActivated(true);
-  }, [isIndicatorWorkspaceActivated, isMobileViewport, selectedIndicatorKey]);
 
   useEffect(() => {
     if (isIndicatorWorkspaceActivated) {
@@ -743,7 +745,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
       return '';
     }
 
-    return restrictionCutoffDate.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US', {
+    return restrictionCutoffDate.toLocaleDateString(getIntlLocale(currentLang), {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
@@ -782,9 +784,9 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
     return selectHistoricalLowPoints(historicalData, (item) => item.compositeScore)
       .map((item) => ({
         date: item.date,
-        label: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US', { year: 'numeric', month: 'short' }),
+        label: item.date.toLocaleDateString(getIntlLocale(currentLang), { year: 'numeric', month: 'short' }),
         value: Math.round(item.score),
-        meta: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US')
+        meta: item.date.toLocaleDateString(getIntlLocale(currentLang))
       }));
   }, [currentLang, historicalData]);
 
@@ -857,7 +859,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
         pointRadius: 0,
       }] : []),
       {
-        label: currentLang === 'zh-TW' ? '過往極端恐懼低點' : 'Past extreme fear lows',
+        label: historicalFearLowLabel,
         yAxisID: 'left-axis',
         pulseMarker: true,
         order: 10,
@@ -1076,7 +1078,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
             if (label) {
               label += ': ';
             }
-            if (tooltipItem.dataset.label === (currentLang === 'zh-TW' ? '過往極端恐懼低點' : 'Past extreme fear lows')) {
+            if (tooltipItem.dataset.label === historicalFearLowLabel) {
               const rawPoint = tooltipItem.raw || {};
               return `${label}${rawPoint.meta || ''} (${formatPrice(tooltipItem.parsed.y)})`;
             }
@@ -1307,7 +1309,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
 
   const getIndicatorLabel = useCallback((key) => {
     return indicatorsData[key]?.label || t(INDICATOR_TRANSLATION_KEY_MAP[key] || key);
-  }, [indicatorsData, t]);
+  }, [currentLang, indicatorsData, t]);
 
   const getIndicatorDetailSummary = useCallback((key) => {
     if (indicatorsData[key]?.detailSummary) {
@@ -1315,9 +1317,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
     }
     const translationKey = INDICATOR_TRANSLATION_KEY_MAP[key];
     if (!translationKey) {
-      return currentLang === 'zh-TW'
-        ? '這個指標提供另一個觀察市場情緒的角度，重點不是單看高低，而是看它是否已經反映出市場過度一致的樂觀或悲觀。'
-        : 'This indicator adds another way to read market sentiment. The point is not just the level itself, but whether it shows the crowd has become too one-sided in optimism or fear.';
+      return getMarketSentimentUiCopy('genericIndicatorDetailSummary', currentLang);
     }
     const descriptionKey = translationKey.replace(/^indicators\./, '');
     return t(`marketSentiment.descriptions.${descriptionKey}.detailDescription`);
@@ -1611,7 +1611,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                 <h1 className="panel-title">
                   <span className="panel-title-brand">Sentiment Inside Out (SIO)</span>
                   <span className="panel-title-index">
-                    {marketConfig.titleIndex[currentLang] || marketConfig.titleIndex.en}
+                    {resolveMarketLocaleText(marketConfig.titleIndex, currentLang)}
                   </span>
                 </h1>
                 <p className="panel-description">{seoSubtitle}</p>
@@ -1621,7 +1621,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                 className="hero-workspace__tabs"
                 data-active-view={heroView}
                 role="tablist"
-                aria-label={currentLang === 'zh-TW' ? '綜合情緒視角切換' : 'Composite sentiment views'}
+                aria-label={getMarketSentimentUiCopy('sentimentViewsAria', currentLang)}
               >
                 <button
                   className={`hero-workspace__tab ${heroView === 'current' ? 'active' : ''}`}
@@ -1629,7 +1629,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                   role="tab"
                   aria-selected={heroView === 'current'}
                 >
-                  {currentLang === 'zh-TW' ? '最新市場情緒' : 'Latest market sentiment'}
+                  {getMarketSentimentUiCopy('latestMarketSentiment', currentLang)}
                 </button>
                 <button
                   className={`hero-workspace__tab ${heroView === 'history' ? 'active' : ''}`}
@@ -1640,7 +1640,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                   role="tab"
                   aria-selected={heroView === 'history'}
                 >
-                  {currentLang === 'zh-TW' ? '歷史趨勢' : 'History'}
+                  {getMarketSentimentUiCopy('history', currentLang)}
                 </button>
               </div>
 
@@ -1679,9 +1679,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                           ? (marketConfig.snapshotGaugeHeadlineFormatter
                             ? marketConfig.snapshotGaugeHeadlineFormatter({ currentLang, formattedRestrictionCutoffDate })
                             : t(marketConfig.snapshotGaugeHeadlineKey || 'marketSentiment.dataLimitation.snapshotGaugeHeadline', { date: formattedRestrictionCutoffDate }))
-                          : (currentLang === 'zh-TW'
-                            ? marketConfig.currentGaugeHeadlineZh
-                            : (marketConfig.currentGaugeHeadlineEn || t('marketSentiment.dataLimitation.currentGaugeHeadline')))}
+                          : resolveMarketLocaleText(marketConfig.currentGaugeHeadline, currentLang)}
                         supplementaryContent={gaugeSupplementaryContent}
                       />
                     </div>
@@ -1848,7 +1846,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                                 detailQueryParam={marketConfig.detailQueryParam}
                                 detailIncludesRange={marketConfig.detailIncludesRange}
                                 benchmarkSeriesLabel={benchmarkSeriesLabel}
-                                benchmarkAxisLabel={marketConfig.benchmarkAxisLabel?.[currentLang] || marketConfig.benchmarkAxisLabel?.en || null}
+                    benchmarkAxisLabel={marketConfig.benchmarkAxisLabel ? resolveMarketLocaleText(marketConfig.benchmarkAxisLabel, currentLang) : null}
                                 isRestrictedPreview={isRestrictedPreview}
                                 restrictionCutoffDate={sentimentData?.restrictionCutoffDate}
                               />
@@ -1892,7 +1890,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                     type="button"
                     className="indicator-mobile-sheet__close"
                     onClick={() => setIsMobileIndicatorSheetOpen(false)}
-                    aria-label={currentLang === 'zh-TW' ? '關閉指標詳情' : 'Close indicator detail'}
+                    aria-label={getMarketSentimentUiCopy('closeIndicatorDetail', currentLang)}
                   >
                     ×
                   </button>
@@ -1920,7 +1918,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
                       detailQueryParam={marketConfig.detailQueryParam}
                       detailIncludesRange={marketConfig.detailIncludesRange}
                       benchmarkSeriesLabel={benchmarkSeriesLabel}
-                      benchmarkAxisLabel={marketConfig.benchmarkAxisLabel?.[currentLang] || marketConfig.benchmarkAxisLabel?.en || null}
+                      benchmarkAxisLabel={marketConfig.benchmarkAxisLabel ? resolveMarketLocaleText(marketConfig.benchmarkAxisLabel, currentLang) : null}
                       isRestrictedPreview={isRestrictedPreview}
                       restrictionCutoffDate={sentimentData?.restrictionCutoffDate}
                     />

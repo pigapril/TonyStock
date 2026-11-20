@@ -15,9 +15,9 @@ const FloatingSponsorButton = () => {
 
   return (
     <a href={`/${lang}/sponsor-us`} className="floating-sponsor-button">
-      <img src={sponsorIcon} alt="贊助我們" />
+      <img src={sponsorIcon} alt={currentLanguage === 'ko-KR' ? '후원하기' : '贊助我們'} />
     </a>
   );
 };
 
-export default FloatingSponsorButton; 
+export default FloatingSponsorButton;

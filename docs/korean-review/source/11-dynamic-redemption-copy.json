@@ -1,0 +1,200 @@
+[
+  {
+    "id": "relativeTime.justNow",
+    "sourceZhTW": "剛剛",
+    "sourceZhCN": "刚刚",
+    "sourceEn": "just now",
+    "context": "Fallback relative time formatter when date-fns locale data is unavailable.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "relativeTime.hoursAgo",
+    "sourceZhTW": "{{hours}} 小時前",
+    "sourceZhCN": "{{hours}} 小时前",
+    "sourceEn": "{{hours}} hours ago",
+    "context": "Fallback relative time formatter; preserve {{hours}}.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "timeUnit.day",
+    "sourceZhTW": "天",
+    "sourceZhCN": "天",
+    "sourceEn": "day / days",
+    "context": "Pluralized time unit; Korean uses the invariant unit 일.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "timeUnit.month",
+    "sourceZhTW": "個月",
+    "sourceZhCN": "个月",
+    "sourceEn": "month / months",
+    "context": "Pluralized time unit; Korean uses 개월.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "timeUnit.year",
+    "sourceZhTW": "年",
+    "sourceZhCN": "年",
+    "sourceEn": "year / years",
+    "context": "Pluralized time unit; Korean uses 년.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "timeExtension.description",
+    "sourceZhTW": "延長 {{duration}} {{unit}}",
+    "sourceZhCN": "延长 {{duration}} {{unit}}",
+    "sourceEn": "Extend {{duration}} {{unit}}",
+    "context": "Benefit description shown for subscription extension; keep duration and localized unit.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "discount.percentageDescription",
+    "sourceZhTW": "{{percentage}}% 折扣",
+    "sourceZhCN": "{{percentage}}% 折扣",
+    "sourceEn": "{{percentage}}% discount",
+    "context": "Discount line; preserve percentage value and % sign.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "discount.fixedDescription",
+    "sourceZhTW": "{{formattedAmount}} 折扣",
+    "sourceZhCN": "{{formattedAmount}} 折扣",
+    "sourceEn": "{{formattedAmount}} discount",
+    "context": "Fixed-amount discount line; formattedAmount already includes currency.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "benefit.discount.title",
+    "sourceZhTW": "折扣優惠",
+    "sourceZhCN": "折扣优惠",
+    "sourceEn": "Discount Applied",
+    "context": "Dynamic redemption benefit title.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "benefit.extension.title",
+    "sourceZhTW": "訂閱延長",
+    "sourceZhCN": "订阅延期",
+    "sourceEn": "Subscription Extended",
+    "context": "Dynamic redemption benefit title.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "benefit.upgrade.title",
+    "sourceZhTW": "方案升級",
+    "sourceZhCN": "套餐升级",
+    "sourceEn": "Plan Upgrade",
+    "context": "Dynamic redemption benefit title.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "benefit.upgrade.description",
+    "sourceZhTW": "升級至 {{planName}}",
+    "sourceZhCN": "升级至 {{planName}}",
+    "sourceEn": "Upgrade to {{planName}}",
+    "context": "Dynamic plan upgrade sentence; preserve planName.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "benefit.default.title",
+    "sourceZhTW": "特殊優惠",
+    "sourceZhCN": "特别优惠",
+    "sourceEn": "Special Benefits",
+    "context": "Fallback benefit title when benefit type is unknown.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "benefit.default.description",
+    "sourceZhTW": "您將獲得特殊促銷優惠",
+    "sourceZhCN": "您将获得特别促销优惠",
+    "sourceEn": "You will receive special promotional benefits",
+    "context": "Fallback benefit description when benefit type is unknown.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "benefit.default.highlight",
+    "sourceZhTW": "高級權限",
+    "sourceZhCN": "高级权限",
+    "sourceEn": "Premium Access",
+    "context": "Fallback benefit highlight; product meaning may be generic entitlement.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "countdown.daysHours",
+    "sourceZhTW": "剩餘 {{days}} 天 {{hours}} 小時",
+    "sourceZhCN": "剩余 {{days}} 天 {{hours}} 小时",
+    "sourceEn": "{{days}}d {{hours}}h remaining",
+    "context": "Countdown with days and hours; preserve both parameters.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "countdown.hoursMinutes",
+    "sourceZhTW": "剩餘 {{hours}} 小時 {{minutes}} 分鐘",
+    "sourceZhCN": "剩余 {{hours}} 小时 {{minutes}} 分钟",
+    "sourceEn": "{{hours}}h {{minutes}}m remaining",
+    "context": "Countdown with hours and minutes.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "countdown.minutes",
+    "sourceZhTW": "剩餘 {{minutes}} 分鐘",
+    "sourceZhCN": "剩余 {{minutes}} 分钟",
+    "sourceEn": "{{minutes}}m remaining",
+    "context": "Countdown with minutes.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "planName.free",
+    "sourceZhTW": "免費方案",
+    "sourceZhCN": "免费套餐",
+    "sourceEn": "Free Plan",
+    "context": "Localized plan name; preserve the Free product tier name as agreed.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "planName.pro",
+    "sourceZhTW": "Pro 方案",
+    "sourceZhCN": "Pro 套餐",
+    "sourceEn": "Pro Plan",
+    "context": "Localized plan name; preserve Pro brand/tier token.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "planName.premium",
+    "sourceZhTW": "高級方案",
+    "sourceZhCN": "高级套餐",
+    "sourceEn": "Premium Plan",
+    "context": "Localized plan name; confirm whether Premium is a live tier or legacy enum only.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "estimatedValue.prefix",
+    "sourceZhTW": "預估價值：{{formattedAmount}}",
+    "sourceZhCN": "预估价值：{{formattedAmount}}",
+    "sourceEn": "Estimated Value: {{formattedAmount}}",
+    "context": "Estimated benefit amount label.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  }
+]

@@ -22,9 +22,10 @@ import BulkOperationsModal from './BulkOperationsModal';
 import AdminOnly from '../../AdminOnly';
 import { useAdminPermissions } from '../../../hooks/useAdminPermissions';
 import { systemLogger } from '../../../utils/logger';
+import { getIntlLocale } from '../../../locales/localeConfig';
 
 const CodeManagementPanel = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { isAdmin, loading: adminLoading, checkAdminStatus } = useAdminPermissions();
     
     // State management
@@ -658,6 +659,7 @@ const CodeManagementPanel = () => {
                                     onStatusChange={(activate) => handleCodeStatusChange(code.id, activate)}
                                     onViewDetails={() => setShowCodeDetails(code)}
                                     t={t}
+                                    intlLocale={getIntlLocale(i18n.language)}
                                 />
                             ))}
                         </tbody>
@@ -735,7 +737,7 @@ const CodeManagementPanel = () => {
 /**
  * Individual code row component
  */
-const CodeRow = ({ code, selected, onSelect, onStatusChange, onViewDetails, t }) => {
+const CodeRow = ({ code, selected, onSelect, onStatusChange, onViewDetails, t, intlLocale }) => {
     const getStatusBadgeClass = (status) => {
         const baseClass = 'status-badge';
         switch (status) {
@@ -750,7 +752,7 @@ const CodeRow = ({ code, selected, onSelect, onStatusChange, onViewDetails, t })
 
     const formatDate = (date) => {
         if (!date) return '-';
-        return new Date(date).toLocaleDateString();
+        return new Date(date).toLocaleDateString(intlLocale);
     };
 
     const formatUsage = (code) => {

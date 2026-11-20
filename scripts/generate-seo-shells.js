@@ -16,19 +16,25 @@
 
 const fs = require('fs');
 const path = require('path');
+const { DEFAULT_LOCALE, LOCALE_CODES, getLocaleResourceChain } = require('../src/locales/localeConfig');
+const { resolveRequiredKeyFromChain } = require('../src/locales/localeKeyResolution');
+const ARTICLE_CATALOG = require('../src/config/articleCatalog');
 
 const ROOT = path.resolve(__dirname, '..');
 const BUILD_DIR = process.env.SEO_BUILD_DIR || path.join(ROOT, 'build');
-const { socialImagePath } = require('../src/utils/socialMetadata');
+const {
+  SITE_NAME,
+  socialImagePath,
+  buildSeoTitle,
+  normalizeMetaDescription,
+} = require('../src/utils/socialMetadata');
 const imageDimensions = require('../src/config/articleImageDimensions.json');
 const SITE_ORIGIN = (process.env.SITE_ORIGIN || 'https://sentimentinsideout.com').replace(/\/$/, '');
 
-const en = require(path.join(ROOT, 'src/locales/en/translation.json'));
-const zhTW = require(path.join(ROOT, 'src/locales/zh-TW/translation.json'));
-
-// `zh` remains a legacy runtime alias, but only en and zh-TW have distinct
-// content. /zh/* redirects to /zh-TW/* and must not get self-canonical shells.
-const STRINGS = { en, 'zh-TW': zhTW };
+const STRINGS = Object.fromEntries(LOCALE_CODES.map(locale => [
+  locale,
+  require(path.join(ROOT, `src/locales/${locale}/translation.json`)),
+]));
 
 
 // indicatorPages.js 是 ESM，這支腳本是 CommonJS，所以用最小的字串解析取出
@@ -43,7 +49,11 @@ const INDICATOR_PAGES = (() => {
   })).filter((page) => page.slug && page.i18nKey);
 })();
 
-const LANGS = ['en', 'zh-TW'];
+const LANGS = LOCALE_CODES;
+
+function readLocaleValue(lang, key) {
+  return resolveRequiredKeyFromChain(lang, key, STRINGS, getLocaleResourceChain).value;
+}
 
 // basePath '' = the language home page (self URL gets a trailing slash,
 // matching the existing sitemap.xml convention).
@@ -60,50 +70,26 @@ const ROUTES = [
   { basePath: '/market-sentiment', metaKey: 'marketSentiment' },
   { basePath: '/tw-market-sentiment', metaKey: 'marketSentiment.tw' },
   { basePath: '/momentum', metaKey: 'momentumDashboard' },
-  { basePath: '/watchlist', metaKey: 'watchlist' },
   { basePath: '/articles', metaKey: 'articles' },
-  { basePath: '/sponsor-us', metaKey: 'sponsorUs' },
+  // The sponsor page is Taiwan-specific and intentionally has no English
+  // sitemap entry (see the existing public/sitemap.xml editorial decision).
+  { basePath: '/sponsor-us', metaKey: 'sponsorUs', seoLocales: ['zh-TW'] },
   { basePath: '/about', metaKey: 'about' },
   { basePath: '/legal', metaKey: 'legal' },
 ];
 
-// Article detail shells: keep this list aligned with published article URLs in
-// sitemap.xml. Only en + zh-TW slugs are canonical URLs.
-const ARTICLE_PAIRS = [
-  {
-    originalSlug: '1.用樂活五線譜分析價格趨勢與情緒',
-    enSlug: 'analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis',
-    enFile: 'Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis.en.ini.md',
-  },
-  {
-    originalSlug: '2.用市場情緒綜合指數判斷買賣時機',
-    enSlug: 'using-market-sentiment-composite-index-to-time-buys-and-sells',
-    enFile: 'using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md',
-  },
-  {
-    originalSlug: '4.樂活五線譜1155萬筆台美股資料實測結果分析',
-    enSlug: 'lohas-five-line-analysis-tested-on-11-6-million-daily-bars',
-    enFile: 'LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md',
-  },
-  {
-    originalSlug: '5.市場動能儀表板使用指南',
-    enSlug: 'market-momentum-dashboard-guide',
-    enFile: 'Market Momentum Dashboard Guide.en.ini.md',
-  },
-  // 第 3 篇（Netflix 併購華納）刻意不列。2026-08 產品方向從個股分析轉向市場情緒，
-  // 那篇站內仍可讀，但不再投 SEO 資源進要放棄的方向。這是決定，不是遺漏，
-  // 請勿「順手補上」。sitemap.xml 同樣刻意不含它。
-];
-
-const ARTICLES = ARTICLE_PAIRS.flatMap(({ originalSlug, enSlug, enFile }) => [
-  { lang: 'en', slug: enSlug, originalSlug, sourceFile: path.join(ROOT, 'public/articles', originalSlug, enFile) },
-  {
-    lang: 'zh-TW',
-    slug: originalSlug,
+// Article routes are emitted only for complete, published locale editions in
+// the shared article catalog. The intentionally delisted Netflix article is
+// absent from that catalog and remains excluded from SEO output.
+const ARTICLES = ARTICLE_CATALOG.flatMap(({ id, originalSlug, locales }) => (
+  Object.entries(locales).map(([lang, edition]) => ({
+    id,
+    lang,
+    slug: edition.slug,
     originalSlug,
-    sourceFile: path.join(ROOT, 'public/articles', originalSlug, `${originalSlug.replace(/^\d+\./, '')}.zh-TW.ini.md`),
-  },
-]);
+    sourceFile: path.join(ROOT, 'public/articles', originalSlug, edition.filename),
+  }))
+));
 
 function articleFrontmatter(sourceFile) {
   const source = fs.readFileSync(sourceFile, 'utf8');
@@ -129,7 +115,10 @@ function escapeAttr(str) {
 }
 
 function ogLocale(lang) {
-  return lang === 'en' ? 'en_US' : 'zh_TW';
+  if (lang === 'en') return 'en_US';
+  if (lang === 'zh-CN') return 'zh_CN';
+  if (lang === 'ko-KR') return 'ko_KR';
+  return 'zh_TW';
 }
 
 function selfUrl(lang, basePath) {
@@ -137,7 +126,7 @@ function selfUrl(lang, basePath) {
 }
 
 function defaultTitle(lang) {
-  return STRINGS[lang].pageContainer.defaultTitle;
+  return readLocaleValue(lang, 'pageContainer.defaultTitle');
 }
 
 // build/index.html is also one of our own output targets (the bare "/"
@@ -158,6 +147,7 @@ function stripPreviousInjection(html) {
 // " | {defaultTitle}" suffix, og/twitter title stays unsuffixed).
 function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref, hreflangLinks, articleMarkup, articleJsonLd, articleImage, image, ogType = 'website' }) {
   const template = stripPreviousInjection(rawTemplate);
+  const cleanDescription = normalizeMetaDescription(description);
 
   let html = template.replace(/<html lang="[^"]*"/, `<html lang="${lang}"`);
   html = html.replace(/<title>[^<]*<\/title>/, `<title data-rh="true">${escapeAttr(title)}</title>`);
@@ -167,12 +157,12 @@ function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref,
   if (!fs.existsSync(imageFile)) throw new Error(`Missing share image: ${shareImage}`);
   const tags = [
     `<link data-rh="true" rel="manifest" href="/manifest.${lang}.json" />`,
-    `<meta data-rh="true" name="description" content="${escapeAttr(description)}" />`,
+    `<meta data-rh="true" name="description" content="${escapeAttr(cleanDescription)}" />`,
     `<meta data-rh="true" property="og:title" content="${escapeAttr(ogTitle)}" />`,
-    `<meta data-rh="true" property="og:description" content="${escapeAttr(description)}" />`,
+    `<meta data-rh="true" property="og:description" content="${escapeAttr(cleanDescription)}" />`,
     `<meta data-rh="true" property="og:url" content="${escapeAttr(selfHref)}" />`,
     `<meta data-rh="true" property="og:type" content="${ogType}" />`,
-    `<meta data-rh="true" property="og:site_name" content="Sentiment Inside Out" />`,
+    `<meta data-rh="true" property="og:site_name" content="${escapeAttr(SITE_NAME)}" />`,
     `<meta data-rh="true" property="og:image" content="${escapeAttr(shareImage)}" />`,
     `<meta data-rh="true" property="og:image:type" content="image/png" />`,
     `<meta data-rh="true" property="og:image:width" content="1200" />`,
@@ -183,7 +173,7 @@ function renderShell(rawTemplate, { lang, title, ogTitle, description, selfHref,
     `<meta data-rh="true" name="twitter:image:alt" content="${escapeAttr(ogTitle)}" />`,
     `<meta data-rh="true" name="twitter:card" content="summary_large_image" />`,
     `<meta data-rh="true" name="twitter:title" content="${escapeAttr(ogTitle)}" />`,
-    `<meta data-rh="true" name="twitter:description" content="${escapeAttr(description)}" />`,
+    `<meta data-rh="true" name="twitter:description" content="${escapeAttr(cleanDescription)}" />`,
     `<link data-rh="true" rel="canonical" href="${escapeAttr(selfHref)}" />`,
     ...hreflangLinks.map(
       ({ hreflang, href }) => `<link data-rh="true" rel="alternate" hreflang="${hreflang}" href="${escapeAttr(href)}" />`
@@ -229,6 +219,13 @@ async function main() {
     process.exit(1);
   }
 
+  for (const locale of LANGS) {
+    const manifestPath = path.join(ROOT, 'public', `manifest.${locale}.json`);
+    if (!fs.existsSync(manifestPath)) {
+      throw new Error(`Missing locale manifest: public/manifest.${locale}.json`);
+    }
+  }
+
   // A previous run overwrites build/index.html in place with the root shell,
   // so after the first run the pristine template only survives as
   // __spa__.html. A fresh `react-app-rewired build` wipes build/, so right
@@ -240,25 +237,30 @@ async function main() {
     : fs.readFileSync(indexPath, 'utf8');
   const written = [];
 
-  // Pristine copy used as the Netlify catch-all fallback for any route that
-  // doesn't get its own shell (see netlify.toml). stripPreviousInjection is a
-  // no-op on a truly pristine template; it only bites if a stale injected
-  // index.html ever slips through as the template source.
-  writeFile(spaPath, stripPreviousInjection(template));
+  // SPA-only routes (account, watchlist, checkout, admin, and unknown legacy
+  // routes) share this fallback. Mark the first HTML response noindex before
+  // React starts; AppContent keeps the directive in sync during client-side
+  // navigation and removes it again on public indexable routes.
+  const spaFallback = stripPreviousInjection(template).replace(
+    '</head>',
+    '<meta data-rh="true" name="robots" content="noindex, follow" />\n  </head>'
+  );
+  writeFile(spaPath, spaFallback);
   written.push(spaPath);
 
-  // Per-language x per-route shells.
-  for (const lang of LANGS) {
-    for (const { basePath, metaKey } of ROUTES) {
-      const meta = metaKey.split('.').reduce((node, part) => node[part], STRINGS[lang]);
+  // Per-language x per-route shells, respecting route-specific SEO availability.
+  for (const { basePath, metaKey, seoLocales = LANGS } of ROUTES) {
+    const xDefaultLocale = seoLocales.includes(DEFAULT_LOCALE) ? DEFAULT_LOCALE : seoLocales[0];
+    for (const lang of seoLocales) {
+      const meta = readLocaleValue(lang, metaKey);
       const ogTitle = meta.pageTitle;
-      const title = `${ogTitle} | ${defaultTitle(lang)}`;
-      const description = meta.pageDescription;
+      const title = buildSeoTitle(ogTitle, defaultTitle(lang));
+      const description = normalizeMetaDescription(meta.pageDescription);
       const selfHref = selfUrl(lang, basePath);
-      const xDefaultHref = basePath === '' ? `${SITE_ORIGIN}/` : selfUrl('en', basePath);
+      const xDefaultHref = basePath === '' ? `${SITE_ORIGIN}/` : selfUrl(xDefaultLocale, basePath);
 
       const hreflangLinks = [
-        ...LANGS.map((hLang) => ({ hreflang: hLang, href: selfUrl(hLang, basePath) })),
+        ...seoLocales.map((hLang) => ({ hreflang: hLang, href: selfUrl(hLang, basePath) })),
         { hreflang: 'x-default', href: xDefaultHref },
       ];
 
@@ -277,8 +279,8 @@ async function main() {
   for (const { lang, slug, originalSlug, sourceFile } of ARTICLES) {
     const decodedSlug = decodeURIComponent(slug);
     const meta = articleFrontmatter(sourceFile);
-    const title = `${meta.title} | ${defaultTitle(lang)}`;
-    const description = meta.description;
+    const title = buildSeoTitle(meta.title, defaultTitle(lang));
+    const description = normalizeMetaDescription(meta.description);
     const selfHref = `${SITE_ORIGIN}/${lang}/articles/${encodeURIComponent(decodedSlug)}/`;
 
     const articleImage = `${SITE_ORIGIN}${socialImagePath('', lang, originalSlug.split('.')[0])}`;
@@ -287,11 +289,15 @@ async function main() {
       '@context': 'https://schema.org', '@type': 'Article', headline: meta.title,
       description, inLanguage: lang, datePublished: meta.date, dateModified: meta.updated || meta.date,
       mainEntityOfPage: selfHref, image: articleImage,
-      author: { '@type': 'Organization', name: 'Sentiment Inside Out' },
-      publisher: { '@type': 'Organization', name: 'Sentiment Inside Out' },
+      author: { '@type': 'Organization', name: SITE_NAME },
+      publisher: { '@type': 'Organization', name: SITE_NAME },
     };
-    const translated = ARTICLE_PAIRS.find(pair => pair.originalSlug === originalSlug);
-    const alternates = LANGS.map(locale => ({ hreflang: locale, href: `${SITE_ORIGIN}/${locale}/articles/${encodeURIComponent(locale === 'en' ? translated.enSlug : originalSlug)}/` }));
+    const alternates = ARTICLES
+      .filter(article => article.originalSlug === originalSlug)
+      .map(article => ({
+        hreflang: article.lang,
+        href: `${SITE_ORIGIN}/${article.lang}/articles/${encodeURIComponent(article.slug)}/`,
+      }));
     const html = renderShell(template, { lang, title, ogTitle: meta.title, description, selfHref,
       hreflangLinks: [...alternates, { hreflang: 'x-default', href: alternates[0].href }], articleMarkup, articleJsonLd, articleImage, ogType: 'article' });
     const outPath = path.join(BUILD_DIR, lang, 'articles', decodedSlug, 'index.html');
@@ -304,16 +310,16 @@ async function main() {
   // build/index.html itself (Netlify serves this for a literal "/" request
   // before the catch-all redirect is ever consulted).
   {
-    const ogTitle = STRINGS.en.home.pageTitle;
-    const title = `${ogTitle} | ${defaultTitle('en')}`;
-    const description = STRINGS.en.home.pageDescription;
+    const ogTitle = STRINGS[DEFAULT_LOCALE].home.pageTitle;
+    const title = buildSeoTitle(ogTitle, defaultTitle(DEFAULT_LOCALE));
+    const description = normalizeMetaDescription(STRINGS[DEFAULT_LOCALE].home.pageDescription);
     const selfHref = `${SITE_ORIGIN}/`;
     const hreflangLinks = [
       ...LANGS.map((hLang) => ({ hreflang: hLang, href: selfUrl(hLang, '') })),
       { hreflang: 'x-default', href: `${SITE_ORIGIN}/` },
     ];
 
-    const html = renderShell(template, { lang: 'en', title, ogTitle, description, selfHref, hreflangLinks });
+    const html = renderShell(template, { lang: DEFAULT_LOCALE, title, ogTitle, description, selfHref, hreflangLinks });
     writeFile(indexPath, html);
     written.push(indexPath);
   }
@@ -331,16 +337,49 @@ async function main() {
 function checkSitemapCoverage() {
   const sitemapPath = path.join(ROOT, 'public/sitemap.xml');
   const sitemapXml = fs.readFileSync(sitemapPath, 'utf8');
-  const locs = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  // Example URLs inside XML comments are documentation, not indexable routes.
+  const activeSitemapXml = sitemapXml.replace(/<!--[\s\S]*?-->/g, '');
+  const localeSet = new Set(LANGS);
+  const entries = [...activeSitemapXml.matchAll(/<url>([\s\S]*?)<\/url>/g)].map(([, block]) => {
+    const loc = (block.match(/<loc>\s*([^<]+)\s*<\/loc>/) || [])[1];
+    if (!loc) return null;
+    const alternates = new Map([...block.matchAll(
+      /<xhtml:link\b[^>]*hreflang="([^"]+)"[^>]*href="([^"]+)"[^>]*\/?>/g
+    )].map(([, language, href]) => [language, href]));
+    const pathname = new URL(loc).pathname.replace(/\/$/, '') || '/';
+    return { loc, pathname, alternates };
+  }).filter(Boolean);
+  const entryByPath = new Map(entries.map(entry => [entry.pathname, entry]));
 
   const missing = [];
+  const unsupportedLocaleRoutes = [];
+  const missingAlternateRoutes = [];
+  for (const entry of entries) {
+    for (const [hreflang, href] of entry.alternates) {
+      if (hreflang === 'x-default') continue;
+      const alternatePath = new URL(href).pathname.replace(/\/$/, '') || '/';
+      if (!entryByPath.has(alternatePath)) {
+        missingAlternateRoutes.push({ source: entry.loc, hreflang, href });
+      }
+    }
+  }
   let checkedCount = 0;
-  for (const loc of locs) {
+  for (const { loc } of entries) {
     const url = new URL(loc);
     const pathname = url.pathname;
+    const segments = pathname.split('/').filter(Boolean);
+    const locale = segments[0];
 
-    // Skip non-lang-prefixed entries — they don't get an SEO shell.
-    if (!/^\/(en|zh-TW)(\/|$)/.test(pathname)) continue;
+    // Skip non-locale entries (for example, the x-default homepage).
+    if (!localeSet.has(locale)) continue;
+
+    const routePath = `/${segments.slice(1).join('/')}`.replace(/\/$/, '');
+    const routeConfig = ROUTES.find(route => route.basePath === routePath);
+    if (routeConfig && !(routeConfig.seoLocales || LANGS).includes(locale)) {
+      unsupportedLocaleRoutes.push({ loc, allowed: routeConfig.seoLocales || LANGS });
+      continue;
+    }
+
     checkedCount += 1;
 
     const decodedPathname = decodeURIComponent(pathname);
@@ -351,6 +390,64 @@ function checkSitemapCoverage() {
     }
   }
 
+  if (unsupportedLocaleRoutes.length > 0) {
+    console.error(`generate-seo-shells: ${unsupportedLocaleRoutes.length} unsupported locale route(s) are present in sitemap.xml:`);
+    for (const { loc, allowed } of unsupportedLocaleRoutes) {
+      console.error(`  - ${loc} (allowed: ${allowed.join(', ')})`);
+    }
+    process.exit(1);
+  }
+
+  if (missingAlternateRoutes.length > 0) {
+    console.error(`generate-seo-shells: ${missingAlternateRoutes.length} alternate URL(s) are not present in sitemap.xml:`);
+    for (const { source, hreflang, href } of missingAlternateRoutes) {
+      console.error(`  - ${source} [${hreflang}] points to ${href}`);
+    }
+    process.exit(1);
+  }
+
+  // Every enabled locale must have every public route in the sitemap. This
+  // makes adding a locale an explicit SEO rollout rather than silently
+  // shipping pages without discoverable, reciprocal hreflang entries.
+  const missingLocaleRoutes = [];
+  const missingHreflang = [];
+  for (const { basePath, seoLocales = LANGS } of ROUTES) {
+    const xDefaultLocale = seoLocales.includes(DEFAULT_LOCALE) ? DEFAULT_LOCALE : seoLocales[0];
+    for (const lang of seoLocales) {
+      const expectedPath = `/${lang}${basePath}`.replace(/\/$/, '') || `/${lang}`;
+      const entry = entryByPath.get(expectedPath);
+      if (!entry) {
+        missingLocaleRoutes.push(expectedPath);
+        continue;
+      }
+
+      const expectedAlternates = [
+        ...seoLocales.map(locale => [locale, selfUrl(locale, basePath)]),
+        ['x-default', basePath === '' ? `${SITE_ORIGIN}/` : selfUrl(xDefaultLocale, basePath)],
+      ];
+      for (const [hreflang, expectedHref] of expectedAlternates) {
+        const actualHref = entry.alternates.get(hreflang);
+        if (actualHref !== expectedHref) {
+          missingHreflang.push({ path: expectedPath, hreflang, expectedHref, actualHref });
+        }
+      }
+    }
+  }
+
+  if (missingLocaleRoutes.length > 0) {
+    console.error(`generate-seo-shells: ${missingLocaleRoutes.length} locale route(s) are missing from sitemap.xml:`);
+    for (const route of missingLocaleRoutes) console.error(`  - ${route}`);
+    process.exit(1);
+  }
+
+  if (missingHreflang.length > 0) {
+    console.error(`generate-seo-shells: ${missingHreflang.length} locale route(s) have missing or incorrect reciprocal hreflang entries:`);
+    for (const { path: route, hreflang, expectedHref, actualHref } of missingHreflang) {
+      console.error(`  - ${route} [${hreflang}] expected ${expectedHref}, received ${actualHref || '(missing)'}`);
+    }
+    process.exit(1);
+  }
+
   if (missing.length > 0) {
     console.error(`generate-seo-shells: ${missing.length} sitemap URL(s) have no matching shell:`);
     for (const { loc, expectedFile } of missing) {
@@ -359,7 +456,7 @@ function checkSitemapCoverage() {
     process.exit(1);
   }
 
-  console.log(`generate-seo-shells: sitemap coverage check passed (${checkedCount} URLs checked).`);
+  console.log(`generate-seo-shells: sitemap coverage check passed (${checkedCount} URLs checked; ${LANGS.length} locale(s) × ${ROUTES.length} public routes with reciprocal hreflang).`);
 }
 
 main().catch((error) => { console.error(error); process.exit(1); });

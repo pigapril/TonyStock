@@ -6,6 +6,7 @@ import { useSubscription } from '../../Subscription/SubscriptionContext';
 import { startFreeTrial } from '../../../services/freeTrialService';
 import { trackProductEvent } from '../../../utils/productAnalytics';
 import { getAnalysisReturnPath, withAnalysisReturnPath } from '../../../utils/trialNavigation';
+import { getPaymentServiceLocale } from '../../../locales/localeConfig';
 import '../CardTrial/CardTrial.css';
 
 const FreeTrialFlow = () => {
@@ -33,7 +34,7 @@ const FreeTrialFlow = () => {
     setPhase('starting');
     setError(null);
     try {
-      await startFreeTrial(language);
+      await startFreeTrial(getPaymentServiceLocale(language), language);
       trackProductEvent('free_trial_started', { source: 'free_trial_page', trial_days: 30 });
       await Promise.allSettled([checkAuthStatus(), refreshUserPlan(), refreshSubscriptionHistory()]);
       setPhase('success');

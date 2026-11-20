@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const puppeteer = require('puppeteer-core');
+const { LOCALE_CODES } = require('../src/locales/localeConfig');
 
 const BASE = process.env.CRAWL_BASE || 'http://localhost:3000';
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -43,7 +44,7 @@ const ROUTES = [
   'NK-Admin',
   'definitely-not-a-real-route-404-test',
 ];
-const LANGS = ['en', 'zh-TW'];
+const LANGS = LOCALE_CODES;
 
 function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 

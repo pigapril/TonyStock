@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 
 import i18n from '../../../i18n';
+import { DialogProvider } from '../../Common/Dialog/DialogContext';
 import MarketSentimentIndex from '../MarketSentimentIndex';
 
 const mockToastApi = {
@@ -86,7 +87,7 @@ const sentimentPayload = {
 const TestWrapper = ({ children }) => (
   <MemoryRouter>
     <I18nextProvider i18n={i18n}>
-      {children}
+      <DialogProvider>{children}</DialogProvider>
     </I18nextProvider>
   </MemoryRouter>
 );

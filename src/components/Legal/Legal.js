@@ -9,17 +9,22 @@ export const Legal = () => {
   const currentLang = i18n.language;
 
   // 根據語言選擇對應的 markdown 文件
-  const getMarkdownFilePath = () => {
+  const getLegalDocument = () => {
     const basePath = '/docs/T&C';
     switch (currentLang) {
       case 'zh-TW':
       case 'zh':
-        return `${basePath}/zh-tw_T&C_20261008.md`;
+        return { filePath: `${basePath}/zh-tw_T&C_20261008.md`, contentLocale: 'zh-TW' };
+      case 'zh-CN':
+        return { filePath: `${basePath}/zh-cn_T&C_20261008.md`, contentLocale: 'zh-CN' };
+      case 'ko-KR':
+        return { filePath: `${basePath}/ko-kr_T&C_20261008.md`, contentLocale: 'ko-KR' };
       case 'en':
       default:
-        return `${basePath}/en_T&C_20261008.md`;
+        return { filePath: `${basePath}/en_T&C_20261008.md`, contentLocale: 'en' };
     }
   };
+  const legalDocument = getLegalDocument();
 
   const legalJsonLd = useMemo(() => ({
     "@context": "https://schema.org",
@@ -27,8 +32,8 @@ export const Legal = () => {
     "name": t('legal.pageTitle'),
     "description": t('legal.pageDescription'),
     "url": `${window.location.origin}/${currentLang}/legal`,
-    "inLanguage": currentLang,
-  }), [t, currentLang]);
+    "inLanguage": legalDocument.contentLocale,
+  }), [t, currentLang, legalDocument.contentLocale]);
 
   return (
     <PageContainer
@@ -48,10 +53,11 @@ export const Legal = () => {
 
         {/* 使用 MarkdownRenderer 渲染條款內容 */}
         <MarkdownRenderer
-          filePath={getMarkdownFilePath()}
+          filePath={legalDocument.filePath}
+          contentLocale={legalDocument.contentLocale}
           className="legal-content"
         />
       </div>
     </PageContainer>
   );
-}; 
+};

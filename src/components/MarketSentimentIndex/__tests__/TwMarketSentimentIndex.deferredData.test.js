@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 
 import i18n from '../../../i18n';
+import { DialogProvider } from '../../Common/Dialog/DialogContext';
 import TwMarketSentimentIndex from '../TwMarketSentimentIndex';
 
 const mockToastApi = {
@@ -20,6 +21,7 @@ const mockAuthState = {
   user: null,
   checkAuthStatus: jest.fn()
 };
+const originalIntersectionObserver = global.IntersectionObserver;
 
 jest.mock('react-chartjs-2', () => ({
   Line: require('react').forwardRef((props, ref) => <div ref={ref} data-testid="mock-line-chart" {...props} />)
@@ -94,7 +96,7 @@ const summaryPayload = {
 const TestWrapper = ({ children }) => (
   <MemoryRouter>
     <I18nextProvider i18n={i18n}>
-      {children}
+      <DialogProvider>{children}</DialogProvider>
     </I18nextProvider>
   </MemoryRouter>
 );
@@ -103,6 +105,28 @@ describe('TwMarketSentimentIndex deferred data loading', () => {
   beforeAll(() => {
     window.requestIdleCallback = window.requestIdleCallback || ((callback) => setTimeout(() => callback({ didTimeout: false, timeRemaining: () => 0 }), 0));
     window.cancelIdleCallback = window.cancelIdleCallback || ((id) => clearTimeout(id));
+    // jsdom has no layout or real viewport intersection. Keep the detail
+    // workspace off-screen until the test explicitly activates it through
+    // the UI; an immediate isIntersecting callback would simulate a scroll
+    // that never happened and make the deferred-fetch assertion flaky.
+    global.IntersectionObserver = class IntersectionObserverMock {
+      constructor(callback, options) {
+        this.callback = callback;
+        this.options = options;
+      }
+      observe() {}
+      disconnect() {}
+      unobserve() {}
+      takeRecords() { return []; }
+    };
+  });
+
+  afterAll(() => {
+    if (originalIntersectionObserver) {
+      global.IntersectionObserver = originalIntersectionObserver;
+    } else {
+      delete global.IntersectionObserver;
+    }
   });
 
   beforeEach(() => {

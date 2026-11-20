@@ -1,5 +1,7 @@
 // Original translation.json files remain the source of truth. Shared/cross-page
 // labels stay in common; these large sections belong to specific feature routes.
+const { getInitialLanguage, stripLocalePrefix } = require('./localeConfig');
+
 const RESOURCE_GROUPS = {
   admin: ['admin'],
   momentum: ['momentumDashboard'],
@@ -10,7 +12,7 @@ const RESOURCE_GROUPS = {
 };
 
 function getRouteLocaleGroups(pathname = '') {
-  const route = pathname.replace(/^\/(en|zh-TW|zh)(?=\/|$)/i, '').replace(/\/$/, '').toLowerCase();
+  const route = stripLocalePrefix(pathname).replace(/\/$/, '').toLowerCase();
   if (/^\/(admin|nk-admin(?:-diagnostic)?)(?:\/|$)/.test(route)) return Object.keys(RESOURCE_GROUPS);
   if (/^\/momentum(?:\/|$)/.test(route)) return ['momentum'];
   if (/^\/sentiment-indicators(?:\/|$)/.test(route)) return ['indicators', 'market'];
@@ -18,16 +20,6 @@ function getRouteLocaleGroups(pathname = '') {
   if (/^\/(priceanalysis|watchlist)(?:\/|$)/.test(route)) return ['price'];
   if (/^\/(subscription-plans|user-account|payment)(?:\/|$)/.test(route)) return ['account'];
   return [];
-}
-
-function getInitialLanguage(pathname = '', browserLanguage = '') {
-  // Resolve the root redirect before the first render. Explicit language URLs
-  // always take precedence over the browser preference.
-  if (pathname === '' || pathname === '/') {
-    return browserLanguage.toLowerCase().startsWith('zh') ? 'zh-TW' : 'en';
-  }
-  const language = pathname.split('/')[1]?.toLowerCase();
-  return language === 'zh-tw' ? 'zh-TW' : language === 'zh' ? 'zh' : 'en';
 }
 
 module.exports = { RESOURCE_GROUPS, getRouteLocaleGroups, getInitialLanguage };

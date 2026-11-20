@@ -1,6 +1,7 @@
 import React, { useId, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { getIntlLocale } from '../../locales/localeConfig';
 import snapshot from './data/usSentimentHistoryExamples.json';
 import './SentimentHistoryExamples.css';
 
@@ -66,7 +67,7 @@ export default function SentimentHistoryExamples({ lang }) {
   const { t } = useTranslation();
   const [caseId, setCaseId] = useState(snapshot.cases[0].id);
   const example = snapshot.cases.find(item => item.id === caseId);
-  const language = lang === 'zh-TW' ? 'zh-TW' : 'en-US';
+  const language = getIntlLocale(lang);
   const panelId = useId();
   const headingId = useId();
 

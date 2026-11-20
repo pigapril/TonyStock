@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
+import { getMarketSentimentUiCopy } from './marketLocaleCopy';
 import { ensureHomeChartsRegistered } from '../../utils/homeChartRegistry';
 import {
   extremeFearPulsePlugin,
@@ -60,7 +61,7 @@ export function SharedSentimentHistoryChart({
         pointRadius: 0
       },
       {
-        label: currentLang === 'zh-TW' ? '過往極端恐懼低點' : 'Past extreme fear lows',
+        label: getMarketSentimentUiCopy('historicalFearLows', currentLang),
         yAxisID: 'left-axis',
         pulseMarker: true,
         order: 10,

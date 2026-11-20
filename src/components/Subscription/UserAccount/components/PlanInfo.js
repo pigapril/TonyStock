@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getIntlLocale } from '../../../../locales/localeConfig';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PlanBadge } from '../../shared/PlanBadge';
 import { AppleButton } from '../../shared/AppleButton';
@@ -11,7 +12,7 @@ import { Analytics } from '../../../../utils/analytics';
 import './PlanInfo.css';
 
 // 綁卡試用的扣款日是台北的日子，使用者瀏覽器不在台北時也不能差一天。
-const trialRenewalDateText = (date, lang) => new Intl.DateTimeFormat(lang === 'zh-TW' ? 'zh-TW' : 'en-US', {
+const trialRenewalDateText = (date, lang) => new Intl.DateTimeFormat(getIntlLocale(lang), {
   timeZone: 'Asia/Taipei',
   year: 'numeric',
   month: 'long',
@@ -110,7 +111,7 @@ export const PlanInfo = ({ plan, loading }) => {
 
   const formatDate = (date) => {
     if (!date) return null;
-    return new Intl.DateTimeFormat(lang === 'zh-TW' ? 'zh-TW' : 'en-US', {
+    return new Intl.DateTimeFormat(getIntlLocale(lang), {
       year: 'numeric',
       month: 'long',
       day: 'numeric'

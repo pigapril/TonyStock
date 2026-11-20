@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { getIntlLocale } from '../../locales/localeConfig';
 
 export default function PaymentTrustNotice({ amount, billingPeriod, lang }) {
     const { t } = useTranslation();
@@ -28,7 +29,7 @@ export default function PaymentTrustNotice({ amount, billingPeriod, lang }) {
                 {Number.isFinite(Number(amount)) && (
                     <p className="payment-page__renewal-notice">
                         {t('payment.security.renewal', {
-                            amount: Number(amount).toLocaleString(lang === 'en' ? 'en-US' : 'zh-TW'),
+                            amount: Number(amount).toLocaleString(getIntlLocale(lang)),
                             period: t(`payment.security.${billingPeriod === 'monthly' ? 'monthly' : 'yearly'}`)
                         })}
                     </p>

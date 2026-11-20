@@ -21,8 +21,8 @@ export const fetchCardTrialResult = (merchantTradeNo) => apiClient
     .get(`/api/payment/card-trial/status/${encodeURIComponent(merchantTradeNo)}`)
     .then(unwrap);
 
-export const startCardTrial = ({ termsConsentedAt, termsVersion, locale, billingPeriod }) => apiClient
-    .post('/api/payment/card-trial/start', { termsConsentedAt, termsVersion, locale, billingPeriod })
+export const startCardTrial = ({ termsConsentedAt, termsVersion, locale, returnLocale, billingPeriod }) => apiClient
+    .post('/api/payment/card-trial/start', { termsConsentedAt, termsVersion, locale, returnLocale, billingPeriod })
     .then(unwrap);
 
 export const createBindCard = ({ merchantTradeNo, bindCardPayToken }) => apiClient

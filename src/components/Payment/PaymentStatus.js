@@ -9,19 +9,26 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { trackSubscriptionPurchase } from '../../utils/subscriptionAnalytics';
 import paymentService from '../../services/paymentService';
 import { systemLogger } from '../../utils/logger';
+import { getIntlLocale } from '../../locales/localeConfig';
 import LoadingSpinner from '../Common/LoadingSpinner';
 
 const PaymentStatus = () => {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
-    const language = i18n.language?.startsWith('zh') ? 'zh-TW' : 'en';
+    const { lang } = useParams();
+    const language = lang || i18n.language;
     const displayError = error => {
         if (error?.startsWith('paymentStatus.')) return t(error);
+        // The payment API currently returns only English or Traditional
+        // Chinese messages. Do not leak provider copy into other UI locales.
+        if (!['zh-TW', 'zh'].includes(i18n.language) && error && /[\u3400-\u9fff]/.test(error)) {
+            return t('paymentStatus.genericFailure');
+        }
         if (i18n.language?.startsWith('en') && /[\u3400-\u9fff]/.test(error || '')) {
             return t('paymentStatus.genericFailure');
         }
@@ -254,19 +261,19 @@ const PaymentStatus = () => {
                         <div className="flex justify-between">
                             <span>{t('paymentStatus.startLabel')}</span>
                             <span className="font-medium">
-                                {new Date(paymentData.subscription.startDate).toLocaleDateString(i18n.language)}
+                                {new Date(paymentData.subscription.startDate).toLocaleDateString(getIntlLocale(i18n.language))}
                             </span>
                         </div>
                         <div className="flex justify-between">
                             <span>{t('paymentStatus.endLabel')}</span>
                             <span className="font-medium">
-                                {new Date(paymentData.subscription.endDate).toLocaleDateString(i18n.language)}
+                                {new Date(paymentData.subscription.endDate).toLocaleDateString(getIntlLocale(i18n.language))}
                             </span>
                         </div>
                         <div className="flex justify-between border-t pt-2">
                             <span>{t('paymentStatus.amountLabel')}</span>
                             <span className="font-medium">
-                                NT$ {paymentData.amount?.toLocaleString()}
+                                NT$ {paymentData.amount?.toLocaleString(getIntlLocale(i18n.language))}
                             </span>
                         </div>
                     </div>

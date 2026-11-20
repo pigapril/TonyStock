@@ -1,0 +1,29 @@
+{
+  "short_name": "SIO 시장 심리",
+  "name": "Sentiment Inside Out | 시장 심리 분석",
+  "description": "시장 심리와 공포·탐욕 지표를 추적하고 투자 심리를 분석하세요.",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "maskable-icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/ko-KR/",
+  "display": "standalone",
+  "theme_color": "#1a1530",
+  "background_color": "#f6f3ff",
+  "lang": "ko-KR",
+  "id": "/"
+}

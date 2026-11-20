@@ -3,10 +3,12 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next'; // 1. 引入 useTranslation
 import { formatPrice } from '../../utils/priceUtils';
+import { getIntlLocale } from '../../locales/localeConfig';
 import './GoogleTrendsSymbolChart.css';  // 引入 Chart 樣式
 
 const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {
-    const { t } = useTranslation(); // 2. 使用 hook
+    const { t, i18n } = useTranslation(); // 2. 使用 hook
+    const intlLocale = getIntlLocale(i18n.language);
 
     if (!data || data.length === 0) {
         // 3. 替換文字
@@ -46,7 +48,7 @@ const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {
             return (
                 <div className="google-trends-tooltip">
                     {/* 3. 替換文字 */}
-                    <p>{`${t('googleTrendsChart.tooltipDate')}: ${new Date(label).toLocaleDateString()}`}</p>
+                    <p>{`${t('googleTrendsChart.tooltipDate')}: ${new Date(label).toLocaleDateString(intlLocale)}`}</p>
                     {payload.map((entry, index) => (
                         <p key={`tooltip-${index}`}>
                             {/* 判斷是否為股價，使用翻譯後的名稱 */}
@@ -73,7 +75,7 @@ const GoogleTrendsSymbolChart = ({ data, symbol = "股票" }) => {
                     dataKey="date"
                     tickFormatter={(tick) => {
                         const date = new Date(tick);
-                        return `${date.getMonth() + 1}/${date.getDate()}`;
+                        return new Intl.DateTimeFormat(intlLocale, { month: 'numeric', day: 'numeric' }).format(date);
                     }}
                     interval={Math.max(0, Math.floor(formattedData.length / 10))}
                     angle={-30}
@@ -154,4 +156,4 @@ GoogleTrendsSymbolChart.propTypes = {
     symbol: PropTypes.string
 };
 
-export default GoogleTrendsSymbolChart; 
+export default GoogleTrendsSymbolChart;

@@ -1,0 +1,302 @@
+[
+  {
+    "id": "marketSentiment.recentReference",
+    "scope": "market-sentiment",
+    "sourceZhTW": "近期參考",
+    "sourceZhCN": "近期参考",
+    "sourceEn": "Recent Reference",
+    "context": "Market sentiment gauge comparison block label.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.historicalExtremeFearLow",
+    "scope": "market-sentiment",
+    "sourceZhTW": "過往極端恐懼低點",
+    "sourceZhCN": "历史极度恐惧低点",
+    "sourceEn": "Past extreme fear lows",
+    "context": "Historical extreme-fear low markers on the shared history chart and tooltip.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.fallbackIndicatorDetail",
+    "scope": "market-sentiment",
+    "sourceZhTW": "這個指標提供另一個觀察市場情緒的角度，重點不是單看高低，而是看它是否已經反映出市場過度一致的樂觀或悲觀。",
+    "sourceZhCN": "这个指标提供了另一个观察市场情绪的角度。重点不只是数值高低，而是看它是否反映出市场已经过度一致地乐观或悲观。",
+    "sourceEn": "This indicator adds another way to read market sentiment. The point is not just the level itself, but whether it shows the crowd has become too one-sided in optimism or fear.",
+    "context": "Fallback detail summary when an indicator data record has no translation-key mapping.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.heroTabs.ariaLabel",
+    "scope": "market-sentiment",
+    "sourceZhTW": "綜合情緒視角切換",
+    "sourceZhCN": "综合情绪视角切换",
+    "sourceEn": "Composite sentiment views",
+    "context": "ARIA label for the current/history tabs.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.heroTabs.current",
+    "scope": "market-sentiment",
+    "sourceZhTW": "最新市場情緒",
+    "sourceZhCN": "最新市场情绪",
+    "sourceEn": "Latest market sentiment",
+    "context": "Current sentiment tab label.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.heroTabs.history",
+    "scope": "market-sentiment",
+    "sourceZhTW": "歷史趨勢",
+    "sourceZhCN": "历史趋势",
+    "sourceEn": "History",
+    "context": "Historical chart tab label.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.mobileIndicator.close",
+    "scope": "market-sentiment",
+    "sourceZhTW": "關閉指標詳情",
+    "sourceZhCN": "关闭指标详情",
+    "sourceEn": "Close indicator detail",
+    "context": "ARIA label for mobile indicator detail sheet close button.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.usGaugeHeadline",
+    "scope": "market-sentiment",
+    "sourceZhTW": "當前美股市場情緒",
+    "sourceZhCN": "当前美股市场情绪",
+    "sourceEn": "Current US market sentiment",
+    "context": "Fallback current US market gauge headline.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.twGaugeHeadline",
+    "scope": "market-sentiment",
+    "sourceZhTW": "當前台股市場情緒",
+    "sourceZhCN": "当前台湾股市情绪",
+    "sourceEn": "Current Taiwan market sentiment",
+    "context": "Current Taiwan market gauge headline.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.twGaugeSnapshotHeadline",
+    "scope": "market-sentiment",
+    "sourceZhTW": "{{date}} 的台股市場情緒",
+    "sourceZhCN": "{{date}} 的台湾股市情绪",
+    "sourceEn": "Taiwan market sentiment on {{date}}",
+    "context": "Snapshot headline for the delayed/free preview; preserve {{date}} exactly.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.twBenchmarkAxis",
+    "scope": "market-sentiment",
+    "sourceZhTW": "台股加權指數",
+    "sourceZhCN": "台湾加权指数",
+    "sourceEn": "TAIEX",
+    "context": "Benchmark axis label in Taiwan sentiment chart.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.usTitleIndex",
+    "scope": "market-sentiment",
+    "sourceZhTW": "美股恐懼貪婪指標",
+    "sourceZhCN": "美股恐惧与贪婪指数",
+    "sourceEn": "US Fear & Greed Index",
+    "context": "Chart/page title index label.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketSentiment.twTitleIndex",
+    "scope": "market-sentiment",
+    "sourceZhTW": "台股恐懼貪婪指標",
+    "sourceZhCN": "台湾股市恐惧与贪婪指数",
+    "sourceEn": "Taiwan Fear & Greed Index",
+    "context": "Chart/page title index label.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketPulse.sp500",
+    "scope": "market-sentiment",
+    "sourceZhTW": "S&P 500",
+    "sourceZhCN": "标普 500",
+    "sourceEn": "S&P 500",
+    "context": "Market Pulse market name for sp500.",
+    "semanticNote": "Draft terminology candidate: S&P 500. Confirm established local index naming where applicable.",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketPulse.nasdaq100",
+    "scope": "market-sentiment",
+    "sourceZhTW": "NASDAQ 100",
+    "sourceZhCN": "纳斯达克 100",
+    "sourceEn": "Nasdaq 100",
+    "context": "Market Pulse market name for nasdaq100.",
+    "semanticNote": "Draft terminology candidate: 나스닥 100. Confirm established local index naming where applicable.",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketPulse.dow",
+    "scope": "market-sentiment",
+    "sourceZhTW": "道瓊工業",
+    "sourceZhCN": "道琼斯工业指数",
+    "sourceEn": "Dow Jones",
+    "context": "Market Pulse market name for dow.",
+    "semanticNote": "Draft terminology candidate: 다우존스 산업평균지수. Confirm established local index naming where applicable.",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketPulse.taiwan",
+    "scope": "market-sentiment",
+    "sourceZhTW": "台灣加權",
+    "sourceZhCN": "台湾加权指数",
+    "sourceEn": "TAIEX",
+    "context": "Market Pulse market name for taiwan.",
+    "semanticNote": "Draft terminology candidate: 대만 가권지수. Confirm established local index naming where applicable.",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketPulse.nikkei",
+    "scope": "market-sentiment",
+    "sourceZhTW": "日經 225",
+    "sourceZhCN": "日经 225",
+    "sourceEn": "Nikkei 225",
+    "context": "Market Pulse market name for nikkei.",
+    "semanticNote": "Draft terminology candidate: 닛케이 225. Confirm established local index naming where applicable.",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketPulse.shanghai",
+    "scope": "market-sentiment",
+    "sourceZhTW": "上證指數",
+    "sourceZhCN": "上证指数",
+    "sourceEn": "Shanghai Composite",
+    "context": "Market Pulse market name for shanghai.",
+    "semanticNote": "Draft terminology candidate: 상하이종합지수. Confirm established local index naming where applicable.",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketPulse.kospi",
+    "scope": "market-sentiment",
+    "sourceZhTW": "韓國綜合",
+    "sourceZhCN": "韩国综合指数",
+    "sourceEn": "KOSPI",
+    "context": "Market Pulse market name for kospi.",
+    "semanticNote": "Draft terminology candidate: 코스피. Confirm established local index naming where applicable.",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketPulse.hangseng",
+    "scope": "market-sentiment",
+    "sourceZhTW": "恆生指數",
+    "sourceZhCN": "恒生指数",
+    "sourceEn": "Hang Seng",
+    "context": "Market Pulse market name for hangseng.",
+    "semanticNote": "Draft terminology candidate: 항셍지수. Confirm established local index naming where applicable.",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "marketPulse.ftse100",
+    "scope": "market-sentiment",
+    "sourceZhTW": "富時 100",
+    "sourceZhCN": "富时 100",
+    "sourceEn": "FTSE 100",
+    "context": "Market Pulse market name for ftse100.",
+    "semanticNote": "Draft terminology candidate: FTSE 100. Confirm established local index naming where applicable.",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "twGaugeExplainer.title",
+    "scope": "market-sentiment",
+    "sourceZhTW": "關於台股恐懼貪婪指標",
+    "sourceZhCN": "",
+    "sourceEn": "",
+    "context": "Hardcoded Traditional-Chinese Taiwan Fear & Greed explainer text in marketConfigs.js.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "twGaugeExplainer.subtitle",
+    "scope": "market-sentiment",
+    "sourceZhTW": "本次綜合分數為 {{score}}，整體偏向「{{sentiment}}」。九項台股訊號合成 0 到 100 分，讓你先看整體情緒，再找出背後的變化。",
+    "sourceZhCN": "",
+    "sourceEn": "",
+    "context": "Hardcoded Traditional-Chinese Taiwan Fear & Greed explainer text in marketConfigs.js.",
+    "semanticNote": "Contains current score and sentiment label interpolation; preserve both dynamic values.",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "twGaugeExplainer.section1.title",
+    "scope": "market-sentiment",
+    "sourceZhTW": "1. 整合台股多面向情緒訊號",
+    "sourceZhCN": "",
+    "sourceEn": "",
+    "context": "Hardcoded Traditional-Chinese Taiwan Fear & Greed explainer text in marketConfigs.js.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "twGaugeExplainer.section1.body",
+    "scope": "market-sentiment",
+    "sourceZhTW": "從選擇權、融資融券、外資期貨部位到匯率、動能與市場參與度，合併觀察台股的風險偏好。不同訊號可能各走各的，綜合分數讓你先掌握整體傾向。",
+    "sourceZhCN": "",
+    "sourceEn": "",
+    "context": "Hardcoded Traditional-Chinese Taiwan Fear & Greed explainer text in marketConfigs.js.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "twGaugeExplainer.section2.title",
+    "scope": "market-sentiment",
+    "sourceZhTW": "2. 留意情緒是否走到極端",
+    "sourceZhCN": "",
+    "sourceEn": "",
+    "context": "Hardcoded Traditional-Chinese Taiwan Fear & Greed explainer text in marketConfigs.js.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "twGaugeExplainer.section2.body",
+    "scope": "market-sentiment",
+    "sourceZhTW": "低分代表合成後偏向恐懼，高分代表偏向貪婪。遇到極端讀數，打開各項指標，確認哪些訊號推動分數，再對照加權指數走勢。",
+    "sourceZhCN": "",
+    "sourceEn": "",
+    "context": "Hardcoded Traditional-Chinese Taiwan Fear & Greed explainer text in marketConfigs.js.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "twGaugeExplainer.section3.title",
+    "scope": "market-sentiment",
+    "sourceZhTW": "3. 用數據檢查追高與殺低的衝動",
+    "sourceZhCN": "",
+    "sourceEn": "",
+    "context": "Hardcoded Traditional-Chinese Taiwan Fear & Greed explainer text in marketConfigs.js.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "id": "twGaugeExplainer.section3.body",
+    "scope": "market-sentiment",
+    "sourceZhTW": "大跌時想出場、急漲時怕錯過，都可以先回到數據。比較情緒分數、指標組成與歷史位置，再決定是否調整原本的配置。",
+    "sourceZhCN": "",
+    "sourceEn": "",
+    "context": "Hardcoded Traditional-Chinese Taiwan Fear & Greed explainer text in marketConfigs.js.",
+    "semanticNote": "",
+    "approvalStatus": "pending_user_approval"
+  }
+]

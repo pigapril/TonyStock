@@ -5,6 +5,7 @@ import { startCardTrial, createBindCard } from '../../../services/cardTrialServi
 import { BIND_CARD_CONTAINER_ID } from '../../../utils/ecpayBindCardSdk';
 import { BINDING_PHASE, localeOf, useCardBinding } from './useCardBinding';
 import { trackProductEvent } from '../../../utils/productAnalytics';
+import { getIntlLocale } from '../../../locales/localeConfig';
 import './CardTrial.css';
 
 // 送到後端落地的版本號，消保法舉證用。文案改動要一起改這個字串。
@@ -25,7 +26,7 @@ const CARD_TRIAL_BINDING = {
         CARD_TRIAL_PREVIOUS_SUBSCRIBER: 'cardTrial.errors.notEligible'
     },
     logMessage: 'Card trial binding failed:',
-    pendingResultUrl: ({ locale, merchantTradeNo }) => `/${locale}/payment/card-trial/result?status=pending&merchantTradeNo=${encodeURIComponent(merchantTradeNo)}`
+    pendingResultUrl: ({ returnLocale, locale, merchantTradeNo }) => `/${returnLocale || locale}/payment/card-trial/result?status=pending&merchantTradeNo=${encodeURIComponent(merchantTradeNo)}`
 };
 
 const RETRYABLE_ERROR_KEYS = new Set([
@@ -48,8 +49,8 @@ const trialEndAt = (now) => {
 };
 
 // production VM 是 Etc/UTC，不指定時區會差一天。
-const renewalDateText = (locale, now) => new Intl.DateTimeFormat(
-    locale === 'en' ? 'en-US' : 'zh-TW',
+const renewalDateText = (intlLocale, now) => new Intl.DateTimeFormat(
+    intlLocale,
     { timeZone: 'Asia/Taipei', year: 'numeric', month: 'long', day: 'numeric' }
 ).format(trialEndAt(now));
 
@@ -63,7 +64,7 @@ const CardTrialFlow = () => {
     const language = lang || i18n.language;
     const locale = localeOf(language);
     const billingPeriod = billingPeriodOf(searchParams.get('period'));
-    const renewalDate = renewalDateText(locale, now);
+    const renewalDate = renewalDateText(getIntlLocale(language), now);
     const {
         phase,
         agreed,
@@ -73,7 +74,7 @@ const CardTrialFlow = () => {
         handleStart,
         handleSubmit,
         handleRestart
-    } = useCardBinding(CARD_TRIAL_BINDING, locale);
+    } = useCardBinding(CARD_TRIAL_BINDING, locale, { returnLocale: language });
 
     const lastTrackedPhase = useRef(null);
     useEffect(() => {
@@ -132,7 +133,7 @@ const CardTrialFlow = () => {
                     <button
                         type="button"
                         className="card-trial__primary"
-                        onClick={() => handleStart({ termsVersion: CARD_TRIAL_TERMS_VERSION, locale, billingPeriod })}
+                        onClick={() => handleStart({ termsVersion: CARD_TRIAL_TERMS_VERSION, locale, returnLocale: language, billingPeriod })}
                         disabled={!agreed}
                     >
                         {t('cardTrial.start')}

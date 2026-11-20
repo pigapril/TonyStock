@@ -1,3 +1,5 @@
+import articleCatalog from '../config/articleCatalog';
+
 export const getArticleInfoFromSlug = (slug) => {
     // 從 slug 中提取標題
     // 例如：'1.運用樂活五線譜分析價格趨勢與情緒' -> '運用樂活五線譜分析價格趨勢與情緒'
@@ -8,60 +10,22 @@ export const getArticleInfoFromSlug = (slug) => {
     };
 };
 
-// **新增：定義 Slug 映射**
-// 將原始 slug (資料夾名稱) 映射到其對應的英文 slug 和英文檔名
-const articleMappings = {
-    '1.用樂活五線譜分析價格趨勢與情緒': {
-        enSlug: 'analyzing-price-trends-and-sentiment-with-lohas-five-line-analysis', // 您的英文 URL Slug
-        enFilename: 'Analyzing Price Trends and Sentiment with LOHAS Five-Line Analysis.en.ini.md'
-    },
-    '2.用市場情緒綜合指數判斷買賣時機': {
-        enSlug: 'using-market-sentiment-composite-index-to-time-buys-and-sells', // 您的英文 URL Slug
-        enFilename: 'using-market-sentiment-composite-index-to-time-buys-and-sells.en.ini.md'
-    },
-    // 2026-08-31 下架：檔案保留在 frontend/public/articles 底下，
-    // 要重新上架就把下面這段解除註解即可。
-    // '3.Netflix 併購華納全解析：如何利用「預期差」與「倒金字塔」策略獲利': {
-    //     enSlug: 'netflix-acquires-warner-capitalizing-on-expectation-gap-strategy',
-    //     enFilename: 'Netflix Acquires Warner Capitalizing on Expectation Gap Strategy.en.ini.md'
-    // },
-    '4.樂活五線譜1155萬筆台美股資料實測結果分析': {
-        enSlug: 'lohas-five-line-analysis-tested-on-11-6-million-daily-bars',
-        enFilename: 'LOHAS Five-Line Analysis Tested on 11.6 Million Daily Bars.en.ini.md'
-    },
-    '5.市場動能儀表板使用指南': {
-        enSlug: 'market-momentum-dashboard-guide',
-        enFilename: 'Market Momentum Dashboard Guide.en.ini.md'
-    }
-    // 未來新增的文章也加在這裡
-};
-
-// 獲取所有原始 slugs (資料夾名稱)
-const originalArticleSlugs = Object.keys(articleMappings);
+// The catalog is the single source of truth for available article editions,
+// localized public slugs and Markdown filenames.
 
 export const getAllArticles = async (lang) => {
-    // 讀取每篇文章的內容
-    const articles = await Promise.all(originalArticleSlugs.map(async (originalSlug, index) => {
-        const mapping = articleMappings[originalSlug];
-        let displaySlug = originalSlug; // 預設使用原始 slug
-        let fileName;
-
-        // 根據語言決定要顯示的 slug 和檔案名稱
-        if (lang === 'en' && mapping?.enSlug && mapping?.enFilename) {
-            displaySlug = mapping.enSlug; // 英文模式下使用英文 slug
-            fileName = mapping.enFilename;
-        } else {
-            // 中文或其他語言，使用原始 slug 和對應語言的檔名
-            const articleName = originalSlug.replace(/^\d+\./, '');
-            fileName = `${articleName}.${lang}.ini.md`;
-        }
+    const contentLocale = articleCatalog.every(article => article.locales[lang]) ? lang : 'en';
+    const articles = await Promise.all(articleCatalog.map(async ({ originalSlug, locales }, index) => {
+        const edition = locales[contentLocale];
+        const displaySlug = edition.slug;
+        const fileName = edition.filename;
 
         const filePath = `/articles/${originalSlug}/${fileName}`; // **注意：路徑仍用 originalSlug**
 
         try {
             const response = await fetch(filePath);
             if (!response.ok) {
-                console.warn(`Article content not found for lang '${lang}': ${filePath}`);
+                console.warn(`Article content not found for lang '${contentLocale}': ${filePath}`);
                 // 即使內容找不到，也嘗試回傳基本資訊，使用正確的 displaySlug
                 return {
                     id: index + 1,
@@ -71,7 +35,7 @@ export const getAllArticles = async (lang) => {
                     content: '',
                     date: '',
                     category: '',
-                    lang: lang
+                    lang: contentLocale
                 };
             }
 
@@ -108,7 +72,7 @@ export const getAllArticles = async (lang) => {
                 content: content,
                 date: date,
                 category: category,
-                lang: lang
+                    lang: contentLocale
             };
         } catch (error) {
             console.error(`Error loading article ${originalSlug} for lang ${lang}:`, error);
@@ -120,7 +84,11 @@ export const getAllArticles = async (lang) => {
                 content: '',
                 date: '',
                 category: '',
-                lang: lang
+                    // Even when the fetch fails, keep the actual content
+                    // fallback locale. Do not let an unsupported app locale
+                    // (such as an unapproved ko-KR) leak into article SEO or
+                    // hreflang metadata.
+                    lang: contentLocale
             };
         }
     }));

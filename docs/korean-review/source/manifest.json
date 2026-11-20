@@ -1,0 +1,132 @@
+{
+  "sourceLocale": "zh-TW",
+  "sourcePath": "src/locales/zh-TW/translation.json",
+  "keyCount": 2265,
+  "batches": [
+    {
+      "batch": 1,
+      "name": "site",
+      "roots": [
+        "home",
+        "about",
+        "articles",
+        "articleDetail",
+        "footer",
+        "nav",
+        "legal",
+        "announcement",
+        "appName",
+        "notFound",
+        "protectedRoute",
+        "pageContainer",
+        "sponsorUs",
+        "sponsorSuccess",
+        "signInButton",
+        "language",
+        "userActions",
+        "infoTool",
+        "interstitialAd",
+        "expandableDescription",
+        "dialog",
+        "userProfile",
+        "ulBandChart"
+      ],
+      "keyCount": 208,
+      "path": "docs/korean-review/source/01-site.json"
+    },
+    {
+      "batch": 2,
+      "name": "price-tools",
+      "roots": [
+        "priceAnalysis",
+        "watchlist",
+        "googleTrendsSymbol",
+        "googleTrendsMarket",
+        "googleTrendsSearch",
+        "googleTrendsTimeframe",
+        "googleTrendsChart",
+        "googleTrendsSymbol"
+      ],
+      "keyCount": 272,
+      "path": "docs/korean-review/source/02-price-tools.json"
+    },
+    {
+      "batch": 3,
+      "name": "market-sentiment",
+      "roots": [
+        "marketSentiment",
+        "marketPulse",
+        "sentiment",
+        "sentimentBoard",
+        "sentimentHistoryExamples",
+        "indicatorItem",
+        "indicators",
+        "timeRangeSelector"
+      ],
+      "keyCount": 306,
+      "path": "docs/korean-review/source/03-market-sentiment.json"
+    },
+    {
+      "batch": 4,
+      "name": "momentum",
+      "roots": [
+        "momentumDashboard"
+      ],
+      "keyCount": 261,
+      "path": "docs/korean-review/source/04-momentum.json"
+    },
+    {
+      "batch": 5,
+      "name": "admin",
+      "roots": [
+        "admin"
+      ],
+      "keyCount": 409,
+      "path": "docs/korean-review/source/05-admin.json"
+    },
+    {
+      "batch": 6,
+      "name": "account-payment",
+      "roots": [
+        "subscription",
+        "payment",
+        "paymentStatus",
+        "cardTrial",
+        "cardUpdate",
+        "freeTrial",
+        "featureUpgrade",
+        "invoice",
+        "refund"
+      ],
+      "keyCount": 434,
+      "path": "docs/korean-review/source/06-account-payment.json"
+    },
+    {
+      "batch": 7,
+      "name": "redemption-errors",
+      "roots": [
+        "redemption",
+        "errors",
+        "errorBoundary",
+        "common",
+        "authDialog",
+        "chatWidget"
+      ],
+      "keyCount": 239,
+      "path": "docs/korean-review/source/07-redemption-errors.json"
+    },
+    {
+      "batch": 8,
+      "name": "indicator-pages",
+      "roots": [
+        "sentimentIndicatorPages"
+      ],
+      "keyCount": 136,
+      "path": "docs/korean-review/source/08-indicator-pages.json"
+    }
+  ],
+  "directObjectStringKeys": 2265,
+  "nestedArrayStringLeaves": 157,
+  "totalTranslatableStringLeaves": 2422,
+  "notes": "All nested array leaf strings are included in the complete Korean proposal; their stable paths use bracket indexes such as sections[0].title."
+}

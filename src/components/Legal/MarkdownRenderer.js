@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useTranslation } from 'react-i18next';
 
-const MarkdownRenderer = ({ filePath, className = '' }) => {
+const MarkdownRenderer = ({ filePath, className = '', contentLocale }) => {
   const { t } = useTranslation();
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
@@ -63,7 +63,7 @@ const MarkdownRenderer = ({ filePath, className = '' }) => {
   }
 
   return (
-    <div className={`markdown-content ${className}`}>
+    <div className={`markdown-content ${className}`} lang={contentLocale}>
       <ReactMarkdown
         components={{
           // 自定義 markdown 組件樣式

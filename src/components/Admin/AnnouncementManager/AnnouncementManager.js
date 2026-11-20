@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import AnnouncementEditor from './components/AnnouncementEditor';
 import AnnouncementPreview from './components/AnnouncementPreview';
 import apiClient from '../../../api/apiClient';
+import { useTranslation } from 'react-i18next';
+import { getIntlLocale } from '../../../locales/localeConfig';
 import './AnnouncementManager.css';
 
 const AnnouncementManager = () => {
+  const { i18n } = useTranslation();
+  const isKorean = i18n.language === 'ko-KR';
   const [config, setConfig] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -25,11 +29,11 @@ const AnnouncementManager = () => {
       if (response.data.success) {
         setConfig(response.data.data);
       } else {
-        throw new Error(response.data.message || '載入配置失敗');
+        throw new Error(response.data.message || (isKorean ? '설정을 불러오지 못했습니다' : '載入配置失敗'));
       }
     } catch (err) {
       console.error('載入公告配置失敗:', err);
-      setError('載入配置失敗: ' + (err.response?.data?.message || err.message));
+      setError((isKorean ? '설정을 불러오지 못했습니다: ' : '載入配置失敗: ') + (err.response?.data?.message || err.message));
     } finally {
       setLoading(false);
     }
@@ -45,16 +49,16 @@ const AnnouncementManager = () => {
 
       if (response.data.success) {
         setConfig(response.data.data);
-        setSuccess('公告配置已成功更新！');
+        setSuccess(isKorean ? '공지 설정이 성공적으로 업데이트되었습니다!' : '公告配置已成功更新！');
         
         // 3秒後清除成功訊息
         setTimeout(() => setSuccess(null), 3000);
       } else {
-        throw new Error(response.data.message || '儲存失敗');
+        throw new Error(response.data.message || (isKorean ? '저장하지 못했습니다' : '儲存失敗'));
       }
     } catch (err) {
       console.error('儲存公告配置失敗:', err);
-      setError('儲存失敗: ' + (err.response?.data?.message || err.message));
+      setError((isKorean ? '저장하지 못했습니다: ' : '儲存失敗: ') + (err.response?.data?.message || err.message));
     } finally {
       setSaving(false);
     }
@@ -69,18 +73,18 @@ const AnnouncementManager = () => {
       if (response.data.success) {
         setPreviewData(response.data.data);
       } else {
-        throw new Error(response.data.message || '預覽生成失敗');
+        throw new Error(response.data.message || (isKorean ? '미리보기를 생성하지 못했습니다' : '預覽生成失敗'));
       }
     } catch (err) {
       console.error('生成預覽失敗:', err);
-      setError('預覽失敗: ' + (err.response?.data?.message || err.message));
+      setError((isKorean ? '미리보기에 실패했습니다: ' : '預覽失敗: ') + (err.response?.data?.message || err.message));
     }
   };
 
   if (loading) {
     return (
       <div className="announcement-mgr-container">
-        <p>載入中...</p>
+        <p>{isKorean ? '불러오는 중...' : '載入中...'}</p>
       </div>
     );
   }
@@ -88,8 +92,8 @@ const AnnouncementManager = () => {
   return (
     <div className="announcement-mgr-container">
       <div className="announcement-mgr-header">
-        <h1>公告管理</h1>
-        <p className="subtitle">管理網站頂部的公告欄內容</p>
+        <h1>{isKorean ? '공지 관리' : '公告管理'}</h1>
+        <p className="subtitle">{isKorean ? '웹사이트 상단 공지 배너 관리' : '管理網站頂部的公告欄內容'}</p>
       </div>
 
       {error && (
@@ -138,18 +142,18 @@ const AnnouncementManager = () => {
 
       {config && (
         <div className="announcement-mgr-config-info">
-          <h3>配置資訊</h3>
+          <h3>{isKorean ? '설정 정보' : '配置資訊'}</h3>
           <div className="announcement-mgr-info-grid">
             <div className="announcement-mgr-info-item">
-              <label>最後更新:</label>
-              <span>{new Date(config.announcement.lastUpdated).toLocaleString('zh-TW')}</span>
+              <label>{isKorean ? '마지막 업데이트:' : '最後更新:'}</label>
+              <span>{new Date(config.announcement.lastUpdated).toLocaleString(getIntlLocale(i18n.language))}</span>
             </div>
             <div className="announcement-mgr-info-item">
-              <label>更新者:</label>
+              <label>{isKorean ? '업데이트한 사용자:' : '更新者:'}</label>
               <span>{config.announcement.updatedBy}</span>
             </div>
             <div className="announcement-mgr-info-item">
-              <label>配置版本:</label>
+              <label>{isKorean ? '설정 버전:' : '配置版本:'}</label>
               <span>{config.settings.version}</span>
             </div>
           </div>

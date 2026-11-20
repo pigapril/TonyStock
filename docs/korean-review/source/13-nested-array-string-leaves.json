@@ -1,0 +1,1572 @@
+[
+  {
+    "key": "marketSentiment.descriptions.composite.sections[0].title",
+    "source": {
+      "zhTW": "解讀 SIO 恐懼貪婪指標",
+      "zhCN": "解读 SIO 恐惧贪婪指标",
+      "en": "Composite Index Explanation"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.composite.sections[0].content",
+    "source": {
+      "zhTW": "SIO 恐懼貪婪指標是由多個美股市場數據綜合計算而成的情緒指標，用 0~100 的分數做代表。數值越低代表市場情緒越偏向恐懼，過度看空的狀況出現時歷史上常伴隨著落底訊號；數值越高代表市場情緒越偏向貪婪，當看多情緒積累到高點時市場多會出現修正或波動放大。相較於 CNN 恐懼貪婪指數納入更全面的指標，包含俗稱「美國散戶指標」的 AAII 投資人調查結果，更能準確反映長線市場情緒與價格的關係。",
+      "zhCN": "SIO 恐惧贪婪指标是由多个美股市场数据综合计算而成的情绪指标，用 0~100 的分数做代表。数值越低代表市场情绪越偏向恐惧，过度看空的状况出现时历史上常伴随着触底信号；数值越高代表市场情绪越偏向贪婪，当看多情绪积累到高点时市场多会出现修正或波动放大。相较于 CNN 恐惧贪婪指数纳入更全面的指标，包含俗称「美国散户指标」的 AAII 投资者调查结果，更能准确反映长期市场情绪与价格的关系。",
+      "en": "The SIO Fear & Greed Indicator is a sentiment indicator calculated from a synthesis of multiple U.S. stock market data points, represented by a score from 0 to 100. A score closer to 0 signifies extreme fear in the market, potentially indicating a higher probability of success for buying at this time. Conversely, a score closer to 100 suggests extreme greed in the market, advising against chasing further highs. Compared to the CNN Fear & Greed Index, it incorporates a more comprehensive set of indicators, including the AAII Investor Sentiment Survey results—often considered a proxy for U.S. retail investor sentiment—to more accurately reflect the long-term relationship between market sentiment and prices."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.composite.sections[1].title",
+    "source": {
+      "zhTW": "歷史數據回顧",
+      "zhCN": "历史数据回顾",
+      "en": "Historical Data Review"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.composite.sections[1].content",
+    "source": {
+      "zhTW": "回顧歷史，Sentiment Inside Out 恐懼貪婪指標 (簡稱:SIO 恐懼貪婪指標)過往每次達到 10 分附近時為熊市底部(包含 2009 年金融海嘯、2020 年新冠疫情、2022 年俄烏戰爭)，每次出現 10 分附近時，代表美股短線低點可能接近；回顧歷史，這些時段後的市場修復力道通常較強。",
+      "zhCN": "回顾历史，Sentiment Inside Out 恐惧贪婪指标 (简称:SIO 恐惧贪婪指标)过往每次达到 10 分附近时为熊市底部(包含 2009 年金融海啸、2020 年新冠疫情、2022 年俄乌战争)，每次出现 10 分附近时，代表美股短线低点可能接近；回顾历史，这些时段后的市场修复力度通常较强。",
+      "en": "Historically, whenever the Sentiment Inside Out Fear & Greed Index (SIO Fear & Greed Index) reached around 10 points, it marked a bear market bottom (including the 2009 financial crisis, the 2020 COVID-19 pandemic, and the 2022 Russo-Ukrainian War). Seizing these moments presented excellent buying opportunities."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.aaiiSpread.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.aaiiSpread.sections[0].content",
+    "source": {
+      "zhTW": "極高的 Bull-Bear Spread（遠高於歷史平均）通常表示市場過度樂觀，可能是潛在的賣出信號。反之，極低的 Spread（遠低於歷史平均，甚至為負值）表示市場過度悲觀，可能是潛在的買入機會。",
+      "zhCN": "极高的 Bull-Bear Spread（远高于历史平均）通常表示市场过度乐观，可能是潜在的卖出信号。反之，极低的 Spread（远低于历史平均，甚至为负值）表示市场过度悲观，可能是潜在的买入机会。",
+      "en": "An extremely high Bull-Bear Spread (well above the historical average) usually indicates excessive market optimism and could be a potential sell signal. Conversely, an extremely low Spread (well below the historical average, even negative) indicates excessive pessimism and could be a potential buying opportunity."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.cboeRatio.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.cboeRatio.sections[0].content",
+    "source": {
+      "zhTW": "高 Put/Call Ratio（通常大於 1）表示投資者購買了更多的賣權進行避險或看空，市場情緒偏向恐懼。低 Put/Call Ratio（通常小於 0.7）表示投資者購買了更多的買權進行投機或看多，市場情緒偏向貪婪。使用 5 日平均值可以平滑數據，更好地觀察趨勢。",
+      "zhCN": "高 Put/Call Ratio（通常大于 1）表示投资者购买了更多的看跌期权进行避险或看空，市场情绪偏向恐惧。低 Put/Call Ratio（通常小于 0.7）表示投资者购买了更多的看涨期权进行投机或看多，市场情绪偏向贪婪。使用 5 日平均值可以平滑数据，更好地观察趋势。",
+      "en": "A high Put/Call Ratio (typically above 1) indicates investors are buying more puts for hedging or bearish bets, suggesting market fear. A low Put/Call Ratio (typically below 0.7) indicates investors are buying more calls for speculation or bullish bets, suggesting market greed. Using a 5-day average smooths the data for better trend observation."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.marketMomentum.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.marketMomentum.sections[0].content",
+    "source": {
+      "zhTW": "當 S&P 500 指數遠高於其 125 日均線時，表示市場處於強勁的上升趨勢，動能強，市場情緒偏向貪婪。當指數遠低於均線時，表示市場處於下降趨勢，動能弱，市場情緒偏向恐懼。",
+      "zhCN": "当 S&P 500 指数远高于其 125 日均线时，表示市场处于强劲的上升趋势，动能强，市场情绪偏向贪婪。当指数远低于均线时，表示市场处于下降趋势，动能弱，市场情绪偏向恐惧。",
+      "en": "When the S&P 500 is significantly above its 125-day MA, it indicates a strong uptrend, strong momentum, and market greed. When the index is significantly below the MA, it indicates a downtrend, weak momentum, and market fear."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.marginShortRatio.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.marginShortRatio.sections[0].content",
+    "source": {
+      "zhTW": "券資比偏高通常代表市場空方力道較強、情緒偏保守；券資比偏低則表示市場多方較強、風險偏好較高。",
+      "zhCN": "券资比偏高通常代表市场空方力度较强、情绪偏保守；券资比偏低则表示市场多方较强、风险偏好较高。",
+      "en": "A higher margin short ratio usually reflects stronger bearish pressure and more cautious sentiment. A lower ratio usually reflects stronger bullish pressure and a more risk-on market."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.twMarketMomentum.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.twMarketMomentum.sections[0].content",
+    "source": {
+      "zhTW": "當台股明顯高於中期均線時，市場通常偏貪婪；當台股明顯低於均線時，市場通常偏恐懼。",
+      "zhCN": "当台湾股市明显高于中期均线时，市场通常偏贪婪；当台湾股市明显低于均线时，市场通常偏恐惧。",
+      "en": "When Taiwan's market is clearly above its medium-term moving average, sentiment is usually greedier. When it is clearly below the average, sentiment is usually more fearful."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.etaDeviation189d.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.etaDeviation189d.sections[0].content",
+    "source": {
+      "zhTW": "當實際戶數高於 189 日趨勢，代表市場參與熱度升溫、偏貪婪；低於趨勢則代表參與熱度降溫、偏恐懼。",
+      "zhCN": "当实际户数高于 189 日趋势，代表市场参与热度升温、偏贪婪；低于趋势则代表参与热度降温、偏恐惧。",
+      "en": "Readings above the 189-day trend indicate heated participation and greed. Readings below the trend indicate cooling participation and fear."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.twVix.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.twVix.sections[0].content",
+    "source": {
+      "zhTW": "TW VIX 上升代表恐懼升溫、避險需求增加；TW VIX 下降代表風險偏好回升、市場情緒偏向貪婪。",
+      "zhCN": "TW VIX 上升代表恐惧升温、避险需求增加；TW VIX 下降代表风险偏好回升、市场情绪偏向贪婪。",
+      "en": "A rising TW VIX indicates growing fear and hedging demand. A falling TW VIX indicates recovering risk appetite and greedier positioning."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.twPcr.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.twPcr.sections[0].content",
+    "source": {
+      "zhTW": "PCR 偏高（避險需求極端）通常代表恐慌已極、接近反彈；PCR 偏低（投機需求旺）通常代表市場偏樂觀、風險偏好高。",
+      "zhCN": "PCR 偏高（避险需求极端）通常代表恐慌已极、接近反弹；PCR 偏低（投机需求旺）通常代表市场偏乐观、风险偏好高。",
+      "en": "Elevated PCR (extreme hedging) typically points to washed-out sentiment and potential rebounds. Depressed PCR points to speculative, risk-on conditions."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.usdTwd.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.usdTwd.sections[0].content",
+    "source": {
+      "zhTW": "USD/TWD 走高代表台幣貶、資金外流，情緒偏恐懼；USD/TWD 走低代表台幣升、資金回流，情緒偏貪婪。",
+      "zhCN": "USD/TWD 走高代表新台币贬、资金外流，情绪偏恐惧；USD/TWD 走低代表新台币升、资金回流，情绪偏贪婪。",
+      "en": "A rising USD/TWD points to outflows and fear. A falling USD/TWD points to inflows and greed."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.marginMaintenanceRatio.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.marginMaintenanceRatio.sections[0].content",
+    "source": {
+      "zhTW": "融資維持率偏高代表融資戶安全、風險承受度高，情緒偏貪婪；偏低代表追繳壓力升溫，情緒偏恐懼。",
+      "zhCN": "融资维持率偏高代表融资户安全、风险承受度高，情绪偏贪婪；偏低代表追缴压力升温，情绪偏恐惧。",
+      "en": "A higher margin maintenance ratio indicates safer retail leverage and greedier sentiment. A lower ratio indicates mounting margin-call pressure and fear."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.finiFutures.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.finiFutures.sections[0].content",
+    "source": {
+      "zhTW": "外資期貨淨多部位過高，常代表市場頂部風險升溫（反向情緒訊號）；淨空部位過深，則常代表恐懼已經反映完畢。",
+      "zhCN": "外资期货净多持仓过高，常代表市场顶部风险升温（反向情绪信号）；净空持仓过深，则常代表恐惧已经反映完毕。",
+      "en": "Very large foreign net longs often mark top risk (contrarian fear signal). Very deep foreign net shorts often mark exhausted pessimism."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.marketBreadth.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.marketBreadth.sections[0].content",
+    "source": {
+      "zhTW": "市場廣度走高代表漲勢廣、情緒偏貪婪；市場廣度走低代表上漲集中、參與度不足，情緒偏恐懼。",
+      "zhCN": "市场广度走高代表涨势广、情绪偏贪婪；市场广度走低代表上涨集中、参与度不足，情绪偏恐惧。",
+      "en": "Broadening market breadth signals broad participation and greed. Narrowing breadth signals concentrated leadership and underlying fear."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.vixMA50.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.vixMA50.sections[0].content",
+    "source": {
+      "zhTW": "當 VIX 50 日移動平均線上升，表示市場恐慌情緒上升，避險需求增加。當 VIX 50 日移動平均線下降時，表示市場相對平靜，投資者風險偏好升高，市場情緒偏向貪婪。",
+      "zhCN": "当 VIX 50 日移动平均线上升，表示市场恐慌情绪上升，避险需求增加。当 VIX 50 日移动平均线下降时，表示市场相对平静，投资者风险偏好升高，市场情绪偏向贪婪。",
+      "en": "An ascending VIX 50-day moving average indicates rising market fear and increased demand for hedging. Conversely, a descending VIX 50-day moving average suggests a relatively calm market, higher investor risk appetite, and a shift in market sentiment towards greed."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.safeHaven.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.safeHaven.sections[0].content",
+    "source": {
+      "zhTW": "當公債回報顯著優於股票回報時（指標數值低），表示投資者紛紛湧入避險資產，市場情緒偏向恐懼。當股票回報顯著優於公債回報時（指標數值高），表示投資者風險偏好高，資金流向風險資產，市場情緒偏向貪婪。",
+      "zhCN": "当公债回报显著优于股票回报时（指标数值低），表示投资者纷纷涌入避险资产，市场情绪偏向恐惧。当股票回报显著优于公债回报时（指标数值高），表示投资者风险偏好高，资金流向风险资产，市场情绪偏向贪婪。",
+      "en": "When bond returns significantly outperform stock returns (low indicator value), it indicates investors are flocking to safe-haven assets, suggesting market fear. When stock returns significantly outperform bond returns (high indicator value), it indicates higher risk appetite and fund flows into risk assets, suggesting market greed."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.junkBond.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.junkBond.sections[0].content",
+    "source": {
+      "zhTW": "當利差擴大（指標值高）時，表示投資者要求更高的風險補償才願意持有垃圾債券，這通常發生在市場擔憂經濟前景或流動性收緊時，市場情緒偏向恐懼。當利差縮小（指標值低）時，表示投資者對風險容忍度提高，願意接受較低的風險補償，市場情緒偏向貪婪。",
+      "zhCN": "当利差扩大（指标值高）时，表示投资者要求更高的风险补偿才愿意持有垃圾债券，这通常发生在市场担忧经济前景或流动性收紧时，市场情绪偏向恐惧。当利差缩小（指标值低）时，表示投资者对风险容忍度提高，愿意接受较低的风险补偿，市场情绪偏向贪婪。",
+      "en": "When the spread widens (high indicator value), it means investors demand higher risk compensation to hold junk bonds. This usually happens when the market worries about economic prospects or tightening liquidity, indicating market fear. When the spread narrows (low indicator value), it means investors' risk tolerance increases, indicating market greed."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.cotIndex.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.cotIndex.sections[0].content",
+    "source": {
+      "zhTW": "COT 指數接近 100% 表示大型投機者的淨多單處於歷史極高水平，市場可能過度看多，情緒偏向極度貪婪。指數接近 0% 表示淨空單處於歷史極高水平（或淨多單極低），市場可能過度看空，情緒偏向極度恐懼。",
+      "zhCN": "COT 指数接近 100% 表示大型投机者的净多单处于历史极高水平，市场可能过度看多，情绪偏向极度贪婪。指数接近 0% 表示净空单处于历史极高水平（或净多单极低），市场可能过度看空，情绪偏向极度恐惧。",
+      "en": "A COT Index near 100% indicates large speculators' net long positions are at historical highs, suggesting the market might be overly bullish and leaning towards extreme greed. An index near 0% indicates net short positions are at historical highs (or net longs are extremely low), suggesting the market might be overly bearish and leaning towards extreme fear."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.naaimIndex.sections[0].title",
+    "source": {
+      "zhTW": "解讀方式",
+      "zhCN": "解读方式",
+      "en": "Interpretation Method"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "marketSentiment.descriptions.naaimIndex.sections[0].content",
+    "source": {
+      "zhTW": "極高的曝險指數（如接近或超過 100%）表示基金經理人普遍看好市場並積極持有股票，市場情緒偏向貪婪。極低的曝險指數（如接近 0% 或為負值，表示持有空頭倉位）表示經理人普遍看空市場並減持股票，市場情緒偏向恐懼。",
+      "zhCN": "极高的风险敞口指数（如接近或超过 100%）表示基金经理普遍看好市场并积极持有股票，市场情绪偏向贪婪。极低的风险敞口指数（如接近 0% 或为负值，表示持有空头仓位）表示基金经理普遍看空市场并减持仓票，市场情绪偏向恐惧。",
+      "en": "An extremely high exposure index (e.g., near or above 100%) indicates fund managers are generally bullish and actively holding stocks, suggesting market greed. An extremely low exposure index (e.g., near 0% or negative, indicating short positions) indicates managers are generally bearish and reducing stock holdings, suggesting market fear."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.freePlan.features[0]",
+    "source": {
+      "zhTW": "樂活五線譜：主要指數與免費 ETF，含 MA 指標",
+      "zhCN": "乐活五线谱：主要指数与免费 ETF，含 MA 指标",
+      "en": "Lohas Spectrum: major indices and free ETFs, with MA"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.freePlan.features[1]",
+    "source": {
+      "zhTW": "市場情緒分析：兩個月前的歷史資料",
+      "zhCN": "市场情绪分析：两个月前的历史数据",
+      "en": "Market Sentiment: historical data delayed by two months"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.freePlan.features[2]",
+    "source": {
+      "zhTW": "追蹤清單功能：同時查看多個標的情緒位階",
+      "zhCN": "自选列表功能：同时查看多个标的情绪位阶",
+      "en": "Watchlist Feature: View multiple stock sentiment levels"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.freePlan.features[3]",
+    "source": {
+      "zhTW": "無廣告體驗",
+      "zhCN": "无广告体验",
+      "en": "Ad-free Experience"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.freePlan.features[4]",
+    "source": {
+      "zhTW": "市場動能：板塊比較、精選 ETF 與篩選結果數",
+      "zhCN": "市场动能：板块比较、精选 ETF 与筛选结果数",
+      "en": "Market Momentum: group comparisons, selected ETFs and screening counts"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.proPlan.features[0]",
+    "source": {
+      "zhTW": "樂活五線譜：分析免費清單外的個股，搭配額外指標 (RSI、MACD、KD)",
+      "zhCN": "乐活五线谱：分析免费列表外的个股，搭配额外指标 (RSI、MACD、KD)",
+      "en": "Lohas Spectrum: analyze stocks beyond the free list"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.proPlan.features[1]",
+    "source": {
+      "zhTW": "市場情緒分析：最新台美股分數與完整歷史",
+      "zhCN": "市场情绪分析：台湾股市和美股的最新分数与完整历史",
+      "en": "Market Sentiment: latest US and Taiwan scores and full history"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.proPlan.features[2]",
+    "source": {
+      "zhTW": "市場動能：完整 ETF 排行、成分股與篩選結果",
+      "zhCN": "市场动能：完整 ETF 排行、成分股与筛选结果",
+      "en": "Market Momentum: full ETF rankings, constituents and screening results"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.proPlan.features[3]",
+    "source": {
+      "zhTW": "RSI、MACD、KD：切換觀察漲跌力道",
+      "zhCN": "RSI、MACD、KD：切换观察涨跌力度",
+      "en": "RSI, MACD and KD: compare price momentum"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.proPlan.features[4]",
+    "source": {
+      "zhTW": "追蹤清單功能：同時比較多個標的情緒位階",
+      "zhCN": "自选列表功能：同时比较多个标的情绪位阶",
+      "en": "Watchlist Feature: compare sentiment levels across holdings"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.proPlan.features[5]",
+    "source": {
+      "zhTW": "追蹤清單可存放10個分類，每個分類50個標的",
+      "zhCN": "自选列表可存放10个分类，每个分类50个标的",
+      "en": "10 watchlist categories, up to 50 holdings each"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "subscription.subscriptionPlans.proPlan.features[6]",
+    "source": {
+      "zhTW": "無廣告體驗",
+      "zhCN": "无广告体验",
+      "en": "Ad-free Experience"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.flow.notices[0]",
+    "source": {
+      "zhTW": "點擊「前往付款」將跳轉到綠界支付頁面",
+      "zhCN": "点击「前往付款」将跳转到绿界支付页面",
+      "en": "Selecting “Proceed to Payment” opens the ECPay payment page."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.flow.notices[1]",
+    "source": {
+      "zhTW": "請在 30 分鐘內完成付款，逾時訂單將自動取消",
+      "zhCN": "请在 30 分钟内完成付款，逾时订单将自动取消",
+      "en": "Complete payment within 30 minutes; the order will expire after that."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.flow.notices[2]",
+    "source": {
+      "zhTW": "付款完成後將自動返回本網站",
+      "zhCN": "付款完成后将自动返回本网站",
+      "en": "You will return to this website after payment."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.security.notices[0]",
+    "source": {
+      "zhTW": "你將前往 payment.ecpay.com.tw，輸入信用卡資料並完成付款。",
+      "zhCN": "你将前往 payment.ecpay.com.tw，输入信用卡数据并完成付款。",
+      "en": "You will be redirected to payment.ecpay.com.tw to enter your card details and complete payment."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.security.notices[1]",
+    "source": {
+      "zhTW": "所有款項以 TWD（新臺幣）扣款；發卡銀行可能收取匯率換算或跨境交易費用。",
+      "zhCN": "所有款项以 TWD（新台币）扣款；发卡银行可能收取汇率换算或跨境交易费用。",
+      "en": "All charges are in TWD (New Taiwan Dollar). Your card issuer may apply currency conversion or international transaction fees."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.security.notices[2]",
+    "source": {
+      "zhTW": "信用卡是否可使用，以綠界與發卡銀行的審核結果為準。",
+      "zhCN": "信用卡是否可使用，以绿界与发卡银行的审核结果为准。",
+      "en": "Card acceptance is subject to ECPay and your card issuer."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.terms.serviceTerms[0]",
+    "source": {
+      "zhTW": "訂閱服務將於付款完成後立即生效",
+      "zhCN": "订阅服务将于付款完成后立即生效",
+      "en": "Subscription service will take effect immediately after payment completion"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.terms.serviceTerms[1]",
+    "source": {
+      "zhTW": "月付方案每月自動續費，年付方案每年自動續費",
+      "zhCN": "月付方案每月自动续费，年付方案每年自动续费",
+      "en": "Monthly plans auto-renew monthly, yearly plans auto-renew yearly"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.terms.serviceTerms[2]",
+    "source": {
+      "zhTW": "您可以隨時取消訂閱，取消後將在當前週期結束時停止服務",
+      "zhCN": "您可以随时取消订阅，取消后将在当前周期结束时停止服务",
+      "en": "You can cancel your subscription at any time, service will stop at the end of current cycle"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.terms.privacyPolicy[0]",
+    "source": {
+      "zhTW": "我們僅收集提供服務所必需的個人資料",
+      "zhCN": "我们仅收集提供服务所必需的个人信息",
+      "en": "We only collect personal data necessary to provide services"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.terms.privacyPolicy[1]",
+    "source": {
+      "zhTW": "您的付款資訊由綠界支付安全處理，我們不會儲存信用卡資訊",
+      "zhCN": "您的付款信息由绿界支付安全处理，我们不会保存信用卡信息",
+      "en": "Your payment information is securely processed by ECPay, we do not store credit card information"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "payment.terms.privacyPolicy[2]",
+    "source": {
+      "zhTW": "我們不會將您的個人資料出售給第三方",
+      "zhCN": "我们不会将您的个人信息出售给第三方",
+      "en": "We will not sell your personal data to third parties"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.bands[0].range",
+    "source": {
+      "zhTW": "8.0 以上",
+      "zhCN": "8.0 以上",
+      "en": "Above 8.0"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.bands[0].meaning",
+    "source": {
+      "zhTW": "極度偏多。美銀將此視為反向賣出訊號，代表多方部位已經擁擠，並非預測行情會下跌。",
+      "zhCN": "极度偏多。美银将此视为反向卖出信号，代表多方持仓已经拥挤，并非预测行情会下跌。",
+      "en": "Extreme bullish. BofA treats this as a contrarian sell signal, indicating a crowded long position rather than a forecast of decline."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.bands[1].range",
+    "source": {
+      "zhTW": "2.0 至 8.0",
+      "zhCN": "2.0 至 8.0",
+      "en": "2.0 to 8.0"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.bands[1].meaning",
+    "source": {
+      "zhTW": "中性區間。指標本身沒有明確訊號，需要搭配其他資訊判斷。",
+      "zhCN": "中性区间。指标本身没有明确信号，需要搭配其他信息判断。",
+      "en": "Neutral range. The gauge carries no clear signal on its own and needs other context."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.bands[2].range",
+    "source": {
+      "zhTW": "2.0 以下",
+      "zhCN": "2.0 以下",
+      "en": "Below 2.0"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.bands[2].meaning",
+    "source": {
+      "zhTW": "極度偏空。美銀將此視為反向買進訊號，通常出現在恐慌與大量資金撤出之後。",
+      "zhCN": "极度偏空。美银将此视为反向买入信号，通常出现在恐慌与大量资金撤出之后。",
+      "en": "Extreme bearish. BofA treats this as a contrarian buy signal, usually seen after heavy outflows and capitulation."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[0].key",
+    "source": {
+      "zhTW": "hf_positioning",
+      "zhCN": "hf_positioning",
+      "en": "hf_positioning"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[0].name",
+    "source": {
+      "zhTW": "避險基金部位（Hedge Fund Positioning）",
+      "zhCN": "避险基金持仓（Hedge Fund Positioning）",
+      "en": "Hedge Fund Positioning"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[0].note",
+    "source": {
+      "zhTW": "避險基金在股票上押了多少。",
+      "zhCN": "避险基金在股票上押了多少。",
+      "en": "How much equity exposure hedge funds are carrying."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[1].key",
+    "source": {
+      "zhTW": "equity_flows",
+      "zhCN": "equity_flows",
+      "en": "equity_flows"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[1].name",
+    "source": {
+      "zhTW": "股票資金流（Equity Flow）",
+      "zhCN": "股票资金流（Equity Flow）",
+      "en": "Equity Flow"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[1].note",
+    "source": {
+      "zhTW": "流進股票型基金的錢。資料來自 EPFR，一家追蹤全球基金資金進出的機構。",
+      "zhCN": "流进股票型基金的钱。数据来自 EPFR，一家跟踪全球基金资金进出的机构。",
+      "en": "Money moving into equity funds, measured by EPFR, a firm that tracks fund flows worldwide."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[2].key",
+    "source": {
+      "zhTW": "bond_flows",
+      "zhCN": "bond_flows",
+      "en": "bond_flows"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[2].name",
+    "source": {
+      "zhTW": "債券資金流（Bond Flow）",
+      "zhCN": "债券资金流（Bond Flow）",
+      "en": "Bond Flow"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[2].note",
+    "source": {
+      "zhTW": "流進債券型基金的錢，用來看投資人願不願意承擔風險。",
+      "zhCN": "流进债券型基金的钱，用来看投资者愿不愿意承担风险。",
+      "en": "Money moving into bond funds, used to gauge appetite for risk."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[3].key",
+    "source": {
+      "zhTW": "credit_mkt_technicals",
+      "zhCN": "credit_mkt_technicals",
+      "en": "credit_mkt_technicals"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[3].name",
+    "source": {
+      "zhTW": "信用市場技術面（Credit Market Technicals）",
+      "zhCN": "信用市场技术面（Credit Market Technicals）",
+      "en": "Credit Market Technicals"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[3].note",
+    "source": {
+      "zhTW": "公司債市場的供需與利差狀況。",
+      "zhCN": "公司债市场的供需与利差状况。",
+      "en": "Supply, demand and spread conditions in corporate credit."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[4].key",
+    "source": {
+      "zhTW": "equity_market_breadth",
+      "zhCN": "equity_market_breadth",
+      "en": "equity_market_breadth"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[4].name",
+    "source": {
+      "zhTW": "全球股市廣度（Global Stock Index Breadth）",
+      "zhCN": "全球股市广度（Global Stock Index Breadth）",
+      "en": "Global Stock Index Breadth"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[4].note",
+    "source": {
+      "zhTW": "全球有多少市場處在上升結構。",
+      "zhCN": "全球有多少市场处在上升结构。",
+      "en": "How many global markets are in an uptrend."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[5].key",
+    "source": {
+      "zhTW": "lo_positioning",
+      "zhCN": "lo_positioning",
+      "en": "lo_positioning"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[5].name",
+    "source": {
+      "zhTW": "經理人配置（FMS Positioning）",
+      "zhCN": "基金经理配置（FMS Positioning）",
+      "en": "FMS Positioning"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.bofaBullBear.components[5].note",
+    "source": {
+      "zhTW": "美銀每月訪問全球基金經理人，問他們實際的資產配置。",
+      "zhCN": "美银每月访问全球基金经理，问他们实际的资产配置。",
+      "en": "Actual allocations reported in BofA's monthly survey of global fund managers."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.bands[0].range",
+    "source": {
+      "zhTW": "0 至 24",
+      "zhCN": "0 至 24",
+      "en": "0 to 24"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.bands[0].meaning",
+    "source": {
+      "zhTW": "極度恐懼（Extreme Fear）。市場處在恐慌狀態，常伴隨大量賣壓。",
+      "zhCN": "极度恐惧（Extreme Fear）。市场处在恐慌状态，常伴随大量卖压。",
+      "en": "Extreme Fear. The market is in panic, usually alongside heavy selling."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.bands[1].range",
+    "source": {
+      "zhTW": "25 至 44",
+      "zhCN": "25 至 44",
+      "en": "25 to 44"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.bands[1].meaning",
+    "source": {
+      "zhTW": "恐懼（Fear）。投資人偏向保守。",
+      "zhCN": "恐惧（Fear）。投资者偏向保守。",
+      "en": "Fear. Investors are leaning defensive."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.bands[2].range",
+    "source": {
+      "zhTW": "45 至 55",
+      "zhCN": "45 至 55",
+      "en": "45 to 55"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.bands[2].meaning",
+    "source": {
+      "zhTW": "中性（Neutral）。多空力道相當。",
+      "zhCN": "中性（Neutral）。多空力度相当。",
+      "en": "Neutral. Buyers and sellers are evenly matched."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.bands[3].range",
+    "source": {
+      "zhTW": "56 至 75",
+      "zhCN": "56 至 75",
+      "en": "56 to 75"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.bands[3].meaning",
+    "source": {
+      "zhTW": "貪婪（Greed）。市場風險偏好上升。",
+      "zhCN": "贪婪（Greed）。市场风险偏好上升。",
+      "en": "Greed. Risk appetite is rising."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.bands[4].range",
+    "source": {
+      "zhTW": "76 至 100",
+      "zhCN": "76 至 100",
+      "en": "76 to 100"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.bands[4].meaning",
+    "source": {
+      "zhTW": "極度貪婪（Extreme Greed）。追價意願強，估值容易被推高。",
+      "zhCN": "极度贪婪（Extreme Greed）。追价意愿强，估值容易被推高。",
+      "en": "Extreme Greed. Strong willingness to chase prices, which stretches valuations."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[0].key",
+    "source": {
+      "zhTW": "market_momentum_sp125",
+      "zhCN": "market_momentum_sp125",
+      "en": "market_momentum_sp125"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[0].name",
+    "source": {
+      "zhTW": "市場動能（Market Momentum）",
+      "zhCN": "市场动能（Market Momentum）",
+      "en": "Market Momentum"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[0].note",
+    "source": {
+      "zhTW": "S&P 500 相對 125 日均線的位置。",
+      "zhCN": "S&P 500 相对 125 日均线的位置。",
+      "en": "Where the S&P 500 sits relative to its 125-day moving average."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[1].key",
+    "source": {
+      "zhTW": "stock_price_strength",
+      "zhCN": "stock_price_strength",
+      "en": "stock_price_strength"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[1].name",
+    "source": {
+      "zhTW": "股價強度（Stock Price Strength）",
+      "zhCN": "股价强度（Stock Price Strength）",
+      "en": "Stock Price Strength"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[1].note",
+    "source": {
+      "zhTW": "創 52 週新高與新低的家數差。",
+      "zhCN": "创 52 周新高与新低的家数差。",
+      "en": "The balance of 52-week highs against 52-week lows."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[2].key",
+    "source": {
+      "zhTW": "stock_price_breadth",
+      "zhCN": "stock_price_breadth",
+      "en": "stock_price_breadth"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[2].name",
+    "source": {
+      "zhTW": "股價廣度（Stock Price Breadth）",
+      "zhCN": "股价广度（Stock Price Breadth）",
+      "en": "Stock Price Breadth"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[2].note",
+    "source": {
+      "zhTW": "上漲股與下跌股的成交量差。",
+      "zhCN": "上涨股与下跌股的成交量差。",
+      "en": "Volume in advancing stocks versus declining stocks."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[3].key",
+    "source": {
+      "zhTW": "put_call_options",
+      "zhCN": "put_call_options",
+      "en": "put_call_options"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[3].name",
+    "source": {
+      "zhTW": "選擇權買賣權比（Put/Call Options）",
+      "zhCN": "看跌/看涨期权比率（Put/Call Options）",
+      "en": "Put/Call Options"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[3].note",
+    "source": {
+      "zhTW": "賣權與買權的成交量比值，用來看避險需求。",
+      "zhCN": "看跌期权与看涨期权的成交量比值，用来看避险需求。",
+      "en": "Put volume against call volume, a read on hedging demand."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[4].key",
+    "source": {
+      "zhTW": "market_volatility_vix_50",
+      "zhCN": "market_volatility_vix_50",
+      "en": "market_volatility_vix_50"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[4].name",
+    "source": {
+      "zhTW": "市場波動率（Market Volatility）",
+      "zhCN": "市场波动率（Market Volatility）",
+      "en": "Market Volatility"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[4].note",
+    "source": {
+      "zhTW": "VIX 相對其 50 日均線的位置。",
+      "zhCN": "VIX 相对其 50 日均线的位置。",
+      "en": "Where VIX sits relative to its 50-day moving average."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[5].key",
+    "source": {
+      "zhTW": "junk_bond_demand",
+      "zhCN": "junk_bond_demand",
+      "en": "junk_bond_demand"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[5].name",
+    "source": {
+      "zhTW": "垃圾債需求（Junk Bond Demand）",
+      "zhCN": "垃圾债需求（Junk Bond Demand）",
+      "en": "Junk Bond Demand"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[5].note",
+    "source": {
+      "zhTW": "垃圾債與投資級債的殖利率差，差距縮小代表願意承擔風險。",
+      "zhCN": "垃圾债与投资级债的收益率差，差距缩小代表愿意承担风险。",
+      "en": "The yield spread between junk and investment grade bonds; a narrowing spread means more appetite for risk."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[6].key",
+    "source": {
+      "zhTW": "safe_haven_demand",
+      "zhCN": "safe_haven_demand",
+      "en": "safe_haven_demand"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[6].name",
+    "source": {
+      "zhTW": "避險需求（Safe Haven Demand）",
+      "zhCN": "避险需求（Safe Haven Demand）",
+      "en": "Safe Haven Demand"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cnnFearGreed.components[6].note",
+    "source": {
+      "zhTW": "股票相對債券的近期報酬差。",
+      "zhCN": "股票相对债券的近期收益差。",
+      "en": "Recent stock returns against bond returns."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.aaiiSurvey.bands[0].range",
+    "source": {
+      "zhTW": "高於 +20",
+      "zhCN": "高于 +20",
+      "en": "Above +20"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.aaiiSurvey.bands[0].meaning",
+    "source": {
+      "zhTW": "散戶明顯偏樂觀。歷史上出現在漲勢延續一段時間之後。",
+      "zhCN": "散户明显偏乐观。历史上出现在涨势延续一段时间之后。",
+      "en": "Retail investors are clearly optimistic. Historically seen after a rally has run for a while."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.aaiiSurvey.bands[1].range",
+    "source": {
+      "zhTW": "-10 至 +20",
+      "zhCN": "-10 至 +20",
+      "en": "-10 to +20"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.aaiiSurvey.bands[1].meaning",
+    "source": {
+      "zhTW": "接近常態範圍，訊號有限。",
+      "zhCN": "接近常态范围，信号有限。",
+      "en": "Close to the normal range, limited signal."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.aaiiSurvey.bands[2].range",
+    "source": {
+      "zhTW": "低於 -20",
+      "zhCN": "低于 -20",
+      "en": "Below -20"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.aaiiSurvey.bands[2].meaning",
+    "source": {
+      "zhTW": "散戶明顯偏悲觀。歷史上常出現在市場大跌之後，被視為反向的參考。",
+      "zhCN": "散户明显偏悲观。历史上常出现在市场大跌之后，被视为反向的参考。",
+      "en": "Retail investors are clearly pessimistic. Historically seen after sharp declines and read as a contrarian marker."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.naaimExposure.bands[0].range",
+    "source": {
+      "zhTW": "高於 90",
+      "zhCN": "高于 90",
+      "en": "Above 90"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.naaimExposure.bands[0].meaning",
+    "source": {
+      "zhTW": "接近滿倉。經理人已經大幅押注股市，後續加碼空間有限。",
+      "zhCN": "接近满仓。基金经理已经大幅押注股市，后续加仓空间有限。",
+      "en": "Close to fully invested. Managers are heavily committed with limited room to add."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.naaimExposure.bands[1].range",
+    "source": {
+      "zhTW": "40 至 90",
+      "zhCN": "40 至 90",
+      "en": "40 to 90"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.naaimExposure.bands[1].meaning",
+    "source": {
+      "zhTW": "常見區間，訊號有限。",
+      "zhCN": "常见区间，信号有限。",
+      "en": "The common range, limited signal."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.naaimExposure.bands[2].range",
+    "source": {
+      "zhTW": "低於 20",
+      "zhCN": "低于 20",
+      "en": "Below 20"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.naaimExposure.bands[2].meaning",
+    "source": {
+      "zhTW": "大幅減碼或空手。歷史上出現在市場恐慌期間。",
+      "zhCN": "大幅减码或空仓。历史上出现在市场恐慌期间。",
+      "en": "Heavily reduced or flat. Historically seen during market panics."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cboePutCall.bands[0].range",
+    "source": {
+      "zhTW": "高於 1.0",
+      "zhCN": "高于 1.0",
+      "en": "Above 1.0"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cboePutCall.bands[0].meaning",
+    "source": {
+      "zhTW": "賣權成交量超過買權，避險需求明顯，情緒偏空。",
+      "zhCN": "看跌期权成交量超过看涨期权，避险需求明显，情绪偏空。",
+      "en": "Put volume exceeds call volume, showing clear demand for hedges and bearish sentiment."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cboePutCall.bands[1].range",
+    "source": {
+      "zhTW": "0.7 至 1.0",
+      "zhCN": "0.7 至 1.0",
+      "en": "0.7 to 1.0"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cboePutCall.bands[1].meaning",
+    "source": {
+      "zhTW": "常見區間。",
+      "zhCN": "常见区间。",
+      "en": "The common range."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cboePutCall.bands[2].range",
+    "source": {
+      "zhTW": "低於 0.7",
+      "zhCN": "低于 0.7",
+      "en": "Below 0.7"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cboePutCall.bands[2].meaning",
+    "source": {
+      "zhTW": "買權明顯多於賣權，市場對風險的警覺偏低。",
+      "zhCN": "看涨期权明显多于看跌期权，市场对风险的警觉偏低。",
+      "en": "Calls clearly outweigh puts, indicating low awareness of risk."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cotSp500.bands[0].range",
+    "source": {
+      "zhTW": "處在歷史高位",
+      "zhCN": "处在历史高位",
+      "en": "At historical highs"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cotSp500.bands[0].meaning",
+    "source": {
+      "zhTW": "投機端相對避險端明顯偏多，兩個陣營對立程度深。",
+      "zhCN": "投机端相对避险端明显偏多，两个阵营对立程度深。",
+      "en": "Speculators are clearly long relative to hedgers, with the two camps far apart."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cotSp500.bands[1].range",
+    "source": {
+      "zhTW": "中間區間",
+      "zhCN": "中间区间",
+      "en": "Middle range"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cotSp500.bands[1].meaning",
+    "source": {
+      "zhTW": "常見狀態，訊號有限。",
+      "zhCN": "常见状态，信号有限。",
+      "en": "The common state, limited signal."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cotSp500.bands[2].range",
+    "source": {
+      "zhTW": "處在歷史低位",
+      "zhCN": "处在历史低位",
+      "en": "At historical lows"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.cotSp500.bands[2].meaning",
+    "source": {
+      "zhTW": "投機端相對避險端明顯偏空。",
+      "zhCN": "投机端相对避险端明显偏空。",
+      "en": "Speculators are clearly short relative to hedgers."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.taiwanFearGreed.bands[0].range",
+    "source": {
+      "zhTW": "0–20",
+      "zhCN": "0–20",
+      "en": "0–20"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.taiwanFearGreed.bands[0].meaning",
+    "source": {
+      "zhTW": "極度恐懼。市場整體偏向防守。",
+      "zhCN": "极度恐惧。市场整体偏向防守。",
+      "en": "Extreme Fear. The market leans defensive."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.taiwanFearGreed.bands[1].range",
+    "source": {
+      "zhTW": "大於 20 至 40",
+      "zhCN": "大于 20 至 40",
+      "en": "Above 20 to 40"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.taiwanFearGreed.bands[1].meaning",
+    "source": {
+      "zhTW": "恐懼。風險偏好偏低。",
+      "zhCN": "恐惧。风险偏好偏低。",
+      "en": "Fear. Risk appetite is low."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.taiwanFearGreed.bands[2].range",
+    "source": {
+      "zhTW": "大於 40 至 60",
+      "zhCN": "大于 40 至 60",
+      "en": "Above 40 to 60"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.taiwanFearGreed.bands[2].meaning",
+    "source": {
+      "zhTW": "中性。情緒未明顯偏向兩端。",
+      "zhCN": "中性。情绪未明显偏向两端。",
+      "en": "Neutral. Sentiment is not strongly tilted either way."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.taiwanFearGreed.bands[3].range",
+    "source": {
+      "zhTW": "大於 60 至 80",
+      "zhCN": "大于 60 至 80",
+      "en": "Above 60 to 80"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.taiwanFearGreed.bands[3].meaning",
+    "source": {
+      "zhTW": "貪婪。風險偏好上升。",
+      "zhCN": "贪婪。风险偏好上升。",
+      "en": "Greed. Risk appetite is elevated."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.taiwanFearGreed.bands[4].range",
+    "source": {
+      "zhTW": "大於 80 至 100",
+      "zhCN": "大于 80 至 100",
+      "en": "Above 80 to 100"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.taiwanFearGreed.bands[4].meaning",
+    "source": {
+      "zhTW": "極度貪婪。市場情緒偏熱。",
+      "zhCN": "极度贪婪。市场情绪偏热。",
+      "en": "Extreme Greed. Sentiment is running hot."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.marketFearBreadth.bands[0].range",
+    "source": {
+      "zhTW": "接近 0%",
+      "zhCN": "接近 0%",
+      "en": "Near 0%"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.marketFearBreadth.bands[0].meaning",
+    "source": {
+      "zhTW": "只有零星標的在極端位置，市場整體情緒正常。",
+      "zhCN": "只有零星标的在极端位置，市场整体情绪正常。",
+      "en": "Only isolated holdings are at an extreme. Market sentiment overall is normal."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.marketFearBreadth.bands[1].range",
+    "source": {
+      "zhTW": "偏高（美股超過 25%、台股超過 16%）",
+      "zhCN": "偏高（美股超过 25%、台湾股市超过 16%）",
+      "en": "Elevated (above 25% in the US, above 16% in Taiwan)"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.marketFearBreadth.bands[1].meaning",
+    "source": {
+      "zhTW": "高於約九成的歷史觀察日，代表恐懼已擴散到更多標的。這是歷史排名，不是 90% 的標的占比。",
+      "zhCN": "高于约九成的历史观察日，代表恐惧已扩散到更多标的。这是历史排名，不是 90% 的标的占比。",
+      "en": "Higher than on roughly nine out of ten historical days, indicating fear has spread across more assets. This is a historical rank, not a 90% share of assets."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.marketFearBreadth.bands[2].range",
+    "source": {
+      "zhTW": "非常高",
+      "zhCN": "非常高",
+      "en": "Very high"
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  },
+  {
+    "key": "sentimentIndicatorPages.marketFearBreadth.bands[2].meaning",
+    "source": {
+      "zhTW": "多半是整個市場一起在跌。歷史上如果觸發這樣的情況，未來一年的表現最好，但過程通常還會再往下探一段。",
+      "zhCN": "多半是整个市场一起在跌。历史上如果触发这样的情况，未来一年的表现最好，但过程通常还会再往下探一段。",
+      "en": "Usually the whole market falling together. Historically, when this has triggered, the year that followed was the strongest — though price typically fell further first."
+    },
+    "koreanCandidate": null,
+    "approvalStatus": "pending_user_approval"
+  }
+]

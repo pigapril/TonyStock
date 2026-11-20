@@ -1,0 +1,189 @@
+{
+  "common": {
+    "loading": "불러오는 중...",
+    "error": "오류",
+    "noData": "표시할 데이터가 없습니다.",
+    "invalidParams": "잘못된 작업 매개변수입니다.",
+    "close": "닫기",
+    "back": "뒤로",
+    "scrollToTop": "맨 위로 이동",
+    "unknown": "알 수 없음",
+    "unknownError": "알 수 없는 오류",
+    "refresh": "새로고침",
+    "previous": "이전",
+    "next": "다음",
+    "cancel": "취소",
+    "dataLoadError": "데이터를 불러오는 중 오류가 발생했습니다.",
+    "locale": "ko-KR",
+    "errorLoading": "불러오지 못했습니다.",
+    "retry": "다시 시도",
+    "retrying": "다시 시도하는 중…",
+    "retryIn": "{{seconds}}초 후 다시 시도",
+    "technicalDetails": "기술 세부 정보",
+    "errorCode": "오류 코드",
+    "timestamp": "시간",
+    "context": "내용",
+    "originalMessage": "원본 메시지",
+    "errorPrefix": "오류:"
+  },
+  "googleTrendsMarket": {
+    "invalidData": "데이터 형식이 올바르지 않습니다.",
+    "fetchError": "데이터를 가져오는 중 오류가 발생했습니다.",
+    "chartDescription": "이 차트는 여러 시장 핵심 키워드의 Google 검색 관심도와 S&P 500(SPY) 주가 흐름을 비교합니다.",
+    "pageTitle": "Google 검색 관심도 - 전체 시장",
+    "pageDescription": "주요 금융 키워드의 Google 검색 관심도를 S&P 500 지수와 비교해 전체 시장 심리를 추적합니다.",
+    "heading": "Google 시장 트렌드 분석"
+  },
+  "googleTrendsSymbol": {
+    "invalidData": "데이터 형식이 올바르지 않습니다.",
+    "fetchError": "데이터를 가져오는 중 오류가 발생했습니다.",
+    "chartDescription": "이 차트는 {symbol}의 Google 검색 관심도와 주가 흐름을 비교합니다.\n검색 관심도는 시장이 해당 종목에 얼마나 주목하는지 보여 주며,\n주가는 실제 가격 변화를 나타냅니다.",
+    "prompt": "위 검색창에 종목 코드를 입력하면 데이터를 확인할 수 있습니다.",
+    "pageTitle": "Google 검색 관심도 - 개별 종목",
+    "pageDescription": "개별 종목 코드의 Google 검색 관심도와 주가 사이의 관계를 분석합니다.",
+    "heading": "Google 종목 검색 관심도 분석"
+  },
+  "googleTrendsChart": {
+    "tooltipDate": "날짜",
+    "yAxisPrice": "주가 ($)",
+    "yAxisTrend": "Google 검색 관심도(0~100)",
+    "priceLineName": "{symbol} 주가"
+  },
+  "googleTrendsSearch": {
+    "placeholder": "종목 코드를 입력하세요",
+    "searching": "검색 중...",
+    "errorIcon": "⚠️",
+    "noResultsIcon": "🔍",
+    "noResults": "일치하는 종목을 찾을 수 없습니다."
+  },
+  "googleTrendsTimeframe": {
+    "label": "기간",
+    "oneMonth": "1개월",
+    "threeMonths": "3개월",
+    "sixMonths": "6개월",
+    "oneYear": "1년"
+  },
+  "home": {
+    "pageTitle": "Sentiment Inside Out | 시장 심리 분석 플랫폼",
+    "pageDescription": "Sentiment Inside Out은 SIO 공포·탐욕 지수, LOHAS 5선 분석과 관심 종목 기능을 제공하여 장기 투자자가 시장 심리와 종목별 가격 흐름을 살펴볼 수 있도록 돕습니다.",
+    "keywords": "공포·탐욕 지수, 시장 심리, 장기 투자, 가격 추세 분석, 관심 종목, 투자 심리, 투자 도구",
+    "jsonLd": {
+      "name": "Sentiment Inside Out",
+      "description": "Sentiment Inside Out은 시장 심리 지표, LOHAS 5선 분석과 관심 종목 기능을 제공하여 장기 투자자가 전체 시장 심리와 개별 종목의 가격 흐름을 살펴볼 수 있도록 돕습니다."
+    },
+    "hero": {
+      "title": "시장을 읽고 공포와 탐욕을 이해하세요",
+      "subtitle": "객관적인 데이터로 현재 주식시장의 심리를 파악하고 공포와 탐욕이라는 인간의 약점을 극복하세요.",
+      "primaryAuthenticated": "시장 심리 보기",
+      "primaryFreeTrial": "카드 등록 없이 Pro 30일 무료 체험",
+      "primaryGuest": "카드 등록 없이 Pro 30일 무료 체험",
+      "secondary": "무료 주가 추세 분석",
+      "marketPreviewHeadline": {
+        "brand": "Sentiment Inside Out",
+        "index": "공포·탐욕 지수"
+      },
+      "moments": {
+        "events": {
+          "chinaDevaluation": {
+            "title": "위안화 환율 급변",
+            "description": "위안화 가치가 급격히 하락하며 글로벌 시장이 흔들렸습니다."
+          },
+          "early2016Low": {
+            "title": "유가 급락",
+            "description": "유가 급락과 경기 둔화 우려가 시장에 부담을 주었습니다."
+          },
+          "tradeWarSelloff": {
+            "title": "무역 전쟁에 따른 매도세",
+            "description": "관세 갈등 심화와 긴축 압력이 연말 매도세를 촉발했습니다."
+          },
+          "prePandemicPeak": {
+            "title": "팬데믹 이전 시장 고점",
+            "description": "팬데믹이 본격적으로 확산되기 전까지 시장 심리는 낙관적인 편이었습니다."
+          },
+          "pandemicPanic": {
+            "title": "팬데믹 공포에 따른 급락",
+            "description": "팬데믹으로 인한 경제 활동 중단의 충격이 빠르게 확산되었습니다."
+          },
+          "liquidityPeak": {
+            "title": "2021년 유동성 정점",
+            "description": "완화적인 유동성과 성장주 열풍이 시장을 끌어올렸습니다."
+          },
+          "inflationShock": {
+            "title": "인플레이션과 금리 인상 충격",
+            "description": "인플레이션이 심화되고 금리가 오르면서 시장은 위험을 다시 평가했고, 심리도 약해졌습니다."
+          },
+          "aiRally": {
+            "title": "AI 테마 열풍",
+            "description": "AI 테마가 시장의 위험 선호를 끌어올리며 심리가 낙관적으로 바뀌었습니다."
+          },
+          "inflationBearLow": {
+            "title": "2022년 약세장 저점",
+            "description": "금리 인상과 인플레이션, 경기 침체에 대한 우려가 계속 커졌습니다."
+          },
+          "trumpTradeWar2025": {
+            "title": "2025년 트럼프 무역 전쟁 충격",
+            "description": "트럼프의 무역 전쟁 관련 소식이 다시 시장을 흔들었습니다."
+          }
+        }
+      },
+      "scrollLabel": "아래에서 주요 기능 살펴보기",
+      "trialLoginTitle": "로그인하고 Pro 체험 시작하기",
+      "trialLoginPrompt": "로그인한 후 자격 요건을 충족하면 Pro 30일 무료 체험을 시작할 수 있습니다.",
+      "historyMomentLabel": "과거 시장 이벤트"
+    },
+    "announcement": {
+      "badge": "공지"
+    },
+    "methodology": {
+      "historyPreview": {
+        "kicker": "과거 시장 흐름",
+        "title": "과거 극도의 공포가 나타난 시점 돌아보기",
+        "description": "시장이 가장 두려움에 빠졌을 때가 장기 투자자에게는 오히려 냉정함이 필요한 순간일 수 있습니다.",
+        "empty": "현재 과거 시장 흐름을 불러올 수 없습니다."
+      },
+      "pricePreview": {
+        "title": "종목의 현재 가격 심리 구간 빠르게 확인",
+        "description": "시장 지수에서 현재 가격이 어느 구간에 있는지 살펴보고 시장 심리가 공포와 탐욕 중 어디에 가까운지 확인하세요.",
+        "currentPrice": "최신 가격",
+        "currentSentiment": "가격 심리",
+        "symbol": "종목 코드",
+        "empty": "현재 SPY 분석을 불러올 수 없습니다."
+      }
+    },
+    "story": {
+      "blocks": {
+        "sentiment": {
+          "eyebrow": "시장 공포가 극심했던 순간 돌아보기",
+          "title": "시장이 공포에 빠질수록 더 냉정해야 합니다.",
+          "description": "시장이 극도의 공포에 진입하면 투자 포트폴리오의 위험 배분을 다시 살펴보세요. 공포만으로 매도하는 일을 피하는 데 도움이 됩니다.",
+          "cta": "과거 공포 저점 보기"
+        },
+        "price": {
+          "title": "추세선으로 주가의 현재 위치 읽기",
+          "description": "주가 흐름을 정확히 예측하기는 어렵습니다. 현재 가격이 추세선에 비해 어느 위치에 있는지 살펴보면 매매 판단에 참고가 됩니다.",
+          "cta": "다른 종목 분석하기"
+        },
+        "watchlist": {
+          "title": "나만의 관심 종목 목록 만들기",
+          "description": "관심 있는 종목들의 현재 가격 위치를 한곳에서 확인하세요.",
+          "cta": "관심 종목 보기",
+          "items": {
+            "spy": "미국 대표 시장 ETF",
+            "qqq": "미국 기술주 ETF",
+            "voo": "S&P 500 ETF",
+            "aapl": "Apple",
+            "nvda": "NVIDIA",
+            "msft": "Microsoft"
+          },
+          "tags": {
+            "extremeGreed": "극도의 탐욕",
+            "greed": "탐욕",
+            "neutral": "중립",
+            "fear": "공포",
+            "extremeFear": "극도의 공포"
+          }
+        }
+      }
+    }
+  }
+}

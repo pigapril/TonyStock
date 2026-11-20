@@ -7,7 +7,16 @@
 
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { PlanCard } from '../PlanCard';
+import { PlanCard, getPlanFeatureAccess } from '../PlanCard';
+
+describe('Free plan feature access semantics', () => {
+    it('uses stable feature positions rather than translated display text', () => {
+        expect([0, 1, 2, 3, 4].map((index) => getPlanFeatureAccess('free', index)))
+            .toEqual(['limited', 'limited', 'disabled', 'disabled', 'included']);
+        expect([0, 1, 2, 3].map((index) => getPlanFeatureAccess('pro', index)))
+            .toEqual(['included', 'included', 'included', 'included']);
+    });
+});
 
 const mockNavigate = jest.fn();
 let mockLocation = { search: '' };
@@ -90,6 +99,17 @@ describe('PlanCard 的免綁卡試用入口', () => {
     it('合資格時才出現試用按鈕', () => {
         renderCard({ freeTrialEligible: true });
 
+        expect(trialButton()).not.toBeNull();
+        expect(existingButton()).toBeNull();
+    });
+
+    it('方案顯示名稱不影響 Free/Pro 權限與入口判斷，穩定 plan.id 才是依據', () => {
+        renderCard({
+            plan: { ...PRO_PLAN, name: 'Free' },
+            freeTrialEligible: true
+        });
+
+        // 即使顯示文案意外為 Free，只要 plan.id 是 pro，仍走 Pro 的既有試用入口。
         expect(trialButton()).not.toBeNull();
         expect(existingButton()).toBeNull();
     });

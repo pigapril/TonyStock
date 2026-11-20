@@ -8,6 +8,9 @@ import { useTranslation } from 'react-i18next';
 import { useSmartNavigation } from './hooks/useSmartNavigation';
 import { useDeferredFeature } from './hooks/useDeferredFeature';
 import { getInitialLanguage } from './locales/resourceGroups';
+import { DEFAULT_LOCALE, getCanonicalLocale } from './locales/localeConfig';
+import { loadCommonLocales } from './locales/loadCommonLocales';
+import { isNonIndexableRoute } from './utils/seoRoutePolicy';
 
 
 // 第三方庫
@@ -139,6 +142,7 @@ function AppContent() {
   
   const isMobile = useMediaQuery({ query: '(max-width: 1300px)' });
   const location = useLocation();
+  const shouldNoindex = isNonIndexableRoute(location.pathname, lang);
   const isHomePage = location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
   const showMarketPulse = [
     'priceanalysis', 'market-sentiment', 'tw-market-sentiment', 'momentum', 'watchlist'
@@ -165,17 +169,6 @@ function AppContent() {
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [sentimentDropdownOpen, setSentimentDropdownOpen] = React.useState(false);
-
-  useEffect(() => {
-    if (lang && i18n.options.supportedLngs.includes(lang)) {
-      if (i18n.language !== lang) {
-        i18n.changeLanguage(lang);
-      }
-    } else {
-      const currentPathWithoutLang = location.pathname.replace(/^\/[^/]+/, '');
-      navigate(`/${i18n.options.fallbackLng}${currentPathWithoutLang || '/'}`, { replace: true });
-    }
-  }, [lang, i18n, navigate, location.pathname]);
 
   // 廣告阻擋邏輯 - 根據用戶訂閱狀態
   useEffect(() => {
@@ -296,7 +289,8 @@ function AppContent() {
   return (
     <div className={`App ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <Helmet>
-        <link rel="manifest" href={`/manifest.${lang?.startsWith('zh') ? 'zh-TW' : 'en'}.json`} />
+        <link rel="manifest" href={`/manifest.${getCanonicalLocale(lang)}.json`} />
+        {shouldNoindex && <meta name="robots" content="noindex, follow" />}
       </Helmet>
       <PageViewTracker />
       <DeferredTagManager />
@@ -344,7 +338,7 @@ function AppContent() {
                       onClick={() => { handleNavItemClick(); setSentimentDropdownOpen(false); }}
                       className={({ isActive }) => isActive ? "active-nav-link" : ""}
                     >
-                      <span>{lang === 'zh-TW' ? '🌐 指標總覽' : '🌐 All Indicators'}</span>
+                      <span>🌐 {t('nav.indicatorOverview')}</span>
                     </NavLink>
                   </li>
                   <li>
@@ -353,7 +347,7 @@ function AppContent() {
                       onClick={() => { handleNavItemClick(); setSentimentDropdownOpen(false); }}
                       className={({ isActive }) => isActive ? "active-nav-link" : ""}
                     >
-                      <span>{lang === 'zh-TW' ? '🇺🇸 美股' : '🇺🇸 US Market'}</span>
+                      <span>🇺🇸 {t('nav.usMarket')}</span>
                     </NavLink>
                   </li>
                   <li>
@@ -362,7 +356,7 @@ function AppContent() {
                       onClick={() => { handleNavItemClick(); setSentimentDropdownOpen(false); }}
                       className={({ isActive }) => isActive ? "active-nav-link" : ""}
                     >
-                      <span>{lang === 'zh-TW' ? '🇹🇼 台股' : '🇹🇼 TW Market'}</span>
+                      <span>🇹🇼 {t('nav.twMarket')}</span>
                     </NavLink>
                   </li>
                 </ul>
@@ -509,19 +503,19 @@ function AppContent() {
                         to={`/${lang}/sentiment-indicators`}
                         className={({ isActive }) => isActive ? "active-nav-link" : ""}
                       >
-                        {lang === 'zh-TW' ? '🌐 指標總覽' : '🌐 All Indicators'}
+                        🌐 {t('nav.indicatorOverview')}
                       </NavLink>
                       <NavLink
                         to={`/${lang}/market-sentiment`}
                         className={({ isActive }) => isActive ? "active-nav-link" : ""}
                       >
-                        {lang === 'zh-TW' ? '🇺🇸 美股' : '🇺🇸 US Market'}
+                        🇺🇸 {t('nav.usMarket')}
                       </NavLink>
                       <NavLink
                         to={`/${lang}/tw-market-sentiment`}
                         className={({ isActive }) => isActive ? "active-nav-link" : ""}
                       >
-                        {lang === 'zh-TW' ? '🇹🇼 台股' : '🇹🇼 TW Market'}
+                        🇹🇼 {t('nav.twMarket')}
                       </NavLink>
                     </div>
                   </div>
@@ -766,43 +760,65 @@ function LanguageWrapper() {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const [localeLoadError, setLocaleLoadError] = React.useState(null);
+  const [localeRetry, setLocaleRetry] = React.useState(0);
+  const standardLang = i18n.options.supportedLngs.find(
+    supportedLang => supportedLang.toLowerCase() === lang?.toLowerCase()
+  );
 
   useEffect(() => {
-    // 找到標準的大小寫格式 (假設 supportedLngs 存儲的是標準格式)
-    const standardLang = i18n.options.supportedLngs.find(
-      supportedLang => supportedLang.toLowerCase() === lang?.toLowerCase()
-    );
-
-    if (lang && standardLang) {
-      // 如果 URL 中的 lang 與標準格式的大小寫不同，則重定向
-      if (lang !== standardLang) {
-        const newPath = location.pathname.replace(`/${lang}`, `/${standardLang}`);
-        navigate(newPath + location.search + location.hash, { replace: true });
-        return; // 停止後續處理，等待重定向生效
-      }
-
-      // Shared shell copy is bundled; feature pages wait inside RouteLocaleGate.
-      if (i18n.language !== standardLang) i18n.changeLanguage(standardLang);
+    if (!lang) return undefined;
+    if (!standardLang) {
+      const currentPathWithoutLang = location.pathname.replace(/^\/[^/]+/, '');
+      navigate(`/${DEFAULT_LOCALE}${currentPathWithoutLang || '/'}${location.search}${location.hash}`, { replace: true });
+      return undefined;
     }
-    // AppContent 中的 useEffect 會處理無效 lang (完全不匹配 supportedLngs) 的情況
-    // 但這裡也可以加上處理，如果 standardLang 未找到
-    // else if (lang) {
-    //   // 如果 lang 存在但不在 supportedLngs 中 (即使忽略大小寫)
-    //   // 導向預設語言
-    //   const currentPathWithoutLang = location.pathname.replace(/^\/[^/]+/, '');
-    //   navigate(`/${i18n.options.fallbackLng}${currentPathWithoutLang || '/'}`, { replace: true });
-    // }
 
-  }, [lang, i18n, navigate, location]); // 添加 location 到依賴
+    // Canonicalize locale casing before starting a resource request.
+    if (lang !== standardLang) {
+      const newPath = location.pathname.replace(`/${lang}`, `/${standardLang}`);
+      navigate(newPath + location.search + location.hash, { replace: true });
+      return undefined;
+    }
 
-  // 確保在語言驗證/重定向前不渲染 AppContent
-  // 檢查標準格式是否存在且與當前 URL 的 lang 匹配
-  const isValidLang = lang && i18n.options.supportedLngs.includes(lang);
+    if (i18n.language === standardLang) {
+      setLocaleLoadError(null);
+      return undefined;
+    }
+
+    let active = true;
+    setLocaleLoadError(null);
+    loadCommonLocales(i18n, standardLang)
+      .then(() => {
+        if (!active || i18n.language === standardLang) return undefined;
+        return i18n.changeLanguage(standardLang);
+      })
+      .then(() => {
+        if (active) setLocaleLoadError(null);
+      })
+      .catch(() => {
+        if (active) setLocaleLoadError(standardLang);
+      });
+
+    return () => { active = false; };
+  }, [lang, standardLang, i18n, navigate, location.pathname, location.search, location.hash, localeRetry]);
+
+  const isValidLang = Boolean(lang && standardLang && lang === standardLang);
 
   if (!isValidLang) {
-    // 如果語言無效或正在重定向，返回 null 或 Loading
-    // AppContent 的 useEffect 也會處理重定向，但這裡提前處理更好
     return null;
+  }
+
+  // Do not render the shell in the previous language while the new common
+  // bundle downloads. RouteLocaleGate will load any page-specific groups next.
+  if (i18n.language !== standardLang) {
+    if (localeLoadError === standardLang) {
+      return <div className="loading-container" role="alert">
+        <p>Unable to load language resources. Check your connection and try again.</p>
+        <button type="button" onClick={() => setLocaleRetry(value => value + 1)}>Retry</button>
+      </div>;
+    }
+    return <RouteFallback />;
   }
 
   return <AppContent />;

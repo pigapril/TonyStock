@@ -5,13 +5,11 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { LOCALE_CODES } = require('../src/locales/localeConfig');
 
 const ROOT = path.resolve(__dirname, '..');
 const REPORT = path.join(ROOT, 'unused-i18n-keys.json');
-const FILES = [
-  path.join(ROOT, 'src/locales/en/translation.json'),
-  path.join(ROOT, 'src/locales/zh-TW/translation.json'),
-];
+const FILES = LOCALE_CODES.map(locale => path.join(ROOT, `src/locales/${locale}/translation.json`));
 
 const { unusedKeys } = JSON.parse(fs.readFileSync(REPORT, 'utf8'));
 

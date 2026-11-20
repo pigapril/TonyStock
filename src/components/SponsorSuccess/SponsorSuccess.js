@@ -3,6 +3,7 @@ import './SponsorSuccess.css'; // 引入樣式表
 import { Helmet } from 'react-helmet-async';
 import { FaHeart } from 'react-icons/fa'; // 引入愛心圖示
 import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { buildSeoTitle, normalizeMetaDescription } from '../../utils/socialMetadata';
 
 const SponsorSuccess = () => {
   const { t } = useTranslation(); // Initialize useTranslation
@@ -10,8 +11,8 @@ const SponsorSuccess = () => {
   return (
     <div className="sponsor-success-page">
       <Helmet>
-        <title>{t('sponsorSuccess.pageTitle')}</title>
-        <meta name="description" content={t('sponsorSuccess.pageDescription')} />
+        <title>{buildSeoTitle(t('sponsorSuccess.pageTitle'), t('pageContainer.defaultTitle'))}</title>
+        <meta name="description" content={normalizeMetaDescription(t('sponsorSuccess.pageDescription'))} />
       </Helmet>
       <div className="sponsor-success-container">
         <div className="heart-icon">

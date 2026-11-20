@@ -1,0 +1,372 @@
+{
+  "redemption": {
+    "inputPlaceholder": "쿠폰 코드를 입력하세요",
+    "validate": "확인",
+    "validating": "확인 중...",
+    "apply": "쿠폰 코드 적용",
+    "applied": "적용됨",
+    "redeem": "사용하기",
+    "redeeming": "사용 중...",
+    "processing": "처리 중...",
+    "loadingPreview": "미리 보기 불러오는 중...",
+    "preview": {
+      "title": "쿠폰 혜택",
+      "percentageDiscount": "{{percentage}}% 할인",
+      "fixedDiscount": "{{amount}} {{currency}} 할인",
+      "timeExtension": "{{duration}}{{unit}} 연장",
+      "planUpgrade": "{{plan}} 요금제로 업그레이드",
+      "benefits": "특별 혜택"
+    },
+    "confirmation": {
+      "title": "쿠폰 사용 확인",
+      "codeLabel": "쿠폰 코드",
+      "benefitsTitle": "제공되는 혜택:",
+      "valueLabel": "예상 혜택 금액:",
+      "paymentMethod": {
+        "title": "결제 수단이 필요합니다",
+        "description": "이 혜택을 이용하려면 유효한 결제 수단을 등록해야 합니다.",
+        "acknowledge": "결제 수단 등록이 필요하다는 점을 확인했습니다."
+      },
+      "cancel": "취소",
+      "confirm": "쿠폰 사용 확인",
+      "processing": "처리 중...",
+      "info": "확인 후에는 이 작업을 취소할 수 없습니다.",
+      "benefits": {
+        "discount": {
+          "percentage": "구독료 {{percentage}}% 할인",
+          "fixed": "구독료 {{amount}} {{currency}} 할인"
+        },
+        "extension": {
+          "description": "구독 기간이 {{duration}}{{unit}} 연장됩니다."
+        },
+        "upgrade": {
+          "description": "{{duration}}{{unit}} 동안 {{plan}} 요금제로 업그레이드됩니다."
+        },
+        "general": {
+          "description": "특별 혜택이 제공됩니다."
+        }
+      }
+    },
+    "history": {
+      "loading": "사용 내역을 불러오는 중...",
+      "retry": "다시 시도",
+      "empty": {
+        "title": "쿠폰 사용 내역이 없습니다",
+        "description": "아직 사용한 쿠폰이 없습니다. 위에 코드를 입력해 혜택을 받아 보세요!"
+      },
+      "summary": "쿠폰 사용 내역 {{showing}} / {{total}}건 표시",
+      "table": {
+        "date": "날짜",
+        "code": "코드",
+        "type": "유형",
+        "benefit": "혜택",
+        "status": "상태"
+      },
+      "types": {
+        "discount": "할인",
+        "extension": "기간 연장",
+        "upgrade": "요금제 업그레이드"
+      },
+      "status": {
+        "applied": "적용됨",
+        "pending": "처리 중",
+        "failed": "실패",
+        "reversed": "취소됨"
+      },
+      "benefits": {
+        "discount": "{{amount}} {{currency}} 할인",
+        "discountGeneral": "구독 할인",
+        "extension": "{{duration}}{{unit}} 연장",
+        "upgrade": "{{plan}} 요금제로 업그레이드",
+        "general": "특별 혜택"
+      },
+      "filters": {
+        "allStatuses": "모든 상태",
+        "allTypes": "모든 유형",
+        "startDate": "시작일",
+        "endDate": "종료일",
+        "apply": "필터 적용",
+        "clear": "필터 초기화"
+      },
+      "pagination": {
+        "previous": "이전",
+        "next": "다음"
+      },
+      "errors": {
+        "loadFailed": "쿠폰 사용 내역을 불러오지 못했습니다."
+      }
+    },
+    "activePromotions": {
+      "loading": "혜택을 불러오는 중...",
+      "retry": "다시 시도",
+      "empty": {
+        "title": "사용 가능한 혜택이 없습니다",
+        "description": "현재 이용할 수 있는 혜택이 없습니다."
+      },
+      "codeLabel": "코드:",
+      "timeRemaining": {
+        "days": "남은 시간 {{days}}일 {{hours}}시간",
+        "hours": "남은 시간 {{hours}}시간 {{minutes}}분",
+        "minutes": "남은 시간 {{minutes}}분"
+      },
+      "expired": "만료됨",
+      "expiringWarning": "혜택이 곧 만료됩니다!",
+      "renewNow": "지금 갱신",
+      "expiredMessage": "이 혜택은 만료되었습니다.",
+      "renewSubscription": "구독 갱신",
+      "benefits": {
+        "discount": {
+          "title": "할인 혜택",
+          "percentage": "구독료 {{percentage}}% 할인",
+          "fixed": "구독료 {{amount}} {{currency}} 할인"
+        },
+        "extension": {
+          "title": "구독 기간 연장",
+          "description": "구독 기간이 {{duration}}{{unit}} 연장되었습니다."
+        },
+        "upgrade": {
+          "title": "요금제 업그레이드",
+          "description": "{{plan}} 요금제의 기능을 이용할 수 있습니다."
+        },
+        "general": {
+          "title": "특별 혜택",
+          "description": "사용 가능한 혜택이 있습니다."
+        }
+      },
+      "errors": {
+        "loadFailed": "사용 가능한 혜택을 불러오지 못했습니다."
+      }
+    },
+    "success": {
+      "redeemed": "쿠폰이 성공적으로 적용되었습니다!"
+    },
+    "errors": {
+      "unknown": "알 수 없는 오류가 발생했습니다.",
+      "validationFailed": "코드를 확인하지 못했습니다.",
+      "previewFailed": "혜택을 미리 볼 수 없습니다.",
+      "redemptionFailed": "쿠폰을 사용하지 못했습니다.",
+      "invalid_code": "유효하지 않은 쿠폰 코드입니다.",
+      "code_not_found": "쿠폰 코드를 찾을 수 없습니다. 입력 내용을 확인한 후 다시 시도해 주세요.",
+      "code_expired": "이 코드는 {{expiryDate}}에 만료되었습니다.",
+      "code_not_active": "이 코드는 {{activationDate}}부터 사용할 수 있습니다.",
+      "code_exhausted": "이 코드는 사용 한도에 도달했습니다.",
+      "code_inactive": "이 쿠폰 코드는 활성화되어 있지 않습니다.",
+      "already_redeemed": "이 코드는 {{redemptionDate}}에 이미 사용했습니다.",
+      "user_limit_exceeded": "이 코드의 사용자별 사용 한도에 도달했습니다.",
+      "eligibility_failed": "이 코드를 사용할 수 있는 조건을 충족하지 않습니다.",
+      "captcha_required": "보안 문자 인증을 완료해야 합니다.",
+      "plan_not_eligible": "이 코드는 다음 요금제에서만 사용할 수 있습니다: {{eligiblePlans}}.",
+      "eligibility_new_customers_only": "이 코드는 신규 고객만 사용할 수 있습니다.",
+      "not_new_customer": "이 코드는 신규 사용자만 사용할 수 있습니다.",
+      "eligibility_plan_restriction": "이 코드는 {{eligiblePlans}} 요금제 사용자만 사용할 수 있습니다.",
+      "eligibility_first_time_only": "이 코드는 처음 쿠폰을 사용하는 사용자만 사용할 수 있습니다.",
+      "not_first_time_user": "이 코드는 최초 사용자만 사용할 수 있습니다.",
+      "payment_method_required": "이 코드를 사용하려면 먼저 결제 수단을 등록해야 합니다.",
+      "stacking_violation": "이 코드는 현재 적용된 다른 혜택과 중복 사용할 수 없습니다.",
+      "stacking_conflict_with": "이 코드는 {{conflictingPromotions}} 혜택과 함께 사용할 수 없습니다.",
+      "confirmation_required": "확인이 필요합니다.",
+      "rate_limited": "시도 횟수가 너무 많습니다. {{retryAfter}}초 후 다시 시도해 주세요.",
+      "rate_limited_ip": "이 IP 주소의 시도 횟수가 너무 많습니다. 잠시 후 다시 시도해 주세요.",
+      "rate_limited_user": "시도 횟수가 너무 많습니다. 잠시 후 다시 시도해 주세요.",
+      "transaction_failed": "거래에 실패했습니다. 다시 시도해 주세요.",
+      "network_error": "네트워크 연결 오류입니다. 연결 상태를 확인해 주세요.",
+      "server_error": "서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+      "timeout": "요청 시간이 초과되었습니다. 다시 시도해 주세요.",
+      "maintenance": "시스템 점검 중입니다. 잠시 후 다시 시도해 주세요.",
+      "code_format_invalid": "코드 형식이 올바르지 않습니다.",
+      "code_too_short": "코드가 너무 짧습니다.",
+      "code_too_long": "코드가 너무 깁니다.",
+      "suspicious_activity": "비정상적인 활동이 감지되었습니다. 고객 지원에 문의해 주세요.",
+      "account_suspended": "계정이 정지되어 쿠폰을 사용할 수 없습니다.",
+      "region_restricted": "이 코드는 현재 지역에서 사용할 수 없습니다.",
+      "device_limit_exceeded": "이 기기에서 사용할 수 있는 횟수 한도에 도달했습니다.",
+      "plan_not_eligible_generic": "이 코드는 현재 요금제에서 사용할 수 없습니다."
+    },
+    "actions": {
+      "upgrade_plan": "요금제 업그레이드",
+      "upgrade_to_plan": "{{planName}} 요금제로 업그레이드",
+      "bind_payment": "결제 수단 등록",
+      "view_history": "쿠폰 사용 내역 보기",
+      "contact_support": "고객 지원 문의",
+      "try_another": "다른 코드 입력",
+      "view_alternatives": "다른 혜택 보기",
+      "check_spelling": "코드 철자 확인",
+      "retry_input": "다시 입력"
+    },
+    "units": {
+      "day": "일",
+      "days": "일",
+      "month": "개월",
+      "months": "개월",
+      "year": "년",
+      "years": "년"
+    },
+    "pricing": {
+      "title": "쿠폰 코드가 있으신가요?",
+      "subtitle": "쿠폰 코드를 입력하면 요금제 할인 혜택을 바로 확인할 수 있습니다.",
+      "placeholder": "쿠폰 코드 입력",
+      "appliedTitle": "쿠폰 코드가 적용되었습니다!",
+      "appliedMessage": "구독에 혜택이 적용되었습니다.",
+      "appliedIndicator": "혜택 적용됨",
+      "discountBadge": {
+        "percentage": "{{percentage}}% 할인",
+        "fixed": "{{amount}} 할인"
+      }
+    }
+  },
+  "subscription": {
+    "pageTitle": "구독 요금제",
+    "pageDescription": "Free와 Pro를 비교해 보세요. Free에서는 지수 ETF와 과거 시장 심리를 확인할 수 있고, Pro에서는 최신 미국·대만 시장 심리, 개별 종목 분석, 모멘텀 스크리닝과 관심 종목 기능을 이용할 수 있습니다.",
+    "upgradeRequired": {
+      "title": "요금제 업그레이드가 필요합니다"
+    },
+    "plans": {
+      "free": "Free 요금제",
+      "pro": "Pro 요금제"
+    },
+    "features": {
+      "lohasSpectrum": "LOHAS 5선 분석",
+      "lohasSpectrumDesc": "주식 기술적 분석 도구",
+      "marketSentiment": "시장 심리 분석",
+      "marketSentimentDesc": "시장 심리 지표 분석",
+      "watchlist": "관심 종목",
+      "watchlistDesc": "개인 맞춤형 종목 추적 기능",
+      "ads": "광고",
+      "adsDesc": "광고 표시 여부",
+      "unavailable": "사용할 수 없는 기능"
+    },
+    "userAccount": {
+      "title": "내 계정",
+      "currentPlan": "현재 요금제",
+      "usageStats": "사용량 통계",
+      "paymentHistory": "결제 내역",
+      "logout": "로그아웃",
+      "viewAccount": "계정 보기",
+      "planLoadError": "요금제 정보를 불러오지 못했습니다.",
+      "statsLoadError": "사용량 통계를 불러오지 못했습니다.",
+      "cancelSubscription": "구독 취소",
+      "cancelConfirmTitle": "구독 취소 확인",
+      "cancelConfirmMessage": "구독을 취소하시겠습니까? {{endDate}}에 현재 구독 기간이 끝나면 자동 갱신이 중단됩니다. 그전까지는 모든 기능을 계속 이용할 수 있습니다.",
+      "confirmCancel": "취소 확인",
+      "keepSubscription": "구독 유지",
+      "cancelledNotice": "구독 취소가 예약되었습니다. {{endDate}}에 현재 기간이 끝나면 자동 갱신이 중단됩니다.",
+      "cancelSuccess": "구독이 취소되었습니다. 현재 결제 기간이 끝날 때까지 모든 기능을 계속 이용할 수 있습니다."
+    },
+    "billingPeriod": {
+      "monthly": "월간 결제",
+      "yearly": "연간 결제",
+      "save": "절약",
+      "perYear": "/년",
+      "perMonth": "/월",
+      "currencyNote": "대만 달러(TWD)로 가격이 표시되며 결제됩니다."
+    },
+    "marketSentimentContext": {
+      "notification": "업그레이드하면 최신 시장 심리 데이터를 확인할 수 있습니다."
+    },
+    "subscriptionPlans": {
+      "title": "나에게 맞는 요금제를 선택하세요",
+      "subtitle": "무료 도구로 시작하고 Pro로 시장과 종목을 지속적으로 추적하세요.",
+      "popular": "인기 요금제",
+      "upgrade": "업그레이드",
+      "downgrade": "다운그레이드",
+      "current": "현재 이용 중",
+      "manageSubscription": "구독 관리",
+      "resumeSubscription": "구독 재개",
+      "resubscribe": "다시 구독",
+      "upgradeToFullPlan": "유료 요금제로 업그레이드",
+      "loginToStart": "로그인하고 시작하기",
+      "loginToUpgrade": "로그인 후 업그레이드",
+      "loginRequired": "먼저 로그인해 주세요.",
+      "comingSoon": "출시 예정",
+      "freePlan": {
+        "name": "Free 요금제",
+        "price": "무료",
+        "description": "지수 ETF와 과거 시장 심리 지표로 도구 사용법을 익혀 보세요.",
+        "features": [
+          "LOHAS 5선 분석: 주요 지수와 무료 ETF, MA 지표 포함",
+          "시장 심리 분석: 2개월 전까지의 과거 데이터",
+          "관심 종목: 여러 종목의 심리 수준을 한 번에 확인",
+          "광고 없는 이용 환경",
+          "시장 모멘텀: 섹터 비교, 선별 ETF 및 스크리닝 결과 수 확인"
+        ]
+      },
+      "proPlan": {
+        "name": "Pro 요금제",
+        "price": "NT$299",
+        "priceYearly": "NT$2,990",
+        "period": "/월",
+        "periodYearly": "/년",
+        "description": "최신 시장 심리를 파악하고 투자 종목을 추적하세요.",
+        "features": [
+          "LOHAS 5선 분석: 무료 목록 외의 개별 종목 분석 및 추가 지표(RSI, MACD, KD)",
+          "시장 심리 분석: 최신 미국·대만 시장 점수와 전체 과거 데이터",
+          "시장 모멘텀: 전체 ETF 순위, 구성 종목 및 스크리닝 결과",
+          "RSI, MACD, KD: 가격 상승·하락 강도 비교",
+          "관심 종목: 여러 종목의 심리 수준을 동시에 비교",
+          "관심 종목 목록은 최대 10개 그룹까지 저장할 수 있으며, 각 그룹에 종목을 50개까지 추가할 수 있습니다.",
+          "광고 없는 이용 환경"
+        ]
+      },
+      "loadingPlans": "요금제 정보를 불러오는 중...",
+      "loadError": "요금제 정보를 불러오지 못했습니다."
+    },
+    "usage": {
+      "daily": "일일 사용량",
+      "monthly": "월간 사용량",
+      "unlimited": "무제한",
+      "used": "사용량",
+      "remaining": "남은 사용량",
+      "resetTime": "초기화 시간",
+      "nextReset": "다음 초기화",
+      "resetNow": "곧 초기화됩니다",
+      "resetInHours": "{{hours}}시간 후 초기화",
+      "resetInDays": "{{days}}일 후 초기화",
+      "totalUsed": "총 사용량",
+      "period": "기간"
+    },
+    "history": {
+      "action": "작업",
+      "status": "상태",
+      "actions": {
+        "upgrade": "업그레이드",
+        "downgrade": "다운그레이드",
+        "renewal": "갱신",
+        "cancellation": "취소"
+      },
+      "statuses": {
+        "completed": "완료",
+        "pending": "처리 중",
+        "failed": "실패"
+      },
+      "noHistory": "구독 내역이 없습니다.",
+      "noHistoryDescription": "구독 내역이 여기에 표시됩니다.",
+      "totalEntries": "전체 내역 수",
+      "memberSince": "가입일",
+      "startDate": "시작일",
+      "endDate": "종료일",
+      "renewalDate": "갱신일"
+    },
+    "comparison": {
+      "title": "기능 비교",
+      "subtitle": "각 요금제에서 제공하는 기능을 자세히 비교하세요.",
+      "features": "기능"
+    },
+    "autoRenewEnabled": "자동 갱신이 활성화되어 있습니다.",
+    "status": {
+      "cancelledButActive": "취소되었지만 이용 기간이 남아 있습니다.",
+      "expiresOn": "만료일: {{date}}"
+    },
+    "freeTrialDialog": {
+      "title": "무료 체험 안내",
+      "heading": "현재 모든 기능을 무료로 이용할 수 있습니다!",
+      "message": "현재 기능 테스트가 진행 중이며 모든 Pro 기능을 모든 사용자에게 무료로 제공하고 있습니다. 추후 유료 서비스로 전환될 예정이니 기대해 주세요!",
+      "featuresTitle": "현재 무료로 제공되는 기능:",
+      "feature1": "무제한 종목 조회",
+      "feature2": "전체 시장 심리 분석",
+      "feature3": "개인 맞춤형 포트폴리오 관리",
+      "understood": "확인했습니다"
+    },
+    "cancelError": "구독을 취소하지 못했습니다.",
+    "unlimited": "제한 없음"
+  }
+}

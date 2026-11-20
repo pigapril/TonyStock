@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import apiClient from '../../api/apiClient';
 import PageContainer from '../PageContainer/PageContainer';
 import { getDecimalPlaces } from '../../utils/priceUtils';
+import { getIntlLocale } from '../../locales/localeConfig';
 import { findIndicatorPage } from './indicatorPages';
 import './SentimentIndicatorPage.css';
 import SentimentHistoryExamples from './SentimentHistoryExamples';
@@ -84,7 +85,7 @@ const SentimentIndicatorPage = () => {
           <section className="indicator-page__current" aria-busy={loadingReading}>
             <p className="indicator-page__currentLabel">{t('sentimentIndicatorPages.currentReading')}</p>
             <p className="indicator-page__currentValue">
-              {hasReading ? formatReading(reading.value) : '—'}
+              {hasReading ? formatReading(reading.value, lang) : '—'}
               {/* 多數指標是無單位的分數（AAII 價差、CNN 0-100），但廣度是百分比，
                   少了 % 會看不懂 31.2 是什麼。單位由註冊表宣告，不猜。 */}
               {hasReading && page.unit ? <span className="indicator-page__currentUnit">{page.unit}</span> : null}
@@ -125,7 +126,7 @@ const SentimentIndicatorPage = () => {
               {components.map((component) => {
                 // 有即時值就一起顯示。CNN 給的是標準化分數加級距，
                 // BofA 那份試算表給的是 0~1 的百分位，所以兩種都要能呈現。
-                const live = component.key ? formatComponent(reading?.components?.[component.key]) : null;
+                const live = component.key ? formatComponent(reading?.components?.[component.key], lang) : null;
                 return (
                   <li key={component.key || component.name}>
                     <b>{component.name}</b>
@@ -164,10 +165,10 @@ const SentimentIndicatorPage = () => {
 };
 
 // 分項的即時值。CNN 給 score（0~100）加 rating，BofA 試算表給 0~1 的百分位。
-function formatComponent(live) {
+function formatComponent(live, lang) {
   if (live === null || live === undefined) return null;
   if (Number.isFinite(Number(live?.score))) {
-    const score = formatReading(live.score);
+    const score = formatReading(live.score, lang);
     return live.rating ? `${score} · ${live.rating}` : score;
   }
   // 0~1 的百分位照站內慣例四捨五入到整數再加 %。
@@ -175,7 +176,7 @@ function formatComponent(live) {
     return `${Math.round(Number(live) * 100)}%`;
   }
   if (Number.isFinite(Number(live?.value))) {
-    const value = formatReading(live.value);
+    const value = formatReading(live.value, lang);
     return live.rating ? `${value} · ${live.rating}` : value;
   }
   return null;
@@ -184,10 +185,10 @@ function formatComponent(live) {
 // DB 存的是 float，直接印會露出 -7.299999999999997 這種浮點誤差。
 // 位數判準與 board、圖表軸標籤共用（見 utils/priceUtils 的 getDecimalPlaces），
 // 同一個指標在總覽頁和解說頁不該顯示成不同長度。
-function formatReading(value) {
+function formatReading(value, lang) {
   const parsed = Number(value);
   return Number.isFinite(parsed)
-    ? parsed.toLocaleString(undefined, { maximumFractionDigits: getDecimalPlaces(parsed) })
+    ? parsed.toLocaleString(getIntlLocale(lang), { maximumFractionDigits: getDecimalPlaces(parsed) })
     : '—';
 }
 

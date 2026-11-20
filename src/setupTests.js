@@ -1,5 +1,12 @@
 import '@testing-library/jest-dom';
 import '../scripts/test-warning-filter';
+import { i18nReady } from './i18n';
+
+// The production entry point waits for the same selected common bundle before
+// rendering. Keep component tests on that initialized baseline as well.
+beforeAll(async () => {
+  await i18nReady;
+});
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

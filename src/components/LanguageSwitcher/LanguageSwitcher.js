@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaGlobe } from 'react-icons/fa'; // 引入地球圖示
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { LOCALES } from '../../locales/localeConfig';
 import './LanguageSwitcher.css'; // 引入樣式
 
 const LanguageSwitcher = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null); // Ref for detecting clicks outside
   const navigate = useNavigate();
@@ -53,22 +54,20 @@ const LanguageSwitcher = () => {
       </button>
       {dropdownOpen && (
         <div className="language-dropdown">
-          <button
-            onClick={() => changeLanguage('zh-TW')}
-            disabled={currentLang === 'zh-TW'}
-          >
-            {t('language.zhTW')}
-          </button>
-          <button
-            onClick={() => changeLanguage('en')}
-            disabled={currentLang === 'en'}
-          >
-            {t('language.en')}
-          </button>
+          {LOCALES.map(locale => (
+            <button
+              key={locale.code}
+              onClick={() => changeLanguage(locale.code)}
+              disabled={currentLang === locale.code}
+              aria-current={currentLang === locale.code ? 'true' : undefined}
+            >
+              {locale.nativeName}
+            </button>
+          ))}
         </div>
       )}
     </div>
   );
 };
 
-export default LanguageSwitcher; 
+export default LanguageSwitcher;

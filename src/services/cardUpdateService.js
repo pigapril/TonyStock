@@ -17,8 +17,8 @@ export const fetchPaymentMethod = () => apiClient
     .get('/api/payment/card-update/method')
     .then(unwrap);
 
-export const startCardUpdate = ({ termsConsentedAt, termsVersion, locale, disclosedGrace }) => apiClient
-    .post('/api/payment/card-update/start', { termsConsentedAt, termsVersion, locale, disclosedGrace })
+export const startCardUpdate = ({ termsConsentedAt, termsVersion, locale, returnLocale, disclosedGrace }) => apiClient
+    .post('/api/payment/card-update/start', { termsConsentedAt, termsVersion, locale, returnLocale, disclosedGrace })
     .then(unwrap);
 
 export const createCardUpdateBind = ({ merchantTradeNo, bindCardPayToken, disclosedGrace }) => apiClient

@@ -115,6 +115,7 @@ describe('PaymentFlow', () => {
         paymentMethod: 'Credit',
         redemptionCode: undefined,
         language: 'zh-TW',
+        returnLocale: 'zh-TW',
         originalAmount: 299,
         finalAmount: 299
       });

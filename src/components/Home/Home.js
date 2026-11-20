@@ -17,6 +17,7 @@ import { useNearViewport } from '../../hooks/useNearViewport';
 import { canSeeFreeTrial } from '../../utils/freeTrialRollout';
 import { fetchFreeTrialEligibility } from '../../services/freeTrialService';
 import { trackProductEvent } from '../../utils/productAnalytics';
+import { getCanonicalLocale, getIntlLocale, getLocaleConfig } from '../../locales/localeConfig';
 
 const HomePricePreviewChart = lazy(() => import('./HomePricePreviewChart').then((module) => ({ default: module.HomePricePreviewChart })));
 const SharedSentimentHistoryChart = lazy(() => import('../MarketSentimentIndex/SharedSentimentHistoryChart').then((module) => ({ default: module.SharedSentimentHistoryChart })));
@@ -87,22 +88,20 @@ function renderTitleWithBreaks(title) {
 }
 
 function renderPriceStoryTitle(title, isChinese) {
-  const normalizedTitle = String(title);
-  const secondLine = '分析極端情緒位階';
+  const segments = String(title).split('｜').filter(Boolean);
 
-  if (!isChinese || !normalizedTitle.includes(secondLine)) {
+  if (!isChinese || segments.length <= 1) {
     return title;
   }
 
-  const firstLine = normalizedTitle.replace(secondLine, '');
-
-  return (
-    <>
-      <span>{firstLine}</span>
-      <br />
-      <span className="home-storyBlock__titleSegment home-storyBlock__titleSegment--noBreak">{secondLine}</span>
-    </>
-  );
+  return segments.map((segment, index) => (
+    <React.Fragment key={`${segment}-${index}`}>
+      {index > 0 ? <br /> : null}
+      <span className={index > 0 ? 'home-storyBlock__titleSegment home-storyBlock__titleSegment--noBreak' : undefined}>
+        {segment}
+      </span>
+    </React.Fragment>
+  ));
 }
 
 function mergeHomepageData(currentData, nextData) {
@@ -138,7 +137,7 @@ export const Home = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const currentLang = i18n.language;
-  const locale = currentLang === 'zh' ? 'zh-TW' : currentLang;
+  const locale = getIntlLocale(currentLang);
   const isMobileHistoryPreview = useMediaQuery({ query: '(max-width: 768px)' });
   const { openDialog, dialog } = useDialog();
   const { isAuthenticated, user } = useAuth();
@@ -312,9 +311,9 @@ export const Home = () => {
   const pricePreview = homepageData?.pricePreview || {};
   const featuredMoments = sentimentData.featuredMoments || [];
   const activeHeroMoment = featuredMoments[activeExtremeIndex] || null;
-  const announcementMessage = currentLang.startsWith('zh')
+  const announcementMessage = getCanonicalLocale(currentLang) === 'zh-TW'
     ? homepageData?.announcement?.message_zh || homepageData?.announcement?.message
-    : homepageData?.announcement?.message_en || homepageData?.announcement?.message;
+    : homepageData?.announcement?.message_en || '';
   const pricePreviewSeries = useMemo(() => (
     (pricePreview.series || [])
       .map((item) => ({
@@ -392,9 +391,9 @@ export const Home = () => {
       .map((item) => ({
         date: item.date,
         score: item.score,
-        meta: item.date.toLocaleDateString(currentLang === 'zh-TW' ? 'zh-TW' : 'en-US')
+        meta: item.date.toLocaleDateString(locale)
       }))
-  ), [currentLang, historyPreview]);
+  ), [locale, historyPreview]);
   const handlePrimaryAction = () => {
     pendingTrialAfterLoginRef.current = true;
     trackProductEvent('free_trial_home_clicked', { source: 'home', trial_days: 30 });
@@ -631,7 +630,7 @@ export const Home = () => {
               </div>
 
               <div className="home-storyBlock__content">
-                <h2>{renderPriceStoryTitle(t('home.story.blocks.price.title'), currentLang.startsWith('zh'))}</h2>
+                <h2>{renderPriceStoryTitle(t('home.story.blocks.price.title'), getLocaleConfig(currentLang)?.writingSystem === 'cjk')}</h2>
                 <p>{t('home.story.blocks.price.description')}</p>
                 <Link to={`/${currentLang}/priceanalysis`} className="home-toolCard__link">
                   {t('home.story.blocks.price.cta')} <FaArrowRight aria-hidden="true" />

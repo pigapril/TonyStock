@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { getIntlLocale } from '../../../../locales/localeConfig';
 import { AppleButton } from '../../shared/AppleButton';
 import { fetchPaymentMethod } from '../../../../services/cardUpdateService';
 import './PaymentMethod.css';
@@ -9,13 +10,15 @@ const ANCHOR_ID = 'payment-method';
 
 // production VM 是 Etc/UTC，不指定時區會差一天。
 const taipeiDateText = (locale, date) => new Intl.DateTimeFormat(
-    locale === 'en' ? 'en-US' : 'zh-TW',
+    getIntlLocale(locale),
     { timeZone: 'Asia/Taipei', year: 'numeric', month: 'long', day: 'numeric' }
 ).format(new Date(date));
 
-// zh-TW 的句子自帶「元」、不加千分位；en 的句子自帶 NT$。
+// Chinese copy supplies its own currency unit. Other locales use native number grouping.
 const amountText = (locale, amount) => (
-    locale === 'en' ? new Intl.NumberFormat('en-US').format(amount) : String(amount)
+    ['zh-TW', 'zh-CN'].includes(locale)
+        ? String(amount)
+        : new Intl.NumberFormat(getIntlLocale(locale)).format(amount)
 );
 
 // 回呼沒帶 CardInfo 時末四碼與有效年月會是 null，缺哪個就不顯示哪個，全缺就沒有這一行。
@@ -36,7 +39,7 @@ export const PaymentMethod = ({ plan }) => {
 
     const isBoundCard = plan?.billingRail === 'bound_card';
     const language = lang || i18n.language;
-    const locale = String(language || '').startsWith('en') ? 'en' : 'zh-TW';
+    const locale = language;
 
     useEffect(() => {
         if (!isBoundCard) return undefined;

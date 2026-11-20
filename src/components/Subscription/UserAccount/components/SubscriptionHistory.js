@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getIntlLocale } from '../../../../locales/localeConfig';
 import './SubscriptionHistory.css';
 
 export const SubscriptionHistory = ({ history, loading }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -42,7 +43,7 @@ export const SubscriptionHistory = ({ history, loading }) => {
   const currentItems = history.slice(startIndex, startIndex + itemsPerPage);
 
   const formatDate = (date) => {
-    return new Intl.DateTimeFormat('zh-TW', {
+    return new Intl.DateTimeFormat(getIntlLocale(i18n.language), {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -53,7 +54,7 @@ export const SubscriptionHistory = ({ history, loading }) => {
 
   const formatAmount = (amount) => {
     if (!amount) return '';
-    return new Intl.NumberFormat('zh-TW', {
+    return new Intl.NumberFormat(getIntlLocale(i18n.language), {
       style: 'currency',
       currency: 'TWD',
       minimumFractionDigits: 0

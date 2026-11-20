@@ -2,6 +2,7 @@ import PageContainer from '../PageContainer/PageContainer';
 import { moveTabFocus } from './tabNavigation';
 import React, { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { DEFAULT_LOCALE, LOCALE_CODES } from '../../locales/localeConfig';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../../api/apiClient';
 import { useAuth } from '../Auth/useAuth';
@@ -48,9 +49,12 @@ export default function MomentumDashboardPage() {
   const [eligibleTrialAccount, setEligibleTrialAccount] = useState(null);
   const [checkedTrialAccount, setCheckedTrialAccount] = useState(null);
   const pendingTrialAfterLogin = useRef(null);
-  const language = i18n.language?.startsWith('en') ? 'en' : 'zh-TW';
+  const language = LOCALE_CODES.includes(i18n.language) ? i18n.language : DEFAULT_LOCALE;
   const plansPath = `/${language}/subscription-plans`;
-  const guideUrl = `/${i18n.language}/articles/${i18n.language === 'en' ? 'market-momentum-dashboard-guide' : '5.市場動能儀表板使用指南'}/`;
+  // Only Traditional Chinese and English guide articles are published. Every
+  // other locale links to the real English article rather than a missing URL.
+  const guideLocale = i18n.language === 'zh-TW' ? 'zh-TW' : 'en';
+  const guideUrl = `/${guideLocale}/articles/${guideLocale === 'en' ? 'market-momentum-dashboard-guide' : '5.市場動能儀表板使用指南'}/`;
   const text = useCallback((key, options) => t(`momentumDashboard.${key}`, options), [t]);
   const groupLabel = (name) => text(`groups.${groupKey(name)}`, { defaultValue: name });
   const groupHint = (name) => universe === 'Structure' ? text(`groupHints.${groupKey(name)}`, { defaultValue: '' }) : '';

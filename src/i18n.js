@@ -1,9 +1,20 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-// Only shared/home copy is bundled initially; feature sections load with routes.
-import en from './locales/resources/en/common.json';
-import zhTW from './locales/resources/zh-TW/common.json';
-import { getInitialLanguage } from './locales/resourceGroups';
+import { loadCommonLocales } from './locales/loadCommonLocales';
+import {
+  DEFAULT_LOCALE,
+  I18NEXT_SUPPORTED_LNGS,
+  getInitialLanguage,
+  getLocaleFallbacks,
+} from './locales/localeConfig';
+
+// Resolve the initial language from the URL/browser before loading any copy.
+// The generated loader registry uses dynamic imports, so only this locale and
+// its configured fallback chain are requested for the initial page view.
+const initialLanguage = getInitialLanguage(
+  typeof window === 'undefined' ? '' : window.location.pathname,
+  typeof navigator === 'undefined' ? '' : navigator.language || navigator.userLanguage || ''
+);
 
 // Dev-only: record every key passed to t() so we can verify "unused" claims
 // from static analysis against real runtime behavior. Reset from the crawler
@@ -12,28 +23,32 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   window.__i18nCalledKeys__ = window.__i18nCalledKeys__ || new Set();
 }
 
-// 初始化 i18n，直接用 resources
-i18n
+// Keep every language switch safe, including callers outside the router
+// (dialogs, embedded flows and tests). i18next's own init-time switch runs
+// before isInitialized; subsequent switches must load common resources first.
+const changeLanguage = i18n.changeLanguage.bind(i18n);
+i18n.changeLanguage = (language, callback) => {
+  const resourcesReady = i18n.isInitialized
+    ? loadCommonLocales(i18n, language)
+    : Promise.resolve();
+  return resourcesReady.then(() => changeLanguage(language, callback));
+};
+
+// Initialize i18next first, then load the selected locale and fallback before
+// index.js mounts React. This prevents the UI from briefly rendering missing
+// keys or English copy while a non-English common chunk is still downloading.
+const i18nInitialized = i18n
   .use(initReactI18next)
   .init({
-    // Both shared language bundles are already present. Resolve deep links
-    // before the first render rather than repainting English as Chinese.
-    lng: getInitialLanguage(
-      typeof window === 'undefined' ? '' : window.location.pathname,
-      typeof navigator === 'undefined' ? '' : navigator.language || navigator.userLanguage || ''
-    ),
-    fallbackLng: {
-      'zh': ['zh-TW', 'en'],
-      'default': ['en']
+    lng: initialLanguage,
+    fallbackLng: language => {
+      const fallbacks = getLocaleFallbacks(language);
+      return fallbacks.length ? fallbacks : (language === DEFAULT_LOCALE ? [] : [DEFAULT_LOCALE]);
     },
     debug: process.env.NODE_ENV === 'development',
-    supportedLngs: ['en', 'zh-TW', 'zh'],
+    supportedLngs: I18NEXT_SUPPORTED_LNGS,
     interpolation: {
       escapeValue: false,
-    },
-    resources: {
-      en: { translation: en },
-      'zh-TW': { translation: zhTW }
     },
     // Dev-only: capture every t() call that resolves to a missing key.
     // Crawler reads window.__i18nMissingKeys__ to collect the full set.
@@ -50,6 +65,9 @@ i18n
         }
       : undefined,
   });
+
+export const i18nReady = i18nInitialized.then(() => loadCommonLocales(i18n, initialLanguage));
+export const loadLocaleCommonResources = language => loadCommonLocales(i18n, language);
 
 // Dev-only: wrap t() to record every call (including successful ones).
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {

@@ -18,6 +18,7 @@ import AdminOnly from '../AdminOnly';
 import redemptionService from '../../services/redemptionService';
 import { Analytics } from '../../utils/analytics';
 import { useRedemptionFormatting } from '../../hooks/useRedemptionFormatting';
+import { getIntlLocale } from '../../locales/localeConfig';
 import './RedemptionHistory.css';
 
 export const RedemptionHistory = ({
@@ -27,7 +28,7 @@ export const RedemptionHistory = ({
     pageSize = 10,
     onHistoryLoad
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { formatHistoryItem, formatters } = useRedemptionFormatting();
     const { user } = useAuth();
     
@@ -191,7 +192,7 @@ export const RedemptionHistory = ({
     const formatDate = (dateString) => {
         if (!dateString) return '-';
         return new Date(dateString).toLocaleDateString(
-            user?.language === 'zh-TW' ? 'zh-TW' : 'en-US',
+            getIntlLocale(i18n.language),
             {
                 year: 'numeric',
                 month: 'short',

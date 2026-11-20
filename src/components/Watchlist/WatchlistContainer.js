@@ -17,6 +17,7 @@ import { Analytics } from '../../utils/analytics';
 import { InfoTool } from '../Common/InfoTool/InfoTool';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+import { buildSeoTitle, normalizeMetaDescription } from '../../utils/socialMetadata';
 import { StaticStockList } from './components/StockCard/StaticStockList';
 import { SortMenu } from './components/SortMenu';
 import { PriceSentimentNotificationSettings } from './PriceSentimentNotificationSettings';
@@ -479,13 +480,8 @@ export function WatchlistContainer() {
             "target": `${window.location.origin}/${currentLang}/watchlist?category={category}&stock={stock}`,
             "query-input": "required name=category,stock"
         }
-        // 如果頁面主要內容是關於列表，可以考慮添加 mainEntity
-        // "mainEntity": {
-        //   "@type": "ItemList",
-        //   "name": t('watchlist.jsonLd.itemListTitle'), // e.g., "My Watchlist Stocks"
-        //   // 如果可能，可以列出一些項目
-        //   // "itemListElement": [ ... ]
-        // }
+        // mainEntity is intentionally omitted until the page has a stable,
+        // user-independent item list suitable for structured data.
     }), [t, currentLang]); // 加入 currentLang 作為依賴
 
     return (
@@ -498,8 +494,8 @@ export function WatchlistContainer() {
         >
             {/* 7. 在 Helmet 中使用定義好的 watchlistJsonLd */}
             <Helmet>
-                <title>{t('watchlist.pageTitle')} | Sentiment Inside Out</title>
-                <meta name="description" content={t('watchlist.pageDescription')} />
+                <title>{buildSeoTitle(t('watchlist.pageTitle'), t('pageContainer.defaultTitle'))}</title>
+                <meta name="description" content={normalizeMetaDescription(t('watchlist.pageDescription'))} />
                 {/* 其他 meta 標籤... */}
                 <script type="application/ld+json">
                     {JSON.stringify(watchlistJsonLd)}

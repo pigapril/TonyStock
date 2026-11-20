@@ -3,6 +3,7 @@ import { render as rtlRender, screen, fireEvent, waitFor } from '@testing-librar
 import { createInstance } from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 import zhTW from '../../../locales/zh-TW/translation.json';
+import zhCN from '../../../locales/zh-CN/translation.json';
 import en from '../../../locales/en/translation.json';
 import PaymentStatus from '../PaymentStatus';
 import paymentService from '../../../services/paymentService';
@@ -38,7 +39,7 @@ const testI18n = createInstance();
 testI18n.init({
   lng: 'zh-TW',
   fallbackLng: 'zh-TW',
-  resources: { 'zh-TW': { translation: zhTW }, en: { translation: en } },
+  resources: { 'zh-TW': { translation: zhTW }, 'zh-CN': { translation: zhCN }, en: { translation: en } },
   initImmediate: false,
   interpolation: { escapeValue: false }
 });
@@ -206,5 +207,20 @@ describe('PaymentStatus', () => {
     const { container } = render(<PaymentStatus />);
     expect(await screen.findByText('There was a problem with the payment. Please try again later.')).toBeInTheDocument();
     expect(container.textContent).not.toMatch(/[\u3400-\u9fff]/);
+  });
+
+  it('keeps Simplified Chinese payment status navigation and hides Traditional Chinese provider errors', async () => {
+    await testI18n.changeLanguage('zh-CN');
+    mockSearchParams = new URLSearchParams('orderId=TN123456789');
+    mockPaymentService.pollPaymentStatusByMerchantTradeNo.mockResolvedValue({
+      success: false,
+      status: 'failed',
+      error: '付款驗證失敗'
+    });
+
+    render(<PaymentStatus />);
+    expect(await screen.findByText('付款过程中发生问题，请稍后再试')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '重新付款' }));
+    expect(mockNavigate).toHaveBeenCalledWith('/zh-CN/subscription-plans', expect.anything());
   });
 });

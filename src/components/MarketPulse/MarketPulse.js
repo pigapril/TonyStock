@@ -1,19 +1,21 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../api/apiClient';
+import { getIntlLocale } from '../../locales/localeConfig';
+import { resolveMarketLocaleText } from '../MarketSentimentIndex/marketLocaleCopy';
 import './MarketPulse.css';
 
 const REFRESH_MS = 60 * 1000;
-const MARKETS = [
-  { id: 'sp500', zh: 'S&P 500', en: 'S&P 500' },
-  { id: 'nasdaq100', zh: 'NASDAQ 100', en: 'Nasdaq 100' },
-  { id: 'dow', zh: '道瓊工業', en: 'Dow Jones' },
-  { id: 'taiwan', zh: '台灣加權', en: 'TAIEX' },
-  { id: 'nikkei', zh: '日經 225', en: 'Nikkei 225' },
-  { id: 'shanghai', zh: '上證指數', en: 'Shanghai Composite' },
-  { id: 'kospi', zh: '韓國綜合', en: 'KOSPI' },
-  { id: 'hangseng', zh: '恆生指數', en: 'Hang Seng' },
-  { id: 'ftse100', zh: '富時 100', en: 'FTSE 100' }
+export const MARKETS = [
+  { id: 'sp500', labels: { 'zh-TW': 'S&P 500', 'zh-CN': '标普 500', 'ko-KR': 'S&P 500', en: 'S&P 500' } },
+  { id: 'nasdaq100', labels: { 'zh-TW': 'NASDAQ 100', 'zh-CN': '纳斯达克 100', 'ko-KR': '나스닥 100', en: 'Nasdaq 100' } },
+  { id: 'dow', labels: { 'zh-TW': '道瓊工業', 'zh-CN': '道琼斯工业指数', 'ko-KR': '다우존스 산업평균지수', en: 'Dow Jones' } },
+  { id: 'taiwan', labels: { 'zh-TW': '台灣加權', 'zh-CN': '台湾加权指数', 'ko-KR': '대만 가권지수', en: 'TAIEX' } },
+  { id: 'nikkei', labels: { 'zh-TW': '日經 225', 'zh-CN': '日经 225', 'ko-KR': '닛케이 225', en: 'Nikkei 225' } },
+  { id: 'shanghai', labels: { 'zh-TW': '上證指數', 'zh-CN': '上证指数', 'ko-KR': '상하이 종합지수', en: 'Shanghai Composite' } },
+  { id: 'kospi', labels: { 'zh-TW': '韓國綜合', 'zh-CN': '韩国综合指数', 'ko-KR': '코스피', en: 'KOSPI' } },
+  { id: 'hangseng', labels: { 'zh-TW': '恆生指數', 'zh-CN': '恒生指数', 'ko-KR': '항셍지수', en: 'Hang Seng' } },
+  { id: 'ftse100', labels: { 'zh-TW': '富時 100', 'zh-CN': '富时 100', 'ko-KR': 'FTSE 100', en: 'FTSE 100' } }
 ];
 
 let sharedSnapshot = null;
@@ -49,7 +51,6 @@ export default function MarketPulse() {
   const [shouldRotate, setShouldRotate] = useState(false);
   const viewportRef = useRef(null);
   const groupRef = useRef(null);
-  const isZh = i18n.language?.startsWith('zh');
 
   useEffect(() => {
     let active = true;
@@ -104,14 +105,14 @@ export default function MarketPulse() {
     return () => observer.disconnect();
   }, [visible.length]);
 
-  const renderMarkets = (duplicate = false) => visible.map(({ id, zh, en, data }) => {
-    const name = isZh ? zh : en;
+  const renderMarkets = (duplicate = false) => visible.map(({ id, labels, data }) => {
+    const name = resolveMarketLocaleText(labels, i18n.language);
     const change = Number.isFinite(data.changePercent) ? data.changePercent : null;
     const direction = change === null || Math.abs(change) < 0.005 ? 'flat' : change > 0 ? 'up' : 'down';
     const percent = change === null ? '—' : `${change > 0 ? '+' : ''}${change.toFixed(2)}%`;
     const latestValue = data.points[data.points.length - 1]?.[1];
     const value = Number.isFinite(latestValue)
-      ? latestValue.toLocaleString(isZh ? 'zh-TW' : 'en-US', { maximumFractionDigits: 0 })
+      ? latestValue.toLocaleString(getIntlLocale(i18n.language), { maximumFractionDigits: 0 })
       : '—';
     return (
       <div className="market-pulse__item" key={`${id}${duplicate ? '-copy' : ''}`} aria-label={t('marketPulse.itemLabel', { name, value, percent })}>

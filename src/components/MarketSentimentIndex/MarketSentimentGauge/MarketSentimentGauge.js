@@ -2,6 +2,8 @@ import React, { useMemo, useState, useCallback, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { getSentiment } from '../../../utils/sentimentUtils';
+import { getIntlLocale } from '../../../locales/localeConfig';
+import { getMarketSentimentUiCopy } from '../marketLocaleCopy';
 import './MarketSentimentGauge.css';
 
 const GAUGE_SEGMENTS = [
@@ -251,7 +253,7 @@ const MarketSentimentGauge = ({
       <section className={`msiArcGauge msiArcGauge--${sentimentInfo.rawSentiment}`}>
         <div className="msiArcGauge__frame">
           <div className="msiArcGauge__headline">
-            {headlineText || (currentLang === 'zh-TW' ? '當前美股市場情緒' : 'Current US market sentiment')}
+            {headlineText || getMarketSentimentUiCopy('usGaugeHeadline', currentLang)}
           </div>
           <div className="msiArcGauge__canvasWrap">
             <svg
@@ -318,9 +320,7 @@ const MarketSentimentGauge = ({
             {showLastUpdate && sentimentData.compositeScoreLastUpdate && (
               <div className="msiArcGauge__lastUpdate">
                 {t('marketSentiment.lastUpdateLabel')}: {' '}
-                {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString(
-                  currentLang === 'zh-TW' ? 'zh-TW' : 'en-US'
-                )}
+                {new Date(sentimentData.compositeScoreLastUpdate).toLocaleDateString(getIntlLocale(currentLang))}
               </div>
             )}
           </div>

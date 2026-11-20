@@ -10,13 +10,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getIntlLocale } from '../../locales/localeConfig';
 import { systemLogger } from '../../utils/logger';
 import LoadingSpinner from '../Common/LoadingSpinner';
 import paymentService from '../../services/paymentService';
 import './PaymentHistory.css';
 
 const PaymentHistory = ({ userId }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -160,15 +161,14 @@ const PaymentHistory = ({ userId }) => {
      * Format amount
      */
     const formatAmount = (amount, currency = 'TWD') => {
-        return `${currency} ${amount.toLocaleString()}`;
+        return `${currency} ${amount.toLocaleString(getIntlLocale(i18n.language))}`;
     };
 
     /**
      * Format date
      */
     const formatDate = (date) => {
-        const locale = t('common.locale', { defaultValue: 'zh-TW' });
-        return new Date(date).toLocaleDateString(locale, {
+        return new Date(date).toLocaleDateString(getIntlLocale(i18n.language), {
             year: 'numeric',
             month: 'long',
             day: 'numeric',

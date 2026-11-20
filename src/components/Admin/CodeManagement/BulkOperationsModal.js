@@ -16,9 +16,10 @@ import LoadingSpinner from '../../Common/LoadingSpinner';
 import ErrorDisplay from '../../Common/ErrorDisplay';
 import AdminRedemptionService from '../../../services/adminRedemptionService';
 import { systemLogger } from '../../../utils/logger';
+import { getIntlLocale } from '../../../locales/localeConfig';
 
 const BulkOperationsModal = ({ selectedCodes, codes, onClose, onComplete }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     
     // State management
     const [operation, setOperation] = useState('activate');
@@ -133,7 +134,7 @@ const BulkOperationsModal = ({ selectedCodes, codes, onClose, onComplete }) => {
         
         setValidationErrors(errors);
         return Object.keys(errors).length === 0;
-    }, [operation, options, t]);
+    }, [operation, options, t, i18n.language]);
 
     /**
      * Proceed to confirmation step
@@ -223,7 +224,7 @@ const BulkOperationsModal = ({ selectedCodes, codes, onClose, onComplete }) => {
         switch (operation) {
             case 'activate':
                 return options.activationDate ? 
-                    t('admin.bulkOps.descriptions.scheduleActivate', { date: new Date(options.activationDate).toLocaleDateString() }) :
+                    t('admin.bulkOps.descriptions.scheduleActivate', { date: new Date(options.activationDate).toLocaleDateString(getIntlLocale(i18n.language)) }) :
                     t('admin.bulkOps.descriptions.activate');
             case 'deactivate':
                 return t('admin.bulkOps.descriptions.deactivate');

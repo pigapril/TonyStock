@@ -8,6 +8,7 @@ import PageContainer from '../PageContainer/PageContainer';
 import { useAuth } from '../Auth/useAuth';
 import { useDialog } from '../Common/Dialog/useDialog';
 import { getDecimalPlaces } from '../../utils/priceUtils';
+import { getIntlLocale } from '../../locales/localeConfig';
 import { PUBLISHED_INDICATOR_PAGES } from './indicatorPages';
 import './SentimentBoard.css';
 
@@ -35,6 +36,7 @@ const SentimentBoard = () => {
   const [trialEligibility, setTrialEligibility] = useState({ accountKey: null, eligible: false, checked: false });
   const pendingTrialAfterLogin = useRef(false);
   const language = lang || 'zh-TW';
+  const intlLocale = getIntlLocale(language);
   const accountKey = user?.id || user?.userId || user?.email || null;
 
   const goToPlans = useCallback(() => navigate(`/${language}/subscription-plans`), [language, navigate]);
@@ -185,12 +187,14 @@ const SentimentBoard = () => {
             data={board.composite.us}
             href={`/${lang}/market-sentiment`}
             t={t}
+            intlLocale={intlLocale}
           />
           <CompositeCard
             label={t('sentimentBoard.compositeTw')}
             data={board.composite.tw}
             href={`/${lang}/tw-market-sentiment`}
             t={t}
+            intlLocale={intlLocale}
           />
         </section>
 
@@ -219,10 +223,10 @@ const SentimentBoard = () => {
                         })}
                       </p>
                       <span className="divergence-card__gap">
-                        {t('sentimentBoard.gap')} <b>{formatNumber(item.gap)}</b>
+                        {t('sentimentBoard.gap')} <b>{formatNumber(item.gap, intlLocale)}</b>
                       </span>
                     </div>
-                    <DivergenceTrack points={points} />
+                    <DivergenceTrack points={points} intlLocale={intlLocale} />
                     {/* 落差只有在兩側同一時點時才有意義。後端已經擋掉時點差太多的組合，
                         這裡把時點寫出來，讓使用者知道這個比較是什麼時候的。 */}
                     {item.asOf && (
@@ -261,7 +265,7 @@ const SentimentBoard = () => {
         )}
 
         <p className="sentiment-board__generatedAt">
-          {t('sentimentBoard.generatedAt')} {formatDateTime(board.generatedAt)}
+          {t('sentimentBoard.generatedAt')} {formatDateTime(board.generatedAt, intlLocale)}
         </p>
       </div>
     </PageContainer>
@@ -321,7 +325,7 @@ const Meter = ({ value, scale, tone = 'neutral', locked = false, caption }) => {
  * 列在兩側時使用者得自己把「左邊那欄」對應到「軌道上某個點」，而軌道兩端
  * 又是 0 和 100，兩種左右關係打架。掛在點上就沒有這個對應成本。
  */
-const DivergenceTrack = ({ points }) => {
+const DivergenceTrack = ({ points, intlLocale }) => {
   // 貼近兩端時把標籤往內收，否則會被卡片邊緣切掉。
   const anchor = (pct) => ({
     left: `${pct}%`,
@@ -335,7 +339,7 @@ const DivergenceTrack = ({ points }) => {
       <div className="divergence-track__row divergence-track__row--values">
         {points.map((p) => (
           <span key={p.key} className="divergence-track__value" style={anchor(p.pct)}>
-            {formatNumber(p.value)}
+            {formatNumber(p.value, intlLocale)}
           </span>
         ))}
       </div>
@@ -363,11 +367,11 @@ const DivergenceTrack = ({ points }) => {
   );
 };
 
-const CompositeCard = ({ label, data, href, t }) => (
+const CompositeCard = ({ label, data, href, t, intlLocale }) => (
   <article className={`composite-card${data.delayed ? ' composite-card--delayed' : ''}`}>
     <p className="composite-card__label">{label}</p>
     <p className="composite-card__value">
-      {data.locked ? <span className="composite-card__lock">{t('sentimentBoard.proOnly')}</span> : formatNumber(data.value)}
+      {data.locked ? <span className="composite-card__lock">{t('sentimentBoard.proOnly')}</span> : formatNumber(data.value, intlLocale)}
     </p>
     <Meter value={data.value} scale={data.scale} tone="sentiment" locked={data.locked} />
     {data.date && (
@@ -410,7 +414,7 @@ const IndicatorCard = ({ item, lang, t }) => {
     <p className="indicator-card__value">
       {item.locked
         ? <span className="indicator-card__lock">{t('sentimentBoard.proOnly')}</span>
-        : (item.value === null ? <span className="indicator-card__empty">—</span> : formatNumber(item.value))}
+        : (item.value === null ? <span className="indicator-card__empty">—</span> : formatNumber(item.value, getIntlLocale(lang)))}
     </p>
 
     {item.rating && !item.locked && <p className="indicator-card__rating">{item.rating}</p>}
@@ -457,17 +461,17 @@ function sideLabel(t, key) {
  * 與 formatPrice 唯一的差別是保留千分位：這頁有六百多萬的有交易戶數和
  * ±二十萬的期貨淨未平倉，沒有分位符號會讀不出量級。
  */
-function formatNumber(value) {
+function formatNumber(value, intlLocale) {
   if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
 
   const num = Number(value);
-  return num.toLocaleString(undefined, { maximumFractionDigits: getDecimalPlaces(num) });
+  return num.toLocaleString(intlLocale, { maximumFractionDigits: getDecimalPlaces(num) });
 }
 
-function formatDateTime(value) {
+function formatDateTime(value, intlLocale) {
   if (!value) return '';
   const parsed = new Date(value);
-  return Number.isNaN(parsed.getTime()) ? '' : parsed.toLocaleString();
+  return Number.isNaN(parsed.getTime()) ? '' : parsed.toLocaleString(intlLocale);
 }
 
 export default SentimentBoard;

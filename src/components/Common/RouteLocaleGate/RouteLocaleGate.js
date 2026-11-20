@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { loadCommonLocales } from '../../../locales/loadCommonLocales';
 import { loadRouteLocales } from '../../../locales/loadRouteLocales';
 import { getRouteLocaleGroups } from '../../../locales/resourceGroups';
 
@@ -15,7 +16,10 @@ export default function RouteLocaleGate({ lang, pathname, fallback = null, child
   useEffect(() => {
     let active = true;
     if (groups.length === 0 && i18n.language === lang) return undefined;
-    loadRouteLocales(i18n, lang, pathname).then(async () => {
+    Promise.all([
+      loadCommonLocales(i18n, lang),
+      loadRouteLocales(i18n, lang, pathname),
+    ]).then(async () => {
       if (!active) return;
       if (i18n.language !== lang) await i18n.changeLanguage(lang);
       if (active) setState({ key, status: 'ready' });

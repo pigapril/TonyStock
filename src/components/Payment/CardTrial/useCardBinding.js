@@ -5,6 +5,7 @@ import {
     requestBindCardPayToken
 } from '../../../utils/ecpayBindCardSdk';
 import { systemLogger } from '../../../utils/logger';
+import { getPaymentServiceLocale } from '../../../locales/localeConfig';
 
 export const BINDING_PHASE = {
     terms: 'terms',
@@ -41,9 +42,9 @@ const errorKeyOf = (error, errorKeys) => {
     return keyOf(code) || GENERIC_ERROR_KEY;
 };
 
-// i18n 的語言可能是 zh、zh-TW 或 en。後端與綠界各自只認一組固定值，所以先收斂成
-// 這兩個，再往下各自轉換。
-export const localeOf = (language) => (String(language || '').startsWith('en') ? 'en' : 'zh-TW');
+// Keep backend/ECPay language fallback centralized; the surrounding UI still
+// renders from the selected app locale.
+export const localeOf = getPaymentServiceLocale;
 
 // 綠界綁卡欄位只支援這兩個值，而且英文是 en-US 不是 en。
 const ecpayLanguageOf = (locale) => (locale === 'en' ? 'en-US' : 'zh-TW');

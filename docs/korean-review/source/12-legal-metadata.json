@@ -1,0 +1,24 @@
+{
+  "sourceLocale": "zh-TW",
+  "sourcePath": "public/docs/T&C/zh-tw_T&C_20261008.md",
+  "checks": {
+    "lines": 272,
+    "nt2": 3,
+    "nt3000": 1,
+    "emails": 2,
+    "numericRefs": 73,
+    "law": 1,
+    "taiwan": 1
+  },
+  "requirements": [
+    "Keep Taiwan governing law: Republic of China (Taiwan) law.",
+    "Do not replace Taiwan personal data law with Korean PIPA.",
+    "Preserve NT$2 card verification authorization and cancellation/refund mechanics.",
+    "Preserve NT$3,000 / 12-month higher-of liability cap exactly.",
+    "Preserve 30-day trial, trial expiry and automatic-charge conditions exactly.",
+    "Preserve section numbering and use the corrected §13 (governing law/disputes) and §14 (other matters) references in §9.4.",
+    "Keep support@sentimentinsideout.com unchanged.",
+    "No legal advice or jurisdictional assumptions may be added."
+  ],
+  "approvalStatus": "pending_user_approval"
+}

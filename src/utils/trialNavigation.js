@@ -1,4 +1,10 @@
-const localeFor = (language) => language?.startsWith('en') ? 'en' : 'zh-TW';
+import { DEFAULT_LOCALE, LOCALE_CODES, getCanonicalLocale } from '../locales/localeConfig';
+
+const localePattern = LOCALE_CODES.map(locale => locale.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+const priceAnalysisPath = new RegExp(`^/(${localePattern})/priceanalysis(?:\\?|$)`);
+const exactPriceAnalysisPath = new RegExp(`^/(${localePattern})/priceanalysis$`);
+
+const localeFor = (language) => getCanonicalLocale(language) || DEFAULT_LOCALE;
 
 // Carry only analysis inputs through the trial flow, never arbitrary redirect URLs.
 export function buildAnalysisReturnPath(language, { stockCode, years, backTestDate } = {}) {
@@ -16,9 +22,9 @@ export function buildAnalysisReturnPath(language, { stockCode, years, backTestDa
 
 export function getAnalysisReturnPath(search, language) {
   const candidate = new URLSearchParams(search).get('returnTo');
-  if (!candidate || candidate.length > 2048 || !/^\/(en|zh-TW)\/priceanalysis(?:\?|$)/.test(candidate)) return null;
+  if (!candidate || candidate.length > 2048 || !priceAnalysisPath.test(candidate)) return null;
   const url = new URL(candidate, 'https://local.invalid');
-  if (!/^\/(en|zh-TW)\/priceanalysis$/.test(url.pathname) || url.hash) return null;
+  if (!exactPriceAnalysisPath.test(url.pathname) || url.hash) return null;
   return buildAnalysisReturnPath(language, Object.fromEntries(url.searchParams));
 }
 

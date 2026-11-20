@@ -1,0 +1,19 @@
+{
+  "sourceNumericTokens": 72,
+  "translatedNumericTokens": 72,
+  "numericSequenceExact": true,
+  "NT2": 3,
+  "NT3000": 1,
+  "email": 2,
+  "ECPay": 3,
+  "ROC Taiwan law": 1,
+  "Taipei court": 1,
+  "Taiwan PDPA": 1,
+  "LOHAS corrected": true,
+  "no musical staff misread": true,
+  "company brand retained": true,
+  "headingsSource": 24,
+  "headingsDraft": 24,
+  "crossReferenceFlagged": true,
+  "approvalPending": true
+}

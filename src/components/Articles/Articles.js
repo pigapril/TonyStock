@@ -83,7 +83,7 @@ export function Articles() {
                 <ul className="articles-list">
                     {articles.filter(article => article.content).reverse().map(article => (
                         <li key={article.id} className="article-item">
-                            <Link to={`/${currentLang}/articles/${article.slug}/`}>
+                            <Link to={`/${article.lang || currentLang}/articles/${article.slug}/`}>
                                 <div className="article-cover">
                                     <img 
                                         src={`/articles/${article.originalSlug}/image-cover.${article.originalSlug.startsWith('5.') ? 'svg' : 'png'}`}

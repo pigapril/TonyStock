@@ -23,22 +23,25 @@ const AnnouncementBar = () => {
     if (!config) return '';
     
     const currentLang = i18n.language || 'zh-TW';
-    const isEnglish = currentLang.startsWith('en');
+    const usesTraditionalChinese = currentLang === 'zh-TW' || currentLang === 'zh';
     
     let selectedMessage = '';
     
     // Only show English announcements when an English message is available.
-    if (isEnglish) {
-      selectedMessage = config.message_en || '';
-    } else {
+    if (usesTraditionalChinese) {
       selectedMessage = config.message_zh || config.message || config.message_en || '';
+    } else {
+      // The announcement API currently supplies only Traditional Chinese and
+      // English. Never use the legacy default field for another locale because
+      // its language is not guaranteed to be English.
+      selectedMessage = config.message_en || '';
     }
     
     // 開發模式下顯示語言選擇資訊
     if (process.env.NODE_ENV === 'development') {
       console.log('🌐 語言選擇:', {
         currentLang,
-        isEnglish,
+        usesTraditionalChinese,
         available: {
           message_zh: config.message_zh ? '✓' : '✗',
           message_en: config.message_en ? '✓' : '✗',

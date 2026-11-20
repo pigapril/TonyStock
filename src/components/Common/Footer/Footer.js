@@ -4,7 +4,8 @@ import { useTranslation, Trans } from 'react-i18next';
 import './Footer.css';
 
 export const Footer = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isKorean = i18n.language === 'ko-KR';
   const { lang } = useParams();
   const currentYear = new Date().getFullYear();
 
@@ -77,9 +78,13 @@ export const Footer = () => {
               {t('footer.disclaimer1')}
             </p>
             <p>
-              <Trans i18nKey="footer.disclaimer2">
-                歡迎分享本網站提供之資訊連結，如需轉載內容務必經由本網站同意。聯絡信箱：<EmailLink />
-              </Trans>
+              {isKorean ? (
+                <>본 웹사이트에서 제공하는 정보 링크는 자유롭게 공유하실 수 있습니다. 콘텐츠를 재게시하려면 반드시 웹사이트의 사전 동의를 받아야 합니다. 문의 이메일: <EmailLink /></>
+              ) : (
+                <Trans i18nKey="footer.disclaimer2">
+                  歡迎分享本網站提供之資訊連結，如需轉載內容務必經由本網站同意。聯絡信箱：<EmailLink />
+                </Trans>
+              )}
             </p>
           </div>
         </div>
