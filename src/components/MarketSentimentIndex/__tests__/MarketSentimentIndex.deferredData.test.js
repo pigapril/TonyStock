@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 
@@ -21,6 +21,8 @@ const mockAuthState = {
   user: null,
   checkAuthStatus: jest.fn()
 };
+const originalIntersectionObserver = global.IntersectionObserver;
+let mockIntersectionObservers = [];
 
 jest.mock('react-chartjs-2', () => ({
   Line: require('react').forwardRef((props, ref) => <div ref={ref} data-testid="mock-line-chart" {...props} />)
@@ -96,10 +98,30 @@ describe('MarketSentimentIndex deferred data loading', () => {
   beforeAll(() => {
     window.requestIdleCallback = window.requestIdleCallback || ((callback) => setTimeout(() => callback({ didTimeout: false, timeRemaining: () => 0 }), 0));
     window.cancelIdleCallback = window.cancelIdleCallback || ((id) => clearTimeout(id));
+    global.IntersectionObserver = class IntersectionObserverMock {
+      constructor(callback, options) {
+        this.callback = callback;
+        this.options = options;
+        mockIntersectionObservers.push(this);
+      }
+      observe(node) { this.node = node; }
+      disconnect() { this.disconnected = true; }
+      unobserve() {}
+      takeRecords() { return []; }
+    };
+  });
+
+  afterAll(() => {
+    if (originalIntersectionObserver) {
+      global.IntersectionObserver = originalIntersectionObserver;
+    } else {
+      delete global.IntersectionObserver;
+    }
   });
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockIntersectionObservers = [];
     mockEnhancedApiClient.get.mockImplementation((url) => {
       if (url === '/api/market-sentiment-free') {
         return Promise.resolve({ data: sentimentPayload });
@@ -158,5 +180,61 @@ describe('MarketSentimentIndex deferred data loading', () => {
         mockEnhancedApiClient.get.mock.calls.some(([url]) => url === '/api/indicator-history')
       ).toBe(true);
     });
+  });
+
+  it('attaches the detail observer after the initial page shell is replaced and loads AAII on intersection', async () => {
+    const { container } = render(
+      <TestWrapper>
+        <MarketSentimentIndex />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('market-sentiment-gauge')).toBeInTheDocument();
+    });
+
+    let detailObserver;
+    await waitFor(() => {
+      detailObserver = mockIntersectionObservers.find((observer) => (
+        observer.node?.classList.contains('indicators-workspace__detail')
+      ));
+      expect(detailObserver).toBeDefined();
+    });
+
+    expect(container.querySelector('.indicator-detail-skeleton')).toBeInTheDocument();
+    expect(mockEnhancedApiClient.get.mock.calls.some(([url]) => url === '/api/indicator-history')).toBe(false);
+
+    act(() => {
+      detailObserver.callback([{ target: detailObserver.node, isIntersecting: true }]);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId('indicator-item')).toBeInTheDocument();
+      expect(mockEnhancedApiClient.get).toHaveBeenCalledWith(
+        '/api/indicator-history',
+        expect.objectContaining({
+          params: { indicator: 'AAII Bull-Bear Spread' }
+        })
+      );
+    });
+
+    expect(container.querySelector('.indicator-detail-skeleton')).not.toBeInTheDocument();
+  });
+
+  it('activates the indicator detail when IntersectionObserver is unavailable', async () => {
+    const availableObserver = global.IntersectionObserver;
+    delete global.IntersectionObserver;
+
+    try {
+      render(
+        <TestWrapper>
+          <MarketSentimentIndex />
+        </TestWrapper>
+      );
+
+      expect(await screen.findByTestId('indicator-item')).toBeInTheDocument();
+    } finally {
+      global.IntersectionObserver = availableObserver;
+    }
   });
 });

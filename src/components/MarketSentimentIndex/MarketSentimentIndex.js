@@ -387,13 +387,23 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   }, [isMobileViewport]);
 
   useEffect(() => {
-    if (isIndicatorWorkspaceActivated) {
+    // The initial render returns a page-level loading shell before the detail
+    // workspace exists. Re-run this effect after the summary request finishes
+    // so the observer can attach to the newly-mounted detail viewport.
+    if (loading || isIndicatorWorkspaceActivated) {
       return undefined;
     }
 
     const node = indicatorDetailViewportRef.current;
 
-    if (!node || typeof IntersectionObserver === 'undefined') {
+    if (!node) {
+      return undefined;
+    }
+
+    // Keep the detail usable in browsers and test environments without
+    // IntersectionObserver instead of leaving its fallback visible forever.
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsIndicatorWorkspaceActivated(true);
       return undefined;
     }
 
@@ -414,7 +424,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
     return () => {
       observer.disconnect();
     };
-  }, [isIndicatorWorkspaceActivated]);
+  }, [isIndicatorWorkspaceActivated, loading]);
 
   useEffect(() => {
     if (!isMobileViewport || !isMobileIndicatorSheetOpen) {
