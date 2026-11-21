@@ -21,6 +21,7 @@ jest.mock('react-i18next', () => ({
       'freeTrial.ctaShort': '免綁卡試用 Pro',
       'sentimentBoard.delayNoticeCta': '升級 Pro 查看最新資料',
       'sentimentBoard.upsellCta': '查看方案',
+      'sentimentBoard.viewDetail': '查看深度分析',
       'sentimentBoard.delayedTag': '升級 Pro 查看最新資料',
       'sentimentBoard.divergenceTitle': '指標之間的落差',
         'sentimentBoard.divergenceNote': '指標可能出現不同判讀。',
@@ -75,6 +76,16 @@ describe('情緒指標總覽的試用 CTA', () => {
     mockDialog.type = null;
     mockGet.mockResolvedValue({ data: { data: board } });
     mockFetchEligibility.mockResolvedValue({ eligible: true });
+  });
+
+  it('美股與台股綜合指標都有醒目的深度分析 CTA，並連到對應市場頁', async () => {
+    renderBoard();
+
+    const links = await screen.findAllByRole('link', { name: '查看深度分析' });
+    expect(links).toHaveLength(2);
+    expect(links[0]).toHaveAttribute('href', '/zh-TW/market-sentiment');
+    expect(links[1]).toHaveAttribute('href', '/zh-TW/tw-market-sentiment');
+    links.forEach((link) => expect(link).toHaveClass('composite-card__link'));
   });
 
   it('訪客看到試用入口，點擊後先登入', async () => {
