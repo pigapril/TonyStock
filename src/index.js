@@ -6,6 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import i18n, { i18nReady, loadLocaleCommonResources } from './i18n';
+import StartupLoader from './components/Common/StartupLoader/StartupLoader';
 
 // 設定 console 日誌級別
 import './utils/consoleConfig';
@@ -21,11 +22,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 // Keep the initial document responsive while the selected common locale
 // chunk is loading; the application shell mounts as soon as i18n is ready.
-root.render(<div role="status" aria-live="polite">Loading...</div>);
+root.render(<StartupLoader />);
 
 const renderApp = () => root.render(
   <React.StrictMode>
-    <Suspense fallback={<div>{i18n.t('common.loading')}</div>}>
+    <Suspense fallback={<StartupLoader />}>
       <Router>
         <HelmetProvider>
           <App />
