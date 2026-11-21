@@ -5,7 +5,7 @@
  */
 
 // Import date-fns dynamically to avoid Jest issues
-let format, formatDistanceToNow, parseISO, zhTW, zhCN, enUS, ko;
+let format, formatDistanceToNow, parseISO, zhTW, zhHK, zhCN, enUS, ko;
 
 try {
     const dateFns = require('date-fns');
@@ -22,18 +22,21 @@ try {
     // Try to import locales
     try {
         const zhTWModule = require('date-fns/locale/zh-TW');
+        const zhHKModule = require('date-fns/locale/zh-HK');
         const zhCNModule = require('date-fns/locale/zh-CN');
         const enUSModule = require('date-fns/locale/en-US');
         const koModule = require('date-fns/locale/ko');
         // date-fns v3/v4 expose locale modules as named exports (zhTW,
         // zhCN, enUS), while older versions exposed the locale directly.
         zhTW = zhTWModule.zhTW || zhTWModule.default || zhTWModule;
+        zhHK = zhHKModule.zhHK || zhHKModule.default || zhHKModule;
         zhCN = zhCNModule.zhCN || zhCNModule.default || zhCNModule;
         enUS = enUSModule.enUS || enUSModule.default || enUSModule;
         ko = koModule.ko || koModule.default || koModule;
     } catch (e) {
         console.warn('date-fns locales not available, using fallback');
         zhTW = null;
+        zhHK = null;
         zhCN = null;
         enUS = null;
         ko = null;
@@ -58,6 +61,7 @@ try {
         }
     };
     zhTW = null;
+    zhHK = null;
     zhCN = null;
     enUS = null;
 }
@@ -76,6 +80,14 @@ const LOCALE_CONFIG = {
             decimal: '.',
             thousands: ','
         }
+    },
+    'zh-HK': {
+        dateFnsLocale: zhHK,
+        currency: {
+            TWD: { symbol: 'NT$', position: 'before' },
+            USD: { symbol: '$', position: 'before' }
+        },
+        numberFormat: { decimal: '.', thousands: ',' }
     },
     'zh-CN': {
         dateFnsLocale: zhCN,
@@ -123,6 +135,7 @@ const getCurrentLocale = () => {
         if (lang === 'zh-CN' || lang.toLowerCase().startsWith('zh-hans')) {
             return 'zh-CN';
         }
+        if (lang.toLowerCase().startsWith('zh-hk') || lang.toLowerCase().startsWith('zh-hant-hk')) return 'zh-HK';
         if (lang === 'zh-TW' || lang === 'zh') {
             return 'zh-TW';
         }
@@ -139,6 +152,7 @@ const getCurrentLocale = () => {
         if (lang === 'zh-CN' || lang.toLowerCase().startsWith('zh-hans')) {
             return 'zh-CN';
         }
+        if (lang.toLowerCase().startsWith('zh-hk') || lang.toLowerCase().startsWith('zh-hant-hk')) return 'zh-HK';
         if (lang === 'zh-TW' || lang === 'zh') {
             return 'zh-TW';
         }
@@ -170,7 +184,7 @@ export const formatCurrency = (amount, currency = 'TWD', locale = null) => {
     const currencyConfig = config.currency[currency] || config.currency['TWD'];
     
     // Format number with thousands separator
-    const formattedAmount = new Intl.NumberFormat(['zh-TW', 'zh-CN', 'ko-KR'].includes(currentLocale) ? currentLocale : 'en-US', {
+    const formattedAmount = new Intl.NumberFormat(currentLocale === 'zh-HK' ? 'zh-HK' : ['zh-TW', 'zh-CN', 'ko-KR'].includes(currentLocale) ? currentLocale : 'en-US', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
     }).format(Number(amount));
@@ -225,7 +239,7 @@ export const formatDate = (date, formatString = 'PPP', locale = null) => {
     }
     
     // Fallback formatting using native methods
-    const localeCode = ['zh-TW', 'zh-CN', 'ko-KR'].includes(currentLocale) ? currentLocale : 'en-US';
+    const localeCode = currentLocale === 'zh-HK' ? 'zh-HK' : ['zh-TW', 'zh-CN', 'ko-KR'].includes(currentLocale) ? currentLocale : 'en-US';
     return dateObj.toLocaleDateString(localeCode, {
         year: 'numeric',
         month: 'long',
@@ -259,7 +273,7 @@ export const formatRelativeTime = (date, locale = null) => {
         if (currentLocale === 'zh-CN') {
             return diffHours > 0 ? `${diffHours} 小时前` : '刚刚';
         }
-        if (currentLocale === 'zh-TW') {
+        if (currentLocale === 'zh-TW' || currentLocale === 'zh-HK') {
             return diffHours > 0 ? `${diffHours} 小時前` : '剛剛';
         }
         if (currentLocale === 'ko-KR') {
@@ -285,7 +299,7 @@ export const formatRelativeTime = (date, locale = null) => {
 export const getPluralizedTimeUnit = (duration, unit, locale = null) => {
     const currentLocale = locale || getCurrentLocale();
     
-    if (currentLocale === 'zh-TW' || currentLocale === 'zh-CN') {
+    if (currentLocale === 'zh-TW' || currentLocale === 'zh-HK' || currentLocale === 'zh-CN') {
         // Chinese doesn't have plural forms
         const unitMap = {
             'day': '天',
@@ -323,7 +337,7 @@ export const formatTimeExtension = (duration, unit, locale = null) => {
     const currentLocale = locale || getCurrentLocale();
     const pluralizedUnit = getPluralizedTimeUnit(duration, unit, currentLocale);
     
-    if (currentLocale === 'zh-TW') {
+    if (currentLocale === 'zh-TW' || currentLocale === 'zh-HK') {
         return `延長 ${duration} ${pluralizedUnit}`;
     } else if (currentLocale === 'zh-CN') {
         return `延长 ${duration} ${pluralizedUnit}`;
@@ -351,7 +365,7 @@ export const formatDiscountDescription = (discount, locale = null) => {
     
     if (isPercentageDiscount) {
         const percentage = discount.percentage || discount.savingsPercentage;
-        if (currentLocale === 'zh-TW' || currentLocale === 'zh-CN') {
+        if (currentLocale === 'zh-TW' || currentLocale === 'zh-HK' || currentLocale === 'zh-CN') {
             return `${percentage}% 折扣`;
         } else if (currentLocale === 'ko-KR') {
             return `${percentage}% 할인`;
@@ -361,7 +375,7 @@ export const formatDiscountDescription = (discount, locale = null) => {
     } else if (isFixedDiscount) {
         const amount = discount.amount || discount.estimatedValue || discount.discountAmount;
         const formattedAmount = formatCurrency(amount, discount.currency, currentLocale);
-        if (currentLocale === 'zh-TW' || currentLocale === 'zh-CN') {
+        if (currentLocale === 'zh-TW' || currentLocale === 'zh-HK' || currentLocale === 'zh-CN') {
             return `${formattedAmount} 折扣`;
         } else if (currentLocale === 'ko-KR') {
             return `${formattedAmount} 할인`;
@@ -390,6 +404,7 @@ export const formatBenefitDescription = (benefit, locale = null) => {
 
             const discountTitle = {
                 'zh-TW': '折扣優惠',
+                'zh-HK': '折扣優惠',
                 'zh-CN': '折扣优惠',
                 'ko-KR': '할인 적용'
             }[currentLocale] || 'Discount Applied';
@@ -408,7 +423,7 @@ export const formatBenefitDescription = (benefit, locale = null) => {
             };
             
         case 'extension':
-            const extensionTitle = currentLocale === 'zh-TW'
+            const extensionTitle = currentLocale === 'zh-TW' || currentLocale === 'zh-HK'
                 ? '訂閱延長'
                 : currentLocale === 'zh-CN'
                     ? '订阅延期'
@@ -424,13 +439,13 @@ export const formatBenefitDescription = (benefit, locale = null) => {
             
         case 'upgrade':
             const planName = getLocalizedPlanName(benefit.targetPlan, currentLocale);
-            if (currentLocale === 'zh-TW' || currentLocale === 'zh-CN' || currentLocale === 'ko-KR') {
+            if (currentLocale === 'zh-TW' || currentLocale === 'zh-HK' || currentLocale === 'zh-CN' || currentLocale === 'ko-KR') {
                 const upgradeTitle = currentLocale === 'zh-CN'
                     ? '套餐升级'
-                    : currentLocale === 'zh-TW' ? '方案升級' : '요금제 업그레이드';
+                    : currentLocale === 'zh-TW' ? '方案升級' : currentLocale === 'zh-HK' ? '計劃升級' : '요금제 업그레이드';
                 const upgradeDescription = currentLocale === 'zh-CN'
                     ? `升级至 ${planName}`
-                    : currentLocale === 'zh-TW' ? `升級至 ${planName}` : `${planName}로 업그레이드`;
+                    : (currentLocale === 'zh-TW' || currentLocale === 'zh-HK') ? `升級至 ${planName}` : `${planName}로 업그레이드`;
                 return {
                     title: upgradeTitle,
                     description: upgradeDescription,
@@ -449,6 +464,7 @@ export const formatBenefitDescription = (benefit, locale = null) => {
         default:
             const defaultCopy = {
                 'zh-TW': { title: '特殊優惠', description: '您將獲得特殊促銷優惠', highlight: '高級權限' },
+                'zh-HK': { title: '特別優惠', description: '你將獲得特別優惠', highlight: '高級權限' },
                 'zh-CN': { title: '特别优惠', description: '您将获得特别促销优惠', highlight: '高级权限' },
                 'ko-KR': { title: '특별 혜택', description: '특별 혜택이 제공됩니다.', highlight: '프리미엄 이용 권한' }
             }[currentLocale] || {
@@ -478,7 +494,7 @@ export const formatCountdown = (timeRemaining, locale = null) => {
     const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
     
-    if (currentLocale === 'zh-TW' || currentLocale === 'zh-CN') {
+    if (currentLocale === 'zh-TW' || currentLocale === 'zh-HK' || currentLocale === 'zh-CN') {
         const remaining = currentLocale === 'zh-CN' ? '剩余' : '剩餘';
         const hour = currentLocale === 'zh-CN' ? '小时' : '小時';
         const minute = currentLocale === 'zh-CN' ? '分钟' : '分鐘';
@@ -546,7 +562,7 @@ export const formatErrorMessage = (errorCode, params = {}, locale = null) => {
 export const formatNumber = (number, options = {}, locale = null) => {
     const currentLocale = locale || getCurrentLocale();
     
-    return new Intl.NumberFormat(['zh-TW', 'zh-CN', 'ko-KR'].includes(currentLocale) ? currentLocale : 'en-US', {
+    return new Intl.NumberFormat(currentLocale === 'zh-HK' ? 'zh-HK' : ['zh-TW', 'zh-CN', 'ko-KR'].includes(currentLocale) ? currentLocale : 'en-US', {
         minimumFractionDigits: options.minimumFractionDigits || 0,
         maximumFractionDigits: options.maximumFractionDigits || 2,
         ...options
@@ -562,7 +578,7 @@ export const formatNumber = (number, options = {}, locale = null) => {
 export const formatPercentage = (percentage, locale = null) => {
     const currentLocale = locale || getCurrentLocale();
     
-    return new Intl.NumberFormat(['zh-TW', 'zh-CN', 'ko-KR'].includes(currentLocale) ? currentLocale : 'en-US', {
+    return new Intl.NumberFormat(currentLocale === 'zh-HK' ? 'zh-HK' : ['zh-TW', 'zh-CN', 'ko-KR'].includes(currentLocale) ? currentLocale : 'en-US', {
         style: 'percent',
         minimumFractionDigits: 0,
         maximumFractionDigits: 1
@@ -583,6 +599,11 @@ export const getLocalizedPlanName = (planKey, locale = null) => {
             'free': '免費方案',
             'pro': 'Pro 方案',
             'premium': '高級方案'
+        },
+        'zh-HK': {
+            'free': '免費計劃',
+            'pro': 'Pro 計劃',
+            'premium': '高級計劃'
         },
         'zh-CN': {
             'free': '免费套餐',
@@ -615,7 +636,7 @@ export const formatEstimatedValue = (value, currency = 'TWD', locale = null) => 
     const currentLocale = locale || getCurrentLocale();
     const formattedAmount = formatCurrency(value, currency, currentLocale);
     
-    if (currentLocale === 'zh-TW') {
+    if (currentLocale === 'zh-TW' || currentLocale === 'zh-HK') {
         return `預估價值：${formattedAmount}`;
     } else if (currentLocale === 'zh-CN') {
         return `预估价值：${formattedAmount}`;

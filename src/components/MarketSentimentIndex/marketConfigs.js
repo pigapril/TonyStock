@@ -13,7 +13,7 @@ const buildTwGaugeExplainerCopy = ({ currentLang, currentCompositeScore, current
       ]
     };
   }
-  if (locale === 'zh-TW') {
+  if (locale === 'zh-TW' || locale === 'zh-HK') {
     return {
       title: '關於台股恐懼貪婪指標',
       subtitle: `本次綜合分數為 ${currentCompositeScore ?? '-'}，整體偏向「${currentCompositeSentimentLabel}」。九項台股訊號合成 0 到 100 分，讓你先看整體情緒，再找出背後的變化。`,

@@ -6,6 +6,7 @@ import { execFileSync } from 'child_process';
 const root = path.resolve(__dirname, '../..');
 const origin = 'https://sentimentinsideout.com';
 const articleCatalog = require('../config/articleCatalog');
+const LOCALES = ['en', 'zh-TW', 'zh-HK', 'zh-CN', 'ko-KR'];
 let output;
 const generate = () => {
   const env = { ...process.env, SEO_BUILD_DIR: output, SITE_ORIGIN: origin };
@@ -29,13 +30,13 @@ test('every indexable URL has usable PNG metadata in its first HTML response', (
   expect(urls).not.toContain(`${origin}/en/sponsor-us/`);
   expect(urls).toContain(`${origin}/zh-TW/sponsor-us/`);
   for (const block of sitemap.match(/<url>[\s\S]*?<\/url>/g) || []) {
-    for (const alternate of block.matchAll(/hreflang="(en|zh-TW|zh-CN|ko-KR)"\s+href="([^"]+)"/g)) {
+    for (const alternate of block.matchAll(new RegExp('hreflang="(' + LOCALES.join('|') + ')"\\s+href="([^"]+)"', 'g'))) {
       expect(urls).toContain(alternate[2]);
     }
   }
-  const articleUrls = urls.filter(url => /^\/(?:en|zh-TW|zh-CN|ko-KR)\/articles\/[^/]+\/?$/.test(new URL(url).pathname));
-  expect(articleUrls).toHaveLength(16);
-  for (const locale of ['en', 'zh-TW', 'zh-CN', 'ko-KR']) {
+  const articleUrls = urls.filter(url => /^\/(?:en|zh-TW|zh-HK|zh-CN|ko-KR)\/articles\/[^/]+\/?$/.test(new URL(url).pathname));
+  expect(articleUrls).toHaveLength(20);
+  for (const locale of LOCALES) {
     expect(articleUrls.filter(url => new URL(url).pathname.startsWith(`/${locale}/`))).toHaveLength(4);
   }
   for (const url of urls) {
@@ -43,7 +44,7 @@ test('every indexable URL has usable PNG metadata in its first HTML response', (
     expect(fs.existsSync(shellPath)).toBe(true);
     const html = fs.readFileSync(shellPath, 'utf8');
     const image = meta(html, 'og:image');
-    expect(image).toMatch(/^https:\/\/sentimentinsideout\.com\/images\/social\/(en|zh-TW|zh-CN|ko-KR)\/[^/]+\.png$/);
+    expect(image).toMatch(/^https:\/\/sentimentinsideout\.com\/images\/social\/(en|zh-TW|zh-HK|zh-CN|ko-KR)\/[^/]+\.png$/);
     expect(meta(html, 'twitter:image')).toBe(image);
     expect(meta(html, 'og:url')).toBe(url);
     expect(meta(html, 'og:type')).toMatch(/^(website|article)$/);
@@ -56,7 +57,7 @@ test('every indexable URL has usable PNG metadata in its first HTML response', (
 });
 
 test('localized HTML shells use matching install metadata and English article charts', () => {
-  for (const lang of ['en', 'zh-TW', 'zh-CN', 'ko-KR']) {
+  for (const lang of LOCALES) {
     const html = fs.readFileSync(path.join(output, lang, 'index.html'), 'utf8');
     expect(html).toContain(`rel="manifest" href="/manifest.${lang}.json"`);
     const manifest = JSON.parse(fs.readFileSync(path.join(root, 'public', `manifest.${lang}.json`), 'utf8'));
@@ -74,7 +75,7 @@ test('localized HTML shells use matching install metadata and English article ch
   expect(translatedPriceAnalysis).toContain(`hreflang="x-default" href="${origin}/en/priceanalysis/`);
   expect(translatedPriceAnalysis).toContain('rel="preload" as="image" href="/logo.avif" fetchpriority="high" type="image/avif"');
   expect(translatedPriceAnalysis).not.toContain('/home-hero-sio.svg');
-  for (const lang of ['en', 'zh-TW', 'zh-CN', 'ko-KR']) {
+  for (const lang of LOCALES) {
     const homepage = fs.readFileSync(path.join(output, lang, 'index.html'), 'utf8');
     const priceAnalysis = fs.readFileSync(path.join(output, lang, 'priceanalysis/index.html'), 'utf8');
     expect(homepage).toContain('rel="preload" as="image" href="/home-hero-sio.svg" fetchpriority="high" type="image/svg+xml"');
@@ -127,7 +128,7 @@ test('all Korean sitemap descriptions stay within Naver’s recommended 80 chara
 test('each active article has localized static content and four reciprocal hreflang targets', () => {
   for (const article of articleCatalog) {
     const editions = Object.entries(article.locales);
-    expect(editions).toHaveLength(4);
+    expect(editions).toHaveLength(5);
     for (const [locale, edition] of editions) {
       const shellPath = path.join(output, locale, 'articles', edition.slug, 'index.html');
       expect(fs.existsSync(shellPath)).toBe(true);
@@ -198,8 +199,8 @@ test('sharing cards use the official logo, site palette and unmodified source co
   const css = fs.readFileSync(path.join(root, manifest.colorSource), 'utf8');
   expect(css).toContain(manifest.palette.primary);
   expect(css).toContain(manifest.palette.secondary);
-  expect(manifest.cards).toHaveLength(54);
-  expect(manifest.cards.filter(card => String(card.name).startsWith('article-'))).toHaveLength(16);
+  expect(manifest.cards).toHaveLength(67);
+  expect(manifest.cards.filter(card => String(card.name).startsWith('article-'))).toHaveLength(20);
   for (const card of manifest.cards) {
     if (card.source) {
       const article = fs.readFileSync(path.join(root, 'public', card.source), 'utf8');
@@ -221,13 +222,13 @@ test('homepage sharing images use the real hero at the selected 2022 bear-market
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'public/images/social/manifest.json'), 'utf8'));
   const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'src/config/socialHeroSnapshot.json'), 'utf8'));
   const homeCards = manifest.cards.filter(card => card.name === 'home');
-  expect(homeCards).toHaveLength(4);
+  expect(homeCards).toHaveLength(5);
   expect(snapshot.eventId).toBe('inflationBearLow');
   expect(snapshot.date).toBe('2022-10-03T00:00:00.000Z');
   expect(Math.round(snapshot.score)).toBe(4);
   expect(snapshot.sentimentKey).toBe('sentiment.extremeFear');
   for (const card of homeCards) {
-    if (card.lang === 'zh-CN' || card.lang === 'ko-KR') {
+    if (card.lang === 'zh-HK' || card.lang === 'zh-CN' || card.lang === 'ko-KR') {
       expect(card.title).toBeTruthy();
       expect(card.description).toBeTruthy();
       expect(card.artwork).toBeUndefined();

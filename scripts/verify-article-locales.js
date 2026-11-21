@@ -8,7 +8,8 @@ const { LOCALE_CODES } = require('../src/locales/localeConfig');
 
 const ROOT = path.resolve(__dirname, '..');
 const EXPECTED_ARTICLE_IDS = ['1', '2', '4', '5'];
-const REQUIRED_LOCALES = ['en', 'zh-TW', 'zh-CN', 'ko-KR'];
+const REQUIRED_LOCALES = ['en', 'zh-TW', 'zh-HK', 'zh-CN', 'ko-KR'];
+const LOCALE_PATTERN = LOCALE_CODES.join('|');
 
 function readFrontmatter(source, filename) {
   const match = source.match(/^---\s*\n([\s\S]*?)\n---(?:\s*\n|$)/);
@@ -62,12 +63,12 @@ function validate() {
           if (!['sentimentinsideout.com', 'www.sentimentinsideout.com'].includes(url.hostname)) continue;
           pathname = url.pathname;
         }
-        const routeLocale = pathname.match(/^\/(en|zh-TW|zh-CN|ko-KR)\//)?.[1];
+        const routeLocale = pathname.match(new RegExp(`^/(${LOCALE_PATTERN})/`))?.[1];
         if (routeLocale && routeLocale !== locale) {
           throw new Error(`Wrong-locale internal link in article ${article.id} (${locale}): ${href}`);
         }
         if (pathname.startsWith('/')) {
-          const hasLocalePrefix = /^\/(en|zh-TW|zh-CN|ko-KR)\//.test(pathname);
+          const hasLocalePrefix = new RegExp(`^/(${LOCALE_PATTERN})/`).test(pathname);
           if (!hasLocalePrefix) throw new Error(`Unlocalized internal link in article ${article.id} (${locale}): ${href}`);
         }
       }
@@ -78,6 +79,9 @@ function validate() {
       }
       if (locale === 'zh-CN' && /\/zh-TW\//.test(body)) {
         throw new Error(`Simplified Chinese article ${article.id} contains a Traditional Chinese route`);
+      }
+      if (locale === 'zh-HK' && /\/zh-TW\//.test(body)) {
+        throw new Error(`Hong Kong article ${article.id} contains a Taiwan locale route`);
       }
       if (/\{\{[^}]+\}\}|\[TODO\]|\[TRANSLATE\]/i.test(body)) {
         throw new Error(`Unresolved translation marker in article ${article.id} (${locale})`);

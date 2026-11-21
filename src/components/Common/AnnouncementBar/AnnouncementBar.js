@@ -23,7 +23,7 @@ const AnnouncementBar = () => {
     if (!config) return '';
     
     const currentLang = i18n.language || 'zh-TW';
-    const usesTraditionalChinese = currentLang === 'zh-TW' || currentLang === 'zh';
+    const usesTraditionalChinese = ['zh-TW', 'zh-HK', 'zh'].includes(currentLang);
     
     let selectedMessage = '';
     

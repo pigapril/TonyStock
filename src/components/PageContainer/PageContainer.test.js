@@ -31,6 +31,18 @@ describe('PageContainer search metadata', () => {
     unmount();
   });
 
+  it('publishes the Hong Kong locale in Open Graph and hreflang metadata', async () => {
+    const { unmount } = renderPage('/zh-HK/priceanalysis');
+
+    await waitFor(() => {
+      expect(document.head.querySelector('meta[property="og:locale"]')?.content).toBe('zh_HK');
+      expect(document.head.querySelector('link[rel="alternate"][hreflang="zh-HK"]')?.href)
+        .toBe(`${SITE_ORIGIN}/zh-HK/priceanalysis/`);
+    });
+
+    unmount();
+  });
+
   it('does not append the brand when the localized title already contains it', async () => {
     const { unmount } = renderPage('/zh-CN/', {
       title: 'Sentiment Inside Out｜市场情绪分析平台'

@@ -149,6 +149,7 @@ async function render(record, palette, logo) {
       // screenshots whose UI copy belongs to a different language.
       if (lang === 'zh-CN' && name === 'sponsor-us') continue;
       if (lang === 'ko-KR' && name === 'sponsor-us') continue;
+      if (lang === 'zh-HK' && name === 'sponsor-us') continue;
       const useArtwork = lang === 'en' || lang === 'zh-TW';
       const artworkPath = useArtwork
         ? asset?.replace('{locale}', getLocaleConfig(lang)?.socialAssetSuffix ?? (lang === DEFAULT_LOCALE ? '-en' : `-${lang}`)).replace('{lang}', lang)

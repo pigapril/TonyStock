@@ -282,7 +282,7 @@ const ChatWidgetSession = ({ language, isOpen, setIsOpen }) => {
       setIsWaitingReply(false);
       setUnreadCount(0);
       try {
-        ['chatWidget.session.v1', 'chatWidget.session.v2.en', 'chatWidget.session.v2.zh-TW', 'chatWidget.session.v2.zh-CN', 'chatWidget.session.v2.ko-KR'].forEach(key => sessionStorage.removeItem(key));
+        ['chatWidget.session.v1', 'chatWidget.session.v2.en', 'chatWidget.session.v2.zh-TW', 'chatWidget.session.v2.zh-HK', 'chatWidget.session.v2.zh-CN', 'chatWidget.session.v2.ko-KR'].forEach(key => sessionStorage.removeItem(key));
       } catch {}
     };
 
@@ -405,6 +405,8 @@ export const resolveChatWidgetLanguage = (i18n) => {
   const rawLanguage = (i18n?.language || i18n?.resolvedLanguage || 'zh-TW').toLowerCase();
   return rawLanguage.startsWith('ko')
     ? 'ko-KR'
+    : rawLanguage.startsWith('zh-hk')
+      ? 'zh-HK'
     : rawLanguage.startsWith('zh-cn') || rawLanguage.startsWith('zh-hans')
       ? 'zh-CN'
       : rawLanguage === 'zh' || rawLanguage.startsWith('zh-tw') || rawLanguage.startsWith('zh-hant')

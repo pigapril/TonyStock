@@ -109,6 +109,7 @@ function escapeAttr(str) {
 
 function ogLocale(lang) {
   if (lang === 'en') return 'en_US';
+  if (lang === 'zh-HK') return 'zh_HK';
   if (lang === 'zh-CN') return 'zh_CN';
   if (lang === 'ko-KR') return 'ko_KR';
   return 'zh_TW';

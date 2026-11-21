@@ -42,6 +42,7 @@ test('canonical locale and legacy URL alias resolve without creating a second tr
   expect(getCanonicalLocale('zh')).toBe('zh-TW');
   expect(getCanonicalLocale('ZH-tw')).toBe('zh-TW');
   expect(getCanonicalLocale('zh-cn')).toBe('zh-CN');
+  expect(getCanonicalLocale('zh-hk')).toBe('zh-HK');
   expect(getCanonicalLocale('unknown')).toBe(DEFAULT_LOCALE);
   expect(getLocaleResourceChain('zh')).toEqual(['zh-TW', 'en']);
 });
@@ -50,16 +51,19 @@ test('fallback chains are taken from locale configuration', () => {
   expect(getLocaleFallbacks('en')).toEqual([]);
   expect(getLocaleFallbacks('zh-TW')).toEqual(['en']);
   expect(getLocaleResourceChain('zh-TW')).toEqual(['zh-TW', 'en']);
+  expect(getLocaleFallbacks('zh-HK')).toEqual(['en']);
+  expect(getLocaleResourceChain('zh-HK')).toEqual(['zh-HK', 'en']);
   expect(getLocaleFallbacks('zh-CN')).toEqual(['en']);
   expect(getLocaleResourceChain('zh-CN')).toEqual(['zh-CN', 'en']);
   expect(getLocaleResourceChain('en')).toEqual(['en']);
 });
 
 test('browser language selects an enabled locale and otherwise falls back to default', () => {
-  expect(getBrowserLocale('zh-HK')).toBe('zh-TW');
+  expect(getBrowserLocale('zh-HK')).toBe('zh-HK');
+  expect(getBrowserLocale('zh-Hant-HK')).toBe('zh-HK');
   expect(getBrowserLocale('zh-TW')).toBe('zh-TW');
   expect(getBrowserLocale('zh-Hant')).toBe('zh-TW');
-  expect(getBrowserLocale('zh-Hant-HK')).toBe('zh-TW');
+  expect(getBrowserLocale('zh-Hant-HK')).toBe('zh-HK');
   expect(getBrowserLocale('zh-CN')).toBe('zh-CN');
   expect(getBrowserLocale('zh-Hans')).toBe('zh-CN');
   expect(getBrowserLocale('zh-Hans-CN')).toBe('zh-CN');
@@ -77,6 +81,7 @@ test('browser language selects an enabled locale and otherwise falls back to def
 test('explicit URL locale takes precedence over browser preference', () => {
   expect(getInitialLanguage('/zh-TW/priceanalysis', 'en-US')).toBe('zh-TW');
   expect(getInitialLanguage('/zh-CN/priceanalysis', 'zh-TW')).toBe('zh-CN');
+  expect(getInitialLanguage('/zh-HK/priceanalysis', 'zh-TW')).toBe('zh-HK');
   expect(getInitialLanguage('/EN/watchlist', 'zh-TW')).toBe('en');
   expect(getInitialLanguage('/zh/momentum', 'en-US')).toBe('zh');
   expect(getInitialLanguage('/ko-KR/momentum', 'en-US')).toBe('ko-KR');
@@ -95,6 +100,7 @@ test('locale prefix parsing is data-driven and leaves non-locale routes intact',
 
 test('Intl formatting locale is centralized with a safe fallback', () => {
   expect(getIntlLocale('zh-TW')).toBe('zh-TW');
+  expect(getIntlLocale('zh-HK')).toBe('zh-HK');
   expect(getIntlLocale('zh-CN')).toBe('zh-CN');
   expect(getIntlLocale('ko-KR')).toBe('ko-KR');
   expect(getIntlLocale('en')).toBe('en-US');
@@ -103,6 +109,7 @@ test('Intl formatting locale is centralized with a safe fallback', () => {
 
 test('payment services receive only the currently supported locales', () => {
   expect(getPaymentServiceLocale('zh-TW')).toBe('zh-TW');
+  expect(getPaymentServiceLocale('zh-HK')).toBe('zh-TW');
   expect(getPaymentServiceLocale('zh')).toBe('zh-TW');
   expect(getPaymentServiceLocale('zh-CN')).toBe('en');
   expect(getPaymentServiceLocale('en')).toBe('en');

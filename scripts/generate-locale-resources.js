@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, '../src/locales');
 const GENERATED_LOADERS = path.join(root, 'localeResources.generated.js');
 const check = process.argv.includes('--check');
 
+require('./generate-hk-locale.js');
 require('./generate-korean-locale.js');
 
 const generatedLines = [

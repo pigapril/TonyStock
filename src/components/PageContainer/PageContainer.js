@@ -71,6 +71,14 @@ const PageContainer = ({
   const fallbackLng = typeof rawFallbackLng === 'string'
     ? rawFallbackLng
     : (rawFallbackLng?.default?.[0] || 'en');
+  const localeTag = normalizeLocale(lang || fallbackLng);
+  const openGraphLocale = ({
+    en: 'en_US',
+    'zh-TW': 'zh_TW',
+    'zh-HK': 'zh_HK',
+    'zh-CN': 'zh_CN',
+    'ko-KR': 'ko_KR',
+  })[localeTag] || 'zh_TW';
 
   const pathWithoutLang = location.pathname.startsWith(`/${lang}`)
     ? location.pathname.substring(`/${lang}`.length)
@@ -109,11 +117,7 @@ const PageContainer = ({
         {pageImage.endsWith('.png') && <meta property="og:image:type" content="image/png" />}
         <meta property="og:url" content={pageOgUrl} />
         <meta property="og:type" content={ogType} />
-        <meta property="og:locale" content={normalizeLocale(lang || fallbackLng) === 'en'
-          ? 'en_US'
-          : (normalizeLocale(lang || fallbackLng) === 'zh-CN'
-            ? 'zh_CN'
-            : (normalizeLocale(lang || fallbackLng) === 'ko-KR' ? 'ko_KR' : 'zh_TW'))} />
+        <meta property="og:locale" content={openGraphLocale} />
         
         {/* Twitter Card 標籤 */}
         <meta name="twitter:card" content={twitterCard} />

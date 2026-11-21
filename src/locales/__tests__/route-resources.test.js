@@ -134,7 +134,7 @@ test('partial Korean route resources load the configured English fallback, never
 });
 
 test.each([
-  ['/zh-TW/', 'zh-TW'], ['/ZH-tw/momentum', 'zh-TW'], ['/zh-CN/', 'zh-CN'], ['/zh/', 'zh'], ['/ko-KR/momentum', 'ko-KR'],
+  ['/zh-TW/', 'zh-TW'], ['/ZH-tw/momentum', 'zh-TW'], ['/zh-HK/', 'zh-HK'], ['/zh-CN/', 'zh-CN'], ['/zh/', 'zh'], ['/ko-KR/momentum', 'ko-KR'],
   ['/en/', 'en'], ['/', 'en'], ['/unsupported/', 'en']
 ])('initial language is resolved from %s before the first render', (pathname, language) => {
   const { getInitialLanguage } = require('../resourceGroups');
@@ -142,17 +142,17 @@ test.each([
 });
 
 test.each([
-  ['/', 'zh-TW', 'zh-TW'], ['/', 'zh-HK', 'zh-TW'], ['/', 'zh-Hant', 'zh-TW'],
+  ['/', 'zh-TW', 'zh-TW'], ['/', 'zh-HK', 'zh-HK'], ['/', 'zh-Hant-HK', 'zh-HK'], ['/', 'zh-Hant', 'zh-TW'],
   ['/', 'zh-CN', 'zh-CN'], ['/', 'zh-Hans', 'zh-CN'], ['/', 'zh-SG', 'zh-CN'], ['/', 'ZH-cn', 'zh-CN'],
   ['/', 'en-US', 'en'], ['/', 'ko-KR', 'ko-KR'], ['/', 'ko', 'ko-KR'], ['/', 'ja-JP', 'en'], ['/', '', 'en'],
-  ['/en/', 'zh-TW', 'en'], ['/zh-TW/', 'en-US', 'zh-TW'], ['/zh-CN/', 'zh-TW', 'zh-CN'], ['/zh/', 'en-US', 'zh'], ['/ko-KR/', 'en-US', 'ko-KR']
+  ['/en/', 'zh-TW', 'en'], ['/zh-TW/', 'en-US', 'zh-TW'], ['/zh-HK/', 'zh-TW', 'zh-HK'], ['/zh-CN/', 'zh-TW', 'zh-CN'], ['/zh/', 'en-US', 'zh'], ['/ko-KR/', 'en-US', 'ko-KR']
 ])('initial language for %s with browser preference %s is %s', (pathname, browserLanguage, language) => {
   const { getInitialLanguage } = require('../resourceGroups');
   expect(getInitialLanguage(pathname, browserLanguage)).toBe(language);
 });
 
 test.each([
-  ['/', 'zh-TW', 'zh-TW'], ['/', 'zh-CN', 'zh-CN'], ['/', 'ko-KR', 'ko-KR'], ['/', 'ja-JP', 'en'], ['/en/', 'zh-TW', 'en'], ['/zh/', 'en-US', 'zh']
+  ['/', 'zh-TW', 'zh-TW'], ['/', 'zh-HK', 'zh-HK'], ['/', 'zh-CN', 'zh-CN'], ['/', 'ko-KR', 'ko-KR'], ['/', 'ja-JP', 'en'], ['/en/', 'zh-TW', 'en'], ['/zh/', 'en-US', 'zh']
 ])('i18n loads only the initial locale chain before readiness resolves for %s with browser language %s', async (pathname, browserLanguage, language) => {
   const originalUrl = window.location.href;
   const originalLanguage = Object.getOwnPropertyDescriptor(navigator, 'language');

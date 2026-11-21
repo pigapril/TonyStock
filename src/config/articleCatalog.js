@@ -17,6 +17,10 @@ const ARTICLE_CATALOG = [
         slug: '1.用樂活五線譜分析價格趨勢與情緒',
         filename: '用樂活五線譜分析價格趨勢與情緒.zh-TW.ini.md',
       },
+      'zh-HK': {
+        slug: '1.用樂活五線譜分析價格趨勢與情緒',
+        filename: 'article-1.zh-HK.ini.md',
+      },
       'zh-CN': {
         slug: 'lohas-five-line-analysis-price-trends-sentiment',
         filename: 'article-1.zh-CN.ini.md',
@@ -38,6 +42,10 @@ const ARTICLE_CATALOG = [
       'zh-TW': {
         slug: '2.用市場情緒綜合指數判斷買賣時機',
         filename: '用市場情緒綜合指數判斷買賣時機.zh-TW.ini.md',
+      },
+      'zh-HK': {
+        slug: '2.用市場情緒綜合指數判斷買賣時機',
+        filename: 'article-2.zh-HK.ini.md',
       },
       'zh-CN': {
         slug: 'sio-fear-greed-index-buy-sell-timing',
@@ -61,6 +69,10 @@ const ARTICLE_CATALOG = [
         slug: '4.樂活五線譜1156萬筆台美股資料實測結果分析',
         filename: '樂活五線譜1155萬筆台美股資料實測結果分析.zh-TW.ini.md',
       },
+      'zh-HK': {
+        slug: '4.樂活五線譜1156萬筆台美股資料實測結果分析',
+        filename: 'article-4.zh-HK.ini.md',
+      },
       'zh-CN': {
         slug: 'lohas-five-line-analysis-backtest-11-56-million-bars',
         filename: 'article-4.zh-CN.ini.md',
@@ -82,6 +94,10 @@ const ARTICLE_CATALOG = [
       'zh-TW': {
         slug: '5.市場動能儀表板使用指南',
         filename: '市場動能儀表板使用指南.zh-TW.ini.md',
+      },
+      'zh-HK': {
+        slug: '5.市場動能儀表板使用指南',
+        filename: 'article-5.zh-HK.ini.md',
       },
       'zh-CN': {
         slug: 'market-momentum-dashboard-guide',

@@ -34,6 +34,7 @@ describe('ChatWidget locale routing', () => {
     ['zh-Hans', 'zh-CN'],
     ['zh', 'zh-TW'],
     ['zh-TW', 'zh-TW'],
+    ['zh-HK', 'zh-HK'],
     ['zh-Hant', 'zh-TW'],
     ['en-US', 'en'],
   ])('routes %s to FAQ locale %s', (language, expected) => {
@@ -59,7 +60,7 @@ describe('ChatWidget locale routing', () => {
     unmount();
   });
 
-  test.each(['zh-CN', 'ko-KR'])('sends %s to both FAQ and chat endpoints', async (locale) => {
+  test.each(['zh-CN', 'zh-HK', 'ko-KR'])('sends %s to both FAQ and chat endpoints', async (locale) => {
     global.__chatWidgetTestI18n = { language: locale };
     global.__chatWidgetFetchWithCSRF = jest.fn().mockResolvedValue({
       json: async () => ({ faq: { '테스트 카테고리': { '테스트 하위 분류': { '테스트 질문?': '테스트 답변' } } } }),

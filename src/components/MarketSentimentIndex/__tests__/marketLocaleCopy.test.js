@@ -9,6 +9,7 @@ describe('market copy locale resolution', () => {
   it('preserves the current en, zh-TW and zh-CN labels', () => {
     expect(getMarketSentimentUiCopy('recentReference', 'en')).toBe('Recent Reference');
     expect(getMarketSentimentUiCopy('recentReference', 'zh-TW')).toBe('近期參考');
+    expect(getMarketSentimentUiCopy('recentReference', 'zh-HK')).toBe('近期參考');
     expect(getMarketSentimentUiCopy('recentReference', 'zh-CN')).toBe('近期参考');
     expect(getMarketSentimentUiCopy('historicalFearLows', 'zh-CN')).toBe('历史极度恐惧低点');
     expect(getMarketSentimentUiCopy('recentReference', 'ko-KR')).toBe('최근 비교 기준');
@@ -22,6 +23,8 @@ describe('market copy locale resolution', () => {
   it('resolves Korean copy and keeps English fallback for unsupported locales', () => {
     expect(getMarketCopyLocale('ko-KR')).toBe('ko-KR');
     expect(getMarketCopyLocale('zh')).toBe('zh-TW');
+    expect(getMarketCopyLocale('zh-HK')).toBe('zh-HK');
+    expect(resolveMarketLocaleText({ en: 'English', 'zh-TW': '繁中' }, 'zh-HK')).toBe('繁中');
     expect(getMarketSentimentUiCopy('history', 'ko-KR')).toBe('과거 추이');
     expect(resolveMarketLocaleText({ en: 'English', 'zh-TW': '繁中' }, 'ko-KR')).toBe('English');
   });
@@ -41,10 +44,12 @@ describe('market copy locale resolution', () => {
   it('keeps existing Taiwan explainer copy and provides reviewed Korean copy', () => {
     const args = { currentCompositeScore: 42, currentCompositeSentimentLabel: 'Fear' };
     const tw = TW_MARKET_SENTIMENT_CONFIG.buildGaugeExplainerCopy({ ...args, currentLang: 'zh-TW' });
+    const hk = TW_MARKET_SENTIMENT_CONFIG.buildGaugeExplainerCopy({ ...args, currentLang: 'zh-HK' });
     const cn = TW_MARKET_SENTIMENT_CONFIG.buildGaugeExplainerCopy({ ...args, currentLang: 'zh-CN' });
     const en = TW_MARKET_SENTIMENT_CONFIG.buildGaugeExplainerCopy({ ...args, currentLang: 'en' });
     const ko = TW_MARKET_SENTIMENT_CONFIG.buildGaugeExplainerCopy({ ...args, currentLang: 'ko-KR' });
     expect(tw.title).toBe('關於台股恐懼貪婪指標');
+    expect(hk.title).toBe(tw.title);
     expect(cn.title).toBe('关于台湾股市恐惧与贪婪指数');
     expect(en.title).toBe('About the Taiwan Fear & Greed Index');
     expect(ko.title).toBe('대만 시장 공포·탐욕 지수 소개');

@@ -1,0 +1,29 @@
+{
+  "short_name": "Sentiment Inside Out",
+  "name": "Sentiment Inside Out｜市場情緒分析",
+  "description": "市場情緒分析平台，協助投資者掌握市場氣氛與恐懼貪婪指標。",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "maskable-icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/zh-HK/",
+  "display": "standalone",
+  "theme_color": "#1a1530",
+  "background_color": "#f6f3ff",
+  "lang": "zh-HK",
+  "id": "/"
+}

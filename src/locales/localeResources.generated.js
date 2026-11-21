@@ -3,6 +3,7 @@
 export const commonLocaleLoaders = {
   "en": () => import('./resources/en/common.json'),
   "zh-TW": () => import('./resources/zh-TW/common.json'),
+  "zh-HK": () => import('./resources/zh-HK/common.json'),
   "zh-CN": () => import('./resources/zh-CN/common.json'),
   "ko-KR": () => import('./resources/ko-KR/common.json')
 };
@@ -31,6 +32,18 @@ export const routeLocaleLoaders = {
     "account": () => import('./resources/zh-TW/account.json'),
     "market": () => import('./resources/zh-TW/market.json'),
     "priceNotifications": () => import('./resources/zh-TW/priceNotifications.json')
+  },
+  "zh-HK": {
+    "admin": () => import('./resources/zh-HK/admin.json'),
+    "momentum": () => import('./resources/zh-HK/momentum.json'),
+    "indicatorsExternal": () => import('./resources/zh-HK/indicatorsExternal.json'),
+    "indicatorsUs": () => import('./resources/zh-HK/indicatorsUs.json'),
+    "indicatorsTw": () => import('./resources/zh-HK/indicatorsTw.json'),
+    "indicatorsSio": () => import('./resources/zh-HK/indicatorsSio.json'),
+    "indicatorsBofa": () => import('./resources/zh-HK/indicatorsBofa.json'),
+    "account": () => import('./resources/zh-HK/account.json'),
+    "market": () => import('./resources/zh-HK/market.json'),
+    "priceNotifications": () => import('./resources/zh-HK/priceNotifications.json')
   },
   "zh-CN": {
     "admin": () => import('./resources/zh-CN/admin.json'),

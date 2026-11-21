@@ -13,7 +13,7 @@ export function AuthDialog() {
     // Only the Traditional Chinese artwork exists; Simplified Chinese uses
     // the language-neutral English artwork rather than showing Traditional text.
     const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
-    const imageLanguage = resolvedLanguage === 'zh-TW' || resolvedLanguage === 'zh' ? 'zh-TW' : 'en';
+    const imageLanguage = ['zh-TW', 'zh-HK', 'zh'].includes(resolvedLanguage) ? 'zh-TW' : 'en';
     const { dialog, closeDialog } = useDialog();
     const { loading, renderGoogleButton, user, ensureGoogleIdentityLoaded } = useAuth();
     const navigate = useNavigate();

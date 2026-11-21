@@ -13,7 +13,7 @@ function formatHeroMomentDate(value, locale) {
     return { monthDay: 'N/A', year: '' };
   }
 
-  if (locale === 'zh-TW' || locale === 'zh-CN') {
+  if (locale === 'zh-TW' || locale === 'zh-HK' || locale === 'zh-CN') {
     return {
       monthDay: `${date.getMonth() + 1}月${date.getDate()}日`,
       year: String(date.getFullYear())

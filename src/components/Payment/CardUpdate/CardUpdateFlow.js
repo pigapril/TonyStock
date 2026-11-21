@@ -37,7 +37,7 @@ const taipeiDateText = (locale, date) => new Intl.DateTimeFormat(
 
 // Chinese copy supplies its own currency unit. Other locales use native number grouping.
 const amountText = (locale, amount) => (
-    ['zh-TW', 'zh-CN'].includes(locale)
+    ['zh-TW', 'zh-HK', 'zh-CN'].includes(locale)
         ? String(amount)
         : new Intl.NumberFormat(getIntlLocale(locale)).format(amount)
 );

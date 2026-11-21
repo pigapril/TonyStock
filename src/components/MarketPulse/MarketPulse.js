@@ -9,8 +9,8 @@ const REFRESH_MS = 60 * 1000;
 export const MARKETS = [
   { id: 'sp500', labels: { 'zh-TW': 'S&P 500', 'zh-CN': '标普 500', 'ko-KR': 'S&P 500', en: 'S&P 500' } },
   { id: 'nasdaq100', labels: { 'zh-TW': 'NASDAQ 100', 'zh-CN': '纳斯达克 100', 'ko-KR': '나스닥 100', en: 'Nasdaq 100' } },
-  { id: 'dow', labels: { 'zh-TW': '道瓊工業', 'zh-CN': '道琼斯工业指数', 'ko-KR': '다우존스 산업평균지수', en: 'Dow Jones' } },
-  { id: 'taiwan', labels: { 'zh-TW': '台灣加權', 'zh-CN': '台湾加权指数', 'ko-KR': '대만 가권지수', en: 'TAIEX' } },
+  { id: 'dow', labels: { 'zh-TW': '道瓊工業', 'zh-HK': '道瓊斯工業指數', 'zh-CN': '道琼斯工业指数', 'ko-KR': '다우존스 산업평균지수', en: 'Dow Jones' } },
+  { id: 'taiwan', labels: { 'zh-TW': '台灣加權', 'zh-HK': '台灣加權指數', 'zh-CN': '台湾加权指数', 'ko-KR': '대만 가권지수', en: 'TAIEX' } },
   { id: 'nikkei', labels: { 'zh-TW': '日經 225', 'zh-CN': '日经 225', 'ko-KR': '닛케이 225', en: 'Nikkei 225' } },
   { id: 'shanghai', labels: { 'zh-TW': '上證指數', 'zh-CN': '上证指数', 'ko-KR': '상하이 종합지수', en: 'Shanghai Composite' } },
   { id: 'kospi', labels: { 'zh-TW': '韓國綜合', 'zh-CN': '韩国综合指数', 'ko-KR': '코스피', en: 'KOSPI' } },

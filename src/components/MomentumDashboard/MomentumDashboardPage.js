@@ -51,9 +51,9 @@ export default function MomentumDashboardPage() {
   const pendingTrialAfterLogin = useRef(null);
   const language = LOCALE_CODES.includes(i18n.language) ? i18n.language : DEFAULT_LOCALE;
   const plansPath = `/${language}/subscription-plans`;
-  // Only Traditional Chinese and English guide articles are published. Every
-  // other locale links to the real English article rather than a missing URL.
-  const guideLocale = i18n.language === 'zh-TW' ? 'zh-TW' : 'en';
+  // The Taiwan and Hong Kong Traditional Chinese guide editions are published.
+  // Other locales link to the real English article rather than a missing URL.
+  const guideLocale = ['zh-TW', 'zh-HK'].includes(i18n.language) ? i18n.language : 'en';
   const guideUrl = `/${guideLocale}/articles/${guideLocale === 'en' ? 'market-momentum-dashboard-guide' : '5.市場動能儀表板使用指南'}/`;
   const text = useCallback((key, options) => t(`momentumDashboard.${key}`, options), [t]);
   const groupLabel = (name) => text(`groups.${groupKey(name)}`, { defaultValue: name });

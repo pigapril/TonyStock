@@ -312,7 +312,7 @@ export const Home = () => {
   const pricePreview = homepageData?.pricePreview || {};
   const featuredMoments = sentimentData.featuredMoments || [];
   const activeHeroMoment = featuredMoments[activeExtremeIndex] || null;
-  const announcementMessage = getCanonicalLocale(currentLang) === 'zh-TW'
+  const announcementMessage = ['zh-TW', 'zh-HK'].includes(getCanonicalLocale(currentLang))
     ? homepageData?.announcement?.message_zh || homepageData?.announcement?.message
     : homepageData?.announcement?.message_en || '';
   const pricePreviewSeries = useMemo(() => (

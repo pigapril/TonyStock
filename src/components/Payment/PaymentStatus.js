@@ -26,7 +26,7 @@ const PaymentStatus = () => {
         if (error?.startsWith('paymentStatus.')) return t(error);
         // The payment API currently returns only English or Traditional
         // Chinese messages. Do not leak provider copy into other UI locales.
-        if (!['zh-TW', 'zh'].includes(i18n.language) && error && /[\u3400-\u9fff]/.test(error)) {
+        if (!['zh-TW', 'zh-HK', 'zh'].includes(i18n.language) && error && /[\u3400-\u9fff]/.test(error)) {
             return t('paymentStatus.genericFailure');
         }
         if (i18n.language?.startsWith('en') && /[\u3400-\u9fff]/.test(error || '')) {

@@ -12,6 +12,10 @@ export const Legal = () => {
   const getLegalDocument = () => {
     const basePath = '/docs/T&C';
     switch (currentLang) {
+      // The current terms are the approved source of contractual obligations.
+      // Keep the legal meaning identical while the zh-HK editorial edition is
+      // reviewed; the rest of the product UI remains independently zh-HK.
+      case 'zh-HK':
       case 'zh-TW':
       case 'zh':
         return { filePath: `${basePath}/zh-tw_T&C_20261008.md`, contentLocale: 'zh-TW' };

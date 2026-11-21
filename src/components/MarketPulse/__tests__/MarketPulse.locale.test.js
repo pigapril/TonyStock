@@ -19,6 +19,7 @@ describe('MarketPulse market labels', () => {
   it('preserves existing English and Chinese labels', () => {
     expect(resolveMarketLocaleText(MARKETS[2].labels, 'en')).toBe('Dow Jones');
     expect(resolveMarketLocaleText(MARKETS[2].labels, 'zh-TW')).toBe('道瓊工業');
+    expect(resolveMarketLocaleText(MARKETS[2].labels, 'zh-HK')).toBe('道瓊斯工業指數');
     expect(resolveMarketLocaleText(MARKETS[2].labels, 'zh-CN')).toBe('道琼斯工业指数');
   });
 });

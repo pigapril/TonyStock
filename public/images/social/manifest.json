@@ -239,6 +239,78 @@
     },
     {
       "name": "home",
+      "lang": "zh-HK",
+      "title": "洞悉市場｜看懂恐懼與貪婪",
+      "description": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點",
+      "titleKey": "home.hero.title",
+      "descriptionKey": "home.hero.subtitle"
+    },
+    {
+      "name": "priceanalysis",
+      "lang": "zh-HK",
+      "title": "樂活五線譜",
+      "description": "用價格趨勢判斷標的情緒。",
+      "titleKey": "priceAnalysis.heading",
+      "descriptionKey": "priceAnalysis.subtitle"
+    },
+    {
+      "name": "sentiment-indicators",
+      "lang": "zh-HK",
+      "title": "市場情緒指標總覽",
+      "description": "一頁看完全球市場情緒指標:CNN 恐懼貪婪指數、BofA Bull & Bear、AAII 散戶調查、NAAIM 經理持倉比重、台指期權波幅等,附資料時間與原始出處。",
+      "titleKey": "sentimentBoard.heading",
+      "descriptionKey": "sentimentBoard.pageDescription"
+    },
+    {
+      "name": "market-sentiment",
+      "lang": "zh-HK",
+      "title": "美股恐懼貪婪指數｜整合 8 項指標的市場情緒分析",
+      "description": "追蹤美股市場整體情緒偏向恐懼還是貪婪。",
+      "titleKey": "marketSentiment.pageTitle",
+      "descriptionKey": "marketSentiment.pageSubtitle"
+    },
+    {
+      "name": "tw-market-sentiment",
+      "lang": "zh-HK",
+      "title": "Sentiment Inside Out (SIO) 台股恐懼貪婪指標｜台股情緒追蹤",
+      "description": "追蹤台股市場整體情緒偏向恐懼還是貪婪。",
+      "titleKey": "marketSentiment.tw.pageTitle",
+      "descriptionKey": "marketSentiment.tw.pageSubtitle"
+    },
+    {
+      "name": "momentum",
+      "lang": "zh-HK",
+      "title": "市場動能",
+      "description": "從強勢板塊找到強勢標的，掌握市場動能的方向。",
+      "titleKey": "momentumDashboard.title",
+      "descriptionKey": "momentumDashboard.subtitle"
+    },
+    {
+      "name": "watchlist",
+      "lang": "zh-HK",
+      "title": "我的自選清單",
+      "description": "追蹤你感興趣的股票，快速掌握多個標的價格情緒",
+      "titleKey": "watchlist.pageTitle",
+      "descriptionKey": "watchlist.pageSubtitle"
+    },
+    {
+      "name": "articles",
+      "lang": "zh-HK",
+      "title": "工具教學與市場情緒觀念",
+      "description": "這裡是網站工具的使用教學與市場情緒的觀念說明。想直接看各項指標現在的數字，可以從下方進入指標總覽。",
+      "titleKey": "articles.heading",
+      "descriptionKey": "articles.intro"
+    },
+    {
+      "name": "about",
+      "lang": "zh-HK",
+      "title": "關於 Sentiment Inside Out",
+      "description": "了解 Sentiment Inside Out 網站的理念，以及如何使用簡單的分析工具，將市場當前的情緒轉化為重要的投資指標，幫助投資者克服恐懼與貪婪心態。",
+      "titleKey": "about.heading",
+      "descriptionKey": "about.pageDescription"
+    },
+    {
+      "name": "home",
       "lang": "zh-CN",
       "title": "洞悉市场｜看懂恐惧与贪婪",
       "description": "用客观数据判断当前股市情绪，克服恐惧与贪婪的人性弱点。",
@@ -401,6 +473,14 @@
     },
     {
       "name": "article-1",
+      "lang": "zh-HK",
+      "title": "用樂活五線譜分析股價趨勢與市場情緒",
+      "category": "工具教學",
+      "date": "2025-05-04",
+      "source": "articles/1.用樂活五線譜分析價格趨勢與情緒/article-1.zh-HK.ini.md"
+    },
+    {
+      "name": "article-1",
       "lang": "zh-CN",
       "title": "用乐活五线谱分析价格趋势与情绪",
       "category": "工具教学",
@@ -432,6 +512,14 @@
       "date": "2026-03-08",
       "source": "articles/2.用市場情緒綜合指數判斷買賣時機/用市場情緒綜合指數判斷買賣時機.zh-TW.ini.md",
       "artwork": "articles/2.用市場情緒綜合指數判斷買賣時機/image-cover.png"
+    },
+    {
+      "name": "article-2",
+      "lang": "zh-HK",
+      "title": "如何利用 SIO 恐懼與貪婪指標判斷買賣時機",
+      "category": "工具教學",
+      "date": "2026-03-08",
+      "source": "articles/2.用市場情緒綜合指數判斷買賣時機/article-2.zh-HK.ini.md"
     },
     {
       "name": "article-2",
@@ -469,6 +557,14 @@
     },
     {
       "name": "article-4",
+      "lang": "zh-HK",
+      "title": "樂活五線譜出現「極度恐懼」時，應否買入？1,156 萬筆日線資料的分析",
+      "category": "工具教學",
+      "date": "2026-08-30",
+      "source": "articles/4.樂活五線譜1155萬筆台美股資料實測結果分析/article-4.zh-HK.ini.md"
+    },
+    {
+      "name": "article-4",
       "lang": "zh-CN",
       "title": "乐活五线谱出现「极度恐惧」时该不该买？1,156 万笔日线数据给出答案",
       "category": "工具教学",
@@ -500,6 +596,14 @@
       "date": "2026-09-30",
       "source": "articles/5.市場動能儀表板使用指南/市場動能儀表板使用指南.zh-TW.ini.md",
       "artwork": "articles/5.市場動能儀表板使用指南/image-cover.svg"
+    },
+    {
+      "name": "article-5",
+      "lang": "zh-HK",
+      "title": "市場動能儀表板使用指南：由強勢板塊篩選 ETF 及個股",
+      "category": "工具教學",
+      "date": "2026-09-30",
+      "source": "articles/5.市場動能儀表板使用指南/article-5.zh-HK.ini.md"
     },
     {
       "name": "article-5",

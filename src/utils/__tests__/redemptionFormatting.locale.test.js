@@ -28,6 +28,17 @@ describe('redemption formatting supports Simplified Chinese', () => {
     expect(formatTimeExtension(30, 'day', 'zh-TW')).toBe('延長 30 天');
     expect(getLocalizedPlanName('pro', 'zh-TW')).toBe('Pro 方案');
   });
+
+  test('supports Hong Kong Traditional Chinese formatting and subscription copy', () => {
+    expect(formatCurrency(1234, 'TWD', 'zh-HK')).toBe('NT$1,234');
+    expect(formatDate('2025-01-02T00:00:00.000Z', 'PPP', 'zh-HK')).toContain('2025');
+    expect(getPluralizedTimeUnit(2, 'month', 'zh-HK')).toBe('個月');
+    expect(formatTimeExtension(30, 'day', 'zh-HK')).toBe('延長 30 天');
+    expect(getLocalizedPlanName('free', 'zh-HK')).toBe('免費計劃');
+    expect(getLocalizedPlanName('pro', 'zh-HK')).toBe('Pro 計劃');
+    expect(getLocalizedPlanName('premium', 'zh-HK')).toBe('高級計劃');
+    expect(formatCountdown(25 * 60 * 60 * 1000, 'zh-HK')).toBe('剩餘 1 天 1 小時');
+  });
 });
 
 describe('Korean numeric and date locale primitives', () => {

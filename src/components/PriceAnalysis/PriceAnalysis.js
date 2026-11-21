@@ -1204,7 +1204,7 @@ export function PriceAnalysis() {
               name: category.name,
               stocks: category.stocks.map(stock => {
                 const stockCode = stock.symbol || stock.stockCode || stock.stockSymbol;
-                const stockName = currentLang === 'zh-TW'
+                const stockName = ['zh-TW', 'zh-HK'].includes(currentLang)
                   ? (stock.name || stock.nameEn || stock.stockName)
                   : (stock.nameEn || stock.name || stock.stockName);
 

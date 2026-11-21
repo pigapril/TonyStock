@@ -2,6 +2,7 @@
 // resources. Unsupported/unapproved app locales intentionally fall back to
 // English; Traditional and Simplified Chinese keep their own exact copy.
 export const getMarketCopyLocale = (locale) => {
+  if (locale === 'zh-HK') return 'zh-HK';
   if (locale === 'zh-TW' || locale === 'zh') return 'zh-TW';
   if (locale === 'zh-CN') return 'zh-CN';
   if (locale === 'ko-KR') return 'ko-KR';
@@ -11,7 +12,8 @@ export const getMarketCopyLocale = (locale) => {
 export const resolveMarketLocaleText = (values, locale, fallback = 'en') => {
   if (!values || typeof values !== 'object') return '';
   const preferred = getMarketCopyLocale(locale);
-  return values[preferred] ?? values[fallback] ?? '';
+  const regionalFallback = preferred === 'zh-HK' ? 'zh-TW' : fallback;
+  return values[preferred] ?? values[regionalFallback] ?? values[fallback] ?? '';
 };
 
 const MARKET_SENTIMENT_UI_COPY = {

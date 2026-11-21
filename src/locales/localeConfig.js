@@ -19,6 +19,14 @@ const LOCALES = [
     fallback: ['en'],
   },
   {
+    code: 'zh-HK',
+    nativeName: '繁體中文（香港）',
+    intlLocale: 'zh-HK',
+    socialAssetSuffix: '-zh-HK',
+    writingSystem: 'cjk',
+    fallback: ['en'],
+  },
+  {
     code: 'zh-CN',
     nativeName: '简体中文',
     intlLocale: 'zh-CN',
@@ -63,12 +71,11 @@ function getIntlLocale(code) {
     || getLocaleConfig(DEFAULT_LOCALE).intlLocale;
 }
 
-// Payment APIs, ECPay and payment notification templates currently support
-// only Traditional Chinese and English. Keep the app locale independent and
-// map every non-Taiwan-Chinese UI locale (including zh-CN and ko-KR) to the
-// available English service payload until those services add translations.
+// Payment APIs and ECPay currently support Taiwan Traditional Chinese and
+// English. Hong Kong Traditional Chinese uses the provider's existing CHT
+// language while retaining zh-HK as the application return locale.
 function getPaymentServiceLocale(code) {
-  return getCanonicalLocale(code) === 'zh-TW' ? 'zh-TW' : 'en';
+  return ['zh-TW', 'zh-HK'].includes(getCanonicalLocale(code)) ? 'zh-TW' : 'en';
 }
 
 function getLocaleFallbacks(code) {
@@ -96,10 +103,16 @@ function getBrowserLocale(browserLanguage = '') {
   const exact = LOCALE_BY_CODE.get(language);
   if (exact) return exact.code;
 
-  // Preserve script/region distinctions between the two Chinese products.
-  // Bare `zh` and unspecified/Hant variants retain the legacy Traditional
-  // Chinese behavior; Hans, mainland China and Singapore select Simplified.
+  // Preserve explicit Hong Kong and Taiwan distinctions before applying the
+  // generic Traditional Chinese fallback. Hans, mainland China and Singapore
+  // select Simplified; bare `zh` and unspecified Hant retain legacy zh-TW.
   if (language === 'zh' || language.startsWith('zh-')) {
+    if (language === 'zh-hk' || language === 'zh-hant-hk') {
+      return LOCALE_BY_CODE.get('zh-hk')?.code || DEFAULT_LOCALE;
+    }
+    if (language === 'zh-tw' || language === 'zh-hant-tw') {
+      return LOCALE_BY_CODE.get('zh-tw')?.code || DEFAULT_LOCALE;
+    }
     if (language.includes('-hans') || language === 'zh-cn' || language === 'zh-sg') {
       return LOCALE_BY_CODE.get('zh-cn')?.code || DEFAULT_LOCALE;
     }
