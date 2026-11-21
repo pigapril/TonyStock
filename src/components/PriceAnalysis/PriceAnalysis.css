@@ -2791,3 +2791,20 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* Desktop: keep the tutorial beside the small page heading instead of on its own row. */
+@media (min-width: 769px) {
+  .price-analysis-view .pa-intro {
+    position: relative;
+  }
+
+  .price-analysis-view .pa-tour-launch {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0;
+    padding: 4px 9px;
+    border-color: transparent;
+    font-size: 12px;
+  }
+}
