@@ -9,7 +9,9 @@ const ANALYSIS_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
 
 export function getTagManagerDeferConfig(pathname = '') {
   const normalizedPath = pathname.toLowerCase();
-  const isAnalysisRoute = normalizedPath.includes('/priceanalysis') || normalizedPath.includes('/market-sentiment');
+  const isAnalysisRoute = normalizedPath.includes('/priceanalysis')
+    || normalizedPath.includes('/market-sentiment')
+    || normalizedPath.includes('/sentiment-indicators');
   const isLocalizedRoot = /^\/[^/]+\/?$/.test(pathname);
 
   if (isLocalizedRoot) {

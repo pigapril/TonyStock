@@ -3,6 +3,7 @@ import { Link, useLocation, useParams, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import apiClient from '../../api/apiClient';
 import PageContainer from '../PageContainer/PageContainer';
+import { useNearViewport } from '../../hooks/useNearViewport';
 import { getDecimalPlaces } from '../../utils/priceUtils';
 import { getIntlLocale } from '../../locales/localeConfig';
 import { findIndicatorPage } from './indicatorPages';
@@ -26,6 +27,7 @@ const SentimentIndicatorPage = () => {
   const { t } = useTranslation();
   const { lang, slug } = useParams();
   const { pathname, search } = useLocation();
+  const [historyExamplesRef, shouldLoadHistoryExamples] = useNearViewport();
   const page = findIndicatorPage(slug);
   const [readingState, setReadingState] = useState(null);
   // 路由切換後舊回應不屬於新指標，不能在新頁的載入期間顯示。
@@ -126,9 +128,18 @@ const SentimentIndicatorPage = () => {
         </Section>
 
         {page.slug === 'bofa-bull-bear' && (
-          <Suspense fallback={<div id="sio-history-examples" aria-hidden="true" />}>
-            <SentimentHistoryExamples lang={lang} />
-          </Suspense>
+          <div
+            id="sio-history-examples"
+            ref={historyExamplesRef}
+            className="indicator-page__historyExamplesSlot"
+            aria-busy={!shouldLoadHistoryExamples}
+          >
+            {shouldLoadHistoryExamples && (
+              <Suspense fallback={<div className="indicator-page__historyExamplesFallback" aria-hidden="true" />}>
+                <SentimentHistoryExamples lang={lang} />
+              </Suspense>
+            )}
+          </div>
         )}
 
         {Array.isArray(components) && components.length > 0 && (

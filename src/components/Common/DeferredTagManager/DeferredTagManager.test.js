@@ -61,6 +61,18 @@ describe('DeferredTagManager', () => {
       interactionEvents: ['pointerdown', 'keydown', 'touchstart']
     });
   });
+
+  it.each([
+    '/zh-TW/sentiment-indicators',
+    '/zh-TW/sentiment-indicators/bofa-bull-bear'
+  ])('uses interaction-first tag loading for sentiment indicator routes (%s)', pathname => {
+    expect(getTagManagerDeferConfig(pathname)).toEqual({
+      timeoutMs: 45000,
+      useIdleCallback: false,
+      triggerOnInteraction: true,
+      interactionEvents: ['pointerdown', 'keydown', 'touchstart']
+    });
+  });
 });
 
 

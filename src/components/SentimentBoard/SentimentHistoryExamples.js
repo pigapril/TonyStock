@@ -72,7 +72,7 @@ export default function SentimentHistoryExamples({ lang }) {
   const headingId = useId();
 
   return (
-    <section id="sio-history-examples" className="sentiment-examples" aria-labelledby={headingId}>
+    <section className="sentiment-examples" aria-labelledby={headingId}>
       <p className="sentiment-examples__eyebrow">{t('sentimentHistoryExamples.eyebrow')}</p>
       <h2 id={headingId}>{t('sentimentHistoryExamples.heading')}</h2>
       <p className="sentiment-examples__intro">{t('sentimentHistoryExamples.intro')}</p>

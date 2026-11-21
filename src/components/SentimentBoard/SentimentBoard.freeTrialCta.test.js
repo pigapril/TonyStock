@@ -80,6 +80,19 @@ describe('情緒指標總覽的試用 CTA', () => {
     mockFetchEligibility.mockResolvedValue({ eligible: true });
   });
 
+  it('資料載入期間先保留三組指標、綜合指標與分歧區塊的版面', () => {
+    mockGet.mockReturnValue(new Promise(() => {}));
+    const { container } = renderBoard();
+
+    const boardRoot = container.querySelector('.sentiment-board--loading');
+    expect(boardRoot).toHaveAttribute('aria-busy', 'true');
+    expect(container.querySelectorAll('.sentiment-board__loadingComposite')).toHaveLength(2);
+    expect(container.querySelectorAll('.sentiment-board__loadingDivergence')).toHaveLength(3);
+    expect(container.querySelectorAll('.sentiment-board__loadingGroup')).toHaveLength(3);
+    // 2 external + 8 US + 12 Taiwan + one optional breadth row per local market.
+    expect(container.querySelectorAll('.sentiment-board__loadingCard')).toHaveLength(24);
+  });
+
   it('美股與台股綜合指標都有醒目的深度分析 CTA，並連到對應市場頁', async () => {
     renderBoard();
 

@@ -16,6 +16,14 @@ const EXPLAINER_BY_ITEM_ID = Object.fromEntries(
   PUBLISHED_INDICATOR_PAGES.filter((page) => page.boardItemId).map((page) => [page.boardItemId, page.slug])
 );
 
+// Keep the first-paint skeleton aligned with the three groups returned by
+// sentimentBoard.service. The extra US/TW slots are the optional breadth rows.
+const BOARD_LOADING_GROUPS = [
+  { key: 'external', count: PUBLISHED_INDICATOR_PAGES.filter((page) => page.group === 'external').length },
+  { key: 'us', count: PUBLISHED_INDICATOR_PAGES.filter((page) => page.group === 'us').length + 1 },
+  { key: 'tw', count: PUBLISHED_INDICATOR_PAGES.filter((page) => page.group === 'tw').length + 1 }
+];
+
 /**
  * 情緒指標總覽。
  *
@@ -134,8 +142,64 @@ const SentimentBoard = () => {
   if (status === 'loading') {
     return (
       <PageContainer {...seo}>
-        <div className="sentiment-board sentiment-board--loading">
-          <div className="sentiment-board__skeleton" aria-hidden="true" />
+        <div className="sentiment-board sentiment-board--loading" aria-busy="true">
+          <header className="sentiment-board__header">
+            <h1 className="sentiment-board__title">{t('sentimentBoard.heading')}</h1>
+            <p className="sentiment-board__subtitle">{t('sentimentBoard.subheading')}</p>
+          </header>
+
+          <div className="sentiment-board__loadingBanner" aria-hidden="true">
+            <span className="sentiment-board__loadingLine sentiment-board__loadingLine--wide" />
+            <span className="sentiment-board__loadingLine sentiment-board__loadingLine--medium" />
+            <span className="sentiment-board__loadingButton" />
+          </div>
+
+          <section className="sentiment-board__composite" aria-hidden="true">
+            {[0, 1].map((index) => (
+              <article className="composite-card sentiment-board__loadingComposite" key={index}>
+                <span className="sentiment-board__loadingLine sentiment-board__loadingLine--label" />
+                <span className="sentiment-board__loadingLine sentiment-board__loadingLine--value" />
+                <span className="sentiment-board__loadingMeter" />
+                <span className="sentiment-board__loadingButton" />
+              </article>
+            ))}
+          </section>
+
+          <section className="sentiment-board__divergences sentiment-board__loadingDivergences" aria-hidden="true">
+            <span className="sentiment-board__loadingLine sentiment-board__loadingLine--sectionTitle" />
+            <span className="sentiment-board__loadingLine sentiment-board__loadingLine--note" />
+            <div className="sentiment-board__divergenceGrid">
+              {[0, 1, 2].map((index) => (
+                <div className="divergence-card sentiment-board__loadingDivergence" key={index}>
+                  <span className="sentiment-board__loadingLine sentiment-board__loadingLine--wide" />
+                  <span className="sentiment-board__loadingMeter" />
+                  <span className="sentiment-board__loadingLine sentiment-board__loadingLine--medium" />
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {BOARD_LOADING_GROUPS.map((group) => (
+            <section className="sentiment-board__group sentiment-board__loadingGroup" key={group.key} aria-hidden="true">
+              <span className="sentiment-board__loadingLine sentiment-board__loadingLine--sectionTitle" />
+              <span className="sentiment-board__loadingLine sentiment-board__loadingLine--note" />
+              <div className="sentiment-board__grid">
+                {Array.from({ length: group.count }, (_, index) => (
+                  <article className="indicator-card sentiment-board__loadingCard" key={`${group.key}-${index}`}>
+                    <span className="sentiment-board__loadingLine sentiment-board__loadingLine--cardTitle" />
+                    <span className="sentiment-board__loadingLine sentiment-board__loadingLine--value" />
+                    <span className="sentiment-board__loadingMeter" />
+                    <span className="sentiment-board__loadingLine sentiment-board__loadingLine--date" />
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+
+          <div className="sentiment-board__loadingUpsell" aria-hidden="true">
+            <span className="sentiment-board__loadingLine sentiment-board__loadingLine--wide" />
+            <span className="sentiment-board__loadingButton" />
+          </div>
           <p className="sentiment-board__status">{t('sentimentBoard.loading')}</p>
         </div>
       </PageContainer>

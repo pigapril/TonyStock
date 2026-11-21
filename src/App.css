@@ -91,6 +91,12 @@ body {
   min-height: 40vh;
 }
 
+/* Keep the shared footer out of the layout-shift measurement while a lazy route
+   is replaced by its real page. It becomes visible at its final document position. */
+.App-inner:has(.route-loading-placeholder) > .site-footer {
+  visibility: hidden;
+}
+
 .route-loading-placeholder--stable-page {
   min-height: 100vh;
   min-height: 100svh;

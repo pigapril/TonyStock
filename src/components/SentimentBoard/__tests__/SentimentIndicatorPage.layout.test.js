@@ -129,6 +129,33 @@ it.each(['bofa-bull-bear', 'cnn-fear-greed'])('only adds the SIO history entry t
   expect(Boolean(shortcut)).toBe(slug === 'bofa-bull-bear');
 });
 
+it('keeps the BofA history anchor available but defers its chart until it approaches the viewport', async () => {
+  const originalObserver = global.IntersectionObserver;
+  let notifyObserver;
+  const observer = { observe: jest.fn(), disconnect: jest.fn() };
+  global.IntersectionObserver = jest.fn(callback => {
+    notifyObserver = callback;
+    return observer;
+  });
+  apiClient.get.mockReturnValue(new Promise(() => {}));
+
+  try {
+    renderPage();
+    expect(document.getElementById('sio-history-examples')).toBeInTheDocument();
+    expect(screen.queryByRole('region', {
+      name: '2020 and 2022: SIO showed extreme fear near market bottoms'
+    })).not.toBeInTheDocument();
+
+    await act(async () => notifyObserver([{ isIntersecting: true }]));
+    expect(await screen.findByRole('region', {
+      name: '2020 and 2022: SIO showed extreme fear near market bottoms'
+    })).toBeInTheDocument();
+    expect(observer.disconnect).toHaveBeenCalled();
+  } finally {
+    global.IntersectionObserver = originalObserver;
+  }
+});
+
 it('uses only the plan-aware sentiment board endpoint for a newly added indicator', async () => {
   apiClient.get.mockResolvedValue(response({ id: 'vix-ma50', value: 18.2, date: '2026-09-19', publisher: 'CBOE', delayed: true }));
   const { container } = renderPage('vix-ma50');

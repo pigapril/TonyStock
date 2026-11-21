@@ -177,6 +177,14 @@
   color: #94a3b8;
 }
 
+.indicator-page__historyExamplesSlot {
+  scroll-margin-top: 110px;
+}
+
+.indicator-page__historyExamplesFallback {
+  min-height: 1px;
+}
+
 @media (max-width: 640px) {
   .indicator-page { padding: 22px 16px 56px; }
   .indicator-page__title { font-size: 1.5rem; }
