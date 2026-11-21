@@ -4,6 +4,9 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: space-between;
+  /* 圖表載入／切換內容時，不讓瀏覽器把輸入框重新選成 scroll anchor，
+     否則 iOS Safari 可能在使用者已捲到結果區後又自行修正視窗位置。 */
+  overflow-anchor: none;
   /* margin-bottom: 20px; */
   /* 由 content-layout-container 的 gap 控制 */
 }

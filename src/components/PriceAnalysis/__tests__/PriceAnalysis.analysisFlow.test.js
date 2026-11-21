@@ -129,6 +129,7 @@ const clickHorizon = (label) => fireEvent.click(horizonButton(label));
 describe('PriceAnalysis analysis flow', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    require('react-responsive').useMediaQuery.mockReturnValue(false);
     mockAuthState.isAuthenticated = true;
     mockAuthState.user = { id: 'user-1', plan: 'pro' };
     mockAuthState.checkAuthStatus.mockResolvedValue(undefined);
@@ -184,6 +185,33 @@ describe('PriceAnalysis analysis flow', () => {
         ))
       ).toBe(true);
     });
+  });
+
+  it('手機送出查詢時立即捲到分析卡片，使用者開始觸控後取消自動捲動', async () => {
+    require('react-responsive').useMediaQuery.mockReturnValue(true);
+    const scrollTo = jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    render(
+      <TestWrapper initialEntries={['/zh-TW/priceanalysis?stockCode=SPY&years=3.5']}>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    await waitFor(() => expect(trackProductEvent).toHaveBeenCalledWith(
+      'price_analysis_completed', expect.any(Object)
+    ));
+
+    await screen.findByTestId('price-analysis-line-chart');
+    const getBoundingClientRect = jest.spyOn(Element.prototype, 'getBoundingClientRect')
+      .mockReturnValue({ top: 500 });
+    fireEvent.change(screen.getByPlaceholderText(/2330.*AAPL/i), { target: { value: 'AAPL' } });
+    fireEvent.submit(screen.getByPlaceholderText(/2330.*AAPL/i).closest('form'));
+
+    await waitFor(() => expect(scrollTo).toHaveBeenCalledWith({ top: 488, behavior: 'smooth' }));
+    fireEvent.touchStart(window);
+    expect(scrollTo).toHaveBeenLastCalledWith(window.scrollX, window.scrollY);
+
+    getBoundingClientRect.mockRestore();
+    scrollTo.mockRestore();
   });
 
   it('does not repeat the initial SPY or hot-search request when auth state resolves', async () => {

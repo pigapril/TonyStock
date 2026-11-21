@@ -109,7 +109,21 @@ const RouteFallback = () => {
     fallbackClassName += ' route-loading-placeholder--stable-page';
   }
 
-  return <div className={fallbackClassName} aria-hidden="true" />;
+  const isPriceAnalysisRoute = pathname.includes('/priceanalysis');
+
+  return (
+    <div className={fallbackClassName} aria-hidden="true">
+      {isPriceAnalysisRoute ? (
+        <div className="priceanalysis-route-skeleton">
+          <div className="priceanalysis-route-skeleton__intro" />
+          <div className="priceanalysis-route-skeleton__search" />
+          <div className="priceanalysis-route-skeleton__hot" />
+          <div className="priceanalysis-route-skeleton__chart" />
+          <div className="priceanalysis-route-skeleton__list" />
+        </div>
+      ) : null}
+    </div>
+  );
 };
 
 // 在 AppContent 之前加入 Overlay 元件定義

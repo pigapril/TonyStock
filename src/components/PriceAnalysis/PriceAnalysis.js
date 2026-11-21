@@ -271,8 +271,31 @@ export function PriceAnalysis() {
   const chartRef = useRef(null); // 新增：圖表 ref 用於程式化控制 tooltip
   const ulbandChartRef = useRef(null); // ULBand 圖表 ref
   const chartCardRef = useRef(null); // 圖表卡片 ref 用於滾動
+  const analysisScrollFramesRef = useRef([]);
+  const analysisScrollCleanupRef = useRef(null);
   const tooltipTimerRef = useRef(null);
   const analyticsTimerRef = useRef(null);
+
+  const cancelPendingAnalysisScroll = useCallback(() => {
+    const hadActiveScroll = Boolean(analysisScrollCleanupRef.current);
+    analysisScrollFramesRef.current.forEach((frame) => window.cancelAnimationFrame(frame));
+    analysisScrollFramesRef.current = [];
+    if (analysisScrollCleanupRef.current) {
+      analysisScrollCleanupRef.current();
+      analysisScrollCleanupRef.current = null;
+    }
+    // 以目前位置覆寫正在進行的 smooth scroll，讓 iOS Safari 立即交還捲動控制權。
+    if (hadActiveScroll) {
+      window.scrollTo(window.scrollX, window.scrollY);
+    }
+  }, []);
+
+  useEffect(() => () => {
+    analysisScrollFramesRef.current.forEach((frame) => window.cancelAnimationFrame(frame));
+    analysisScrollFramesRef.current = [];
+    analysisScrollCleanupRef.current?.();
+    analysisScrollCleanupRef.current = null;
+  }, []);
 
   const analysisSentimentText = useMemo(() => {
     if (!analysisResult.sentimentKey) return null;
@@ -1048,20 +1071,45 @@ export function PriceAnalysis() {
 
   const beginAnalysisRequest = useCallback(() => {
     clearPostAnalysisTimers();
+    cancelPendingAnalysisScroll();
     setLoading(true);
     resetAnalysisOutputs();
     // 手機在送出分析的當下就定位到五線譜區塊，不等 API 回傳。
     // 以圖表卡片頂端為錨點，避免原本對齊卡片底部而把下方技術指標帶進視窗。
     if (isMobile) {
-      window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
-        const card = chartCardRef.current;
-        if (!card) return;
-        const top = window.pageYOffset + card.getBoundingClientRect().top - 12;
-        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-      }));
+      // 從送出當下就監聽使用者操作，包含兩個 rAF 等待期間，避免手勢比捲動先發生。
+      const cancelOnUserInput = () => cancelPendingAnalysisScroll();
+      ['touchstart', 'wheel', 'pointerdown', 'keydown'].forEach((eventName) => {
+        window.addEventListener(eventName, cancelOnUserInput, { passive: true });
+      });
+      const cleanup = () => {
+        ['touchstart', 'wheel', 'pointerdown', 'keydown'].forEach((eventName) => {
+          window.removeEventListener(eventName, cancelOnUserInput);
+        });
+        window.clearTimeout(cleanupTimer);
+      };
+      const cleanupTimer = window.setTimeout(() => {
+        cleanup();
+        if (analysisScrollCleanupRef.current === cleanup) {
+          analysisScrollCleanupRef.current = null;
+        }
+      }, 1400);
+      analysisScrollCleanupRef.current = cleanup;
+
+      const firstFrame = window.requestAnimationFrame(() => {
+        const secondFrame = window.requestAnimationFrame(() => {
+          analysisScrollFramesRef.current = [];
+          const card = chartCardRef.current;
+          if (!card) return;
+          const top = window.pageYOffset + card.getBoundingClientRect().top - 12;
+          window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+        });
+        analysisScrollFramesRef.current = [secondFrame];
+      });
+      analysisScrollFramesRef.current = [firstFrame];
     }
     requestAdDisplay('priceAnalysis', 3);
-  }, [clearPostAnalysisTimers, isMobile, requestAdDisplay, resetAnalysisOutputs]);
+  }, [cancelPendingAnalysisScroll, clearPostAnalysisTimers, isMobile, requestAdDisplay, resetAnalysisOutputs]);
 
   const runAnalysisForStock = useCallback((nextStockCode, source, invalidYearsMessage) => {
     const upperClickedCode = nextStockCode.toUpperCase();
