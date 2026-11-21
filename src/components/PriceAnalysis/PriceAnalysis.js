@@ -240,6 +240,7 @@ export function PriceAnalysis() {
   const lastRunKeyRef = useRef('long|');      // 期長／模式 ＋ 回測日期
   const lastRunYearsRef = useRef(null);       // 上次送出的自訂年數（數值，非自訂時為 null）
   const resumedAnalysisRef = useRef(null);
+  const initializedRouteKeyRef = useRef(null);
   const analysisContextRef = useRef(null);
   analysisContextRef.current = {
     years: isAdvancedQuery ? (parseYears(years) || 3.5) : PERIOD_YEARS[analysisPeriod],
@@ -1239,6 +1240,42 @@ export function PriceAnalysis() {
     const urlBackTestDate = searchParams.get('backTestDate');
     const shouldResume = location.state?.resumeAfterTrial || location.state?.resumeAfterLogin;
     const resumeKey = shouldResume ? `${location.key}:${urlStockCode}:${urlYears}:${urlBackTestDate}` : null;
+    const routeInitKey = `${location.key}:${location.pathname}:${location.search}`;
+
+    // The route's initial setup (including the default SPY request and hot
+    // searches) must run once per navigation, not again when auth/user changes.
+    // A login/trial return is the one exception: it resumes only after auth is
+    // confirmed, and only once for this navigation.
+    if (initializedRouteKeyRef.current === routeInitKey) {
+      if (shouldResume && isAuthenticated && resumedAnalysisRef.current !== resumeKey) {
+        const fetchStock = (urlStockCode || 'SPY').toUpperCase();
+        const fetchYears = urlYears || '3.5';
+        const numYears = parseFloat(fetchYears);
+        const fetchDate = urlBackTestDate || '';
+        resumedAnalysisRef.current = resumeKey;
+        const effectivePlan = process.env.REACT_APP_TEMPORARY_FREE_MODE === 'true'
+          ? 'pro'
+          : (user?.plan || 'free');
+
+        if (Number.isFinite(numYears) && numYears > 0 && isStockAllowed(fetchStock, effectivePlan)) {
+          clearPostAnalysisTimers();
+          setLoading(true);
+          setDisplayStockCode(fetchStock);
+          resetAnalysisOutputs();
+          fetchStockData(fetchStock, numYears, fetchDate);
+        } else if (Number.isFinite(numYears) && numYears > 0) {
+          openDialog('featureUpgrade', {
+            ...buildStockAccessDialogProps(fetchStock),
+            upgradeUrl: withAnalysisReturnPath(`/${i18n.language}/subscription-plans`, buildAnalysisReturnPath(i18n.language, {
+              stockCode: fetchStock, years: fetchYears, backTestDate: fetchDate
+            }))
+          });
+        }
+      }
+      return;
+    }
+    initializedRouteKeyRef.current = routeInitKey;
+
     // Auth refreshes can rerun this effect; resume each navigation only once.
     if (resumeKey && resumedAnalysisRef.current === resumeKey) return;
 
@@ -1358,7 +1395,7 @@ export function PriceAnalysis() {
     fetchHotSearches();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, location.state, isAuthenticated, user, fetchStockData, clearPostAnalysisTimers, resetAnalysisOutputs, showToast, t]); // <--- 修改：新增依賴項
+  }, [searchParams, location.key, location.pathname, location.search, location.state, isAuthenticated, user, fetchStockData, clearPostAnalysisTimers, resetAnalysisOutputs, showToast, t, openDialog, buildStockAccessDialogProps, i18n.language]);
 
   // 新增：當 watchlist 資料載入完成時，預設全部收合
   useEffect(() => {

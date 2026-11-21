@@ -24,7 +24,7 @@ const RESOURCE_GROUPS = {
   indicatorsBofa: ['sentimentHistoryExamples'],
   account: ['redemption'],
   market: ['marketSentiment.descriptions', 'marketSentiment.enhancedDescription', 'marketSentiment.tw'],
-  price: ['priceAnalysis.description', 'priceAnalysis.tour', 'watchlist.priceSentimentNotifications']
+  priceNotifications: ['watchlist.priceSentimentNotifications']
 };
 
 function getRouteLocaleGroups(pathname = '') {
@@ -39,7 +39,7 @@ function getRouteLocaleGroups(pathname = '') {
     return group ? [...(page.slug === 'bofa-bull-bear' ? [group, 'indicatorsBofa'] : [group])] : [];
   }
   if (/^\/(market-sentiment|tw-market-sentiment)(?:\/|$)/.test(route)) return ['market'];
-  if (/^\/(priceanalysis|watchlist)(?:\/|$)/.test(route)) return ['price'];
+  if (/^\/watchlist(?:\/|$)/.test(route)) return ['priceNotifications'];
   if (/^\/(subscription-plans|user-account|payment)(?:\/|$)/.test(route)) return ['account'];
   return [];
 }

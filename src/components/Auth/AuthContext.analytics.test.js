@@ -2,22 +2,26 @@ import React, { useContext } from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { AuthContext, AuthProvider } from './AuthContext';
 import apiClient from '../../api/apiClient';
+import authStateManager from '../../utils/authStateManager';
+import csrfClient from '../../utils/csrfClient';
 
 jest.mock('react-router-dom', () => ({ useNavigate: () => jest.fn() }));
 jest.mock('../../api/apiClient', () => ({ get: jest.fn(), post: jest.fn() }));
 jest.mock('../../utils/enhancedApiClient', () => ({}));
 jest.mock('../../utils/errorHandler', () => ({ handleApiError: error => error }));
 jest.mock('../../utils/authDiagnostics', () => ({ authDiagnostics: { diagnoseAuthIssue: jest.fn() } }));
-jest.mock('../../utils/authInitFix', () => ({ initialize: jest.fn().mockResolvedValue(undefined) }));
-jest.mock('../../utils/authStateManager', () => ({ setAuthState: jest.fn(), invalidateCache: jest.fn() }));
-jest.mock('../../utils/authPreloader', () => ({ waitForPreload: jest.fn().mockResolvedValue(null) }));
+jest.mock('../../utils/authStateManager', () => ({
+  getAuthState: jest.fn().mockResolvedValue({ isAuthenticated: false, user: null }),
+  setAuthState: jest.fn(),
+  invalidateCache: jest.fn()
+}));
 jest.mock('../../utils/authStateCache', () => ({
   loadAuthState: () => ({ user: null, confidence: 'high', cacheAge: 0 }),
   saveAuthState: jest.fn(),
   clearAuthState: jest.fn()
 }));
 jest.mock('../../utils/csrfClient', () => ({
-  setCSRFToken: jest.fn(), clearCSRFToken: jest.fn(), isTokenInitialized: () => true
+  setCSRFToken: jest.fn(), clearCSRFToken: jest.fn(), initializeCSRFToken: jest.fn(), isTokenInitialized: () => false
 }));
 jest.mock('../../utils/logger', () => ({
   systemLogger: { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn() }
@@ -32,6 +36,7 @@ const authEvents = eventName => (window.dataLayer || []).filter(event => event.e
 
 beforeEach(() => {
   jest.clearAllMocks();
+  authStateManager.getAuthState.mockResolvedValue({ isAuthenticated: false, user: null });
   sessionStorage.clear();
   delete window.dataLayer;
   window.google = { accounts: { id: { initialize: jest.fn(), disableAutoSelect: jest.fn() } } };
@@ -54,6 +59,26 @@ async function mountAndGetCredentialCallback() {
   await act(async () => {});
   return window.google.accounts.id.initialize.mock.calls[0][0].callback;
 }
+
+it('bootstraps through one shared AuthStateManager check and does not call authService.checkStatus directly', async () => {
+  render(<AuthProvider><Consumer /></AuthProvider>);
+
+  await waitFor(() => expect(authStateManager.getAuthState).toHaveBeenCalledTimes(1));
+  expect(authStateManager.getAuthState).toHaveBeenCalledWith(false);
+  expect(apiClient.get).not.toHaveBeenCalledWith('/api/auth/status', expect.anything());
+});
+
+it('defers CSRF token retrieval for an existing session until a state-changing request', async () => {
+  authStateManager.getAuthState.mockResolvedValueOnce({
+    isAuthenticated: true,
+    user: { id: 'existing-user', plan: 'pro' },
+    confidence: 'high'
+  });
+
+  render(<AuthProvider><Consumer /></AuthProvider>);
+  expect(await screen.findByText('Signed in')).toBeInTheDocument();
+  expect(csrfClient.initializeCSRFToken).not.toHaveBeenCalled();
+});
 
 it('records exactly one login and logout while applying the auth state', async () => {
   apiClient.post.mockResolvedValueOnce({ data: { data: { user: { id: 'test-user' }, csrfToken: 'test-csrf' } } });

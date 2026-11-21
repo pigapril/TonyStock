@@ -32,7 +32,7 @@ test('the locale registry is the source of truth for supported locale resources'
     expect(Object.keys(routeLocaleLoaders[locale])).toEqual(
       expect.arrayContaining([
         'admin', 'momentum', 'indicatorsExternal', 'indicatorsUs', 'indicatorsTw',
-        'indicatorsSio', 'indicatorsBofa', 'account', 'market', 'price'
+        'indicatorsSio', 'indicatorsBofa', 'account', 'market', 'priceNotifications'
       ])
     );
   }

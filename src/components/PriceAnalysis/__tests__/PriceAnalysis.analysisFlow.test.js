@@ -186,6 +186,31 @@ describe('PriceAnalysis analysis flow', () => {
     });
   });
 
+  it('does not repeat the initial SPY or hot-search request when auth state resolves', async () => {
+    mockAuthState.isAuthenticated = false;
+    mockAuthState.user = null;
+    const view = (
+      <TestWrapper initialEntries={['/zh-TW/priceanalysis']}>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+    const { rerender } = render(view);
+
+    await waitFor(() => {
+      expect(mockEnhancedApiClient.get.mock.calls.filter(([url]) => url === '/api/integrated-analysis')).toHaveLength(1);
+      expect(mockEnhancedApiClient.get.mock.calls.filter(([url]) => url === '/api/hot-searches')).toHaveLength(1);
+    });
+
+    await act(async () => {
+      mockAuthState.isAuthenticated = true;
+      mockAuthState.user = { id: 'user-1', plan: 'pro' };
+      rerender(view);
+    });
+
+    expect(mockEnhancedApiClient.get.mock.calls.filter(([url]) => url === '/api/integrated-analysis')).toHaveLength(1);
+    expect(mockEnhancedApiClient.get.mock.calls.filter(([url]) => url === '/api/hot-searches')).toHaveLength(1);
+  });
+
   it('只在使用者主動分析成功後請求試用插頁，不在首次自動查詢時觸發', async () => {
     render(
       <TestWrapper initialEntries={['/zh-TW/priceanalysis?stockCode=SPY&years=3.5']}>

@@ -1,12 +1,11 @@
-import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Tooltip } from 'chart.js';
 import ULBandChart from '../ULBandChart/ULBandChart';
 import { ensureChartZoomRegistered } from '../../utils/chartZoomRegistry';
 import { useDeferredFeature } from '../../hooks/useDeferredFeature';
-import { ensureCrosshairRegistered, linkCharts } from '../../utils/linkedCrosshair';
+import { createLinkedChartsScheduler, ensureCrosshairRegistered } from '../../utils/linkedCrosshair';
 import PriceAnalysisSummary from './PriceAnalysisSummary';
-import TechnicalIndicatorChart from './TechnicalIndicatorChart';
 import { useAuth } from '../Auth/useAuth';
 import { useDialog } from '../Common/Dialog/useDialog';
 import { useTranslation } from 'react-i18next';
@@ -33,6 +32,7 @@ function isChartAttached(chart) {
 
 const MemoizedULBandChart = React.memo(ULBandChart);
 const PriceAnalysisChartEnhancements = lazy(() => import('./PriceAnalysisChartEnhancements'));
+const TechnicalIndicatorChart = lazy(() => import('./TechnicalIndicatorChart'));
 
 function PriceAnalysisChartWorkspace({
   isMobile,
@@ -67,9 +67,21 @@ function PriceAnalysisChartWorkspace({
     useIdleCallback: true,
     triggerOnInteraction: true
   });
+  const shouldLoadTechnicalIndicator = useDeferredFeature({
+    timeoutMs: 3000,
+    minDelayMs: 1200,
+    useIdleCallback: true,
+    triggerOnInteraction: true
+  });
   const shouldRenderEnhancements = shouldLoadEnhancements && hasAnalysisContent;
   const contentRef = useRef(null);
   const indicatorChartRef = useRef(null);
+  const chartLinkSchedulerRef = useRef(null);
+  if (!chartLinkSchedulerRef.current) {
+    chartLinkSchedulerRef.current = createLinkedChartsScheduler(
+      () => [chartRef.current, ulbandChartRef.current, indicatorChartRef.current]
+    );
+  }
   const { user, loading: authLoading } = useAuth();
   const { openDialog } = useDialog();
   const { i18n } = useTranslation();
@@ -90,6 +102,28 @@ function PriceAnalysisChartWorkspace({
       upgradeUrl: `/${i18n.language}/subscription-plans`
     });
   };
+
+  // Rebind only after Chart.js has actually attached its canvas. This also
+  // handles the technical-indicator chunk mounting long after the first two
+  // charts; rAF coalesces refs that become ready in the same commit.
+  const handleMainChartReady = useCallback((chart) => {
+    chartRef.current = chart;
+    chartLinkSchedulerRef.current?.schedule();
+  }, [chartRef]);
+
+  const handleBandChartReady = useCallback((chart) => {
+    ulbandChartRef.current = chart;
+    chartLinkSchedulerRef.current?.schedule();
+  }, [ulbandChartRef]);
+
+  const handleIndicatorChartReady = useCallback((chart) => {
+    indicatorChartRef.current = chart;
+    chartLinkSchedulerRef.current?.schedule();
+  }, []);
+
+  useEffect(() => () => {
+    chartLinkSchedulerRef.current?.destroy();
+  }, []);
 
   // 主圖與通道圖是 flex 項目，初次掛載時高度還沒算出來（flex-basis 0），
   // Chart.js 會先用一個接近 0 的尺寸建圖，畫面就被擠成一條。
@@ -138,23 +172,6 @@ function PriceAnalysisChartWorkspace({
   // 依賴刻意不含 bandXRange：縮放後跟著重跑 resize() 會把剛做的縮放洗掉。
   // 範圍同步已經由 xRange prop 負責，這個 effect 只管初次排版的尺寸。
   }, [chartRef, loading, chartData, ulbandData, ulbandChartRef]);
-
-  // 三張圖共用垂直標線。日線與週線粒度不同，所以用時間值對應而不是 index。
-  useEffect(() => {
-    if (loading || !chartData) {
-      return undefined;
-    }
-
-    let unlink;
-    const timer = window.setTimeout(() => {
-      unlink = linkCharts(() => [chartRef.current, ulbandChartRef.current, indicatorChartRef.current]);
-    }, 450);
-
-    return () => {
-      window.clearTimeout(timer);
-      unlink?.();
-    };
-  }, [chartRef, loading, chartData, ulbandData, ulbandChartRef, activeIndicator]);
 
   return (
     <>
@@ -208,7 +225,7 @@ function PriceAnalysisChartWorkspace({
                   <h2 className="chart-stack__title">{t('priceAnalysis.chart.tabs.sd')}</h2>
                   <div className="chart-stack__plot">
                     <Line
-                      ref={chartRef}
+                      ref={handleMainChartReady}
                       data={localizedChartData || chartData}
                       options={lineChartOptions}
                     />
@@ -226,7 +243,7 @@ function PriceAnalysisChartWorkspace({
                       hideXAxisLabels={Boolean(chartData)}
                       yRange={sharedPriceRange}
                       xRange={bandXRange}
-                      onChartReady={(chart) => { ulbandChartRef.current = chart; }}
+                      onChartReady={handleBandChartReady}
                     />
                   </div>
                 </div>
@@ -242,20 +259,27 @@ function PriceAnalysisChartWorkspace({
     </div>
 
     {!loading && chartData?.labels?.length > 0 && chartData?.datasets?.[0]?.data?.length > 0 ? (
-      <TechnicalIndicatorChart
-        activeIndicator={activeIndicator}
-        onIndicatorChange={handleIndicatorChange}
-        canUseAdvanced={canUseAdvancedIndicators}
-        chartRef={indicatorChartRef}
-        dates={chartData.labels}
-        prices={chartData.datasets[0].data}
-        highs={indicatorRanges?.highs}
-        lows={indicatorRanges?.lows}
-        xRange={bandXRange}
-        timeUnit={chartData.timeUnit}
-        isMobile={isMobile}
-        t={t}
-      />
+      shouldLoadTechnicalIndicator ? (
+        <Suspense fallback={<div className="pa-indicator-placeholder" aria-hidden="true" />}>
+          <TechnicalIndicatorChart
+            activeIndicator={activeIndicator}
+            onIndicatorChange={handleIndicatorChange}
+            canUseAdvanced={canUseAdvancedIndicators}
+            chartRef={indicatorChartRef}
+            onChartReady={handleIndicatorChartReady}
+            dates={chartData.labels}
+            prices={chartData.datasets[0].data}
+            highs={indicatorRanges?.highs}
+            lows={indicatorRanges?.lows}
+            xRange={bandXRange}
+            timeUnit={chartData.timeUnit}
+            isMobile={isMobile}
+            t={t}
+          />
+        </Suspense>
+      ) : (
+        <div className="pa-indicator-placeholder" aria-hidden="true" />
+      )
     ) : null}
 
     {/* 狀態說明放在卡片外面：卡片在桌機是固定高度、手機是固定 490px，

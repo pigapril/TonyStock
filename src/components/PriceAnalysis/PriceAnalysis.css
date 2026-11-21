@@ -2003,6 +2003,19 @@
   box-shadow: none;
 }
 
+.price-analysis-view .pa-indicator-placeholder {
+  min-width: 0;
+  min-height: 280px;
+  padding: 22px 0 10px;
+  border-top: 1px solid var(--color-border-light, #edf0f2);
+}
+
+@media (max-width: 768px) {
+  .price-analysis-view .pa-indicator-placeholder {
+    min-height: 270px;
+  }
+}
+
 .price-analysis-view .pa-indicator {
   min-width: 0;
   padding: 22px 0 10px;

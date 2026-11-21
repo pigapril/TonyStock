@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Chart } from 'react-chartjs-2';
 import { BarController, BarElement, Chart as ChartJS } from 'chart.js';
 import { FaLock } from 'react-icons/fa';
@@ -43,6 +43,7 @@ function TechnicalIndicatorChart({
   onIndicatorChange,
   canUseAdvanced,
   chartRef,
+  onChartReady,
   dates,
   prices,
   highs,
@@ -52,6 +53,11 @@ function TechnicalIndicatorChart({
   isMobile,
   t
 }) {
+  const handleChartRef = useCallback((chart) => {
+    chartRef.current = chart;
+    onChartReady?.(chart);
+  }, [chartRef, onChartReady]);
+
   // 只計算目前顯示的指標。免費用戶預設只看 MA，不應在背景先算 Pro 專屬指標。
   const series = useMemo(() => {
     if (activeIndicator === 'rsi') {
@@ -248,7 +254,7 @@ function TechnicalIndicatorChart({
       </div>
       <div className="pa-indicator__plot">
         {hasIndicatorData ? (
-          <Chart key={activeIndicator} ref={chartRef} type="line" data={chartData} options={options} />
+          <Chart key={activeIndicator} ref={handleChartRef} type="line" data={chartData} options={options} />
         ) : (
           <p className="pa-indicator__empty">
             {t(missingKdRange ? 'priceAnalysis.indicators.missingRange' : 'priceAnalysis.indicators.insufficient')}

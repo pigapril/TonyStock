@@ -7,7 +7,6 @@ jest.mock('./useAuth', () => ({ useAuth: jest.fn() }));
 jest.mock('./UserProfile', () => ({ UserProfile: () => <div>Profile</div> }));
 jest.mock('../Common/Dialog/useDialog', () => ({ useDialog: () => ({ openDialog: jest.fn() }) }));
 jest.mock('react-i18next', () => ({ useTranslation: () => ({ t: () => '登入' }) }));
-jest.mock('../../utils/authPreloader', () => ({ getPreloadedState: () => null }));
 
 it('keeps the same navigation slot while authentication resolves', () => {
   useAuth.mockReturnValue({ user: null, loading: true });

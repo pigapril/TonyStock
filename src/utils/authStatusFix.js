@@ -11,7 +11,7 @@ class AuthStatusFix {
             /**
      * 安全的認證狀態檢查
      */
-    async checkAuthStatus() {
+    async checkAuthStatus({ signal } = {}) {
         const url = `${this.baseURL}/api/auth/status`;
         
         try {
@@ -21,11 +21,10 @@ class AuthStatusFix {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache, no-store, must-revalidate',
-                    'Pragma': 'no-cache'
-                }
+                    'Accept': 'application/json'
+                },
+                cache: 'no-store',
+                ...(signal ? { signal } : {})
             });
 
             console.log('📡 AuthStatusFix: Response received:', {

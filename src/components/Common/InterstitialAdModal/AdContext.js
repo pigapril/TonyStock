@@ -5,6 +5,10 @@ import FreeTrialPromotion from '../../Payment/FreeTrial/FreeTrialPromotion';
 import { useAuth } from '../../Auth/useAuth';
 import { useDialog } from '../Dialog/useDialog';
 
+// Temporarily disable the custom full-screen AdSense interstitial shell.
+// Keep ConditionalAdSense and the site's regular AdSense placements enabled.
+const ENABLE_CUSTOM_ADSENSE_INTERSTITIAL = false;
+
 // 1. 建立 Context
 const AdContext = createContext();
 
@@ -59,6 +63,8 @@ export const AdProvider = ({ children }) => {
 
   // 請求顯示廣告的函數
   const requestAdDisplay = useCallback((triggerSource, threshold, ignoreCooldown = false) => {
+    if (!ENABLE_CUSTOM_ADSENSE_INTERSTITIAL) return;
+
     // Pro 用戶、其他 Dialog 或已取得互斥鎖時，不顯示 AdSense 插頁
     if (isProUser || otherDialogOpen || modalLockRef.current !== null || showTrialPromotion || showInterstitialAd) {
       console.log(`🚫 Interstitial ad blocked because another modal is active. Source: ${triggerSource}`);
@@ -152,7 +158,8 @@ export const AdProvider = ({ children }) => {
         onRelease={releaseTrialPromotion}
       />
       {/* 只有非 Pro 用戶才渲染 Modal */}
-      {!isProUser && showInterstitialAd && <InterstitialAdModal onClose={closeAd} />}
+      {ENABLE_CUSTOM_ADSENSE_INTERSTITIAL && !isProUser && showInterstitialAd
+        && <InterstitialAdModal onClose={closeAd} />}
     </AdContext.Provider>
   );
 };

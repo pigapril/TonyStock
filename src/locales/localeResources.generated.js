@@ -18,7 +18,7 @@ export const routeLocaleLoaders = {
     "indicatorsBofa": () => import('./resources/en/indicatorsBofa.json'),
     "account": () => import('./resources/en/account.json'),
     "market": () => import('./resources/en/market.json'),
-    "price": () => import('./resources/en/price.json')
+    "priceNotifications": () => import('./resources/en/priceNotifications.json')
   },
   "zh-TW": {
     "admin": () => import('./resources/zh-TW/admin.json'),
@@ -30,7 +30,7 @@ export const routeLocaleLoaders = {
     "indicatorsBofa": () => import('./resources/zh-TW/indicatorsBofa.json'),
     "account": () => import('./resources/zh-TW/account.json'),
     "market": () => import('./resources/zh-TW/market.json'),
-    "price": () => import('./resources/zh-TW/price.json')
+    "priceNotifications": () => import('./resources/zh-TW/priceNotifications.json')
   },
   "zh-CN": {
     "admin": () => import('./resources/zh-CN/admin.json'),
@@ -42,7 +42,7 @@ export const routeLocaleLoaders = {
     "indicatorsBofa": () => import('./resources/zh-CN/indicatorsBofa.json'),
     "account": () => import('./resources/zh-CN/account.json'),
     "market": () => import('./resources/zh-CN/market.json'),
-    "price": () => import('./resources/zh-CN/price.json')
+    "priceNotifications": () => import('./resources/zh-CN/priceNotifications.json')
   },
   "ko-KR": {
     "admin": () => import('./resources/ko-KR/admin.json'),
@@ -54,6 +54,6 @@ export const routeLocaleLoaders = {
     "indicatorsBofa": () => import('./resources/ko-KR/indicatorsBofa.json'),
     "account": () => import('./resources/ko-KR/account.json'),
     "market": () => import('./resources/ko-KR/market.json'),
-    "price": () => import('./resources/ko-KR/price.json')
+    "priceNotifications": () => import('./resources/ko-KR/priceNotifications.json')
   }
 };

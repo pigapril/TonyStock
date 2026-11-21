@@ -1,0 +1,69 @@
+{
+  "version": 2,
+  "skills": {
+    "humanizer": {
+      "source": "blader/humanizer",
+      "commit": "b48c832f0f809c1b5658edbb838c2521b72f2413",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "04cdabbcceaa7b5d4bd4b1ea02339013503d623b270b5b3b2e274837494d7134",
+      "installMode": "copy"
+    },
+    "localizing-software": {
+      "source": "BrunoMiguens/translating-products-skill",
+      "commit": "b1810d5d5b5626673b0fe0d7cb39a65911adeae9",
+      "sourceType": "github",
+      "skillPath": "skills/localizing-software/SKILL.md",
+      "computedHash": "2a3a38aac03ee3561c9d1f9beb3fb6b595efa30686f572bbe33c783a5a90cf13",
+      "installMode": "copy"
+    },
+    "reviewing-translations": {
+      "source": "BrunoMiguens/translating-products-skill",
+      "commit": "b1810d5d5b5626673b0fe0d7cb39a65911adeae9",
+      "sourceType": "github",
+      "skillPath": "skills/reviewing-translations/SKILL.md",
+      "computedHash": "e13c3762e3c687817c33aa618c03390dcb2614ec0d6d6b2c5e2562d115f25d20",
+      "installMode": "copy"
+    },
+    "translating-chinese": {
+      "source": "BrunoMiguens/translating-products-skill",
+      "commit": "b1810d5d5b5626673b0fe0d7cb39a65911adeae9",
+      "sourceType": "github",
+      "skillPath": "skills/translating-chinese/SKILL.md",
+      "computedHash": "dfb63eae1a65a185634da2152f821b3216ce3b7c3e7b23de0264ef7e10e78bba",
+      "installMode": "copy"
+    },
+    "translating-core": {
+      "source": "BrunoMiguens/translating-products-skill",
+      "commit": "b1810d5d5b5626673b0fe0d7cb39a65911adeae9",
+      "sourceType": "github",
+      "skillPath": "skills/translating-core/SKILL.md",
+      "computedHash": "56d326a5cc88f4093042c015ca5c07ab5c28cabf2b5d3ecde1be6974258f5893",
+      "installMode": "copy"
+    },
+    "translating-marketing": {
+      "source": "BrunoMiguens/translating-products-skill",
+      "commit": "b1810d5d5b5626673b0fe0d7cb39a65911adeae9",
+      "sourceType": "github",
+      "skillPath": "skills/translating-marketing/SKILL.md",
+      "computedHash": "33f6480ce4177963fe9896259680f4048ceb82ea45a0ea79437b675b40976738",
+      "installMode": "copy"
+    },
+    "translating-products": {
+      "source": "BrunoMiguens/translating-products-skill",
+      "commit": "b1810d5d5b5626673b0fe0d7cb39a65911adeae9",
+      "sourceType": "github",
+      "skillPath": "skills/translating-products/SKILL.md",
+      "computedHash": "ea8103792562dd65c2a6e239e2593be461424ddd37d9e33fce2033dabc0d8871",
+      "installMode": "copy"
+    },
+    "translating-web": {
+      "source": "BrunoMiguens/translating-products-skill",
+      "commit": "b1810d5d5b5626673b0fe0d7cb39a65911adeae9",
+      "sourceType": "github",
+      "skillPath": "skills/translating-web/SKILL.md",
+      "computedHash": "e4c093f077e2d17f1a807176cd37564b895b1a7181b98ac30308f3d3e3c55430",
+      "installMode": "copy"
+    }
+  }
+}

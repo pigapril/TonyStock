@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { AdProvider, useAdContext } from '../AdContext';
 
 const mockAuthState = { user: { id: 'user-1', plan: 'free' } };
@@ -13,8 +13,9 @@ jest.mock('../../../Payment/FreeTrial/FreeTrialPromotion', () => {
   const React = require('react');
   return {
     __esModule: true,
-    default: ({ request, onAcquire, onRelease }) => {
+    default: ({ request, adOpen, adCooldownActive, onAcquire, onRelease }) => {
       global.trialPromotionRequest = request;
+      global.trialPromotionGate = { adOpen, adCooldownActive };
       return React.createElement(React.Fragment, null,
       React.createElement('button', {
         onClick: () => { global.trialLockResult = onAcquire(); }
@@ -52,6 +53,7 @@ describe('AdProvider modal mutex', () => {
     mockDialogState.dialog = null;
     global.trialLockResult = undefined;
     global.trialPromotionRequest = null;
+    global.trialPromotionGate = undefined;
     global.trialRequestResult = undefined;
     jest.useFakeTimers();
   });
@@ -73,19 +75,18 @@ describe('AdProvider modal mutex', () => {
     expect(global.trialLockResult).toBe(true);
   });
 
-  it('AdSense 開啟或冷卻期間仍保留試用請求，等待安全時機顯示', () => {
+  it('停用自訂 AdSense 插頁，不渲染空殼、不啟動冷卻，也不阻擋試用促銷', () => {
     render(<AdProvider><AdRequester /><TrialRequester /></AdProvider>);
     fireEvent.click(screen.getByText('trigger AdSense'));
+
+    expect(screen.queryByTestId('adsense-modal')).not.toBeInTheDocument();
+    expect(global.trialPromotionGate).toEqual({ adOpen: false, adCooldownActive: false });
 
     fireEvent.click(screen.getByText('request trial promotion'));
     expect(global.trialRequestResult).toBe(true);
     expect(global.trialPromotionRequest).toEqual(expect.objectContaining({
       triggerSource: 'price_analysis_completed', pathname: '/zh-TW/priceanalysis'
     }));
-
-    fireEvent.click(screen.getByText('close AdSense'));
-    fireEvent.click(screen.getByText('request trial promotion'));
-    expect(global.trialRequestResult).toBe(true);
   });
 
   it('試用插頁持有鎖時，同步阻擋 AdSense 插頁', () => {
@@ -98,19 +99,11 @@ describe('AdProvider modal mutex', () => {
     expect(screen.queryByTestId('adsense-modal')).not.toBeInTheDocument();
   });
 
-  it('AdSense 持有鎖及冷卻期間阻擋試用插頁，冷卻結束後才允許取得鎖', () => {
+  it('自訂 AdSense 插頁請求不取得互斥鎖或啟動冷卻，試用插頁可正常取得鎖', () => {
     render(<AdProvider><AdRequester /></AdProvider>);
 
     fireEvent.click(screen.getByText('trigger AdSense'));
-    expect(screen.getByTestId('adsense-modal')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('acquire trial'));
-    expect(global.trialLockResult).toBe(false);
-
-    fireEvent.click(screen.getByText('close AdSense'));
-    fireEvent.click(screen.getByText('acquire trial'));
-    expect(global.trialLockResult).toBe(false);
-
-    act(() => { jest.advanceTimersByTime(120000); });
+    expect(screen.queryByTestId('adsense-modal')).not.toBeInTheDocument();
     fireEvent.click(screen.getByText('acquire trial'));
     expect(global.trialLockResult).toBe(true);
   });

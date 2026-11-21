@@ -24,9 +24,12 @@ test.each(LOCALE_CODES)('all split resources reconstruct the exact original %s c
   const common = resource(lang, 'common');
   expect(common.home.hero.title).toBe(original(lang).home.hero.title);
   expect(common.marketSentiment.composite.scoreLabel).toBeTruthy();
+  expect(common.priceAnalysis.description.sd.title).toBe(original(lang).priceAnalysis.description.sd.title);
+  expect(common.priceAnalysis.tour.start).toBe(original(lang).priceAnalysis.tour.start);
   expect(common.priceAnalysis.sentiment).toEqual(original(lang).priceAnalysis.sentiment);
   expect(common).not.toHaveProperty('admin');
   expect(common).not.toHaveProperty('momentumDashboard');
+  expect(common.watchlist).not.toHaveProperty('priceSentimentNotifications');
   expect(common.sentimentIndicatorPages.currentReading).toBe(original(lang).sentimentIndicatorPages.currentReading);
   expect(common.sentimentIndicatorPages).not.toHaveProperty('bofaBullBear');
   expect(common).not.toHaveProperty('sentimentHistoryExamples');
@@ -34,7 +37,7 @@ test.each(LOCALE_CODES)('all split resources reconstruct the exact original %s c
 
 test.each(LOCALE_CODES)('every enabled locale prefix resolves the same feature route groups: %s', locale => {
   expect(getRouteLocaleGroups(`/${locale}/momentum`)).toEqual(['momentum']);
-  expect(getRouteLocaleGroups(`/${locale}/priceanalysis`)).toEqual(['price']);
+  expect(getRouteLocaleGroups(`/${locale}/priceanalysis`)).toEqual([]);
   expect(getRouteLocaleGroups(`/${locale}/market-sentiment`)).toEqual(['market']);
   expect(getRouteLocaleGroups(`/${locale}/payment/card-trial/result`)).toEqual(['account']);
 });
@@ -48,8 +51,8 @@ test.each([
   ['/en/sentiment-indicators/bofa-bull-bear', ['indicatorsExternal', 'indicatorsBofa']],
   ['/zh-TW/sentiment-indicators/market-fear-breadth', ['indicatorsSio']],
   ['/en/sentiment-indicators/unknown', []],
-  ['/zh-TW/tw-market-sentiment/', ['market']], ['/en/priceanalysis', ['price']],
-  ['/zh-TW/watchlist', ['price']], ['/en/payment/card-trial/result', ['account']],
+  ['/zh-TW/tw-market-sentiment/', ['market']], ['/en/priceanalysis', []],
+  ['/zh-TW/watchlist', ['priceNotifications']], ['/en/payment/card-trial/result', ['account']],
   ['/zh-TW/subscription-plans', ['account']], ['/en/user-account', ['account']],
   ['/en/momentum-other', []], ['/zh-TW/NK-Admin', Object.keys(RESOURCE_GROUPS)],
   ['/en/NK-Admin-diagnostic', Object.keys(RESOURCE_GROUPS)], ['/en/admin', Object.keys(RESOURCE_GROUPS)]

@@ -5,9 +5,7 @@ import authService from '../../components/Auth/auth.service';
 import { handleApiError } from '../../utils/errorHandler';
 import csrfClient from '../../utils/csrfClient';
 import { authDiagnostics } from '../../utils/authDiagnostics';
-import authInitFix from '../../utils/authInitFix';
 import authStateManager from '../../utils/authStateManager';
-import authPreloader from '../../utils/authPreloader';
 import authStateCache from '../../utils/authStateCache';
 import { systemLogger } from '../../utils/logger';
 import { ensureGoogleIdentityScript } from '../../utils/deferredScripts';
@@ -33,7 +31,6 @@ export function AuthProvider({ children }) {
     const [isGoogleScriptReady, setIsGoogleScriptReady] = useState(() => Boolean(window.google?.accounts?.id));
     const [isAdmin, setIsAdmin] = useState(false);
     const [adminLoading, setAdminLoading] = useState(false);
-    const [preloadApplied, setPreloadApplied] = useState(false);
 
     const handleError = (error) => {
         const errorData = handleApiError(error);
@@ -245,218 +242,100 @@ export function AuthProvider({ children }) {
         }
     }, [checkBrowserCompatibility, handleGoogleCredential, isGoogleScriptReady]);
 
-    // 檢查認證狀態（已移除不必要的延遲，因為 /api/auth/status 已被後端豁免）
-    const checkAuthStatus = useCallback(async () => {
-        systemLogger.debug('CheckAuthStatus initiated:', {
-            currentCookies: document.cookie,
-            timestamp: new Date().toISOString(),
-            preloadApplied
+    // AuthStateManager is the single source for the initial session check and
+    // all subsequent forced refreshes. AuthContext only projects that result
+    // into React state; it must not issue a parallel auth/status request.
+    const checkAuthStatus = useCallback(async (forceRefresh = true) => {
+        systemLogger.debug('AuthContext: Resolving authentication state', {
+            forceRefresh,
+            timestamp: new Date().toISOString()
         });
 
         try {
-            // 移除人為延遲，因為認證端點已被後端 rate limiting 豁免
-            systemLogger.info('🚀 AuthContext: Performing auth check without artificial delay');
+            const authState = await authStateManager.getAuthState(forceRefresh);
 
-            // 保留 authInitFix 初始化，但縮短超時時間
-            try {
-                await Promise.race([
-                    authInitFix.initialize(),
-                    new Promise(resolve => setTimeout(resolve, 1000)) // 縮短到 1 秒
-                ]);
-            } catch (initError) {
-                systemLogger.warn('AuthInitFix initialization timeout, proceeding anyway:', initError);
+            // A transport / server error is not proof that the session expired.
+            // Keep the last known user and CSRF token until a successful status
+            // response confirms the user is anonymous.
+            if (authState?.error) {
+                systemLogger.warn('AuthContext: Auth status could not be verified; preserving last known state:', authState.error);
+                Analytics.auth.statusCheck({ status: 'error' });
+                return authState;
             }
 
-            // 直接進行認證檢查，無延遲
-
-            const { user: userData } = await authService.checkStatus();
-            systemLogger.debug('CheckAuthStatus response:', {
-                hasUser: !!userData,
-                cookies: document.cookie,
-                timestamp: new Date().toISOString()
-            });
-
+            const userData = authState?.isAuthenticated ? (authState.user || null) : null;
             setUser(userData);
+            setError(null);
 
-            // 保存認證狀態到快取
-            const authState = {
-                isAuthenticated: !!userData,
+            authStateCache.saveAuthState({
+                isAuthenticated: Boolean(userData),
                 user: userData,
                 timestamp: Date.now()
-            };
-            authStateCache.saveAuthState(authState);
+            });
 
-            // 如果用戶已登入，嘗試初始化 CSRF token（如果還沒有的話）
-            if (userData) {
-                if (!csrfClient.isTokenInitialized()) {
-                    try {
-                        systemLogger.info('Initializing CSRF token for existing user...');
-                        await csrfClient.initializeCSRFToken();
-                        systemLogger.info('CSRF token initialized successfully for existing user');
-                    } catch (csrfError) {
-                        systemLogger.warn('Failed to initialize CSRF token for existing user:', csrfError);
-                        // 不拋出錯誤，讓用戶繼續使用（某些功能可能受限）
-                        // 這可能是因為用戶的 session 已過期，需要重新登入
-                    }
-                }
-            } else {
-                // 如果用戶未登入，清除 CSRF token
+            if (!userData) {
                 csrfClient.clearCSRFToken();
             }
+            // Existing sessions do not need a CSRF round trip just to render a
+            // read-only page. apiClient and fetchWithCSRF acquire the token on
+            // the first state-changing request; Google login applies its token
+            // immediately when the verification response supplies one.
 
             Analytics.auth.statusCheck({ status: 'success' });
+            return authState;
         } catch (error) {
-            systemLogger.warn('CheckAuthStatus error:', {
+            systemLogger.warn('AuthContext: Failed to resolve authentication state:', {
                 error: error.message,
                 status: error.response?.status,
-                cookies: document.cookie,
                 timestamp: new Date().toISOString()
             });
 
-            // 如果是 403 錯誤且包含 IP 封鎖信息，特殊處理
-            if (error.response?.status === 403 && error.response?.data?.message?.includes('IP 已被封鎖')) {
-                systemLogger.error('🚫 IP has been blocked due to too many requests. Please wait and try again later.');
-                setError('系統檢測到異常請求，請稍後再試。如果問題持續，請聯繫技術支援。');
-                setUser(null);
-                return;
-            }
-
-            // 如果是 403 錯誤，可能是 CSRF 配置問題
             if (error.response?.status === 403) {
-                systemLogger.warn('🔄 Auth status check got 403, this may indicate CSRF middleware misconfiguration');
-
-                // 只在開發環境且沒有最近運行過診斷時才運行
                 const lastDiagnostic = sessionStorage.getItem('lastAuthDiagnostic');
                 const now = Date.now();
                 if (process.env.NODE_ENV === 'development' &&
-                    (!lastDiagnostic || now - parseInt(lastDiagnostic) > 60000)) { // 增加到 60 秒內不重複診斷
+                    (!lastDiagnostic || now - parseInt(lastDiagnostic, 10) > 60000)) {
                     sessionStorage.setItem('lastAuthDiagnostic', now.toString());
                     authDiagnostics.diagnoseAuthIssue().catch(diagError => {
-                        systemLogger.error('Diagnostics failed:', diagError);
+                        systemLogger.error('AuthContext: Authentication diagnostic failed:', diagError);
                     });
                 }
-
-                // 清除用戶狀態，因為 403 表示認證問題
                 setUser(null);
-                return;
+                authStateCache.clearAuthState();
+                csrfClient.clearCSRFToken();
+                return null;
             }
 
-            // 如果是網路錯誤（通常是 CORS 問題），保持當前狀態
-            if (error.message === 'Network Error' || error.code === 'ERR_NETWORK') {
-                systemLogger.warn('🔄 Auth status check got network error (possibly CORS or server down)');
-
-                // 只在開發環境且沒有最近運行過診斷時才運行
-                const lastNetworkDiagnostic = sessionStorage.getItem('lastNetworkDiagnostic');
-                const now = Date.now();
-                if (process.env.NODE_ENV === 'development' &&
-                    (!lastNetworkDiagnostic || now - parseInt(lastNetworkDiagnostic) > 120000)) { // 增加到 120 秒內不重複診斷
-                    sessionStorage.setItem('lastNetworkDiagnostic', now.toString());
-                    authDiagnostics.diagnoseAuthIssue().catch(diagError => {
-                        systemLogger.error('Diagnostics failed:', diagError);
-                    });
-                }
-
-                // 不設置 user 為 null，保持當前狀態
-                return;
+            if (error.message !== 'Network Error' && error.code !== 'ERR_NETWORK') {
+                handleError(error);
             }
-
-            setUser(null);
-            handleError(error);
+            return null;
         } finally {
             setLoading(false);
         }
     }, []);
 
-    // 應用快取和預載入的認證狀態（如果可用）
+    // Apply a local cache immediately for navigation continuity, then perform
+    // exactly one server-backed bootstrap. The manager coalesces this with any
+    // API guard request that races during the same initial React commit.
     useEffect(() => {
-        const applyInitialState = async () => {
-            if (preloadApplied) return;
-
-            // 首先嘗試從快取載入狀態
-            const cachedState = authStateCache.loadAuthState();
-            if (cachedState) {
-                systemLogger.info('💾 AuthContext: Applying cached auth state:', {
-                    isAuthenticated: cachedState.isAuthenticated,
-                    hasUser: !!cachedState.user,
-                    source: cachedState.source,
-                    confidence: cachedState.confidence,
-                    cacheAge: cachedState.cacheAge
-                });
-
-                setUser(cachedState.user);
-                setLoading(false);
-                setPreloadApplied(true);
-
-                // 如果快取狀態需要刷新或信心度較低，在背景中進行檢查
-                if (cachedState.needsRefresh || cachedState.confidence === 'low' || cachedState.cacheAge > 60000) {
-                    systemLogger.info('🔄 AuthContext: Cache needs refresh, performing background check');
-                    setTimeout(() => {
-                        checkAuthStatus();
-                    }, 100);
-                }
-
-                return;
-            }
-
-            try {
-                // 如果沒有快取，嘗試獲取預載入狀態
-                const preloadedState = await authPreloader.waitForPreload(1000);
-
-                if (preloadedState && preloadedState.confidence !== 'none') {
-                    systemLogger.info('🚀 AuthContext: Applying preloaded auth state:', {
-                        isAuthenticated: preloadedState.isAuthenticated,
-                        hasUser: !!preloadedState.user,
-                        source: preloadedState.source,
-                        confidence: preloadedState.confidence,
-                        preloadTime: preloadedState.preloadTime
-                    });
-
-                    setUser(preloadedState.user);
-                    setLoading(false);
-                    setPreloadApplied(true);
-
-                    // 保存到快取
-                    authStateCache.saveAuthState(preloadedState);
-
-                    // 如果預載入狀態信心度較低，在背景中進行完整檢查
-                    if (preloadedState.confidence === 'low' || preloadedState.source === 'preload_failed') {
-                        systemLogger.info('🔄 AuthContext: Preload confidence low, performing background check');
-                        setTimeout(() => {
-                            checkAuthStatus();
-                        }, 100);
-                    }
-
-                    return;
-                }
-            } catch (error) {
-                systemLogger.warn('⚠️ AuthContext: Failed to apply preloaded state:', error);
-            }
-
-            // 如果沒有快取或預載入狀態，進行正常檢查
-            systemLogger.info('🔄 AuthContext: No cached or preloaded state available, performing normal check');
-            checkAuthStatus();
-        };
-
-        applyInitialState();
-    }, [checkAuthStatus, preloadApplied]);
-
-    // 初始化時檢查登入狀態（僅在沒有應用預載入狀態時）
-    useEffect(() => {
-        if (!preloadApplied) {
-            checkAuthStatus();
+        const cachedState = authStateCache.loadAuthState();
+        if (cachedState) {
+            setUser(cachedState.user || null);
+            setLoading(false);
         }
-    }, [checkAuthStatus, preloadApplied]);
+
+        checkAuthStatus(false);
+    }, [checkAuthStatus]);
 
     // 當用戶狀態改變時檢查管理員狀態 - 修復無限循環
+    const authenticatedUserId = user?.id || user?.userId || null;
     useEffect(() => {
-        if (user) {
-            // 只在用戶 ID 實際改變時才檢查管理員狀態
-            const userId = user.id || user.userId;
+        if (authenticatedUserId) {
             const lastCheckedUserId = sessionStorage.getItem('lastCheckedAdminUserId');
-
-            if (lastCheckedUserId !== String(userId)) {
-                systemLogger.info('AuthContext: User changed, checking admin status for:', userId);
-                sessionStorage.setItem('lastCheckedAdminUserId', String(userId));
+            if (lastCheckedUserId !== String(authenticatedUserId)) {
+                systemLogger.info('AuthContext: User changed, checking admin status for:', authenticatedUserId);
+                sessionStorage.setItem('lastCheckedAdminUserId', String(authenticatedUserId));
                 checkAdminStatus();
             }
         } else {
@@ -464,7 +343,7 @@ export function AuthProvider({ children }) {
             setAdminLoading(false);
             sessionStorage.removeItem('lastCheckedAdminUserId');
         }
-    }, [user?.id, user?.userId, checkAdminStatus]); // 只監聽用戶 ID 變化
+    }, [authenticatedUserId, checkAdminStatus]);
 
     // 登出處理
     const logout = async () => {

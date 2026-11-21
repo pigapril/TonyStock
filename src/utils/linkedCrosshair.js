@@ -178,3 +178,41 @@ export function linkCharts(getCharts) {
     getCharts().forEach(clearChart);
   };
 }
+
+/**
+ * Coalesce chart mount/unmount notifications into one animation frame, then
+ * replace the previous set of canvas listeners with the currently mounted
+ * chart instances. A lazy chart can mount well after the other charts, so the
+ * scheduler remains reusable for later notifications.
+ */
+export function createLinkedChartsScheduler(
+  getCharts,
+  {
+    requestFrame = (callback) => window.requestAnimationFrame(callback),
+    cancelFrame = (frameId) => window.cancelAnimationFrame(frameId)
+  } = {}
+) {
+  let frameId = null;
+  let unlink = null;
+
+  const schedule = () => {
+    if (frameId !== null) return;
+
+    frameId = requestFrame(() => {
+      frameId = null;
+      unlink?.();
+      unlink = linkCharts(getCharts);
+    });
+  };
+
+  const destroy = () => {
+    if (frameId !== null) {
+      cancelFrame(frameId);
+      frameId = null;
+    }
+    unlink?.();
+    unlink = null;
+  };
+
+  return { schedule, destroy };
+}

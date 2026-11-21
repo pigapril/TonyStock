@@ -136,13 +136,16 @@ export const SubscriptionProvider = ({ children }) => {
 
       const plan = await subscriptionService.getUserPlan();
       
-      // If no active subscription found, create a default plan based on user's stored plan
+      let resolvedPlan = plan;
+
+      // No subscription record: use the already authenticated user's plan
+      // rather than issuing another /api/auth/status request from the service.
       if (!plan && user?.plan) {
         const isFree = user.plan === 'free';
         const defaultPlan = {
           type: user.plan,
           status: isFree ? 'active' : 'inactive',
-          startDate: null,
+          startDate: user.createdAt ? new Date(user.createdAt) : null,
           endDate: null,
           autoRenew: false,
           cancelAtPeriodEnd: false,
@@ -155,6 +158,7 @@ export const SubscriptionProvider = ({ children }) => {
           _isFallback: true
         };
         console.warn('⚠️ Using fallback plan with secure flags:', defaultPlan);
+        resolvedPlan = defaultPlan;
         setUserPlan(defaultPlan);
       } else if (plan) {
         // Map backend subscription fields to frontend plan fields
@@ -164,18 +168,19 @@ export const SubscriptionProvider = ({ children }) => {
         };
         
         // Debug log to check the plan data
+        resolvedPlan = mappedPlan;
         setUserPlan(mappedPlan);
       } else {
         setUserPlan(null);
       }
       // Update redemption-related state
-      updateRedemptionState(plan);
+      updateRedemptionState(resolvedPlan);
 
       Analytics.track('subscription_plan_loaded', {
         userId: user.id,
-        planType: plan?.type || 'unknown',
-        hasPromotions: plan?.activePromotions?.length > 0,
-        redemptionSource: plan?.redemptionSource
+        planType: resolvedPlan?.type || 'unknown',
+        hasPromotions: resolvedPlan?.activePromotions?.length > 0,
+        redemptionSource: resolvedPlan?.redemptionSource
       });
     } catch (err) {
       if (process.env.NODE_ENV === 'development') {

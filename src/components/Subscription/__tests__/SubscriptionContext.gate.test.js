@@ -85,6 +85,55 @@ describe('SubscriptionContext regression gate', () => {
         expect(result.current.promotionExpiresAt).toBe('2026-04-30T00:00:00.000Z');
     });
 
+  it('builds a Free plan from the authenticated user without another auth lookup', async () => {
+    mockAuthState.user = {
+      id: 'user-123',
+      plan: 'free',
+      createdAt: '2026-03-05T08:30:00.000Z'
+    };
+    mockGetUserPlan.mockResolvedValueOnce(null);
+
+    const { result } = renderHook(() => useSubscription(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.userPlan?.type).toBe('free');
+    });
+
+    expect(result.current.userPlan).toEqual(expect.objectContaining({
+      type: 'free',
+      status: 'active',
+      startDate: new Date('2026-03-05T08:30:00.000Z'),
+      endDate: null,
+      isActive: true,
+      isExpired: false,
+      _isFallback: true
+    }));
+    expect(mockGetUserPlan).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps a paid plan inactive when subscription details are unavailable', async () => {
+    mockAuthState.user = {
+      id: 'user-123',
+      plan: 'pro',
+      createdAt: '2026-03-05T08:30:00.000Z'
+    };
+    mockGetUserPlan.mockResolvedValueOnce(null);
+
+    const { result } = renderHook(() => useSubscription(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.userPlan?.type).toBe('pro');
+    });
+
+    expect(result.current.userPlan).toEqual(expect.objectContaining({
+      type: 'pro',
+      status: 'inactive',
+      isActive: false,
+      isExpired: true,
+      _isFallback: true
+    }));
+  });
+
     it('refreshes plan, usage, and subscription history after redemption success', async () => {
         mockGetUserPlan
             .mockResolvedValueOnce({

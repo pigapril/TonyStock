@@ -26,16 +26,6 @@ jest.mock('../../utils/logger', () => ({
   }
 }));
 
-const authStatusResponse = (user) => ({
-  data: {
-    status: 'success',
-    data: {
-      isAuthenticated: true,
-      user
-    }
-  }
-});
-
 const noSubscriptionResponse = {
   data: {
     status: 'success',
@@ -43,36 +33,27 @@ const noSubscriptionResponse = {
   }
 };
 
-describe('subscriptionService.getUserPlan - free plan start date', () => {
+describe('subscriptionService.getUserPlan - no-subscription fallback', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('uses the account creation date as the free plan start date', async () => {
-    enhancedApiClient.get.mockImplementation((url) => {
-      if (url === '/api/subscription/current') return Promise.resolve(noSubscriptionResponse);
-      return Promise.resolve(authStatusResponse({
-        id: 'user-1',
-        plan: 'free',
-        createdAt: '2026-03-05T08:30:00.000Z'
-      }));
-    });
+  it('returns null without making a second auth-status request when there is no subscription', async () => {
+    enhancedApiClient.get.mockResolvedValue(noSubscriptionResponse);
 
     const plan = await subscriptionService.getUserPlan();
 
-    expect(plan.type).toBe('free');
-    expect(plan.startDate).toEqual(new Date('2026-03-05T08:30:00.000Z'));
+    expect(plan).toBeNull();
+    expect(enhancedApiClient.get).toHaveBeenCalledTimes(1);
+    expect(enhancedApiClient.get).toHaveBeenCalledWith('/api/subscription/current');
   });
 
-  it('leaves the start date empty instead of falling back to today', async () => {
-    enhancedApiClient.get.mockImplementation((url) => {
-      if (url === '/api/subscription/current') return Promise.resolve(noSubscriptionResponse);
-      return Promise.resolve(authStatusResponse({ id: 'user-1', plan: 'free' }));
-    });
+  it('does not convert a failed subscription lookup into a free plan or auth-status request', async () => {
+    enhancedApiClient.get.mockRejectedValue(new Error('Network unavailable'));
 
-    const plan = await subscriptionService.getUserPlan();
-
-    expect(plan.startDate).toBeNull();
+    await expect(subscriptionService.getUserPlan()).rejects.toThrow('Network unavailable');
+    expect(enhancedApiClient.get).toHaveBeenCalledTimes(1);
+    expect(enhancedApiClient.get).toHaveBeenCalledWith('/api/subscription/current');
   });
 
   it('keeps using the subscription start date when a subscription exists', async () => {

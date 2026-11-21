@@ -7,8 +7,6 @@
 import axios from 'axios';
 import csrfClient from './csrfClient';
 import { authDiagnostics } from './authDiagnostics';
-import apiClient from '../api/apiClient';
-import requestTracker from './requestTracker';
 import authStateManager from './authStateManager';
 
 class AuthGuard {
@@ -44,7 +42,8 @@ class AuthGuard {
         });
         
         // 如果用戶登出，清理 CSRF token
-        if (!authState.isAuthenticated && authState.source !== 'cache_invalidated') {
+        if (!authState.isAuthenticated && !authState.error
+            && authState.confidence === 'high' && authState.source !== 'cache_invalidated') {
             console.log('🧹 AuthGuard: User logged out, clearing CSRF token');
             csrfClient.clearCSRFToken();
         }
@@ -82,98 +81,21 @@ class AuthGuard {
      * @private
      */
     async _initializeAuth() {
-        console.log('🔐 AuthGuard: Initializing authentication...');
-        
         try {
-            // Step 1: 使用 AuthStateManager 檢查認證狀態
+            // AuthStateManager is the shared session authority. Each API endpoint
+            // still enforces its own authorization; repeating /validate-session
+            // here adds a network round trip but does not secure the target API.
             const authState = await authStateManager.getAuthState();
-            
-            if (!authState.isAuthenticated) {
-                console.log('❌ AuthGuard: User not authenticated - skipping CSRF token initialization');
-                return false;
-            }
-
-            console.log('✅ AuthGuard: User is authenticated, proceeding with CSRF token initialization');
-
-            // Step 2: 只有在用戶已認證時才初始化 CSRF token
-            await this._ensureCSRFToken();
-
-            // Step 3: 驗證 session 仍然有效
-            await this._validateSession();
-
-            // 重置錯誤統計
             this.errorStats.consecutiveFailures = 0;
-
-            console.log('✅ AuthGuard: Authentication ready');
-            return true;
-
+            return Boolean(authState?.isAuthenticated && !authState?.error);
         } catch (error) {
-            console.error('❌ AuthGuard: Authentication initialization failed:', error);
-            
-            // Log diagnostic information
             authDiagnostics.logAuthState('auth_guard_init_failed', {
                 error: error.message,
                 timestamp: new Date().toISOString(),
                 authStateReliable: authStateManager.isAuthStateReliable(),
                 consecutiveFailures: this.errorStats.consecutiveFailures
             });
-            
             throw error;
-        }
-    }
-
-    /**
-     * Ensure CSRF token is initialized (改進版)
-     * @private
-     */
-    async _ensureCSRFToken() {
-        if (!csrfClient.isTokenInitialized()) {
-            console.log('🛡️ AuthGuard: Initializing CSRF token...');
-            
-            try {
-                await csrfClient.initializeCSRFToken();
-                console.log('✅ AuthGuard: CSRF token initialized');
-            } catch (error) {
-                console.error('❌ AuthGuard: CSRF token initialization failed:', error);
-                
-                // 檢查是否是認證問題
-                if (error.message.includes('403') || error.message.includes('401')) {
-                    // 強制刷新認證狀態
-                    console.log('🔄 AuthGuard: Refreshing auth state due to CSRF init failure');
-                    await authStateManager.getAuthState(true);
-                }
-                
-                throw new Error('CSRF token initialization failed');
-            }
-        } else {
-            console.log('✅ AuthGuard: CSRF token already initialized');
-        }
-    }
-
-    /**
-     * Validate that the session is still active (改進版)
-     * @private
-     */
-    async _validateSession() {
-        try {
-            // Make a lightweight authenticated request to validate session
-            const response = await csrfClient.fetchWithCSRF('/api/auth/validate-session', { method: 'GET' });
-            
-            if (!response.ok) {
-                // 如果是 403 錯誤，可能是認證狀態不一致
-                if (response.status === 403) {
-                    console.warn('⚠️ AuthGuard: Session validation returned 403, invalidating auth cache');
-                    authStateManager.invalidateCache();
-                }
-                
-                throw new Error(`Session validation failed: ${response.status}`);
-            }
-
-            console.log('✅ AuthGuard: Session validated');
-
-        } catch (error) {
-            console.error('❌ AuthGuard: Session validation failed:', error);
-            throw new Error('Session validation failed');
         }
     }
 

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { formatPrice } from '../../utils/priceUtils';
 import { useTranslation } from 'react-i18next';
@@ -71,15 +71,13 @@ const ULBandChart = ({ data, onChartReady, follower = false, hideXAxisLabels = f
     const chartRef = useRef(null);
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
+    const handleChartRef = useCallback((chart) => {
+        chartRef.current = chart;
+        onChartReady?.(chart);
+    }, [onChartReady]);
+
     // 使用自定義 Hook 處理手機版觸控（follower 模式不攔截觸控，交給主圖）
     useMobileTouchHandler(chartRef, isMobile, !follower);
-
-    // 當圖表準備好時，通知父組件
-    useEffect(() => {
-        if (chartRef.current && onChartReady) {
-            onChartReady(chartRef.current);
-        }
-    }, [chartRef.current, onChartReady]);
 
     // 計算合適的時間單位
     const calculateTimeUnit = () => {
@@ -426,7 +424,7 @@ const ULBandChart = ({ data, onChartReady, follower = false, hideXAxisLabels = f
     if (!data) return null;
 
     return (
-        <Line ref={chartRef} data={chartData} options={options} />
+        <Line ref={handleChartRef} data={chartData} options={options} />
     );
 };
 

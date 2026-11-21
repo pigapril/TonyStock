@@ -47,8 +47,6 @@ import { Toast } from './components/Watchlist/components/Toast';
 
 // 工具函數
 import { initializeApiClient } from './api/setupApiClient';
-import authGuard from './utils/authGuard';
-import authPreloader from './utils/authPreloader';
 import { setupRobotsProtection } from './utils/robotsHandler';
 import { initializeFreeStockList } from './utils/freeStockListUtils';
 import { canSeeCardTrial } from './utils/cardTrialRollout';
@@ -57,7 +55,7 @@ import BrandLogo from './components/Common/BrandLogo/BrandLogo';
 import DeferredTagManager from './components/Common/DeferredTagManager/DeferredTagManager';
 import RouteLocaleGate from './components/Common/RouteLocaleGate/RouteLocaleGate';
 import MarketPulse from './components/MarketPulse/MarketPulse';
-import { Home } from './components/Home/Home';
+const Home = lazy(() => import('./components/Home/Home').then(module => ({ default: module.Home })));
 
 const AuthDialog = lazy(() => import('./components/Auth/AuthDialog').then(module => ({ default: module.AuthDialog })));
 const GlobalFeatureUpgradeDialog = lazy(() => import('./components/Common/Dialog/GlobalFeatureUpgradeDialog').then(module => ({ default: module.GlobalFeatureUpgradeDialog })));
@@ -194,22 +192,9 @@ function AppContent() {
 
 
 
-  // 初始化認證守衛和預載入器
+  // 認證狀態由 AuthProvider 單一初始化流程負責。
+  // 此處只保留與登入無關的環境保護設定，避免啟動時再次查詢 session。
   useEffect(() => {
-    // 確保認證預載入器已啟動
-    authPreloader.startPreload().then(() => {
-      console.log('🚀 App: Auth preloader completed');
-    }).catch(error => {
-      console.warn('⚠️ App: Auth preloader failed:', error);
-    });
-
-    // 確保認證狀態在應用啟動時初始化
-    authGuard.ensureAuthenticated().catch(error => {
-      console.log('Authentication not available on app start:', error.message);
-      // 不需要顯示錯誤，因為用戶可能未登入
-    });
-
-    // 設置 staging 環境的搜尋引擎保護
     setupRobotsProtection();
   }, []);
 

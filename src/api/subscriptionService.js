@@ -18,95 +18,54 @@ class SubscriptionService {
   async getUserPlan() {
     try {
       console.log('🔄 Getting user plan from subscription API...');
+      const subscriptionResponse = await enhancedApiClient.get('/api/subscription/current');
+      console.log('📊 Subscription API response:', subscriptionResponse.data);
 
-      // 首先嘗試從訂閱 API 獲取詳細的訂閱信息
-      try {
-        const subscriptionResponse = await enhancedApiClient.get('/api/subscription/current');
-
-        console.log('📊 Subscription API response:', subscriptionResponse.data);
-
-        if (subscriptionResponse.data.status === 'success' && subscriptionResponse.data.data.subscription) {
-          const subscription = subscriptionResponse.data.data.subscription;
-
-          console.log('📊 Found active subscription:', {
-            id: subscription.id,
-            planType: subscription.planType,
-            status: subscription.status,
-            cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
-            currentPeriodEnd: subscription.currentPeriodEnd
-          });
-
-          // 將後端的訂閱數據映射到前端期望的格式
-          return {
-            type: subscription.planType,
-            startDate: subscription.startDate ? new Date(subscription.startDate) : null,
-            endDate: subscription.currentPeriodEnd ? new Date(subscription.currentPeriodEnd) : null,
-            status: subscription.status, // 保留原始狀態供參考
-            autoRenew: subscription.autoRenew,
-            cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
-            cancelledAt: subscription.cancelledAt ? new Date(subscription.cancelledAt) : null,
-            // ✅ 優先使用這些經過時間驗證的欄位
-            isActive: subscription.isActive, // 後端已進行時間比對
-            isExpired: subscription.isExpired, // 後端已進行時間比對
-            isCancelled: subscription.isCancelled,
-            willCancelAtPeriodEnd: subscription.willCancelAtPeriodEnd,
-            daysUntilExpiry: subscription.daysUntilExpiry,
-            // 添加額外的訂閱信息
-            subscriptionId: subscription.id,
-            currentPeriodStart: subscription.currentPeriodStart ? new Date(subscription.currentPeriodStart) : null,
-            billingRail: subscription.billingRail,
-            billingPeriod: subscription.billingPeriod,
-            trialEnd: subscription.trialEnd ? new Date(subscription.trialEnd) : null,
-            renewalAmount: subscription.renewalAmount
-          };
-        }
-      } catch (subscriptionError) {
-        console.warn('⚠️ Failed to get subscription details, falling back to auth status:', subscriptionError.message);
+      if (subscriptionResponse.data?.status !== 'success') {
+        throw new Error(subscriptionResponse.data?.message || 'Failed to load subscription details');
       }
 
-      // 如果沒有找到訂閱記錄，從 auth status API 獲取基本用戶方案資訊
-      const response = await enhancedApiClient.get('/api/auth/status');
-
-      if (response.data.status === 'success' && response.data.data.isAuthenticated) {
-        const user = response.data.data.user;
-
-        console.log('📊 Fallback to user plan from auth status:', user.plan);
-
-        return {
-          type: user.plan || 'free',
-          // 沒有訂閱記錄時，方案起始日就是註冊日；拿不到就不顯示，不要用當下時間充數
-          startDate: user.createdAt ? new Date(user.createdAt) : null,
-          endDate: user.plan === 'free' ? null : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-          status: 'active',
-          autoRenew: user.plan !== 'free',
-          cancelAtPeriodEnd: false, // 默認值
-          cancelledAt: null
-        };
+      const subscription = subscriptionResponse.data?.data?.subscription;
+      if (!subscription) {
+        // AuthContext already owns the current user's plan. Do not issue a
+        // second /api/auth/status request from this service just to rebuild it.
+        return null;
       }
 
-      // 如果未認證，返回免費方案
-      console.log('📊 User not authenticated, returning free plan');
+      console.log('📊 Found active subscription:', {
+        id: subscription.id,
+        planType: subscription.planType,
+        status: subscription.status,
+        cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+        currentPeriodEnd: subscription.currentPeriodEnd
+      });
+
+      // 將後端的訂閱數據映射到前端期望的格式
       return {
-        type: 'free',
-        startDate: null,
-        endDate: null,
-        status: 'active',
-        autoRenew: false,
-        cancelAtPeriodEnd: false,
-        cancelledAt: null
+        type: subscription.planType,
+        startDate: subscription.startDate ? new Date(subscription.startDate) : null,
+        endDate: subscription.currentPeriodEnd ? new Date(subscription.currentPeriodEnd) : null,
+        status: subscription.status,
+        autoRenew: subscription.autoRenew,
+        cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+        cancelledAt: subscription.cancelledAt ? new Date(subscription.cancelledAt) : null,
+        isActive: subscription.isActive,
+        isExpired: subscription.isExpired,
+        isCancelled: subscription.isCancelled,
+        willCancelAtPeriodEnd: subscription.willCancelAtPeriodEnd,
+        daysUntilExpiry: subscription.daysUntilExpiry,
+        subscriptionId: subscription.id,
+        currentPeriodStart: subscription.currentPeriodStart ? new Date(subscription.currentPeriodStart) : null,
+        billingRail: subscription.billingRail,
+        billingPeriod: subscription.billingPeriod,
+        trialEnd: subscription.trialEnd ? new Date(subscription.trialEnd) : null,
+        renewalAmount: subscription.renewalAmount
       };
     } catch (error) {
       console.error('❌ Failed to get user plan:', error);
-      // 返回預設的免費方案，而不是拋出錯誤
-      return {
-        type: 'free',
-        startDate: null,
-        endDate: null,
-        status: 'active',
-        autoRenew: false,
-        cancelAtPeriodEnd: false,
-        cancelledAt: null
-      };
+      // A failed subscription lookup is not equivalent to having no
+      // subscription. Let the context retain its current state and surface it.
+      throw error;
     }
   }
 
