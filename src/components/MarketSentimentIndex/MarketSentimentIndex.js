@@ -448,6 +448,13 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
   }, [isMobileIndicatorSheetOpen, isMobileViewport]);
 
   useEffect(() => {
+    // Resolve the session before choosing Pro vs Free. These routes are also
+    // available to guests, so mounting before auth settles must not fetch the
+    // Free endpoint for a returning Pro user.
+    if (authLoading) {
+      return undefined;
+    }
+
     let isMounted = true;
 
     async function fetchSentimentData() {
@@ -519,7 +526,7 @@ const MarketSentimentIndex = ({ marketConfig = US_MARKET_SENTIMENT_CONFIG }) => 
     return () => {
       isMounted = false;
     };
-  }, [checkAuthStatus, isProUser, isTemporaryFreeMode, marketConfig, showToast, t]);
+  }, [authLoading, checkAuthStatus, isProUser, isTemporaryFreeMode, marketConfig, showToast, t]);
 
   useEffect(() => {
     if (!shouldLoadHistoricalData || historicalFetchStartedRef.current) {

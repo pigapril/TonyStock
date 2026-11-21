@@ -105,12 +105,12 @@ describe('Market sentiment shared shell parity', () => {
     mockRestrictedPreview = false;
     mockFetchFreeTrialEligibility.mockResolvedValue({ eligible: true });
     mockEnhancedApiClient.get.mockImplementation((url) => {
-      if (url === '/api/market-sentiment-free') {
+      if (url === '/api/market-sentiment-free' || url === '/api/market-sentiment') {
         return Promise.resolve({
           data: {
             totalScore: 52,
             compositeScoreLastUpdate: '2026-03-20',
-            isRestricted: mockRestrictedPreview,
+            isRestricted: url.endsWith('-free') ? mockRestrictedPreview : false,
             restrictionCutoffDate: '2026-08-31',
             indicators: {
               'AAII Bull-Bear Spread': { percentileRank: 65, value: 12.5, weight: 1.5 }
@@ -152,6 +152,8 @@ describe('Market sentiment shared shell parity', () => {
     expect(screen.getByRole('tab', { name: /latest market sentiment/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /history/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /AAII Investor Sentiment/i })).toBeInTheDocument();
+    expect(mockEnhancedApiClient.get).toHaveBeenCalledWith('/api/market-sentiment-free');
+    expect(mockOpenDialog).not.toHaveBeenCalled();
 
     rerender(
       <TestWrapper initialEntries={['/zh-TW/tw-market-sentiment']}>
@@ -166,6 +168,59 @@ describe('Market sentiment shared shell parity', () => {
     expect(screen.getByRole('tab', { name: /latest market sentiment/i })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /history/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /台指選擇權波動率/ })).toBeInTheDocument();
+    expect(mockEnhancedApiClient.get).toHaveBeenCalledWith('/api/tw-market-sentiment-free');
+    expect(mockOpenDialog).not.toHaveBeenCalled();
+  });
+
+  it('waits for auth resolution before selecting the guest Free summary endpoint', async () => {
+    mockAuthState.loading = true;
+    const view = render(
+      <TestWrapper initialEntries={['/zh-TW/market-sentiment']}>
+        <MarketSentimentIndex />
+      </TestWrapper>
+    );
+
+    await act(async () => { await Promise.resolve(); });
+    expect(mockEnhancedApiClient.get).not.toHaveBeenCalled();
+
+    mockAuthState.loading = false;
+    view.rerender(
+      <TestWrapper initialEntries={['/zh-TW/market-sentiment']}>
+        <MarketSentimentIndex />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('market-sentiment-gauge')).toBeInTheDocument();
+    });
+    expect(mockEnhancedApiClient.get).toHaveBeenCalledWith('/api/market-sentiment-free');
+    expect(mockOpenDialog).not.toHaveBeenCalled();
+  });
+
+  it('uses the Pro endpoint when the session resolves to a Pro account', async () => {
+    mockAuthState.loading = true;
+    const view = render(
+      <TestWrapper initialEntries={['/zh-TW/market-sentiment']}>
+        <MarketSentimentIndex />
+      </TestWrapper>
+    );
+
+    await act(async () => { await Promise.resolve(); });
+    expect(mockEnhancedApiClient.get).not.toHaveBeenCalled();
+
+    mockAuthState.user = { id: 'pro-user', plan: 'pro' };
+    mockAuthState.loading = false;
+    view.rerender(
+      <TestWrapper initialEntries={['/zh-TW/market-sentiment']}>
+        <MarketSentimentIndex />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('market-sentiment-gauge')).toBeInTheDocument();
+    });
+    expect(mockEnhancedApiClient.get).toHaveBeenCalledWith('/api/market-sentiment');
+    expect(mockEnhancedApiClient.get).not.toHaveBeenCalledWith('/api/market-sentiment-free');
   });
 
   it('offers a free trial to guests and routes eligible accounts into the trial after sign-in', async () => {
