@@ -171,7 +171,7 @@ const SentimentBoard = () => {
           <div className="board-delay-banner">
             <div className="board-delay-banner__copy">
               <h2 className="board-delay-banner__title">
-                {t('sentimentBoard.delayBannerTitle', { date: board.delayed.until })}
+                {t('sentimentBoard.delayBannerTitle', { date: formatDate(board.delayed.until, intlLocale) })}
               </h2>
               <p className="board-delay-banner__body">{t('sentimentBoard.delayBannerBody')}</p>
             </div>
@@ -200,7 +200,12 @@ const SentimentBoard = () => {
 
         {board.divergences && board.divergences.length > 0 && (
           <section className="sentiment-board__divergences">
-            <h2 className="sentiment-board__sectionTitle">{t('sentimentBoard.divergenceTitle')}</h2>
+            <div className="sentiment-board__sectionHeading">
+              <h2 className="sentiment-board__sectionTitle">{t('sentimentBoard.divergenceTitle')}</h2>
+              {!isPro && (
+                <span className="sentiment-board__upgradeBadge">{t('sentimentBoard.delayedTag')}</span>
+              )}
+            </div>
             <p className="sentiment-board__sectionNote">{t('sentimentBoard.divergenceNote')}</p>
             <div className="sentiment-board__divergenceGrid">
               {board.divergences.map((item) => {
@@ -472,6 +477,15 @@ function formatDateTime(value, intlLocale) {
   if (!value) return '';
   const parsed = new Date(value);
   return Number.isNaN(parsed.getTime()) ? '' : parsed.toLocaleString(intlLocale);
+}
+
+function formatDate(value, intlLocale) {
+  if (!value) return '';
+  const dateValue = /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00` : value;
+  const parsed = new Date(dateValue);
+  return Number.isNaN(parsed.getTime())
+    ? value
+    : new Intl.DateTimeFormat(intlLocale, { year: 'numeric', month: 'short', day: 'numeric' }).format(parsed);
 }
 
 export default SentimentBoard;

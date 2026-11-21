@@ -607,7 +607,7 @@ function AppContent() {
                 <Route
                   path="market-sentiment"
                   element={
-                    <ProtectedRoute>
+                    <ProtectedRoute dismissTo={`/${lang}/sentiment-indicators`}>
                       <MarketSentimentIndex />
                     </ProtectedRoute>
                   }
@@ -616,7 +616,7 @@ function AppContent() {
                 <Route
                   path="tw-market-sentiment"
                   element={
-                    <ProtectedRoute>
+                    <ProtectedRoute dismissTo={`/${lang}/sentiment-indicators`}>
                       <TwMarketSentimentIndex />
                     </ProtectedRoute>
                   }

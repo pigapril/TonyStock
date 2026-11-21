@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import SentimentBoard from './SentimentBoard';
 
@@ -16,11 +16,19 @@ jest.mock('react-router-dom', () => ({
 }));
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key) => ({
+    t: (key, options = {}) => {
+      const translations = {
       'freeTrial.ctaShort': '免綁卡試用 Pro',
       'sentimentBoard.delayNoticeCta': '升級 Pro 查看最新資料',
-      'sentimentBoard.upsellCta': '查看方案'
-    }[key] || key)
+      'sentimentBoard.upsellCta': '查看方案',
+      'sentimentBoard.delayedTag': '升級 Pro 查看最新資料',
+      'sentimentBoard.divergenceTitle': '指標之間的落差',
+        'sentimentBoard.divergenceNote': '指標可能出現不同判讀。',
+        'sentimentBoard.delayBannerTitle': ({ date }) => `免費版：部分情緒指標只更新至 ${date}，升級 Pro 查看最新市場情緒。`
+      };
+      const value = translations[key];
+      return typeof value === 'function' ? value(options) : (value || key);
+    }
   })
 }));
 jest.mock('../../api/apiClient', () => ({ get: (...args) => mockGet(...args) }));
@@ -39,10 +47,16 @@ const board = {
   userPlan: 'free',
   delayed: { active: true, until: '2026-08-31' },
   composite: {
-    us: { value: 52, scale: { min: 0, max: 100 }, date: '2026-10-30' },
-    tw: { value: 57, scale: { min: 0, max: 100 }, date: '2026-10-30' }
+    us: { value: 52, scale: { min: 0, max: 100 }, date: '2026-10-30', delayed: true },
+    tw: { value: 57, scale: { min: 0, max: 100 }, date: '2026-10-30', delayed: true }
   },
-  divergences: [],
+  divergences: [{
+    key: 'retail_vs_institutional',
+    gap: 18,
+    left: { key: 'retail', value: 22 },
+    right: { key: 'institutional', value: 40 },
+    asOf: '2026-08-31'
+  }],
   groups: [],
   generatedAt: '2026-10-31T00:00:00.000Z'
 };
@@ -72,6 +86,19 @@ describe('情緒指標總覽的試用 CTA', () => {
     expect(mockOpenDialog).toHaveBeenCalledWith('auth', expect.objectContaining({
       source: 'sentiment_board_trial_cta'
     }));
+  });
+
+  it('免費版標示資料更新日期，並在延遲指標與落差區塊顯示升級 badge', async () => {
+    renderBoard();
+
+    expect(await screen.findByRole('heading', {
+      name: /免費版：部分情緒指標只更新至/
+    })).toBeInTheDocument();
+
+    const divergenceSection = screen.getByRole('heading', { name: '指標之間的落差' }).closest('section');
+    expect(within(divergenceSection).getByText('升級 Pro 查看最新資料'))
+      .toHaveClass('sentiment-board__upgradeBadge');
+    expect(screen.getAllByText('升級 Pro 查看最新資料')).toHaveLength(3);
   });
 
   it('合資格登入者進入試用，不合資格者前往正確的方案頁', async () => {

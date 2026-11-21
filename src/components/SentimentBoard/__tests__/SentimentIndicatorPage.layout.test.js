@@ -134,7 +134,7 @@ it('uses only the plan-aware sentiment board endpoint for a newly added indicato
   const { container } = renderPage('vix-ma50');
 
   expect(await screen.findByText('18.2')).toBeInTheDocument();
-  expect(screen.getByText(/Delayed/)).toBeInTheDocument();
+  expect(screen.getByText(new RegExp(require('../../../locales/en/translation.json').sentimentBoard.delayedTag))).toBeInTheDocument();
   expect(screen.getByText(require('../../../locales/en/translation.json').sentimentIndicatorPages.vixMa50.howToRead)).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'How should you read it?' })).toBeInTheDocument();
   expect(container.querySelector('.indicator-page__bands')).not.toBeInTheDocument();

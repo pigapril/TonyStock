@@ -2,6 +2,7 @@ import { useDialog } from '../../components/Common/Dialog/useDialog';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
 import { Dialog } from '../Common/Dialog/Dialog';
 import { useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Analytics } from '../../utils/analytics';
 import { useTranslation } from 'react-i18next';
 import { FiActivity, FiBarChart2, FiMessageCircle } from 'react-icons/fi';
@@ -15,6 +16,7 @@ export function AuthDialog() {
     const imageLanguage = resolvedLanguage === 'zh-TW' || resolvedLanguage === 'zh' ? 'zh-TW' : 'en';
     const { dialog, closeDialog } = useDialog();
     const { loading, renderGoogleButton, user, ensureGoogleIdentityLoaded } = useAuth();
+    const navigate = useNavigate();
     const buttonRef = useRef(null);
 
     useEffect(() => {
@@ -65,7 +67,11 @@ export function AuthDialog() {
     }, [dialog.isOpen, dialog.type, dialog.source, closeDialog, ensureGoogleIdentityLoaded, renderGoogleButton, user]);
 
     const handleClose = () => {
+        const dismissTo = dialog.props?.dismissTo;
         closeDialog();
+        if (dismissTo) {
+            navigate(dismissTo, { replace: true });
+        }
         Analytics.auth.login({ 
             method: 'google', 
             status: 'cancelled',

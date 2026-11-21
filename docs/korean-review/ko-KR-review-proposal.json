@@ -59923,11 +59923,11 @@
     {
       "key": "sentimentBoard.delayBannerTitle",
       "source": {
-        "zhTW": "免費版：SIO 計算的部分顯示至 {{date}}",
-        "zhCN": "免费版：SIO 计算的部分显示至 {{date}}",
-        "en": "Free plan: SIO-calculated data shown up to {{date}}"
+        "zhTW": "免費版：部分情緒指標只更新至 {{date}}，升級 Pro 查看最新市場情緒。",
+        "zhCN": "免费版：部分情绪指标仅更新至 {{date}}，升级 Pro 查看最新市场情绪。",
+        "en": "Free plan: Some sentiment indicators are updated only through {{date}}. Upgrade to Pro for the latest market sentiment."
       },
-      "korean": "Free 버전: SIO 계산 데이터는 {{date}}까지 표시됩니다.",
+      "korean": "Free 버전에서는 일부 시장 심리 지표가 {{date}}까지만 업데이트됩니다. 최신 시장 심리는 Pro에서 확인하세요.",
       "candidateSource": "docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -59936,7 +59936,7 @@
         "values": [
           {
             "key": "sentimentBoard.delayBannerTitle",
-            "value": "Free plan: SIO-calculated data shown up to {{date}}"
+            "value": "Free plan: Some sentiment indicators are updated only through {{date}}. Upgrade to Pro for the latest market sentiment."
           }
         ]
       },
@@ -59956,11 +59956,11 @@
     {
       "key": "sentimentBoard.delayBannerBody",
       "source": {
-        "zhTW": "CNN、BofA、AAII 等第三方指標顯示最新公開讀數。SIO 計算的合成指標與歷史百分位，免費版截至兩個月前，卡片會標示「延遲」。",
-        "zhCN": "CNN、BofA、AAII 等第三方指标显示最新公开读数。SIO 计算的合成指标与历史百分位，免费版截至两个月前，卡片会标示「延迟」。",
-        "en": "CNN, BofA, AAII and other third-party indicators show their latest published readings. SIO composites and historical percentiles are delayed by two months on Free and marked “Delayed”."
+        "zhTW": "CNN、BofA、AAII 等第三方指標顯示最新公開讀數；SIO 計算的綜合指標與歷史百分位則只更新至上述日期。",
+        "zhCN": "CNN、BofA、AAII 等第三方指标显示最新公开读数；SIO 计算的综合指标与历史百分位则仅更新至上述日期。",
+        "en": "CNN, BofA, AAII and other third-party indicators show their latest published readings. SIO composites and historical percentiles are updated only through the date above."
       },
-      "korean": "CNN, BofA, AAII 등 제3자 지표는 최신 공개 수치를 표시합니다. SIO가 계산한 종합 지표와 과거 백분위는 Free 버전에서 두 달 전까지 제공되며 해당 카드에 '지연'으로 표시됩니다.",
+      "korean": "CNN, BofA, AAII 등 제3자 지표는 최신 공개 수치를 표시합니다. SIO 종합 지표와 과거 백분위는 위 날짜까지만 업데이트됩니다.",
       "candidateSource": "docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -59969,7 +59969,7 @@
         "values": [
           {
             "key": "sentimentBoard.delayBannerBody",
-            "value": "CNN, BofA, AAII and other third-party indicators show their latest published readings. SIO composites and historical percentiles are delayed by two months on Free and marked “Delayed”."
+            "value": "CNN, BofA, AAII and other third-party indicators show their latest published readings. SIO composites and historical percentiles are updated only through the date above."
           }
         ]
       },
@@ -59985,11 +59985,11 @@
     {
       "key": "sentimentBoard.delayedTag",
       "source": {
-        "zhTW": "延遲",
-        "zhCN": "延迟",
-        "en": "Delayed"
+        "zhTW": "升級 Pro 查看最新資料",
+        "zhCN": "升级 Pro 查看最新数据",
+        "en": "Upgrade to Pro for the latest data"
       },
-      "korean": "지연",
+      "korean": "Pro로 업그레이드해 최신 데이터 확인",
       "candidateSource": "docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -59998,7 +59998,7 @@
         "values": [
           {
             "key": "sentimentBoard.delayedTag",
-            "value": "Delayed"
+            "value": "Upgrade to Pro for the latest data"
           }
         ]
       },

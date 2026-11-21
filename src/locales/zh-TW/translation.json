@@ -2813,9 +2813,9 @@
     },
     "percentileCaption": "歷史百分位",
     "delayNoticeCta": "升級 Pro 查看最新資料",
-    "delayBannerTitle": "免費版：SIO 計算的部分顯示至 {{date}}",
-    "delayBannerBody": "CNN、BofA、AAII 等第三方指標顯示最新公開讀數。SIO 計算的合成指標與歷史百分位，免費版截至兩個月前，卡片會標示「延遲」。",
-    "delayedTag": "延遲",
+    "delayBannerTitle": "免費版：部分情緒指標只更新至 {{date}}，升級 Pro 查看最新市場情緒。",
+    "delayBannerBody": "CNN、BofA、AAII 等第三方指標顯示最新公開讀數；SIO 計算的綜合指標與歷史百分位則只更新至上述日期。",
+    "delayedTag": "升級 Pro 查看最新資料",
     "asOf": "資料時點"
   },
   "sentimentIndicatorPages": {

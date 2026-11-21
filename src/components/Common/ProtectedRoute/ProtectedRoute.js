@@ -6,13 +6,15 @@ import { useDialog } from '../Dialog/useDialog';
 import { Analytics } from '../../../utils/analytics';
 import './ProtectedRoute.css';
 
-export function ProtectedRoute({ children, requireAuth = true }) {
+export function ProtectedRoute({ children, requireAuth = true, dismissTo }) {
     const { t } = useTranslation();
     const { user, loading } = useAuth();
     const { openDialog } = useDialog();
     const location = useLocation();
     const dialogShownRef = useRef(false);
     const returnPath = `${location.pathname}${location.search || ''}${location.hash || ''}`;
+    const locale = location.pathname.split('/')[1] || 'zh-TW';
+    const loginDismissPath = dismissTo || `/${locale}`;
 
     useEffect(() => {
         if (user || !requireAuth) {
@@ -26,6 +28,7 @@ export function ProtectedRoute({ children, requireAuth = true }) {
 
         openDialog('auth', {
             returnPath,
+            dismissTo: loginDismissPath,
             message: t('protectedRoute.loginRequired')
         });
         dialogShownRef.current = returnPath;
@@ -33,7 +36,7 @@ export function ProtectedRoute({ children, requireAuth = true }) {
             status: 'dialog_shown',
             from: returnPath
         });
-    }, [requireAuth, user, loading, openDialog, returnPath, t]);
+    }, [requireAuth, user, loading, openDialog, returnPath, loginDismissPath, t]);
 
     if (loading) {
         return (

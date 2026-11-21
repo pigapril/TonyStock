@@ -85,6 +85,7 @@ describe('ProtectedRoute', () => {
         await waitFor(() => {
             expect(mockOpenDialog).toHaveBeenCalledWith('auth', {
                 returnPath: '/zh-TW/market-sentiment?timeRange=1Y#aaii',
+                dismissTo: '/zh-TW',
                 message: 'protectedRoute.loginRequired'
             });
         });
