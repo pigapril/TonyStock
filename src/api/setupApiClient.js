@@ -7,16 +7,15 @@ import { setupApiClientInterceptors } from './apiClient';
  */
 export const initializeApiClient = (dependencies) => {
   const {
-    authLogout,
+    clearAuthState,
     showToast,
     openDialog,
-    navigate,
     t
   } = dependencies;
 
   // Validate required dependencies
-  if (!authLogout || typeof authLogout !== 'function') {
-    console.warn('initializeApiClient: authLogout function is required for 401 handling');
+  if (!clearAuthState || typeof clearAuthState !== 'function') {
+    console.warn('initializeApiClient: clearAuthState function is required for 401 handling');
   }
   
   if (!showToast || typeof showToast !== 'function') {
@@ -27,20 +26,15 @@ export const initializeApiClient = (dependencies) => {
     console.warn('initializeApiClient: openDialog function is required for user interactions');
   }
   
-  if (!navigate || typeof navigate !== 'function') {
-    console.warn('initializeApiClient: navigate function is required for redirects');
-  }
-  
   if (!t || typeof t !== 'function') {
     console.warn('initializeApiClient: t function is required for translations');
   }
 
   // Setup the interceptors
   setupApiClientInterceptors({
-    logout: authLogout,
+    clearAuthState,
     showToastFn: showToast,
     openDialogFn: openDialog,
-    navigateFn: navigate,
     translateFn: t
   });
 

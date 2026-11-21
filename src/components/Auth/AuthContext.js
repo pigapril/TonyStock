@@ -16,6 +16,7 @@ export const AuthContext = createContext({
     watchlistAccess: false,
     loading: true,
     error: null,
+    clearAuthState: () => {},
     isGoogleInitialized: false,
     ensureGoogleIdentityLoaded: async () => false,
     isAdmin: false,
@@ -345,23 +346,27 @@ export function AuthProvider({ children }) {
         }
     }, [authenticatedUserId, checkAdminStatus]);
 
+    // Clear the local session without navigating. Used when an API confirms
+    // that the current session is no longer authorized; explicit user logout
+    // adds the remote logout request and the homepage redirect below.
+    const clearAuthState = useCallback(() => {
+        setUser(null);
+        setError(null);
+        setLoading(false);
+        setIsAdmin(false);
+        setAdminLoading(false);
+        authStateCache.clearAuthState();
+        authStateManager.invalidateCache();
+        csrfClient.clearCSRFToken();
+        window.dispatchEvent(new CustomEvent('logoutSuccess'));
+    }, []);
+
     // 登出處理
     const logout = async () => {
         try {
             await authService.logout();
 
-            // 立即清除用戶狀態
-            setUser(null);
-            setError(null);
-            setLoading(false);
-            setIsAdmin(false);
-            setAdminLoading(false);
-
-            // 清除快取的認證狀態
-            authStateCache.clearAuthState();
-
-            // 清除認證狀態管理器的快取
-            authStateManager.invalidateCache();
+            clearAuthState();
 
             let identityServiceRevoked = false;
             if (window.google?.accounts?.id) {
@@ -373,12 +378,6 @@ export function AuthProvider({ children }) {
                     systemLogger.error('Google Identity Service disable auto-select failed:', error);
                 }
             }
-
-            // 新增：登出時清除CSRF token
-            csrfClient.clearCSRFToken();
-
-            // 新增：觸發登出成功事件，讓其他組件可以重置狀態
-            window.dispatchEvent(new CustomEvent('logoutSuccess'));
 
             // 新增：登出後自動導向首頁
             navigate('/');
@@ -457,6 +456,7 @@ export function AuthProvider({ children }) {
         renderGoogleButton,
         isGoogleInitialized,
         ensureGoogleIdentityLoaded,
+        clearAuthState,
         isAdmin,
         adminLoading,
         checkAdminStatus

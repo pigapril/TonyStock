@@ -31,14 +31,6 @@ jest.mock('react-i18next', () => ({
 }));
 
 jest.mock('react-router-dom', () => ({
-    Navigate: ({ to, state, replace }) => (
-        <div
-            data-testid="navigate"
-            data-to={to}
-            data-state={JSON.stringify(state)}
-            data-replace={String(replace)}
-        />
-    ),
     useLocation: () => mockLocation
 }));
 
@@ -72,7 +64,12 @@ describe('ProtectedRoute', () => {
         });
     });
 
-    it('opens the auth dialog and redirects unauthenticated users', async () => {
+    it('opens the auth dialog and preserves the requested URL for unauthenticated users', async () => {
+        mockLocation = {
+            pathname: '/zh-TW/market-sentiment',
+            search: '?timeRange=1Y',
+            hash: '#aaii'
+        };
         mockUseAuth.mockReturnValue({
             user: null,
             loading: false,
@@ -87,16 +84,15 @@ describe('ProtectedRoute', () => {
 
         await waitFor(() => {
             expect(mockOpenDialog).toHaveBeenCalledWith('auth', {
-                returnPath: '/',
+                returnPath: '/zh-TW/market-sentiment?timeRange=1Y#aaii',
                 message: 'protectedRoute.loginRequired'
             });
         });
 
-        expect(screen.getByTestId('navigate')).toHaveAttribute('data-to', '/');
         expect(screen.queryByTestId('protected-content')).not.toBeInTheDocument();
         expect(mockRouteProtection).toHaveBeenCalledWith({
             status: 'dialog_shown',
-            from: '/'
+            from: '/zh-TW/market-sentiment?timeRange=1Y#aaii'
         });
     });
 
@@ -133,7 +129,6 @@ describe('ProtectedRoute', () => {
         );
 
         expect(screen.getByTestId('protected-content')).toBeInTheDocument();
-        expect(screen.queryByTestId('navigate')).not.toBeInTheDocument();
     });
 
     it('allows watchlist access in temporary free mode', () => {
@@ -152,7 +147,6 @@ describe('ProtectedRoute', () => {
         );
 
         expect(screen.getByTestId('protected-content')).toBeInTheDocument();
-        expect(screen.queryByTestId('navigate')).not.toBeInTheDocument();
     });
 
     it('resets the dialog guard after login so a later logout can prompt again', async () => {

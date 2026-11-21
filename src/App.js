@@ -138,8 +138,7 @@ const Overlay = ({ isVisible, onClick }) => (
 function AppContent() {
   const { t, i18n } = useTranslation();
   const { lang } = useParams();
-  const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, clearAuthState } = useAuth();
   const { userPlan } = useSubscription();
   const { openDialog, dialog } = useDialog();
   const { showToast, toast, hideToast } = useToastManager();
@@ -196,13 +195,12 @@ function AppContent() {
   // 初始化 API Client 攔截器
   useEffect(() => {
     initializeApiClient({
-      authLogout: logout,
+      clearAuthState,
       showToast: showToast,
       openDialog: openDialog,
-      navigate: navigate,
       t: t
     });
-  }, [logout, showToast, openDialog, navigate, t]);
+  }, [clearAuthState, showToast, openDialog, t]);
 
 
 
@@ -608,12 +606,20 @@ function AppContent() {
                 />
                 <Route
                   path="market-sentiment"
-                  element={<MarketSentimentIndex />}
+                  element={
+                    <ProtectedRoute>
+                      <MarketSentimentIndex />
+                    </ProtectedRoute>
+                  }
                 />
                 <Route path="momentum" element={<MomentumDashboardPage />} />
                 <Route
                   path="tw-market-sentiment"
-                  element={<TwMarketSentimentIndex />}
+                  element={
+                    <ProtectedRoute>
+                      <TwMarketSentimentIndex />
+                    </ProtectedRoute>
+                  }
                 />
                 <Route
                   path="about"

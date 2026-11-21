@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../Auth/useAuth';
 import { useDialog } from '../Dialog/useDialog';
@@ -12,20 +12,28 @@ export function ProtectedRoute({ children, requireAuth = true }) {
     const { openDialog } = useDialog();
     const location = useLocation();
     const dialogShownRef = useRef(false);
+    const returnPath = `${location.pathname}${location.search || ''}${location.hash || ''}`;
 
     useEffect(() => {
-        if (requireAuth && !user && !loading && !dialogShownRef.current) {
-            openDialog('auth', {
-                returnPath: location.pathname,
-                message: t('protectedRoute.loginRequired')
-            });
-            dialogShownRef.current = true;
-        }
-        // 當 user 登入後，重置 dialogShownRef
-        if (user && dialogShownRef.current) {
+        if (user || !requireAuth) {
             dialogShownRef.current = false;
+            return;
         }
-    }, [requireAuth, user, loading, openDialog, location.pathname, t]);
+
+        if (loading || dialogShownRef.current === returnPath) {
+            return;
+        }
+
+        openDialog('auth', {
+            returnPath,
+            message: t('protectedRoute.loginRequired')
+        });
+        dialogShownRef.current = returnPath;
+        Analytics.auth.routeProtection({
+            status: 'dialog_shown',
+            from: returnPath
+        });
+    }, [requireAuth, user, loading, openDialog, returnPath, t]);
 
     if (loading) {
         return (
@@ -37,11 +45,9 @@ export function ProtectedRoute({ children, requireAuth = true }) {
     }
 
     if (requireAuth && !user) {
-        Analytics.auth.routeProtection({
-            status: 'dialog_shown',
-            from: location.pathname
-        });
-        return <Navigate to="/" state={{ from: location.pathname }} replace />;
+        // Keep the requested URL mounted while the global auth dialog is open.
+        // Redirecting to / here discards the destination and can race the dialog.
+        return null;
     }
 
     Analytics.auth.routeProtection({

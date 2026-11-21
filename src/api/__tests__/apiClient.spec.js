@@ -65,20 +65,18 @@ describe('apiClient interceptor contract', () => {
     expect(config.headers['X-CSRF-Token']).toBeUndefined();
   });
 
-  it('wires 401 handling through the injected logout, toast, dialog, and navigation hooks', async () => {
-    const logout = jest.fn().mockResolvedValue(undefined);
+  it('clears local auth state on 401 without treating it as a user logout', async () => {
+    const clearAuthState = jest.fn().mockResolvedValue(undefined);
     const showToastFn = jest.fn();
     const openDialogFn = jest.fn();
-    const navigateFn = jest.fn();
     const translateFn = jest.fn((key, fallback) => fallback || key);
 
     window.history.pushState({}, '', '/');
 
     apiClientModule.setupApiClientInterceptors({
-      logout,
+      clearAuthState,
       showToastFn,
       openDialogFn,
-      navigateFn,
       translateFn
     });
 
@@ -96,26 +94,23 @@ describe('apiClient interceptor contract', () => {
 
     await expect(responseRejected(error)).rejects.toBe(error);
 
-    expect(logout).toHaveBeenCalledTimes(1);
+    expect(clearAuthState).toHaveBeenCalledTimes(1);
     expect(showToastFn).toHaveBeenCalledWith('Your session has expired. Please log in again.', 'warning');
     expect(openDialogFn).not.toHaveBeenCalled();
-    expect(navigateFn).not.toHaveBeenCalled();
   });
 
-  it('opens auth dialog and redirects when a protected route receives 401', async () => {
-    const logout = jest.fn().mockResolvedValue(undefined);
+  it('leaves protected routes mounted so ProtectedRoute can show the auth dialog', async () => {
+    const clearAuthState = jest.fn().mockResolvedValue(undefined);
     const showToastFn = jest.fn();
     const openDialogFn = jest.fn();
-    const navigateFn = jest.fn();
     const translateFn = jest.fn((key, fallback) => fallback || key);
 
     window.history.pushState({}, '', '/zh-TW/watchlist');
 
     apiClientModule.setupApiClientInterceptors({
-      logout,
+      clearAuthState,
       showToastFn,
       openDialogFn,
-      navigateFn,
       translateFn
     });
 
@@ -133,23 +128,42 @@ describe('apiClient interceptor contract', () => {
 
     await expect(responseRejected(error)).rejects.toBe(error);
 
-    expect(logout).toHaveBeenCalledTimes(1);
+    expect(clearAuthState).toHaveBeenCalledTimes(1);
     expect(showToastFn).toHaveBeenCalledWith('Your session has expired. Please log in again.', 'warning');
+    expect(openDialogFn).not.toHaveBeenCalled();
+  });
+
+  it('shows an auth dialog for a 401 on the public PriceAnalysis route without redirecting', async () => {
+    const clearAuthState = jest.fn().mockResolvedValue(undefined);
+    const openDialogFn = jest.fn();
+
+    window.history.pushState({}, '', '/zh-TW/priceanalysis?symbol=AAPL#chart');
+    apiClientModule.setupApiClientInterceptors({
+      clearAuthState,
+      showToastFn: jest.fn(),
+      openDialogFn,
+      translateFn: jest.fn((key, fallback) => fallback || key)
+    });
+
+    const error = {
+      response: { status: 401, data: { message: 'Unauthenticated' } },
+      config: { url: '/api/stock-analysis' }
+    };
+
+    await expect(responseRejected(error)).rejects.toBe(error);
     expect(openDialogFn).toHaveBeenCalledWith('auth', expect.objectContaining({
-      returnPath: '/zh-TW/watchlist',
+      returnPath: '/zh-TW/priceanalysis?symbol=AAPL#chart',
       message: 'Please log in to continue'
     }));
-    expect(navigateFn).toHaveBeenCalledWith('/', { replace: true });
   });
 
   it('suppresses duplicate 429 toast handling until the cooldown resets', async () => {
     const showToastFn = jest.fn();
 
     apiClientModule.setupApiClientInterceptors({
-      logout: jest.fn(),
+      clearAuthState: jest.fn(),
       showToastFn,
       openDialogFn: jest.fn(),
-      navigateFn: jest.fn(),
       translateFn: jest.fn((key, fallback) => fallback || key)
     });
 

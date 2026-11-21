@@ -24,20 +24,15 @@ let isHandling401 = false;
 let isHandling429 = false;
 
 // Store references to external dependencies (will be set by setupInterceptors)
-let authLogout = null;
+let clearAuthState = null;
 let showToast = null;
 let openDialog = null;
-let navigate = null;
 let t = null;
 
-const requiresAuthRedirect = (pathname = '') => {
-  return [
-    /^\/[^/]+\/watchlist(?:\/|$)/,
-    /^\/[^/]+\/user-account(?:\/|$)/,
-    /^\/[^/]+\/payment(?:\/|$)/,
-    /^\/[^/]+\/google-trends(?:\/|$)/,
-    /^\/[^/]+\/NK-Admin(?:\/|$)/
-  ].some((pattern) => pattern.test(pathname));
+const requiresInlineAuthPrompt = (pathname = '') => {
+  // PriceAnalysis is intentionally browseable without an account and does
+  // not use ProtectedRoute; its auth-required API failures need an inline prompt.
+  return /^\/[^/]+\/priceanalysis(?:\/|$)/.test(pathname);
 };
 
 /**
@@ -46,17 +41,15 @@ const requiresAuthRedirect = (pathname = '') => {
  */
 export const setupApiClientInterceptors = (dependencies) => {
   const { 
-    logout, 
+    clearAuthState: clearAuthStateFn,
     showToastFn, 
     openDialogFn, 
-    navigateFn, 
     translateFn 
   } = dependencies;
 
-  authLogout = logout;
+  clearAuthState = clearAuthStateFn;
   showToast = showToastFn;
   openDialog = openDialogFn;
-  navigate = navigateFn;
   t = translateFn;
 };
 
@@ -168,16 +161,16 @@ apiClient.interceptors.response.use(
     if (status === 401 && !isHandling401) {
       isHandling401 = true;
       
-      console.warn('API Client: 401 Unauthorized - clearing auth data and redirecting to login');
+      console.warn('API Client: 401 Unauthorized - clearing the local session');
       
       try {
-        // Clear authentication data
-        if (authLogout && typeof authLogout === 'function') {
-          await authLogout();
+        // A rejected API request is not an intentional user logout. Clear
+        // local auth state without calling /logout or redirecting to the home page.
+        if (clearAuthState && typeof clearAuthState === 'function') {
+          await clearAuthState();
         }
         
-        const currentPath = window.location.pathname || '/';
-        const shouldPromptReauth = requiresAuthRedirect(currentPath);
+        const currentPath = `${window.location.pathname || '/'}${window.location.search || ''}${window.location.hash || ''}`;
 
         // Show user-friendly message
         if (showToast && typeof showToast === 'function') {
@@ -187,18 +180,15 @@ apiClient.interceptors.response.use(
           showToast(message, 'warning');
         }
         
-        // Only force re-auth flows on pages that require authentication.
-        if (shouldPromptReauth && openDialog && typeof openDialog === 'function') {
+        // ProtectedRoute handles its own prompt after clearAuthState updates
+        // AuthContext. Only pages without a route-level guard prompt here.
+        if (requiresInlineAuthPrompt(window.location.pathname || '') && openDialog && typeof openDialog === 'function') {
           openDialog('auth', {
             returnPath: currentPath,
             message: t && typeof t === 'function' 
               ? t('protectedRoute.loginRequired', 'Please log in to continue')
               : 'Please log in to continue'
           });
-        }
-        
-        if (shouldPromptReauth && navigate && typeof navigate === 'function') {
-          navigate('/', { replace: true });
         }
         
       } catch (logoutError) {

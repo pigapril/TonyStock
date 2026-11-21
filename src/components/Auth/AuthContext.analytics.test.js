@@ -3,9 +3,11 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { AuthContext, AuthProvider } from './AuthContext';
 import apiClient from '../../api/apiClient';
 import authStateManager from '../../utils/authStateManager';
+import authStateCache from '../../utils/authStateCache';
 import csrfClient from '../../utils/csrfClient';
 
-jest.mock('react-router-dom', () => ({ useNavigate: () => jest.fn() }));
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({ useNavigate: () => mockNavigate }));
 jest.mock('../../api/apiClient', () => ({ get: jest.fn(), post: jest.fn() }));
 jest.mock('../../utils/enhancedApiClient', () => ({}));
 jest.mock('../../utils/errorHandler', () => ({ handleApiError: error => error }));
@@ -28,14 +30,19 @@ jest.mock('../../utils/logger', () => ({
 }));
 
 const Consumer = () => {
-  const { user, logout } = useContext(AuthContext);
-  return <><span>{user ? 'Signed in' : 'Signed out'}</span><button onClick={logout}>Sign out</button></>;
+  const { user, logout, clearAuthState } = useContext(AuthContext);
+  return <>
+    <span>{user ? 'Signed in' : 'Signed out'}</span>
+    <button onClick={logout}>Sign out</button>
+    <button onClick={clearAuthState}>Clear expired session</button>
+  </>;
 };
 
 const authEvents = eventName => (window.dataLayer || []).filter(event => event.event === eventName);
 
 beforeEach(() => {
   jest.clearAllMocks();
+  mockNavigate.mockClear();
   authStateManager.getAuthState.mockResolvedValue({ isAuthenticated: false, user: null });
   sessionStorage.clear();
   delete window.dataLayer;
@@ -94,6 +101,27 @@ it('records exactly one login and logout while applying the auth state', async (
   await waitFor(() => expect(screen.getByText('Signed out')).toBeInTheDocument());
   expect(authEvents('auth_logout')).toHaveLength(1);
   expect(authEvents('auth_logout')[0]).toMatchObject({ status: 'success', trigger_source: 'user_action' });
+  expect(mockNavigate).toHaveBeenCalledWith('/');
+});
+
+it('clears an expired session without calling the logout endpoint or redirecting', async () => {
+  authStateManager.getAuthState.mockResolvedValueOnce({
+    isAuthenticated: true,
+    user: { id: 'expired-user', plan: 'pro' },
+    confidence: 'high'
+  });
+
+  render(<AuthProvider><Consumer /></AuthProvider>);
+  expect(await screen.findByText('Signed in')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole('button', { name: 'Clear expired session' }));
+
+  await waitFor(() => expect(screen.getByText('Signed out')).toBeInTheDocument());
+  expect(authStateCache.clearAuthState).toHaveBeenCalled();
+  expect(authStateManager.invalidateCache).toHaveBeenCalled();
+  expect(csrfClient.clearCSRFToken).toHaveBeenCalled();
+  expect(apiClient.post).not.toHaveBeenCalled();
+  expect(mockNavigate).not.toHaveBeenCalled();
 });
 
 it('records a rejected login once and never counts it as a successful login', async () => {
