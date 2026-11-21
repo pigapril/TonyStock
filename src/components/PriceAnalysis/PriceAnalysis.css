@@ -2624,6 +2624,14 @@
     box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.03));
   }
 
+  /* 延遲載入技術指標時，placeholder 也是 dashboard 的直接 flex 子項。
+     必須跟正式指標放在相同順序，不能以預設 order: 0 插到搜尋列前面。 */
+  .price-analysis-view .pa-indicator-placeholder {
+    order: 4;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
   /* 狀態說明講的是這次的結果，緊跟著圖表；接著才是換一檔用的清單；
      說明是查一次的參考資料，退到最後。 */
   .price-analysis-view .combined-state-note {
