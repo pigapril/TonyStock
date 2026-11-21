@@ -1,5 +1,6 @@
 import { Analytics } from './analytics';
 import { getAnalyticsPageContext } from './analyticsPageContext';
+import { FREE_TRIAL_DAYS } from './trialConfig';
 
 // Only allow product metadata. Never forward search text, user data, payment IDs or tokens.
 const FIELDS = ['action', 'universe', 'metric', 'sort_order', 'group_name', 'asset_symbol',
@@ -21,7 +22,7 @@ export function trackVerifiedTrialResult(bindingId, status) {
   if (seenTrialResults.has(key)) return;
   try { if (sessionStorage.getItem(key)) return; } catch { /* Storage may be disabled. */ }
   const queued = trackProductEvent(status === 'success' ? 'card_trial_started' : 'card_trial_result', {
-    status, trial_days: 30
+    status, trial_days: FREE_TRIAL_DAYS
   });
   if (!queued) return;
   // Mark only after the event enters the queue, so a failed push can be retried.

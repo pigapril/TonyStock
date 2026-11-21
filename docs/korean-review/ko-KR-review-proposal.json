@@ -17856,7 +17856,7 @@
         "zhCN": "无需绑定信用卡，免费试用 Pro 30 天",
         "en": "Try Pro free for 30 days\nNo card needed"
       },
-      "korean": "카드 등록 없이 Pro 30일 무료 체험",
+      "korean": "카드 등록 없이 Pro 14일 무료 체험",
       "candidateSource": "docs/i18n/ko-KR-review/03-core-google-home.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -17885,7 +17885,7 @@
         "zhCN": "无需绑定信用卡，免费试用 Pro 30 天",
         "en": "Try Pro free for 30 days\nNo card needed"
       },
-      "korean": "카드 등록 없이 Pro 30일 무료 체험",
+      "korean": "카드 등록 없이 Pro 14일 무료 체험",
       "candidateSource": "docs/i18n/ko-KR-review/03-core-google-home.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -18639,7 +18639,7 @@
         "zhCN": "登录后即可确认是否符合资格，并开始 Pro 30 天免费试用。",
         "en": "Sign in to check your eligibility and start a 30-day Pro trial."
       },
-      "korean": "로그인한 후 자격 요건을 충족하면 Pro 30일 무료 체험을 시작할 수 있습니다.",
+      "korean": "로그인한 후 자격 요건을 충족하면 Pro 14일 무료 체험을 시작할 수 있습니다.",
       "candidateSource": "docs/i18n/ko-KR-review/03-core-google-home.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -68098,7 +68098,7 @@
         "zhCN": "免费试用 30 天",
         "en": "30-day free trial"
       },
-      "korean": "30일 무료 체험",
+      "korean": "14일 무료 체험",
       "candidateSource": "docs/i18n/ko-KR-review/01-content-payments.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -68243,7 +68243,7 @@
         "zhCN": "Pro 30 天免费体验",
         "en": "30 days of Pro free"
       },
-      "korean": "Pro 30일 무료 체험",
+      "korean": "Pro 14일 무료 체험",
       "candidateSource": "docs/i18n/ko-KR-review/01-content-payments.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -68359,7 +68359,7 @@
         "zhCN": "免费试用 30 天",
         "en": "Start a 30-day free trial"
       },
-      "korean": "30일 무료 체험 시작",
+      "korean": "14일 무료 체험 시작",
       "candidateSource": "docs/i18n/ko-KR-review/01-content-payments.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -68479,7 +68479,7 @@
         "zhCN": "试用期 30 天，期间可使用全部 Pro 功能",
         "en": "Use all Pro features for 30 days"
       },
-      "korean": "30일 동안 Pro의 모든 기능을 이용할 수 있습니다.",
+      "korean": "14일 동안 Pro의 모든 기능을 이용할 수 있습니다.",
       "candidateSource": "docs/i18n/ko-KR-review/01-content-payments.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -68653,7 +68653,7 @@
         "zhCN": "Pro 功能已开启 30 天。试用结束后不会自动扣款。",
         "en": "Pro features are available for 30 days. You will not be charged when the trial ends."
       },
-      "korean": "30일 동안 Pro 기능을 이용할 수 있습니다. 체험 기간이 끝나도 자동 결제되지 않습니다.",
+      "korean": "14일 동안 Pro 기능을 이용할 수 있습니다. 체험 기간이 끝나도 자동 결제되지 않습니다.",
       "candidateSource": "docs/i18n/ko-KR-review/01-content-payments.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -68894,7 +68894,7 @@
         "zhCN": "免费试用 30 天",
         "en": "30-day free trial"
       },
-      "korean": "30일 무료 체험",
+      "korean": "14일 무료 체험",
       "candidateSource": "docs/i18n/ko-KR-review/01-content-payments.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -68923,7 +68923,7 @@
         "zhCN": "免费试用 30 天",
         "en": "Start a 30-day free trial"
       },
-      "korean": "30일 무료 체험 시작",
+      "korean": "14일 무료 체험 시작",
       "candidateSource": "docs/i18n/ko-KR-review/01-content-payments.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -68981,7 +68981,7 @@
         "zhCN": "试用期 30 天，期间可使用全部 Pro 功能",
         "en": "The trial runs for 30 days, with every Pro feature available"
       },
-      "korean": "30일 동안 Pro의 모든 기능을 이용할 수 있습니다.",
+      "korean": "14일 동안 Pro의 모든 기능을 이용할 수 있습니다.",
       "candidateSource": "docs/i18n/ko-KR-review/01-content-payments.draft.json",
       "alternatives": [],
       "englishFallback": {

@@ -91,7 +91,7 @@ jest.mock('../../../../utils/analytics', () => ({
 
 const { SubscriptionPlansPage } = require('../SubscriptionPlansPage');
 
-const TRIAL_CTA = '免費試用 30 天';
+const TRIAL_CTA = '免費試用 14 天';
 const EXISTING_PRO_CTA = '立即付款升級';
 
 const renderPage = () => render(

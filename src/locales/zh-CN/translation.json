@@ -760,8 +760,8 @@
       "title": "洞悉市场｜看懂恐惧与贪婪",
       "subtitle": "用客观数据判断当前股市情绪，克服恐惧与贪婪的人性弱点。",
       "primaryAuthenticated": "查看市场情绪",
-      "primaryFreeTrial": "无需绑定信用卡，免费试用 Pro 30 天",
-      "primaryGuest": "无需绑定信用卡，免费试用 Pro 30 天",
+      "primaryFreeTrial": "无需绑定信用卡，免费试用 Pro 14 天",
+      "primaryGuest": "无需绑定信用卡，免费试用 Pro 14 天",
       "secondary": "免费分析股价趋势",
       "marketPreviewHeadline": {
         "brand": "Sentiment Inside Out",
@@ -813,7 +813,7 @@
       },
       "scrollLabel": "前往下方的功能介绍",
       "trialLoginTitle": "登录后开始 Pro 试用",
-      "trialLoginPrompt": "登录后即可确认是否符合资格，并开始 Pro 30 天免费试用。",
+      "trialLoginPrompt": "登录后即可确认是否符合资格，并开始 Pro 14 天免费试用。",
       "historyMomentLabel": "历史市场事件"
     },
     "announcement": {
@@ -3464,32 +3464,32 @@
     "itemLabel": "{{name}}，指数 {{value}}，涨跌 {{percent}}"
   },
   "freeTrial": {
-    "title": "免费试用 30 天",
+    "title": "免费试用 14 天",
     "ctaShort": "免绑信用卡试用 Pro",
     "promotion": {
       "badge": "PRO",
       "title": "看见市场全貌。",
       "description": "美国与台湾市场情绪、个股分析、自选列表功能和无广告体验，全部开放使用。",
-      "visualOffer": "Pro 30 天免费体验",
+      "visualOffer": "Pro 14 天免费体验",
       "detail": "免绑信用卡，不会自动扣款。",
       "cta": "开始免费试用",
       "later": "稍后再说"
     },
     "planCard": {
-      "startTrial": "免费试用 30 天",
+      "startTrial": "免费试用 14 天",
       "trialActive": "Pro 试用中",
       "subscribeAfterTrial": "试用至 {{date}}，结束后可选择订阅"
     },
     "disclosureTitle": "开始前请确认",
     "disclosure": {
-      "length": "试用期 30 天，期间可使用全部 Pro 功能",
+      "length": "试用期 14 天，期间可使用全部 Pro 功能",
       "noCard": "不需绑定信用卡，开始试用不会产生费用",
       "expiry": "试用到期后会自动回到 Free 套餐；若想继续使用 Pro，请自行订阅。不会自动扣款"
     },
     "start": "开始免费试用",
     "starting": "正在开启试用",
     "successTitle": "试用已开始",
-    "successBody": "Pro 功能已开启 30 天。试用结束后不会自动扣款。",
+    "successBody": "Pro 功能已开启 14 天。试用结束后不会自动扣款。",
     "successCta": "开始使用",
     "accountExpiry": "试用到期后会回到 Free 套餐，不会自动扣款。",
     "goToSubscription": "返回套餐页",
@@ -3501,13 +3501,13 @@
     "analyzeStock": "开始分析股票"
   },
   "cardTrial": {
-    "title": "免费试用 30 天",
+    "title": "免费试用 14 天",
     "planCard": {
-      "startTrial": "免费试用 30 天"
+      "startTrial": "免费试用 14 天"
     },
     "disclosureTitle": "开始前请确认",
     "disclosure": {
-      "length": "试用期 30 天，期间可使用全部 Pro 功能",
+      "length": "试用期 14 天，期间可使用全部 Pro 功能",
       "verification": "绑定信用卡时会进行一笔 NT$2 的验证，你不会被收取这笔费用。",
       "renewal": "如果在试用期结束前未取消，系统将于 {{date}} 自动扣款 NT$199，之后每月自动续费。",
       "renewalYearly": "如果在试用期结束前未取消，系统将于 {{date}} 自动扣款 NT$1,990，之后每年自动续费。",

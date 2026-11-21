@@ -11,7 +11,7 @@ const cardTrialSources = fs.readdirSync(cardTrialDir)
 
 // Visa 對試用綁卡的四項硬性揭露，扣款那一項分月繳與年繳兩句。改這些句子要走法務，不是文案潤飾，所以逐字釘死。
 const REQUIRED_DISCLOSURES = {
-    length: '試用期 30 天，期間可使用全部 Pro 功能',
+    length: '試用期 14 天，期間可使用全部 Pro 功能',
     verification: '綁定信用卡時會進行一筆 2 元的驗證，你不會被收取這筆費用',
     renewal: '試用期滿若未取消，將於 {{date}} 自動扣款 199 元，之後每月自動續費',
     renewalYearly: '試用期滿若未取消，將於 {{date}} 自動扣款 1990 元，之後每年自動續費',

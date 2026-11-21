@@ -73,8 +73,30 @@ describe('免費試用宣傳插頁', () => {
     expect(mockClaim).toHaveBeenCalledTimes(1);
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     expect(mockTrack).toHaveBeenCalledWith('free_trial_promotion_viewed', expect.objectContaining({
-      trial_days: 30, placement: 'interstitial', trigger_source: 'price_analysis_completed'
+      trial_days: 14, placement: 'interstitial', trigger_source: 'price_analysis_completed'
     }));
+  });
+
+  it('同一分頁可在後端曝光冷卻期結束後再次檢查', async () => {
+    jest.useFakeTimers();
+    mockClaim.mockResolvedValueOnce({ show: false }).mockResolvedValueOnce({ show: true });
+    const { rerender } = render(<FreeTrialPromotion request={request} />);
+
+    await act(async () => {
+      jest.advanceTimersByTime(3000);
+      await flush();
+    });
+    expect(mockClaim).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    rerender(<FreeTrialPromotion request={{ ...request, id: 2 }} />);
+    await act(async () => {
+      jest.advanceTimersByTime(3000);
+      await flush();
+    });
+
+    expect(mockClaim).toHaveBeenCalledTimes(2);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
   it('其他 Dialog 開啟時不 claim；關閉後重新開始 3 秒計時', async () => {

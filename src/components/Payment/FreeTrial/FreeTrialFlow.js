@@ -6,6 +6,7 @@ import { useSubscription } from '../../Subscription/SubscriptionContext';
 import { startFreeTrial } from '../../../services/freeTrialService';
 import { trackProductEvent } from '../../../utils/productAnalytics';
 import { getAnalysisReturnPath, withAnalysisReturnPath } from '../../../utils/trialNavigation';
+import { FREE_TRIAL_DAYS } from '../../../utils/trialConfig';
 import { getPaymentServiceLocale } from '../../../locales/localeConfig';
 import '../CardTrial/CardTrial.css';
 
@@ -25,23 +26,23 @@ const FreeTrialFlow = () => {
   useEffect(() => {
     if (trackedPageView.current) return;
     trackedPageView.current = true;
-    trackProductEvent('free_trial_page_viewed', { source: 'free_trial_page', trial_days: 30 });
+    trackProductEvent('free_trial_page_viewed', { source: 'free_trial_page', trial_days: FREE_TRIAL_DAYS });
   }, []);
 
   const handleStart = async () => {
     if (phase !== 'ready') return;
-    trackProductEvent('free_trial_start_clicked', { source: 'free_trial_page', trial_days: 30 });
+    trackProductEvent('free_trial_start_clicked', { source: 'free_trial_page', trial_days: FREE_TRIAL_DAYS });
     setPhase('starting');
     setError(null);
     try {
       await startFreeTrial(getPaymentServiceLocale(language), language);
-      trackProductEvent('free_trial_started', { source: 'free_trial_page', trial_days: 30 });
+      trackProductEvent('free_trial_started', { source: 'free_trial_page', trial_days: FREE_TRIAL_DAYS });
       await Promise.allSettled([checkAuthStatus(), refreshUserPlan(), refreshSubscriptionHistory()]);
       setPhase('success');
     } catch (requestError) {
       const status = requestError.response?.status;
       trackProductEvent('free_trial_start_failed', {
-        source: 'free_trial_page', trial_days: 30,
+        source: 'free_trial_page', trial_days: FREE_TRIAL_DAYS,
         error_type: status === 409 ? 'not_eligible' : 'request_failed'
       });
       setError(status === 409 ? 'freeTrial.errors.notEligible' : 'freeTrial.errors.generic');

@@ -6,6 +6,7 @@ import { useSubscription } from '../../Subscription/SubscriptionContext';
 import { Dialog } from '../../Common/Dialog/Dialog';
 import { claimFreeTrialPromotion } from '../../../services/freeTrialService';
 import { trackProductEvent } from '../../../utils/productAnalytics';
+import { FREE_TRIAL_DAYS } from '../../../utils/trialConfig';
 import { getAnalysisReturnPath, withAnalysisReturnPath } from '../../../utils/trialNavigation';
 import './FreeTrialPromotion.css';
 
@@ -27,7 +28,6 @@ export default function FreeTrialPromotion({
     && new URLSearchParams(location.search).get('previewFreeTrial') === '1';
   const handledRequests = useRef(new Set());
   const hasPromotionLock = useRef(false);
-  const checkedAccounts = useRef(new Set());
   const inFlightAccounts = useRef(new Set());
   const [open, setOpen] = useState(false);
   const [previewDismissed, setPreviewDismissed] = useState(false);
@@ -70,7 +70,7 @@ export default function FreeTrialPromotion({
       return undefined;
     }
     if (adOpen || adCooldownActive || otherDialogOpen) return undefined;
-    if (checkedAccounts.current.has(userId) || inFlightAccounts.current.has(userId)) {
+    if (inFlightAccounts.current.has(userId)) {
       consume();
       return undefined;
     }
@@ -78,11 +78,10 @@ export default function FreeTrialPromotion({
     const timeoutId = window.setTimeout(async () => {
       if (handledRequests.current.has(requestId)) return;
       consume();
-      if (checkedAccounts.current.has(userId) || inFlightAccounts.current.has(userId)) return;
+      if (inFlightAccounts.current.has(userId)) return;
       inFlightAccounts.current.add(userId);
       try {
         const result = await claimFreeTrialPromotion();
-        checkedAccounts.current.add(userId);
         if (result?.show && location.pathname === requestPathname) {
           setPendingPromotion({ userId, pathname: requestPathname, triggerSource });
         }
@@ -114,7 +113,7 @@ export default function FreeTrialPromotion({
     setActivePromotion({ placement: 'interstitial', triggerSource: pendingPromotion.triggerSource });
     setOpen(true);
     trackProductEvent('free_trial_promotion_viewed', {
-      trial_days: 30, placement: 'interstitial', trigger_source: pendingPromotion.triggerSource
+      trial_days: FREE_TRIAL_DAYS, placement: 'interstitial', trigger_source: pendingPromotion.triggerSource
     });
   }, [pendingPromotion, userId, isFree, adOpen, adCooldownActive, otherDialogOpen, location.pathname, onAcquire]);
 
@@ -125,7 +124,7 @@ export default function FreeTrialPromotion({
     releasePromotionLock();
     if (!isLocalPreview && activePromotion) {
       trackProductEvent('free_trial_promotion_dismissed', {
-        trial_days: 30,
+        trial_days: FREE_TRIAL_DAYS,
         placement: activePromotion.placement,
         trigger_source: activePromotion.triggerSource
       });
@@ -139,7 +138,7 @@ export default function FreeTrialPromotion({
     releasePromotionLock();
     if (!isLocalPreview) {
       trackProductEvent('free_trial_promotion_clicked', {
-        trial_days: 30,
+        trial_days: FREE_TRIAL_DAYS,
         placement: activePromotion?.placement || 'interstitial',
         trigger_source: activePromotion?.triggerSource || null
       });

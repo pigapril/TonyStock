@@ -12,6 +12,7 @@ import { getPricingDisplayData, formatPrice, formatDiscount } from '../../../../
 import { canAccessPaymentFeatures } from '../../../../utils/premiumWhitelist';
 import { getAnalysisReturnPath, withAnalysisReturnPath } from '../../../../utils/trialNavigation';
 import { getIntlLocale } from '../../../../locales/localeConfig';
+import { FREE_TRIAL_DAYS } from '../../../../utils/trialConfig';
 
 import './PlanCard.css';
 
@@ -307,12 +308,12 @@ export const PlanCard = ({
   useEffect(() => {
     if (!showFreeTrialEntry || trackedTrialEntry.current === billingPeriod) return;
     trackedTrialEntry.current = billingPeriod;
-    trackProductEvent('free_trial_entry_viewed', { source: 'subscription_plans', billing_period: billingPeriod, trial_days: 30 });
+    trackProductEvent('free_trial_entry_viewed', { source: 'subscription_plans', billing_period: billingPeriod, trial_days: FREE_TRIAL_DAYS });
   }, [showFreeTrialEntry, billingPeriod]);
 
   const handleFreeTrialSelect = () => {
     trackProductEvent('free_trial_entry_clicked', {
-      source: 'subscription_plans', billing_period: billingPeriod, trial_days: 30,
+      source: 'subscription_plans', billing_period: billingPeriod, trial_days: FREE_TRIAL_DAYS,
       planId: plan.id, billingPeriod
     });
     navigate(withAnalysisReturnPath(`/${language}/payment/free-trial`, getAnalysisReturnPath(location.search, language)));

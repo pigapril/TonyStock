@@ -6,12 +6,13 @@ import { BIND_CARD_CONTAINER_ID } from '../../../utils/ecpayBindCardSdk';
 import { BINDING_PHASE, localeOf, useCardBinding } from './useCardBinding';
 import { trackProductEvent } from '../../../utils/productAnalytics';
 import { getIntlLocale } from '../../../locales/localeConfig';
+import { FREE_TRIAL_DAYS } from '../../../utils/trialConfig';
 import './CardTrial.css';
 
 // 送到後端落地的版本號，消保法舉證用。文案改動要一起改這個字串。
-export const CARD_TRIAL_TERMS_VERSION = 'card-trial-v3';
+export const CARD_TRIAL_TERMS_VERSION = 'card-trial-v4';
 
-const TRIAL_DAYS = 30;
+const TRIAL_DAYS = FREE_TRIAL_DAYS;
 const DAY_MS = 24 * 60 * 60 * 1000;
 // 揭露日期要在按下同意那一刻仍正確。每秒重算，跨台北午夜時頁面與後端的差距不超過一秒。
 const TICK_MS = 1000;
@@ -39,7 +40,7 @@ const RETRYABLE_ERROR_KEYS = new Set([
 // 網址上的 period 是使用者可以亂改的輸入，年繳以外一律當月繳。
 const billingPeriodOf = (period) => (period === 'yearly' ? 'yearly' : 'monthly');
 
-// 與後端 boundCardTrial.service.js 的 trialEndAt 同一條規則：滿 30 天之後的下一個
+// 與後端 boundCardTrial.service.js 的 trialEndAt 同一條規則：滿 14 天之後的下一個
 // 台北午夜，剛好是午夜就不進位。扣款 job 在那天 00:15 扣，確認信也寫這一天。
 const trialEndAt = (now) => {
     const wallClock = now + TRIAL_DAYS * DAY_MS + TAIPEI_OFFSET_MS;

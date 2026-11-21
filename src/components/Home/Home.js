@@ -17,6 +17,7 @@ import { useNearViewport } from '../../hooks/useNearViewport';
 import { canSeeFreeTrial } from '../../utils/freeTrialRollout';
 import { fetchFreeTrialEligibility } from '../../services/freeTrialService';
 import { trackProductEvent } from '../../utils/productAnalytics';
+import { FREE_TRIAL_DAYS } from '../../utils/trialConfig';
 import { getCanonicalLocale, getIntlLocale, getLocaleConfig } from '../../locales/localeConfig';
 
 const HomePricePreviewChart = lazy(() => import('./HomePricePreviewChart').then((module) => ({ default: module.HomePricePreviewChart })));
@@ -396,7 +397,7 @@ export const Home = () => {
   ), [locale, historyPreview]);
   const handlePrimaryAction = () => {
     pendingTrialAfterLoginRef.current = true;
-    trackProductEvent('free_trial_home_clicked', { source: 'home', trial_days: 30 });
+    trackProductEvent('free_trial_home_clicked', { source: 'home', trial_days: FREE_TRIAL_DAYS });
     openDialog('auth', {
       customTitle: t('home.hero.trialLoginTitle'),
       customDescription: t('home.hero.trialLoginPrompt')
@@ -483,7 +484,7 @@ export const Home = () => {
                   <Link
                     to={showFreeTrialAction ? `/${currentLang}/payment/free-trial` : `/${currentLang}/market-sentiment`}
                     onClick={showFreeTrialAction ? () => trackProductEvent('free_trial_home_clicked', {
-                      source: 'home', trial_days: 30
+                      source: 'home', trial_days: FREE_TRIAL_DAYS
                     }) : undefined}
                     className={`${BUTTON_LINK_CLASS('primary')} home-hero__action home-hero__action--primary${showFreeTrialAction ? ' home-hero__action--trial' : ''}`}
                   >

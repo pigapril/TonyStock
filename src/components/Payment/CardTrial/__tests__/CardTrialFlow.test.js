@@ -88,7 +88,7 @@ describe('CardTrialFlow', () => {
     it('四項揭露在使用者做任何事之前就看得到', () => {
         renderFlow();
 
-        expect(screen.getByText('試用期 30 天，期間可使用全部 Pro 功能')).toBeInTheDocument();
+        expect(screen.getByText('試用期 14 天，期間可使用全部 Pro 功能')).toBeInTheDocument();
         expect(screen.getByText('綁定信用卡時會進行一筆 2 元的驗證，你不會被收取這筆費用')).toBeInTheDocument();
         expect(screen.getByText(/自動扣款 199 元，之後每月自動續費$/)).toBeInTheDocument();
         expect(screen.getByText('隨時可於帳戶頁面取消，取消後試用期仍可使用到期滿')).toBeInTheDocument();
@@ -106,7 +106,7 @@ describe('CardTrialFlow', () => {
 
         await waitFor(() => expect(startCardTrial).toHaveBeenCalledTimes(1));
         expect(startCardTrial.mock.calls[0][0].billingPeriod).toBe('yearly');
-        expect(trackProductEvent).toHaveBeenCalledWith('card_trial_view', expect.objectContaining({ billing_period: 'yearly', trial_days: 30 }));
+        expect(trackProductEvent).toHaveBeenCalledWith('card_trial_view', expect.objectContaining({ billing_period: 'yearly', trial_days: 14 }));
         expect(trackProductEvent).toHaveBeenCalledWith('card_trial_step', expect.objectContaining({ step: 'starting' }));
         await waitFor(() => expect(trackProductEvent).toHaveBeenCalledWith('card_trial_step', expect.objectContaining({ step: 'binding' })));
         expect(trackProductEvent).not.toHaveBeenCalledWith('card_trial_started', expect.anything());
@@ -147,7 +147,7 @@ describe('CardTrialFlow', () => {
         await waitFor(() => expect(startCardTrial).toHaveBeenCalledTimes(1));
 
         const [{ termsConsentedAt, termsVersion }] = startCardTrial.mock.calls[0];
-        expect(termsVersion).toBe('card-trial-v3');
+        expect(termsVersion).toBe('card-trial-v4');
         expect(Date.parse(termsConsentedAt)).toBeGreaterThanOrEqual(before);
     });
 
@@ -280,27 +280,27 @@ describe('CardTrialFlow 揭露的扣款日期', () => {
         jest.useRealTimers();
     });
 
-    it('台北下午綁卡，扣款日是滿 30 天之後的下一個台北午夜', () => {
+    it('台北下午綁卡，扣款日是滿 14 天之後的下一個台北午夜', () => {
         jest.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-09-12T06:00:00Z'));
         renderFlow();
 
-        expect(renewalText()).toContain('將於 2026年10月13日 自動扣款');
+        expect(renewalText()).toContain('將於 2026年9月27日 自動扣款');
     });
 
     it('剛好在台北午夜綁卡時不進位', () => {
         jest.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-09-11T16:00:00Z'));
         renderFlow();
 
-        expect(renewalText()).toContain('將於 2026年10月12日 自動扣款');
+        expect(renewalText()).toContain('將於 2026年9月26日 自動扣款');
     });
 
-    it('不是 Date.now() 加 30 天的台北日期', () => {
+    it('不是 Date.now() 加 14 天的台北日期', () => {
         const now = Date.parse('2026-09-12T06:00:00Z');
         jest.spyOn(Date, 'now').mockReturnValue(now);
         renderFlow();
 
-        const naive = taipeiDate(now + 30 * 24 * 60 * 60 * 1000);
-        expect(naive).toBe('2026年10月12日');
+        const naive = taipeiDate(now + 14 * 24 * 60 * 60 * 1000);
+        expect(naive).toBe('2026年9月26日');
         expect(renewalText()).not.toContain(naive);
     });
 
@@ -310,14 +310,14 @@ describe('CardTrialFlow 揭露的扣款日期', () => {
         jest.spyOn(Date, 'now').mockImplementation(() => now);
         renderFlow();
 
-        expect(renewalText()).toContain('將於 2026年10月13日 自動扣款');
+        expect(renewalText()).toContain('將於 2026年9月27日 自動扣款');
 
         now = Date.parse('2026-09-12T16:00:30Z');
         act(() => {
             jest.advanceTimersByTime(60 * 1000);
         });
 
-        expect(renewalText()).toContain('將於 2026年10月14日 自動扣款');
+        expect(renewalText()).toContain('將於 2026年9月28日 自動扣款');
     });
 
     it('離開頁面時停掉計時器', () => {

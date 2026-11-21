@@ -27,11 +27,11 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key) => ({
       'home.hero.primaryAuthenticated': '查看市場情緒',
-      'home.hero.primaryFreeTrial': '免綁卡免費試用 Pro 30 天',
-      'home.hero.primaryGuest': '免綁卡免費試用 Pro 30 天',
+      'home.hero.primaryFreeTrial': '免綁卡免費試用 Pro 14 天',
+      'home.hero.primaryGuest': '免綁卡免費試用 Pro 14 天',
       'home.hero.secondary': '免費分析個股趨勢',
       'home.hero.trialLoginTitle': '登入以開始 Pro 試用',
-      'home.hero.trialLoginPrompt': '登入後，符合資格即可開始 Pro 30 天免費試用。'
+      'home.hero.trialLoginPrompt': '登入後，符合資格即可開始 Pro 14 天免費試用。'
     }[key] || key),
     i18n: { language: 'zh-TW' }
   })
@@ -80,11 +80,11 @@ test('符合試用資格的登入用戶可從首頁直接開始試用流程', as
 
   renderHome();
 
-  const trialLink = await screen.findByRole('link', { name: '免綁卡免費試用 Pro 30 天' });
+  const trialLink = await screen.findByRole('link', { name: '免綁卡免費試用 Pro 14 天' });
   expect(trialLink.getAttribute('href')).toBe('/zh-TW/payment/free-trial');
   trialLink.click();
   expect(trackProductEvent).toHaveBeenCalledWith('free_trial_home_clicked', {
-    source: 'home', trial_days: 30
+    source: 'home', trial_days: 14
   });
 });
 
@@ -104,17 +104,17 @@ test('訪客看到試用入口，登入後符合資格會直接進入試用流�
 
   const view = renderHomeWithLocation();
 
-  const trialButton = screen.getByRole('button', { name: '免綁卡免費試用 Pro 30 天' });
+  const trialButton = screen.getByRole('button', { name: '免綁卡免費試用 Pro 14 天' });
   expect(screen.getByRole('link', { name: '免費分析個股趨勢' })).toBeInTheDocument();
   expect(fetchFreeTrialEligibility).not.toHaveBeenCalled();
 
   fireEvent.click(trialButton);
   expect(mockOpenDialog).toHaveBeenCalledWith('auth', {
     customTitle: '登入以開始 Pro 試用',
-    customDescription: '登入後，符合資格即可開始 Pro 30 天免費試用。'
+    customDescription: '登入後，符合資格即可開始 Pro 14 天免費試用。'
   });
   expect(trackProductEvent).toHaveBeenCalledWith('free_trial_home_clicked', {
-    source: 'home', trial_days: 30
+    source: 'home', trial_days: 14
   });
 
   useAuth.mockReturnValue({ isAuthenticated: true, user: { id: 3, email: 'new@example.com' } });
@@ -133,7 +133,7 @@ test('登入後沒有試用資格時導向方案頁', async () => {
   fetchFreeTrialEligibility.mockResolvedValue({ eligible: false });
 
   const view = renderHomeWithLocation();
-  fireEvent.click(screen.getByRole('button', { name: '免綁卡免費試用 Pro 30 天' }));
+  fireEvent.click(screen.getByRole('button', { name: '免綁卡免費試用 Pro 14 天' }));
 
   useAuth.mockReturnValue({ isAuthenticated: true, user: { id: 4, email: 'used@example.com' } });
   view.rerender(
@@ -151,7 +151,7 @@ test('登入後無法確認試用資格時導向方案頁', async () => {
   fetchFreeTrialEligibility.mockRejectedValue(new Error('eligibility unavailable'));
 
   const view = renderHomeWithLocation();
-  fireEvent.click(screen.getByRole('button', { name: '免綁卡免費試用 Pro 30 天' }));
+  fireEvent.click(screen.getByRole('button', { name: '免綁卡免費試用 Pro 14 天' }));
 
   useAuth.mockReturnValue({ isAuthenticated: true, user: { id: 5, email: 'unknown@example.com' } });
   view.rerender(

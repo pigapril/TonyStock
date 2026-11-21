@@ -760,8 +760,8 @@
       "title": "洞悉市場｜看懂恐懼與貪婪",
       "subtitle": "用客觀數據，判斷股市當前情緒，克服恐懼和貪婪的人性弱點",
       "primaryAuthenticated": "查看市場情緒",
-      "primaryFreeTrial": "免綁卡免費試用 Pro 30 天",
-      "primaryGuest": "免綁卡免費試用 Pro 30 天",
+      "primaryFreeTrial": "免綁卡免費試用 Pro 14 天",
+      "primaryGuest": "免綁卡免費試用 Pro 14 天",
       "secondary": "免費分析股價趨勢",
       "marketPreviewHeadline": {
         "brand": "Sentiment Inside Out",
@@ -813,7 +813,7 @@
       },
       "scrollLabel": "前往下方的功能介紹",
       "trialLoginTitle": "登入後開始 Pro 試用",
-      "trialLoginPrompt": "登入後，符合資格即可開始 Pro 30 天免費試用。",
+      "trialLoginPrompt": "登入後，符合資格即可開始 Pro 14 天免費試用。",
       "historyMomentLabel": "歷史市場事件"
     },
     "announcement": {
@@ -3464,32 +3464,32 @@
     "itemLabel": "{{name}}，指數 {{value}}，漲跌 {{percent}}"
   },
   "freeTrial": {
-    "title": "免費試用 30 天",
+    "title": "免費試用 14 天",
     "ctaShort": "免綁卡試用 Pro",
     "promotion": {
       "badge": "PRO",
       "title": "看見市場全貌。",
       "description": "台美股情緒、個股分析、追蹤清單與無廣告體驗，全部開放。",
-      "visualOffer": "Pro 30 天免費體驗",
+      "visualOffer": "Pro 14 天免費體驗",
       "detail": "免綁信用卡，不會自動扣款。",
       "cta": "開始免費試用",
       "later": "稍後再說"
     },
     "planCard": {
-      "startTrial": "免費試用 30 天",
+      "startTrial": "免費試用 14 天",
       "trialActive": "Pro 試用中",
       "subscribeAfterTrial": "試用至 {{date}}，結束後可選擇訂閱"
     },
     "disclosureTitle": "開始前請確認",
     "disclosure": {
-      "length": "試用期 30 天，期間可使用全部 Pro 功能",
+      "length": "試用期 14 天，期間可使用全部 Pro 功能",
       "noCard": "不需綁定信用卡，開始試用不會產生費用",
       "expiry": "試用到期後會自動回到 Free 方案；若想繼續使用 Pro，請自行訂閱。不會自動扣款"
     },
     "start": "開始免費試用",
     "starting": "正在開啟試用",
     "successTitle": "試用已開始",
-    "successBody": "Pro 功能已開啟 30 天。試用結束後不會自動扣款。",
+    "successBody": "Pro 功能已開啟 14 天。試用結束後不會自動扣款。",
     "successCta": "開始使用",
     "accountExpiry": "試用到期後會回到 Free 方案，不會自動扣款。",
     "goToSubscription": "返回方案頁",
@@ -3501,13 +3501,13 @@
     "analyzeStock": "開始分析股票"
   },
   "cardTrial": {
-    "title": "免費試用 30 天",
+    "title": "免費試用 14 天",
     "planCard": {
-      "startTrial": "免費試用 30 天"
+      "startTrial": "免費試用 14 天"
     },
     "disclosureTitle": "開始前請確認",
     "disclosure": {
-      "length": "試用期 30 天，期間可使用全部 Pro 功能",
+      "length": "試用期 14 天，期間可使用全部 Pro 功能",
       "verification": "綁定信用卡時會進行一筆 2 元的驗證，你不會被收取這筆費用",
       "renewal": "試用期滿若未取消，將於 {{date}} 自動扣款 199 元，之後每月自動續費",
       "renewalYearly": "試用期滿若未取消，將於 {{date}} 自動扣款 1990 元，之後每年自動續費",

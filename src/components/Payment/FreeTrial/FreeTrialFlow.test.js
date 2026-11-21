@@ -61,9 +61,9 @@ describe('免綁卡試用頁', () => {
     expect(mockCheckAuthStatus).toHaveBeenCalledTimes(1);
     expect(mockRefreshUserPlan).toHaveBeenCalledTimes(1);
     expect(mockRefreshSubscriptionHistory).toHaveBeenCalledTimes(1);
-    expect(trackProductEvent).toHaveBeenCalledWith('free_trial_page_viewed', expect.any(Object));
-    expect(trackProductEvent).toHaveBeenCalledWith('free_trial_start_clicked', expect.any(Object));
-    expect(trackProductEvent).toHaveBeenCalledWith('free_trial_started', expect.any(Object));
+    expect(trackProductEvent).toHaveBeenCalledWith('free_trial_page_viewed', expect.objectContaining({ trial_days: 14 }));
+    expect(trackProductEvent).toHaveBeenCalledWith('free_trial_start_clicked', expect.objectContaining({ trial_days: 14 }));
+    expect(trackProductEvent).toHaveBeenCalledWith('free_trial_started', expect.objectContaining({ trial_days: 14 }));
   });
 
   it('简中介面啟用免卡試用時，後端通知語系使用英文，導頁仍保留簡中', async () => {
