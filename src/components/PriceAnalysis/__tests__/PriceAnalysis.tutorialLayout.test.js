@@ -8,5 +8,6 @@ describe('PriceAnalysis desktop tutorial placement', () => {
     expect(desktopRule).toMatch(/\.pa-intro\s*\{[^}]*position:\s*relative\s*;/);
     expect(desktopRule).toMatch(/\.pa-tour-launch\s*\{[^}]*position:\s*absolute\s*;[^}]*top:\s*0\s*;[^}]*right:\s*0\s*;/);
     expect(desktopRule).toMatch(/\.pa-tour-launch\s*\{[^}]*margin-top:\s*0\s*;/);
+    expect(desktopRule).toMatch(/\.pa-tour-launch\s*\{[^}]*border-color:\s*var\(--color-border-light,\s*#e1e7ef\)\s*;/);
   });
 });
