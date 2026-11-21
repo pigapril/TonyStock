@@ -153,8 +153,8 @@ const renderDeferredDatePickerFallback = () => (
   <div className="price-analysis-date-picker-skeleton" aria-hidden="true" />
 );
 
-const renderChartWorkspaceFallback = (t, displayedHorizonKey) => (
-  <div className="chart-card">
+const renderChartWorkspaceFallback = (t, displayedHorizonKey, chartCardRef) => (
+  <div className="chart-card" ref={chartCardRef}>
     <div className="chart-container">
       <PriceAnalysisSummary t={t} displayedHorizonKey={displayedHorizonKey} />
       <div className="chart-content">
@@ -272,7 +272,6 @@ export function PriceAnalysis() {
   const ulbandChartRef = useRef(null); // ULBand 圖表 ref
   const chartCardRef = useRef(null); // 圖表卡片 ref 用於滾動
   const tooltipTimerRef = useRef(null);
-  const scrollTimerRef = useRef(null);
   const analyticsTimerRef = useRef(null);
 
   const analysisSentimentText = useMemo(() => {
@@ -479,7 +478,6 @@ export function PriceAnalysis() {
   const [activeQuickSelectTab, setActiveQuickSelectTab] = useState('freeStocks'); // 'freeStocks' 或 'watchlist'
   // 用戶一旦手動切過 tab，就不再自動把免費用戶導回免費清單
   const userManuallyChangedTabRef = useRef(false);
-  const [isUserInitiated, setIsUserInitiated] = useState(false); // 追蹤是否為用戶主動操作
 
   // 新增：Watchlist 狀態（改為保留分類結構）
   const [watchlistCategories, setWatchlistCategories] = useState([]);
@@ -494,11 +492,6 @@ export function PriceAnalysis() {
     if (tooltipTimerRef.current) {
       clearTimeout(tooltipTimerRef.current);
       tooltipTimerRef.current = null;
-    }
-
-    if (scrollTimerRef.current) {
-      clearTimeout(scrollTimerRef.current);
-      scrollTimerRef.current = null;
     }
 
     if (analyticsTimerRef.current) {
@@ -575,24 +568,8 @@ export function PriceAnalysis() {
       }, 220);
     }
 
-    if (isMobile && isUserInitiated && chartCardRef.current) {
-      scrollTimerRef.current = window.setTimeout(() => {
-        if (chartCardRef.current) {
-          const rect = chartCardRef.current.getBoundingClientRect();
-          const windowHeight = window.innerHeight;
-          const bottomPadding = 100;
-          const scrollTarget = window.pageYOffset + rect.bottom - windowHeight + bottomPadding;
-          window.scrollTo({
-            top: scrollTarget,
-            behavior: 'smooth'
-          });
-        }
-        setIsUserInitiated(false);
-      }, 120);
-    }
-
     return clearPostAnalysisTimers;
-  }, [chartData, clearPostAnalysisTimers, isMobile, isUserInitiated, loading, ulbandData]);
+  }, [chartData, clearPostAnalysisTimers, isMobile, loading, ulbandData]);
 
   useEffect(() => clearPostAnalysisTimers, [clearPostAnalysisTimers]);
 
@@ -1073,8 +1050,18 @@ export function PriceAnalysis() {
     clearPostAnalysisTimers();
     setLoading(true);
     resetAnalysisOutputs();
+    // 手機在送出分析的當下就定位到五線譜區塊，不等 API 回傳。
+    // 以圖表卡片頂端為錨點，避免原本對齊卡片底部而把下方技術指標帶進視窗。
+    if (isMobile) {
+      window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+        const card = chartCardRef.current;
+        if (!card) return;
+        const top = window.pageYOffset + card.getBoundingClientRect().top - 12;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+      }));
+    }
     requestAdDisplay('priceAnalysis', 3);
-  }, [clearPostAnalysisTimers, requestAdDisplay, resetAnalysisOutputs]);
+  }, [clearPostAnalysisTimers, isMobile, requestAdDisplay, resetAnalysisOutputs]);
 
   const runAnalysisForStock = useCallback((nextStockCode, source, invalidYearsMessage) => {
     const upperClickedCode = nextStockCode.toUpperCase();
@@ -1085,7 +1072,6 @@ export function PriceAnalysis() {
 
     lastRunKeyRef.current = buildAutoKey(isAdvancedQuery, analysisPeriod, backTestDate);
     lastRunYearsRef.current = isAdvancedQuery ? parseYears(years) : null;
-    setIsUserInitiated(true);
     setDisplayStockCode(upperClickedCode);
     setStockCode(upperClickedCode);
     beginAnalysisRequest();
@@ -2047,7 +2033,7 @@ export function PriceAnalysis() {
 
               {/* 主圖表區塊 */}
               {hasChartData ? (
-                <Suspense fallback={renderChartWorkspaceFallback(t, isAdvancedQuery ? null : analysisPeriod)}>
+                <Suspense fallback={renderChartWorkspaceFallback(t, isAdvancedQuery ? null : analysisPeriod, chartCardRef)}>
                   <PriceAnalysisChartWorkspace
                     isMobile={isMobile}
                     loading={loading}
@@ -2081,9 +2067,9 @@ export function PriceAnalysis() {
                   />
                 </Suspense>
               ) : loading ? (
-                renderChartWorkspaceFallback(t, isAdvancedQuery ? null : analysisPeriod)
+                renderChartWorkspaceFallback(t, isAdvancedQuery ? null : analysisPeriod, chartCardRef)
               ) : (
-                <div className="chart-card">
+                <div className="chart-card" ref={chartCardRef}>
                   <div className="chart-container">
                     <PriceAnalysisSummary t={t} displayedHorizonKey={isAdvancedQuery ? null : analysisPeriod} />
                     <div className="chart-content">

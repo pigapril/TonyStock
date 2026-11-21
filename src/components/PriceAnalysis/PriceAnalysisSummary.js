@@ -21,7 +21,7 @@ export default function PriceAnalysisSummary({
       aria-busy={!hasAnalysisContent}
     >
       <div className={`analysis-result ${hasAnalysisContent ? '' : 'analysis-result--skeleton'}`}>
-        <div className="analysis-item">
+        <div className="analysis-item analysis-item--stock">
           <span className="analysis-label">{t('priceAnalysis.result.stockCode')}</span>
           {hasAnalysisContent ? (
             <span className="analysis-value">{displayedStockCode || '—'}</span>
@@ -29,7 +29,7 @@ export default function PriceAnalysisSummary({
             <span className="analysis-value-skeleton" />
           )}
         </div>
-        <div className="analysis-item">
+        <div className="analysis-item analysis-item--price">
           <span className="analysis-label">{t('priceAnalysis.result.stockPrice')}</span>
           {hasAnalysisContent ? (
             <span className="analysis-value">${formatPrice(analysisResult.price)}</span>
@@ -37,7 +37,7 @@ export default function PriceAnalysisSummary({
             <span className="analysis-value-skeleton" />
           )}
         </div>
-        <div className="analysis-item">
+        <div className="analysis-item analysis-item--sentiment">
           <span className="analysis-label">
             {t('priceAnalysis.result.marketSentiment')}
             <InfoPopover
@@ -96,7 +96,7 @@ export default function PriceAnalysisSummary({
           </span>
         </div>
         {/* 通道位置自成一欄，與情緒並列。掛在情緒值後面會讓兩個等重的資訊擠在一起。 */}
-        <div className="analysis-item">
+        <div className="analysis-item analysis-item--channel">
           <span className="analysis-label">
             {t('priceAnalysis.result.channelPosition')}
             <InfoPopover
@@ -117,8 +117,11 @@ export default function PriceAnalysisSummary({
             <span className="analysis-value-skeleton analysis-value-skeleton--wide analysis-value-skeleton--channel" />
           )}
         </div>
-        {hasAnalysisContent && onAddToWatchlist ? (
-          <div className="analysis-item analysis-item--watchlist-action">
+        <div
+          className="analysis-item analysis-item--watchlist-action"
+          aria-hidden={!hasAnalysisContent || !onAddToWatchlist}
+        >
+          {hasAnalysisContent && onAddToWatchlist ? (
             <button
               type="button"
               className="pa-add-to-watchlist-button"
@@ -130,8 +133,10 @@ export default function PriceAnalysisSummary({
                 ? t('priceAnalysis.addToWatchlist.loading', { defaultValue: '載入分類中…' })
                 : t('priceAnalysis.addToWatchlist.button', { defaultValue: '加入追蹤清單' })}
             </button>
-          </div>
-        ) : null}
+          ) : (
+            <span className="pa-add-to-watchlist-placeholder" aria-hidden="true" />
+          )}
+        </div>
       </div>
     </div>
   );

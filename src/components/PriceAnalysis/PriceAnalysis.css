@@ -41,7 +41,7 @@
   width: 100%;
   /* 原本寫死 80%，等於假設 header 固定約 90px；header 一變高圖就被擠出卡片。
      改成吃容器剩餘高度，header 多一行也不會溢出。 */
-  flex: 1 1 auto;
+  flex: 1 1 0;
   min-height: 0;
   margin-top: 0px;
 }
@@ -114,6 +114,12 @@
   gap: 0;
   align-content: center;
   justify-items: center;
+}
+
+.price-analysis-view .pa-add-to-watchlist-placeholder {
+  display: block;
+  width: 1px;
+  height: 26px;
 }
 
 .price-analysis-view .chart-title {
@@ -1057,11 +1063,8 @@
 
 /* 響應式設計調整 */
 @media (max-width: 768px) {
-  /* 加入「樂活通道」後變成四欄，375px 排成一列會被 overflow:hidden 切掉，
-     所以手機改成 2x2。再加「其他週期情緒」變成五個，2x2 會剩一個落單，
-     而且那一格內部還有三個小格，被壓成半寬就擠成一團。
-     改成：代碼｜價格 → 市場情緒｜樂活通道 → 其他週期情緒獨佔一列。
-     前兩列各是「這是什麼」與「兩張圖現在各在哪」，第三列才展開三個週期。 */
+  /* 固定語意欄位位置，避免 horizons 插在市場情緒與樂活通道之間時，
+     Grid 自動排版多出一個空格，讓摘要多長一整列、壓縮下方圖表。 */
   .price-analysis-view .analysis-result {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1076,11 +1079,14 @@
     max-width: none;
   }
 
-  /* 用 order 把它推到最後：DOM 順序（市場情緒→其他週期→樂活通道）是桌機的閱讀順序，
-     手機不改 DOM，只換視覺位置。 */
+  .price-analysis-view .analysis-item--stock { grid-column: 1; grid-row: 1; }
+  .price-analysis-view .analysis-item--price { grid-column: 2; grid-row: 1; }
+  .price-analysis-view .analysis-item--sentiment { grid-column: 1; grid-row: 2; }
+  .price-analysis-view .analysis-item--channel { grid-column: 2; grid-row: 2; }
+
   .price-analysis-view .analysis-item--horizons {
-    order: 1;
     grid-column: 1 / -1;
+    grid-row: 3;
     margin-top: 2px;
     padding-top: 8px;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
@@ -1094,6 +1100,7 @@
 
   .price-analysis-view .analysis-item--watchlist-action {
     grid-column: 1 / -1;
+    grid-row: 4;
     min-height: 26px;
     margin-top: 0;
   }
@@ -1109,7 +1116,13 @@
   }
 
   .price-analysis-view .chart-header {
-    min-height: 92px;
+    /* 載入骨架與完成狀態共用相同摘要欄位及追蹤按鈕保留列，
+       讓 header 依真實內容自然排版，不必用固定高度硬塞空白。 */
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    height: auto;
+    min-height: 0;
+    margin-bottom: 0;
   }
 }
 

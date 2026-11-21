@@ -246,7 +246,7 @@ describe('摘要載入時的欄位預留', () => {
     const items = Array.from(container.querySelectorAll('.analysis-item'));
     const labels = Array.from(container.querySelectorAll('.analysis-label')).map((label) => label.textContent);
     const periods = Array.from(container.querySelectorAll('.horizon-grid__period')).map((label) => label.textContent);
-    expect(items).toHaveLength(5);
+    expect(items).toHaveLength(6);
     expect(header).toHaveAttribute('aria-busy', 'true');
     expect(Array.from(container.querySelectorAll('.horizon-grid__value')).map((cell) => cell.textContent)).toEqual(['—', '—']);
 
@@ -263,6 +263,33 @@ describe('摘要載入時的欄位預留', () => {
     expect(Array.from(container.querySelectorAll('.horizon-grid__period')).map((label) => label.textContent)).toEqual(periods);
     expect(header).toHaveAttribute('aria-busy', 'false');
     expect(container.querySelector('.horizon-grid__value').textContent).toBe(translations.priceAnalysis.sentiment.extremeFear);
+    expect(container.querySelector('.analysis-item--watchlist-action .pa-add-to-watchlist-placeholder')).toBeInTheDocument();
+  });
+
+  it('載入與完成狀態都保留追蹤操作列，避免摘要區高度因按鈕出現而改變', () => {
+    const t = (key) => key.split('.').reduce((value, part) => value?.[part], zhTW);
+    const onAddToWatchlist = jest.fn();
+    const { container, rerender } = render(
+      <PriceAnalysisSummary t={t} displayedHorizonKey="long" />
+    );
+    const actionRow = container.querySelector('.analysis-item--watchlist-action');
+    expect(actionRow).toBeInTheDocument();
+    expect(actionRow.querySelector('.pa-add-to-watchlist-placeholder')).toBeInTheDocument();
+
+    rerender(
+      <PriceAnalysisSummary
+        t={t}
+        hasAnalysisContent
+        displayedStockCode="SPY"
+        displayedHorizonKey="long"
+        onAddToWatchlist={onAddToWatchlist}
+        analysisResult={{ price: 100, sentimentKey: 'priceAnalysis.sentiment.neutral', channelState: 'inside' }}
+      />
+    );
+
+    expect(container.querySelector('.analysis-item--watchlist-action')).toBe(actionRow);
+    expect(actionRow.querySelector('.pa-add-to-watchlist-button')).toBeInTheDocument();
+    expect(actionRow.querySelector('.pa-add-to-watchlist-placeholder')).toBeNull();
   });
 });
 /* eslint-enable testing-library/no-node-access, testing-library/no-container */
