@@ -12,7 +12,7 @@ const LOCALES = [
   },
   {
     code: 'zh-TW',
-    nativeName: '繁體中文',
+    nativeName: '繁體中文（台灣）',
     intlLocale: 'zh-TW',
     socialAssetSuffix: '',
     writingSystem: 'cjk',

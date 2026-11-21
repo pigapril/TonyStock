@@ -40,15 +40,20 @@
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   z-index: 100; /* Ensure it's above other content */
-  min-width: 100px; /* Minimum width */
+  width: max-content;
+  min-width: 160px;
+  max-width: calc(100vw - 24px);
+  box-sizing: border-box;
   padding: 5px 0;
 }
 
 .language-dropdown button {
   display: block;
   width: 100%;
+  box-sizing: border-box;
   padding: 8px 15px;
   text-align: left;
+  white-space: nowrap;
   background: none;
   border: none;
   cursor: pointer;

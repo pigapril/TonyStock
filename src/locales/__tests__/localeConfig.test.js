@@ -38,6 +38,11 @@ test('the locale registry is the source of truth for supported locale resources'
   }
 });
 
+test('Traditional Chinese language options identify their region', () => {
+  expect(LOCALES.find(locale => locale.code === 'zh-TW')?.nativeName).toBe('繁體中文（台灣）');
+  expect(LOCALES.find(locale => locale.code === 'zh-HK')?.nativeName).toBe('繁體中文（香港）');
+});
+
 test('canonical locale and legacy URL alias resolve without creating a second translation', () => {
   expect(getCanonicalLocale('zh')).toBe('zh-TW');
   expect(getCanonicalLocale('ZH-tw')).toBe('zh-TW');
