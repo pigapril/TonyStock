@@ -22,6 +22,8 @@ jest.mock('react-i18next', () => ({
       'sentimentBoard.delayNoticeCta': '升級 Pro 查看最新資料',
       'sentimentBoard.upsellCta': '查看方案',
       'sentimentBoard.viewDetail': '查看深度分析',
+      'sentimentBoard.compositeUs': 'Sentiment Inside Out 美股恐懼貪婪指標',
+      'sentimentBoard.compositeTw': 'Sentiment Inside Out 台股恐懼貪婪指標',
       'sentimentBoard.delayedTag': '升級 Pro 查看最新資料',
       'sentimentBoard.divergenceTitle': '指標之間的落差',
         'sentimentBoard.divergenceNote': '指標可能出現不同判讀。',
@@ -86,6 +88,10 @@ describe('情緒指標總覽的試用 CTA', () => {
     expect(links[0]).toHaveAttribute('href', '/zh-TW/market-sentiment');
     expect(links[1]).toHaveAttribute('href', '/zh-TW/tw-market-sentiment');
     links.forEach((link) => expect(link).toHaveClass('composite-card__link'));
+    expect(screen.getByText('Sentiment Inside Out 美股恐懼貪婪指標')).toBeInTheDocument();
+    expect(screen.getByText('Sentiment Inside Out 台股恐懼貪婪指標')).toBeInTheDocument();
+    expect(links[0].querySelector('.composite-card__linkArrow')).toBeNull();
+    expect(links[0]).toHaveStyle({ width: 'fit-content' });
   });
 
   it('訪客看到試用入口，點擊後先登入', async () => {

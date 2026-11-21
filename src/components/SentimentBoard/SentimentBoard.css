@@ -90,9 +90,11 @@
 }
 
 .composite-card__label {
-  margin: 0 0 6px;
-  font-size: 0.875rem;
-  color: #64748b;
+  margin: 0 0 8px;
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.45;
 }
 
 .composite-card__value {
@@ -111,15 +113,15 @@
 }
 
 .composite-card__link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-  min-height: 46px;
-  margin-top: 14px;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 40px;
+  margin-top: 16px;
   box-sizing: border-box;
-  padding: 11px 15px;
+  padding: 9px 16px;
   border: 1px solid rgba(49, 94, 232, 0.18);
   border-radius: 12px;
   background: linear-gradient(110deg, #315ee8 0%, #5143c6 100%);
@@ -148,20 +150,8 @@
   transform: translateY(0);
 }
 
-.composite-card__linkArrow {
-  flex: none;
-  font-size: 1.15rem;
-  line-height: 1;
-  transition: transform 0.16s ease;
-}
-
-.composite-card__link:hover .composite-card__linkArrow {
-  transform: translateX(3px);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .composite-card__link,
-  .composite-card__linkArrow {
+  .composite-card__link {
     transition: none;
   }
 }

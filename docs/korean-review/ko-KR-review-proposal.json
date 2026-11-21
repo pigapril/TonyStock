@@ -58386,11 +58386,11 @@
     {
       "key": "sentimentBoard.compositeUs",
       "source": {
-        "zhTW": "SIO 美股恐懼貪婪指標",
-        "zhCN": "SIO 美股恐惧贪婪指标",
-        "en": "SIO US Fear & Greed Index"
+        "zhTW": "Sentiment Inside Out 美股恐懼貪婪指標",
+        "zhCN": "Sentiment Inside Out 美股恐惧贪婪指标",
+        "en": "Sentiment Inside Out US Fear & Greed Index"
       },
-      "korean": "SIO 미국 시장 공포·탐욕 지수",
+      "korean": "Sentiment Inside Out 미국 주식 공포·탐욕 지수",
       "candidateSource": "docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -58399,7 +58399,7 @@
         "values": [
           {
             "key": "sentimentBoard.compositeUs",
-            "value": "SIO US Fear & Greed Index"
+            "value": "Sentiment Inside Out US Fear & Greed Index"
           }
         ]
       },
@@ -58415,11 +58415,11 @@
     {
       "key": "sentimentBoard.compositeTw",
       "source": {
-        "zhTW": "SIO 台股恐懼貪婪指標",
-        "zhCN": "SIO 台湾股市恐惧贪婪指标",
-        "en": "SIO Taiwan Fear & Greed Index"
+        "zhTW": "Sentiment Inside Out 台股恐懼貪婪指標",
+        "zhCN": "Sentiment Inside Out 台股恐惧贪婪指标",
+        "en": "Sentiment Inside Out Taiwan Fear & Greed Index"
       },
-      "korean": "SIO 대만 시장 공포·탐욕 지수",
+      "korean": "Sentiment Inside Out 대만 주식 공포·탐욕 지수",
       "candidateSource": "docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -58428,7 +58428,7 @@
         "values": [
           {
             "key": "sentimentBoard.compositeTw",
-            "value": "SIO Taiwan Fear & Greed Index"
+            "value": "Sentiment Inside Out Taiwan Fear & Greed Index"
           }
         ]
       },

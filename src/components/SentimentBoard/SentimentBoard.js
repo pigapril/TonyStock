@@ -385,10 +385,7 @@ const CompositeCard = ({ label, data, href, t, intlLocale }) => (
         {data.date}
       </p>
     )}
-    <Link className="composite-card__link" to={href}>
-      <span>{t('sentimentBoard.viewDetail')}</span>
-      <span className="composite-card__linkArrow" aria-hidden="true">→</span>
-    </Link>
+    <Link className="composite-card__link" to={href}>{t('sentimentBoard.viewDetail')}</Link>
   </article>
 );
 

@@ -23760,11 +23760,11 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### sentimentBoard.compositeUs
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** SIO 美股恐懼貪婪指標
-- **簡中對照：** SIO 美股恐惧贪婪指标
-- **英文對照：** SIO US Fear & Greed Index
-- **英文 fallback：** direct — sentimentBoard.compositeUs: SIO US Fear & Greed Index
-- **韓文候選：** SIO 미국 시장 공포·탐욕 지수
+- **繁中原文：** Sentiment Inside Out 美股恐懼貪婪指標
+- **簡中對照：** Sentiment Inside Out 美股恐惧贪婪指标
+- **英文對照：** Sentiment Inside Out US Fear & Greed Index
+- **英文 fallback：** direct — sentimentBoard.compositeUs: Sentiment Inside Out US Fear & Greed Index
+- **韓文候選：** Sentiment Inside Out 미국 주식 공포·탐욕 지수
 - **候選來源：** docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json
 - **替代候選：** 無
 - **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
@@ -23772,11 +23772,11 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### sentimentBoard.compositeTw
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** SIO 台股恐懼貪婪指標
-- **簡中對照：** SIO 台湾股市恐惧贪婪指标
-- **英文對照：** SIO Taiwan Fear & Greed Index
-- **英文 fallback：** direct — sentimentBoard.compositeTw: SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수
+- **繁中原文：** Sentiment Inside Out 台股恐懼貪婪指標
+- **簡中對照：** Sentiment Inside Out 台股恐惧贪婪指标
+- **英文對照：** Sentiment Inside Out Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentBoard.compositeTw: Sentiment Inside Out Taiwan Fear & Greed Index
+- **韓文候選：** Sentiment Inside Out 대만 주식 공포·탐욕 지수
 - **候選來源：** docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json
 - **替代候選：** 無
 - **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
