@@ -1199,6 +1199,51 @@
   font-size: 1rem;
 }
 
+.price-analysis-view .chart-placeholder--guest-login {
+  text-align: center;
+  color: var(--color-text-primary, #334155);
+}
+
+.price-analysis-view .pa-guest-analysis-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+}
+
+.price-analysis-view .pa-guest-analysis-prompt p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.price-analysis-view .pa-guest-analysis-login {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 22px;
+  border: 1px solid var(--accent-color-blue, #2563eb);
+  border-radius: 8px;
+  background: var(--accent-color-blue, #2563eb);
+  color: #fff;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.price-analysis-view .pa-guest-analysis-login:hover {
+  border-color: var(--accent-color-blue-dark, #1d4ed8);
+  background: var(--accent-color-blue-dark, #1d4ed8);
+}
+
+.price-analysis-view .pa-guest-analysis-login:focus-visible {
+  outline: 2px solid var(--accent-color-blue, #2563eb);
+  outline-offset: 3px;
+}
+
 /* 新增：主內容區域佈局 (仿效 MarketSentimentIndex) */
 .price-analysis-view .content-layout-container {
   display: flex;

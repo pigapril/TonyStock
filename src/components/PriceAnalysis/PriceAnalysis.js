@@ -458,6 +458,11 @@ export function PriceAnalysis() {
   }), [isMobile, syncBandRange]);
 
   const hasChartData = Boolean(chartData || ulbandData);
+  const pendingGuestStockCode = searchParams.get('stockCode')?.trim().toUpperCase() || '';
+  const showGuestLoginPrompt = !isAuthenticated
+    && Boolean(pendingGuestStockCode)
+    && !loading
+    && (!hasChartData || location.state?.showPendingAnalysisLogin);
   const shouldLoadDescriptionTabs = useDeferredFeature({
     timeoutMs: 1500,
     useIdleCallback: true,
@@ -666,11 +671,14 @@ export function PriceAnalysis() {
     ...analysisContextRef.current, stockCode
   }), [i18n.language]);
 
-  const openAnalysisLogin = useCallback((stockCode, message) => {
+  const openAnalysisLogin = useCallback((stockCode, message, { showPendingAnalysis = true } = {}) => {
     const returnPath = analysisReturnPath(stockCode);
     // Replace the current analysis entry rather than adding a duplicate history
     // entry; the selected stock remains in the URL for the post-login resume.
-    navigate(returnPath, { replace: true, state: { resumeAfterLogin: true } });
+    navigate(returnPath, {
+      replace: true,
+      state: { resumeAfterLogin: true, showPendingAnalysisLogin: showPendingAnalysis }
+    });
     openDialog('auth', { returnPath, message });
   }, [analysisReturnPath, navigate, openDialog]);
 
@@ -679,7 +687,7 @@ export function PriceAnalysis() {
     if (!symbol) return;
 
     if (!isAuthenticated) {
-      openAnalysisLogin(symbol, t('protectedRoute.loginRequired'));
+      openAnalysisLogin(symbol, t('protectedRoute.loginRequired'), { showPendingAnalysis: false });
       return;
     }
 
@@ -2080,7 +2088,7 @@ export function PriceAnalysis() {
 
 
               {/* 主圖表區塊 */}
-              {hasChartData ? (
+              {hasChartData && !showGuestLoginPrompt ? (
                 <Suspense fallback={renderChartWorkspaceFallback(t, isAdvancedQuery ? null : analysisPeriod, chartCardRef)}>
                   <PriceAnalysisChartWorkspace
                     isMobile={isMobile}
@@ -2121,7 +2129,20 @@ export function PriceAnalysis() {
                   <div className="chart-container">
                     <PriceAnalysisSummary t={t} displayedHorizonKey={isAdvancedQuery ? null : analysisPeriod} />
                     <div className="chart-content">
-                      <div className="chart-placeholder">{t('priceAnalysis.prompt.enterSymbol')}</div>
+                      <div className={`chart-placeholder${showGuestLoginPrompt ? ' chart-placeholder--guest-login' : ''}`}>
+                        {showGuestLoginPrompt ? (
+                          <div className="pa-guest-analysis-prompt">
+                            <p>{t('priceAnalysis.prompt.loginToAnalyze')}</p>
+                            <button
+                              type="button"
+                              className="pa-guest-analysis-login"
+                              onClick={() => openAnalysisLogin(pendingGuestStockCode, t('protectedRoute.loginRequired'))}
+                            >
+                              {t('userActions.login')}
+                            </button>
+                          </div>
+                        ) : t('priceAnalysis.prompt.enterSymbol')}
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -1473,7 +1473,8 @@
       }
     },
     "prompt": {
-      "enterSymbol": "輸入股票代碼，或從清單中選擇。"
+      "enterSymbol": "輸入股票代碼，或從清單中選擇。",
+      "loginToAnalyze": "登入後分析其他標的"
     },
     "hotSearches": {
       "noData": "暫無資料"

@@ -651,6 +651,39 @@ describe('PriceAnalysis analysis flow', () => {
       .toHaveLength(1);
   });
 
+  it('訪客關閉登入視窗後會看到登入提示，並可再次開啟登入視窗', async () => {
+    mockAuthState.isAuthenticated = false;
+    mockAuthState.user = null;
+    render(
+      <TestWrapper initialEntries={['/zh-TW/priceanalysis?stockCode=SPY&years=7&backTestDate=2026-09-01']}>
+        <PriceAnalysis />
+      </TestWrapper>
+    );
+
+    // 先確認畫面已有舊標的圖表，避免只測到原本就沒有分析資料的空狀態。
+    expect(await screen.findByTestId('price-analysis-line-chart')).toBeInTheDocument();
+    const stockInput = screen.getByPlaceholderText(/2330.*AAPL/i);
+    fireEvent.change(stockInput, { target: { value: 'AAPL' } });
+    fireEvent.submit(stockInput.closest('form'));
+
+    await waitFor(() => expect(mockDialogApi.openDialog).toHaveBeenCalledWith('auth', expect.any(Object)));
+    expect(await screen.findByText(en.priceAnalysis.prompt.loginToAnalyze)).toBeInTheDocument();
+    expect(screen.queryByText(en.priceAnalysis.prompt.enterSymbol)).not.toBeInTheDocument();
+    expect(screen.queryByTestId('price-analysis-line-chart')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: en.userActions.login }));
+
+    await waitFor(() => expect(mockDialogApi.openDialog).toHaveBeenLastCalledWith(
+      'auth', expect.objectContaining({ returnPath: expect.stringContaining('stockCode=AAPL') })
+    ));
+    const [, props] = mockDialogApi.openDialog.mock.calls[mockDialogApi.openDialog.mock.calls.length - 1];
+    expect(Object.fromEntries(new URL(props.returnPath, 'https://local.invalid').searchParams)).toEqual({
+      stockCode: 'AAPL', years: '7', backTestDate: '2026-09-01'
+    });
+    expect(mockEnhancedApiClient.get.mock.calls.filter(([url]) => url === '/api/integrated-analysis'))
+      .toHaveLength(1);
+  });
+
   it.each(['success', 'failed', 'empty'])('只有成功的分析資料才送完成事件：%s', async (outcome) => {
     let finishAnalysis;
     let failAnalysis;

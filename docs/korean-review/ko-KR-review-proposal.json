@@ -7,20 +7,20 @@
       "targetLocale": "ko-KR",
       "targetStatus": "runtime_locale_configured_deployment_not_part_of_this_change",
       "approvalStatus": "original_2422_reviewed_new_256_indicator_strings_pending_native_review",
-      "sourceKeyCount": 2681,
-      "directObjectStringKeyCount": 2524,
+      "sourceKeyCount": 2682,
+      "directObjectStringKeyCount": 2525,
       "nestedArrayStringLeafCount": 157,
       "zhCN": {
-        "keyCount": 2681,
+        "keyCount": 2682,
         "missing": 0,
         "extra": 0
       },
       "en": {
-        "keyCount": 2686,
+        "keyCount": 2689,
         "missingFallback": 0
       },
       "korean": {
-        "proposed": 2681,
+        "proposed": 2682,
         "missing": 0,
         "placeholderMismatches": 0,
         "englishPlaceholderMismatches": 0,
@@ -80031,6 +80031,34 @@
     {
       "key": "watchlist.stockCard.analysis.loadError",
       "korean": "분석을 불러오지 못했습니다"
+    },
+    {
+      "key": "priceAnalysis.prompt.loginToAnalyze",
+      "source": {
+        "zhTW": "登入後分析其他標的",
+        "zhCN": "登录后分析其他标的",
+        "en": "Log in to analyze other stocks"
+      },
+      "korean": "로그인 후 다른 종목을 분석하세요",
+      "candidateSource": "new PriceAnalysis guest login prompt",
+      "alternatives": [],
+      "englishFallback": {
+        "status": "direct",
+        "key": "priceAnalysis.prompt.loginToAnalyze",
+        "values": [
+          {
+            "key": "priceAnalysis.prompt.loginToAnalyze",
+            "value": "Log in to analyze other stocks"
+          }
+        ]
+      },
+      "placeholders": {
+        "source": [],
+        "proposed": [],
+        "match": true,
+        "englishFallbackMatch": true
+      },
+      "approvalStatus": "authored_pending_native_language_review_not_released"
     }
   ],
   "checks": {
