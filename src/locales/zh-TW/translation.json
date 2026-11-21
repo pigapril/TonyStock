@@ -1642,7 +1642,9 @@
         "title": "取消追蹤"
       },
       "analysis": {
-        "loading": "分析中"
+        "loading": "分析中",
+        "unavailable": "暫無分析資料",
+        "loadError": "分析載入失敗"
       },
       "header": {
         "symbol": "股票代碼",

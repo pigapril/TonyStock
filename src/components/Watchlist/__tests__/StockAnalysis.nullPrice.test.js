@@ -35,6 +35,28 @@ describe('StockAnalysis 缺少價格時不給假訊號', () => {
         expect(container.querySelector('.stock-gauge-container')).not.toBeInTheDocument();
     });
 
+    it('資料補齊期間只在分析區域顯示 Skeleton', () => {
+        const { container } = render(
+            <I18nextProvider i18n={i18n}>
+                <StockAnalysis price={null} analysis={null} analysisStatus="pending" quoteStatus="pending" />
+            </I18nextProvider>
+        );
+
+        expect(container.querySelector('.analysis-skeleton')).toBeInTheDocument();
+        expect(container.querySelector('.stock-gauge-container')).not.toBeInTheDocument();
+    });
+
+    it('資料補齊完成但無可用分析時不會持續顯示 Skeleton', () => {
+        const { container } = render(
+            <I18nextProvider i18n={i18n}>
+                <StockAnalysis price={null} analysis={null} analysisStatus="unavailable" quoteStatus="unavailable" />
+            </I18nextProvider>
+        );
+
+        expect(container.querySelector('.analysis-skeleton')).not.toBeInTheDocument();
+        expect(container.querySelector('.analysis-loading')).toBeInTheDocument();
+    });
+
     it('有正常價格時照常渲染量表與支撐壓力值', () => {
         const { container } = renderWith(35.69);
 

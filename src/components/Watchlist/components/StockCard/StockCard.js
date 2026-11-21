@@ -10,12 +10,24 @@ import { useAdContext } from '../../../../components/Common/InterstitialAdModal/
 import '../../styles/StockCard.css';
 
 // New component for the analysis result - Moved outside StockCard for clarity
-const StockAnalysisResult = memo(function StockAnalysisResult({ price, analysis }) {
+const StockAnalysisResult = memo(function StockAnalysisResult({ price, analysis, analysisStatus, quoteStatus }) {
     const { t } = useTranslation(); // 使用 hook
 
     // 沒有價格就無法判定情緒：null 會被比較運算子當成 0，落入 price <= tl_minus_2sd
     // 而顯示「極度恐懼」——寧可顯示無資料，也不要給出假訊號。
     if (!analysis || price == null) {
+        if (analysisStatus === 'pending' || quoteStatus === 'pending') {
+            return <span className="analysis-result-skeleton" role="status" aria-label={t('watchlist.stockCard.analysis.loading')} />;
+        }
+
+        if (analysisStatus === 'error' || quoteStatus === 'error') {
+            return <span className="status-label status-unavailable">{t('watchlist.stockCard.analysis.loadError', { defaultValue: '載入失敗' })}</span>;
+        }
+
+        if (analysisStatus === 'unavailable' || quoteStatus === 'unavailable') {
+            return <span className="status-label status-unavailable">{t('watchlist.stockCard.analysis.unavailable', { defaultValue: '暫無資料' })}</span>;
+        }
+
         return <span className="status-label">{t('watchlist.stockCard.analysis.loading')}</span>;
     }
 
@@ -95,12 +107,16 @@ export const StockCard = memo(function StockCard({
                     <StockAnalysis
                         price={stock.price}
                         analysis={stock.analysis}
+                        analysisStatus={stock.analysisStatus}
+                        quoteStatus={stock.quoteStatus}
                     />
                 </div>
                 <div className="stock-analysis-result-section">
                     <StockAnalysisResult
                         price={stock.price}
                         analysis={stock.analysis}
+                        analysisStatus={stock.analysisStatus}
+                        quoteStatus={stock.quoteStatus}
                     />
                 </div>
             </div>

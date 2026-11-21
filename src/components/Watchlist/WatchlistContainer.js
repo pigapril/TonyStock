@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useEffect, useCallback, useMemo } from 'react';
+import React, { Suspense, lazy, useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useAuth } from '../Auth/useAuth'; // 更新路徑
 import { useNavigate } from 'react-router-dom';
 import { FaLock, FaSearch } from 'react-icons/fa';
@@ -24,6 +24,11 @@ import { PriceSentimentNotificationSettings } from './PriceSentimentNotification
 import { sortStocks, SORTABLE_COLUMNS } from './utils/sortStocks';
 
 const loadDraggableStockList = () => import('./components/StockCard/DraggableStockList');
+
+const CATEGORY_DYNAMIC_FIELDS = [
+    'name', 'nameEn', 'price', 'change', 'changePercent', 'logo',
+    'analysis', 'news', 'quoteStatus', 'analysisStatus'
+];
 const DraggableStockList = lazy(loadDraggableStockList);
 const CategoryManagerDialog = lazy(() => import('./components/CategoryManagerDialog').then((module) => ({ default: module.CategoryManagerDialog })));
 const CreateCategoryDialog = lazy(() => import('./components/CreateCategoryDialog').then((module) => ({ default: module.CreateCategoryDialog })));
@@ -83,16 +88,114 @@ export function WatchlistContainer() {
         setEditingCategory,
         setCategories, // 取得 setCategories 以支援樂觀更新
         loadCategories,
+        loadCategoriesInitial,
         createCategory,
         updateCategory,
         deleteCategory,
         reorderCategories
     } = useCategories(watchlistService, showToast);
 
+    const categoryDataLoadedRef = useRef(new Set());
+    const categoryDataRequestsRef = useRef(new Map());
+    const isMountedRef = useRef(false);
+
+    const hydrateCategoryData = useCallback((categoryId, force = false) => {
+        if (!categoryId) return Promise.resolve(false);
+
+        const key = String(categoryId);
+        if (!force && categoryDataLoadedRef.current.has(key)) {
+            return Promise.resolve(true);
+        }
+
+        const activeRequest = categoryDataRequestsRef.current.get(key);
+        if (activeRequest) {
+            return force
+                ? activeRequest.then(() => hydrateCategoryData(categoryId, true))
+                : activeRequest;
+        }
+
+        const request = watchlistService.getCategoryData(categoryId)
+            .then((hydratedCategory) => {
+                if (!hydratedCategory || !Array.isArray(hydratedCategory.stocks)) {
+                    throw new Error('Unexpected Watchlist category data response');
+                }
+
+                if (isMountedRef.current) {
+                    const hydratedStocksById = new Map(
+                        hydratedCategory.stocks.map(stock => [String(stock.id), stock])
+                    );
+
+                    // Merge market data only. The category structure and current order
+                    // remain controlled by the initial/structural endpoint and local UI.
+                    setCategories(currentCategories => currentCategories.map(category => {
+                        if (String(category.id) !== key) return category;
+
+                        return {
+                            ...category,
+                            stocks: (category.stocks || []).map(stock => {
+                                const hydratedStock = hydratedStocksById.get(String(stock.id));
+                                if (!hydratedStock) return stock;
+
+                                return CATEGORY_DYNAMIC_FIELDS.reduce((nextStock, field) => {
+                                    if (Object.prototype.hasOwnProperty.call(hydratedStock, field)) {
+                                        nextStock[field] = hydratedStock[field];
+                                    }
+                                    return nextStock;
+                                }, { ...stock });
+                            })
+                        };
+                    }));
+                }
+
+                categoryDataLoadedRef.current.add(key);
+                return true;
+            })
+            .catch((hydrateError) => {
+                console.warn(`Watchlist category ${key} hydration failed:`, hydrateError);
+                if (isMountedRef.current) {
+                    setCategories(currentCategories => currentCategories.map(category => {
+                        if (String(category.id) !== key) return category;
+                        return {
+                            ...category,
+                            stocks: (category.stocks || []).map(stock => ({
+                                ...stock,
+                                quoteStatus: stock.quoteStatus === 'pending' ? 'error' : stock.quoteStatus,
+                                analysisStatus: stock.analysisStatus === 'pending' ? 'error' : stock.analysisStatus
+                            }))
+                        };
+                    }));
+                }
+                return false;
+            })
+            .finally(() => {
+                if (categoryDataRequestsRef.current.get(key) === request) {
+                    categoryDataRequestsRef.current.delete(key);
+                }
+            });
+
+        categoryDataRequestsRef.current.set(key, request);
+        return request;
+    }, [setCategories]);
+
+    const refreshCategoryAfterMutation = useCallback(async (categoryId, operation) => {
+        if (!categoryId) return;
+
+        // Refresh only category structure. The selected category's dynamic data is
+        // fetched separately, so a stock add/remove never hydrates unrelated lists.
+        await loadCategories(true);
+        const key = String(categoryId);
+        if (operation !== 'order') {
+            categoryDataLoadedRef.current.delete(key);
+            await hydrateCategoryData(categoryId, true);
+        } else {
+            await hydrateCategoryData(categoryId);
+        }
+    }, [loadCategories, hydrateCategoryData]);
+
     // 股票相關邏輯
-    const handleStockOperationSuccess = useCallback(() => {
-        loadCategories(true);  // 使用 silent refresh (true) 避免全頁 Loading
-    }, [loadCategories]);
+    const handleStockOperationSuccess = useCallback((categoryId, operation) => {
+        return refreshCategoryAfterMutation(categoryId, operation);
+    }, [refreshCategoryAfterMutation]);
 
     const {
         handleAddStock: onAddStock,
@@ -255,12 +358,33 @@ export function WatchlistContainer() {
             return;
         }
 
+        let cancelled = false;
+
         if (!isProUser) {
-            let cancelled = false;
             setFreePreviewLoading(true);
-            watchlistService.getFreePreview()
+            watchlistService.getFreePreviewInitial()
                 .then((categories) => {
-                    if (!cancelled) setFreePreviewCategories(categories || []);
+                    if (cancelled) return;
+                    setFreePreviewCategories(categories || []);
+
+                    // Free preview uses the same progressive rendering contract as the
+                    // personal Watchlist: show the curated symbols first, then enrich them.
+                    watchlistService.getFreePreview()
+                        .then((hydratedCategories) => {
+                            if (!cancelled) setFreePreviewCategories(hydratedCategories || []);
+                        })
+                        .catch((hydrateError) => {
+                            if (cancelled) return;
+                            console.warn('Free Watchlist preview hydration failed:', hydrateError);
+                            setFreePreviewCategories(currentCategories => currentCategories.map(category => ({
+                                ...category,
+                                stocks: (category.stocks || []).map(stock => ({
+                                    ...stock,
+                                    quoteStatus: stock.quoteStatus === 'pending' ? 'error' : stock.quoteStatus,
+                                    analysisStatus: stock.analysisStatus === 'pending' ? 'error' : stock.analysisStatus
+                                }))
+                            })));
+                        });
                 })
                 .catch((loadError) => {
                     if (!cancelled) setError(loadError.message || t('watchlist.loadFailed'));
@@ -276,7 +400,13 @@ export function WatchlistContainer() {
 
         const initializeCategories = async () => {
             try {
-                await loadCategories();
+                const initialCategories = await loadCategoriesInitial();
+                if (initialCategories === null) {
+                    throw new Error('Initial Watchlist request failed');
+                }
+                if (!cancelled) {
+                    // The selected category is hydrated by its own effect below.
+                }
             } catch (error) {
                 // ✅ 攔截 403 (後端判定無權限)
                 if (error.response?.status === 403) {
@@ -309,12 +439,32 @@ export function WatchlistContainer() {
         };
 
         initializeCategories();
-    }, [isAuthenticated, isProUser, loadCategories, showToast, t, checkAuthStatus, i18n.language]);
+        return () => { cancelled = true; };
+    }, [isAuthenticated, isProUser, loadCategories, loadCategoriesInitial, setCategories, showToast, t, checkAuthStatus, i18n.language]);
+
+    useEffect(() => {
+        const categoryDataRequests = categoryDataRequestsRef.current;
+        const categoryDataLoaded = categoryDataLoadedRef.current;
+        isMountedRef.current = true;
+        return () => {
+            isMountedRef.current = false;
+            categoryDataRequests.clear();
+            categoryDataLoaded.clear();
+        };
+    }, []);
+
+    // Load the selected category on demand. Successful results are kept in state
+    // and in the loaded-id set, so returning to a visited category makes no request.
+    useEffect(() => {
+        if (!isAuthenticated || !isProUser || !activeTab) return;
+        hydrateCategoryData(activeTab);
+    }, [activeTab, hydrateCategoryData, isAuthenticated, isProUser]);
 
     // 使用目前方案可見的分類設定預設標籤，避免 Free 有資料卻沒有 active category。
     useEffect(() => {
         if (displayCategories.length > 0 && !displayCategories.some((category) => category.id === activeTab)) {
-            setActiveTab(displayCategories[0].id);
+            const firstCategoryWithStocks = displayCategories.find(category => category.stocks?.length > 0);
+            setActiveTab((firstCategoryWithStocks || displayCategories[0]).id);
         } else if (displayCategories.length === 0 && activeTab) {
             setActiveTab(null);
         }
@@ -339,7 +489,7 @@ export function WatchlistContainer() {
         return () => {
             window.removeEventListener('logoutSuccess', handleLogout);
         };
-    }, []);
+    }, [setEditingCategory]);
 
     useEffect(() => {
         if (isEditModeReady || isLoading || !isAuthenticated || categories.length === 0) {

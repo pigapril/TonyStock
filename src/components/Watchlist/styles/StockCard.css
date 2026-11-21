@@ -256,6 +256,12 @@
     /* #0000CC is a darker shade of #0000FF */
 }
 
+.status-label.status-unavailable {
+    color: #64748b;
+    background: #e2e8f0;
+    box-shadow: none;
+}
+
 /* 修改：Hover 效果 (取代原 analysis-result:hover 樣式) */
 .status-label:hover {
     transform: translateY(-1px);

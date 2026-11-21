@@ -73,6 +73,63 @@
     color: #666;
 }
 
+.analysis-skeleton {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.analysis-skeleton__value,
+.analysis-skeleton__track,
+.analysis-result-skeleton {
+    display: block;
+    background: linear-gradient(90deg, #e9edf2 25%, #f5f7fa 50%, #e9edf2 75%);
+    background-size: 200% 100%;
+    animation: watchlist-skeleton-shimmer 1.35s ease-in-out infinite;
+}
+
+.analysis-skeleton__value {
+    width: 48px;
+    height: 14px;
+    flex: 0 1 48px;
+    border-radius: 4px;
+}
+
+.analysis-skeleton__track {
+    width: 100%;
+    max-width: 160px;
+    height: 18px;
+    flex: 1 1 auto;
+    border-radius: 999px;
+}
+
+.analysis-result-skeleton {
+    width: 72px;
+    height: 28px;
+    border-radius: 999px;
+}
+
+.analysis-loading.analysis-error {
+    color: #b45309;
+}
+
+@keyframes watchlist-skeleton-shimmer {
+    from { background-position: 100% 0; }
+    to { background-position: -100% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .analysis-skeleton__value,
+    .analysis-skeleton__track,
+    .analysis-result-skeleton {
+        animation: none;
+        background: #edf0f4;
+    }
+}
+
 /* Remove this section as it’s redundant with the first document */
 /* .stock-gauge-container {
     flex: 1;

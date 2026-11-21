@@ -19,6 +19,7 @@ const mockCategoriesApi = {
   setEditingCategory: jest.fn(),
   setCategories: jest.fn(),
   loadCategories: jest.fn(),
+  loadCategoriesInitial: jest.fn().mockResolvedValue([]),
   createCategory: jest.fn(),
   updateCategory: jest.fn(),
   deleteCategory: jest.fn(),
@@ -51,7 +52,12 @@ jest.mock('../hooks/useStocks', () => ({
   })
 }));
 
-jest.mock('../services/watchlistService', () => ({ __esModule: true, default: {} }));
+jest.mock('../services/watchlistService', () => ({
+  __esModule: true,
+  default: {
+    getCategoryData: jest.fn().mockResolvedValue({ stocks: [] })
+  }
+}));
 
 jest.mock('../SearchBox', () => ({ SearchBox: () => <div /> }));
 
@@ -99,6 +105,8 @@ const categories = [
   }
 ];
 
+const mockWatchlistService = require('../services/watchlistService').default;
+
 const renderContainer = () => render(
   <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
     <I18nextProvider i18n={i18n}>
@@ -111,6 +119,8 @@ describe('觀察清單欄位排序', () => {
   beforeEach(() => {
     window.localStorage.clear();
     mockCategoriesApi.categories = categories;
+    mockCategoriesApi.loadCategoriesInitial.mockResolvedValue(categories);
+    mockWatchlistService.getCategoryData.mockResolvedValue({ stocks: [] });
   });
 
   it('預設是手動順序，不動後端給的排列', () => {

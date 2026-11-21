@@ -23,7 +23,7 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
             Analytics.watchlist.addStock({ categoryId, stockSymbol });
 
             if (onSuccess) {
-                onSuccess();
+                await onSuccess(categoryId, 'stocks');
             }
             return true;
 
@@ -68,7 +68,7 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
             });
 
             if (onSuccess) {
-                onSuccess();
+                await onSuccess(categoryId, 'stocks');
             }
 
             return true;
@@ -102,7 +102,7 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
 
             // 成功後重新載入分類以確保排序正確
             if (onSuccess) {
-                onSuccess();
+                await onSuccess(categoryId, 'order');
             }
         } catch (error) {
             console.error('Reorder stocks failed:', error);
@@ -114,7 +114,7 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
             });
             // 失敗時重新載入以回滾
             if (onSuccess) {
-                onSuccess();
+                await onSuccess(categoryId, 'order');
             }
         }
     }, [watchlistService, showToast, onSuccess, t]);
@@ -126,4 +126,4 @@ export const useStocks = (watchlistService, showToast, onSuccess) => {
         handleRemoveStock,
         handleReorderStocks
     };
-}; 
+};

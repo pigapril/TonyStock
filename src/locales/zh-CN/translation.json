@@ -1642,7 +1642,9 @@
         "title": "取消关注"
       },
       "analysis": {
-        "loading": "分析中"
+        "loading": "分析中",
+        "unavailable": "暂无分析数据",
+        "loadError": "分析加载失败"
       },
       "header": {
         "symbol": "股票代码",

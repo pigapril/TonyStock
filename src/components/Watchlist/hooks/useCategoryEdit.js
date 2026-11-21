@@ -3,6 +3,39 @@ import { handleApiError } from '../../../utils/errorHandler';
 import { Analytics } from '../../../utils/analytics';
 import { useTranslation } from 'react-i18next';
 
+const PRESERVED_STOCK_DATA_FIELDS = [
+    'name', 'nameEn', 'price', 'change', 'changePercent', 'logo',
+    'analysis', 'news', 'quoteStatus', 'analysisStatus'
+];
+
+const mergeCategoryStructure = (freshCategories, currentCategories) => {
+    const currentByCategoryId = new Map(
+        (currentCategories || []).map(category => [String(category.id), category])
+    );
+
+    return (freshCategories || []).map(category => {
+        const currentCategory = currentByCategoryId.get(String(category.id));
+        const currentStocksById = new Map(
+            (currentCategory?.stocks || []).map(stock => [String(stock.id), stock])
+        );
+
+        return {
+            ...category,
+            stocks: (category.stocks || []).map(stock => {
+                const currentStock = currentStocksById.get(String(stock.id));
+                if (!currentStock) return stock;
+
+                return PRESERVED_STOCK_DATA_FIELDS.reduce((merged, field) => {
+                    if (Object.prototype.hasOwnProperty.call(currentStock, field)) {
+                        merged[field] = currentStock[field];
+                    }
+                    return merged;
+                }, { ...stock });
+            })
+        };
+    });
+};
+
 export const useCategoryEdit = (watchlistService, showToast, { setCategories, setLoading }) => {
     const { t } = useTranslation();
 
@@ -20,8 +53,9 @@ export const useCategoryEdit = (watchlistService, showToast, { setCategories, se
     const loadCategories = useCallback(async (silent = false) => {
         try {
             if (!silent) setLoading(true);
-            const data = await watchlistService.getCategories();
-            setCategories(data);
+            // Structural refreshes must not hydrate every category's market data.
+            const data = await watchlistService.getCategoriesInitial();
+            setCategories(current => mergeCategoryStructure(data, current));
             return data;
         } catch (error) {
             handleOperationError(error, 'load_categories');
@@ -30,6 +64,17 @@ export const useCategoryEdit = (watchlistService, showToast, { setCategories, se
             if (!silent) setLoading(false);
         }
     }, [handleOperationError, watchlistService, setCategories, setLoading]);
+
+    const loadCategoriesInitial = useCallback(async () => {
+        setLoading(true);
+        try {
+            const data = await watchlistService.getCategoriesInitial();
+            setCategories(data);
+            return data;
+        } finally {
+            setLoading(false);
+        }
+    }, [watchlistService, setCategories, setLoading]);
 
     const createCategory = async (name) => {
         try {
@@ -134,9 +179,10 @@ export const useCategoryEdit = (watchlistService, showToast, { setCategories, se
 
     return {
         loadCategories,
+        loadCategoriesInitial,
         createCategory,
         updateCategory,
         deleteCategory,
         reorderCategories
     };
-}; 
+};

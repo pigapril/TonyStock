@@ -114,6 +114,33 @@ class WatchlistService {
         }
     }
 
+    async getCategoriesInitial() {
+        try {
+            const response = await csrfClient.fetchWithCSRF('/api/watchlist/categories/initial', {
+                method: 'GET'
+            });
+            const responseData = await this._handleApiResponse(response);
+
+            if (Array.isArray(responseData)) return responseData;
+            return Array.isArray(responseData?.categories) ? responseData.categories : [];
+        } catch (error) {
+            this._handleApiError(error, 'getCategoriesInitial');
+        }
+    }
+
+    async getCategoryData(categoryId) {
+        try {
+            const response = await csrfClient.fetchWithCSRF(
+                `/api/watchlist/categories/${encodeURIComponent(categoryId)}/data`,
+                { method: 'GET' }
+            );
+            const responseData = await this._handleApiResponse(response);
+            return responseData?.category || null;
+        } catch (error) {
+            this._handleApiError(error, 'getCategoryData');
+        }
+    }
+
     async getCategoriesLite() {
         try {
             if (this._categoriesLiteCache && this._categoriesLiteCache.expiresAt > Date.now()) {
@@ -170,6 +197,19 @@ class WatchlistService {
             return Array.isArray(responseData?.categories) ? responseData.categories : [];
         } catch (error) {
             this._handleApiError(error, 'getFreePreview');
+        }
+    }
+
+    async getFreePreviewInitial() {
+        try {
+            const response = await csrfClient.fetchWithCSRF('/api/watchlist/free-preview/initial', {
+                method: 'GET'
+            });
+            const responseData = await this._handleApiResponse(response);
+            if (Array.isArray(responseData)) return responseData;
+            return Array.isArray(responseData?.categories) ? responseData.categories : [];
+        } catch (error) {
+            this._handleApiError(error, 'getFreePreviewInitial');
         }
     }
 

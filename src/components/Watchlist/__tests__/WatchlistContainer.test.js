@@ -22,6 +22,7 @@ const mockCategoriesApi = {
   setEditingCategory: jest.fn(),
   setCategories: jest.fn(),
   loadCategories: jest.fn(),
+  loadCategoriesInitial: jest.fn(),
   createCategory: jest.fn(),
   updateCategory: jest.fn(),
   deleteCategory: jest.fn(),
@@ -68,6 +69,8 @@ jest.mock('../hooks/useStocks', () => ({
 jest.mock('../services/watchlistService', () => ({
   __esModule: true,
   default: {
+    getCategories: jest.fn().mockResolvedValue([]),
+    getCategoryData: jest.fn().mockResolvedValue(null),
     getPriceSentimentNotificationSettings: jest.fn().mockResolvedValue({
       enabled: false,
       selectedSentiments: ['extremeFear', 'extremeGreed'],
@@ -79,6 +82,11 @@ jest.mock('../services/watchlistService', () => ({
       selectedSentiments: ['extremeFear', 'extremeGreed'],
       canUseFeature: true
     }),
+    getFreePreviewInitial: jest.fn().mockResolvedValue([{
+      id: 'platform-featured',
+      name: '平台精選',
+      stocks: [{ id: 'featured-1', symbol: '0050', name: '元大台灣50', quoteStatus: 'pending', analysisStatus: 'pending' }]
+    }]),
     getFreePreview: jest.fn().mockResolvedValue([{
       id: 'platform-featured',
       name: '平台精選',
@@ -166,10 +174,20 @@ describe('WatchlistContainer', () => {
       name: '平台精選',
       stocks: [{ id: 'featured-1', symbol: '0050', name: '元大台灣50' }]
     }]);
+    mockWatchlistService.getFreePreviewInitial.mockResolvedValue([{
+      id: 'platform-featured',
+      name: '平台精選',
+      stocks: [{ id: 'featured-1', symbol: '0050', name: '元大台灣50', quoteStatus: 'pending', analysisStatus: 'pending' }]
+    }]);
     mockAuthState.isAuthenticated = true;
     mockAuthState.user = { id: 'user-1', plan: 'pro' };
     mockCategoriesApi.categories = categories;
     mockCategoriesApi.loading = false;
+    mockCategoriesApi.loadCategoriesInitial.mockResolvedValue(categories);
+    mockWatchlistService.getCategories.mockResolvedValue(categories);
+    mockWatchlistService.getCategoryData.mockImplementation(async (categoryId) => (
+      categories.find(category => category.id === categoryId) || null
+    ));
   });
 
   it('shows login gate when unauthenticated', () => {
@@ -200,6 +218,35 @@ describe('WatchlistContainer', () => {
     expect(screen.getByText('SPY')).toBeInTheDocument();
     expect(screen.queryByText('NVDA')).not.toBeInTheDocument();
     expect(screen.queryByTestId('draggable-stock-list')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(mockCategoriesApi.loadCategoriesInitial).toHaveBeenCalledTimes(1);
+      expect(mockWatchlistService.getCategoryData).toHaveBeenCalledTimes(1);
+      expect(mockWatchlistService.getCategoryData).toHaveBeenCalledWith('cat-1');
+    });
+    expect(mockWatchlistService.getCategories).not.toHaveBeenCalled();
+  });
+
+  it('hydrates categories only when selected and reuses a category already loaded', async () => {
+    render(
+      <TestWrapper>
+        <WatchlistContainer />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      expect(mockWatchlistService.getCategoryData).toHaveBeenCalledWith('cat-1');
+    });
+    expect(mockWatchlistService.getCategoryData).not.toHaveBeenCalledWith('cat-2');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Growth' }));
+    await waitFor(() => {
+      expect(mockWatchlistService.getCategoryData).toHaveBeenCalledWith('cat-2');
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Core' }));
+    await waitFor(() => {
+      expect(mockWatchlistService.getCategoryData).toHaveBeenCalledTimes(2);
+    });
   });
 
   it('mounts the draggable list only after entering edit mode', async () => {
@@ -246,6 +293,10 @@ describe('WatchlistContainer', () => {
     expect(screen.queryByTestId('watchlist-search-box')).not.toBeInTheDocument();
     expect(screen.getByTestId('watchlist-edit-mode-button')).toHaveClass('is-locked');
     expect(screen.queryByTestId('watchlist-browse-mode-button')).not.toBeInTheDocument();
+    expect(mockWatchlistService.getFreePreviewInitial).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(mockWatchlistService.getFreePreview).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('routes Free management actions to the Pro plans page', async () => {

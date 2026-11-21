@@ -16,6 +16,7 @@ export const useCategories = (watchlistService, showToast) => {
 
     const {
         loadCategories,
+        loadCategoriesInitial,
         createCategory,
         updateCategory,
         deleteCategory,
@@ -44,6 +45,7 @@ export const useCategories = (watchlistService, showToast) => {
         setEditingCategory,
         clearError,
         loadCategories,
+        loadCategoriesInitial,
         createCategory,
         updateCategory,
         deleteCategory,
@@ -52,4 +54,4 @@ export const useCategories = (watchlistService, showToast) => {
         selectFirstCategory,
         handleCategoryDeleted
     };
-}; 
+};

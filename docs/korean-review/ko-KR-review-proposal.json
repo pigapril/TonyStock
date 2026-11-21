@@ -7,11 +7,11 @@
       "targetLocale": "ko-KR",
       "targetStatus": "runtime_locale_configured_deployment_not_part_of_this_change",
       "approvalStatus": "original_2422_reviewed_new_256_indicator_strings_pending_native_review",
-      "sourceKeyCount": 2679,
-      "directObjectStringKeyCount": 2522,
+      "sourceKeyCount": 2681,
+      "directObjectStringKeyCount": 2524,
       "nestedArrayStringLeafCount": 157,
       "zhCN": {
-        "keyCount": 2679,
+        "keyCount": 2681,
         "missing": 0,
         "extra": 0
       },
@@ -20,7 +20,7 @@
         "missingFallback": 0
       },
       "korean": {
-        "proposed": 2679,
+        "proposed": 2681,
         "missing": 0,
         "placeholderMismatches": 0,
         "englishPlaceholderMismatches": 0,
@@ -80023,6 +80023,14 @@
       },
       "approvalStatus": "authored_pending_native_language_review_not_released",
       "legacy171Reconciliation": "new-indicator-page-copy-added-after-the-original-proposal"
+    },
+    {
+      "key": "watchlist.stockCard.analysis.unavailable",
+      "korean": "분석 데이터 없음"
+    },
+    {
+      "key": "watchlist.stockCard.analysis.loadError",
+      "korean": "분석을 불러오지 못했습니다"
     }
   ],
   "checks": {
