@@ -2586,6 +2586,11 @@
   }
 
   .price-analysis-view .pa-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 4px;
     order: 0;
     width: 100%;
     box-sizing: border-box;
@@ -2600,12 +2605,24 @@
   }
 
   .price-analysis-view .pa-intro h1 {
-    margin-bottom: 8px;
+    grid-column: 1;
+    grid-row: 1;
+    margin-bottom: 0;
     font-size: 15px;
   }
 
   .price-analysis-view .pa-intro p {
+    grid-column: 1 / -1;
+    grid-row: 2;
     font-size: clamp(23px, 5.2vw, 27px);
+  }
+
+  .price-analysis-view .pa-tour-launch {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    min-height: 34px;
+    margin-top: 0;
   }
 
   .price-analysis-view .content-layout-container .dashboard .chart-card {
@@ -2667,6 +2684,48 @@
 
   .price-analysis-view .pa-indicator__plot {
     height: 170px;
+  }
+
+  /* 其他週期與加入追蹤清單共用一列；保留完整按鈕文案，避免只剩不明確的圖示。 */
+  .price-analysis-view .analysis-result {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    justify-items: stretch;
+  }
+
+  .price-analysis-view .analysis-item--horizons {
+    grid-column: 1;
+    grid-row: 3;
+    min-width: 0;
+  }
+
+  .price-analysis-view .analysis-item--horizons .horizon-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 4px 8px;
+  }
+
+  .price-analysis-view .analysis-item--watchlist-action {
+    grid-column: 2;
+    grid-row: 3;
+    min-width: 116px;
+    min-height: 54px;
+    box-sizing: border-box;
+    justify-items: end;
+    align-content: center;
+    padding-top: 8px;
+  }
+
+  .price-analysis-view .analysis-item--watchlist-action .pa-add-to-watchlist-button {
+    padding-right: 7px;
+    padding-left: 7px;
+    gap: 4px;
+    font-size: 11px;
+  }
+
+  /* 載入骨架時保留與正式按鈕相同的寬度，避免資料回來後摘要列左右跳動。 */
+  .price-analysis-view .analysis-item--watchlist-action .pa-add-to-watchlist-placeholder {
+    width: 116px;
   }
 
   /* 手機：期長與進階自成一列，跟 Google 搜尋把「AI 模式」另起一行同一個道理 */
