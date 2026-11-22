@@ -6,7 +6,7 @@
   "footer.articles": "분석 칼럼",
   "appName": "시장 심리 모니터링 플랫폼",
   "about.section1Title": "시황 = 자금 + 심리",
-  "about.section1Text": "이는 《한 투기자의 고백》의 저자 앙드레 코스톨라니의 명언입니다. 자금은 펀더멘털과 거시경제를, 심리는 투자자의 감정과 인간 본성을 가리킵니다. 저는 시장의 순환이 인간의 비합리성에서 비롯되고, 그 비합리성이 경제와 주식시장의 고점과 저점을 만든다고 생각합니다.",
+  "about.section1Text": "이는 《한 투기자의 고백》을 쓴 앙드레 코스톨라니의 명언입니다. 자금은 펀더멘털과 거시경제를, 심리는 투자자의 감정과 인간 본성을 가리킵니다. 저는 시장의 순환이 인간의 비합리성에서 비롯되고, 그 비합리성이 경제와 주식시장의 고점과 저점을 만든다고 생각합니다.",
   "home.methodology.historyPreview.empty": "과거 시장 흐름을 불러오지 못했습니다.",
   "home.methodology.historyPreview.description": "시장이 극심한 공포에 휩싸일 때가 장기 투자자에게는 더욱 냉정함이 필요한 순간일 수 있습니다.",
   "home.methodology.pricePreview.title": "현재 주가의 심리 구간 빠르게 보기",

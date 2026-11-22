@@ -11,6 +11,12 @@ const check = process.argv.includes('--check');
 // article copy is separately edited for native Hong Kong phrasing.
 const replacements = [
   // Terms that need phrase-level handling must come before shorter terms.
+  ['CBOE 買賣權比例', 'CBOE 認沽／認購期權比率'],
+  ['CBOE 買賣權比率', 'CBOE 認沽／認購期權比率'],
+  ['CBOE 買賣權比', 'CBOE 認沽／認購期權比率'],
+  ['買賣權比例', '認沽／認購期權比率'],
+  ['買賣權比率', '認沽／認購期權比率'],
+  ['買賣權比', '認沽／認購期權比率'],
   ['CBOE 買/賣權比例', 'CBOE 認沽／認購期權比率'],
   ['NAAIM 投資經理人曝險指數', 'NAAIM 投資經理股票持倉指數'],
   ['持有空頭倉位', '持有淡倉'],
@@ -72,7 +78,6 @@ const replacements = [
   ['財報', '業績報告'],
   ['配息', '派息'],
   ['下單', '落盤'],
-  ['台幣', '新台幣'],
   ['公債', '國債'],
   ['產業與主題', '行業與主題'],
   ['強勢分類', '強勢板塊'],
@@ -87,7 +92,6 @@ const replacements = [
   ['漲幅', '升幅'],
   ['漲跌', '升跌'],
   ['上漲', '上升'],
-  ['均線', '移動平均線'],
   ['報酬率', '回報率'],
   ['報酬', '回報'],
   ['進場', '入市'],
@@ -110,10 +114,39 @@ const transform = value => {
     return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, transform(child)]));
   }
   if (typeof value !== 'string') return value;
-  return replacements.reduce((result, [from, to]) => result.split(from).join(to), value);
+  let result = value.replace(/(?:選擇權|期權)的?買(?:賣|\/賣)權(?:比例|比率|比)/g, '認沽／認購期權比率');
+  result = replacements.reduce((text, [from, to]) => text.split(from).join(to), result);
+  // Expand only a bare 均線. The characters inside 平均線 are already correct.
+  result = result.replace(/(^|[^平])均線/g, '$1移動平均線');
+  // Prefix 台幣 only when it is not already 新台幣.
+  result = result.replace(/(^|[^新])台幣/g, '$1新台幣');
+  result = result.replace(/\.{3}/g, '……');
+  return result;
 };
 
 const target = transform(source);
+const collectStrings = (value, prefix = '', output = []) => {
+  if (typeof value === 'string') output.push([prefix, value]);
+  else if (Array.isArray(value)) value.forEach((child, index) => collectStrings(child, `${prefix}[${index}]`, output));
+  else if (value && typeof value === 'object') {
+    for (const [key, child] of Object.entries(value)) {
+      collectStrings(child, prefix ? `${prefix}.${key}` : key, output);
+    }
+  }
+  return output;
+};
+const forbiddenArtifacts = [
+  ['duplicate moving-average phrase', /移動平移動平均線/],
+  ['duplicate Taiwan-dollar prefix', /新新台幣/],
+  ['misrendered Put/Call ratio', /買認沽期權比率?/],
+  ['duplicated options noun in Put/Call ratio', /期權(?:的)?認沽／認購期權比率/],
+  ['ASCII Chinese ellipsis', /\.\.\./],
+];
+for (const [key, value] of collectStrings(target)) {
+  for (const [label, pattern] of forbiddenArtifacts) {
+    if (pattern.test(value)) throw new Error(`Hong Kong locale contains ${label} at ${key}: ${value}`);
+  }
+}
 const leaves = value => Object.entries(value).flatMap(([key, child]) => {
   if (typeof child === 'string') return [key];
   if (child && typeof child === 'object') return leaves(child).map(path => `${key}.${path}`);

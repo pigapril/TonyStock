@@ -1,1 +1,6 @@
 source_term,target_term,locale,domain,context,status,provenance,alternatives
+市場廣度,시장 폭,ko-KR,equity markets,"MA20 proportion of tracked stocks above their individual moving averages",draft,"2026-11-22 Korean editorial choice; checked against Korean market terminology; native confirmation pending","시장 확산도"
+融資維持率,신용융자 담보유지비율,ko-KR,Taiwan margin finance,"Aggregate collateral market value relative to the margin-financing balance",draft,"2026-11-22 Korean editorial choice; financial term cross-check; local-market confirmation pending","신용융자 유지율"
+券資比,신용대주·신용융자 잔액 비율,ko-KR,Taiwan margin finance,"Borrowed-stock balance compared with margin-financing balance",draft,"2026-11-22 label makes numerator and denominator explicit; native confirmation pending","대주·융자 비율"
+台指選擇權波動率,대만 주가지수 옵션 내재변동성,ko-KR,options,"Implied volatility derived from Taiwan index options",draft,"2026-11-22 Korean editorial choice; native confirmation pending","대만 VIX"
+散戶小台淨部位,개인 투자자 대만 미니 지수선물 순포지션,ko-KR,futures,"Estimated individual-investor net position in Taiwan mini index futures",draft,"2026-11-22 Korean editorial choice; contract naming should be checked by local-market specialist","개인 투자자 미니 선물 순포지션"

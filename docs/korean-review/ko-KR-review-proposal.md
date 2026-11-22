@@ -1,23 +1,23 @@
 # ko-KR Korean translation review proposal
 
-Generated: 2026-11-19T11:20:35.343Z
+Generated: 2026-11-22T05:30:34.001Z
 
 ## Coverage
 
 | Item | Count / result |
 |---|---:|
-| zh-TW direct object string keys | 2522 |
+| zh-TW direct object string keys | 2525 |
 | Additional nested array string leaves | 157 |
-| Total translatable source string leaves | 2679 |
-| zh-CN source string leaves | 2679; missing 0; extra 0 |
-| EN source string leaves | 2685; missing English fallback 0 |
-| Korean proposed strings | 2679 |
+| Total translatable source string leaves | 2682 |
+| zh-CN source string leaves | 2682; missing 0; extra 0 |
+| EN source string leaves | 2689; missing English fallback 0 |
+| Korean proposed strings | 2682 |
 | Korean missing strings | 0 |
 | Korean placeholder mismatches | 0 |
 | English placeholder mismatches | 0 |
-| Conflicting candidate strings | 149 |
+| Conflicting candidate strings | 151 |
 
-The original 2,422 entries retain their existing editorial review status. The additional 256 indicator explainer strings are included as authored candidates and remain pending native-language review. These review artifacts are separate from the runtime locale files.
+The 2,422 entries with delegated-editor review retain that provenance and are not native-speaker certified or released. A further 260 entries have now received an AI-assisted Korean editorial review: 256 indicator-explainer strings and four UI strings. Human native-language proof is still pending for all 260, and none of these entries is released. These review artifacts are separate from the runtime locale files.
 
 ## Historical 171-item proposal
 
@@ -43,7 +43,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 ---
 
-# Original 2,422 per-key review entries (the additional 256 indicator strings are listed below)
+# Complete per-key review list (2682 string leaves)
 
 ### sentimentHistoryExamples.shortcut
 
@@ -181,7 +181,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 到 SIO 對照完整歷史走勢與八項訊號；升級 Pro，掌握最新情緒與近期變化。
-- **簡中對照：** 到 SIO 对照完整历史走势与八项信号；升级 Pro，掌握最新情绪与近期变化。
+- **簡中對照：** 前往 SIO 查看完整历史走势和八项信号；升级 Pro，跟踪最新市场情绪及近期变化。
 - **英文對照：** Compare the full history and eight signals in SIO. Pro adds the latest sentiment and recent changes.
 - **英文 fallback：** direct — sentimentHistoryExamples.nextBody: Compare the full history and eight signals in SIO. Pro adds the latest sentiment and recent changes.
 - **韓文候選：** SIO에서 전체 과거 흐름과 8개 지표를 비교해 보세요. Pro로 업그레이드하면 최신 시장 심리와 최근 변화를 확인할 수 있습니다.
@@ -733,7 +733,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 從強勢分類找到強勢標的，掌握市場動能的方向。
-- **簡中對照：** 从强势分类找到强势标的，掌握市场动能的方向。
+- **簡中對照：** 从动能较强的分类中筛选标的，掌握市场动能方向。
 - **英文對照：** Find stronger assets within stronger groups and follow market momentum.
 - **英文 fallback：** direct — momentumDashboard.subtitle: Find stronger assets within stronger groups and follow market momentum.
 - **韓文候選：** 강세를 보이는 분류에서 유망 종목을 찾아 시장 모멘텀의 방향을 파악하세요.
@@ -769,7 +769,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 產業與主題
-- **簡中對照：** 产业与主题
+- **簡中對照：** 行业与主题
 - **英文對照：** Sectors & themes
 - **英文 fallback：** direct — momentumDashboard.tabs.Industry: Sectors & themes
 - **韓文候選：** 산업·테마
@@ -901,7 +901,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 更新失敗，目前顯示上次取得的行情。
-- **簡中對照：** 更新失败，目前显示上次取得的行情。
+- **簡中對照：** 更新失败，目前显示上次获取的行情。
 - **英文對照：** Could not refresh. Showing the last available data.
 - **英文 fallback：** direct — momentumDashboard.refreshError: Could not refresh. Showing the last available data.
 - **韓文候選：** 업데이트에 실패했습니다. 이전에 가져온 시세를 표시합니다.
@@ -1285,7 +1285,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 資料為觀察清單標的的日線行情，非盤中即時報價。各期間報酬與單日變化採調整後收盤價，反映配息與拆股調整。動能分數將近 20、60、120 個交易日的報酬，在所選清單內排名，再以 20%、40%、40% 加權；分類分數為所含標的的平均。
-- **簡中對照：** 数据为观察列表标的的日线行情，非盘中即时报价。各期间收益与单日变化采调整后收盘价，反映分红与拆股调整。动能分数将近 20、60、120 个交易日的收益，在所选列表内排名，再以 20%、40%、40% 加权；分类分数为所含标的的平均。
+- **簡中對照：** 数据为观察列表中各标的的日线行情，并非盘中实时行情。各周期收益和单日涨跌均按调整后收盘价计算，已考虑分红和拆股因素。动能分数根据近 20、60、120 个交易日的收益在所选列表中排名，再按 20%、40%、40% 加权；分类分数为该分类内所有标的的平均分。
 - **英文對照：** Daily data for assets in the watchlist, updated after the close. Period returns and daily changes use adjusted closing prices, reflecting dividend and split adjustments. Momentum ranks 20-, 60- and 120-session returns within each list, weighted 20%, 40% and 40%. Group scores average their assets.
 - **英文 fallback：** direct — momentumDashboard.methodBody: Daily data for assets in the watchlist, updated after the close. Period returns and daily changes use adjusted closing prices, reflecting dividend and split adjustments. Momentum ranks 20-, 60- and 120-session returns within each list, weighted 20%, 40% and 40%. Group scores average their assets.
 - **韓文候選：** 데이터는 추적 대상 종목의 일봉 시세이며 장중 실시간 호가가 아닙니다. 기간별 수익률과 일일 변동은 배당과 주식 분할을 반영한 수정 종가를 사용합니다. 모멘텀 점수는 최근 20·60·120거래일 수익률을 선택한 목록 안에서 각각 순위화한 뒤 20%·40%·40%의 가중치를 적용합니다. 분류 점수는 해당 분류에 속한 종목 점수의 평균입니다.
@@ -1297,7 +1297,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 分類線條顯示平均動能分數。標的的相對強度線則以調整後價格除以 SPY 同期價格，將起點設為 100，搭配 20 個交易日的簡單移動平均。排名以 SPY 最新資料日統一計算，缺少該日資料的標的不計分。 個股以 SPY 成分股與已取得的 ETF 美元股票持股組成共同觀察池，使用同一組 20／60／120 日權重計分。RSI 採 14 日 Wilder 平滑；平均每日成交額以近 20 日收盤價乘成交量估算。
-- **簡中對照：** 分类线条显示平均动能分数。标的的相对强度线则以调整后价格除以 SPY 同期价格，将起点设为 100，搭配 20 个交易日的简单移动平均。排名以 SPY 最新数据日统一计算，缺少该日数据的标的不计分。 个股以 SPY 成分股与已取得的 ETF 美元股票持仓组成共同观察池，使用同一组 20／60／120 日权重计分。RSI 采 14 日 Wilder 平滑；平均每日成交额以近 20 日收盘价乘成交量估算。
+- **簡中對照：** 分类趋势线显示平均动能分数。标的的相对强度线以调整后价格除以 SPY 同期价格，并将起点设为 100，再配合 20 个交易日的简单移动平均线。排名统一按 SPY 最新数据日期计算，缺少该日数据的标的不计分。个股观察池由 SPY 成分股和已获取的 ETF 美元计价股票持仓组成，并使用相同的 20／60／120 日权重计分。RSI 采用 14 日 Wilder 平滑法；日均成交额按近 20 日收盘价乘以成交量估算。
 - **英文對照：** Group lines show average momentum scores. Asset relative strength lines divide adjusted prices by SPY prices, normalized to 100 at the start, with a 20-session simple moving average. Rankings use the latest SPY data date; assets missing that date are excluded. Stock scores use a shared pool of SPY constituents and available USD equity holdings from ETFs, with the same 20/60/120-session weights. RSI uses 14-session Wilder smoothing. Average daily turnover estimates close times volume over 20 sessions.
 - **英文 fallback：** direct — momentumDashboard.methodTrend: Group lines show average momentum scores. Asset relative strength lines divide adjusted prices by SPY prices, normalized to 100 at the start, with a 20-session simple moving average. Rankings use the latest SPY data date; assets missing that date are excluded. Stock scores use a shared pool of SPY constituents and available USD equity holdings from ETFs, with the same 20/60/120-session weights. RSI uses 14-session Wilder smoothing. Average daily turnover estimates close times volume over 20 sessions.
 - **韓文候選：** 분류별 선은 평균 모멘텀 점수를 나타냅니다. 종목의 상대 강도선은 수정 주가를 같은 기간의 SPY 가격으로 나눈 뒤 시작점을 100으로 설정하고, 20거래일 단순 이동평균을 함께 표시합니다. 순위는 SPY의 최신 데이터 날짜를 기준으로 일괄 계산하며, 해당 날짜의 데이터가 없는 종목은 점수를 산출하지 않습니다. 개별 종목의 공통 비교 대상에는 SPY 구성 종목과 확보된 ETF의 달러 표시 주식 보유 종목이 포함되며, 모두 동일한 20·60·120일 가중치로 점수를 계산합니다. RSI는 14일 Wilder 평활법을 사용합니다. 일평균 거래대금은 최근 20일 종가에 거래량을 곱해 추정합니다.
@@ -1345,7 +1345,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 已開發市場
-- **簡中對照：** 已开发市场
+- **簡中對照：** 发达市场
 - **英文對照：** Developed markets
 - **英文 fallback：** direct — momentumDashboard.groups.developed-markets: Developed markets
 - **韓文候選：** 선진국 시장
@@ -1381,7 +1381,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 不動產
-- **簡中對照：** 不动产
+- **簡中對照：** 房地产
 - **英文對照：** Real estate
 - **英文 fallback：** direct — momentumDashboard.groups.real-estate: Real estate
 - **韓文候選：** 부동산
@@ -1429,7 +1429,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 美國公債
-- **簡中對照：** 美国公债
+- **簡中對照：** 美国国债
 - **英文對照：** US Treasury bonds
 - **英文 fallback：** direct — momentumDashboard.groups.treasury-bonds: US Treasury bonds
 - **韓文候選：** 미국 국채
@@ -1465,7 +1465,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 原物料
-- **簡中對照：** 原物料
+- **簡中對照：** 大宗商品
 - **英文對照：** Commodities
 - **英文 fallback：** direct — momentumDashboard.groups.3-commodities: Commodities
 - **韓文候選：** 원자재
@@ -1765,7 +1765,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 先找動能較強的分類，再查看其中排名靠前的標的。點選標的，比較各期間報酬與領先 SPY 的幅度；相對強度線則用來觀察是否持續領先大盤。
-- **簡中對照：** 先找动能较强的分类，再查看其中排名靠前的标的。点选标的，比较各期间收益与领先 SPY 的幅度；相对强度线则用来观察是否持续领先大盘。
+- **簡中對照：** 先找动能较强的分类，再查看其中排名靠前的标的。点击标的，比较各周期收益及其相对 SPY 的领先幅度；再通过相对强度线观察是否持续跑赢大盘。
 - **英文對照：** Start with a stronger group, then review its highest-ranked assets. Select an asset row to compare returns and its lead over SPY across periods. The relative strength line shows whether it continues to outperform the broad market.
 - **英文 fallback：** direct — momentumDashboard.guide.action.body: Start with a stronger group, then review its highest-ranked assets. Select an asset row to compare returns and its lead over SPY across periods. The relative strength line shows whether it continues to outperform the broad market.
 - **韓文候選：** 먼저 모멘텀이 강한 분류를 찾은 다음, 해당 분류에서 순위가 높은 종목을 확인하세요. 종목을 선택해 기간별 수익률과 SPY 대비 초과 성과를 비교할 수 있습니다. 상대 강도선으로 시장 대비 우위가 지속되는지도 살펴볼 수 있습니다.
@@ -2065,7 +2065,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 成分股資料正在建立，完成後即可查看。
-- **簡中對照：** 成分股数据正在建立，完成后即可查看。
+- **簡中對照：** 成分股数据正在生成，完成后即可查看。
 - **英文對照：** Holdings are being prepared. Check again once the update is complete.
 - **英文 fallback：** direct — momentumDashboard.holdingsPending: Holdings are being prepared. Check again once the update is complete.
 - **韓文候選：** 구성 종목 데이터를 준비하고 있습니다. 완료되면 확인할 수 있습니다.
@@ -2317,7 +2317,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 這份觀察清單，以美國上市 ETF 為主，另含封閉式基金等上市商品，例如 DXYZ。涵蓋產業、主題、股市、債券、商品與股票策略，並非全部市場。部分標的會出現在不同清單中。
-- **簡中對照：** 这份观察列表，以美国上市 ETF 为主，另含封闭式基金等上市商品，例如 DXYZ。涵盖产业、主题、股市、债券、商品与股票策略，并非全部市场。部分标的会出现在不同列表中。
+- **簡中對照：** 这份观察列表以美国上市 ETF 为主，也包含封闭式基金等上市产品，例如 DXYZ。涵盖行业、主题、股市、债券、大宗商品与股票策略，并非覆盖全部市场。部分标的可能出现在多个列表中。
 - **英文對照：** This curated watchlist consists mainly of US-listed ETFs, plus other listed products such as the DXYZ closed-end fund. It covers sectors, themes, stock markets, bonds, commodities and equity strategies, not the entire market. Some assets appear in multiple lists.
 - **英文 fallback：** direct — momentumDashboard.coverageBody: This curated watchlist consists mainly of US-listed ETFs, plus other listed products such as the DXYZ closed-end fund. It covers sectors, themes, stock markets, bonds, commodities and equity strategies, not the entire market. Some assets appear in multiple lists.
 - **韓文候選：** 이 추적 목록은 미국 상장 ETF를 중심으로 하며 DXYZ와 같은 폐쇄형 펀드 등 상장 상품도 포함합니다. 산업, 테마, 주식시장, 채권, 원자재 및 주식 전략을 다루지만 전체 시장을 포괄하지는 않습니다. 일부 종목은 여러 목록에 중복으로 포함될 수 있습니다.
@@ -2329,7 +2329,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 分類依觀察主題整理，不是正式產業分類。分類分數會受到所選標的影響；不同 ETF 可能持有相同股票，檔數更多不一定代表涵蓋更多市場。
-- **簡中對照：** 分类依观察主题整理，不是正式产业分类。分类分数会受到所选标的影响；不同 ETF 可能持有相同股票，标的数量更多不一定代表涵盖更多市场。
+- **簡中對照：** 分类按观察主题整理，并非正式行业分类。分类分数会受到所选标的影响；不同 ETF 可能持有相同股票，因此标的数量更多不一定代表覆盖的市场更广。
 - **英文對照：** Groups reflect research themes, not an official industry classification. Group scores depend on the assets included. ETFs can hold the same stocks, so adding more funds does not necessarily broaden coverage.
 - **英文 fallback：** direct — momentumDashboard.coverageGroups: Groups reflect research themes, not an official industry classification. Group scores depend on the assets included. ETFs can hold the same stocks, so adding more funds does not necessarily broaden coverage.
 - **韓文候選：** 분류는 관찰 주제에 따라 구성했으며 공식 산업 분류가 아닙니다. 분류 점수는 선택된 종목의 영향을 받습니다. ETF마다 같은 주식을 보유할 수 있으므로 종목 수가 많다고 해서 더 많은 시장을 포괄하는 것은 아닙니다.
@@ -2401,7 +2401,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 「因子」是選股所依據的特徵。這組包含追隨漲勢（SPMO）、高市場敏感度（SPHB）、品質（SPHQ）、低波動（SPLV）及高股息低波動（SPHD）；色塊呈現這些不同策略的平均分數。
-- **簡中對照：** 「因子」是选股所依据的特征。这组包含动量策略（SPMO）、高市场敏感度（SPHB）、质量（SPHQ）、低波动（SPLV）及高股息低波动（SPHD）；色块呈现这些不同策略的平均分数。
+- **簡中對照：** “因子”是选股所依据的特征。这组包含动量策略（SPMO）、高市场敏感度（SPHB）、质量（SPHQ）、低波动（SPLV）及高股息低波动（SPHD）；色块呈现这些不同策略的平均分数。
 - **英文對照：** Factors are characteristics used to select stocks. This group includes momentum (SPMO), high market sensitivity (SPHB), quality (SPHQ), low volatility (SPLV), and high dividends with low volatility (SPHD). The tile averages these different strategies.
 - **英文 fallback：** direct — momentumDashboard.groupDescriptions.factors: Factors are characteristics used to select stocks. This group includes momentum (SPMO), high market sensitivity (SPHB), quality (SPHQ), low volatility (SPLV), and high dividends with low volatility (SPHD). The tile averages these different strategies.
 - **韓文候選：** 팩터는 종목을 선정할 때 사용하는 특성입니다. 이 그룹에는 모멘텀 추종(SPMO), 높은 시장 민감도(SPHB), 퀄리티(SPHQ), 저변동성(SPLV), 고배당·저변동성(SPHD) 전략이 포함됩니다. 색상 영역은 서로 다른 전략의 평균 점수를 나타냅니다.
@@ -2413,7 +2413,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 這組投資具有成長特徵的股票，依各基金指數規則篩選，例如營收或獲利成長。包含大型與小型股；「成長股」是選股類型，並不保證股價會上漲。
-- **簡中對照：** 这组投资具有成长特征的股票，依各基金指数规则筛选，例如营收或获利成长。包含大型与小型股；「成长股」是选股类型，并不保证股价会上涨。
+- **簡中對照：** 这组投资具有成长特征的股票，依各基金指数规则筛选，例如营收或获利成长。包含大型与小型股；“成长股”是选股类型，并不保证股价会上涨。
 - **英文對照：** These funds select stocks with growth characteristics, such as earnings or revenue growth, according to their index rules. They cover large and small companies. Growth describes the selection style, not a promise that prices will rise.
 - **英文 fallback：** direct — momentumDashboard.groupDescriptions.growth: These funds select stocks with growth characteristics, such as earnings or revenue growth, according to their index rules. They cover large and small companies. Growth describes the selection style, not a promise that prices will rise.
 - **韓文候選：** 이 그룹은 각 펀드 지수의 규칙에 따라 매출이나 이익 성장 등 성장 특성을 가진 주식에 투자합니다. 대형주와 소형주가 모두 포함됩니다. 성장주는 종목 선정 유형을 뜻하며 주가 상승을 보장하지 않습니다.
@@ -2437,7 +2437,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 在同一產業板塊內，指數於再平衡時給每檔股票相同權重；之後權重會隨價格變動。
-- **簡中對照：** 在同一产业板块内，指数于再平衡时给每只股票相同权重；之后权重会随价格变动。
+- **簡中對照：** 在同一行业板块内，指数会在再平衡时为每只股票分配相同权重；此后权重会随股价变化。
 - **英文對照：** Each stock within a sector receives the same weight at index rebalancing; weights then drift as prices change.
 - **英文 fallback：** direct — momentumDashboard.groupDescriptions.equal-weighted-sectors: Each stock within a sector receives the same weight at index rebalancing; weights then drift as prices change.
 - **韓文候選：** 같은 산업 섹터 안에서 지수는 리밸런싱 시 각 주식에 동일한 비중을 부여합니다. 이후에는 주가 변동에 따라 비중이 달라집니다.
@@ -2449,7 +2449,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 在同一產業板塊內，通常市值越大的公司權重越高，並依各指數規則調整。
-- **簡中對照：** 在同一产业板块内，通常市值越大的公司权重越高，并依各指数规则调整。
+- **簡中對照：** 在同一行业板块内，通常市值越大的公司权重越高，并按各指数规则调整。
 - **英文對照：** Larger companies generally receive larger weights within a sector, subject to each index’s rules.
 - **英文 fallback：** direct — momentumDashboard.groupDescriptions.market-cap-weighted-sectors: Larger companies generally receive larger weights within a sector, subject to each index’s rules.
 - **韓文候選：** 같은 산업 섹터 안에서는 일반적으로 시가총액이 큰 기업일수록 비중이 높으며, 각 지수의 규칙에 따라 조정됩니다.
@@ -2665,7 +2665,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 使用教學
-- **簡中對照：** 使用教学
+- **簡中對照：** 使用指南
 - **英文對照：** Page tutorial
 - **英文 fallback：** direct — momentumDashboard.tour.start: Page tutorial
 - **韓文候選：** 사용 안내
@@ -2677,7 +2677,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 略過
-- **簡中對照：** 略过
+- **簡中對照：** 跳过
 - **英文對照：** Skip
 - **英文 fallback：** direct — momentumDashboard.tour.skip: Skip
 - **韓文候選：** 건너뛰기
@@ -2737,7 +2737,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 「市場總覽」比較分類與 ETF；「動能選股」從強勢板塊中篩選個股。兩種方式可隨時切換。
-- **簡中對照：** 「市场总览」比较分类与 ETF；「动能选股」从强势板块中筛选个股。两种方式可随时切换。
+- **簡中對照：** “市场总览”比较分类与 ETF；“动能选股”从强势板块中筛选个股。两种方式可随时切换。
 - **英文對照：** Market overview compares groups and ETFs. Stock screener finds candidates within strong sectors. Switch between the two at any time.
 - **英文 fallback：** direct — momentumDashboard.tour.screen.body: Market overview compares groups and ETFs. Stock screener finds candidates within strong sectors. Switch between the two at any time.
 - **韓文候選：** 시장 개요에서는 분류와 ETF를 비교하고, 모멘텀 종목 찾기에서는 강세 섹터에서 개별 종목을 선별합니다. 두 화면은 언제든 전환할 수 있습니다.
@@ -2761,7 +2761,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 「產業與主題」比較板塊，「主要資產」比較股票、債券與商品，「市場結構」則是比較不同選股方式。也可切換近期動能與單日漲跌。
-- **簡中對照：** 「产业与主题」比较板块，「主要资产」比较股票、债券与商品，「市场结构」则是比较不同选股方式。也可切换近期动能与单日涨跌。
+- **簡中對照：** “行业与主题”用于比较行业板块，“主要资产”用于比较股票、债券与商品，“市场结构”用于比较不同选股方式。也可以切换查看近期动能或单日涨跌。
 - **英文對照：** “Sectors & themes” compares sectors, “Major assets” compares stocks, bonds and commodities, and “Market structure” compares stock-selection approaches. Switch between recent momentum and daily change.
 - **英文 fallback：** direct — momentumDashboard.tour.scope.body: “Sectors & themes” compares sectors, “Major assets” compares stocks, bonds and commodities, and “Market structure” compares stock-selection approaches. Switch between recent momentum and daily change.
 - **韓文候選：** 산업·테마에서는 섹터를, 주요 자산에서는 주식·채권·원자재를, 시장 구조에서는 서로 다른 종목 선정 방식을 비교합니다. 최근 모멘텀과 일일 등락률도 전환해 볼 수 있습니다.
@@ -2773,7 +2773,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 點選分類，查看 ETF
-- **簡中對照：** 点选分类，查看 ETF
+- **簡中對照：** 点击分类，查看 ETF
 - **英文對照：** Select a group to see its ETFs
 - **英文 fallback：** direct — momentumDashboard.tour.map.title: Select a group to see its ETFs
 - **韓文候選：** 분류를 선택해 ETF 확인
@@ -2785,7 +2785,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 色塊顯示分類的平均動能分數，分數越高代表近幾個月的表現越靠前。點選分類，下方會列出其中的 ETF。
-- **簡中對照：** 色块显示分类的平均动能分数，分数越高代表近几个月的表现越靠前。点选分类，下方会列出其中的 ETF。
+- **簡中對照：** 色块显示分类的平均动能分数，分数越高代表近几个月的表现越靠前。点击分类，下方会列出其中的 ETF。
 - **英文對照：** Tiles show each group’s average momentum score. Higher scores mean stronger performance over recent months. Select a group to see its ETFs below.
 - **英文 fallback：** direct — momentumDashboard.tour.map.body: Tiles show each group’s average momentum score. Higher scores mean stronger performance over recent months. Select a group to see its ETFs below.
 - **韓文候選：** 색상 영역은 분류의 평균 모멘텀 점수를 나타냅니다. 점수가 높을수록 최근 몇 달간 성과 순위가 높습니다. 분류를 선택하면 아래에 해당 ETF가 표시됩니다.
@@ -2797,7 +2797,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 點選分類，查看 ETF
-- **簡中對照：** 点选分类，查看 ETF
+- **簡中對照：** 点击分类，查看 ETF
 - **英文對照：** Select a group to see its ETFs
 - **英文 fallback：** direct — momentumDashboard.tour.mapDaily.title: Select a group to see its ETFs
 - **韓文候選：** 분류를 선택해 ETF 확인
@@ -2809,7 +2809,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 單日漲跌模式顯示各分類最近一個交易日的漲跌，綠色代表上漲，紅色代表下跌。點選分類，下方會列出其中的 ETF。
-- **簡中對照：** 单日涨跌模式显示各分类最近一个交易日的涨跌，绿色代表上涨，红色代表下跌。点选分类，下方会列出其中的 ETF。
+- **簡中對照：** 单日涨跌模式显示各分类最近一个交易日的涨跌，绿色代表上涨，红色代表下跌。点击分类，下方会列出其中的 ETF。
 - **英文對照：** Daily change shows each group’s move in the latest trading session: green for gains and red for losses. Select a group to see its ETFs below.
 - **英文 fallback：** direct — momentumDashboard.tour.mapDaily.body: Daily change shows each group’s move in the latest trading session: green for gains and red for losses. Select a group to see its ETFs below.
 - **韓文候選：** 일일 등락률 모드에서는 각 분류의 최근 거래일 등락률을 보여줍니다. 녹색은 상승, 빨간색은 하락을 뜻합니다. 분류를 선택하면 아래에 해당 ETF가 표시됩니다.
@@ -2833,7 +2833,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 點選整列 ETF，查看表現與走勢。切換到「成分股」可查看其中的股票；返回清單後可繼續比較其他標的。
-- **簡中對照：** 点选整列 ETF，查看表现与走势。切换到「成分股」可查看其中的股票；返回列表后可继续比较其他标的。
+- **簡中對照：** 点击 ETF 所在行，可查看其表现与走势。切换到“成分股”可查看其中的股票；返回列表后可继续比较其他标的。
 - **英文對照：** Select an ETF row to see its performance and charts. Open Constituents to explore its stocks, then return to the list to compare other assets.
 - **英文 fallback：** direct — momentumDashboard.tour.asset.body: Select an ETF row to see its performance and charts. Open Constituents to explore its stocks, then return to the list to compare other assets.
 - **韓文候選：** ETF 행 전체를 선택하면 성과와 추이를 확인할 수 있습니다. 구성 종목으로 전환하면 ETF가 보유한 주식을 볼 수 있습니다. 목록으로 돌아가 다른 종목도 계속 비교할 수 있습니다.
@@ -3553,7 +3553,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 市場動能儀表板｜ETF 排名與強勢分類
-- **簡中對照：** 市场动能仪表板｜ETF 排名与强势分类
+- **簡中對照：** 市场动能仪表盘｜ETF 排名与板块趋势
 - **英文對照：** Market Momentum Dashboard \| ETF Rankings & Sector Trends
 - **英文 fallback：** direct — momentumDashboard.pageTitle: Market Momentum Dashboard \| ETF Rankings & Sector Trends
 - **韓文候選：** 시장 모멘텀 대시보드 \| ETF 순위 및 강세 분류
@@ -3565,7 +3565,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 比較 ETF 動能排名、產業分類與多期間表現，從強勢分類找到強勢標的，掌握市場動能的方向。
-- **簡中對照：** 比较 ETF 动能排名、产业分类与多期间表现，从强势分类找到强势标的，掌握市场动能的方向。
+- **簡中對照：** 比较 ETF 动能排名、板块趋势及多个周期的表现，从表现较强的板块中寻找相对强势的标的，掌握市场动能方向。
 - **英文對照：** Compare ETF momentum rankings, sector trends and performance across multiple periods. Find stronger assets within stronger groups.
 - **英文 fallback：** direct — momentumDashboard.pageDescription: Compare ETF momentum rankings, sector trends and performance across multiple periods. Find stronger assets within stronger groups.
 - **韓文候選：** ETF 모멘텀 순위, 산업 분류 및 여러 기간의 성과를 비교하고, 강세 분류에서 유망 종목을 찾아 시장 모멘텀의 방향을 파악하세요.
@@ -3745,7 +3745,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入中...
-- **簡中對照：** 加载中...
+- **簡中對照：** 加载中……
 - **英文對照：** Loading...
 - **英文 fallback：** direct — articleDetail.loadingTitle: Loading...
 - **韓文候選：** 불러오는 중...
@@ -3757,7 +3757,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入文章內容中...
-- **簡中對照：** 加载文章内容中...
+- **簡中對照：** 加载文章内容中……
 - **英文對照：** Loading article content...
 - **英文 fallback：** direct — articleDetail.loadingDescription: Loading article content...
 - **韓文候選：** 게시글 내용을 불러오는 중입니다...
@@ -3928,7 +3928,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 - **簡中對照：** 这是【一个投机者的告白】作者科斯托兰尼的名言。资金=基本面=总体经济，心理=投资者情绪＝人性。我相信循环来自于人的不理性，造就了经济和股市的波峰与谷底。
 - **英文對照：** This is a famous quote from André Kostolany, author of 'The Speculator's Confession'. Funds = Fundamentals = Macroeconomics. Psychology = Investor Sentiment = Human Nature. I believe cycles stem from human irrationality, creating the peaks and troughs of the economy and stock market.
 - **英文 fallback：** direct — about.section1Text: This is a famous quote from André Kostolany, author of 'The Speculator's Confession'. Funds = Fundamentals = Macroeconomics. Psychology = Investor Sentiment = Human Nature. I believe cycles stem from human irrationality, creating the peaks and troughs of the economy and stock market.
-- **韓文候選：** 이는 《한 투기자의 고백》의 저자 앙드레 코스톨라니의 명언입니다. 자금은 펀더멘털과 거시경제를, 심리는 투자자의 감정과 인간 본성을 가리킵니다. 저는 시장의 순환이 인간의 비합리성에서 비롯되고, 그 비합리성이 경제와 주식시장의 고점과 저점을 만든다고 생각합니다.
+- **韓文候選：** 이는 《한 투기자의 고백》을 쓴 앙드레 코스톨라니의 명언입니다. 자금은 펀더멘털과 거시경제를, 심리는 투자자의 감정과 인간 본성을 가리킵니다. 저는 시장의 순환이 인간의 비합리성에서 비롯되고, 그 비합리성이 경제와 주식시장의 고점과 저점을 만든다고 생각합니다.
 - **候選來源：** docs/korean-review/drafts/reviewed-overrides.ko-KR.json
 - **替代候選：** docs/korean-review/drafts/01-content-payments.revised.ko-KR.json: 이는 《어느 투기꾼의 고백》의 저자 앙드레 코스톨라니의 명언입니다. 자금은 펀더멘털과 거시경제를, 심리는 투자자의 감정과 인간 본성을 가리킵니다. 저는 시장의 순환이 인간의 비합리성에서 비롯되고, 그 비합리성이 경제와 주식시장의 고점과 저점을 만든다고 생각합니다.；docs/i18n/ko-KR-review/01-content-payments.draft.json: 이는 《어느 투기꾼의 고백》의 저자 앙드레 코스톨라니의 명언입니다. 자금은 펀더멘털과 거시경제를, 심리는 투자자의 감정과 인간 본성을 뜻합니다. 저는 시장의 순환이 인간의 비합리성에서 비롯되며, 이것이 경제와 주식시장의 고점과 저점을 만든다고 생각합니다.；docs/i18n/ko-KR-review/ko-KR.translation-review.json: 이는 《어느 투기꾼의 고백》의 저자 앙드레 코스톨라니의 명언입니다. 자금은 펀더멘털과 거시경제를, 심리는 투자자의 감정과 인간 본성을 뜻합니다. 저는 시장의 순환이 인간의 비합리성에서 비롯되며, 이것이 경제와 주식시장의 고점과 저점을 만든다고 생각합니다.
 - **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
@@ -4093,7 +4093,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 驗證中...
-- **簡中對照：** 验证中...
+- **簡中對照：** 验证中……
 - **英文對照：** Validating...
 - **英文 fallback：** direct — redemption.validating: Validating...
 - **韓文候選：** 확인 중...
@@ -4141,7 +4141,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 兌換中...
-- **簡中對照：** 兑换中...
+- **簡中對照：** 兑换中……
 - **英文對照：** Redeeming...
 - **英文 fallback：** direct — redemption.redeeming: Redeeming...
 - **韓文候選：** 쿠폰 적용 중...
@@ -4153,7 +4153,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 處理中...
-- **簡中對照：** 处理中...
+- **簡中對照：** 处理中……
 - **英文對照：** Processing...
 - **英文 fallback：** direct — redemption.processing: Processing...
 - **韓文候選：** 처리 중...
@@ -4165,7 +4165,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入預覽中...
-- **簡中對照：** 加载预览中...
+- **簡中對照：** 加载预览中……
 - **英文對照：** Loading preview...
 - **英文 fallback：** direct — redemption.loadingPreview: Loading preview...
 - **韓文候選：** 미리 보기 불러오는 중...
@@ -4357,7 +4357,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 處理中...
-- **簡中對照：** 处理中...
+- **簡中對照：** 处理中……
 - **英文對照：** Processing...
 - **英文 fallback：** direct — redemption.confirmation.processing: Processing...
 - **韓文候選：** 처리 중...
@@ -4417,7 +4417,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 升級至 {{plan}} 方案 {{duration}} {{unit}}
-- **簡中對照：** 升级至 {{plan}} 方案 {{duration}} {{unit}}
+- **簡中對照：** 升级至 {{plan}} 套餐 {{duration}} {{unit}}
 - **英文對照：** Upgrade to {{plan}} for {{duration}} {{unit}}
 - **英文 fallback：** direct — redemption.confirmation.benefits.upgrade.description: Upgrade to {{plan}} for {{duration}} {{unit}}
 - **韓文候選：** {{duration}}{{unit}} 동안 {{plan}} 요금제로 업그레이드됩니다.
@@ -4441,7 +4441,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入記錄中...
-- **簡中對照：** 加载记录中...
+- **簡中對照：** 加载记录中……
 - **英文對照：** Loading history...
 - **英文 fallback：** direct — redemption.history.loading: Loading history...
 - **韓文候選：** 사용 내역을 불러오는 중...
@@ -4813,7 +4813,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入優惠中...
-- **簡中對照：** 加载优惠中...
+- **簡中對照：** 加载优惠中……
 - **英文對照：** Loading promotions...
 - **英文 fallback：** direct — redemption.activePromotions.loading: Loading promotions...
 - **韓文候選：** 혜택을 불러오는 중...
@@ -5029,7 +5029,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 方案升級
-- **簡中對照：** 方案升级
+- **簡中對照：** 套餐升级
 - **英文對照：** Plan Upgrade
 - **英文 fallback：** direct — redemption.activePromotions.benefits.upgrade.title: Plan Upgrade
 - **韓文候選：** 요금제 업그레이드
@@ -5041,7 +5041,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 您可使用 {{plan}} 方案功能
-- **簡中對照：** 您可使用 {{plan}} 方案功能
+- **簡中對照：** 您可使用 {{plan}} 套餐功能
 - **英文對照：** You have access to {{plan}} features
 - **英文 fallback：** direct — redemption.activePromotions.benefits.upgrade.description: You have access to {{plan}} features
 - **韓文候選：** {{plan}} 요금제의 기능을 이용할 수 있습니다.
@@ -5269,7 +5269,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 此代碼僅適用於以下方案：{{eligiblePlans}}。
-- **簡中對照：** 此代码仅适用于以下方案：{{eligiblePlans}}。
+- **簡中對照：** 此代码仅适用于以下套餐：{{eligiblePlans}}。
 - **英文對照：** This code is only available for these plans: {{eligiblePlans}}.
 - **英文 fallback：** direct — redemption.errors.plan_not_eligible: This code is only available for these plans: {{eligiblePlans}}.
 - **韓文候選：** 이 코드는 다음 요금제에서만 사용할 수 있습니다: {{eligiblePlans}}.
@@ -5305,7 +5305,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 此代碼僅限 {{eligiblePlans}} 方案用戶使用
-- **簡中對照：** 此代码仅限 {{eligiblePlans}} 方案用户使用
+- **簡中對照：** 此代码仅限 {{eligiblePlans}} 套餐用户使用
 - **英文對照：** This code is only for {{eligiblePlans}} plan users
 - **英文 fallback：** direct — redemption.errors.eligibility_plan_restriction: This code is only for {{eligiblePlans}} plan users
 - **韓文候選：** 이 코드는 {{eligiblePlans}} 요금제 사용자만 사용할 수 있습니다.
@@ -5461,7 +5461,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 請求逾時，請重試
-- **簡中對照：** 请求逾时，请重试
+- **簡中對照：** 请求超时，请重试
 - **英文對照：** Request timed out. Please try again
 - **英文 fallback：** direct — redemption.errors.timeout: Request timed out. Please try again
 - **韓文候選：** 요청 시간이 초과되었습니다. 다시 시도해 주세요.
@@ -5569,7 +5569,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 此代碼不適用於您目前的方案。
-- **簡中對照：** 此代码不适用于您当前的方案。
+- **簡中對照：** 此代码不适用于您当前的套餐。
 - **英文對照：** This code isn't eligible for your current plan.
 - **英文 fallback：** direct — redemption.errors.plan_not_eligible_generic: This code isn't eligible for your current plan.
 - **韓文候選：** 이 코드는 현재 요금제에서 사용할 수 없습니다.
@@ -5581,7 +5581,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 升級方案
-- **簡中對照：** 升级方案
+- **簡中對照：** 升级套餐
 - **英文對照：** Upgrade plan
 - **英文 fallback：** direct — redemption.actions.upgrade_plan: Upgrade plan
 - **韓文候選：** 요금제 업그레이드
@@ -5593,7 +5593,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 升級到 {{planName}} 方案
-- **簡中對照：** 升级到 {{planName}} 方案
+- **簡中對照：** 升级到 {{planName}} 套餐
 - **英文對照：** Upgrade to {{planName}}
 - **英文 fallback：** direct — redemption.actions.upgrade_to_plan: Upgrade to {{planName}}
 - **韓文候選：** {{planName}} 요금제로 업그레이드
@@ -5773,7 +5773,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 輸入您的優惠代碼，立即查看方案折扣
-- **簡中對照：** 输入您的优惠代码，立即查看方案折扣
+- **簡中對照：** 输入优惠码，立即查看可享受的套餐折扣。
 - **英文對照：** Enter your promotional code to see instant discounts on our plans
 - **英文 fallback：** direct — redemption.pricing.subtitle: Enter your promotional code to see instant discounts on our plans
 - **韓文候選：** 쿠폰 코드를 입력하면 요금제 할인 혜택을 바로 확인할 수 있습니다.
@@ -5941,7 +5941,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 輸入訊息...
-- **簡中對照：** 输入消息...
+- **簡中對照：** 输入消息……
 - **英文對照：** Enter message...
 - **英文 fallback：** direct — chatWidget.inputPlaceholder: Enter message...
 - **韓文候選：** 메시지를 입력하세요...
@@ -6073,7 +6073,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入中...
-- **簡中對照：** 加载中...
+- **簡中對照：** 加载中……
 - **英文對照：** Loading...
 - **英文 fallback：** direct — signInButton.loading: Loading...
 - **韓文候選：** 불러오는 중...
@@ -6289,7 +6289,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 歡迎分享本網站提供之資訊連結，如需轉載內容務必經由本網站同意。聯絡信箱：support@sentimentinsideout.com
-- **簡中對照：** 欢迎分享本网站提供的信息链接。如需转载本网站内容，请事先取得本网站同意。联系邮箱：support@sentimentinsideout.com
+- **簡中對照：** 欢迎分享本网站提供的信息链接。如需转载本网站内容，请事先获得本网站同意。联系邮箱：support@sentimentinsideout.com
 - **英文對照：** Feel free to share links to information provided on this website. Reproduction of content requires prior consent. Contact us at: support@sentimentinsideout.com
 - **英文 fallback：** direct — footer.disclaimer2: Feel free to share links to information provided on this website. Reproduction of content requires prior consent. Contact us at: support@sentimentinsideout.com
 - **韓文候選：** 본 사이트의 정보 링크는 자유롭게 공유하실 수 있습니다. 콘텐츠를 재게시하려면 반드시 본 사이트의 사전 동의를 받아야 합니다. 문의: support@sentimentinsideout.com
@@ -6325,7 +6325,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入中...
-- **簡中對照：** 加载中...
+- **簡中對照：** 加载中……
 - **英文對照：** Loading...
 - **英文 fallback：** direct — protectedRoute.loading: Loading...
 - **韓文候選：** 불러오는 중...
@@ -6469,7 +6469,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入中...
-- **簡中對照：** 加载中...
+- **簡中對照：** 加载中……
 - **英文對照：** Loading...
 - **英文 fallback：** direct — common.loading: Loading...
 - **韓文候選：** 불러오는 중...
@@ -6829,7 +6829,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** Google 市場趨勢分析
-- **簡中對照：** Google 市场趋势分析
+- **簡中對照：** Google 整体市场搜索热度分析
 - **英文對照：** Google Market Trends Analysis
 - **英文 fallback：** direct — googleTrendsMarket.heading: Google Market Trends Analysis
 - **韓文候選：** Google 시장 트렌드 분석
@@ -6913,7 +6913,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** Google 標的搜尋熱度分析
-- **簡中對照：** Google 标的搜索热度分析
+- **簡中對照：** Google 个股搜索热度分析
 - **英文對照：** Google Symbol Trends Analysis
 - **英文 fallback：** direct — googleTrendsSymbol.heading: Google Symbol Trends Analysis
 - **韓文候選：** Google 종목 검색 관심도 분석
@@ -6985,7 +6985,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 搜尋中...
-- **簡中對照：** 搜索中...
+- **簡中對照：** 搜索中……
 - **英文對照：** Searching...
 - **英文 fallback：** direct — googleTrendsSearch.searching: Searching...
 - **韓文候選：** 검색 중...
@@ -7188,10 +7188,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### home.hero.primaryFreeTrial
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** 免綁卡免費試用 Pro 30 天
-- **簡中對照：** 无需绑定信用卡，免费试用 Pro 30 天
-- **英文對照：** Try Pro free for 30 days<br>No card needed
-- **英文 fallback：** direct — home.hero.primaryFreeTrial: Try Pro free for 30 days<br>No card needed
+- **繁中原文：** 免綁卡免費試用 Pro 14 天
+- **簡中對照：** 无需绑定信用卡，免费试用 Pro 14 天
+- **英文對照：** Try Pro free for 14 days<br>No card needed
+- **英文 fallback：** direct — home.hero.primaryFreeTrial: Try Pro free for 14 days<br>No card needed
 - **韓文候選：** 카드 등록 없이 Pro 30일 무료 체험
 - **候選來源：** docs/i18n/ko-KR-review/03-core-google-home.draft.json
 - **替代候選：** 無
@@ -7200,10 +7200,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### home.hero.primaryGuest
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** 免綁卡免費試用 Pro 30 天
-- **簡中對照：** 无需绑定信用卡，免费试用 Pro 30 天
-- **英文對照：** Try Pro free for 30 days<br>No card needed
-- **英文 fallback：** direct — home.hero.primaryGuest: Try Pro free for 30 days<br>No card needed
+- **繁中原文：** 免綁卡免費試用 Pro 14 天
+- **簡中對照：** 无需绑定信用卡，免费试用 Pro 14 天
+- **英文對照：** Try Pro free for 14 days<br>No card needed
+- **英文 fallback：** direct — home.hero.primaryGuest: Try Pro free for 14 days<br>No card needed
 - **韓文候選：** 카드 등록 없이 Pro 30일 무료 체험
 - **候選來源：** docs/i18n/ko-KR-review/03-core-google-home.draft.json
 - **替代候選：** 無
@@ -7512,10 +7512,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### home.hero.trialLoginPrompt
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** 登入後，符合資格即可開始 Pro 30 天免費試用。
-- **簡中對照：** 登录后即可确认是否符合资格，并开始 Pro 30 天免费试用。
-- **英文對照：** Sign in to check your eligibility and start a 30-day Pro trial.
-- **英文 fallback：** direct — home.hero.trialLoginPrompt: Sign in to check your eligibility and start a 30-day Pro trial.
+- **繁中原文：** 登入後，符合資格即可開始 Pro 14 天免費試用。
+- **簡中對照：** 登录后即可确认是否符合资格，并开始 Pro 14 天免费试用。
+- **英文對照：** Sign in to check your eligibility and start a 14-day Pro trial.
+- **英文 fallback：** direct — home.hero.trialLoginPrompt: Sign in to check your eligibility and start a 14-day Pro trial.
 - **韓文候選：** 로그인한 후 자격 요건을 충족하면 Pro 30일 무료 체험을 시작할 수 있습니다.
 - **候選來源：** docs/i18n/ko-KR-review/03-core-google-home.draft.json
 - **替代候選：** 無
@@ -7753,7 +7753,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 建立個人追蹤清單
-- **簡中對照：** 建立个人自选列表
+- **簡中對照：** 创建个人自选列表
 - **英文對照：** Build a personal watchlist
 - **英文 fallback：** direct — home.story.blocks.watchlist.title: Build a personal watchlist
 - **韓文候選：** 나만의 관심 종목 목록 만들기
@@ -7981,7 +7981,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 為方便統一衡量不同指標，將實際數值依據歷史位階轉換為百分標準，作為恐懼貪婪分數(0~100)。分數愈高代表市場愈貪婪；分數愈低代表市場愈恐懼
-- **簡中對照：** 为方便统一衡量不同指标，将实际数值依据历史位阶转换为百分标准，作为恐惧贪婪分数(0~100)。分数愈高代表市场愈贪婪；分数愈低代表市场愈恐惧
+- **簡中對照：** 为便于统一衡量不同指标，我们会根据各指标的历史分布，将实际数值转换为 0～100 的恐惧贪婪分数。分数越高，代表市场越偏向贪婪；分数越低，代表市场越偏向恐惧。
 - **英文對照：** For consistent measurement across indicators, the actual value is converted to a percentile based on historical rank, serving as the Sentiment Score (0-100). Higher scores indicate more greed; lower scores indicate more fear.
 - **英文 fallback：** direct — indicatorItem.fearGreedTooltip: For consistent measurement across indicators, the actual value is converted to a percentile based on historical rank, serving as the Sentiment Score (0-100). Higher scores indicate more greed; lower scores indicate more fear.
 - **韓文候選：** 서로 다른 지표를 동일한 기준으로 비교하기 위해 실제 수치를 과거 분포상 위치에 따라 0~100의 표준 점수로 변환합니다. 점수가 높을수록 시장이 탐욕 쪽에 가깝고, 낮을수록 공포 쪽에 가깝습니다.
@@ -8089,7 +8089,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 垃圾債殖利率差
-- **簡中對照：** 垃圾债收益率差
+- **簡中對照：** 高收益债利差
 - **英文對照：** Junk Bond Spread
 - **英文 fallback：** direct — indicators.junkBond: Junk Bond Spread
 - **韓文候選：** 하이일드 채권 수익률 스프레드
@@ -8377,7 +8377,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 整合 VIX、AAII、Put/Call、NAAIM 等 8 項指標的美股恐懼貪婪指數，將市場情緒量化為 0 到 100 分。協助長線投資人判斷美股是否進入極端恐慌或貪婪區域。
-- **簡中對照：** 整合 VIX、AAII、Put/Call、NAAIM 等 8 项指标的美股恐惧贪婪指数，将市场情绪量化为 0 到 100 分。协助长期投资者判断美股是否进入极端恐慌或贪婪区域。
+- **簡中對照：** 整合 VIX、AAII、Put/Call、NAAIM 等 8 项指标的美股恐惧贪婪指数，将市场情绪量化为 0～100 分，帮助长期投资者判断美股是否进入极度恐惧或极度贪婪区域。
 - **英文對照：** US Fear & Greed Index combining VIX, AAII, Put/Call Ratio, NAAIM and 4 more indicators into a 0–100 sentiment score. Built for long-term investors to spot extreme fear and greed in the US market.
 - **英文 fallback：** direct — marketSentiment.pageDescription: US Fear & Greed Index combining VIX, AAII, Put/Call Ratio, NAAIM and 4 more indicators into a 0–100 sentiment score. Built for long-term investors to spot extreme fear and greed in the US market.
 - **韓文候選：** VIX, AAII, Put/Call, NAAIM 등 8개 지표를 종합한 미국 주식 공포·탐욕 지수로 시장 심리를 0~100점으로 수치화합니다. 장기 투자자가 미국 주식시장이 극단적인 공포 또는 탐욕 구간에 진입했는지 판단하는 데 도움을 줍니다.
@@ -8533,7 +8533,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** SIO 將散戶情緒、選擇權避險需求、波動率、股票與公債的相對表現、信用利差，以及期貨與主動經理人的部位整合成 0 到 100 分。你現在看到的 {{score}} 分，是這些訊號依設定權重合成後的情緒讀數。
-- **簡中對照：** SIO 将散户情绪、期权避险需求、波动率、股票与公债的相对表现、信用利差，以及期货与主动基金经理的持仓整合成 0 到 100 分。你现在看到的 {{score}} 分，是这些信号依设置权重合成后的情绪读数。
+- **簡中對照：** SIO 将散户情绪、期权避险需求、波动率、股票与国债的相对表现、信用利差，以及期货与主动基金经理的持仓整合成 0 到 100 分。你现在看到的 {{score}} 分，是这些信号依设置权重合成后的情绪读数。
 - **英文對照：** SIO brings retail sentiment, options hedging, volatility pressure, capital flows, credit spreads, and institutional and active-manager positioning into one framework, then converts them into a 0 to 100 score. The {{score}} reading you see now is the combined output of those signals.
 - **英文 fallback：** direct — marketSentiment.gauge.explainer.current.section1.body: SIO brings retail sentiment, options hedging, volatility pressure, capital flows, credit spreads, and institutional and active-manager positioning into one framework, then converts them into a 0 to 100 score. The {{score}} reading you see now is the combined output of those signals.
 - **韓文候選：** SIO는 개인 투자자 심리, 옵션 헤지 수요, 변동성, 주식과 미국 국채의 상대 성과, 신용 스프레드, 선물 및 액티브 운용 매니저의 포지션을 종합해 0~100점으로 산출합니다. 현재 표시된 {{score}}점은 이러한 신호에 설정된 가중치를 적용해 합산한 심리 지표입니다.
@@ -8605,7 +8605,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 截至 {{date}}，SIO 為 {{score}} 分，市場情緒偏向「{{sentiment}}」。
-- **簡中對照：** 截至 {{date}}，SIO 为 {{score}} 分，市场情绪偏向「{{sentiment}}」。
+- **簡中對照：** 截至 {{date}}，SIO 为 {{score}} 分，市场情绪偏向“{{sentiment}}”。
 - **英文對照：** As of {{date}}, SIO scored {{score}}, indicating {{sentiment}}.
 - **英文 fallback：** direct — marketSentiment.gauge.explainer.snapshot.subtitle: As of {{date}}, SIO scored {{score}}, indicating {{sentiment}}.
 - **韓文候選：** {{date}} 기준 SIO는 {{score}}점이며, 시장 심리는 ‘{{sentiment}}’ 쪽에 기울어 있습니다.
@@ -9061,7 +9061,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 數據更新至兩個月前。升級至 Pro 方案即可獲得最新的市場情緒數據。
-- **簡中對照：** 数据更新至两个月前。升级至 Pro 方案即可获得最新的市场情绪数据。
+- **簡中對照：** 数据更新至两个月前。升级至 Pro 套餐即可获得最新的市场情绪数据。
 - **英文對照：** Data is updated up to two months ago. Upgrade to Pro to access the latest market sentiment data.
 - **英文 fallback：** direct — marketSentiment.tutorial.upgradeMessage: Data is updated up to two months ago. Upgrade to Pro to access the latest market sentiment data.
 - **韓文候選：** 데이터는 두 달 전까지 제공됩니다. Pro로 업그레이드하면 최신 시장 심리 데이터를 확인할 수 있습니다.
@@ -9097,7 +9097,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 💡 免費版歷史數據顯示至兩個月前。升級 Pro 方案可查看最新數據！
-- **簡中對照：** 💡 免费版历史数据显示至两个月前。升级 Pro 方案可查看最新数据！
+- **簡中對照：** 💡 免费版历史数据显示至两个月前。升级 Pro 套餐可查看最新数据！
 - **英文對照：** 💡 Latest data requires Pro. Free version data up to two months ago.
 - **英文 fallback：** direct — marketSentiment.dataLimitation.toastMessage: 💡 Latest data requires Pro. Free version data up to two months ago.
 - **韓文候選：** 💡 무료 버전에서는 두 달 전까지의 과거 데이터를 볼 수 있습니다. Pro로 업그레이드하면 최신 데이터를 확인할 수 있습니다!
@@ -9109,7 +9109,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 🔒 此功能需要 Pro 方案。升級即可獲得完整的市場情緒分析！
-- **簡中對照：** 🔒 此功能需要 Pro 方案。升级即可获得完整的市场情绪分析！
+- **簡中對照：** 🔒 此功能需要 Pro 套餐。升级即可获得完整的市场情绪分析！
 - **英文對照：** 🔒 This feature requires Pro plan. Upgrade for complete market sentiment analysis!
 - **英文 fallback：** direct — marketSentiment.dataLimitation.upgradeToast: 🔒 This feature requires Pro plan. Upgrade for complete market sentiment analysis!
 - **韓文候選：** 🔒 이 기능은 Pro 전용입니다. 업그레이드하면 전체 시장 심리 분석을 이용할 수 있습니다!
@@ -9169,7 +9169,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 免綁卡試用 Pro
-- **簡中對照：** 免绑卡试用 Pro
+- **簡中對照：** 免绑信用卡试用 Pro
 - **英文對照：** Try Pro free
 - **英文 fallback：** direct — marketSentiment.dataLimitation.freeTrialForLatest: Try Pro free
 - **韓文候選：** 카드 등록 없이 Pro 체험
@@ -9337,7 +9337,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** Sentiment Inside Out 恐懼貪婪指標 (簡稱:SIO 恐懼貪婪指標) 將市場情緒量化成 0~100 的分數，目的在於了解當前市場參與者的心理是偏向恐懼還是貪婪，類似於 CNN 恐懼貪婪指數和 BofA 牛熊指標。幫助投資人在非理性的股市波動中保持冷靜，避免跟著情緒追高殺低。
-- **簡中對照：** Sentiment Inside Out 恐惧贪婪指标 (简称:SIO 恐惧贪婪指标) 将市场情绪量化成 0~100 的分数，目的在于了解当前市场参与者的心理是偏向恐惧还是贪婪，类似于 CNN 恐惧贪婪指数和 BofA 牛熊指标。帮助投资者在非理性的股市波动中保持冷静，避免跟着情绪追涨杀跌。
+- **簡中對照：** Sentiment Inside Out 恐惧贪婪指标（简称 SIO）将市场情绪量化为 0～100 分，用于判断当前市场参与者的心理偏向恐惧还是贪婪，类似于 CNN 恐惧贪婪指数和 BofA 牛熊指标。它能帮助投资者在非理性的股市波动中保持冷静，避免跟风追涨杀跌。
 - **英文對照：** The Sentiment Inside Out Fear & Greed Indicator (SIO Fear & Greed Indicator) quantifies market sentiment into a score from 0 to 100. Its purpose is to gauge whether current market participants' psychology leans towards fear or greed, similar to the CNN Fear & Greed Index and the BofA Bull & Bear Indicator. It helps investors remain calm during irrational stock market volatility and avoid emotionally driven decisions like chasing highs and selling lows.
 - **英文 fallback：** direct — marketSentiment.descriptions.composite.shortDescription: The Sentiment Inside Out Fear & Greed Indicator (SIO Fear & Greed Indicator) quantifies market sentiment into a score from 0 to 100. Its purpose is to gauge whether current market participants' psychology leans towards fear or greed, similar to the CNN Fear & Greed Index and the BofA Bull & Bear Indicator. It helps investors remain calm during irrational stock market volatility and avoid emotionally driven decisions like chasing highs and selling lows.
 - **韓文候選：** Sentiment Inside Out의 공포·탐욕 지수(약칭: SIO 공포·탐욕 지표)는 시장 심리를 0~100점으로 수치화해 현재 시장 참여자의 심리가 공포와 탐욕 중 어느 쪽에 가까운지 파악하기 위한 지표입니다. CNN 공포·탐욕 지수와 BofA Bull & Bear Indicator와 유사한 목적을 가집니다. 비이성적인 주가 변동 속에서도 투자자가 냉정을 유지하고 감정에 휩쓸려 고점 매수와 저점 매도를 하지 않도록 돕습니다.
@@ -9361,7 +9361,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** SIO 恐懼貪婪指標是由多個美股市場數據綜合計算而成的情緒指標，用 0~100 的分數做代表。數值越低代表市場情緒越偏向恐懼，過度看空的狀況出現時歷史上常伴隨著落底訊號；數值越高代表市場情緒越偏向貪婪，當看多情緒積累到高點時市場多會出現修正或波動放大。相較於 CNN 恐懼貪婪指數納入更全面的指標，包含俗稱「美國散戶指標」的 AAII 投資人調查結果，更能準確反映長線市場情緒與價格的關係。
-- **簡中對照：** SIO 恐惧贪婪指标是由多个美股市场数据综合计算而成的情绪指标，用 0~100 的分数做代表。数值越低代表市场情绪越偏向恐惧，过度看空的状况出现时历史上常伴随着触底信号；数值越高代表市场情绪越偏向贪婪，当看多情绪积累到高点时市场多会出现修正或波动放大。相较于 CNN 恐惧贪婪指数纳入更全面的指标，包含俗称「美国散户指标」的 AAII 投资者调查结果，更能准确反映长期市场情绪与价格的关系。
+- **簡中對照：** SIO 恐惧贪婪指标综合多项美股市场数据，以 0～100 分表示市场情绪。分数越低，代表市场越恐惧；历史上，极度看空往往伴随市场触底信号。分数越高，代表市场越贪婪；看多情绪过度累积时，市场往往更容易出现回调或波动加剧。与 CNN 恐惧贪婪指数相比，SIO 纳入的指标更全面，其中包括俗称“美国散户指标”的 AAII 投资者调查，因此能更全面地呈现长期市场情绪与价格之间的关系。
 - **英文對照：** The SIO Fear & Greed Indicator is a sentiment indicator calculated from a synthesis of multiple U.S. stock market data points, represented by a score from 0 to 100. A score closer to 0 signifies extreme fear in the market, potentially indicating a higher probability of success for buying at this time. Conversely, a score closer to 100 suggests extreme greed in the market, advising against chasing further highs. Compared to the CNN Fear & Greed Index, it incorporates a more comprehensive set of indicators, including the AAII Investor Sentiment Survey results—often considered a proxy for U.S. retail investor sentiment—to more accurately reflect the long-term relationship between market sentiment and prices.
 - **英文 fallback：** direct — marketSentiment.descriptions.composite.sections[0].content: The SIO Fear & Greed Indicator is a sentiment indicator calculated from a synthesis of multiple U.S. stock market data points, represented by a score from 0 to 100. A score closer to 0 signifies extreme fear in the market, potentially indicating a higher probability of success for buying at this time. Conversely, a score closer to 100 suggests extreme greed in the market, advising against chasing further highs. Compared to the CNN Fear & Greed Index, it incorporates a more comprehensive set of indicators, including the AAII Investor Sentiment Survey results—often considered a proxy for U.S. retail investor sentiment—to more accurately reflect the long-term relationship between market sentiment and prices.
 - **韓文候選：** SIO 공포·탐욕 지표는 여러 미국 주식시장 데이터를 종합해 산출하는 심리 지표로, 0~100점으로 표시합니다. 점수가 낮을수록 시장 심리가 공포 쪽에 기울어 있습니다. 지나친 비관론이 나타날 때 과거에는 바닥 신호가 동반되는 경우가 많았습니다. 점수가 높을수록 시장 심리가 탐욕 쪽에 기울어 있으며, 낙관론이 높은 수준까지 누적되면 시장 조정이나 변동성 확대가 나타나는 경우가 많습니다. CNN 공포·탐욕 지수보다 더 다양한 지표를 반영하며, 이른바 ‘미국 개인 투자자 심리 지표’인 AAII 투자자 설문 결과도 포함합니다. 이를 통해 장기 시장 심리와 가격의 관계를 더 정확하게 반영하도록 설계했습니다.
@@ -9973,7 +9973,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** VIX 指數（波動率指數），常被稱為「恐慌指數」，衡量市場對未來 30 天 S&P 500 指數波動性的預期。此處計算 VIX  50 日移動平均線來觀察恐慌情緒的長期變化趨勢。
-- **簡中對照：** VIX 指数（波动率指数），常被称为「恐慌指数」，衡量市场对未来 30 天 S&P 500 指数波动性的预期。此处计算 VIX  50 日移动平均线来观察恐慌情绪的长期变化趋势。
+- **簡中對照：** VIX 指数（波动率指数），常被称为“恐慌指数”，衡量市场对未来 30 天 S&P 500 指数波动性的预期。此处计算 VIX  50 日移动平均线来观察恐慌情绪的长期变化趋势。
 - **英文對照：** The VIX Index (Volatility Index), often referred to as the 'Fear Gauge,' measures the market's expectation of 30-day forward-looking volatility of the S&P 500 Index. Here, the 50-day moving average of the VIX is calculated to observe long-term trends in market sentiment.
 - **英文 fallback：** direct — marketSentiment.descriptions.vixMA50.shortDescription: The VIX Index (Volatility Index), often referred to as the 'Fear Gauge,' measures the market's expectation of 30-day forward-looking volatility of the S&P 500 Index. Here, the 50-day moving average of the VIX is calculated to observe long-term trends in market sentiment.
 - **韓文候選：** VIX 지수(변동성 지수)는 흔히 ‘공포 지수’라고 불리며 향후 30일간 S&P 500의 변동성에 대한 시장의 기대를 측정합니다. 여기서는 VIX의 50일 이동평균선을 계산해 공포 심리의 장기적인 변화를 살펴봅니다.
@@ -10021,7 +10021,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 避險需求指標比較過去 20 個交易日中，股票（風險資產）的總回報與美國公債（避險資產）的總回報兩者之間的差異。它反映了資金流向避險資產的程度。
-- **簡中對照：** 避险需求指标比较过去 20 个交易日中，股票（风险资产）的总回报与美国公债（避险资产）的总回报两者之间的差异。它反映了资金流向避险资产的程度。
+- **簡中對照：** 避险需求指标比较过去 20 个交易日中，股票（风险资产）的总回报与美国国债（避险资产）的总回报两者之间的差异。它反映了资金流向避险资产的程度。
 - **英文對照：** The Safe Haven Demand indicator compares the difference between the total return of stocks (risk asset) and US Treasury bonds (safe-haven asset)over the past 20 trading days. It reflects the extent of fund flows into safe-haven assets.
 - **英文 fallback：** direct — marketSentiment.descriptions.safeHaven.shortDescription: The Safe Haven Demand indicator compares the difference between the total return of stocks (risk asset) and US Treasury bonds (safe-haven asset)over the past 20 trading days. It reflects the extent of fund flows into safe-haven assets.
 - **韓文候選：** 안전자산 선호 지표는 최근 20거래일 동안 주식(위험자산)의 총수익률과 미국 국채(안전자산)의 총수익률 차이를 비교합니다. 자금이 안전자산으로 이동하는 정도를 반영합니다.
@@ -10033,7 +10033,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 比較近 20 個交易日 SPY 與美國公債 IEF 的報酬。股票跑贏公債，市場通常較願意承擔風險；公債跑贏股票，通常較偏向避險。
-- **簡中對照：** 比较近 20 个交易日 SPY 与美国公债 IEF 的收益。股票跑赢公债，市场通常较愿意承担风险；公债跑赢股票，通常较偏向避险。
+- **簡中對照：** 比较近 20 个交易日 SPY 与美国国债 IEF 的收益。股票跑赢国债，市场通常较愿意承担风险；国债跑赢股票，通常较偏向避险。
 - **英文對照：** Compare SPY and US Treasury ETF IEF returns over the past 20 trading days. Stocks leading bonds usually suggest stronger risk appetite; bonds leading stocks suggest a more defensive market.
 - **英文 fallback：** direct — marketSentiment.descriptions.safeHaven.detailDescription: Compare SPY and US Treasury ETF IEF returns over the past 20 trading days. Stocks leading bonds usually suggest stronger risk appetite; bonds leading stocks suggest a more defensive market.
 - **韓文候選：** 최근 20거래일간 SPY와 미국 국채 ETF인 IEF의 수익률을 비교합니다. 주식이 국채보다 높은 수익률을 기록하면 시장이 위험을 감수하려는 경향이 강하고, 국채가 주식보다 높은 수익률을 기록하면 상대적으로 안전자산 선호가 강한 편입니다.
@@ -10057,7 +10057,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 當公債回報顯著優於股票回報時（指標數值低），表示投資者紛紛湧入避險資產，市場情緒偏向恐懼。當股票回報顯著優於公債回報時（指標數值高），表示投資者風險偏好高，資金流向風險資產，市場情緒偏向貪婪。
-- **簡中對照：** 当公债回报显著优于股票回报时（指标数值低），表示投资者纷纷涌入避险资产，市场情绪偏向恐惧。当股票回报显著优于公债回报时（指标数值高），表示投资者风险偏好高，资金流向风险资产，市场情绪偏向贪婪。
+- **簡中對照：** 当国债回报显著优于股票回报时（指标数值低），表示投资者纷纷涌入避险资产，市场情绪偏向恐惧。当股票回报显著优于国债回报时（指标数值高），表示投资者风险偏好高，资金流向风险资产，市场情绪偏向贪婪。
 - **英文對照：** When bond returns significantly outperform stock returns (low indicator value), it indicates investors are flocking to safe-haven assets, suggesting market fear. When stock returns significantly outperform bond returns (high indicator value), it indicates higher risk appetite and fund flows into risk assets, suggesting market greed.
 - **英文 fallback：** direct — marketSentiment.descriptions.safeHaven.sections[0].content: When bond returns significantly outperform stock returns (low indicator value), it indicates investors are flocking to safe-haven assets, suggesting market fear. When stock returns significantly outperform bond returns (high indicator value), it indicates higher risk appetite and fund flows into risk assets, suggesting market greed.
 - **韓文候選：** 국채 수익률이 주식 수익률을 크게 웃돌면(지표 값이 낮으면) 투자자들이 안전자산으로 몰리고 시장 심리가 공포 쪽에 기울었음을 나타냅니다. 주식 수익률이 국채 수익률을 크게 웃돌면(지표 값이 높으면) 투자자의 위험 선호도가 높고 자금이 위험자산으로 이동해 시장 심리가 탐욕 쪽에 기울었음을 나타냅니다.
@@ -10069,7 +10069,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 高收益債與投資級公司債的信用利差，反映市場要求的風險補償。此處比較兩類債券各自相對美國公債的選擇權調整利差（OAS）。
-- **簡中對照：** 高收益债与投资级公司债的信用利差，反映市场要求的风险补偿。此处比较两类债券各自相对美国公债的期权调整利差（OAS）。
+- **簡中對照：** 高收益债与投资级公司债的信用利差，反映市场要求的风险补偿。此处比较两类债券各自相对美国国债的期权调整利差（OAS）。
 - **英文對照：** Credit spreads show the risk premium demanded for corporate debt. This measure compares the option-adjusted spreads (OAS) of high-yield and investment-grade bonds over US Treasuries.
 - **英文 fallback：** direct — marketSentiment.descriptions.junkBond.shortDescription: Credit spreads show the risk premium demanded for corporate debt. This measure compares the option-adjusted spreads (OAS) of high-yield and investment-grade bonds over US Treasuries.
 - **韓文候選：** 하이일드 채권과 투자등급 회사채의 신용 스프레드는 시장이 요구하는 위험 보상을 반영합니다. 여기서는 두 채권 유형 각각의 미국 국채 대비 옵션조정스프레드(OAS)를 비교합니다.
@@ -10105,7 +10105,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 當利差擴大（指標值高）時，表示投資者要求更高的風險補償才願意持有垃圾債券，這通常發生在市場擔憂經濟前景或流動性收緊時，市場情緒偏向恐懼。當利差縮小（指標值低）時，表示投資者對風險容忍度提高，願意接受較低的風險補償，市場情緒偏向貪婪。
-- **簡中對照：** 当利差扩大（指标值高）时，表示投资者要求更高的风险补偿才愿意持有垃圾债券，这通常发生在市场担忧经济前景或流动性收紧时，市场情绪偏向恐惧。当利差缩小（指标值低）时，表示投资者对风险容忍度提高，愿意接受较低的风险补偿，市场情绪偏向贪婪。
+- **簡中對照：** 当利差扩大（指标值高）时，表示投资者要求更高的风险补偿才愿意持有高收益债券，这通常发生在市场担忧经济前景或流动性收紧时，市场情绪偏向恐惧。当利差缩小（指标值低）时，表示投资者对风险容忍度提高，愿意接受较低的风险补偿，市场情绪偏向贪婪。
 - **英文對照：** When the spread widens (high indicator value), it means investors demand higher risk compensation to hold junk bonds. This usually happens when the market worries about economic prospects or tightening liquidity, indicating market fear. When the spread narrows (low indicator value), it means investors' risk tolerance increases, indicating market greed.
 - **英文 fallback：** direct — marketSentiment.descriptions.junkBond.sections[0].content: When the spread widens (high indicator value), it means investors demand higher risk compensation to hold junk bonds. This usually happens when the market worries about economic prospects or tightening liquidity, indicating market fear. When the spread narrows (low indicator value), it means investors' risk tolerance increases, indicating market greed.
 - **韓文候選：** 스프레드가 확대되면(지표 값이 높으면) 투자자가 투기등급 채권을 보유하기 위해 더 높은 위험 보상을 요구한다는 뜻입니다. 이는 일반적으로 경기 전망에 대한 우려나 유동성 긴축이 나타날 때 발생하며 시장 심리가 공포 쪽에 기울었음을 나타냅니다. 스프레드가 축소되면(지표 값이 낮으면) 투자자의 위험 감내도가 높아져 더 낮은 위험 보상으로도 투자하려는 경향이 커지고 시장 심리가 탐욕 쪽에 기울었음을 나타냅니다.
@@ -10237,7 +10237,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** Sentiment Inside Out 恐懼貪婪指標 (簡稱:SIO 恐懼貪婪指標) 將市場情緒量化成 0~100 的分數，目的在於了解當前市場參與者的心理是偏向恐懼還是貪婪，類似於 CNN 恐懼貪婪指數和 BofA 牛熊指標。幫助投資人在非理性的股市波動中保持冷靜，避免跟著情緒追高殺低。
-- **簡中對照：** Sentiment Inside Out 恐惧贪婪指标 (简称:SIO 恐惧贪婪指标) 将市场情绪量化成 0~100 的分数，目的在于了解当前市场参与者的心理是偏向恐惧还是贪婪，类似于 CNN 恐惧贪婪指数和 BofA 牛熊指标。帮助投资者在非理性的股市波动中保持冷静，避免跟着情绪追涨杀跌。
+- **簡中對照：** Sentiment Inside Out 恐惧贪婪指标（简称 SIO）将市场情绪量化为 0～100 分，用于判断当前市场参与者的心理偏向恐惧还是贪婪，类似于 CNN 恐惧贪婪指数和 BofA 牛熊指标。它能帮助投资者在非理性的股市波动中保持冷静，避免跟风追涨杀跌。
 - **英文對照：** When the indicator shows extreme fear (0-20), it's typically a good buying opportunity
 - **英文 fallback：** direct — marketSentiment.enhancedDescription.content.tips.tip1: When the indicator shows extreme fear (0-20), it's typically a good buying opportunity
 - **韓文候選：** Sentiment Inside Out의 공포·탐욕 지수(약칭: SIO 공포·탐욕 지표)는 시장 심리를 0~100점으로 수치화해 현재 시장 참여자의 심리가 공포와 탐욕 중 어느 쪽에 가까운지 파악하기 위한 지표입니다. CNN 공포·탐욕 지수와 BofA Bull & Bear Indicator와 유사한 목적을 가집니다. 비이성적인 주가 변동 속에서도 투자자가 냉정을 유지하고 감정에 휩쓸려 고점 매수와 저점 매도를 하지 않도록 돕습니다.
@@ -10249,7 +10249,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 不預測股價，只量化情緒。低分代表「過度恐慌」，高分代表「過度貪婪」。
-- **簡中對照：** 不预测股价，只量化情绪。低分代表「过度恐慌」，高分代表「过度贪婪」。
+- **簡中對照：** 不预测股价，只量化情绪。低分代表“过度恐慌”，高分代表“过度贪婪”。
 - **英文對照：** When the indicator shows extreme greed (80-100), be cautious about chasing highs and consider profit-taking
 - **英文 fallback：** direct — marketSentiment.enhancedDescription.content.tips.tip2: When the indicator shows extreme greed (80-100), be cautious about chasing highs and consider profit-taking
 - **韓文候選：** 주가를 예측하는 대신 시장 심리를 수치화합니다. 낮은 점수는 ‘과도한 공포’, 높은 점수는 ‘과도한 탐욕’을 나타냅니다.
@@ -10297,7 +10297,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 這和常見的「CNN 恐懼與貪婪指數」或「BofA 牛熊指標」有什麼不同？
-- **簡中對照：** 这和常见的「CNN 恐惧与贪婪指数」或「BofA 牛熊指标」有什么不同？
+- **簡中對照：** 这和常见的“CNN 恐惧与贪婪指数”或“BofA 牛熊指标”有什么不同？
 - **英文對照：** How is this different from the 'CNN Fear & Greed Index' or the 'BofA Bull & Bear Indicator'?
 - **英文 fallback：** direct — marketSentiment.enhancedDescription.content.faq.q2: How is this different from the 'CNN Fear & Greed Index' or the 'BofA Bull & Bear Indicator'?
 - **韓文候選：** 일반적인 CNN 공포·탐욕 지수 또는 BofA Bull & Bear Indicator와 어떻게 다른가요?
@@ -10369,7 +10369,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 不同指標，例如「VIX 指數」和「AAII 散戶指標」為什麼可以放在一起比較？
-- **簡中對照：** 不同指标，例如「VIX 指数」和「AAII 散户指标」为什么可以放在一起比较？
+- **簡中對照：** 不同指标，例如“VIX 指数”和“AAII 散户指标”为什么可以放在一起比较？
 - **英文對照：** How can you compare different indicators, like the 'VIX' and 'AAII Retail Sentiment', together?
 - **英文 fallback：** direct — marketSentiment.enhancedDescription.content.faq.q5: How can you compare different indicators, like the 'VIX' and 'AAII Retail Sentiment', together?
 - **韓文候選：** VIX 지수와 AAII 개인 투자자 지표처럼 서로 다른 지표를 어떻게 함께 비교할 수 있나요?
@@ -10393,7 +10393,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 針對每週發布的數據（如 COT 報告），指標如何處理「發布延遲」以避免前視偏誤？
-- **簡中對照：** 针对每周发布的数据（如 COT 报告），指标如何处理「发布延迟」以避免前视偏误？
+- **簡中對照：** 针对每周发布的数据（如 COT 报告），指标如何处理“发布延迟”以避免前视偏误？
 - **英文對照：** For weekly data (like COT reports), how does the indicator handle 'publication delays' to avoid look-ahead bias?
 - **英文 fallback：** direct — marketSentiment.enhancedDescription.content.faq.q6: For weekly data (like COT reports), how does the indicator handle 'publication delays' to avoid look-ahead bias?
 - **韓文候選：** COT 보고서처럼 매주 발표되는 데이터의 발표 지연을 어떻게 처리해 미래 참조 편향을 방지하나요?
@@ -10405,7 +10405,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 指標計算過程中，嚴格執行「Point-in-Time」數據校正。避免發生「偷看未來」的錯誤。例如，CFTC COT 報告雖於週五發布，但數據只截至週二。因此系統在運算時強制加入滯後天數。因此回測歷史上的週三、週四時，會還原當下無法取得該週數據的狀態，模擬真實交易環境下的資訊落差，確保可信度。
-- **簡中對照：** 指标计算过程中，严格执行「Point-in-Time」数据校正。避免发生「偷看未来」的错误。例如，CFTC COT 报告虽于周五发布，但数据只截至周二。因此系统在运算时强制加入滞后天数。因此回测历史上的周三、周四时，会还原当下无法取得该周数据的状态，模拟真实交易环境下的信息落差，确保可信度。
+- **簡中對照：** 指标计算过程中，严格执行“Point-in-Time”数据校正。避免发生“偷看未来”的错误。例如，CFTC COT 报告虽于周五发布，但数据只截至周二。因此系统在运算时强制加入滞后天数。因此回测历史上的周三、周四时，会还原当下无法获取该周数据的状态，模拟真实交易环境下的信息落差，确保可信度。
 - **英文對照：** We strictly enforce 'Point-in-Time' calibration during calculation to avoid 'peeking into the future.' For example, the CFTC COT report comes out on Friday but covers data up to Tuesday. So, our system forces a lag in the calculation. This means when backtesting a historical Wednesday or Thursday, we restore the state where that week's data wasn't available yet, simulating the information gap in a real trading environment to ensure credibility.
 - **英文 fallback：** direct — marketSentiment.enhancedDescription.content.faq.a6: We strictly enforce 'Point-in-Time' calibration during calculation to avoid 'peeking into the future.' For example, the CFTC COT report comes out on Friday but covers data up to Tuesday. So, our system forces a lag in the calculation. This means when backtesting a historical Wednesday or Thursday, we restore the state where that week's data wasn't available yet, simulating the information gap in a real trading environment to ensure credibility.
 - **韓文候選：** 지표 계산에는 엄격한 Point-in-Time 데이터 보정을 적용해 미래 데이터를 미리 사용하는 오류를 방지합니다. 예를 들어 CFTC COT 보고서는 금요일에 발표되지만 데이터 기준일은 화요일입니다. 따라서 시스템은 계산 시 지연 일수를 반영합니다. 과거 수요일과 목요일을 백테스트할 때 해당 주의 데이터를 당시에는 아직 이용할 수 없었던 상태로 복원해 실제 거래 환경의 정보 시차를 재현하고 신뢰성을 확보합니다.
@@ -10429,7 +10429,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 有的，回測中採用嚴謹的「滾動式前進驗證 (Walk-Forward Validation)」。 我刻意將模型參數鎖定在 2019 年以前的數據進行訓練，並將 2020 年至 2026 年設定為「盲測期」。回測結果顯示，即使經歷了 COVID-19 熔斷與 2022 年股債雙殺的極端市場環境，該策略在盲測期間仍有優於大盤的風險調整後回報，且最大回撤顯著低於 S&P 500 指數。
-- **簡中對照：** 有的，回测中采用严谨的「滚动式前进验证 (Walk-Forward Validation)」。 我刻意将模型参数固定在 2019 年以前的数据进行训练，并将 2020 年至 2026 年设置为「盲测期」。回测结果显示，即使经历了 COVID-19 熔断与 2022 年股债双杀的极端市场环境，该策略在盲测期间仍有优于大盘的风险调整后回报，且最大回撤显著低于 S&P 500 指数。
+- **簡中對照：** 有的，回测中采用严谨的“滚动式前进验证 (Walk-Forward Validation)”。 我刻意将模型参数固定在 2019 年以前的数据进行训练，并将 2020 年至 2026 年设置为“盲测期”。回测结果显示，即使经历了 COVID-19 熔断与 2022 年股债双杀的极端市场环境，该策略在盲测期间仍有优于大盘的风险调整后回报，且最大回撤显著低于 S&P 500 指数。
 - **英文對照：** Yes, the backtest uses rigorous 'Walk-Forward Validation.' I deliberately locked the model parameters using data from before 2019 and set 2020 to 2026 as the 'blind test' period. The results show that even through the extreme environments of the COVID-19 crash and the 2022 stock/bond double dip, the strategy still delivered better risk-adjusted returns than the broader market during the blind test, with a significantly lower max drawdown than the S&P 500.
 - **英文 fallback：** direct — marketSentiment.enhancedDescription.content.faq.a7: Yes, the backtest uses rigorous 'Walk-Forward Validation.' I deliberately locked the model parameters using data from before 2019 and set 2020 to 2026 as the 'blind test' period. The results show that even through the extreme environments of the COVID-19 crash and the 2022 stock/bond double dip, the strategy still delivered better risk-adjusted returns than the broader market during the blind test, with a significantly lower max drawdown than the S&P 500.
 - **韓文候選：** 예. 백테스트에는 엄격한 롤링 워크포워드 검증(Walk-Forward Validation)을 적용했습니다. 모델 파라미터는 2019년 이전 데이터로 학습하도록 고정하고, 2020년부터 2026년까지를 블라인드 테스트 기간으로 설정했습니다. COVID-19 서킷브레이커와 2022년 주식·채권 동반 하락이라는 극단적인 시장 환경을 거쳤음에도, 백테스트 결과 해당 전략은 블라인드 테스트 기간에 시장보다 높은 위험조정수익률을 기록했고 최대 낙폭도 S&P 500 지수보다 현저히 낮았습니다.
@@ -10453,7 +10453,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 為了避免錯失中期回調的機會，可以採用「分批佈局」策略。 雖然歷史級別的災難（如 2008 年金融海嘯、2020 年疫情）確實會讓指標殺到 5 分以下，但這種情況極為罕見。部分中型修正可能在指標來到 8~12 分 附近就止跌反彈（例如 2011 年歐債危機或 2025 貿易戰）。如果堅持只在 < 5 分才出手，可能會錯過進場機會。因此，最佳的策略是採用「兩階段進場」：第一階段 (< 15 分)： 建立 50% 基礎倉位，確保不錯過反彈行情。第二階段 (< 5 分)： 若市場發生系統性崩盤，再將剩餘 50% 資金投入。回測證明，這種「先進一半，保留一半」的做法，能在風險與回報之間取得最佳平衡。
-- **簡中對照：** 为了避免错失中期回调的机会，可以采用「分批布局」策略。 虽然历史级别的灾难（如 2008 年金融海啸、2020 年疫情）确实会让指标杀到 5 分以下，但这种情况极为罕见。部分中型修正可能在指标来到 8~12 分 附近就止跌反弹（例如 2011 年欧债危机或 2025 贸易战）。如果坚持只在 < 5 分才出手，可能会错过入场机会。因此，最佳的策略是采用「两阶段入场」：第一阶段（低于 15 分）：建立 50% 的基础仓位，确保不错过反弹行情。第二阶段（低于 5 分）：若市场发生系统性崩盘，再将剩余 50% 资金投入。回测证明，这种「先进一半，保留一半」的做法，能在风险与回报之间取得最佳平衡。
+- **簡中對照：** 为了避免错失中期回调的机会，可以采用“分批布局”策略。 虽然历史级别的灾难（如 2008 年金融海啸、2020 年疫情）确实会让指标杀到 5 分以下，但这种情况极为罕见。部分中型修正可能在指标来到 8~12 分 附近就止跌反弹（例如 2011 年欧债危机或 2025 贸易战）。如果坚持只在 < 5 分才出手，可能会错过入场机会。因此，最佳的策略是采用“两阶段入场”：第一阶段（低于 15 分）：建立 50% 的基础仓位，确保不错过反弹行情。第二阶段（低于 5 分）：若市场发生系统性崩盘，再将剩余 50% 资金投入。回测证明，这种“先进一半，保留一半”的做法，能在风险与回报之间实现最佳平衡。
 - **英文對照：** To avoid missing out on mid-term pullbacks, we suggest a 'batch entry' strategy. While historical disasters (like the 2008 Financial Crisis or 2020 Pandemic) do push the indicator below 5, those are extremely rare. Some mid-sized corrections might bottom out around 8-12 (like the 2011 Euro Debt Crisis or the 2025 Trade War). If you insist on waiting for < 5, you might miss the entry entirely. Therefore, the best strategy is a 'Two-Stage Entry': Stage 1 (< 15): Deploy 50% to ensure you catch the rebound. Stage 2 (< 5): If a systemic crash happens, invest the remaining 50%. Backtests prove that this 'half now, half later' approach strikes the best balance between risk and reward.
 - **英文 fallback：** direct — marketSentiment.enhancedDescription.content.faq.a8: To avoid missing out on mid-term pullbacks, we suggest a 'batch entry' strategy. While historical disasters (like the 2008 Financial Crisis or 2020 Pandemic) do push the indicator below 5, those are extremely rare. Some mid-sized corrections might bottom out around 8-12 (like the 2011 Euro Debt Crisis or the 2025 Trade War). If you insist on waiting for < 5, you might miss the entry entirely. Therefore, the best strategy is a 'Two-Stage Entry': Stage 1 (< 15): Deploy 50% to ensure you catch the rebound. Stage 2 (< 5): If a systemic crash happens, invest the remaining 50%. Backtests prove that this 'half now, half later' approach strikes the best balance between risk and reward.
 - **韓文候選：** 중기 조정에서 매수 기회를 놓치지 않으려면 분할 매수 전략을 활용할 수 있습니다. 2008년 글로벌 금융위기와 2020년 팬데믹 같은 역사적 재난에서는 지표가 실제로 5점 아래까지 떨어졌지만 이런 상황은 매우 드뭅니다. 일부 중간 규모 조정은 지표가 8~12점 부근에 도달했을 때 하락을 멈추고 반등할 수 있습니다(예: 2011년 유럽 재정위기 또는 2025년 무역전쟁). 5점 미만에서만 매수하면 진입 기회를 놓칠 수 있습니다. 따라서 두 단계로 진입하는 전략을 고려할 수 있습니다. 1단계(15점 미만): 반등을 놓치지 않도록 기본 투자금의 50%를 투입합니다. 2단계(5점 미만): 시장에 시스템적 붕괴가 발생하면 나머지 50%를 투입합니다. 백테스트에서는 절반을 먼저 투자하고 절반을 남겨 두는 방식이 위험과 수익 사이에서 가장 나은 균형을 보였습니다.
@@ -10465,7 +10465,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 如果指標出現「極度貪婪 (96+)」，我應該馬上清倉或放空嗎？
-- **簡中對照：** 如果指标出现「极度贪婪 (96+)」，我应该马上清仓或放空吗？
+- **簡中對照：** 如果指标出现“极度贪婪 (96+)”，我应该马上清仓或放空吗？
 - **英文對照：** If the indicator shows 'Extreme Greed (96+)', should I sell everything or go short immediately?
 - **英文 fallback：** direct — marketSentiment.enhancedDescription.content.faq.q9: If the indicator shows 'Extreme Greed (96+)', should I sell everything or go short immediately?
 - **韓文候選：** 지표가 극도의 탐욕(96+) 구간에 진입하면 즉시 전량 매도하거나 공매도해야 하나요?
@@ -10525,7 +10525,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 升級至 Pro 方案以查看當前市場情緒指數與詳細分析
-- **簡中對照：** 升级至 Pro 方案以查看当前市场情绪指数与详细分析
+- **簡中對照：** 升级至 Pro 套餐以查看当前市场情绪指数与详细分析
 - **英文對照：** Upgrade to Pro to view current market sentiment index and detailed analysis
 - **英文 fallback：** direct — marketSentiment.restricted.gaugeDescription: Upgrade to Pro to view current market sentiment index and detailed analysis
 - **韓文候選：** Pro로 업그레이드하면 현재 시장 심리 지수와 상세 분석을 확인할 수 있습니다.
@@ -10669,7 +10669,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 這和常見的「CNN 恐懼與貪婪指數」或「BofA 牛熊指標」有什麼不同？
-- **簡中對照：** 这和常见的「CNN 恐惧与贪婪指数」或「BofA 牛熊指标」有什么不同？
+- **簡中對照：** 这和常见的“CNN 恐惧与贪婪指数”或“BofA 牛熊指标”有什么不同？
 - **英文對照：** How is this different from the 'CNN Fear & Greed Index' or the 'BofA Bull & Bear Indicator'?
 - **英文 fallback：** direct — marketSentiment.tw.faq.q2: How is this different from the 'CNN Fear & Greed Index' or the 'BofA Bull & Bear Indicator'?
 - **韓文候選：** 일반적인 CNN 공포·탐욕 지수 또는 BofA Bull & Bear Indicator와 어떻게 다른가요?
@@ -10681,7 +10681,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** CNN 和 BofA 指標都是為美股設計的，採用 VIX、Put/Call Ratio、AAII 等美股專屬資料，無法反映台股獨有的結構，例如外資期貨淨未平倉、融資維持率、券資比與美元兌台幣匯率。SIO 台股恐懼貪婪指標是專為台股客製的版本，整合台指選擇權波動率、散戶與外資部位、匯率與市場廣度等九項台股原生訊號，維持與 BofA Bull & Bear Indicator 相同的長線配置邏輯，但能準確反映台股市場的資金與情緒結構。
-- **簡中對照：** CNN 和 BofA 指标都是为美股设计的，采用 VIX、Put/Call Ratio、AAII 等美股专属数据，无法反映台湾股市独有的结构，例如外资期货净未平仓、融资维持率、券资比与美元兑新台币汇率。SIO 台湾股市恐惧贪婪指标是专为台湾股市专属版本，整合台湾股指期权波动率、散户与外资持仓、汇率与市场广度等九项台湾股市原生信号，维持与 BofA Bull & Bear Indicator 相同的长期配置逻辑，但能准确反映台湾股市市场的资金与情绪结构。
+- **簡中對照：** CNN 和 BofA 指标都是为美股设计的，采用 VIX、Put/Call Ratio、AAII 等美股专属数据，无法反映台湾股市独有的市场结构，例如外资期货净未平仓、融资维持率、券资比和美元兑新台币汇率。SIO 台湾股市恐惧贪婪指标专为台湾股市设计，整合台湾股指期权波动率、散户与外资持仓、汇率和市场广度等九项本地信号，并沿用 BofA Bull & Bear Indicator 的长期配置逻辑，以反映台湾股市的资金流向和情绪结构。
 - **英文對照：** Both CNN and BofA indicators are built for the US market, using VIX, Put/Call Ratio, AAII and other US-specific data that can't capture what moves Taiwan stocks — foreign-institution futures positioning, margin maintenance ratio, margin-to-short ratio and USD/TWD. The SIO Taiwan Fear & Greed Index is a TAIEX-customized version that aggregates nine Taiwan-native signals: options-implied volatility, retail and foreign positioning, FX pressure and market breadth. It keeps the same long-horizon allocation logic as the BofA Bull & Bear Indicator, but properly reflects Taiwan's capital flow and sentiment structure.
 - **英文 fallback：** direct — marketSentiment.tw.faq.a2: Both CNN and BofA indicators are built for the US market, using VIX, Put/Call Ratio, AAII and other US-specific data that can't capture what moves Taiwan stocks — foreign-institution futures positioning, margin maintenance ratio, margin-to-short ratio and USD/TWD. The SIO Taiwan Fear & Greed Index is a TAIEX-customized version that aggregates nine Taiwan-native signals: options-implied volatility, retail and foreign positioning, FX pressure and market breadth. It keeps the same long-horizon allocation logic as the BofA Bull & Bear Indicator, but properly reflects Taiwan's capital flow and sentiment structure.
 - **韓文候選：** CNN과 BofA 지표는 모두 미국 주식시장을 위해 설계되었으며 VIX, Put/Call Ratio, AAII 등 미국 주식시장 전용 데이터를 사용합니다. 따라서 외국인 선물 순미결제약정, 신용융자 담보유지비율, 신용융자 잔고 대비 신용대주 잔고 비율, 미국 달러/대만 달러 환율과 같은 대만 시장 고유의 구조를 반영할 수 없습니다. SIO 대만 주식 공포·탐욕 지수는 대만 시장에 맞춰 설계한 버전으로, 대만 지수 옵션 변동성, 개인 및 외국인 포지션, 환율, 시장 폭 등 대만 시장 고유의 9개 신호를 종합합니다. BofA Bull & Bear Indicator와 동일한 장기 자산 배분 논리를 유지하면서 대만 주식시장의 자금 흐름과 심리 구조를 반영합니다.
@@ -10777,7 +10777,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 指標計算嚴格執行 Point-in-Time 校正。例如期交所的外資期貨未平倉資料於盤後公告，融資融券餘額次日公告，系統在回測時會還原當時尚未取得該筆資料的狀態，加入對應的時間滯後，模擬真實決策環境下的資訊落差，避免「偷看未來」。
-- **簡中對照：** 指标计算严格执行 Point-in-Time 校正。例如期交所的外资期货未平仓数据于盘后公告，融资融券余额次日公告，系统在回测时会还原当时尚未取得该笔数据的状态，加入对应的时间滞后，模拟真实决策环境下的信息落差，避免「偷看未来」。
+- **簡中對照：** 指标计算严格执行 Point-in-Time 校正。例如期交所的外资期货未平仓数据于盘后公告，融资融券余额次日公告，系统在回测时会还原当时尚未获取该笔数据的状态，加入对应的时间滞后，模拟真实决策环境下的信息落差，避免“偷看未来”。
 - **英文對照：** We enforce Point-in-Time calibration throughout the calculation. Foreign-institution futures data is released after market close; margin and short-interest balances are released the following day. During backtesting the system reconstructs the information state that was actually available at each moment, adding the corresponding lag, to prevent 'peeking into the future.'
 - **英文 fallback：** direct — marketSentiment.tw.faq.a6: We enforce Point-in-Time calibration throughout the calculation. Foreign-institution futures data is released after market close; margin and short-interest balances are released the following day. During backtesting the system reconstructs the information state that was actually available at each moment, adding the corresponding lag, to prevent 'peeking into the future.'
 - **韓文候選：** 지표 계산에는 엄격한 Point-in-Time 보정을 적용합니다. 예를 들어 선물거래소의 외국인 선물 미결제약정 데이터는 장 마감 후 공표되고, 신용거래 잔고는 다음 날 공표됩니다. 시스템은 백테스트 시점에 아직 해당 데이터를 이용할 수 없었던 상태를 복원하고 해당 시간 지연을 반영해 실제 의사결정 환경의 정보 시차를 재현함으로써 미래 데이터를 미리 사용하는 오류를 방지합니다.
@@ -10921,7 +10921,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 捐款贊助成功
-- **簡中對照：** 捐款赞助成功
+- **簡中對照：** 赞助成功
 - **英文對照：** Sponsorship Successful
 - **英文 fallback：** direct — sponsorSuccess.pageTitle: Sponsorship Successful
 - **韓文候選：** 후원이 완료되었습니다
@@ -10933,7 +10933,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 感謝您的款項，您的支持是我們前進的動力！
-- **簡中對照：** 感谢您的款项，您的支持是我们前进的动力！
+- **簡中對照：** 感谢您的赞助！您的支持是我们持续改进服务的动力。
 - **英文對照：** Thank you for your contribution, your support is our driving force!
 - **英文 fallback：** direct — sponsorSuccess.pageDescription: Thank you for your contribution, your support is our driving force!
 - **韓文候選：** 후원해 주셔서 감사합니다. 보내 주신 응원이 저희에게 큰 힘이 됩니다!
@@ -10945,7 +10945,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 感謝您滿滿的愛心！
-- **簡中對照：** 感谢您满满的爱心！
+- **簡中對照：** 感谢您的支持！
 - **英文對照：** Thank you for your abundant love!
 - **英文 fallback：** direct — sponsorSuccess.heading: Thank you for your abundant love!
 - **韓文候選：** 따뜻한 응원에 진심으로 감사드립니다!
@@ -11125,7 +11125,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 有你/妳的幫助，Sentiment Inside Out 將能持續運作、提供簡單實用的投資工具，造福更多投資人。您的贊助將支持網站維護和發展。
-- **簡中對照：** 有你/妳的帮助，Sentiment Inside Out 将能持续运作、提供简单实用的投资工具，造福更多投资者。您的赞助将支持网站维护和发展。
+- **簡中對照：** 您的支持能帮助 Sentiment Inside Out 持续运营，并为更多投资者提供简单实用的投资工具。赞助款将用于网站维护和后续开发。
 - **英文對照：** With your help, Sentiment Inside Out can continue operating, providing simple and practical investment tools to benefit more investors. Your sponsorship will support website maintenance and development.
 - **英文 fallback：** direct — sponsorUs.pageDescription: With your help, Sentiment Inside Out can continue operating, providing simple and practical investment tools to benefit more investors. Your sponsorship will support website maintenance and development.
 - **韓文候選：** 여러분의 도움으로 Sentiment Inside Out은 계속 운영되며 더 많은 투자자에게 간단하고 실용적인 투자 도구를 제공할 수 있습니다. 후원금은 사이트 유지·보수와 발전에 사용됩니다.
@@ -11461,7 +11461,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 樂活五線譜｜股價趨勢與價格位階分析工具
-- **簡中對照：** 乐活五线谱｜股价趋势与价格位阶分析工具
+- **簡中對照：** 乐活五线谱｜股价趋势与价格位置分析工具
 - **英文對照：** LOHAS Five-Line
 - **英文 fallback：** direct — priceAnalysis.pageTitle: LOHAS Five-Line
 - **韓文候選：** LOHAS 5선 분석｜주가 추세 및 가격 위치 분석 도구
@@ -11533,7 +11533,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 樂活五線譜用過去 3.5 年的股價拉出一條趨勢線，上下各加兩條線，畫出股價偏離趨勢的常見範圍，形成五條參考線。股價越靠近最外緣，代表離長期趨勢越遠：碰到最上緣顯示「極度貪婪」，碰到最下緣顯示「極度恐懼」。搭配反應較快的樂活通道一起看，可以判斷短期是過熱還是過冷。這個工具適合用來判讀個股或指數 ETF 目前位於長期趨勢的哪個位置，作為參考，而非單獨作為買賣決策依據。
-- **簡中對照：** 乐活五线谱用过去 3.5 年的股价拉出一条趋势线，上下各加两条线，画出股价偏离趋势的常见范围，形成五条参考线。股价越靠近最外缘，代表离长期趋势越远：碰到最上缘显示「极度贪婪」，碰到最下缘显示「极度恐惧」。搭配反应较快的乐活通道一起看，可以判断短期是过热还是过冷。这个工具适合用来判读个股或指数 ETF 目前位于长期趋势的哪个位置，作为参考，而非单独作为买卖决策依据。
+- **簡中對照：** 乐活五线谱用过去 3.5 年的股价拉出一条趋势线，上下各加两条线，画出股价偏离趋势的常见范围，形成五条参考线。股价越靠近最外缘，代表离长期趋势越远：碰到最上缘显示“极度贪婪”，碰到最下缘显示“极度恐惧”。搭配反应较快的乐活通道一起看，可以判断短期是过热还是过冷。这个工具适合用来判读个股或指数 ETF 目前位于长期趋势的哪个位置，作为参考，而非单独作为买卖决策依据。
 - **英文對照：** The LOHAS Five-Line fits a trend to the last 3.5 years of prices and adds two lines either side, marking how far price usually strays from that trend. The closer to the outer edge, the further price sits from its long-term trend: the top line shows as "Extreme Greed", the bottom as "Extreme Fear". Read alongside the faster-moving LOHAS Channel, it indicates whether the short term is overheated or oversold. It is a way to see where a stock or index ETF sits in its long-term trend — a reference point, not a standalone basis for buying or selling.
 - **英文 fallback：** direct — priceAnalysis.jsonLd.description: The LOHAS Five-Line fits a trend to the last 3.5 years of prices and adds two lines either side, marking how far price usually strays from that trend. The closer to the outer edge, the further price sits from its long-term trend: the top line shows as "Extreme Greed", the bottom as "Extreme Fear". Read alongside the faster-moving LOHAS Channel, it indicates whether the short term is overheated or oversold. It is a way to see where a stock or index ETF sits in its long-term trend — a reference point, not a standalone basis for buying or selling.
 - **韓文候選：** LOHAS 5선 분석은 과거 3.5년간의 주가로 추세선을 계산하고, 위아래에 각각 두 개의 선을 더해 주가가 추세에서 벗어나는 일반적인 범위를 다섯 개의 기준선으로 나타냅니다. 주가가 바깥쪽 선에 가까울수록 장기 추세에서 더 멀리 벗어난 상태입니다. 가장 위쪽 선에 닿으면 "극도의 탐욕", 가장 아래쪽 선에 닿으면 "극도의 공포"로 표시합니다. 반응 속도가 더 빠른 LOHAS 채널과 함께 보면 단기적으로 과열 또는 과매도 상태인지 판단할 수 있습니다. 이 도구는 개별 주식이나 지수 ETF가 장기 추세에서 현재 어느 위치에 있는지 파악하는 참고 자료이며, 단독으로 매매 결정을 내리는 근거로 사용해서는 안 됩니다.
@@ -11617,7 +11617,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** Loading...
-- **簡中對照：** Loading...
+- **簡中對照：** 加载中……
 - **英文對照：** Loading...
 - **英文 fallback：** direct — priceAnalysis.chart.loading.fetching: Loading...
 - **韓文候選：** 불러오는 중...
@@ -11629,7 +11629,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 圖表生成中...
-- **簡中對照：** 图表生成中...
+- **簡中對照：** 图表生成中……
 - **英文對照：** Generating chart...
 - **英文 fallback：** direct — priceAnalysis.chart.loading.generating: Generating chart...
 - **韓文候選：** 차트를 생성하고 있습니다...
@@ -12109,7 +12109,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 分析中...
-- **簡中對照：** 分析中...
+- **簡中對照：** 分析中……
 - **英文對照：** Analyzing...
 - **英文 fallback：** direct — priceAnalysis.form.buttonAnalyzing: Analyzing...
 - **韓文候選：** 분석 중...
@@ -12121,7 +12121,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 處理數據中...
-- **簡中對照：** 处理数据中...
+- **簡中對照：** 处理数据中……
 - **英文對照：** Processing data...
 - **英文 fallback：** direct — priceAnalysis.form.buttonProcessing: Processing data...
 - **韓文候選：** 데이터 처리 중...
@@ -12277,7 +12277,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 上圖中，位於中間的線是股價趨勢線，代表股價的長期走勢。趨勢線上下各加上兩條標準差線，作為股價偏離趨勢線的範圍。股價距離中間趨勢線愈遠，愈可能均值回歸趨勢線。可用以判斷目前價格是貪婪還是恐懼。
-- **簡中對照：** 上图中，位于中间的线是股价趋势线，代表股价的长期走势。趋势线上下各加上两条标准差线，作为股价偏离趋势线的范围。股价距离中间趋势线愈远，愈可能均值回归趋势线。可用以判断目前价格是贪婪还是恐惧。
+- **簡中對照：** 上图中间的线是根据股价计算出的趋势线，代表股价的长期走势。趋势线上下各有两条标准差线，用来表示股价相对趋势线的偏离范围。股价离趋势线越远，越可能向趋势线均值回归。可借此判断当前价格处于贪婪还是恐惧区间。
 - **英文對照：** The middle line is a trend line calculated from the price, showing the long-term direction of the holding. Two standard-deviation lines either side mark how far price strays from that trend. The further price sits from the middle line, the more likely it is to revert towards it — which is what tells you whether the current price sits in greed or in fear.
 - **英文 fallback：** direct — priceAnalysis.description.sd.point1: The middle line is a trend line calculated from the price, showing the long-term direction of the holding. Two standard-deviation lines either side mark how far price strays from that trend. The further price sits from the middle line, the more likely it is to revert towards it — which is what tells you whether the current price sits in greed or in fear.
 - **韓文候選：** 위 차트의 가운데 선은 주가의 장기 흐름을 나타내는 추세선입니다. 추세선 위아래에 각각 두 개의 표준편차선을 추가해 주가가 추세선에서 벗어나는 범위를 표시합니다. 주가가 가운데 추세선에서 멀어질수록 추세선으로 평균 회귀할 가능성이 커집니다. 이를 바탕으로 현재 가격이 탐욕 또는 공포 쪽에 있는지 판단할 수 있습니다.
@@ -12301,7 +12301,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 碰到五線譜最上緣表示「極度貪婪」。搭配樂活通道是否也突破上緣：兩張圖都突破，股價可能將轉弱；若只有五線譜突破，則有機會再漲一段。
-- **簡中對照：** 碰到五线谱最上缘表示「极度贪婪」。搭配乐活通道是否也突破上缘：两张图都突破，股价可能将转弱；若只有五线谱突破，则有机会再涨一段。
+- **簡中對照：** 碰到五线谱最上缘表示“极度贪婪”。搭配乐活通道是否也突破上缘：两张图都突破，股价可能将转弱；若只有五线谱突破，则有机会再涨一段。
 - **英文對照：** Touching the top line of the five-line chart means "Extreme Greed". Check whether the LOHAS Channel has also broken above its upper edge: when both have, price may be about to weaken; when only the five-line chart has, it has a chance of running a little further.
 - **英文 fallback：** direct — priceAnalysis.description.sd.point3: Touching the top line of the five-line chart means "Extreme Greed". Check whether the LOHAS Channel has also broken above its upper edge: when both have, price may be about to weaken; when only the five-line chart has, it has a chance of running a little further.
 - **韓文候選：** 5선 분석의 가장 위쪽 선에 닿으면 "극도의 탐욕"을 뜻합니다. 이때 LOHAS 채널도 위쪽 경계를 돌파했는지 함께 확인하세요. 두 차트가 모두 경계를 돌파했다면 주가가 약세로 돌아설 수 있습니다. 5선 분석만 경계를 돌파했다면 상승세가 한동안 더 이어질 가능성이 있습니다.
@@ -12313,7 +12313,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 五線譜到「極度恐懼」時，再看樂活通道是否也跌破下緣。本次回測的 43 檔指數型 ETF 中，兩項條件同時成立後持有一年，上漲比例的中位數為 88%；隨機進場為 74%。
-- **簡中對照：** 五线谱到「极度恐惧」时，再看乐活通道是否也跌破下缘。本次回测的 43 只指数型 ETF 中，两项条件同时成立后持有一年，上涨比例的中位数为 88%；随机入场为 74%。
+- **簡中對照：** 五线谱到“极度恐惧”时，再看乐活通道是否也跌破下缘。本次回测的 43 只指数型 ETF 中，两项条件同时成立后持有一年，上涨比例的中位数为 88%；随机入场为 74%。
 - **英文對照：** At Extreme Fear, check whether price is also below the LOHAS Channel. Across 43 index ETFs in this backtest, the median share of entries ending higher after one year was 88% when both conditions held, versus 74% for random entry.
 - **英文 fallback：** direct — priceAnalysis.description.sd.point4: At Extreme Fear, check whether price is also below the LOHAS Channel. Across 43 index ETFs in this backtest, the median share of entries ending higher after one year was 88% when both conditions held, versus 74% for random entry.
 - **韓文候選：** 5선 분석에서 "극도의 공포"가 나타나면 LOHAS 채널도 아래쪽 경계를 하향 돌파했는지 확인하세요. 이번에 지수 ETF 43종을 대상으로 실시한 백테스트에서는 두 조건이 동시에 충족된 뒤 1년간 보유했을 때 상승 비율의 중앙값이 88%였으며, 무작위 진입은 74%였습니다.
@@ -12465,6 +12465,18 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 - **替代候選：** 無
 - **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
 
+### priceAnalysis.prompt.loginToAnalyze
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 登入後分析其他標的
+- **簡中對照：** 登录后分析其他标的
+- **英文對照：** Log in to analyze other stocks
+- **英文 fallback：** direct — priceAnalysis.prompt.loginToAnalyze: Log in to analyze other stocks
+- **韓文候選：** 로그인하면 다른 종목도 분석할 수 있습니다.
+- **候選來源：** src/locales/ko-KR/translation.json (AI Korean editorial revision)
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
 ### priceAnalysis.hotSearches.noData
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
@@ -12529,7 +12541,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 前往「我的追蹤清單」新增股票
-- **簡中對照：** 前往「我的自选列表」新增股票
+- **簡中對照：** 前往“我的自选列表”新增股票
 - **英文對照：** Go to 'My Watchlist' to add stocks
 - **英文 fallback：** direct — priceAnalysis.watchlistQuickAccess.addStocksHint: Go to 'My Watchlist' to add stocks
 - **韓文候選：** 관심 종목 페이지에서 종목을 추가하세요.
@@ -12731,13 +12743,13 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 ### priceAnalysis.tour.start
 
-- **審核狀態：** authored_pending_native_language_review_not_released
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
 - **繁中原文：** 使用教學
 - **簡中對照：** 使用指南
 - **英文對照：** Page guide
 - **英文 fallback：** direct — priceAnalysis.tour.start: Page guide
-- **韓文候選：** 사용 안내
-- **候選來源：** docs/i18n/ko-KR-review/ko-KR.translation-review.json
+- **韓文候選：** 사용 방법
+- **候選來源：** src/locales/ko-KR/translation.json (AI Korean editorial revision)
 - **替代候選：** 無
 - **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
 
@@ -12889,7 +12901,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 預設分析 3.5 年，可切換 0.5 年或 1.5 年。選「自訂」輸入年數後，按 Enter 或離開欄位即可更新；選擇回測日期，可查看當時的分析結果。
-- **簡中對照：** 默认分析 3.5 年，可切换 0.5 年或 1.5 年。选「自定义」输入年数后，按 Enter 或离开输入框即可更新；选择回测日期，可查看当时的分析结果。
+- **簡中對照：** 默认分析 3.5 年，可切换 0.5 年或 1.5 年。选“自定义”输入年数后，按 Enter 或离开输入框即可更新；选择回测日期，可查看当时的分析结果。
 - **英文對照：** The default span is 3.5 years; switch to 0.5 or 1.5 years. Choose Custom and enter a span, then press Enter or leave the field to update. Pick a backtest date to see the analysis as of that day.
 - **英文 fallback：** direct — priceAnalysis.tour.period.body: The default span is 3.5 years; switch to 0.5 or 1.5 years. Choose Custom and enter a span, then press Enter or leave the field to update. Pick a backtest date to see the analysis as of that day.
 - **韓文候選：** 기본 분석 기간은 3.5년이며, 0.5년 또는 1.5년으로 변경할 수 있습니다. "직접 설정"을 선택해 연수를 입력한 뒤 Enter 키를 누르거나 입력란에서 벗어나면 값이 갱신됩니다. 백테스트 날짜를 선택하면 해당 날짜의 분석 결과를 확인할 수 있습니다.
@@ -13009,7 +13021,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 建立分類後，這檔股票會直接加入其中。
-- **簡中對照：** 建立分类后，这只股票会直接加入其中。
+- **簡中對照：** 创建分类后，这只股票会直接加入其中。
 - **英文對照：** Create a category and add this stock to it.
 - **英文 fallback：** direct — priceAnalysis.addToWatchlist.newCategoryDescription: Create a category and add this stock to it.
 - **韓文候選：** 분류를 만들면 이 종목이 해당 분류에 바로 추가됩니다.
@@ -13093,7 +13105,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 建立新分類
-- **簡中對照：** 建立新分类
+- **簡中對照：** 创建新分类
 - **英文對照：** Create a category
 - **英文 fallback：** direct — priceAnalysis.addToWatchlist.createNew: Create a category
 - **韓文候選：** 새 분류 만들기
@@ -13129,7 +13141,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 最多 26 個字元。建立後，股票會直接加入這個分類。
-- **簡中對照：** 最多 26 个字符。建立后，股票会直接加入这个分类。
+- **簡中對照：** 最多 26 个字符。创建后，股票会直接加入这个分类。
 - **英文對照：** Up to 26 characters. This stock will be added to the new category.
 - **英文 fallback：** direct — priceAnalysis.addToWatchlist.newCategoryHint: Up to 26 characters. This stock will be added to the new category.
 - **韓文候選：** 최대 26자까지 입력할 수 있습니다. 분류를 만들면 종목이 바로 추가됩니다.
@@ -13285,7 +13297,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 追蹤你感興趣的股票，掌握價格情緒位階。方便同時查看多個股票在長期趨勢之下的價格位階，避免買在高點、賣在低點。
-- **簡中對照：** 关注你感兴趣的股票，掌握价格情绪位阶。方便同时查看多个股票在长期趋势之下的价格位阶，避免买在高点、卖在低点。
+- **簡中對照：** 关注感兴趣的股票，掌握它们在长期价格趋势中的情绪位置。你可以在同一页面查看多只股票当前的价格位置，避免追高或在低点卖出。
 - **英文對照：** Quickly grasp stock sentiment and see long-term trends to avoid buying high and selling low.
 - **英文 fallback：** direct — watchlist.jsonLd.description: Quickly grasp stock sentiment and see long-term trends to avoid buying high and selling low.
 - **韓文候選：** 관심 있는 종목을 추적하고 현재 가격 심리 구간을 확인하세요. 장기 추세에서 여러 종목의 가격 위치를 한 번에 비교하여 고점 매수와 저점 매도를 피하는 데 도움이 됩니다.
@@ -13297,7 +13309,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入中，請稍候... ({{count}}/{{max}})
-- **簡中對照：** 加载中，请稍候... ({{count}}/{{max}})
+- **簡中對照：** 加载中，请稍候…… ({{count}}/{{max}})
 - **英文對照：** Loading, please wait... ({{count}}/{{max}})
 - **英文 fallback：** direct — watchlist.loadingRetry: Loading, please wait... ({{count}}/{{max}})
 - **韓文候選：** 불러오는 중입니다. 잠시만 기다려 주세요... ({{count}}/{{max}})
@@ -13333,7 +13345,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 此功能需要升級至 Pro 方案
-- **簡中對照：** 此功能需要升级至 Pro 方案
+- **簡中對照：** 此功能需要升级至 Pro 套餐
 - **英文對照：** This feature requires upgrading to Pro plan
 - **英文 fallback：** direct — watchlist.upgradeRequired: This feature requires upgrading to Pro plan
 - **韓文候選：** 이 기능을 이용하려면 Pro로 업그레이드해야 합니다.
@@ -13453,7 +13465,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 添加股票後，將自動根據股票長期(3.5年)趨勢，計算出當前價格的情緒位階，包括極度恐懼、恐懼、中性、貪婪、極度貪婪，點擊該股票可跳轉至樂活五線譜頁面查看詳情
-- **簡中對照：** 添加股票后，将自动根据股票长期(3.5年)趋势，计算出当前价格的情绪位阶，包括极度恐惧、恐惧、中性、贪婪、极度贪婪，点击该股票可跳转至乐活五线谱页面查看详情
+- **簡中對照：** 添加股票后，系统会根据股票长期（3.5 年）趋势计算当前价格对应的情绪位置，包括极度恐惧、恐惧、中性、贪婪和极度贪婪。点击该股票即可跳转至乐活五线谱页面查看详情。
 - **英文對照：** Add a stock, and we'll automatically determine its current price position within the LOHAS Five-Line sentiment bands (Extreme Fear to Extreme Greed) based on its 3.5-year trend. Click the stock for the full LOHAS Five-Line Analysis chart.
 - **英文 fallback：** direct — watchlist.infoTooltip: Add a stock, and we'll automatically determine its current price position within the LOHAS Five-Line sentiment bands (Extreme Fear to Extreme Greed) based on its 3.5-year trend. Click the stock for the full LOHAS Five-Line Analysis chart.
 - **韓文候選：** 종목을 추가하면 최근 3.5년의 장기 추세를 기준으로 현재 가격의 심리 구간을 자동 계산합니다. 구간은 극도의 공포, 공포, 중립, 탐욕, 극도의 탐욕으로 나뉩니다. 종목을 클릭하면 LOHAS 5선 분석 페이지에서 자세한 내용을 볼 수 있습니다.
@@ -13713,6 +13725,30 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 - **替代候選：** 無
 - **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
 
+### watchlist.stockCard.analysis.unavailable
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 暫無分析資料
+- **簡中對照：** 暂无分析数据
+- **英文對照：** Analysis unavailable
+- **英文 fallback：** direct — watchlist.stockCard.analysis.unavailable: Analysis unavailable
+- **韓文候選：** 아직 분석 데이터가 없습니다.
+- **候選來源：** src/locales/ko-KR/translation.json (AI Korean editorial revision)
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### watchlist.stockCard.analysis.loadError
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 分析載入失敗
+- **簡中對照：** 分析加载失败
+- **英文對照：** Could not load analysis
+- **英文 fallback：** direct — watchlist.stockCard.analysis.loadError: Could not load analysis
+- **韓文候選：** 분석 데이터를 불러오지 못했습니다.
+- **候選來源：** src/locales/ko-KR/translation.json (AI Korean editorial revision)
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
 ### watchlist.stockCard.header.symbol
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
@@ -13897,7 +13933,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 搜尋中...
-- **簡中對照：** 搜索中...
+- **簡中對照：** 搜索中……
 - **英文對照：** Searching...
 - **英文 fallback：** direct — watchlist.searchBox.loading: Searching...
 - **韓文候選：** 검색 중...
@@ -14017,7 +14053,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 自動監控追蹤清單中的股票，當長期價格情緒進入你選擇的狀態時，於每日掃描後寄送摘要。
-- **簡中對照：** 自动监控自选列表中的股票，当长期价格情绪进入你选择的状态时，于每日扫描后寄送摘要。
+- **簡中對照：** 自动监控自选列表中的股票。当长期价格情绪达到你选择的状态时，系统会在每日扫描后发送摘要。
 - **英文對照：** Automatically monitor the stocks in your Watchlist and receive a daily summary when their long-term price sentiment enters a state you selected.
 - **英文 fallback：** direct — watchlist.priceSentimentNotifications.description: Automatically monitor the stocks in your Watchlist and receive a daily summary when their long-term price sentiment enters a state you selected.
 - **韓文候選：** 관심 종목에 등록된 주식을 자동으로 모니터링합니다. 장기 가격 심리가 선택한 상태에 진입하면 매일 스캔이 끝난 후 요약 이메일을 보냅니다.
@@ -14077,7 +14113,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 查看 Pro 方案
-- **簡中對照：** 查看 Pro 方案
+- **簡中對照：** 查看 Pro 套餐
 - **英文對照：** View Pro plans
 - **英文 fallback：** direct — watchlist.priceSentimentNotifications.upgrade: View Pro plans
 - **韓文候選：** Pro 요금제 보기
@@ -14173,7 +14209,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 選擇希望收到通知的價格位階。預設為極度恐懼與極度貪婪。
-- **簡中對照：** 选择希望收到通知的价格位阶。默认为极度恐惧与极度贪婪。
+- **簡中對照：** 选择希望接收通知的价格位置，默认选择极度恐惧和极度贪婪。
 - **英文對照：** Choose the price sentiment states you want to receive. Extreme Fear and Extreme Greed are selected by default.
 - **英文 fallback：** direct — watchlist.priceSentimentNotifications.conditionsHint: Choose the price sentiment states you want to receive. Extreme Fear and Extreme Greed are selected by default.
 - **韓文候選：** 알림을 받을 가격 구간을 선택하세요. 기본 설정은 극도의 공포와 극도의 탐욕입니다.
@@ -14425,7 +14461,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 免費用戶僅能分析平台指定清單中的標的，升級至 Pro 方案即可分析所有標的。
-- **簡中對照：** 免费用户仅能分析平台湾股指定列表中的标的，升级至 Pro 方案即可分析所有标的。
+- **簡中對照：** 免费用户仅能分析平台湾股指定列表中的标的，升级至 Pro 套餐即可分析所有标的。
 - **英文對照：** Free users can only analyze stocks on the platform-designated list. Upgrade to Pro to access all stocks.
 - **英文 fallback：** direct — errors.STOCK_ACCESS_DENIED: Free users can only analyze stocks on the platform-designated list. Upgrade to Pro to access all stocks.
 - **韓文候選：** Free 사용자는 플랫폼에서 지정한 목록의 종목만 분석할 수 있습니다. Pro로 업그레이드하면 모든 종목을 분석할 수 있습니다.
@@ -14533,7 +14569,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 無法取得市場情緒數據
-- **簡中對照：** 无法取得市场情绪数据
+- **簡中對照：** 无法获取市场情绪数据
 - **英文對照：** Failed to load market sentiment data.
 - **英文 fallback：** direct — errors.SENTIMENT_DATA_ERROR: Failed to load market sentiment data.
 - **韓文候選：** 시장 심리 데이터를 가져올 수 없습니다.
@@ -14545,7 +14581,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 無法取得歷史數據
-- **簡中對照：** 无法取得历史数据
+- **簡中對照：** 无法获取历史数据
 - **英文對照：** Failed to load historical stock data.
 - **英文 fallback：** direct — errors.HISTORICAL_DATA_ERROR: Failed to load historical stock data.
 - **韓文候選：** 과거 데이터를 가져올 수 없습니다.
@@ -14653,7 +14689,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 操作逾時，請重試
-- **簡中對照：** 操作逾时，请重试
+- **簡中對照：** 操作超时，请重试
 - **英文對照：** Operation timed out. Please try the action again.
 - **英文 fallback：** direct — errors.BUTTON_TIMEOUT: Operation timed out. Please try the action again.
 - **韓文候選：** 작업 시간이 초과되었습니다. 다시 시도해 주세요.
@@ -14893,7 +14929,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 建立新分類失敗
-- **簡中對照：** 建立新分类失败
+- **簡中對照：** 创建新分类失败
 - **英文對照：** Failed to create the new category.
 - **英文 fallback：** direct — errors.CREATE_CATEGORY_FAILED: Failed to create the new category.
 - **韓文候選：** 새 그룹을 만들지 못했습니다.
@@ -15037,7 +15073,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 升級至 Pro 方案，查詢任何股票
-- **簡中對照：** 升级至 Pro 方案，查询任何股票
+- **簡中對照：** 升级至 Pro 套餐，查询任何股票
 - **英文對照：** Upgrade to Pro to analyze any stock
 - **英文 fallback：** direct — featureUpgrade.stockAccess.subtitle: Upgrade to Pro to analyze any stock
 - **韓文候選：** Pro 요금제로 업그레이드하면 원하는 종목을 조회할 수 있습니다.
@@ -15073,7 +15109,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 免費方案可立即查詢這些主要指數與 ETF：
-- **簡中對照：** 免费方案可立即查询这些主要指数与 ETF：
+- **簡中對照：** 免费套餐可立即查询这些主要指数与 ETF：
 - **英文對照：** These major indices & ETFs are free to analyze right now:
 - **英文 fallback：** direct — featureUpgrade.stockAccess.freeListHint: These major indices & ETFs are free to analyze right now:
 - **韓文候選：** Free 요금제에서는 다음 주요 지수와 ETF를 바로 조회할 수 있습니다:
@@ -15205,7 +15241,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 把最新市場情緒、個股分析與追蹤清單放在一起，持續掌握你的投資名單。
-- **簡中對照：** 把最新市场情绪、个股分析与自选列表放在一起，持续掌握你的自选股列表。
+- **簡中對照：** 整合最新市场情绪、个股分析与自选列表，持续跟踪关注标的。
 - **英文對照：** Bring the latest sentiment, stock analysis and your watchlist together to follow the investments that matter to you.
 - **英文 fallback：** direct — featureUpgrade.default.description: Bring the latest sentiment, stock analysis and your watchlist together to follow the investments that matter to you.
 - **韓文候選：** 최신 시장 심리, 개별 종목 분석과 관심 종목을 한곳에서 확인하고 투자 종목을 지속적으로 추적하세요.
@@ -15373,7 +15409,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 升級至 Pro 方案
-- **簡中對照：** 升级至 Pro 方案
+- **簡中對照：** 升级至 Pro 套餐
 - **英文對照：** Upgrade to Pro plan
 - **英文 fallback：** direct — featureUpgrade.upgradeAriaLabel: Upgrade to Pro plan
 - **韓文候選：** Pro 요금제로 업그레이드
@@ -15433,7 +15469,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 訂閱方案
-- **簡中對照：** 订阅方案
+- **簡中對照：** 订阅套餐
 - **英文對照：** Subscription Plans
 - **英文 fallback：** direct — subscription.pageTitle: Subscription Plans
 - **韓文候選：** 구독 요금제
@@ -15457,7 +15493,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 需要升級方案
-- **簡中對照：** 需要升级方案
+- **簡中對照：** 需要升级套餐
 - **英文對照：** Upgrade Required
 - **英文 fallback：** direct — subscription.upgradeRequired.title: Upgrade Required
 - **韓文候選：** 요금제 업그레이드가 필요합니다
@@ -15469,7 +15505,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 免費方案
-- **簡中對照：** 免费方案
+- **簡中對照：** 免费套餐
 - **英文對照：** Free Plan
 - **英文 fallback：** direct — subscription.plans.free: Free Plan
 - **韓文候選：** Free 요금제
@@ -15481,7 +15517,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 專業方案
-- **簡中對照：** 专业方案
+- **簡中對照：** 专业套餐
 - **英文對照：** Pro Plan
 - **英文 fallback：** direct — subscription.plans.pro: Pro Plan
 - **韓文候選：** Pro 요금제
@@ -15553,7 +15589,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 個人化股票追蹤功能
-- **簡中對照：** 个性化自选股管理功能
+- **簡中對照：** 个性化自选列表管理功能
 - **英文對照：** Personal stock tracking feature
 - **英文 fallback：** direct — subscription.features.watchlistDesc: Personal stock tracking feature
 - **韓文候選：** 개인 맞춤형 종목 추적 기능
@@ -15613,7 +15649,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 目前方案
-- **簡中對照：** 目前方案
+- **簡中對照：** 目前套餐
 - **英文對照：** Current Plan
 - **英文 fallback：** direct — subscription.userAccount.currentPlan: Current Plan
 - **韓文候選：** 현재 요금제
@@ -15673,7 +15709,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 無法載入方案資訊
-- **簡中對照：** 无法加载方案信息
+- **簡中對照：** 无法加载套餐信息
 - **英文對照：** Unable to load plan information
 - **英文 fallback：** direct — subscription.userAccount.planLoadError: Unable to load plan information
 - **韓文候選：** 요금제 정보를 불러오지 못했습니다.
@@ -15841,7 +15877,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 以新台幣（TWD）計價與扣款。
-- **簡中對照：** 以新台币（TWD）计价与扣款。
+- **簡中對照：** 所有价格均以新台币（TWD）计价和扣款。
 - **英文對照：** Billed in New Taiwan dollars (TWD).
 - **英文 fallback：** direct — subscription.billingPeriod.currencyNote: Billed in New Taiwan dollars (TWD).
 - **韓文候選：** 대만 달러(TWD)로 가격이 표시되며 결제됩니다.
@@ -15865,7 +15901,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 選擇適合您的方案
-- **簡中對照：** 选择适合您的方案
+- **簡中對照：** 选择适合您的套餐
 - **英文對照：** Choose the plan that's right for you
 - **英文 fallback：** direct — subscription.subscriptionPlans.title: Choose the plan that's right for you
 - **韓文候選：** 나에게 맞는 요금제를 선택하세요
@@ -15973,7 +16009,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 升級為付費方案
-- **簡中對照：** 升级为付费方案
+- **簡中對照：** 升级为付费套餐
 - **英文對照：** Upgrade to Paid Plan
 - **英文 fallback：** direct — subscription.subscriptionPlans.upgradeToFullPlan: Upgrade to Paid Plan
 - **韓文候選：** 유료 요금제로 업그레이드
@@ -16033,7 +16069,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 免費方案
-- **簡中對照：** 免费方案
+- **簡中對照：** 免费套餐
 - **英文對照：** Free Plan
 - **英文 fallback：** direct — subscription.subscriptionPlans.freePlan.name: Free Plan
 - **韓文候選：** Free 요금제
@@ -16093,7 +16129,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 追蹤清單功能：同時查看多個標的情緒位階
-- **簡中對照：** 自选列表功能：同时查看多个标的情绪位阶
+- **簡中對照：** 自选列表功能：同时查看多个标的的情绪位置
 - **英文對照：** Watchlist Feature: View multiple stock sentiment levels
 - **英文 fallback：** direct — subscription.subscriptionPlans.freePlan.features[2]: Watchlist Feature: View multiple stock sentiment levels
 - **韓文候選：** 관심 종목: 여러 종목의 심리 수준을 한 번에 확인
@@ -16129,7 +16165,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 專業方案
-- **簡中對照：** 专业方案
+- **簡中對照：** 专业套餐
 - **英文對照：** Pro Plan
 - **英文 fallback：** direct — subscription.subscriptionPlans.proPlan.name: Pro Plan
 - **韓文候選：** Pro 요금제
@@ -16189,7 +16225,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 掌握最新市場情緒，追蹤你的投資名單
-- **簡中對照：** 掌握最新市场情绪，查看你的自选股列表
+- **簡中對照：** 掌握最新市场情绪，查看自选列表中的股票
 - **英文對照：** Follow the latest sentiment and your investment list
 - **英文 fallback：** direct — subscription.subscriptionPlans.proPlan.description: Follow the latest sentiment and your investment list
 - **韓文候選：** 최신 시장 심리를 파악하고 투자 종목을 추적하세요.
@@ -16249,7 +16285,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 追蹤清單功能：同時比較多個標的情緒位階
-- **簡中對照：** 自选列表功能：同时比较多个标的情绪位阶
+- **簡中對照：** 自选列表功能：同时比较多个标的的情绪位置
 - **英文對照：** Watchlist Feature: compare sentiment levels across holdings
 - **英文 fallback：** direct — subscription.subscriptionPlans.proPlan.features[4]: Watchlist Feature: compare sentiment levels across holdings
 - **韓文候選：** 관심 종목: 여러 종목의 심리 수준을 동시에 비교
@@ -16285,7 +16321,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入方案資料中...
-- **簡中對照：** 加载方案数据中...
+- **簡中對照：** 加载套餐数据中……
 - **英文對照：** Loading plans...
 - **英文 fallback：** direct — subscription.subscriptionPlans.loadingPlans: Loading plans...
 - **韓文候選：** 요금제 정보를 불러오는 중...
@@ -16297,7 +16333,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 方案載入失敗
-- **簡中對照：** 方案加载失败
+- **簡中對照：** 套餐加载失败
 - **英文對照：** Failed to load plans
 - **英文 fallback：** direct — subscription.subscriptionPlans.loadError: Failed to load plans
 - **韓文候選：** 요금제 정보를 불러오지 못했습니다.
@@ -16657,7 +16693,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 詳細比較各方案功能差異
-- **簡中對照：** 详细比较各方案功能差异
+- **簡中對照：** 详细比较各套餐功能差异
 - **英文對照：** Compare features across all plans
 - **英文 fallback：** direct — subscription.comparison.subtitle: Compare features across all plans
 - **韓文候選：** 각 요금제에서 제공하는 기능을 자세히 비교하세요.
@@ -16837,7 +16873,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 升級到 {{planName}} 方案
-- **簡中對照：** 升级到 {{planName}} 方案
+- **簡中對照：** 升级到 {{planName}} 套餐
 - **英文對照：** Upgrade to {{planName}} Plan
 - **英文 fallback：** direct — payment.upgradeTitle: Upgrade to {{planName}} Plan
 - **韓文候選：** {{planName}} 요금제로 업그레이드
@@ -16849,7 +16885,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 選擇最適合您的付款方式，立即享受完整功能
-- **簡中對照：** 选择最适合您的付款方式，立即享受完整功能
+- **簡中對照：** 选择合适的支付方式，立即解锁完整功能。
 - **英文對照：** Choose the payment method that works best for you and enjoy full features immediately
 - **英文 fallback：** direct — payment.upgradeSubtitle: Choose the payment method that works best for you and enjoy full features immediately
 - **韓文候選：** 나에게 맞는 결제 방법을 선택하고 모든 기능을 이용하세요.
@@ -16861,7 +16897,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 返回方案選擇
-- **簡中對照：** 返回方案选择
+- **簡中對照：** 返回套餐选择
 - **英文對照：** Back to Plans
 - **英文 fallback：** direct — payment.backToPlans: Back to Plans
 - **韓文候選：** 요금제 선택으로 돌아가기
@@ -16885,7 +16921,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 無效的方案
-- **簡中對照：** 无效的方案
+- **簡中對照：** 无效的套餐
 - **英文對照：** Invalid Plan
 - **英文 fallback：** direct — payment.invalidPlan.title: Invalid Plan
 - **韓文候選：** 유효하지 않은 요금제
@@ -16897,7 +16933,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 您選擇的方案不存在，請重新選擇。
-- **簡中對照：** 您选择的方案不存在，请重新选择。
+- **簡中對照：** 您选择的套餐不存在，请重新选择。
 - **英文對照：** The selected plan does not exist. Please choose again.
 - **英文 fallback：** direct — payment.invalidPlan.message: The selected plan does not exist. Please choose again.
 - **韓文候選：** 선택한 요금제가 존재하지 않습니다. 다시 선택해 주세요.
@@ -16969,7 +17005,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 點擊「前往付款」將跳轉到綠界支付頁面
-- **簡中對照：** 点击「前往付款」将跳转到绿界支付页面
+- **簡中對照：** 点击“前往付款”将跳转到绿界支付页面
 - **英文對照：** Selecting “Proceed to Payment” opens the ECPay payment page.
 - **英文 fallback：** direct — payment.flow.notices[0]: Selecting “Proceed to Payment” opens the ECPay payment page.
 - **韓文候選：** '결제 페이지로 이동'을 클릭하면 ECPay 결제 페이지로 이동합니다.
@@ -16981,7 +17017,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 請在 30 分鐘內完成付款，逾時訂單將自動取消
-- **簡中對照：** 请在 30 分钟内完成付款，逾时订单将自动取消
+- **簡中對照：** 请在 30 分钟内完成付款，超时订单将自动取消
 - **英文對照：** Complete payment within 30 minutes; the order will expire after that.
 - **英文 fallback：** direct — payment.flow.notices[1]: Complete payment within 30 minutes; the order will expire after that.
 - **韓文候選：** 30분 이내에 결제를 완료해 주세요. 시간이 지나면 주문이 자동 취소됩니다.
@@ -17041,7 +17077,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 處理中...
-- **簡中對照：** 处理中...
+- **簡中對照：** 处理中……
 - **英文對照：** Processing...
 - **英文 fallback：** direct — payment.form.processing: Processing...
 - **韓文候選：** 처리 중...
@@ -17053,7 +17089,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 建立訂單中...
-- **簡中對照：** 建立订单中...
+- **簡中對照：** 创建订单中……
 - **英文對照：** Creating order...
 - **英文 fallback：** direct — payment.form.creating: Creating order...
 - **韓文候選：** 주문을 생성하는 중...
@@ -17077,7 +17113,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 確認方案
-- **簡中對照：** 确认方案
+- **簡中對照：** 确认套餐
 - **英文對照：** Confirm Plan
 - **英文 fallback：** direct — payment.form.confirmPlan: Confirm Plan
 - **韓文候選：** 요금제 확인
@@ -17173,7 +17209,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 創建訂單中...
-- **簡中對照：** 创建订单中...
+- **簡中對照：** 创建订单中……
 - **英文對照：** Creating Order...
 - **英文 fallback：** direct — payment.form.creatingOrder: Creating Order...
 - **韓文候選：** 주문을 생성하는 중...
@@ -17353,7 +17389,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 方案
-- **簡中對照：** 方案
+- **簡中對照：** 套餐
 - **英文對照：** Plan
 - **英文 fallback：** direct — payment.history.plan: Plan
 - **韓文候選：** 요금제
@@ -17509,7 +17545,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 建立訂單失敗
-- **簡中對照：** 建立订单失败
+- **簡中對照：** 创建订单失败
 - **英文對照：** Failed to create order
 - **英文 fallback：** direct — payment.errors.createOrderFailed: Failed to create order
 - **韓文候選：** 주문을 생성하지 못했습니다.
@@ -17581,7 +17617,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 你將前往 payment.ecpay.com.tw，輸入信用卡資料並完成付款。
-- **簡中對照：** 你将前往 payment.ecpay.com.tw，输入信用卡数据并完成付款。
+- **簡中對照：** 你将前往 payment.ecpay.com.tw，输入信用卡信息并完成付款。
 - **英文對照：** You will be redirected to payment.ecpay.com.tw to enter your card details and complete payment.
 - **英文 fallback：** direct — payment.security.notices[0]: You will be redirected to payment.ecpay.com.tw to enter your card details and complete payment.
 - **韓文候選：** payment.ecpay.com.tw로 이동하여 신용카드 정보를 입력하고 결제를 완료하게 됩니다.
@@ -17593,7 +17629,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 所有款項以 TWD（新臺幣）扣款；發卡銀行可能收取匯率換算或跨境交易費用。
-- **簡中對照：** 所有款项以 TWD（新台币）扣款；发卡银行可能收取汇率换算或跨境交易费用。
+- **簡中對照：** 所有款项均以新台币（TWD）扣款；发卡行可能会收取货币转换费或跨境交易手续费。
 - **英文對照：** All charges are in TWD (New Taiwan Dollar). Your card issuer may apply currency conversion or international transaction fees.
 - **英文 fallback：** direct — payment.security.notices[1]: All charges are in TWD (New Taiwan Dollar). Your card issuer may apply currency conversion or international transaction fees.
 - **韓文候選：** 모든 결제는 TWD(대만 달러)로 청구됩니다. 카드 발급 은행에 따라 환전 수수료 또는 해외 거래 수수료가 부과될 수 있습니다.
@@ -17605,7 +17641,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 信用卡是否可使用，以綠界與發卡銀行的審核結果為準。
-- **簡中對照：** 信用卡是否可使用，以绿界与发卡银行的审核结果为准。
+- **簡中對照：** 信用卡是否可使用，以绿界与发卡行的审核结果为准。
 - **英文對照：** Card acceptance is subject to ECPay and your card issuer.
 - **英文 fallback：** direct — payment.security.notices[2]: Card acceptance is subject to ECPay and your card issuer.
 - **韓文候選：** 신용카드 사용 가능 여부는 ECPay와 카드 발급 은행의 심사 결과에 따라 결정됩니다.
@@ -17629,7 +17665,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 訂閱將自動續訂，每{{period}}扣款 TWD {{amount}}，直到取消為止。可在下次續訂前至會員帳戶管理或取消訂閱。
-- **簡中對照：** 订阅将自动续订，每{{period}}扣款 TWD {{amount}}，直到取消为止。可在下次续订前至会员账户管理或取消订阅。
+- **簡中對照：** 订阅将自动续费，按{{period}}扣款 TWD {{amount}}（新台币），直至取消为止。你可以在下次续费前前往账户管理或取消订阅。
 - **英文對照：** Renews automatically at TWD {{amount}} every {{period}} until cancelled. Manage or cancel your subscription in your account before the next renewal.
 - **英文 fallback：** direct — payment.security.renewal: Renews automatically at TWD {{amount}} every {{period}} until cancelled. Manage or cancel your subscription in your account before the next renewal.
 - **韓文候選：** 구독은 취소할 때까지 자동 갱신되며, {{period}}마다 TWD {{amount}}가 청구됩니다. 다음 갱신일 전에 회원 계정에서 구독을 관리하거나 취소할 수 있습니다.
@@ -17701,7 +17737,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 正在確認付款狀態...
-- **簡中對照：** 正在确认付款状态...
+- **簡中對照：** 正在确认付款状态……
 - **英文對照：** Confirming payment status...
 - **英文 fallback：** direct — payment.result.loading: Confirming payment status...
 - **韓文候選：** 결제 상태를 확인하는 중...
@@ -17713,7 +17749,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 正在等待付款確認... ({{pollingCount}}/{{maxPollingAttempts}})
-- **簡中對照：** 正在等待付款确认... ({{pollingCount}}/{{maxPollingAttempts}})
+- **簡中對照：** 正在等待付款确认…… ({{pollingCount}}/{{maxPollingAttempts}})
 - **英文對照：** Waiting for payment confirmation... ({{pollingCount}}/{{maxPollingAttempts}})
 - **英文 fallback：** direct — payment.result.polling: Waiting for payment confirmation... ({{pollingCount}}/{{maxPollingAttempts}})
 - **韓文候選：** 결제 확인을 기다리는 중... ({{pollingCount}}/{{maxPollingAttempts}})
@@ -17881,7 +17917,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** {{countdown}}秒後將自動跳轉到您的帳戶頁面...
-- **簡中對照：** {{countdown}}秒后将自动跳转到您的账户页面...
+- **簡中對照：** {{countdown}}秒后将自动跳转到您的账户页面……
 - **英文對照：** Redirecting to your account page in {{countdown}} seconds...
 - **英文 fallback：** direct — payment.result.autoRedirect: Redirecting to your account page in {{countdown}} seconds...
 - **韓文候選：** {{countdown}}초 후 계정 페이지로 자동 이동합니다...
@@ -17965,7 +18001,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 重新選擇方案
-- **簡中對照：** 重新选择方案
+- **簡中對照：** 重新选择套餐
 - **英文對照：** Choose Plan Again
 - **英文 fallback：** direct — payment.result.tryAgain: Choose Plan Again
 - **韓文候選：** 요금제 다시 선택
@@ -18109,7 +18145,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 您已從付款頁面返回。正在確認付款狀態...
-- **簡中對照：** 您已从付款页面返回。正在确认付款状态...
+- **簡中對照：** 您已从付款页面返回。正在确认付款状态……
 - **英文對照：** You have returned from the payment page. We are checking your payment status…
 - **英文 fallback：** direct — payment.result.clientReturn.message: You have returned from the payment page. We are checking your payment status…
 - **韓文候選：** 결제 페이지에서 돌아왔습니다. 결제 상태를 확인하는 중입니다...
@@ -18121,7 +18157,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** Pro 方案
-- **簡中對照：** Pro 方案
+- **簡中對照：** Pro 套餐
 - **英文對照：** Pro Plan
 - **英文 fallback：** direct — payment.plan.proPlan: Pro Plan
 - **韓文候選：** Pro 요금제
@@ -18181,7 +18217,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 優先客戶支援
-- **簡中對照：** 优先客户支援
+- **簡中對照：** 优先客户支持
 - **英文對照：** Priority Customer Support
 - **英文 fallback：** direct — payment.plan.features.prioritySupport: Priority Customer Support
 - **韓文候選：** 우선 고객 지원
@@ -18289,7 +18325,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 月付方案每月自動續費，年付方案每年自動續費
-- **簡中對照：** 月付方案每月自动续费，年付方案每年自动续费
+- **簡中對照：** 月付套餐每月自动续费，年付套餐每年自动续费
 - **英文對照：** Monthly plans auto-renew monthly, yearly plans auto-renew yearly
 - **英文 fallback：** direct — payment.terms.serviceTerms[1]: Monthly plans auto-renew monthly, yearly plans auto-renew yearly
 - **韓文候選：** 월간 요금제는 매월, 연간 요금제는 매년 자동 갱신됩니다.
@@ -18385,7 +18421,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 方案
-- **簡中對照：** 方案
+- **簡中對照：** 套餐
 - **英文對照：** Plan
 - **英文 fallback：** direct — payment.orderSummary.plan: Plan
 - **韓文候選：** 요금제
@@ -18409,7 +18445,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 信用卡定期定額
-- **簡中對照：** 信用卡定期定额
+- **簡中對照：** 信用卡自动续费
 - **英文對照：** Credit Card Recurring
 - **英文 fallback：** direct — payment.orderSummary.creditCardRecurring: Credit Card Recurring
 - **韓文候選：** 신용카드 정기 결제
@@ -18517,7 +18553,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 此兌換碼不適用於此方案
-- **簡中對照：** 此兑换码不适用于此方案
+- **簡中對照：** 此兑换码不适用于此套餐
 - **英文對照：** This redemption code is not applicable to this plan
 - **英文 fallback：** direct — payment.redemption.notApplicable: This redemption code is not applicable to this plan
 - **韓文候選：** 이 쿠폰은 선택한 요금제에서 사용할 수 없습니다.
@@ -18565,7 +18601,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 顯示備用價格,請重新整理以取得最新資訊
-- **簡中對照：** 显示备用价格,请刷新以取得最新信息
+- **簡中對照：** 显示备用价格，请刷新以获取最新信息。
 - **英文對照：** Showing fallback pricing — please refresh for latest
 - **英文 fallback：** direct — payment.warning.usingFallbackPricing: Showing fallback pricing — please refresh for latest
 - **韓文候選：** 대체 가격을 표시하고 있습니다. 최신 정보를 확인하려면 페이지를 새로고침해 주세요.
@@ -18829,7 +18865,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 檢查權限中...
-- **簡中對照：** 检查权限中...
+- **簡中對照：** 检查权限中……
 - **英文對照：** Checking permissions...
 - **英文 fallback：** direct — admin.permissions.checking: Checking permissions...
 - **韓文候選：** 권한을 확인하는 중...
@@ -19093,7 +19129,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入健康狀態中...
-- **簡中對照：** 加载健康状态中...
+- **簡中對照：** 加载健康状态中……
 - **英文對照：** Loading health status...
 - **英文 fallback：** direct — admin.paymentRetry.overview.loading: Loading health status...
 - **韓文候選：** 시스템 상태를 불러오는 중...
@@ -19885,7 +19921,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 升級中...
-- **簡中對照：** 升级中...
+- **簡中對照：** 升级中……
 - **英文對照：** Upgrading...
 - **英文 fallback：** direct — admin.userManagement.upgrade.buttonUpgrading: Upgrading...
 - **韓文候選：** 업그레이드 중...
@@ -20065,7 +20101,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入代碼中...
-- **簡中對照：** 加载代码中...
+- **簡中對照：** 加载代码中……
 - **英文對照：** Loading codes...
 - **英文 fallback：** direct — admin.codes.loading: Loading codes...
 - **韓文候選：** 코드를 불러오는 중...
@@ -20209,7 +20245,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 搜尋活動...
-- **簡中對照：** 搜索活动...
+- **簡中對照：** 搜索活动……
 - **英文對照：** Search campaign...
 - **英文 fallback：** direct — admin.codes.searchCampaign: Search campaign...
 - **韓文候選：** 캠페인 검색...
@@ -20233,7 +20269,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 搜尋前綴...
-- **簡中對照：** 搜索前缀...
+- **簡中對照：** 搜索前缀……
 - **英文對照：** Search prefix...
 - **英文 fallback：** direct — admin.codes.searchPrefix: Search prefix...
 - **韓文候選：** 접두사 검색...
@@ -20245,7 +20281,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 建立時間晚於
-- **簡中對照：** 建立时间晚于
+- **簡中對照：** 创建时间晚于
 - **英文對照：** Created After
 - **英文 fallback：** direct — admin.codes.createdAfter: Created After
 - **韓文候選：** 생성일(이후)
@@ -20257,7 +20293,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 建立時間早於
-- **簡中對照：** 建立时间早于
+- **簡中對照：** 创建时间早于
 - **英文對照：** Created Before
 - **英文 fallback：** direct — admin.codes.createdBefore: Created Before
 - **韓文候選：** 생성일(이전)
@@ -20545,7 +20581,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 建立時間
-- **簡中對照：** 建立时间
+- **簡中對照：** 创建时间
 - **英文對照：** Created
 - **英文 fallback：** direct — admin.codes.table.created: Created
 - **韓文候選：** 생성일
@@ -20677,7 +20713,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 載入分析中...
-- **簡中對照：** 加载分析中...
+- **簡中對照：** 加载分析中……
 - **英文對照：** Loading analytics...
 - **英文 fallback：** direct — admin.analytics.loading: Loading analytics...
 - **韓文候選：** 분석 데이터를 불러오는 중...
@@ -21493,7 +21529,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 目標方案
-- **簡中對照：** 目标方案
+- **簡中對照：** 目标套餐
 - **英文對照：** Target Plan
 - **英文 fallback：** direct — admin.wizard.targetPlan: Target Plan
 - **韓文候選：** 대상 요금제
@@ -21541,7 +21577,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 符合資格的方案
-- **簡中對照：** 符合资格的方案
+- **簡中對照：** 符合资格的套餐
 - **英文對照：** Eligible Plans
 - **英文 fallback：** direct — admin.wizard.eligiblePlans: Eligible Plans
 - **韓文候選：** 적용 대상 요금제
@@ -21757,7 +21793,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 免費方案
-- **簡中對照：** 免费方案
+- **簡中對照：** 免费套餐
 - **英文對照：** Free Plan
 - **英文 fallback：** direct — admin.wizard.plans.free: Free Plan
 - **韓文候選：** 무료 요금제
@@ -21769,7 +21805,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 專業方案
-- **簡中對照：** 专业方案
+- **簡中對照：** 专业套餐
 - **英文對照：** Pro Plan
 - **英文 fallback：** direct — admin.wizard.plans.pro: Pro Plan
 - **韓文候選：** Pro 요금제
@@ -21805,7 +21841,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 特定方案
-- **簡中對照：** 特定方案
+- **簡中對照：** 特定套餐
 - **英文對照：** Specific Plans
 - **英文 fallback：** direct — admin.wizard.eligibility.specificPlans: Specific Plans
 - **韓文候選：** 특정 요금제
@@ -21925,7 +21961,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 至少必須選擇一個方案
-- **簡中對照：** 至少必须选择一个方案
+- **簡中對照：** 至少必须选择一个套餐
 - **英文對照：** At least one plan must be selected
 - **英文 fallback：** direct — admin.wizard.validation.plansRequired: At least one plan must be selected
 - **韓文候選：** 요금제를 하나 이상 선택해야 합니다
@@ -22513,7 +22549,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 建立時間
-- **簡中對照：** 建立时间
+- **簡中對照：** 创建时间
 - **英文對照：** Created
 - **英文 fallback：** direct — admin.codeDetails.created: Created
 - **韓文候選：** 생성일
@@ -22609,7 +22645,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 符合資格的方案
-- **簡中對照：** 符合资格的方案
+- **簡中對照：** 符合资格的套餐
 - **英文對照：** Eligible Plans
 - **英文 fallback：** direct — admin.codeDetails.eligiblePlans: Eligible Plans
 - **韓文候選：** 적용 대상 요금제
@@ -22813,7 +22849,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 用戶方案：{{plans}}
-- **簡中對照：** 用户方案：{{plans}}
+- **簡中對照：** 用户套餐：{{plans}}
 - **英文對照：** Users on: {{plans}}
 - **英文 fallback：** direct — admin.codeDetails.eligibility.specificPlans: Users on: {{plans}}
 - **韓文候選：** 사용자 요금제: {{plans}}
@@ -22825,7 +22861,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 特定方案
-- **簡中對照：** 特定方案
+- **簡中對照：** 特定套餐
 - **英文對照：** Specific Plans
 - **英文 fallback：** direct — admin.codeDetails.eligibility.specificPlansOption: Specific Plans
 - **韓文候選：** 특정 요금제
@@ -23005,7 +23041,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 至少必須選擇一個方案
-- **簡中對照：** 至少必须选择一个方案
+- **簡中對照：** 至少必须选择一个套餐
 - **英文對照：** At least one plan must be selected
 - **英文 fallback：** direct — admin.codeDetails.validation.plansRequired: At least one plan must be selected
 - **韓文候選：** 요금제를 하나 이상 선택해야 합니다
@@ -23545,7 +23581,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 請等待操作處理完成...
-- **簡中對照：** 请等待操作处理完成...
+- **簡中對照：** 请等待操作处理完成……
 - **英文對照：** Please wait while the operation is being processed...
 - **英文 fallback：** direct — admin.bulkOps.processing.description: Please wait while the operation is being processed...
 - **韓文候選：** 작업이 완료될 때까지 기다려 주세요...
@@ -23701,7 +23737,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 一頁看完全球市場情緒指標:CNN 恐懼貪婪指數、BofA Bull & Bear、AAII 散戶調查、NAAIM 經理人曝險、台指選擇權波動率等,附資料時間與原始出處。
-- **簡中對照：** 一页看完全球市场情绪指标:CNN 恐惧贪婪指数、BofA Bull & Bear、AAII 散户调查、NAAIM 基金经理风险敞口、台湾股指期权波动率等,附数据时间与原始出处。
+- **簡中對照：** 一页看完全球市场情绪指标：CNN 恐惧贪婪指数、BofA Bull & Bear、AAII 散户调查、NAAIM 基金经理风险敞口、台湾股指期权波动率等，附数据时间与原始出处。
 - **英文對照：** Every major market sentiment indicator on one page: CNN Fear & Greed, BofA Bull & Bear, AAII, NAAIM, TAIFEX volatility and more, each with its as-of date and original source.
 - **英文 fallback：** direct — sentimentBoard.pageDescription: Every major market sentiment indicator on one page: CNN Fear & Greed, BofA Bull & Bear, AAII, NAAIM, TAIFEX volatility and more, each with its as-of date and original source.
 - **韓文候選：** CNN 공포·탐욕 지수, BofA Bull & Bear, AAII 개인 투자자 조사, NAAIM 운용자 익스포저, 대만 주가지수 옵션 변동성 등 글로벌 시장 심리 지표를 한 페이지에서 확인하세요. 데이터 기준 시각과 원본 출처도 함께 제공합니다.
@@ -23766,7 +23802,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 - **英文 fallback：** direct — sentimentBoard.compositeUs: Sentiment Inside Out US Fear & Greed Index
 - **韓文候選：** Sentiment Inside Out 미국 주식 공포·탐욕 지수
 - **候選來源：** docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json
-- **替代候選：** 無
+- **替代候選：** docs/i18n/ko-KR-review/ko-KR.translation-review.json: SIO 미국 시장 공포·탐욕 지수
 - **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
 
 ### sentimentBoard.compositeTw
@@ -23778,7 +23814,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 - **英文 fallback：** direct — sentimentBoard.compositeTw: Sentiment Inside Out Taiwan Fear & Greed Index
 - **韓文候選：** Sentiment Inside Out 대만 주식 공포·탐욕 지수
 - **候選來源：** docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json
-- **替代候選：** 無
+- **替代候選：** docs/i18n/ko-KR-review/ko-KR.translation-review.json: SIO 대만 시장 공포·탐욕 지수
 - **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
 
 ### sentimentBoard.divergenceTitle
@@ -23881,7 +23917,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 指標載入失敗,請稍後再試。
-- **簡中對照：** 指标加载失败,请稍后再试。
+- **簡中對照：** 指标加载失败，请稍后再试。
 - **英文對照：** Could not load indicators. Please try again shortly.
 - **英文 fallback：** direct — sentimentBoard.error: Could not load indicators. Please try again shortly.
 - **韓文候選：** 지표를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.
@@ -23905,7 +23941,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 查看方案
-- **簡中對照：** 查看方案
+- **簡中對照：** 查看套餐
 - **英文對照：** See plans
 - **英文 fallback：** direct — sentimentBoard.upsellCta: See plans
 - **韓文候選：** 요금제 보기
@@ -23917,7 +23953,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 同一時間，散戶調查、機構部位與不同市場的判讀經常不一致。落差數字越大，代表兩邊的分歧越明顯。散戶取自 AAII 調查；機構取自 NAAIM 曝險、COT 與垃圾債利差。
-- **簡中對照：** 同一时间，散户调查、机构持仓与不同市场的判读经常不一致。落差数字越大，代表两边的分歧越明显。散户取自 AAII 调查；机构取自 NAAIM 风险敞口、COT 与垃圾债利差。
+- **簡中對照：** 同一时间，散户调查、机构持仓与不同市场的判读经常不一致。落差数字越大，代表两边的分歧越明显。散户取自 AAII 调查；机构取自 NAAIM 风险敞口、COT 与高收益债利差。
 - **英文對照：** Retail surveys, institutional positioning and different markets often read the same moment differently. The larger the gap, the wider the disagreement. Retail comes from the AAII survey; institutional from NAAIM exposure, COT and the junk bond spread.
 - **英文 fallback：** direct — sentimentBoard.divergenceNote: Retail surveys, institutional positioning and different markets often read the same moment differently. The larger the gap, the wider the disagreement. Retail comes from the AAII survey; institutional from NAAIM exposure, COT and the junk bond spread.
 - **韓文候選：** 같은 시점에도 개인 투자자 조사, 기관 포지션 및 서로 다른 시장의 해석은 자주 엇갈립니다. 괴리 수치가 클수록 두 측정값의 차이가 크다는 뜻입니다. 개인 투자자 심리는 AAII 조사에서, 기관 심리는 NAAIM 익스포저, COT 및 하이일드 채권 스프레드에서 가져옵니다.
@@ -24205,7 +24241,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 垃圾債利差
-- **簡中對照：** 垃圾债利差
+- **簡中對照：** 高收益债利差
 - **英文對照：** Junk Bond Spread
 - **英文 fallback：** direct — sentimentBoard.indicatorNames.junk-bond-spread: Junk Bond Spread
 - **韓文候選：** 하이일드 채권 스프레드
@@ -24396,10 +24432,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### sentimentBoard.delayBannerTitle
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** 免費版：SIO 計算的部分顯示至 {{date}}
-- **簡中對照：** 免费版：SIO 计算的部分显示至 {{date}}
-- **英文對照：** Free plan: SIO-calculated data shown up to {{date}}
-- **英文 fallback：** direct — sentimentBoard.delayBannerTitle: Free plan: SIO-calculated data shown up to {{date}}
+- **繁中原文：** 免費版：部分情緒指標只更新至 {{date}}，升級 Pro 查看最新市場情緒。
+- **簡中對照：** 免费版：部分情绪指标仅更新至 {{date}}，升级 Pro 查看最新市场情绪。
+- **英文對照：** Free plan: Some sentiment indicators are updated only through {{date}}. Upgrade to Pro for the latest market sentiment.
+- **英文 fallback：** direct — sentimentBoard.delayBannerTitle: Free plan: Some sentiment indicators are updated only through {{date}}. Upgrade to Pro for the latest market sentiment.
 - **韓文候選：** Free 버전: SIO 계산 데이터는 {{date}}까지 표시됩니다.
 - **候選來源：** docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json
 - **替代候選：** 無
@@ -24408,10 +24444,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### sentimentBoard.delayBannerBody
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** CNN、BofA、AAII 等第三方指標顯示最新公開讀數。SIO 計算的合成指標與歷史百分位，免費版截至兩個月前，卡片會標示「延遲」。
-- **簡中對照：** CNN、BofA、AAII 等第三方指标显示最新公开读数。SIO 计算的合成指标与历史百分位，免费版截至两个月前，卡片会标示「延迟」。
-- **英文對照：** CNN, BofA, AAII and other third-party indicators show their latest published readings. SIO composites and historical percentiles are delayed by two months on Free and marked “Delayed”.
-- **英文 fallback：** direct — sentimentBoard.delayBannerBody: CNN, BofA, AAII and other third-party indicators show their latest published readings. SIO composites and historical percentiles are delayed by two months on Free and marked “Delayed”.
+- **繁中原文：** CNN、BofA、AAII 等第三方指標顯示最新公開讀數；SIO 計算的綜合指標與歷史百分位則只更新至上述日期。
+- **簡中對照：** CNN、BofA、AAII 等第三方指标显示最新公开读数；SIO 计算的综合指标与历史百分位则仅更新至上述日期。
+- **英文對照：** CNN, BofA, AAII and other third-party indicators show their latest published readings. SIO composites and historical percentiles are updated only through the date above.
+- **英文 fallback：** direct — sentimentBoard.delayBannerBody: CNN, BofA, AAII and other third-party indicators show their latest published readings. SIO composites and historical percentiles are updated only through the date above.
 - **韓文候選：** CNN, BofA, AAII 등 제3자 지표는 최신 공개 수치를 표시합니다. SIO가 계산한 종합 지표와 과거 백분위는 Free 버전에서 두 달 전까지 제공되며 해당 카드에 '지연'으로 표시됩니다.
 - **候選來源：** docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json
 - **替代候選：** 無
@@ -24420,10 +24456,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### sentimentBoard.delayedTag
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** 延遲
-- **簡中對照：** 延迟
-- **英文對照：** Delayed
-- **英文 fallback：** direct — sentimentBoard.delayedTag: Delayed
+- **繁中原文：** 升級 Pro 查看最新資料
+- **簡中對照：** 升级 Pro 查看最新数据
+- **英文對照：** Upgrade to Pro for the latest data
+- **英文 fallback：** direct — sentimentBoard.delayedTag: Upgrade to Pro for the latest data
 - **韓文候選：** 지연
 - **候選來源：** docs/i18n/ko-KR-review/07-watchlist-sentiment-board.draft.json
 - **替代候選：** 無
@@ -24565,7 +24601,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 這個指標由美銀投資策略團隊發布，首席策略師是 Michael Hartnett，每週隨《The Flow Show》週報更新，通常在美國時間週四晚間到週五之間出來。它不看行情漲跌，而是彙整六項「資金流向哪裡、部位站在哪一邊」的資料，各自換算成百分位後合成 0 到 10 的分數。原始資料包含全球基金的資金進出、美銀自家的基金經理人問卷、期貨市場的持倉，以及全球股市的廣度。
-- **簡中對照：** 这个指标由美银投资策略团队发布，首席策略师是 Michael Hartnett，每周随《The Flow Show》周报更新，通常在美国时间周四晚间到周五之间出来。它不看行情涨跌，而是汇整六项「资金流向哪里、持仓站在哪一边」的数据，各自换算成百分位后合成 0 到 10 的分数。原始数据包含全球基金的资金进出、美银自家的基金经理问卷、期货市场的持仓，以及全球股市的广度。
+- **簡中對照：** 这个指标由美银投资策略团队发布，首席策略师是 Michael Hartnett，每周随《The Flow Show》周报更新，通常在美国时间周四晚间到周五之间出来。它不看行情涨跌，而是汇整六项“资金流向哪里、持仓站在哪一边”的数据，各自换算成百分位后合成 0 到 10 的分数。原始数据包含全球基金的资金进出、美银自家的基金经理问卷、期货市场的持仓，以及全球股市的广度。
 - **英文對照：** The gauge comes from the BofA Investment Strategy team led by chief strategist Michael Hartnett, and updates each week with The Flow Show, typically Thursday evening to Friday US time. It ignores price action and instead aggregates six measures of where money is flowing and how investors are positioned, converting each to a percentile before combining them into a 0-to-10 score. The underlying data covers global fund flows, BofA's own survey of fund managers, futures market positioning and global equity breadth.
 - **英文 fallback：** direct — sentimentIndicatorPages.bofaBullBear.whatItIs: The gauge comes from the BofA Investment Strategy team led by chief strategist Michael Hartnett, and updates each week with The Flow Show, typically Thursday evening to Friday US time. It ignores price action and instead aggregates six measures of where money is flowing and how investors are positioned, converting each to a percentile before combining them into a 0-to-10 score. The underlying data covers global fund flows, BofA's own survey of fund managers, futures market positioning and global equity breadth.
 - **韓文候選：** 이 지표는 뱅크오브아메리카 투자전략팀이 발표하며, 수석 전략가는 Michael Hartnett입니다. 주간 보고서 《The Flow Show》와 함께 매주 업데이트되며, 보통 미국 시간 목요일 저녁부터 금요일 사이에 공개됩니다. 시장 가격의 등락을 보는 대신, 자금이 어디로 흐르는지와 투자자들의 포지션이 어느 쪽에 쏠려 있는지를 보여주는 6개 데이터를 각각 백분위로 환산해 0~10점으로 종합합니다. 원자료에는 글로벌 펀드 자금 유출입, 뱅크오브아메리카 자체 펀드매니저 설문, 선물시장 포지션, 글로벌 주식시장 폭 등이 포함됩니다.
@@ -25069,7 +25105,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** CNN 用七項市場資料合成這個指數，包含股價相對均線的位置、創新高與創新低的家數差、上漲下跌股票的成交量差、選擇權的買賣權比例、垃圾債與投資級債的利差、市場波動率，以及股票相對債券的近期報酬。每一項都換算成同一個尺度後平均，得到 0 到 100 的分數，每個交易日更新。
-- **簡中對照：** CNN 用七项市场数据合成这个指数，包含股价相对均线的位置、创新高与创新低的家数差、上涨下跌股票的成交量差、看跌/看涨期权成交量比率、垃圾债与投资级债的利差、市场波动率，以及股票相对债券的近期收益。每一项都换算成同一个尺度后平均，得到 0 到 100 的分数，每个交易日更新。
+- **簡中對照：** CNN 用七项市场数据合成这个指数，包含股价相对均线的位置、创新高与创新低的家数差、上涨下跌股票的成交量差、看跌/看涨期权成交量比率、高收益债与投资级债的利差、市场波动率，以及股票相对债券的近期收益。每一项都换算成同一个尺度后平均，得到 0 到 100 的分数，每个交易日更新。
 - **英文對照：** CNN builds the index from seven market inputs: where prices sit relative to their moving average, the balance of new highs against new lows, volume in advancing versus declining stocks, the ratio of put to call options, the spread between junk and investment grade bonds, market volatility, and recent stock returns against bonds. Each is rescaled and averaged into a 0-to-100 score, updated every trading day.
 - **英文 fallback：** direct — sentimentIndicatorPages.cnnFearGreed.whatItIs: CNN builds the index from seven market inputs: where prices sit relative to their moving average, the balance of new highs against new lows, volume in advancing versus declining stocks, the ratio of put to call options, the spread between junk and investment grade bonds, market volatility, and recent stock returns against bonds. Each is rescaled and averaged into a 0-to-100 score, updated every trading day.
 - **韓文候選：** CNN은 주가와 이동평균선의 상대적 위치, 신고가와 신저가 종목 수의 차이, 상승·하락 종목의 거래량 차이, 옵션의 풋·콜 비율, 하이일드 채권과 투자등급 채권의 스프레드, 시장 변동성, 주식과 채권의 최근 수익률 등 7개 시장 데이터를 종합해 이 지수를 산출합니다. 각 항목을 동일한 척도로 환산한 뒤 평균해 0~100점으로 나타내며, 매 거래일 업데이트됩니다.
@@ -25261,7 +25297,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** CNN 這個指數的成分偏向短期。它的七項資料多數看的是最近幾天到幾週的變化，所以在下跌途中很早就會落到極度恐懼，之後行情繼續跌、指數卻已經貼在底部，等於失去分辨力。SIO 的恐懼貪婪指標用較長的標準化窗口，把每一項放進十幾年的歷史分布裡比較，因此在極端狀態下仍然分得出「很恐懼」與「非常罕見的恐懼」。兩者一起看，可以避免被短期訊號帶著跑。
-- **簡中對照：** CNN 这个指数的成分偏向短期。它的七项数据多数看的是最近几天到几周的变化，所以在下跌途中很早就会落到极度恐惧，之后行情继续跌、指数却已经贴在底部，等于失去分辨力。SIO 的恐惧贪婪指标用较长的标准化窗口，把每一项放进十几年的历史分布里比较，因此在极端状态下仍然分得出「很恐惧」与「非常罕见的恐惧」。两者一起看，可以避免被短期信号带着跑。
+- **簡中對照：** CNN 这个指数的成分偏向短期。它的七项数据多数看的是最近几天到几周的变化，所以在下跌途中很早就会落到极度恐惧，之后行情继续跌、指数却已经贴在底部，等于失去分辨力。SIO 的恐惧贪婪指标用较长的标准化窗口，把每一项放进十几年的历史分布里比较，因此在极端状态下仍然分得出“很恐惧”与“非常罕见的恐惧”。两者一起看，可以避免被短期信号带着跑。
 - **英文對照：** The CNN index leans short term. Most of its seven inputs look at changes over the past days to weeks, so during a decline it drops into extreme fear early, then pins to the floor while the market keeps falling, losing the ability to discriminate. The SIO Fear & Greed Index standardises each input against more than a decade of history, so even at extremes it still separates ordinary fear from genuinely rare fear. Reading both together keeps short-term signals in perspective.
 - **英文 fallback：** direct — sentimentIndicatorPages.cnnFearGreed.relationToSio: The CNN index leans short term. Most of its seven inputs look at changes over the past days to weeks, so during a decline it drops into extreme fear early, then pins to the floor while the market keeps falling, losing the ability to discriminate. The SIO Fear & Greed Index standardises each input against more than a decade of history, so even at extremes it still separates ordinary fear from genuinely rare fear. Reading both together keeps short-term signals in perspective.
 - **韓文候選：** CNN 지수의 구성 항목은 단기 흐름에 치우쳐 있습니다. 7개 항목 대부분이 최근 며칠에서 몇 주 사이의 변화를 반영하기 때문에, 하락이 진행되는 초기에 이미 극단적 공포 구간에 진입할 수 있습니다. 이후 시장이 더 하락해도 지수는 바닥에 머물러 추가적인 차이를 구분하기 어려워집니다. SIO 공포·탐욕 지수는 더 긴 표준화 기간을 사용해 각 항목을 10여 년에 걸친 과거 분포와 비교합니다. 따라서 극단적인 상황에서도 '매우 두려운 상태'와 '역사적으로 매우 드문 수준의 공포'를 구분할 수 있습니다. 두 지표를 함께 보면 단기 신호에 지나치게 반응하는 일을 줄일 수 있습니다.
@@ -25513,7 +25549,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 垃圾債需求（Junk Bond Demand）
-- **簡中對照：** 垃圾债需求（Junk Bond Demand）
+- **簡中對照：** 高收益债需求（Junk Bond Demand）
 - **英文對照：** Junk Bond Demand
 - **英文 fallback：** direct — sentimentIndicatorPages.cnnFearGreed.components[5].name: Junk Bond Demand
 - **韓文候選：** 하이일드 채권 수요(Junk Bond Demand)
@@ -25525,7 +25561,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 垃圾債與投資級債的殖利率差，差距縮小代表願意承擔風險。
-- **簡中對照：** 垃圾债与投资级债的收益率差，差距缩小代表愿意承担风险。
+- **簡中對照：** 高收益债与投资级债的收益率差，差距缩小代表愿意承担风险。
 - **英文對照：** The yield spread between junk and investment grade bonds; a narrowing spread means more appetite for risk.
 - **英文 fallback：** direct — sentimentIndicatorPages.cnnFearGreed.components[5].note: The yield spread between junk and investment grade bonds; a narrowing spread means more appetite for risk.
 - **韓文候選：** 하이일드 채권과 투자등급 채권의 수익률 차이입니다. 스프레드가 축소되면 투자자들이 위험을 감수하려는 경향이 있음을 나타냅니다.
@@ -25801,7 +25837,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** AAII 有兩個先天限制。它是問卷，回覆的人是自願參與的協會會員，樣本每週不同，數字本身的雜訊不小。而且它問的是「想法」，人怎麼想與怎麼下單常常有落差。SIO 的恐懼貪婪指標把 AAII 當成其中一項成分，經過平滑與標準化後再與其他七項合成，用意就是讓單一問卷的雜訊不會主導判斷。
-- **簡中對照：** AAII 有两个先天限制。它是问卷，回复的人是自愿参与的协会会员，样本每周不同，数字本身的杂讯不小。而且它问的是「想法」，人怎么想与怎么下单常常有落差。SIO 的恐惧贪婪指标把 AAII 当成其中一项成分，经过平滑与标准化后再与其他七项合成，用意就是让单一问卷的杂讯不会主导判断。
+- **簡中對照：** AAII 有两个先天限制。它是问卷，回复的人是自愿参与的协会会员，样本每周不同，数字本身的杂讯不小。而且它问的是“想法”，人怎么想与怎么下单常常有落差。SIO 的恐惧贪婪指标把 AAII 当成其中一项成分，经过平滑与标准化后再与其他七项合成，用意就是让单一问卷的杂讯不会主导判断。
 - **英文對照：** AAII carries two built-in limits. It is a survey answered by self-selecting members, so the sample shifts each week and the raw number is noisy. It also asks what people think, and what people think often differs from what they trade. The SIO Fear & Greed Index treats AAII as one component, smoothed and standardised before being combined with seven other inputs, so no single survey dominates the reading.
 - **英文 fallback：** direct — sentimentIndicatorPages.aaiiSurvey.relationToSio: AAII carries two built-in limits. It is a survey answered by self-selecting members, so the sample shifts each week and the raw number is noisy. It also asks what people think, and what people think often differs from what they trade. The SIO Fear & Greed Index treats AAII as one component, smoothed and standardised before being combined with seven other inputs, so no single survey dominates the reading.
 - **韓文候選：** AAII 조사에는 구조적인 한계가 두 가지 있습니다. 설문은 자발적으로 참여하는 협회 회원을 대상으로 하므로 표본이 매주 달라지고 수치에 잡음이 적지 않습니다. 또한 응답은 실제 '생각'을 묻기 때문에 투자자의 생각과 실제 주문 사이에는 차이가 생길 수 있습니다. SIO 공포·탐욕 지수는 AAII를 8개 구성 항목 중 하나로 사용하고, 평활화와 표준화를 거쳐 나머지 7개 항목과 함께 종합합니다. 이를 통해 단일 설문의 잡음이 전체 판단을 좌우하지 않도록 합니다.
@@ -26569,7 +26605,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 本站收錄的資料自 2006 年 6 月起。有三點要留意：報告本身有三天時間差，週五公布的是週二的狀況；CFTC 在 2021 年前後調整過合約分類，跨越那個時點比較數字要留意口徑差異；另外「資產管理機構」被歸入投機端，但這類帳戶有不少是長期偏多的配置型資金，判讀極端值時值得把這一點納入考量。
-- **簡中對照：** 本站收录的数据自 2006 年 6 月起。有三点要留意：报告本身有三天时间差，周五公布的是周二的状况；CFTC 在 2021 年前后调整过合约分类，跨越那个时点比较数字要留意口径差异；另外「资产管理机构」被归入投机端，但这类账户有不少是长期偏多的配置型资金，判读极端值时值得把这一点纳入考量。
+- **簡中對照：** 本站收录的数据自 2006 年 6 月起。有三点要留意：报告本身有三天时间差，周五公布的是周二的状况；CFTC 在 2021 年前后调整过合约分类，跨越那个时点比较数字要留意口径差异；另外“资产管理机构”被归入投机端，但这类账户有不少是长期偏多的配置型资金，判读极端值时值得把这一点纳入考量。
 - **英文對照：** Our record starts in June 2006. Three things are worth noting: the report carries a three-day lag, with Friday publication covering Tuesday positions; the CFTC revised contract classifications around 2021, so comparisons spanning that point need care; and asset managers are counted on the speculative side even though many such accounts run structurally long allocations, which is worth bearing in mind when reading extremes.
 - **英文 fallback：** direct — sentimentIndicatorPages.cotSp500.history: Our record starts in June 2006. Three things are worth noting: the report carries a three-day lag, with Friday publication covering Tuesday positions; the CFTC revised contract classifications around 2021, so comparisons spanning that point need care; and asset managers are counted on the speculative side even though many such accounts run structurally long allocations, which is worth bearing in mind when reading extremes.
 - **韓文候選：** SIO가 수집하는 데이터는 2006년 6월부터 시작됩니다. 유의할 점은 세 가지입니다. 첫째, 보고서에는 3일의 시차가 있어 금요일에 발표되는 수치는 화요일 기준입니다. 둘째, CFTC는 2021년 전후로 계약 분류를 조정했으므로 해당 시점을 전후한 수치를 비교할 때는 집계 기준의 차이를 고려해야 합니다. 셋째, 자산운용사는 투기 그룹으로 분류되지만 이 계정 중 상당수는 장기적으로 주식 비중을 유지하는 자금입니다. 극단값을 해석할 때 이 점을 함께 고려할 필요가 있습니다.
@@ -26905,7 +26941,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 台股與美股的情緒經常不同步。台股受外資進出、匯率與電子產業循環的影響很深，這些因素在美股指標裡完全看不到。兩邊同時觀察，可以看出資金是全球性地避險，還是只在單一市場調整。
-- **簡中對照：** 台湾股市与美股的情绪经常不同步。台湾股市受外资进出、汇率与电子产业循环的影响很深，这些因素在美股指标里完全看不到。两边同时观察，可以看出资金是全球性地避险，还是只在单一市场调整。
+- **簡中對照：** 台湾股市与美股的情绪经常不同步。台湾股市深受外资流向、汇率和电子行业周期影响，这些因素在美股指标中无法体现。对照两个市场，可以判断资金是在全球范围内避险，还是只在单一市场调整。
 - **英文對照：** Taiwan and US sentiment frequently move out of step. Taiwan is heavily shaped by foreign institutional flows, the exchange rate and the electronics cycle, none of which appear in US gauges. Watching both reveals whether money is de-risking globally or repositioning within a single market.
 - **英文 fallback：** direct — sentimentIndicatorPages.taiwanFearGreed.relationToSio: Taiwan and US sentiment frequently move out of step. Taiwan is heavily shaped by foreign institutional flows, the exchange rate and the electronics cycle, none of which appear in US gauges. Watching both reveals whether money is de-risking globally or repositioning within a single market.
 - **韓文候選：** 대만 증시와 미국 증시의 심리는 서로 다른 방향으로 움직이는 경우가 많습니다. 대만 증시는 외국인 자금 흐름, 환율, 전자산업 경기 사이클의 영향을 크게 받으며, 이런 요인은 미국 지표에 전혀 반영되지 않습니다. 두 시장을 함께 살펴보면 자금이 글로벌 차원에서 위험을 회피하는지, 특정 시장에서만 포지션을 조정하는지 파악하는 데 도움이 됩니다.
@@ -27037,7 +27073,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 我們對固定一批標的逐一計算樂活五線譜，看有幾檔的股價已經跌到趨勢線下方兩個標準差以外，也就是網站上標示為「極度恐懼」的位置。把這個數量除以當日算得出來的數量，就是恐懼廣度。美股用 28 檔涵蓋主要國家與類股的 ETF，台股則是用 38 檔跨產業的大型股。
-- **簡中對照：** 我们对固定一批标的逐一计算乐活五线谱，统计有多少只标的的股价已经跌到趋势线下方两个标准差以外，也就是网站上标示为「极度恐惧」的位置。把这个数量除以当日可计算的标的数量，就是恐惧广度。美股使用 28 只涵盖主要国家与类股的 ETF；台湾股市则使用 38 只跨产业的大型股。
+- **簡中對照：** 我们对固定的一组标的逐一计算乐活五线谱，统计有多少只标的的股价已跌至趋势线下方两个标准差以外，也就是网站标示为“极度恐惧”的位置。将这个数量除以当日可计算的标的数量，就是恐惧广度。美股使用 28 只覆盖主要国家和行业板块的 ETF；台湾股市则使用 38 只覆盖多个行业的大盘股。
 - **英文對照：** We run the LOHAS five-line analysis over a fixed list of holdings and count how many have fallen more than two standard deviations below their trend line — the position labelled "extreme fear" across the site. Dividing that count by the number we can evaluate that day gives the breadth. The US list is 28 ETFs covering major countries and sectors; Taiwan uses 38 large caps spanning industries.
 - **英文 fallback：** direct — sentimentIndicatorPages.marketFearBreadth.whatItIs: We run the LOHAS five-line analysis over a fixed list of holdings and count how many have fallen more than two standard deviations below their trend line — the position labelled "extreme fear" across the site. Dividing that count by the number we can evaluate that day gives the breadth. The US list is 28 ETFs covering major countries and sectors; Taiwan uses 38 large caps spanning industries.
 - **韓文候選：** 고정된 종목군의 각 종목에 LOHAS 5선 분석을 적용해 주가가 추세선보다 2 표준편차 이상 낮은지 계산합니다. 이 구간은 사이트에서 '극도의 공포'로 표시합니다. 해당 종목 수를 당일 계산 가능한 전체 종목 수로 나눈 값이 극단적 공포 종목 비율입니다. 미국 주식시장에서는 주요 국가와 업종을 대표하는 ETF 28개를, 대만 주식시장에서는 여러 업종의 대형주 38개를 사용합니다.
@@ -27157,7 +27193,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 美股資料從 1996 年算起，台股從 2000 年算起。「歷史第 90 百分位」代表恐懼廣度高於約九成的歷史觀察日，不是九成標的都陷入極度恐懼；極端讀數可能連續出現。
-- **簡中對照：** 美股数据从 1996 年算起，台湾股市从 2000 年算起。「历史第 90 百分位」代表恐惧广度高于约九成的历史观察日，不是九成标的都陷入极度恐惧；极端读数可能连续出现。
+- **簡中對照：** 美股数据从 1996 年算起，台湾股市从 2000 年算起。“历史第 90 百分位”代表恐惧广度高于约九成的历史观察日，不是九成标的都陷入极度恐惧；极端读数可能连续出现。
 - **英文對照：** US history starts in 1996 and Taiwan history in 2000. The 90th historical percentile means breadth is higher than on roughly nine out of ten observed days—not that 90% of assets are at Extreme Fear. Extreme readings can persist.
 - **英文 fallback：** direct — sentimentIndicatorPages.marketFearBreadth.history: US history starts in 1996 and Taiwan history in 2000. The 90th historical percentile means breadth is higher than on roughly nine out of ten observed days—not that 90% of assets are at Extreme Fear. Extreme readings can persist.
 - **韓文候選：** 미국 주식시장 데이터는 1996년부터, 대만 주식시장 데이터는 2000년부터 제공됩니다. '과거 90백분위'는 이 비율이 과거 관측일의 약 90%보다 높았다는 뜻이지, 전체 종목의 90%가 극도의 공포 상태였다는 의미는 아닙니다. 극단적인 수치가 여러 날 연속 나타날 수도 있습니다.
@@ -27213,6 +27249,3078 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 - **替代候選：** docs/i18n/ko-KR-review/ko-KR.translation-review.json: Sentiment Inside Out이 공개 시장 데이터를 바탕으로 산출합니다. 미국 시장과 대만 시장 모두 매 거래일 업데이트됩니다.；docs/i18n/ko-KR-review/worker-3-indicator-pages.draft.json: Sentiment Inside Out이 공개 시장 데이터를 바탕으로 산출합니다. 미국 시장과 대만 시장 모두 매 거래일 업데이트됩니다.
 - **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
 
+### sentimentIndicatorPages.vixMa50.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** VIX 50 日均
+- **簡中對照：** VIX 50 日均
+- **英文對照：** VIX 50-Day Moving Average
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.shortName: VIX 50-Day Moving Average
+- **韓文候選：** VIX 50일 이동평균
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** VIX 50 日均是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** VIX 50 日均是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is VIX 50-Day Moving Average? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.pageTitle: What is VIX 50-Day Moving Average? Explained: meaning, interpretation and limitations
+- **韓文候選：** VIX 50일 이동평균이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此序列是 Cboe 波動率指數（VIX）的 50 個交易日移動平均。VIX 由 S&P 500 選擇權價格推算，反映選擇權市場對未來約 30 天波動幅度的預期；移動平均可降低單日跳動，凸顯較持續的變化。 均線走高或維持高檔，代表市場預期波動持續偏高；均線下降則表示波動預期逐漸緩和。VIX 衡量的是預期波動幅度，不是漲跌方向，而移動平均也可能落後突發事件。
+- **簡中對照：** 该序列是 Cboe 波动率指数（VIX）的 50 个交易日移动平均。VIX 根据 S&P 500 期权价格推算，反映期权市场对未来约 30 天波动幅度的预期；移动平均可以平滑单日波动，突出较持续的变化。 均线走高或维持高位，说明市场预期波动持续偏高；均线下降则表示波动预期逐渐缓和。VIX 衡量的是预期波动幅度，而非涨跌方向，移动平均也可能滞后于突发事件。
+- **英文對照：** This series is the 50-trading-day moving average of the Cboe Volatility Index (VIX). VIX is derived from S&P 500 option prices and reflects the options market's estimate of volatility over roughly the next 30 days. The moving average smooths daily jumps to make persistent changes easier to see. A rising or high average indicates that expected volatility has stayed elevated; a falling average suggests that volatility expectations are easing. VIX measures the expected size of moves, not whether the market will rise or fall, and a moving average can react slowly to a sudden shock.
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.pageDescription: This series is the 50-trading-day moving average of the Cboe Volatility Index (VIX). VIX is derived from S&P 500 option prices and reflects the options market's estimate of volatility over roughly the next 30 days. The moving average smooths daily jumps to make persistent changes easier to see. A rising or high average indicates that expected volatility has stayed elevated; a falling average suggests that volatility expectations are easing. VIX measures the expected size of moves, not whether the market will rise or fall, and a moving average can react slowly to a sudden shock.
+- **韓文候選：** Cboe VIX의 50거래일 이동평균으로 예상 변동성의 중기 흐름을 살펴보고, 이동평균의 한계도 확인합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** VIX 50 日均, market sentiment, indicator, how to read
+- **簡中對照：** VIX 50 日均, market sentiment, indicator, how to read
+- **英文對照：** VIX 50-Day Moving Average, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.keywords: VIX 50-Day Moving Average, market sentiment, indicator, how to read
+- **韓文候選：** VIX 50일 이동평균, 시장 심리, 지표, 해석 방법
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** VIX 50 日均是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** VIX 50 日均是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is VIX 50-Day Moving Average? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.heading: What is VIX 50-Day Moving Average? Explained: meaning, interpretation and limitations
+- **韓文候選：** VIX 50일 이동평균이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此序列是 Cboe 波動率指數（VIX）的 50 個交易日移動平均。VIX 由 S&P 500 選擇權價格推算，反映選擇權市場對未來約 30 天波動幅度的預期；移動平均可降低單日跳動，凸顯較持續的變化。 均線走高或維持高檔，代表市場預期波動持續偏高；均線下降則表示波動預期逐漸緩和。VIX 衡量的是預期波動幅度，不是漲跌方向，而移動平均也可能落後突發事件。
+- **簡中對照：** 该序列是 Cboe 波动率指数（VIX）的 50 个交易日移动平均。VIX 根据 S&P 500 期权价格推算，反映期权市场对未来约 30 天波动幅度的预期；移动平均可以平滑单日波动，突出较持续的变化。 均线走高或维持高位，说明市场预期波动持续偏高；均线下降则表示波动预期逐渐缓和。VIX 衡量的是预期波动幅度，而非涨跌方向，移动平均也可能滞后于突发事件。
+- **英文對照：** This series is the 50-trading-day moving average of the Cboe Volatility Index (VIX). VIX is derived from S&P 500 option prices and reflects the options market's estimate of volatility over roughly the next 30 days. The moving average smooths daily jumps to make persistent changes easier to see. A rising or high average indicates that expected volatility has stayed elevated; a falling average suggests that volatility expectations are easing. VIX measures the expected size of moves, not whether the market will rise or fall, and a moving average can react slowly to a sudden shock.
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.lede: This series is the 50-trading-day moving average of the Cboe Volatility Index (VIX). VIX is derived from S&P 500 option prices and reflects the options market's estimate of volatility over roughly the next 30 days. The moving average smooths daily jumps to make persistent changes easier to see. A rising or high average indicates that expected volatility has stayed elevated; a falling average suggests that volatility expectations are easing. VIX measures the expected size of moves, not whether the market will rise or fall, and a moving average can react slowly to a sudden shock.
+- **韓文候選：** 이 지표는 Cboe 변동성 지수(VIX)의 50거래일 이동평균입니다. VIX는 S&P 500 옵션 가격을 바탕으로 산출되며 향후 약 30일 동안의 예상 변동 폭을 나타냅니다. 이동평균은 일별 급등락을 완화해 보다 지속적인 변화를 보여 줍니다. 이동평균이 상승하거나 높은 수준을 유지하면 시장의 예상 변동성이 계속 높다는 뜻이며, 하락하면 변동성 기대가 점차 완화되고 있음을 시사합니다. VIX는 시장의 상승·하락 방향이 아니라 예상 변동 폭을 측정합니다. 이동평균은 갑작스러운 시장 충격을 뒤늦게 반영할 수 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此序列是 Cboe 波動率指數（VIX）的 50 個交易日移動平均。VIX 由 S&P 500 選擇權價格推算，反映選擇權市場對未來約 30 天波動幅度的預期；移動平均可降低單日跳動，凸顯較持續的變化。
+- **簡中對照：** 该序列是 Cboe 波动率指数（VIX）的 50 个交易日移动平均。VIX 根据 S&P 500 期权价格推算，反映期权市场对未来约 30 天波动幅度的预期；移动平均可以平滑单日波动，突出较持续的变化。
+- **英文對照：** This series is the 50-trading-day moving average of the Cboe Volatility Index (VIX). VIX is derived from S&P 500 option prices and reflects the options market's estimate of volatility over roughly the next 30 days. The moving average smooths daily jumps to make persistent changes easier to see.
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.whatItIs: This series is the 50-trading-day moving average of the Cboe Volatility Index (VIX). VIX is derived from S&P 500 option prices and reflects the options market's estimate of volatility over roughly the next 30 days. The moving average smooths daily jumps to make persistent changes easier to see.
+- **韓文候選：** 이 지표는 Cboe 변동성 지수(VIX)의 50거래일 이동평균입니다. VIX는 S&P 500 옵션 가격을 바탕으로 산출되며 향후 약 30일 동안의 예상 변동 폭을 나타냅니다. 이동평균은 일별 급등락을 완화해 보다 지속적인 변화를 보여 줍니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 均線走高或維持高檔，代表市場預期波動持續偏高；均線下降則表示波動預期逐漸緩和。VIX 衡量的是預期波動幅度，不是漲跌方向，而移動平均也可能落後突發事件。
+- **簡中對照：** 均线走高或维持高位，说明市场预期波动持续偏高；均线下降则表示波动预期逐渐缓和。VIX 衡量的是预期波动幅度，而非涨跌方向，移动平均也可能滞后于突发事件。
+- **英文對照：** A rising or high average indicates that expected volatility has stayed elevated; a falling average suggests that volatility expectations are easing. VIX measures the expected size of moves, not whether the market will rise or fall, and a moving average can react slowly to a sudden shock.
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.howToRead: A rising or high average indicates that expected volatility has stayed elevated; a falling average suggests that volatility expectations are easing. VIX measures the expected size of moves, not whether the market will rise or fall, and a moving average can react slowly to a sudden shock.
+- **韓文候選：** 이동평균이 상승하거나 높은 수준을 유지하면 시장의 예상 변동성이 계속 높다는 뜻이며, 하락하면 변동성 기대가 점차 완화되고 있음을 시사합니다. VIX는 시장의 상승·하락 방향이 아니라 예상 변동 폭을 측정합니다. 이동평균은 갑작스러운 시장 충격을 뒤늦게 반영할 수 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 美股恐懼貪婪指數使用的八項輸入之一。SIO 會先處理不同單位與特性的訊號，再合併為綜合指標，因此單一讀值不等於綜合分數，也不應單獨作為交易指令。
+- **簡中對照：** 这是 SIO 美股恐惧贪婪指数使用的八项输入之一。SIO 会先处理不同单位和特性的信号，再合并为综合指标，因此单一读数不等于综合分数，也不应单独作为交易指令。
+- **英文對照：** This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.relationToSio: This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
+- **韓文候選：** 이 지표는 SIO 미국 시장 공포·탐욕 지수의 8개 입력 신호 중 하나입니다. SIO는 단위와 특성이 서로 다른 신호를 표준화해 하나의 종합 지표로 결합합니다. 따라서 개별 지표의 값이 종합 점수와 같지는 않으며, 이 지표만으로 매매를 결정해서는 안 됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 美股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 美股恐惧贪婪指数
+- **英文對照：** View the SIO US Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.relationToSioCta: View the SIO US Fear & Greed Index
+- **韓文候選：** SIO 미국 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.vixMa50.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** Cboe VIX 資料：https://www.cboe.com/tradable_products/vix/。50 個交易日移動平均由 Sentiment Inside Out 計算。
+- **簡中對照：** Cboe VIX 数据：https://www.cboe.com/tradable_products/vix/。50 个交易日移动平均由 Sentiment Inside Out 计算。
+- **英文對照：** Cboe VIX data: https://www.cboe.com/tradable_products/vix/. The 50-session moving average is calculated by Sentiment Inside Out.
+- **英文 fallback：** direct — sentimentIndicatorPages.vixMa50.source: Cboe VIX data: https://www.cboe.com/tradable_products/vix/. The 50-session moving average is calculated by Sentiment Inside Out.
+- **韓文候選：** Cboe VIX 데이터: https://www.cboe.com/tradable_products/vix/. 50거래일 이동평균은 Sentiment Inside Out에서 계산합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 市場動能
+- **簡中對照：** 市场动能
+- **英文對照：** Market Momentum
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.shortName: Market Momentum
+- **韓文候選：** 시장 모멘텀
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 市場動能是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 市场动能是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Market Momentum? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.pageTitle: What is Market Momentum? Explained: meaning, interpretation and limitations
+- **韓文候選：** 시장 모멘텀이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** SIO 將 S&P 500 指數與其 125 個交易日移動平均比較，並以相對偏離幅度呈現兩者距離。這項指標用來觀察美股大盤相對中期趨勢的位置。 數值為正代表指數高於 125 日均線，為負代表低於均線；絕對值越大，代表與趨勢線的距離越遠。它描述趨勢位置，不代表趨勢一定延續或反轉，也不是估值指標。
+- **簡中對照：** SIO 将 S&P 500 指数与其 125 个交易日移动平均进行比较，并以相对偏离幅度表示两者距离，用来观察美股大盘相对中期趋势的位置。 数值为正表示指数高于 125 日均线，为负表示低于均线；绝对值越大，说明指数与趋势线的距离越远。它描述趋势位置，不代表趋势必然延续或反转，也不是估值指标。
+- **英文對照：** SIO compares the S&P 500 with its 125-trading-day moving average and expresses the distance as a relative deviation. This turns the broad index's position against its medium-term trend into a directional momentum reading. A positive value means the index is above its 125-day average; a negative value means it is below. A larger absolute deviation means a wider gap from the trend, not a guaranteed continuation or reversal. It is a trend measure, not a valuation measure.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.pageDescription: SIO compares the S&P 500 with its 125-trading-day moving average and expresses the distance as a relative deviation. This turns the broad index's position against its medium-term trend into a directional momentum reading. A positive value means the index is above its 125-day average; a negative value means it is below. A larger absolute deviation means a wider gap from the trend, not a guaranteed continuation or reversal. It is a trend measure, not a valuation measure.
+- **韓文候選：** S&P 500과 125거래일 이동평균의 상대적 괴리율로 미국 주식시장의 중기 추세 위치를 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 市場動能, market sentiment, indicator, how to read
+- **簡中對照：** 市场动能, market sentiment, indicator, how to read
+- **英文對照：** Market Momentum, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.keywords: Market Momentum, market sentiment, indicator, how to read
+- **韓文候選：** 시장 모멘텀, 시장 심리, 지표, 해석 방법
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 市場動能是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 市场动能是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Market Momentum? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.heading: What is Market Momentum? Explained: meaning, interpretation and limitations
+- **韓文候選：** 시장 모멘텀이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** SIO 將 S&P 500 指數與其 125 個交易日移動平均比較，並以相對偏離幅度呈現兩者距離。這項指標用來觀察美股大盤相對中期趨勢的位置。 數值為正代表指數高於 125 日均線，為負代表低於均線；絕對值越大，代表與趨勢線的距離越遠。它描述趨勢位置，不代表趨勢一定延續或反轉，也不是估值指標。
+- **簡中對照：** SIO 将 S&P 500 指数与其 125 个交易日移动平均进行比较，并以相对偏离幅度表示两者距离，用来观察美股大盘相对中期趋势的位置。 数值为正表示指数高于 125 日均线，为负表示低于均线；绝对值越大，说明指数与趋势线的距离越远。它描述趋势位置，不代表趋势必然延续或反转，也不是估值指标。
+- **英文對照：** SIO compares the S&P 500 with its 125-trading-day moving average and expresses the distance as a relative deviation. This turns the broad index's position against its medium-term trend into a directional momentum reading. A positive value means the index is above its 125-day average; a negative value means it is below. A larger absolute deviation means a wider gap from the trend, not a guaranteed continuation or reversal. It is a trend measure, not a valuation measure.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.lede: SIO compares the S&P 500 with its 125-trading-day moving average and expresses the distance as a relative deviation. This turns the broad index's position against its medium-term trend into a directional momentum reading. A positive value means the index is above its 125-day average; a negative value means it is below. A larger absolute deviation means a wider gap from the trend, not a guaranteed continuation or reversal. It is a trend measure, not a valuation measure.
+- **韓文候選：** SIO는 S&P 500 지수와 해당 지수의 125거래일 이동평균을 비교하고, 두 값 사이의 상대적 괴리율을 계산합니다. 이를 통해 미국 주식시장이 중기 추세선의 어느 위치에 있는지 살펴봅니다. 값이 양수이면 지수가 125일 이동평균 위에 있고, 음수이면 아래에 있다는 뜻입니다. 절댓값이 클수록 지수와 추세선 사이의 거리가 멉니다. 이 지표는 추세상의 위치를 보여 줄 뿐 추세의 지속이나 반전을 보장하지 않으며, 적정가치를 나타내는 지표도 아닙니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** SIO 將 S&P 500 指數與其 125 個交易日移動平均比較，並以相對偏離幅度呈現兩者距離。這項指標用來觀察美股大盤相對中期趨勢的位置。
+- **簡中對照：** SIO 将 S&P 500 指数与其 125 个交易日移动平均进行比较，并以相对偏离幅度表示两者距离，用来观察美股大盘相对中期趋势的位置。
+- **英文對照：** SIO compares the S&P 500 with its 125-trading-day moving average and expresses the distance as a relative deviation. This turns the broad index's position against its medium-term trend into a directional momentum reading.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.whatItIs: SIO compares the S&P 500 with its 125-trading-day moving average and expresses the distance as a relative deviation. This turns the broad index's position against its medium-term trend into a directional momentum reading.
+- **韓文候選：** SIO는 S&P 500 지수와 해당 지수의 125거래일 이동평균을 비교하고, 두 값 사이의 상대적 괴리율을 계산합니다. 이를 통해 미국 주식시장이 중기 추세선의 어느 위치에 있는지 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 數值為正代表指數高於 125 日均線，為負代表低於均線；絕對值越大，代表與趨勢線的距離越遠。它描述趨勢位置，不代表趨勢一定延續或反轉，也不是估值指標。
+- **簡中對照：** 数值为正表示指数高于 125 日均线，为负表示低于均线；绝对值越大，说明指数与趋势线的距离越远。它描述趋势位置，不代表趋势必然延续或反转，也不是估值指标。
+- **英文對照：** A positive value means the index is above its 125-day average; a negative value means it is below. A larger absolute deviation means a wider gap from the trend, not a guaranteed continuation or reversal. It is a trend measure, not a valuation measure.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.howToRead: A positive value means the index is above its 125-day average; a negative value means it is below. A larger absolute deviation means a wider gap from the trend, not a guaranteed continuation or reversal. It is a trend measure, not a valuation measure.
+- **韓文候選：** 값이 양수이면 지수가 125일 이동평균 위에 있고, 음수이면 아래에 있다는 뜻입니다. 절댓값이 클수록 지수와 추세선 사이의 거리가 멉니다. 이 지표는 추세상의 위치를 보여 줄 뿐 추세의 지속이나 반전을 보장하지 않으며, 적정가치를 나타내는 지표도 아닙니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 美股恐懼貪婪指數使用的八項輸入之一。SIO 會先處理不同單位與特性的訊號，再合併為綜合指標，因此單一讀值不等於綜合分數，也不應單獨作為交易指令。
+- **簡中對照：** 这是 SIO 美股恐惧贪婪指数使用的八项输入之一。SIO 会先处理不同单位和特性的信号，再合并为综合指标，因此单一读数不等于综合分数，也不应单独作为交易指令。
+- **英文對照：** This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.relationToSio: This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
+- **韓文候選：** 이 지표는 SIO 미국 시장 공포·탐욕 지수의 8개 입력 신호 중 하나입니다. SIO는 단위와 특성이 서로 다른 신호를 표준화해 하나의 종합 지표로 결합합니다. 따라서 개별 지표의 값이 종합 점수와 같지는 않으며, 이 지표만으로 매매를 결정해서는 안 됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 美股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 美股恐惧贪婪指数
+- **英文對照：** View the SIO US Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.relationToSioCta: View the SIO US Fear & Greed Index
+- **韓文候選：** SIO 미국 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketMomentum.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** S&P 500 指數收盤資料；125 個交易日均線與相對偏離幅度由 Sentiment Inside Out 計算。
+- **簡中對照：** S&P 500 指数收盘数据；125 个交易日均线与相对偏离幅度由 Sentiment Inside Out 计算。
+- **英文對照：** S&P 500 index closing data. Sentiment Inside Out calculates the 125-session moving average and relative deviation.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketMomentum.source: S&P 500 index closing data. Sentiment Inside Out calculates the 125-session moving average and relative deviation.
+- **韓文候選：** S&P 500 지수 종가 데이터. 125거래일 이동평균과 상대적 괴리율은 Sentiment Inside Out에서 계산합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 避險需求
+- **簡中對照：** 避险需求
+- **英文對照：** Safe Haven Demand
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.shortName: Safe Haven Demand
+- **韓文候選：** 안전자산 수요
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 避險需求是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 避险需求是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Safe Haven Demand? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.pageTitle: What is Safe Haven Demand? Explained: meaning, interpretation and limitations
+- **韓文候選：** 안전자산 수요란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此指標比較 SPY（追蹤 S&P 500 的 ETF）與 IEF（美國 7 至 10 年期公債 ETF）近 20 個交易日的報酬。資料計算方式為 SPY 報酬減去 IEF 報酬，用來衡量股票與中期公債的相對表現。 正值代表期間內 SPY 表現優於 IEF；負值代表 IEF 表現優於 SPY。公債相對強勢可能與避險需求有關，但利率、通膨預期及存續期間效果也會影響債券價格。
+- **簡中對照：** 该指标比较 SPY（跟踪 S&P 500 的 ETF）与 IEF（美国 7 至 10 年期国债 ETF）近 20 个交易日的回报。数据按 SPY 回报减去 IEF 回报计算，用来衡量股票与中期国债的相对表现。 正值表示该期间 SPY 表现优于 IEF；负值表示 IEF 表现优于 SPY。国债相对强势可能与避险需求有关，但利率、通胀预期和久期因素也会影响债券价格。
+- **英文對照：** This measure compares the 20-trading-day returns of SPY, an S&P 500 ETF, and IEF, a 7–10 year US Treasury bond ETF. The stored spread is SPY return minus IEF return, so it tracks the relative performance of equities and intermediate-term Treasuries. A positive value means SPY outperformed IEF over the period; a negative value means IEF outperformed SPY. Bond outperformance can be consistent with defensive demand, but rates, inflation expectations and duration effects also move bond prices.
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.pageDescription: This measure compares the 20-trading-day returns of SPY, an S&P 500 ETF, and IEF, a 7–10 year US Treasury bond ETF. The stored spread is SPY return minus IEF return, so it tracks the relative performance of equities and intermediate-term Treasuries. A positive value means SPY outperformed IEF over the period; a negative value means IEF outperformed SPY. Bond outperformance can be consistent with defensive demand, but rates, inflation expectations and duration effects also move bond prices.
+- **韓文候選：** SPY와 IEF의 최근 20거래일 수익률 차이로 주식과 중기 국채의 상대 성과를 비교합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 避險需求, market sentiment, indicator, how to read
+- **簡中對照：** 避险需求, market sentiment, indicator, how to read
+- **英文對照：** Safe Haven Demand, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.keywords: Safe Haven Demand, market sentiment, indicator, how to read
+- **韓文候選：** 안전자산 수요, 시장 심리, ETF 수익률, 해석 방법
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 避險需求是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 避险需求是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Safe Haven Demand? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.heading: What is Safe Haven Demand? Explained: meaning, interpretation and limitations
+- **韓文候選：** 안전자산 수요란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此指標比較 SPY（追蹤 S&P 500 的 ETF）與 IEF（美國 7 至 10 年期公債 ETF）近 20 個交易日的報酬。資料計算方式為 SPY 報酬減去 IEF 報酬，用來衡量股票與中期公債的相對表現。 正值代表期間內 SPY 表現優於 IEF；負值代表 IEF 表現優於 SPY。公債相對強勢可能與避險需求有關，但利率、通膨預期及存續期間效果也會影響債券價格。
+- **簡中對照：** 该指标比较 SPY（跟踪 S&P 500 的 ETF）与 IEF（美国 7 至 10 年期国债 ETF）近 20 个交易日的回报。数据按 SPY 回报减去 IEF 回报计算，用来衡量股票与中期国债的相对表现。 正值表示该期间 SPY 表现优于 IEF；负值表示 IEF 表现优于 SPY。国债相对强势可能与避险需求有关，但利率、通胀预期和久期因素也会影响债券价格。
+- **英文對照：** This measure compares the 20-trading-day returns of SPY, an S&P 500 ETF, and IEF, a 7–10 year US Treasury bond ETF. The stored spread is SPY return minus IEF return, so it tracks the relative performance of equities and intermediate-term Treasuries. A positive value means SPY outperformed IEF over the period; a negative value means IEF outperformed SPY. Bond outperformance can be consistent with defensive demand, but rates, inflation expectations and duration effects also move bond prices.
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.lede: This measure compares the 20-trading-day returns of SPY, an S&P 500 ETF, and IEF, a 7–10 year US Treasury bond ETF. The stored spread is SPY return minus IEF return, so it tracks the relative performance of equities and intermediate-term Treasuries. A positive value means SPY outperformed IEF over the period; a negative value means IEF outperformed SPY. Bond outperformance can be consistent with defensive demand, but rates, inflation expectations and duration effects also move bond prices.
+- **韓文候選：** 이 지표는 S&P 500을 추종하는 ETF인 SPY와 미국 7~10년 만기 국채 ETF인 IEF의 최근 20거래일 수익률을 비교합니다. 계산값은 SPY 수익률에서 IEF 수익률을 뺀 값으로, 주식과 중기 국채의 상대 수익률을 나타냅니다. 값이 양수이면 해당 기간 SPY의 수익률이 IEF보다 높았고, 음수이면 IEF의 수익률이 SPY보다 높았다는 뜻입니다. 국채의 상대적 강세는 안전자산 선호와 함께 나타날 수 있지만, 금리·인플레이션 기대·듀레이션 효과도 채권 가격에 영향을 줄 수 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此指標比較 SPY（追蹤 S&P 500 的 ETF）與 IEF（美國 7 至 10 年期公債 ETF）近 20 個交易日的報酬。資料計算方式為 SPY 報酬減去 IEF 報酬，用來衡量股票與中期公債的相對表現。
+- **簡中對照：** 该指标比较 SPY（跟踪 S&P 500 的 ETF）与 IEF（美国 7 至 10 年期国债 ETF）近 20 个交易日的回报。数据按 SPY 回报减去 IEF 回报计算，用来衡量股票与中期国债的相对表现。
+- **英文對照：** This measure compares the 20-trading-day returns of SPY, an S&P 500 ETF, and IEF, a 7–10 year US Treasury bond ETF. The stored spread is SPY return minus IEF return, so it tracks the relative performance of equities and intermediate-term Treasuries.
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.whatItIs: This measure compares the 20-trading-day returns of SPY, an S&P 500 ETF, and IEF, a 7–10 year US Treasury bond ETF. The stored spread is SPY return minus IEF return, so it tracks the relative performance of equities and intermediate-term Treasuries.
+- **韓文候選：** 이 지표는 S&P 500을 추종하는 ETF인 SPY와 미국 7~10년 만기 국채 ETF인 IEF의 최근 20거래일 수익률을 비교합니다. 계산값은 SPY 수익률에서 IEF 수익률을 뺀 값으로, 주식과 중기 국채의 상대 수익률을 나타냅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 正值代表期間內 SPY 表現優於 IEF；負值代表 IEF 表現優於 SPY。公債相對強勢可能與避險需求有關，但利率、通膨預期及存續期間效果也會影響債券價格。
+- **簡中對照：** 正值表示该期间 SPY 表现优于 IEF；负值表示 IEF 表现优于 SPY。国债相对强势可能与避险需求有关，但利率、通胀预期和久期因素也会影响债券价格。
+- **英文對照：** A positive value means SPY outperformed IEF over the period; a negative value means IEF outperformed SPY. Bond outperformance can be consistent with defensive demand, but rates, inflation expectations and duration effects also move bond prices.
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.howToRead: A positive value means SPY outperformed IEF over the period; a negative value means IEF outperformed SPY. Bond outperformance can be consistent with defensive demand, but rates, inflation expectations and duration effects also move bond prices.
+- **韓文候選：** 값이 양수이면 해당 기간 SPY의 수익률이 IEF보다 높았고, 음수이면 IEF의 수익률이 SPY보다 높았다는 뜻입니다. 국채의 상대적 강세는 안전자산 선호와 함께 나타날 수 있지만, 금리·인플레이션 기대·듀레이션 효과도 채권 가격에 영향을 줄 수 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 美股恐懼貪婪指數使用的八項輸入之一。SIO 會先處理不同單位與特性的訊號，再合併為綜合指標，因此單一讀值不等於綜合分數，也不應單獨作為交易指令。
+- **簡中對照：** 这是 SIO 美股恐惧贪婪指数使用的八项输入之一。SIO 会先处理不同单位和特性的信号，再合并为综合指标，因此单一读数不等于综合分数，也不应单独作为交易指令。
+- **英文對照：** This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.relationToSio: This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
+- **韓文候選：** 이 지표는 SIO 미국 시장 공포·탐욕 지수의 8개 입력 신호 중 하나입니다. SIO는 단위와 특성이 서로 다른 신호를 표준화해 하나의 종합 지표로 결합합니다. 따라서 개별 지표의 값이 종합 점수와 같지는 않으며, 이 지표만으로 매매를 결정해서는 안 됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 美股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 美股恐惧贪婪指数
+- **英文對照：** View the SIO US Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.relationToSioCta: View the SIO US Fear & Greed Index
+- **韓文候選：** SIO 미국 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.safeHavenDemand.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** SPY 與 IEF 調整後價格歷史資料；20 個交易日報酬差由 Sentiment Inside Out 計算。
+- **簡中對照：** SPY 与 IEF 调整后价格历史数据；20 个交易日回报差由 Sentiment Inside Out 计算。
+- **英文對照：** SPY and IEF adjusted-price history. Sentiment Inside Out calculates the 20-session return difference.
+- **英文 fallback：** direct — sentimentIndicatorPages.safeHavenDemand.source: SPY and IEF adjusted-price history. Sentiment Inside Out calculates the 20-session return difference.
+- **韓文候選：** SPY 및 IEF의 수정주가 이력. 20거래일 수익률 차이는 Sentiment Inside Out에서 계산합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 垃圾債利差
+- **簡中對照：** 高收益债利差
+- **英文對照：** Junk Bond Spread
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.shortName: Junk Bond Spread
+- **韓文候選：** 하이일드 채권 스프레드
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 垃圾債利差是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 高收益债利差是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Junk Bond Spread? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.pageTitle: What is Junk Bond Spread? Explained: meaning, interpretation and limitations
+- **韓文候選：** 하이일드 채권 스프레드란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此指標以美國高收益公司債的選擇權調整利差（OAS）減去美國投資級公司債的 OAS，衡量兩者信用利差的差距。兩個利差都以美國公債殖利率為基準；相減後可觀察投資人持有非投資等級債券時，額外要求多少信用風險補償。 差距擴大代表高收益債相較投資級債需要更高的風險補償，通常反映市場對較低信用評等公司債的疑慮升高；差距收窄則代表相對信用風險溢酬下降。這是信用市場指標，不是股票報酬的直接預測。
+- **簡中對照：** 该指标用美国高收益公司债的期权调整利差（OAS）减去美国投资级公司债的 OAS，衡量两者信用利差的差距。两个利差都以美国国债收益率为基准；相减后可以观察投资者持有非投资级债券时，额外要求多少信用风险补偿。 差距扩大表示高收益债相较投资级债需要更高的风险补偿，通常反映市场对较低信用评级公司债的担忧上升；差距收窄则表示相对信用风险溢价下降。这是信用市场指标，不是股票回报的直接预测。
+- **英文對照：** This indicator subtracts the option-adjusted spread (OAS) on US investment-grade corporate bonds from the OAS on US high-yield corporate bonds. Both spreads measure the extra yield over comparable US Treasuries; the difference shows how much more compensation investors demand for below-investment-grade credit risk. A widening gap means high-yield bonds require a larger risk premium than investment-grade bonds, which often signals rising concern about lower-rated corporate credit. A narrowing gap suggests that this relative credit-risk premium is easing. It is a credit-market signal, not a direct forecast of stock returns.
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.pageDescription: This indicator subtracts the option-adjusted spread (OAS) on US investment-grade corporate bonds from the OAS on US high-yield corporate bonds. Both spreads measure the extra yield over comparable US Treasuries; the difference shows how much more compensation investors demand for below-investment-grade credit risk. A widening gap means high-yield bonds require a larger risk premium than investment-grade bonds, which often signals rising concern about lower-rated corporate credit. A narrowing gap suggests that this relative credit-risk premium is easing. It is a credit-market signal, not a direct forecast of stock returns.
+- **韓文候選：** 미국 하이일드 회사채와 투자등급 회사채의 옵션 조정 스프레드 차이로 신용위험 프리미엄의 변화를 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 垃圾債利差, market sentiment, indicator, how to read
+- **簡中對照：** 高收益债利差, market sentiment, indicator, how to read
+- **英文對照：** Junk Bond Spread, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.keywords: Junk Bond Spread, market sentiment, indicator, how to read
+- **韓文候選：** 하이일드 채권 스프레드, 신용 스프레드, 시장 심리, 해석 방법
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 垃圾債利差是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 高收益债利差是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Junk Bond Spread? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.heading: What is Junk Bond Spread? Explained: meaning, interpretation and limitations
+- **韓文候選：** 하이일드 채권 스프레드란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此指標以美國高收益公司債的選擇權調整利差（OAS）減去美國投資級公司債的 OAS，衡量兩者信用利差的差距。兩個利差都以美國公債殖利率為基準；相減後可觀察投資人持有非投資等級債券時，額外要求多少信用風險補償。 差距擴大代表高收益債相較投資級債需要更高的風險補償，通常反映市場對較低信用評等公司債的疑慮升高；差距收窄則代表相對信用風險溢酬下降。這是信用市場指標，不是股票報酬的直接預測。
+- **簡中對照：** 该指标用美国高收益公司债的期权调整利差（OAS）减去美国投资级公司债的 OAS，衡量两者信用利差的差距。两个利差都以美国国债收益率为基准；相减后可以观察投资者持有非投资级债券时，额外要求多少信用风险补偿。 差距扩大表示高收益债相较投资级债需要更高的风险补偿，通常反映市场对较低信用评级公司债的担忧上升；差距收窄则表示相对信用风险溢价下降。这是信用市场指标，不是股票回报的直接预测。
+- **英文對照：** This indicator subtracts the option-adjusted spread (OAS) on US investment-grade corporate bonds from the OAS on US high-yield corporate bonds. Both spreads measure the extra yield over comparable US Treasuries; the difference shows how much more compensation investors demand for below-investment-grade credit risk. A widening gap means high-yield bonds require a larger risk premium than investment-grade bonds, which often signals rising concern about lower-rated corporate credit. A narrowing gap suggests that this relative credit-risk premium is easing. It is a credit-market signal, not a direct forecast of stock returns.
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.lede: This indicator subtracts the option-adjusted spread (OAS) on US investment-grade corporate bonds from the OAS on US high-yield corporate bonds. Both spreads measure the extra yield over comparable US Treasuries; the difference shows how much more compensation investors demand for below-investment-grade credit risk. A widening gap means high-yield bonds require a larger risk premium than investment-grade bonds, which often signals rising concern about lower-rated corporate credit. A narrowing gap suggests that this relative credit-risk premium is easing. It is a credit-market signal, not a direct forecast of stock returns.
+- **韓文候選：** 이 지표는 미국 하이일드 회사채의 옵션 조정 스프레드(OAS)에서 미국 투자등급 회사채의 OAS를 뺀 값입니다. 두 스프레드는 모두 미국 국채 수익률을 기준으로 산정되며, 그 차이는 투기등급 회사채에 투자할 때 시장이 요구하는 추가 신용위험 프리미엄을 나타냅니다. 차이가 커지면 하이일드 채권에 요구되는 위험 프리미엄이 투자등급 채권보다 더 커졌다는 뜻이며, 신용등급이 낮은 기업의 신용위험에 대한 시장 우려가 커졌음을 시사할 수 있습니다. 차이가 줄어들면 상대적인 신용위험 프리미엄이 낮아졌다는 뜻입니다. 이 지표는 신용시장을 보여 주며 주식 수익률을 직접 예측하지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此指標以美國高收益公司債的選擇權調整利差（OAS）減去美國投資級公司債的 OAS，衡量兩者信用利差的差距。兩個利差都以美國公債殖利率為基準；相減後可觀察投資人持有非投資等級債券時，額外要求多少信用風險補償。
+- **簡中對照：** 该指标用美国高收益公司债的期权调整利差（OAS）减去美国投资级公司债的 OAS，衡量两者信用利差的差距。两个利差都以美国国债收益率为基准；相减后可以观察投资者持有非投资级债券时，额外要求多少信用风险补偿。
+- **英文對照：** This indicator subtracts the option-adjusted spread (OAS) on US investment-grade corporate bonds from the OAS on US high-yield corporate bonds. Both spreads measure the extra yield over comparable US Treasuries; the difference shows how much more compensation investors demand for below-investment-grade credit risk.
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.whatItIs: This indicator subtracts the option-adjusted spread (OAS) on US investment-grade corporate bonds from the OAS on US high-yield corporate bonds. Both spreads measure the extra yield over comparable US Treasuries; the difference shows how much more compensation investors demand for below-investment-grade credit risk.
+- **韓文候選：** 이 지표는 미국 하이일드 회사채의 옵션 조정 스프레드(OAS)에서 미국 투자등급 회사채의 OAS를 뺀 값입니다. 두 스프레드는 모두 미국 국채 수익률을 기준으로 산정되며, 그 차이는 투기등급 회사채에 투자할 때 시장이 요구하는 추가 신용위험 프리미엄을 나타냅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 差距擴大代表高收益債相較投資級債需要更高的風險補償，通常反映市場對較低信用評等公司債的疑慮升高；差距收窄則代表相對信用風險溢酬下降。這是信用市場指標，不是股票報酬的直接預測。
+- **簡中對照：** 差距扩大表示高收益债相较投资级债需要更高的风险补偿，通常反映市场对较低信用评级公司债的担忧上升；差距收窄则表示相对信用风险溢价下降。这是信用市场指标，不是股票回报的直接预测。
+- **英文對照：** A widening gap means high-yield bonds require a larger risk premium than investment-grade bonds, which often signals rising concern about lower-rated corporate credit. A narrowing gap suggests that this relative credit-risk premium is easing. It is a credit-market signal, not a direct forecast of stock returns.
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.howToRead: A widening gap means high-yield bonds require a larger risk premium than investment-grade bonds, which often signals rising concern about lower-rated corporate credit. A narrowing gap suggests that this relative credit-risk premium is easing. It is a credit-market signal, not a direct forecast of stock returns.
+- **韓文候選：** 차이가 커지면 하이일드 채권에 요구되는 위험 프리미엄이 투자등급 채권보다 더 커졌다는 뜻이며, 신용등급이 낮은 기업의 신용위험에 대한 시장 우려가 커졌음을 시사할 수 있습니다. 차이가 줄어들면 상대적인 신용위험 프리미엄이 낮아졌다는 뜻입니다. 이 지표는 신용시장을 보여 주며 주식 수익률을 직접 예측하지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 美股恐懼貪婪指數使用的八項輸入之一。SIO 會先處理不同單位與特性的訊號，再合併為綜合指標，因此單一讀值不等於綜合分數，也不應單獨作為交易指令。
+- **簡中對照：** 这是 SIO 美股恐惧贪婪指数使用的八项输入之一。SIO 会先处理不同单位和特性的信号，再合并为综合指标，因此单一读数不等于综合分数，也不应单独作为交易指令。
+- **英文對照：** This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.relationToSio: This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
+- **韓文候選：** 이 지표는 SIO 미국 시장 공포·탐욕 지수의 8개 입력 신호 중 하나입니다. SIO는 단위와 특성이 서로 다른 신호를 표준화해 하나의 종합 지표로 결합합니다. 따라서 개별 지표의 값이 종합 점수와 같지는 않으며, 이 지표만으로 매매를 결정해서는 안 됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 美股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 美股恐惧贪婪指数
+- **英文對照：** View the SIO US Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.relationToSioCta: View the SIO US Fear & Greed Index
+- **韓文候選：** SIO 미국 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.junkBondSpread.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** FRED：ICE BofA 美國高收益公司債選擇權調整利差（BAMLH0A0HYM2）減去 ICE BofA 美國投資級公司債選擇權調整利差（BAMLC0A0CM）：https://fred.stlouisfed.org/series/BAMLH0A0HYM2 與 https://fred.stlouisfed.org/series/BAMLC0A0CM。
+- **簡中對照：** FRED：ICE BofA 美国高收益公司债期权调整利差（BAMLH0A0HYM2）减去 ICE BofA 美国投资级公司债期权调整利差（BAMLC0A0CM）：https://fred.stlouisfed.org/series/BAMLH0A0HYM2 和 https://fred.stlouisfed.org/series/BAMLC0A0CM。
+- **英文對照：** FRED: ICE BofA US High Yield Index Option-Adjusted Spread (BAMLH0A0HYM2) minus ICE BofA US Corporate Index Option-Adjusted Spread (BAMLC0A0CM): https://fred.stlouisfed.org/series/BAMLH0A0HYM2 and https://fred.stlouisfed.org/series/BAMLC0A0CM.
+- **英文 fallback：** direct — sentimentIndicatorPages.junkBondSpread.source: FRED: ICE BofA US High Yield Index Option-Adjusted Spread (BAMLH0A0HYM2) minus ICE BofA US Corporate Index Option-Adjusted Spread (BAMLC0A0CM): https://fred.stlouisfed.org/series/BAMLH0A0HYM2 and https://fred.stlouisfed.org/series/BAMLC0A0CM.
+- **韓文候選：** FRED: ICE BofA 미국 하이일드 회사채 옵션 조정 스프레드(BAMLH0A0HYM2)에서 ICE BofA 미국 투자등급 회사채 옵션 조정 스프레드(BAMLC0A0CM)를 뺀 값입니다: https://fred.stlouisfed.org/series/BAMLH0A0HYM2 및 https://fred.stlouisfed.org/series/BAMLC0A0CM.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台指選擇權波動率
+- **簡中對照：** 台湾股指期权波动率
+- **英文對照：** Taiwan Index Options Volatility
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.shortName: Taiwan Index Options Volatility
+- **韓文候選：** 대만 주가지수 옵션 내재변동성
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台指選擇權波動率是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 台湾股指期权波动率是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Taiwan Index Options Volatility? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.pageTitle: What is Taiwan Index Options Volatility? Explained: meaning, interpretation and limitations
+- **韓文候選：** 대만 주가지수 옵션 내재변동성이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台指選擇權波動率指標由台灣加權股價指數選擇權推算，整理選擇權價格所隱含的未來市場波動預期。 數值越高，代表選擇權市場預期未來波動越大，通常也反映避險需求增加。但它不代表市場接下來一定上漲或下跌；急升可能出現在下跌或不確定性升高時。
+- **簡中對照：** 台湾股指期权波动率指标由台湾加权股价指数期权推算，汇总期权价格所隐含的未来市场波动预期。 数值越高，表示期权市场预期未来波动越大，通常也反映避险需求增加。但它不表示市场接下来一定上涨或下跌；快速上升可能出现在下跌或不确定性升高时。
+- **英文對照：** The Taiwan index-options volatility index is derived from options on Taiwan's weighted stock index. It summarises the volatility expectations embedded in option prices for the market over the coming period. A higher reading indicates that option prices imply larger expected market swings and often a higher demand for protection. It does not identify the direction of the next move; a sharp increase can accompany either a sell-off or heightened uncertainty.
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.pageDescription: The Taiwan index-options volatility index is derived from options on Taiwan's weighted stock index. It summarises the volatility expectations embedded in option prices for the market over the coming period. A higher reading indicates that option prices imply larger expected market swings and often a higher demand for protection. It does not identify the direction of the next move; a sharp increase can accompany either a sell-off or heightened uncertainty.
+- **韓文候選：** 대만 가권지수 옵션 가격에 반영된 예상 변동성과 위험 회피 수요의 변화를 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台指選擇權波動率, market sentiment, indicator, how to read
+- **簡中對照：** 台湾股指期权波动率, market sentiment, indicator, how to read
+- **英文對照：** Taiwan Index Options Volatility, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.keywords: Taiwan Index Options Volatility, market sentiment, indicator, how to read
+- **韓文候選：** 대만 VIX, 대만 주가지수 옵션 내재변동성, 시장 심리, 해석 방법
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台指選擇權波動率是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 台湾股指期权波动率是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Taiwan Index Options Volatility? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.heading: What is Taiwan Index Options Volatility? Explained: meaning, interpretation and limitations
+- **韓文候選：** 대만 주가지수 옵션 내재변동성이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台指選擇權波動率指標由台灣加權股價指數選擇權推算，整理選擇權價格所隱含的未來市場波動預期。 數值越高，代表選擇權市場預期未來波動越大，通常也反映避險需求增加。但它不代表市場接下來一定上漲或下跌；急升可能出現在下跌或不確定性升高時。
+- **簡中對照：** 台湾股指期权波动率指标由台湾加权股价指数期权推算，汇总期权价格所隐含的未来市场波动预期。 数值越高，表示期权市场预期未来波动越大，通常也反映避险需求增加。但它不表示市场接下来一定上涨或下跌；快速上升可能出现在下跌或不确定性升高时。
+- **英文對照：** The Taiwan index-options volatility index is derived from options on Taiwan's weighted stock index. It summarises the volatility expectations embedded in option prices for the market over the coming period. A higher reading indicates that option prices imply larger expected market swings and often a higher demand for protection. It does not identify the direction of the next move; a sharp increase can accompany either a sell-off or heightened uncertainty.
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.lede: The Taiwan index-options volatility index is derived from options on Taiwan's weighted stock index. It summarises the volatility expectations embedded in option prices for the market over the coming period. A higher reading indicates that option prices imply larger expected market swings and often a higher demand for protection. It does not identify the direction of the next move; a sharp increase can accompany either a sell-off or heightened uncertainty.
+- **韓文候選：** 대만 주가지수 옵션 내재변동성 지표는 대만 가권지수 옵션 가격에 반영된 향후 시장 변동성 기대를 요약합니다. 수치가 높을수록 옵션시장이 예상하는 변동 폭이 크며, 위험을 헤지하려는 수요도 늘었을 가능성이 있습니다. 다만 이 값은 시장의 상승·하락 방향을 나타내지 않습니다. 급등은 시장이 하락할 때뿐 아니라 불확실성이 커질 때도 나타날 수 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台指選擇權波動率指標由台灣加權股價指數選擇權推算，整理選擇權價格所隱含的未來市場波動預期。
+- **簡中對照：** 台湾股指期权波动率指标由台湾加权股价指数期权推算，汇总期权价格所隐含的未来市场波动预期。
+- **英文對照：** The Taiwan index-options volatility index is derived from options on Taiwan's weighted stock index. It summarises the volatility expectations embedded in option prices for the market over the coming period.
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.whatItIs: The Taiwan index-options volatility index is derived from options on Taiwan's weighted stock index. It summarises the volatility expectations embedded in option prices for the market over the coming period.
+- **韓文候選：** 대만 주가지수 옵션 내재변동성 지표는 대만 가권지수 옵션 가격에 반영된 향후 시장 변동성 기대를 요약합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 數值越高，代表選擇權市場預期未來波動越大，通常也反映避險需求增加。但它不代表市場接下來一定上漲或下跌；急升可能出現在下跌或不確定性升高時。
+- **簡中對照：** 数值越高，表示期权市场预期未来波动越大，通常也反映避险需求增加。但它不表示市场接下来一定上涨或下跌；快速上升可能出现在下跌或不确定性升高时。
+- **英文對照：** A higher reading indicates that option prices imply larger expected market swings and often a higher demand for protection. It does not identify the direction of the next move; a sharp increase can accompany either a sell-off or heightened uncertainty.
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.howToRead: A higher reading indicates that option prices imply larger expected market swings and often a higher demand for protection. It does not identify the direction of the next move; a sharp increase can accompany either a sell-off or heightened uncertainty.
+- **韓文候選：** 수치가 높을수록 옵션시장이 예상하는 변동 폭이 크며, 위험을 헤지하려는 수요도 늘었을 가능성이 있습니다. 다만 이 값은 시장의 상승·하락 방향을 나타내지 않습니다. 급등은 시장이 하락할 때뿐 아니라 불확실성이 커질 때도 나타날 수 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
+- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
+- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.relationToSio: This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 신호 중 하나입니다. 다른 신호와 함께 종합적으로 평가되므로, 개별 수치만으로 종합 점수가 결정되지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twVix.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 臺灣期貨交易所（TAIFEX）台指選擇權波動率指數：https://www.taifex.com.tw/cht/7/vixQuery。
+- **簡中對照：** 台湾期货交易所（TAIFEX）台湾 VIX：https://www.taifex.com.tw/cht/7/vixQuery。
+- **英文對照：** Taiwan Futures Exchange (TAIFEX) Taiwan VIX: https://www.taifex.com.tw/cht/7/vixQuery.
+- **英文 fallback：** direct — sentimentIndicatorPages.twVix.source: Taiwan Futures Exchange (TAIFEX) Taiwan VIX: https://www.taifex.com.tw/cht/7/vixQuery.
+- **韓文候選：** 대만 선물거래소(TAIFEX) 대만 VIX: https://www.taifex.com.tw/cht/7/vixQuery.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台指選擇權 Put/Call Ratio
+- **簡中對照：** 台湾股指期权 Put/Call Ratio
+- **英文對照：** Taiwan Options Put/Call Ratio
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.shortName: Taiwan Options Put/Call Ratio
+- **韓文候選：** 대만 지수 옵션 Put/Call Ratio
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台指選擇權 Put/Call Ratio是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 台湾股指期权 Put/Call Ratio是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Taiwan Options Put/Call Ratio? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.pageTitle: What is Taiwan Options Put/Call Ratio? Explained: meaning, interpretation and limitations
+- **韓文候選：** 대만 지수 옵션 Put/Call Ratio란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** Put/Call Ratio 比較台指選擇權中賣權與買權的交易活動，呈現選擇權市場的下檔保護需求與上檔曝險活動之相對分布。 比率上升代表賣權活動相對買權增加；下降則代表買權活動相對較多。比率可能同時反映避險與方向性布局，應搭配價格、波動率及統計期間一起觀察。
+- **簡中對照：** Put/Call Ratio 比较台湾股指期权中认沽与认购期权的交易活动，呈现期权市场下行保护需求与上行敞口活动的相对分布。 比率上升表示认沽期权活动相对认购期权增加；下降则表示认购期权活动相对更多。比率可能同时反映对冲和方向性布局，应结合价格、波动率及统计期间观察。
+- **英文對照：** The Put/Call Ratio compares trading activity in put options with activity in call options on Taiwan index options. It provides a snapshot of how options activity is distributed between downside-protection and upside-exposure contracts. A higher ratio means put activity is larger relative to call activity; a lower ratio means call activity is relatively larger. The ratio can reflect hedging as well as directional views, so it should be read with price action, volatility and the exact reporting period.
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.pageDescription: The Put/Call Ratio compares trading activity in put options with activity in call options on Taiwan index options. It provides a snapshot of how options activity is distributed between downside-protection and upside-exposure contracts. A higher ratio means put activity is larger relative to call activity; a lower ratio means call activity is relatively larger. The ratio can reflect hedging as well as directional views, so it should be read with price action, volatility and the exact reporting period.
+- **韓文候選：** 대만 주가지수 옵션의 풋옵션과 콜옵션 거래 활동을 비교해 옵션시장의 상대적 수요를 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台指選擇權 Put/Call Ratio, market sentiment, indicator, how to read
+- **簡中對照：** 台湾股指期权 Put/Call Ratio, market sentiment, indicator, how to read
+- **英文對照：** Taiwan Options Put/Call Ratio, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.keywords: Taiwan Options Put/Call Ratio, market sentiment, indicator, how to read
+- **韓文候選：** 대만 지수 옵션 Put/Call Ratio, 풋옵션, 콜옵션, 시장 심리
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台指選擇權 Put/Call Ratio是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 台湾股指期权 Put/Call Ratio是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Taiwan Options Put/Call Ratio? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.heading: What is Taiwan Options Put/Call Ratio? Explained: meaning, interpretation and limitations
+- **韓文候選：** 대만 지수 옵션 Put/Call Ratio란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** Put/Call Ratio 比較台指選擇權中賣權與買權的交易活動，呈現選擇權市場的下檔保護需求與上檔曝險活動之相對分布。 比率上升代表賣權活動相對買權增加；下降則代表買權活動相對較多。比率可能同時反映避險與方向性布局，應搭配價格、波動率及統計期間一起觀察。
+- **簡中對照：** Put/Call Ratio 比较台湾股指期权中认沽与认购期权的交易活动，呈现期权市场下行保护需求与上行敞口活动的相对分布。 比率上升表示认沽期权活动相对认购期权增加；下降则表示认购期权活动相对更多。比率可能同时反映对冲和方向性布局，应结合价格、波动率及统计期间观察。
+- **英文對照：** The Put/Call Ratio compares trading activity in put options with activity in call options on Taiwan index options. It provides a snapshot of how options activity is distributed between downside-protection and upside-exposure contracts. A higher ratio means put activity is larger relative to call activity; a lower ratio means call activity is relatively larger. The ratio can reflect hedging as well as directional views, so it should be read with price action, volatility and the exact reporting period.
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.lede: The Put/Call Ratio compares trading activity in put options with activity in call options on Taiwan index options. It provides a snapshot of how options activity is distributed between downside-protection and upside-exposure contracts. A higher ratio means put activity is larger relative to call activity; a lower ratio means call activity is relatively larger. The ratio can reflect hedging as well as directional views, so it should be read with price action, volatility and the exact reporting period.
+- **韓文候選：** Put/Call Ratio는 대만 주가지수 옵션의 풋옵션 거래 활동과 콜옵션 거래 활동을 비교한 비율입니다. 옵션시장에서 하락 위험을 헤지하려는 거래와 상승 방향의 익스포저를 취하려는 거래가 차지하는 상대적 비중을 보여 줍니다. 비율이 상승하면 풋옵션 거래가 콜옵션 거래보다 상대적으로 많아진 것이고, 하락하면 콜옵션 거래가 상대적으로 많아진 것입니다. 이 비율에는 위험 헤지 목적의 거래와 방향성 투자 거래가 모두 반영될 수 있으므로 주가, 변동성, 집계 기간과 함께 살펴봐야 합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** Put/Call Ratio 比較台指選擇權中賣權與買權的交易活動，呈現選擇權市場的下檔保護需求與上檔曝險活動之相對分布。
+- **簡中對照：** Put/Call Ratio 比较台湾股指期权中认沽与认购期权的交易活动，呈现期权市场下行保护需求与上行敞口活动的相对分布。
+- **英文對照：** The Put/Call Ratio compares trading activity in put options with activity in call options on Taiwan index options. It provides a snapshot of how options activity is distributed between downside-protection and upside-exposure contracts.
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.whatItIs: The Put/Call Ratio compares trading activity in put options with activity in call options on Taiwan index options. It provides a snapshot of how options activity is distributed between downside-protection and upside-exposure contracts.
+- **韓文候選：** Put/Call Ratio는 대만 주가지수 옵션의 풋옵션 거래 활동과 콜옵션 거래 활동을 비교한 비율입니다. 옵션시장에서 하락 위험을 헤지하려는 거래와 상승 방향의 익스포저를 취하려는 거래가 차지하는 상대적 비중을 보여 줍니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 比率上升代表賣權活動相對買權增加；下降則代表買權活動相對較多。比率可能同時反映避險與方向性布局，應搭配價格、波動率及統計期間一起觀察。
+- **簡中對照：** 比率上升表示认沽期权活动相对认购期权增加；下降则表示认购期权活动相对更多。比率可能同时反映对冲和方向性布局，应结合价格、波动率及统计期间观察。
+- **英文對照：** A higher ratio means put activity is larger relative to call activity; a lower ratio means call activity is relatively larger. The ratio can reflect hedging as well as directional views, so it should be read with price action, volatility and the exact reporting period.
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.howToRead: A higher ratio means put activity is larger relative to call activity; a lower ratio means call activity is relatively larger. The ratio can reflect hedging as well as directional views, so it should be read with price action, volatility and the exact reporting period.
+- **韓文候選：** 비율이 상승하면 풋옵션 거래가 콜옵션 거래보다 상대적으로 많아진 것이고, 하락하면 콜옵션 거래가 상대적으로 많아진 것입니다. 이 비율에는 위험 헤지 목적의 거래와 방향성 투자 거래가 모두 반영될 수 있으므로 주가, 변동성, 집계 기간과 함께 살펴봐야 합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
+- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
+- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.relationToSio: This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 신호 중 하나입니다. 다른 신호와 함께 종합적으로 평가되므로, 개별 수치만으로 종합 점수가 결정되지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.pcrRatio.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 臺灣期貨交易所（TAIFEX）選擇權 Put/Call Ratio：https://www.taifex.com.tw/cht/3/pcRatio。
+- **簡中對照：** 台湾期货交易所（TAIFEX）期权 Put/Call Ratio：https://www.taifex.com.tw/cht/3/pcRatio。
+- **英文對照：** Taiwan Futures Exchange (TAIFEX) options Put/Call Ratio: https://www.taifex.com.tw/cht/3/pcRatio.
+- **英文 fallback：** direct — sentimentIndicatorPages.pcrRatio.source: Taiwan Futures Exchange (TAIFEX) options Put/Call Ratio: https://www.taifex.com.tw/cht/3/pcRatio.
+- **韓文候選：** 대만 선물거래소(TAIFEX) 옵션 Put/Call Ratio: https://www.taifex.com.tw/cht/3/pcRatio.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美元兌台幣
+- **簡中對照：** 美元兑新台币
+- **英文對照：** USD/TWD
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.shortName: USD/TWD
+- **韓文候選：** 미국 달러/대만 달러 환율
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美元兌台幣是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 美元兑新台币是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is USD/TWD? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.pageTitle: What is USD/TWD? Explained: meaning, interpretation and limitations
+- **韓文候選：** USD/TWD 환율이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** USD/TWD 是美元兌新台幣的市場匯率，可用來觀察利率預期、資金流向與美元需求變化所反映的匯市環境。 匯率上升代表買進一美元需要更多新台幣，也就是新台幣相對美元走弱；匯率下降則代表新台幣相對走強。匯率本身無法單獨說明變動原因。
+- **簡中對照：** USD/TWD 是美元兑新台币的市场汇率，可用于观察利率预期、资金流向和美元需求变化所反映的外汇市场环境。 汇率上升表示购买一美元需要更多新台币，也就是新台币相对美元走弱；汇率下降则表示新台币相对走强。汇率本身无法单独说明变化原因。
+- **英文對照：** USD/TWD is the market exchange rate between the US dollar and the Taiwan dollar. It provides a currency-market reference that can reflect changes in interest-rate expectations, capital flows and demand for the US dollar. A rising USD/TWD rate means more Taiwan dollars are required to buy one US dollar, so the Taiwan dollar is weakening against the US dollar. A falling rate indicates relative Taiwan-dollar strength. The exchange rate alone does not reveal the cause of a move.
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.pageDescription: USD/TWD is the market exchange rate between the US dollar and the Taiwan dollar. It provides a currency-market reference that can reflect changes in interest-rate expectations, capital flows and demand for the US dollar. A rising USD/TWD rate means more Taiwan dollars are required to buy one US dollar, so the Taiwan dollar is weakening against the US dollar. A falling rate indicates relative Taiwan-dollar strength. The exchange rate alone does not reveal the cause of a move.
+- **韓文候選：** USD/TWD 환율의 움직임을 통해 대만 달러의 상대적 강세·약세와 외환시장 환경을 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美元兌台幣, market sentiment, indicator, how to read
+- **簡中對照：** 美元兑新台币, market sentiment, indicator, how to read
+- **英文對照：** USD/TWD, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.keywords: USD/TWD, market sentiment, indicator, how to read
+- **韓文候選：** USD/TWD, 미국 달러/대만 달러 환율, 대만 달러, 시장 심리
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美元兌台幣是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 美元兑新台币是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is USD/TWD? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.heading: What is USD/TWD? Explained: meaning, interpretation and limitations
+- **韓文候選：** USD/TWD 환율이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** USD/TWD 是美元兌新台幣的市場匯率，可用來觀察利率預期、資金流向與美元需求變化所反映的匯市環境。 匯率上升代表買進一美元需要更多新台幣，也就是新台幣相對美元走弱；匯率下降則代表新台幣相對走強。匯率本身無法單獨說明變動原因。
+- **簡中對照：** USD/TWD 是美元兑新台币的市场汇率，可用于观察利率预期、资金流向和美元需求变化所反映的外汇市场环境。 汇率上升表示购买一美元需要更多新台币，也就是新台币相对美元走弱；汇率下降则表示新台币相对走强。汇率本身无法单独说明变化原因。
+- **英文對照：** USD/TWD is the market exchange rate between the US dollar and the Taiwan dollar. It provides a currency-market reference that can reflect changes in interest-rate expectations, capital flows and demand for the US dollar. A rising USD/TWD rate means more Taiwan dollars are required to buy one US dollar, so the Taiwan dollar is weakening against the US dollar. A falling rate indicates relative Taiwan-dollar strength. The exchange rate alone does not reveal the cause of a move.
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.lede: USD/TWD is the market exchange rate between the US dollar and the Taiwan dollar. It provides a currency-market reference that can reflect changes in interest-rate expectations, capital flows and demand for the US dollar. A rising USD/TWD rate means more Taiwan dollars are required to buy one US dollar, so the Taiwan dollar is weakening against the US dollar. A falling rate indicates relative Taiwan-dollar strength. The exchange rate alone does not reveal the cause of a move.
+- **韓文候選：** USD/TWD는 미국 달러와 대만 달러 사이의 시장 환율입니다. 금리 기대, 자금 흐름, 달러 수요 변화가 외환시장에 어떻게 반영되는지 살펴볼 때 참고할 수 있습니다. 환율이 상승하면 미국 달러 1달러를 사는 데 더 많은 대만 달러가 필요하므로 대만 달러가 미국 달러 대비 약세를 보인다는 뜻입니다. 환율이 하락하면 대만 달러가 상대적으로 강세를 보인다는 뜻입니다. 환율의 움직임만으로 변동 원인을 단정할 수는 없습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** USD/TWD 是美元兌新台幣的市場匯率，可用來觀察利率預期、資金流向與美元需求變化所反映的匯市環境。
+- **簡中對照：** USD/TWD 是美元兑新台币的市场汇率，可用于观察利率预期、资金流向和美元需求变化所反映的外汇市场环境。
+- **英文對照：** USD/TWD is the market exchange rate between the US dollar and the Taiwan dollar. It provides a currency-market reference that can reflect changes in interest-rate expectations, capital flows and demand for the US dollar.
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.whatItIs: USD/TWD is the market exchange rate between the US dollar and the Taiwan dollar. It provides a currency-market reference that can reflect changes in interest-rate expectations, capital flows and demand for the US dollar.
+- **韓文候選：** USD/TWD는 미국 달러와 대만 달러 사이의 시장 환율입니다. 금리 기대, 자금 흐름, 달러 수요 변화가 외환시장에 어떻게 반영되는지 살펴볼 때 참고할 수 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 匯率上升代表買進一美元需要更多新台幣，也就是新台幣相對美元走弱；匯率下降則代表新台幣相對走強。匯率本身無法單獨說明變動原因。
+- **簡中對照：** 汇率上升表示购买一美元需要更多新台币，也就是新台币相对美元走弱；汇率下降则表示新台币相对走强。汇率本身无法单独说明变化原因。
+- **英文對照：** A rising USD/TWD rate means more Taiwan dollars are required to buy one US dollar, so the Taiwan dollar is weakening against the US dollar. A falling rate indicates relative Taiwan-dollar strength. The exchange rate alone does not reveal the cause of a move.
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.howToRead: A rising USD/TWD rate means more Taiwan dollars are required to buy one US dollar, so the Taiwan dollar is weakening against the US dollar. A falling rate indicates relative Taiwan-dollar strength. The exchange rate alone does not reveal the cause of a move.
+- **韓文候選：** 환율이 상승하면 미국 달러 1달러를 사는 데 더 많은 대만 달러가 필요하므로 대만 달러가 미국 달러 대비 약세를 보인다는 뜻입니다. 환율이 하락하면 대만 달러가 상대적으로 강세를 보인다는 뜻입니다. 환율의 움직임만으로 변동 원인을 단정할 수는 없습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
+- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
+- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.relationToSio: This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 신호 중 하나입니다. 다른 신호와 함께 종합적으로 평가되므로, 개별 수치만으로 종합 점수가 결정되지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.usdTwd.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** USD/TWD 市場報價資料。請同時核對總覽頁顯示的資料日期；匯率不是可單獨判斷投資人情緒的指標。
+- **簡中對照：** USD/TWD 市场报价数据。请同时核对总览页显示的数据日期；汇率不是可单独判断投资者情绪的指标。
+- **英文對照：** USD/TWD market quote feed. Check the observation date shown with the board reading; the quote is not a standalone measure of investor sentiment.
+- **英文 fallback：** direct — sentimentIndicatorPages.usdTwd.source: USD/TWD market quote feed. Check the observation date shown with the board reading; the quote is not a standalone measure of investor sentiment.
+- **韓文候選：** USD/TWD 시장 환율 데이터. 보드에 표시된 데이터 기준일을 함께 확인하세요. 환율은 단독으로 투자 심리를 판단할 수 있는 지표가 아닙니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 外資期貨淨未平倉
+- **簡中對照：** 外资期货净未平仓
+- **英文對照：** Foreign Institutional Futures Net OI
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.shortName: Foreign Institutional Futures Net OI
+- **韓文候選：** 외국인 선물 순미결제약정
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 外資期貨淨未平倉是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 外资期货净未平仓是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Foreign Institutional Futures Net OI? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.pageTitle: What is Foreign Institutional Futures Net OI? Explained: meaning, interpretation and limitations
+- **韓文候選：** 외국인 선물 순미결제약정이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 外資期貨淨未平倉反映期交所報表中，外資法人在台灣期貨市場的期貨淨部位，用來觀察這類投資人於指數期貨市場的持倉方向。 應同時觀察正負方向、近期變化與資料日期；正負值代表不同的淨部位方向。期貨部位可能用於避險，也可能用於方向性交易，因此不能直接視為現貨市場的買賣超。
+- **簡中對照：** 外资期货净未平仓反映期交所报告中外资机构投资者在台湾期货市场的期货净持仓，用来观察这类投资者在股指期货市场的持仓方向。 应同时观察正负方向、近期变化和数据日期；正负值代表不同的净持仓方向。期货持仓可用于对冲，也可用于方向性交易，因此不能直接视为现货市场的买卖超。
+- **英文對照：** Foreign institutional futures net open interest summarises the net futures positions attributed to foreign institutional investors in Taiwan futures-market reporting. It gives context on how this investor group is positioned in index futures. Read the net figure together with its sign, recent change and the reporting date: positive and negative values represent opposite net-position directions. Futures exposure can be used for hedging as well as directional speculation, so it is not a direct proxy for spot-market buying or selling.
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.pageDescription: Foreign institutional futures net open interest summarises the net futures positions attributed to foreign institutional investors in Taiwan futures-market reporting. It gives context on how this investor group is positioned in index futures. Read the net figure together with its sign, recent change and the reporting date: positive and negative values represent opposite net-position directions. Futures exposure can be used for hedging as well as directional speculation, so it is not a direct proxy for spot-market buying or selling.
+- **韓文候選：** 대만 주가지수 선물시장에서 외국인 기관투자자의 순포지션과 최근 변화를 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 外資期貨淨未平倉, market sentiment, indicator, how to read
+- **簡中對照：** 外资期货净未平仓, market sentiment, indicator, how to read
+- **英文對照：** Foreign Institutional Futures Net OI, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.keywords: Foreign Institutional Futures Net OI, market sentiment, indicator, how to read
+- **韓文候選：** 외국인 선물 순미결제약정, 대만 지수선물, 외국인 포지션, 시장 심리
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 外資期貨淨未平倉是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 外资期货净未平仓是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Foreign Institutional Futures Net OI? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.heading: What is Foreign Institutional Futures Net OI? Explained: meaning, interpretation and limitations
+- **韓文候選：** 외국인 선물 순미결제약정이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 外資期貨淨未平倉反映期交所報表中，外資法人在台灣期貨市場的期貨淨部位，用來觀察這類投資人於指數期貨市場的持倉方向。 應同時觀察正負方向、近期變化與資料日期；正負值代表不同的淨部位方向。期貨部位可能用於避險，也可能用於方向性交易，因此不能直接視為現貨市場的買賣超。
+- **簡中對照：** 外资期货净未平仓反映期交所报告中外资机构投资者在台湾期货市场的期货净持仓，用来观察这类投资者在股指期货市场的持仓方向。 应同时观察正负方向、近期变化和数据日期；正负值代表不同的净持仓方向。期货持仓可用于对冲，也可用于方向性交易，因此不能直接视为现货市场的买卖超。
+- **英文對照：** Foreign institutional futures net open interest summarises the net futures positions attributed to foreign institutional investors in Taiwan futures-market reporting. It gives context on how this investor group is positioned in index futures. Read the net figure together with its sign, recent change and the reporting date: positive and negative values represent opposite net-position directions. Futures exposure can be used for hedging as well as directional speculation, so it is not a direct proxy for spot-market buying or selling.
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.lede: Foreign institutional futures net open interest summarises the net futures positions attributed to foreign institutional investors in Taiwan futures-market reporting. It gives context on how this investor group is positioned in index futures. Read the net figure together with its sign, recent change and the reporting date: positive and negative values represent opposite net-position directions. Futures exposure can be used for hedging as well as directional speculation, so it is not a direct proxy for spot-market buying or selling.
+- **韓文候選：** 외국인 선물 순미결제약정은 대만 선물거래소 보고서에 집계된 외국인 기관투자자의 선물 순포지션을 나타냅니다. 외국인 투자자 집단이 대만 주가지수 선물시장에서 어느 방향으로 포지션을 보유하는지 살펴볼 수 있습니다. 순포지션의 부호와 최근 변화, 보고서 기준일을 함께 확인해야 합니다. 선물은 헤지와 방향성 거래 모두에 사용되므로 이 수치가 현물시장의 순매수·순매도를 그대로 나타내지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 外資期貨淨未平倉反映期交所報表中，外資法人在台灣期貨市場的期貨淨部位，用來觀察這類投資人於指數期貨市場的持倉方向。
+- **簡中對照：** 外资期货净未平仓反映期交所报告中外资机构投资者在台湾期货市场的期货净持仓，用来观察这类投资者在股指期货市场的持仓方向。
+- **英文對照：** Foreign institutional futures net open interest summarises the net futures positions attributed to foreign institutional investors in Taiwan futures-market reporting. It gives context on how this investor group is positioned in index futures.
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.whatItIs: Foreign institutional futures net open interest summarises the net futures positions attributed to foreign institutional investors in Taiwan futures-market reporting. It gives context on how this investor group is positioned in index futures.
+- **韓文候選：** 외국인 선물 순미결제약정은 대만 선물거래소 보고서에 집계된 외국인 기관투자자의 선물 순포지션을 나타냅니다. 외국인 투자자 집단이 대만 주가지수 선물시장에서 어느 방향으로 포지션을 보유하는지 살펴볼 수 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應同時觀察正負方向、近期變化與資料日期；正負值代表不同的淨部位方向。期貨部位可能用於避險，也可能用於方向性交易，因此不能直接視為現貨市場的買賣超。
+- **簡中對照：** 应同时观察正负方向、近期变化和数据日期；正负值代表不同的净持仓方向。期货持仓可用于对冲，也可用于方向性交易，因此不能直接视为现货市场的买卖超。
+- **英文對照：** Read the net figure together with its sign, recent change and the reporting date: positive and negative values represent opposite net-position directions. Futures exposure can be used for hedging as well as directional speculation, so it is not a direct proxy for spot-market buying or selling.
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.howToRead: Read the net figure together with its sign, recent change and the reporting date: positive and negative values represent opposite net-position directions. Futures exposure can be used for hedging as well as directional speculation, so it is not a direct proxy for spot-market buying or selling.
+- **韓文候選：** 순포지션의 부호와 최근 변화, 보고서 기준일을 함께 확인해야 합니다. 선물은 헤지와 방향성 거래 모두에 사용되므로 이 수치가 현물시장의 순매수·순매도를 그대로 나타내지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
+- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
+- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.relationToSio: This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 신호 중 하나입니다. 다른 신호와 함께 종합적으로 평가되므로, 개별 수치만으로 종합 점수가 결정되지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.finiFuturesNetOi.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 臺灣期貨交易所（TAIFEX）期貨法人未平倉報表：https://www.taifex.com.tw/cht/3/futContractsDate。
+- **簡中對照：** 台湾期货交易所（TAIFEX）期货机构未平仓报告：https://www.taifex.com.tw/cht/3/futContractsDate。
+- **英文對照：** Taiwan Futures Exchange (TAIFEX) futures institutional open-interest reports: https://www.taifex.com.tw/cht/3/futContractsDate.
+- **英文 fallback：** direct — sentimentIndicatorPages.finiFuturesNetOi.source: Taiwan Futures Exchange (TAIFEX) futures institutional open-interest reports: https://www.taifex.com.tw/cht/3/futContractsDate.
+- **韓文候選：** 대만 선물거래소(TAIFEX) 선물 기관별 미결제약정 보고서: https://www.taifex.com.tw/cht/3/futContractsDate.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美債 10 年期殖利率
+- **簡中對照：** 美债 10 年期收益率
+- **英文對照：** US 10-Year Treasury Yield
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.shortName: US 10-Year Treasury Yield
+- **韓文候選：** 미국 10년물 국채 수익률
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美債 10 年期殖利率是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 美债 10 年期收益率是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is US 10-Year Treasury Yield? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.pageTitle: What is US 10-Year Treasury Yield? Explained: meaning, interpretation and limitations
+- **韓文候選：** 미국 10년물 국채 수익률이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美國 10 年期公債殖利率是市場對剩餘期限約十年的美國政府債券所要求的殖利率，也是長期利率預期及多種資產折現率的重要參考。 殖利率上升可能反映成長或通膨預期提高、貨幣政策預期轉緊，或期限溢酬上升；下降則可能反映相反因素或公債需求增加。它不是純粹的風險偏好指標。
+- **簡中對照：** 美国 10 年期国债收益率是市场对剩余期限约十年的美国政府债券所要求的收益率，也是长期利率预期和多种资产折现率的重要参考。 收益率上升可能反映增长或通胀预期提高、货币政策预期趋紧，或期限溢价上升；下降则可能反映相反因素或国债需求增加。它不是纯粹的风险偏好指标。
+- **英文對照：** The US 10-year Treasury yield is the market yield on US government debt with approximately ten years to maturity. It is a widely watched reference for long-term interest-rate expectations and the discount rates used across asset markets. A rising yield can reflect stronger growth or inflation expectations, tighter monetary-policy expectations, or higher term premiums; a falling yield can reflect the opposite or stronger demand for government bonds. It is not a pure risk-on/risk-off signal.
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.pageDescription: The US 10-year Treasury yield is the market yield on US government debt with approximately ten years to maturity. It is a widely watched reference for long-term interest-rate expectations and the discount rates used across asset markets. A rising yield can reflect stronger growth or inflation expectations, tighter monetary-policy expectations, or higher term premiums; a falling yield can reflect the opposite or stronger demand for government bonds. It is not a pure risk-on/risk-off signal.
+- **韓文候選：** 미국 10년물 국채 수익률의 변동 요인과 장기 금리 기대 및 자산 할인율과의 관계를 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美債 10 年期殖利率, market sentiment, indicator, how to read
+- **簡中對照：** 美债 10 年期收益率, market sentiment, indicator, how to read
+- **英文對照：** US 10-Year Treasury Yield, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.keywords: US 10-Year Treasury Yield, market sentiment, indicator, how to read
+- **韓文候選：** 미국 10년물 국채 수익률, 미국 국채 금리, 장기 금리, 시장 환경
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美債 10 年期殖利率是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 美债 10 年期收益率是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is US 10-Year Treasury Yield? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.heading: What is US 10-Year Treasury Yield? Explained: meaning, interpretation and limitations
+- **韓文候選：** 미국 10년물 국채 수익률이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美國 10 年期公債殖利率是市場對剩餘期限約十年的美國政府債券所要求的殖利率，也是長期利率預期及多種資產折現率的重要參考。 殖利率上升可能反映成長或通膨預期提高、貨幣政策預期轉緊，或期限溢酬上升；下降則可能反映相反因素或公債需求增加。它不是純粹的風險偏好指標。
+- **簡中對照：** 美国 10 年期国债收益率是市场对剩余期限约十年的美国政府债券所要求的收益率，也是长期利率预期和多种资产折现率的重要参考。 收益率上升可能反映增长或通胀预期提高、货币政策预期趋紧，或期限溢价上升；下降则可能反映相反因素或国债需求增加。它不是纯粹的风险偏好指标。
+- **英文對照：** The US 10-year Treasury yield is the market yield on US government debt with approximately ten years to maturity. It is a widely watched reference for long-term interest-rate expectations and the discount rates used across asset markets. A rising yield can reflect stronger growth or inflation expectations, tighter monetary-policy expectations, or higher term premiums; a falling yield can reflect the opposite or stronger demand for government bonds. It is not a pure risk-on/risk-off signal.
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.lede: The US 10-year Treasury yield is the market yield on US government debt with approximately ten years to maturity. It is a widely watched reference for long-term interest-rate expectations and the discount rates used across asset markets. A rising yield can reflect stronger growth or inflation expectations, tighter monetary-policy expectations, or higher term premiums; a falling yield can reflect the opposite or stronger demand for government bonds. It is not a pure risk-on/risk-off signal.
+- **韓文候選：** 미국 10년물 국채 수익률은 잔존만기가 약 10년인 미국 국채에 대해 시장이 요구하는 수익률입니다. 장기 금리 기대와 다양한 자산의 할인율을 가늠할 때 중요한 참고 지표입니다. 수익률 상승은 성장 또는 인플레이션 기대 상승, 통화정책 긴축 기대, 기간 프리미엄 상승 등을 반영할 수 있습니다. 하락은 반대 요인이나 국채 수요 증가를 반영할 수 있습니다. 이 지표만으로 시장의 위험 선호를 판단할 수는 없습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美國 10 年期公債殖利率是市場對剩餘期限約十年的美國政府債券所要求的殖利率，也是長期利率預期及多種資產折現率的重要參考。
+- **簡中對照：** 美国 10 年期国债收益率是市场对剩余期限约十年的美国政府债券所要求的收益率，也是长期利率预期和多种资产折现率的重要参考。
+- **英文對照：** The US 10-year Treasury yield is the market yield on US government debt with approximately ten years to maturity. It is a widely watched reference for long-term interest-rate expectations and the discount rates used across asset markets.
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.whatItIs: The US 10-year Treasury yield is the market yield on US government debt with approximately ten years to maturity. It is a widely watched reference for long-term interest-rate expectations and the discount rates used across asset markets.
+- **韓文候選：** 미국 10년물 국채 수익률은 잔존만기가 약 10년인 미국 국채에 대해 시장이 요구하는 수익률입니다. 장기 금리 기대와 다양한 자산의 할인율을 가늠할 때 중요한 참고 지표입니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 殖利率上升可能反映成長或通膨預期提高、貨幣政策預期轉緊，或期限溢酬上升；下降則可能反映相反因素或公債需求增加。它不是純粹的風險偏好指標。
+- **簡中對照：** 收益率上升可能反映增长或通胀预期提高、货币政策预期趋紧，或期限溢价上升；下降则可能反映相反因素或国债需求增加。它不是纯粹的风险偏好指标。
+- **英文對照：** A rising yield can reflect stronger growth or inflation expectations, tighter monetary-policy expectations, or higher term premiums; a falling yield can reflect the opposite or stronger demand for government bonds. It is not a pure risk-on/risk-off signal.
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.howToRead: A rising yield can reflect stronger growth or inflation expectations, tighter monetary-policy expectations, or higher term premiums; a falling yield can reflect the opposite or stronger demand for government bonds. It is not a pure risk-on/risk-off signal.
+- **韓文候選：** 수익률 상승은 성장 또는 인플레이션 기대 상승, 통화정책 긴축 기대, 기간 프리미엄 상승 등을 반영할 수 있습니다. 하락은 반대 요인이나 국채 수요 증가를 반영할 수 있습니다. 이 지표만으로 시장의 위험 선호를 판단할 수는 없습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項資料目前提供作為情勢參考，但尚未納入 SIO 台股恐懼貪婪指數的加權計算。閱讀時應將它視為背景資訊，而非綜合分數的組成項目。
+- **簡中對照：** 这项数据目前作为市场参考信息提供，但尚未纳入 SIO 台湾股市恐惧贪婪指数的加权计算。阅读时应将它视为背景信息，而不是综合分数的组成项。
+- **英文對照：** This series is available as a reference on the sentiment board, but it is not currently weighted into the SIO Taiwan Fear & Greed Index. Use it as context rather than treating it as part of the composite calculation.
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.relationToSio: This series is available as a reference on the sentiment board, but it is not currently weighted into the SIO Taiwan Fear & Greed Index. Use it as context rather than treating it as part of the composite calculation.
+- **韓文候選：** 이 데이터는 현재 시장 상황을 파악하기 위한 참고 자료로 제공되지만, SIO 대만 시장 공포·탐욕 지수의 가중치 계산에는 포함되지 않습니다. 따라서 종합 점수의 구성 요소가 아닌 보조 정보로 해석해야 합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.us10yYield.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 美國財政部每日公債殖利率曲線資料：https://home.treasury.gov/resource-center/data-chart-center/interest-rates。總覽頁顯示可取得的市場資料日期。
+- **簡中對照：** 美国财政部每日国债收益率曲线数据：https://home.treasury.gov/resource-center/data-chart-center/interest-rates。总览页显示可取得的市场数据日期。
+- **英文對照：** US Treasury daily par yield curve reference: https://home.treasury.gov/resource-center/data-chart-center/interest-rates. The board displays the available market-data observation.
+- **英文 fallback：** direct — sentimentIndicatorPages.us10yYield.source: US Treasury daily par yield curve reference: https://home.treasury.gov/resource-center/data-chart-center/interest-rates. The board displays the available market-data observation.
+- **韓文候選：** 미국 재무부 일일 국채 수익률 곡선 자료: https://home.treasury.gov/resource-center/data-chart-center/interest-rates. 보드에는 확인 가능한 시장 데이터 기준일이 표시됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數
+- **簡中對照：** 有交易户数
+- **英文對照：** Active Trading Accounts
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.shortName: Active Trading Accounts
+- **韓文候選：** 실제 거래 계좌 수
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 有交易户数是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Active Trading Accounts? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.pageTitle: What is Active Trading Accounts? Explained: meaning, interpretation and limitations
+- **韓文候選：** 실제 거래 계좌 수란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數統計在指定期間內實際發生證券交易的帳戶數量。它反映市場參與廣度，但不表示這些帳戶是買超還是賣超。 戶數增加代表參與交易的帳戶變多；減少則代表活躍帳戶變少。這項資料通常定期公布而非即時更新，應依公布日期比較，也不宜用單月數字判斷市場方向。
+- **簡中對照：** 有效交易账户数统计在指定报告期内实际发生证券交易的账户数量。它反映市场参与广度，但不表示这些账户是净买入还是净卖出。 账户数上升表示参与交易的账户增多；下降则表示活跃账户减少。这项数据通常定期公布而非实时更新，应按发布日期比较，也不宜用单月数字判断市场方向。
+- **英文對照：** Effective trading accounts count securities accounts that recorded trading activity during the reporting period. It is a participation indicator: it describes how many accounts were active, not whether those investors were net buyers or sellers. A rising count indicates broader account participation, while a decline suggests fewer active accounts. The series is generally reported periodically rather than continuously; compare observations using their publication dates and avoid interpreting a single month as a market-direction signal.
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.pageDescription: Effective trading accounts count securities accounts that recorded trading activity during the reporting period. It is a participation indicator: it describes how many accounts were active, not whether those investors were net buyers or sellers. A rising count indicates broader account participation, while a decline suggests fewer active accounts. The series is generally reported periodically rather than continuously; compare observations using their publication dates and avoid interpreting a single month as a market-direction signal.
+- **韓文候選：** 지정된 기간에 실제 증권 거래가 발생한 계좌 수로 대만 주식시장의 참여 범위를 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數, market sentiment, indicator, how to read
+- **簡中對照：** 有交易户数, market sentiment, indicator, how to read
+- **英文對照：** Active Trading Accounts, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.keywords: Active Trading Accounts, market sentiment, indicator, how to read
+- **韓文候選：** 실제 거래 계좌 수, 거래 활동 계좌, 대만 주식시장, 시장 참여
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 有交易户数是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Active Trading Accounts? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.heading: What is Active Trading Accounts? Explained: meaning, interpretation and limitations
+- **韓文候選：** 실제 거래 계좌 수란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數統計在指定期間內實際發生證券交易的帳戶數量。它反映市場參與廣度，但不表示這些帳戶是買超還是賣超。 戶數增加代表參與交易的帳戶變多；減少則代表活躍帳戶變少。這項資料通常定期公布而非即時更新，應依公布日期比較，也不宜用單月數字判斷市場方向。
+- **簡中對照：** 有效交易账户数统计在指定报告期内实际发生证券交易的账户数量。它反映市场参与广度，但不表示这些账户是净买入还是净卖出。 账户数上升表示参与交易的账户增多；下降则表示活跃账户减少。这项数据通常定期公布而非实时更新，应按发布日期比较，也不宜用单月数字判断市场方向。
+- **英文對照：** Effective trading accounts count securities accounts that recorded trading activity during the reporting period. It is a participation indicator: it describes how many accounts were active, not whether those investors were net buyers or sellers. A rising count indicates broader account participation, while a decline suggests fewer active accounts. The series is generally reported periodically rather than continuously; compare observations using their publication dates and avoid interpreting a single month as a market-direction signal.
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.lede: Effective trading accounts count securities accounts that recorded trading activity during the reporting period. It is a participation indicator: it describes how many accounts were active, not whether those investors were net buyers or sellers. A rising count indicates broader account participation, while a decline suggests fewer active accounts. The series is generally reported periodically rather than continuously; compare observations using their publication dates and avoid interpreting a single month as a market-direction signal.
+- **韓文候選：** 실제 거래 계좌 수는 지정된 기간에 증권 거래가 한 번 이상 발생한 계좌의 수입니다. 시장 참여 범위를 보여 주지만 해당 계좌가 순매수했는지 순매도했는지는 나타내지 않습니다. 계좌 수가 증가하면 거래에 참여한 계좌가 늘었음을, 감소하면 활동 계좌가 줄었음을 뜻합니다. 이 통계는 실시간이 아니라 정기적으로 발표되므로 발표일을 기준으로 비교해야 합니다. 한 달의 수치만으로 시장 방향을 판단해서는 안 됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數統計在指定期間內實際發生證券交易的帳戶數量。它反映市場參與廣度，但不表示這些帳戶是買超還是賣超。
+- **簡中對照：** 有效交易账户数统计在指定报告期内实际发生证券交易的账户数量。它反映市场参与广度，但不表示这些账户是净买入还是净卖出。
+- **英文對照：** Effective trading accounts count securities accounts that recorded trading activity during the reporting period. It is a participation indicator: it describes how many accounts were active, not whether those investors were net buyers or sellers.
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.whatItIs: Effective trading accounts count securities accounts that recorded trading activity during the reporting period. It is a participation indicator: it describes how many accounts were active, not whether those investors were net buyers or sellers.
+- **韓文候選：** 실제 거래 계좌 수는 지정된 기간에 증권 거래가 한 번 이상 발생한 계좌의 수입니다. 시장 참여 범위를 보여 주지만 해당 계좌가 순매수했는지 순매도했는지는 나타내지 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 戶數增加代表參與交易的帳戶變多；減少則代表活躍帳戶變少。這項資料通常定期公布而非即時更新，應依公布日期比較，也不宜用單月數字判斷市場方向。
+- **簡中對照：** 账户数上升表示参与交易的账户增多；下降则表示活跃账户减少。这项数据通常定期公布而非实时更新，应按发布日期比较，也不宜用单月数字判断市场方向。
+- **英文對照：** A rising count indicates broader account participation, while a decline suggests fewer active accounts. The series is generally reported periodically rather than continuously; compare observations using their publication dates and avoid interpreting a single month as a market-direction signal.
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.howToRead: A rising count indicates broader account participation, while a decline suggests fewer active accounts. The series is generally reported periodically rather than continuously; compare observations using their publication dates and avoid interpreting a single month as a market-direction signal.
+- **韓文候選：** 계좌 수가 증가하면 거래에 참여한 계좌가 늘었음을, 감소하면 활동 계좌가 줄었음을 뜻합니다. 이 통계는 실시간이 아니라 정기적으로 발표되므로 발표일을 기준으로 비교해야 합니다. 한 달의 수치만으로 시장 방향을 판단해서는 안 됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項資料目前提供作為情勢參考，但尚未納入 SIO 台股恐懼貪婪指數的加權計算。閱讀時應將它視為背景資訊，而非綜合分數的組成項目。
+- **簡中對照：** 这项数据目前作为市场参考信息提供，但尚未纳入 SIO 台湾股市恐惧贪婪指数的加权计算。阅读时应将它视为背景信息，而不是综合分数的组成项。
+- **英文對照：** This series is available as a reference on the sentiment board, but it is not currently weighted into the SIO Taiwan Fear & Greed Index. Use it as context rather than treating it as part of the composite calculation.
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.relationToSio: This series is available as a reference on the sentiment board, but it is not currently weighted into the SIO Taiwan Fear & Greed Index. Use it as context rather than treating it as part of the composite calculation.
+- **韓文候選：** 이 데이터는 현재 시장 상황을 파악하기 위한 참고 자료로 제공되지만, SIO 대만 시장 공포·탐욕 지수의 가중치 계산에는 포함되지 않습니다. 따라서 종합 점수의 구성 요소가 아닌 보조 정보로 해석해야 합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.effectiveTradingAccounts.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 臺灣證券交易所（TWSE）市場統計－有交易戶數：https://www.twse.com.tw/zh/statistics/statisticsList?type=07。
+- **簡中對照：** 台湾证券交易所（TWSE）市场统计－有效交易账户：https://www.twse.com.tw/zh/statistics/statisticsList?type=07。
+- **英文對照：** Taiwan Stock Exchange (TWSE) market statistics, active trading accounts: https://www.twse.com.tw/zh/statistics/statisticsList?type=07.
+- **英文 fallback：** direct — sentimentIndicatorPages.effectiveTradingAccounts.source: Taiwan Stock Exchange (TWSE) market statistics, active trading accounts: https://www.twse.com.tw/zh/statistics/statisticsList?type=07.
+- **韓文候選：** 대만증권거래소(TWSE) 시장 통계 - 실제 거래 계좌 수: https://www.twse.com.tw/zh/statistics/statisticsList?type=07.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 融資維持率
+- **簡中對照：** 融资维持率
+- **英文對照：** Margin Maintenance Ratio
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.shortName: Margin Maintenance Ratio
+- **韓文候選：** 신용융자 담보유지비율
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 融資維持率是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 融资维持率是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Margin Maintenance Ratio? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.pageTitle: What is Margin Maintenance Ratio? Explained: meaning, interpretation and limitations
+- **韓文候選：** 신용융자 담보유지비율이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 融資維持率反映台股融資部位的擔保品市值相對於融資金額的覆蓋程度。SIO 會依市場市值與融資餘額資料計算此序列，並非單純引用股價指數。 維持率越高，通常代表擔保緩衝越充足；維持率下滑則表示緩衝縮小，融資部位面臨追繳或處分的風險可能提高。這項總體數字無法指出個別帳戶的風險。
+- **簡中對照：** 融资维持率反映台湾股票融资持仓的担保品市值相对于融资金额的覆盖程度。SIO 根据市场市值和融资余额数据计算该序列，并非直接引用股价指数。 维持率越高，通常表示担保缓冲越充足；维持率下降则说明缓冲缩小，融资持仓面临追缴或处置的风险可能提高。该汇总数据无法指出个别账户的风险。
+- **英文對照：** The margin maintenance ratio describes the collateral coverage of margin-financed positions in Taiwan equities. The SIO series is calculated from market-value and margin-balance data; it is not simply a raw market-price index. A higher ratio generally means a larger collateral buffer relative to outstanding margin financing. A falling ratio means that buffer is shrinking and leveraged positions may be more vulnerable to maintenance calls or forced liquidation. It does not identify which individual accounts are at risk.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.pageDescription: The margin maintenance ratio describes the collateral coverage of margin-financed positions in Taiwan equities. The SIO series is calculated from market-value and margin-balance data; it is not simply a raw market-price index. A higher ratio generally means a larger collateral buffer relative to outstanding margin financing. A falling ratio means that buffer is shrinking and leveraged positions may be more vulnerable to maintenance calls or forced liquidation. It does not identify which individual accounts are at risk.
+- **韓文候選：** 대만 주식시장의 신용융자 담보유지비율로 담보 여력과 추가 담보 납부·담보 처분 위험을 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 融資維持率, market sentiment, indicator, how to read
+- **簡中對照：** 融资维持率, market sentiment, indicator, how to read
+- **英文對照：** Margin Maintenance Ratio, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.keywords: Margin Maintenance Ratio, market sentiment, indicator, how to read
+- **韓文候選：** 신용융자 담보유지비율, 대만 신용융자, 담보 여력, 시장 심리
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 融資維持率是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 融资维持率是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Margin Maintenance Ratio? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.heading: What is Margin Maintenance Ratio? Explained: meaning, interpretation and limitations
+- **韓文候選：** 신용융자 담보유지비율이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 融資維持率反映台股融資部位的擔保品市值相對於融資金額的覆蓋程度。SIO 會依市場市值與融資餘額資料計算此序列，並非單純引用股價指數。 維持率越高，通常代表擔保緩衝越充足；維持率下滑則表示緩衝縮小，融資部位面臨追繳或處分的風險可能提高。這項總體數字無法指出個別帳戶的風險。
+- **簡中對照：** 融资维持率反映台湾股票融资持仓的担保品市值相对于融资金额的覆盖程度。SIO 根据市场市值和融资余额数据计算该序列，并非直接引用股价指数。 维持率越高，通常表示担保缓冲越充足；维持率下降则说明缓冲缩小，融资持仓面临追缴或处置的风险可能提高。该汇总数据无法指出个别账户的风险。
+- **英文對照：** The margin maintenance ratio describes the collateral coverage of margin-financed positions in Taiwan equities. The SIO series is calculated from market-value and margin-balance data; it is not simply a raw market-price index. A higher ratio generally means a larger collateral buffer relative to outstanding margin financing. A falling ratio means that buffer is shrinking and leveraged positions may be more vulnerable to maintenance calls or forced liquidation. It does not identify which individual accounts are at risk.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.lede: The margin maintenance ratio describes the collateral coverage of margin-financed positions in Taiwan equities. The SIO series is calculated from market-value and margin-balance data; it is not simply a raw market-price index. A higher ratio generally means a larger collateral buffer relative to outstanding margin financing. A falling ratio means that buffer is shrinking and leveraged positions may be more vulnerable to maintenance calls or forced liquidation. It does not identify which individual accounts are at risk.
+- **韓文候選：** 신용융자 담보유지비율은 대만 주식시장의 신용융자 포지션에서 담보로 제공된 자산의 시가가 신용융자 잔액을 얼마나 충당하는지 보여 줍니다. SIO는 시장 전체 시가총액과 신용융자 잔액 데이터를 바탕으로 이 시계열을 계산하며, 단순히 주가지수 값을 인용한 것은 아닙니다. 비율이 높을수록 일반적으로 담보 여력이 충분하다는 뜻입니다. 비율이 하락하면 담보 여력이 줄어 추가 담보 납부 요구나 담보 처분 위험이 커질 수 있습니다. 이 집계 수치만으로 개별 계좌의 위험을 판단할 수는 없습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 融資維持率反映台股融資部位的擔保品市值相對於融資金額的覆蓋程度。SIO 會依市場市值與融資餘額資料計算此序列，並非單純引用股價指數。
+- **簡中對照：** 融资维持率反映台湾股票融资持仓的担保品市值相对于融资金额的覆盖程度。SIO 根据市场市值和融资余额数据计算该序列，并非直接引用股价指数。
+- **英文對照：** The margin maintenance ratio describes the collateral coverage of margin-financed positions in Taiwan equities. The SIO series is calculated from market-value and margin-balance data; it is not simply a raw market-price index.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.whatItIs: The margin maintenance ratio describes the collateral coverage of margin-financed positions in Taiwan equities. The SIO series is calculated from market-value and margin-balance data; it is not simply a raw market-price index.
+- **韓文候選：** 신용융자 담보유지비율은 대만 주식시장의 신용융자 포지션에서 담보로 제공된 자산의 시가가 신용융자 잔액을 얼마나 충당하는지 보여 줍니다. SIO는 시장 전체 시가총액과 신용융자 잔액 데이터를 바탕으로 이 시계열을 계산하며, 단순히 주가지수 값을 인용한 것은 아닙니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 維持率越高，通常代表擔保緩衝越充足；維持率下滑則表示緩衝縮小，融資部位面臨追繳或處分的風險可能提高。這項總體數字無法指出個別帳戶的風險。
+- **簡中對照：** 维持率越高，通常表示担保缓冲越充足；维持率下降则说明缓冲缩小，融资持仓面临追缴或处置的风险可能提高。该汇总数据无法指出个别账户的风险。
+- **英文對照：** A higher ratio generally means a larger collateral buffer relative to outstanding margin financing. A falling ratio means that buffer is shrinking and leveraged positions may be more vulnerable to maintenance calls or forced liquidation. It does not identify which individual accounts are at risk.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.howToRead: A higher ratio generally means a larger collateral buffer relative to outstanding margin financing. A falling ratio means that buffer is shrinking and leveraged positions may be more vulnerable to maintenance calls or forced liquidation. It does not identify which individual accounts are at risk.
+- **韓文候選：** 비율이 높을수록 일반적으로 담보 여력이 충분하다는 뜻입니다. 비율이 하락하면 담보 여력이 줄어 추가 담보 납부 요구나 담보 처분 위험이 커질 수 있습니다. 이 집계 수치만으로 개별 계좌의 위험을 판단할 수는 없습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
+- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
+- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.relationToSio: This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 신호 중 하나입니다. 다른 신호와 함께 종합적으로 평가되므로, 개별 수치만으로 종합 점수가 결정되지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginMaintenanceRatio.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 臺灣證券交易所融資融券與維持率相關資料：https://www.twse.com.tw/zh/trading/margin/mi-margn.html。指標由 SIO 依公開資料計算。
+- **簡中對照：** 台湾证券交易所融资融券与维持率数据：https://www.twse.com.tw/zh/trading/margin/mi-margn.html。指标由 SIO 根据公开数据计算。
+- **英文對照：** TWSE margin-trading and maintenance data: https://www.twse.com.tw/zh/trading/margin/mi-margn.html. SIO calculates the indicator from the published inputs.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginMaintenanceRatio.source: TWSE margin-trading and maintenance data: https://www.twse.com.tw/zh/trading/margin/mi-margn.html. SIO calculates the indicator from the published inputs.
+- **韓文候選：** 대만증권거래소(TWSE) 신용융자·신용대주 및 담보유지비율 관련 자료: https://www.twse.com.tw/zh/trading/margin/mi-margn.html. 지표는 SIO가 공개 자료를 바탕으로 계산합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 券資比
+- **簡中對照：** 券资比
+- **英文對照：** Short-to-Margin Ratio
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.shortName: Short-to-Margin Ratio
+- **韓文候選：** 신용대주·신용융자 잔액 비율
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 券資比是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 券资比是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Short-to-Margin Ratio? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.pageTitle: What is Short-to-Margin Ratio? Explained: meaning, interpretation and limitations
+- **韓文候選：** 신용대주·신용융자 잔액 비율이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 券資比比較台股融券餘額與融資餘額，呈現放空部位相對於融資部位的規模。這是 SIO 依交易所公開資料計算的衍生指標。 比率上升代表融券餘額相對融資餘額增加；下降則代表相對規模縮小。比率變動可能來自分子或分母改變，不代表所有投資人的整體部位，也不保證後續價格走勢。
+- **簡中對照：** 券资比比较台湾股票融券余额与融资余额，呈现卖空持仓相对于融资持仓的规模。这是 SIO 根据交易所公开数据计算的衍生指标。 比率上升表示融券余额相对融资余额增加；下降则表示相对规模缩小。比率变化可能来自分子或分母变化，不代表所有投资者的整体持仓，也不能保证后续价格走势。
+- **英文對照：** The margin short ratio compares short-selling balances with margin-financing balances in Taiwan equities. It is an SIO-derived measure of the relative size of short exposure and margin-financed long exposure. A higher ratio means short balances are larger relative to margin-financing balances; a lower ratio means they are smaller. The ratio describes positioning, not the net position of every investor, and may change because either side of the ratio changes.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.pageDescription: The margin short ratio compares short-selling balances with margin-financing balances in Taiwan equities. It is an SIO-derived measure of the relative size of short exposure and margin-financed long exposure. A higher ratio means short balances are larger relative to margin-financing balances; a lower ratio means they are smaller. The ratio describes positioning, not the net position of every investor, and may change because either side of the ratio changes.
+- **韓文候選：** 대만 주식시장의 신용대주 잔액을 신용융자 잔액과 비교해 공매도성 포지션의 상대적 규모를 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 券資比, market sentiment, indicator, how to read
+- **簡中對照：** 券资比, market sentiment, indicator, how to read
+- **英文對照：** Short-to-Margin Ratio, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.keywords: Short-to-Margin Ratio, market sentiment, indicator, how to read
+- **韓文候選：** 신용대주 잔액, 신용융자 잔액, 대만 신용거래, 시장 심리
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 券資比是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 券资比是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Short-to-Margin Ratio? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.heading: What is Short-to-Margin Ratio? Explained: meaning, interpretation and limitations
+- **韓文候選：** 신용대주·신용융자 잔액 비율이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 券資比比較台股融券餘額與融資餘額，呈現放空部位相對於融資部位的規模。這是 SIO 依交易所公開資料計算的衍生指標。 比率上升代表融券餘額相對融資餘額增加；下降則代表相對規模縮小。比率變動可能來自分子或分母改變，不代表所有投資人的整體部位，也不保證後續價格走勢。
+- **簡中對照：** 券资比比较台湾股票融券余额与融资余额，呈现卖空持仓相对于融资持仓的规模。这是 SIO 根据交易所公开数据计算的衍生指标。 比率上升表示融券余额相对融资余额增加；下降则表示相对规模缩小。比率变化可能来自分子或分母变化，不代表所有投资者的整体持仓，也不能保证后续价格走势。
+- **英文對照：** The margin short ratio compares short-selling balances with margin-financing balances in Taiwan equities. It is an SIO-derived measure of the relative size of short exposure and margin-financed long exposure. A higher ratio means short balances are larger relative to margin-financing balances; a lower ratio means they are smaller. The ratio describes positioning, not the net position of every investor, and may change because either side of the ratio changes.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.lede: The margin short ratio compares short-selling balances with margin-financing balances in Taiwan equities. It is an SIO-derived measure of the relative size of short exposure and margin-financed long exposure. A higher ratio means short balances are larger relative to margin-financing balances; a lower ratio means they are smaller. The ratio describes positioning, not the net position of every investor, and may change because either side of the ratio changes.
+- **韓文候選：** 이 비율은 대만 주식시장의 신용대주 잔액을 신용융자 잔액과 비교해, 공매도 성격의 대주 포지션이 신용융자 매수 포지션에 비해 어느 정도 규모인지 보여 주는 SIO 파생 지표입니다. 비율이 상승하면 신용대주 잔액이 신용융자 잔액에 비해 늘어난 것이고, 하락하면 상대 규모가 줄어든 것입니다. 비율 변화는 분자나 분모 중 어느 쪽이 변해도 발생할 수 있습니다. 따라서 이 값이 모든 투자자의 전체 포지션을 나타내거나 이후 주가 방향을 보장하는 것은 아닙니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 券資比比較台股融券餘額與融資餘額，呈現放空部位相對於融資部位的規模。這是 SIO 依交易所公開資料計算的衍生指標。
+- **簡中對照：** 券资比比较台湾股票融券余额与融资余额，呈现卖空持仓相对于融资持仓的规模。这是 SIO 根据交易所公开数据计算的衍生指标。
+- **英文對照：** The margin short ratio compares short-selling balances with margin-financing balances in Taiwan equities. It is an SIO-derived measure of the relative size of short exposure and margin-financed long exposure.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.whatItIs: The margin short ratio compares short-selling balances with margin-financing balances in Taiwan equities. It is an SIO-derived measure of the relative size of short exposure and margin-financed long exposure.
+- **韓文候選：** 이 비율은 대만 주식시장의 신용대주 잔액을 신용융자 잔액과 비교해, 공매도 성격의 대주 포지션이 신용융자 매수 포지션에 비해 어느 정도 규모인지 보여 주는 SIO 파생 지표입니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 比率上升代表融券餘額相對融資餘額增加；下降則代表相對規模縮小。比率變動可能來自分子或分母改變，不代表所有投資人的整體部位，也不保證後續價格走勢。
+- **簡中對照：** 比率上升表示融券余额相对融资余额增加；下降则表示相对规模缩小。比率变化可能来自分子或分母变化，不代表所有投资者的整体持仓，也不能保证后续价格走势。
+- **英文對照：** A higher ratio means short balances are larger relative to margin-financing balances; a lower ratio means they are smaller. The ratio describes positioning, not the net position of every investor, and may change because either side of the ratio changes.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.howToRead: A higher ratio means short balances are larger relative to margin-financing balances; a lower ratio means they are smaller. The ratio describes positioning, not the net position of every investor, and may change because either side of the ratio changes.
+- **韓文候選：** 비율이 상승하면 신용대주 잔액이 신용융자 잔액에 비해 늘어난 것이고, 하락하면 상대 규모가 줄어든 것입니다. 비율 변화는 분자나 분모 중 어느 쪽이 변해도 발생할 수 있습니다. 따라서 이 값이 모든 투자자의 전체 포지션을 나타내거나 이후 주가 방향을 보장하는 것은 아닙니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
+- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
+- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.relationToSio: This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 신호 중 하나입니다. 다른 신호와 함께 종합적으로 평가되므로, 개별 수치만으로 종합 점수가 결정되지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marginShortRatio.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 臺灣證券交易所融資融券資料：https://www.twse.com.tw/zh/trading/margin/mi-margn.html。券資比由 SIO 計算。
+- **簡中對照：** 台湾证券交易所融资融券数据：https://www.twse.com.tw/zh/trading/margin/mi-margn.html。券资比由 SIO 计算。
+- **英文對照：** TWSE margin-trading and short-selling data: https://www.twse.com.tw/zh/trading/margin/mi-margn.html. SIO calculates the ratio.
+- **英文 fallback：** direct — sentimentIndicatorPages.marginShortRatio.source: TWSE margin-trading and short-selling data: https://www.twse.com.tw/zh/trading/margin/mi-margn.html. SIO calculates the ratio.
+- **韓文候選：** 대만증권거래소(TWSE) 신용융자·신용대주 자료: https://www.twse.com.tw/zh/trading/margin/mi-margn.html. 비율은 SIO가 계산합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 市場廣度 MA20
+- **簡中對照：** 市场广度 MA20
+- **英文對照：** Market Breadth (MA20)
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.shortName: Market Breadth (MA20)
+- **韓文候選：** 시장 폭 MA20
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 市場廣度 MA20是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 市场广度 MA20是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Market Breadth (MA20)? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.pageTitle: What is Market Breadth (MA20)? Explained: meaning, interpretation and limitations
+- **韓文候選：** 시장 폭 MA20이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此指標統計每個交易日收盤價高於自身 20 日移動平均線的台股個股占比。它用來觀察有多少股票站在各自短期趨勢線之上，補充加權指數可能受少數大型權值股主導的限制。 占比上升代表站在各自 20 日均線上方的股票變多，市場趨勢的參與度較廣；下降則表示維持在短期趨勢線上方的個股減少。少數大型權值股仍可能讓加權指數與市場廣度出現背離。
+- **簡中對照：** 该指标统计每个交易日收盘价高于自身 20 日移动平均线的台湾上市股票占比。它用于观察有多少股票处于各自短期趋势线上方，补充加权指数可能受少数大型权重股主导的局限。 占比上升表示站在各自 20 日均线上方的股票增多，市场趋势的参与范围更广；下降则表示维持在短期趋势线上方的个股减少。少数大型权重股仍可能使加权指数与市场广度出现背离。
+- **英文對照：** This indicator measures the percentage of Taiwan-listed stocks whose closing price is above their own 20-trading-day moving average on each trading day. It shows how broadly individual stocks participate in the market trend rather than relying only on the weighted index. A rising percentage means more stocks are trading above their own 20-day averages, suggesting broader participation in the market trend. A falling percentage indicates that fewer stocks are holding above their short-term trend. A handful of large constituents can still cause the weighted index to move differently from market breadth.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.pageDescription: This indicator measures the percentage of Taiwan-listed stocks whose closing price is above their own 20-trading-day moving average on each trading day. It shows how broadly individual stocks participate in the market trend rather than relying only on the weighted index. A rising percentage means more stocks are trading above their own 20-day averages, suggesting broader participation in the market trend. A falling percentage indicates that fewer stocks are holding above their short-term trend. A handful of large constituents can still cause the weighted index to move differently from market breadth.
+- **韓文候選：** 각 종목의 종가가 20거래일 이동평균을 웃도는 대만 주식의 비율로 시장 전반의 참여 정도를 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 市場廣度 MA20, market sentiment, indicator, how to read
+- **簡中對照：** 市场广度 MA20, market sentiment, indicator, how to read
+- **英文對照：** Market Breadth (MA20), market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.keywords: Market Breadth (MA20), market sentiment, indicator, how to read
+- **韓文候選：** 시장 폭 MA20, 시장 폭, 20일 이동평균, 대만 주식시장
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 市場廣度 MA20是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 市场广度 MA20是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Market Breadth (MA20)? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.heading: What is Market Breadth (MA20)? Explained: meaning, interpretation and limitations
+- **韓文候選：** 시장 폭 MA20이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此指標統計每個交易日收盤價高於自身 20 日移動平均線的台股個股占比。它用來觀察有多少股票站在各自短期趨勢線之上，補充加權指數可能受少數大型權值股主導的限制。 占比上升代表站在各自 20 日均線上方的股票變多，市場趨勢的參與度較廣；下降則表示維持在短期趨勢線上方的個股減少。少數大型權值股仍可能讓加權指數與市場廣度出現背離。
+- **簡中對照：** 该指标统计每个交易日收盘价高于自身 20 日移动平均线的台湾上市股票占比。它用于观察有多少股票处于各自短期趋势线上方，补充加权指数可能受少数大型权重股主导的局限。 占比上升表示站在各自 20 日均线上方的股票增多，市场趋势的参与范围更广；下降则表示维持在短期趋势线上方的个股减少。少数大型权重股仍可能使加权指数与市场广度出现背离。
+- **英文對照：** This indicator measures the percentage of Taiwan-listed stocks whose closing price is above their own 20-trading-day moving average on each trading day. It shows how broadly individual stocks participate in the market trend rather than relying only on the weighted index. A rising percentage means more stocks are trading above their own 20-day averages, suggesting broader participation in the market trend. A falling percentage indicates that fewer stocks are holding above their short-term trend. A handful of large constituents can still cause the weighted index to move differently from market breadth.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.lede: This indicator measures the percentage of Taiwan-listed stocks whose closing price is above their own 20-trading-day moving average on each trading day. It shows how broadly individual stocks participate in the market trend rather than relying only on the weighted index. A rising percentage means more stocks are trading above their own 20-day averages, suggesting broader participation in the market trend. A falling percentage indicates that fewer stocks are holding above their short-term trend. A handful of large constituents can still cause the weighted index to move differently from market breadth.
+- **韓文候選：** 이 지표는 각 거래일에 종가가 각 종목의 20거래일 이동평균을 웃도는 대만 상장 종목의 비율을 집계합니다. 개별 종목이 각자의 단기 추세선 위에 얼마나 많이 위치하는지 보여 주며, 소수 대형주가 가권지수를 주도할 수 있다는 한계를 보완합니다. 비율이 상승하면 각 종목의 20일 이동평균 위에 있는 종목이 늘어 더 많은 종목이 시장 흐름에 동참하고 있음을 뜻합니다. 하락하면 단기 추세선 위를 유지하는 종목이 줄었다는 의미입니다. 일부 대형주가 가권지수를 주도하면 지수와 시장 폭이 서로 다르게 움직일 수 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 此指標統計每個交易日收盤價高於自身 20 日移動平均線的台股個股占比。它用來觀察有多少股票站在各自短期趨勢線之上，補充加權指數可能受少數大型權值股主導的限制。
+- **簡中對照：** 该指标统计每个交易日收盘价高于自身 20 日移动平均线的台湾上市股票占比。它用于观察有多少股票处于各自短期趋势线上方，补充加权指数可能受少数大型权重股主导的局限。
+- **英文對照：** This indicator measures the percentage of Taiwan-listed stocks whose closing price is above their own 20-trading-day moving average on each trading day. It shows how broadly individual stocks participate in the market trend rather than relying only on the weighted index.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.whatItIs: This indicator measures the percentage of Taiwan-listed stocks whose closing price is above their own 20-trading-day moving average on each trading day. It shows how broadly individual stocks participate in the market trend rather than relying only on the weighted index.
+- **韓文候選：** 이 지표는 각 거래일에 종가가 각 종목의 20거래일 이동평균을 웃도는 대만 상장 종목의 비율을 집계합니다. 개별 종목이 각자의 단기 추세선 위에 얼마나 많이 위치하는지 보여 주며, 소수 대형주가 가권지수를 주도할 수 있다는 한계를 보완합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 占比上升代表站在各自 20 日均線上方的股票變多，市場趨勢的參與度較廣；下降則表示維持在短期趨勢線上方的個股減少。少數大型權值股仍可能讓加權指數與市場廣度出現背離。
+- **簡中對照：** 占比上升表示站在各自 20 日均线上方的股票增多，市场趋势的参与范围更广；下降则表示维持在短期趋势线上方的个股减少。少数大型权重股仍可能使加权指数与市场广度出现背离。
+- **英文對照：** A rising percentage means more stocks are trading above their own 20-day averages, suggesting broader participation in the market trend. A falling percentage indicates that fewer stocks are holding above their short-term trend. A handful of large constituents can still cause the weighted index to move differently from market breadth.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.howToRead: A rising percentage means more stocks are trading above their own 20-day averages, suggesting broader participation in the market trend. A falling percentage indicates that fewer stocks are holding above their short-term trend. A handful of large constituents can still cause the weighted index to move differently from market breadth.
+- **韓文候選：** 비율이 상승하면 각 종목의 20일 이동평균 위에 있는 종목이 늘어 더 많은 종목이 시장 흐름에 동참하고 있음을 뜻합니다. 하락하면 단기 추세선 위를 유지하는 종목이 줄었다는 의미입니다. 일부 대형주가 가권지수를 주도하면 지수와 시장 폭이 서로 다르게 움직일 수 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
+- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
+- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.relationToSio: This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 신호 중 하나입니다. 다른 신호와 함께 종합적으로 평가되므로, 개별 수치만으로 종합 점수가 결정되지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.marketBreadthMa20.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** Sentiment Inside Out 依台股歷史收盤價，計算其追蹤股票池中收盤價高於各自 20 日移動平均線的股票比例。
+- **簡中對照：** Sentiment Inside Out 根据台湾股票历史收盘价，计算其跟踪股票池中收盘价高于各自 20 日移动平均线的股票比例。
+- **英文對照：** Sentiment Inside Out calculates the percentage of stocks in its Taiwan stock universe whose daily close is above each stock’s own 20-trading-day moving average, using historical closing-price data.
+- **英文 fallback：** direct — sentimentIndicatorPages.marketBreadthMa20.source: Sentiment Inside Out calculates the percentage of stocks in its Taiwan stock universe whose daily close is above each stock’s own 20-trading-day moving average, using historical closing-price data.
+- **韓文候選：** Sentiment Inside Out은 대만 주식시장의 과거 종가를 바탕으로 추적 대상 종목 중 종가가 각 종목의 20거래일 이동평균을 웃도는 종목의 비율을 계산합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台股市場動能
+- **簡中對照：** 台湾股市市场动能
+- **英文對照：** Taiwan Market Momentum
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.shortName: Taiwan Market Momentum
+- **韓文候選：** 대만 시장 모멘텀
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台股市場動能是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 台湾股市市场动能是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Taiwan Market Momentum? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.pageTitle: What is Taiwan Market Momentum? Explained: meaning, interpretation and limitations
+- **韓文候選：** 대만 시장 모멘텀이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台股市場動能將加權指數與 125 個交易日移動平均比較，並以相對偏離幅度呈現指數與中期趨勢的距離。 正值代表加權指數高於 125 日均線，負值代表低於均線；偏離幅度越大，表示指數與趨勢線距離越遠。它不是目標價，也不保證趨勢會延續。
+- **簡中對照：** 台湾市场动能将加权指数与 125 个交易日移动平均进行比较，并以相对偏离幅度表示指数与中期趋势的距离。 正值表示加权指数高于 125 日均线，负值表示低于均线；偏离幅度越大，说明指数与趋势线距离越远。它不是目标价，也不保证趋势会延续。
+- **英文對照：** Taiwan Market Momentum compares the TAIEX with its 125-trading-day moving average and measures the index's relative distance from that trend. It provides a smoothed view of the broad market's medium-term direction. A positive value means the TAIEX is above its 125-day average; a negative value means it is below. The size of the deviation describes the gap from trend, not a price target or a guarantee that the trend will continue.
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.pageDescription: Taiwan Market Momentum compares the TAIEX with its 125-trading-day moving average and measures the index's relative distance from that trend. It provides a smoothed view of the broad market's medium-term direction. A positive value means the TAIEX is above its 125-day average; a negative value means it is below. The size of the deviation describes the gap from trend, not a price target or a guarantee that the trend will continue.
+- **韓文候選：** 대만 가권지수와 125거래일 이동평균의 상대적 괴리 폭으로 중기 추세에서 지수의 위치를 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台股市場動能, market sentiment, indicator, how to read
+- **簡中對照：** 台湾股市市场动能, market sentiment, indicator, how to read
+- **英文對照：** Taiwan Market Momentum, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.keywords: Taiwan Market Momentum, market sentiment, indicator, how to read
+- **韓文候選：** 대만 시장 모멘텀, 대만 가권지수, 125일 이동평균, 시장 심리
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台股市場動能是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 台湾股市市场动能是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Taiwan Market Momentum? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.heading: What is Taiwan Market Momentum? Explained: meaning, interpretation and limitations
+- **韓文候選：** 대만 시장 모멘텀이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台股市場動能將加權指數與 125 個交易日移動平均比較，並以相對偏離幅度呈現指數與中期趨勢的距離。 正值代表加權指數高於 125 日均線，負值代表低於均線；偏離幅度越大，表示指數與趨勢線距離越遠。它不是目標價，也不保證趨勢會延續。
+- **簡中對照：** 台湾市场动能将加权指数与 125 个交易日移动平均进行比较，并以相对偏离幅度表示指数与中期趋势的距离。 正值表示加权指数高于 125 日均线，负值表示低于均线；偏离幅度越大，说明指数与趋势线距离越远。它不是目标价，也不保证趋势会延续。
+- **英文對照：** Taiwan Market Momentum compares the TAIEX with its 125-trading-day moving average and measures the index's relative distance from that trend. It provides a smoothed view of the broad market's medium-term direction. A positive value means the TAIEX is above its 125-day average; a negative value means it is below. The size of the deviation describes the gap from trend, not a price target or a guarantee that the trend will continue.
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.lede: Taiwan Market Momentum compares the TAIEX with its 125-trading-day moving average and measures the index's relative distance from that trend. It provides a smoothed view of the broad market's medium-term direction. A positive value means the TAIEX is above its 125-day average; a negative value means it is below. The size of the deviation describes the gap from trend, not a price target or a guarantee that the trend will continue.
+- **韓文候選：** 대만 시장 모멘텀은 대만 가권지수와 해당 지수의 125거래일 이동평균을 비교해 상대적 괴리 폭을 나타냅니다. 값이 양수이면 가권지수가 125일 이동평균 위에 있고, 음수이면 아래에 있다는 뜻입니다. 괴리 폭이 클수록 지수와 추세선 사이의 거리가 멉니다. 이 값은 중기 추세에서 지수가 어디에 있는지 보여 주며, 목표 가격이나 추세 지속을 보장하지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 台股市場動能將加權指數與 125 個交易日移動平均比較，並以相對偏離幅度呈現指數與中期趨勢的距離。
+- **簡中對照：** 台湾市场动能将加权指数与 125 个交易日移动平均进行比较，并以相对偏离幅度表示指数与中期趋势的距离。
+- **英文對照：** Taiwan Market Momentum compares the TAIEX with its 125-trading-day moving average and measures the index's relative distance from that trend. It provides a smoothed view of the broad market's medium-term direction.
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.whatItIs: Taiwan Market Momentum compares the TAIEX with its 125-trading-day moving average and measures the index's relative distance from that trend. It provides a smoothed view of the broad market's medium-term direction.
+- **韓文候選：** 대만 시장 모멘텀은 대만 가권지수와 해당 지수의 125거래일 이동평균을 비교해 상대적 괴리 폭을 나타냅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 正值代表加權指數高於 125 日均線，負值代表低於均線；偏離幅度越大，表示指數與趨勢線距離越遠。它不是目標價，也不保證趨勢會延續。
+- **簡中對照：** 正值表示加权指数高于 125 日均线，负值表示低于均线；偏离幅度越大，说明指数与趋势线距离越远。它不是目标价，也不保证趋势会延续。
+- **英文對照：** A positive value means the TAIEX is above its 125-day average; a negative value means it is below. The size of the deviation describes the gap from trend, not a price target or a guarantee that the trend will continue.
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.howToRead: A positive value means the TAIEX is above its 125-day average; a negative value means it is below. The size of the deviation describes the gap from trend, not a price target or a guarantee that the trend will continue.
+- **韓文候選：** 값이 양수이면 가권지수가 125일 이동평균 위에 있고, 음수이면 아래에 있다는 뜻입니다. 괴리 폭이 클수록 지수와 추세선 사이의 거리가 멉니다. 이 값은 중기 추세에서 지수가 어디에 있는지 보여 주며, 목표 가격이나 추세 지속을 보장하지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
+- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
+- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.relationToSio: This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 신호 중 하나입니다. 다른 신호와 함께 종합적으로 평가되므로, 개별 수치만으로 종합 점수가 결정되지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.twMarketMomentum.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 臺灣加權股價指數收盤資料；125 個交易日均線與相對偏離幅度由 Sentiment Inside Out 計算。
+- **簡中對照：** 台湾加权股价指数收盘数据；125 个交易日均线与相对偏离幅度由 Sentiment Inside Out 计算。
+- **英文對照：** TAIEX closing data. Sentiment Inside Out calculates the 125-session moving average and relative deviation.
+- **英文 fallback：** direct — sentimentIndicatorPages.twMarketMomentum.source: TAIEX closing data. Sentiment Inside Out calculates the 125-session moving average and relative deviation.
+- **韓文候選：** 대만 가권지수 종가 데이터. 125거래일 이동평균과 상대적 괴리율은 Sentiment Inside Out에서 계산합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數偏離度
+- **簡中對照：** 有交易户数偏离度
+- **英文對照：** Active Accounts Deviation (189d)
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.shortName: Active Accounts Deviation (189d)
+- **韓文候選：** 거래 계좌 수의 장기 추세 편차
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數偏離度是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 有交易户数偏离度是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Active Accounts Deviation (189d)? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.pageTitle: What is Active Accounts Deviation (189d)? Explained: meaning, interpretation and limitations
+- **韓文候選：** 거래 계좌 수의 장기 추세 편차란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數偏離度衡量台股活躍交易帳戶數相對於估計的 189 日長期趨勢偏離多少，重點在參與程度的變化，而非單看戶數絕對值。 正值表示活躍帳戶數高於估計趨勢，負值表示低於趨勢。它可反映散戶參與度變化，但帳戶有交易不代表買進或賣出的方向，也無法反映交易是否獲利。
+- **簡中對照：** 有效交易账户偏离度衡量台湾活跃证券交易账户数相对于估算的 189 日长期趋势偏离多少，重点在参与程度的变化，而非账户绝对数量。 正值表示活跃账户数高于估算趋势，负值表示低于趋势。它可反映个人投资者参与度变化，但账户发生交易不代表买卖方向，也无法反映交易是否盈利。
+- **英文對照：** The 189-day active-trading-account deviation measures how the number of active Taiwan securities accounts differs from its estimated longer-term trend. It focuses on the change in participation rather than the absolute account count. A positive deviation means active-account participation is above the estimated trend; a negative deviation means it is below. Changes can reflect retail engagement and market conditions, but account activity does not reveal the direction or profitability of trades.
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.pageDescription: The 189-day active-trading-account deviation measures how the number of active Taiwan securities accounts differs from its estimated longer-term trend. It focuses on the change in participation rather than the absolute account count. A positive deviation means active-account participation is above the estimated trend; a negative deviation means it is below. Changes can reflect retail engagement and market conditions, but account activity does not reveal the direction or profitability of trades.
+- **韓文候選：** 대만 주식시장의 활동 계좌 수가 추정된 189일 장기 추세에서 얼마나 벗어났는지 측정합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數偏離度, market sentiment, indicator, how to read
+- **簡中對照：** 有交易户数偏离度, market sentiment, indicator, how to read
+- **英文對照：** Active Accounts Deviation (189d), market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.keywords: Active Accounts Deviation (189d), market sentiment, indicator, how to read
+- **韓文候選：** 거래 계좌 수 편차, 189일 추세, 대만 주식시장, 시장 참여
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數偏離度是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 有交易户数偏离度是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Active Accounts Deviation (189d)? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.heading: What is Active Accounts Deviation (189d)? Explained: meaning, interpretation and limitations
+- **韓文候選：** 거래 계좌 수의 장기 추세 편차란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數偏離度衡量台股活躍交易帳戶數相對於估計的 189 日長期趨勢偏離多少，重點在參與程度的變化，而非單看戶數絕對值。 正值表示活躍帳戶數高於估計趨勢，負值表示低於趨勢。它可反映散戶參與度變化，但帳戶有交易不代表買進或賣出的方向，也無法反映交易是否獲利。
+- **簡中對照：** 有效交易账户偏离度衡量台湾活跃证券交易账户数相对于估算的 189 日长期趋势偏离多少，重点在参与程度的变化，而非账户绝对数量。 正值表示活跃账户数高于估算趋势，负值表示低于趋势。它可反映个人投资者参与度变化，但账户发生交易不代表买卖方向，也无法反映交易是否盈利。
+- **英文對照：** The 189-day active-trading-account deviation measures how the number of active Taiwan securities accounts differs from its estimated longer-term trend. It focuses on the change in participation rather than the absolute account count. A positive deviation means active-account participation is above the estimated trend; a negative deviation means it is below. Changes can reflect retail engagement and market conditions, but account activity does not reveal the direction or profitability of trades.
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.lede: The 189-day active-trading-account deviation measures how the number of active Taiwan securities accounts differs from its estimated longer-term trend. It focuses on the change in participation rather than the absolute account count. A positive deviation means active-account participation is above the estimated trend; a negative deviation means it is below. Changes can reflect retail engagement and market conditions, but account activity does not reveal the direction or profitability of trades.
+- **韓文候選：** 거래 계좌 수 편차는 대만 주식시장의 활동 계좌 수가 추정된 189일 장기 추세에서 얼마나 벗어났는지를 나타냅니다. 계좌 수의 절대 수준보다 시장 참여 정도의 변화를 살펴보는 데 초점을 둡니다. 값이 양수이면 실제 활동 계좌 수가 추정 추세보다 많고, 음수이면 적다는 뜻입니다. 개인 투자자의 참여 변화를 보여 줄 수 있지만, 계좌에서 거래가 발생했다는 사실만으로 매수·매도 방향이나 거래 수익성을 알 수는 없습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 有交易戶數偏離度衡量台股活躍交易帳戶數相對於估計的 189 日長期趨勢偏離多少，重點在參與程度的變化，而非單看戶數絕對值。
+- **簡中對照：** 有效交易账户偏离度衡量台湾活跃证券交易账户数相对于估算的 189 日长期趋势偏离多少，重点在参与程度的变化，而非账户绝对数量。
+- **英文對照：** The 189-day active-trading-account deviation measures how the number of active Taiwan securities accounts differs from its estimated longer-term trend. It focuses on the change in participation rather than the absolute account count.
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.whatItIs: The 189-day active-trading-account deviation measures how the number of active Taiwan securities accounts differs from its estimated longer-term trend. It focuses on the change in participation rather than the absolute account count.
+- **韓文候選：** 거래 계좌 수 편차는 대만 주식시장의 활동 계좌 수가 추정된 189일 장기 추세에서 얼마나 벗어났는지를 나타냅니다. 계좌 수의 절대 수준보다 시장 참여 정도의 변화를 살펴보는 데 초점을 둡니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 正值表示活躍帳戶數高於估計趨勢，負值表示低於趨勢。它可反映散戶參與度變化，但帳戶有交易不代表買進或賣出的方向，也無法反映交易是否獲利。
+- **簡中對照：** 正值表示活跃账户数高于估算趋势，负值表示低于趋势。它可反映个人投资者参与度变化，但账户发生交易不代表买卖方向，也无法反映交易是否盈利。
+- **英文對照：** A positive deviation means active-account participation is above the estimated trend; a negative deviation means it is below. Changes can reflect retail engagement and market conditions, but account activity does not reveal the direction or profitability of trades.
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.howToRead: A positive deviation means active-account participation is above the estimated trend; a negative deviation means it is below. Changes can reflect retail engagement and market conditions, but account activity does not reveal the direction or profitability of trades.
+- **韓文候選：** 값이 양수이면 실제 활동 계좌 수가 추정 추세보다 많고, 음수이면 적다는 뜻입니다. 개인 투자자의 참여 변화를 보여 줄 수 있지만, 계좌에서 거래가 발생했다는 사실만으로 매수·매도 방향이나 거래 수익성을 알 수는 없습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
+- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
+- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.relationToSio: This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
+- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 신호 중 하나입니다. 다른 신호와 함께 종합적으로 평가되므로, 개별 수치만으로 종합 점수가 결정되지는 않습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.etaDeviation189d.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 臺灣證券交易所有交易戶數統計：https://www.twse.com.tw/zh/statistics/statisticsList?type=07。189 日趨勢偏離由 SIO 計算。
+- **簡中對照：** 台湾证券交易所有效交易账户统计：https://www.twse.com.tw/zh/statistics/statisticsList?type=07。189 日趋势偏离由 SIO 计算。
+- **英文對照：** TWSE active trading account statistics: https://www.twse.com.tw/zh/statistics/statisticsList?type=07. SIO calculates the 189-session trend deviation.
+- **英文 fallback：** direct — sentimentIndicatorPages.etaDeviation189d.source: TWSE active trading account statistics: https://www.twse.com.tw/zh/statistics/statisticsList?type=07. SIO calculates the 189-session trend deviation.
+- **韓文候選：** 대만증권거래소(TWSE) 실제 거래 계좌 수 통계: https://www.twse.com.tw/zh/statistics/statisticsList?type=07. 189일 추세 대비 편차는 SIO가 계산합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.shortName
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 散戶小台淨部位
+- **簡中對照：** 散户小台净持仓
+- **英文對照：** Retail Mini-Futures Net Position
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.shortName: Retail Mini-Futures Net Position
+- **韓文候選：** 개인 투자자 대만 미니 지수선물 순포지션
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.pageTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 散戶小台淨部位是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 散户小台净持仓是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Retail Mini-Futures Net Position? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.pageTitle: What is Retail Mini-Futures Net Position? Explained: meaning, interpretation and limitations
+- **韓文候選：** 개인 투자자 대만 미니 지수선물 순포지션이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.pageDescription
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 散戶小台淨部位整合期交所相關報表，估算個人投資人在小型臺指期貨的淨持倉，是 SIO 對散戶期貨部位的衍生觀察值。 正負號表示淨部位方向，數值大小表示淨曝險規模。淨多或淨空不一定直接等於看多或看空，因為期貨也可能用於避險，部位偏向某一側也可能維持一段時間。
+- **簡中對照：** 散户小台净持仓整合期交所相关报告，估算个人投资者在小型台指期货中的净持仓，是 SIO 对散户期货持仓的衍生观察值。 正负号表示净持仓方向，数值大小表示净敞口规模。净多或净空不一定直接等于看多或看空，因为期货也可用于对冲，持仓偏向一侧也可能持续一段时间。
+- **英文對照：** This indicator estimates the net futures position of individual investors in Taiwan mini-TAIEX futures by combining the relevant exchange reports. It is an SIO-derived view of retail positioning in a smaller index-futures contract. The sign indicates the net-position direction and the size indicates the reported net exposure. A net long or net short position is not automatically bullish or bearish: futures can be used for hedging, and positioning can remain crowded longer than expected.
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.pageDescription: This indicator estimates the net futures position of individual investors in Taiwan mini-TAIEX futures by combining the relevant exchange reports. It is an SIO-derived view of retail positioning in a smaller index-futures contract. The sign indicates the net-position direction and the size indicates the reported net exposure. A net long or net short position is not automatically bullish or bearish: futures can be used for hedging, and positioning can remain crowded longer than expected.
+- **韓文候選：** 대만 미니 지수선물에서 개인 투자자의 순포지션을 추정해 포지션 방향과 순노출 규모를 살펴봅니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.keywords
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 散戶小台淨部位, market sentiment, indicator, how to read
+- **簡中對照：** 散户小台净持仓, market sentiment, indicator, how to read
+- **英文對照：** Retail Mini-Futures Net Position, market sentiment, indicator, how to read
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.keywords: Retail Mini-Futures Net Position, market sentiment, indicator, how to read
+- **韓文候選：** 개인 투자자 미니 지수선물 순포지션, 대만 선물, 순포지션, 시장 심리
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.heading
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 散戶小台淨部位是什麼？指標原理、解讀方式與使用限制
+- **簡中對照：** 散户小台净持仓是什么？指标原理、解读方式与使用限制
+- **英文對照：** What is Retail Mini-Futures Net Position? Explained: meaning, interpretation and limitations
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.heading: What is Retail Mini-Futures Net Position? Explained: meaning, interpretation and limitations
+- **韓文候選：** 개인 투자자 대만 미니 지수선물 순포지션이란? 지표 원리, 해석 방법 및 활용 시 유의사항
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.lede
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 散戶小台淨部位整合期交所相關報表，估算個人投資人在小型臺指期貨的淨持倉，是 SIO 對散戶期貨部位的衍生觀察值。 正負號表示淨部位方向，數值大小表示淨曝險規模。淨多或淨空不一定直接等於看多或看空，因為期貨也可能用於避險，部位偏向某一側也可能維持一段時間。
+- **簡中對照：** 散户小台净持仓整合期交所相关报告，估算个人投资者在小型台指期货中的净持仓，是 SIO 对散户期货持仓的衍生观察值。 正负号表示净持仓方向，数值大小表示净敞口规模。净多或净空不一定直接等于看多或看空，因为期货也可用于对冲，持仓偏向一侧也可能持续一段时间。
+- **英文對照：** This indicator estimates the net futures position of individual investors in Taiwan mini-TAIEX futures by combining the relevant exchange reports. It is an SIO-derived view of retail positioning in a smaller index-futures contract. The sign indicates the net-position direction and the size indicates the reported net exposure. A net long or net short position is not automatically bullish or bearish: futures can be used for hedging, and positioning can remain crowded longer than expected.
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.lede: This indicator estimates the net futures position of individual investors in Taiwan mini-TAIEX futures by combining the relevant exchange reports. It is an SIO-derived view of retail positioning in a smaller index-futures contract. The sign indicates the net-position direction and the size indicates the reported net exposure. A net long or net short position is not automatically bullish or bearish: futures can be used for hedging, and positioning can remain crowded longer than expected.
+- **韓文候選：** 이 지표는 대만 선물거래소의 관련 보고서를 결합해 개인 투자자의 대만 미니 지수선물 순포지션을 추정한 SIO 파생 지표입니다. 값의 부호는 순포지션 방향을, 절댓값은 순노출 규모를 나타냅니다. 순매수 또는 순매도 포지션이 곧바로 강세 또는 약세 전망을 뜻하지는 않습니다. 선물은 헤지에도 사용되며 한쪽 포지션이 일정 기간 지속될 수도 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.whatItIsTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標衡量什麼？
+- **簡中對照：** 这项指标衡量什么？
+- **英文對照：** What does this indicator measure?
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.whatItIsTitle: What does this indicator measure?
+- **韓文候選：** 이 지표는 무엇을 측정하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.whatItIs
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 散戶小台淨部位整合期交所相關報表，估算個人投資人在小型臺指期貨的淨持倉，是 SIO 對散戶期貨部位的衍生觀察值。
+- **簡中對照：** 散户小台净持仓整合期交所相关报告，估算个人投资者在小型台指期货中的净持仓，是 SIO 对散户期货持仓的衍生观察值。
+- **英文對照：** This indicator estimates the net futures position of individual investors in Taiwan mini-TAIEX futures by combining the relevant exchange reports. It is an SIO-derived view of retail positioning in a smaller index-futures contract.
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.whatItIs: This indicator estimates the net futures position of individual investors in Taiwan mini-TAIEX futures by combining the relevant exchange reports. It is an SIO-derived view of retail positioning in a smaller index-futures contract.
+- **韓文候選：** 이 지표는 대만 선물거래소의 관련 보고서를 결합해 개인 투자자의 대만 미니 지수선물 순포지션을 추정한 SIO 파생 지표입니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.howToReadTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 應該如何解讀？
+- **簡中對照：** 应该如何解读？
+- **英文對照：** How should you read it?
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.howToReadTitle: How should you read it?
+- **韓文候選：** 어떻게 해석해야 하나요?
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.howToRead
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 正負號表示淨部位方向，數值大小表示淨曝險規模。淨多或淨空不一定直接等於看多或看空，因為期貨也可能用於避險，部位偏向某一側也可能維持一段時間。
+- **簡中對照：** 正负号表示净持仓方向，数值大小表示净敞口规模。净多或净空不一定直接等于看多或看空，因为期货也可用于对冲，持仓偏向一侧也可能持续一段时间。
+- **英文對照：** The sign indicates the net-position direction and the size indicates the reported net exposure. A net long or net short position is not automatically bullish or bearish: futures can be used for hedging, and positioning can remain crowded longer than expected.
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.howToRead: The sign indicates the net-position direction and the size indicates the reported net exposure. A net long or net short position is not automatically bullish or bearish: futures can be used for hedging, and positioning can remain crowded longer than expected.
+- **韓文候選：** 값의 부호는 순포지션 방향을, 절댓값은 순노출 규모를 나타냅니다. 순매수 또는 순매도 포지션이 곧바로 강세 또는 약세 전망을 뜻하지는 않습니다. 선물은 헤지에도 사용되며 한쪽 포지션이 일정 기간 지속될 수도 있습니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.historyTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 歷史資料與更新頻率
+- **簡中對照：** 历史数据与更新频率
+- **英文對照：** Historical data and update frequency
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.historyTitle: Historical data and update frequency
+- **韓文候選：** 과거 데이터 및 업데이트 주기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.history
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
+- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
+- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.history: The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
+- **韓文候選：** 상단 수치는 기존 시장 심리 대시보드 API에서 제공하며 데이터 기준일도 함께 표시합니다. 이 설명 페이지에는 전체 과거 데이터를 제공하는 별도 API가 없습니다. 데이터 출처마다 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한에 따라 그대로 적용됩니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.relationToSioTitle
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項指標與 SIO 的關係
+- **簡中對照：** 这项指标与 SIO 的关系
+- **英文對照：** How does it relate to SIO?
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.relationToSioTitle: How does it relate to SIO?
+- **韓文候選：** SIO와의 관계
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.relationToSio
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 這項資料目前提供作為情勢參考，但尚未納入 SIO 台股恐懼貪婪指數的加權計算。閱讀時應將它視為背景資訊，而非綜合分數的組成項目。
+- **簡中對照：** 这项数据目前作为市场参考信息提供，但尚未纳入 SIO 台湾股市恐惧贪婪指数的加权计算。阅读时应将它视为背景信息，而不是综合分数的组成项。
+- **英文對照：** This series is available as a reference on the sentiment board, but it is not currently weighted into the SIO Taiwan Fear & Greed Index. Use it as context rather than treating it as part of the composite calculation.
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.relationToSio: This series is available as a reference on the sentiment board, but it is not currently weighted into the SIO Taiwan Fear & Greed Index. Use it as context rather than treating it as part of the composite calculation.
+- **韓文候選：** 이 데이터는 현재 시장 상황을 파악하기 위한 참고 자료로 제공되지만, SIO 대만 시장 공포·탐욕 지수의 가중치 계산에는 포함되지 않습니다. 따라서 종합 점수의 구성 요소가 아닌 보조 정보로 해석해야 합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.relationToSioCta
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
+- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
+- **英文對照：** View the SIO Taiwan Fear & Greed Index
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.relationToSioCta: View the SIO Taiwan Fear & Greed Index
+- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
+### sentimentIndicatorPages.retailSentimentSmallFutures.source
+
+- **審核狀態：** reviewed_by_ai_korean_editor_pending_human_native_proof_not_released
+- **繁中原文：** 臺灣期貨交易所每日市場交易報告：https://www.taifex.com.tw/cht/3/futDailyMarketReport。散戶小台淨部位由 SIO 依公開報表推算。
+- **簡中對照：** 台湾期货交易所每日市场交易报告：https://www.taifex.com.tw/cht/3/futDailyMarketReport。散户小台净持仓由 SIO 根据公开报告推算。
+- **英文對照：** TAIFEX daily futures market reports: https://www.taifex.com.tw/cht/3/futDailyMarketReport. SIO derives the retail mini-futures net position from published reports.
+- **英文 fallback：** direct — sentimentIndicatorPages.retailSentimentSmallFutures.source: TAIFEX daily futures market reports: https://www.taifex.com.tw/cht/3/futDailyMarketReport. SIO derives the retail mini-futures net position from published reports.
+- **韓文候選：** 대만 선물거래소(TAIFEX) 일일 시장 거래 보고서: https://www.taifex.com.tw/cht/3/futDailyMarketReport. 개인 투자자의 미니 지수선물 순포지션은 SIO가 공개 보고서를 바탕으로 추정합니다.
+- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
+- **替代候選：** 無
+- **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
+
 ### marketPulse.refreshNote
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
@@ -27265,7 +30373,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 市場走勢暫時無法取得
-- **簡中對照：** 市场走势暂时无法取得
+- **簡中對照：** 市场走势暂时无法获取
 - **英文對照：** Market moves are temporarily unavailable
 - **英文 fallback：** direct — marketPulse.unavailable: Market moves are temporarily unavailable
 - **韓文候選：** 현재 시장 흐름을 가져올 수 없습니다.
@@ -27288,10 +30396,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### freeTrial.title
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** 免費試用 30 天
-- **簡中對照：** 免费试用 30 天
-- **英文對照：** 30-day free trial
-- **英文 fallback：** direct — freeTrial.title: 30-day free trial
+- **繁中原文：** 免費試用 14 天
+- **簡中對照：** 免费试用 14 天
+- **英文對照：** 14-day free trial
+- **英文 fallback：** direct — freeTrial.title: 14-day free trial
 - **韓文候選：** 30일 무료 체험
 - **候選來源：** docs/i18n/ko-KR-review/01-content-payments.draft.json
 - **替代候選：** 無
@@ -27301,7 +30409,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 免綁卡試用 Pro
-- **簡中對照：** 免绑卡试用 Pro
+- **簡中對照：** 免绑信用卡试用 Pro
 - **英文對照：** Try Pro free
 - **英文 fallback：** direct — freeTrial.ctaShort: Try Pro free
 - **韓文候選：** 카드 등록 없이 Pro 체험
@@ -27337,7 +30445,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 台美股情緒、個股分析、追蹤清單與無廣告體驗，全部開放。
-- **簡中對照：** 台湾股市和美股情绪、个股分析、自选列表与无广告体验，全部开放。
+- **簡中對照：** 美国与台湾市场情绪、个股分析、自选列表功能和无广告体验，全部开放使用。
 - **英文對照：** Market sentiment, stock analysis, watchlists, and an ad-free experience are all yours.
 - **英文 fallback：** direct — freeTrial.promotion.description: Market sentiment, stock analysis, watchlists, and an ad-free experience are all yours.
 - **韓文候選：** 미국·대만 시장 심리, 개별 종목 분석, 관심 종목 기능과 광고 없는 환경을 모두 이용할 수 있습니다.
@@ -27348,10 +30456,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### freeTrial.promotion.visualOffer
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** Pro 30 天免費體驗
-- **簡中對照：** Pro 30 天免费体验
-- **英文對照：** 30 days of Pro free
-- **英文 fallback：** direct — freeTrial.promotion.visualOffer: 30 days of Pro free
+- **繁中原文：** Pro 14 天免費體驗
+- **簡中對照：** Pro 14 天免费体验
+- **英文對照：** 14 days of Pro free
+- **英文 fallback：** direct — freeTrial.promotion.visualOffer: 14 days of Pro free
 - **韓文候選：** Pro 30일 무료 체험
 - **候選來源：** docs/i18n/ko-KR-review/01-content-payments.draft.json
 - **替代候選：** 無
@@ -27396,10 +30504,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### freeTrial.planCard.startTrial
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** 免費試用 30 天
-- **簡中對照：** 免费试用 30 天
-- **英文對照：** Start a 30-day free trial
-- **英文 fallback：** direct — freeTrial.planCard.startTrial: Start a 30-day free trial
+- **繁中原文：** 免費試用 14 天
+- **簡中對照：** 免费试用 14 天
+- **英文對照：** Start a 14-day free trial
+- **英文 fallback：** direct — freeTrial.planCard.startTrial: Start a 14-day free trial
 - **韓文候選：** 30일 무료 체험 시작
 - **候選來源：** docs/i18n/ko-KR-review/01-content-payments.draft.json
 - **替代候選：** 無
@@ -27444,10 +30552,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### freeTrial.disclosure.length
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** 試用期 30 天，期間可使用全部 Pro 功能
-- **簡中對照：** 试用期 30 天，期间可使用全部 Pro 功能
-- **英文對照：** Use all Pro features for 30 days
-- **英文 fallback：** direct — freeTrial.disclosure.length: Use all Pro features for 30 days
+- **繁中原文：** 試用期 14 天，期間可使用全部 Pro 功能
+- **簡中對照：** 试用期 14 天，期间可使用全部 Pro 功能
+- **英文對照：** Use all Pro features for 14 days
+- **英文 fallback：** direct — freeTrial.disclosure.length: Use all Pro features for 14 days
 - **韓文候選：** 30일 동안 모든 Pro 기능을 이용할 수 있습니다.
 - **候選來源：** docs/i18n/ko-KR-review/01-content-payments.draft.json
 - **替代候選：** 無
@@ -27469,9 +30577,9 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 試用到期後會自動回到 Free 方案；若想繼續使用 Pro，請自行訂閱。不會自動扣款
-- **簡中對照：** 试用到期后会自动回到 Free 方案；若想继续使用 Pro，请自行订阅。不会自动扣款
-- **英文對照：** After 30 days, your plan returns to Free. Subscribe if you want to keep Pro. You will not be charged automatically
-- **英文 fallback：** direct — freeTrial.disclosure.expiry: After 30 days, your plan returns to Free. Subscribe if you want to keep Pro. You will not be charged automatically
+- **簡中對照：** 试用到期后会自动回到 Free 套餐；若想继续使用 Pro，请自行订阅。不会自动扣款
+- **英文對照：** After 14 days, your plan returns to Free. Subscribe if you want to keep Pro. You will not be charged automatically
+- **英文 fallback：** direct — freeTrial.disclosure.expiry: After 14 days, your plan returns to Free. Subscribe if you want to keep Pro. You will not be charged automatically
 - **韓文候選：** 체험 기간이 끝나면 요금제가 자동으로 Free로 전환됩니다. Pro를 계속 이용하려면 직접 구독해야 하며, 자동 결제는 발생하지 않습니다.
 - **候選來源：** docs/i18n/ko-KR-review/01-content-payments.draft.json
 - **替代候選：** 無
@@ -27516,10 +30624,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### freeTrial.successBody
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** Pro 功能已開啟 30 天。試用結束後不會自動扣款。
-- **簡中對照：** Pro 功能已开启 30 天。试用结束后不会自动扣款。
-- **英文對照：** Pro features are available for 30 days. You will not be charged when the trial ends.
-- **英文 fallback：** direct — freeTrial.successBody: Pro features are available for 30 days. You will not be charged when the trial ends.
+- **繁中原文：** Pro 功能已開啟 14 天。試用結束後不會自動扣款。
+- **簡中對照：** Pro 功能已开启 14 天。试用结束后不会自动扣款。
+- **英文對照：** Pro features are available for 14 days. You will not be charged when the trial ends.
+- **英文 fallback：** direct — freeTrial.successBody: Pro features are available for 14 days. You will not be charged when the trial ends.
 - **韓文候選：** 30일 동안 Pro 기능을 이용할 수 있습니다. 체험이 끝나도 자동 결제되지 않습니다.
 - **候選來源：** docs/i18n/ko-KR-review/01-content-payments.draft.json
 - **替代候選：** 無
@@ -27541,7 +30649,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 試用到期後會回到 Free 方案，不會自動扣款。
-- **簡中對照：** 试用到期后会回到 Free 方案，不会自动扣款。
+- **簡中對照：** 试用到期后会回到 Free 套餐，不会自动扣款。
 - **英文對照：** Your plan returns to Free after the trial. You will not be charged automatically.
 - **英文 fallback：** direct — freeTrial.accountExpiry: Your plan returns to Free after the trial. You will not be charged automatically.
 - **韓文候選：** 체험 기간이 끝나면 요금제가 Free로 전환되며 자동 결제되지 않습니다.
@@ -27553,7 +30661,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 返回方案頁
-- **簡中對照：** 返回方案页
+- **簡中對照：** 返回套餐页
 - **英文對照：** Back to plans
 - **英文 fallback：** direct — freeTrial.goToSubscription: Back to plans
 - **韓文候選：** 요금제 페이지로 돌아가기
@@ -27612,10 +30720,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### cardTrial.title
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** 免費試用 30 天
-- **簡中對照：** 免费试用 30 天
-- **英文對照：** 30-day free trial
-- **英文 fallback：** direct — cardTrial.title: 30-day free trial
+- **繁中原文：** 免費試用 14 天
+- **簡中對照：** 免费试用 14 天
+- **英文對照：** 14-day free trial
+- **英文 fallback：** direct — cardTrial.title: 14-day free trial
 - **韓文候選：** 30일 무료 체험
 - **候選來源：** docs/i18n/ko-KR-review/01-content-payments.draft.json
 - **替代候選：** 無
@@ -27624,10 +30732,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### cardTrial.planCard.startTrial
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** 免費試用 30 天
-- **簡中對照：** 免费试用 30 天
-- **英文對照：** Start a 30-day free trial
-- **英文 fallback：** direct — cardTrial.planCard.startTrial: Start a 30-day free trial
+- **繁中原文：** 免費試用 14 天
+- **簡中對照：** 免费试用 14 天
+- **英文對照：** Start a 14-day free trial
+- **英文 fallback：** direct — cardTrial.planCard.startTrial: Start a 14-day free trial
 - **韓文候選：** 30일 무료 체험 시작
 - **候選來源：** docs/i18n/ko-KR-review/01-content-payments.draft.json
 - **替代候選：** 無
@@ -27648,10 +30756,10 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 ### cardTrial.disclosure.length
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
-- **繁中原文：** 試用期 30 天，期間可使用全部 Pro 功能
-- **簡中對照：** 试用期 30 天，期间可使用全部 Pro 功能
-- **英文對照：** The trial runs for 30 days, with every Pro feature available
-- **英文 fallback：** direct — cardTrial.disclosure.length: The trial runs for 30 days, with every Pro feature available
+- **繁中原文：** 試用期 14 天，期間可使用全部 Pro 功能
+- **簡中對照：** 试用期 14 天，期间可使用全部 Pro 功能
+- **英文對照：** The trial runs for 14 days, with every Pro feature available
+- **英文 fallback：** direct — cardTrial.disclosure.length: The trial runs for 14 days, with every Pro feature available
 - **韓文候選：** 30일 동안 모든 Pro 기능을 이용할 수 있습니다.
 - **候選來源：** docs/i18n/ko-KR-review/01-content-payments.draft.json
 - **替代候選：** 無
@@ -27661,7 +30769,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 綁定信用卡時會進行一筆 2 元的驗證，你不會被收取這筆費用
-- **簡中對照：** 绑定信用卡时会进行一笔 2 元的验证，你不会被收取这笔费用
+- **簡中對照：** 绑定信用卡时会进行一笔 NT$2 的验证，你不会被收取这笔费用。
 - **英文對照：** Binding your card runs a NT$2 verification, and you will not be charged for it
 - **英文 fallback：** direct — cardTrial.disclosure.verification: Binding your card runs a NT$2 verification, and you will not be charged for it
 - **韓文候選：** 신용카드를 등록할 때 본인 확인을 위해 NT$2가 승인되지만 실제 청구되는 금액은 아닙니다.
@@ -27673,7 +30781,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 試用期滿若未取消，將於 {{date}} 自動扣款 199 元，之後每月自動續費
-- **簡中對照：** 试用期满若未取消，将于 {{date}} 自动扣款 199 元，之后每月自动续费
+- **簡中對照：** 如果在试用期结束前未取消，系统将于 {{date}} 自动扣款 NT$199，之后每月自动续费。
 - **英文對照：** If you do not cancel, NT$199 will be charged automatically on {{date}}, and monthly after that
 - **英文 fallback：** direct — cardTrial.disclosure.renewal: If you do not cancel, NT$199 will be charged automatically on {{date}}, and monthly after that
 - **韓文候選：** 체험 기간이 끝나기 전에 취소하지 않으면 {{date}}에 NT$199가 자동 결제되며, 이후 매월 자동 갱신됩니다.
@@ -27685,7 +30793,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 試用期滿若未取消，將於 {{date}} 自動扣款 1990 元，之後每年自動續費
-- **簡中對照：** 试用期满若未取消，将于 {{date}} 自动扣款 1990 元，之后每年自动续费
+- **簡中對照：** 如果在试用期结束前未取消，系统将于 {{date}} 自动扣款 NT$1,990，之后每年自动续费。
 - **英文對照：** If you do not cancel, NT$1,990 will be charged automatically on {{date}}, and yearly after that
 - **英文 fallback：** direct — cardTrial.disclosure.renewalYearly: If you do not cancel, NT$1,990 will be charged automatically on {{date}}, and yearly after that
 - **韓文候選：** 체험 기간이 끝나기 전에 취소하지 않으면 {{date}}에 NT$1,990가 자동 결제되며, 이후 매년 자동 갱신됩니다.
@@ -27757,7 +30865,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 輸入信用卡資料
-- **簡中對照：** 输入信用卡数据
+- **簡中對照：** 输入信用卡信息
 - **英文對照：** Enter your card details
 - **英文 fallback：** direct — cardTrial.cardTitle: Enter your card details
 - **韓文候選：** 신용카드 정보 입력
@@ -27769,7 +30877,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 卡片資料由綠界科技處理，我們不會儲存你的卡號。
-- **簡中對照：** 卡片数据由绿界科技处理，我们不会保存你的卡号。
+- **簡中對照：** 银行卡信息由绿界科技处理，我们不会保存你的卡号。
 - **英文對照：** Card details are handled by ECPay. We never store your card number.
 - **英文 fallback：** direct — cardTrial.cardNote: Card details are handled by ECPay. We never store your card number.
 - **韓文候選：** 카드 정보는 ECPay에서 처리하며, 당사는 카드 번호를 저장하지 않습니다.
@@ -27829,7 +30937,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 這次綁卡已超過有效時間，請重新試一次。
-- **簡中對照：** 这次绑卡已超过有效时间，请重新试一次。
+- **簡中對照：** 银行卡绑定请求已过期，请重试。
 - **英文對照：** This card binding session has timed out. Please try again.
 - **英文 fallback：** direct — cardTrial.errors.expired: This card binding session has timed out. Please try again.
 - **韓文候選：** 카드 등록 세션이 만료되었습니다. 다시 시도해 주세요.
@@ -27949,7 +31057,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 銀行的回覆還在路上，稍後可於帳戶頁面查看。
-- **簡中對照：** 银行的回复还在路上，稍后可于账户页面查看。
+- **簡中對照：** 银行尚未返回验证结果，稍后可于账户页面查看。
 - **英文對照：** The bank has not replied yet. You can check your account page shortly.
 - **英文 fallback：** direct — cardTrial.result.pendingBody: The bank has not replied yet. You can check your account page shortly.
 - **韓文候選：** 은행의 응답을 아직 받지 못했습니다. 잠시 후 계정 페이지에서 확인할 수 있습니다.
@@ -27985,7 +31093,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 這次驗證未獲發卡銀行核准。請確認卡片資訊，或改用另一張卡。
-- **簡中對照：** 这次验证未获发卡银行核准。请确认卡片信息，或改用另一张卡。
+- **簡中對照：** 本次验证未获发卡行批准。请确认卡片信息，或改用另一张卡。
 - **英文對照：** Your card issuer did not approve this verification. Check the card details or use a different card.
 - **英文 fallback：** direct — cardTrial.result.failureReasons.issuer_declined: Your card issuer did not approve this verification. Check the card details or use a different card.
 - **韓文候選：** 카드 발급사가 이번 인증을 승인하지 않았습니다. 카드 정보를 확인하거나 다른 카드를 사용해 주세요.
@@ -27997,7 +31105,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 發卡銀行要求進一步確認，請聯絡發卡銀行後再試。
-- **簡中對照：** 发卡银行要求进一步确认，请联系发卡银行后再试。
+- **簡中對照：** 发卡行要求进一步确认，请联系发卡行后再试。
 - **英文對照：** Your card issuer requires further confirmation. Contact them, then try again.
 - **英文 fallback：** direct — cardTrial.result.failureReasons.contact_issuer: Your card issuer requires further confirmation. Contact them, then try again.
 - **韓文候選：** 카드 발급사의 추가 확인이 필요합니다. 발급사에 문의한 후 다시 시도해 주세요.
@@ -28021,7 +31129,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 這次綁卡已逾時，請重新開始。
-- **簡中對照：** 这次绑卡已逾时，请重新开始。
+- **簡中對照：** 银行卡绑定已超时，请重新操作。
 - **英文對照：** This card binding session expired. Please start again.
 - **英文 fallback：** direct — cardTrial.result.failureReasons.session_expired: This card binding session expired. Please start again.
 - **韓文候選：** 카드 등록 세션이 만료되었습니다. 처음부터 다시 시작해 주세요.
@@ -28057,7 +31165,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 銀行沒有完成這次卡片驗證。請確認卡片資訊後再試，或改用另一張卡。
-- **簡中對照：** 银行没有完成这次卡片验证。请确认卡片信息后再试，或改用另一张卡。
+- **簡中對照：** 银行未能完成本次银行卡验证。请确认卡片信息后重试，或改用另一张卡。
 - **英文對照：** The bank did not complete this card verification. Check the card details or use a different card.
 - **英文 fallback：** direct — cardTrial.result.failureReasons.verification_not_completed: The bank did not complete this card verification. Check the card details or use a different card.
 - **韓文候選：** 은행에서 카드 인증을 완료하지 못했습니다. 카드 정보를 확인하거나 다른 카드를 사용해 주세요.
@@ -28105,7 +31213,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 綁定新卡時會進行一筆 2 元的驗證，你不會被收取這筆費用
-- **簡中對照：** 绑定新卡时会进行一笔 2 元的验证，你不会被收取这笔费用
+- **簡中對照：** 绑定新卡时会进行一笔 NT$2 的验证，你不会被收取这笔费用。
 - **英文對照：** Binding your new card runs a NT$2 verification, and you will not be charged for it
 - **英文 fallback：** direct — cardUpdate.disclosure.verification: Binding your new card runs a NT$2 verification, and you will not be charged for it
 - **韓文候選：** 새 카드를 등록할 때 본인 확인을 위해 NT$2가 승인되지만 실제 청구되는 금액은 아닙니다.
@@ -28129,7 +31237,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 換卡成功後會立即扣款 {{amount}} 元
-- **簡中對照：** 换卡成功后会立即扣款 {{amount}} 元
+- **簡中對照：** 更换银行卡成功后，将立即扣款 NT$ {{amount}}。
 - **英文對照：** Once the card is updated, NT${{amount}} will be charged right away
 - **英文 fallback：** direct — cardUpdate.disclosure.chargeNow: Once the card is updated, NT${{amount}} will be charged right away
 - **韓文候選：** 카드 변경이 완료되면 NT${{amount}}가 즉시 결제됩니다.
@@ -28189,7 +31297,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 同意並綁定新卡，付款 {{amount}} 元
-- **簡中對照：** 同意并绑定新卡，付款 {{amount}} 元
+- **簡中對照：** 同意并绑定新卡，支付 NT$ {{amount}}
 - **英文對照：** Agree, bind new card, and pay NT${{amount}}
 - **英文 fallback：** direct — cardUpdate.startAndPay: Agree, bind new card, and pay NT${{amount}}
 - **韓文候選：** 동의하고 새 카드를 등록한 후 NT${{amount}} 결제
@@ -28309,7 +31417,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 更換卡片並付款 {{amount}} 元
-- **簡中對照：** 更换卡片并付款 {{amount}} 元
+- **簡中對照：** 更换银行卡并支付 NT$ {{amount}}
 - **英文對照：** Update card and pay NT${{amount}}
 - **英文 fallback：** direct — cardUpdate.method.updateAndPay: Update card and pay NT${{amount}}
 - **韓文候選：** 카드 변경 및 NT${{amount}} 결제
@@ -28321,7 +31429,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 這次扣款未成功，我們沒有向你收取任何費用。請於 {{date}} 前更換付款卡片。
-- **簡中對照：** 这次扣款未成功，我们没有向你收取任何费用。请于 {{date}} 前更换付款卡片。
+- **簡中對照：** 本次扣款未成功，我们没有向你收取任何费用。请于 {{date}} 前更换付款卡片。
 - **英文對照：** This charge did not go through, and you were not charged anything. Please update your payment card by {{date}}.
 - **英文 fallback：** direct — cardUpdate.method.graceNotice: This charge did not go through, and you were not charged anything. Please update your payment card by {{date}}.
 - **韓文候選：** 이번 결제가 완료되지 않아 비용이 청구되지 않았습니다. {{date}}까지 결제 카드를 변경해 주세요.
@@ -28525,7 +31633,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 付款處理中...
-- **簡中對照：** 付款处理中...
+- **簡中對照：** 付款处理中……
 - **英文對照：** Processing payment…
 - **英文 fallback：** direct — paymentStatus.processingTitle: Processing payment…
 - **韓文候選：** 결제 처리 중...
@@ -28645,7 +31753,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 恭喜您成功升級到 Pro 方案，現在可以享受完整功能了！
-- **簡中對照：** 恭喜您成功升级到 Pro 方案，现在可以享受完整功能了！
+- **簡中對照：** 恭喜您成功升级到 Pro 套餐，现在可以享受完整功能了！
 - **英文對照：** Pro is ready. Explore the latest sentiment, stock analysis and your watchlist.
 - **英文 fallback：** direct — paymentStatus.successBody: Pro is ready. Explore the latest sentiment, stock analysis and your watchlist.
 - **韓文候選：** Pro 이용이 시작되었습니다. 최신 시장 심리, 종목 분석과 관심 종목 기능을 이용해 보세요.
@@ -28669,7 +31777,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 方案類型：
-- **簡中對照：** 方案类型：
+- **簡中對照：** 套餐类型：
 - **英文對照：** Plan:
 - **英文 fallback：** direct — paymentStatus.planLabel: Plan:
 - **韓文候選：** 요금제:
@@ -28681,7 +31789,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** {{plan}} 方案
-- **簡中對照：** {{plan}} 方案
+- **簡中對照：** {{plan}} 套餐
 - **英文對照：** {{plan}} plan
 - **英文 fallback：** direct — paymentStatus.planName: {{plan}} plan
 - **韓文候選：** {{plan}} 요금제
@@ -28825,7 +31933,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 追蹤你的投資名單
-- **簡中對照：** 查看你的自选股列表
+- **簡中對照：** 查看自选列表中的股票
 - **英文對照：** Track your investment list
 - **英文 fallback：** direct — paymentStatus.availableWatchlist: Track your investment list
 - **韓文候選：** 관심 종목 추적
@@ -28969,7 +32077,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 返回方案選擇
-- **簡中對照：** 返回方案选择
+- **簡中對照：** 返回套餐选择
 - **英文對照：** Back to plans
 - **英文 fallback：** direct — paymentStatus.backToPlans: Back to plans
 - **韓文候選：** 요금제 선택으로 돌아가기
@@ -28993,7 +32101,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 您已取消付款流程，如需升級方案請重新選擇
-- **簡中對照：** 您已取消付款流程，如需升级方案请重新选择
+- **簡中對照：** 您已取消付款流程，如需升级套餐请重新选择
 - **英文對照：** You cancelled the payment. Select a plan again when you are ready.
 - **英文 fallback：** direct — paymentStatus.cancelledBody: You cancelled the payment. Select a plan again when you are ready.
 - **韓文候選：** 결제를 취소했습니다. 다시 진행하려면 원하는 요금제를 선택해 주세요.
@@ -29005,7 +32113,7 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 
 - **審核狀態：** reviewed_by_delegated_editor_not_released
 - **繁中原文：** 重新選擇方案
-- **簡中對照：** 重新选择方案
+- **簡中對照：** 重新选择套餐
 - **英文對照：** Choose a plan
 - **英文 fallback：** direct — paymentStatus.choosePlan: Choose a plan
 - **韓文候選：** 요금제 선택
@@ -29120,2309 +32228,3 @@ exact_historical_text_and_item_level_approval_status_not_recoverable_from_curren
 - **候選來源：** docs/i18n/ko-KR-review/01-content-payments.draft.json
 - **替代候選：** 無
 - **動態參數：** 無（韓文匹配：是；英文 fallback 匹配：是）
-
-# Additional indicator explainer strings (16 pages, 256 strings)
-
-### sentimentIndicatorPages.vixMa50.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** VIX 50 日均
-- **簡中對照：** VIX 50 日均
-- **英文對照：** VIX 50-Day Moving Average
-- **韓文候選：** VIX 50일 이동평균
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** VIX 50 日均是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** VIX 50 日均是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is VIX 50-Day Moving Average? Explained: meaning, interpretation and limitations
-- **韓文候選：** VIX 50일 이동평균 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此序列是 Cboe 波動率指數（VIX）的 50 個交易日移動平均。VIX 由 S&P 500 選擇權價格推算，反映選擇權市場對未來約 30 天波動幅度的預期；移動平均可降低單日跳動，凸顯較持續的變化。 均線走高或維持高檔，代表市場預期波動持續偏高；均線下降則表示波動預期逐漸緩和。VIX 衡量的是預期波動幅度，不是漲跌方向，而移動平均也可能落後突發事件。
-- **簡中對照：** 该序列是 Cboe 波动率指数（VIX）的 50 个交易日移动平均。VIX 根据 S&P 500 期权价格推算，反映期权市场对未来约 30 天波动幅度的预期；移动平均可以平滑单日波动，突出较持续的变化。 均线走高或维持高位，说明市场预期波动持续偏高；均线下降则表示波动预期逐渐缓和。VIX 衡量的是预期波动幅度，而非涨跌方向，移动平均也可能滞后于突发事件。
-- **英文對照：** This series is the 50-trading-day moving average of the Cboe Volatility Index (VIX). VIX is derived from S&P 500 option prices and reflects the options market's estimate of volatility over roughly the next 30 days. The moving average smooths daily jumps to make persistent changes easier to see. A rising or high average indicates that expected volatility has stayed elevated; a falling average suggests that volatility expectations are easing. VIX measures the expected size of moves, not whether the market will rise or fall, and a moving average can react slowly to a sudden shock.
-- **韓文候選：** VIX 50일 이동평균의 의미와 해석법을 설명합니다. 예상 변동성의 흐름을 살펴보세요.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** VIX 50 日均, market sentiment, indicator, how to read
-- **簡中對照：** VIX 50 日均, market sentiment, indicator, how to read
-- **英文對照：** VIX 50-Day Moving Average, market sentiment, indicator, how to read
-- **韓文候選：** VIX 50일 이동평균, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** VIX 50 日均是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** VIX 50 日均是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is VIX 50-Day Moving Average? Explained: meaning, interpretation and limitations
-- **韓文候選：** VIX 50일 이동평균 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此序列是 Cboe 波動率指數（VIX）的 50 個交易日移動平均。VIX 由 S&P 500 選擇權價格推算，反映選擇權市場對未來約 30 天波動幅度的預期；移動平均可降低單日跳動，凸顯較持續的變化。 均線走高或維持高檔，代表市場預期波動持續偏高；均線下降則表示波動預期逐漸緩和。VIX 衡量的是預期波動幅度，不是漲跌方向，而移動平均也可能落後突發事件。
-- **簡中對照：** 该序列是 Cboe 波动率指数（VIX）的 50 个交易日移动平均。VIX 根据 S&P 500 期权价格推算，反映期权市场对未来约 30 天波动幅度的预期；移动平均可以平滑单日波动，突出较持续的变化。 均线走高或维持高位，说明市场预期波动持续偏高；均线下降则表示波动预期逐渐缓和。VIX 衡量的是预期波动幅度，而非涨跌方向，移动平均也可能滞后于突发事件。
-- **英文對照：** This series is the 50-trading-day moving average of the Cboe Volatility Index (VIX). VIX is derived from S&P 500 option prices and reflects the options market's estimate of volatility over roughly the next 30 days. The moving average smooths daily jumps to make persistent changes easier to see. A rising or high average indicates that expected volatility has stayed elevated; a falling average suggests that volatility expectations are easing. VIX measures the expected size of moves, not whether the market will rise or fall, and a moving average can react slowly to a sudden shock.
-- **韓文候選：** 이 시계열은 Cboe 변동성 지수(VIX)의 50거래일 이동평균입니다. VIX는 S&P 500 옵션 가격에서 산출되며 향후 약 30일의 예상 변동 폭을 반영합니다. 이동평균은 일별 급등락을 완화해 지속적인 변화를 보여 줍니다. 이동평균이 높거나 상승하면 예상 변동성이 지속해서 높은 상태임을 뜻하고, 하락하면 변동성 기대가 완화되고 있음을 시사합니다. VIX는 방향이 아니라 변동 폭을 측정하며, 이동평균은 갑작스러운 충격에 늦게 반응할 수 있습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此序列是 Cboe 波動率指數（VIX）的 50 個交易日移動平均。VIX 由 S&P 500 選擇權價格推算，反映選擇權市場對未來約 30 天波動幅度的預期；移動平均可降低單日跳動，凸顯較持續的變化。
-- **簡中對照：** 该序列是 Cboe 波动率指数（VIX）的 50 个交易日移动平均。VIX 根据 S&P 500 期权价格推算，反映期权市场对未来约 30 天波动幅度的预期；移动平均可以平滑单日波动，突出较持续的变化。
-- **英文對照：** This series is the 50-trading-day moving average of the Cboe Volatility Index (VIX). VIX is derived from S&P 500 option prices and reflects the options market's estimate of volatility over roughly the next 30 days. The moving average smooths daily jumps to make persistent changes easier to see.
-- **韓文候選：** 이 시계열은 Cboe 변동성 지수(VIX)의 50거래일 이동평균입니다. VIX는 S&P 500 옵션 가격에서 산출되며 향후 약 30일의 예상 변동 폭을 반영합니다. 이동평균은 일별 급등락을 완화해 지속적인 변화를 보여 줍니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 均線走高或維持高檔，代表市場預期波動持續偏高；均線下降則表示波動預期逐漸緩和。VIX 衡量的是預期波動幅度，不是漲跌方向，而移動平均也可能落後突發事件。
-- **簡中對照：** 均线走高或维持高位，说明市场预期波动持续偏高；均线下降则表示波动预期逐渐缓和。VIX 衡量的是预期波动幅度，而非涨跌方向，移动平均也可能滞后于突发事件。
-- **英文對照：** A rising or high average indicates that expected volatility has stayed elevated; a falling average suggests that volatility expectations are easing. VIX measures the expected size of moves, not whether the market will rise or fall, and a moving average can react slowly to a sudden shock.
-- **韓文候選：** 이동평균이 높거나 상승하면 예상 변동성이 지속해서 높은 상태임을 뜻하고, 하락하면 변동성 기대가 완화되고 있음을 시사합니다. VIX는 방향이 아니라 변동 폭을 측정하며, 이동평균은 갑작스러운 충격에 늦게 반응할 수 있습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 美股恐懼貪婪指數使用的八項輸入之一。SIO 會先處理不同單位與特性的訊號，再合併為綜合指標，因此單一讀值不等於綜合分數，也不應單獨作為交易指令。
-- **簡中對照：** 这是 SIO 美股恐惧贪婪指数使用的八项输入之一。SIO 会先处理不同单位和特性的信号，再合并为综合指标，因此单一读数不等于综合分数，也不应单独作为交易指令。
-- **英文對照：** This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
-- **韓文候選：** 이 지표는 SIO 미국 시장 공포·탐욕 지수에 사용되는 8개 입력 신호 중 하나입니다. SIO는 단위와 특성이 서로 다른 신호를 표준화한 뒤 결합하므로, 개별 수치가 종합 점수와 같거나 독립적인 매매 지시를 의미하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 美股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 美股恐惧贪婪指数
-- **英文對照：** View the SIO US Fear & Greed Index
-- **韓文候選：** SIO 미국 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.vixMa50.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** Cboe VIX 資料：https://www.cboe.com/tradable_products/vix/。50 個交易日移動平均由 Sentiment Inside Out 計算。
-- **簡中對照：** Cboe VIX 数据：https://www.cboe.com/tradable_products/vix/。50 个交易日移动平均由 Sentiment Inside Out 计算。
-- **英文對照：** Cboe VIX data: https://www.cboe.com/tradable_products/vix/. The 50-session moving average is calculated by Sentiment Inside Out.
-- **韓文候選：** Cboe VIX 데이터: https://www.cboe.com/tradable_products/vix/. 50거래일 이동평균은 Sentiment Inside Out이 계산합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 市場動能
-- **簡中對照：** 市场动能
-- **英文對照：** Market Momentum
-- **韓文候選：** 시장 모멘텀
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 市場動能是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 市场动能是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Market Momentum? Explained: meaning, interpretation and limitations
-- **韓文候選：** 시장 모멘텀 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** SIO 將 S&P 500 指數與其 125 個交易日移動平均比較，並以相對偏離幅度呈現兩者距離。這項指標用來觀察美股大盤相對中期趨勢的位置。 數值為正代表指數高於 125 日均線，為負代表低於均線；絕對值越大，代表與趨勢線的距離越遠。它描述趨勢位置，不代表趨勢一定延續或反轉，也不是估值指標。
-- **簡中對照：** SIO 将 S&P 500 指数与其 125 个交易日移动平均进行比较，并以相对偏离幅度表示两者距离，用来观察美股大盘相对中期趋势的位置。 数值为正表示指数高于 125 日均线，为负表示低于均线；绝对值越大，说明指数与趋势线的距离越远。它描述趋势位置，不代表趋势必然延续或反转，也不是估值指标。
-- **英文對照：** SIO compares the S&P 500 with its 125-trading-day moving average and expresses the distance as a relative deviation. This turns the broad index's position against its medium-term trend into a directional momentum reading. A positive value means the index is above its 125-day average; a negative value means it is below. A larger absolute deviation means a wider gap from the trend, not a guaranteed continuation or reversal. It is a trend measure, not a valuation measure.
-- **韓文候選：** S&P 500과 125일 이동평균의 괴리로 미국 주식시장의 중기 추세를 읽습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 市場動能, market sentiment, indicator, how to read
-- **簡中對照：** 市场动能, market sentiment, indicator, how to read
-- **英文對照：** Market Momentum, market sentiment, indicator, how to read
-- **韓文候選：** 시장 모멘텀, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 市場動能是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 市场动能是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Market Momentum? Explained: meaning, interpretation and limitations
-- **韓文候選：** 시장 모멘텀 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** SIO 將 S&P 500 指數與其 125 個交易日移動平均比較，並以相對偏離幅度呈現兩者距離。這項指標用來觀察美股大盤相對中期趨勢的位置。 數值為正代表指數高於 125 日均線，為負代表低於均線；絕對值越大，代表與趨勢線的距離越遠。它描述趨勢位置，不代表趨勢一定延續或反轉，也不是估值指標。
-- **簡中對照：** SIO 将 S&P 500 指数与其 125 个交易日移动平均进行比较，并以相对偏离幅度表示两者距离，用来观察美股大盘相对中期趋势的位置。 数值为正表示指数高于 125 日均线，为负表示低于均线；绝对值越大，说明指数与趋势线的距离越远。它描述趋势位置，不代表趋势必然延续或反转，也不是估值指标。
-- **英文對照：** SIO compares the S&P 500 with its 125-trading-day moving average and expresses the distance as a relative deviation. This turns the broad index's position against its medium-term trend into a directional momentum reading. A positive value means the index is above its 125-day average; a negative value means it is below. A larger absolute deviation means a wider gap from the trend, not a guaranteed continuation or reversal. It is a trend measure, not a valuation measure.
-- **韓文候選：** SIO는 S&P 500 지수를 125거래일 이동평균과 비교하고 두 값의 상대적 괴리를 계산합니다. 이를 통해 미국 주식시장이 중기 추세선의 어느 위치에 있는지 살펴봅니다. 양수는 지수가 125일 이동평균 위에 있음을, 음수는 아래에 있음을 뜻합니다. 절대값이 클수록 추세선과의 거리가 큽니다. 추세 위치를 설명하는 지표이지 추세의 지속이나 반전을 보장하거나 적정가치를 나타내지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** SIO 將 S&P 500 指數與其 125 個交易日移動平均比較，並以相對偏離幅度呈現兩者距離。這項指標用來觀察美股大盤相對中期趨勢的位置。
-- **簡中對照：** SIO 将 S&P 500 指数与其 125 个交易日移动平均进行比较，并以相对偏离幅度表示两者距离，用来观察美股大盘相对中期趋势的位置。
-- **英文對照：** SIO compares the S&P 500 with its 125-trading-day moving average and expresses the distance as a relative deviation. This turns the broad index's position against its medium-term trend into a directional momentum reading.
-- **韓文候選：** SIO는 S&P 500 지수를 125거래일 이동평균과 비교하고 두 값의 상대적 괴리를 계산합니다. 이를 통해 미국 주식시장이 중기 추세선의 어느 위치에 있는지 살펴봅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 數值為正代表指數高於 125 日均線，為負代表低於均線；絕對值越大，代表與趨勢線的距離越遠。它描述趨勢位置，不代表趨勢一定延續或反轉，也不是估值指標。
-- **簡中對照：** 数值为正表示指数高于 125 日均线，为负表示低于均线；绝对值越大，说明指数与趋势线的距离越远。它描述趋势位置，不代表趋势必然延续或反转，也不是估值指标。
-- **英文對照：** A positive value means the index is above its 125-day average; a negative value means it is below. A larger absolute deviation means a wider gap from the trend, not a guaranteed continuation or reversal. It is a trend measure, not a valuation measure.
-- **韓文候選：** 양수는 지수가 125일 이동평균 위에 있음을, 음수는 아래에 있음을 뜻합니다. 절대값이 클수록 추세선과의 거리가 큽니다. 추세 위치를 설명하는 지표이지 추세의 지속이나 반전을 보장하거나 적정가치를 나타내지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 美股恐懼貪婪指數使用的八項輸入之一。SIO 會先處理不同單位與特性的訊號，再合併為綜合指標，因此單一讀值不等於綜合分數，也不應單獨作為交易指令。
-- **簡中對照：** 这是 SIO 美股恐惧贪婪指数使用的八项输入之一。SIO 会先处理不同单位和特性的信号，再合并为综合指标，因此单一读数不等于综合分数，也不应单独作为交易指令。
-- **英文對照：** This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
-- **韓文候選：** 이 지표는 SIO 미국 시장 공포·탐욕 지수에 사용되는 8개 입력 신호 중 하나입니다. SIO는 단위와 특성이 서로 다른 신호를 표준화한 뒤 결합하므로, 개별 수치가 종합 점수와 같거나 독립적인 매매 지시를 의미하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 美股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 美股恐惧贪婪指数
-- **英文對照：** View the SIO US Fear & Greed Index
-- **韓文候選：** SIO 미국 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketMomentum.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** S&P 500 指數收盤資料；125 個交易日均線與相對偏離幅度由 Sentiment Inside Out 計算。
-- **簡中對照：** S&P 500 指数收盘数据；125 个交易日均线与相对偏离幅度由 Sentiment Inside Out 计算。
-- **英文對照：** S&P 500 index closing data. Sentiment Inside Out calculates the 125-session moving average and relative deviation.
-- **韓文候選：** S&P 500 지수 종가 데이터. 125거래일 이동평균과 상대 괴리는 Sentiment Inside Out이 계산합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 避險需求
-- **簡中對照：** 避险需求
-- **英文對照：** Safe Haven Demand
-- **韓文候選：** 안전자산 수요
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 避險需求是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 避险需求是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Safe Haven Demand? Explained: meaning, interpretation and limitations
-- **韓文候選：** 안전자산 수요 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此指標比較 SPY（追蹤 S&P 500 的 ETF）與 IEF（美國 7 至 10 年期公債 ETF）近 20 個交易日的報酬。資料計算方式為 SPY 報酬減去 IEF 報酬，用來衡量股票與中期公債的相對表現。 正值代表期間內 SPY 表現優於 IEF；負值代表 IEF 表現優於 SPY。公債相對強勢可能與避險需求有關，但利率、通膨預期及存續期間效果也會影響債券價格。
-- **簡中對照：** 该指标比较 SPY（跟踪 S&P 500 的 ETF）与 IEF（美国 7 至 10 年期国债 ETF）近 20 个交易日的回报。数据按 SPY 回报减去 IEF 回报计算，用来衡量股票与中期国债的相对表现。 正值表示该期间 SPY 表现优于 IEF；负值表示 IEF 表现优于 SPY。国债相对强势可能与避险需求有关，但利率、通胀预期和久期因素也会影响债券价格。
-- **英文對照：** This measure compares the 20-trading-day returns of SPY, an S&P 500 ETF, and IEF, a 7–10 year US Treasury bond ETF. The stored spread is SPY return minus IEF return, so it tracks the relative performance of equities and intermediate-term Treasuries. A positive value means SPY outperformed IEF over the period; a negative value means IEF outperformed SPY. Bond outperformance can be consistent with defensive demand, but rates, inflation expectations and duration effects also move bond prices.
-- **韓文候選：** SPY와 미국 국채 ETF IEF의 20거래일 수익률 차이로 위험 회피 흐름을 살펴봅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 避險需求, market sentiment, indicator, how to read
-- **簡中對照：** 避险需求, market sentiment, indicator, how to read
-- **英文對照：** Safe Haven Demand, market sentiment, indicator, how to read
-- **韓文候選：** 안전자산 수요, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 避險需求是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 避险需求是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Safe Haven Demand? Explained: meaning, interpretation and limitations
-- **韓文候選：** 안전자산 수요 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此指標比較 SPY（追蹤 S&P 500 的 ETF）與 IEF（美國 7 至 10 年期公債 ETF）近 20 個交易日的報酬。資料計算方式為 SPY 報酬減去 IEF 報酬，用來衡量股票與中期公債的相對表現。 正值代表期間內 SPY 表現優於 IEF；負值代表 IEF 表現優於 SPY。公債相對強勢可能與避險需求有關，但利率、通膨預期及存續期間效果也會影響債券價格。
-- **簡中對照：** 该指标比较 SPY（跟踪 S&P 500 的 ETF）与 IEF（美国 7 至 10 年期国债 ETF）近 20 个交易日的回报。数据按 SPY 回报减去 IEF 回报计算，用来衡量股票与中期国债的相对表现。 正值表示该期间 SPY 表现优于 IEF；负值表示 IEF 表现优于 SPY。国债相对强势可能与避险需求有关，但利率、通胀预期和久期因素也会影响债券价格。
-- **英文對照：** This measure compares the 20-trading-day returns of SPY, an S&P 500 ETF, and IEF, a 7–10 year US Treasury bond ETF. The stored spread is SPY return minus IEF return, so it tracks the relative performance of equities and intermediate-term Treasuries. A positive value means SPY outperformed IEF over the period; a negative value means IEF outperformed SPY. Bond outperformance can be consistent with defensive demand, but rates, inflation expectations and duration effects also move bond prices.
-- **韓文候選：** 이 지표는 S&P 500 ETF인 SPY와 미국 7~10년 만기 국채 ETF인 IEF의 최근 20거래일 수익률을 비교합니다. 계산값은 SPY 수익률에서 IEF 수익률을 뺀 값으로, 주식과 중기 국채의 상대 성과를 나타냅니다. 양수는 해당 기간 SPY가 IEF보다 좋은 성과를 냈음을, 음수는 IEF가 SPY보다 좋은 성과를 냈음을 뜻합니다. 국채의 상대적 강세는 안전자산 선호와 함께 나타날 수 있지만 금리, 인플레이션 기대와 듀레이션 요인도 채권 가격에 영향을 줍니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此指標比較 SPY（追蹤 S&P 500 的 ETF）與 IEF（美國 7 至 10 年期公債 ETF）近 20 個交易日的報酬。資料計算方式為 SPY 報酬減去 IEF 報酬，用來衡量股票與中期公債的相對表現。
-- **簡中對照：** 该指标比较 SPY（跟踪 S&P 500 的 ETF）与 IEF（美国 7 至 10 年期国债 ETF）近 20 个交易日的回报。数据按 SPY 回报减去 IEF 回报计算，用来衡量股票与中期国债的相对表现。
-- **英文對照：** This measure compares the 20-trading-day returns of SPY, an S&P 500 ETF, and IEF, a 7–10 year US Treasury bond ETF. The stored spread is SPY return minus IEF return, so it tracks the relative performance of equities and intermediate-term Treasuries.
-- **韓文候選：** 이 지표는 S&P 500 ETF인 SPY와 미국 7~10년 만기 국채 ETF인 IEF의 최근 20거래일 수익률을 비교합니다. 계산값은 SPY 수익률에서 IEF 수익률을 뺀 값으로, 주식과 중기 국채의 상대 성과를 나타냅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 正值代表期間內 SPY 表現優於 IEF；負值代表 IEF 表現優於 SPY。公債相對強勢可能與避險需求有關，但利率、通膨預期及存續期間效果也會影響債券價格。
-- **簡中對照：** 正值表示该期间 SPY 表现优于 IEF；负值表示 IEF 表现优于 SPY。国债相对强势可能与避险需求有关，但利率、通胀预期和久期因素也会影响债券价格。
-- **英文對照：** A positive value means SPY outperformed IEF over the period; a negative value means IEF outperformed SPY. Bond outperformance can be consistent with defensive demand, but rates, inflation expectations and duration effects also move bond prices.
-- **韓文候選：** 양수는 해당 기간 SPY가 IEF보다 좋은 성과를 냈음을, 음수는 IEF가 SPY보다 좋은 성과를 냈음을 뜻합니다. 국채의 상대적 강세는 안전자산 선호와 함께 나타날 수 있지만 금리, 인플레이션 기대와 듀레이션 요인도 채권 가격에 영향을 줍니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 美股恐懼貪婪指數使用的八項輸入之一。SIO 會先處理不同單位與特性的訊號，再合併為綜合指標，因此單一讀值不等於綜合分數，也不應單獨作為交易指令。
-- **簡中對照：** 这是 SIO 美股恐惧贪婪指数使用的八项输入之一。SIO 会先处理不同单位和特性的信号，再合并为综合指标，因此单一读数不等于综合分数，也不应单独作为交易指令。
-- **英文對照：** This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
-- **韓文候選：** 이 지표는 SIO 미국 시장 공포·탐욕 지수에 사용되는 8개 입력 신호 중 하나입니다. SIO는 단위와 특성이 서로 다른 신호를 표준화한 뒤 결합하므로, 개별 수치가 종합 점수와 같거나 독립적인 매매 지시를 의미하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 美股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 美股恐惧贪婪指数
-- **英文對照：** View the SIO US Fear & Greed Index
-- **韓文候選：** SIO 미국 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.safeHavenDemand.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** SPY 與 IEF 調整後價格歷史資料；20 個交易日報酬差由 Sentiment Inside Out 計算。
-- **簡中對照：** SPY 与 IEF 调整后价格历史数据；20 个交易日回报差由 Sentiment Inside Out 计算。
-- **英文對照：** SPY and IEF adjusted-price history. Sentiment Inside Out calculates the 20-session return difference.
-- **韓文候選：** SPY 및 IEF 수정주가 이력. 20거래일 수익률 차이는 Sentiment Inside Out이 계산합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 垃圾債利差
-- **簡中對照：** 高收益债利差
-- **英文對照：** Junk Bond Spread
-- **韓文候選：** 하이일드 채권 스프레드
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 垃圾債利差是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 高收益债利差是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Junk Bond Spread? Explained: meaning, interpretation and limitations
-- **韓文候選：** 하이일드 채권 스프레드 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此指標以美國高收益公司債的選擇權調整利差（OAS）減去美國投資級公司債的 OAS，衡量兩者信用利差的差距。兩個利差都以美國公債殖利率為基準；相減後可觀察投資人持有非投資等級債券時，額外要求多少信用風險補償。 差距擴大代表高收益債相較投資級債需要更高的風險補償，通常反映市場對較低信用評等公司債的疑慮升高；差距收窄則代表相對信用風險溢酬下降。這是信用市場指標，不是股票報酬的直接預測。
-- **簡中對照：** 该指标用美国高收益公司债的期权调整利差（OAS）减去美国投资级公司债的 OAS，衡量两者信用利差的差距。两个利差都以美国国债收益率为基准；相减后可以观察投资者持有非投资级债券时，额外要求多少信用风险补偿。 差距扩大表示高收益债相较投资级债需要更高的风险补偿，通常反映市场对较低信用评级公司债的担忧上升；差距收窄则表示相对信用风险溢价下降。这是信用市场指标，不是股票回报的直接预测。
-- **英文對照：** This indicator subtracts the option-adjusted spread (OAS) on US investment-grade corporate bonds from the OAS on US high-yield corporate bonds. Both spreads measure the extra yield over comparable US Treasuries; the difference shows how much more compensation investors demand for below-investment-grade credit risk. A widening gap means high-yield bonds require a larger risk premium than investment-grade bonds, which often signals rising concern about lower-rated corporate credit. A narrowing gap suggests that this relative credit-risk premium is easing. It is a credit-market signal, not a direct forecast of stock returns.
-- **韓文候選：** 미국 하이일드와 투자등급 회사채의 신용 스프레드 차이 및 해석법을 설명합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 垃圾債利差, market sentiment, indicator, how to read
-- **簡中對照：** 高收益债利差, market sentiment, indicator, how to read
-- **英文對照：** Junk Bond Spread, market sentiment, indicator, how to read
-- **韓文候選：** 하이일드 채권 스프레드, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 垃圾債利差是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 高收益债利差是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Junk Bond Spread? Explained: meaning, interpretation and limitations
-- **韓文候選：** 하이일드 채권 스프레드 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此指標以美國高收益公司債的選擇權調整利差（OAS）減去美國投資級公司債的 OAS，衡量兩者信用利差的差距。兩個利差都以美國公債殖利率為基準；相減後可觀察投資人持有非投資等級債券時，額外要求多少信用風險補償。 差距擴大代表高收益債相較投資級債需要更高的風險補償，通常反映市場對較低信用評等公司債的疑慮升高；差距收窄則代表相對信用風險溢酬下降。這是信用市場指標，不是股票報酬的直接預測。
-- **簡中對照：** 该指标用美国高收益公司债的期权调整利差（OAS）减去美国投资级公司债的 OAS，衡量两者信用利差的差距。两个利差都以美国国债收益率为基准；相减后可以观察投资者持有非投资级债券时，额外要求多少信用风险补偿。 差距扩大表示高收益债相较投资级债需要更高的风险补偿，通常反映市场对较低信用评级公司债的担忧上升；差距收窄则表示相对信用风险溢价下降。这是信用市场指标，不是股票回报的直接预测。
-- **英文對照：** This indicator subtracts the option-adjusted spread (OAS) on US investment-grade corporate bonds from the OAS on US high-yield corporate bonds. Both spreads measure the extra yield over comparable US Treasuries; the difference shows how much more compensation investors demand for below-investment-grade credit risk. A widening gap means high-yield bonds require a larger risk premium than investment-grade bonds, which often signals rising concern about lower-rated corporate credit. A narrowing gap suggests that this relative credit-risk premium is easing. It is a credit-market signal, not a direct forecast of stock returns.
-- **韓文候選：** 이 지표는 미국 하이일드 회사채의 옵션조정 스프레드(OAS)에서 투자등급 회사채의 OAS를 뺀 값입니다. 두 스프레드 모두 미국 국채 대비 추가 수익률을 나타내며, 차이는 투기등급 채권에 투자할 때 시장이 요구하는 추가 신용 위험 프리미엄을 보여 줍니다. 격차 확대는 하이일드 채권이 투자등급 채권보다 더 큰 위험 프리미엄을 요구한다는 뜻으로, 낮은 신용등급 기업의 신용 위험에 대한 우려가 커졌음을 시사할 수 있습니다. 격차 축소는 상대적인 신용 위험 프리미엄이 완화되고 있음을 뜻합니다. 주식 수익률을 직접 예측하는 지표는 아닙니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此指標以美國高收益公司債的選擇權調整利差（OAS）減去美國投資級公司債的 OAS，衡量兩者信用利差的差距。兩個利差都以美國公債殖利率為基準；相減後可觀察投資人持有非投資等級債券時，額外要求多少信用風險補償。
-- **簡中對照：** 该指标用美国高收益公司债的期权调整利差（OAS）减去美国投资级公司债的 OAS，衡量两者信用利差的差距。两个利差都以美国国债收益率为基准；相减后可以观察投资者持有非投资级债券时，额外要求多少信用风险补偿。
-- **英文對照：** This indicator subtracts the option-adjusted spread (OAS) on US investment-grade corporate bonds from the OAS on US high-yield corporate bonds. Both spreads measure the extra yield over comparable US Treasuries; the difference shows how much more compensation investors demand for below-investment-grade credit risk.
-- **韓文候選：** 이 지표는 미국 하이일드 회사채의 옵션조정 스프레드(OAS)에서 투자등급 회사채의 OAS를 뺀 값입니다. 두 스프레드 모두 미국 국채 대비 추가 수익률을 나타내며, 차이는 투기등급 채권에 투자할 때 시장이 요구하는 추가 신용 위험 프리미엄을 보여 줍니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 差距擴大代表高收益債相較投資級債需要更高的風險補償，通常反映市場對較低信用評等公司債的疑慮升高；差距收窄則代表相對信用風險溢酬下降。這是信用市場指標，不是股票報酬的直接預測。
-- **簡中對照：** 差距扩大表示高收益债相较投资级债需要更高的风险补偿，通常反映市场对较低信用评级公司债的担忧上升；差距收窄则表示相对信用风险溢价下降。这是信用市场指标，不是股票回报的直接预测。
-- **英文對照：** A widening gap means high-yield bonds require a larger risk premium than investment-grade bonds, which often signals rising concern about lower-rated corporate credit. A narrowing gap suggests that this relative credit-risk premium is easing. It is a credit-market signal, not a direct forecast of stock returns.
-- **韓文候選：** 격차 확대는 하이일드 채권이 투자등급 채권보다 더 큰 위험 프리미엄을 요구한다는 뜻으로, 낮은 신용등급 기업의 신용 위험에 대한 우려가 커졌음을 시사할 수 있습니다. 격차 축소는 상대적인 신용 위험 프리미엄이 완화되고 있음을 뜻합니다. 주식 수익률을 직접 예측하는 지표는 아닙니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 美股恐懼貪婪指數使用的八項輸入之一。SIO 會先處理不同單位與特性的訊號，再合併為綜合指標，因此單一讀值不等於綜合分數，也不應單獨作為交易指令。
-- **簡中對照：** 这是 SIO 美股恐惧贪婪指数使用的八项输入之一。SIO 会先处理不同单位和特性的信号，再合并为综合指标，因此单一读数不等于综合分数，也不应单独作为交易指令。
-- **英文對照：** This is one of the eight inputs used by the SIO US Fear & Greed Index. SIO standardises signals with different units and behaviours before combining them, so one indicator should not be read as the composite score or as a standalone trading instruction.
-- **韓文候選：** 이 지표는 SIO 미국 시장 공포·탐욕 지수에 사용되는 8개 입력 신호 중 하나입니다. SIO는 단위와 특성이 서로 다른 신호를 표준화한 뒤 결합하므로, 개별 수치가 종합 점수와 같거나 독립적인 매매 지시를 의미하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 美股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 美股恐惧贪婪指数
-- **英文對照：** View the SIO US Fear & Greed Index
-- **韓文候選：** SIO 미국 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.junkBondSpread.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** FRED：ICE BofA 美國高收益公司債選擇權調整利差（BAMLH0A0HYM2）減去 ICE BofA 美國投資級公司債選擇權調整利差（BAMLC0A0CM）：https://fred.stlouisfed.org/series/BAMLH0A0HYM2 與 https://fred.stlouisfed.org/series/BAMLC0A0CM。
-- **簡中對照：** FRED：ICE BofA 美国高收益公司债期权调整利差（BAMLH0A0HYM2）减去 ICE BofA 美国投资级公司债期权调整利差（BAMLC0A0CM）：https://fred.stlouisfed.org/series/BAMLH0A0HYM2 和 https://fred.stlouisfed.org/series/BAMLC0A0CM。
-- **英文對照：** FRED: ICE BofA US High Yield Index Option-Adjusted Spread (BAMLH0A0HYM2) minus ICE BofA US Corporate Index Option-Adjusted Spread (BAMLC0A0CM): https://fred.stlouisfed.org/series/BAMLH0A0HYM2 and https://fred.stlouisfed.org/series/BAMLC0A0CM.
-- **韓文候選：** FRED: ICE BofA 미국 하이일드 회사채 옵션조정 스프레드(BAMLH0A0HYM2)에서 ICE BofA 미국 투자등급 회사채 옵션조정 스프레드(BAMLC0A0CM)를 뺀 값입니다: https://fred.stlouisfed.org/series/BAMLH0A0HYM2 및 https://fred.stlouisfed.org/series/BAMLC0A0CM.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台指選擇權波動率
-- **簡中對照：** 台湾股指期权波动率
-- **英文對照：** Taiwan Index Options Volatility
-- **韓文候選：** 대만 주가지수 옵션 변동성
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台指選擇權波動率是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 台湾股指期权波动率是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Taiwan Index Options Volatility? Explained: meaning, interpretation and limitations
-- **韓文候選：** 대만 주가지수 옵션 변동성 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台指選擇權波動率指標由台灣加權股價指數選擇權推算，整理選擇權價格所隱含的未來市場波動預期。 數值越高，代表選擇權市場預期未來波動越大，通常也反映避險需求增加。但它不代表市場接下來一定上漲或下跌；急升可能出現在下跌或不確定性升高時。
-- **簡中對照：** 台湾股指期权波动率指标由台湾加权股价指数期权推算，汇总期权价格所隐含的未来市场波动预期。 数值越高，表示期权市场预期未来波动越大，通常也反映避险需求增加。但它不表示市场接下来一定上涨或下跌；快速上升可能出现在下跌或不确定性升高时。
-- **英文對照：** The Taiwan index-options volatility index is derived from options on Taiwan's weighted stock index. It summarises the volatility expectations embedded in option prices for the market over the coming period. A higher reading indicates that option prices imply larger expected market swings and often a higher demand for protection. It does not identify the direction of the next move; a sharp increase can accompany either a sell-off or heightened uncertainty.
-- **韓文候選：** 대만 주가지수 옵션 가격에 반영된 예상 변동성과 대만 VIX의 해석법을 설명합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台指選擇權波動率, market sentiment, indicator, how to read
-- **簡中對照：** 台湾股指期权波动率, market sentiment, indicator, how to read
-- **英文對照：** Taiwan Index Options Volatility, market sentiment, indicator, how to read
-- **韓文候選：** 대만 주가지수 옵션 변동성, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台指選擇權波動率是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 台湾股指期权波动率是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Taiwan Index Options Volatility? Explained: meaning, interpretation and limitations
-- **韓文候選：** 대만 주가지수 옵션 변동성 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台指選擇權波動率指標由台灣加權股價指數選擇權推算，整理選擇權價格所隱含的未來市場波動預期。 數值越高，代表選擇權市場預期未來波動越大，通常也反映避險需求增加。但它不代表市場接下來一定上漲或下跌；急升可能出現在下跌或不確定性升高時。
-- **簡中對照：** 台湾股指期权波动率指标由台湾加权股价指数期权推算，汇总期权价格所隐含的未来市场波动预期。 数值越高，表示期权市场预期未来波动越大，通常也反映避险需求增加。但它不表示市场接下来一定上涨或下跌；快速上升可能出现在下跌或不确定性升高时。
-- **英文對照：** The Taiwan index-options volatility index is derived from options on Taiwan's weighted stock index. It summarises the volatility expectations embedded in option prices for the market over the coming period. A higher reading indicates that option prices imply larger expected market swings and often a higher demand for protection. It does not identify the direction of the next move; a sharp increase can accompany either a sell-off or heightened uncertainty.
-- **韓文候選：** 대만 주가지수 옵션 변동성 지표는 대만 가권지수 옵션에서 산출되며 옵션 가격에 반영된 향후 시장 변동성 기대를 요약합니다. 수치가 높을수록 옵션시장이 더 큰 변동 폭을 예상하고 있으며 위험 회피 수요도 커졌을 가능성이 있습니다. 다만 향후 상승 또는 하락 방향을 나타내지는 않으며, 급등은 하락장이나 불확실성 확대 국면 모두에서 나타날 수 있습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台指選擇權波動率指標由台灣加權股價指數選擇權推算，整理選擇權價格所隱含的未來市場波動預期。
-- **簡中對照：** 台湾股指期权波动率指标由台湾加权股价指数期权推算，汇总期权价格所隐含的未来市场波动预期。
-- **英文對照：** The Taiwan index-options volatility index is derived from options on Taiwan's weighted stock index. It summarises the volatility expectations embedded in option prices for the market over the coming period.
-- **韓文候選：** 대만 주가지수 옵션 변동성 지표는 대만 가권지수 옵션에서 산출되며 옵션 가격에 반영된 향후 시장 변동성 기대를 요약합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 數值越高，代表選擇權市場預期未來波動越大，通常也反映避險需求增加。但它不代表市場接下來一定上漲或下跌；急升可能出現在下跌或不確定性升高時。
-- **簡中對照：** 数值越高，表示期权市场预期未来波动越大，通常也反映避险需求增加。但它不表示市场接下来一定上涨或下跌；快速上升可能出现在下跌或不确定性升高时。
-- **英文對照：** A higher reading indicates that option prices imply larger expected market swings and often a higher demand for protection. It does not identify the direction of the next move; a sharp increase can accompany either a sell-off or heightened uncertainty.
-- **韓文候選：** 수치가 높을수록 옵션시장이 더 큰 변동 폭을 예상하고 있으며 위험 회피 수요도 커졌을 가능성이 있습니다. 다만 향후 상승 또는 하락 방향을 나타내지는 않으며, 급등은 하락장이나 불확실성 확대 국면 모두에서 나타날 수 있습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
-- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
-- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
-- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 항목 중 하나입니다. 다른 신호와 함께 평가되며, 단일 수치가 종합 점수를 결정하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twVix.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 臺灣期貨交易所（TAIFEX）台指選擇權波動率指數：https://www.taifex.com.tw/cht/7/vixQuery。
-- **簡中對照：** 台湾期货交易所（TAIFEX）台湾 VIX：https://www.taifex.com.tw/cht/7/vixQuery。
-- **英文對照：** Taiwan Futures Exchange (TAIFEX) Taiwan VIX: https://www.taifex.com.tw/cht/7/vixQuery.
-- **韓文候選：** 대만 선물거래소(TAIFEX) 대만 VIX: https://www.taifex.com.tw/cht/7/vixQuery.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台指選擇權 Put/Call Ratio
-- **簡中對照：** 台湾股指期权 Put/Call Ratio
-- **英文對照：** Taiwan Options Put/Call Ratio
-- **韓文候選：** 대만 지수 옵션 Put/Call Ratio
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台指選擇權 Put/Call Ratio是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 台湾股指期权 Put/Call Ratio是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Taiwan Options Put/Call Ratio? Explained: meaning, interpretation and limitations
-- **韓文候選：** 대만 지수 옵션 Put/Call Ratio 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** Put/Call Ratio 比較台指選擇權中賣權與買權的交易活動，呈現選擇權市場的下檔保護需求與上檔曝險活動之相對分布。 比率上升代表賣權活動相對買權增加；下降則代表買權活動相對較多。比率可能同時反映避險與方向性布局，應搭配價格、波動率及統計期間一起觀察。
-- **簡中對照：** Put/Call Ratio 比较台湾股指期权中认沽与认购期权的交易活动，呈现期权市场下行保护需求与上行敞口活动的相对分布。 比率上升表示认沽期权活动相对认购期权增加；下降则表示认购期权活动相对更多。比率可能同时反映对冲和方向性布局，应结合价格、波动率及统计期间观察。
-- **英文對照：** The Put/Call Ratio compares trading activity in put options with activity in call options on Taiwan index options. It provides a snapshot of how options activity is distributed between downside-protection and upside-exposure contracts. A higher ratio means put activity is larger relative to call activity; a lower ratio means call activity is relatively larger. The ratio can reflect hedging as well as directional views, so it should be read with price action, volatility and the exact reporting period.
-- **韓文候選：** 대만 주가지수 옵션 Put/Call Ratio로 풋·콜 거래 비중과 투자 심리를 살펴봅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台指選擇權 Put/Call Ratio, market sentiment, indicator, how to read
-- **簡中對照：** 台湾股指期权 Put/Call Ratio, market sentiment, indicator, how to read
-- **英文對照：** Taiwan Options Put/Call Ratio, market sentiment, indicator, how to read
-- **韓文候選：** 대만 지수 옵션 Put/Call Ratio, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台指選擇權 Put/Call Ratio是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 台湾股指期权 Put/Call Ratio是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Taiwan Options Put/Call Ratio? Explained: meaning, interpretation and limitations
-- **韓文候選：** 대만 지수 옵션 Put/Call Ratio 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** Put/Call Ratio 比較台指選擇權中賣權與買權的交易活動，呈現選擇權市場的下檔保護需求與上檔曝險活動之相對分布。 比率上升代表賣權活動相對買權增加；下降則代表買權活動相對較多。比率可能同時反映避險與方向性布局，應搭配價格、波動率及統計期間一起觀察。
-- **簡中對照：** Put/Call Ratio 比较台湾股指期权中认沽与认购期权的交易活动，呈现期权市场下行保护需求与上行敞口活动的相对分布。 比率上升表示认沽期权活动相对认购期权增加；下降则表示认购期权活动相对更多。比率可能同时反映对冲和方向性布局，应结合价格、波动率及统计期间观察。
-- **英文對照：** The Put/Call Ratio compares trading activity in put options with activity in call options on Taiwan index options. It provides a snapshot of how options activity is distributed between downside-protection and upside-exposure contracts. A higher ratio means put activity is larger relative to call activity; a lower ratio means call activity is relatively larger. The ratio can reflect hedging as well as directional views, so it should be read with price action, volatility and the exact reporting period.
-- **韓文候選：** Put/Call Ratio는 대만 주가지수 옵션의 풋옵션 거래 활동과 콜옵션 거래 활동을 비교합니다. 옵션시장에서 하락 위험을 방어하려는 거래와 상승 노출을 취하려는 거래의 상대적 분포를 보여 줍니다. 비율 상승은 풋옵션 활동이 콜옵션보다 상대적으로 많다는 뜻이고, 하락은 콜옵션 활동이 상대적으로 많다는 뜻입니다. 헤지와 방향성 거래가 모두 반영될 수 있으므로 가격, 변동성 및 집계 기간과 함께 살펴봐야 합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** Put/Call Ratio 比較台指選擇權中賣權與買權的交易活動，呈現選擇權市場的下檔保護需求與上檔曝險活動之相對分布。
-- **簡中對照：** Put/Call Ratio 比较台湾股指期权中认沽与认购期权的交易活动，呈现期权市场下行保护需求与上行敞口活动的相对分布。
-- **英文對照：** The Put/Call Ratio compares trading activity in put options with activity in call options on Taiwan index options. It provides a snapshot of how options activity is distributed between downside-protection and upside-exposure contracts.
-- **韓文候選：** Put/Call Ratio는 대만 주가지수 옵션의 풋옵션 거래 활동과 콜옵션 거래 활동을 비교합니다. 옵션시장에서 하락 위험을 방어하려는 거래와 상승 노출을 취하려는 거래의 상대적 분포를 보여 줍니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 比率上升代表賣權活動相對買權增加；下降則代表買權活動相對較多。比率可能同時反映避險與方向性布局，應搭配價格、波動率及統計期間一起觀察。
-- **簡中對照：** 比率上升表示认沽期权活动相对认购期权增加；下降则表示认购期权活动相对更多。比率可能同时反映对冲和方向性布局，应结合价格、波动率及统计期间观察。
-- **英文對照：** A higher ratio means put activity is larger relative to call activity; a lower ratio means call activity is relatively larger. The ratio can reflect hedging as well as directional views, so it should be read with price action, volatility and the exact reporting period.
-- **韓文候選：** 비율 상승은 풋옵션 활동이 콜옵션보다 상대적으로 많다는 뜻이고, 하락은 콜옵션 활동이 상대적으로 많다는 뜻입니다. 헤지와 방향성 거래가 모두 반영될 수 있으므로 가격, 변동성 및 집계 기간과 함께 살펴봐야 합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
-- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
-- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
-- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 항목 중 하나입니다. 다른 신호와 함께 평가되며, 단일 수치가 종합 점수를 결정하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.pcrRatio.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 臺灣期貨交易所（TAIFEX）選擇權 Put/Call Ratio：https://www.taifex.com.tw/cht/3/pcRatio。
-- **簡中對照：** 台湾期货交易所（TAIFEX）期权 Put/Call Ratio：https://www.taifex.com.tw/cht/3/pcRatio。
-- **英文對照：** Taiwan Futures Exchange (TAIFEX) options Put/Call Ratio: https://www.taifex.com.tw/cht/3/pcRatio.
-- **韓文候選：** 대만 선물거래소(TAIFEX) 옵션 Put/Call Ratio: https://www.taifex.com.tw/cht/3/pcRatio.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美元兌台幣
-- **簡中對照：** 美元兑新台币
-- **英文對照：** USD/TWD
-- **韓文候選：** 미국 달러/대만 달러
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美元兌台幣是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 美元兑新台币是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is USD/TWD? Explained: meaning, interpretation and limitations
-- **韓文候選：** 미국 달러/대만 달러 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** USD/TWD 是美元兌新台幣的市場匯率，可用來觀察利率預期、資金流向與美元需求變化所反映的匯市環境。 匯率上升代表買進一美元需要更多新台幣，也就是新台幣相對美元走弱；匯率下降則代表新台幣相對走強。匯率本身無法單獨說明變動原因。
-- **簡中對照：** USD/TWD 是美元兑新台币的市场汇率，可用于观察利率预期、资金流向和美元需求变化所反映的外汇市场环境。 汇率上升表示购买一美元需要更多新台币，也就是新台币相对美元走弱；汇率下降则表示新台币相对走强。汇率本身无法单独说明变化原因。
-- **英文對照：** USD/TWD is the market exchange rate between the US dollar and the Taiwan dollar. It provides a currency-market reference that can reflect changes in interest-rate expectations, capital flows and demand for the US dollar. A rising USD/TWD rate means more Taiwan dollars are required to buy one US dollar, so the Taiwan dollar is weakening against the US dollar. A falling rate indicates relative Taiwan-dollar strength. The exchange rate alone does not reveal the cause of a move.
-- **韓文候選：** USD/TWD 환율 변동이 대만 달러와 시장 환경에 의미하는 바를 설명합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美元兌台幣, market sentiment, indicator, how to read
-- **簡中對照：** 美元兑新台币, market sentiment, indicator, how to read
-- **英文對照：** USD/TWD, market sentiment, indicator, how to read
-- **韓文候選：** 미국 달러/대만 달러, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美元兌台幣是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 美元兑新台币是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is USD/TWD? Explained: meaning, interpretation and limitations
-- **韓文候選：** 미국 달러/대만 달러 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** USD/TWD 是美元兌新台幣的市場匯率，可用來觀察利率預期、資金流向與美元需求變化所反映的匯市環境。 匯率上升代表買進一美元需要更多新台幣，也就是新台幣相對美元走弱；匯率下降則代表新台幣相對走強。匯率本身無法單獨說明變動原因。
-- **簡中對照：** USD/TWD 是美元兑新台币的市场汇率，可用于观察利率预期、资金流向和美元需求变化所反映的外汇市场环境。 汇率上升表示购买一美元需要更多新台币，也就是新台币相对美元走弱；汇率下降则表示新台币相对走强。汇率本身无法单独说明变化原因。
-- **英文對照：** USD/TWD is the market exchange rate between the US dollar and the Taiwan dollar. It provides a currency-market reference that can reflect changes in interest-rate expectations, capital flows and demand for the US dollar. A rising USD/TWD rate means more Taiwan dollars are required to buy one US dollar, so the Taiwan dollar is weakening against the US dollar. A falling rate indicates relative Taiwan-dollar strength. The exchange rate alone does not reveal the cause of a move.
-- **韓文候選：** USD/TWD는 미국 달러와 대만 달러 사이의 시장 환율입니다. 금리 기대, 자금 흐름과 달러 수요 변화가 외환시장에 어떻게 반영되는지 살펴볼 때 참고할 수 있습니다. 환율 상승은 1달러를 사는 데 더 많은 대만 달러가 필요하다는 뜻으로, 대만 달러가 달러 대비 약세임을 의미합니다. 하락은 대만 달러의 상대적 강세를 뜻합니다. 환율만으로 변동 원인을 단정할 수는 없습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** USD/TWD 是美元兌新台幣的市場匯率，可用來觀察利率預期、資金流向與美元需求變化所反映的匯市環境。
-- **簡中對照：** USD/TWD 是美元兑新台币的市场汇率，可用于观察利率预期、资金流向和美元需求变化所反映的外汇市场环境。
-- **英文對照：** USD/TWD is the market exchange rate between the US dollar and the Taiwan dollar. It provides a currency-market reference that can reflect changes in interest-rate expectations, capital flows and demand for the US dollar.
-- **韓文候選：** USD/TWD는 미국 달러와 대만 달러 사이의 시장 환율입니다. 금리 기대, 자금 흐름과 달러 수요 변화가 외환시장에 어떻게 반영되는지 살펴볼 때 참고할 수 있습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 匯率上升代表買進一美元需要更多新台幣，也就是新台幣相對美元走弱；匯率下降則代表新台幣相對走強。匯率本身無法單獨說明變動原因。
-- **簡中對照：** 汇率上升表示购买一美元需要更多新台币，也就是新台币相对美元走弱；汇率下降则表示新台币相对走强。汇率本身无法单独说明变化原因。
-- **英文對照：** A rising USD/TWD rate means more Taiwan dollars are required to buy one US dollar, so the Taiwan dollar is weakening against the US dollar. A falling rate indicates relative Taiwan-dollar strength. The exchange rate alone does not reveal the cause of a move.
-- **韓文候選：** 환율 상승은 1달러를 사는 데 더 많은 대만 달러가 필요하다는 뜻으로, 대만 달러가 달러 대비 약세임을 의미합니다. 하락은 대만 달러의 상대적 강세를 뜻합니다. 환율만으로 변동 원인을 단정할 수는 없습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
-- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
-- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
-- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 항목 중 하나입니다. 다른 신호와 함께 평가되며, 단일 수치가 종합 점수를 결정하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.usdTwd.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** USD/TWD 市場報價資料。請同時核對總覽頁顯示的資料日期；匯率不是可單獨判斷投資人情緒的指標。
-- **簡中對照：** USD/TWD 市场报价数据。请同时核对总览页显示的数据日期；汇率不是可单独判断投资者情绪的指标。
-- **英文對照：** USD/TWD market quote feed. Check the observation date shown with the board reading; the quote is not a standalone measure of investor sentiment.
-- **韓文候選：** USD/TWD 시장 환율 데이터. 보드에 표시된 관측 날짜를 함께 확인하세요. 환율은 단독으로 투자 심리를 판정하는 지표가 아닙니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 外資期貨淨未平倉
-- **簡中對照：** 外资期货净未平仓
-- **英文對照：** Foreign Institutional Futures Net OI
-- **韓文候選：** 외국인 선물 순미결제약정
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 外資期貨淨未平倉是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 外资期货净未平仓是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Foreign Institutional Futures Net OI? Explained: meaning, interpretation and limitations
-- **韓文候選：** 외국인 선물 순미결제약정 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 外資期貨淨未平倉反映期交所報表中，外資法人在台灣期貨市場的期貨淨部位，用來觀察這類投資人於指數期貨市場的持倉方向。 應同時觀察正負方向、近期變化與資料日期；正負值代表不同的淨部位方向。期貨部位可能用於避險，也可能用於方向性交易，因此不能直接視為現貨市場的買賣超。
-- **簡中對照：** 外资期货净未平仓反映期交所报告中外资机构投资者在台湾期货市场的期货净持仓，用来观察这类投资者在股指期货市场的持仓方向。 应同时观察正负方向、近期变化和数据日期；正负值代表不同的净持仓方向。期货持仓可用于对冲，也可用于方向性交易，因此不能直接视为现货市场的买卖超。
-- **英文對照：** Foreign institutional futures net open interest summarises the net futures positions attributed to foreign institutional investors in Taiwan futures-market reporting. It gives context on how this investor group is positioned in index futures. Read the net figure together with its sign, recent change and the reporting date: positive and negative values represent opposite net-position directions. Futures exposure can be used for hedging as well as directional speculation, so it is not a direct proxy for spot-market buying or selling.
-- **韓文候選：** 외국인 투자자의 대만 지수선물 순미결제약정과 포지션 해석법을 설명합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 外資期貨淨未平倉, market sentiment, indicator, how to read
-- **簡中對照：** 外资期货净未平仓, market sentiment, indicator, how to read
-- **英文對照：** Foreign Institutional Futures Net OI, market sentiment, indicator, how to read
-- **韓文候選：** 외국인 선물 순미결제약정, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 外資期貨淨未平倉是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 外资期货净未平仓是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Foreign Institutional Futures Net OI? Explained: meaning, interpretation and limitations
-- **韓文候選：** 외국인 선물 순미결제약정 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 外資期貨淨未平倉反映期交所報表中，外資法人在台灣期貨市場的期貨淨部位，用來觀察這類投資人於指數期貨市場的持倉方向。 應同時觀察正負方向、近期變化與資料日期；正負值代表不同的淨部位方向。期貨部位可能用於避險，也可能用於方向性交易，因此不能直接視為現貨市場的買賣超。
-- **簡中對照：** 外资期货净未平仓反映期交所报告中外资机构投资者在台湾期货市场的期货净持仓，用来观察这类投资者在股指期货市场的持仓方向。 应同时观察正负方向、近期变化和数据日期；正负值代表不同的净持仓方向。期货持仓可用于对冲，也可用于方向性交易，因此不能直接视为现货市场的买卖超。
-- **英文對照：** Foreign institutional futures net open interest summarises the net futures positions attributed to foreign institutional investors in Taiwan futures-market reporting. It gives context on how this investor group is positioned in index futures. Read the net figure together with its sign, recent change and the reporting date: positive and negative values represent opposite net-position directions. Futures exposure can be used for hedging as well as directional speculation, so it is not a direct proxy for spot-market buying or selling.
-- **韓文候選：** 외국인 선물 순미결제약정은 대만 선물시장 보고서에 집계된 외국 기관투자자의 선물 순포지션을 요약합니다. 이 투자자 집단이 주가지수 선물시장에서 어떤 방향으로 포지션을 보유하는지 보여 줍니다. 순포지션의 부호와 최근 변화, 보고 날짜를 함께 확인해야 합니다. 선물은 헤지와 방향성 거래 모두에 사용되므로 현물시장의 순매수·순매도를 그대로 나타내지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 外資期貨淨未平倉反映期交所報表中，外資法人在台灣期貨市場的期貨淨部位，用來觀察這類投資人於指數期貨市場的持倉方向。
-- **簡中對照：** 外资期货净未平仓反映期交所报告中外资机构投资者在台湾期货市场的期货净持仓，用来观察这类投资者在股指期货市场的持仓方向。
-- **英文對照：** Foreign institutional futures net open interest summarises the net futures positions attributed to foreign institutional investors in Taiwan futures-market reporting. It gives context on how this investor group is positioned in index futures.
-- **韓文候選：** 외국인 선물 순미결제약정은 대만 선물시장 보고서에 집계된 외국 기관투자자의 선물 순포지션을 요약합니다. 이 투자자 집단이 주가지수 선물시장에서 어떤 방향으로 포지션을 보유하는지 보여 줍니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應同時觀察正負方向、近期變化與資料日期；正負值代表不同的淨部位方向。期貨部位可能用於避險，也可能用於方向性交易，因此不能直接視為現貨市場的買賣超。
-- **簡中對照：** 应同时观察正负方向、近期变化和数据日期；正负值代表不同的净持仓方向。期货持仓可用于对冲，也可用于方向性交易，因此不能直接视为现货市场的买卖超。
-- **英文對照：** Read the net figure together with its sign, recent change and the reporting date: positive and negative values represent opposite net-position directions. Futures exposure can be used for hedging as well as directional speculation, so it is not a direct proxy for spot-market buying or selling.
-- **韓文候選：** 순포지션의 부호와 최근 변화, 보고 날짜를 함께 확인해야 합니다. 선물은 헤지와 방향성 거래 모두에 사용되므로 현물시장의 순매수·순매도를 그대로 나타내지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
-- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
-- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
-- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 항목 중 하나입니다. 다른 신호와 함께 평가되며, 단일 수치가 종합 점수를 결정하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.finiFuturesNetOi.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 臺灣期貨交易所（TAIFEX）期貨法人未平倉報表：https://www.taifex.com.tw/cht/3/futContractsDate。
-- **簡中對照：** 台湾期货交易所（TAIFEX）期货机构未平仓报告：https://www.taifex.com.tw/cht/3/futContractsDate。
-- **英文對照：** Taiwan Futures Exchange (TAIFEX) futures institutional open-interest reports: https://www.taifex.com.tw/cht/3/futContractsDate.
-- **韓文候選：** 대만 선물거래소(TAIFEX) 선물 기관별 미결제약정 보고서: https://www.taifex.com.tw/cht/3/futContractsDate.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美債 10 年期殖利率
-- **簡中對照：** 美债 10 年期收益率
-- **英文對照：** US 10-Year Treasury Yield
-- **韓文候選：** 미국 10년물 국채 수익률
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美債 10 年期殖利率是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 美债 10 年期收益率是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is US 10-Year Treasury Yield? Explained: meaning, interpretation and limitations
-- **韓文候選：** 미국 10년물 국채 수익률 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美國 10 年期公債殖利率是市場對剩餘期限約十年的美國政府債券所要求的殖利率，也是長期利率預期及多種資產折現率的重要參考。 殖利率上升可能反映成長或通膨預期提高、貨幣政策預期轉緊，或期限溢酬上升；下降則可能反映相反因素或公債需求增加。它不是純粹的風險偏好指標。
-- **簡中對照：** 美国 10 年期国债收益率是市场对剩余期限约十年的美国政府债券所要求的收益率，也是长期利率预期和多种资产折现率的重要参考。 收益率上升可能反映增长或通胀预期提高、货币政策预期趋紧，或期限溢价上升；下降则可能反映相反因素或国债需求增加。它不是纯粹的风险偏好指标。
-- **英文對照：** The US 10-year Treasury yield is the market yield on US government debt with approximately ten years to maturity. It is a widely watched reference for long-term interest-rate expectations and the discount rates used across asset markets. A rising yield can reflect stronger growth or inflation expectations, tighter monetary-policy expectations, or higher term premiums; a falling yield can reflect the opposite or stronger demand for government bonds. It is not a pure risk-on/risk-off signal.
-- **韓文候選：** 미국 10년물 국채 수익률의 변동 요인과 시장에 미치는 영향을 설명합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美債 10 年期殖利率, market sentiment, indicator, how to read
-- **簡中對照：** 美债 10 年期收益率, market sentiment, indicator, how to read
-- **英文對照：** US 10-Year Treasury Yield, market sentiment, indicator, how to read
-- **韓文候選：** 미국 10년물 국채 수익률, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美債 10 年期殖利率是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 美债 10 年期收益率是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is US 10-Year Treasury Yield? Explained: meaning, interpretation and limitations
-- **韓文候選：** 미국 10년물 국채 수익률 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美國 10 年期公債殖利率是市場對剩餘期限約十年的美國政府債券所要求的殖利率，也是長期利率預期及多種資產折現率的重要參考。 殖利率上升可能反映成長或通膨預期提高、貨幣政策預期轉緊，或期限溢酬上升；下降則可能反映相反因素或公債需求增加。它不是純粹的風險偏好指標。
-- **簡中對照：** 美国 10 年期国债收益率是市场对剩余期限约十年的美国政府债券所要求的收益率，也是长期利率预期和多种资产折现率的重要参考。 收益率上升可能反映增长或通胀预期提高、货币政策预期趋紧，或期限溢价上升；下降则可能反映相反因素或国债需求增加。它不是纯粹的风险偏好指标。
-- **英文對照：** The US 10-year Treasury yield is the market yield on US government debt with approximately ten years to maturity. It is a widely watched reference for long-term interest-rate expectations and the discount rates used across asset markets. A rising yield can reflect stronger growth or inflation expectations, tighter monetary-policy expectations, or higher term premiums; a falling yield can reflect the opposite or stronger demand for government bonds. It is not a pure risk-on/risk-off signal.
-- **韓文候選：** 미국 10년물 국채 수익률은 잔존만기가 약 10년인 미국 국채에 대해 시장이 요구하는 수익률입니다. 장기 금리 기대와 다양한 자산의 할인율을 가늠하는 대표적인 참고 지표입니다. 수익률 상승은 성장·인플레이션 기대, 통화정책 긴축 기대 또는 기간 프리미엄 상승을 반영할 수 있습니다. 하락은 반대 요인이나 국채 수요 증가와 관련될 수 있습니다. 순수한 위험 선호 지표는 아닙니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美國 10 年期公債殖利率是市場對剩餘期限約十年的美國政府債券所要求的殖利率，也是長期利率預期及多種資產折現率的重要參考。
-- **簡中對照：** 美国 10 年期国债收益率是市场对剩余期限约十年的美国政府债券所要求的收益率，也是长期利率预期和多种资产折现率的重要参考。
-- **英文對照：** The US 10-year Treasury yield is the market yield on US government debt with approximately ten years to maturity. It is a widely watched reference for long-term interest-rate expectations and the discount rates used across asset markets.
-- **韓文候選：** 미국 10년물 국채 수익률은 잔존만기가 약 10년인 미국 국채에 대해 시장이 요구하는 수익률입니다. 장기 금리 기대와 다양한 자산의 할인율을 가늠하는 대표적인 참고 지표입니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 殖利率上升可能反映成長或通膨預期提高、貨幣政策預期轉緊，或期限溢酬上升；下降則可能反映相反因素或公債需求增加。它不是純粹的風險偏好指標。
-- **簡中對照：** 收益率上升可能反映增长或通胀预期提高、货币政策预期趋紧，或期限溢价上升；下降则可能反映相反因素或国债需求增加。它不是纯粹的风险偏好指标。
-- **英文對照：** A rising yield can reflect stronger growth or inflation expectations, tighter monetary-policy expectations, or higher term premiums; a falling yield can reflect the opposite or stronger demand for government bonds. It is not a pure risk-on/risk-off signal.
-- **韓文候選：** 수익률 상승은 성장·인플레이션 기대, 통화정책 긴축 기대 또는 기간 프리미엄 상승을 반영할 수 있습니다. 하락은 반대 요인이나 국채 수요 증가와 관련될 수 있습니다. 순수한 위험 선호 지표는 아닙니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項資料目前提供作為情勢參考，但尚未納入 SIO 台股恐懼貪婪指數的加權計算。閱讀時應將它視為背景資訊，而非綜合分數的組成項目。
-- **簡中對照：** 这项数据目前作为市场参考信息提供，但尚未纳入 SIO 台湾股市恐惧贪婪指数的加权计算。阅读时应将它视为背景信息，而不是综合分数的组成项。
-- **英文對照：** This series is available as a reference on the sentiment board, but it is not currently weighted into the SIO Taiwan Fear & Greed Index. Use it as context rather than treating it as part of the composite calculation.
-- **韓文候選：** 이 데이터는 현재 시장 참고 자료로 제공되지만 SIO 대만 시장 공포·탐욕 지수의 가중 계산에는 포함되지 않습니다. 종합 점수의 구성 요소가 아닌 보조 정보로 해석해야 합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.us10yYield.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 美國財政部每日公債殖利率曲線資料：https://home.treasury.gov/resource-center/data-chart-center/interest-rates。總覽頁顯示可取得的市場資料日期。
-- **簡中對照：** 美国财政部每日国债收益率曲线数据：https://home.treasury.gov/resource-center/data-chart-center/interest-rates。总览页显示可取得的市场数据日期。
-- **英文對照：** US Treasury daily par yield curve reference: https://home.treasury.gov/resource-center/data-chart-center/interest-rates. The board displays the available market-data observation.
-- **韓文候選：** 미국 재무부 일일 국채 수익률 곡선: https://home.treasury.gov/resource-center/data-chart-center/interest-rates. 보드에는 확인 가능한 시장 데이터 날짜가 표시됩니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數
-- **簡中對照：** 有交易户数
-- **英文對照：** Active Trading Accounts
-- **韓文候選：** 실제 거래 계좌 수
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 有交易户数是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Active Trading Accounts? Explained: meaning, interpretation and limitations
-- **韓文候選：** 실제 거래 계좌 수 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數統計在指定期間內實際發生證券交易的帳戶數量。它反映市場參與廣度，但不表示這些帳戶是買超還是賣超。 戶數增加代表參與交易的帳戶變多；減少則代表活躍帳戶變少。這項資料通常定期公布而非即時更新，應依公布日期比較，也不宜用單月數字判斷市場方向。
-- **簡中對照：** 有效交易账户数统计在指定报告期内实际发生证券交易的账户数量。它反映市场参与广度，但不表示这些账户是净买入还是净卖出。 账户数上升表示参与交易的账户增多；下降则表示活跃账户减少。这项数据通常定期公布而非实时更新，应按发布日期比较，也不宜用单月数字判断市场方向。
-- **英文對照：** Effective trading accounts count securities accounts that recorded trading activity during the reporting period. It is a participation indicator: it describes how many accounts were active, not whether those investors were net buyers or sellers. A rising count indicates broader account participation, while a decline suggests fewer active accounts. The series is generally reported periodically rather than continuously; compare observations using their publication dates and avoid interpreting a single month as a market-direction signal.
-- **韓文候選：** 대만 주식시장의 실제 거래 계좌 수로 시장 참여 범위를 살펴봅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數, market sentiment, indicator, how to read
-- **簡中對照：** 有交易户数, market sentiment, indicator, how to read
-- **英文對照：** Active Trading Accounts, market sentiment, indicator, how to read
-- **韓文候選：** 실제 거래 계좌 수, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 有交易户数是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Active Trading Accounts? Explained: meaning, interpretation and limitations
-- **韓文候選：** 실제 거래 계좌 수 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數統計在指定期間內實際發生證券交易的帳戶數量。它反映市場參與廣度，但不表示這些帳戶是買超還是賣超。 戶數增加代表參與交易的帳戶變多；減少則代表活躍帳戶變少。這項資料通常定期公布而非即時更新，應依公布日期比較，也不宜用單月數字判斷市場方向。
-- **簡中對照：** 有效交易账户数统计在指定报告期内实际发生证券交易的账户数量。它反映市场参与广度，但不表示这些账户是净买入还是净卖出。 账户数上升表示参与交易的账户增多；下降则表示活跃账户减少。这项数据通常定期公布而非实时更新，应按发布日期比较，也不宜用单月数字判断市场方向。
-- **英文對照：** Effective trading accounts count securities accounts that recorded trading activity during the reporting period. It is a participation indicator: it describes how many accounts were active, not whether those investors were net buyers or sellers. A rising count indicates broader account participation, while a decline suggests fewer active accounts. The series is generally reported periodically rather than continuously; compare observations using their publication dates and avoid interpreting a single month as a market-direction signal.
-- **韓文候選：** 실제 거래 계좌 수는 해당 보고 기간에 실제로 증권 거래가 발생한 계좌 수를 집계합니다. 시장 참여 범위를 보여 주지만 해당 계좌들이 순매수했는지 순매도했는지는 나타내지 않습니다. 계좌 수 증가는 거래에 참여한 계좌가 늘었음을, 감소는 활동 계좌가 줄었음을 뜻합니다. 일반적으로 실시간이 아닌 정기 통계이므로 발표 날짜를 기준으로 비교하고 한 달의 수치만으로 시장 방향을 판단하지 않아야 합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數統計在指定期間內實際發生證券交易的帳戶數量。它反映市場參與廣度，但不表示這些帳戶是買超還是賣超。
-- **簡中對照：** 有效交易账户数统计在指定报告期内实际发生证券交易的账户数量。它反映市场参与广度，但不表示这些账户是净买入还是净卖出。
-- **英文對照：** Effective trading accounts count securities accounts that recorded trading activity during the reporting period. It is a participation indicator: it describes how many accounts were active, not whether those investors were net buyers or sellers.
-- **韓文候選：** 실제 거래 계좌 수는 해당 보고 기간에 실제로 증권 거래가 발생한 계좌 수를 집계합니다. 시장 참여 범위를 보여 주지만 해당 계좌들이 순매수했는지 순매도했는지는 나타내지 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 戶數增加代表參與交易的帳戶變多；減少則代表活躍帳戶變少。這項資料通常定期公布而非即時更新，應依公布日期比較，也不宜用單月數字判斷市場方向。
-- **簡中對照：** 账户数上升表示参与交易的账户增多；下降则表示活跃账户减少。这项数据通常定期公布而非实时更新，应按发布日期比较，也不宜用单月数字判断市场方向。
-- **英文對照：** A rising count indicates broader account participation, while a decline suggests fewer active accounts. The series is generally reported periodically rather than continuously; compare observations using their publication dates and avoid interpreting a single month as a market-direction signal.
-- **韓文候選：** 계좌 수 증가는 거래에 참여한 계좌가 늘었음을, 감소는 활동 계좌가 줄었음을 뜻합니다. 일반적으로 실시간이 아닌 정기 통계이므로 발표 날짜를 기준으로 비교하고 한 달의 수치만으로 시장 방향을 판단하지 않아야 합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項資料目前提供作為情勢參考，但尚未納入 SIO 台股恐懼貪婪指數的加權計算。閱讀時應將它視為背景資訊，而非綜合分數的組成項目。
-- **簡中對照：** 这项数据目前作为市场参考信息提供，但尚未纳入 SIO 台湾股市恐惧贪婪指数的加权计算。阅读时应将它视为背景信息，而不是综合分数的组成项。
-- **英文對照：** This series is available as a reference on the sentiment board, but it is not currently weighted into the SIO Taiwan Fear & Greed Index. Use it as context rather than treating it as part of the composite calculation.
-- **韓文候選：** 이 데이터는 현재 시장 참고 자료로 제공되지만 SIO 대만 시장 공포·탐욕 지수의 가중 계산에는 포함되지 않습니다. 종합 점수의 구성 요소가 아닌 보조 정보로 해석해야 합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.effectiveTradingAccounts.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 臺灣證券交易所（TWSE）市場統計－有交易戶數：https://www.twse.com.tw/zh/statistics/statisticsList?type=07。
-- **簡中對照：** 台湾证券交易所（TWSE）市场统计－有效交易账户：https://www.twse.com.tw/zh/statistics/statisticsList?type=07。
-- **英文對照：** Taiwan Stock Exchange (TWSE) market statistics, active trading accounts: https://www.twse.com.tw/zh/statistics/statisticsList?type=07.
-- **韓文候選：** 대만증권거래소(TWSE) 시장 통계, 실제 거래 계좌 수: https://www.twse.com.tw/zh/statistics/statisticsList?type=07.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 融資維持率
-- **簡中對照：** 融资维持率
-- **英文對照：** Margin Maintenance Ratio
-- **韓文候選：** 신용융자 유지율
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 融資維持率是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 融资维持率是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Margin Maintenance Ratio? Explained: meaning, interpretation and limitations
-- **韓文候選：** 신용융자 유지율 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 融資維持率反映台股融資部位的擔保品市值相對於融資金額的覆蓋程度。SIO 會依市場市值與融資餘額資料計算此序列，並非單純引用股價指數。 維持率越高，通常代表擔保緩衝越充足；維持率下滑則表示緩衝縮小，融資部位面臨追繳或處分的風險可能提高。這項總體數字無法指出個別帳戶的風險。
-- **簡中對照：** 融资维持率反映台湾股票融资持仓的担保品市值相对于融资金额的覆盖程度。SIO 根据市场市值和融资余额数据计算该序列，并非直接引用股价指数。 维持率越高，通常表示担保缓冲越充足；维持率下降则说明缓冲缩小，融资持仓面临追缴或处置的风险可能提高。该汇总数据无法指出个别账户的风险。
-- **英文對照：** The margin maintenance ratio describes the collateral coverage of margin-financed positions in Taiwan equities. The SIO series is calculated from market-value and margin-balance data; it is not simply a raw market-price index. A higher ratio generally means a larger collateral buffer relative to outstanding margin financing. A falling ratio means that buffer is shrinking and leveraged positions may be more vulnerable to maintenance calls or forced liquidation. It does not identify which individual accounts are at risk.
-- **韓文候選：** 대만 주식 신용융자 유지율과 담보 여력, 추가 증거금 위험을 설명합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 融資維持率, market sentiment, indicator, how to read
-- **簡中對照：** 融资维持率, market sentiment, indicator, how to read
-- **英文對照：** Margin Maintenance Ratio, market sentiment, indicator, how to read
-- **韓文候選：** 신용융자 유지율, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 融資維持率是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 融资维持率是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Margin Maintenance Ratio? Explained: meaning, interpretation and limitations
-- **韓文候選：** 신용융자 유지율 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 融資維持率反映台股融資部位的擔保品市值相對於融資金額的覆蓋程度。SIO 會依市場市值與融資餘額資料計算此序列，並非單純引用股價指數。 維持率越高，通常代表擔保緩衝越充足；維持率下滑則表示緩衝縮小，融資部位面臨追繳或處分的風險可能提高。這項總體數字無法指出個別帳戶的風險。
-- **簡中對照：** 融资维持率反映台湾股票融资持仓的担保品市值相对于融资金额的覆盖程度。SIO 根据市场市值和融资余额数据计算该序列，并非直接引用股价指数。 维持率越高，通常表示担保缓冲越充足；维持率下降则说明缓冲缩小，融资持仓面临追缴或处置的风险可能提高。该汇总数据无法指出个别账户的风险。
-- **英文對照：** The margin maintenance ratio describes the collateral coverage of margin-financed positions in Taiwan equities. The SIO series is calculated from market-value and margin-balance data; it is not simply a raw market-price index. A higher ratio generally means a larger collateral buffer relative to outstanding margin financing. A falling ratio means that buffer is shrinking and leveraged positions may be more vulnerable to maintenance calls or forced liquidation. It does not identify which individual accounts are at risk.
-- **韓文候選：** 신용융자 유지율은 대만 주식 신용융자 포지션의 담보 시가가 융자 잔액을 얼마나 충당하는지 나타냅니다. SIO는 시장 시가와 융자 잔액 데이터를 바탕으로 이 시계열을 계산하며 단순한 주가지수 값은 아닙니다. 유지율이 높을수록 일반적으로 담보 여력이 크다는 뜻입니다. 하락하면 완충 여력이 줄어 추가 증거금 요구나 강제 청산 위험이 커질 수 있습니다. 이 집계 수치로 개별 계좌의 위험을 알 수는 없습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 融資維持率反映台股融資部位的擔保品市值相對於融資金額的覆蓋程度。SIO 會依市場市值與融資餘額資料計算此序列，並非單純引用股價指數。
-- **簡中對照：** 融资维持率反映台湾股票融资持仓的担保品市值相对于融资金额的覆盖程度。SIO 根据市场市值和融资余额数据计算该序列，并非直接引用股价指数。
-- **英文對照：** The margin maintenance ratio describes the collateral coverage of margin-financed positions in Taiwan equities. The SIO series is calculated from market-value and margin-balance data; it is not simply a raw market-price index.
-- **韓文候選：** 신용융자 유지율은 대만 주식 신용융자 포지션의 담보 시가가 융자 잔액을 얼마나 충당하는지 나타냅니다. SIO는 시장 시가와 융자 잔액 데이터를 바탕으로 이 시계열을 계산하며 단순한 주가지수 값은 아닙니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 維持率越高，通常代表擔保緩衝越充足；維持率下滑則表示緩衝縮小，融資部位面臨追繳或處分的風險可能提高。這項總體數字無法指出個別帳戶的風險。
-- **簡中對照：** 维持率越高，通常表示担保缓冲越充足；维持率下降则说明缓冲缩小，融资持仓面临追缴或处置的风险可能提高。该汇总数据无法指出个别账户的风险。
-- **英文對照：** A higher ratio generally means a larger collateral buffer relative to outstanding margin financing. A falling ratio means that buffer is shrinking and leveraged positions may be more vulnerable to maintenance calls or forced liquidation. It does not identify which individual accounts are at risk.
-- **韓文候選：** 유지율이 높을수록 일반적으로 담보 여력이 크다는 뜻입니다. 하락하면 완충 여력이 줄어 추가 증거금 요구나 강제 청산 위험이 커질 수 있습니다. 이 집계 수치로 개별 계좌의 위험을 알 수는 없습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
-- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
-- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
-- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 항목 중 하나입니다. 다른 신호와 함께 평가되며, 단일 수치가 종합 점수를 결정하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginMaintenanceRatio.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 臺灣證券交易所融資融券與維持率相關資料：https://www.twse.com.tw/zh/trading/margin/mi-margn.html。指標由 SIO 依公開資料計算。
-- **簡中對照：** 台湾证券交易所融资融券与维持率数据：https://www.twse.com.tw/zh/trading/margin/mi-margn.html。指标由 SIO 根据公开数据计算。
-- **英文對照：** TWSE margin-trading and maintenance data: https://www.twse.com.tw/zh/trading/margin/mi-margn.html. SIO calculates the indicator from the published inputs.
-- **韓文候選：** 대만증권거래소 신용거래 및 유지율 데이터: https://www.twse.com.tw/zh/trading/margin/mi-margn.html. SIO가 공개 자료를 바탕으로 계산합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 券資比
-- **簡中對照：** 券资比
-- **英文對照：** Short-to-Margin Ratio
-- **韓文候選：** 신용융자·대주 비율
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 券資比是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 券资比是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Short-to-Margin Ratio? Explained: meaning, interpretation and limitations
-- **韓文候選：** 신용융자·대주 비율 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 券資比比較台股融券餘額與融資餘額，呈現放空部位相對於融資部位的規模。這是 SIO 依交易所公開資料計算的衍生指標。 比率上升代表融券餘額相對融資餘額增加；下降則代表相對規模縮小。比率變動可能來自分子或分母改變，不代表所有投資人的整體部位，也不保證後續價格走勢。
-- **簡中對照：** 券资比比较台湾股票融券余额与融资余额，呈现卖空持仓相对于融资持仓的规模。这是 SIO 根据交易所公开数据计算的衍生指标。 比率上升表示融券余额相对融资余额增加；下降则表示相对规模缩小。比率变化可能来自分子或分母变化，不代表所有投资者的整体持仓，也不能保证后续价格走势。
-- **英文對照：** The margin short ratio compares short-selling balances with margin-financing balances in Taiwan equities. It is an SIO-derived measure of the relative size of short exposure and margin-financed long exposure. A higher ratio means short balances are larger relative to margin-financing balances; a lower ratio means they are smaller. The ratio describes positioning, not the net position of every investor, and may change because either side of the ratio changes.
-- **韓文候選：** 대만 주식 대주·신용융자 비율의 의미와 포지션 해석법을 설명합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 券資比, market sentiment, indicator, how to read
-- **簡中對照：** 券资比, market sentiment, indicator, how to read
-- **英文對照：** Short-to-Margin Ratio, market sentiment, indicator, how to read
-- **韓文候選：** 신용융자·대주 비율, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 券資比是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 券资比是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Short-to-Margin Ratio? Explained: meaning, interpretation and limitations
-- **韓文候選：** 신용융자·대주 비율 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 券資比比較台股融券餘額與融資餘額，呈現放空部位相對於融資部位的規模。這是 SIO 依交易所公開資料計算的衍生指標。 比率上升代表融券餘額相對融資餘額增加；下降則代表相對規模縮小。比率變動可能來自分子或分母改變，不代表所有投資人的整體部位，也不保證後續價格走勢。
-- **簡中對照：** 券资比比较台湾股票融券余额与融资余额，呈现卖空持仓相对于融资持仓的规模。这是 SIO 根据交易所公开数据计算的衍生指标。 比率上升表示融券余额相对融资余额增加；下降则表示相对规模缩小。比率变化可能来自分子或分母变化，不代表所有投资者的整体持仓，也不能保证后续价格走势。
-- **英文對照：** The margin short ratio compares short-selling balances with margin-financing balances in Taiwan equities. It is an SIO-derived measure of the relative size of short exposure and margin-financed long exposure. A higher ratio means short balances are larger relative to margin-financing balances; a lower ratio means they are smaller. The ratio describes positioning, not the net position of every investor, and may change because either side of the ratio changes.
-- **韓文候選：** 신용융자·대주 비율은 대만 주식의 대주 잔액을 신용융자 잔액과 비교합니다. 공매도 포지션이 신용융자 롱 포지션에 비해 어느 정도 규모인지 보여 주는 SIO 파생 지표입니다. 비율 상승은 대주 잔액이 신용융자 잔액에 비해 커졌음을, 하락은 상대 규모가 줄었음을 뜻합니다. 분자와 분모 중 어느 쪽이 변해도 비율은 달라질 수 있으며 이후 가격 방향을 보장하지 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 券資比比較台股融券餘額與融資餘額，呈現放空部位相對於融資部位的規模。這是 SIO 依交易所公開資料計算的衍生指標。
-- **簡中對照：** 券资比比较台湾股票融券余额与融资余额，呈现卖空持仓相对于融资持仓的规模。这是 SIO 根据交易所公开数据计算的衍生指标。
-- **英文對照：** The margin short ratio compares short-selling balances with margin-financing balances in Taiwan equities. It is an SIO-derived measure of the relative size of short exposure and margin-financed long exposure.
-- **韓文候選：** 신용융자·대주 비율은 대만 주식의 대주 잔액을 신용융자 잔액과 비교합니다. 공매도 포지션이 신용융자 롱 포지션에 비해 어느 정도 규모인지 보여 주는 SIO 파생 지표입니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 比率上升代表融券餘額相對融資餘額增加；下降則代表相對規模縮小。比率變動可能來自分子或分母改變，不代表所有投資人的整體部位，也不保證後續價格走勢。
-- **簡中對照：** 比率上升表示融券余额相对融资余额增加；下降则表示相对规模缩小。比率变化可能来自分子或分母变化，不代表所有投资者的整体持仓，也不能保证后续价格走势。
-- **英文對照：** A higher ratio means short balances are larger relative to margin-financing balances; a lower ratio means they are smaller. The ratio describes positioning, not the net position of every investor, and may change because either side of the ratio changes.
-- **韓文候選：** 비율 상승은 대주 잔액이 신용융자 잔액에 비해 커졌음을, 하락은 상대 규모가 줄었음을 뜻합니다. 분자와 분모 중 어느 쪽이 변해도 비율은 달라질 수 있으며 이후 가격 방향을 보장하지 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
-- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
-- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
-- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 항목 중 하나입니다. 다른 신호와 함께 평가되며, 단일 수치가 종합 점수를 결정하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marginShortRatio.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 臺灣證券交易所融資融券資料：https://www.twse.com.tw/zh/trading/margin/mi-margn.html。券資比由 SIO 計算。
-- **簡中對照：** 台湾证券交易所融资融券数据：https://www.twse.com.tw/zh/trading/margin/mi-margn.html。券资比由 SIO 计算。
-- **英文對照：** TWSE margin-trading and short-selling data: https://www.twse.com.tw/zh/trading/margin/mi-margn.html. SIO calculates the ratio.
-- **韓文候選：** 대만증권거래소 신용거래 및 대주 데이터: https://www.twse.com.tw/zh/trading/margin/mi-margn.html. 비율은 SIO가 계산합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 市場廣度 MA20
-- **簡中對照：** 市场广度 MA20
-- **英文對照：** Market Breadth (MA20)
-- **韓文候選：** 시장 폭 MA20
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 市場廣度 MA20是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 市场广度 MA20是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Market Breadth (MA20)? Explained: meaning, interpretation and limitations
-- **韓文候選：** 시장 폭 MA20 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此指標統計每個交易日收盤價高於自身 20 日移動平均線的台股個股占比。它用來觀察有多少股票站在各自短期趨勢線之上，補充加權指數可能受少數大型權值股主導的限制。 占比上升代表站在各自 20 日均線上方的股票變多，市場趨勢的參與度較廣；下降則表示維持在短期趨勢線上方的個股減少。少數大型權值股仍可能讓加權指數與市場廣度出現背離。
-- **簡中對照：** 该指标统计每个交易日收盘价高于自身 20 日移动平均线的台湾上市股票占比。它用于观察有多少股票处于各自短期趋势线上方，补充加权指数可能受少数大型权重股主导的局限。 占比上升表示站在各自 20 日均线上方的股票增多，市场趋势的参与范围更广；下降则表示维持在短期趋势线上方的个股减少。少数大型权重股仍可能使加权指数与市场广度出现背离。
-- **英文對照：** This indicator measures the percentage of Taiwan-listed stocks whose closing price is above their own 20-trading-day moving average on each trading day. It shows how broadly individual stocks participate in the market trend rather than relying only on the weighted index. A rising percentage means more stocks are trading above their own 20-day averages, suggesting broader participation in the market trend. A falling percentage indicates that fewer stocks are holding above their short-term trend. A handful of large constituents can still cause the weighted index to move differently from market breadth.
-- **韓文候選：** 대만 상장 주식 중 20일 이동평균 위에 있는 종목의 비율과 해석법을 설명합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 市場廣度 MA20, market sentiment, indicator, how to read
-- **簡中對照：** 市场广度 MA20, market sentiment, indicator, how to read
-- **英文對照：** Market Breadth (MA20), market sentiment, indicator, how to read
-- **韓文候選：** 시장 폭 MA20, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 市場廣度 MA20是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 市场广度 MA20是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Market Breadth (MA20)? Explained: meaning, interpretation and limitations
-- **韓文候選：** 시장 폭 MA20 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此指標統計每個交易日收盤價高於自身 20 日移動平均線的台股個股占比。它用來觀察有多少股票站在各自短期趨勢線之上，補充加權指數可能受少數大型權值股主導的限制。 占比上升代表站在各自 20 日均線上方的股票變多，市場趨勢的參與度較廣；下降則表示維持在短期趨勢線上方的個股減少。少數大型權值股仍可能讓加權指數與市場廣度出現背離。
-- **簡中對照：** 该指标统计每个交易日收盘价高于自身 20 日移动平均线的台湾上市股票占比。它用于观察有多少股票处于各自短期趋势线上方，补充加权指数可能受少数大型权重股主导的局限。 占比上升表示站在各自 20 日均线上方的股票增多，市场趋势的参与范围更广；下降则表示维持在短期趋势线上方的个股减少。少数大型权重股仍可能使加权指数与市场广度出现背离。
-- **英文對照：** This indicator measures the percentage of Taiwan-listed stocks whose closing price is above their own 20-trading-day moving average on each trading day. It shows how broadly individual stocks participate in the market trend rather than relying only on the weighted index. A rising percentage means more stocks are trading above their own 20-day averages, suggesting broader participation in the market trend. A falling percentage indicates that fewer stocks are holding above their short-term trend. A handful of large constituents can still cause the weighted index to move differently from market breadth.
-- **韓文候選：** 이 지표는 각 거래일 종가가 각 종목의 20거래일 이동평균보다 높은 대만 상장 주식의 비율을 측정합니다. 시가총액이 큰 일부 종목뿐 아니라 개별 종목 전반이 시장 흐름에 얼마나 참여하는지 보여 줍니다. 비율 상승은 각 종목의 20일 이동평균 위에 있는 주식이 늘어 시장 흐름에 더 많은 종목이 참여하고 있음을 뜻합니다. 하락은 단기 추세선 위에 있는 종목이 줄었음을 시사합니다. 일부 대형주가 지수를 주도하면 지수와 시장 폭은 서로 다르게 움직일 수 있습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 此指標統計每個交易日收盤價高於自身 20 日移動平均線的台股個股占比。它用來觀察有多少股票站在各自短期趨勢線之上，補充加權指數可能受少數大型權值股主導的限制。
-- **簡中對照：** 该指标统计每个交易日收盘价高于自身 20 日移动平均线的台湾上市股票占比。它用于观察有多少股票处于各自短期趋势线上方，补充加权指数可能受少数大型权重股主导的局限。
-- **英文對照：** This indicator measures the percentage of Taiwan-listed stocks whose closing price is above their own 20-trading-day moving average on each trading day. It shows how broadly individual stocks participate in the market trend rather than relying only on the weighted index.
-- **韓文候選：** 이 지표는 각 거래일 종가가 각 종목의 20거래일 이동평균보다 높은 대만 상장 주식의 비율을 측정합니다. 시가총액이 큰 일부 종목뿐 아니라 개별 종목 전반이 시장 흐름에 얼마나 참여하는지 보여 줍니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 占比上升代表站在各自 20 日均線上方的股票變多，市場趨勢的參與度較廣；下降則表示維持在短期趨勢線上方的個股減少。少數大型權值股仍可能讓加權指數與市場廣度出現背離。
-- **簡中對照：** 占比上升表示站在各自 20 日均线上方的股票增多，市场趋势的参与范围更广；下降则表示维持在短期趋势线上方的个股减少。少数大型权重股仍可能使加权指数与市场广度出现背离。
-- **英文對照：** A rising percentage means more stocks are trading above their own 20-day averages, suggesting broader participation in the market trend. A falling percentage indicates that fewer stocks are holding above their short-term trend. A handful of large constituents can still cause the weighted index to move differently from market breadth.
-- **韓文候選：** 비율 상승은 각 종목의 20일 이동평균 위에 있는 주식이 늘어 시장 흐름에 더 많은 종목이 참여하고 있음을 뜻합니다. 하락은 단기 추세선 위에 있는 종목이 줄었음을 시사합니다. 일부 대형주가 지수를 주도하면 지수와 시장 폭은 서로 다르게 움직일 수 있습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
-- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
-- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
-- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 항목 중 하나입니다. 다른 신호와 함께 평가되며, 단일 수치가 종합 점수를 결정하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.marketBreadthMa20.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** Sentiment Inside Out 依台股歷史收盤價，計算其追蹤股票池中收盤價高於各自 20 日移動平均線的股票比例。
-- **簡中對照：** Sentiment Inside Out 根据台湾股票历史收盘价，计算其跟踪股票池中收盘价高于各自 20 日移动平均线的股票比例。
-- **英文對照：** Sentiment Inside Out calculates the percentage of stocks in its Taiwan stock universe whose daily close is above each stock’s own 20-trading-day moving average, using historical closing-price data.
-- **韓文候選：** Sentiment Inside Out은 대만 주식 데이터 유니버스의 일별 종가와 각 종목의 20거래일 이동평균을 비교해 평균선 위에 있는 종목의 비율을 계산합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台股市場動能
-- **簡中對照：** 台湾股市市场动能
-- **英文對照：** Taiwan Market Momentum
-- **韓文候選：** 대만 시장 모멘텀
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台股市場動能是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 台湾股市市场动能是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Taiwan Market Momentum? Explained: meaning, interpretation and limitations
-- **韓文候選：** 대만 시장 모멘텀 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台股市場動能將加權指數與 125 個交易日移動平均比較，並以相對偏離幅度呈現指數與中期趨勢的距離。 正值代表加權指數高於 125 日均線，負值代表低於均線；偏離幅度越大，表示指數與趨勢線距離越遠。它不是目標價，也不保證趨勢會延續。
-- **簡中對照：** 台湾市场动能将加权指数与 125 个交易日移动平均进行比较，并以相对偏离幅度表示指数与中期趋势的距离。 正值表示加权指数高于 125 日均线，负值表示低于均线；偏离幅度越大，说明指数与趋势线距离越远。它不是目标价，也不保证趋势会延续。
-- **英文對照：** Taiwan Market Momentum compares the TAIEX with its 125-trading-day moving average and measures the index's relative distance from that trend. It provides a smoothed view of the broad market's medium-term direction. A positive value means the TAIEX is above its 125-day average; a negative value means it is below. The size of the deviation describes the gap from trend, not a price target or a guarantee that the trend will continue.
-- **韓文候選：** 대만 가권지수와 125일 이동평균의 괴리로 중기 추세를 해석합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台股市場動能, market sentiment, indicator, how to read
-- **簡中對照：** 台湾股市市场动能, market sentiment, indicator, how to read
-- **英文對照：** Taiwan Market Momentum, market sentiment, indicator, how to read
-- **韓文候選：** 대만 시장 모멘텀, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台股市場動能是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 台湾股市市场动能是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Taiwan Market Momentum? Explained: meaning, interpretation and limitations
-- **韓文候選：** 대만 시장 모멘텀 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台股市場動能將加權指數與 125 個交易日移動平均比較，並以相對偏離幅度呈現指數與中期趨勢的距離。 正值代表加權指數高於 125 日均線，負值代表低於均線；偏離幅度越大，表示指數與趨勢線距離越遠。它不是目標價，也不保證趨勢會延續。
-- **簡中對照：** 台湾市场动能将加权指数与 125 个交易日移动平均进行比较，并以相对偏离幅度表示指数与中期趋势的距离。 正值表示加权指数高于 125 日均线，负值表示低于均线；偏离幅度越大，说明指数与趋势线距离越远。它不是目标价，也不保证趋势会延续。
-- **英文對照：** Taiwan Market Momentum compares the TAIEX with its 125-trading-day moving average and measures the index's relative distance from that trend. It provides a smoothed view of the broad market's medium-term direction. A positive value means the TAIEX is above its 125-day average; a negative value means it is below. The size of the deviation describes the gap from trend, not a price target or a guarantee that the trend will continue.
-- **韓文候選：** 대만 시장 모멘텀은 가권지수를 125거래일 이동평균과 비교하고 상대적 괴리 폭으로 지수와 중기 추세의 거리를 나타냅니다. 양수는 가권지수가 125일 이동평균 위에 있음을, 음수는 아래에 있음을 뜻합니다. 괴리 폭이 클수록 추세선과의 거리가 큽니다. 목표 가격이나 추세 지속을 보장하는 값은 아닙니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 台股市場動能將加權指數與 125 個交易日移動平均比較，並以相對偏離幅度呈現指數與中期趨勢的距離。
-- **簡中對照：** 台湾市场动能将加权指数与 125 个交易日移动平均进行比较，并以相对偏离幅度表示指数与中期趋势的距离。
-- **英文對照：** Taiwan Market Momentum compares the TAIEX with its 125-trading-day moving average and measures the index's relative distance from that trend. It provides a smoothed view of the broad market's medium-term direction.
-- **韓文候選：** 대만 시장 모멘텀은 가권지수를 125거래일 이동평균과 비교하고 상대적 괴리 폭으로 지수와 중기 추세의 거리를 나타냅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 正值代表加權指數高於 125 日均線，負值代表低於均線；偏離幅度越大，表示指數與趨勢線距離越遠。它不是目標價，也不保證趨勢會延續。
-- **簡中對照：** 正值表示加权指数高于 125 日均线，负值表示低于均线；偏离幅度越大，说明指数与趋势线距离越远。它不是目标价，也不保证趋势会延续。
-- **英文對照：** A positive value means the TAIEX is above its 125-day average; a negative value means it is below. The size of the deviation describes the gap from trend, not a price target or a guarantee that the trend will continue.
-- **韓文候選：** 양수는 가권지수가 125일 이동평균 위에 있음을, 음수는 아래에 있음을 뜻합니다. 괴리 폭이 클수록 추세선과의 거리가 큽니다. 목표 가격이나 추세 지속을 보장하는 값은 아닙니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
-- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
-- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
-- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 항목 중 하나입니다. 다른 신호와 함께 평가되며, 단일 수치가 종합 점수를 결정하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.twMarketMomentum.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 臺灣加權股價指數收盤資料；125 個交易日均線與相對偏離幅度由 Sentiment Inside Out 計算。
-- **簡中對照：** 台湾加权股价指数收盘数据；125 个交易日均线与相对偏离幅度由 Sentiment Inside Out 计算。
-- **英文對照：** TAIEX closing data. Sentiment Inside Out calculates the 125-session moving average and relative deviation.
-- **韓文候選：** 대만 가권지수 종가 데이터. 125거래일 이동평균과 상대 괴리는 Sentiment Inside Out이 계산합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數偏離度
-- **簡中對照：** 有交易户数偏离度
-- **英文對照：** Active Accounts Deviation (189d)
-- **韓文候選：** 실제 거래 계좌 수 편차
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數偏離度是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 有交易户数偏离度是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Active Accounts Deviation (189d)? Explained: meaning, interpretation and limitations
-- **韓文候選：** 실제 거래 계좌 수 편차 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數偏離度衡量台股活躍交易帳戶數相對於估計的 189 日長期趨勢偏離多少，重點在參與程度的變化，而非單看戶數絕對值。 正值表示活躍帳戶數高於估計趨勢，負值表示低於趨勢。它可反映散戶參與度變化，但帳戶有交易不代表買進或賣出的方向，也無法反映交易是否獲利。
-- **簡中對照：** 有效交易账户偏离度衡量台湾活跃证券交易账户数相对于估算的 189 日长期趋势偏离多少，重点在参与程度的变化，而非账户绝对数量。 正值表示活跃账户数高于估算趋势，负值表示低于趋势。它可反映个人投资者参与度变化，但账户发生交易不代表买卖方向，也无法反映交易是否盈利。
-- **英文對照：** The 189-day active-trading-account deviation measures how the number of active Taiwan securities accounts differs from its estimated longer-term trend. It focuses on the change in participation rather than the absolute account count. A positive deviation means active-account participation is above the estimated trend; a negative deviation means it is below. Changes can reflect retail engagement and market conditions, but account activity does not reveal the direction or profitability of trades.
-- **韓文候選：** 대만 실제 거래 계좌 수가 189일 추세에서 얼마나 벗어났는지 살펴봅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數偏離度, market sentiment, indicator, how to read
-- **簡中對照：** 有交易户数偏离度, market sentiment, indicator, how to read
-- **英文對照：** Active Accounts Deviation (189d), market sentiment, indicator, how to read
-- **韓文候選：** 실제 거래 계좌 수 편차, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數偏離度是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 有交易户数偏离度是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Active Accounts Deviation (189d)? Explained: meaning, interpretation and limitations
-- **韓文候選：** 실제 거래 계좌 수 편차 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數偏離度衡量台股活躍交易帳戶數相對於估計的 189 日長期趨勢偏離多少，重點在參與程度的變化，而非單看戶數絕對值。 正值表示活躍帳戶數高於估計趨勢，負值表示低於趨勢。它可反映散戶參與度變化，但帳戶有交易不代表買進或賣出的方向，也無法反映交易是否獲利。
-- **簡中對照：** 有效交易账户偏离度衡量台湾活跃证券交易账户数相对于估算的 189 日长期趋势偏离多少，重点在参与程度的变化，而非账户绝对数量。 正值表示活跃账户数高于估算趋势，负值表示低于趋势。它可反映个人投资者参与度变化，但账户发生交易不代表买卖方向，也无法反映交易是否盈利。
-- **英文對照：** The 189-day active-trading-account deviation measures how the number of active Taiwan securities accounts differs from its estimated longer-term trend. It focuses on the change in participation rather than the absolute account count. A positive deviation means active-account participation is above the estimated trend; a negative deviation means it is below. Changes can reflect retail engagement and market conditions, but account activity does not reveal the direction or profitability of trades.
-- **韓文候選：** 실제 거래 계좌 수 편차는 대만 증권시장의 활동 계좌 수가 추정된 189일 장기 추세에서 얼마나 벗어났는지 측정합니다. 계좌 수 자체보다 시장 참여 수준의 변화를 살펴봅니다. 양수는 활동 계좌 수가 추정 추세보다 많음을, 음수는 적음을 뜻합니다. 개인 투자자 참여 변화를 보여 줄 수 있지만 계좌 활동만으로 매수·매도 방향이나 거래 수익성을 알 수는 없습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 有交易戶數偏離度衡量台股活躍交易帳戶數相對於估計的 189 日長期趨勢偏離多少，重點在參與程度的變化，而非單看戶數絕對值。
-- **簡中對照：** 有效交易账户偏离度衡量台湾活跃证券交易账户数相对于估算的 189 日长期趋势偏离多少，重点在参与程度的变化，而非账户绝对数量。
-- **英文對照：** The 189-day active-trading-account deviation measures how the number of active Taiwan securities accounts differs from its estimated longer-term trend. It focuses on the change in participation rather than the absolute account count.
-- **韓文候選：** 실제 거래 계좌 수 편차는 대만 증권시장의 활동 계좌 수가 추정된 189일 장기 추세에서 얼마나 벗어났는지 측정합니다. 계좌 수 자체보다 시장 참여 수준의 변화를 살펴봅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 正值表示活躍帳戶數高於估計趨勢，負值表示低於趨勢。它可反映散戶參與度變化，但帳戶有交易不代表買進或賣出的方向，也無法反映交易是否獲利。
-- **簡中對照：** 正值表示活跃账户数高于估算趋势，负值表示低于趋势。它可反映个人投资者参与度变化，但账户发生交易不代表买卖方向，也无法反映交易是否盈利。
-- **英文對照：** A positive deviation means active-account participation is above the estimated trend; a negative deviation means it is below. Changes can reflect retail engagement and market conditions, but account activity does not reveal the direction or profitability of trades.
-- **韓文候選：** 양수는 활동 계좌 수가 추정 추세보다 많음을, 음수는 적음을 뜻합니다. 개인 투자자 참여 변화를 보여 줄 수 있지만 계좌 활동만으로 매수·매도 방향이나 거래 수익성을 알 수는 없습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這是 SIO 台股恐懼貪婪指數的其中一項輸入。它會與其他訊號一併評估，單一讀值不會直接決定綜合分數。
-- **簡中對照：** 这是 SIO 台湾股市恐惧贪婪指数的其中一项输入。它会与其他信号一起评估，单一读数不会直接决定综合分数。
-- **英文對照：** This indicator is one input to the SIO Taiwan Fear & Greed Index. Its contribution is considered alongside other signals; a single reading does not determine the composite score.
-- **韓文候選：** 이 지표는 SIO 대만 시장 공포·탐욕 지수의 입력 항목 중 하나입니다. 다른 신호와 함께 평가되며, 단일 수치가 종합 점수를 결정하지는 않습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.etaDeviation189d.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 臺灣證券交易所有交易戶數統計：https://www.twse.com.tw/zh/statistics/statisticsList?type=07。189 日趨勢偏離由 SIO 計算。
-- **簡中對照：** 台湾证券交易所有效交易账户统计：https://www.twse.com.tw/zh/statistics/statisticsList?type=07。189 日趋势偏离由 SIO 计算。
-- **英文對照：** TWSE active trading account statistics: https://www.twse.com.tw/zh/statistics/statisticsList?type=07. SIO calculates the 189-session trend deviation.
-- **韓文候選：** 대만증권거래소 실제 거래 계좌 통계: https://www.twse.com.tw/zh/statistics/statisticsList?type=07. 189일 추세 편차는 SIO가 계산합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.shortName
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 散戶小台淨部位
-- **簡中對照：** 散户小台净持仓
-- **英文對照：** Retail Mini-Futures Net Position
-- **韓文候選：** 개인 투자자 미니 선물 순포지션
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.pageTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 散戶小台淨部位是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 散户小台净持仓是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Retail Mini-Futures Net Position? Explained: meaning, interpretation and limitations
-- **韓文候選：** 개인 투자자 미니 선물 순포지션 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.pageDescription
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 散戶小台淨部位整合期交所相關報表，估算個人投資人在小型臺指期貨的淨持倉，是 SIO 對散戶期貨部位的衍生觀察值。 正負號表示淨部位方向，數值大小表示淨曝險規模。淨多或淨空不一定直接等於看多或看空，因為期貨也可能用於避險，部位偏向某一側也可能維持一段時間。
-- **簡中對照：** 散户小台净持仓整合期交所相关报告，估算个人投资者在小型台指期货中的净持仓，是 SIO 对散户期货持仓的衍生观察值。 正负号表示净持仓方向，数值大小表示净敞口规模。净多或净空不一定直接等于看多或看空，因为期货也可用于对冲，持仓偏向一侧也可能持续一段时间。
-- **英文對照：** This indicator estimates the net futures position of individual investors in Taiwan mini-TAIEX futures by combining the relevant exchange reports. It is an SIO-derived view of retail positioning in a smaller index-futures contract. The sign indicates the net-position direction and the size indicates the reported net exposure. A net long or net short position is not automatically bullish or bearish: futures can be used for hedging, and positioning can remain crowded longer than expected.
-- **韓文候選：** 대만 미니 주가지수 선물에서 개인 투자자의 순포지션을 살펴봅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.keywords
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 散戶小台淨部位, market sentiment, indicator, how to read
-- **簡中對照：** 散户小台净持仓, market sentiment, indicator, how to read
-- **英文對照：** Retail Mini-Futures Net Position, market sentiment, indicator, how to read
-- **韓文候選：** 개인 투자자 미니 선물 순포지션, market sentiment, indicator, how to read
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.heading
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 散戶小台淨部位是什麼？指標原理、解讀方式與使用限制
-- **簡中對照：** 散户小台净持仓是什么？指标原理、解读方式与使用限制
-- **英文對照：** What is Retail Mini-Futures Net Position? Explained: meaning, interpretation and limitations
-- **韓文候選：** 개인 투자자 미니 선물 순포지션 의미와 해석 방법, 활용 시 유의점
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.lede
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 散戶小台淨部位整合期交所相關報表，估算個人投資人在小型臺指期貨的淨持倉，是 SIO 對散戶期貨部位的衍生觀察值。 正負號表示淨部位方向，數值大小表示淨曝險規模。淨多或淨空不一定直接等於看多或看空，因為期貨也可能用於避險，部位偏向某一側也可能維持一段時間。
-- **簡中對照：** 散户小台净持仓整合期交所相关报告，估算个人投资者在小型台指期货中的净持仓，是 SIO 对散户期货持仓的衍生观察值。 正负号表示净持仓方向，数值大小表示净敞口规模。净多或净空不一定直接等于看多或看空，因为期货也可用于对冲，持仓偏向一侧也可能持续一段时间。
-- **英文對照：** This indicator estimates the net futures position of individual investors in Taiwan mini-TAIEX futures by combining the relevant exchange reports. It is an SIO-derived view of retail positioning in a smaller index-futures contract. The sign indicates the net-position direction and the size indicates the reported net exposure. A net long or net short position is not automatically bullish or bearish: futures can be used for hedging, and positioning can remain crowded longer than expected.
-- **韓文候選：** 개인 투자자 미니 선물 순포지션은 거래소의 관련 보고서를 결합해 개인 투자자의 대만 미니 주가지수 선물 순포지션을 추정합니다. SIO가 계산한 개인 투자자 선물 포지셔닝 지표입니다. 부호는 순포지션 방향을, 크기는 순노출 규모를 나타냅니다. 순매수 또는 순매도 포지션이 곧바로 강세나 약세를 뜻하지는 않습니다. 선물은 헤지에도 사용되며 한쪽 포지션이 예상보다 오래 지속될 수 있습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.whatItIsTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標衡量什麼？
-- **簡中對照：** 这项指标衡量什么？
-- **英文對照：** What does this indicator measure?
-- **韓文候選：** 이 지표는 무엇을 측정하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.whatItIs
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 散戶小台淨部位整合期交所相關報表，估算個人投資人在小型臺指期貨的淨持倉，是 SIO 對散戶期貨部位的衍生觀察值。
-- **簡中對照：** 散户小台净持仓整合期交所相关报告，估算个人投资者在小型台指期货中的净持仓，是 SIO 对散户期货持仓的衍生观察值。
-- **英文對照：** This indicator estimates the net futures position of individual investors in Taiwan mini-TAIEX futures by combining the relevant exchange reports. It is an SIO-derived view of retail positioning in a smaller index-futures contract.
-- **韓文候選：** 개인 투자자 미니 선물 순포지션은 거래소의 관련 보고서를 결합해 개인 투자자의 대만 미니 주가지수 선물 순포지션을 추정합니다. SIO가 계산한 개인 투자자 선물 포지셔닝 지표입니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.howToReadTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 應該如何解讀？
-- **簡中對照：** 应该如何解读？
-- **英文對照：** How should you read it?
-- **韓文候選：** 어떻게 해석해야 하나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.howToRead
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 正負號表示淨部位方向，數值大小表示淨曝險規模。淨多或淨空不一定直接等於看多或看空，因為期貨也可能用於避險，部位偏向某一側也可能維持一段時間。
-- **簡中對照：** 正负号表示净持仓方向，数值大小表示净敞口规模。净多或净空不一定直接等于看多或看空，因为期货也可用于对冲，持仓偏向一侧也可能持续一段时间。
-- **英文對照：** The sign indicates the net-position direction and the size indicates the reported net exposure. A net long or net short position is not automatically bullish or bearish: futures can be used for hedging, and positioning can remain crowded longer than expected.
-- **韓文候選：** 부호는 순포지션 방향을, 크기는 순노출 규모를 나타냅니다. 순매수 또는 순매도 포지션이 곧바로 강세나 약세를 뜻하지는 않습니다. 선물은 헤지에도 사용되며 한쪽 포지션이 예상보다 오래 지속될 수 있습니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.historyTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 歷史資料與更新頻率
-- **簡中對照：** 历史数据与更新频率
-- **英文對照：** Historical data and update frequency
-- **韓文候選：** 과거 데이터와 업데이트 주기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.history
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 上方讀值來自既有情緒總覽 API，並會顯示資料日期。本解說頁不另行提供完整歷史資料 API。各來源的更新頻率與歷史資料可用性不同；SIO 衍生資料對 Free 方案的兩個月延遲，仍由伺服器依方案權限執行。
-- **簡中對照：** 上方读数来自现有情绪总览 API，并显示数据日期。本解说页不会另行开放完整历史数据接口。不同来源的更新频率和历史数据可用性各不相同；SIO 衍生数据对 Free 方案的两个月延迟，仍由服务器按方案权限执行。
-- **英文對照：** The value shown above comes from the existing sentiment-board endpoint and includes its observation date. This explainer does not add a separate historical-data feed. Source frequency and historical availability vary; any Free-plan delay on SIO-derived data continues to be enforced by the server-side plan rules.
-- **韓文候選：** 위 수치는 기존 시장 심리 보드 API에서 가져오며 관측 날짜를 함께 표시합니다. 이 설명 페이지는 별도의 전체 과거 데이터 API를 추가하지 않습니다. 데이터 출처에 따라 업데이트 주기와 과거 데이터 제공 범위가 다릅니다. SIO 파생 데이터에 적용되는 Free 플랜의 2개월 지연은 기존 서버 측 플랜 권한 규칙을 그대로 따릅니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.relationToSioTitle
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項指標與 SIO 的關係
-- **簡中對照：** 这项指标与 SIO 的关系
-- **英文對照：** How does it relate to SIO?
-- **韓文候選：** SIO와 어떤 관계가 있나요?
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.relationToSio
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 這項資料目前提供作為情勢參考，但尚未納入 SIO 台股恐懼貪婪指數的加權計算。閱讀時應將它視為背景資訊，而非綜合分數的組成項目。
-- **簡中對照：** 这项数据目前作为市场参考信息提供，但尚未纳入 SIO 台湾股市恐惧贪婪指数的加权计算。阅读时应将它视为背景信息，而不是综合分数的组成项。
-- **英文對照：** This series is available as a reference on the sentiment board, but it is not currently weighted into the SIO Taiwan Fear & Greed Index. Use it as context rather than treating it as part of the composite calculation.
-- **韓文候選：** 이 데이터는 현재 시장 참고 자료로 제공되지만 SIO 대만 시장 공포·탐욕 지수의 가중 계산에는 포함되지 않습니다. 종합 점수의 구성 요소가 아닌 보조 정보로 해석해야 합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.relationToSioCta
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 查看 SIO 台股恐懼貪婪指數
-- **簡中對照：** 查看 SIO 台湾股市恐惧贪婪指数
-- **英文對照：** View the SIO Taiwan Fear & Greed Index
-- **韓文候選：** SIO 대만 시장 공포·탐욕 지수 보기
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json
-
-### sentimentIndicatorPages.retailSentimentSmallFutures.source
-
-- **審核狀態：** authored_pending_native_language_review_not_released
-- **繁中原文：** 臺灣期貨交易所每日市場交易報告：https://www.taifex.com.tw/cht/3/futDailyMarketReport。散戶小台淨部位由 SIO 依公開報表推算。
-- **簡中對照：** 台湾期货交易所每日市场交易报告：https://www.taifex.com.tw/cht/3/futDailyMarketReport。散户小台净持仓由 SIO 根据公开报告推算。
-- **英文對照：** TAIFEX daily futures market reports: https://www.taifex.com.tw/cht/3/futDailyMarketReport. SIO derives the retail mini-futures net position from published reports.
-- **韓文候選：** 대만 선물거래소(TAIFEX) 일일 선물시장 보고서: https://www.taifex.com.tw/cht/3/futDailyMarketReport. 개인 투자자 미니 선물 순포지션은 SIO가 공개 보고서로부터 산출합니다.
-- **候選來源：** docs/korean-review/drafts/15-indicator-explainers.ko-KR.json

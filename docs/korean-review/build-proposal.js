@@ -107,7 +107,24 @@ function englishFallback(key, en) {
 const tw = flatten(readJson(path.join(SOURCE_LOCALE_DIR, 'zh-TW/translation.json')));
 const cn = flatten(readJson(path.join(SOURCE_LOCALE_DIR, 'zh-CN/translation.json')));
 const en = flatten(readJson(path.join(SOURCE_LOCALE_DIR, 'en/translation.json')));
+const runtimeKo = flatten(readJson(path.join(SOURCE_LOCALE_DIR, 'ko-KR/translation.json')));
 const candidates = loadCandidateFiles();
+const runtimeOnlyPendingKeys = new Set([
+  'priceAnalysis.prompt.loginToAnalyze',
+  'watchlist.stockCard.analysis.unavailable',
+  'watchlist.stockCard.analysis.loadError',
+]);
+const additionalPendingNativeReviewKeys = new Set([
+  'priceAnalysis.tour.start',
+  'priceAnalysis.prompt.loginToAnalyze',
+  ...runtimeOnlyPendingKeys,
+]);
+const aiReviewedUiKeys = new Set([
+  'priceAnalysis.tour.start',
+  'priceAnalysis.prompt.loginToAnalyze',
+  'watchlist.stockCard.analysis.unavailable',
+  'watchlist.stockCard.analysis.loadError',
+]);
 
 const missingCN = Object.keys(tw).filter(key => !(key in cn));
 const extraCN = Object.keys(cn).filter(key => !(key in tw));
@@ -121,7 +138,19 @@ const conflictingCandidates = [];
 
 const entries = Object.entries(tw).map(([key, sourceZhTW]) => {
   const options = (candidates.get(key) || []).sort((a, b) => b.priority - a.priority);
-  const selected = options[0] || null;
+  const selected = aiReviewedUiKeys.has(key) && typeof runtimeKo[key] === 'string'
+    ? {
+      sourceFile: 'src/locales/ko-KR/translation.json (AI Korean editorial revision)',
+      value: runtimeKo[key],
+      priority: 130,
+    }
+    : options[0] || (runtimeOnlyPendingKeys.has(key) && typeof runtimeKo[key] === 'string'
+      ? {
+        sourceFile: 'src/locales/ko-KR/translation.json (runtime-only candidate)',
+        value: runtimeKo[key],
+        priority: 0,
+      }
+      : null);
   if (!selected) missingKorean.push(key);
   const fallback = englishFallback(key, en);
   const sourceTokens = placeholders(sourceZhTW);
@@ -178,19 +207,29 @@ const entries = Object.entries(tw).map(([key, sourceZhTW]) => {
         ? fallback.values.every(value => sameArray(sourceTokens, placeholders(value.value)))
         : false,
     },
-    approvalStatus: selected?.sourceFile.endsWith('15-indicator-explainers.ko-KR.json')
-      ? 'authored_pending_native_language_review_not_released'
+    approvalStatus: (selected?.sourceFile.endsWith('15-indicator-explainers.ko-KR.json')
+      || additionalPendingNativeReviewKeys.has(key))
+      ? 'reviewed_by_ai_korean_editor_pending_human_native_proof_not_released'
       : 'reviewed_by_delegated_editor_not_released',
     legacy171Reconciliation: 'unverified_historical_membership_and_status',
   };
 });
+
+const reviewStatusCounts = entries.reduce((counts, entry) => {
+  counts[entry.approvalStatus] = (counts[entry.approvalStatus] || 0) + 1;
+  return counts;
+}, {});
 
 const summary = {
   sourceLocale: 'zh-TW',
   sourcePath: 'src/locales/zh-TW/translation.json',
   targetLocale: 'ko-KR',
   targetStatus: 'runtime_locale_configured_deployment_not_part_of_this_change',
-  approvalStatus: 'original_2422_reviewed_new_256_indicator_strings_pending_native_review',
+  approvalStatus: '2422_delegated_editor_reviewed_260_ai_korean_editor_reviewed_human_native_proof_pending_not_released',
+  reviewStatusCounts: {
+    delegatedEditorReviewedNotReleased: reviewStatusCounts.reviewed_by_delegated_editor_not_released || 0,
+    aiKoreanEditorReviewedHumanNativeProofPendingNotReleased: reviewStatusCounts.reviewed_by_ai_korean_editor_pending_human_native_proof_not_released || 0,
+  },
   sourceKeyCount: Object.keys(tw).length,
   directObjectStringKeyCount: Object.keys(directTw).length,
   nestedArrayStringLeafCount: nestedArrayStringLeaves.length,
@@ -213,6 +252,7 @@ const artifact = {
   metadata: {
     generatedAt: new Date().toISOString(),
     summary,
+    approvalStatus: summary.approvalStatus,
     terminology: {
       '市場情緒': '시장 심리',
       '投資人情緒': '투자자 심리 (only when explicitly referring to investors)',
@@ -221,6 +261,11 @@ const artifact = {
       '市場動能': '시장 모멘텀',
       '自選列表': '관심 종목',
       'Pro': 'Pro (brand/tier token preserved)',
+      '市場廣度': '시장 폭 (draft term; pending native Korean confirmation)',
+      '融資維持率': '신용융자 담보유지비율 (draft term; Taiwan margin-finance context)',
+      '券資比': '신용대주·신용융자 잔액 비율 (draft explanatory label; numerator/denominator explicit)',
+      '台指選擇權波動率': '대만 주가지수 옵션 내재변동성 (draft term)',
+      '散戶小台淨部位': '개인 투자자 대만 미니 지수선물 순포지션 (draft term)',
       'ETF / tickers / technical identifiers': 'Preserve original identifiers and symbols',
     },
     placeholders: 'Names and case must match the source. All entries are machine checked below.',
@@ -256,8 +301,13 @@ const detailedEntries = entries.map(entry => [
   '',
 ].join('\n')).join('\n');
 
-const report = `# ko-KR Korean translation review proposal\n\nGenerated: ${artifact.metadata.generatedAt}\n\n## Coverage\n\n| Item | Count / result |\n|---|---:|\n| zh-TW direct object string keys | ${summary.directObjectStringKeyCount} |\n| Additional nested array string leaves | ${summary.nestedArrayStringLeafCount} |\n| Total translatable source string leaves | ${summary.sourceKeyCount} |\n| zh-CN source string leaves | ${summary.zhCN.keyCount}; missing ${summary.zhCN.missing}; extra ${summary.zhCN.extra} |\n| EN source string leaves | ${summary.en.keyCount}; missing English fallback ${summary.en.missingFallback} |\n| Korean proposed strings | ${summary.korean.proposed} |\n| Korean missing strings | ${summary.korean.missing} |\n| Korean placeholder mismatches | ${summary.korean.placeholderMismatches} |\n| English placeholder mismatches | ${summary.korean.englishPlaceholderMismatches} |\n| Conflicting candidate strings | ${summary.korean.conflictingCandidates} |\n\nThe original 2,422 entries retain their existing editorial review status. The additional 256 indicator explainer strings are included as authored candidates and remain pending native-language review. These review artifacts are separate from the runtime locale files.\n\n## Historical 171-item proposal\n\n${summary.legacy171.status}. ${summary.legacy171.handling}\n\n## Terminology\n\n- 市場情緒 → **시장 심리**\n- 投資人情緒 → **투자자 심리** when the subject is investors specifically\n- 恐懼與貪婪指數 → **공포·탐욕 지수**\n- 樂活五線譜 → **LOHAS 5선 분석**\n- 市場動能 → **시장 모멘텀**\n- 自選列表 → **관심 종목**\n- Preserve SIO, LOHAS, Pro, ETFs, stock tickers, API names, formulas and placeholders.\n\n## Review constraints\n\n- Use natural South Korean fintech vocabulary and Korean word spacing.\n- Explanatory prose uses a consistent formal 합니다 style; compact controls use concise product UI wording.\n- Preserve source conditions, limits, dates, amounts, currencies and legal meaning.\n- Do not invent data-source definitions, calculations, predictive certainty or product functions.\n- Every entry includes zh-TW and zh-CN source text, English source/fallback, the Korean candidate, provenance, alternatives and placeholder audit.\n\n---\n\n# Complete per-key review list (${entries.length} string leaves)\n\n${detailedEntries}`;
-fs.writeFileSync(OUTPUT_REPORT, report);
+const report = `# ko-KR Korean translation review proposal\n\nGenerated: ${artifact.metadata.generatedAt}\n\n## Coverage\n\n| Item | Count / result |\n|---|---:|\n| zh-TW direct object string keys | ${summary.directObjectStringKeyCount} |\n| Additional nested array string leaves | ${summary.nestedArrayStringLeafCount} |\n| Total translatable source string leaves | ${summary.sourceKeyCount} |\n| zh-CN source string leaves | ${summary.zhCN.keyCount}; missing ${summary.zhCN.missing}; extra ${summary.zhCN.extra} |\n| EN source string leaves | ${summary.en.keyCount}; missing English fallback ${summary.en.missingFallback} |\n| Korean proposed strings | ${summary.korean.proposed} |\n| Korean missing strings | ${summary.korean.missing} |\n| Korean placeholder mismatches | ${summary.korean.placeholderMismatches} |\n| English placeholder mismatches | ${summary.korean.englishPlaceholderMismatches} |\n| Conflicting candidate strings | ${summary.korean.conflictingCandidates} |\n\nThe 2,422 entries with delegated-editor review retain that provenance and are not native-speaker certified or released. A further 260 entries have now received an AI-assisted Korean editorial review: 256 indicator-explainer strings and four UI strings. Human native-language proof is still pending for all 260, and none of these entries is released. These review artifacts are separate from the runtime locale files.\n\n## Historical 171-item proposal\n\n${summary.legacy171.status}. ${summary.legacy171.handling}\n\n## Terminology\n\n- 市場情緒 → **시장 심리**\n- 投資人情緒 → **투자자 심리** when the subject is investors specifically\n- 恐懼與貪婪指數 → **공포·탐욕 지수**\n- 樂活五線譜 → **LOHAS 5선 분석**\n- 市場動能 → **시장 모멘텀**\n- 自選列表 → **관심 종목**\n- Preserve SIO, LOHAS, Pro, ETFs, stock tickers, API names, formulas and placeholders.\n\n## Review constraints\n\n- Use natural South Korean fintech vocabulary and Korean word spacing.\n- Explanatory prose uses a consistent formal 합니다 style; compact controls use concise product UI wording.\n- Preserve source conditions, limits, dates, amounts, currencies and legal meaning.\n- Do not invent data-source definitions, calculations, predictive certainty or product functions.\n- Every entry includes zh-TW and zh-CN source text, English source/fallback, the Korean candidate, provenance, alternatives and placeholder audit.\n\n---\n\n# Complete per-key review list (${entries.length} string leaves)\n\n${detailedEntries}`;
+const correctedStatusNote = `The 2,422 entries with delegated-editor review retain that provenance and are not native-speaker certified or released. A further 260 entries have now received an AI-assisted Korean editorial review: 256 indicator-explainer strings and four UI strings. Human native-language proof is still pending for all 260, and none of these entries is released. These review artifacts are separate from the runtime locale files.`;
+const correctedReport = report.replace(
+  /The original 2,422 entries retain their existing editorial review status\. The additional 256 indicator explainer strings are included as authored candidates and remain pending native-language review\. These review artifacts are separate from the runtime locale files\./,
+  correctedStatusNote,
+);
+fs.writeFileSync(OUTPUT_REPORT, correctedReport);
 
 console.log(JSON.stringify(summary, null, 2));
 if (missingCN.length || extraCN.length || missingEnglishFallback.length || missingKorean.length

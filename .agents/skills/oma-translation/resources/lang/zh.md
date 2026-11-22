@@ -19,13 +19,17 @@ string, because script, vocabulary, and punctuation all diverge.
 |---|---|---|
 | `zh-CN` / `zh-Hans` | 简体 | 软件, 网络, 程序, 服务器, 内存, 视频 |
 | `zh-TW` / `zh-Hant-TW` | 繁體 | 軟體, 網路, 程式, 伺服器, 記憶體, 影片 |
-| `zh-HK` / `zh-Hant-HK` | 繁體 | mostly TW vocabulary, HK-specific terms where established |
+| `zh-HK` / `zh-Hant-HK` | 繁體 | Hong Kong written Chinese; load `zh-HK.md` for product and Taiwan-finance terminology |
 
 Resolution order: explicit locale in the file path or user request → dominant
 script of sibling files → ask. If bare `zh` is requested with no signal, default
 to `zh-CN` and say so once in the output notes. Never mix scripts in one file,
 and never convert 简体 to 繁體 by character substitution alone: the vocabulary
 must be converted too (`软件` → `軟體`, not `軟件`).
+
+When the locale is `zh-HK`, read `zh-HK.md` after this shared profile. Its
+Hong Kong term choices override generic Traditional-Chinese preferences only
+within their stated product, financial, and market scope.
 
 ## Register
 

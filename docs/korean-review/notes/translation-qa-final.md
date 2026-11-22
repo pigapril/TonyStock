@@ -1,6 +1,6 @@
 # ko-KR Korean translation QA — final report
 
-**Review and implementation status:** The 2,422 reviewed Korean resource strings and production-visible UI copy are now registered and implemented under `ko-KR`; frontend/backend tests and production build passed locally. The site has **not** been deployed. This remains an editorial/semantic review, not native-speaker certification or a Taiwan legal opinion.
+**Review and implementation status (reconciled 2026-11-22):** The runtime Korean locale contains 2,682 strings. The earlier 2,422-string editorial batches retain their delegated-editor review provenance; they are not native-speaker certified or released. A further 260 strings have now received an AI-assisted Korean editorial review (256 indicator-explainer strings and four UI strings); qualified human native-language proof remains pending for all 260. The site has **not** been deployed. This remains an editorial/semantic review, not native-speaker certification or a Taiwan legal opinion.
 
 ## 1. Coverage
 
@@ -16,7 +16,7 @@
 | `08-indicator-pages` | 136 | All keys reviewed; no further definite Korean corrections; 2 data/source-claim blockers |
 | `13-nested-array-string-leaves` | 157 | All array leaves reviewed; no definite Korean corrections; 3 source-claim blockers |
 
-The direct-object batches total 2,265 keys. The 157 nested array leaves bring the full resource to **2,422 strings**. The additional 173 rows in `03-market-sentiment-missing.json` repeat the 306 unique market-sentiment entries; they are not additional distinct strings.
+The original editorial batches total 2,265 direct-object keys. The 157 nested array leaves brought that review inventory to **2,422 strings**. The additional 173 rows in `03-market-sentiment-missing.json` repeat the 306 unique market-sentiment entries; they are not additional distinct strings. These historical batch totals are separate from the subsequently expanded 2,682-string runtime locale.
 
 The separately inventoried hardcoded/dynamic set is **296 entries**: 244 AST candidates plus 30 market copy entries plus 22 dynamic redemption entries. All 296 received QA. The four PlanCard comparison tokens were not translated because they were code-logic strings; runtime access classification was migrated to stable semantic feature IDs instead. Production-visible market, redemption, subscription, announcement/admin, footer and action copy is localized; debug/log-only strings remain untranslated.
 
@@ -26,14 +26,14 @@ The complete Terms and Privacy draft and its legal metadata were also reviewed a
 
 Latest `node docs/korean-review/build-proposal.js` result:
 
-- Source strings: 2,422 (2,265 direct object keys + 157 nested array leaves).
-- Korean candidates: 2,422/2,422; no blank candidates or missing keys.
+- Source strings: 2,682 (2,525 direct object string keys + 157 nested array leaves).
+- Korean candidates: 2,682/2,682; no blank candidates or missing keys.
 - Placeholder mismatches: 0.
 - English-fallback placeholder mismatches: 0.
-- zh-CN key alignment: 2,422/2,422, with no missing or extra keys.
-- English fallback resolution: all 2,422 source strings resolve; no missing fallback.
-- Different source candidates are preserved as alternatives for 149 keys; none are silently discarded.
-- All 2,422 entries carry `reviewed_by_delegated_editor_not_released` as an editorial provenance label; runtime Korean resources are now generated and registered separately.
+- zh-CN key alignment: 2,682/2,682, with no missing or extra keys.
+- English fallback resolution: all 2,682 source strings resolve; no missing fallback.
+- Different source candidates are preserved as alternatives for 151 keys; none are silently discarded.
+- Editorial provenance: 2,422 entries are `reviewed_by_delegated_editor_not_released`; 260 are `reviewed_by_ai_korean_editor_pending_human_native_proof_not_released`; none are approved for release.
 
 Thirty-five final Korean wording decisions are centralized in `drafts/reviewed-overrides.ko-KR.json`; the proposal builder applies them at highest candidate priority while retaining the legacy candidates and alternatives. The original legacy proposal files were not overwritten.
 
@@ -49,7 +49,7 @@ Thirty-five final Korean wording decisions are centralized in `drafts/reviewed-o
 ### Taiwan-market finance terminology
 
 - `融資維持率` is expressed as `신용융자 담보유지비율`.
-- `券資比` is expressed as `신용융자 잔고 대비 신용대주 잔고 비율`, preserving both the short-balance numerator and margin-financing denominator. The former `공매도 잔고 비율` wording was insufficiently specific.
+- `券資比` is expressed as `신용대주·신용융자 잔액 비율`; the explainer explicitly identifies the short-balance numerator and margin-financing denominator. The former `공매도 잔고 비율` wording was insufficiently specific.
 - `融資融券` in the Taiwan-market explanation is expressed as `신용융자·대주`, not generic `신용거래`.
 - `시장 폭` is retained for market breadth; it is an established Korean finance term. Fear-breadth labels are more explicit (`극단적 공포 종목 비율`) where the calculation is a proportion of securities beyond the lower -2σ band.
 
@@ -113,7 +113,7 @@ These are not Korean grammar problems. The Korean generally preserves the source
 
 ## 7. Existing project checks and release status
 
-- `ko-KR` is registered in locale config/i18next/LanguageSwitcher/App routes; 2,422 keys are present with zero unresolved fallback and zero placeholder mismatches.
+- `ko-KR` is registered in locale config/i18next/LanguageSwitcher/App routes; 2,682 keys are present with zero unresolved fallback and zero placeholder mismatches. The review artifact records 2,422 delegated-editor-reviewed strings and 260 AI Korean-editorial-reviewed strings awaiting human native-language proof; neither status represents release approval.
 - Full frontend Jest: **107 suites / 793 tests passed**. Full backend Jest: **149 suites / 1,730 tests passed**.
 - Production build: successful (compiled with existing warnings). SEO generator wrote 83 files; sitemap has 82 URLs including 18 Korean routes, and all 18 Korean shells passed canonical/hreflang/manifest/OG checks. There are no Korean article-detail or Taiwan-only sponsor URLs.
 - ECPay lifecycle targeted tests cover all documented transaction states, recovery, retries and escalation. No live `DoAction` transaction or production deploy was performed.
@@ -121,4 +121,22 @@ These are not Korean grammar problems. The Korean generally preserves the source
 
 ## Final disposition
 
-The reviewed Korean core resources, market copy, subscription copy, production-visible announcement/admin actions, route fallback and SEO assets are implemented locally and tested. Remaining publication gates are Taiwan legal review, live ECPay merchant validation and manual refund operations, evidence for the listed market-data claims, and optional final native-speaker proofing. Korean articles, emails/support FAQ and invoice PDFs still use clearly identified English content/fallback where no Korean source is published. No changes have been committed, pushed or deployed.
+The Korean runtime resources, market copy, subscription copy, production-visible announcement/admin actions, route fallback and SEO assets are implemented locally. The 260 newly edited strings still require a qualified human Korean native-language proof before they can be treated as fully verified; this report does not claim that such proof has occurred. Other publication gates include Taiwan legal review, live ECPay merchant validation and manual refund operations, and evidence for the listed market-data claims. Korean articles, emails/support FAQ and invoice PDFs still use clearly identified English content/fallback where no Korean source is published. No changes have been committed, pushed or deployed.
+
+## 2026-11-22 translation QA follow-up
+
+- Rebuilt the current proposal from the live `zh-TW` source and Korean candidate files: 2,682/2,682 candidate strings, no missing keys, and no placeholder mismatches.
+- Reconciled editorial provenance: 2,422 delegated-editor reviewed / not released; 260 AI Korean-editorial reviewed / human native-language proof pending / not released; zero unclassified entries. The 260 reviewed strings comprise 256 indicator-explainer strings and four UI strings (two Price Analysis and two Watchlist).
+- The earlier Korean morphology cleanup on the indicator pages was carried forward and superseded by the full 260-item editorial pass below. The final checks found no chained-genitive constructions in the 260 revised strings. The separate `about.section1Text` revision also remains in the Korean candidate set.
+- Scanned all four Korean article files for the profile's high-signal issues: no double-passive forms, listed loanword misspellings, common Japanese-style calques, or ASCII ellipses were found. Corrected three definite issues: clarified that the introductory passage covers market indicators (not generic data), added the `점` unit to SIO readings 1.5 and 4.2, changed the Article 4 SEO title to avoid a chained-genitive phrase, and aligned Article 5's screener label with the actual `모멘텀 종목 찾기` UI label.
+- The Korean prose and articles still require a qualified human Korean editor's final pass before any native-language approval or release claim.
+
+
+## 2026-11-22 Korean editorial review of the 260-item batch
+
+- Completed an item-by-item Korean editorial revision of all 256 indicator-explainer fields (16 pages × 16 fields) and all four associated UI strings.
+- Reviewed short names, page titles/headings, SEO descriptions and keywords, lead paragraphs, definitions, interpretation guidance, history/update notes, SIO-composite relationships, CTAs and data-source statements as a connected page, rather than as isolated strings.
+- Clarified financial definitions and calculations, including the direction of Put/Call Ratio, USD/TWD movement, the net futures-position indicators, the denominator/numerator of the Taiwan margin-balance ratio, and the distinction between the index and market breadth.
+- Recorded five locale-specific terminology decisions as draft terms pending owner/native-speaker confirmation: 시장 폭, 신용융자 담보유지비율, 신용대주·신용융자 잔액 비율, 대만 주가지수 옵션 내재변동성, and 개인 투자자 대만 미니 지수선물 순포지션.
+- Preserved all source URLs, numeric values in explanatory prose, product identifiers and placeholders. The 2,682-key Korean proposal has zero missing strings and zero placeholder mismatches.
+- Final editorial status: 2,422 delegated-editor reviewed / not released; 260 AI Korean-editorial reviewed / human native-language proof pending / not released. This is not a human native-speaker certification or release approval.

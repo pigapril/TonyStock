@@ -5,6 +5,9 @@ description: Use when refining Chinese translations for script and region, inclu
 
 # Translating Chinese
 
+Read `oma-translation/resources/lang/zh.md` for shared Chinese guidance and,
+when the target is `zh-HK`, also read its dedicated `zh-HK.md` locale profile.
+
 ## Overview
 
 Revise an approved `translating-core` draft into natural Chinese for the configured script, region, market, audience, and register. Preserve meaning, glossary decisions, placeholders, resource syntax, and protected values exactly.
@@ -63,6 +66,7 @@ Pass source, core draft, revision, full locale and market, register, exact-local
 - script and region match the configured locale throughout; no unapproved cross-region mixture remains
 - meaning, actors, facts, names, numbers, links, placeholders, and structure remain complete
 - terminology is approved for this locale rather than merely character-converted
+- `zh-HK` uses its dedicated locale profile and contains no unsafe substring-replacement artifacts
 - classifiers and surrounding grammar work for representative runtime values
 - punctuation, quotation marks, no-space conventions, and Latin boundaries fit the target market and format
 - UI copy is concise and unambiguous; long-form prose has natural regional Chinese flow
