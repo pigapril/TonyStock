@@ -34,11 +34,6 @@ export default function PaymentTrustNotice({ amount, billingPeriod, lang }) {
                         })}
                     </p>
                 )}
-                <div className="payment-page__support-links">
-                    <a className="payment-page__link" href={`/${lang}/user-account`} target="_blank" rel="noopener noreferrer">{t('payment.security.cancel')}</a>
-                    <a className="payment-page__link" href={`/${lang}/legal`} target="_blank" rel="noopener noreferrer">{t('payment.security.policy')}</a>
-                    <a className="payment-page__link" href="mailto:support@sentimentinsideout.com">{t('payment.security.support')}</a>
-                </div>
             </div>
         </div>
     );

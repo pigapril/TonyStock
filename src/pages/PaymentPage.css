@@ -920,12 +920,6 @@ er Summary Discount Styles */
   line-height: 1.6;
 }
 
-.payment-page__support-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 20px;
-}
-
 .payment-page__security-text {
   min-width: 0;
   overflow-wrap: anywhere;

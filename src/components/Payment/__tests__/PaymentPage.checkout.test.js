@@ -47,8 +47,11 @@ describe.each([
     const { container } = render(<I18nextProvider i18n={i18n}><PaymentPage /></I18nextProvider>);
     await waitFor(() => expect(container.querySelector('.payment-page__loading')).not.toBeInTheDocument());
     expect(screen.getAllByAltText('Mastercard')).toHaveLength(1);
+    expect(container.querySelectorAll('.payment-page__security-notice a')).toHaveLength(0);
     scrollTo.mockClear();
     fireEvent.click(screen.getByRole('button', { name: i18n.t('payment.form.confirmPlan') }));
+    expect(screen.getByRole('link', { name: i18n.t('payment.form.termsAndConditions') }))
+      .toHaveAttribute('href', `/${lang}/legal`);
     expect(scrollTo).toHaveBeenCalledTimes(1);
     expect(scrollTo).toHaveBeenLastCalledWith(0, 0);
     fireEvent.click(screen.getByRole('checkbox'));
