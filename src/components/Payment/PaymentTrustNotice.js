@@ -27,7 +27,7 @@ export default function PaymentTrustNotice({ amount, billingPeriod, lang }) {
                     ))}
                 </ul>
                 {Number.isFinite(Number(amount)) && (
-                    <p className="payment-page__renewal-notice">
+                    <p className="payment-page__renewal-notice" data-testid="payment-renewal-notice">
                         {t('payment.security.renewal', {
                             amount: Number(amount).toLocaleString(getIntlLocale(lang)),
                             period: t(`payment.security.${billingPeriod === 'monthly' ? 'monthly' : 'yearly'}`)

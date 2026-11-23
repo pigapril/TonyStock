@@ -924,3 +924,430 @@ er Summary Discount Styles */
   min-width: 0;
   overflow-wrap: anywhere;
 }
+
+/* Single-page checkout: the signed backend order is the source of truth. */
+.payment-page__container {
+  max-width: 1120px;
+}
+
+.payment-page__header {
+  position: relative;
+  background: transparent;
+  border-bottom: 0;
+  padding: 28px 36px 12px;
+  backdrop-filter: none;
+}
+
+.payment-page__header .payment-page__back-button {
+  margin-bottom: 18px;
+}
+
+.payment-page__title-section {
+  max-width: none;
+  text-align: left;
+}
+
+.payment-page__title {
+  text-align: left;
+  font-size: clamp(26px, 3vw, 34px);
+  letter-spacing: -0.035em;
+  margin-bottom: 8px;
+}
+
+.payment-page__subtitle {
+  font-size: 15px;
+}
+
+.payment-page__content--single {
+  width: 100%;
+  max-width: 1120px;
+  padding: 20px 36px 56px;
+  margin: 0 auto;
+}
+
+.payment-page__checkout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(360px, 0.96fr);
+  align-items: start;
+  gap: 24px;
+  width: 100%;
+}
+
+.payment-page__summary-column,
+.payment-page__terms-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.payment-page__summary-column .payment-page__plan-card,
+.payment-page__summary-column .payment-page__security-notice,
+.payment-page__terms-column .payment-page__terms-content,
+.payment-page__terms-column .payment-page__payment-method-card {
+  margin: 0;
+}
+
+.payment-page__order-summary {
+  padding: 28px;
+}
+
+.payment-page__checkout-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.payment-page__checkout-card-heading .payment-page__summary-title {
+  margin: 0;
+  text-align: left;
+  font-size: 18px;
+}
+
+.payment-page__checkout-card-heading .payment-page__plan-badge {
+  margin: 0;
+}
+
+.payment-page__plan-header {
+  text-align: left;
+  margin: 0 0 22px;
+  padding: 0 0 22px;
+  border-bottom: 1px solid var(--color-border-soft, #e5e5e5);
+}
+
+.payment-page__plan-name {
+  font-size: 21px;
+  margin-bottom: 8px;
+}
+
+.payment-page__plan-price {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.payment-page__plan-amount {
+  font-size: clamp(30px, 4vw, 38px);
+  letter-spacing: -0.035em;
+}
+
+.payment-page__plan-period {
+  font-size: 15px;
+}
+
+.payment-page__plan-discount {
+  display: inline-block;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.payment-page__order-details {
+  gap: 14px;
+}
+
+.payment-page__order-row {
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.payment-page__order-row span:last-child {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.payment-page__order-reference {
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border-soft, #e5e5e5);
+}
+
+.payment-page__order-reference .payment-page__order-id {
+  max-width: 65%;
+}
+
+.payment-page__order-total-amount {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.payment-page__plan-features {
+  margin-top: 22px;
+  padding-top: 20px;
+}
+
+.payment-page__features-title {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.payment-page__feature-item {
+  font-size: 14px;
+  padding: 6px 0;
+}
+
+.payment-page__feature-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(52, 199, 89, 0.12);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.payment-page__security-notice {
+  padding: 20px;
+  margin: 0;
+  gap: 12px;
+}
+
+.payment-page__security-text h4 {
+  margin-bottom: 8px;
+}
+
+.payment-page__security-text li {
+  font-size: 13px;
+}
+
+.payment-page__security-text .payment-page__renewal-notice {
+  font-size: 13px;
+  margin: 12px 0 0;
+}
+
+.payment-page__terms-content {
+  padding: 26px;
+}
+
+.payment-page__terms-title {
+  font-size: 19px;
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.payment-page__terms-box {
+  max-height: 360px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+.payment-page__terms-group h3,
+.payment-page__terms-group h4 {
+  font-size: 14px;
+  font-weight: 650;
+  margin: 0 0 10px;
+}
+
+.payment-page__terms-group li {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.payment-page__checkbox-label {
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.payment-page__checkbox {
+  flex: 0 0 18px;
+  margin-top: 2px;
+}
+
+.payment-page__checkbox-text {
+  font-size: 14px;
+}
+
+.payment-page__payment-method-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+}
+
+.payment-page__payment-method-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-link, #007aff);
+  background: var(--color-bg-subtle, #f0f0f0);
+  flex: 0 0 auto;
+}
+
+.payment-page__payment-method-card h3 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--color-text-primary, rgba(0, 0, 0, 0.85));
+}
+
+.payment-page__payment-method-card p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+}
+
+.payment-page__checkout-actions {
+  justify-content: stretch;
+  gap: 12px;
+}
+
+.payment-page__checkout-actions .payment-page__button {
+  min-height: 48px;
+  flex: 1 1 auto;
+  margin: 0;
+}
+
+.payment-page__checkout-actions .payment-page__submit-button {
+  flex: 1.6 1 auto;
+  font-weight: 650;
+}
+
+.payment-page__checkout-actions .payment-page__submit-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.payment-page__order-loading {
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.60));
+}
+
+.payment-page__retry-button {
+  margin: 16px auto 0;
+}
+
+.payment-page__error-message {
+  max-width: 1048px;
+  margin: 0 auto 8px;
+}
+
+@media (max-width: 900px) {
+  .payment-page__checkout-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .payment-page__summary-column,
+  .payment-page__terms-column {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .payment-page__header {
+    padding: 18px 20px 8px;
+  }
+
+  .payment-page__header .payment-page__back-button {
+    margin-bottom: 14px;
+  }
+
+  .payment-page__title-section {
+    text-align: left;
+  }
+
+  .payment-page__title {
+    text-align: left;
+    font-size: 25px;
+  }
+
+  .payment-page__subtitle {
+    font-size: 14px;
+  }
+
+  .payment-page__content--single {
+    padding: 16px 20px 36px;
+  }
+
+  .payment-page__order-summary,
+  .payment-page__terms-content {
+    padding: 22px;
+  }
+
+  .payment-page__terms-box {
+    max-height: 300px;
+  }
+
+  .payment-page__actions.payment-page__checkout-actions {
+    flex-direction: column-reverse;
+  }
+
+  .payment-page__checkout-actions .payment-page__button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-page__header {
+    padding: 14px 16px 6px;
+  }
+
+  .payment-page__content--single {
+    padding: 14px 16px 28px;
+  }
+
+  .payment-page__order-summary,
+  .payment-page__terms-content,
+  .payment-page__security-notice {
+    padding: 18px;
+  }
+
+  .payment-page__checkout-card-heading .payment-page__summary-title {
+    font-size: 16px;
+  }
+
+  .payment-page__plan-amount {
+    font-size: 30px;
+  }
+
+  .payment-page__order-row {
+    font-size: 13px;
+  }
+
+  .payment-page__payment-method-card {
+    padding: 15px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .payment-page__header {
+    background: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .payment-page__payment-method-icon {
+    background: rgba(58, 58, 60, 0.7);
+  }
+
+  .payment-page__payment-method-card h3 {
+    color: rgba(235, 235, 245, 0.85);
+  }
+
+  .payment-page__payment-method-card p {
+    color: rgba(235, 235, 245, 0.60);
+  }
+
+  .payment-page__order-reference {
+    border-top-color: rgba(84, 84, 88, 0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .payment-page *,
+  .payment-page *::before,
+  .payment-page *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

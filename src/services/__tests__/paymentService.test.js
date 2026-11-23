@@ -48,6 +48,76 @@ describe('paymentService', () => {
     expect(result).toEqual(responseData);
   });
 
+  it('coalesces concurrent identical create-order requests into one POST', async () => {
+    const orderData = {
+      planType: 'pro',
+      billingPeriod: 'monthly',
+      paymentMethod: 'Credit',
+      appliedDiscount: { type: 'fixed', amount: 20 }
+    };
+    const responseData = {
+      orderId: 'order-single-flight',
+      merchantTradeNo: 'TN-SINGLE-FLIGHT',
+      amount: 179,
+      paymentUrl: 'https://payment.ecpay.com.tw/test'
+    };
+    let resolveRequest;
+    mockApiClient.mockReturnValue(new Promise(resolve => {
+      resolveRequest = resolve;
+    }));
+
+    const first = paymentService.createOrder(orderData);
+    const second = paymentService.createOrder({
+      appliedDiscount: { amount: 20, type: 'fixed' },
+      paymentMethod: 'Credit',
+      billingPeriod: 'monthly',
+      planType: 'pro'
+    });
+
+    expect(mockApiClient).toHaveBeenCalledTimes(1);
+    resolveRequest({ data: { status: 'success', data: responseData } });
+
+    await expect(Promise.all([first, second])).resolves.toEqual([responseData, responseData]);
+    expect(mockApiClient).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not automatically replay create-order after a server error', async () => {
+    const serverError = new Error('Internal Server Error');
+    serverError.response = { status: 500, data: { errorCode: 'CREATE_ORDER_FAILED' } };
+    mockApiClient.mockRejectedValue(serverError);
+
+    await expect(paymentService.createOrder({
+      planType: 'pro',
+      billingPeriod: 'monthly',
+      paymentMethod: 'Credit'
+    })).rejects.toBe(serverError);
+
+    expect(mockApiClient).toHaveBeenCalledTimes(1);
+  });
+
+  it('marks an order as handed off before submitting its ECPay form', async () => {
+    const responseData = {
+      orderId: 'order-123',
+      merchantTradeNo: 'TN123456789',
+      amount: 299,
+      status: 'pending'
+    };
+    mockApiClient.mockResolvedValue({
+      data: {
+        status: 'success',
+        data: responseData
+      }
+    });
+
+    const result = await paymentService.markPaymentSubmissionStarted('order-123');
+
+    expect(mockApiClient).toHaveBeenCalledWith({
+      method: 'POST',
+      url: '/api/payment/mark-submission/order-123'
+    });
+    expect(result).toEqual(responseData);
+  });
+
   it('queries payment status by merchantTradeNo', async () => {
     const responseData = {
       orderStatus: 'paid',

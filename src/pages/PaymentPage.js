@@ -1,10 +1,10 @@
 /**
- * 專用付款頁面
- * 
- * Apple 風格的獨立付款頁面，提供清晰的付款流程
+ * Single-page subscription checkout.
+ * The backend creates (or reuses) the authoritative pending order on entry;
+ * ECPay is contacted only when the user agrees to the terms and continues.
  */
 
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../components/Auth/useAuth';
@@ -20,154 +20,189 @@ import PaymentTrustNotice from '../components/Payment/PaymentTrustNotice';
 import { getIntlLocale, getPaymentServiceLocale } from '../locales/localeConfig';
 import './PaymentPage.css';
 
+const wait = (milliseconds) => new Promise(resolve => setTimeout(resolve, milliseconds));
+
+const createOrderWithLockRetry = async (orderPayload) => {
+    const retryDelays = [350, 700, 1200, 1800, 2500];
+
+    for (let attempt = 0; ; attempt += 1) {
+        try {
+            return await paymentService.createOrder(orderPayload);
+        } catch (error) {
+            const isLockContention = [
+                'ORDER_CREATION_IN_PROGRESS',
+                'SUBSCRIPTION_REQUEST_IN_PROGRESS'
+            ].includes(error.response?.data?.errorCode);
+            if (!isLockContention || attempt >= retryDelays.length) throw error;
+            await wait(retryDelays[attempt]);
+        }
+    }
+};
+
 const PaymentPage = () => {
     const { t } = useTranslation();
     const { lang } = useParams();
     const displayLocale = getIntlLocale(lang);
-    const formatAmount = (amount) => amount == null ? '' : Number(amount).toLocaleString(displayLocale);
+    const formatAmount = (amount) => Number(amount ?? 0).toLocaleString(displayLocale);
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const { user, loading: authLoading } = useAuth();
+    const userId = user?.id;
     const { userPlan } = useSubscription();
     const [searchParams] = useSearchParams();
 
-
-
     const planType = searchParams.get('plan') || 'pro';
     const billingPeriod = searchParams.get('period') || 'monthly';
-    const [loading, setLoading] = useState(false);
-    const [currentStep, setCurrentStep] = useState(1);
-    const [paymentMethod, setPaymentMethod] = useState('Credit');
+    const redemptionCode = searchParams.get('redemption') || searchParams.get('redemptionCode');
+    const discountValue = searchParams.get('discountValue');
+    const discountType = searchParams.get('discountType');
+    const selectedPlan = useMemo(
+        () => subscriptionService.getAvailablePlans().find(plan => plan.id === planType),
+        [planType]
+    );
+
+    const [orderLoading, setOrderLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
     const [agreedToTerms, setAgreedToTerms] = useState(false);
     const [orderData, setOrderData] = useState(null);
     const [error, setError] = useState(null);
-    const [appliedDiscount, setAppliedDiscount] = useState(null);
-    const [appliedRedemption, setAppliedRedemption] = useState(null);
-    const [originalAmount, setOriginalAmount] = useState(null);
-    const [finalAmount, setFinalAmount] = useState(null);
+    const [retryCount, setRetryCount] = useState(0);
+    const pageViewTrackedRef = useRef(null);
 
-    // Reset the viewport after the new checkout step has rendered.
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [currentStep]);
+    }, []);
 
-    // 確保用戶已登入並檢查折扣信息
+    // Keep the login redirect compatible with the selected plan and coupon.
     useEffect(() => {
+        if (authLoading) return;
+
         if (!user) {
             navigate(`/${lang}/subscription-plans`, {
                 state: {
                     message: t('payment.loginRequired'),
-                    returnTo: `/payment?plan=${planType}&period=${billingPeriod}`
+                    returnTo: `/payment?${searchParams.toString()}`
                 }
             });
-            return;
         }
+    }, [authLoading, user, navigate, lang, searchParams, t]);
 
-        // 檢查URL參數中的折扣信息
-        const discountValue = searchParams.get('discountValue');
-        const discountType = searchParams.get('discountType');
-        const originalPrice = searchParams.get('originalPrice');
-        const finalPrice = searchParams.get('finalPrice');
-        const redemptionCode = searchParams.get('redemption') || searchParams.get('redemptionCode');
+    // Keep analytics separate from order creation. The subscription context
+    // may finish loading after checkout mounts; that must not POST another order.
+    useEffect(() => {
+        if (authLoading || !userId) return;
 
-        // 設置價格信息
-        if (originalPrice) setOriginalAmount(parseFloat(originalPrice));
-        if (finalPrice) setFinalAmount(parseFloat(finalPrice));
+        const pageViewKey = JSON.stringify([
+            userId,
+            planType,
+            billingPeriod,
+            redemptionCode || null,
+            discountValue || null
+        ]);
+        if (pageViewTrackedRef.current === pageViewKey) return;
+        pageViewTrackedRef.current = pageViewKey;
 
-        // 處理優惠碼信息
-        if (redemptionCode) {
-            console.log('🔗 PaymentPage 從 URL 參數中發現優惠碼:', redemptionCode);
-            console.log('🔍 PaymentPage URL 參數詳細:', {
-                discountValue: discountValue,
-                discountType: discountType,
-                originalPrice: originalPrice,
-                finalPrice: finalPrice,
-                redemptionCode: redemptionCode,
-                allParams: Object.fromEntries(searchParams.entries())
-            });
-
-            // 🔧 修復：確保正確解析折扣數值
-            const parsedDiscountValue = discountValue ? parseFloat(discountValue) : 0;
-            const parsedOriginalPrice = originalPrice ? parseFloat(originalPrice) : null;
-            const parsedFinalPrice = finalPrice ? parseFloat(finalPrice) : null;
-
-            console.log('🔍 PaymentPage 解析後的數值:', {
-                parsedDiscountValue,
-                parsedOriginalPrice,
-                parsedFinalPrice
-            });
-
-            // 🔧 修復：根據折扣類型設置正確的 benefits 結構
-            const benefits = {
-                type: 'discount',
-                discountType: discountType || 'FIXED_AMOUNT_DISCOUNT'
-            };
-
-            // 根據折扣類型設置不同的字段
-            if (discountType === 'PERCENTAGE_DISCOUNT' || discountType === 'percentage') {
-                // 百分比折扣
-                benefits.savingsPercentage = parsedDiscountValue;
-                benefits.discountPercentage = parsedDiscountValue;
-                console.log('🔍 PaymentPage 設置百分比折扣:', parsedDiscountValue + '%');
-            } else {
-                // 固定金額折扣
-                benefits.discountAmount = parsedDiscountValue;
-                benefits.estimatedValue = parsedDiscountValue;
-                benefits.amount = parsedDiscountValue;
-                console.log('🔍 PaymentPage 設置固定金額折扣:', parsedDiscountValue);
-            }
-
-            setAppliedRedemption({
-                code: redemptionCode,
-                isValid: true,
-                canRedeem: true,
-                benefits: benefits
-            });
-
-            console.log('🔍 PaymentPage 設置的 appliedRedemption:', {
-                code: redemptionCode,
-                benefits: benefits
-            });
-        }
-
-        // 向後兼容：設置舊的 appliedDiscount 格式
-        if (discountValue && discountType) {
-            setAppliedDiscount({
-                type: discountType,
-                value: parseFloat(discountValue),
-                originalPrice: originalPrice ? parseFloat(originalPrice) : null,
-                finalPrice: finalPrice ? parseFloat(finalPrice) : null
-            });
-        }
-
-        // 追蹤頁面訪問
         Analytics.track('payment_page_viewed', {
-            userId: user.id,
+            userId,
             planType,
             billingPeriod,
-            currentPlan: userPlan?.type || 'unknown',
-            hasDiscount: !!appliedDiscount
+            currentPlan: userPlan?.type || userPlan || 'unknown',
+            hasDiscount: Boolean(redemptionCode || discountValue)
         });
-    }, [user, navigate, lang, planType, billingPeriod, userPlan, t, searchParams]);
+    }, [authLoading, userId, planType, billingPeriod, redemptionCode, discountValue, userPlan]);
 
-    const handleError = (error) => {
-        setLoading(false);
+    // Create or reuse the backend order as soon as checkout opens so the amount
+    // shown here is the amount the ECPay signed form will actually submit.
+    useEffect(() => {
+        if (authLoading || !userId || !selectedPlan) return undefined;
 
-        Analytics.track('payment_error', {
-            userId: user?.id,
+        let active = true;
+        const orderPayload = {
             planType,
             billingPeriod,
-            error: error.message
-        });
+            paymentMethod: 'Credit',
+            language: getPaymentServiceLocale(lang || 'zh-TW'),
+            returnLocale: lang || 'zh-TW',
+            redemptionCode: redemptionCode || null,
+            // Retain compatibility with existing non-code discount links.
+            appliedDiscount: discountValue && discountType && Number.isFinite(Number(discountValue))
+                ? { type: discountType, amount: Number(discountValue) }
+                : null
+        };
 
-        navigate(`/${lang}/payment/status`, {
-            state: {
-                error: true,
-                errorMessage: error.message,
-                planType,
-                billingPeriod
-            }
-        });
-    };
+        setOrderLoading(true);
+        setOrderData(null);
+        // If an order expires or its authoritative amount changes, require
+        // the user to review the new order before enabling the handoff.
+        setAgreedToTerms(false);
+        setError(null);
+
+        createOrderWithLockRetry(orderPayload)
+            .then(result => {
+                if (!active) return;
+
+                if (!result?.orderId || !result?.paymentUrl || !result?.formData?.CheckMacValue) {
+                    throw new Error(t('payment.errors.invalidAmount'));
+                }
+
+                setOrderData(result);
+                trackSubscriptionCheckout({ ...result, planType, billingPeriod });
+
+                if (!result.reusedOrder) {
+                    Analytics.track('payment_order_created', {
+                        userId,
+                        planType,
+                        billingPeriod,
+                        orderId: result.orderId
+                    });
+                }
+            })
+            .catch(createError => {
+                if (!active) return;
+
+                const response = createError.response?.data;
+                const activeOrder = response?.data;
+
+                // A previous tab already handed this order to ECPay. Never
+                // generate another order or resubmit the same signed request.
+                if (response?.errorCode === 'PAYMENT_SUBMISSION_IN_PROGRESS' && activeOrder?.merchantTradeNo) {
+                    const resultParams = new URLSearchParams({
+                        source: 'client',
+                        merchantTradeNo: activeOrder.merchantTradeNo
+                    });
+                    navigate(`/${lang}/payment/result?${resultParams.toString()}`, { replace: true });
+                    return;
+                }
+
+                const message = response?.message || createError.message || t('payment.errors.createOrderFailed');
+                setError(message);
+                Analytics.track('payment_error', {
+                    userId,
+                    planType,
+                    billingPeriod,
+                    error: message
+                });
+            })
+            .finally(() => {
+                if (active) setOrderLoading(false);
+            });
+
+        return () => {
+            active = false;
+        };
+    }, [
+        authLoading,
+        userId,
+        selectedPlan,
+        planType,
+        billingPeriod,
+        lang,
+        redemptionCode,
+        discountValue,
+        discountType,
+        retryCount,
+        navigate,
+        t
+    ]);
 
     const handleCancel = () => {
         Analytics.track('payment_cancelled', {
@@ -175,274 +210,79 @@ const PaymentPage = () => {
             planType,
             billingPeriod
         });
-
         navigate(`/${lang}/subscription-plans`);
     };
 
-    // 新增：定價資料狀態
-    const [planPricing, setPlanPricing] = useState(null);
-    const [pricingLoading, setPricingLoading] = useState(true);
-    const [pricingError, setPricingError] = useState(null);
-
-    // 獲取方案資訊
-    const availablePlans = subscriptionService.getAvailablePlans();
-    const selectedPlan = availablePlans.find(plan => plan.id === planType);
-    const basePlan = planPricing?.[planType]?.[billingPeriod];
-
-    // 載入定價資料
-    useEffect(() => {
-        const loadPricing = async () => {
-            try {
-                setPricingLoading(true);
-                setPricingError(null);
-
-                console.log('🔄 PaymentPage: 開始載入定價資料');
-
-                // 使用新的 API 方法載入定價
-                const pricing = await paymentService.getPlanPricingFromAPI();
-
-                setPlanPricing(pricing);
-                console.log('✅ PaymentPage: 定價資料載入成功', pricing);
-
-            } catch (error) {
-                console.error('❌ PaymentPage: 定價資料載入失敗', error);
-                setPricingError(error.message);
-
-                // 使用 fallback 定價
-                const fallbackPricing = paymentService.getPlanPricing();
-                setPlanPricing(fallbackPricing);
-
-            } finally {
-                setPricingLoading(false);
-            }
-        };
-
-        loadPricing();
-    }, []);
-
-    // 計算實際價格（考慮折扣）
-    const calculateFinalPrice = () => {
-        const basePrice = basePlan?.price || 0;
-
-        // 🔧 修復：優先使用 finalAmount（從 URL 參數計算好的價格）
-        if (finalAmount !== null && finalAmount !== undefined) {
-            console.log('🔍 PaymentPage 使用 URL 參數中的 finalAmount:', finalAmount);
-            return finalAmount;
-        }
-
-        // 🔧 修復：檢查 appliedRedemption 而不是 appliedDiscount
-        if (appliedRedemption && appliedRedemption.benefits) {
-            const benefits = appliedRedemption.benefits;
-            console.log('🔍 PaymentPage 根據 appliedRedemption 計算價格:', benefits);
-            console.log('🔍 PaymentPage basePrice:', basePrice);
-
-            if (benefits.discountType === 'PERCENTAGE_DISCOUNT' || benefits.discountType === 'percentage') {
-                const discountPercentage = benefits.savingsPercentage || benefits.discountPercentage || 0;
-                const discountAmount = (basePrice * discountPercentage) / 100;
-                const calculatedPrice = Math.max(0, basePrice - discountAmount);
-                console.log('🔍 PaymentPage 百分比折扣計算:', {
-                    basePrice,
-                    discountPercentage: discountPercentage + '%',
-                    discountAmount,
-                    calculatedPrice
-                });
-                return calculatedPrice;
-            } else if (benefits.discountType === 'FIXED_AMOUNT_DISCOUNT' || benefits.discountType === 'fixed') {
-                const discountAmount = benefits.estimatedValue || benefits.discountAmount || benefits.amount || 0;
-                const calculatedPrice = Math.max(0, basePrice - discountAmount);
-                console.log('🔍 PaymentPage 固定金額折扣計算:', {
-                    discountAmount,
-                    basePrice,
-                    calculatedPrice
-                });
-                return calculatedPrice;
-            }
-        }
-
-        // 向後兼容：檢查舊的 appliedDiscount 格式
-        if (appliedDiscount) {
-            // 如果URL中已經有計算好的最終價格，直接使用
-            if (appliedDiscount.finalPrice !== null && appliedDiscount.finalPrice !== undefined) {
-                return appliedDiscount.finalPrice;
-            }
-
-            // 否則根據折扣類型重新計算
-            if (appliedDiscount.type === 'percentage') {
-                const discountAmount = (basePrice * appliedDiscount.value) / 100;
-                return Math.max(0, basePrice - discountAmount);
-            } else if (appliedDiscount.type === 'fixed') {
-                return Math.max(0, basePrice - appliedDiscount.value);
-            }
-        }
-
-        return basePrice;
-    };
-
-    const finalPrice = calculateFinalPrice();
-    const basePrice = basePlan?.price || 0;
-
-    // 🔧 修復：正確設置 originalPrice，無論是 appliedRedemption 還是 appliedDiscount
-    const hasDiscount = Boolean(
-        (appliedRedemption && appliedRedemption.benefits) ||
-        appliedDiscount ||
-        (originalAmount && finalAmount && originalAmount !== finalAmount)
-    );
-
-    // 🔧 修復：確保有折扣時 originalPrice 正確設置
-    let originalPriceToShow = null;
-    if (hasDiscount) {
-        if (originalAmount) {
-            originalPriceToShow = originalAmount;
-        } else if (appliedRedemption || appliedDiscount) {
-            originalPriceToShow = basePrice;
-        }
-    }
-
-    console.log('🔍 PaymentPage 價格計算結果:', {
-        basePrice,
-        finalPrice,
-        originalAmount,
-        finalAmount,
-        hasDiscount,
-        originalPriceToShow,
-        appliedRedemption: appliedRedemption ? appliedRedemption.code : null,
-        appliedDiscount
-    });
-
-    const currentPlan = {
-        ...basePlan,
-        price: finalPrice,
-        originalPrice: originalPriceToShow,
-        discount: appliedDiscount,
-        redemption: appliedRedemption
-    };
-
-    // 處理步驟導航
-    const handleNextStep = () => {
-        if (currentStep < 3) {
-            setCurrentStep(currentStep + 1);
-        }
-    };
-
-    const handlePrevStep = () => {
-        if (currentStep > 1) {
-            setCurrentStep(currentStep - 1);
-        }
-    };
-
-    // 處理條款同意
-    const handleTermsChange = (agreed) => {
-        setAgreedToTerms(agreed);
-    };
-
-    // 創建訂單並跳轉到付款頁面
-    const handleCreateOrder = async () => {
+    const handleSubmitPayment = async () => {
         if (!agreedToTerms) {
             setError(t('payment.errors.termsRequired'));
             return;
         }
 
-        setLoading(true);
-        setError(null);
-
-        try {
-            // 🔍 調試：檢查 appliedRedemption 狀態
-            console.log('🔍 PaymentPage 創建訂單前的 appliedRedemption:', appliedRedemption);
-            console.log('🔍 PaymentPage 傳遞給後端的 redemptionCode:', appliedRedemption?.code);
-
-            // 🔧 修復：確保傳遞正確的參數給後端，包括語言偏好
-            const orderPayload = {
-                planType,
-                billingPeriod,
-                paymentMethod,
-                language: getPaymentServiceLocale(lang || 'zh-TW'),
-                returnLocale: lang || 'zh-TW',
-                redemptionCode: appliedRedemption?.code || null,
-                // 保持向後兼容
-                appliedDiscount: appliedDiscount ? {
-                    type: appliedDiscount.type,
-                    amount: appliedDiscount.value
-                } : null
-            };
-
-            console.log('🔍 PaymentPage 完整的訂單參數:', orderPayload);
-
-            const result = await paymentService.createOrder(orderPayload);
-
-            trackSubscriptionCheckout({ ...result, planType, billingPeriod });
-            setOrderData(result);
-            setCurrentStep(3); // 跳轉到確認頁面
-
-            Analytics.track('payment_order_created', {
-                userId: user?.id,
-                planType,
-                billingPeriod,
-                orderId: result.orderId
-            });
-
-        } catch (error) {
-            setError(t('payment.errors.createOrderFailed'));
-            handleError(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // 提交付款表單到綠界
-    const handleSubmitPayment = () => {
-        if (!orderData) {
+        if (!orderData?.orderId || !orderData?.paymentUrl || !orderData?.formData?.CheckMacValue) {
             setError(t('payment.errors.invalidAmount'));
             return;
         }
 
+        if (submitting) return;
+
+        setSubmitting(true);
+        setError(null);
+
         try {
-            // 提交表單到綠界
+            // Persist the handoff state before the cross-origin form POST. If
+            // the browser returns or refreshes, the backend will not cancel or
+            // recreate an order whose ECPay callback may still be pending.
+            await paymentService.markPaymentSubmissionStarted(orderData.orderId);
             paymentService.submitPaymentForm(orderData);
-        } catch (error) {
-            setError(t('payment.errors.paymentFailed'));
-            handleError(error);
+        } catch (submitError) {
+            const response = submitError.response?.data;
+            if (response?.errorCode === 'PAYMENT_SUBMISSION_IN_PROGRESS' && response?.data?.merchantTradeNo) {
+                const resultParams = new URLSearchParams({
+                    source: 'client',
+                    merchantTradeNo: response.data.merchantTradeNo
+                });
+                navigate(`/${lang}/payment/result?${resultParams.toString()}`, { replace: true });
+                return;
+            }
+
+            // The pending order can expire while the checkout page is open.
+            // Fetch a new backend order and show its freshly confirmed amount
+            // instead of attempting to submit an expired signed form.
+            if (['ORDER_EXPIRED', 'ORDER_NOT_PAYABLE'].includes(response?.errorCode)) {
+                setOrderData(null);
+                setSubmitting(false);
+                setRetryCount(value => value + 1);
+                return;
+            }
+
+            const message = submitError.response?.data?.message ||
+                submitError.message ||
+                t('payment.errors.paymentFailed');
+            setError(message);
+            setSubmitting(false);
+            Analytics.track('payment_error', {
+                userId: user?.id,
+                planType,
+                billingPeriod,
+                error: message
+            });
         }
     };
 
-    if (!user) {
-        return null; // 重定向處理中
-    }
-
-    // 如果定價資料還在載入中，顯示載入狀態
-    if (pricingLoading) {
+    if (authLoading) {
         return (
             <div className="payment-page">
                 <div className="payment-page__container">
-                    <div className="payment-page__loading">
+                    <div className="payment-page__order-loading" aria-live="polite">
                         <LoadingSpinner size="large" />
-                        <p className="payment-page__loading-text">
-                            {t('payment.loading.pricingData', '載入方案資料中...')}
-                        </p>
                     </div>
                 </div>
             </div>
         );
     }
 
-    // 如果定價資料載入失敗且沒有 fallback 資料
-    if (pricingError && !planPricing) {
-        return (
-            <div className="payment-page">
-                <div className="payment-page__container">
-                    <div className="payment-page__error">
-                        <h1>{t('payment.error.pricingLoadFailed', '載入方案資料失敗')}</h1>
-                        <p>{pricingError}</p>
-                        <button
-                            className="payment-page__back-button"
-                            onClick={() => window.location.reload()}
-                        >
-                            {t('payment.error.retry', '重新載入')}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+    if (!user) return null;
 
     if (!selectedPlan) {
         return (
@@ -463,312 +303,23 @@ const PaymentPage = () => {
         );
     }
 
-    // 渲染步驟指示器
-    const renderStepIndicator = () => {
-        const steps = [
-            { number: 1, title: t('payment.form.confirmPlan') },
-            { number: 2, title: t('payment.form.confirmTerms') },
-            { number: 3, title: t('payment.form.confirmPayment') }
-        ];
-
-        return (
-            <div className="payment-page__steps">
-                {steps.map((step, index) => (
-                    <Fragment key={step.number}>
-                        <div className={`payment-page__step ${currentStep >= step.number ? 'payment-page__step--active' : ''
-                            }`}>
-                            <div className="payment-page__step-number">
-                                {currentStep > step.number ? (
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                        <path
-                                            d="M20 6L9 17L4 12"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </svg>
-                                ) : (
-                                    step.number
-                                )}
-                            </div>
-                            <span className="payment-page__step-title">{step.title}</span>
-                        </div>
-                        {index < steps.length - 1 && (
-                            <div className={`payment-page__step-connector ${currentStep > step.number ? 'payment-page__step-connector--completed' : ''
-                                }`} />
-                        )}
-                    </Fragment>
-                ))}
-            </div>
-        );
-    };
-
-    // 渲染方案確認
-    const renderPlanConfirmation = () => (
-        <div className="payment-page__plan-section">
-            <div className="payment-page__plan-card ui-surface-card ui-surface-card--prominent">
-                <div className="payment-page__plan-header">
-                    <Badge
-                        label={selectedPlan?.name || 'Pro'}
-                        variant="blue"
-                        size="medium"
-                        className="payment-page__plan-badge"
-                    />
-                    <h3 className="payment-page__plan-name">{t('payment.plan.proPlan')}</h3>
-                    <div className="payment-page__plan-price">
-                        <span className="payment-page__plan-amount">
-                            TWD {formatAmount(currentPlan?.price)}
-                        </span>
-                        <span className="payment-page__plan-period">
-                            / {billingPeriod === 'monthly' ? t('payment.plan.pricing.monthly') : t('payment.plan.pricing.yearly')}
-                        </span>
-                    </div>
-
-                    {/* 🔧 修復：優先顯示 appliedRedemption 的折扣信息 */}
-                    {appliedRedemption && appliedRedemption.benefits && currentPlan?.originalPrice && (
-                        <div className="payment-page__plan-discount">
-                            <div className="payment-page__original-price">
-                                {t('payment.plan.pricing.originalPrice')}：TWD {formatAmount(currentPlan.originalPrice)}
-                            </div>
-                            <div className="payment-page__discount-badge">
-                                {appliedRedemption.benefits.discountType === 'PERCENTAGE_DISCOUNT' || appliedRedemption.benefits.discountType === 'percentage'
-                                    ? `${appliedRedemption.benefits.savingsPercentage || appliedRedemption.benefits.discountPercentage}% ${t('payment.orderSummary.discount')}`
-                                    : `${t('payment.orderSummary.discount')} TWD ${formatAmount(appliedRedemption.benefits.estimatedValue || appliedRedemption.benefits.discountAmount || appliedRedemption.benefits.amount || 0)}`
-                                }
-                            </div>
-                            <div className="payment-page__redemption-code">
-                                {t('redemption.confirmation.codeLabel')}：{appliedRedemption.code}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* 向後兼容：顯示舊的 appliedDiscount 格式 */}
-                    {!appliedRedemption && appliedDiscount && currentPlan?.originalPrice && (
-                        <div className="payment-page__plan-discount">
-                            <div className="payment-page__original-price">
-                                {t('payment.plan.pricing.originalPrice')}：TWD {formatAmount(currentPlan.originalPrice)}
-                            </div>
-                            <div className="payment-page__discount-badge">
-                                {appliedDiscount.type === 'percentage'
-                                    ? `${appliedDiscount.value}% ${t('payment.orderSummary.discount')}`
-                                    : `${t('payment.orderSummary.discount')} TWD ${formatAmount(appliedDiscount.value)}`
-                                }
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                <div className="payment-page__plan-features">
-                    <h4 className="payment-page__features-title">{t('payment.plan.features.title')}</h4>
-                    <ul className="payment-page__features-list">
-                        <li className="payment-page__feature-item">
-                            <svg className="payment-page__feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                            {t('payment.plan.features.marketSentiment')}
-                        </li>
-                        <li className="payment-page__feature-item">
-                            <svg className="payment-page__feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                            {t('payment.plan.features.advancedAnalysis')}
-                        </li>
-                        <li className="payment-page__feature-item">
-                            <svg className="payment-page__feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                            {t('payment.plan.features.unlimitedWatchlist')}
-                        </li>
-                        <li className="payment-page__feature-item">
-                            <svg className="payment-page__feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                            {t('payment.plan.features.prioritySupport')}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <PaymentTrustNotice amount={orderData?.amount ?? finalPrice} billingPeriod={billingPeriod} lang={lang || 'zh-TW'} />
-            <div className="payment-page__actions">
-                <Button
-                    className="payment-page__button"
-                    variant="outline"
-                    onClick={handleCancel}
-                >
-                    {t('payment.form.cancel')}
-                </Button>
-                <Button
-                    className="payment-page__button"
-                    variant="primary"
-                    onClick={handleNextStep}
-                >
-                    {t('payment.form.confirmPlan')}
-                </Button>
-            </div>
-        </div>
-    );
-
-    // 渲染條款同意
-    const renderTermsAgreement = () => (
-        <div className="payment-page__terms-section">
-            <div className="payment-page__terms-content ui-surface-card ui-surface-card--prominent">
-                <h3 className="payment-page__terms-title">{t('payment.terms.title')}</h3>
-
-                <div className="payment-page__terms-box">
-                    <div className="payment-page__terms-group">
-                        <h4>{t('payment.terms.serviceTermsTitle')}</h4>
-                        <ul>
-                            {t('payment.terms.serviceTerms', { returnObjects: true }).map((term, index) => (
-                                <li key={index}>{term}</li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    <div className="payment-page__terms-group">
-                        <h4>{t('payment.terms.privacyPolicyTitle')}</h4>
-                        <ul>
-                            {t('payment.terms.privacyPolicy', { returnObjects: true }).map((policy, index) => (
-                                <li key={index}>{policy}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-
-                <label className="payment-page__checkbox-label">
-                    <input
-                        type="checkbox"
-                        checked={agreedToTerms}
-                        onChange={(e) => handleTermsChange(e.target.checked)}
-                        className="payment-page__checkbox"
-                    />
-                    <span className="payment-page__checkbox-text">
-                        {t('payment.terms.agreement')}
-                        <a href={`/${lang}/legal`} target="_blank" className="payment-page__link">
-                            {t('payment.form.termsAndConditions')}
-                        </a>
-                    </span>
-                </label>
-            </div>
-
-            <PaymentTrustNotice amount={orderData?.amount ?? finalPrice} billingPeriod={billingPeriod} lang={lang || 'zh-TW'} />
-            <div className="payment-page__actions">
-                <Button
-                    className="payment-page__button"
-                    variant="outline"
-                    onClick={handlePrevStep}
-                >
-                    {t('payment.form.previous')}
-                </Button>
-                <Button
-                    className="payment-page__button"
-                    variant="primary"
-                    onClick={handleCreateOrder}
-                    disabled={!agreedToTerms || loading}
-                >
-                    {loading ? t('payment.form.creatingOrder') : t('payment.form.createOrder')}
-                </Button>
-            </div>
-        </div>
-    );
-
-    // 渲染付款確認
-    const renderPaymentConfirmation = () => (
-        <div className="payment-page__confirmation-section">
-            <div className="payment-page__order-summary ui-surface-card ui-surface-card--prominent">
-                <h3 className="payment-page__summary-title">{t('payment.orderSummary.title')}</h3>
-
-                {orderData && (
-                    <div className="payment-page__order-details">
-                        <div className="payment-page__order-row">
-                            <span>{t('payment.orderSummary.orderId')}</span>
-                            <span className="payment-page__order-id">{orderData.orderId}</span>
-                        </div>
-                        <div className="payment-page__order-row">
-                            <span>{t('payment.orderSummary.plan')}</span>
-                            <span>{t('payment.plan.proPlan')} ({billingPeriod === 'monthly' ? t('payment.orderSummary.monthlyPlan') : t('payment.orderSummary.yearlyPlan')})</span>
-                        </div>
-                        <div className="payment-page__order-row">
-                            <span>{t('payment.orderSummary.paymentMethod')}</span>
-                            <span>{t('payment.orderSummary.creditCardRecurring')}</span>
-                        </div>
-                        {/* 🔧 修復：優先顯示 appliedRedemption 的折扣信息 */}
-                        {appliedRedemption && appliedRedemption.benefits && currentPlan?.originalPrice && (
-                            <>
-                                <div className="payment-page__order-row">
-                                    <span>{t('payment.plan.pricing.originalPrice')}</span>
-                                    <span>TWD {formatAmount(currentPlan.originalPrice)}</span>
-                                </div>
-                                <div className="payment-page__order-row payment-page__order-discount">
-                                    <span>{t('payment.orderSummary.discount')} ({appliedRedemption.code})</span>
-                                    <span className="payment-page__discount-amount">
-                                        -{appliedRedemption.benefits.discountType === 'PERCENTAGE_DISCOUNT' || appliedRedemption.benefits.discountType === 'percentage'
-                                            ? `${appliedRedemption.benefits.savingsPercentage || appliedRedemption.benefits.discountPercentage}%`
-                                            : `TWD ${formatAmount(appliedRedemption.benefits.estimatedValue || appliedRedemption.benefits.discountAmount || appliedRedemption.benefits.amount || 0)}`
-                                        }
-                                    </span>
-                                </div>
-                            </>
-                        )}
-
-                        {/* 向後兼容：顯示舊的 appliedDiscount 格式 */}
-                        {!appliedRedemption && appliedDiscount && currentPlan?.originalPrice && (
-                            <>
-                                <div className="payment-page__order-row">
-                                    <span>{t('payment.plan.pricing.originalPrice')}</span>
-                                    <span>TWD {formatAmount(currentPlan.originalPrice)}</span>
-                                </div>
-                                <div className="payment-page__order-row payment-page__order-discount">
-                                    <span>{t('payment.orderSummary.discount')}</span>
-                                    <span className="payment-page__discount-amount">
-                                        -{appliedDiscount.type === 'percentage'
-                                            ? `${appliedDiscount.value}%`
-                                            : `TWD ${formatAmount(appliedDiscount.value)}`
-                                        }
-                                    </span>
-                                </div>
-                            </>
-                        )}
-                        <div className="payment-page__order-row payment-page__order-total">
-                            <span>{t('payment.plan.pricing.totalAmount')}</span>
-                            <span>TWD {formatAmount(orderData.amount)}</span>
-                        </div>
-                    </div>
-                )}
-            </div>
-
-            <PaymentTrustNotice amount={orderData?.amount ?? finalPrice} billingPeriod={billingPeriod} lang={lang || 'zh-TW'} />
-            <div className="payment-page__actions">
-                <Button
-                    className="payment-page__button"
-                    variant="outline"
-                    onClick={handleCancel}
-                >
-                    {t('payment.form.cancelOrder')}
-                </Button>
-                <Button
-                    className="payment-page__button"
-                    variant="success"
-                    onClick={handleSubmitPayment}
-                >
-                    {t('payment.form.proceedToPayment')}
-                </Button>
-            </div>
-        </div>
-    );
+    const serviceTerms = t('payment.terms.serviceTerms', { returnObjects: true });
+    const privacyTerms = t('payment.terms.privacyPolicy', { returnObjects: true });
+    const originalAmount = Number(orderData?.originalAmount ?? orderData?.amount ?? 0);
+    const orderAmount = Number(orderData?.amount ?? 0);
+    const discountAmount = Number(orderData?.discountAmount ?? Math.max(0, originalAmount - orderAmount));
+    const hasDiscount = discountAmount > 0 && originalAmount > orderAmount;
 
     return (
         <div className="payment-page">
             <div className="payment-page__container">
-                {/* 頁面標題 */}
                 <header className="payment-page__header">
                     <button
                         className="payment-page__back-button"
                         onClick={handleCancel}
                         aria-label={t('common.back')}
                     >
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                             <path
                                 d="M15 18L9 12L15 6"
                                 stroke="currentColor"
@@ -782,21 +333,15 @@ const PaymentPage = () => {
 
                     <div className="payment-page__title-section">
                         <h1 className="payment-page__title">
-                            {t('payment.upgradeTitle', { planName: selectedPlan?.name || 'Pro' })}
+                            {t('payment.upgradeTitle', { planName: selectedPlan.name || 'Pro' })}
                         </h1>
-                        <p className="payment-page__subtitle">
-                            {t('payment.upgradeSubtitle')}
-                        </p>
+                        <p className="payment-page__subtitle">{t('payment.upgradeSubtitle')}</p>
                     </div>
                 </header>
 
-                {/* 步驟指示器 */}
-                {renderStepIndicator()}
-
-                {/* 錯誤訊息 */}
                 {error && (
-                    <div className="payment-page__error-message">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <div className="payment-page__error-message" role="alert">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                             <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
                             <line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" strokeWidth="2" />
                             <line x1="9" y1="9" x2="15" y2="15" stroke="currentColor" strokeWidth="2" />
@@ -805,18 +350,196 @@ const PaymentPage = () => {
                     </div>
                 )}
 
-                {/* 載入狀態 */}
-                {loading && (
-                    <div className="payment-page__loading">
-                        <LoadingSpinner size="large" />
-                    </div>
-                )}
+                <main className="payment-page__content payment-page__content--single">
+                    {orderLoading ? (
+                        <div className="payment-page__order-loading" aria-live="polite">
+                            <LoadingSpinner size="large" />
+                            <p>{t('payment.loading.orderData', 'Confirming your order amount…')}</p>
+                        </div>
+                    ) : !orderData ? (
+                        <div className="payment-page__error">
+                            <h2>{t('payment.errors.createOrderFailed')}</h2>
+                            <p>{error || t('payment.errors.createOrderFailed')}</p>
+                            <button
+                                className="payment-page__back-button payment-page__retry-button"
+                                onClick={() => setRetryCount(value => value + 1)}
+                            >
+                                {t('payment.error.retry')}
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="payment-page__checkout-grid">
+                            <section className="payment-page__summary-column" aria-labelledby="payment-order-summary-title">
+                                <div className="payment-page__plan-card payment-page__order-summary ui-surface-card ui-surface-card--prominent">
+                                    <div className="payment-page__checkout-card-heading">
+                                        <h2 className="payment-page__summary-title" id="payment-order-summary-title">
+                                            {t('payment.orderSummary.title')}
+                                        </h2>
+                                        <Badge
+                                            label={selectedPlan.name || 'Pro'}
+                                            variant="blue"
+                                            size="medium"
+                                            className="payment-page__plan-badge"
+                                        />
+                                    </div>
 
-                {/* 付款流程內容 */}
-                <main className="payment-page__content">
-                    {currentStep === 1 && renderPlanConfirmation()}
-                    {currentStep === 2 && renderTermsAgreement()}
-                    {currentStep === 3 && renderPaymentConfirmation()}
+                                    <div className="payment-page__plan-header">
+                                        <h3 className="payment-page__plan-name">{t('payment.plan.proPlan')}</h3>
+                                        <div className="payment-page__plan-price">
+                                            <span className="payment-page__plan-amount" data-testid="payment-plan-amount">
+                                                TWD {formatAmount(orderData.amount)}
+                                            </span>
+                                            <span className="payment-page__plan-period">
+                                                / {billingPeriod === 'monthly'
+                                                    ? t('payment.plan.pricing.monthly')
+                                                    : t('payment.plan.pricing.yearly')}
+                                            </span>
+                                        </div>
+                                        {hasDiscount && (
+                                            <div className="payment-page__plan-discount" aria-label={t('payment.orderSummary.discount')}>
+                                                <div className="payment-page__original-price" data-testid="payment-original-amount">
+                                                    {t('payment.plan.pricing.originalPrice')}: TWD {formatAmount(originalAmount)}
+                                                </div>
+                                                <div className="payment-page__discount-badge">
+                                                    {t('payment.orderSummary.discount')}: -TWD {formatAmount(discountAmount)}
+                                                </div>
+                                                {orderData.redemptionCode && (
+                                                    <div className="payment-page__redemption-code">
+                                                        {t('redemption.confirmation.codeLabel')}: {orderData.redemptionCode}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="payment-page__order-details">
+                                        <div className="payment-page__order-row">
+                                            <span>{t('payment.orderSummary.plan')}</span>
+                                            <span>
+                                                {t('payment.plan.proPlan')} ({billingPeriod === 'monthly'
+                                                    ? t('payment.orderSummary.monthlyPlan')
+                                                    : t('payment.orderSummary.yearlyPlan')})
+                                            </span>
+                                        </div>
+                                        <div className="payment-page__order-row">
+                                            <span>{t('payment.plan.pricing.totalAmount')}</span>
+                                            <span className="payment-page__order-total-amount" data-testid="payment-order-total">
+                                                TWD {formatAmount(orderData.amount)}
+                                            </span>
+                                        </div>
+                                        <div className="payment-page__order-row payment-page__order-reference">
+                                            <span>{t('payment.orderSummary.orderId')}</span>
+                                            <span className="payment-page__order-id">{orderData.orderId}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="payment-page__plan-features">
+                                        <h4 className="payment-page__features-title">{t('payment.plan.features.title')}</h4>
+                                        <ul className="payment-page__features-list">
+                                            <li className="payment-page__feature-item">
+                                                <span className="payment-page__feature-icon" aria-hidden="true">✓</span>
+                                                {t('payment.plan.features.marketSentiment')}
+                                            </li>
+                                            <li className="payment-page__feature-item">
+                                                <span className="payment-page__feature-icon" aria-hidden="true">✓</span>
+                                                {t('payment.plan.features.advancedAnalysis')}
+                                            </li>
+                                            <li className="payment-page__feature-item">
+                                                <span className="payment-page__feature-icon" aria-hidden="true">✓</span>
+                                                {t('payment.plan.features.unlimitedWatchlist')}
+                                            </li>
+                                            <li className="payment-page__feature-item">
+                                                <span className="payment-page__feature-icon" aria-hidden="true">✓</span>
+                                                {t('payment.plan.features.prioritySupport')}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <PaymentTrustNotice
+                                    amount={orderData.amount}
+                                    billingPeriod={billingPeriod}
+                                    lang={lang || 'zh-TW'}
+                                />
+                            </section>
+
+                            <section className="payment-page__terms-column" aria-labelledby="payment-terms-title">
+                                <div className="payment-page__terms-content ui-surface-card ui-surface-card--prominent">
+                                    <h2 className="payment-page__terms-title" id="payment-terms-title">
+                                        {t('payment.terms.title')}
+                                    </h2>
+
+                                    <div className="payment-page__terms-box">
+                                        <div className="payment-page__terms-group">
+                                            <h3>{t('payment.terms.serviceTermsTitle')}</h3>
+                                            <ul>
+                                                {(Array.isArray(serviceTerms) ? serviceTerms : []).map((term, index) => (
+                                                    <li key={`service-${index}`}>{term}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+
+                                        <div className="payment-page__terms-group">
+                                            <h3>{t('payment.terms.privacyPolicyTitle')}</h3>
+                                            <ul>
+                                                {(Array.isArray(privacyTerms) ? privacyTerms : []).map((policy, index) => (
+                                                    <li key={`privacy-${index}`}>{policy}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <label className="payment-page__checkbox-label">
+                                        <input
+                                            type="checkbox"
+                                            checked={agreedToTerms}
+                                            onChange={(event) => setAgreedToTerms(event.target.checked)}
+                                            className="payment-page__checkbox"
+                                        />
+                                        <span className="payment-page__checkbox-text">
+                                            {t('payment.terms.agreement')}
+                                            <a href={`/${lang}/legal`} target="_blank" rel="noreferrer" className="payment-page__link">
+                                                {t('payment.form.termsAndConditions')}
+                                            </a>
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <div className="payment-page__payment-method-card ui-surface-card">
+                                    <div className="payment-page__payment-method-icon" aria-hidden="true">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <rect x="2.5" y="5" width="19" height="14" rx="2" stroke="currentColor" strokeWidth="1.7" />
+                                            <path d="M3 9.5H21" stroke="currentColor" strokeWidth="1.7" />
+                                            <path d="M6.5 15H10" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3>{t('payment.orderSummary.paymentMethod')}</h3>
+                                        <p>{t('payment.orderSummary.creditCardRecurring')}</p>
+                                    </div>
+                                </div>
+
+                                <div className="payment-page__actions payment-page__checkout-actions">
+                                    <Button
+                                        className="payment-page__button payment-page__cancel-button"
+                                        variant="outline"
+                                        onClick={handleCancel}
+                                        disabled={submitting}
+                                    >
+                                        {t('payment.form.cancel')}
+                                    </Button>
+                                    <Button
+                                        className="payment-page__button payment-page__submit-button"
+                                        variant="primary"
+                                        onClick={handleSubmitPayment}
+                                        disabled={!agreedToTerms || orderLoading || submitting || !orderData}
+                                    >
+                                        {submitting ? t('payment.form.processing') : t('payment.form.proceedToPayment')}
+                                    </Button>
+                                </div>
+                            </section>
+                        </div>
+                    )}
                 </main>
             </div>
         </div>

@@ -11,11 +11,28 @@
 import apiClient from '../api/apiClient';
 import { systemLogger } from '../utils/logger';
 
+const serializeStable = (value) => {
+    if (Array.isArray(value)) {
+        return `[${value.map(serializeStable).join(',')}]`;
+    }
+
+    if (value && typeof value === 'object') {
+        return `{${Object.keys(value).sort().map(key =>
+            `${JSON.stringify(key)}:${serializeStable(value[key])}`
+        ).join(',')}}`;
+    }
+
+    return JSON.stringify(value) ?? 'null';
+};
+
 class PaymentService {
     constructor() {
         this.baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
         this.retryAttempts = 3;
         this.retryDelay = 1000; // 1 second
+        // Coalesce concurrent identical checkout requests in this browser tab.
+        // The backend Redis lock remains the cross-tab / cross-device guard.
+        this.createOrderRequests = new Map();
     }
 
     /**
@@ -27,10 +44,38 @@ class PaymentService {
      * @returns {Promise<Object>} 訂單創建結果
      */
     async createOrder(orderData) {
+        const requestKey = serializeStable(orderData);
+        const existingRequest = this.createOrderRequests.get(requestKey);
+        if (existingRequest) {
+            return existingRequest;
+        }
+
+        const request = this.performCreateOrder(orderData);
+        this.createOrderRequests.set(requestKey, request);
+
+        try {
+            return await request;
+        } finally {
+            if (this.createOrderRequests.get(requestKey) === request) {
+                this.createOrderRequests.delete(requestKey);
+            }
+        }
+    }
+
+    async performCreateOrder(orderData) {
         try {
             systemLogger.info('Creating payment order:', orderData);
 
-            const response = await this.makeRequest('POST', '/api/payment/create-order', orderData);
+            // A POST whose response is lost may already have created the order.
+            // Do not blindly replay checkout creation on 5xx/network failures;
+            // the page has explicit lock-contention retry and backend reuse.
+            const response = await this.makeRequest(
+                'POST',
+                '/api/payment/create-order',
+                orderData,
+                1,
+                { retryOn5xx: false, retryOnNetworkError: false }
+            );
 
             if (response.data.status === 'success') {
                 const responseData = response.data.data;
@@ -52,6 +97,34 @@ class PaymentService {
                 orderData
             });
 
+            throw error;
+        }
+    }
+
+    /**
+     * Lock an order before the browser submits its signed payment form to
+     * ECPay. The API is one-time so a concurrent or repeated browser submit
+     * cannot send the same signed payment form twice.
+     * @param {string} orderId
+     * @returns {Promise<Object>}
+     */
+    async markPaymentSubmissionStarted(orderId) {
+        try {
+            const response = await this.makeRequest(
+                'POST',
+                `/api/payment/mark-submission/${orderId}`
+            );
+
+            if (response.data.status === 'success') {
+                return response.data.data;
+            }
+
+            throw new Error(response.data.message || '無法確認付款狀態');
+        } catch (error) {
+            systemLogger.error('Failed to mark payment submission as started:', {
+                error: error.message,
+                orderId
+            });
             throw error;
         }
     }
@@ -510,7 +583,12 @@ class PaymentService {
      * @param {number} attempt - 當前嘗試次數
      * @returns {Promise<Object>} 響應資料
      */
-    async makeRequest(method, url, data = null, attempt = 1) {
+    async makeRequest(method, url, data = null, attempt = 1, retryOptions = {}) {
+        const {
+            retryOn5xx = true,
+            retryOnNetworkError = true
+        } = retryOptions;
+
         try {
             const config = {
                 method,
@@ -533,7 +611,7 @@ class PaymentService {
             });
 
             // 如果是網路錯誤且還有重試次數，則重試
-            if (this.shouldRetry(error) && attempt < this.retryAttempts) {
+            if (this.shouldRetry(error, { retryOn5xx, retryOnNetworkError }) && attempt < this.retryAttempts) {
                 systemLogger.info(`Retrying request in ${this.retryDelay}ms...`, {
                     method,
                     url,
@@ -541,7 +619,7 @@ class PaymentService {
                 });
 
                 await this.delay(this.retryDelay);
-                return this.makeRequest(method, url, data, attempt + 1);
+                return this.makeRequest(method, url, data, attempt + 1, retryOptions);
             }
 
             throw error;
@@ -553,14 +631,14 @@ class PaymentService {
      * @param {Error} error - 錯誤物件
      * @returns {boolean} 是否應該重試
      */
-    shouldRetry(error) {
+    shouldRetry(error, { retryOn5xx = true, retryOnNetworkError = true } = {}) {
         // 網路錯誤或 5xx 伺服器錯誤才重試
         if (!error.response) {
-            return true; // 網路錯誤
+            return retryOnNetworkError;
         }
 
         const status = error.response.status;
-        return status >= 500 && status < 600; // 5xx 錯誤
+        return retryOn5xx && status >= 500 && status < 600;
     }
 
     /**
