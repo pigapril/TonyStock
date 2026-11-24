@@ -1981,7 +1981,7 @@
   },
   "payment": {
     "upgradeTitle": "升级到 {{planName}} 套餐",
-    "upgradeSubtitle": "选择合适的支付方式，立即解锁完整功能。",
+    "upgradeSubtitle": "确认订阅内容和金额，然后前往绿界安全支付页面。",
     "backToPlans": "返回套餐选择",
     "loginRequired": "请先登录以继续付款流程",
     "invalidPlan": {
@@ -2170,7 +2170,8 @@
       "notApplicable": "此兑换码不适用于此套餐"
     },
     "loading": {
-      "pricingData": "加载价格信息…"
+      "pricingData": "加载价格信息…",
+      "orderData": "正在确认订单金额…"
     },
     "error": {
       "pricingLoadFailed": "价格信息加载失败",

@@ -41606,11 +41606,11 @@
     {
       "key": "payment.upgradeSubtitle",
       "source": {
-        "zhTW": "選擇最適合您的付款方式，立即享受完整功能",
-        "zhCN": "选择合适的支付方式，立即解锁完整功能。",
-        "en": "Choose the payment method that works best for you and enjoy full features immediately"
+        "zhTW": "確認訂閱內容與金額，接著前往綠界安全付款頁面。",
+        "zhCN": "确认订阅内容和金额，然后前往绿界安全支付页面。",
+        "en": "Review your subscription and total, then continue to ECPay's secure checkout."
       },
-      "korean": "나에게 맞는 결제 방법을 선택하고 모든 기능을 이용하세요.",
+      "korean": "구독 내용과 결제 금액을 확인한 후 ECPay의 안전한 결제 페이지로 이동하세요.",
       "candidateSource": "docs/i18n/ko-KR-review/05-payment-invoice.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -80124,6 +80124,10 @@
       },
       "approvalStatus": "reviewed_by_delegated_editor_not_released",
       "legacy171Reconciliation": "unverified_historical_membership_and_status"
+    },
+    {
+      "key": "payment.loading.orderData",
+      "korean": "주문 금액을 확인하는 중…"
     }
   ],
   "checks": {

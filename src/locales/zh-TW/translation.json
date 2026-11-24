@@ -1981,7 +1981,7 @@
   },
   "payment": {
     "upgradeTitle": "升級到 {{planName}} 方案",
-    "upgradeSubtitle": "選擇最適合您的付款方式，立即享受完整功能",
+    "upgradeSubtitle": "確認訂閱內容與金額，接著前往綠界安全付款頁面。",
     "backToPlans": "返回方案選擇",
     "loginRequired": "請先登入以繼續付款流程",
     "invalidPlan": {
@@ -2170,7 +2170,8 @@
       "notApplicable": "此兌換碼不適用於此方案"
     },
     "loading": {
-      "pricingData": "載入價格資訊…"
+      "pricingData": "載入價格資訊…",
+      "orderData": "正在確認訂單金額…"
     },
     "error": {
       "pricingLoadFailed": "價格資訊載入失敗",

@@ -23,12 +23,89 @@ wrappers to the public response.
 - `translation-qa`
 - `terminology-qa`
 - `structural-qa`
+- `website-copy-naturalness-audit`
 
 ## Review Inputs
 
 Read the complete source, complete target, source and target locales, project brief, glossary, protected terms, style guide, structural constraints, installed specialist responsibilities, retry history, verified target-product evidence, and semantic-group map. Compare against explicit project decisions before applying general language preferences. Treat existing target copy as evidence only within its verified scope; it never outranks approved context or semantic fidelity.
 
 Run all six passes in order. A pass may produce multiple findings, but do not duplicate the same defect across passes.
+
+## Website Copy Naturalness Audit
+
+Activate this mode when the caller asks whether public website copy sounds
+mechanical, templated, AI-like, translated, generic, repetitive, or unlike a
+local professional writer. This is a language-quality review, not an AI-authorship
+classifier. Never assign an AI-generated probability, claim that a detector can
+prove authorship, or change copy merely to lower a detector score.
+
+Read `SKILL_DIRECTORY/references/website-copy-naturalness-audit.md` before
+starting. Establish the site inventory from the sitemap and route configuration,
+then reconcile it with actual rendered pages and the source locale resources.
+Review the rendered public experience where available; source files alone do not
+prove that a string is visible, and a rendered page alone may omit collapsed,
+authenticated, responsive, or dynamically loaded content. Mark each source of
+evidence separately.
+
+Include public-facing navigation, homepage and landing-page copy, product
+explanations, indicator pages, FAQs, pricing and account flows, article index and
+article bodies, SEO titles/descriptions, social metadata, legal and disclaimer
+copy. Exclude admin-only interfaces, test fixtures, logs, developer comments,
+and internal prompts unless explicitly requested. Record exclusions and any
+content that could not be inspected. Do not silently treat missing locale content
+or English fallback as a reviewed translation.
+
+Review in two layers:
+
+1. **Unit-level naturalness:** assess each substantive string or paragraph for
+   native phrasing, specificity, useful information density, rhythm, register,
+   audience fit, unnecessary abstraction, and unidiomatic translation. Read the
+   target independently before comparing it with the source.
+2. **Corpus-level pattern audit:** compare pages and locale editions for repeated
+   openings, conclusions, sentence scaffolds, headings, adjective clusters,
+   transitions, CTA language, FAQ structures, and near-duplicate explanations.
+   Repetition is not automatically a defect: shared UI labels, legally required
+   wording, definitions, data-source disclosures, and deliberate brand phrases
+   may appropriately recur. Explain why a repetition is harmful before flagging it.
+
+Look for the patterns in the reference rubric, but never treat a phrase list or
+surface feature as a deterministic AI signature. A rhetorical question, neat
+three-part list, parallel heading, transition word, or polished sentence is not
+by itself evidence of machine writing. Only report a defect when its specific
+context makes the copy vague, repetitive, unnatural, over-engineered, or less
+useful to the reader.
+
+Keep the site's professional financial-product voice. Prefer concrete subject,
+action, method, data scope, and limitation over generic claims about insight,
+empowerment, comprehensive understanding, or smarter decisions. Do not add
+colloquialisms, personality, or emotional language just to make prose appear
+human. Do not alter indicator definitions, formulas, thresholds, backtest claims,
+sample periods, data provenance, legal disclaimers, pricing, or product behavior
+without verified evidence and the relevant domain owner's approval. Flag an
+unsupported or unusually strong financial claim separately from its writing
+style; a fluent rewrite cannot validate the claim.
+
+For each finding, capture:
+
+- locale and route (or article path), plus the exact resource key / heading / paragraph locator;
+- the smallest useful exact excerpt and its rendered/source evidence;
+- issue category, severity (`P0`, `P1`, `P2`), confidence, and why it harms the reader;
+- whether it is a local phrasing issue, cross-page repetition, locale mismatch,
+  source defect, or factual/legal verification risk;
+- a proposed revision only when it can be made without inventing or strengthening
+  a claim; otherwise state what evidence or owner decision is needed.
+
+Severity: `P0` is a potentially misleading financial, legal, pricing, or product
+claim; `P1` is prominent, repeated, high-visibility, or trust-damaging copy; `P2`
+is a localized style or polish issue. Do not inflate severity because a string
+resembles common AI prose. Group repeated manifestations under one root finding
+and list affected locations to avoid counting the same defect multiple times.
+
+This mode is audit-only by default. Do not edit locale files, article files,
+source components, SEO metadata, or deploy unless the caller separately asks for
+correction. The audit is not complete until coverage, exclusions, findings, and
+all unverified areas are reported. Native-speaker review remains a separate
+provenance status; model review must never be represented as human native proof.
 
 Before the passes, confirm or construct semantic groups from artifact structure
 and meaning: question stems and choices, subjects and message fields,
