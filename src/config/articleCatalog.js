@@ -29,6 +29,10 @@ const ARTICLE_CATALOG = [
         slug: 'lohas-five-line-analysis-price-trends-and-sentiment',
         filename: 'article-1.ko-KR.ini.md',
       },
+      'ja-JP': {
+        slug: 'lohas-five-line-analysis-price-trends-and-sentiment',
+        filename: 'article-1.ja-JP.ini.md',
+      },
     },
   },
   {
@@ -54,6 +58,10 @@ const ARTICLE_CATALOG = [
       'ko-KR': {
         slug: 'sio-fear-greed-index-buy-sell-timing',
         filename: 'article-2.ko-KR.ini.md',
+      },
+      'ja-JP': {
+        slug: 'sio-fear-greed-index-buy-sell-timing',
+        filename: 'article-2.ja-JP.ini.md',
       },
     },
   },
@@ -81,6 +89,10 @@ const ARTICLE_CATALOG = [
         slug: 'lohas-five-line-analysis-backtest-11-56-million-bars',
         filename: 'article-4.ko-KR.ini.md',
       },
+      'ja-JP': {
+        slug: 'lohas-five-line-analysis-backtest-11-56-million-bars',
+        filename: 'article-4.ja-JP.ini.md',
+      },
     },
   },
   {
@@ -106,6 +118,10 @@ const ARTICLE_CATALOG = [
       'ko-KR': {
         slug: 'market-momentum-dashboard-guide',
         filename: 'article-5.ko-KR.ini.md',
+      },
+      'ja-JP': {
+        slug: 'market-momentum-dashboard-guide',
+        filename: 'article-5.ja-JP.ini.md',
       },
     },
   },

@@ -41,6 +41,7 @@ test('the locale registry is the source of truth for supported locale resources'
 test('Traditional Chinese language options identify their region', () => {
   expect(LOCALES.find(locale => locale.code === 'zh-TW')?.nativeName).toBe('繁體中文（台灣）');
   expect(LOCALES.find(locale => locale.code === 'zh-HK')?.nativeName).toBe('繁體中文（香港）');
+  expect(LOCALES.find(locale => locale.code === 'ja-JP')?.nativeName).toBe('日本語');
 });
 
 test('canonical locale and legacy URL alias resolve without creating a second translation', () => {
@@ -58,6 +59,8 @@ test('fallback chains are taken from locale configuration', () => {
   expect(getLocaleResourceChain('zh-TW')).toEqual(['zh-TW', 'en']);
   expect(getLocaleFallbacks('zh-HK')).toEqual(['en']);
   expect(getLocaleResourceChain('zh-HK')).toEqual(['zh-HK', 'en']);
+  expect(getLocaleFallbacks('ja-JP')).toEqual(['en']);
+  expect(getLocaleResourceChain('ja-JP')).toEqual(['ja-JP', 'en']);
   expect(getLocaleFallbacks('zh-CN')).toEqual(['en']);
   expect(getLocaleResourceChain('zh-CN')).toEqual(['zh-CN', 'en']);
   expect(getLocaleResourceChain('en')).toEqual(['en']);
@@ -75,11 +78,13 @@ test('browser language selects an enabled locale and otherwise falls back to def
   expect(getBrowserLocale('zh-SG')).toBe('zh-CN');
   expect(getBrowserLocale('zh')).toBe('zh-TW');
   expect(getBrowserLocale('en-GB')).toBe('en');
-  expect(getBrowserLocale('ja-JP')).toBe(DEFAULT_LOCALE);
+  expect(getBrowserLocale('ja-JP')).toBe('ja-JP');
+  expect(getBrowserLocale('ja')).toBe('ja-JP');
   expect(getBrowserLocale('ko-KR')).toBe('ko-KR');
   expect(getBrowserLocale('ko')).toBe('ko-KR');
   expect(getCanonicalLocale('ko-KR')).toBe('ko-KR');
   expect(getLocaleResourceChain('ko-KR')).toEqual(['ko-KR', 'en']);
+  expect(getCanonicalLocale('ja-JP')).toBe('ja-JP');
   expect(getBrowserLocale('')).toBe(DEFAULT_LOCALE);
 });
 
@@ -90,6 +95,7 @@ test('explicit URL locale takes precedence over browser preference', () => {
   expect(getInitialLanguage('/EN/watchlist', 'zh-TW')).toBe('en');
   expect(getInitialLanguage('/zh/momentum', 'en-US')).toBe('zh');
   expect(getInitialLanguage('/ko-KR/momentum', 'en-US')).toBe('ko-KR');
+  expect(getInitialLanguage('/ja-JP/market-sentiment', 'en-US')).toBe('ja-JP');
   expect(getInitialLanguage('/unsupported/path', 'zh-TW')).toBe(DEFAULT_LOCALE);
   expect(getInitialLanguage('/', 'zh-TW')).toBe('zh-TW');
 });
@@ -108,6 +114,7 @@ test('Intl formatting locale is centralized with a safe fallback', () => {
   expect(getIntlLocale('zh-HK')).toBe('zh-HK');
   expect(getIntlLocale('zh-CN')).toBe('zh-CN');
   expect(getIntlLocale('ko-KR')).toBe('ko-KR');
+  expect(getIntlLocale('ja-JP')).toBe('ja-JP');
   expect(getIntlLocale('en')).toBe('en-US');
   expect(getIntlLocale('unknown')).toBe('en-US');
 });
@@ -120,6 +127,8 @@ test('payment services receive only the currently supported locales', () => {
   expect(getPaymentServiceLocale('en')).toBe('en');
   // Korean UI copy is independent from payment service language support.
   expect(getPaymentServiceLocale('ko-KR')).toBe('en');
+  // Japanese UI remains separate from ECPay's supported English/Chinese service locale.
+  expect(getPaymentServiceLocale('ja-JP')).toBe('en');
 });
 
 test('Korean translation covers every source leaf with matching placeholders', () => {

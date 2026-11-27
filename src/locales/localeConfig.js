@@ -42,6 +42,14 @@ const LOCALES = [
     writingSystem: 'cjk',
     fallback: ['en'],
   },
+  {
+    code: 'ja-JP',
+    nativeName: '日本語',
+    intlLocale: 'ja-JP',
+    socialAssetSuffix: '-ja-JP',
+    writingSystem: 'cjk',
+    fallback: ['en'],
+  },
 ];
 
 const DEFAULT_LOCALE = 'en';

@@ -1,0 +1,9 @@
+source_term,target_term,locale,domain,context,status,provenance,alternatives
+恐懼與貪婪指數,恐怖と強欲指数,ja-JP,financial_markets,Market sentiment indicator name,draft,Common Japanese rendering in finance references,恐怖・強欲指数
+樂活五線譜,LOHAS 5線チャート,ja-JP,technical_analysis,Product feature label,draft,Preserves LOHAS brand and describes chart form,LOHAS五線譜
+市場動能,市場モメンタム,ja-JP,technical_analysis,Market momentum feature and page label,draft,Established Japanese technical-analysis loanword,マーケット・モメンタム
+追蹤清單,ウォッチリスト,ja-JP,product_ui,Watchlist navigation and feature,draft,Common Japanese financial-product UI usage,お気に入り銘柄リスト
+價格情緒,株価センチメント,ja-JP,financial_markets,Price-analysis sentiment state,draft,Separates price-based sentiment from broad market psychology,株価の心理
+標準差,標準偏差,ja-JP,statistics,Statistical measure in five-line analysis,draft,Standard Japanese statistical term,標準偏差
+極度恐懼,極度の恐怖,ja-JP,financial_markets,Sentiment classification label,draft,Consistent with Japanese fear-greed index terminology,強い恐怖
+極度貪婪,極度の強欲,ja-JP,financial_markets,Sentiment classification label,draft,Consistent with Japanese fear-greed index terminology,強い強欲

@@ -112,6 +112,7 @@ function ogLocale(lang) {
   if (lang === 'zh-HK') return 'zh_HK';
   if (lang === 'zh-CN') return 'zh_CN';
   if (lang === 'ko-KR') return 'ko_KR';
+  if (lang === 'ja-JP') return 'ja_JP';
   return 'zh_TW';
 }
 

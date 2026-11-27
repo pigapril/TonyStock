@@ -22,15 +22,15 @@ test.each(LOCALE_CODES)('all split resources reconstruct the exact original %s c
   expect(instance.getResourceBundle(lang, 'translation')).toEqual(original(lang));
   // Shared homepage gauge and preview charts must not depend on feature chunks.
   const common = resource(lang, 'common');
-  expect(common.home.hero.title).toBe(original(lang).home.hero.title);
-  expect(common.marketSentiment.composite.scoreLabel).toBeTruthy();
-  expect(common.priceAnalysis.description.sd.title).toBe(original(lang).priceAnalysis.description.sd.title);
-  expect(common.priceAnalysis.tour.start).toBe(original(lang).priceAnalysis.tour.start);
-  expect(common.priceAnalysis.sentiment).toEqual(original(lang).priceAnalysis.sentiment);
+  expect(common.home?.hero?.title).toBe(original(lang).home?.hero?.title);
+  expect(Boolean(common.marketSentiment?.composite?.scoreLabel)).toBe(Boolean(original(lang).marketSentiment?.composite?.scoreLabel));
+  expect(common.priceAnalysis?.description?.sd?.title).toBe(original(lang).priceAnalysis?.description?.sd?.title);
+  expect(common.priceAnalysis?.tour?.start).toBe(original(lang).priceAnalysis?.tour?.start);
+  expect(common.priceAnalysis?.sentiment).toEqual(original(lang).priceAnalysis?.sentiment);
   expect(common).not.toHaveProperty('admin');
   expect(common).not.toHaveProperty('momentumDashboard');
   expect(common.watchlist).not.toHaveProperty('priceSentimentNotifications');
-  expect(common.sentimentIndicatorPages.currentReading).toBe(original(lang).sentimentIndicatorPages.currentReading);
+  expect(common.sentimentIndicatorPages?.currentReading).toBe(original(lang).sentimentIndicatorPages?.currentReading);
   expect(common.sentimentIndicatorPages).not.toHaveProperty('bofaBullBear');
   expect(common).not.toHaveProperty('sentimentHistoryExamples');
 });
@@ -51,7 +51,7 @@ test.each([
   ['/en/sentiment-indicators/bofa-bull-bear', ['indicatorsExternal', 'indicatorsBofa']],
   ['/zh-TW/sentiment-indicators/market-fear-breadth', ['indicatorsSio']],
   ['/en/sentiment-indicators/unknown', []],
-  ['/zh-TW/tw-market-sentiment/', ['market']], ['/en/priceanalysis', []],
+  ['/zh-TW/tw-market-sentiment/', ['market']], ['/ja-JP/market-sentiment/', ['market']], ['/ja-JP/watchlist', ['priceNotifications']], ['/en/priceanalysis', []],
   ['/zh-TW/watchlist', ['priceNotifications']], ['/en/payment/card-trial/result', ['account']],
   ['/zh-TW/subscription-plans', ['account']], ['/en/user-account', ['account']],
   ['/en/momentum-other', []], ['/zh-TW/NK-Admin', Object.keys(RESOURCE_GROUPS)],
@@ -144,7 +144,7 @@ test.each([
 test.each([
   ['/', 'zh-TW', 'zh-TW'], ['/', 'zh-HK', 'zh-HK'], ['/', 'zh-Hant-HK', 'zh-HK'], ['/', 'zh-Hant', 'zh-TW'],
   ['/', 'zh-CN', 'zh-CN'], ['/', 'zh-Hans', 'zh-CN'], ['/', 'zh-SG', 'zh-CN'], ['/', 'ZH-cn', 'zh-CN'],
-  ['/', 'en-US', 'en'], ['/', 'ko-KR', 'ko-KR'], ['/', 'ko', 'ko-KR'], ['/', 'ja-JP', 'en'], ['/', '', 'en'],
+  ['/', 'en-US', 'en'], ['/', 'ko-KR', 'ko-KR'], ['/', 'ko', 'ko-KR'], ['/', 'ja-JP', 'ja-JP'], ['/', 'ja', 'ja-JP'], ['/', '', 'en'],
   ['/en/', 'zh-TW', 'en'], ['/zh-TW/', 'en-US', 'zh-TW'], ['/zh-HK/', 'zh-TW', 'zh-HK'], ['/zh-CN/', 'zh-TW', 'zh-CN'], ['/zh/', 'en-US', 'zh'], ['/ko-KR/', 'en-US', 'ko-KR']
 ])('initial language for %s with browser preference %s is %s', (pathname, browserLanguage, language) => {
   const { getInitialLanguage } = require('../resourceGroups');
@@ -152,7 +152,7 @@ test.each([
 });
 
 test.each([
-  ['/', 'zh-TW', 'zh-TW'], ['/', 'zh-HK', 'zh-HK'], ['/', 'zh-CN', 'zh-CN'], ['/', 'ko-KR', 'ko-KR'], ['/', 'ja-JP', 'en'], ['/en/', 'zh-TW', 'en'], ['/zh/', 'en-US', 'zh']
+  ['/', 'zh-TW', 'zh-TW'], ['/', 'zh-HK', 'zh-HK'], ['/', 'zh-CN', 'zh-CN'], ['/', 'ko-KR', 'ko-KR'], ['/', 'ja-JP', 'ja-JP'], ['/en/', 'zh-TW', 'en'], ['/zh/', 'en-US', 'zh']
 ])('i18n loads only the initial locale chain before readiness resolves for %s with browser language %s', async (pathname, browserLanguage, language) => {
   const originalUrl = window.location.href;
   const originalLanguage = Object.getOwnPropertyDescriptor(navigator, 'language');
@@ -176,4 +176,26 @@ test.each([
     if (originalLanguage) Object.defineProperty(navigator, 'language', originalLanguage);
     else delete navigator.language;
   }
+});
+
+
+test('partial Japanese resources use English fallback and never Traditional Chinese for missing copy', async () => {
+  const instance = createInstance();
+  await instance.init({ lng: 'ja-JP', fallbackLng: ['en'], resources: {
+    'ja-JP': { translation: resource('ja-JP', 'common') },
+    en: { translation: resource('en', 'common') },
+  } });
+  const loaders = Object.fromEntries(['ja-JP', 'en', 'zh-TW'].map(lang => [lang, {
+    market: jest.fn(async () => ({ default: resource(lang, 'market') })),
+  }]));
+  const fallbackChain = locale => locale === 'ja-JP' ? ['ja-JP', 'en'] : [locale];
+  const load = createRouteLocaleLoader(instance, loaders, fallbackChain);
+  await load('ja-JP', '/ja-JP/market-sentiment');
+
+  expect(instance.t('marketSentiment.enhancedDescription.tabs.faq')).toBe('よくある質問');
+  expect(instance.t('marketSentiment.pageTitle')).toBe(original('ja-JP').marketSentiment.pageTitle);
+  expect(instance.t('marketSentiment.gauge.comparison.previousDay')).toBe(original('en').marketSentiment.gauge.comparison.previousDay);
+  expect(loaders['ja-JP'].market).toHaveBeenCalledTimes(1);
+  expect(loaders.en.market).toHaveBeenCalledTimes(1);
+  expect(loaders['zh-TW'].market).not.toHaveBeenCalled();
 });

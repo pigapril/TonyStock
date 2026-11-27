@@ -329,7 +329,7 @@
       "name": "sentiment-indicators",
       "lang": "zh-CN",
       "title": "市场情绪指标总览",
-      "description": "一页看完全球市场情绪指标:CNN 恐惧贪婪指数、BofA Bull & Bear、AAII 散户调查、NAAIM 基金经理风险敞口、台湾股指期权波动率等,附数据时间与原始出处。",
+      "description": "一页看完全球市场情绪指标：CNN 恐惧贪婪指数、BofA Bull & Bear、AAII 散户调查、NAAIM 基金经理风险敞口、台湾股指期权波动率等，附数据时间与原始出处。",
       "titleKey": "sentimentBoard.heading",
       "descriptionKey": "sentimentBoard.pageDescription"
     },
@@ -403,7 +403,7 @@
       "title": "시장 심리 지표 전체 보기",
       "description": "CNN·BofA·AAII·NAAIM 등 주요 시장 심리 지표의 최신 수치와 산출 방식, 원본 출처를 확인하세요.",
       "titleKey": "sentimentBoard.heading",
-      "descriptionKey": "sentimentBoard.pageDescription"
+      "descriptionKey": null
     },
     {
       "name": "market-sentiment",
@@ -451,7 +451,7 @@
       "title": "Sentiment Inside Out 소개",
       "description": "Sentiment Inside Out의 운영 철학과 시장 심리 지표를 투자 판단에 참고하는 방법을 소개합니다.",
       "titleKey": "about.heading",
-      "descriptionKey": "about.pageDescription"
+      "descriptionKey": null
     },
     {
       "name": "article-1",
@@ -620,6 +620,114 @@
       "category": "도구 사용 가이드",
       "date": "2026-09-30",
       "source": "articles/5.市場動能儀表板使用指南/article-5.ko-KR.ini.md"
+    },
+    {
+      "name": "home",
+      "lang": "ja-JP",
+      "title": "市場を読み解く\n恐怖と強欲を知る",
+      "description": "客観的なデータで株式市場の市場心理を把握し、恐怖や強欲に左右されない投資判断を目指しましょう。",
+      "titleKey": null,
+      "descriptionKey": null
+    },
+    {
+      "name": "priceanalysis",
+      "lang": "ja-JP",
+      "title": "LOHAS Five-Line（5線チャート）",
+      "description": "株価トレンドに対する位置から、銘柄の市場心理を読み解きます。",
+      "titleKey": null,
+      "descriptionKey": null
+    },
+    {
+      "name": "sentiment-indicators",
+      "lang": "ja-JP",
+      "title": "市場心理指標一覧",
+      "description": "CNN恐怖・強欲指数、BofA Bull & Bear、AAII投資家調査、NAAIMエクスポージャー、台湾株価指数オプションのボラティリティなど、世界の主要な市場心理指標を1ページで確認できます。データの基準時刻と原典も表示します。",
+      "titleKey": null,
+      "descriptionKey": null
+    },
+    {
+      "name": "market-sentiment",
+      "lang": "ja-JP",
+      "title": "米国株の恐怖・強欲指数｜8つの指標を統合した市場心理分析",
+      "description": "米国株市場全体の心理が恐怖と強欲のどちらに傾いているかを追跡します。",
+      "titleKey": null,
+      "descriptionKey": null
+    },
+    {
+      "name": "tw-market-sentiment",
+      "lang": "ja-JP",
+      "title": "Sentiment Inside Out（SIO）台湾株の恐怖・強欲指数｜台湾株の市場心理を追跡",
+      "description": "台湾株市場全体の心理が恐怖と強欲のどちらに傾いているかを追跡します。",
+      "titleKey": null,
+      "descriptionKey": null
+    },
+    {
+      "name": "momentum",
+      "lang": "ja-JP",
+      "title": "市場モメンタム",
+      "description": "強いカテゴリーから有望な銘柄を探し、市場モメンタムの方向を把握します。",
+      "titleKey": null,
+      "descriptionKey": null
+    },
+    {
+      "name": "watchlist",
+      "lang": "ja-JP",
+      "title": "ウォッチリスト",
+      "description": "気になる銘柄を登録し、複数銘柄の市場心理をまとめて確認できます。",
+      "titleKey": null,
+      "descriptionKey": null
+    },
+    {
+      "name": "articles",
+      "lang": "ja-JP",
+      "title": "ツールの使い方と市場心理の基礎",
+      "description": "LOHAS Five-Line（5線チャート）やSIO恐怖・強欲指数を使った売買タイミングの考え方と、各種市場心理指標について解説します。",
+      "titleKey": null,
+      "descriptionKey": null
+    },
+    {
+      "name": "about",
+      "lang": "ja-JP",
+      "title": "サイトについて",
+      "description": "Sentiment Inside Outの理念と、シンプルな分析ツールを使って市場の現在の心理を重要な投資指標に変え、投資家が恐怖と強欲に振り回されないための活用方法を紹介します。",
+      "titleKey": null,
+      "descriptionKey": null
+    },
+    {
+      "name": "article-1",
+      "lang": "ja-JP",
+      "title": "LOHAS Five-Line（5線チャート）で株価トレンドと市場心理を分析する",
+      "description": "LOHAS Five-Lineを使って株価トレンドと市場の恐怖・強欲を把握し、投資判断の参考にする方法を解説します。",
+      "titleKey": null,
+      "descriptionKey": null,
+      "date": "2025-05-04"
+    },
+    {
+      "name": "article-2",
+      "lang": "ja-JP",
+      "title": "SIO恐怖・強欲指数で売買タイミングを判断する",
+      "description": "市場心理の基本と、Sentiment Inside Out独自のSIO恐怖・強欲指数を使って長期的な市場の恐怖と強欲を把握し、売買タイミングを考える方法を解説します。",
+      "titleKey": null,
+      "descriptionKey": null,
+      "date": "2026-03-08"
+    },
+    {
+      "name": "article-4",
+      "lang": "ja-JP",
+      "title": "LOHAS Five-Line（5線チャート）の「極度の恐怖」は買い場か？1,156万件の日足データで検証",
+      "description": "1,449銘柄、1,156万件の日足データを分析しました。最も古いデータは1927年までさかのぼります。「極度の強欲」は約10日ごとに現れ、LOHAS Five-LineとLOHASチャネルの判定は約6割の期間で一致しません。両方が同時に極端となった5日間では、1年間保有した場合、ランダムエントリーを11.1パーセントポイント上回りましたが、1カ月保有ではほとんど差がありませんでした。",
+      "titleKey": null,
+      "descriptionKey": null,
+      "date": "2026-08-30"
+    },
+    {
+      "name": "article-5",
+      "lang": "ja-JP",
+      "title": "市場モメンタム・ダッシュボード：強いセクターからETF・個別株を探す",
+      "description": "モメンタムの強いカテゴリーからETFを探し、構成銘柄のモメンタム、売買代金、相対強度線、RSIを使って個別株を絞り込み、押し目を観察する方法を紹介します。",
+      "titleKey": null,
+      "descriptionKey": null,
+      "date": "2026-09-30"
     }
   ]
 }

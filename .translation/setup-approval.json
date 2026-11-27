@@ -1,0 +1,13 @@
+{
+  "status": "approved",
+  "approved_by": "User-approved in ChatGPT conversation",
+  "approved_at": "2026-11-26T22:12:00+08:00",
+  "context_sha256": {
+    "project-brief.md": "d5e6a9f5cf5dde050809e9da539862bdbe2e23cf8036c3d49160b9383023b268",
+    "locales.yaml": "b9612bf5c820c2022288d12fd67749d46384ece0a4397c39ff4c9715a55a1488",
+    "glossary.csv": "164710333aba8bc95425a6450ad04147adeb722ff9b7adc7473a4c8a17a33fc7",
+    "style-guide.md": "2d66110f17e849000e55b8c81a53cd50e77fc1666b168fad24eca30fbfef1af6",
+    "protected-terms.txt": "9979a1dcbff894ebccfe4a50dc96c2cc63b378d384ec58f1b83be33700974ab0"
+  },
+  "approved_empty": []
+}

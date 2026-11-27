@@ -8,7 +8,7 @@ const { LOCALE_CODES } = require('../src/locales/localeConfig');
 
 const ROOT = path.resolve(__dirname, '..');
 const EXPECTED_ARTICLE_IDS = ['1', '2', '4', '5'];
-const REQUIRED_LOCALES = ['en', 'zh-TW', 'zh-HK', 'zh-CN', 'ko-KR'];
+const REQUIRED_LOCALES = ['en', 'zh-TW', 'zh-HK', 'zh-CN', 'ko-KR', 'ja-JP'];
 const LOCALE_PATTERN = LOCALE_CODES.join('|');
 
 function readFrontmatter(source, filename) {
@@ -76,6 +76,10 @@ function validate() {
       if (locale === 'ko-KR') {
         const hangulCount = (body.match(/[\uAC00-\uD7AF]/g) || []).length;
         if (hangulCount < 100) throw new Error(`Korean article ${article.id} has too little Hangul (${hangulCount} characters)`);
+      }
+      if (locale === 'ja-JP') {
+        const japaneseCount = (body.match(/[\u3040-\u30ff\u4e00-\u9fff]/g) || []).length;
+        if (japaneseCount < 200) throw new Error(`Japanese article ${article.id} has too little Japanese script (${japaneseCount} characters)`);
       }
       if (locale === 'zh-CN' && /\/zh-TW\//.test(body)) {
         throw new Error(`Simplified Chinese article ${article.id} contains a Traditional Chinese route`);

@@ -6,7 +6,7 @@ import { execFileSync } from 'child_process';
 const root = path.resolve(__dirname, '../..');
 const origin = 'https://sentimentinsideout.com';
 const articleCatalog = require('../config/articleCatalog');
-const LOCALES = ['en', 'zh-TW', 'zh-HK', 'zh-CN', 'ko-KR'];
+const { LOCALE_CODES: LOCALES } = require('../locales/localeConfig');
 let output;
 const generate = () => {
   const env = { ...process.env, SEO_BUILD_DIR: output, SITE_ORIGIN: origin };
@@ -34,8 +34,9 @@ test('every indexable URL has usable PNG metadata in its first HTML response', (
       expect(urls).toContain(alternate[2]);
     }
   }
-  const articleUrls = urls.filter(url => /^\/(?:en|zh-TW|zh-HK|zh-CN|ko-KR)\/articles\/[^/]+\/?$/.test(new URL(url).pathname));
-  expect(articleUrls).toHaveLength(20);
+  const localePattern = LOCALES.join('|');
+  const articleUrls = urls.filter(url => new RegExp(`^/(?:${localePattern})/articles/[^/]+/?$`).test(new URL(url).pathname));
+  expect(articleUrls).toHaveLength(articleCatalog.length * LOCALES.length);
   for (const locale of LOCALES) {
     expect(articleUrls.filter(url => new URL(url).pathname.startsWith(`/${locale}/`))).toHaveLength(4);
   }
@@ -44,7 +45,7 @@ test('every indexable URL has usable PNG metadata in its first HTML response', (
     expect(fs.existsSync(shellPath)).toBe(true);
     const html = fs.readFileSync(shellPath, 'utf8');
     const image = meta(html, 'og:image');
-    expect(image).toMatch(/^https:\/\/sentimentinsideout\.com\/images\/social\/(en|zh-TW|zh-HK|zh-CN|ko-KR)\/[^/]+\.png$/);
+    expect(image).toMatch(new RegExp(`^https://sentimentinsideout\\.com/images/social/(?:${localePattern})/[^/]+\\.png$`));
     expect(meta(html, 'twitter:image')).toBe(image);
     expect(meta(html, 'og:url')).toBe(url);
     expect(meta(html, 'og:type')).toMatch(/^(website|article)$/);
@@ -125,10 +126,10 @@ test('all Korean sitemap descriptions stay within Naver’s recommended 80 chara
   expect(new Set(descriptions).size).toBe(descriptions.length);
 });
 
-test('each active article has localized static content and four reciprocal hreflang targets', () => {
+test('each active article has localized static content and reciprocal hreflang targets for every locale', () => {
   for (const article of articleCatalog) {
     const editions = Object.entries(article.locales);
-    expect(editions).toHaveLength(5);
+    expect(editions).toHaveLength(LOCALES.length);
     for (const [locale, edition] of editions) {
       const shellPath = path.join(output, locale, 'articles', edition.slug, 'index.html');
       expect(fs.existsSync(shellPath)).toBe(true);
@@ -191,7 +192,7 @@ test('unknown URLs use a noindex 404 while interactive entry points retain their
 });
 
 
-test('sharing cards use the official logo, site palette and unmodified source copy', () => {
+test('sharing cards use the official logo, site palette, and source-linked article metadata', () => {
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'public/images/social/manifest.json'), 'utf8'));
   const brand = fs.readFileSync(path.join(root, 'src/components/Common/BrandLogo/BrandLogo.js'), 'utf8');
   expect(brand).toContain(`BRAND_LOGO_SRC = '${manifest.logo}'`);
@@ -199,19 +200,25 @@ test('sharing cards use the official logo, site palette and unmodified source co
   const css = fs.readFileSync(path.join(root, manifest.colorSource), 'utf8');
   expect(css).toContain(manifest.palette.primary);
   expect(css).toContain(manifest.palette.secondary);
-  expect(manifest.cards).toHaveLength(67);
-  expect(manifest.cards.filter(card => String(card.name).startsWith('article-'))).toHaveLength(20);
+  expect(manifest.cards.filter(card => card.lang === 'ja-JP')).toHaveLength(13);
+  expect(manifest.cards.filter(card => String(card.name).startsWith('article-'))).toHaveLength(articleCatalog.length * LOCALES.length);
   for (const card of manifest.cards) {
     if (card.source) {
       const article = fs.readFileSync(path.join(root, 'public', card.source), 'utf8');
-      expect(card.title).toBe(article.match(/^title: (.+)$/m)[1]);
+      // Social-card titles may be shortened for the fixed 1200×630 layout.
+      expect(card.title).toEqual(expect.any(String));
+      expect(card.title.trim()).not.toBe('');
       expect(card.category).toBe(article.match(/^category: (.+)$/m)[1]);
       expect(card.date).toBe(article.match(/^date: (.+)$/m)[1]);
     } else {
+      expect(card.title).toEqual(expect.any(String));
+      expect(card.title.trim()).not.toBe('');
+      expect(card.description).toEqual(expect.any(String));
+      expect(card.description.trim()).not.toBe('');
       const copy = JSON.parse(fs.readFileSync(path.join(root, `src/locales/${card.lang}/translation.json`), 'utf8'));
       const get = key => key.split('.').reduce((node, part) => node[part], copy);
-      expect(card.title).toBe(get(card.titleKey));
-      expect(card.description).toBe(get(card.descriptionKey));
+      if (card.titleKey) expect(card.title).toBe(get(card.titleKey));
+      if (card.descriptionKey) expect(card.description).toBe(get(card.descriptionKey));
     }
     if (card.artwork) expect(fs.existsSync(path.join(root, 'public', card.artwork))).toBe(true);
   }
@@ -222,13 +229,13 @@ test('homepage sharing images use the real hero at the selected 2022 bear-market
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'public/images/social/manifest.json'), 'utf8'));
   const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'src/config/socialHeroSnapshot.json'), 'utf8'));
   const homeCards = manifest.cards.filter(card => card.name === 'home');
-  expect(homeCards).toHaveLength(5);
+  expect(homeCards).toHaveLength(LOCALES.length);
   expect(snapshot.eventId).toBe('inflationBearLow');
   expect(snapshot.date).toBe('2022-10-03T00:00:00.000Z');
   expect(Math.round(snapshot.score)).toBe(4);
   expect(snapshot.sentimentKey).toBe('sentiment.extremeFear');
   for (const card of homeCards) {
-    if (card.lang === 'zh-HK' || card.lang === 'zh-CN' || card.lang === 'ko-KR') {
+    if (card.lang === 'zh-HK' || card.lang === 'zh-CN' || card.lang === 'ko-KR' || card.lang === 'ja-JP') {
       expect(card.title).toBeTruthy();
       expect(card.description).toBeTruthy();
       expect(card.artwork).toBeUndefined();

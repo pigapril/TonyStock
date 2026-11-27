@@ -5,7 +5,8 @@ export const commonLocaleLoaders = {
   "zh-TW": () => import('./resources/zh-TW/common.json'),
   "zh-HK": () => import('./resources/zh-HK/common.json'),
   "zh-CN": () => import('./resources/zh-CN/common.json'),
-  "ko-KR": () => import('./resources/ko-KR/common.json')
+  "ko-KR": () => import('./resources/ko-KR/common.json'),
+  "ja-JP": () => import('./resources/ja-JP/common.json')
 };
 
 export const routeLocaleLoaders = {
@@ -68,5 +69,17 @@ export const routeLocaleLoaders = {
     "account": () => import('./resources/ko-KR/account.json'),
     "market": () => import('./resources/ko-KR/market.json'),
     "priceNotifications": () => import('./resources/ko-KR/priceNotifications.json')
+  },
+  "ja-JP": {
+    "admin": () => import('./resources/ja-JP/admin.json'),
+    "momentum": () => import('./resources/ja-JP/momentum.json'),
+    "indicatorsExternal": () => import('./resources/ja-JP/indicatorsExternal.json'),
+    "indicatorsUs": () => import('./resources/ja-JP/indicatorsUs.json'),
+    "indicatorsTw": () => import('./resources/ja-JP/indicatorsTw.json'),
+    "indicatorsSio": () => import('./resources/ja-JP/indicatorsSio.json'),
+    "indicatorsBofa": () => import('./resources/ja-JP/indicatorsBofa.json'),
+    "account": () => import('./resources/ja-JP/account.json'),
+    "market": () => import('./resources/ja-JP/market.json'),
+    "priceNotifications": () => import('./resources/ja-JP/priceNotifications.json')
   }
 };

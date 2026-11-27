@@ -142,7 +142,7 @@ async function render(record, palette, logo) {
     }
   }
   fs.writeFileSync(path.join(ROOT, 'src/config/articleImageDimensions.json'), JSON.stringify(dimensions, null, 2) + '\n');
-  for (const lang of LOCALE_CODES) {
+  for (const lang of ACTIVE_LOCALES) {
     for (const [name, [titleKey, descriptionKey, asset]] of Object.entries(pages)) {
       // Only English and Traditional Chinese have localized in-product
       // artwork. Other locales use text-led cards rather than embedding
@@ -150,6 +150,7 @@ async function render(record, palette, logo) {
       if (lang === 'zh-CN' && name === 'sponsor-us') continue;
       if (lang === 'ko-KR' && name === 'sponsor-us') continue;
       if (lang === 'zh-HK' && name === 'sponsor-us') continue;
+      if (lang === 'ja-JP' && name === 'sponsor-us') continue;
       const useArtwork = lang === 'en' || lang === 'zh-TW';
       const artworkPath = useArtwork
         ? asset?.replace('{locale}', getLocaleConfig(lang)?.socialAssetSuffix ?? (lang === DEFAULT_LOCALE ? '-en' : `-${lang}`)).replace('{lang}', lang)
@@ -163,7 +164,7 @@ async function render(record, palette, logo) {
   // Only complete editions in the article catalog produce share cards. Build
   // therefore fails early if an advertised locale is missing its Markdown.
   for (const { id, originalSlug, locales } of ARTICLE_CATALOG) {
-    for (const lang of LOCALE_CODES) {
+    for (const lang of ACTIVE_LOCALES) {
       const edition = locales[lang];
       if (!edition) continue;
       const source = `articles/${originalSlug}/${edition.filename}`;
@@ -175,7 +176,17 @@ async function render(record, palette, logo) {
     }
   }
   for (const record of records) await render(record, palette, logo);
-  fs.writeFileSync(path.join(ROOT, 'public/images/social/manifest.json'), JSON.stringify({
-    logo: logoPath, colorSource: 'src/components/Common/global-styles.css', palette, cards: records
+  const manifestPath = path.join(ROOT, 'public/images/social/manifest.json');
+  let previousCards = [];
+  if (ACTIVE_LOCALES.length !== LANGS.length && fs.existsSync(manifestPath)) {
+    try { previousCards = JSON.parse(fs.readFileSync(manifestPath, 'utf8')).cards || []; } catch (_) { previousCards = []; }
+  }
+  const activeSet = new Set(ACTIVE_LOCALES);
+  const mergedCards = [
+    ...previousCards.filter(card => !activeSet.has(card.lang)),
+    ...records,
+  ];
+  fs.writeFileSync(manifestPath, JSON.stringify({
+    logo: logoPath, colorSource: 'src/components/Common/global-styles.css', palette, cards: mergedCards
   }, null, 2) + '\n');
 })().catch(error => {console.error(error);process.exit(1);});

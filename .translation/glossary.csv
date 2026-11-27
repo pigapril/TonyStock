@@ -1,0 +1,21 @@
+source_term,target_term,locale,context,status,notes
+Sentiment Inside Out,Sentiment Inside Out,ja-JP,Product brand,approved,Preserve the product and company brand exactly.
+SIO,SIO,ja-JP,Product abbreviation,approved,Preserve the approved product abbreviation.
+LOHAS Five-Line,LOHAS Five-Line,ja-JP,Product feature name,approved,Preserve this branded English feature name; surrounding Japanese prose may be localized.
+ECPay,ECPay,ja-JP,Payment provider,approved,Preserve the payment provider's official brand spelling.
+AAII,AAII,ja-JP,Indicator/data-source acronym,approved,Preserve the source acronym.
+CBOE,CBOE,ja-JP,Exchange/data-source acronym,approved,Preserve the source acronym.
+NAAIM,NAAIM,ja-JP,Indicator/data-source acronym,approved,Preserve the source acronym.
+VIX,VIX,ja-JP,Market indicator acronym,approved,Preserve the established indicator ticker/name.
+SPY,SPY,ja-JP,ETF ticker,approved,Preserve the ticker symbol.
+ETF,ETF,ja-JP,Financial-market abbreviation,approved,Use the established abbreviation consistently.
+Pro,Pro,ja-JP,Subscription plan label,approved,Preserve the branded plan tier name.
+CFTC,CFTC,ja-JP,Regulatory/data-source acronym,approved,Preserve the source acronym.
+FRED,FRED,ja-JP,Data-source acronym,approved,Preserve the source acronym.
+S&P 500,S&P 500,ja-JP,Market index name,approved,Preserve the index name and punctuation.
+QQQ,QQQ,ja-JP,ETF ticker,approved,Preserve the ticker symbol.
+DIA,DIA,ja-JP,ETF ticker,approved,Preserve the ticker symbol.
+NASDAQ,NASDAQ,ja-JP,Market/data-source name,approved,Preserve the source spelling.
+NYSE,NYSE,ja-JP,Market/data-source name,approved,Preserve the source spelling.
+Market Sentiment,市場心理,ja-JP,Core product concept and navigation,approved,"User-approved Japanese terminology on 2026-11-26; use consistently across UI, FAQs, articles, and notifications."
+Market Sentiment Composite Index,市場心理総合指数,ja-JP,Core indicator name,approved,Use 市場心理 for Market Sentiment; preserve Composite Index meaning.

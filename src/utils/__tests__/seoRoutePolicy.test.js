@@ -20,6 +20,8 @@ describe('isNonIndexableRoute', () => {
   test.each([
     ['/ko-KR/', 'ko-KR'],
     ['/ko-KR/priceanalysis/', 'ko-KR'],
+    ['/ja-JP/', 'ja-JP'],
+    ['/ja-JP/market-sentiment', 'ja-JP'],
     ['/zh-CN/market-sentiment', 'zh-CN'],
     ['/en/articles/market-momentum-dashboard-guide/', 'en'],
   ])('leaves public content route %s indexable', (pathname, locale) => {

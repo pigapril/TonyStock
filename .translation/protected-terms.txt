@@ -1,0 +1,19 @@
+# Exact brand, product, provider, index, ticker, and data-source names to preserve.
+Sentiment Inside Out
+SIO
+LOHAS Five-Line
+ECPay
+AAII
+CBOE
+NAAIM
+VIX
+SPY
+ETF
+Pro
+CFTC
+FRED
+S&P 500
+QQQ
+DIA
+NASDAQ
+NYSE

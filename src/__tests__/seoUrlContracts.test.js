@@ -11,19 +11,19 @@ describe('SEO URL contracts', () => {
   const redirects = fs.readFileSync(path.join(publicDir, '_redirects'), 'utf8');
   const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 
-  it('advertises only final, canonical URLs for the five distinct UI locales', () => {
-    expect(locs).toHaveLength(186);
+  it('advertises only final, canonical URLs for all six distinct UI locales', () => {
+    expect(locs).toHaveLength(223);
     expect(locs.every((url) => LOCALE_CODES.some(locale => url.startsWith(`${origin}/${locale}/`))))
       .toBe(true);
     expect(locs.every((url) => url.endsWith('/'))).toBe(true);
     expect(sitemap).not.toMatch(/hreflang="zh"|https:\/\/sentimentinsideout\.com\/zh\//);
     expect(locs).not.toContain(`${origin}/en/sponsor-us/`);
     expect(locs).toContain(`${origin}/zh-TW/sponsor-us/`);
-    expect(locs.some(url => /\/(?:en|zh-TW|zh-HK|zh-CN|ko-KR)\/watchlist\/$/.test(url))).toBe(false);
+    expect(locs.some(url => LOCALE_CODES.some(locale => new URL(url).pathname === `/${locale}/watchlist/`))).toBe(false);
     const homeBlocks = [...sitemap.matchAll(/<url>[\s\S]*?<\/url>/g)]
       .map(([block]) => block)
-      .filter(block => /<loc>https:\/\/sentimentinsideout\.com\/(?:en|zh-TW|zh-HK|zh-CN|ko-KR)\/<\/loc>/.test(block));
-    expect(homeBlocks).toHaveLength(5);
+      .filter(block => LOCALE_CODES.some(locale => block.includes(`<loc>${origin}/${locale}/</loc>`)));
+    expect(homeBlocks).toHaveLength(LOCALE_CODES.length);
     homeBlocks.forEach(block => {
       expect(block).toContain(`hreflang="x-default" href="${origin}/"`);
     });
@@ -42,7 +42,7 @@ describe('SEO URL contracts', () => {
     const indicatorBlocks = [...sitemap.matchAll(/<url>[\s\S]*?<\/url>/g)]
       .map(([block]) => block)
       .filter((block) => /<loc>[^<]*\/sentiment-indicators\/[^<]+<\/loc>/.test(block));
-    expect(indicatorBlocks).toHaveLength(120);
+    expect(indicatorBlocks).toHaveLength(24 * LOCALE_CODES.length);
     const canonical = new Set(locs);
 
     for (const block of indicatorBlocks) {
@@ -68,11 +68,11 @@ describe('SEO URL contracts', () => {
     }
   });
 
-  it('publishes each active article in all five locales with reciprocal alternates', () => {
+  it('publishes each active article in all six locales with reciprocal hreflang alternates', () => {
     const articleBlocks = [...sitemap.matchAll(/<url>[\s\S]*?<\/url>/g)]
       .map(([block]) => block)
       .filter((block) => /<loc>[^<]*\/articles\/[^/<]+\/?<\/loc>/.test(block));
-    expect(articleBlocks).toHaveLength(20);
+    expect(articleBlocks).toHaveLength(24);
 
     const canonical = new Set(locs);
     for (const block of articleBlocks) {
