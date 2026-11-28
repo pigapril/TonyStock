@@ -55,29 +55,41 @@ async function installIsolatedApiMocks(page) {
       body = { data: { isAuthenticated: false, user: null } };
     } else if (apiPath === '/hot-searches') {
       body = { data: { data: { top_searches: [] } } };
+    } else if (apiPath === '/public/free-stock-list/regions') {
+      body = {
+        success: true,
+        data: {
+          americas: { title: '美洲市場', icon: '🌎', stocks: [{ ticker: 'SPY', name: 'SPDR S&P 500 ETF' }] },
+          europe: { title: '歐洲市場', icon: '🇪🇺', stocks: [] },
+          asiaPacific: { title: '亞太市場', icon: '🌏', stocks: [] },
+          global: { title: '全球市場', icon: '🌍', stocks: [] }
+        }
+      };
+    } else if (apiPath === '/public/free-stock-list/tickers') {
+      body = { success: true, data: { tickers: ['SPY'] } };
     } else if (apiPath === '/integrated-analysis') {
+      // The browser receives Axios response.data directly, so the API payload
+      // must be wrapped once (the extra wrapper belongs to Jest Axios mocks).
       body = {
         data: {
-          data: {
-            stockCode: url.searchParams.get('stockCode') || 'SPY',
-            dates: ['2026-11-20', '2026-11-21', '2026-11-24'],
-            prices: [670, 672, 675],
-            sdAnalysis: {
-              trendLine: [668, 670, 672],
-              tl_minus_2sd: [620, 622, 624],
-              tl_minus_sd: [644, 646, 648],
-              tl_plus_sd: [692, 694, 696],
-              tl_plus_2sd: [716, 718, 720]
-            },
-            weeklyDates: ['2026-11-20', '2026-11-21', '2026-11-24'],
-            weeklyPrices: [670, 672, 675],
-            upperBand: [692, 694, 696],
-            lowerBand: [644, 646, 648],
-            ma20: [668, 670, 672],
-            currentPrice: 675,
-            currentPricePosition: 0,
-            sentiment: { key: 'sentiment.neutral', value: 'Neutral' }
-          }
+          stockCode: url.searchParams.get('stockCode') || 'SPY',
+          dates: ['2026-11-20', '2026-11-21', '2026-11-24'],
+          prices: [670, 672, 675],
+          sdAnalysis: {
+            trendLine: [668, 670, 672],
+            tl_minus_2sd: [620, 622, 624],
+            tl_minus_sd: [644, 646, 648],
+            tl_plus_sd: [692, 694, 696],
+            tl_plus_2sd: [716, 718, 720]
+          },
+          weeklyDates: ['2026-11-20', '2026-11-21', '2026-11-24'],
+          weeklyPrices: [670, 672, 675],
+          upperBand: [692, 694, 696],
+          lowerBand: [644, 646, 648],
+          ma20: [668, 670, 672],
+          currentPrice: 675,
+          currentPricePosition: 0,
+          sentiment: { key: 'sentiment.neutral', value: 'Neutral' }
         }
       };
     } else if (apiPath === '/market-sentiment-free') {
@@ -171,6 +183,8 @@ test.describe('Frontend browser smoke tests', () => {
 
     await expect(page.getByPlaceholder(/2330.*AAPL/i)).toBeVisible();
     await expect(page.locator('.chart-card')).toBeVisible();
+    await expect(page.locator('.chart-card canvas').first()).toBeVisible();
+    await expect(page.getByText('發生未知錯誤')).toHaveCount(0);
     await expect(page.getByRole('dialog')).toHaveCount(0);
     expect(network.requests.some((request) => request.includes('/api/integrated-analysis'))).toBe(true);
 
