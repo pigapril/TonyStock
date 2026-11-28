@@ -1,6 +1,12 @@
 import '@testing-library/jest-dom';
 import '../scripts/test-warning-filter';
 import { i18nReady } from './i18n';
+import { TextDecoder, TextEncoder } from 'util';
+
+// React Router v7 relies on Web Encoding APIs that Jest 27's jsdom does not
+// expose by default. Node provides compatible implementations for tests.
+if (typeof global.TextEncoder === 'undefined') global.TextEncoder = TextEncoder;
+if (typeof global.TextDecoder === 'undefined') global.TextDecoder = TextDecoder;
 
 // The production entry point waits for the same selected common bundle before
 // rendering. Keep component tests on that initialized baseline as well.

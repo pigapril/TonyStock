@@ -74,6 +74,22 @@ const webpack = override(
 module.exports = {
   webpack,
   jest: (config) => {
+    // Jest 27 does not resolve the package export used by React Router v7's
+    // CommonJS entry. Select the package's Node CommonJS fallback from its
+    // public exports map instead of hardcoding a dist/ path.
+    const reactRouterPackagePath = require.resolve('react-router/package.json');
+    const reactRouterPackage = require(reactRouterPackagePath);
+    const reactRouterDomNodeEntry = reactRouterPackage.exports?.['./dom']?.node?.default;
+
+    if (!reactRouterDomNodeEntry) {
+      throw new Error('Unable to resolve the React Router v7 Node DOM entry for Jest.');
+    }
+
+    config.moduleNameMapper = {
+      '^react-router/dom$': path.resolve(path.dirname(reactRouterPackagePath), reactRouterDomNodeEntry),
+      ...(config.moduleNameMapper || {})
+    };
+
     // Axios 1.7+ exposes an ESM entry point. Let babel transform only Axios
     // JavaScript while preserving CRA's default treatment of all other JS and
     // CSS modules. A broad `node_modules/(?!axios/)` rule also excludes package

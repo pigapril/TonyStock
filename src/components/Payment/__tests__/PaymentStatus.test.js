@@ -40,7 +40,7 @@ testI18n.init({
   lng: 'zh-TW',
   fallbackLng: 'zh-TW',
   resources: { 'zh-TW': { translation: zhTW }, 'zh-CN': { translation: zhCN }, en: { translation: en } },
-  initImmediate: false,
+  initAsync: false,
   interpolation: { escapeValue: false }
 });
 const render = ui => rtlRender(<I18nextProvider i18n={testI18n}>{ui}</I18nextProvider>);

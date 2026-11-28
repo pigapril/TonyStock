@@ -14,7 +14,7 @@ beforeEach(() => {
 
 test.each(['en', 'zh-TW'])('loading, carousel and failed-data states preserve the gauge and reserve all event copy in %s', lang => {
   const instance = createInstance();
-  instance.use(initReactI18next).init({ lng: lang, fallbackLng: 'en', initImmediate: false,
+  instance.use(initReactI18next).init({ lng: lang, fallbackLng: 'en', initAsync: false,
     resources: { en: { translation: en }, 'zh-TW': { translation: zh } } });
   const copy = lang === 'en' ? en : zh;
   const events = Object.keys(copy.home.hero.moments.events);

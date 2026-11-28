@@ -67,7 +67,7 @@ describe.each([
       en: { translation: en },
       'zh-TW': { translation: zhTW },
       'zh-CN': { translation: zhCN }
-    }, initImmediate: false, interpolation: { escapeValue: false } });
+    }, initAsync: false, interpolation: { escapeValue: false } });
     render(<I18nextProvider i18n={i18n}><PaymentPage /></I18nextProvider>);
     await screen.findByTestId('payment-plan-amount', {}, { timeout: 4000 });
     expect(screen.getAllByAltText('Mastercard')).toHaveLength(1);
@@ -129,7 +129,7 @@ describe.each([
       en: { translation: en },
       'zh-TW': { translation: zhTW },
       'zh-CN': { translation: zhCN }
-    }, initImmediate: false, interpolation: { escapeValue: false } });
+    }, initAsync: false, interpolation: { escapeValue: false } });
     render(<I18nextProvider i18n={i18n}><PaymentPage /></I18nextProvider>);
 
     await screen.findByTestId('payment-order-total');
@@ -173,7 +173,7 @@ describe.each([
       en: { translation: en },
       'zh-TW': { translation: zhTW },
       'zh-CN': { translation: zhCN }
-    }, initImmediate: false, interpolation: { escapeValue: false } });
+    }, initAsync: false, interpolation: { escapeValue: false } });
     render(<I18nextProvider i18n={i18n}><PaymentPage /></I18nextProvider>);
 
     await screen.findByTestId('payment-order-total');

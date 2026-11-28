@@ -8,12 +8,11 @@
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-react": "^7.22.5",
     "@hello-pangea/dnd": "^16.6.0",
-    "@marsidev/react-turnstile": "^1.1.0",
     "@nivo/core": "^0.88.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.7.7",
+    "axios": "^1.21.1",
     "chart.js": "^4.4.4",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-annotation": "^3.0.1",
@@ -21,8 +20,7 @@
     "chartjs-plugin-zoom": "^2.2.0",
     "customize-cra": "^1.0.0",
     "date-fns": "^4.1.0",
-    "i18next": "^25.0.2",
-    "i18next-http-backend": "^3.0.2",
+    "i18next": "^26.7.2",
     "rc-slider": "^11.1.8",
     "react": "^18.3.1",
     "react-app-rewired": "^2.2.1",
@@ -36,15 +34,18 @@
     "react-markdown": "^9.0.3",
     "react-modal": "^3.16.3",
     "react-responsive": "^9.0.0",
-    "react-router-dom": "^6.26.2",
+    "react-router-dom": "^7.18.7",
     "react-scripts": "^5.0.1",
-    "react-turnstile": "^1.1.4",
     "recharts": "^2.13.3",
     "remark-gfm": "^4.0.1",
     "styled-components": "^6.1.13",
-    "turnstile-js": "^0.0.1",
     "use-debounce": "^10.0.4",
     "web-vitals": "^2.1.4"
+  },
+  "overrides": {
+    "react-scripts": {
+      "bfj": "^9.1.5"
+    }
   },
   "scripts": {
     "build": "node scripts/generate-locale-resources.js && SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false ESLINT_NO_DEV_ERRORS=true react-app-rewired build",
@@ -56,6 +57,9 @@
     "start:staging": "node scripts/generate-locale-resources.js && REACT_APP_ENVIRONMENT=staging react-app-rewired start",
     "test": "react-app-rewired test",
     "test:ci": "node ./scripts/run-ci-tests.js",
+    "test:regression": "node ./scripts/run-ci-tests.js --regression",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
     "eject": "react-scripts eject",
     "locales:check": "node scripts/generate-locale-resources.js --check",
     "articles:check": "node scripts/verify-article-locales.js"
@@ -65,6 +69,28 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/**/*.test.{js,jsx}",
+      "!src/**/*.spec.{js,jsx}",
+      "!src/**/__tests__/**",
+      "!src/**/setupTests.js"
+    ],
+    "coverageReporters": [
+      "text-summary",
+      "lcov",
+      "json"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 40,
+        "branches": 38,
+        "functions": 40,
+        "lines": 40
+      }
+    }
   },
   "browserslist": {
     "production": [
@@ -79,6 +105,7 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "1.65.1",
     "ajv": "^8.12.0",
     "ajv-keywords": "^5.1.0",
     "clean-css-loader": "^4.2.1",
