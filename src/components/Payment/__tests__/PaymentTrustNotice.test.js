@@ -14,7 +14,7 @@ describe.each([
 ])('payment disclosure %s %s', (lang, billingPeriod, period) => {
   it('shows payment disclosures without unrelated navigation links', () => {
     const i18n = createInstance();
-    i18n.init({ lng: lang, resources: { en: { translation: en }, 'zh-TW': { translation: zhTW } }, initImmediate: false, interpolation: { escapeValue: false } });
+    i18n.init({ lng: lang, resources: { en: { translation: en }, 'zh-TW': { translation: zhTW } }, initAsync: false, interpolation: { escapeValue: false } });
     const { container } = render(<I18nextProvider i18n={i18n}><PaymentTrustNotice amount={179} billingPeriod={billingPeriod} lang={lang} /></I18nextProvider>);
     expect(screen.getByAltText('Visa')).toHaveAttribute('src', '/images/payment/visa.png');
     expect(screen.getByAltText('Mastercard')).toHaveAttribute('src', '/images/payment/mastercard.webp');
