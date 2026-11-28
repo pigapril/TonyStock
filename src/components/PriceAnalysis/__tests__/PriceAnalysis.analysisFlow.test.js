@@ -196,11 +196,14 @@ describe('PriceAnalysis analysis flow', () => {
       </TestWrapper>
     );
 
-    await waitFor(() => expect(trackProductEvent).toHaveBeenCalledWith(
+    // The completion event is emitted after the API response is accepted, while
+    // chart state is committed in a transition and the workspace is lazy-loaded.
+    // Wait for the rendered chart itself rather than treating analytics as a DOM
+    // readiness signal; Netlify's slower CI workers need a longer async boundary.
+    await screen.findByTestId('price-analysis-line-chart', {}, { timeout: 10000 });
+    expect(trackProductEvent).toHaveBeenCalledWith(
       'price_analysis_completed', expect.any(Object)
-    ));
-
-    await screen.findByTestId('price-analysis-line-chart');
+    );
     const getBoundingClientRect = jest.spyOn(Element.prototype, 'getBoundingClientRect')
       .mockReturnValue({ top: 500 });
     fireEvent.change(screen.getByPlaceholderText(/2330.*AAPL/i), { target: { value: 'AAPL' } });
