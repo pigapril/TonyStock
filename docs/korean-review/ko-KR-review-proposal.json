@@ -19413,7 +19413,7 @@
         "zhCN": "标普 500 指数 ETF",
         "en": "S&P 500 ETF"
       },
-      "korean": "S&P 500 ETF",
+      "korean": "S&P 500 지수 추종 ETF",
       "candidateSource": "docs/i18n/ko-KR-review/03-core-google-home.draft.json",
       "alternatives": [],
       "englishFallback": {
@@ -64728,7 +64728,7 @@
         "zhCN": "CBOE Put/Call Ratio",
         "en": "CBOE Put/Call Ratio"
       },
-      "korean": "CBOE Put/Call Ratio",
+      "korean": "CBOE 풋/콜 비율",
       "candidateSource": "docs/korean-review/drafts/08-indicator-pages.revised.ko-KR.json",
       "alternatives": [],
       "englishFallback": {

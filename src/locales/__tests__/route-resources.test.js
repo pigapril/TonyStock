@@ -194,7 +194,7 @@ test('partial Japanese resources use English fallback and never Traditional Chin
 
   expect(instance.t('marketSentiment.enhancedDescription.tabs.faq')).toBe('よくある質問');
   expect(instance.t('marketSentiment.pageTitle')).toBe(original('ja-JP').marketSentiment.pageTitle);
-  expect(instance.t('marketSentiment.gauge.comparison.previousDay')).toBe(original('en').marketSentiment.gauge.comparison.previousDay);
+  expect(instance.t('marketSentiment.gauge.comparison.previousDay')).toBe('前日');
   expect(loaders['ja-JP'].market).toHaveBeenCalledTimes(1);
   expect(loaders.en.market).toHaveBeenCalledTimes(1);
   expect(loaders['zh-TW'].market).not.toHaveBeenCalled();

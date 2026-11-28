@@ -299,6 +299,13 @@
             "body": "過去のチャートで市場心理が極端になった時期を振り返り、その後の価格変化を確認します。Proでは同じ分析を最新データにも利用できます。"
           }
         }
+      },
+      "comparison": {
+        "ariaLabel": "総合指標の過去比較",
+        "previousDay": "前日",
+        "previousWeek": "前週",
+        "previousMonth": "30日前",
+        "previousQuarter": "90日前"
       }
     },
     "comparison": {
@@ -835,7 +842,7 @@
       "relationToSioTitle": "この指標とSIOの関係",
       "relationToSio": "Put/Call Ratioの日次値には大きなノイズがあり、同じ週の中でも0.6から1.2へ動くことがあります。単独で見ると誤解しやすく、オプション市場しか反映しないため、現物株、債券、資金フローの状況は分かりません。SIOはPut/Call Ratioを平滑化・標準化してほかの7項目と統合し、オプションだけでは見えない情報を補います。",
       "relationToSioCta": "SIO米国株恐怖・強欲指数を見る",
-      "shortName": "CBOE Put/Call Ratio",
+      "shortName": "CBOEプット・コール・レシオ",
       "pageTitle": "CBOE Put/Call Ratioとは？読み方と注意点",
       "pageDescription": "CBOE Put/Call Ratioはオプション市場におけるプットとコールの出来高比率です。数値が高いほど一般にヘッジ需要が強いことを示します。",
       "keywords": "CBOE Put/Call Ratio,Put Call Ratio,PCR,オプション,ヘッジ需要,市場心理",
@@ -1314,7 +1321,7 @@
           "items": {
             "spy": "米国株式市場ETF",
             "qqq": "米国テクノロジーETF",
-          "voo": "S&P 500連動ETF",
+            "voo": "S&P 500連動ETF",
             "aapl": "Apple",
             "nvda": "NVIDIA",
             "msft": "Microsoft"
@@ -1350,7 +1357,9 @@
     "disclaimer2": "本サイトの情報へのリンクは自由に共有できます。コンテンツを転載する場合は、必ず事前に本サイトの許可を得てください。お問い合わせ：support@sentimentinsideout.com"
   },
   "protectedRoute": {
-    "watchlistUpgradeRequired": "ウォッチリスト機能を利用するには、Proプランへのアップグレードが必要です。"
+    "watchlistUpgradeRequired": "ウォッチリスト機能を利用するには、Proプランへのアップグレードが必要です。",
+    "loading": "読み込み中...",
+    "loginRequired": "続行するにはログインしてください"
   },
   "articles": {
     "pageTitle": "ツールの使い方と市場心理の基礎",
@@ -1481,7 +1490,7 @@
   },
   "indicators": {
     "aaiiSpread": "AAII投資家センチメント調査",
-    "cboeRatio": "CBOE Put/Call Ratio",
+    "cboeRatio": "CBOEプット・コール・レシオ",
     "marketMomentum": "S&P 500市場モメンタム",
     "vixMA50": "VIX恐怖指数",
     "safeHaven": "債券への逃避需要",
@@ -1562,7 +1571,21 @@
     "delayBannerBody": "CNN、BofA、AAIIなど第三者指標は最新の公表値を表示します。SIOが算出する総合指数と過去パーセンタイルは上記の日付までです。",
     "delayedTag": "Proにアップグレードして最新データを見る",
     "asOf": "データ基準時刻",
-    "cta": "SIO米国株の市場心理を見る"
+    "cta": "SIO米国株の市場心理を見る",
+    "groups": {
+      "external": {
+        "title": "他機関が公表する主なセンチメント指標",
+        "note": "他の機関が公表する市場心理指標です。CNN恐怖・強欲指数は反応が速い一方、短期的な動きに偏り、株価が底を打つ前に極度の恐怖を示すことがあります。BofAブル・ベア指標は週次で更新され、基となるレポートは一般公開されていません。"
+      },
+      "us": {
+        "title": "米国株のセンチメント指標",
+        "note": "AAIIの個人投資家調査、NAAIMの運用者エクスポージャー、オプションのPut/Call比率、信用スプレッドなどが、SIO米国株恐怖・強欲指数を構成するシグナルです。"
+      },
+      "tw": {
+        "title": "台湾株のセンチメント指標",
+        "note": "台湾株価指数オプションのボラティリティ、海外投資家の先物ポジション、信用取引の維持率などが、SIO台湾株恐怖・強欲指数を構成するシグナルです。台湾株と米国株では市場構造が異なるため、それぞれ別の指標セットを使用しています。"
+      }
+    }
   },
   "priceAnalysis": {
     "pageTitle": "LOHAS Five-Line（5線チャート）｜株価トレンドと価格水準の分析ツール",
@@ -1606,7 +1629,13 @@
       "signal": "シグナルライン",
       "histogram": "ヒストグラム",
       "insufficient": "この期間のデータが不足しています。より長い分析期間を選択してください。",
-      "missingRange": "日次の高値・安値データがないため、KDを計算できません。"
+      "missingRange": "日次の高値・安値データがないため、KDを計算できません。",
+      "description": {
+        "rsi": "RSI（14日）は、直近の値動きの強さを0～100の範囲で示します。",
+        "macd": "MACDは12日と26日の指数移動平均線の差を、9日のシグナル線とともに示します。算出初期には、十分な過去データが必要です。",
+        "kd": "KD（9日）は、直近の高値・安値に対する終値の位置をK線とD線で示します。",
+        "ma": "終値と5日、10日、20日、60日、120日の移動平均線を比較します。"
+      }
     },
     "sentiment": {
       "extremeGreed": "極度の強欲",
@@ -1784,6 +1813,10 @@
         "freeStocks": "指数ETF 💎",
         "watchlist": "ウォッチリスト 📋"
       }
+    },
+    "jsonLd": {
+      "name": "LOHAS Five-Line（5線チャート）",
+      "description": "LOHAS Five-Line（5線チャート）は、過去3年半の価格から長期トレンドを算出し、その上下に2本ずつラインを加えて、価格が通常どの程度トレンドから離れるかを示します。外側のラインに近いほど長期トレンドからの乖離が大きく、上側は「極度の強欲」、下側は「極度の恐怖」を表します。より短期的に動くLOHASチャネルと併せて見ることで、短期的な過熱や売られすぎの状態も確認できます。個別株や指数連動ETFが長期トレンドのどの位置にあるかを把握するための参考情報であり、単独で売買を判断するものではありません。"
     }
   },
   "subscription": {
@@ -2353,7 +2386,9 @@
       "turnoverReminder": "注文前に売買代金と売買スプレッドを確認してください。",
       "unlockBody": "銘柄名、モメンタムスコア、価格推移の詳細を確認できます。",
       "unlockAction": "Proにアップグレード"
-    }
+    },
+    "pageTitle": "市場モメンタムダッシュボード｜ETFランキングとセクター動向",
+    "pageDescription": "ETFのモメンタムランキング、セクター動向、複数期間のパフォーマンスを比較できます。強いグループの中から、相対的に強い資産を見つけましょう。"
   },
   "pageTitle": "市場モメンタム・ダッシュボード｜ETFランキングと強いカテゴリー",
   "pageDescription": "ETFのモメンタムランキング、産業カテゴリー、複数期間のパフォーマンスを比較し、強いカテゴリーから有望な銘柄を探して市場モメンタムの方向を把握します。",
@@ -2976,5 +3011,95 @@
   },
   "userActions": {
     "login": "ログイン"
+  },
+  "dialog": {
+    "close": "閉じる",
+    "closeAriaLabel": "ダイアログを閉じる"
+  },
+  "errorBoundary": {
+    "title": "問題が発生しました",
+    "defaultMessage": "不明なエラーが発生しました",
+    "retryButton": "再試行"
+  },
+  "signInButton": {
+    "loading": "読み込み中...",
+    "googleAriaLabel": "Googleでログイン"
+  },
+  "infoTool": {
+    "moreInfoAriaLabel": "詳細情報"
+  },
+  "interstitialAd": {
+    "closeButton": "広告を閉じる"
+  },
+  "googleTrendsMarket": {
+    "invalidData": "データ形式が正しくありません",
+    "fetchError": "データの取得中にエラーが発生しました",
+    "chartDescription": "複数の市場関連キーワードのGoogle検索トレンドと、S&P 500（SPY）の株価推移を比較するチャートです。",
+    "pageTitle": "Google検索トレンド｜市場全体",
+    "pageDescription": "主要な金融用語のGoogle検索トレンドをS&P 500指数と比較し、市場全体のセンチメントを把握します。",
+    "heading": "Google検索トレンドによる市場分析"
+  },
+  "googleTrendsSymbol": {
+    "invalidData": "データ形式が正しくありません",
+    "fetchError": "データの取得中にエラーが発生しました",
+    "chartDescription": "{symbol}のGoogle検索トレンドと株価推移を比較するチャートです。検索トレンドは市場の関心度を、株価は実際の価格変動を示します。",
+    "prompt": "データを表示するには、上の検索ボックスに銘柄コードを入力してください",
+    "pageTitle": "Google検索トレンド｜個別銘柄",
+    "pageDescription": "個別銘柄のGoogle検索トレンドと株価の関係を分析します。",
+    "heading": "銘柄別Google検索トレンド分析"
+  },
+  "googleTrendsChart": {
+    "tooltipDate": "日付",
+    "yAxisPrice": "株価（ドル）",
+    "yAxisTrend": "Google検索トレンド（0～100）",
+    "priceLineName": "{symbol}の株価"
+  },
+  "googleTrendsSearch": {
+    "placeholder": "銘柄コードを入力",
+    "searching": "検索中...",
+    "errorIcon": "⚠️",
+    "noResultsIcon": "🔍",
+    "noResults": "該当する銘柄が見つかりません"
+  },
+  "googleTrendsTimeframe": {
+    "label": "期間",
+    "oneMonth": "1か月",
+    "threeMonths": "3か月",
+    "sixMonths": "6か月",
+    "oneYear": "1年"
+  },
+  "indicatorItem": {
+    "updatedDateLabel": "更新日",
+    "asOfLabel": "データ基準日：{{date}}",
+    "spyPriceLabel": "SPY価格",
+    "latestDataLabel": "最新データ",
+    "fearGreedScoreLabel": "センチメントスコア",
+    "fearGreedTooltip": "各指標を同じ基準で比較できるよう、実際の数値を過去の順位に基づくパーセンタイルに変換し、センチメントスコア（0～100）として表示します。スコアが高いほど強欲、低いほど恐怖に傾いていることを示します。",
+    "marketSentimentLabel": "市場センチメント",
+    "notAvailable": "該当なし",
+    "noData": "データがありません。しばらくしてからもう一度お試しください"
+  },
+  "ulBandChart": {
+    "upperBandLabel": "上限バンド",
+    "ma20Label": "MA20",
+    "priceLabel": "価格",
+    "lowerBandLabel": "下限バンド"
+  },
+  "expandableDescription": {
+    "expand": "続きを読む",
+    "collapse": "折りたたむ"
+  },
+  "marketPulse": {
+    "refreshNote": "市場データは約5分ごとに更新されます",
+    "title": "世界のマーケット",
+    "latestSession": "直近の取引日",
+    "loading": "市場の値動きを読み込んでいます",
+    "unavailable": "現在、市場の値動きを取得できません",
+    "itemLabel": "{{name}}、指数 {{value}}、変動率 {{percent}}"
+  },
+  "announcement": {
+    "title": "📢 お知らせ",
+    "close": "お知らせを閉じる",
+    "confirm": "確認しました"
   }
 }

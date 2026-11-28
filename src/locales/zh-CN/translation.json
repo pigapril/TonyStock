@@ -2312,7 +2312,7 @@
         }
       },
       "userInfo": {
-        "email": "Email",
+        "email": "电子邮箱",
         "registeredAt": "注册时间",
         "lastLogin": "最后登录",
         "subscriptionStatus": "订阅状态",
@@ -3034,7 +3034,7 @@
       "source": "National Association of Active Investment Managers（NAAIM）。调查每周更新。"
     },
     "cboePutCall": {
-      "shortName": "CBOE Put/Call Ratio",
+      "shortName": "CBOE 看跌/看涨期权比率",
       "pageTitle": "CBOE Put/Call Ratio（看跌/看涨期权比率）是什么？怎么解读？",
       "pageDescription": "CBOE Put/Call Ratio 的完整解读：期权市场的看跌期权与看涨期权成交量比值，数字越高代表避险需求越强。附最新读数、判读方式与它的已知限制。",
       "keywords": "CBOE Put Call Ratio,看跌/看涨期权比率,PCR,期权比率,put call ratio,市场情绪指标,避险需求",
